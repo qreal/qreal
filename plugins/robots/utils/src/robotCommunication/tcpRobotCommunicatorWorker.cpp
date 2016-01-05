@@ -83,6 +83,7 @@ void TcpRobotCommunicatorWorker::runProgram(const QString &programName)
 
 void TcpRobotCommunicatorWorker::runDirectCommand(const QString &directCommand, bool asScript)
 {
+	connect();
 	if (!mControlConnection->isConnected()) {
 		return;
 	}
@@ -94,6 +95,7 @@ void TcpRobotCommunicatorWorker::runDirectCommand(const QString &directCommand, 
 
 void TcpRobotCommunicatorWorker::stopRobot()
 {
+	connect();
 	if (!mControlConnection->isConnected()) {
 		return;
 	}

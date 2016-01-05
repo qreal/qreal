@@ -18,6 +18,10 @@
 
 #include "declSpec.h"
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace utils {
 namespace robotCommunication {
 

@@ -16,8 +16,6 @@
 
 #include <QtCore/QThread>
 
-#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-
 #include "utils/utilsDeclSpec.h"
 
 namespace utils {
@@ -61,9 +59,6 @@ public:
 	/// Disconnects from robot.
 	void disconnect();
 
-	/// Starts to use the given \a errorReporter for diplaying errors and messages to user.
-	void setErrorReporter(qReal::ErrorReporterInterface *errorReporter);
-
 signals:
 	/// Emitted when TCP socket with robot was opened or failed to open.
 	void connected(bool success, const QString &errorMessage);
@@ -85,7 +80,7 @@ signals:
 
 	void uploadProgramDone();
 
-	void uploadProgramError();
+	void uploadProgramError(const QString &error);
 
 	void runDirectCommandDone();
 
@@ -93,14 +88,22 @@ signals:
 
 	void connectionError(const QString &errorString);
 
+	/// Emitted if we didn't receive version of trikRuntime within 3 seconds.
+	void trikRuntimeVersionGettingError();
+
+	/// Emitted if trikRuntime version does not match version required by this version of TRIK Studio.
+	void trikRuntimeVersionError();
+
+	/// Emitted when new information message arrives from robot.
+	void infoFromRobot(const QString &message);
+
+	/// Emitted when new error message arrives from robot.
+	void errorFromRobot(const QString &message);
+
 private slots:
 	void onMessageFromRobot(const MessageKind &messageKind, const QString &message);
 
 	void onConnectionError(const QString &error);
-
-	void onTrikRuntimeVersionGettingError();
-
-	void onTrikRuntimeVersionError();
 
 	void onConnected();
 
@@ -110,9 +113,6 @@ private:
 
 	/// Worker thread.
 	QThread mWorkerThread;
-
-	/// Reference to error reporter.
-	qReal::ErrorReporterInterface *mErrorReporter = nullptr;  // Does not have ownership.
 };
 
 }

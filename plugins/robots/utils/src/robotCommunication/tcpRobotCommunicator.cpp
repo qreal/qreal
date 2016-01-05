@@ -47,9 +47,9 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::connectionError
 			, this, &TcpRobotCommunicator::onConnectionError, Qt::QueuedConnection);
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::trikRuntimeVersionError
-			, this, &TcpRobotCommunicator::onTrikRuntimeVersionError, Qt::QueuedConnection);
+			, this, &TcpRobotCommunicator::trikRuntimeVersionError, Qt::QueuedConnection);
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::trikRuntimeVersionGettingError
-			, this, &TcpRobotCommunicator::onTrikRuntimeVersionGettingError, Qt::QueuedConnection);
+			, this, &TcpRobotCommunicator::trikRuntimeVersionGettingError, Qt::QueuedConnection);
 
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::uploadProgramDone
 			, this, &TcpRobotCommunicator::uploadProgramDone, Qt::QueuedConnection);
@@ -77,11 +77,7 @@ void TcpRobotCommunicator::uploadProgram(const QString &programName)
 {
 	if (programName.isEmpty()) {
 		QLOG_ERROR() << "Empty program name";
-		if (mErrorReporter) {
-			mErrorReporter->addError(tr("Empty program name, can not upload"));
-		}
-
-		emit uploadProgramError();
+		emit uploadProgramError(tr("Empty program name, can not upload"));
 		return;
 	}
 
@@ -89,11 +85,7 @@ void TcpRobotCommunicator::uploadProgram(const QString &programName)
 	const QString fileContents = utils::InFile::readAll(programName, &errorString);
 	if (!errorString.isEmpty()) {
 		QLOG_ERROR() << "Reading file to transfer failed";
-		if (mErrorReporter) {
-			mErrorReporter->addCritical(tr("Can not read generated file, uploading aborted"));
-		}
-
-		emit uploadProgramError();
+		emit uploadProgramError(tr("Can not read generated file, uploading aborted"));
 		return;
 	}
 
@@ -124,11 +116,6 @@ void TcpRobotCommunicator::requestData(const QString &sensor)
 	QMetaObject::invokeMethod(mWorker.data(), "requestData", Q_ARG(QString, sensor));
 }
 
-void TcpRobotCommunicator::setErrorReporter(qReal::ErrorReporterInterface *errorReporter)
-{
-	mErrorReporter = errorReporter;
-}
-
 void TcpRobotCommunicator::connect()
 {
 	QMetaObject::invokeMethod(mWorker.data(), "connect");
@@ -141,20 +128,13 @@ void TcpRobotCommunicator::disconnect()
 
 void TcpRobotCommunicator::onMessageFromRobot(const MessageKind &messageKind, const QString &message)
 {
-	const QString fromRobotString(tr("From robot: "));
 
 	switch (messageKind) {
 	case MessageKind::error:
-		if (mErrorReporter) {
-			mErrorReporter->addError(fromRobotString + message);
-		}
-
+		emit errorFromRobot(message);
 		break;
 	case MessageKind::info:
-		if (mErrorReporter) {
-			mErrorReporter->addInformation(fromRobotString + message);
-		}
-
+		emit infoFromRobot(message);
 		break;
 	case MessageKind::text:
 		emit printText(message);
@@ -164,10 +144,6 @@ void TcpRobotCommunicator::onMessageFromRobot(const MessageKind &messageKind, co
 
 void TcpRobotCommunicator::onConnectionError(const QString &error)
 {
-	if (mErrorReporter) {
-		mErrorReporter->addError(error);
-	}
-
 	emit connectionError(error);
 
 	// Insane protocol for robot model connection require that "connection failed" event is emitted as "connected"
@@ -180,19 +156,4 @@ void TcpRobotCommunicator::onConnectionError(const QString &error)
 void TcpRobotCommunicator::onConnected()
 {
 	emit connected(true, "");
-}
-
-void TcpRobotCommunicator::onTrikRuntimeVersionGettingError()
-{
-	if (mErrorReporter) {
-		mErrorReporter->addError(tr("Current TRIK runtime version can not be received"));
-	}
-}
-
-void TcpRobotCommunicator::onTrikRuntimeVersionError()
-{
-	if (mErrorReporter) {
-		mErrorReporter->addError(tr("TRIK runtime version is too old, please update it by pressing "
-				"'Upload Runtime' button on toolbar"));
-	}
 }

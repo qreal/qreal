@@ -24,6 +24,7 @@ HEADERS += \
 	$$PWD/../include/utils/realTimeline.h \
 	$$PWD/../include/utils/realTimer.h \
 	$$PWD/../include/utils/objectsSet.h \
+	$$PWD/../include/utils/robotCommunication/networkCommunicationErrorReporter.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/../include/utils/robotCommunication/robotCommunicator.h \
 	$$PWD/../include/utils/robotCommunication/runProgramProtocol.h \
@@ -61,6 +62,7 @@ SOURCES += \
 	$$PWD/canvas/ellipseObject.cpp \
 	$$PWD/canvas/arcObject.cpp \
 	$$PWD/canvas/textObject.cpp \
+	$$PWD/robotCommunication/networkCommunicationErrorReporter.cpp \
 	$$PWD/robotCommunication/protocol.cpp \
 	$$PWD/robotCommunication/robotCommunicator.cpp \
 	$$PWD/robotCommunication/robotCommunicationException.cpp \

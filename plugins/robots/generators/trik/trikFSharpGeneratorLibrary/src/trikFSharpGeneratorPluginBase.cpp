@@ -21,6 +21,7 @@
 #include <qrkernel/settingsManager.h>
 #include <utils/robotCommunication/tcpRobotCommunicator.h>
 #include <utils/robotCommunication/stopRobotProtocol.h>
+#include <utils/robotCommunication/networkCommunicationErrorReporter.h>
 
 #include "trikFSharpMasterGenerator.h"
 #include "trikFSharpAdditionalPreferences.h"
@@ -71,8 +72,8 @@ void TrikFSharpGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &c
 {
 	const auto errorReporter = configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
 	RobotsGeneratorPluginBase::init(configurer);
-	mCommunicator.reset(new utils::robotCommunication::TcpRobotCommunicator("TrikTcpServer"));
-	mCommunicator->setErrorReporter(errorReporter);
+	mCommunicator.reset(new TcpRobotCommunicator("TrikTcpServer"));
+	NetworkCommunicationErrorReporter::connectErrorReporter(*mCommunicator, *errorReporter);
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
 	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, [errorReporter]() {

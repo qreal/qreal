@@ -27,6 +27,7 @@
 #include <utils/robotCommunication/runProgramProtocol.h>
 #include <utils/robotCommunication/stopRobotProtocol.h>
 #include <utils/robotCommunication/uploadProgramProtocol.h>
+#include <utils/robotCommunication/networkCommunicationErrorReporter.h>
 
 #include "trikQtsMasterGenerator.h"
 #include "emptyShell.h"
@@ -58,13 +59,14 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 	const auto errorReporter = configurer.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
 	RobotsGeneratorPluginBase::init(configurer);
 	mCommunicator.reset(new TcpRobotCommunicator("TrikTcpServer"));
-	mCommunicator->setErrorReporter(errorReporter);
+	NetworkCommunicationErrorReporter::connectErrorReporter(*mCommunicator, *errorReporter);
+
 	mUploadProgramProtocol.reset(new UploadProgramProtocol(*mCommunicator));
 	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator));
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
 	const auto timeout = [this, errorReporter]() {
-		errorReporter->addError(tr("Run program operation timed out"));
+		errorReporter->addError(tr("Network operation timed out"));
 		onProtocolFinished();
 	};
 

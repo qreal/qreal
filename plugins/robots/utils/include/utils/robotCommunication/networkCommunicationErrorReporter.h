@@ -14,42 +14,23 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-#include <QtCore/QScopedPointer>
-
 #include "utils/utilsDeclSpec.h"
 
-class QState;
+namespace qReal {
+class ErrorReporterInterface;
+}
 
 namespace utils {
 namespace robotCommunication {
 
 class TcpRobotCommunicator;
-class Protocol;
 
-class ROBOTS_UTILS_EXPORT StopRobotProtocol : public QObject
+class ROBOTS_UTILS_EXPORT NetworkCommunicationErrorReporter
 {
-	Q_OBJECT
-
 public:
-	explicit StopRobotProtocol(TcpRobotCommunicator &communicator);
-	~StopRobotProtocol() override;
-
-	void run(const QString &command);
-
-signals:
-	void success();
-	void error();
-	void timeout();
-
-private:
-	QScopedPointer<Protocol> mProtocol;
-
-	/// Does not have direct ownership (will be disposed by mProtocol).
-	QState *mWaitingForStopRobotCommandSent = nullptr;
-
-	/// Does not have direct ownership (will be disposed by mProtocol).
-	QState *mWaitingForDeinitializeCommandSent = nullptr;
+	NetworkCommunicationErrorReporter() = delete;
+	static void connectErrorReporter(const TcpRobotCommunicator &communicator
+			, qReal::ErrorReporterInterface &errorReporter);
 };
 
 }

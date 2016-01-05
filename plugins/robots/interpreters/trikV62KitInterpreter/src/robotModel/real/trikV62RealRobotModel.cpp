@@ -42,6 +42,8 @@
 #include <trikKitInterpreterCommon/robotModel/real/parts/gamepadPadPressSensor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/gamepadWheel.h>
 
+#include <utils/robotCommunication/networkCommunicationErrorReporter.h>
+
 using namespace trik::robotModel::real;
 using namespace kitBase::robotModel;
 
@@ -92,7 +94,10 @@ void RealRobotModel::disconnectFromRobot()
 
 void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
-	mRobotCommunicator->setErrorReporter(&errorReporter);
+	utils::robotCommunication::NetworkCommunicationErrorReporter::connectErrorReporter(
+			*mRobotCommunicator
+			, errorReporter
+			);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)

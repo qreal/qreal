@@ -19,6 +19,10 @@
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace utils {
 namespace robotCommunication {
 

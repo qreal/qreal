@@ -34,13 +34,11 @@ Protocol::Protocol(TcpRobotCommunicator &communicator, int timeout)
 	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &Protocol::onTimeout);
 
 	connect(mSuccess, &QState::entered, [this]() {
-		qDebug() << "Entered done state";
 		emit success();
 		mTimeoutTimer->stop();
 	});
 
 	connect(mErrored, &QState::entered, [this]() {
-		qDebug() << "Entered error state";
 		emit error();
 		mTimeoutTimer->stop();
 	});
