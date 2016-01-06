@@ -624,19 +624,19 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
+	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 	for (const QString &elementName : mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
 			, id().diagram())) {
 		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
+			const QList<StringPossibleEdge> list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
 			for (const StringPossibleEdge &pEdge : list) {
-				const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 				if (portTypes.contains(pEdge.first.first)
 						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
 				{
 					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
-					QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
+					const QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
 					if (elementPairs.empty()) {
 						continue;
 					}

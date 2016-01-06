@@ -82,9 +82,9 @@ void AbstractModelItem::stackBefore(AbstractModelItem *element, AbstractModelIte
 	mChildren.insert(mChildren.indexOf(sibling), element);
 }
 
-int AbstractModelItem::row()
+int AbstractModelItem::row() const
 {
-	return mParent->children().indexOf(this);
+	return mParent->children().indexOf(const_cast<AbstractModelItem *>(this));
 }
 
 void AbstractModelItem::clearChildren()

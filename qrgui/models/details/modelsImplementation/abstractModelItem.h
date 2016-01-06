@@ -31,7 +31,7 @@ public:
 	AbstractModelItem *parent() const;
 	PointerList children() const;
 
-	int row();
+	int row() const;
 	void addChild(AbstractModelItem *child);
 	void removeChild(AbstractModelItem *child);
 	void clearChildren();

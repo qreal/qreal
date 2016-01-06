@@ -100,10 +100,8 @@ QModelIndex AbstractModel::index(const AbstractModelItem * const item) const
 {
 	QList<int> rowCoords;
 
-	for (const AbstractModelItem *curItem = item;
-		curItem != mRootItem; curItem = curItem->parent())
-	{
-		rowCoords.append(const_cast<AbstractModelItem *>(curItem)->row());
+	for (const AbstractModelItem *curItem = item; curItem != mRootItem; curItem = curItem->parent()) {
+		rowCoords.append(curItem->row());
 	}
 
 	QModelIndex result;
@@ -144,7 +142,7 @@ const EditorManagerInterface &AbstractModel::editorManagerInterface() const
 
 QModelIndex AbstractModel::indexById(const Id &id) const
 {
-	if (mModelItems.keys().contains(id)) {
+	if (mModelItems.contains(id)) {
 		return index(mModelItems.find(id).value());
 	}
 

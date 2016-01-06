@@ -137,8 +137,10 @@ Id EditorViewMViface::rootId() const
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
+	mScene->setEnabled(true);
+	mScene->blockSignals(true);
+	mView->scene()->clearSelection();
 	for (int row = start; row <= end; ++row) {
-		mScene->setEnabled(true);
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex())) {
@@ -206,7 +208,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			}
 
 			if (!isEdgeFromEmbeddedLinker) {
-				mView->scene()->clearSelection();
 				elem->setSelected(true);
 			}
 
@@ -238,6 +239,8 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 	}
 
+	mScene->blockSignals(false);
+	emit mScene->selectionChanged();
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 

@@ -370,10 +370,8 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 	return result;
 }
 
-// Цель: оставить 1-2 метода createElement, а лучше вообще избавиться от них, все делая через модели!
 Id EditorViewScene::createElement(const QString &str)
 {
-	// Этот метод надо удалить, вынести содержимое в лямбду
 	mLastCreatedFromLinker = createElement(str, mCreatePoint, &mLastCreatedFromLinkerCommand);
 	mShouldReparentItems = false;
 	return mLastCreatedFromLinker;
@@ -386,7 +384,6 @@ Id EditorViewScene::createElement(const QString &str
 		, const QPointF &shiftToParent
 		, const QString &explosionTargetUuid)
 {
-	// Что тут за стыдобища? Зачем упаковывать, а потом распаковывать? изжить!
 	Id typeId = Id::loadFromString(str);
 	Id objectId = typeId.sameTypeId();
 
@@ -432,23 +429,18 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 	inStream >> explosionTargetUuid;
 
 	const Id id = Id::loadFromString(uuid);
-	// Все посюда надо куда-то в общее место засунуть
 
-	// Это условие вполне перелезет в команду
 	if (!mEditorManager.hasElement(id.type())) {
 		return;
 	}
 
-	// На это пофиг
 	QLOG_TRACE() << "Created element, id = " << id << ", position = " << scenePos;
 
-	// Этот хлам надо в первую пачку
 	const Id explosionTarget = explosionTargetUuid.isEmpty()
 			? Id()
 			: Id::loadFromString(explosionTargetUuid);
 
 	if (mEditorManager.getPatternNames().contains(id.element())) {
-		// Код с паттерном 100% идет в команду, уже даже там. При этом нажо зарефакторить модели для создания сразу пачки.
 		const ElementInfo element(id, isFromLogicalModel ? id : mModels.graphicalModelAssistApi().logicalId(id)
 				, mRootId, mRootId, {}, {{"position", scenePos}});
 		CreateAndUpdatePatternCommand *createGroupCommand = new CreateAndUpdatePatternCommand(
@@ -457,11 +449,8 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 			mController.execute(createGroupCommand);
 		}
 	} else {
-		// В этой ветке вся суть происходит в createSingleElement, остальной код отвечает за поиск родителя в позиции
-		// под курсором, и далее после вставки элемент стекается над родителем.
 		Element *newParent = nullptr;
 
-		// Это вообще стыд какой-то, надо изжить
 		const ElementImpl * const impl = mEditorManager.elementImpl(id);
 		const bool isNode = impl->isNode();
 		delete impl;
@@ -482,7 +471,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 			newParent = nullptr;
 		}
 
-		// лол, !newParent. scenePos -- точно ли удачное название? не может ли он уже быть в родителе?
 		const QPointF position = !newParent
 				? scenePos
 				: newParent->mapToItem(newParent, newParent->mapFromScene(scenePos));
@@ -508,8 +496,6 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 		, const Id &explosionTarget, CreateElementsCommand **createCommandPointer
 		, bool executeImmediately)
 {
-	// Создание идет через команды все равно! Не должен ли этот код (вычищенный и не отвратный) лежать там?
-	// Параметры надо как-то упаковать в структурку, эксплозер изжить нахрен, если получится, если нет, то модели с ним тоже в одно место.
 	ElementInfo elementInfo(id, isFromLogicalModel ? id : Id(), mRootId, parentId
 					, {{"name", name}}, {{"position", position}}, explosionTarget);
 	CreateElementsCommand *createCommand = new CreateElementsCommand(mModels, {elementInfo});
@@ -520,7 +506,6 @@ void EditorViewScene::createSingleElement(const Id &id, const QString &name, boo
 
 	if (executeImmediately) {
 		if (isNode) {
-			// Почему все ноды всегда якобы вставляются? Надо это убрать.
 			const QSize size = mEditorManager.iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
 					*this, mModels, Id(), Id(), parentId, position, QPointF(size.width(), size.height())

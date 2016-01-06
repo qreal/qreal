@@ -53,6 +53,7 @@ public:
 	virtual bool copyPorts(NodeType *parent) = 0;
 	void copyLabels(GraphicType *parent);
 	virtual bool copyPictures(GraphicType *parent) = 0;
+	virtual QList<Port *> ports() const;
 
 	QString description() const;
 	void setDescription(const QString &description);

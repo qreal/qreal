@@ -170,6 +170,10 @@ void GraphicalModel::addTree(const Id &parent, const QMultiMap<Id, ElementInfo *
 
 	visited.insert(parent);
 	const QList<ElementInfo *> children = childrenOfParents.values(parent);
+	if (children.isEmpty()) {
+		return;
+	}
+
 	const int newRow = parentItem->children().size();
 	beginInsertRows(index(parentItem), newRow, newRow + children.size() - 1);
 	for (ElementInfo *child : children) {

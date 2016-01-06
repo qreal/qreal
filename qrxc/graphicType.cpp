@@ -96,6 +96,11 @@ void GraphicType::copyLabels(GraphicType *parent)
 	}
 }
 
+QList<Port *> GraphicType::ports() const
+{
+	return {};
+}
+
 bool GraphicType::init(const QDomElement &element, const QString &context)
 {
 	mElement = element;
