@@ -24,7 +24,8 @@ Shell::Shell(const DeviceInfo &info, const PortInfo &port
 	: robotModel::parts::TrikShell(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::printText, this, &Shell::textPrinted);
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::printText
+			, this, &Shell::textPrinted);
 }
 
 void Shell::say(const QString &text)

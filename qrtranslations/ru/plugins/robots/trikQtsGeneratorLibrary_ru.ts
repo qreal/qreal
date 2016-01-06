@@ -125,7 +125,7 @@
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsGeneratorPluginBase.cpp" line="69"/>
         <source>Network operation timed out</source>
-        <translation>Не удалось получить ответ от робота</translation>
+        <translation type="unfinished">Не удалось получить ответ от робота, проверьте настройки, проверьте, включён ли робот</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsGeneratorPluginBase.cpp" line="95"/>
