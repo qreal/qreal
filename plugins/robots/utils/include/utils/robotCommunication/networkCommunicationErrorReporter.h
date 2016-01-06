@@ -25,10 +25,14 @@ namespace robotCommunication {
 
 class TcpRobotCommunicator;
 
+/// Helper static class that connects TcpRobotCommunicator to Error reporter, adding all network error messages.
 class ROBOTS_UTILS_EXPORT NetworkCommunicationErrorReporter
 {
 public:
+	/// No constructor is needed.
 	NetworkCommunicationErrorReporter() = delete;
+
+	/// Connects TcpRobotCommunicator to ErrorReporter, prints network errors from communicator.
 	static void connectErrorReporter(const TcpRobotCommunicator &communicator
 			, qReal::ErrorReporterInterface &errorReporter);
 };

@@ -27,27 +27,42 @@ namespace robotCommunication {
 class TcpRobotCommunicator;
 class Protocol;
 
+/// Protocol for stopping robot and killing programs that may be launched by executing script. Uses state machine to do
+/// it asynchronously and track protocol phase.
 class ROBOTS_UTILS_EXPORT StopRobotProtocol : public QObject
 {
 	Q_OBJECT
 
 public:
+	/// Constructor.
+	/// @param communicator - network communicator over which protocol will work.
 	explicit StopRobotProtocol(TcpRobotCommunicator &communicator);
+
 	~StopRobotProtocol() override;
 
-	void run(const QString &command);
+	/// Stop robot and then execute "shutdownCommand" on it ("killall espeak", for example).
+	void run(const QString &shutdownCommand);
 
 signals:
+	/// Emitted when protocol completed successfully.
 	void success();
+
+	/// Emitted when protocol completed with error.
 	void error();
+
+	/// Emitted when protocol finished by timeout. Most likely it means internal error in protocol state machine
+	/// or in communicator, since network timeouts will be reported as error() signal.
 	void timeout();
 
 private:
+	/// Underlying abstract protocol.
 	QScopedPointer<Protocol> mProtocol;
 
+	/// First phase of a protocol --- sending "stop" command.
 	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForStopRobotCommandSent = nullptr;
 
+	/// Second phase of a protocol --- executing shutdown command as direct command on robot.
 	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForDeinitializeCommandSent = nullptr;
 };

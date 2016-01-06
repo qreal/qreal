@@ -97,6 +97,7 @@ private:
 	/// Communicator object used to send commands to robot.
 	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mCommunicator;
 
+	/// Protocol that is used to stop robot.
 	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };
 

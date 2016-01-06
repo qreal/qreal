@@ -28,27 +28,42 @@ namespace robotCommunication {
 class TcpRobotCommunicator;
 class Protocol;
 
+/// Protocol for uploading and running program on a robot. Uses state machine to do it asynchronously and track
+/// protocol phase.
 class ROBOTS_UTILS_EXPORT RunProgramProtocol : public QObject
 {
 	Q_OBJECT
 
 public:
+	/// Constructor.
+	/// @param communicator - network communicator over which protocol will work.
 	explicit RunProgramProtocol(TcpRobotCommunicator &communicator);
+
 	~RunProgramProtocol() override;
 
+	/// Upload and run program from given file on a robot.
 	void run(const QFileInfo &fileToRun);
 
 signals:
+	/// Emitted when protocol completed successfully.
 	void success();
+
+	/// Emitted when protocol completed with error.
 	void error();
+
+	/// Emitted when protocol finished by timeout. Most likely it means internal error in protocol state machine
+	/// or in communicator, since network timeouts will be reported as error() signal.
 	void timeout();
 
 private:
+	/// Underlying abstract protocol.
 	QScopedPointer<Protocol> mProtocol;
 
+	/// First phase of a protocol --- uploading program.
 	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForUploadingComplete = nullptr;
 
+	/// Second phase of a protocol --- sending "run program" command on robot.
 	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForRunComplete = nullptr;
 };

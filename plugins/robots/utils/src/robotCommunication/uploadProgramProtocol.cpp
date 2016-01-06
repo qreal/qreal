@@ -38,10 +38,10 @@ UploadProgramProtocol::~UploadProgramProtocol()
 {
 }
 
-void UploadProgramProtocol::run(const QFileInfo &fileToRun)
+void UploadProgramProtocol::run(const QFileInfo &programToUpload)
 {
-	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](auto &communicator) {
-		communicator.uploadProgram(fileToRun.canonicalFilePath());
+	mProtocol->setAction(mWaitingForUploadingComplete, [this, programToUpload](auto &communicator) {
+		communicator.uploadProgram(programToUpload.canonicalFilePath());
 	});
 
 	mProtocol->run();

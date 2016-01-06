@@ -78,15 +78,22 @@ signals:
 	/// Emitted when a robot starts program execution.
 	void startedRunning();
 
+	/// Emitted when program uploaded successfully.
 	void uploadProgramDone();
 
+	/// Emitted when program upload failed by reasons not related to network error.
+	/// @param error - user-readable error message describing what went wrong.
 	void uploadProgramError(const QString &error);
 
+	/// Emitted when direct command sent successfully.
 	void runDirectCommandDone();
 
+	/// Emitted when "stop" command sent successfully.
 	void stopRobotDone();
 
-	void connectionError(const QString &errorString);
+	/// Emitted when there was a network error.
+	/// @param error - user-readable error message describing what went wrong.
+	void connectionError(const QString &error);
 
 	/// Emitted if we didn't receive version of trikRuntime within 3 seconds.
 	void trikRuntimeVersionGettingError();
@@ -101,10 +108,13 @@ signals:
 	void errorFromRobot(const QString &message);
 
 private slots:
+	/// Processes message from robot --- classifies it as info, error or text from stdout.
 	void onMessageFromRobot(const MessageKind &messageKind, const QString &message);
 
+	/// Handles connection error.
 	void onConnectionError(const QString &error);
 
+	/// Reports successful connection.
 	void onConnected();
 
 private:

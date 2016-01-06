@@ -39,14 +39,14 @@ StopRobotProtocol::~StopRobotProtocol()
 {
 }
 
-void StopRobotProtocol::run(const QString &command)
+void StopRobotProtocol::run(const QString &shutdownCommand)
 {
 	mProtocol->setAction(mWaitingForStopRobotCommandSent, [this](auto &communicator) {
 		communicator.stopRobot();
 	});
 
-	mProtocol->setAction(mWaitingForDeinitializeCommandSent, [this, command](auto &communicator) {
-		communicator.runDirectCommand(command, true);
+	mProtocol->setAction(mWaitingForDeinitializeCommandSent, [this, shutdownCommand](auto &communicator) {
+		communicator.runDirectCommand(shutdownCommand, true);
 	});
 
 	mProtocol->run();

@@ -100,8 +100,13 @@ private:
 
 	QStringList mPathsToTemplates;
 
+	/// Protocol that is used to upload program to robot.
 	QScopedPointer<utils::robotCommunication::UploadProgramProtocol> mUploadProgramProtocol;
+
+	/// Protocol that is used to upload and run program.
 	QScopedPointer<utils::robotCommunication::RunProgramProtocol> mRunProgramProtocol;
+
+	/// Protocol that is used to stop robot.
 	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };
 
