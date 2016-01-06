@@ -54,13 +54,15 @@ public:
 	/// Creates element described by the given parameters set.
 	/// @param elementInfo Element properties container describing element that must be created.
 	/// @warning logicalId entry may be replaced with actual one if empty or incorrect id is provided.
-	virtual void addElementToModel(const ElementInfo &elementInfo) = 0;
+	virtual void addElementToModel(ElementInfo &elementInfo) = 0;
 
 	/// Creates elements set described by the given parameters list. Elements will be created in one bunch,
 	/// causing rowsInserted with multiple rows in performance considerations. This is much more efficient way
 	/// to create group of elements than calling addElementToModel() multiple times.
 	/// @param elementsInfo Element properties containers list  describing element that must be created.
-	virtual void addElementsToModel(const QList<ElementInfo> &elementsInfo) = 0;
+	/// @warning Creation will be performed in order items are placed in the list. Sorting items to satisfy
+	/// dependencies (for example parent-child relation) must be performed by the caller.
+	virtual void addElementsToModel(QList<ElementInfo> &elementsInfo) = 0;
 
 	QPersistentModelIndex rootIndex() const;
 	const EditorManagerInterface &editorManagerInterface() const;

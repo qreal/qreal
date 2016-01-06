@@ -43,12 +43,8 @@ HEADERS += \
 	$$PWD/propertyEditorView.h \
 	$$PWD/private/pushButtonProperty.h \
 	$$PWD/private/editorViewMVIface.h \
-	$$PWD/copyPaste/pasteCommand.h \
-	$$PWD/copyPaste/clipboardHandler.h \
-	$$PWD/copyPaste/pasteNodeCommand.h \
-	$$PWD/copyPaste/pasteGroupCommand.h \
-	$$PWD/copyPaste/pasteEdgeCommand.h \
 	$$PWD/private/exploserView.h \
+	$$PWD/private/clipboardHandler.h \
 	$$PWD/private/touchSupportManager.h \
 	$$PWD/edgeElement.h \
 	$$PWD/element.h \
@@ -59,7 +55,6 @@ HEADERS += \
 	$$PWD/contextMenuAction.h \
 	$$PWD/embedded/linkers/embeddedLinker.h \
 	$$PWD/embedded/linkers/embeddedLinkers.h \
-	$$PWD/serializationData.h \
 	$$PWD/private/sceneGridHandler.h \
 	$$PWD/private/resizeHandler.h \
 	$$PWD/private/umlPortHandler.h \
@@ -81,8 +76,8 @@ HEADERS += \
 	$$PWD/commands/selectElementCommand.h \
 	$$PWD/commands/updateElementCommand.h \
 	$$PWD/commands/insertIntoEdgeCommand.h \
-	$$PWD/commands/createAndUpdateGroupCommand.h \
-	$$PWD/commands/multipleRemoveAndUpdateCommand.h \
+	$$PWD/commands/createAndUpdatePatternCommand.h \
+	$$PWD/commands/removeAndUpdateCommand.h \
 	$$PWD/commands/resizeCommand.h \
 	$$PWD/commands/foldCommand.h \
 	$$PWD/commands/reshapeEdgeCommand.h \
@@ -95,12 +90,8 @@ SOURCES += \
 	$$PWD/propertyEditorView.cpp \
 	$$PWD/private/pushButtonProperty.cpp \
 	$$PWD/private/editorViewMVIface.cpp \
-	$$PWD/copyPaste/pasteCommand.cpp \
-	$$PWD/copyPaste/clipboardHandler.cpp \
-	$$PWD/copyPaste/pasteNodeCommand.cpp \
-	$$PWD/copyPaste/pasteGroupCommand.cpp \
-	$$PWD/copyPaste/pasteEdgeCommand.cpp \
 	$$PWD/private/exploserView.cpp \
+	$$PWD/private/clipboardHandler.cpp \
 	$$PWD/private/touchSupportManager.cpp \
 	$$PWD/edgeElement.cpp \
 	$$PWD/element.cpp \
@@ -111,7 +102,6 @@ SOURCES += \
 	$$PWD/contextMenuAction.cpp \
 	$$PWD/embedded/linkers/embeddedLinker.cpp \
 	$$PWD/embedded/linkers/embeddedLinkers.cpp \
-	$$PWD/serializationData.cpp \
 	$$PWD/private/sceneGridHandler.cpp \
 	$$PWD/private/resizeHandler.cpp \
 	$$PWD/private/umlPortHandler.cpp \
@@ -133,8 +123,8 @@ SOURCES += \
 	$$PWD/commands/selectElementCommand.cpp \
 	$$PWD/commands/updateElementCommand.cpp \
 	$$PWD/commands/insertIntoEdgeCommand.cpp \
-	$$PWD/commands/createAndUpdateGroupCommand.cpp \
-	$$PWD/commands/multipleRemoveAndUpdateCommand.cpp \
+	$$PWD/commands/createAndUpdatePatternCommand.cpp \
+	$$PWD/commands/removeAndUpdateCommand.cpp \
 	$$PWD/commands/resizeCommand.cpp \
 	$$PWD/commands/foldCommand.cpp \
 	$$PWD/commands/reshapeEdgeCommand.cpp \

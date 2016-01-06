@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@
 
 #include "editor/sceneCustomizer.h"
 #include "editor/labels/label.h"
-#include "editor/commands/multipleRemoveAndUpdateCommand.h"
-#include "editor/commands/createAndUpdateGroupCommand.h"
+#include "editor/commands/removeAndUpdateCommand.h"
+#include "editor/commands/createAndUpdatePatternCommand.h"
 #include "editor/commands/insertIntoEdgeCommand.h"
 #include "editor/commands/reshapeEdgeCommand.h"
 #include "editor/commands/resizeCommand.h"
@@ -278,7 +278,7 @@ bool EditorViewScene::canBeContainedBy(const Id &container, const Id &candidate)
 }
 
 int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
-		, const QPointF &scenePos, bool canBeConnected, CreateElementCommand **createCommand)
+		, const QPointF &scenePos, bool canBeConnected, CreateElementsCommand **createCommand)
 {
 	edge->setSelected(true);
 
@@ -381,14 +381,14 @@ Id EditorViewScene::createElement(const QString &str)
 
 Id EditorViewScene::createElement(const QString &str
 		, const QPointF &scenePos
-		, CreateElementCommand **createCommand
+		, CreateElementsCommand **createCommand
 		, bool executeImmediately
 		, const QPointF &shiftToParent
 		, const QString &explosionTargetUuid)
 {
 	// Что тут за стыдобища? Зачем упаковывать, а потом распаковывать? изжить!
 	Id typeId = Id::loadFromString(str);
-	Id objectId(typeId.editor(), typeId.diagram(), typeId.element(), QUuid::createUuid().toString());
+	Id objectId = typeId.sameTypeId();
 
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData();
@@ -413,7 +413,7 @@ Id EditorViewScene::createElement(const QString &str
 }
 
 void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &scenePos
-		, CreateElementCommand **createCommandPointer, bool executeImmediately)
+		, CreateElementsCommand **createCommandPointer, bool executeImmediately)
 {
 	QByteArray itemData = mimeData->data("application/x-real-uml-data");
 	QDataStream inStream(&itemData, QIODevice::ReadOnly);
@@ -449,9 +449,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 
 	if (mEditorManager.getPatternNames().contains(id.element())) {
 		// Код с паттерном 100% идет в команду, уже даже там. При этом нажо зарефакторить модели для создания сразу пачки.
-		CreateAndUpdateGroupCommand *createGroupCommand = new CreateAndUpdateGroupCommand(
-				*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
-				, mRootId, mRootId, id, isFromLogicalModel, scenePos);
+		const ElementInfo element(id, isFromLogicalModel ? id : mModels.graphicalModelAssistApi().logicalId(id)
+				, mRootId, mRootId, {}, {{"position", scenePos}});
+		CreateAndUpdatePatternCommand *createGroupCommand = new CreateAndUpdatePatternCommand(
+				*this, mModels, {element});
 		if (executeImmediately) {
 			mController.execute(createGroupCommand);
 		}
@@ -504,34 +505,25 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 
 void EditorViewScene::createSingleElement(const Id &id, const QString &name, bool isNode
 		, const QPointF &position, const Id &parentId, bool isFromLogicalModel
-		, const Id &explosionTarget, CreateElementCommand **createCommandPointer
+		, const Id &explosionTarget, CreateElementsCommand **createCommandPointer
 		, bool executeImmediately)
 {
 	// Создание идет через команды все равно! Не должен ли этот код (вычищенный и не отвратный) лежать там?
 	// Параметры надо как-то упаковать в структурку, эксплозер изжить нахрен, если получится, если нет, то модели с ним тоже в одно место.
-	CreateElementCommand *createCommand = new CreateElementCommand(
-				mModels.logicalModelAssistApi()
-				, mModels.graphicalModelAssistApi()
-				, mModels.exploser()
-				, mRootId
-				, parentId
-				, id
-				, isFromLogicalModel
-				, name
-				, position);
+	ElementInfo elementInfo(id, isFromLogicalModel ? id : Id(), mRootId, parentId
+					, {{"name", name}}, {{"position", position}}, explosionTarget);
+	CreateElementsCommand *createCommand = new CreateElementsCommand(mModels, {elementInfo});
 
 	if (createCommandPointer) {
 		(*createCommandPointer) = createCommand;
 	}
 
-	mExploser.handleCreationWithExplosion(createCommand, id, explosionTarget);
 	if (executeImmediately) {
 		if (isNode) {
 			// Почему все ноды всегда якобы вставляются? Надо это убрать.
 			const QSize size = mEditorManager.iconSize(id);
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-					*this, mModels.logicalModelAssistApi(), mModels.graphicalModelAssistApi(), mModels.exploser()
-					, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
+					*this, mModels, Id(), Id(), parentId, position, QPointF(size.width(), size.height())
 					, isFromLogicalModel, createCommand);
 			mController.execute(insertCommand);
 		} else {
@@ -693,7 +685,7 @@ Element *EditorViewScene::lastCreatedFromLinker() const
 
 void EditorViewScene::deleteSelectedItems()
 {
-	QList<QGraphicsItem *> itemsToDelete = selectedItems();
+	const QList<QGraphicsItem *> itemsToDelete = selectedItems();
 	IdList idsToDelete;
 	for (const QGraphicsItem *item : itemsToDelete) {
 		const Element *element = dynamic_cast<const Element *>(item);
@@ -707,11 +699,9 @@ void EditorViewScene::deleteSelectedItems()
 	}
 }
 
-void EditorViewScene::deleteElements(IdList &idsToDelete)
+void EditorViewScene::deleteElements(const IdList &idsToDelete)
 {
-	MultipleRemoveAndUpdateCommand * const command = new MultipleRemoveAndUpdateCommand(*this, mModels);
-	command->setItemsToDelete(idsToDelete);
-	mController.execute(command);
+	mController.execute((new MultipleRemoveAndUpdateCommand(*this, mModels))->withItemsToDelete(idsToDelete));
 }
 
 void EditorViewScene::keyPressEvent(QKeyEvent *event)
@@ -839,8 +829,7 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mousePressEvent(event);
 
-	mCurrentMousePos = event->scenePos();
-	QGraphicsItem * item = itemAt(mCurrentMousePos, QTransform());
+	QGraphicsItem * item = itemAt(event->scenePos(), QTransform());
 
 	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
 		mLeftButtonPressed = true;
@@ -945,7 +934,7 @@ void EditorViewScene::getObjectByGesture()
 		const QPointF gestureCenter = mMouseMovementManager->pos();
 		for (QGraphicsItem * const item : items(gestureCenter)) {
 			if (NodeElement * const node = dynamic_cast<NodeElement *>(item)) {
-				deleteElements(IdList() << node->id());
+				deleteElements({node->id()});
 				break;
 			}
 		}
@@ -1018,7 +1007,7 @@ void EditorViewScene::createEdge(const QString &idStr)
 {
 	const QPointF start = mMouseMovementManager->firstPoint();
 	const QPointF end = mMouseMovementManager->lastPoint();
-	CreateElementCommand *createCommand;
+	CreateElementsCommand *createCommand;
 	const Id id = createElement(idStr, start, &createCommand);
 	Element *edgeElement = getElem(id);
 	EdgeElement *edge = dynamic_cast <EdgeElement *>(edgeElement);
@@ -1108,7 +1097,6 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	mCurrentMousePos = event->scenePos();
 	if ((mLeftButtonPressed && !(event->buttons() & Qt::RightButton))) {
 		QGraphicsScene::mouseMoveEvent(event);
 	} else {
@@ -1123,11 +1111,6 @@ void EditorViewScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			QGraphicsScene::mouseMoveEvent(event);
 		}
 	}
-}
-
-QPointF EditorViewScene::getMousePos() const
-{
-	return mCurrentMousePos;
 }
 
 void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)

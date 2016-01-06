@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,38 @@
 
 #pragma once
 
-#include "models/commands/createGroupCommand.h"
+#include <QtCore/QObject>
 
+#include "editor/nodeElement.h"
+#include "editor/edgeElement.h"
 
 namespace qReal {
 namespace gui {
 namespace editor {
-class EditorViewScene;
-namespace commands {
 
-/// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.
-/// In other words this command adds view part into the CreateGroupCommand.
-class CreateAndUpdateGroupCommand : public qReal::commands::CreateGroupCommand
+class EditorViewScene;
+
+class ClipboardHandler
 {
 public:
-	CreateAndUpdateGroupCommand(EditorViewScene &scene
-			, models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser &exploser
-			, const Id &logicalParent
-			, const Id &graphicalParent
-			, const Id &id
-			, bool isFromLogicalModel
-			, const QPointF &position);
+	ClipboardHandler(EditorViewScene &scene, Controller &controller);
+
+	void cut();
+	void copy();
+	void paste(bool isGraphicalCopy);
 
 private:
-	bool execute() override;
+	void pushDataToClipboard(const QList<NodeInfo> &nodesData, const QList<EdgeInfo> &edgesData);
+	QList<NodeElement *> getNodesForCopying();
+	QList<NodeInfo> getNodesData(QList<NodeElement *> const &nodes);
+	QList<EdgeInfo> getEdgesData();
+	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
+	QPointF currentMousePosInSceneCoordinates() const;
 
 	EditorViewScene &mScene;
+	Controller &mController;
 };
 
-}
 }
 }
 }

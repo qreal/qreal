@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,14 +47,9 @@ using namespace qReal::commands;
 using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
-NodeElement::NodeElement(ElementImpl *impl
-		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		, models::Exploser &exploser
-		)
-	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-	, mExploser(exploser)
+NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &models)
+	: Element(impl, id, models)
+	, mExploser(models.exploser())
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mDragState(None)
 	, mResizeCommand(nullptr)
@@ -72,7 +67,7 @@ NodeElement::NodeElement(ElementImpl *impl
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	LabelFactory labelFactory(graphicalAssistApi, mId);
+	LabelFactory labelFactory(models.graphicalModelAssistApi(), mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
@@ -508,8 +503,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-			*evScene, mLogicalAssistApi, mGraphicalAssistApi, mExploser, id(), id(), Id::rootId()
-			, event->scenePos(), boundingRect().bottomRight(), false);
+			*evScene, mModels, id(), id(), Id::rootId(), event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
@@ -1156,25 +1150,20 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 	mPortHandler->checkConnectionsToPort();
 }
 
-NodeData NodeElement::data()
+NodeInfo NodeElement::data() const
 {
-	NodeData result;
+	NodeInfo result;
 	result.id = id();
 	result.logicalId = logicalId();
 	result.logicalProperties = logicalProperties();
 	result.graphicalProperties = graphicalProperties();
 	// new element should not have references to links connected to original source element
 	result.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
-	result.pos = mPos;
-	result.contents = mContents;
-	result.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	result.graphicalProperties["position"] = mPos;
+	result.explosionTarget = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 
-	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
-	if (parent) {
-		result.parentId = parent->id();
-	} else {
-		result.parentId = Id::rootId();
-	}
+	result.logicalParent = mLogicalAssistApi.parent(logicalId());
+	result.graphicalParent = mGraphicalAssistApi.parent(id());
 
 	return result;
 }
@@ -1360,9 +1349,7 @@ QRectF NodeElement::diagramRenderingRect() const
 	const NodeElement *initial = new NodeElement(
 			mLogicalAssistApi.editorManagerInterface().elementImpl(id())
 			, id().sameTypeId()
-			, mGraphicalAssistApi
-			, mLogicalAssistApi
-			, mExploser
+			, mModels
 			);
 
 	const qreal xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);

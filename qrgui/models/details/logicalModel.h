@@ -44,8 +44,8 @@ public:
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
 	void updateElements(const Id &logicalId, const QString &name);
 	virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
-	void addElementToModel(const ElementInfo &elementInfo) override;
-	void addElementsToModel(const QList<ElementInfo> &elementsInfo) override;
+	void addElementToModel(ElementInfo &elementInfo) override;
+	void addElementsToModel(QList<ElementInfo> &elementsInfo) override;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
@@ -66,11 +66,11 @@ private:
 
 	virtual modelsImplementation::AbstractModelItem *createModelItem(const Id &id
 			, modelsImplementation::AbstractModelItem *parentItem) const;
+	void addTree(const Id &parent, const QMultiMap<Id, ElementInfo> &childrenOfParents, QSet<Id> &visited);
 	/// Adds entries to row model without inserting rows and notifying about that connected views.
-	/// \a parentItem and \a item are output parameters.
-	void createElementWithoutCommit(const ElementInfo &elementInfo
-			, modelsImplementation::AbstractModelItem *&parentItem
-			, modelsImplementation::AbstractModelItem *&result);
+	/// @returns created model item.
+	modelsImplementation::AbstractModelItem *createElementWithoutCommit(const ElementInfo &elementInfo
+			, modelsImplementation::AbstractModelItem *parentItem);
 	void initializeElement(const ElementInfo &elementInfo
 			, modelsImplementation::AbstractModelItem *parentItem
 			, modelsImplementation::AbstractModelItem *item);

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,12 +163,15 @@ QString LogicalModel::pathToItem(const AbstractModelItem *item) const
 	return Id::rootId().toString();
 }
 
-void LogicalModel::addElementToModel(const ElementInfo &elementInfo)
+void LogicalModel::addElementToModel(ElementInfo &elementInfo)
 {
-	AbstractModelItem *parentItem = nullptr;
-	AbstractModelItem *newItem = nullptr;
+	if (mModelItems.contains(elementInfo.id)) {
+		return;
+	}
 
-	createElementWithoutCommit(elementInfo, parentItem, newItem);
+	Q_ASSERT_X(mModelItems.contains(elementInfo.logicalParent), Q_FUNC_INFO, "Adding element to non-existing parent");
+	AbstractModelItem * const parentItem = mModelItems[elementInfo.logicalParent];
+	AbstractModelItem * const newItem = createElementWithoutCommit(elementInfo, parentItem);
 	if (!newItem) {
 		return;
 	}
@@ -178,58 +181,77 @@ void LogicalModel::addElementToModel(const ElementInfo &elementInfo)
 	initializeElement(elementInfo, parentItem, newItem);
 
 	endInsertRows();
-	emit elementAdded(elementInfo.id());
+	emit elementAdded(elementInfo.id);
 }
 
-void LogicalModel::addElementsToModel(const QList<ElementInfo> &elementsInfo)
+/// @todo: unify this with graphical model
+void LogicalModel::addElementsToModel(QList<ElementInfo> &elementsInfo)
 {
-	QMultiMap<AbstractModelItem *, QPair<AbstractModelItem *, ElementInfo>> parentsToChildrenMap;
-	for (const ElementInfo &elementInfo : elementsInfo) {
-		AbstractModelItem *parentItem = nullptr;
-		AbstractModelItem *newItem = nullptr;
-		createElementWithoutCommit(elementInfo, parentItem, newItem);
-		if (newItem) {
-			parentsToChildrenMap.insertMulti(parentItem, qMakePair(newItem, elementInfo));
+	IdList parentsOrder;
+	IdList edgesParentsOrder;
+	QSet<Id> visitedElements;
+	QMultiMap<Id, ElementInfo> parentsToChildrenMap;
+	QMultiMap<Id, ElementInfo> parentsToEdgesMap;
+	for (ElementInfo &elementInfo : elementsInfo) {
+		if (elementInfo.isEdge()) {
+			edgesParentsOrder << elementInfo.logicalParent;
+			parentsToEdgesMap.insertMulti(elementInfo.logicalParent, elementInfo);
+		} else {
+			parentsOrder << elementInfo.logicalParent;
+			parentsToChildrenMap.insertMulti(elementInfo.logicalParent, elementInfo);
 		}
 	}
 
-	for (AbstractModelItem * const parentItem : parentsToChildrenMap.keys()) {
-		const QList<QPair<AbstractModelItem *, ElementInfo>> children = parentsToChildrenMap.values();
-		const int newRow = parentItem->children().size();
-		beginInsertRows(index(parentItem), newRow, newRow + children.size() - 1);
-		for (const QPair<AbstractModelItem *, ElementInfo> &child : children) {
-			initializeElement(child.second, parentItem, child.first);
+	for (const Id &parent : parentsOrder) {
+		if (!visitedElements.contains(parent)) {
+			addTree(parent, parentsToChildrenMap, visitedElements);
 		}
+	}
 
-		endInsertRows();
-
-		for (const QPair<AbstractModelItem *, ElementInfo> &child : children) {
-			emit elementAdded(child.second.id());
-		}
+	visitedElements.clear();
+	for (const Id &parent : edgesParentsOrder) {
+		addTree(parent, parentsToEdgesMap, visitedElements);
 	}
 }
 
-void LogicalModel::createElementWithoutCommit(const ElementInfo &elementInfo
-		, AbstractModelItem *&parentItem
-		, AbstractModelItem *&result)
+void LogicalModel::addTree(const Id &parent, const QMultiMap<Id, ElementInfo> &childrenOfParents, QSet<Id> &visited)
 {
-	if (mModelItems.contains(elementInfo.id())) {
-		return;
+	Q_ASSERT_X(mModelItems.contains(parent), Q_FUNC_INFO, "Adding element to non-existing parent");
+	AbstractModelItem * const parentItem = mModelItems[parent];
+
+	visited.insert(parent);
+	QList<ElementInfo> children = childrenOfParents.values(parent);
+	const int newRow = parentItem->children().size();
+	beginInsertRows(index(parentItem), newRow, newRow + children.size() - 1);
+	for (ElementInfo &child : children) {
+		AbstractModelItem * const newGraphicalModelItem = createElementWithoutCommit(child, parentItem);
+		initializeElement(child, parentItem, newGraphicalModelItem);
 	}
 
-	Q_ASSERT_X(mModelItems.contains(elementInfo.parent()), Q_FUNC_INFO, "Adding element to non-existing parent");
-	parentItem = mModelItems[elementInfo.parent()];
-	result = nullptr;
+	endInsertRows();
 
-	if (elementInfo.logicalId() != Id::rootId() && mModelItems.contains(elementInfo.logicalId())) {
-		if (elementInfo.parent() == elementInfo.logicalId()) {
-			return;
+	for (const ElementInfo &child : children) {
+		emit elementAdded(child.id);
+		addTree(child.id, childrenOfParents, visited);
+	}
+}
+
+AbstractModelItem *LogicalModel::createElementWithoutCommit(const ElementInfo &elementInfo
+		, AbstractModelItem *parentItem)
+{
+	AbstractModelItem *result = nullptr;
+
+	if (elementInfo.logicalId != Id::rootId() && mModelItems.contains(elementInfo.logicalId)) {
+		if (elementInfo.logicalParent == elementInfo.logicalId) {
+			return nullptr;
 		}
 
-		changeParent(index(mModelItems[elementInfo.logicalId()]), index(parentItem), QPointF());
+		changeParent(index(mModelItems[elementInfo.logicalId]), index(parentItem), QPointF());
 	} else {
-		result = createModelItem(elementInfo.id(), parentItem);
+		result = createModelItem(elementInfo.id, parentItem);
 	}
+
+	return result;
 }
 
 void LogicalModel::initializeElement(const ElementInfo &elementInfo
@@ -237,13 +259,16 @@ void LogicalModel::initializeElement(const ElementInfo &elementInfo
 		, modelsImplementation::AbstractModelItem *item)
 {
 	parentItem->addChild(item);
-	mApi.addChild(parentItem->id(), elementInfo.id());
-	mApi.setMetaInformation(elementInfo.id().editor() + "Version"
-			, mEditorManagerInterface.version(Id(elementInfo.id().editor())).toString());
+	mApi.addChild(parentItem->id(), elementInfo.id);
+	mApi.setMetaInformation(elementInfo.id.editor() + "Version"
+			, mEditorManagerInterface.version(Id(elementInfo.id.editor())).toString());
 
-	addInsufficientProperties(elementInfo.id(), elementInfo.name());
+	addInsufficientProperties(elementInfo.id, elementInfo.name());
+	for (const QString &property : elementInfo.logicalProperties.keys()) {
+		mApi.setProperty(elementInfo.id, property, elementInfo.logicalProperties[property]);
+	}
 
-	mModelItems.insert(elementInfo.id(), item);
+	mModelItems.insert(elementInfo.id, item);
 }
 
 QVariant LogicalModel::data(const QModelIndex &index, int role) const

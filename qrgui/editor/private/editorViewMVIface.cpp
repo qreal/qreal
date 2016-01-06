@@ -159,12 +159,8 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
-				? dynamic_cast<Element *>(
-						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
-						)
-				: dynamic_cast<Element *>(
-						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
-						);
+				? dynamic_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
+				: dynamic_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 
@@ -239,13 +235,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
 		if (nodeElement) {
 			nodeElement->alignToGrid();
-		}
-	}
-
-	for (QGraphicsItem *item : mScene->items()) {
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			node->adjustLinks();
 		}
 	}
 

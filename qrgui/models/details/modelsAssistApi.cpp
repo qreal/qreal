@@ -39,10 +39,12 @@ Id ModelsAssistApi::createElement(const Id &parent, const Id &id, const Id &logi
 	Id realLogicalId = logicalId;
 	if (isFromLogicalModel) {
 		realLogicalId = id;
-		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
+		newId = id.sameTypeId();
 	}
 
-	mModel.addElementToModel(ElementInfo(newId, realLogicalId, parent, name, position));
+	ElementInfo info(newId, realLogicalId, isFromLogicalModel ? parent : Id(), isFromLogicalModel ? Id() : parent
+			, {{"name", name}}, {{"position", position}});
+	mModel.addElementToModel(info);
 	return newId;
 }
 

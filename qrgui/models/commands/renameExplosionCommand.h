@@ -31,7 +31,7 @@ class QRGUI_MODELS_EXPORT RenameExplosionCommand : public AbstractCommand
 public:
 	RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, const models::GraphicalModelAssistApi * const graphicalApi
-		, models::Exploser &exploser
+		, const models::Exploser &exploser
 		, const Id &target);
 
 	virtual ~RenameExplosionCommand();
@@ -50,7 +50,7 @@ private:
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	const models::GraphicalModelAssistApi *mGraphicalApi;
-	models::Exploser &mExploser;
+	const models::Exploser &mExploser;
 	Id mTarget;
 	QString mOldName;
 	QString mNewName;

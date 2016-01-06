@@ -1,4 +1,4 @@
-/* Copyright 2015 Dmitry Mordvinov
+/* Copyright 2015-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,46 +16,107 @@
 
 using namespace qReal;
 
+ElementInfo::ElementInfo()
+	: mIsEdge(false)
+{
+}
+
+ElementInfo::ElementInfo(bool isEdge)
+	: mIsEdge(isEdge)
+{
+}
+
 ElementInfo::ElementInfo(const Id &id
 		, const Id &logicalId
-		, const Id &parent
-		, const QString &name
-		, const QPointF &position)
-	: mId(id)
-	, mLogicalId(logicalId)
-	, mParent(parent)
-	, mName(name)
-	, mPosition(position)
+		, const Id &logicalParent
+		, const Id &graphicalParent
+		, const QMap<QString, QVariant> &logicalProperties
+		, const QMap<QString, QVariant> &graphicalProperties
+		, const Id &explosionTarget
+		, bool isEdge)
+	: id(id)
+	, logicalId(logicalId)
+	, logicalParent(logicalParent)
+	, graphicalParent(graphicalParent)
+	, logicalProperties(logicalProperties)
+	, graphicalProperties(graphicalProperties)
+	, explosionTarget(explosionTarget)
+	, mIsEdge(isEdge)
 {
 }
 
-Id ElementInfo::id() const
+ElementInfo::~ElementInfo()
 {
-	return mId;
 }
 
-Id ElementInfo::logicalId() const
+QDataStream &ElementInfo::serialize(QDataStream &out) const
 {
-	return mLogicalId;
+	return out << id << logicalId << logicalParent << graphicalParent
+			<< logicalProperties << graphicalProperties << explosionTarget << mIsEdge;
+}
+
+QDataStream &ElementInfo::deserialize(QDataStream &in)
+{
+	return in >> id >> logicalId >> logicalParent >> graphicalParent
+			>> logicalProperties >> graphicalProperties >> explosionTarget >> mIsEdge;
+}
+
+bool ElementInfo::equals(const ElementInfo &other) const
+{
+	return id == other.id
+			&& logicalId == other.logicalId
+			&& logicalParent == other.logicalParent
+			&& graphicalParent == other.graphicalParent
+			&& logicalProperties == other.logicalProperties
+			&& graphicalProperties == other.graphicalProperties
+			&& explosionTarget == other.explosionTarget
+			&& mIsEdge == other.mIsEdge;
+}
+
+bool ElementInfo::isEdge() const
+{
+	return mIsEdge;
 }
 
 Id ElementInfo::parent() const
 {
-	return mParent;
+	return logicalId == id ? logicalParent : graphicalParent;
 }
 
 QString ElementInfo::name() const
 {
-	return mName;
+	return logicalProperties["name"].toString();
 }
 
 QPointF ElementInfo::position() const
 {
-	return mPosition;
+	return graphicalProperties["position"].toPointF();
 }
 
-ElementInfo &ElementInfo::withLogicalId(const Id &logicalId)
+Id ElementInfo::newId()
 {
-	mLogicalId = logicalId;
-	return *this;
+	if (id.isNull() && id == Id::rootId()) {
+		return id;
+	}
+
+	return (id = id.sameTypeId());
+}
+
+Id ElementInfo::newLogicalId()
+{
+	if (id.isNull() && id == Id::rootId()) {
+		return logicalId;
+	}
+
+	return (logicalId = id.sameTypeId());
+}
+
+void ElementInfo::setPos(const QPointF &position)
+{
+	graphicalProperties["position"] = position;
+}
+
+bool operator==(const ElementInfo &first, const ElementInfo &second)
+{
+	return first.equals(second);
 }

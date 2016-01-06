@@ -20,6 +20,7 @@
 #include "qrgui/models/details/logicalModel.h"
 #include "qrgui/models/graphicalModelAssistApi.h"
 #include "qrgui/models/logicalModelAssistApi.h"
+#include "qrgui/models/exploser.h"
 
 namespace qReal {
 namespace models {

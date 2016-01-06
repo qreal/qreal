@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2015 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,27 @@
 
 #pragma once
 
-#include "editor/copyPaste/pasteCommand.h"
-#include "models/commands/createElementCommand.h"
+#include "models/commands/createPatternCommand.h"
 
-namespace qReal
-{
+namespace qReal {
 namespace gui {
 namespace editor {
+class EditorViewScene;
+namespace commands {
 
-namespace commands
-{
-
-class PasteEdgeCommand : public PasteCommand
+/// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.
+/// In other words this command adds view part into the CreateGroupCommand.
+class CreateAndUpdatePatternCommand : public qReal::commands::CreatePatternCommand
 {
 public:
-	PasteEdgeCommand(EditorViewScene *scene
-			, const EdgeData &data
-			, const QPointF &offset
-			, bool isGraphicalCopy
-			, QHash<qReal::Id, qReal::Id> *copiedIds);
-	virtual ~PasteEdgeCommand() {}
-
-protected:
-	virtual Id pasteNewInstance();
-	virtual Id pasteGraphicalCopy();
-	virtual void restoreElement();
+	CreateAndUpdatePatternCommand(EditorViewScene &scene
+			, const models::Models &models
+			, const ElementInfo &pattern);
 
 private:
-	const EdgeData mEdgeData;
-	qReal::commands::CreateElementCommand *mCreateCommand;
+	bool execute() override;
+
+	EditorViewScene &mScene;
 };
 
 }

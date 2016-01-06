@@ -279,7 +279,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
-		CreateElementCommand *createElementFromMenuCommand = nullptr;
+		CreateElementsCommand *createElementFromMenuCommand = nullptr;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {

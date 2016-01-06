@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,9 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
-#include <plugins/pluginManager/sdfRenderer.h>
-#include <plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/plugins/pluginManager/sdfRenderer.h>
+#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/models/nodeInfo.h>
 
 #include "qrgui/editor/element.h"
 #include "qrgui/editor/edgeElement.h"
@@ -37,7 +38,6 @@
 #include "qrgui/editor/private/umlPortHandler.h"
 #include "qrgui/editor/private/portHandler.h"
 
-#include "editor/serializationData.h"
 
 namespace qReal {
 namespace gui {
@@ -54,9 +54,7 @@ class QRGUI_EDITOR_EXPORT NodeElement : public Element
 public:
 	explicit NodeElement(ElementImpl *impl
 			, const Id &id
-			, models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi
-			, models::Exploser &exploser
+			, const models::Models &models
 			);
 
 	virtual ~NodeElement();
@@ -118,7 +116,7 @@ public:
 	/// Remove edge from node's edge list, rearrange linear ports
 	void delEdge(EdgeElement *edge);
 
-	NodeData data();
+	NodeInfo data() const;
 
 	virtual bool initPossibleEdges();
 	QList<PossibleEdge> getPossibleEdges();

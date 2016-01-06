@@ -71,9 +71,9 @@ Id GraphicalModelAssistApi::createElement(const Id &parent, const Id &type)
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
-	const Id newElementId(type, QUuid::createUuid().toString());
+	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	ElementInfo newElement(newElementId, Id(), parent, elementFriendlyName, QPointF());
+	ElementInfo newElement{newElementId, Id(), Id(), parent, {{"name", elementFriendlyName}}, {}};
 	mGraphicalModel.addElementToModel(newElement);
 	return newElementId;
 }
@@ -83,6 +83,11 @@ Id GraphicalModelAssistApi::createElement(const Id &parent, const Id &id
 		, const QPointF &position, const Id &preferedLogicalId)
 {
 	return mModelsAssistApi.createElement(parent, id, preferedLogicalId, isFromLogicalModel, name, position);
+}
+
+void GraphicalModelAssistApi::createElements(QList<ElementInfo> &elements)
+{
+	mGraphicalModel.addElementsToModel(elements);
 }
 
 Id GraphicalModelAssistApi::copyElement(const Id &source)

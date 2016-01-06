@@ -53,9 +53,9 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &type)
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
-	const Id newElementId(type, QUuid::createUuid().toString());
+	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	ElementInfo newElement(newElementId, Id(), parent, elementFriendlyName, QPointF());
+	ElementInfo newElement(newElementId, Id(), parent, Id(), {{"name", elementFriendlyName}}, {});
 	mLogicalModel.addElementToModel(newElement);
 	return newElementId;
 }
@@ -66,6 +66,11 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &id
 {
 	Q_UNUSED(preferedLogicalId)
 	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
+}
+
+void LogicalModelAssistApi::createElements(QList<ElementInfo> &elements)
+{
+	mLogicalModel.addElementsToModel(elements);
 }
 
 Id LogicalModelAssistApi::parent(const Id &element) const

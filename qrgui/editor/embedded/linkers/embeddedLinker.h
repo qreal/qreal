@@ -20,7 +20,7 @@
 #include <qrkernel/roles.h>
 
 #include "editor/edgeElement.h"
-#include "models/commands/createElementCommand.h"
+#include "models/commands/createElementsCommand.h"
 
 namespace qReal {
 namespace gui {
@@ -74,7 +74,7 @@ private:
 	Id mEdgeType;
 
 	QPointF mInitialClickPoint;
-	qReal::commands::CreateElementCommand *mCreateEdgeCommand;
+	qReal::commands::CreateElementsCommand *mCreateEdgeCommand;
 };
 
 }

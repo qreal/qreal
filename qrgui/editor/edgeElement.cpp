@@ -25,6 +25,7 @@
 #include <math.h>
 #include <qrkernel/logging.h>
 #include <qrutils/mathUtils/geometry.h>
+#include <models/models.h>
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
@@ -49,26 +50,24 @@ const int maxReductCoeff = 16;
 EdgeElement::EdgeElement(
 		ElementImpl *impl
 		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-		, mPenStyle(Qt::SolidLine)
-		, mPenWidth(1)
-		, mPenColor(Qt::black)
-		, mSrc(nullptr)
-		, mDst(nullptr)
-		, mLineFactory(new LineFactory(this))
-		, mHandler(nullptr)
-		, mPortFrom(0)
-		, mPortTo(0)
-		, mDragType(noPort)
-		, mLongPart(0)
-		, mReverseAction(tr("Reverse"), this)
-		, mChangeShapeAction(tr("Change shape type"), this)
-		, mBreakPointPressed(false)
-		, mModelUpdateIsCalled(false)
-		, mIsLoop(false)
+		, const models::Models &models)
+	: Element(impl, id, models)
+	, mPenStyle(Qt::SolidLine)
+	, mPenWidth(1)
+	, mPenColor(Qt::black)
+	, mSrc(nullptr)
+	, mDst(nullptr)
+	, mLineFactory(new LineFactory(this))
+	, mHandler(nullptr)
+	, mPortFrom(0)
+	, mPortTo(0)
+	, mDragType(noPort)
+	, mLongPart(0)
+	, mReverseAction(tr("Reverse"), this)
+	, mChangeShapeAction(tr("Change shape type"), this)
+	, mBreakPointPressed(false)
+	, mModelUpdateIsCalled(false)
+	, mIsLoop(false)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -83,7 +82,7 @@ EdgeElement::EdgeElement(
 
 	setAcceptHoverEvents(true);
 
-	LabelFactory factory(graphicalAssistApi, mId);
+	LabelFactory factory(models.graphicalModelAssistApi(), mId);
 	QList<LabelInterface*> titles;
 
 	mElementImpl->init(factory, titles);
@@ -966,8 +965,9 @@ void EdgeElement::placeEndTo(const QPointF &place)
 	updateLongestPart();
 }
 
-void EdgeElement::moveConnection(NodeElement *node, const qreal portId) {
-	//expected that the id will change only fractional part
+void EdgeElement::moveConnection(NodeElement *node, const qreal portId)
+{
+	// Expected that the id will change only fractional part
 	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
 		setFromPort(portId);
 	}
@@ -1011,28 +1011,33 @@ void EdgeElement::highlight(const QColor &color)
 	update();
 }
 
-EdgeData EdgeElement::data()
+EdgeInfo EdgeElement::data()
 {
-	EdgeData result;
+	EdgeInfo result;
 	result.id = id();
 	result.logicalId = logicalId();
+
+	result.logicalParent = mLogicalAssistApi.parent(logicalId());
+	result.graphicalParent = mGraphicalAssistApi.parent(id());
+
 	result.srcId = src() ? src()->id() : Id::rootId();
 	result.dstId = dst() ? dst()->id() : Id::rootId();
 
-	result.portFrom = mPortFrom;
-	result.portTo = mPortTo;
-
-	result.configuration = mGraphicalAssistApi.configuration(mId);
-	result.pos = mGraphicalAssistApi.position(mId);
-
-	result.shapeType = mShapeType;
-
-	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
+	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {
 		if (property != "from" && property != "to") {
 			result.logicalProperties[property] = properties[property];
 		}
 	}
+
+	result.portFrom = mPortFrom;
+	result.portTo = mPortTo;
+
+
+	result.configuration = mGraphicalAssistApi.configuration(mId);
+	result.graphicalProperties["position"] = mGraphicalAssistApi.position(mId);
+
+	result.shapeType = mShapeType;
 
 	return result;
 }

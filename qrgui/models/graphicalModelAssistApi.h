@@ -54,6 +54,8 @@ public:
 	Id createElement(const Id &parent, const Id &type) override;
 	Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel, const QString &name
 			, const QPointF &position, const Id &preferedLogicalId = Id()) override;
+	void createElements(QList<ElementInfo> &elements) override;
+
 	Id copyElement(const Id &source) override;
 	Id parent(const Id &element) const override;
 	IdList children(const Id &element) const override;

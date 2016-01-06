@@ -14,53 +14,39 @@
 
 #pragma once
 
-#include <QtCore/QPointF>
+#include <qrgui/controller/commands/abstractCommand.h>
 
-#include "qrgui/models/elementInfo.h"
+#include "qrgui/models/modelsDeclSpec.h"
+#include "qrgui/models/commands/createRemoveCommandImplementation.h"
 
 namespace qReal {
-
-namespace models {
-class Models;
-class LogicalModelAssistApi;
-class GraphicalModelAssistApi;
-class Exploser;
-}
-
 namespace commands {
 
-/// Implements logic for creation and deletion a set of nodes and edges.
-class CreateRemoveCommandImplementation
+class QRGUI_MODELS_EXPORT CreateElementsCommand : public AbstractCommand
 {
 public:
-	CreateRemoveCommandImplementation(const models::Models &models, const QList<ElementInfo> &elements);
+	CreateElementsCommand(const models::Models &models, const QList<ElementInfo> &elements);
 
-	/// Creates all elements given in constructor. Factical ids of elements after creation may be obtained by results().
-	void create();
-
-	/// Removes all elements given in constructor.
-	void remove();
-
-	/// Rewrites current elements list that will be created with \a elements.
-	void setElements(const QList<ElementInfo> &elements);
-
-	/// Returns information about all elements created or removed by this command.
-	/// If creation was performed then result will contain ids that elements got after creation.
+	/// Returns information about all elements created by this command.
+	/// Results will contain factical ids that elements got after creation (they may differ from given in constructor).
 	const QList<ElementInfo> &results() const;
 
 	/// @todo: Bad method, required only for linkers. Get rid of it.
 	/// Modifies command setting new creation position for the first element info given.
 	void setNewPosition(const QPointF &position);
 
-private:
-	void removeOne(ElementInfo &element);
+protected:
+	void setElements(const QList<ElementInfo> &elements);
+	void addExplosionCommands(const QList<ElementInfo> &elements);
 
-	void refreshAllPalettes();
+	bool execute() override;
+	bool restoreState() override;
 
+	const models::Models &mModels;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	const models::Exploser &mExploser;
-	QList<ElementInfo> mElements;
+	CreateRemoveCommandImplementation mImpl;
 };
 
 }
