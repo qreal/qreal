@@ -69,9 +69,7 @@ QString SceneAPI::createBlockOnScene(const DraggableElement * const paletteEleme
 		const QMimeData * const mimeData = paletteElement->mimeData(elementId);
 		currentTab->mutableScene().createElement(
 				paletteElement->mimeData(elementId)
-				, currentTab->mapToScene(QPoint(xSceneCoord, ySceneCoord))
-				, nullptr
-				, true);
+				, currentTab->mapToScene(QPoint(xSceneCoord, ySceneCoord)));
 
 		QByteArray itemData = mimeData->data("application/x-real-uml-data");
 		QDataStream inStream(&itemData, QIODevice::ReadOnly);

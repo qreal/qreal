@@ -123,20 +123,8 @@ void DraggableElement::setIconSize(int size)
 
 QMimeData *DraggableElement::mimeData(const Id &elementId) const
 {
-	QByteArray itemData;
-	const bool isFromLogicalModel = false;
-
-	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << elementId.toString();  // uuid
-	stream << Id::rootId().toString();  // pathToItem
-	stream << text();
-	stream << QPointF(0, 0);
-	stream << isFromLogicalModel;
-	stream << mData.explosionTarget().toString();
-
-	QMimeData * const mimeData = new QMimeData;
-	mimeData->setData("application/x-real-uml-data", itemData);
-	return mimeData;
+	const bool isEdge = mEditorManagerProxy.isNodeOrEdge(elementId.editor(), elementId.element()) < 0;
+	return ElementInfo(elementId, Id(), text(), mData.explosionTarget(), isEdge).mimeData();
 }
 
 void DraggableElement::changePropertiesPaletteActionTriggered()

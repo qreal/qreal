@@ -14,6 +14,10 @@
 
 #include "elementInfo.h"
 
+#include <QtCore/QMimeData>
+
+#include <qrkernel/definitions.h>
+
 using namespace qReal;
 
 ElementInfo::ElementInfo()
@@ -23,6 +27,19 @@ ElementInfo::ElementInfo()
 
 ElementInfo::ElementInfo(bool isEdge)
 	: mIsEdge(isEdge)
+{
+}
+
+ElementInfo::ElementInfo(const Id &id
+		, const Id &logicalId
+		, const QString &name
+		, const Id &explosionTarget
+		, bool isEdge)
+	: id(id)
+	, logicalId(logicalId)
+	, logicalProperties({{"name", name}})
+	, explosionTarget(explosionTarget)
+	, mIsEdge(isEdge)
 {
 }
 
@@ -73,6 +90,26 @@ bool ElementInfo::equals(const ElementInfo &other) const
 			&& mIsEdge == other.mIsEdge;
 }
 
+QMimeData *ElementInfo::mimeData() const
+{
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	stream << *this;
+	QMimeData * const mimeData = new QMimeData;
+	mimeData->setData(DEFAULT_MIME_TYPE, data);
+	return mimeData;
+}
+
+ElementInfo ElementInfo::fromMimeData(const QMimeData *mimeData)
+{
+	QByteArray data = mimeData->data(DEFAULT_MIME_TYPE);
+	QDataStream inStream(&data, QIODevice::ReadOnly);
+
+	ElementInfo result;
+	inStream >> result;
+	return result;
+}
+
 bool ElementInfo::isEdge() const
 {
 	return mIsEdge;
@@ -114,6 +151,16 @@ Id ElementInfo::newLogicalId()
 void ElementInfo::setPos(const QPointF &position)
 {
 	graphicalProperties["position"] = position;
+}
+
+QDataStream &operator<< (QDataStream &out, const ElementInfo &data)
+{
+	return data.serialize(out);
+}
+
+QDataStream &operator>> (QDataStream &in, ElementInfo &data)
+{
+	return data.deserialize(in);
 }
 
 bool operator==(const ElementInfo &first, const ElementInfo &second)

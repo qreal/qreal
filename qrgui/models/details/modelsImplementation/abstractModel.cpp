@@ -172,27 +172,14 @@ bool AbstractModel::dropMimeData(const QMimeData *data, Qt::DropAction action, i
 
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
 
-	QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+	ElementInfo element = ElementInfo::fromMimeData(data);
+	Q_ASSERT(element.id.idSize() == 4);
 
-	QDataStream stream(&dragData, QIODevice::ReadOnly);
-	QString idString;
-	QString pathToItem;
-	QString name;
-	QPointF position;
-	bool isFromLogicalModel = false;
-	stream >> idString;
-	stream >> pathToItem;
-	stream >> name;
-	stream >> position;
-	stream >> isFromLogicalModel;
-
-	Id id = Id::loadFromString(idString);
-	Q_ASSERT(id.idSize() == 4);
-
-	if (mModelItems.contains(id)) {
-		modelAssistInterface()->changeParent(id, parentItem->id());
+	if (mModelItems.contains(element.id)) {
+		modelAssistInterface()->changeParent(element.id, parentItem->id());
 	} else {
-		modelAssistInterface()->createElement(parentItem->id(), id, isFromLogicalModel, name, position);
+		element.graphicalParent = element.logicalParent = parentItem->id();
+		modelAssistInterface()->createElements(QList<ElementInfo>() << element);
 	}
 
 	return true;

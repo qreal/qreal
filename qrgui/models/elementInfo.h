@@ -20,6 +20,8 @@
 
 #include <qrkernel/ids.h>
 
+class QMimeData;
+
 namespace qReal {
 
 /// Base for convenient storing node or edge element data for passing it into methods with just one parameter.
@@ -28,6 +30,11 @@ class ElementInfo
 public:
 	ElementInfo();
 	explicit ElementInfo(bool isEdge);
+	ElementInfo(const Id &id
+			, const Id &logicalId
+			, const QString &name
+			, const Id &explosionTarget = Id()
+			, bool isEdge = false);
 	ElementInfo(const Id &id
 			, const Id &logicalId
 			, const Id &logicalParent
@@ -48,6 +55,13 @@ public:
 
 	/// Returns true if \a contains just the same data as this instance.
 	virtual bool equals(const ElementInfo &other) const;
+
+	/// Produces and returns mime data object where stored this element.
+	/// Transfers ownership to caller.
+	QMimeData *mimeData() const;
+
+	/// Extracts ElementInfo instance from mime data, returns it.
+	static ElementInfo fromMimeData(const QMimeData *mimeData);
 
 	/// Returns true if this instance describes edge, false if node.
 	bool isEdge() const;
@@ -100,4 +114,6 @@ private:
 
 }
 
+QDataStream &operator<< (QDataStream &out, const qReal::ElementInfo &data);
+QDataStream &operator>> (QDataStream &in, qReal::ElementInfo &data);
 bool operator== (const qReal::ElementInfo &first, const qReal::ElementInfo &second);

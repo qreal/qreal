@@ -58,9 +58,7 @@ public:
 	virtual Id createElement(const QString &
 			, const QPointF &scenePos
 			, qReal::commands::CreateElementsCommand **createCommand = 0
-			, bool executeImmediately = true
-			, const QPointF &shiftToParent = QPointF()
-			, const QString &explosionTargetUuid = QString());
+			, bool executeImmediately = true);
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
 			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
@@ -103,10 +101,7 @@ public:
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void createSingleElement(const Id &id, const QString &name
-			, bool isNode, const QPointF &position
-			, const Id &parentId, bool isFromLogicalModel
-			, const Id &explosionTarget = Id()
+	void createSingleElement(const ElementInfo &element
 			, qReal::commands::CreateElementsCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 

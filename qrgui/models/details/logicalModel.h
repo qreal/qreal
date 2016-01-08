@@ -74,7 +74,6 @@ private:
 	void initializeElement(const ElementInfo &elementInfo
 			, modelsImplementation::AbstractModelItem *parentItem
 			, modelsImplementation::AbstractModelItem *item);
-	QString pathToItem(const modelsImplementation::AbstractModelItem * const item) const;
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
 			, details::modelsImplementation::AbstractModelItem *child);
 

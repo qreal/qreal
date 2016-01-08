@@ -125,42 +125,20 @@ void LogicalModel::updateElements(const Id &logicalId, const QString &name)
 QMimeData* LogicalModel::mimeData(const QModelIndexList &indexes) const
 {
 	QByteArray data;
-	bool isFromLogicalModel = true;
 	QDataStream stream(&data, QIODevice::WriteOnly);
-	foreach (QModelIndex index, indexes) {
+	for (QModelIndex index : indexes) {
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
-			stream << item->id().toString();
-			stream << pathToItem(item);
-			stream << mApi.property(item->id(), "name").toString();
-			stream << QPointF();
-			stream << isFromLogicalModel;
+			const Id id = item->id();
+			stream << ElementInfo(id, id, mApi.property(id, "name").toString(), mApi.outgoingExplosion(item->id()));
 		} else {
-			stream << Id::rootId().toString();
-			stream << QString();
-			stream << QString();
-			stream << QPointF();
-			stream << isFromLogicalModel;
+			stream << ElementInfo();
 		}
 	}
 
 	QMimeData *mimeData = new QMimeData();
 	mimeData->setData(DEFAULT_MIME_TYPE, data);
 	return mimeData;
-}
-
-QString LogicalModel::pathToItem(const AbstractModelItem *item) const
-{
-	if (item != mRootItem) {
-		QString path;
-		do {
-			item = item->parent();
-			path = item->id().toString() + ID_PATH_DIVIDER + path;
-		} while (item != mRootItem);
-		return path;
-	}
-
-	return Id::rootId().toString();
 }
 
 void LogicalModel::addElementToModel(ElementInfo &elementInfo)
