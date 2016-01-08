@@ -737,10 +737,21 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 		updateByNewParent();
 		return value;
 
+	case ItemSelectedChange: {
+		if (connectionInProgress()) {
+			// If we are dragging edge from linker then unselecting this element will cause dragging interruption.
+			// So unselection events must be declined, doing it here...
+			return QGraphicsItem::itemChange(change, true);
+		}
+
+		return QGraphicsItem::itemChange(change, value);
+	}
 	case ItemSelectedHasChanged: {
 		updateBySelection();
 		return QGraphicsItem::itemChange(change, value);
-	case ItemSceneHasChanged:
+	}
+
+	case ItemSceneHasChanged: {
 		connectSceneEvents();
 		return QGraphicsItem::itemChange(change, value);
 	}

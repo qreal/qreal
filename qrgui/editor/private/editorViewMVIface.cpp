@@ -198,18 +198,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			mView->setFocus();
 			// TODO: brush up init~()
 
-			bool isEdgeFromEmbeddedLinker = false;
-			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
-			if (selectedItems.size() == 1) {
-				NodeElement* master = dynamic_cast<NodeElement*>(selectedItems.at(0));
-				if (master && master->connectionInProgress()) {
-					isEdgeFromEmbeddedLinker = true;
-				}
-			}
-
-			if (!isEdgeFromEmbeddedLinker) {
-				elem->setSelected(true);
-			}
+			elem->setSelected(true);
 
 			if (dynamic_cast<NodeElement *>(elem) && currentId.element() == "Class" &&
 					mGraphicalAssistApi->children(currentId).empty())
