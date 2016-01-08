@@ -480,7 +480,6 @@ void EditorViewScene::createElement(const QMimeData *mimeData, const QPointF &sc
 		createSingleElement(id, name, isNode, position, parentId, isFromLogicalModel
 				, explosionTarget, createCommandPointer, executeImmediately);
 
-		// stackBefore должно умереть
 		NodeElement *parentNode = dynamic_cast<NodeElement *>(newParent);
 		if (parentNode) {
 			Element *nextNode = parentNode->getPlaceholderNextElement();
