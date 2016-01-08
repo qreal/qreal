@@ -146,7 +146,7 @@ public:
 	* @brief Returns element that follows placeholder
 	* @return element or nullptr
 	*/
-	Element *getPlaceholderNextElement();
+	Element *getPlaceholderNextElement() const;
 
 	void changeExpanded();
 	bool isExpanded() const;
@@ -228,7 +228,7 @@ private:
 	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
-	void connectSceneEvents() const;
+	void connectSceneEvents();
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

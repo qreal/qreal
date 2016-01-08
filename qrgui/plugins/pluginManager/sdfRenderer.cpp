@@ -86,7 +86,6 @@ void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
 
 void SdfRenderer::setZoom(qreal zoomFactor)
 {
-	qDebug() << "setting zoom to" << zoomFactor;
 	mZoom = zoomFactor;
 }
 
@@ -808,7 +807,7 @@ void SdfRenderer::ImagesCache::drawImage(const QString &fileName, QPainter &pain
 		QPixmap pixmap(scaledRect.size());
 		pixmap.fill(Qt::transparent);
 		QPainter pixmapPainter(&pixmap);
-		renderer.render(&pixmapPainter, scaledRect);
+		renderer.render(&pixmapPainter, scaledRect.translated(-scaledRect.topLeft()));
 		mPrerenderedSvgs[fileName].insert(scaledRect, pixmap);
 	};
 

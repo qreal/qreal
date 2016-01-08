@@ -119,7 +119,7 @@ void NodeElement::initPortsVisibility()
 	}
 }
 
-void NodeElement::connectSceneEvents() const
+void NodeElement::connectSceneEvents()
 {
 	if (!scene()) {
 		return;
@@ -132,6 +132,7 @@ void NodeElement::connectSceneEvents() const
 		}
 	}
 
+	mRenderer.setZoom(editorView->transform().m11());
 	if (editorView) {
 		connect(editorView, &EditorView::zoomChanged, &mRenderer, &SdfRenderer::setZoom);
 	}
@@ -1030,7 +1031,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	resize();
 }
 
-Element* NodeElement::getPlaceholderNextElement()
+Element* NodeElement::getPlaceholderNextElement() const
 {
 	if(mPlaceholder == nullptr) {
 		return nullptr;
