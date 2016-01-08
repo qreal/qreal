@@ -48,6 +48,9 @@ signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
 	void rootElementRemoved(const QModelIndex &rootGraphicsIndex);
 
+	/// Emitted when current zoom of editor was changed by user.
+	void zoomChanged(qreal zoomFactor);
+
 public slots:
 	void toggleAntialiasing(bool);
 	void zoomIn();

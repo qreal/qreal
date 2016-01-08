@@ -119,6 +119,24 @@ void NodeElement::initPortsVisibility()
 	}
 }
 
+void NodeElement::connectSceneEvents() const
+{
+	if (!scene()) {
+		return;
+	}
+
+	const EditorView *editorView = nullptr;
+	for (const QGraphicsView *view : scene()->views()) {
+		if ((editorView = dynamic_cast<const EditorView *>(view))) {
+			break;
+		}
+	}
+
+	if (editorView) {
+		connect(editorView, &EditorView::zoomChanged, &mRenderer, &SdfRenderer::setZoom);
+	}
+}
+
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
 {
 	return mGraphicalAssistApi.properties(id());
@@ -127,11 +145,6 @@ QMap<QString, QVariant> NodeElement::graphicalProperties() const
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
 	return mGraphicalAssistApi.properties(logicalId());
-}
-
-void NodeElement::invalidateImagesZoomCache(qreal zoomFactor)
-{
-	mRenderer.invalidateSvgCache(zoomFactor);
 }
 
 void NodeElement::setName(const QString &value, bool withUndoRedo)
@@ -326,7 +339,8 @@ void NodeElement::alignToGrid()
 	}
 }
 
-void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos) {
+void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos)
+{
 	// in case of unresizable item use switch
 	// Determing parent using corner position, not mouse coordinates
 	QPointF newParentInnerPoint = mouseScenePos;
@@ -725,6 +739,9 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 
 	case ItemSelectedHasChanged: {
 		updateBySelection();
+		return QGraphicsItem::itemChange(change, value);
+	case ItemSceneHasChanged:
+		connectSceneEvents();
 		return QGraphicsItem::itemChange(change, value);
 	}
 

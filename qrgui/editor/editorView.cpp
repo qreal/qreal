@@ -298,9 +298,8 @@ void EditorView::zoom(const qreal zoomFactor)
 		mScene.setRealIndexGrid(mScene.realIndexGrid() * zoomFactor);
 	}
 
-	mMVIface.invalidateImagesZoomCache(transform().m11());
-
 	checkGrid();
+	emit zoomChanged(transform().m11());
 }
 
 void EditorView::setSceneFont()

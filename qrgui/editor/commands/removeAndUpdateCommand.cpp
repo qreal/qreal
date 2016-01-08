@@ -23,14 +23,14 @@
 using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 
-MultipleRemoveAndUpdateCommand::MultipleRemoveAndUpdateCommand(EditorViewScene &scene
+RemoveAndUpdateCommand::RemoveAndUpdateCommand(EditorViewScene &scene
 		, const models::Models &models)
 	: RemoveElementsCommand(models)
 	, mScene(scene)
 {
 }
 
-void MultipleRemoveAndUpdateCommand::appendGraphicalDelete(const Id &id
+void RemoveAndUpdateCommand::appendGraphicalDelete(const Id &id
 		, QList<ElementInfo> &nodes, QList<ElementInfo> &edges)
 {
 	RemoveElementsCommand::appendGraphicalDelete(id, nodes, edges);

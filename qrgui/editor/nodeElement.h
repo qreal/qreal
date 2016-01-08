@@ -62,10 +62,6 @@ public:
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
-	/// Clears prerendered images.
-	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateImagesZoomCache(qreal zoomFactor);
-
 	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w);
 
 	QRectF boundingRect() const;
@@ -232,6 +228,7 @@ private:
 	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
+	void connectSceneEvents() const;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

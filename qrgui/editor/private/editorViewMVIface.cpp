@@ -431,13 +431,3 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 		}
 	}
 }
-
-void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
-{
-	for (const IndexElementPair & item : mItems) {
-		auto node = dynamic_cast<NodeElement *>(item.second);
-		if (node) {
-			node->invalidateImagesZoomCache(zoomFactor);
-		}
-	}
-}
