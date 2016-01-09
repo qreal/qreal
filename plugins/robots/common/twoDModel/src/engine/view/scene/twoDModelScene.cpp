@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
+#include "src/engine/commands/createElementCommand.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -68,6 +69,11 @@ TwoDModelScene::~TwoDModelScene()
 bool TwoDModelScene::oneRobot() const
 {
 	return mRobots.size() == 1;
+}
+
+void TwoDModelScene::setController(ControllerInterface &controller)
+{
+	mController = &controller;
 }
 
 void TwoDModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)

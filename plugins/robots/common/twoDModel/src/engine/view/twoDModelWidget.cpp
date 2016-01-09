@@ -600,6 +600,11 @@ Model &TwoDModelWidget::model() const
 	return mModel;
 }
 
+void TwoDModelWidget::setController(ControllerInterface &controller)
+{
+	mScene->setController(controller);
+}
+
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
 {
 	const bool worldReadOnly = (flags & ReadOnly::World) != 0;

@@ -104,7 +104,7 @@ QRectF RegionItem::boundingRect() const
 	return QRectF(QPointF(), mSize);
 }
 
-void RegionItem::serialize(QDomElement &element)
+void RegionItem::serialize(QDomElement &element) const
 {
 	if (!id().isEmpty()) {
 		element.setAttribute("id", id());

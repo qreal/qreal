@@ -53,6 +53,8 @@ public:
 	virtual void drawFieldForResizeItem(QPainter *painter);
 	virtual void setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option);
 	virtual void setPenBrushDriftRect(QPainter *painter);
+	virtual QDomElement serialize(QDomElement &parent) const;
+	virtual void deserialize(const QDomElement &element);
 
 	static QStringList getPenStyleList();
 	static QStringList getBrushStyleList();
@@ -103,6 +105,7 @@ public:
 	//for save to xml
 	virtual void setXandY(QDomElement& dom, const QRectF &rect);
 	QDomElement setPenBrushToDoc(QDomDocument &document, const QString &domName) const;
+	QDomElement setPenBrushToElement(QDomElement &target, const QString &domName) const;
 	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
 	void readPenBrush(const QDomElement &docItem);
 
@@ -143,9 +146,6 @@ signals:
 	void deletedWithContextMenu();
 
 protected:
-	virtual void serialize(QDomElement &element) const;
-	virtual void deserialize(const QDomElement &element);
-
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 

@@ -221,29 +221,27 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document) const
+QDomElement WorldModel::serialize(QDomElement &parent) const
 {
-	QDomElement result = document.createElement("world");
+	QDomElement result = parent.ownerDocument().createElement("world");
+	parent.appendChild(result);
 
-	QDomElement walls = document.createElement("walls");
+	QDomElement walls = parent.ownerDocument().createElement("walls");
 	result.appendChild(walls);
 	for (items::WallItem * const wall : mWalls) {
-		QDomElement wallNode = document.createElement("wall");
-		wall->serialize(wallNode);
-		walls.appendChild(wallNode);
+		wall->serialize(walls);
 	}
 
-	QDomElement colorFields = document.createElement("colorFields");
+	QDomElement colorFields = parent.ownerDocument().createElement("colorFields");
 	result.appendChild(colorFields);
-	for (items::ColorFieldItem * const colorField : mColorFields) {
-		QDomElement colorFiedlNode = colorField->serialize(document, QPointF());
-		colorFields.appendChild(colorFiedlNode);
+	for (const items::ColorFieldItem *colorField : mColorFields) {
+		colorField->serialize(colorFields);
 	}
 
-	QDomElement regions = document.createElement("regions");
+	QDomElement regions = parent.ownerDocument().createElement("regions");
 	result.appendChild(regions);
-	for (items::RegionItem * const region : mRegions) {
-		QDomElement regionElement = document.createElement("region");
+	for (const items::RegionItem *region : mRegions) {
+		QDomElement regionElement = parent.ownerDocument().createElement("region");
 		region->serialize(regionElement);
 		regions.appendChild(regionElement);
 	}
@@ -251,6 +249,10 @@ QDomElement WorldModel::serialize(QDomDocument &document) const
 	// Robot trace saving is disabled
 
 	return result;
+}
+
+QDomElement WorldModel::serializeItem(const QString &id) const
+{
 }
 
 void WorldModel::deserialize(const QDomElement &element)
@@ -279,48 +281,15 @@ void WorldModel::deserialize(const QDomElement &element)
 			; wallsNode = wallsNode.nextSiblingElement("walls")) {
 		for (QDomElement wallNode = wallsNode.firstChildElement("wall"); !wallNode.isNull()
 				; wallNode = wallNode.nextSiblingElement("wall")) {
-			items::WallItem *wall = new items::WallItem(QPointF(0, 0), QPointF(0, 0));
-			wall->deserialize(wallNode);
-			addWall(wall);
+			createWall(wallNode);
 		}
 	}
 
 	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull()
 			; colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
-
-		for (QDomElement rectangleNode = colorFieldsNode.firstChildElement("rectangle"); !rectangleNode.isNull()
-				; rectangleNode = rectangleNode.nextSiblingElement("rectangle")) {
-			items::RectangleItem *rectangleItem = new items::RectangleItem(QPointF(0, 0), QPointF(0, 0));
-			rectangleItem->deserialize(rectangleNode);
-			addColorField(rectangleItem);
-		}
-
-		for (QDomElement ellipseNode = colorFieldsNode.firstChildElement("ellipse"); !ellipseNode.isNull()
-				; ellipseNode = ellipseNode.nextSiblingElement("ellipse")) {
-			items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(0, 0), QPointF(0, 0));
-			ellipseItem->deserialize(ellipseNode);
-			addColorField(ellipseItem);
-		}
-
-		for (QDomElement lineNode = colorFieldsNode.firstChildElement("line"); !lineNode.isNull()
-				; lineNode = lineNode.nextSiblingElement("line")) {
-			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
-			lineItem->deserialize(lineNode);
-			addColorField(lineItem);
-		}
-
-		for (QDomElement curveNode = colorFieldsNode.firstChildElement("cubicBezier"); !curveNode.isNull()
-				; curveNode = curveNode.nextSiblingElement("cubicBezier")) {
-			items::CurveItem *curveItem = new items::CurveItem(QPointF(0, 0), QPointF(0, 0));
-			curveItem->deserialize(curveNode);
-			addColorField(curveItem);
-		}
-
-		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull()
-				; stylusNode = stylusNode.nextSiblingElement("stylus")) {
-			items::StylusItem *stylusItem = new items::StylusItem(0, 0);
-			stylusItem->deserialize(stylusNode);
-			addColorField(stylusItem);
+		for (QDomElement elementNode = colorFieldsNode.firstChildElement(); !elementNode.isNull()
+				; elementNode = elementNode.nextSiblingElement()) {
+			createElement(elementNode);
 		}
 	}
 
@@ -376,4 +345,73 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 	}
 
 	return nullptr;
+}
+
+void WorldModel::createElement(const QDomElement &element)
+{
+	if (element.tagName() == "rectangle") {
+		createRectangle(element);
+	} else if (element.tagName() == "ellipse") {
+		createEllipse(element);
+	} else if (element.tagName() == "line") {
+		createLine(element);
+	} else if (element.tagName() == "cubicBezier") {
+		createCubicBezier(element);
+	} else if (element.tagName() == "stylus") {
+		createStylus(element);
+	} else if (element.tagName() == "wall") {
+		createRectangle(element);
+	}
+}
+
+void WorldModel::createWall(const QDomElement &element)
+{
+	items::WallItem *wall = new items::WallItem(QPointF(), QPointF());
+	wall->deserialize(element);
+	addWall(wall);
+}
+
+void WorldModel::createLine(const QDomElement &element)
+{
+	items::LineItem *lineItem = new items::LineItem(QPointF(), QPointF());
+	lineItem->deserialize(element);
+	addColorField(lineItem);
+}
+
+void WorldModel::createRectangle(const QDomElement &element)
+{
+	items::RectangleItem *rectangleItem = new items::RectangleItem(QPointF(), QPointF());
+	rectangleItem->deserialize(element);
+	addColorField(rectangleItem);
+}
+
+void WorldModel::createEllipse(const QDomElement &element)
+{
+	items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(), QPointF());
+	ellipseItem->deserialize(element);
+	addColorField(ellipseItem);
+}
+
+void WorldModel::createCubicBezier(const QDomElement &element)
+{
+	items::CurveItem *curveItem = new items::CurveItem(QPointF(), QPointF());
+	curveItem->deserialize(element);
+	addColorField(curveItem);
+}
+
+void WorldModel::createStylus(const QDomElement &element)
+{
+	items::StylusItem *stylusItem = new items::StylusItem(0, 0);
+	stylusItem->deserialize(element);
+	addColorField(stylusItem);
+}
+
+void WorldModel::removeItem(const QString &id)
+{
+	QGraphicsObject *item = findId(id);
+	if (items::WallItem *wall = dynamic_cast<items::WallItem *>(item)) {
+		removeWall(wall);
+	} else if (items::ColorFieldItem *colorItem = dynamic_cast<items::ColorFieldItem *>(item)) {
+		removeColorField(colorItem);
+	}
 }

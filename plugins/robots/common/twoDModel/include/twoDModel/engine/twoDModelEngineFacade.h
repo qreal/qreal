@@ -52,6 +52,7 @@ public:
 	void init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 			, const qReal::SystemEvents &systemEvents
 			, qReal::LogicalModelAssistInterface &logicalModel
+			, qReal::ControllerInterface &controller
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) override;

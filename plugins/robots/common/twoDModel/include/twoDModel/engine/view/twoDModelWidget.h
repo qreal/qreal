@@ -40,6 +40,10 @@ namespace graphicsUtils {
 class AbstractItem;
 }
 
+namespace qReal {
+class ControllerInterface;
+}
+
 namespace twoDModel {
 
 namespace model {
@@ -78,6 +82,9 @@ public:
 
 	/// Returns a reference to a model part of 2D model MVC architecture.
 	model::Model &model() const;
+
+	/// Passes into view a reference to controller object that will execute commands.
+	void setController(qReal::ControllerInterface &controller);
 
 	/// Sets groups of items on 2d model that can not be modified by user. Used for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.

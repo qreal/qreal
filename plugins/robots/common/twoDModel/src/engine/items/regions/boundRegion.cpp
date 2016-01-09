@@ -40,7 +40,7 @@ void BoundRegion::setStroke(int stroke)
 	mStroke = stroke;
 }
 
-void BoundRegion::serialize(QDomElement &element)
+void BoundRegion::serialize(QDomElement &element) const
 {
 	RegionItem::serialize(element);
 	element.setAttribute("boundItem", mBoundId);

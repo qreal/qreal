@@ -47,13 +47,14 @@ void StartPosition::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *
 	painter->restore();
 }
 
-void StartPosition::serialize(QDomElement &robotElement, QDomDocument &target) const
+QDomElement StartPosition::serialize(QDomElement &parent) const
 {
-	QDomElement startPositionElement = target.createElement("startPosition");
+	QDomElement startPositionElement = RotateItem::serialize(parent);
+	startPositionElement.setTagName("startPosition");
 	startPositionElement.setAttribute("x", QString::number(scenePos().x()));
 	startPositionElement.setAttribute("y", QString::number(scenePos().y()));
 	startPositionElement.setAttribute("direction", QString::number(rotation()));
-	robotElement.appendChild(startPositionElement);
+	return startPositionElement;
 }
 
 void StartPosition::deserialize(const QDomElement &robotElement)

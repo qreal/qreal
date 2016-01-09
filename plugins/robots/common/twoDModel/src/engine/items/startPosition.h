@@ -27,7 +27,7 @@ public:
 	QRectF boundingRect() const override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
-	void serialize(QDomElement &robotElement, QDomDocument &target) const;
+	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &robotElement) override;
 
 private:

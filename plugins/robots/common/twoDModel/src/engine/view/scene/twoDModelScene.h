@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,10 @@
 
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/readOnly.h>
+
+namespace qReal {
+class ControllerInterface;
+}
 
 namespace twoDModel {
 
@@ -56,6 +60,9 @@ public:
 
 	/// Returns true if existing only one robot
 	bool oneRobot() const;
+
+	/// Passes into scene a reference to controller object that will execute commands.
+	void setController(qReal::ControllerInterface &controller);
 
 	/// Forbid all interaction with specified categories of objects on scene, for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
@@ -142,7 +149,6 @@ private:
 		, stylus
 		, rectangle
 		, ellipse
-		, noneWordLoad
 	};
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
@@ -167,6 +173,7 @@ private:
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
 	model::Model &mModel;
+	qReal::ControllerInterface *mController = nullptr;
 
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;

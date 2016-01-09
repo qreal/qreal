@@ -351,19 +351,25 @@ void AbstractItem::setXandY(QDomElement& dom, const QRectF &rect)
 
 QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString &domName) const
 {
-	QDomElement dom = document.createElement(domName);
-	dom.setAttribute("fill", mBrush.color().name(QColor::HexArgb));
+	QDomElement dom = document.createElement(QString());
+	return setPenBrushToElement(dom, domName);
+}
+
+QDomElement AbstractItem::setPenBrushToElement(QDomElement &target, const QString &domName) const
+{
+	target.setTagName(domName);
+	target.setAttribute("fill", mBrush.color().name(QColor::HexArgb));
 
 	if (mBrush.style() == Qt::NoBrush) {
-		dom.setAttribute("fill-style", "none");
+		target.setAttribute("fill-style", "none");
 	}
 
 	if (mBrush.style() == Qt::SolidPattern) {
-		dom.setAttribute("fill-style", "solid");
+		target.setAttribute("fill-style", "solid");
 	}
 
-	dom.setAttribute("stroke", mPen.color().name(QColor::HexArgb));
-	dom.setAttribute("stroke-width", mPen.width());
+	target.setAttribute("stroke", mPen.color().name(QColor::HexArgb));
+	target.setAttribute("stroke-width", mPen.width());
 
 	QString penStyle;
 	switch (mPen.style()) {
@@ -389,9 +395,9 @@ QDomElement AbstractItem::setPenBrushToDoc(QDomDocument &document, const QString
 		break;
 	}
 
-	dom.setAttribute("stroke-style", penStyle);
+	target.setAttribute("stroke-style", penStyle);
 
-	return dom;
+	return target;
 }
 
 QRectF AbstractItem::sceneBoundingRectCoord(const QPoint &topLeftPicture)
@@ -476,9 +482,12 @@ bool AbstractItem::editable() const
 	return mEditable;
 }
 
-void AbstractItem::serialize(QDomElement &element) const
+QDomElement AbstractItem::serialize(QDomElement &parent) const
 {
-	element.setAttribute("id", id());
+	QDomElement result = parent.ownerDocument().createElement("tempNodeName");
+	result.setAttribute("id", id());
+	parent.appendChild(result);
+	return result;
 }
 
 void AbstractItem::deserialize(const QDomElement &element)

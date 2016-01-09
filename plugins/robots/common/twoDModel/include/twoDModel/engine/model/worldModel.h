@@ -81,11 +81,39 @@ public:
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomDocument &document) const;
+	QDomElement serialize(QDomElement &parent) const;
+	QDomElement serializeItem(const QString &id) const;
 	void deserialize(const QDomElement &element);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
 	QGraphicsObject *findId(const QString &id) const;
+
+	/// Creates XML specification from some basic parameters specification.
+	void createSpecification(const QDomElement &element);
+
+	/// Creates element from serialized XML specification.
+	void createElement(const QDomElement &element);
+
+	/// Creates wall item described by \a element in the world model.
+	void createWall(const QDomElement &element);
+
+	/// Creates line colored item described by \a element in the world model.
+	void createLine(const QDomElement &element);
+
+	/// Creates rectangular colored item described by \a element in the world model.
+	void createRectangle(const QDomElement &element);
+
+	/// Creates ellipse colored item described by \a element in the world model.
+	void createEllipse(const QDomElement &element);
+
+	/// Creates cubic bezier colored item described by \a element in the world model.
+	void createCubicBezier(const QDomElement &element);
+
+	/// Creates stylus colored item described by \a element in the world model.
+	void createStylus(const QDomElement &element);
+
+	/// Removes item with the \a id from the world model.
+	void removeItem(const QString &id);
 
 signals:
 	/// Emitted each time when model is appended with some new wall.

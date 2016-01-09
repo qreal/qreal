@@ -204,12 +204,13 @@ void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 	mDragged = false;
 }
 
-void WallItem::serialize(QDomElement &wallNode) const
+QDomElement WallItem::serialize(QDomElement &parent) const
 {
+	QDomElement wallNode = SolidItem::serialize(parent);
 	wallNode.setTagName("wall");
-	AbstractItem::serialize(wallNode);
 	mLineImpl.serialize(wallNode, x1() + scenePos().x(), y1() + scenePos().y()
 			, x2() + scenePos().x(), y2() + scenePos().y());
+	return wallNode;
 }
 
 void WallItem::deserialize(const QDomElement &element)
