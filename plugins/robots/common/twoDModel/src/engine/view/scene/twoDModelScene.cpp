@@ -39,6 +39,8 @@ using namespace view;
 using namespace qReal;
 using namespace graphicsUtils;
 
+const QString twoDModelUndoStackName = "2D-model-undo-stack";
+
 TwoDModelScene::TwoDModelScene(model::Model &model
 		, AbstractView *view
 		, QObject *parent)
@@ -75,6 +77,7 @@ bool TwoDModelScene::oneRobot() const
 void TwoDModelScene::setController(ControllerInterface &controller)
 {
 	mController = &controller;
+	mController->moduleOpened(twoDModelUndoStackName);
 }
 
 void TwoDModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
@@ -323,7 +326,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 	if (createdItem) {
 		createdItem->setSelected(true);
-		if (mDrawingAction != none) {
+		if (mDrawingAction != none && mController) {
 			commands::CreateElementCommand *command = new commands::CreateElementCommand(mModel, createdItem->id());
 			// Command was already executed when element was drawn by user. So we should create it in redone state.
 			command->setRedoEnabled(false);
@@ -418,6 +421,14 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 		}
 	} else {
 		QGraphicsScene::keyPressEvent(event);
+	}
+}
+
+void TwoDModelScene::focusInEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusInEvent(event);
+	if (mController) {
+		mController->setActiveModule(twoDModelUndoStackName);
 	}
 }
 

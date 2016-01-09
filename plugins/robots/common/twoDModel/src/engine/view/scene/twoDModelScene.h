@@ -158,6 +158,8 @@ private:
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
 
+	void focusInEvent(QFocusEvent *event);
+
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void deleteItem(QGraphicsItem *item);

@@ -80,6 +80,7 @@ EditorViewMViface &EditorView::mutableMvIface()
 
 void EditorView::focusOutEvent(QFocusEvent *event)
 {
+	QGraphicsView::focusOutEvent(event);
 	if (event->reason() != Qt::PopupFocusReason) {
 		mScene.setActionsEnabled(false);
 	}
@@ -87,7 +88,7 @@ void EditorView::focusOutEvent(QFocusEvent *event)
 
 void EditorView::focusInEvent(QFocusEvent *event)
 {
-	Q_UNUSED(event)
+	QGraphicsView::focusInEvent(event);
 	mScene.setActionsEnabled(true);
 }
 
