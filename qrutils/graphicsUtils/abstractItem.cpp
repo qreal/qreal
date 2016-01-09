@@ -14,6 +14,7 @@
 
 #include "abstractItem.h"
 
+#include <QtCore/QUuid>
 #include <QtGui/QPainter>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QStyle>
@@ -30,6 +31,7 @@ AbstractItem::AbstractItem(QGraphicsItem* parent)
 	, mY1(0)
 	, mX2(0)
 	, mY2(0)
+	, mId(QUuid::createUuid().toString())
 	, mEditable(true)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsGeometryChanges);
@@ -468,7 +470,9 @@ QString AbstractItem::id() const
 
 void AbstractItem::setId(const QString &id)
 {
-	mId = id;
+	if (!id.isEmpty()) {
+		mId = id;
+	}
 }
 
 void AbstractItem::setEditable(bool editable)

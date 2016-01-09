@@ -37,6 +37,7 @@ QGraphicsPathItem *debugPath = nullptr;
 #endif
 
 WorldModel::WorldModel()
+	: mXmlFactory(new QDomDocument)
 {
 }
 
@@ -113,24 +114,24 @@ bool WorldModel::checkCollision(const QPainterPath &path) const
 	return buildWallPath().intersects(path);
 }
 
-QList<items::WallItem *> const &WorldModel::walls() const
+const QMap<QString, items::WallItem *> &WorldModel::walls() const
 {
 	return mWalls;
 }
 
 void WorldModel::addWall(items::WallItem *wall)
 {
-	mWalls.append(wall);
+	mWalls[wall->id()] = wall;
 	emit wallAdded(wall);
 }
 
 void WorldModel::removeWall(items::WallItem *wall)
 {
-	mWalls.removeOne(wall);
+	mWalls.remove(wall->id());
 	emit itemRemoved(wall);
 }
 
-QList<items::ColorFieldItem *> const &WorldModel::colorFields() const
+const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
 {
 	return mColorFields;
 }
@@ -140,25 +141,15 @@ const QList<QGraphicsLineItem *> &WorldModel::trace() const
 	return mRobotTrace;
 }
 
-int WorldModel::wallsCount() const
-{
-	return mWalls.count();
-}
-
-items::WallItem *WorldModel::wallAt(int index) const
-{
-	return mWalls[index];
-}
-
 void WorldModel::addColorField(items::ColorFieldItem *colorField)
 {
-	mColorFields.append(colorField);
+	mColorFields[colorField->id()] = colorField;
 	emit colorItemAdded(colorField);
 }
 
 void WorldModel::removeColorField(items::ColorFieldItem *colorField)
 {
-	mColorFields.removeOne(colorField);
+	mColorFields.remove(colorField->id());
 	emit itemRemoved(colorField);
 }
 
@@ -174,7 +165,7 @@ void WorldModel::clear()
 
 	while (!mRegions.isEmpty()) {
 		QGraphicsItem * const toRemove = mRegions.last();
-		mRegions.removeLast();
+		mRegions.remove(mRegions.lastKey());
 		emit itemRemoved(toRemove);
 	}
 
@@ -253,6 +244,13 @@ QDomElement WorldModel::serialize(QDomElement &parent) const
 
 QDomElement WorldModel::serializeItem(const QString &id) const
 {
+	const graphicsUtils::AbstractItem *item = dynamic_cast<const graphicsUtils::AbstractItem *>(findId(id));
+	if (!item) {
+		return QDomElement();
+	}
+
+	QDomElement temporalParent = mXmlFactory->createElement("temporalParent");
+	return item->serialize(temporalParent);
 }
 
 void WorldModel::deserialize(const QDomElement &element)
@@ -308,13 +306,14 @@ void WorldModel::deserialize(const QDomElement &element)
 			const QGraphicsObject *boundItem = findId(id);
 			if (boundItem) {
 				item = new items::BoundRegion(*boundItem, id);
-				connect(item, &QObject::destroyed, this, [this, item]() { mRegions.removeAll(item); });
+				connect(item, &QObject::destroyed, this, [this, item]() { mRegions.remove(item->id()); });
+				// Item itself will be deleted with its parent, see BoundRegion constructor.
 			} /// @todo: else report error
 		}
 
 		if (item) {
 			item->deserialize(regionNode);
-			mRegions.append(item);
+			mRegions[item->id()] = item;
 			emit regionItemAdded(item);
 		}
 	}
@@ -326,22 +325,16 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 		return nullptr;
 	}
 
-	for (items::WallItem * const wall : mWalls) {
-		if (wall->id() == id) {
-			return wall;
-		}
+	if (mWalls.contains(id)) {
+		return mWalls[id];
 	}
 
-	for (items::ColorFieldItem * const field : mColorFields) {
-		if (field->id() == id) {
-			return field;
-		}
+	if (mColorFields.contains(id)) {
+		return mColorFields[id];
 	}
 
-	for (items::RegionItem * const region : mRegions) {
-		if (region->id() == id) {
-			return region;
-		}
+	if (mRegions.contains(id)) {
+		return mRegions[id];
 	}
 
 	return nullptr;
@@ -360,7 +353,7 @@ void WorldModel::createElement(const QDomElement &element)
 	} else if (element.tagName() == "stylus") {
 		createStylus(element);
 	} else if (element.tagName() == "wall") {
-		createRectangle(element);
+		createWall(element);
 	}
 }
 

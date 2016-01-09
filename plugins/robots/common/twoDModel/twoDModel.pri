@@ -86,7 +86,6 @@ HEADERS += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
-	$$PWD/src/engine/items/tool.h \
 	$$PWD/src/engine/items/solidItem.h \
 	$$PWD/src/engine/items/wallItem.h \
 	$$PWD/src/engine/items/stylusItem.h \
@@ -100,6 +99,13 @@ HEADERS += \
 	$$PWD/src/engine/items/regions/ellipseRegion.h \
 	$$PWD/src/engine/items/regions/rectangularRegion.h \
 	$$PWD/src/engine/items/regions/boundRegion.h \
+#	$$PWD/src/engine/commands/changePropertyCommand.h \
+	$$PWD/src/engine/commands/createElementCommand.h \
+	$$PWD/src/engine/commands/createRemoveCommandImplementation.h \
+#	$$PWD/src/engine/commands/multipleRemoveCommand.h \
+#	$$PWD/src/engine/commands/removeElementCommand.h \
+#	$$PWD/src/engine/commands/resizeCommand.h \
+#	$$PWD/src/engine/commands/rotateCommand.h \
 	$$PWD/src/robotModel/nullTwoDRobotModel.h \
 
 SOURCES += \
@@ -132,7 +138,6 @@ SOURCES += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
-	$$PWD/src/engine/items/tool.cpp \
 	$$PWD/src/engine/items/solidItem.cpp \
 	$$PWD/src/engine/items/wallItem.cpp \
 	$$PWD/src/engine/items/stylusItem.cpp \
@@ -152,6 +157,13 @@ SOURCES += \
 	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
 	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
 	$$PWD/src/engine/constraints/details/valuesFactory.cpp \
+#	$$PWD/src/engine/commands/changePropertyCommand.cpp \
+	$$PWD/src/engine/commands/createElementCommand.cpp \
+	$$PWD/src/engine/commands/createRemoveCommandImplementation.cpp \
+#	$$PWD/src/engine/commands/multipleRemoveCommand.cpp \
+#	$$PWD/src/engine/commands/removeElementCommand.cpp \
+#	$$PWD/src/engine/commands/resizeCommand.cpp \
+#	$$PWD/src/engine/commands/rotateCommand.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/nullTwoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \

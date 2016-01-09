@@ -52,8 +52,8 @@ void RealisticPhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1,
 	mForceMomentDecrement = 0;
 	mGettingOutVector = QVector2D();
 
-	for (int i = 0; i < mWorldModel.wallsCount(); ++i) {
-		findCollision(robotBoundingPath, mWorldModel.wallAt(i)->path(), rotationCenter);
+	for (const items::WallItem *wall : mWorldModel.walls()) {
+		findCollision(robotBoundingPath, wall->path(), rotationCenter);
 	}
 
 	countTractionForceAndItsMoment(speed1, speed2, engine1Break || engine2Break, rotationCenter, direction);

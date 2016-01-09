@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,28 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "tool.h"
+#include "createElementCommand.h"
 
-using namespace twoDModel::items;
+using namespace twoDModel::commands;
 
-Tool::Tool(const QIcon &icon, const QString &displayedName)
-	: mIcon(icon)
-	, mDisplayedName(displayedName)
-	, mAction(icon, displayedName, nullptr)
+CreateElementCommand::CreateElementCommand(model::Model &model, const QDomElement &data)
+	: mImpl(model, data)
 {
 }
 
-Tool::~Tool()
+CreateElementCommand::CreateElementCommand(twoDModel::model::Model &model, const QString &id)
+	: CreateElementCommand(model, model.worldModel().serializeItem(id))
 {
 }
 
-QIcon Tool::icon() const
+bool CreateElementCommand::execute()
 {
-	return mIcon;
+	mImpl.create();
+	return true;
 }
 
-QString Tool::displayedName() const
+bool CreateElementCommand::restoreState()
 {
-	return mDisplayedName;
+	mImpl.remove();
+	return true;
 }
-

@@ -20,6 +20,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
+#include <qrgui/controller/controllerInterface.h>
 
 #include "robotItem.h"
 
@@ -275,53 +276,60 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	emit mouseReleased();
 
 	// After dragging item may be null. We mustn`t select it in that case.
-	QGraphicsItem *itemToSelect = nullptr;
+	AbstractItem *createdItem = nullptr;
 	switch (mDrawingAction){
 	case wall: {
 		reshapeWall(mouseEvent);
-		itemToSelect = mCurrentWall;
+		createdItem = mCurrentWall;
 		mCurrentWall = nullptr;
 		break;
 	}
 	case line: {
 		reshapeLine(mouseEvent);
-		itemToSelect = mCurrentLine;
+		createdItem = mCurrentLine;
 		mCurrentLine = nullptr;
 		break;
 	}
 	case bezier: {
 		reshapeCurve(mouseEvent);
-		itemToSelect = mCurrentCurve;
+		createdItem = mCurrentCurve;
 		mCurrentCurve = nullptr;
 		break;
 	}
 	case stylus: {
 		reshapeStylus(mouseEvent);
-		itemToSelect = mCurrentStylus;
+		createdItem = mCurrentStylus;
 		mCurrentStylus = nullptr;
 		break;
 	}
 	case rectangle: {
 		reshapeRectangle(mouseEvent);
-		itemToSelect = mCurrentRectangle;
+		createdItem = mCurrentRectangle;
 		mCurrentRectangle = nullptr;
 		break;
 	}
 	case ellipse: {
 		reshapeEllipse(mouseEvent);
-		itemToSelect = mCurrentEllipse;
+		createdItem = mCurrentEllipse;
 		mCurrentEllipse = nullptr;
 		break;
 	}
 	default:
-		if (itemToSelect) {
+		if (createdItem) {
 			forReleaseResize(mouseEvent);
 		}
 		break;
 	}
 
-	if (itemToSelect) {
-		itemToSelect->setSelected(true);
+	if (createdItem) {
+		createdItem->setSelected(true);
+		if (mDrawingAction != none) {
+			commands::CreateElementCommand *command = new commands::CreateElementCommand(mModel, createdItem->id());
+			// Command was already executed when element was drawn by user. So we should create it in redone state.
+			command->setRedoEnabled(false);
+			mController->execute(command);
+			command->setRedoEnabled(true);
+		}
 	}
 
 	setMoveFlag(mouseEvent);
