@@ -74,37 +74,111 @@ private :
 	QString generatedPartOfTemplateForAllDiagrams(const QString &templateName
 			, const bool isIfForMainCheck = false);
 
-	NeededStringsForConcreteGenerate generateCommonNeededPartsForElements(QString elementName);
+	NeededStringsForConcreteGenerate generateCommonNeededPartsForElements(const QString &elementName);
 	QString generateMainCheckStatusesForElementsCPP(QMap<QString, QString> appendOptionalCheckStatusInMainCheckCPP);
-	NeededStringsForConcreteGenerate generateNeededPartsForDiagramFiles(qReal::Id const &diagram);
-	void generateDiagramFiles(qReal::Id const &diagram, QString diagramNameTemplate);
-	QString replaceLanguageName(QString string, qReal::Id const &diagram, int count);
-	QString correctedLanguageName(qReal::Id const &diagram);
+	NeededStringsForConcreteGenerate generateNeededPartsForDiagramFiles(const qReal::Id &diagram);
+	void generateDiagramFiles(const qReal::Id &diagram, const QString &diagramNameTemplate);
+	QString replaceLanguageName(QString string, const qReal::Id &diagram, const int count);
+	QString correctedLanguageName(const qReal::Id &diagram);
 
-	QString countRealConstraintOfDiagramElement(qReal::Id const &constraintElement);
-	QString countRealConstraintForElement(qReal::Id const &constraintElement, metaType const &type, QString elementName, QString resultName, int depth, QString addStr);
-	QString countRealConstraintForEdgeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
-	QString countRealConstraintForNodeElement(qReal::Id const &constraintElement, QString elementName, QString resultName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countRealConstraintForOneEdgeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr = false);
-	QPair<QString, QList<QString> > countRealConstraintForOneNodeElement(qReal::Id const &constraint, qReal::IdList &usedElements, QString elementName, int depth, QString addStr, bool isMultiOr = false);
-	QPair<QString, QList<QString> > countNeighborsElementsByOr(qReal::Id const &constraint, QString resConstraintBool, qReal::IdList &usedElements, metaType const &type, QString elementName, int depth, QString addStr);
-	QPair<bool, QString> handleConstraintsSelection(qReal::Id const &constraintElement);
-	QString additionalCommonPartForConstraint(QList<QString> resBool, QString resultName, int depth, QString addStr);
+	QString countRealConstraintOfDiagramElement(const qReal::Id &constraintElement);
 
-	QPair<QString, QList<QString> > countConstraintForBeginNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForEndNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
+	QString countRealConstraintForElement(
+			const qReal::Id &constraintElement
+			, const metaType &type
+			, const QString &elementName
+			, const QString &resultName
+			, const int depth
+			, const QString &addStr);
 
-	QPair<QString, QList<QString> > countConstraintForListOfElements(qReal::Id const &constraint, QString elementName, QString resElementName, QString functionName, QString resType, int depth, QString addStr);
+	QString countRealConstraintForEdgeElement(
+			const qReal::Id &constraintElement
+			, const QString &elementName
+			, const QString &resultName
+			, int depth
+			, const QString &addStr);
 
-	QPair<QString, QList<QString> > countConstraintForParent(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForChildrens(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForOutgoingLinks(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForIncomingLinks(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForOutgoingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForIncomingNodes(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint, QString elementName, int depth, QString addStr);
-	QPair<QString, QString > countPropertyCharacteristicForConstraintElement(qReal::Id const &constraint, QString const &characteristicName, QString const &defaultValue, QString property, QString sign, QString value,  QString elementName, int depth, QString addStr);
-	QPair<QString, QList<QString> > countConstraintForMultiOrNode(qReal::Id const &constraint, qReal::IdList &usedElements, metaType const &type, QString elementName, int depth, QString addStr);
+	QString countRealConstraintForNodeElement(
+			const qReal::Id &constraintElement
+			, const QString &elementName
+			, const QString &resultName
+			, const int depth
+			, const QString &addStr);
+
+	QPair<QString, QList<QString> > countRealConstraintForOneEdgeElement(
+			const qReal::Id &constraint
+			, qReal::IdList &usedElements
+			, const QString &elementName
+			, const int depth
+			, const QString &addStr
+			, const bool isMultiOr = false);
+
+	QPair<QString, QList<QString> > countRealConstraintForOneNodeElement(
+			const qReal::Id &constraint
+			, qReal::IdList &usedElements
+			, const QString &elementName
+			, const int depth
+			, const QString &addStr
+			, const bool isMultiOr = false);
+
+	QPair<QString, QList<QString> > countNeighborsElementsByOr(
+			const qReal::Id &constraint
+			, const QString &resConstraintBool
+			, qReal::IdList &usedElements
+			, const metaType &type
+			, const QString &elementName
+			, const int depth
+			, const QString &addStr);
+
+	QPair<bool, QString> handleConstraintsSelection(const qReal::Id &constraintElement);
+
+	QString additionalCommonPartForConstraint(
+			const QList<QString> &resBool
+			, const QString &resultName
+			, const int depth
+			, const QString &addStr);
+
+	QPair<QString, QList<QString> > countConstraintForBeginNode(
+			qReal::Id const &constraint
+			, const QString &elementName
+			, const int depth
+			, const QString &additionalString);
+
+	QPair<QString, QList<QString> > countConstraintForEndNode(
+			qReal::Id const &constraint
+			, const QString &elementName
+			, int depth
+			, const QString &additionalString);
+
+	QPair<QString, QList<QString> > countConstraintForParent(
+			const qReal::Id &constraint
+			, const QString &elementName
+			, const int depth
+			, const QString &additionalString);
+
+	QPair<QString, QList<QString> > countConstraintForPropertyNode(
+			qReal::Id const &constraint
+			, const QString &elementName
+			, const int depth
+			, const QString &addStr);
+
+	QPair<QString, QString > countPropertyCharacteristicForConstraintElement(const qReal::Id &constraint
+			, const QString &characteristicName
+			, const QString &defaultValue
+			, const QString &property
+			, QString sign
+			, QString value
+			, const QString &elementName
+			, const int depth
+			, const QString &addStr);
+
+	QPair<QString, QList<QString> > countConstraintForMultiOrNode(
+			const qReal::Id &constraint
+			, qReal::IdList &usedElements
+			, const metaType &type
+			, const QString &elementName
+			, const int depth
+			, const QString &addStr);
 
 	QString mPathToQReal;
 	QString const &mMetamodelName; //имя метамодели языков, для которых напсана эта модель ограничений, по которой генерируется код

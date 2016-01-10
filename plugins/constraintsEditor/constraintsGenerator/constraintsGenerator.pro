@@ -22,14 +22,14 @@ HEADERS = \
 	concreteGenerator.h \
 	generatorUtils/defs.h \
 	generatorUtils/auxiliaryMethods.h \
-	generatorUtils/countRealConstraintsMethods.h \
+	generatorParts/generatorForListsOfElements.h \
 
 SOURCES = \
 	constraintsGeneratorPlugin.cpp \
 	generator.cpp \
 	concreteGenerator.cpp \
 	generatorUtils/auxiliaryMethods.cpp \
-	generatorUtils/countRealConstraintsMethods.cpp \
+	generatorParts/generatorForListsOfElements.cpp \
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
