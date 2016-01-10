@@ -32,7 +32,9 @@
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
-#include "src/engine/commands/createElementCommand.h"
+
+#include "src/engine/commands/createWorldItemCommand.h"
+#include "src/engine/commands/removeWorldItemsCommand.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -327,7 +329,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	if (createdItem) {
 		createdItem->setSelected(true);
 		if (mDrawingAction != none && mController) {
-			commands::CreateElementCommand *command = new commands::CreateElementCommand(mModel, createdItem->id());
+			commands::CreateWorldItemCommand *command = new commands::CreateWorldItemCommand(mModel, createdItem->id());
 			// Command was already executed when element was drawn by user. So we should create it in redone state.
 			command->setRedoEnabled(false);
 			mController->execute(command);
@@ -345,35 +347,35 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
 
-void TwoDModelScene::deleteItem(QGraphicsItem *item)
-{
-	if (!items().contains(item)) {
-		return;
-	}
-
-	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
-		for (RobotItem * const robotItem : mRobots.values()) {
-			const kitBase::robotModel::PortInfo port = robotItem->sensors().key(sensor);
-			if (port.isValid()) {
-				deviceConfigurationChanged(robotItem->robotModel().info().robotId()
-						, port, kitBase::robotModel::DeviceInfo(), Reason::userAction);
-			}
-		}
-	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
-		mModel.worldModel().removeWall(wall);
-		mCurrentWall = nullptr;
-	} else if (items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item)) {
-		mModel.worldModel().removeColorField(colorField);
-		mCurrentLine = nullptr;
-		mCurrentStylus = nullptr;
-		mCurrentEllipse = nullptr;
-	}
-}
-
 void TwoDModelScene::deleteSelectedItems()
 {
+	QStringList worldItemsToDelete;
 	for (QGraphicsItem * const item : selectedItems()) {
-		deleteItem(item);
+		SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
+		items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
+		items::ColorFieldItem * const colorField = dynamic_cast<items::ColorFieldItem *>(item);
+
+		if (sensor && !mSensorsReadOnly) {
+			for (RobotItem * const robotItem : mRobots.values()) {
+				const kitBase::robotModel::PortInfo port = robotItem->sensors().key(sensor);
+				if (port.isValid()) {
+					deviceConfigurationChanged(robotItem->robotModel().info().robotId()
+							, port, kitBase::robotModel::DeviceInfo(), Reason::userAction);
+				}
+			}
+		} else if (wall && !mWorldReadOnly) {
+			worldItemsToDelete << wall->id();
+			mCurrentWall = nullptr;
+		} else if (colorField && !mWorldReadOnly) {
+			worldItemsToDelete << colorField->id();
+			mCurrentLine = nullptr;
+			mCurrentStylus = nullptr;
+			mCurrentEllipse = nullptr;
+		}
+	}
+
+	if (mController && !worldItemsToDelete.isEmpty()) {
+		mController->execute(new commands::RemoveWorldItemsCommand(mModel, worldItemsToDelete));
 	}
 }
 
@@ -403,22 +405,8 @@ void TwoDModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 
 void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
-		for (QGraphicsItem * const item : selectedItems()) {
-			const bool isWorldItem = dynamic_cast<items::ColorFieldItem *>(item)
-					|| dynamic_cast<items::WallItem *>(item);
-			const bool isRobotItem = dynamic_cast<RobotItem *>(item) != nullptr;
-			const bool isSensorItem = dynamic_cast<SensorItem *>(item) != nullptr;
-			if (isWorldItem && mWorldReadOnly) {
-				return;
-			} else if (isRobotItem && mRobotReadOnly) {
-				return;
-			} else if (isSensorItem && mSensorsReadOnly) {
-				return;
-			}
-
-			deleteItem(item);
-		}
+	if (event->key() == Qt::Key_Delete) {
+		deleteSelectedItems();
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}

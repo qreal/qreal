@@ -1,4 +1,4 @@
-/* Copyright 2015-2016 CyberTech Labs Ltd.
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,29 +16,22 @@
 
 #include <qrgui/controller/commands/abstractCommand.h>
 
-#include "createRemoveCommandImplementation.h"
+#include "createRemoveWorldItemImplementation.h"
 
 namespace twoDModel {
 namespace commands {
 
-/// Creates element in 2D model world.
-class CreateElementCommand : public qReal::commands::AbstractCommand
+class RemoveElementCommand : public qReal::commands::AbstractCommand
 {
 public:
-	/// Creates instance of command using XML \a data.
-	CreateElementCommand(model::Model &model, const QDomElement &data);
-
-	/// Creates instance of commands using information about already existing element with \a id in world model.
-	CreateElementCommand(model::Model &model, const QString &id);
+	RemoveElementCommand(model::Model &model, const QString &id);
 
 protected:
 	bool execute() override;
 	bool restoreState() override;
 
 private:
-	QDomElement serialize(const QString &element, const QPointF &position) const;
-
-	CreateRemoveCommandImplementation mImpl;
+	CreateRemoveWorldItemImplementation mImpl;
 };
 
 }

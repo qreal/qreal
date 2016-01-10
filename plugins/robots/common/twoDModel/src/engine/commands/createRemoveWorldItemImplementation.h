@@ -12,28 +12,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "createElementCommand.h"
+#pragma once
 
-using namespace twoDModel::commands;
+#include <QtXml/QDomElement>
 
-CreateElementCommand::CreateElementCommand(model::Model &model, const QDomElement &data)
-	: mImpl(model, data)
+#include "twoDModel/engine/model/model.h"
+
+namespace twoDModel {
+namespace commands {
+
+class CreateRemoveWorldItemImplementation
 {
+public:
+	CreateRemoveWorldItemImplementation(model::Model &model, const QDomElement &data);
+
+	void create();
+	void remove();
+
+	bool equals(const CreateRemoveWorldItemImplementation &other) const;
+
+private:
+	model::Model &mModel;
+	QDomElement mData;
+};
+
 }
-
-CreateElementCommand::CreateElementCommand(twoDModel::model::Model &model, const QString &id)
-	: CreateElementCommand(model, model.worldModel().serializeItem(id))
-{
-}
-
-bool CreateElementCommand::execute()
-{
-	mImpl.create();
-	return true;
-}
-
-bool CreateElementCommand::restoreState()
-{
-	mImpl.remove();
-	return true;
 }
