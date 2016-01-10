@@ -103,6 +103,9 @@ HEADERS += \
 	$$PWD/src/engine/commands/removeWorldItemCommand.h \
 	$$PWD/src/engine/commands/removeWorldItemsCommand.h \
 	$$PWD/src/engine/commands/createRemoveWorldItemImplementation.h \
+	$$PWD/src/engine/commands/createSensorCommand.h \
+	$$PWD/src/engine/commands/removeSensorCommand.h \
+	$$PWD/src/engine/commands/createRemoveSensorImplementation.h \
 	$$PWD/src/engine/commands/changePropertyCommand.h \
 	$$PWD/src/engine/commands/resizeCommand.h \
 	$$PWD/src/engine/commands/rotateCommand.h \
@@ -161,6 +164,9 @@ SOURCES += \
 	$$PWD/src/engine/commands/removeWorldItemCommand.cpp \
 	$$PWD/src/engine/commands/removeWorldItemsCommand.cpp \
 	$$PWD/src/engine/commands/createRemoveWorldItemImplementation.cpp \
+	$$PWD/src/engine/commands/createSensorCommand.cpp \
+	$$PWD/src/engine/commands/removeSensorCommand.cpp \
+	$$PWD/src/engine/commands/createRemoveSensorImplementation.cpp \
 	$$PWD/src/engine/commands/changePropertyCommand.cpp \
 	$$PWD/src/engine/commands/resizeCommand.cpp \
 	$$PWD/src/engine/commands/rotateCommand.cpp \

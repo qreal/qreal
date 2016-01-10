@@ -20,6 +20,6 @@ using namespace twoDModel::commands;
 RemoveWorldItemsCommand::RemoveWorldItemsCommand(model::Model &model, const QStringList &itemsToDelete)
 {
 	for (const QString &id : itemsToDelete) {
-		addPreAction(new RemoveElementCommand(model, id));
+		addPreAction(new RemoveWorldItemCommand(model, id));
 	}
 }

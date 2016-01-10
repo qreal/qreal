@@ -31,7 +31,7 @@ class TWO_D_MODEL_EXPORT SensorsConfiguration : public QObject, public kitBase::
 	Q_OBJECT
 
 public:
-	SensorsConfiguration(const QString &robotModelName);
+	explicit SensorsConfiguration(const QString &robotModelName);
 
 	void setPosition(const kitBase::robotModel::PortInfo &port, const QPointF &position);
 	QPointF position(const kitBase::robotModel::PortInfo &port) const;

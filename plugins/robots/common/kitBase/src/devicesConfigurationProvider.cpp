@@ -24,6 +24,8 @@ DevicesConfigurationProvider::DevicesConfigurationProvider(const QString &name)
 
 DevicesConfigurationProvider::~DevicesConfigurationProvider()
 {
+	disconnectDevicesConfigurationProvider();
+	mConnectedProviders.clear();
 }
 
 void DevicesConfigurationProvider::connectDevicesConfigurationProvider(
@@ -36,6 +38,15 @@ void DevicesConfigurationProvider::connectDevicesConfigurationProvider(
 	if (!mConnectedProviders.contains(otherProvider)) {
 		mConnectedProviders << otherProvider;
 		otherProvider->connectDevicesConfigurationProvider(this);
+	}
+
+	// Copying unknown devices configuration from connected provider.
+	for (const QString &robotModel : otherProvider->configuredModels()) {
+		for (const kitBase::robotModel::PortInfo &port : otherProvider->configuredPorts(robotModel)) {
+			if (!mCurrentConfiguration.contains(robotModel) || !mCurrentConfiguration[robotModel].contains(port)) {
+				mCurrentConfiguration[robotModel][port] = otherProvider->currentConfiguration(robotModel, port);
+			}
+		}
 	}
 }
 

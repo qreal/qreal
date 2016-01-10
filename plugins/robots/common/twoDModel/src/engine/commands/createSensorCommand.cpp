@@ -1,4 +1,4 @@
-/* Copyright 2015-2016 CyberTech Labs Ltd.
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,23 +12,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "removeWorldItemCommand.h"
+#include "createSensorCommand.h"
 
 using namespace twoDModel::commands;
 
-RemoveWorldItemCommand::RemoveWorldItemCommand(model::Model &model, const QString &id)
-	: mImpl(model, model.worldModel().serializeItem(id))
+CreateSensorCommand::CreateSensorCommand(model::SensorsConfiguration &configurator
+		, const QString &robotModel
+		, const kitBase::robotModel::PortInfo &port
+		, const kitBase::robotModel::DeviceInfo &device
+		, const QPointF &position
+		, const qreal direction)
+	: mImpl(configurator, robotModel, port, device, position, direction)
 {
 }
 
-bool RemoveWorldItemCommand::execute()
+bool CreateSensorCommand::execute()
 {
-	mImpl.remove();
+	mImpl.create();
 	return true;
 }
 
-bool RemoveWorldItemCommand::restoreState()
+bool CreateSensorCommand::restoreState()
 {
-	mImpl.create();
+	mImpl.remove();
 	return true;
 }

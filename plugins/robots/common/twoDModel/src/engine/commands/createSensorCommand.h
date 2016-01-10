@@ -1,4 +1,4 @@
-/* Copyright 2015-2016 CyberTech Labs Ltd.
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,30 @@
 
 #include <qrgui/controller/commands/abstractCommand.h>
 
-#include "createRemoveWorldItemImplementation.h"
+#include "createRemoveSensorImplementation.h"
 
 namespace twoDModel {
 namespace commands {
 
-class RemoveWorldItemCommand : public qReal::commands::AbstractCommand
+/// Creates element in 2D model world.
+class CreateSensorCommand : public qReal::commands::AbstractCommand
 {
 public:
-	RemoveWorldItemCommand(model::Model &model, const QString &id);
+	/// Creates and configures sensor for the \a robotModel on port \a port of the type \a device.
+	/// Sensor will be placed at \a position and oriented at \a direction degrees.
+	CreateSensorCommand(model::SensorsConfiguration &configurator
+						, const QString &robotModel
+						, const kitBase::robotModel::PortInfo &port
+						, const kitBase::robotModel::DeviceInfo &device
+						, const QPointF &position
+						, const qreal direction);
 
-private:
+protected:
 	bool execute() override;
 	bool restoreState() override;
 
-	CreateRemoveWorldItemImplementation mImpl;
+private:
+	CreateRemoveSensorImplementation mImpl;
 };
 
 }

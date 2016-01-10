@@ -35,6 +35,7 @@
 
 #include "src/engine/commands/createWorldItemCommand.h"
 #include "src/engine/commands/removeWorldItemsCommand.h"
+#include "src/engine/commands/removeSensorCommand.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -350,6 +351,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void TwoDModelScene::deleteSelectedItems()
 {
 	QStringList worldItemsToDelete;
+	QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> sensorsToDelete;
 	for (QGraphicsItem * const item : selectedItems()) {
 		SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
 		items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
@@ -359,8 +361,7 @@ void TwoDModelScene::deleteSelectedItems()
 			for (RobotItem * const robotItem : mRobots.values()) {
 				const kitBase::robotModel::PortInfo port = robotItem->sensors().key(sensor);
 				if (port.isValid()) {
-					deviceConfigurationChanged(robotItem->robotModel().info().robotId()
-							, port, kitBase::robotModel::DeviceInfo(), Reason::userAction);
+					sensorsToDelete << qMakePair(&robotItem->robotModel(), port);
 				}
 			}
 		} else if (wall && !mWorldReadOnly) {
@@ -374,8 +375,16 @@ void TwoDModelScene::deleteSelectedItems()
 		}
 	}
 
-	if (mController && !worldItemsToDelete.isEmpty()) {
-		mController->execute(new commands::RemoveWorldItemsCommand(mModel, worldItemsToDelete));
+	const bool shouldCreateCommand = !worldItemsToDelete.isEmpty() || !sensorsToDelete.isEmpty();
+	if (mController && shouldCreateCommand) {
+		auto command = new commands::RemoveWorldItemsCommand(mModel, worldItemsToDelete);
+		// Appending sensors deletion commands
+		for (const QPair<model::RobotModel *, kitBase::robotModel::PortInfo> &sensor : sensorsToDelete) {
+			command->addPostAction(new commands::RemoveSensorCommand(sensor.first->configuration()
+					, sensor.first->info().robotId(), sensor.second));
+		}
+
+		mController->execute(command);
 	}
 }
 

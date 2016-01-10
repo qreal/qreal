@@ -31,12 +31,9 @@ public:
 	/// Creates instance of commands using information about already existing element with \a id in world model.
 	CreateWorldItemCommand(model::Model &model, const QString &id);
 
-protected:
+private:
 	bool execute() override;
 	bool restoreState() override;
-
-private:
-	QDomElement serialize(const QString &element, const QPointF &position) const;
 
 	CreateRemoveWorldItemImplementation mImpl;
 };

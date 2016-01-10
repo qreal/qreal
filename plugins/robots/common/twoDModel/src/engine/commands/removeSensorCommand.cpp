@@ -1,4 +1,4 @@
-/* Copyright 2015-2016 CyberTech Labs Ltd.
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,26 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "removeSensorCommand.h"
 
-#include <qrgui/controller/commands/abstractCommand.h>
+using namespace twoDModel::commands;
 
-#include "createRemoveWorldItemImplementation.h"
-
-namespace twoDModel {
-namespace commands {
-
-class RemoveWorldItemCommand : public qReal::commands::AbstractCommand
+RemoveSensorCommand::RemoveSensorCommand(model::SensorsConfiguration &configurator
+		, const QString &robotModel
+		, const kitBase::robotModel::PortInfo &port)
+	: mImpl(configurator, robotModel, port, kitBase::robotModel::DeviceInfo(), QPointF(), 0)
 {
-public:
-	RemoveWorldItemCommand(model::Model &model, const QString &id);
-
-private:
-	bool execute() override;
-	bool restoreState() override;
-
-	CreateRemoveWorldItemImplementation mImpl;
-};
-
 }
+
+bool RemoveSensorCommand::execute()
+{
+	mImpl.remove();
+	return true;
+}
+
+bool RemoveSensorCommand::restoreState()
+{
+	mImpl.create();
+	return true;
 }

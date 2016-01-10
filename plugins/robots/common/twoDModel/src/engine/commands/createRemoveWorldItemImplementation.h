@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2015-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,8 +28,6 @@ public:
 
 	void create();
 	void remove();
-
-	bool equals(const CreateRemoveWorldItemImplementation &other) const;
 
 private:
 	model::Model &mModel;
