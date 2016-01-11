@@ -136,6 +136,11 @@ const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
 	return mColorFields;
 }
 
+const QMap<QString, items::RegionItem *> &WorldModel::regions() const
+{
+	return mRegions;
+}
+
 const QList<QGraphicsLineItem *> &WorldModel::trace() const
 {
 	return mRobotTrace;
@@ -295,27 +300,7 @@ void WorldModel::deserialize(const QDomElement &element)
 			; !regionNode.isNull()
 			; regionNode = regionNode.nextSiblingElement("region"))
 	{
-		const QString type = regionNode.attribute("type", "ellipse").toLower();
-		items::RegionItem *item = nullptr;
-		if (type == "ellipse") {
-			item = new items::EllipseRegion;
-		} else if (type == "rectangle") {
-			item = new items::RectangularRegion;
-		} else if (type == "bound") {
-			const QString id = regionNode.attribute("boundItem");
-			const QGraphicsObject *boundItem = findId(id);
-			if (boundItem) {
-				item = new items::BoundRegion(*boundItem, id);
-				connect(item, &QObject::destroyed, this, [this, item]() { mRegions.remove(item->id()); });
-				// Item itself will be deleted with its parent, see BoundRegion constructor.
-			} /// @todo: else report error
-		}
-
-		if (item) {
-			item->deserialize(regionNode);
-			mRegions[item->id()] = item;
-			emit regionItemAdded(item);
-		}
+		createRegion(regionNode);
 	}
 }
 
@@ -354,6 +339,8 @@ void WorldModel::createElement(const QDomElement &element)
 		createStylus(element);
 	} else if (element.tagName() == "wall") {
 		createWall(element);
+	} else if (element.tagName() == "region") {
+		createRegion(element);
 	}
 }
 
@@ -397,6 +384,31 @@ void WorldModel::createStylus(const QDomElement &element)
 	items::StylusItem *stylusItem = new items::StylusItem(0, 0);
 	stylusItem->deserialize(element);
 	addColorField(stylusItem);
+}
+
+void WorldModel::createRegion(const QDomElement &element)
+{
+	const QString type = element.attribute("type", "ellipse").toLower();
+	items::RegionItem *item = nullptr;
+	if (type == "ellipse") {
+		item = new items::EllipseRegion;
+	} else if (type == "rectangle") {
+		item = new items::RectangularRegion;
+	} else if (type == "bound") {
+		const QString id = element.attribute("boundItem");
+		const QGraphicsObject *boundItem = findId(id);
+		if (boundItem) {
+			item = new items::BoundRegion(*boundItem, id);
+			connect(item, &QObject::destroyed, this, [this, item]() { mRegions.remove(item->id()); });
+			// Item itself will be deleted with its parent, see BoundRegion constructor.
+		} /// @todo: else report error
+	}
+
+	if (item) {
+		item->deserialize(element);
+		mRegions[item->id()] = item;
+		emit regionItemAdded(item);
+	}
 }
 
 void WorldModel::removeItem(const QString &id)

@@ -163,6 +163,8 @@ private:
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
 	void deleteSelectedItems();
+	void deleteWithCommand(const QStringList &worldItems
+			, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors);
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);

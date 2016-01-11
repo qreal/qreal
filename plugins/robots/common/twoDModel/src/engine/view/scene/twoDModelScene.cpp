@@ -375,11 +375,17 @@ void TwoDModelScene::deleteSelectedItems()
 		}
 	}
 
-	const bool shouldCreateCommand = !worldItemsToDelete.isEmpty() || !sensorsToDelete.isEmpty();
+	deleteWithCommand(worldItemsToDelete, sensorsToDelete);
+}
+
+void TwoDModelScene::deleteWithCommand(const QStringList &worldItems
+		, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors)
+{
+	const bool shouldCreateCommand = !worldItems.isEmpty() || !sensors.isEmpty();
 	if (mController && shouldCreateCommand) {
-		auto command = new commands::RemoveWorldItemsCommand(mModel, worldItemsToDelete);
+		auto command = new commands::RemoveWorldItemsCommand(mModel, worldItems);
 		// Appending sensors deletion commands
-		for (const QPair<model::RobotModel *, kitBase::robotModel::PortInfo> &sensor : sensorsToDelete) {
+		for (const QPair<model::RobotModel *, kitBase::robotModel::PortInfo> &sensor : sensors) {
 			command->addPostAction(new commands::RemoveSensorCommand(sensor.first->configuration()
 					, sensor.first->info().robotId(), sensor.second));
 		}
@@ -477,16 +483,50 @@ void TwoDModelScene::setNoneStatus()
 
 void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 {
-	mModel.worldModel().clear();
+	if (reason == Reason::userAction) {
+		// User pressed clear button, this action must be undone when required, so executing it with command.
 
-	for (model::RobotModel *robotModel : mRobots.keys()) {
-		robotModel->clear();
-		if (removeRobot) {
-			for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
-				deviceConfigurationChanged(robotModel->info().robotId()
-						, port, kitBase::robotModel::DeviceInfo(), reason);
+		QStringList worldItemsToDelete;
+		for (const items::WallItem *wall : mModel.worldModel().walls()) {
+			worldItemsToDelete << wall->id();
+		}
+		for (const items::ColorFieldItem *colorField : mModel.worldModel().colorFields()) {
+			worldItemsToDelete << colorField->id();
+		}
+		for (const items::RegionItem *region : mModel.worldModel().regions()) {
+			worldItemsToDelete << region->id();
+		}
+
+		QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> sensorsToDelete;
+		for (model::RobotModel *robotModel : mRobots.keys()) {
+			/// @todo: Move robot command here.
+			if (removeRobot) {
+				for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
+					sensorsToDelete << qMakePair(robotModel, port);
+				}
 			}
 		}
+
+		deleteWithCommand(worldItemsToDelete, sensorsToDelete);
+
+		// Clear trace action mustn`t be undone though
+		mModel.worldModel().clearRobotTrace();
+
+	} else {
+		// The model is being reloaded, we can make it without undo-redo, so a bit faster
+
+		mModel.worldModel().clear();
+
+		for (model::RobotModel *robotModel : mRobots.keys()) {
+			robotModel->clear();
+			if (removeRobot) {
+				for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
+					deviceConfigurationChanged(robotModel->info().robotId()
+							, port, kitBase::robotModel::DeviceInfo(), reason);
+				}
+			}
+		}
+
 	}
 }
 

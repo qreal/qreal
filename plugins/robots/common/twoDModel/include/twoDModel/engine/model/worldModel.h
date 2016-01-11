@@ -61,6 +61,9 @@ public:
 	/// Returns a set of color field items in the world model. Result is mapping of field ids to fields themselves.
 	const QMap<QString, items::ColorFieldItem *> &colorFields() const;
 
+	/// Returns a set of region items in the world model. Result is mapping of field ids to regions themselves.
+	const QMap<QString, items::RegionItem *> &regions() const;
+
 	/// Returns a list of trace items on the floor.
 	const QList<QGraphicsLineItem *> &trace() const;
 
@@ -120,6 +123,9 @@ public:
 	/// Creates stylus colored item described by \a element in the world model.
 	void createStylus(const QDomElement &element);
 
+	/// Creates region item described by \a element in the world model.
+	void createRegion(const QDomElement &element);
+
 	/// Removes item with the \a id from the world model.
 	void removeItem(const QString &id);
 
@@ -150,8 +156,8 @@ private:
 
 	QMap<QString, items::WallItem *> mWalls;
 	QMap<QString, items::ColorFieldItem *> mColorFields;
-	QList<QGraphicsLineItem *> mRobotTrace;
 	QMap<QString, items::RegionItem *> mRegions;
+	QList<QGraphicsLineItem *> mRobotTrace;
 	QScopedPointer<QDomDocument> mXmlFactory;
 };
 
