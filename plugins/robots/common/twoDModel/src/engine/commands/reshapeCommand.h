@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <QtCore/QMap>
 #include <QtXml/QDomDocument>
 
 #include <qrgui/controller/commands/abstractCommand.h>
@@ -36,7 +37,7 @@ namespace commands {
 class ReshapeCommand : public qReal::commands::AbstractCommand, public qReal::commands::TrackingEntity
 {
 public:
-	ReshapeCommand(graphicsUtils::AbstractScene &scene, const model::Model &model, const QString &id);
+	ReshapeCommand(graphicsUtils::AbstractScene &scene, const model::Model &model, const QStringList &ids);
 
 	void startTracking() override;
 	void stopTracking() override;
@@ -49,17 +50,15 @@ protected:
 	bool restoreState();
 
 private:
-	bool findItem();
-	QDomElement snapshotElement();
-	void setConfiguration(const QDomElement &configuration);
+	void takeSnapshot(QMap<QString, QDomElement> &target);
+	void setConfiguration(const QMap<QString, QDomElement> &configuration);
 
 	graphicsUtils::AbstractScene &mScene;
 	const model::Model &mModel;
-	const QString mId;
-	graphicsUtils::AbstractItem *mItem = nullptr;
+	const QStringList mIds;
 	QDomDocument mXmlFactory;
-	QDomElement mOldConfiguration;
-	QDomElement mNewConfiguration;
+	QMap<QString, QDomElement> mOldConfiguration;
+	QMap<QString, QDomElement> mNewConfiguration;
 };
 
 }

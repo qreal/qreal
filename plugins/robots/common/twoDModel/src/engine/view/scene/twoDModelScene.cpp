@@ -518,7 +518,7 @@ void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 		QList<qReal::commands::AbstractCommand *> additionalCommands;
 		for (model::RobotModel *robotModel : mRobots.keys()) {
 			commands::ReshapeCommand * const reshapeCommand = new commands::ReshapeCommand(*this, mModel
-					, mRobots[robotModel]->id());
+					, {mRobots[robotModel]->id()});
 			reshapeCommand->startTracking();
 			robotModel->clear();
 			reshapeCommand->stopTracking();
@@ -641,7 +641,14 @@ void TwoDModelScene::subscribeItem(AbstractItem *item)
 {
 	connect(item, &AbstractItem::mouseInteractionStarted, this, [=]() {
 		if (mDrawingAction == none) {
-			mCurrentReshapeCommand = new commands::ReshapeCommand(*this, mModel, item->id());
+			QStringList selectedIds;
+			for (const QGraphicsItem *item : selectedItems()) {
+				if (const AbstractItem *itemWithId = dynamic_cast<const AbstractItem *>(item)) {
+					selectedIds << itemWithId->id();
+				}
+			}
+
+			mCurrentReshapeCommand = new commands::ReshapeCommand(*this, mModel, selectedIds);
 			mCurrentReshapeCommand->startTracking();
 		}
 	});

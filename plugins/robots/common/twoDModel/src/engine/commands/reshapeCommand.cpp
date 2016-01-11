@@ -21,10 +21,10 @@
 
 using namespace twoDModel::commands;
 
-ReshapeCommand::ReshapeCommand(graphicsUtils::AbstractScene &scene, const model::Model &model, const QString &id)
+ReshapeCommand::ReshapeCommand(graphicsUtils::AbstractScene &scene, const model::Model &model, const QStringList &ids)
 	: mScene(scene)
 	, mModel(model)
-	, mId(id)
+	, mIds(ids)
 {
 }
 
@@ -48,39 +48,38 @@ bool ReshapeCommand::restoreState()
 	return true;
 }
 
-bool ReshapeCommand::findItem()
+void ReshapeCommand::takeSnapshot(QMap<QString, QDomElement> &target)
 {
-	return (mItem = mScene.findItem(mId)) != nullptr;
+	target.clear();
+	for (const QString &id : mIds) {
+		if (const graphicsUtils::AbstractItem *item = mScene.findItem(id)) {
+			QDomElement temporalParent = mXmlFactory.createElement("temporalParent");
+			target[id] = item->serialize(temporalParent);
+		}
+	}
 }
 
-QDomElement ReshapeCommand::snapshotElement()
+void ReshapeCommand::setConfiguration(const QMap<QString, QDomElement> &configuration)
 {
-	if (!findItem()) {
-		return QDomElement();
+	for (const QString &id : mIds) {
+		if (graphicsUtils::AbstractItem * const item = mScene.findItem(id)) {
+			item->deserialize(configuration[id]);
+		}
 	}
 
-	QDomElement temporalParent = mXmlFactory.createElement("temporalParent");
-	return mItem->serialize(temporalParent);
-}
-
-void ReshapeCommand::setConfiguration(const QDomElement &configuration)
-{
-	if (findItem()) {
-		mItem->deserialize(configuration);
-		mScene.update();
-	}
+	mScene.update();
 }
 
 void ReshapeCommand::startTracking()
 {
 	TrackingEntity::startTracking();
-	mOldConfiguration = snapshotElement();
+	takeSnapshot(mOldConfiguration);
 }
 
 void ReshapeCommand::stopTracking()
 {
 	TrackingEntity::stopTracking();
-	mNewConfiguration = snapshotElement();
+	takeSnapshot(mNewConfiguration);
 }
 
 bool ReshapeCommand::modificationsHappened() const
