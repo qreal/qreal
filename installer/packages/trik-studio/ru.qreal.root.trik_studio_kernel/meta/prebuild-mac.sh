@@ -27,6 +27,8 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-utils.1.0.0.dylib"
 
 # Cleaning up prebuild-common.sh results...
 rm -rf $PWD/../data/plugins/
+rm -rf "$BUNDLE_CONTENTS/Resources/help/"
+rm -rf "$BUNDLE_CONTENTS/Resources/images/"
 mv $PWD/../data/help "$BUNDLE_CONTENTS/Resources/"
 mv $PWD/../data/images "$BUNDLE_CONTENTS/Resources/"
 mv $PWD/../data/splashscreen.png "$BUNDLE_CONTENTS/MacOS/"

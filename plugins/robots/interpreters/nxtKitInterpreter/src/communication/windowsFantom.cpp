@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <qrkernel/logging.h>
 #include <utils/robotCommunication/robotCommunicationException.h>
+
 #include "windowsFantom.h"
 #include "fantomMethods.h"
 #include "fantom.h"
@@ -23,4 +25,7 @@ WindowsFantom::WindowsFantom()
 {
 	mFantomLibrary.setFileName("fantom");
 	mFantomLibrary.load();
+	if (!mFantomLibrary.errorString().isEmpty()) {
+		QLOG_ERROR() << "Fantom resolving error:" << mFantomLibrary.errorString().toLocal8Bit();
+	}
 }

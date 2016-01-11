@@ -19,8 +19,8 @@ using namespace qrRepo;
 using namespace qrRepo::details;
 using namespace qReal;
 
-RepoApi::RepoApi(const QString &workingDirectory, bool ignoreAutosave)
-	: mRepository(new Repository(workingDirectory))
+RepoApi::RepoApi(const QString &workingFile, bool ignoreAutosave)
+	: mRepository(new Repository(workingFile))
 	, mIgnoreAutosave(ignoreAutosave)
 {
 }

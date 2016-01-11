@@ -604,7 +604,7 @@ void PositionCache::MeasureWidths(Surface *surface, ViewStyle &vstyle, unsigned 
 		// long comments with only a single comment.
 
 		// Two way associative: try two probe positions.
-		int hashValue = PositionCacheEntry::Hash(styleNumber, s, len);
+		qint64 hashValue = PositionCacheEntry::Hash(styleNumber, s, len);
 		probe = static_cast<int>(hashValue % size);
 		if (pces[probe].Retrieve(styleNumber, s, len, positions)) {
 			return;

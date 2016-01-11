@@ -17,6 +17,7 @@
 #include <qrgui/models/models.h>
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 PasteNodeCommand::PasteNodeCommand(EditorViewScene *scene
 		, const NodeData &data

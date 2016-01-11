@@ -162,6 +162,12 @@ void ItemPopup::checkSelection()
 	move(parentWidget()->mapFromGlobal(globalPoint));
 }
 
+void ItemPopup::mousePressEvent(QMouseEvent *event)
+{
+	Q_UNUSED(event)
+	hide();
+}
+
 bool ItemPopup::hasProperty(const QString &property) const
 {
 	for (QGraphicsItem * const item : mCurrentItems) {

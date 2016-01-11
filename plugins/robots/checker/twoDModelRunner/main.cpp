@@ -60,7 +60,9 @@ void setDefaultLocale()
 void initLogging()
 {
 	const QDir logsDir(qReal::PlatformInfo::invariantSettingsPath("pathToLogs"));
-	if (logsDir.mkpath(logsDir.absolutePath())) {
+	if (logsDir.mkpath(logsDir.absolutePath())
+		&& QFileInfo(logsDir.filePath("2d-model.log")).isWritable())
+	{
 		qReal::Logger::addLogTarget(logsDir.filePath("2d-model.log"), maxLogSize, 2, QsLogging::DebugLevel);
 	}
 }
@@ -110,7 +112,9 @@ int main(int argc, char *argv[])
 	const QString report = parser.isSet(reportOption) ? parser.value(reportOption) : QString();
 	const QString trajectory = parser.isSet(trajectoryOption) ? parser.value(trajectoryOption) : QString();
 	twoDModel::Runner runner(report, trajectory);
-	runner.interpret(qrsFile, backgroundMode);
+	if (!runner.interpret(qrsFile, backgroundMode)) {
+		return 2;
+	}
 
 	const int exitCode = app.exec();
 	QLOG_INFO() << "------------------- APPLICATION FINISHED -------------------";

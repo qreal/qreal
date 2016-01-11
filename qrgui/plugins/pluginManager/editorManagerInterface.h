@@ -37,7 +37,11 @@
 
 namespace qReal {
 
+namespace gui {
+namespace editor {
 class Element;
+}
+}
 
 class EditorManagerInterface
 {

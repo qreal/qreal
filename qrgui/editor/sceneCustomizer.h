@@ -18,6 +18,8 @@
 #include "qrgui/editor/sceneCustomizationInterface.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// Provides some information for the scene from plugins.
 /// @todo: All entities in this class must be specified in the medamodel!
@@ -52,4 +54,6 @@ private:
 	QString mCollapseExplosionActionText;
 };
 
+}
+}
 }

@@ -71,6 +71,8 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mNullDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mCurrentSpeed(defaultSpeedFactorIndex)
+	, mNoneCursorType(noDrag)
+	, mCursorType(noDrag)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -157,6 +159,7 @@ void TwoDModelWidget::initWidget()
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, QBrush(pen.color(), Qt::NoBrush));
 	});
+	connect(mColorFieldItemPopup, &ColorItemPopup::propertyChanged, this, &TwoDModelWidget::saveToRepo);
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;

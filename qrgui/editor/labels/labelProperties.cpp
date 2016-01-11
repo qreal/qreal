@@ -15,6 +15,7 @@
 #include "labelProperties.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 LabelProperties::LabelProperties()
 	: mIndex(0)

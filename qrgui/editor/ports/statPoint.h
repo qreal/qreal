@@ -16,6 +16,10 @@
 
 #include "plugins/editorPluginInterface/portHelpers.h"
 
+namespace qReal {
+namespace gui {
+namespace editor {
+
 /** @brief point port description */
 class StatPoint : public PortInterface
 {
@@ -38,3 +42,6 @@ private:
 	int mInitHeight;
 };
 
+}
+}
+}

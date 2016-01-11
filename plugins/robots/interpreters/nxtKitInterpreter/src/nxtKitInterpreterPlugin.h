@@ -31,7 +31,7 @@ class NxtKitInterpreterPlugin : public QObject, public kitBase::KitPluginInterfa
 {
 	Q_OBJECT
 	Q_INTERFACES(kitBase::KitPluginInterface)
-	Q_PLUGIN_METADATA(IID "nxtKitInterpreter.NxtKitInterpreterPlugin")
+	Q_PLUGIN_METADATA(IID "nxt.NxtKitInterpreterPlugin")
 
 public:
 	NxtKitInterpreterPlugin();

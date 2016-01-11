@@ -74,6 +74,10 @@ protected slots:
 	/// Default implementation clears items memorized last time.
 	virtual void detach();
 
+signals:
+	/// Emitted when user modifies some property or a group of properties via this popup window.
+	void somethingChanged();
+
 private slots:
 	void onMousePressedScene();
 	void onMouseReleasedScene();
@@ -81,6 +85,8 @@ private slots:
 	void checkSelection();
 
 protected:
+	void mousePressEvent(QMouseEvent *event) override;
+
 	/// Searches for the given property value that is met most oftenly among items memorized in last attachTo() call.
 	/// Items that are not QObjects are ignored. Obtaining property values is performed with Qt reflection.
 	QVariant dominantPropertyValue(const QString &property) const;
