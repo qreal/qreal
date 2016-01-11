@@ -221,6 +221,7 @@ private:
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;
 
 	model::Model &mModel;
+	qReal::ControllerInterface *mController = nullptr;
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 	engine::TwoDModelDisplayWidget *mNullDisplay = nullptr;

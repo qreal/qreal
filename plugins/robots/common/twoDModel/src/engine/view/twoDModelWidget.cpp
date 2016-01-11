@@ -23,6 +23,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrgui/controller/controllerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
@@ -66,6 +67,7 @@ using namespace robotParts;
 
 const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
 const int defaultSpeedFactorIndex = 3;
+const QString twoDModelUndoStackName = "2D-model-undo-stack";
 
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
@@ -589,6 +591,12 @@ QDomDocument TwoDModelWidget::generateXml() const
 
 void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 {
+	if (mController) {
+		// Clearing 2D model undo stack...
+		mController->moduleClosed(twoDModelUndoStackName);
+		mController->moduleOpened(twoDModelUndoStackName);
+	}
+
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 	updateWheelComboBoxes();
@@ -602,6 +610,7 @@ Model &TwoDModelWidget::model() const
 
 void TwoDModelWidget::setController(ControllerInterface &controller)
 {
+	mController = &controller;
 	mScene->setController(controller);
 }
 
