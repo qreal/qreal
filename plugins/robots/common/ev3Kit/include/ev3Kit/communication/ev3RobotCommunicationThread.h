@@ -33,7 +33,7 @@ public slots:
 	virtual QString uploadFile(const QString &sourceFile, const QString &targetDir);
 
 	/// Starts program execution on EV3 brick. Does not upload the program itself.
-	virtual bool runProgram(const QString &pathOnRobot = 0);
+	virtual bool runProgram(const QString &pathOnRobot = QString());
 
 	/// Stops currently executing program in EV3 brick.
 	virtual void stopProgram();

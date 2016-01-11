@@ -22,15 +22,15 @@
 #include "ev3Kit/communication/ev3DirectCommand.h"
 #include "ev3Kit/communication/commandConstants.h"
 
-#define EV3_VID 0x0694
-#define EV3_PID 0x0005
-#define EV3_USB_TIMEOUT 2000
-#define EV3_INTERFACE_NUMBER 0
-#define EV3_CONFIGURATION_NB 1
-#define EV3_EP_OUT 0x01
-#define EV3_EP_IN 0x81
-#define EV3_PACKET_SIZE 0x400
-#define MAX_DEBUG_LEVEL 3
+static const int EV3_VID = 0x0694;
+static const int EV3_PID = 0x0005;
+static const int EV3_USB_TIMEOUT = 2000;
+static const int EV3_INTERFACE_NUMBER = 0;
+static const int EV3_CONFIGURATION_NB = 1;
+static const int EV3_EP_OUT = 0x01;
+static const int EV3_EP_IN = 0x81;
+static const int EV3_PACKET_SIZE = 0x400;
+static const int MAX_DEBUG_LEVEL = 3;
 
 using namespace ev3::communication;
 

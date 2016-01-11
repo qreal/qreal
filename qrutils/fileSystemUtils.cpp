@@ -63,7 +63,7 @@ bool FileSystemUtils::setCreationDateToNow(const QString &path)
 			? (LPCTSTR)path.toLocal8Bit().constData()
 			: (LPCTSTR)path.utf16();
 	const HANDLE handle = CreateFile(fileName, FILE_WRITE_ATTRIBUTES
-			, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 	if (handle == INVALID_HANDLE_VALUE) {
 		qWarning() << "FileSystemUtils::setCreationDateToNow: Could not open" << path << "for writing";
 		return false;

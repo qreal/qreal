@@ -19,16 +19,16 @@
 #include "ev3Kit/communication/commandConstants.h"
 #include "ev3Kit/communication/ev3DirectCommand.h"
 
-#define     SYSTEM_COMMAND_REPLY              0x01    //  System command, reply required
-#define     SYSTEM_COMMAND_NO_REPLY           0x81    //  System command, reply not required
-#define     BEGIN_DOWNLOAD                    0x92    //  Begin file down load
-#define     CONTINUE_DOWNLOAD                 0x93    //  Continue file down load
-#define     SYSTEM_REPLY                      0x03    //  System command reply
-#define     SYSTEM_REPLY_ERROR                0x05    //  System command reply error
-#define     BEGIN_DOWNLOAD_RESPONSE_SIZE      8
-#define     CONTINUE_DOWNLOAD_RESPONSE_SIZE   8
-#define     SUCCESS                           0x00
-#define     END_OF_FILE                       0x08
+static const int SYSTEM_COMMAND_REPLY =             0x01;    //  System command, reply required
+static const int SYSTEM_COMMAND_NO_REPLY =          0x81;    //  System command, reply not required
+static const int BEGIN_DOWNLOAD =                   0x92;    //  Begin file down load
+static const int CONTINUE_DOWNLOAD =                0x93;    //  Continue file down load
+static const int SYSTEM_REPLY =                     0x03;    //  System command reply
+static const int SYSTEM_REPLY_ERROR =               0x05;    //  System command reply error
+static const int BEGIN_DOWNLOAD_RESPONSE_SIZE =     8;
+static const int CONTINUE_DOWNLOAD_RESPONSE_SIZE =  8;
+static const int SUCCESS =                          0x00;
+static const int END_OF_FILE =                      0x08;
 
 using namespace ev3::communication;
 
