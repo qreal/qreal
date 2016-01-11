@@ -42,6 +42,7 @@
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/commands/changePropertyCommand.h"
 
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/model.h"
@@ -154,7 +155,7 @@ void TwoDModelWidget::initWidget()
 
 	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
-		mScene->setPenBrushItems(pen, Qt::NoBrush);
+		mScene->setPenBrushItems(pen, QBrush(pen.color(), Qt::NoBrush));
 	});
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
@@ -569,6 +570,15 @@ void TwoDModelWidget::setController(ControllerInterface &controller)
 {
 	mController = &controller;
 	mScene->setController(controller);
+
+	auto setItemsProperty = [=](const QStringList &items, const QString &property, const QVariant &value) {
+		if (mController) {
+			mController->execute(new commands::ChangePropertyCommand(*mScene, mModel, items, property, value));
+		}
+	};
+
+	connect(mRobotItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
+	connect(mColorFieldItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
 }
 
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
