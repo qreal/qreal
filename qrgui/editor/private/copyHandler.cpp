@@ -19,6 +19,7 @@
 
 using namespace qReal;
 using namespace models;
+using namespace qReal::gui::editor;
 
 CopyHandler::CopyHandler(NodeElement &copyingElement, GraphicalModelAssistApi &graphicalAssistApi)
 	: mNode(copyingElement), mGraphicalAssistApi(graphicalAssistApi)
@@ -29,8 +30,8 @@ NodeElement *CopyHandler::clone(bool toCursorPos, bool searchForParents)
 {
 	EditorViewScene *evscene = dynamic_cast<EditorViewScene *>(mNode.scene());
 
-	qReal::Id typeId = mNode.id().type();
-	qReal::Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
+	Id typeId = mNode.id().type();
+	Id resultId = evscene->createElement(typeId.toString(), QPointF(), searchForParents);
 
 	NodeElement *result = dynamic_cast<NodeElement *>(evscene->getElem(resultId));
 
@@ -52,7 +53,7 @@ NodeElement *CopyHandler::clone(bool toCursorPos, bool searchForParents)
 
 void CopyHandler::copyChildren(const NodeElement &destination, const NodeElement &source) const
 {
-	foreach (QGraphicsItem * const child, source.childItems()) {
+	for (QGraphicsItem * const child : source.childItems()) {
 		NodeElement * const element = dynamic_cast<NodeElement *>(child);
 		if (!element) {
 			continue;
