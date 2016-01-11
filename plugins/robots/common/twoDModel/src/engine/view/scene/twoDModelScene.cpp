@@ -22,9 +22,17 @@
 #include <qrutils/deleteLaterHelper.h>
 #include <qrgui/controller/controllerInterface.h>
 
+#include <kitBase/robotModel/robotParts/touchSensor.h>
+#include <kitBase/robotModel/robotParts/colorSensor.h>
+#include <kitBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
+
 #include "robotItem.h"
 
 #include "twoDModel/engine/model/model.h"
+#include "src/engine/view/scene/sensorItem.h"
+#include "src/engine/view/scene/sonarSensorItem.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
@@ -36,6 +44,7 @@
 #include "src/engine/commands/createWorldItemCommand.h"
 #include "src/engine/commands/removeWorldItemsCommand.h"
 #include "src/engine/commands/removeSensorCommand.h"
+#include "src/engine/commands/reshapeCommand.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -128,6 +137,7 @@ void TwoDModelScene::onRobotAdd(model::RobotModel *robotModel)
 
 	addItem(robotItem);
 	addItem(robotItem->robotModel().startPositionMarker());
+	subscribeItem(static_cast<AbstractItem *>(robotModel->startPositionMarker()));
 
 	mRobots.insert(robotModel, robotItem);
 
@@ -149,6 +159,7 @@ void TwoDModelScene::onRobotRemove(model::RobotModel *robotModel)
 void TwoDModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
+	subscribeItem(wall);
 	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
 	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
@@ -157,6 +168,7 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
 	addItem(item);
+	subscribeItem(item);
 	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	item->setEditable(!mWorldReadOnly);
 }
@@ -375,11 +387,12 @@ void TwoDModelScene::deleteSelectedItems()
 		}
 	}
 
-	deleteWithCommand(worldItemsToDelete, sensorsToDelete);
+	deleteWithCommand(worldItemsToDelete, sensorsToDelete, {});
 }
 
 void TwoDModelScene::deleteWithCommand(const QStringList &worldItems
-		, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors)
+		, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors
+		, const QList<qReal::commands::AbstractCommand *> &additionalCommands)
 {
 	const bool shouldCreateCommand = !worldItems.isEmpty() || !sensors.isEmpty();
 	if (mController && shouldCreateCommand) {
@@ -388,6 +401,10 @@ void TwoDModelScene::deleteWithCommand(const QStringList &worldItems
 		for (const QPair<model::RobotModel *, kitBase::robotModel::PortInfo> &sensor : sensors) {
 			command->addPostAction(new commands::RemoveSensorCommand(sensor.first->configuration()
 					, sensor.first->info().robotId(), sensor.second));
+		}
+
+		for (qReal::commands::AbstractCommand * const additionalCommand : additionalCommands) {
+			command->addPostAction(additionalCommand);
 		}
 
 		mController->execute(command);
@@ -498,8 +515,14 @@ void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 		}
 
 		QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> sensorsToDelete;
+		QList<qReal::commands::AbstractCommand *> additionalCommands;
 		for (model::RobotModel *robotModel : mRobots.keys()) {
-			/// @todo: Move robot command here.
+			commands::ReshapeCommand * const reshapeCommand = new commands::ReshapeCommand(*this, mModel
+					, mRobots[robotModel]->id());
+			reshapeCommand->startTracking();
+			robotModel->clear();
+			reshapeCommand->stopTracking();
+			additionalCommands << reshapeCommand;
 			if (removeRobot) {
 				for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
 					sensorsToDelete << qMakePair(robotModel, port);
@@ -507,7 +530,7 @@ void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 			}
 		}
 
-		deleteWithCommand(worldItemsToDelete, sensorsToDelete);
+		deleteWithCommand(worldItemsToDelete, sensorsToDelete, additionalCommands);
 
 		// Clear trace action mustn`t be undone though
 		mModel.worldModel().clearRobotTrace();
@@ -614,6 +637,27 @@ void TwoDModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void TwoDModelScene::subscribeItem(AbstractItem *item)
+{
+	connect(item, &AbstractItem::mouseInteractionStarted, this, [=]() {
+		if (mDrawingAction == none) {
+			mCurrentReshapeCommand = new commands::ReshapeCommand(*this, mModel, item->id());
+			mCurrentReshapeCommand->startTracking();
+		}
+	});
+
+	connect(item, &AbstractItem::mouseInteractionStopped, this, [=]() {
+		if (mDrawingAction == none) {
+			mCurrentReshapeCommand->stopTracking();
+			if (mController) {
+				mController->execute(mCurrentReshapeCommand);
+			}
+
+			mCurrentReshapeCommand = nullptr;
+		}
+	});
+}
+
 void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos)
 {
 	bool isNeedStop = false;
@@ -668,4 +712,41 @@ void TwoDModelScene::centerOnRobot(RobotItem *selectedItem)
 			view->centerOn(robotItem);
 		}
 	}
+}
+
+void TwoDModelScene::reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port)
+{
+	robotItem->removeSensor(port);
+	model::RobotModel &robotModel = robotItem->robotModel();
+
+	const kitBase::robotModel::DeviceInfo &device = robotModel.configuration().type(port);
+	if (device.isNull() || (
+			/// @todo: Add supported by 2D model sensors here
+			!device.isA<kitBase::robotModel::robotParts::TouchSensor>()
+			&& !device.isA<kitBase::robotModel::robotParts::ColorSensor>()
+			&& !device.isA<kitBase::robotModel::robotParts::LightSensor>()
+			&& !device.isA<kitBase::robotModel::robotParts::RangeSensor>()
+			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
+			&& !device.isA<kitBase::robotModel::robotParts::VectorSensor>()
+			))
+	{
+		return;
+	}
+
+	SensorItem *sensor = device.isA<kitBase::robotModel::robotParts::RangeSensor>()
+			? new SonarSensorItem(mModel.worldModel(), robotModel.configuration()
+					, port
+					, robotModel.info().sensorImagePath(device)
+					, robotModel.info().sensorImageRect(device)
+					)
+			: new SensorItem(robotModel.configuration()
+					, port
+					, robotModel.info().sensorImagePath(device)
+					, robotModel.info().sensorImageRect(device)
+					);
+
+	sensor->setEditable(!mSensorsReadOnly);
+	subscribeItem(sensor);
+
+	robotItem->addSensor(port, sensor);
 }

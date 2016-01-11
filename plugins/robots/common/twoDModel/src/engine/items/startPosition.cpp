@@ -57,7 +57,14 @@ QDomElement StartPosition::serialize(QDomElement &parent) const
 	return startPositionElement;
 }
 
-void StartPosition::deserialize(const QDomElement &robotElement)
+void StartPosition::deserialize(const QDomElement &startPositionElement)
+{
+	setX(startPositionElement.attribute("x").toDouble());
+	setY(startPositionElement.attribute("y").toDouble());
+	setRotation(startPositionElement.attribute("direction").toDouble());
+}
+
+void StartPosition::deserializeCompatibly(const QDomElement &robotElement)
 {
 	const QDomElement startPositionElement = robotElement.firstChildElement("startPosition");
 	if (startPositionElement.isNull()) {
@@ -68,9 +75,7 @@ void StartPosition::deserialize(const QDomElement &robotElement)
 		setY(robotY.toDouble() + robotHeight / 2);
 		setRotation(robotElement.attribute("direction").toDouble());
 	} else {
-		setX(startPositionElement.attribute("x").toDouble());
-		setY(startPositionElement.attribute("y").toDouble());
-		setRotation(startPositionElement.attribute("direction").toDouble());
+		deserialize(startPositionElement);
 	}
 }
 

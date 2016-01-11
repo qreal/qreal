@@ -135,6 +135,7 @@ void LineItem::deserialize(const QDomElement &element)
 	const QPointF begin = points.first;
 	const QPointF end = points.second;
 
+	setPos(QPointF());
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());

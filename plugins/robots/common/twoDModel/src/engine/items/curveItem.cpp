@@ -220,6 +220,7 @@ QVariant CurveItem::Marker::itemChange(QGraphicsItem::GraphicsItemChange change,
 void CurveItem::Marker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
+	emit static_cast<AbstractItem *>(parentItem())->mouseInteractionStarted();
 }
 
 void CurveItem::Marker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -231,4 +232,5 @@ void CurveItem::Marker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void CurveItem::Marker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
+	emit static_cast<AbstractItem *>(parentItem())->mouseInteractionStopped();
 }

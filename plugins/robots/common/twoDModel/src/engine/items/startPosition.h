@@ -28,7 +28,8 @@ public:
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 	QDomElement serialize(QDomElement &parent) const override;
-	void deserialize(const QDomElement &robotElement) override;
+	void deserialize(const QDomElement &startPositionElement) override;
+	void deserializeCompatibly(const QDomElement &robotElement);
 
 private:
 	void drawFieldForResizeItem(QPainter* painter) override;

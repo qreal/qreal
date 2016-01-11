@@ -321,6 +321,18 @@ void AbstractScene::addActions(const QList<QAction *> &actions)
 	mView->addActions(actions);
 }
 
+AbstractItem *AbstractScene::findItem(const QString &id) const
+{
+	for (QGraphicsItem * const item : items()) {
+		AbstractItem * const itemWithId = dynamic_cast<AbstractItem *>(item);
+		if (itemWithId && itemWithId->id() == id) {
+			return itemWithId;
+		}
+	}
+
+	return nullptr;
+}
+
 void AbstractScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	if (abstractItems(event->scenePos()).isEmpty()) {

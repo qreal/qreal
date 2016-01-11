@@ -28,19 +28,12 @@
 
 #include <kitBase/devicesConfigurationWidget.h>
 #include <kitBase/robotModel/robotParts/motor.h>
-#include <kitBase/robotModel/robotParts/touchSensor.h>
-#include <kitBase/robotModel/robotParts/colorSensor.h>
-#include <kitBase/robotModel/robotParts/lightSensor.h>
-#include <kitBase/robotModel/robotParts/rangeSensor.h>
-#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 #include "parts/actionsBox.h"
 #include "parts/colorItemPopup.h"
 #include "parts/robotItemPopup.h"
 #include "parts/speedPopup.h"
 
-#include "scene/sensorItem.h"
-#include "scene/sonarSensorItem.h"
 #include "scene/twoDModelScene.h"
 #include "scene/robotItem.h"
 
@@ -426,42 +419,6 @@ void TwoDModelWidget::loadWorldModel()
 	}
 
 	loadXml(save);
-}
-
-void TwoDModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
-{
-	robotItem->removeSensor(port);
-	RobotModel &robotModel = robotItem->robotModel();
-
-	const DeviceInfo &device = robotModel.configuration().type(port);
-	if (device.isNull() || (
-			/// @todo: Add supported by 2D model sensors here
-			!device.isA<TouchSensor>()
-			&& !device.isA<ColorSensor>()
-			&& !device.isA<LightSensor>()
-			&& !device.isA<RangeSensor>()
-			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
-			&& !device.isA<VectorSensor>()
-			))
-	{
-		return;
-	}
-
-	SensorItem *sensor = device.isA<RangeSensor>()
-			? new SonarSensorItem(mModel.worldModel(), robotModel.configuration()
-					, port
-					, robotModel.info().sensorImagePath(device)
-					, robotModel.info().sensorImageRect(device)
-					)
-			: new SensorItem(robotModel.configuration()
-					, port
-					, robotModel.info().sensorImagePath(device)
-					, robotModel.info().sensorImageRect(device)
-					);
-
-	sensor->setEditable(!mSensorsReadOnly);
-
-	robotItem->addSensor(port, sensor);
 }
 
 bool TwoDModelWidget::isColorItem(AbstractItem * const item) const
@@ -893,7 +850,7 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 
 	if (robotItem) {
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded
-				, [this, robotItem](const PortInfo &port) { reinitSensor(robotItem, port); });
+				, [this, robotItem](const PortInfo &port) { mScene->reinitSensor(robotItem, port); });
 
 		auto checkAndSaveToRepo = [this](const PortInfo &port, bool isLoaded) {
 			Q_UNUSED(port);

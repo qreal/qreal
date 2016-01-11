@@ -25,6 +25,13 @@
 
 namespace qReal {
 class ControllerInterface;
+namespace commands {
+class AbstractCommand;
+}
+}
+
+namespace graphicsUtils {
+class AbstractItem;
 }
 
 namespace twoDModel {
@@ -41,6 +48,10 @@ class EllipseItem;
 namespace model {
 class Model;
 class RobotModel;
+}
+
+namespace commands {
+class ReshapeCommand;
 }
 
 namespace view {
@@ -107,6 +118,9 @@ public slots:
 	/// Focuses all graphics views on the robot if it is not visible.
 	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
+	/// Reread sensor configuration on given port, delete old sensor item and create new.
+	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
+
 signals:
 	/// Emitted each time when user presses mouse button somewhere on the scene.
 	void mousePressed();
@@ -164,7 +178,8 @@ private:
 
 	void deleteSelectedItems();
 	void deleteWithCommand(const QStringList &worldItems
-			, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors);
+			, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors
+			, const QList<qReal::commands::AbstractCommand *> &additionalCommands);
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
@@ -173,6 +188,7 @@ private:
 	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
+	void subscribeItem(graphicsUtils::AbstractItem *item);
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
 	model::Model &mModel;
@@ -193,6 +209,8 @@ private:
 	items::StylusItem *mCurrentStylus = nullptr;
 	items::RectangleItem *mCurrentRectangle = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
+
+	commands::ReshapeCommand *mCurrentReshapeCommand = nullptr;
 
 	bool mWorldReadOnly = false;
 	bool mRobotReadOnly = false;

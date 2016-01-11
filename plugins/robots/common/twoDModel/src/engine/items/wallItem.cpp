@@ -176,7 +176,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 		setDraggedEnd(deltaX, deltaY);
 	}  else if (mDragged) {
-		QGraphicsItem::mouseMoveEvent(event);
+		AbstractItem::mouseMoveEvent(event);
 	}
 
 	// Items under cursor cannot be dragged when adding new item,
@@ -200,7 +200,7 @@ qreal WallItem::width() const
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-	QGraphicsItem::mouseReleaseEvent(event);
+	AbstractItem::mouseReleaseEvent(event);
 	mDragged = false;
 }
 

@@ -176,9 +176,6 @@ private:
 	/// Get QPushButton for current sensor
 	QPushButton *currentPortButton();
 
-	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
-
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(int cursorType);
 	void setCursorType(CursorType cursor);

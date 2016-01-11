@@ -111,6 +111,26 @@ void SensorItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 	mPortItem->hide();
 }
 
+QDomElement SensorItem::serialize(QDomElement &parent) const
+{
+	QDomElement result = RotateItem::serialize(parent);
+	result.setTagName("sensor");
+	result.setAttribute("position", QString::number(x()) + ":" + QString::number(y()));
+	result.setAttribute("direction", QString::number(rotation()));
+	return result;
+}
+
+void SensorItem::deserialize(const QDomElement &element)
+{
+	const QString positionStr = element.attribute("position", "0:0");
+	const QStringList splittedStr = positionStr.split(":");
+	const qreal x = static_cast<qreal>(splittedStr[0].toDouble());
+	const qreal y = static_cast<qreal>(splittedStr[1].toDouble());
+	setPos(x, y);
+
+	setRotation(element.attribute("direction", "0").toDouble());
+}
+
 QString SensorItem::name() const
 {
 	const DeviceInfo sensor = mConfiguration.type(mPort);

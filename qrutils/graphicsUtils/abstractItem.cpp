@@ -529,6 +529,18 @@ QVariant AbstractItem::itemChange(QGraphicsItem::GraphicsItemChange change, cons
 	return QGraphicsItem::itemChange(change, value);
 }
 
+void AbstractItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem::mousePressEvent(event);
+	emit mouseInteractionStarted();
+}
+
+void AbstractItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsItem::mouseReleaseEvent(event);
+	emit mouseInteractionStopped();
+}
+
 void AbstractItem::copyTo(AbstractItem * const other) const
 {
 	other->mDragState = mDragState;

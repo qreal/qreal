@@ -145,9 +145,18 @@ signals:
 	/// Emitted when user clicks with right mouse button on this item and selects to remove it.
 	void deletedWithContextMenu();
 
+	/// Emitted when user presses left mouse button on this item.
+	void mouseInteractionStarted();
+
+	/// Emitted when user releases left mouse button on this item.
+	void mouseInteractionStopped();
+
 protected:
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 	void copyTo(AbstractItem * const other) const;
 

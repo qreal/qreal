@@ -359,7 +359,7 @@ void RobotModel::deserialize(const QDomElement &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
-	mStartPositionMarker->deserialize(robotElement);
+	mStartPositionMarker->deserializeCompatibly(robotElement);
 	deserializeWheels(robotElement);
 	nextFragment();
 }
