@@ -38,6 +38,7 @@ public:
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const utils::ParserErrorReporter &parserErrorReporter
 			, QObject *parent = 0);
+
 	~Ev3LuaProcessor() override;
 
 	/// Configures this processor with variables instance. Variables cannot be passed to constructor because it will

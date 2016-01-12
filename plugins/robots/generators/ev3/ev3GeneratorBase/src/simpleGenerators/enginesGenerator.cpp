@@ -21,20 +21,20 @@
 using namespace ev3::simple;
 using namespace generatorBase::simple;
 
-EnginesGenerator::EnginesGenerator(qrRepo::RepoApi const &repo
+EnginesGenerator::EnginesGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
-		, QString const &engineType
+		, const qReal::Id &id
+		, const QString &engineType
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, engineType.contains("EnginesBackward")
 					? "engines/backward.t"
 					: "engines/forward.t"
 			, {
-			Binding::createConverting("@@PORT@@", "Ports"
-					, static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
-			, Binding::createConverting("@@POWER@@", "Power"
-					, customizer.factory()->intPropertyConverter(id, "Power"))
+				Binding::createConverting("@@PORT@@", "Ports"
+						, static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
+				, Binding::createConverting("@@POWER@@", "Power"
+						, customizer.factory()->intPropertyConverter(id, "Power"))
 			}
 			, parent)
 {

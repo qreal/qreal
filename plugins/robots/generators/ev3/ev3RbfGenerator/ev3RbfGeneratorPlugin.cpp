@@ -213,7 +213,7 @@ QString Ev3RbfGeneratorPlugin::upload(const QFileInfo &lmsFile)
 		return QString();
 	}
 
-	auto connection = connect(communicator, &communication::Ev3RobotCommunicationThread::connected
+	const auto connection = connect(communicator, &communication::Ev3RobotCommunicationThread::connected
 			, this, [&connected](bool success, const QString &) { connected = success; });
 	communicator->connect();
 	disconnect(connection);

@@ -80,7 +80,7 @@ public:
 	QStringList additionalCode(const QSharedPointer<qrtext::core::ast::Node> &node) const;
 
 	/// Returns code that initializes all known constants.
-	QString constantsEvaluation();
+	QString constantsEvaluation() const;
 
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node
@@ -200,7 +200,7 @@ private:
 	qReal::Id mId;
 	int mTableInitializersCount = -1;
 	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
-	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership
+	QScopedPointer<const generatorBase::simple::Binding::ConverterInterface> mReservedVariablesConverter;
 	generatorBase::lua::ReservedFunctionsConverter mReservedFunctionsConverter;
 };
 

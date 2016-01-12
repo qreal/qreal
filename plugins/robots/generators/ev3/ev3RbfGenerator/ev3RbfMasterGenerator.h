@@ -26,13 +26,13 @@ class Ev3LuaProcessor;
 class Ev3RbfMasterGenerator : public Ev3MasterGeneratorBase
 {
 public:
-	Ev3RbfMasterGenerator(qrRepo::RepoApi const &repo
+	Ev3RbfMasterGenerator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const utils::ParserErrorReporter &parserErrorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId
-			, QString const &generatorName);
+			, const qReal::Id &diagramId
+			, const QString &generatorName);
 
 	void initialize() override;
 	QString generate(const QString &indentString) override;

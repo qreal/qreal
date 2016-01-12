@@ -18,16 +18,16 @@
 using namespace ev3::simple;
 using namespace generatorBase::simple;
 
-DrawPixelGenerator::DrawPixelGenerator(qrRepo::RepoApi const &repo
+DrawPixelGenerator::DrawPixelGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "drawing/drawPixel.t"
 			, {
-			Binding::createConverting("@@XCoordinatePix@@", "XCoordinatePix"
-					, customizer.factory()->intPropertyConverter(id, "XCoordinatePix"))
-			, Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix"
-					, customizer.factory()->intPropertyConverter(id, "YCoordinatePix"))
+				Binding::createConverting("@@XCoordinatePix@@", "XCoordinatePix"
+						, customizer.factory()->intPropertyConverter(id, "XCoordinatePix"))
+				, Binding::createConverting("@@YCoordinatePix@@", "YCoordinatePix"
+						, customizer.factory()->intPropertyConverter(id, "YCoordinatePix"))
 			}
 			, parent)
 {

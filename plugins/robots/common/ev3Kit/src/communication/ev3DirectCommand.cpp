@@ -58,7 +58,7 @@ void Ev3DirectCommand::addShortParameter(qint16 parameter, QByteArray &command, 
 	command[index++] = (parameter >> 8) & 0xFF;
 }
 
-void Ev3DirectCommand::addStringParameter(QString const &parameter, QByteArray &command, int &index)
+void Ev3DirectCommand::addStringParameter(const QString &parameter, QByteArray &command, int &index)
 {
 	QByteArray parameterBytes = parameter.toLocal8Bit();
 	command[index++] = enums::argumentSize::ArgumentSizeEnum::STRING;

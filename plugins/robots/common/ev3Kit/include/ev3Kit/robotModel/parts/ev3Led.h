@@ -32,17 +32,17 @@ enum class Ev3LedColor
 	/// LED is turned on, orange color
 	, orange
 	/// LED is flashes with red color
-	, red_flash
+	, redFlash
 	/// LED is flashes with green color
-	, green_flash
+	, greenFlash
 	/// LED is flashes with orange color
-	, orange_flash
+	, orangeFlash
 	/// LED is pulses with red color
-	, red_pulse
+	, redPulse
 	/// LED is pulses with green color
-	, green_pulse
+	, greenPulse
 	/// LED is pulses with orange color
-	, orange_pulse
+	, orangePulse
 };
 
 /// A base for all implementations of LED on the front panel of EV3 brick.

@@ -20,9 +20,9 @@
 using namespace ev3::simple;
 using namespace generatorBase::simple;
 
-EnginesStopGenerator::EnginesStopGenerator(qrRepo::RepoApi const &repo
+EnginesStopGenerator::EnginesStopGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
-		, qReal::Id const &id
+		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "engines/stop.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Ports"

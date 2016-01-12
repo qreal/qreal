@@ -32,13 +32,13 @@ using namespace generatorBase;
 
 using namespace qReal;
 
-Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(qrRepo::RepoApi const &repo
+Ev3RbfMasterGenerator::Ev3RbfMasterGenerator(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const utils::ParserErrorReporter &parserErrorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
-		, qReal::Id const &diagramId
-		, QString const &generatorName)
+		, const qReal::Id &diagramId
+		, const QString &generatorName)
 	: Ev3MasterGeneratorBase(repo, errorReporter, parserErrorReporter
 			, robotModelManager, textLanguage, diagramId, generatorName)
 	, mLuaProcessorInstance(nullptr)
@@ -74,7 +74,7 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	}
 
 	QString mainCode;
-	semantics::SemanticTree const *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
+	const semantics::SemanticTree * const gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 	if (gotoMainControlFlow) {
 		mainCode = gotoMainControlFlow->toString(1, indentString);
 		bool const gotoSubprogramsResult = mCustomizer->factory()

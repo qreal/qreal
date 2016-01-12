@@ -722,7 +722,7 @@ QString ConstraintsParser::id(const QDomElement &element) const
 
 int ConstraintsParser::intAttribute(const QDomElement &element, const QString &attributeName, int defaultValue)
 {
-	QString const attributeValue = element.attribute(attributeName);
+	const QString attributeValue = element.attribute(attributeName);
 	bool ok = false;
 	const int result = attributeValue.toInt(&ok);
 	if (!ok) {
@@ -736,7 +736,7 @@ int ConstraintsParser::intAttribute(const QDomElement &element, const QString &a
 
 qreal ConstraintsParser::doubleAttribute(const QDomElement &element, const QString &attributeName, qreal defaultValue)
 {
-	QString const attributeValue = element.attribute(attributeName);
+	const QString attributeValue = element.attribute(attributeName);
 	bool ok = false;
 	const qreal result = attributeValue.toDouble(&ok);
 	if (!ok) {

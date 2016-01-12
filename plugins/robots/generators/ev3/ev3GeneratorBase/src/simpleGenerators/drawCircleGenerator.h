@@ -22,9 +22,9 @@ namespace simple {
 class DrawCircleGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	DrawCircleGenerator(qrRepo::RepoApi const &repo
+	DrawCircleGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

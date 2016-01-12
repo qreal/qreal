@@ -23,21 +23,21 @@ namespace ev3 {
 class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3GeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
-	Ev3GeneratorFactory(qrRepo::RepoApi const &repo
+	Ev3GeneratorFactory(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 
 	~Ev3GeneratorFactory() override;
 
-	generatorBase::simple::AbstractSimpleGenerator *ifGenerator(qReal::Id const &id
+	generatorBase::simple::AbstractSimpleGenerator *ifGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting) override;
 
 	generatorBase::simple::AbstractSimpleGenerator *forLoopGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
-	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(qReal::Id const &id
+	generatorBase::simple::AbstractSimpleGenerator *simpleGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
 	/// Converts an output port with given id into generator-dependent port representation.
@@ -49,7 +49,7 @@ public:
 	QStringList pathsToTemplates() const override;
 
 private:
-	QString const mGeneratorName;
+	const QString mGeneratorName;
 };
 
 }

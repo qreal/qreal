@@ -91,20 +91,17 @@ Ev3LuaPrinter::Ev3LuaPrinter(const QStringList &pathsToTemplates
 	: generatorBase::TemplateParametrizedEntity(addSuffix(pathsToTemplates))
 	, mTextLanguage(textLanguage)
 	, mVariables(variables)
-	, mReservedVariablesConverter(nullptr)
 	, mReservedFunctionsConverter(pathsToTemplates)
 {
 }
 
 Ev3LuaPrinter::~Ev3LuaPrinter()
 {
-	delete mReservedVariablesConverter;
 }
 
 void Ev3LuaPrinter::configure(const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
-	delete mReservedVariablesConverter;
-	mReservedVariablesConverter = reservedVariablesConverter;
+	mReservedVariablesConverter.reset(reservedVariablesConverter);
 }
 
 QStringList Ev3LuaPrinter::addSuffix(const QStringList &list)
@@ -224,7 +221,7 @@ QStringList Ev3LuaPrinter::additionalCode(const QSharedPointer<qrtext::core::ast
 	return mAdditionalCode[node.data()];
 }
 
-QString Ev3LuaPrinter::constantsEvaluation()
+QString Ev3LuaPrinter::constantsEvaluation() const
 {
 	QStringList code;
 	for (const QString &constantName : mTextLanguage.specialConstants()) {

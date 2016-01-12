@@ -40,11 +40,13 @@ class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3GeneratorPluginBase : public generator
 public:
 	Ev3GeneratorPluginBase(const QString &usbRobotName, const QString &usbRobotFriendlyName, int usbPriority
 			, const QString &bluetoothRobotName, const QString &bluetoothRobotFriendlyName, int bluetoothPriority);
-	~Ev3GeneratorPluginBase();
+
+	~Ev3GeneratorPluginBase() override;
 
 	QString kitId() const override;
 
 	QList<kitBase::robotModel::RobotModelInterface *> robotModels() override;
+
 	kitBase::blocksBase::BlocksFactoryInterface *blocksFactoryFor(
 			const kitBase::robotModel::RobotModelInterface *model) override;
 

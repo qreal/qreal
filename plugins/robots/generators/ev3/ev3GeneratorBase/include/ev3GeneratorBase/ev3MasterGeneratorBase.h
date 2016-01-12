@@ -24,13 +24,13 @@ namespace ev3 {
 class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3MasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
-	Ev3MasterGeneratorBase(qrRepo::RepoApi const &repo
+	Ev3MasterGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const utils::ParserErrorReporter &parserErrorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
-			, qReal::Id const &diagramId
-			, QString const &generatorName);
+			, const qReal::Id &diagramId
+			, const QString &generatorName);
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;

@@ -23,9 +23,9 @@ namespace simple {
 class EnginesStopGenerator : public generatorBase::simple::BindingGenerator
 {
 public:
-	EnginesStopGenerator(qrRepo::RepoApi const &repo
+	EnginesStopGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
-			, qReal::Id const &id
+			, const qReal::Id &id
 			, QObject *parent);
 };
 

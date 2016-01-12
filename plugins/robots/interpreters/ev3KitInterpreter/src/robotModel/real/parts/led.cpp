@@ -52,17 +52,17 @@ qint8 Led::colorByte(ev3::robotModel::parts::Ev3LedColor color) const
 		return 2;
 	case ev3::robotModel::parts::Ev3LedColor::orange:
 		return 3;
-	case ev3::robotModel::parts::Ev3LedColor::green_flash:
+	case ev3::robotModel::parts::Ev3LedColor::greenFlash:
 		return 4;
-	case ev3::robotModel::parts::Ev3LedColor::red_flash:
+	case ev3::robotModel::parts::Ev3LedColor::redFlash:
 		return 5;
-	case ev3::robotModel::parts::Ev3LedColor::orange_flash:
+	case ev3::robotModel::parts::Ev3LedColor::orangeFlash:
 		return 6;
-	case ev3::robotModel::parts::Ev3LedColor::green_pulse:
+	case ev3::robotModel::parts::Ev3LedColor::greenPulse:
 		return 7;
-	case ev3::robotModel::parts::Ev3LedColor::red_pulse:
+	case ev3::robotModel::parts::Ev3LedColor::redPulse:
 		return 8;
-	case ev3::robotModel::parts::Ev3LedColor::orange_pulse:
+	case ev3::robotModel::parts::Ev3LedColor::orangePulse:
 		return 9;
 	default:
 		qWarning() << "Unknown EV3 LED color:" << static_cast<int>(color);

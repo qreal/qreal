@@ -49,27 +49,27 @@ robotModel::parts::Ev3LedColor LedBlock::toLedColor(const QString &color) const
 	}
 
 	if (color == "red_flash") {
-		return robotModel::parts::Ev3LedColor::red_flash;
+		return robotModel::parts::Ev3LedColor::redFlash;
 	}
 
 	if (color == "green_flash") {
-		return robotModel::parts::Ev3LedColor::green_flash;
+		return robotModel::parts::Ev3LedColor::greenFlash;
 	}
 
 	if (color == "orange_flash") {
-		return robotModel::parts::Ev3LedColor::orange_flash;
+		return robotModel::parts::Ev3LedColor::orangeFlash;
 	}
 
 	if (color == "red_pulse") {
-		return robotModel::parts::Ev3LedColor::red_pulse;
+		return robotModel::parts::Ev3LedColor::redPulse;
 	}
 
 	if (color == "green_pulse") {
-		return robotModel::parts::Ev3LedColor::green_pulse;
+		return robotModel::parts::Ev3LedColor::greenPulse;
 	}
 
 	if (color == "orange_pulse") {
-		return robotModel::parts::Ev3LedColor::orange_pulse;
+		return robotModel::parts::Ev3LedColor::orangePulse;
 	}
 
 	return robotModel::parts::Ev3LedColor::off;

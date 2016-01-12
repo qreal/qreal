@@ -23,11 +23,11 @@ namespace rbf {
 class Ev3RbfGeneratorFactory : public Ev3GeneratorFactory
 {
 public:
-	Ev3RbfGeneratorFactory(qrRepo::RepoApi const &repo
+	Ev3RbfGeneratorFactory(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 
 	generatorBase::simple::AbstractSimpleGenerator *labelGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;

@@ -23,11 +23,11 @@ namespace ev3 {
 class Ev3GeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
-	Ev3GeneratorCustomizer(qrRepo::RepoApi const &repo
+	Ev3GeneratorCustomizer(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, QString const &generatorName);
+			, const QString &generatorName);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
