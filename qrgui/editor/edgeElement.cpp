@@ -643,6 +643,8 @@ NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 	const int searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
 	const QPointF positionInSceneCoordinates = mapToScene(position);
 	circlePath.addEllipse(positionInSceneCoordinates, searchAreaRadius, searchAreaRadius);
+//	qDebug() << scene()->items();
+//	qDebug() << circlePath;
 	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
 	qreal minimalDistance = 10e10;  // Very large number

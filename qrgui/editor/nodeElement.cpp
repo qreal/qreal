@@ -132,6 +132,7 @@ void NodeElement::connectSceneEvents()
 		}
 	}
 
+	updateBySelection();
 	mRenderer.setZoom(editorView->transform().m11());
 	if (editorView) {
 		connect(editorView, &EditorView::zoomChanged, &mRenderer, &SdfRenderer::setZoom);
@@ -769,6 +770,7 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
+//	qDebug() << mContents;
 	return mContents.adjusted(-2 * kvadratik, -2 * kvadratik, kvadratik, kvadratik);
 }
 

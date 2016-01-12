@@ -138,8 +138,6 @@ Id EditorViewMViface::rootId() const
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	mScene->setEnabled(true);
-	mScene->blockSignals(true);
-	mView->scene()->clearSelection();
 	for (int row = start; row <= end; ++row) {
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
@@ -161,15 +159,14 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
-				? dynamic_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
-				: dynamic_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
+				? static_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
+				: static_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 
-		// TODO: It is impossible for elem to be nullptr here.
 		if (elem) {
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
@@ -197,8 +194,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			elem->initTitles();
 			mView->setFocus();
 			// TODO: brush up init~()
-
-			elem->setSelected(true);
 
 			if (dynamic_cast<NodeElement *>(elem) && currentId.element() == "Class" &&
 					mGraphicalAssistApi->children(currentId).empty())
@@ -228,8 +223,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 	}
 
-	mScene->blockSignals(false);
-	emit mScene->selectionChanged();
 	QAbstractItemView::rowsInserted(parent, start, end);
 }
 
