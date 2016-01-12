@@ -42,16 +42,18 @@
 #include <trikKitInterpreterCommon/robotModel/real/parts/gamepadPadPressSensor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/gamepadWheel.h>
 
+#include <utils/robotCommunication/networkCommunicationErrorReporter.h>
+
 using namespace trik::robotModel::real;
 using namespace kitBase::robotModel;
 
 RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 	: TrikRobotModelV62(kitId, robotId)
-	, mRobotCommunicator(new utils::TcpRobotCommunicator("TrikTcpServer"))
+	, mRobotCommunicator(new utils::robotCommunication::TcpRobotCommunicator("TrikTcpServer"))
 {
-	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::connected
+	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::connected
 			, this, &RealRobotModel::connected);
-	connect(mRobotCommunicator.data(), &utils::TcpRobotCommunicator::disconnected
+	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::disconnected
 			, this, &RealRobotModel::disconnected);
 }
 
@@ -92,7 +94,10 @@ void RealRobotModel::disconnectFromRobot()
 
 void RealRobotModel::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
-	mRobotCommunicator->setErrorReporter(&errorReporter);
+	utils::robotCommunication::NetworkCommunicationErrorReporter::connectErrorReporter(
+			*mRobotCommunicator
+			, errorReporter
+			);
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)

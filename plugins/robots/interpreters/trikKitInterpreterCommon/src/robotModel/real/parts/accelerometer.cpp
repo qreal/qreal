@@ -18,11 +18,11 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 Accelerometer::Accelerometer(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &robotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &robotCommunicator)
 	: kitBase::robotModel::robotParts::AccelerometerSensor(info, port)
 	, mRobotCommunicator(robotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newVectorSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newVectorSensorData
 			, this, &Accelerometer::onIncomingData);
 }
 

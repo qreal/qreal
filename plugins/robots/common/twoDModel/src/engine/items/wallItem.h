@@ -84,16 +84,16 @@ private:
 
 	graphicsUtils::LineImpl mLineImpl;
 
-	bool mDragged;
-	bool mOverlappedWithRobot;
+	bool mDragged = false;
+	bool mOverlappedWithRobot = false;
 	const QImage mImage;
 
-	int mOldX1;
-	int mOldY1;
-	int mCellNumbX1;
-	int mCellNumbY1;
-	int mCellNumbX2;
-	int mCellNumbY2;
+	int mOldX1 = 0;
+	int mOldY1 = 0;
+	int mCellNumbX1 = 0;
+	int mCellNumbY1 = 0;
+	int mCellNumbX2 = 0;
+	int mCellNumbY2 = 0;
 
 	QPainterPath mPath;
 };
