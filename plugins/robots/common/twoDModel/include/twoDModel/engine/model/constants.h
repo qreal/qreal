@@ -28,7 +28,7 @@ const QSize displaySize(200, 300);
 const qreal beepWavesSize = 120;
 
 /// Experimental constant that scales gyroscope output so that it is close to real robot gyroscope readings.
-const qreal gyroscopeConstant = -800;
+const qreal gyroscopeConstant = -1600;
 
 /// Experimental constant that scales accelerometer output so that it is close to real robot accelerometer readings
 /// with our magic acceleration smoothing formula.
