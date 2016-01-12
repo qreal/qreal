@@ -15,7 +15,6 @@
 #pragma once
 
 #include <qrkernel/ids.h>
-#include <qrkernel/definitions.h>
 
 namespace qReal {
 

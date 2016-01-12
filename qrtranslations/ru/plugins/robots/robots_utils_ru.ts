@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/networkCommunicationErrorReporter.cpp" line="26"/>
+        <source>Current TRIK runtime version can not be received</source>
+        <translation>Не удаётся получить текущую версию прошивки ТРИК</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/networkCommunicationErrorReporter.cpp" line="30"/>
+        <source>TRIK runtime version is too old, please update it by pressing &apos;Upload Runtime&apos; button on toolbar</source>
+        <translation>ПО робота устарело, обновите его, нажав на кнопку &quot;Загрузить ПО на робот&quot; на панели инструментов</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/networkCommunicationErrorReporter.cpp" line="35"/>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/networkCommunicationErrorReporter.cpp" line="39"/>
+        <source>From robot: </source>
+        <translation>На роботе: </translation>
+    </message>
+</context>
+<context>
     <name>trik::UploaderTool</name>
     <message>
         <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="130"/>
@@ -22,7 +41,7 @@
     <message>
         <location filename="../../../../plugins/robots/utils/src/uploaderTool.cpp" line="176"/>
         <source>%1 is not installed. Please install %1 first.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 не установлен. Пожалуйста, сначала установите %1.</translation>
     </message>
 </context>
 <context>
@@ -36,19 +55,42 @@
         <translation type="vanished">С робота:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="132"/>
         <source>From robot: </source>
-        <translation>На роботе: </translation>
+        <translation type="vanished">На роботе: </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="138"/>
         <source>TRIK runtime version is too old, please update it by pressing &apos;Upload Runtime&apos; button on toolbar</source>
-        <translation>ПО робота устарело, обновите его, нажав на кнопку &quot;Загрузить ПО на робот&quot; на панели инструментов</translation>
+        <translation type="vanished">ПО робота устарело, обновите его, нажав на кнопку &quot;Загрузить ПО на робот&quot; на панели инструментов</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/utils/src/tcpRobotCommunicator.cpp" line="183"/>
         <source>Current TRIK runtime version can not be received</source>
-        <translation>Не удаётся получить текущую версию прошивки ТРИК</translation>
+        <translation type="vanished">Не удаётся получить текущую версию прошивки ТРИК</translation>
+    </message>
+</context>
+<context>
+    <name>utils::robotCommunication::TcpRobotCommunicator</name>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/tcpRobotCommunicator.cpp" line="80"/>
+        <source>Empty program name, can not upload</source>
+        <translation>Пустое имя программы, загрузка на робот невозможна</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/tcpRobotCommunicator.cpp" line="88"/>
+        <source>Can not read generated file, uploading aborted</source>
+        <translation>Невозможно прочитать сгенерированный файл, загрузка отменена</translation>
+    </message>
+</context>
+<context>
+    <name>utils::robotCommunication::TcpRobotCommunicatorWorker</name>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/tcpRobotCommunicatorWorker.cpp" line="186"/>
+        <source>Unable to resolve host.</source>
+        <translation>Указанное имя робота неизвестно.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/utils/src/robotCommunication/tcpRobotCommunicatorWorker.cpp" line="204"/>
+        <source>Connection failed</source>
+        <translation>Не удалось установить соединение с роботом</translation>
     </message>
 </context>
 </TS>

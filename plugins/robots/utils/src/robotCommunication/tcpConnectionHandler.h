@@ -17,11 +17,10 @@
 #include <QtNetwork/QTcpSocket>
 #include <QtCore/QTimer>
 
-#include "utilsDeclSpec.h"
-
 namespace utils {
+namespace robotCommunication {
 
-class ROBOTS_UTILS_EXPORT TcpConnectionHandler : public QObject
+class TcpConnectionHandler : public QObject
 {
 	Q_OBJECT
 
@@ -41,16 +40,18 @@ signals:
 
 private slots:
 	void onIncomingData();
+	void onDisconnected();
 	void keepalive();
 
 private:
 	QTcpSocket mSocket;
 	QByteArray mBuffer;
 	int mExpectedBytes = 0;
-	int mPort;
+	const int mPort;
 
 	/// Timer used to send "keepalive" packets for other side to be able to detect connection failure.
 	QTimer mKeepAliveTimer;
 };
 
+}
 }
