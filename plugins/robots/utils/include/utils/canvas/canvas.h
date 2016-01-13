@@ -78,14 +78,16 @@ public:
 	/// @param y - y coordinate.
 	/// @param width - rectangle`s width.
 	/// @param height - rectangle's height.
-	virtual void drawRect(int x, int y, int width, int height);
+	/// @param filled - if true then rectangle will be filled with color, if false it will be empty.
+	virtual void drawRect(int x, int y, int width, int height, bool filled = false);
 
 	/// Draw ellipse on the canvas without redrawing it.
 	/// @param centerX - x coordinate of the center.
 	/// @param y - y coordinate of the center.
 	/// @param width - the semi-axis length by the x-dimension of the ellipse.
 	/// @param semiDiameterY - the semi-axis length by the y-dimension of the ellipse.
-	virtual void drawEllipse(int centerX, int centerY, int semiDiameterX, int semiDiameterY);
+	/// @param filled - if true then ellipse will be filled with color, if false it will be empty.
+	virtual void drawEllipse(int centerX, int centerY, int semiDiameterX, int semiDiameterY, bool filled = false);
 
 	/// Draw arc on the canvas without redrawing it.
 	/// @param x - x coordinate.

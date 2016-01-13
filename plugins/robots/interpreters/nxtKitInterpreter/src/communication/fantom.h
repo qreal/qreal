@@ -51,7 +51,6 @@ signals:
 protected:
 	Fantom();
 
-private:
 	QLibrary mFantomLibrary;
 };
 

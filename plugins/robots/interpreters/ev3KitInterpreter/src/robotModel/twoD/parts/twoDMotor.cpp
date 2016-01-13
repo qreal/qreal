@@ -14,22 +14,27 @@
 
 #include "twoDMotor.h"
 
-using namespace nxtKitInterpreter::robotModel::twoD::parts;
+using namespace ev3::robotModel::twoD::parts;
 
 TwoDMotor::TwoDMotor(kitBase::robotModel::DeviceInfo const &info
 		, kitBase::robotModel::PortInfo const &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: NxtMotor(info, port)
+	: Ev3Motor(info, port)
 	, mEngine(engine)
 {
 }
 
-void TwoDMotor::on(int speed, unsigned long degrees, bool breakMode)
+void TwoDMotor::on(int speed)
 {
-	mEngine.setNewMotor(speed, degrees, port(), breakMode);
+	mEngine.setNewMotor(speed, 0, port(), true);
 }
 
-void TwoDMotor::stop(bool breakMode)
+void TwoDMotor::stop()
 {
-	on(0, 0, breakMode);
+	on(0);
+}
+
+void TwoDMotor::off()
+{
+	on(0);
 }

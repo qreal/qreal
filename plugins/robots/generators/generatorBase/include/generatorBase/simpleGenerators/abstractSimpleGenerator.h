@@ -36,6 +36,15 @@ public:
 
 	virtual ~AbstractSimpleGenerator();
 
+	/// Returns a reference to repository used by this generator.
+	const qrRepo::RepoApi &repo() const;
+
+	/// Returns a reference to an object that customizes this generator.
+	GeneratorCustomizer &customizer() const;
+
+	/// Returns an id of the block that this generator generates code for.
+	qReal::Id id() const;
+
 	/// Generates and returns code using parameters specified in constructor
 	virtual QString generate() = 0;
 

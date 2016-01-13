@@ -350,6 +350,8 @@ void TwoDModelScene::deleteItem(QGraphicsItem *item)
 		mCurrentLine = nullptr;
 		mCurrentStylus = nullptr;
 		mCurrentEllipse = nullptr;
+		mCurrentRectangle = nullptr;
+		mCurrentCurve = nullptr;
 	}
 }
 

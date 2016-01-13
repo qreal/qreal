@@ -4,9 +4,8 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/portNameConverter.cpp" line="45"/>
         <source>Port %1 is unknown. It will be generated as-is.</source>
-        <translation>Port &apos;%1&apos; est inconnu. Le code sera généré tel quel.</translation>
+        <translation type="vanished">Port &apos;%1&apos; est inconnu. Le code sera généré tel quel.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="64"/>

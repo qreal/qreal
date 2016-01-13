@@ -22,6 +22,7 @@
 
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
 
+#include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
@@ -49,6 +50,7 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	QList<DeviceInfo> const analogPortConnections = {
 		lightSensorInfo()
 		, infraredSensorInfo()
+		, touchSensorInfo()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -76,13 +78,11 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("D1", input, {}, "sensorD1"), { sonarSensorInfo() });
 	addAllowedConnection(PortInfo("D2", input, {}, "sensorD2"), { sonarSensorInfo() });
 
-	addAllowedConnection(PortInfo("GyroscopePortX", input, {}, "gyroscopeX"), { gyroscopeInfo() });
-	addAllowedConnection(PortInfo("GyroscopePortY", input, {}, "gyroscopeY"), { gyroscopeInfo() });
-	addAllowedConnection(PortInfo("GyroscopePortZ", input, {}, "gyroscopeZ"), { gyroscopeInfo() });
+	addAllowedConnection(PortInfo("GyroscopePort", input, {}, "gyroscope", PortInfo::ReservedVariableType::vector)
+			, { gyroscopeInfo() });
 
-	addAllowedConnection(PortInfo("AccelerometerPortX", input, {}, "accelerometerX"), { accelerometerInfo() });
-	addAllowedConnection(PortInfo("AccelerometerPortY", input, {}, "accelerometerY"), { accelerometerInfo() });
-	addAllowedConnection(PortInfo("AccelerometerPortZ", input, {}, "accelerometerZ"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPort", input, {}, "accelerometer"
+			, PortInfo::ReservedVariableType::vector), { accelerometerInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
@@ -135,7 +135,8 @@ QList<PortInfo> TrikRobotModelBase::configurablePorts() const
 
 QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 {
-	return { DeviceInfo::create<robotParts::LightSensor>()
+	return { DeviceInfo::create<robotParts::TouchSensor>()
+		, DeviceInfo::create<robotParts::LightSensor>()
 		, DeviceInfo::create<parts::TrikInfraredSensor>()
 		, DeviceInfo::create<parts::TrikSonarSensor>()
 		, DeviceInfo::create<parts::TrikMotionSensor>()
@@ -171,6 +172,11 @@ DeviceInfo TrikRobotModelBase::servoMotorInfo() const
 DeviceInfo TrikRobotModelBase::encoderInfo() const
 {
 	return DeviceInfo::create<robotParts::EncoderSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::touchSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::TouchSensor>();
 }
 
 DeviceInfo TrikRobotModelBase::lightSensorInfo() const

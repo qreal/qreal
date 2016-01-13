@@ -137,8 +137,8 @@ Id EditorViewMViface::rootId() const
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
+	mScene->setEnabled(true);
 	for (int row = start; row <= end; ++row) {
-		mScene->setEnabled(true);
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex())) {
@@ -159,26 +159,21 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
-				? dynamic_cast<Element *>(
-						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
-						)
-				: dynamic_cast<Element *>(
-						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
-						);
+				? static_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
+				: static_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 
-		// TODO: It is impossible for elem to be nullptr here.
 		if (elem) {
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
 
-			NodeElement *node = dynamic_cast<NodeElement *>(elem);
-			if (node) {
-				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect());
+			if (NodeElement * const node = dynamic_cast<NodeElement *>(elem)) {
+				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect()
+						.translated(ePos.toPoint()));
 			}
 
 			if (item(parent)) {
@@ -200,20 +195,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			mView->setFocus();
 			// TODO: brush up init~()
 
-			bool isEdgeFromEmbeddedLinker = false;
-			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
-			if (selectedItems.size() == 1) {
-				NodeElement* master = dynamic_cast<NodeElement*>(selectedItems.at(0));
-				if (master && master->connectionInProgress()) {
-					isEdgeFromEmbeddedLinker = true;
-				}
-			}
-
-			if (!isEdgeFromEmbeddedLinker) {
-				mView->scene()->clearSelection();
-				elem->setSelected(true);
-			}
-
 			if (dynamic_cast<NodeElement *>(elem) && currentId.element() == "Class" &&
 					mGraphicalAssistApi->children(currentId).empty())
 			{
@@ -226,8 +207,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 				}
 			}
 
-			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
-			if (edgeElem) {
+			if (EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem)) {
 				edgeElem->layOut();
 			}
 		}
@@ -239,13 +219,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
 		if (nodeElement) {
 			nodeElement->alignToGrid();
-		}
-	}
-
-	for (QGraphicsItem *item : mScene->items()) {
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			node->adjustLinks();
 		}
 	}
 
@@ -361,17 +334,6 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 
 void EditorViewMViface::clearItems()
 {
-	QList<QGraphicsItem *> toRemove;
-	for (const IndexElementPair &pair : mItems) {
-		if (!pair.second->parentItem()) {
-			toRemove.append(pair.second);
-		}
-	}
-
-	for (QGraphicsItem * const item : toRemove) {
-		delete item;
-	}
-
 	mItems.clear();
 }
 
@@ -436,16 +398,6 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 			if (graphicalItem) {
 				graphicalItem->updateData();
 			}
-		}
-	}
-}
-
-void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
-{
-	for (const IndexElementPair & item : mItems) {
-		auto node = dynamic_cast<NodeElement *>(item.second);
-		if (node) {
-			node->invalidateImagesZoomCache(zoomFactor);
 		}
 	}
 }

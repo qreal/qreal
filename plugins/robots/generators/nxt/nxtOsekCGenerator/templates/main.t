@@ -31,6 +31,7 @@ void ecrobot_device_terminate(void)
 /* nxtOSEK hook to be invoked from an ISR in category 2 */
 void user_1ms_isr_type2(void)
 { 
+	ts_dispatch_timers();
 @@USERISRHOOKS@@
 }
 

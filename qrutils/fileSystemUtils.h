@@ -18,7 +18,9 @@
 
 #include "qrutils/utilsDeclSpec.h"
 
-namespace qReal {
+class QDateTime;
+
+namespace utils {
 
 /// This class contains platform-dependent file system operations implementations
 class QRUTILS_EXPORT FileSystemUtils
@@ -30,6 +32,10 @@ public:
 
 	/// Recursively removes every entry in the given directory.
 	static void clearDir(const QString &path);
+
+	/// Implemented only for Windows for now. Sets creation timestamp of the given file to the current date and time.
+	/// Returns the success of the operation.
+	static bool setCreationDateToNow(const QString &path);
 };
 
 }

@@ -27,7 +27,7 @@ WaitForTouchSensorBlock::WaitForTouchSensorBlock(kitBase::robotModel::RobotModel
 
 void WaitForTouchSensorBlock::responseSlot(int reading)
 {
-	if (reading == 1) {
+	if (reading > 0) {
 		stop();
 	}
 }

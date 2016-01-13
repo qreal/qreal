@@ -22,4 +22,3 @@ QREAL_EDITOR_PATH = robots/editor/generated
 ROOT = ../../../..
 
 include($$PWD/../../../editorsSdk/editorsCommon.pri)
-

@@ -22,15 +22,15 @@ using namespace trik::qts;
 using namespace kitBase::robotModel;
 
 TrikV6QtsGeneratorPlugin::TrikV6QtsGeneratorPlugin()
-	: TrikQtsGeneratorPluginBase(initModel(
-				new robotModel::TrikV6GeneratorRobotModel(
-						"trikKit"
-						, "trikKitRobot"
-						, "TrikQtsGeneratorRobotModel"
-						, tr("Generation (Java Script)")
-						, 9 /* After 2D model */))
-				, new blocks::TrikV6BlocksFactory()
-				, {":/trikV6Qts/templates", ":/trikQts/templates"})
+	: TrikQtsGeneratorPluginBase(new robotModel::TrikV6GeneratorRobotModel(
+					"trikKit"
+					, "trikKitRobot"
+					, "TrikQtsGeneratorRobotModel"
+					, tr("Generation (Java Script)")
+					, 9 /* After 2D model */)
+			, new blocks::TrikV6BlocksFactory()
+			, {":/trikV6Qts/templates", ":/trikQts/templates"})
+	, mModel(static_cast<robotModel::TrikV6GeneratorRobotModel *>(robotModels().first()))
 {
 }
 
@@ -43,11 +43,4 @@ void TrikV6QtsGeneratorPlugin::init(const kitBase::KitPluginConfigurator &config
 {
 	TrikQtsGeneratorPluginBase::init(configurator);
 	addShellDevice(*mModel);
-}
-
-robotModel::TrikV6GeneratorRobotModel *TrikV6QtsGeneratorPlugin::initModel(
-		robotModel::TrikV6GeneratorRobotModel * const model)
-{
-	mModel = model;
-	return model;
 }

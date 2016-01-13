@@ -217,6 +217,12 @@ void SemanticAnalyzer::requestRecheck()
 	mRecheckNeeded = true;
 }
 
+bool SemanticAnalyzer::isGeneralization(const QSharedPointer<types::TypeExpression> &specific
+		, const QSharedPointer<types::TypeExpression> &general) const
+{
+	return generalizationsTable().isGeneralization(specific, general);
+}
+
 void SemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
 {
 	Q_UNUSED(node)
