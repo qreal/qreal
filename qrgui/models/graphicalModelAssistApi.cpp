@@ -73,7 +73,11 @@ Id GraphicalModelAssistApi::createElement(const Id &parent, const Id &type)
 
 	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	ElementInfo newElement{newElementId, Id(), Id(), parent, {{"name", elementFriendlyName}}, {}};
+
+	const int isEdge = mModelsAssistApi.editorManagerInterface()
+			.isNodeOrEdge(newElementId.editor(), newElementId.element());
+
+	ElementInfo newElement{newElementId, Id(), Id(), parent, {{"name", elementFriendlyName}}, {}, Id(), isEdge == -1};
 	mGraphicalModel.addElementToModel(newElement);
 	return newElementId;
 }

@@ -28,7 +28,7 @@ NodeInfo::NodeInfo(const Id &id
 		, const QMap<QString, QVariant> &graphicalProperties
 		, const Id &explosionTarget)
 	: ElementInfo(id, logicalId, graphicalParent, logicalParent
-			, logicalProperties, graphicalProperties, explosionTarget)
+			, logicalProperties, graphicalProperties, explosionTarget, false)
 {
 }
 

@@ -1183,18 +1183,16 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 
 NodeInfo NodeElement::data() const
 {
-	NodeInfo result;
-	result.id = id();
-	result.logicalId = logicalId();
-	result.logicalProperties = logicalProperties();
-	result.graphicalProperties = graphicalProperties();
-	// new element should not have references to links connected to original source element
-	result.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
-	result.graphicalProperties["position"] = mPos;
-	result.explosionTarget = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	NodeInfo result(id(), logicalId(), mLogicalAssistApi.parent(logicalId()), mGraphicalAssistApi.parent(id())
+			, {}, {}, mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId())
+	);
 
-	result.logicalParent = mLogicalAssistApi.parent(logicalId());
-	result.graphicalParent = mGraphicalAssistApi.parent(id());
+	result.setAllLogicalProperties(logicalProperties());
+	result.setAllGraphicalProperties(graphicalProperties());
+
+	// new element should not have references to links connected to original source element
+	result.setGraphicalProperty("links", IdListHelper::toVariant(IdList()));
+	result.setGraphicalProperty("position", mPos);
 
 	return result;
 }

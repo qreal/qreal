@@ -21,14 +21,31 @@ EdgeInfo::EdgeInfo()
 {
 }
 
+EdgeInfo::EdgeInfo(const Id &id
+		, const Id &logicalId
+		, const Id &logicalParent
+		, const Id &graphicalParent
+		, qreal portFrom
+		, qreal portTo
+		, const QPolygon &configuration
+		, int shapeType
+		)
+	: ElementInfo(id, logicalId, logicalParent, graphicalParent, {}, {}, Id(), true)
+	, mPortFrom(portFrom)
+	, mPortTo(portTo)
+	, mConfiguration(configuration)
+	, mShapeType(shapeType)
+{
+}
+
 QDataStream &EdgeInfo::serialize(QDataStream &out) const
 {
-	return ElementInfo::serialize(out) << srcId << dstId << portFrom << portTo << configuration << shapeType;
+	return ElementInfo::serialize(out) << mSrcId << mDstId << mPortFrom << mPortTo << mConfiguration << mShapeType;
 }
 
 QDataStream &EdgeInfo::deserialize(QDataStream &in)
 {
-	return ElementInfo::deserialize(in) >> srcId >> dstId >> portFrom >> portTo >> configuration >> shapeType;
+	return ElementInfo::deserialize(in) >> mSrcId >> mDstId >> mPortFrom >> mPortTo >> mConfiguration >> mShapeType;
 }
 
 bool EdgeInfo::equals(const ElementInfo &other) const
@@ -39,11 +56,11 @@ bool EdgeInfo::equals(const ElementInfo &other) const
 	}
 
 	return ElementInfo::equals(other)
-			&& srcId == otherEdge->srcId
-			&& dstId == otherEdge->dstId
-			&& portFrom == otherEdge->portFrom
-			&& portTo == otherEdge->portTo
-			&& configuration == otherEdge->configuration;
+			&& mSrcId == otherEdge->mSrcId
+			&& mDstId == otherEdge->mDstId
+			&& mPortFrom == otherEdge->mPortFrom
+			&& mPortTo == otherEdge->mPortTo
+			&& mConfiguration == otherEdge->mConfiguration;
 }
 
 QDataStream &operator<< (QDataStream &out, const EdgeInfo &data)
@@ -64,14 +81,34 @@ bool operator== (const EdgeInfo &first, const EdgeInfo &second)
 ElementInfo EdgeInfo::convertToSimpleInfo() const
 {
 	ElementInfo element(*this);
-	element.graphicalProperties["configuration"] = configuration;
-	element.graphicalProperties["linkShape"] = shapeType;
+	element.setGraphicalProperty("configuration", mConfiguration);
+	element.setGraphicalProperty("linkShape", mShapeType);
 
-	element.graphicalProperties["from"] = srcId.toVariant();
-	element.graphicalProperties["to"] = dstId.toVariant();
+	element.setGraphicalProperty("from", mSrcId.toVariant());
+	element.setGraphicalProperty("to", mDstId.toVariant());
 
-	element.graphicalProperties["fromPort"] = portFrom;
-	element.graphicalProperties["toPort"] = portTo;
+	element.setGraphicalProperty("fromPort", mPortFrom);
+	element.setGraphicalProperty("toPort", mPortTo);
 
 	return element;
+}
+
+const Id &EdgeInfo::srcId() const
+{
+	return mSrcId;
+}
+
+const Id &EdgeInfo::dstId() const
+{
+	return mDstId;
+}
+
+void EdgeInfo::setSrcId(const Id &id)
+{
+	mSrcId = id;
+}
+
+void EdgeInfo::setDstId(const Id &id)
+{
+	mDstId = id;
 }

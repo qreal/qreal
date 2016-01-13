@@ -27,8 +27,9 @@ CreateAndUpdatePatternCommand::CreateAndUpdatePatternCommand(EditorViewScene &sc
 	InsertIntoEdgeCommand * const insertCommand = new InsertIntoEdgeCommand(mScene, mModels
 			, mCreatedNodes[mPattern.inNode()]
 			, mCreatedNodes[mPattern.outNode()]
-			, pattern.graphicalParent, pattern.position()
-			, mPattern.size(), pattern.logicalId == pattern.id);
+			, pattern.graphicalParent(), pattern.position()
+			, mPattern.size(), pattern.logicalId() == pattern.id());
+
 	insertCommand->setUndoEnabled(false);
 	addPostAction(insertCommand);
 }

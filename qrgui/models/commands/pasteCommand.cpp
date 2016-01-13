@@ -72,11 +72,11 @@ QHash<qReal::Id, qReal::Id> PasteCommand::prepareNodes(models::GraphicalModelAss
 	// ids of their parents.
 	for (NodeInfo &node : nodesData) {
 		if (!mIsGraphicalCopy) {
-			copiedIds[graphicalApi.logicalId(node.id)] = node.newLogicalId();
+			copiedIds[graphicalApi.logicalId(node.id())] = node.newLogicalId();
 		}
 
 		// Do not move node.id into brackets (evaluation order).
-		const Id oldId = node.id;
+		const Id oldId = node.id();
 		copiedIds[oldId] = node.newId();
 	}
 
@@ -84,7 +84,7 @@ QHash<qReal::Id, qReal::Id> PasteCommand::prepareNodes(models::GraphicalModelAss
 	// then it will be child of new parent element, or not copied, then parent will be root diagram.
 	for (NodeInfo &node : nodesData) {
 		node.setPos(mIsGraphicalCopy ? newGraphicalPos(node, copiedIds, offset) : newPos(node, copiedIds, offset));
-		node.graphicalParent = newGraphicalParent(node, copiedIds);
+		node.setGraphicalParent(newGraphicalParent(node, copiedIds));
 	}
 
 	return copiedIds;
@@ -97,8 +97,8 @@ void PasteCommand::prepareEdge(EdgeInfo &edgeData, const QPointF &offset, const 
 		edgeData.newLogicalId();
 	}
 
-	edgeData.srcId = copiedIds.contains(edgeData.srcId) ? copiedIds[edgeData.srcId] : Id::rootId();
-	edgeData.dstId = copiedIds.contains(edgeData.dstId) ? copiedIds[edgeData.dstId] : Id::rootId();
+	edgeData.setSrcId(copiedIds.contains(edgeData.srcId()) ? copiedIds[edgeData.srcId()] : Id::rootId());
+	edgeData.setDstId(copiedIds.contains(edgeData.dstId()) ? copiedIds[edgeData.dstId()] : Id::rootId());
 	edgeData.setPos(edgeData.position() + offset);
 }
 
@@ -128,7 +128,9 @@ QPointF PasteCommand::newGraphicalPos(const NodeInfo &nodeData
 
 qReal::Id PasteCommand::newGraphicalParent(const NodeInfo &nodeData, const QHash<Id, Id> &copiedIds) const
 {
-	return copiedIds.contains(nodeData.graphicalParent) ? copiedIds[nodeData.graphicalParent] : mRootDiagramGraphicalId;
+	return copiedIds.contains(nodeData.graphicalParent())
+			? copiedIds[nodeData.graphicalParent()]
+			: mRootDiagramGraphicalId;
 }
 
 QPointF PasteCommand::vectorFromContainer(const NodeInfo &nodeData) const

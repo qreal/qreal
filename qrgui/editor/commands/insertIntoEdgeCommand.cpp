@@ -63,8 +63,8 @@ bool InsertIntoEdgeCommand::execute()
 {
 	if (mCreateCommand) {
 		mCreateCommand->redo();
-		mFirstId = mCreateCommand->results().first().id;
-		mLastId = mCreateCommand->results().first().id;
+		mFirstId = mCreateCommand->results().first().id();
+		mLastId = mCreateCommand->results().first().id();
 	}
 
 	EdgeElement *edge = mRemoveOldEdge ? mScene.getEdgeById(mOldEdge) : mScene.edgeForInsertion(mPos);
@@ -112,10 +112,10 @@ bool InsertIntoEdgeCommand::restoreState()
 
 		mRemoveOldEdge->undo();
 
-		mOldEdge = mRemoveOldEdge->results().first().id;
+		mOldEdge = mRemoveOldEdge->results().first().id();
 		EdgeElement *edge = mScene.getEdgeById(mOldEdge);
-		edge->setSrc(mScene.getEdgeById(mCreateFirst->results().first().id)->src());
-		edge->setDst(mScene.getEdgeById(mCreateSecond->results().first().id)->dst());
+		edge->setSrc(mScene.getEdgeById(mCreateFirst->results().first().id())->src());
+		edge->setDst(mScene.getEdgeById(mCreateSecond->results().first().id())->dst());
 		mScene.reConnectLink(edge);
 		mGraphicalAssistApi.setConfiguration(edge->id(), mConfiguration);
 
@@ -136,7 +136,7 @@ void InsertIntoEdgeCommand::initCommand(CreateElementsCommand *&command, const I
 		const QString name = mLogicalAssistApi.editorManagerInterface().friendlyName(type);
 		const Id newId = type.sameTypeId();
 		const ElementInfo element(newId, mIsLogical ? newId : Id(), mScene.rootItemId(), mParentId
-				, {{"name", name}}, {{"position", mPos}});
+				, {{"name", name}}, {{"position", mPos}}, Id(), false);
 		command = new CreateElementsCommand(mModels, {element});
 	}
 }
@@ -144,7 +144,7 @@ void InsertIntoEdgeCommand::initCommand(CreateElementsCommand *&command, const I
 void InsertIntoEdgeCommand::makeLink(CreateElementsCommand *command, NodeElement *src, NodeElement *dst)
 {
 	command->redo();
-	Id newLink = command->results().first().id;
+	Id newLink = command->results().first().id();
 	if (src) {
 		mGraphicalAssistApi.setFrom(newLink, src->id());
 	}

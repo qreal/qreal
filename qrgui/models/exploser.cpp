@@ -128,13 +128,14 @@ AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(const Id &s
 {
 	AbstractCommand *result = nullptr;
 	Id newElementId;
-	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element())) {
+	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element()) == 1) {
 		const QString friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
 		newElementId = targetType.sameTypeId();
-		const ElementInfo toCreate(newElementId, Id(), Id::rootId(), Id::rootId(), {{"name", friendlyTargetName}}, {});
+		const ElementInfo toCreate(newElementId, Id(), Id::rootId(), Id::rootId()
+				, {{"name", friendlyTargetName}}, {}, Id(), false);
 		result = new CreateElementsCommand(models, {toCreate});
 	} else {
-		const ElementInfo toCreate(targetType, Id(), Id::rootId(), Id::rootId(), {}, {});
+		const ElementInfo toCreate(targetType, Id(), Id::rootId(), Id::rootId(), {}, {}, Id(), true);
 		result = new CreatePatternCommand(models, {toCreate});
 		newElementId = static_cast<CreatePatternCommand *>(result)->rootId();
 	}

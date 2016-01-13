@@ -1015,31 +1015,27 @@ void EdgeElement::highlight(const QColor &color)
 
 EdgeInfo EdgeElement::data()
 {
-	EdgeInfo result;
-	result.id = id();
-	result.logicalId = logicalId();
+	EdgeInfo result(id()
+			, logicalId()
+			, mLogicalAssistApi.parent(logicalId())
+			, mGraphicalAssistApi.parent(id())
+			, mPortFrom
+			, mPortTo
+			, mGraphicalAssistApi.configuration(mId)
+			, mShapeType
+	);
 
-	result.logicalParent = mLogicalAssistApi.parent(logicalId());
-	result.graphicalParent = mGraphicalAssistApi.parent(id());
-
-	result.srcId = src() ? src()->id() : Id::rootId();
-	result.dstId = dst() ? dst()->id() : Id::rootId();
+	result.setSrcId(src() ? src()->id() : Id::rootId());
+	result.setDstId(dst() ? dst()->id() : Id::rootId());
 
 	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {
 		if (property != "from" && property != "to") {
-			result.logicalProperties[property] = properties[property];
+			result.setLogicalProperty(property, properties[property]);
 		}
 	}
 
-	result.portFrom = mPortFrom;
-	result.portTo = mPortTo;
-
-
-	result.configuration = mGraphicalAssistApi.configuration(mId);
-	result.graphicalProperties["position"] = mGraphicalAssistApi.position(mId);
-
-	result.shapeType = mShapeType;
+	result.setGraphicalProperty("position", mGraphicalAssistApi.position(mId));
 
 	return result;
 }

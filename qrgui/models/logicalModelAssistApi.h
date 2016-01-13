@@ -94,7 +94,6 @@ private:
 
 	details::ModelsAssistApi mModelsAssistApi;
 	details::LogicalModel &mLogicalModel;
-	const EditorManagerInterface &mEditorManager;
 };
 
 }

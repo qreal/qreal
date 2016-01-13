@@ -39,10 +39,10 @@ void CreateRemoveCommandImplementation::create()
 	for (const ElementInfo &element : mElements) {
 		// Graphical properties were already setted in GraphicalModel.
 		// Now for graphical elements logical properties should be setted.
-		const Id logicalId = mGraphicalApi.logicalId(element.id);
-		if (mLogicalApi.logicalRepoApi().exist(logicalId) && element.id != logicalId) {
-			for (const QString &property : element.logicalProperties.keys()) {
-				mLogicalApi.setPropertyByRoleName(logicalId, element.logicalProperties[property], property);
+		const Id logicalId = mGraphicalApi.logicalId(element.id());
+		if (mLogicalApi.logicalRepoApi().exist(logicalId) && element.id() != logicalId) {
+			for (const QString &property : element.logicalProperties()) {
+				mLogicalApi.setPropertyByRoleName(logicalId, element.logicalProperty(property), property);
 			}
 		}
 	}
@@ -71,27 +71,27 @@ const QList<ElementInfo> &CreateRemoveCommandImplementation::results() const
 
 void CreateRemoveCommandImplementation::removeOne(ElementInfo &element)
 {
-	if (element.id == element.logicalId) {
-		mLogicalApi.removeReferencesTo(element.id);
-		mLogicalApi.removeReferencesFrom(element.id);
-		mLogicalApi.removeElement(element.id);
-		mGraphicalApi.removeElement(element.id);
+	if (element.id() == element.logicalId()) {
+		mLogicalApi.removeReferencesTo(element.id());
+		mLogicalApi.removeReferencesFrom(element.id());
+		mLogicalApi.removeElement(element.id());
+		mGraphicalApi.removeElement(element.id());
 	} else {
-		element.graphicalProperties = mGraphicalApi.properties(element.id);
-		if (!mLogicalApi.logicalRepoApi().exist(element.logicalId)) {
-			mGraphicalApi.removeElement(element.id);
+		element.setAllGraphicalProperties(mGraphicalApi.properties(element.id()));
+		if (!mLogicalApi.logicalRepoApi().exist(element.logicalId())) {
+			mGraphicalApi.removeElement(element.id());
 			return;
 		}
 
-		element.logicalProperties = mGraphicalApi.properties(element.logicalId);
-		const IdList graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(element.logicalId);
-		mGraphicalApi.removeElement(element.id);
+		element.setAllLogicalProperties(mGraphicalApi.properties(element.logicalId()));
+		const IdList graphicalIds = mGraphicalApi.graphicalIdsByLogicalId(element.logicalId());
+		mGraphicalApi.removeElement(element.id());
 		// Checking that the only graphical part is our element itself
 		// (bijection between graphical and logical parts)
-		if (graphicalIds.count() == 1 && graphicalIds[0] == element.id) {
-			mLogicalApi.removeReferencesTo(element.logicalId);
-			mLogicalApi.removeReferencesFrom(element.logicalId);
-			mLogicalApi.removeElement(element.logicalId);
+		if (graphicalIds.count() == 1 && graphicalIds[0] == element.id()) {
+			mLogicalApi.removeReferencesTo(element.logicalId());
+			mLogicalApi.removeReferencesFrom(element.logicalId());
+			mLogicalApi.removeElement(element.logicalId());
 		}
 	}
 }

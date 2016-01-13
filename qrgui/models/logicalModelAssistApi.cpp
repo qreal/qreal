@@ -24,7 +24,6 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, const EditorManagerInterface &editorManagerInterface)
 	: mModelsAssistApi(logicalModel, editorManagerInterface)
 	, mLogicalModel(logicalModel)
-	, mEditorManager(editorManagerInterface)
 {
 	connect(&logicalModel, &LogicalModel::elementAdded, this, &LogicalModelAssistApi::elementAdded);
 }
@@ -55,7 +54,9 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &type)
 
 	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	ElementInfo newElement(newElementId, Id(), parent, Id(), {{"name", elementFriendlyName}}, {});
+	const bool isEdge = mModelsAssistApi.editorManagerInterface().isNodeOrEdge(
+			newElementId.editor(), newElementId.element()) == -1;
+	ElementInfo newElement(newElementId, Id(), parent, Id(), {{"name", elementFriendlyName}}, {}, Id(), isEdge);
 	mLogicalModel.addElementToModel(newElement);
 	return newElementId;
 }
@@ -198,7 +199,7 @@ void LogicalModelAssistApi::removeReferencesTo(const Id &id)
 
 void LogicalModelAssistApi::removeReferencesFrom(const Id &id)
 {
-	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
+	QStringList referenceProperties = mModelsAssistApi.editorManagerInterface().referenceProperties(id.type());
 
 	foreach (const QString &property, referenceProperties) {
 		QStringList propertyValue = mLogicalModel.api().property(id, property).toString().split(','
@@ -212,7 +213,7 @@ void LogicalModelAssistApi::removeReferencesFrom(const Id &id)
 
 void LogicalModelAssistApi::removeReference(const Id &id, const Id &reference)
 {
-	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
+	QStringList referenceProperties = mModelsAssistApi.editorManagerInterface().referenceProperties(id.type());
 
 	foreach (const QString &propertyName, referenceProperties) {
 		QStringList stringData = mLogicalModel.api().property(id, propertyName).toString().split(','

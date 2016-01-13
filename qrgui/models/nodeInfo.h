@@ -27,13 +27,14 @@ class QRGUI_MODELS_EXPORT NodeInfo : public ElementInfo
 {
 public:
 	NodeInfo();
+
 	NodeInfo(const Id &id
 			, const Id &logicalId
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, const QMap<QString, QVariant> &logicalProperties
 			, const QMap<QString, QVariant> &graphicalProperties
-			, const Id &explosion);
+			, const Id &explosionTarget);
 };
 
 }

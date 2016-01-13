@@ -151,9 +151,9 @@ void RemoveElementsCommand::appendExplosionsCommands(const Id &logicalId
 void RemoveElementsCommand::appendHangingEdges(QList<ElementInfo> &nodes, QList<ElementInfo> &edges)
 {
 	for (const ElementInfo &node : nodes) {
-		const IdList linksOfCurrentElement = mLogicalApi.logicalRepoApi().links(node.id);
+		const IdList linksOfCurrentElement = mLogicalApi.logicalRepoApi().links(node.id());
 		for (const Id &link : linksOfCurrentElement) {
-			const Id otherEntityOfLink = mLogicalApi.logicalRepoApi().otherEntityFromLink(link, node.id);
+			const Id otherEntityOfLink = mLogicalApi.logicalRepoApi().otherEntityFromLink(link, node.id());
 			const bool isHanging = otherEntityOfLink == Id::rootId() || contains(nodes, otherEntityOfLink);
 			if (isHanging && !contains(edges, link)) {
 				appendLogicalDelete(mGraphicalApi.logicalId(link), nodes, edges);
@@ -165,7 +165,7 @@ void RemoveElementsCommand::appendHangingEdges(QList<ElementInfo> &nodes, QList<
 bool RemoveElementsCommand::contains(QList<qReal::ElementInfo> &infos, const qReal::Id &id) const
 {
 	for (const ElementInfo &info : infos) {
-		if (info.id == id || info.logicalId == id) {
+		if (info.id() == id || info.logicalId() == id) {
 			return true;
 		}
 	}

@@ -21,7 +21,6 @@
 using namespace qReal;
 
 ElementInfo::ElementInfo()
-	: mIsEdge(false)
 {
 }
 
@@ -35,10 +34,10 @@ ElementInfo::ElementInfo(const Id &id
 		, const QString &name
 		, const Id &explosionTarget
 		, bool isEdge)
-	: id(id)
-	, logicalId(logicalId)
-	, logicalProperties({{"name", name}})
-	, explosionTarget(explosionTarget)
+	: mId(id)
+	, mLogicalId(logicalId)
+	, mLogicalProperties({{"name", name}})
+	, mExplosionTarget(explosionTarget)
 	, mIsEdge(isEdge)
 {
 }
@@ -51,13 +50,13 @@ ElementInfo::ElementInfo(const Id &id
 		, const QMap<QString, QVariant> &graphicalProperties
 		, const Id &explosionTarget
 		, bool isEdge)
-	: id(id)
-	, logicalId(logicalId)
-	, logicalParent(logicalParent)
-	, graphicalParent(graphicalParent)
-	, logicalProperties(logicalProperties)
-	, graphicalProperties(graphicalProperties)
-	, explosionTarget(explosionTarget)
+	: mId(id)
+	, mLogicalId(logicalId)
+	, mLogicalParent(logicalParent)
+	, mGraphicalParent(graphicalParent)
+	, mLogicalProperties(logicalProperties)
+	, mGraphicalProperties(graphicalProperties)
+	, mExplosionTarget(explosionTarget)
 	, mIsEdge(isEdge)
 {
 }
@@ -68,25 +67,25 @@ ElementInfo::~ElementInfo()
 
 QDataStream &ElementInfo::serialize(QDataStream &out) const
 {
-	return out << id << logicalId << logicalParent << graphicalParent
-			<< logicalProperties << graphicalProperties << explosionTarget << mIsEdge;
+	return out << mId << mLogicalId << mLogicalParent << mGraphicalParent
+			<< mLogicalProperties << mGraphicalProperties << mExplosionTarget << mIsEdge;
 }
 
 QDataStream &ElementInfo::deserialize(QDataStream &in)
 {
-	return in >> id >> logicalId >> logicalParent >> graphicalParent
-			>> logicalProperties >> graphicalProperties >> explosionTarget >> mIsEdge;
+	return in >> mId >> mLogicalId >> mLogicalParent >> mGraphicalParent
+			>> mLogicalProperties >> mGraphicalProperties >> mExplosionTarget >> mIsEdge;
 }
 
 bool ElementInfo::equals(const ElementInfo &other) const
 {
-	return id == other.id
-			&& logicalId == other.logicalId
-			&& logicalParent == other.logicalParent
-			&& graphicalParent == other.graphicalParent
-			&& logicalProperties == other.logicalProperties
-			&& graphicalProperties == other.graphicalProperties
-			&& explosionTarget == other.explosionTarget
+	return mId == other.mId
+			&& mLogicalId == other.mLogicalId
+			&& mLogicalParent == other.mLogicalParent
+			&& mGraphicalParent == other.mGraphicalParent
+			&& mLogicalProperties == other.mLogicalProperties
+			&& mGraphicalProperties == other.mGraphicalProperties
+			&& mExplosionTarget == other.mExplosionTarget
 			&& mIsEdge == other.mIsEdge;
 }
 
@@ -117,40 +116,120 @@ bool ElementInfo::isEdge() const
 
 Id ElementInfo::parent() const
 {
-	return logicalId == id ? logicalParent : graphicalParent;
+	return mLogicalId == mId ? mLogicalParent : mGraphicalParent;
 }
 
 QString ElementInfo::name() const
 {
-	return logicalProperties["name"].toString();
+	return mLogicalProperties["name"].toString();
 }
 
 QPointF ElementInfo::position() const
 {
-	return graphicalProperties["position"].toPointF();
+	return mGraphicalProperties["position"].toPointF();
 }
 
 Id ElementInfo::newId()
 {
-	if (id.isNull() && id == Id::rootId()) {
-		return id;
+	if (mId.isNull() && mId == Id::rootId()) {
+		return mId;
 	}
 
-	return (id = id.sameTypeId());
+	return (mId = mId.sameTypeId());
 }
 
 Id ElementInfo::newLogicalId()
 {
-	if (id.isNull() && id == Id::rootId()) {
-		return logicalId;
+	if (mId.isNull() && mId == Id::rootId()) {
+		return mLogicalId;
 	}
 
-	return (logicalId = id.sameTypeId());
+	return (mLogicalId = mId.sameTypeId());
 }
 
 void ElementInfo::setPos(const QPointF &position)
 {
-	graphicalProperties["position"] = position;
+	mGraphicalProperties["position"] = position;
+}
+
+void ElementInfo::setGraphicalProperty(const QString &propertyName, const QVariant &propertyValue)
+{
+	mGraphicalProperties[propertyName] = propertyValue;
+}
+
+const Id &ElementInfo::explosionTarget() const
+{
+	return mExplosionTarget;
+}
+
+const Id &ElementInfo::id() const
+{
+	return mId;
+}
+
+const Id &ElementInfo::logicalId() const
+{
+	return mLogicalId;
+}
+
+const Id &ElementInfo::logicalParent() const
+{
+	return mLogicalParent;
+}
+
+void ElementInfo::setLogicalId(const Id &id)
+{
+	mLogicalId = id;
+}
+
+void ElementInfo::setLogicalParent(const Id &parent)
+{
+	mLogicalParent = parent;
+}
+
+const Id &ElementInfo::graphicalParent() const
+{
+	return mGraphicalParent;
+}
+
+void ElementInfo::setGraphicalParent(const Id &parent)
+{
+	mGraphicalParent = parent;
+}
+
+const QList<QString> ElementInfo::logicalProperties() const
+{
+	return mLogicalProperties.keys();
+}
+
+QVariant ElementInfo::logicalProperty(const QString &propertyName) const
+{
+	return mLogicalProperties[propertyName];
+}
+
+void ElementInfo::setLogicalProperty(const QString &propertyName, const QVariant &propertyValue)
+{
+	mLogicalProperties[propertyName] = propertyValue;
+}
+
+void ElementInfo::setAllLogicalProperties(const QMap<QString, QVariant> &logicalProperties)
+{
+	mLogicalProperties = logicalProperties;
+}
+
+const QList<QString> ElementInfo::graphicalProperties() const
+{
+	return mGraphicalProperties.keys();
+}
+
+QVariant ElementInfo::graphicalProperty(const QString &propertyName) const
+{
+	return mGraphicalProperties[propertyName];
+}
+
+void ElementInfo::setAllGraphicalProperties(const QMap<QString, QVariant> &graphicalProperties)
+{
+	mGraphicalProperties = graphicalProperties;
 }
 
 QDataStream &operator<< (QDataStream &out, const ElementInfo &data)

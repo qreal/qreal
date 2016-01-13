@@ -28,14 +28,15 @@ class QRGUI_MODELS_EXPORT EdgeInfo : public ElementInfo
 public:
 	EdgeInfo();
 
-	Id srcId;
-	Id dstId;
-
-	qreal portFrom;
-	qreal portTo;
-
-	QPolygon configuration;
-	int shapeType;
+	EdgeInfo(const Id &id
+			, const Id &logicalId
+			, const Id &logicalParent
+			, const Id &graphicalParent
+			, qreal portFrom
+			, qreal portTo
+			, const QPolygon &configuration
+			, int shapeType
+	);
 
 	QDataStream &serialize(QDataStream &out) const override;
 	QDataStream &deserialize(QDataStream &in) override;
@@ -44,6 +45,28 @@ public:
 
 	/// Places fields into graphical and logical properties map, returns new ElementInfo instance.
 	ElementInfo convertToSimpleInfo() const;
+
+	/// Returns Id of a source of an edge.
+	const Id &srcId() const;
+
+	/// Returns Id of a destination of an edge.
+	const Id &dstId() const;
+
+	/// Sets Id of a source of an edge.
+	void setSrcId(const Id &id);
+
+	/// Sets Id of a destination of an edge.
+	void setDstId(const Id &id);
+
+private:
+	Id mSrcId;
+	Id mDstId;
+
+	qreal mPortFrom = 0.0;
+	qreal mPortTo = 0.0;
+
+	QPolygon mConfiguration;
+	int mShapeType = 0;
 };
 
 }

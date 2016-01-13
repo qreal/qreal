@@ -32,7 +32,7 @@ qReal::Id CreatePatternCommand::rootId() const
 QList<qReal::ElementInfo> CreatePatternCommand::parse(models::LogicalModelAssistApi &logicalApi
 		, qReal::models::GraphicalModelAssistApi &graphicalApi, const qReal::ElementInfo &info)
 {
-	mPattern = graphicalApi.editorManagerInterface().getPatternByName(info.id.element());
+	mPattern = graphicalApi.editorManagerInterface().getPatternByName(info.id().element());
 	QList<qReal::ElementInfo> result;
 	const QPointF size = mPattern.size();
 
@@ -41,7 +41,7 @@ QList<qReal::ElementInfo> CreatePatternCommand::parse(models::LogicalModelAssist
 	QList<GroupNode> toCreate = mPattern.nodes();
 	QSet<QString> consideredNodes;
 	// If group node has no parent then it has 'global' one
-	mCreatedNodes[QString()] = info.graphicalParent;
+	mCreatedNodes[QString()] = info.graphicalParent();
 	bool somethingChangedThisIteration = true;
 	while (!toCreate.isEmpty() && somethingChangedThisIteration) {
 		somethingChangedThisIteration = false;
@@ -50,7 +50,7 @@ QList<qReal::ElementInfo> CreatePatternCommand::parse(models::LogicalModelAssist
 				continue;
 			}
 
-			const Id element(info.id.editor(), info.id.diagram(), node.type, QUuid::createUuid().toString());
+			const Id element(info.id().editor(), info.id().diagram(), node.type, QUuid::createUuid().toString());
 			mCreatedNodes[node.id] = element;
 			if (node.id == mPattern.rootNode()) {
 				mRootId = element;
@@ -59,9 +59,10 @@ QList<qReal::ElementInfo> CreatePatternCommand::parse(models::LogicalModelAssist
 			const QPointF globalPosition = info.position();
 			const QPointF nodePos(globalPosition.x() - size.x() / 2 + node.position.x()
 					, globalPosition.y() + node.position.y());
-			const ElementInfo nodeInfo(element, Id(), info.logicalParent, mCreatedNodes[node.parent]
+			const ElementInfo nodeInfo(element, Id(), info.logicalParent(), mCreatedNodes[node.parent]
 					, {{"name", logicalApi.editorManagerInterface().friendlyName(element.type())}}
-					, {{"position", nodePos}});
+					, {{"position", nodePos}}, Id(), false);
+
 			result << nodeInfo;
 			consideredNodes << node.id;
 			toCreate.removeAll(node);
@@ -70,13 +71,14 @@ QList<qReal::ElementInfo> CreatePatternCommand::parse(models::LogicalModelAssist
 	}
 
 	if (!toCreate.isEmpty()) {
-		qWarning() << "Warning: inconsistent pattern" << info.id.type();
+		qWarning() << "Warning: inconsistent pattern" << info.id().type();
 	}
 
 	for (const GroupEdge &edge : mPattern.edges()) {
-		const Id element(info.id.editor(), info.id.diagram(), edge.type, QUuid::createUuid().toString());
-		const ElementInfo edgeInfo(element, Id(), info.logicalParent, info.graphicalParent
-				, {{"name", logicalApi.editorManagerInterface().friendlyName(element.type())}}, {});
+		const Id element(info.id().editor(), info.id().diagram(), edge.type, QUuid::createUuid().toString());
+		const ElementInfo edgeInfo(element, Id(), info.logicalParent(), info.graphicalParent()
+				, {{"name", logicalApi.editorManagerInterface().friendlyName(element.type())}}, {}, Id(), true);
+
 		result << edgeInfo;
 		mCreatedEdges << element;
 	}

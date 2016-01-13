@@ -173,12 +173,13 @@ bool AbstractModel::dropMimeData(const QMimeData *data, Qt::DropAction action, i
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
 
 	ElementInfo element = ElementInfo::fromMimeData(data);
-	Q_ASSERT(element.id.idSize() == 4);
+	Q_ASSERT(element.id().idSize() == 4);
 
-	if (mModelItems.contains(element.id)) {
-		modelAssistInterface()->changeParent(element.id, parentItem->id());
+	if (mModelItems.contains(element.id())) {
+		modelAssistInterface()->changeParent(element.id(), parentItem->id());
 	} else {
-		element.graphicalParent = element.logicalParent = parentItem->id();
+		element.setGraphicalParent(parentItem->id());
+		element.setLogicalParent(parentItem->id());
 		modelAssistInterface()->createElements(QList<ElementInfo>() << element);
 	}
 

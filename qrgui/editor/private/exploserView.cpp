@@ -168,7 +168,7 @@ void ExploserView::handleDoubleClick(const Id &id)
 					mExploser.createElementWithIncomingExplosionCommand(
 							id, diagramType, mModels);
 			mController.executeGlobal(createCommand);
-			outgoingLink = static_cast<CreateElementsCommand *>(createCommand)->results().first().id;
+			outgoingLink = static_cast<CreateElementsCommand *>(createCommand)->results().first().id();
 		}
 	}
 	goTo(outgoingLink);

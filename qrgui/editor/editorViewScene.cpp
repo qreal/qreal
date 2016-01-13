@@ -159,7 +159,7 @@ void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 	for (QGraphicsItem *item : elements) {
 		NodeElement *el = dynamic_cast<NodeElement*>(item);
 		if (el) {
-			if (canBeContainedBy(el->id(), element.id)) {
+			if (canBeContainedBy(el->id(), element.id())) {
 				node = el;
 				break;
 			}
@@ -363,18 +363,19 @@ Id EditorViewScene::createElement(const QString &str)
 	return mLastCreatedFromLinker;
 }
 
-Id EditorViewScene::createElement(const QString &str
+Id EditorViewScene::createElement(const QString &idString
 		, const QPointF &scenePos
-		, CreateElementsCommand **createCommand
+		, CreateElementsCommand **createCommandPointer
 		, bool executeImmediately)
 {
-	const Id typeId = Id::loadFromString(str);
+	const Id typeId = Id::loadFromString(idString);
 	const Id objectId = typeId.sameTypeId();
 	const QString name = mEditorManager.friendlyName(typeId);
 
-	const QMimeData *mimeData = ElementInfo(objectId, Id(), name).mimeData();
-	createElement(mimeData, scenePos, createCommand, executeImmediately);
-	delete mimeData;
+	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.editor(), typeId.element()) == -1;
+
+	const ElementInfo elementInfo(objectId, Id(), name, Id(), isEdge);
+	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);
 
 	return objectId;
 }
@@ -384,22 +385,33 @@ void EditorViewScene::createElement(const QMimeData *mimeData
 		, CreateElementsCommand **createCommandPointer
 		, bool executeImmediately)
 {
-	ElementInfo element = ElementInfo::fromMimeData(mimeData);
-	if (!mEditorManager.hasElement(element.id.type())) {
+	ElementInfo elementInfo = ElementInfo::fromMimeData(mimeData);
+	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);
+}
+
+void EditorViewScene::createElement(const ElementInfo &elementInfo
+		, const QPointF &scenePos
+		, CreateElementsCommand **createCommandPointer
+		, bool executeImmediately)
+{
+	ElementInfo innerElementInfo = elementInfo;
+
+	if (!mEditorManager.hasElement(innerElementInfo.id().type())) {
 		return;
 	}
 
-	QLOG_TRACE() << "Created element, id = " << element.id << ", position = " << scenePos;
+	QLOG_TRACE() << "Created element, id = " << innerElementInfo.id() << ", position = " << scenePos;
 
-	if (mEditorManager.getPatternNames().contains(element.id.element())) {
-		element.setPos(scenePos);
-		element.graphicalParent = element.logicalParent = mRootId;
-		if (element.logicalId.isNull()) {
-			element.logicalId = mModels.graphicalModelAssistApi().logicalId(element.id);
+	if (mEditorManager.getPatternNames().contains(innerElementInfo.id().element())) {
+		innerElementInfo.setPos(scenePos);
+		innerElementInfo.setGraphicalParent(mRootId);
+		innerElementInfo.setLogicalParent(mRootId);
+		if (innerElementInfo.logicalId().isNull()) {
+			innerElementInfo.setLogicalId(mModels.graphicalModelAssistApi().logicalId(innerElementInfo.id()));
 		}
 
 		CreateAndUpdatePatternCommand * const createGroupCommand = new CreateAndUpdatePatternCommand(
-				*this, mModels, {element});
+				*this, mModels, {innerElementInfo});
 		if (executeImmediately) {
 			mController.execute(createGroupCommand);
 		}
@@ -407,10 +419,10 @@ void EditorViewScene::createElement(const QMimeData *mimeData
 		const NodeElement *newParent = nullptr;
 
 		// If element is node then we should look for parent for him
-		if (!element.isEdge()) {
+		if (!innerElementInfo.isEdge()) {
 			for (const QGraphicsItem *item : items(scenePos)) {
 				const NodeElement *nodeElement = dynamic_cast<const NodeElement *>(item);
-				if (nodeElement && canBeContainedBy(nodeElement->id(), element.id)) {
+				if (nodeElement && canBeContainedBy(nodeElement->id(), innerElementInfo.id())) {
 					newParent = nodeElement;
 					break;
 				}
@@ -420,16 +432,16 @@ void EditorViewScene::createElement(const QMimeData *mimeData
 		const QPointF position = newParent ? newParent->mapFromScene(scenePos) : scenePos;
 		const Id parentId = newParent ? newParent->id() : mRootId;
 
-		element.logicalParent = mRootId;
-		element.graphicalParent = parentId;
-		element.setPos(position);
+		innerElementInfo.setLogicalParent(mRootId);
+		innerElementInfo.setGraphicalParent(parentId);
+		innerElementInfo.setPos(position);
 
-		createSingleElement(element, createCommandPointer, executeImmediately);
+		createSingleElement(innerElementInfo, createCommandPointer, executeImmediately);
 
 		if (newParent) {
 			Element *nextNode = newParent->getPlaceholderNextElement();
 			if (nextNode) {
-				mModels.graphicalModelAssistApi().stackBefore(element.id, nextNode->id());
+				mModels.graphicalModelAssistApi().stackBefore(innerElementInfo.id(), nextNode->id());
 			}
 		}
 	}
@@ -448,10 +460,10 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 		if (element.isEdge()) {
 			mController.execute(createCommand);
 		} else {
-			const QSize size = mEditorManager.iconSize(element.id);
+			const QSize size = mEditorManager.iconSize(element.id());
 			commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
 					*this, mModels, Id(), Id(), element.parent(), element.position()
-					, QPointF(size.width(), size.height()), element.id == element.logicalId, createCommand);
+					, QPointF(size.width(), size.height()), element.id() == element.logicalId(), createCommand);
 			mController.execute(insertCommand);
 		}
 	}
@@ -891,7 +903,7 @@ void EditorViewScene::updateMovedElements()
 void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &child)
 {
 	QList<PossibleEdge> edges = parent->getPossibleEdges();
-	QList<QString> allLinks;
+	QList<Id> allLinks;
 	for (const PossibleEdge &possibleEdge : edges) {
 		if (possibleEdge.first.second.editor() == child.id().editor()
 				&& possibleEdge.first.second.diagram() == child.id().diagram()
@@ -900,7 +912,7 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
 						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
 		{
-			allLinks.push_back(possibleEdge.second.second.toString());
+			allLinks.push_back(possibleEdge.second.second);
 		}
 	}
 
@@ -913,29 +925,29 @@ void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &c
 	}
 }
 
-void EditorViewScene::createEdgeMenu(const QList<QString> &ids)
+void EditorViewScene::createEdgeMenu(const QList<Id> &ids)
 {
-	QMenu *edgeMenu = new QMenu();
-	QSignalMapper *menuSignalMapper = new QSignalMapper(this);
-	for (QString id : ids) {
-		QAction *element = new QAction(mEditorManager.friendlyName(Id::loadFromString(id)), edgeMenu);
+	QScopedPointer<QMenu> edgeMenu(new QMenu());
+	for (const Id &id : ids) {
+		QAction *element = new QAction(mEditorManager.friendlyName(id), edgeMenu.data());
 		edgeMenu->addAction(element);
-		QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
-		menuSignalMapper->setMapping(element, id);
+		QObject::connect(element, &QAction::triggered, [this, id](){
+			createEdge(id);
+		});
 	}
 
-	QObject::connect(menuSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(createEdge(QString)));
 	edgeMenu->exec(QCursor::pos());
 }
 
-void EditorViewScene::createEdge(const QString &idStr)
+void EditorViewScene::createEdge(const Id &typeId)
 {
 	const QPointF start = mMouseMovementManager->firstPoint();
 	const QPointF end = mMouseMovementManager->lastPoint();
-	CreateElementsCommand *createCommand;
-	const Id id = createElement(idStr, start, &createCommand);
-	Element *edgeElement = getElem(id);
-	EdgeElement *edge = dynamic_cast <EdgeElement *>(edgeElement);
+	CreateElementsCommand *createCommand = nullptr;
+	const Id edgeId = createElement(typeId.toString(), start, &createCommand);
+	Element *edgeElement = getElem(edgeId);
+	EdgeElement *edge = dynamic_cast<EdgeElement *>(edgeElement);
+	Q_ASSERT(edge);
 	edge->setSrc(nullptr);
 	edge->setDst(nullptr);
 
@@ -954,7 +966,7 @@ void EditorViewScene::createEdge(const QString &idStr)
 		edge->dst()->arrangeLinks();
 		edge->dst()->adjustLinks();
 	}
-	ReshapeEdgeCommand *reshapeEdgeCommand = new ReshapeEdgeCommand(this, id);
+	ReshapeEdgeCommand *reshapeEdgeCommand = new ReshapeEdgeCommand(this, edgeId);
 	reshapeEdgeCommand->startTracking();
 	edge->layOut();
 	reshapeEdgeCommand->stopTracking();

@@ -42,8 +42,8 @@ void CreateElementsCommand::setElements(const QList<ElementInfo> &elements)
 void CreateElementsCommand::addExplosionCommands(const QList<qReal::ElementInfo> &elements)
 {
 	for (const ElementInfo &element : elements) {
-		if (element.explosionTarget.isNull() || mGraphicalApi.graphicalRepoApi().exist(element.explosionTarget)) {
-			mExploser.handleCreationWithExplosion(this, mModels, element.id, element.explosionTarget);
+		if (element.explosionTarget().isNull() || mGraphicalApi.graphicalRepoApi().exist(element.explosionTarget())) {
+			mExploser.handleCreationWithExplosion(this, mModels, element.id(), element.explosionTarget());
 		}
 	}
 }

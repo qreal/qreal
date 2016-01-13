@@ -54,10 +54,11 @@ public:
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
 			, bool canBeConnected, qReal::commands::CreateElementsCommand **elementCommand = 0);
+
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
-	virtual Id createElement(const QString &
+	virtual Id createElement(const QString &idString
 			, const QPointF &scenePos
-			, qReal::commands::CreateElementsCommand **createCommand = 0
+			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
 			, bool executeImmediately = true);
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
@@ -106,8 +107,10 @@ public:
 			, bool executeImmediately = true);
 
 	EdgeElement *edgeForInsertion(const QPointF &scenePos);
+
 	void resolveOverlaps(NodeElement* node, const QPointF &scenePos, const QPointF &shift
 			, QMap<Id, QPointF> &shifting) const;
+
 	void returnElementsToOldPositions(QMap<Id, QPointF> const &shifting) const;
 
 	QList<NodeElement*> getCloseNodes(NodeElement* node) const;
@@ -192,7 +195,7 @@ protected:
 	virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
 private slots:
-	void createEdge(const QString &id);
+	void createEdge(const Id &id);
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
@@ -206,7 +209,7 @@ private:
 
 	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
 	void drawGesture();
-	void createEdgeMenu(QList<QString> const &ids);
+	void createEdgeMenu(const QList<Id> &ids);
 
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene
 	/// (to keep ability of scene rect to grow automatically)
@@ -226,6 +229,11 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
+	void createElement(const ElementInfo &elementInfo
+			, const QPointF &scenePos
+			, qReal::commands::CreateElementsCommand **createCommandPointer
+			, bool executeImmediately);
+
 	const models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
@@ -233,6 +241,8 @@ private:
 	const Id mRootId;
 
 	Id mLastCreatedFromLinker;
+
+	/// Does not have ownership.
 	qReal::commands::CreateElementsCommand *mLastCreatedFromLinkerCommand;
 
 	ClipboardHandler mClipboardHandler;

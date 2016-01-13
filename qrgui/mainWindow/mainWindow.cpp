@@ -1375,7 +1375,7 @@ void MainWindow::createDiagram(const QString &idString)
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
-		const ElementInfo toCreate(id, Id(), Id::rootId(), Id::rootId(), {}, {});
+		const ElementInfo toCreate(id, Id(), Id::rootId(), Id::rootId(), {}, {}, Id(), false);
 		CreatePatternCommand createGroupCommand(models(), {toCreate});
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();

@@ -31,20 +31,24 @@ class QRGUI_MODELS_EXPORT ElementInfo
 {
 public:
 	ElementInfo();
+
 	explicit ElementInfo(bool isEdge);
+
 	ElementInfo(const Id &id
 			, const Id &logicalId
 			, const QString &name
-			, const Id &explosionTarget = Id()
-			, bool isEdge = false);
+			, const Id &explosionTarget
+			, bool isEdge);
+
 	ElementInfo(const Id &id
 			, const Id &logicalId
 			, const Id &logicalParent
 			, const Id &graphicalParent
 			, const QMap<QString, QVariant> &logicalProperties
 			, const QMap<QString, QVariant> &graphicalProperties
-			, const Id &explosionTarget = Id()
-			, bool isEdge = false);
+			, const Id &explosionTarget
+			, bool isEdge);
+
 	virtual ~ElementInfo();
 
 	/// Saves element data into the given byte stream, it can be then read with deserialize().
@@ -89,29 +93,79 @@ public:
 	/// Sets to the \a position graphical property stored by key "position".
 	void setPos(const QPointF &position);
 
-	/// An id of this element, can be graphical or logical. In second case id == logicalId must be preserved.
-	Id id;
+	/// Returns target of the explosion (to which expands this element).
+	const Id &explosionTarget() const;
 
-	/// An id of this element in logical model.
-	Id logicalId;
+	/// Id of this element.
+	const Id &id() const;
 
-	/// Logical parent id of this element. May be empty if graphical instance is described.
-	Id logicalParent;
+	/// Logical Id of this element.
+	const Id &logicalId() const;
 
-	/// Graphical parent id of this element. May be empty if logical instance is described.
-	Id graphicalParent;
+	/// Sets logical Id of this element.
+	void setLogicalId(const Id &id);
 
-	/// Known properties of logical instance of the element. Must have "name" property.
-	QMap<QString, QVariant> logicalProperties;
+	/// Logical parent of this element.
+	const Id &logicalParent() const;
 
-	/// Known properties of graphical instance of the element. Can have position property setted explicitly.
-	QMap<QString, QVariant> graphicalProperties;
+	/// Sets logical parent of this element.
+	void setLogicalParent(const Id &parent);
 
-	/// Logical id of element that opened by editor when this element is double-clicked.
-	Id explosionTarget;
+	/// Graphical parent of this element.
+	const Id &graphicalParent() const;
+
+	/// Sets graphical parent of this element.
+	void setGraphicalParent(const Id &parent);
+
+	/// List of all logical property names of this element.
+	const QList<QString> logicalProperties() const;
+
+	/// Gets logical property with given name.
+	QVariant logicalProperty(const QString &propertyName) const;
+
+	/// Sets logical property with given name to given value.
+	void setLogicalProperty(const QString &propertyName, const QVariant &propertyValue);
+
+	/// Sets all logical properties of this element to the contents of the given map. All previous properties
+	/// are erased.
+	void setAllLogicalProperties(const QMap<QString, QVariant> &logicalProperties);
+
+	/// List of all graphical property names of this element.
+	const QList<QString> graphicalProperties() const;
+
+	/// Gets graphical property with given name.
+	QVariant graphicalProperty(const QString &propertyName) const;
+
+	/// Sets graphical property with given name of the element.
+	void setGraphicalProperty(const QString &propertyName, const QVariant &propertyValue);
+
+	/// Sets all graphical properties of this element to the contents of the given map. All previous properties
+	/// are erased.
+	void setAllGraphicalProperties(const QMap<QString, QVariant> &graphicalProperties);
 
 private:
-	bool mIsEdge;
+	/// An id of this element, can be graphical or logical. In second case id == logicalId must be preserved.
+	Id mId;
+
+	/// An id of this element in logical model.
+	Id mLogicalId;
+
+	/// Logical parent id of this element. May be empty if graphical instance is described.
+	Id mLogicalParent;
+
+	/// Graphical parent id of this element. May be empty if logical instance is described.
+	Id mGraphicalParent;
+
+	/// Known properties of logical instance of the element. Must have "name" property.
+	QMap<QString, QVariant> mLogicalProperties;
+
+	/// Known properties of graphical instance of the element. Can have position property setted explicitly.
+	QMap<QString, QVariant> mGraphicalProperties;
+
+	/// Logical id of element that opened by editor when this element is double-clicked.
+	Id mExplosionTarget;
+
+	bool mIsEdge = false;
 };
 
 }
