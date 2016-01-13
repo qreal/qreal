@@ -8,7 +8,8 @@ using namespace constraints::generator::generatorParts;
 using namespace qReal;
 using namespace qrRepo;
 
-QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(const Id &constraintElement
+QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(
+		const Id &constraintElement
 		, const QString &elementName
 		, const QString &resultName
 		, const int depth
@@ -22,7 +23,8 @@ QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(const Id &co
 			, countsOfConstraintElementsInOneConstraint, errorReporter);
 }
 
-QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(const Id &constraint
+QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(
+		const Id &constraint
 		, IdList &usedElements
 		, const QString &elementName
 		, const int depth

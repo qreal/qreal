@@ -9,6 +9,7 @@ namespace constraints {
 namespace generator {
 namespace generatorParts {
 
+/// Methods in this class generate concrete expressions (for example, conjunction or disjunction).
 class GeneratorForExpressions
 {
 public:

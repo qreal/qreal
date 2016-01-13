@@ -60,7 +60,8 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 private:
-	static QPair<QString, QList<QString> > countConstraintForListOfElements(const qReal::Id &constraint
+	static QPair<QString, QList<QString> > countConstraintForListOfElements(
+			const qReal::Id &constraint
 			, const QString &elementName
 			, const QString &resElementName
 			, const QString &functionName

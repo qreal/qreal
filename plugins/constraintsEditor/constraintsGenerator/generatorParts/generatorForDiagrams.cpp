@@ -123,6 +123,7 @@ QPair<bool, QString> GeneratorForDiagrams::handleConstraintsSelection(
 		} else {
 			resultString += "	if (true) {\n";
 		}
+
 		return QPair<bool, QString>(neededSelectionByProperty, resultString);
 	} else {
 		return QPair<bool, QString>(false, "");

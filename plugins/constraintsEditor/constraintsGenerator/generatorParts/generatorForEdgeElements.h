@@ -15,7 +15,8 @@ namespace generatorParts {
 class GeneratorForEdgeElements
 {
 public:
-	static QString countRealConstraintForEdgeElement(const qReal::Id &constraintElement
+	static QString countRealConstraintForEdgeElement(
+			const qReal::Id &constraintElement
 			, const QString &elementName
 			, const QString &resultName
 			, const int depth
@@ -24,7 +25,8 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
 
-	static QPair<QString, QList<QString>> countRealConstraintForOneEdgeElement(const qReal::Id &constraint
+	static QPair<QString, QList<QString>> countRealConstraintForOneEdgeElement(
+			const qReal::Id &constraint
 			, qReal::IdList &usedElements
 			, const QString &elementName
 			, const int depth

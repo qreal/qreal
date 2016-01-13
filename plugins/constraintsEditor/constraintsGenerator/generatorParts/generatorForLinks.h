@@ -9,6 +9,7 @@ namespace constraints {
 namespace generator {
 namespace generatorParts {
 
+/// This class contains methods responsible for generating code for links.
 class GeneratorForLinks
 {
 public:
