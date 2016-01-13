@@ -38,6 +38,8 @@ public:
 	void connect();
 	void disconnect();
 
+	/// Returns a pointer to communication thread object that currently implementing this communicator.
+	RobotCommunicationThreadInterface *currentCommunicator() const;
 	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
 	/// Checks if connection can be established or emits errorOccured();

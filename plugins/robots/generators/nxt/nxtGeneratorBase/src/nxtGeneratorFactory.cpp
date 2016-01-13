@@ -52,9 +52,7 @@ generatorBase::simple::AbstractSimpleGenerator *NxtGeneratorFactory::simpleGener
 		, generatorBase::GeneratorCustomizer &customizer)
 {
 	const QString elementType = id.element();
-	if (elementType == "NxtWaitForButton") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "ClearScreen") {
+	if (elementType == "ClearScreen") {
 		return new ClearScreenBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("DrawPixel")) {
 		return new DrawPixelBlockGenerator(mRepo, customizer, id, this);

@@ -31,7 +31,7 @@ namespace semantics {
 
 /// A tree representing control flow of some language. Consists of semantic nodes.
 /// Also provides some factory methods for nodes.
-class SemanticTree : public QObject
+class ROBOTS_GENERATOR_EXPORT SemanticTree : public QObject
 {
 public:
 	SemanticTree(GeneratorCustomizer &customizer, const qReal::Id &initialBlock

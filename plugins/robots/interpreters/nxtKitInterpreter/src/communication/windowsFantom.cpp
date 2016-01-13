@@ -24,8 +24,7 @@ using namespace nxt::communication;
 WindowsFantom::WindowsFantom()
 {
 	mFantomLibrary.setFileName("fantom");
-	mFantomLibrary.load();
-	if (!mFantomLibrary.errorString().isEmpty()) {
-		QLOG_ERROR() << "Fantom resolving error:" << mFantomLibrary.errorString().toLocal8Bit();
+	if (!mFantomLibrary.load()) {
+		QLOG_ERROR() << "Fantom resolving error:" << qUtf8Printable(mFantomLibrary.errorString());
 	}
 }

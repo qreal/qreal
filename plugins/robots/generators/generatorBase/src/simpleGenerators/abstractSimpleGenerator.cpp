@@ -33,3 +33,18 @@ AbstractSimpleGenerator::AbstractSimpleGenerator(const qrRepo::RepoApi &repo
 AbstractSimpleGenerator::~AbstractSimpleGenerator()
 {
 }
+
+const qrRepo::RepoApi &AbstractSimpleGenerator::repo() const
+{
+	return mRepo;
+}
+
+generatorBase::GeneratorCustomizer &AbstractSimpleGenerator::customizer() const
+{
+	return mCustomizer;
+}
+
+Id AbstractSimpleGenerator::id() const
+{
+	return mId;
+}

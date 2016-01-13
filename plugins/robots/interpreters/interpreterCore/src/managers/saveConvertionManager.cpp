@@ -30,7 +30,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 		, from300to301Converter()
 		, from301to302Converter()
 		, from302to310Converter()
-		, from312to320Converter()
+		, from312to313Converter()
 	};
 }
 
@@ -200,7 +200,7 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 	);
 }
 
-ProjectConverter SaveConvertionManager::from312to320Converter()
+ProjectConverter SaveConvertionManager::from312to313Converter()
 {
 	const QMap<QString, QString> replacementRules = {
 			{ "gyroscopeX", "gyroscope[0]"}
@@ -211,7 +211,7 @@ ProjectConverter SaveConvertionManager::from312to320Converter()
 			, { "accelerometerZ", "accelerometer[2]" }
 	};
 
-	return constructConverter("3.1.2", "3.2.0", { replace(replacementRules) });
+	return constructConverter("3.1.2", "3.1.3", { replace(replacementRules) });
 }
 
 bool SaveConvertionManager::isRobotsDiagram(const Id &element)

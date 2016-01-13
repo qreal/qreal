@@ -16,7 +16,7 @@
 #include "ui_nxtAdditionalPreferences.h"
 
 #include <qrkernel/settingsManager.h>
-#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
+#include <utils/widgets/comPortPicker.h>
 
 using namespace nxt;
 using namespace qReal;
@@ -45,22 +45,7 @@ void NxtAdditionalPreferences::save()
 
 void NxtAdditionalPreferences::restoreSettings()
 {
-	QList<QextPortInfo> const ports = QextSerialEnumerator::getPorts();
-	const QString defaultPortName = SettingsManager::value("NxtBluetoothPortName").toString();
-	mUi->comPortComboBox->clear();
-
-	for (const QextPortInfo &info : ports) {
-		const QRegExp portNameRegexp("COM\\d+", Qt::CaseInsensitive);
-		if (portNameRegexp.indexIn(info.portName) != -1) {
-			const QString portName = portNameRegexp.cap();
-			mUi->comPortComboBox->addItem(portName);
-		}
-	}
-
-	const int defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
-	if (defaultIndex != -1) {
-		mUi->comPortComboBox->setCurrentIndex(defaultIndex);
-	}
+	ui::ComPortPicker::populate(*mUi->comPortComboBox, "NxtBluetoothPortName");
 
 	if (mUi->comPortComboBox->count() == 0) {
 		mUi->comPortComboBox->hide();
@@ -69,7 +54,7 @@ void NxtAdditionalPreferences::restoreSettings()
 		mUi->noComPortsFoundLabel->show();
 		mUi->directInputComPortLabel->show();
 		mUi->directInputComPortLineEdit->show();
-		mUi->directInputComPortLineEdit->setText(defaultPortName);
+		mUi->directInputComPortLineEdit->setText(SettingsManager::value("NxtBluetoothPortName").toString());
 	} else {
 		mUi->comPortComboBox->show();
 		mUi->comPortLabel->show();

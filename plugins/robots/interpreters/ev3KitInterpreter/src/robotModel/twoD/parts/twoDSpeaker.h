@@ -14,16 +14,16 @@
 
 #pragma once
 
-#include "robotModel/parts/nxtSpeaker.h"
+#include <ev3Kit/robotModel/parts/ev3Speaker.h>
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 
-namespace nxtKitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class TwoDSpeaker : public robotModel::parts::NxtSpeaker
+class TwoDSpeaker : public robotModel::parts::Ev3Speaker
 {
 	Q_OBJECT
 
@@ -32,7 +32,7 @@ public:
 			, kitBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	void playTone(unsigned freq, unsigned time) override;
+	void playTone(int volume, int frequency, int duration) override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

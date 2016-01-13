@@ -14,13 +14,14 @@
 
 #include "fileSystemUtils.h"
 
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
 #endif
 
-using namespace qReal;
+using namespace utils;
 
 bool FileSystemUtils::makeHidden(const QString &filePath)
 {
@@ -52,4 +53,32 @@ void FileSystemUtils::clearDir(const QString &path)
 	}
 
 	dir.rmdir(path);
+}
+
+bool FileSystemUtils::setCreationDateToNow(const QString &path)
+{
+#if defined(Q_OS_WIN)
+	// Getting file handle
+	const LPCTSTR fileName = sizeof(TCHAR) == 1
+			? (LPCTSTR)path.toLocal8Bit().constData()
+			: (LPCTSTR)path.utf16();
+	const HANDLE handle = CreateFile(fileName, FILE_WRITE_ATTRIBUTES
+			, FILE_SHARE_READ | FILE_SHARE_WRITE, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (handle == INVALID_HANDLE_VALUE) {
+		qWarning() << "FileSystemUtils::setCreationDateToNow: Could not open" << path << "for writing";
+		return false;
+	}
+
+	FILETIME fileTime;
+	SYSTEMTIME systemTime;
+
+	GetSystemTime(&systemTime);
+	SystemTimeToFileTime(&systemTime, &fileTime);
+	bool result = SetFileTime(handle, &fileTime, static_cast<LPFILETIME>(nullptr), static_cast<LPFILETIME>(nullptr));
+	result &= CloseHandle(handle);
+	return result;
+#else
+	Q_UNUSED(path)
+	return false;
+#endif
 }

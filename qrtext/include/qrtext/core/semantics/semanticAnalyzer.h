@@ -85,6 +85,10 @@ public:
 	/// Returns a mapping of variable identifiers known to semantic analyzer to their types.
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
 
+	/// Returns true if \a specific type is a subtype of \a general type, including case when they are equivalent.
+	bool isGeneralization(const QSharedPointer<core::types::TypeExpression> &specific
+			, const QSharedPointer<core::types::TypeExpression> &general) const;
+
 	/// Clears the state of semantic analyzer, forgetting known identifiers and expression types.
 	virtual void clear();
 

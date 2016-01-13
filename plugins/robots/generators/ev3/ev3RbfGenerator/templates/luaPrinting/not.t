@@ -1,0 +1,1 @@
+SUB8(1, @@OPERAND@@, @@RESULT@@)
