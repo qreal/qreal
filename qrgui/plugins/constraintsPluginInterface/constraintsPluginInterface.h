@@ -31,6 +31,8 @@ public:
 			, const qrRepo::LogicalRepoApi &logicalApi
 			, const EditorManagerInterface &editorManager) = 0;
 
+	virtual ~ConstraintsPluginInterface() {}
+
 	virtual QString metamodelName() const = 0;
 	virtual QString id() const = 0;
 
