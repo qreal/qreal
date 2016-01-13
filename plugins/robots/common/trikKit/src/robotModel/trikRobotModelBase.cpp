@@ -22,6 +22,7 @@
 
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
 
+#include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
@@ -49,6 +50,7 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	QList<DeviceInfo> const analogPortConnections = {
 		lightSensorInfo()
 		, infraredSensorInfo()
+		, touchSensorInfo()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -135,7 +137,8 @@ QList<PortInfo> TrikRobotModelBase::configurablePorts() const
 
 QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 {
-	return { DeviceInfo::create<robotParts::LightSensor>()
+	return { DeviceInfo::create<robotParts::TouchSensor>()
+		, DeviceInfo::create<robotParts::LightSensor>()
 		, DeviceInfo::create<parts::TrikInfraredSensor>()
 		, DeviceInfo::create<parts::TrikSonarSensor>()
 		, DeviceInfo::create<parts::TrikMotionSensor>()
@@ -171,6 +174,11 @@ DeviceInfo TrikRobotModelBase::servoMotorInfo() const
 DeviceInfo TrikRobotModelBase::encoderInfo() const
 {
 	return DeviceInfo::create<robotParts::EncoderSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::touchSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::TouchSensor>();
 }
 
 DeviceInfo TrikRobotModelBase::lightSensorInfo() const

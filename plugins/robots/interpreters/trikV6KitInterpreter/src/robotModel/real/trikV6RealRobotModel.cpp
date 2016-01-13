@@ -25,6 +25,7 @@
 #include <trikKitInterpreterCommon/robotModel/real/parts/servoMotor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/encoderSensor.h>
 
+#include <trikKitInterpreterCommon/robotModel/real/parts/touchSensor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/lightSensor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/infraredSensor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/sonarSensor.h>
@@ -118,6 +119,8 @@ robotParts::Device *TrikV6RealRobotModel::createDevice(const PortInfo &port, con
 		return new parts::ServoMotor(servoMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(encoderInfo())) {
 		return new parts::EncoderSensor(encoderInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(touchSensorInfo())) {
+		return new parts::TouchSensor(touchSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(lightSensorInfo())) {
 		return new parts::LightSensor(lightSensorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(infraredSensorInfo())) {

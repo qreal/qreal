@@ -66,6 +66,7 @@
         <file>templates/sensors/Up.t</file>
         <file>templates/sensors/Down.t</file>
         <file>templates/sensors/encoder.t</file>
+        <file>templates/sensors/touch.t</file>
         <file>templates/sensors/light.t</file>
         <file>templates/sensors/infrared.t</file>
         <file>templates/sensors/sonar.t</file>
@@ -129,6 +130,7 @@
         <file>templates/wait/gamepadConnect.t</file>
         <file>templates/wait/gamepadDisconnect.t</file>
         <file>templates/wait/gamepadWheel.t</file>
+        <file>templates/wait/touch.t</file>
         <file>templates/wait/light.t</file>
         <file>templates/wait/sonar.t</file>
         <file>templates/wait/infrared.t</file>

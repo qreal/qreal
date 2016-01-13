@@ -20,6 +20,7 @@
 
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotParts/touchSensor.h>
 
 #include <trikKit/robotModel/parts/trikLineSensor.h>
 #include <trikKit/robotModel/parts/trikObjectSensor.h>
@@ -162,7 +163,9 @@ void TrikTwoDRobotModel::setWheelPorts(const QString &leftWheelPort, const QStri
 
 QRect TrikTwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const
 {
-	if (deviceType.isA<robotParts::LightSensor>()) {
+	if (deviceType.isA<robotParts::TouchSensor>()) {
+			return QRect(-12, -5, 25, 10);
+	} else if (deviceType.isA<robotParts::LightSensor>()) {
 		return QRect(-6, -6, 12, 12);
 	} else if (deviceType.isA<robotModel::parts::TrikInfraredSensor>()) {
 		return QRect(-18, -18, 36, 36);
