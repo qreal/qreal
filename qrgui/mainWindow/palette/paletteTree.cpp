@@ -112,7 +112,9 @@ void PaletteTree::initDone()
 		mComboBox->show();
 	}
 	setActiveEditor(SettingsManager::value("CurrentIndex", 0).toInt());
-	mTree->resizeIcons();
+	if (mTree) {
+		mTree->resizeIcons();
+	}
 }
 
 void PaletteTree::setComboBox(const Id &id)
@@ -243,7 +245,9 @@ int PaletteTree::itemsCountInARow() const
 
 void PaletteTree::resizeEvent(QResizeEvent *)
 {
-	mTree->resizeIcons();
+	if (mTree) {
+		mTree->resizeIcons();
+	}
 }
 
 int PaletteTree::maxItemsCountInARow() const

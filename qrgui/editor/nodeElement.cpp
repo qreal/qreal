@@ -725,6 +725,13 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 		if (mDragState == None) {
 			alignToGrid();
 		}
+
+		if (isSelected()) {
+			/// @todo: Actually we must do it when user drags items group. For now the criteria of that is selection
+			/// state, but we need to change it to more trustful one.
+			storeGeometry();
+		}
+
 		adjustLinks();
 		return value;
 

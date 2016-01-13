@@ -171,9 +171,9 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
 
-			NodeElement *node = dynamic_cast<NodeElement *>(elem);
-			if (node) {
-				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect());
+			if (NodeElement * const node = dynamic_cast<NodeElement *>(elem)) {
+				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect()
+						.translated(ePos.toPoint()));
 			}
 
 			if (item(parent)) {
@@ -207,8 +207,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 				}
 			}
 
-			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
-			if (edgeElem) {
+			if (EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem)) {
 				edgeElem->layOut();
 			}
 		}
