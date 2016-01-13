@@ -18,10 +18,12 @@
 
 #include "elementInfo.h"
 
+#include "modelsDeclSpec.h"
+
 namespace qReal {
 
 /// Container for convenient storing node element data for passing it into methods with just one parameter.
-class NodeInfo : public ElementInfo
+class QRGUI_MODELS_EXPORT NodeInfo : public ElementInfo
 {
 public:
 	NodeInfo();
@@ -36,6 +38,6 @@ public:
 
 }
 
-QDataStream &operator<< (QDataStream &out, const qReal::NodeInfo &data);
-QDataStream &operator>> (QDataStream &in, qReal::NodeInfo &data);
-bool operator== (const qReal::NodeInfo &first, const qReal::NodeInfo &second);
+QRGUI_MODELS_EXPORT QDataStream &operator<< (QDataStream &out, const qReal::NodeInfo &data);
+QRGUI_MODELS_EXPORT QDataStream &operator>> (QDataStream &in, qReal::NodeInfo &data);
+QRGUI_MODELS_EXPORT bool operator== (const qReal::NodeInfo &first, const qReal::NodeInfo &second);

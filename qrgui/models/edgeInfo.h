@@ -18,10 +18,12 @@
 
 #include "elementInfo.h"
 
+#include "modelsDeclSpec.h"
+
 namespace qReal {
 
 /// Container for convenient storing edge element data for passing it into methods with just one parameter.
-class EdgeInfo : public ElementInfo
+class QRGUI_MODELS_EXPORT EdgeInfo : public ElementInfo
 {
 public:
 	EdgeInfo();
@@ -46,6 +48,6 @@ public:
 
 }
 
-QDataStream &operator<< (QDataStream &out, const qReal::EdgeInfo &data);
-QDataStream &operator>> (QDataStream &in, qReal::EdgeInfo &data);
-bool operator== (const qReal::EdgeInfo &first, const qReal::EdgeInfo &second);
+QRGUI_MODELS_EXPORT QDataStream &operator<< (QDataStream &out, const qReal::EdgeInfo &data);
+QRGUI_MODELS_EXPORT QDataStream &operator>> (QDataStream &in, qReal::EdgeInfo &data);
+QRGUI_MODELS_EXPORT bool operator== (const qReal::EdgeInfo &first, const qReal::EdgeInfo &second);

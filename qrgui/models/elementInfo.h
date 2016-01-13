@@ -20,12 +20,14 @@
 
 #include <qrkernel/ids.h>
 
+#include "modelsDeclSpec.h"
+
 class QMimeData;
 
 namespace qReal {
 
 /// Base for convenient storing node or edge element data for passing it into methods with just one parameter.
-class ElementInfo
+class QRGUI_MODELS_EXPORT ElementInfo
 {
 public:
 	ElementInfo();
@@ -114,6 +116,6 @@ private:
 
 }
 
-QDataStream &operator<< (QDataStream &out, const qReal::ElementInfo &data);
-QDataStream &operator>> (QDataStream &in, qReal::ElementInfo &data);
-bool operator== (const qReal::ElementInfo &first, const qReal::ElementInfo &second);
+QRGUI_MODELS_EXPORT QDataStream &operator<< (QDataStream &out, const qReal::ElementInfo &data);
+QRGUI_MODELS_EXPORT QDataStream &operator>> (QDataStream &in, qReal::ElementInfo &data);
+QRGUI_MODELS_EXPORT bool operator== (const qReal::ElementInfo &first, const qReal::ElementInfo &second);
