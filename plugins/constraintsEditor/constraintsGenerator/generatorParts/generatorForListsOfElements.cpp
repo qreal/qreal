@@ -1,6 +1,9 @@
 #include "generatorForListsOfElements.h"
 
 #include "generatorUtils/auxiliaryMethods.h"
+#include "generatorForProperties.h"
+#include "generatorForEdgeElements.h"
+#include "generatorForNodeElements.h"
 
 using namespace qReal;
 using namespace constraints::generator::generatorParts;
@@ -12,7 +15,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForC
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -23,16 +27,17 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForC
 			, depth
 			, additionalString
 			, api
-			, errorReporter);
+			, errorReporter
+			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForOutgoingLinks(
-		const Id &constraint
+QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForOutgoingLinks(const Id &constraint
 		, const QString &elementName
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -43,7 +48,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 			, depth
 			, additionalString
 			, api
-			, errorReporter);
+			, errorReporter
+			, countsOfConstraintElementsInOneConstraint);
 }
 
 QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForIncomingLinks(
@@ -52,7 +58,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -63,7 +70,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 			, depth
 			, additionalString
 			, api
-			, errorReporter);
+			, errorReporter
+			, countsOfConstraintElementsInOneConstraint);
 }
 
 QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForOutgoingNodes(
@@ -72,7 +80,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -83,7 +92,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 			, depth
 			, additionalString
 			, api
-			, errorReporter);
+			, errorReporter
+			, countsOfConstraintElementsInOneConstraint);
 }
 
 QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForIncomingNodes(
@@ -92,7 +102,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -103,7 +114,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 			, depth
 			, additionalString
 			, api
-			, errorReporter);
+			, errorReporter
+			, countsOfConstraintElementsInOneConstraint);
 }
 
 
@@ -116,7 +128,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
-		, ErrorReporterInterface &errorReporter)
+		, ErrorReporterInterface &errorReporter
+		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
 {
 	QString resultString = "";
 	QList<QString> resBool;
@@ -167,38 +180,45 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 
 	if (neededSelection) {
 		QList<QString> selectionList = selection.split(" ");
-//		QPair<QString, QString> selectionRes = countPropertyCharacteristicForConstraintElement(
-//				constraint
-//				, resElementName.at(0).toLower() + resElementName.mid(1) + "Selection"
-//				, "false"
-//				, selectionList.at(0)
-//				, selectionList.at(1)
-//				, selectionList.at(2)
-//				, curElementOfList
-//				, depth
-//				, additionalString + "	");
+		QPair<QString, QString> selectionRes = GeneratorForProperties::countPropertyCharacteristicForConstraintElement(
+				constraint
+				, resElementName.at(0).toLower() + resElementName.mid(1) + "Selection"
+				, "false"
+				, selectionList.at(0)
+				, selectionList.at(1)
+				, selectionList.at(2)
+				, curElementOfList
+				, depth
+				, additionalString + "	"
+				, errorReporter);
 
-//		resultString += QString("%1%2	if (%3) {\n")
-//				.arg(selectionRes.first)
-//				.arg(additionalString)
-//				.arg(selectionRes.second);
+		resultString += QString("%1%2	if (%3) {\n")
+				.arg(selectionRes.first)
+				.arg(additionalString)
+				.arg(selectionRes.second);
 	}
 
-//	if (resType == "node") {
-//		resultString += countRealConstraintForNodeElement(
-//				constraint
-//				, curElementOfList
-//				, functionName + "Res"
-//				, depth + 1
-//				, additionalString + "	");
-//	} else if (resType == "edge") {
-//		resultString += countRealConstraintForEdgeElement(
-//				constraint
-//				, curElementOfList
-//				, functionName + "Res"
-//				, depth + 1
-//				, additionalString + "	");
-//	}
+	if (resType == "node") {
+		resultString += GeneratorForNodeElements::countRealConstraintForNodeElement(
+				constraint
+				, curElementOfList
+				, functionName + "Res"
+				, depth + 1
+				, additionalString + "	"
+				, api
+				, countsOfConstraintElementsInOneConstraint
+				, errorReporter);
+	} else if (resType == "edge") {
+		resultString += GeneratorForEdgeElements::countRealConstraintForEdgeElement(
+				constraint
+				, curElementOfList
+				, functionName + "Res"
+				, depth + 1
+				, additionalString + "	"
+				, api
+				, countsOfConstraintElementsInOneConstraint
+				, errorReporter);
+	}
 
 	resultString += QString("%1	main%2Res_%3 = main%2Res_%3 && %4Res_%3;\n")
 			.arg(additionalString)

@@ -3,6 +3,7 @@
 #include <QtCore/QString>
 
 #include <qrrepo/logicalRepoApi.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 namespace constraints {
 namespace generator {
@@ -39,14 +40,6 @@ public:
 	static bool linkWithGivenTypeExists(
 			const qReal::Id &element
 			, const QString &type
-			, const qrRepo::LogicalRepoApi &api);
-
-	static QString generateExistsProperty(
-			const QString &resElementName
-			, const QString &elementName
-			, const qReal::Id &constraint
-			, const int depth
-			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api);
 
 private:

@@ -48,29 +48,6 @@ bool AuxiliaryMethods::linkWithGivenTypeExists(
 	return false;
 }
 
-QString AuxiliaryMethods::generateExistsProperty(
-		const QString &resElementName
-		, const QString &elementName
-		, const Id &constraint
-		, const int depth
-		, const QString &additionalString
-		, const LogicalRepoApi &api)
-{
-	QString resultString = "";
-	const QString exists = api.property(constraint, "exists").toString();
-
-	resultString += additionalString + "bool " + resElementName + "_" + QString::number(depth) + " = ";
-
-	if (exists == "true" || exists == "false") {
-		const QString comparisonSymbol = (exists == "true") ? "!=" : "==";
-		resultString += "(" + elementName + "_" + QString::number(depth) + " " + comparisonSymbol + " qReal::Id::rootId());\n";
-	} else {
-		resultString += "true;\n";
-	}
-
-	return resultString;
-}
-
 QString AuxiliaryMethods::formedExpression(
 		QList<QString> listOfBooleanExpressions
 		, const QString &firstElement

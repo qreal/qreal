@@ -23,6 +23,12 @@ HEADERS = \
 	generatorUtils/defs.h \
 	generatorUtils/auxiliaryMethods.h \
 	generatorParts/generatorForListsOfElements.h \
+	generatorParts/generatorForProperties.h \
+	generatorParts/generatorForNodeElements.h \
+	generatorParts/generatorForElements.h \
+	generatorParts/generatorForEdgeElements.h \
+	generatorUtils/commonDataForAllGenerators.h \
+	generatorParts/generatorForDiagrams.h \
 
 SOURCES = \
 	constraintsGeneratorPlugin.cpp \
@@ -30,6 +36,12 @@ SOURCES = \
 	concreteGenerator.cpp \
 	generatorUtils/auxiliaryMethods.cpp \
 	generatorParts/generatorForListsOfElements.cpp \
+	generatorParts/generatorForProperties.cpp \
+	generatorParts/generatorForNodeElements.cpp \
+	generatorParts/generatorForElements.cpp \
+	generatorParts/generatorForEdgeElements.cpp \
+	generatorUtils/commonDataForAllGenerators.cpp \
+	generatorParts/generatorForDiagrams.cpp \
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
@@ -37,10 +49,3 @@ win32 {
 else {
 	QMAKE_POST_LINK = "mkdir ../../../bin/templates/ && cp -r templates ../../../bin/templates/ "
 }
-
-
-
-
-
-
-

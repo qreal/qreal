@@ -42,6 +42,7 @@ void Generator::generate(qReal::Id const &metamodel)
 		mErrorReporter->addCritical(tr("OutputDirPath of constraints model not found"), metamodel);
 		return;
 	}
+
 	qDebug() << "generate : " << outputDirPath;
 
 	QString constraintMetamodelName = mLogicalModel->logicalRepoApi().name(metamodel);
