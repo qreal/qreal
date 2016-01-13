@@ -70,7 +70,7 @@ signals:
 	void newScalarSensorData(const QString &port, int data);
 
 	/// Emitted when new vector telemetry data is available for given port.
-	void newVectorSensorData(const QString &port, QVector<int> const &data);
+	void newVectorSensorData(const QString &port, const QVector<int> &data);
 
 	/// Emitted when a robot wants to print something to stdout.
 	void printText(const QString &text);
