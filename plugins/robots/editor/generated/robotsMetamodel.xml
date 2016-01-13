@@ -674,7 +674,7 @@
 					</picture>
 					<labels>
 						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
