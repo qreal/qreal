@@ -1,0 +1,1 @@
+MATH(ACOS, @@ARGUMENT@@, @@RESULT@@)

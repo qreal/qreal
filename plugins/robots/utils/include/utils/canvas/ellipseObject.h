@@ -28,6 +28,7 @@ class ROBOTS_UTILS_EXPORT EllipseObject : public CanvasObject
 	Q_PROPERTY(int w READ semiDiameterX WRITE setSemiDiameterX)
 	Q_PROPERTY(int h READ semiDiameterY WRITE setSemiDiameterY)
 	Q_PROPERTY(QRect boundingRect READ boundingRect)
+	Q_PROPERTY(bool filled READ filled WRITE setFilled)
 
 public:
 	explicit EllipseObject(QObject *parent = 0);
@@ -36,6 +37,7 @@ public:
 			, int semiDiameterY
 			, const QColor &color = Qt::black
 			, int thickness = 1
+			, bool filled = false
 			, QObject *parent = 0);
 
 	/// Returns the coordinates of the central point in pixels.
@@ -59,6 +61,12 @@ public:
 	/// Returns the bounding box of this ellipse.
 	QRect boundingRect() const;
 
+	/// Returns true if this ellipse is filled with color.
+	bool filled() const;
+
+	/// Fills ellipse with its color or makes it empty.
+	void setFilled(bool filled);
+
 	void paint(QPainter *painter) override;
 	QJsonObject toJson() const override;
 
@@ -66,6 +74,7 @@ private:
 	QPoint mCenter;
 	int mSemiDiameterX;
 	int mSemiDiameterY;
+	bool mFilled;
 };
 
 }

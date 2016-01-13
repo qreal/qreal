@@ -28,6 +28,8 @@ SUBDIRS = \
 	nxtGeneratorBase \
 	nxtOsekCGenerator \
 	nxtRussianCGenerator \
+	ev3GeneratorBase \
+	ev3RbfGenerator \
 
 trikGeneratorBase.subdir = $$PWD/trik/trikGeneratorBase
 trikQtsGeneratorLibrary.subdir = $$PWD/trik/trikQtsGeneratorLibrary
@@ -41,6 +43,8 @@ trikV62RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV62RuntimeUploaderPlugin
 nxtGeneratorBase.subdir = $$PWD/nxt/nxtGeneratorBase
 nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
 nxtRussianCGenerator.subdir = $$PWD/nxt/nxtRussianCGenerator
+ev3GeneratorBase.subdir = $$PWD/ev3/ev3GeneratorBase
+ev3RbfGenerator.subdir = $$PWD/ev3/ev3RbfGenerator
 
 trikGeneratorBase.depends = generatorBase
 trikQtsGeneratorLibrary.depends = trikGeneratorBase
@@ -52,3 +56,5 @@ trikV62FSharpGenerator.depends = trikFSharpGeneratorLibrary
 nxtGeneratorBase.depends = generatorBase
 nxtOsekCGenerator.depends = nxtGeneratorBase
 nxtRussianCGenerator.depends = nxtGeneratorBase
+ev3GeneratorBase.depends = generatorBase
+ev3RbfGenerator.depends = ev3GeneratorBase

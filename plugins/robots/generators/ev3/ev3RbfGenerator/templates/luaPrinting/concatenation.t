@@ -1,0 +1,1 @@
+STRINGS(ADD, @@LEFT@@, @@RIGHT@@, @@RESULT@@)

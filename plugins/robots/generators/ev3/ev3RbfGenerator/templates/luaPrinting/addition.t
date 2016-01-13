@@ -1,0 +1,1 @@
+ADD@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)

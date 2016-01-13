@@ -384,6 +384,8 @@ void TwoDModelScene::deleteSelectedItems()
 			mCurrentLine = nullptr;
 			mCurrentStylus = nullptr;
 			mCurrentEllipse = nullptr;
+			mCurrentRectangle = nullptr;
+			mCurrentCurve = nullptr;
 		}
 	}
 

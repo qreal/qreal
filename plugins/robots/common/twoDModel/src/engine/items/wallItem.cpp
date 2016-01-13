@@ -28,14 +28,7 @@ const int wallWidth = 10;
 
 WallItem::WallItem(const QPointF &begin, const QPointF &end)
 	: SolidItem()
-	, mDragged(false)
 	, mImage(":/icons/2d_wall.png")
-	, mOldX1(0)
-	, mOldY1(0)
-	, mCellNumbX1(0)
-	, mCellNumbY1(0)
-	, mCellNumbX2(0)
-	, mCellNumbY2(0)
 {
 	setX1(begin.x());
 	setY1(begin.y());

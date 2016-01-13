@@ -26,10 +26,15 @@ class ROBOTS_UTILS_EXPORT RectangleObject : public CanvasObject
 	Q_OBJECT
 	Q_PROPERTY(QRect shape READ shape)
 	Q_PROPERTY(QRect boundingRect READ boundingRect)
+	Q_PROPERTY(bool filled READ filled WRITE setFilled)
 
 public:
 	explicit RectangleObject(QObject *parent = 0);
-	RectangleObject(const QRect &shape, const QColor &color = Qt::black, int thickness = 1, QObject *parent = 0);
+	RectangleObject(const QRect &shape
+			, const QColor &color = Qt::black
+			, int thickness = 1
+			, bool filled = false
+			, QObject *parent = 0);
 
 	/// Returns the coordinates of this rectangle.
 	QRect shape() const;
@@ -37,11 +42,18 @@ public:
 	/// Returns the coordinates of this rectangle.
 	QRect boundingRect() const;
 
+	/// Returns true if this rectangle is filled with color.
+	bool filled() const;
+
+	/// Fills rectangle with its color or makes it empty.
+	void setFilled(bool filled);
+
 	void paint(QPainter *painter) override;
 	QJsonObject toJson() const override;
 
 private:
 	QRect mShape;
+	bool mFilled;
 };
 
 }

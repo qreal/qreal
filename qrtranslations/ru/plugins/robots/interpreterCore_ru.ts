@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>ActionsManager</name>
+    <message>
+        <source>To main page</source>
+        <translation type="obsolete">На главную</translation>
+    </message>
+    <message>
+        <source>Real robot</source>
+        <translation type="obsolete">Реальный робот</translation>
+    </message>
+    <message>
+        <source>2D model</source>
+        <translation type="obsolete">2D модель</translation>
+    </message>
+</context>
+<context>
     <name>D2Form</name>
     <message>
         <source>2D Robot Model</source>
@@ -248,6 +263,44 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>DefaultRobotModel</name>
+    <message>
+        <source>Empty model</source>
+        <translation type="obsolete">Пустая модель</translation>
+    </message>
+</context>
+<context>
+    <name>Interpreter</name>
+    <message>
+        <source>No connection to robot</source>
+        <translation type="obsolete">Нет соединения с роботом</translation>
+    </message>
+    <message>
+        <source>Interpreter is already running</source>
+        <translation type="obsolete">Программа уже запущена</translation>
+    </message>
+    <message>
+        <source>Connected successfully</source>
+        <translation type="obsolete">Подключение к роботу выполнено</translation>
+    </message>
+    <message>
+        <source>Can&apos;t connect to a robot.</source>
+        <translation type="obsolete">Не удалось подключиться к роботу.</translation>
+    </message>
+    <message>
+        <source>Cannot create new thread with already occupied id %1</source>
+        <translation type="obsolete">Идентификатор потока %1 уже занят</translation>
+    </message>
+    <message>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation type="obsolete">Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
+    </message>
+    <message>
+        <source>Killing non-existent thread %1</source>
+        <translation type="obsolete">Попытка завершить несуществующий поток %1</translation>
+    </message>
+</context>
+<context>
     <name>NxtDisplay</name>
     <message>
         <source>tr(NxtDisplay)</source>
@@ -342,30 +395,25 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">IP-адрес сервера</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="205"/>
         <source>Noise</source>
-        <translation>Шум</translation>
+        <translation type="vanished">Шум</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="228"/>
         <source>Realistic sensors</source>
         <oldsource>Enable sensor noise</oldsource>
-        <translation>Реалистичные сенсоры</translation>
+        <translation type="vanished">Реалистичные сенсоры</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="218"/>
         <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
-        <translation>Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
+        <translation type="vanished">Для больших значений поведение сенсоров и моторов ближе к реальному, но при этом производительность падает больше.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="221"/>
         <source>Approximation level</source>
-        <translation>Уровень приближения</translation>
+        <translation type="vanished">Уровень приближения</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="211"/>
         <source>Realistic engines</source>
-        <translation>Реалистичные моторы</translation>
+        <translation type="vanished">Реалистичные моторы</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="146"/>
@@ -393,12 +441,12 @@ p, li { white-space: pre-wrap; }
         <translation>Никогда не запускать</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="291"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="233"/>
         <source>Type of constructor kit</source>
         <translation>Конструктор</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="305"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="247"/>
         <source>Type of robot model</source>
         <translation>Тип модели робота</translation>
     </message>
@@ -483,7 +531,7 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Дисплей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="53"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="52"/>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
         <translation>Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
     </message>
@@ -707,6 +755,17 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>RobotsPluginFacade</name>
+    <message>
+        <source>Robots</source>
+        <translation type="obsolete">Роботы</translation>
+    </message>
+    <message>
+        <source>Toggle robot console panel</source>
+        <translation type="obsolete">Показать/спрятать панель консоли</translation>
+    </message>
+</context>
+<context>
     <name>SensorsConfigurationWidget</name>
     <message>
         <source>Port 1:</source>
@@ -769,12 +828,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="131"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="132"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="293"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="294"/>
         <source>Toggle robot console panel</source>
         <translation>Показать/спрятать панель консоли</translation>
     </message>
@@ -802,17 +861,17 @@ p, li { white-space: pre-wrap; }
         <translation>режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="239"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="245"/>
         <source>Edit mode</source>
         <translation>Режим редактирования</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="242"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="248"/>
         <source>Debug mode</source>
         <translation>Режим отладки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="347"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="354"/>
         <source>Modes</source>
         <translation>Режимы</translation>
     </message>
@@ -955,13 +1014,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="87"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="160"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="86"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="155"/>
         <source>No connection to robot</source>
         <translation>Нет соединения с роботом</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="92"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="91"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
@@ -971,22 +1030,22 @@ p, li { white-space: pre-wrap; }
         <translation>Подключение к роботу выполнено</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="145"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="143"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>Не удалось подключиться к роботу.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="200"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
         <source>Cannot create new thread with already occupied id %1</source>
         <translation>Идентификатор потока %1 уже занят</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="214"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="206"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="236"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="228"/>
         <source>Killing non-existent thread %1</source>
         <translation>Попытка завершить несуществующий поток %1</translation>
     </message>
@@ -1080,7 +1139,7 @@ p, li { white-space: pre-wrap; }
         <translation>Не загружено ни одного плагина с описанием робоплатформы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="212"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="205"/>
         <source>No robot models available for </source>
         <translation>Ни одной модели робота не найдено в плагине </translation>
     </message>

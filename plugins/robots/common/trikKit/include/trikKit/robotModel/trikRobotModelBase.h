@@ -43,6 +43,7 @@ protected:
 	virtual kitBase::robotModel::DeviceInfo servoMotorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo encoderInfo() const;
 
+	virtual kitBase::robotModel::DeviceInfo touchSensorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo lightSensorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo infraredSensorInfo() const;
 

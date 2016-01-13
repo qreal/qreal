@@ -1,0 +1,1 @@
+ARRAY_WRITE(@@TABLE@@, @@INDEX@@, @@VALUE@@)

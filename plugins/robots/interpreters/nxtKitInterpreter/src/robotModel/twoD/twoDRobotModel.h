@@ -40,7 +40,7 @@ protected:
 			) override;
 
 private:
-	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;
+	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;  // Does not have ownership
 };
 
 }

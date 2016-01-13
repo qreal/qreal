@@ -118,8 +118,6 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 		return new DetectorToVariableGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikInitVideoStreaming") {
 		return new InitVideoStreamingGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "TrikWaitForButton") {
-		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForMotion") {
 		return new WaitForMotionGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikWaitForIRDistance") {
