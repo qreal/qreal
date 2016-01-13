@@ -50,9 +50,8 @@
 #include <dialogs/progressDialog/progressDialog.h>
 
 #include <models/models.h>
-#include <models/commands/createGroupCommand.h>
-#include <models/commands/multipleRemoveCommand.h>
-#include <models/commands/removeElementCommand.h>
+#include <models/commands/createPatternCommand.h>
+#include <models/commands/removeElementsCommand.h>
 
 #include <editor/editorView.h>
 #include <editor/sceneCustomizer.h>
@@ -653,11 +652,9 @@ void MainWindow::closeDiagramTab(const Id &id)
 
 void MainWindow::deleteFromLogicalExplorer()
 {
-	const QModelIndex index = mUi->logicalModelExplorer->currentIndex();
-	if (index.isValid()) {
-		/// @todo: rewrite it with just MultipleRemoveCommand.
-		MultipleRemoveCommand factory(models());
-		mController->executeGlobal(factory.logicalDeleteCommand(index));
+	const Id id = models().logicalModelAssistApi().idByIndex(mUi->logicalModelExplorer->currentIndex());
+	if (!id.isNull()) {
+		mController->executeGlobal((new RemoveElementsCommand(models()))->withLogicalItemToDelete({id}));
 	}
 }
 
@@ -665,9 +662,7 @@ void MainWindow::deleteFromGraphicalExplorer()
 {
 	const Id id = models().graphicalModelAssistApi().idByIndex(mUi->graphicalModelExplorer->currentIndex());
 	if (!id.isNull()) {
-		MultipleRemoveCommand * const command = new MultipleRemoveCommand(models());
-		command->setItemsToDelete(IdList() << id);
-		mController->executeGlobal(command);
+		mController->executeGlobal((new RemoveElementsCommand(models()))->withItemsToDelete({id}));
 	}
 }
 
@@ -1012,7 +1007,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		const Id diagramId = models().graphicalModelAssistApi().idByIndex(index);
 		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, diagramId, this);
 		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
-		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()) ,&EditorViewScene::enableMouseGestures);
+		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()), &EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
 		mController->diagramOpened(diagramId);
 		initCurrentTab(view, index);
@@ -1380,9 +1375,8 @@ void MainWindow::createDiagram(const QString &idString)
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
-		CreateGroupCommand createGroupCommand(models().logicalModelAssistApi()
-				, models().graphicalModelAssistApi(), models().exploser(), Id::rootId(), Id::rootId()
-				, id, false, QPointF());
+		const ElementInfo toCreate(id, Id(), Id::rootId(), Id::rootId(), {}, {});
+		CreatePatternCommand createGroupCommand(models(), {toCreate});
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();
 	}

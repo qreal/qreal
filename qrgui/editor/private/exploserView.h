@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,10 +62,6 @@ public:
 	/// Activates binded with explosion element or creates default explosed element
 	void handleDoubleClick(const Id &id);
 
-	/// Adds commands of explosion creation to given element creation command
-	void handleCreationWithExplosion(qReal::commands::AbstractCommand *createCommand
-			, const Id &source, const Id &target);
-
 signals:
 	/// Activates first binded with explosion link graphical instance of the element
 	/// with given @arg id.
@@ -104,6 +100,7 @@ private:
 	void createExpandAction(const Element * const element
 			, QMenu &contextMenu, const Id &alreadyConnectedElement) const;
 
+	const models::Models &mModels;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;

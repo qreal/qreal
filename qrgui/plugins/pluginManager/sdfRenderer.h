@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,25 +57,28 @@ public:
 
 	void setElementRepo(ElementRepoInterface *elementRepo);
 
-	/// Clears prerendered images.
-	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateSvgCache(qreal zoomFactor);
+public slots:
+	/// Sets current zoom in editor to render images in more suitable resolution.
+	void setZoom(qreal zoomFactor);
 
 private:
 
 	/// Cache for images that contains them pre-loaded and parsed and is able to quickly draw it on a painter.
 	/// Pixmaps and svg images are contained separately as they are rendered differently.
-	class ImagesCache {
+	class ImagesCache
+	{
 	public:
+		static ImagesCache &instance();
+
 		/// Draws image with given file name on given painter in given rectangle. Note that actual file, from which
 		/// an image will be loaded may be different from fileName, as described in selectBestImageFile.
 		/// @see selectBestImageFile
-		void drawImage(const QString &fileName, QPainter &painter, const QRect &rect);
-
-		/// Clears prerendered svg cache.
-		void invalidateSvgCache(double zoomFactor);
+		void drawImage(const QString &fileName, QPainter &painter, const QRect &rect, qreal zoom);
 
 	private:
+		ImagesCache();
+		~ImagesCache();
+
 		/// Selects "best available" image file, using following rules:
 		/// - if there is .svg file with given name in a directory from filePath, it is used as actual image file.
 		/// - else if there is a file with other extension but with correct name, it is used.
@@ -95,16 +98,10 @@ private:
 		QHash<QString, QSharedPointer<QSvgRenderer>> mFileNameSvgRendererMap;
 
 		/// Maps file name to pixmaps with pre-rendered svg images.
-		QHash<QString, QPixmap> mPrerenderedSvgs;
-
-		/// Current scene zoom factor for rendering svg files.
-		double mCurrentZoomFactor = 1;
+		QHash<QString, QHash<QRect, QPixmap>> mPrerenderedSvgs;
 	};
 
 	QString mWorkingDirName;
-
-	/// Smart cache for images, to avoid loading image from disc on every paint() call.
-	ImagesCache mImagesCache;
 
 	int first_size_x;
 	int first_size_y;
@@ -129,6 +126,7 @@ private:
 	 * coords, is useful for rendering icons. default is true
 	**/
 	bool mNeedScale;
+	qreal mZoom = 1.0;
 	ElementRepoInterface *mElementRepo;
 
 	bool checkShowConditions(const QDomElement &element, bool isIcon) const;
@@ -197,4 +195,9 @@ private:
 	QMap<QString, QSize> mPreferedSizes;
 };
 
+}
+
+inline uint qHash(const QRect &rect)
+{
+	return qHash(rect.width()) ^ qHash(rect.height()) ^ qHash(rect.top()) ^ qHash(rect.left());
 }

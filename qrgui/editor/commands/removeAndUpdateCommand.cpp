@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "multipleRemoveAndUpdateCommand.h"
+#include "removeAndUpdateCommand.h"
+
+#include <models/models.h>
 
 #include "editor/editorViewScene.h"
 #include "editor/commands/arrangeLinksCommand.h"
@@ -21,32 +23,31 @@
 using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 
-MultipleRemoveAndUpdateCommand::MultipleRemoveAndUpdateCommand(EditorViewScene &scene
+RemoveAndUpdateCommand::RemoveAndUpdateCommand(EditorViewScene &scene
 		, const models::Models &models)
-	: MultipleRemoveCommand(models)
+	: RemoveElementsCommand(models)
 	, mScene(scene)
 {
 }
 
-AbstractCommand *MultipleRemoveAndUpdateCommand::graphicalDeleteCommand(const Id &id)
+void RemoveAndUpdateCommand::appendGraphicalDelete(const Id &id
+		, QList<ElementInfo> &nodes, QList<ElementInfo> &edges)
 {
-	AbstractCommand *result = MultipleRemoveCommand::graphicalDeleteCommand(id);
+	RemoveElementsCommand::appendGraphicalDelete(id, nodes, edges);
 
 	// correcting unremoved edges
 	ArrangeLinksCommand *arrangeCommand = new ArrangeLinksCommand(&mScene, id, true);
 	arrangeCommand->setRedoEnabled(false);
-	result->addPreAction(arrangeCommand);
+	addPreAction(arrangeCommand);
 
 	UpdateElementCommand *updateCommand = new UpdateElementCommand(&mScene, id);
 	updateCommand->setRedoEnabled(false);
-	result->addPreAction(updateCommand);
+	addPreAction(updateCommand);
 
 	const IdList links = mGraphicalApi.graphicalRepoApi().links(id);
 	for (const Id &link : links) {
 		UpdateElementCommand *updateLinkCommand = new UpdateElementCommand(&mScene, link);
 		updateLinkCommand->setRedoEnabled(false);
-		result->addPreAction(updateLinkCommand);
+		addPreAction(updateLinkCommand);
 	}
-
-	return result;
 }

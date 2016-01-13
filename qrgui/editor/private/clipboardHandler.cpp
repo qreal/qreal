@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,12 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include "clipboardHandler.h"
+
 #include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 
-#include "editor/copyPaste/clipboardHandler.h"
-#include "editor/copyPaste/pasteGroupCommand.h"
-#include "editor/editorViewScene.h"
+#include <models/models.h>
+#include <models/commands/pasteCommand.h>
+
+#include "editor/editorView.h"
 
 using namespace qReal;
 using namespace qReal::gui::editor;
@@ -38,17 +41,17 @@ void ClipboardHandler::copy()
 {
 	QList<NodeElement *> nodes = getNodesForCopying();
 
-	QList<NodeData> nodesData = getNodesData(nodes);
-	QList<EdgeData> edgesData = getEdgesData();
+	QList<NodeInfo> nodesData = getNodesData(nodes);
+	QList<EdgeInfo> edgesData = getEdgesData();
 
 	if (!nodesData.isEmpty() || !edgesData.isEmpty()) {
 		pushDataToClipboard(nodesData, edgesData);
 	}
 }
 
-QList<NodeData> ClipboardHandler::getNodesData(QList<NodeElement *> const &nodes)
+QList<NodeInfo> ClipboardHandler::getNodesData(QList<NodeElement *> const &nodes)
 {
-	QList<NodeData> nodesData;
+	QList<NodeInfo> nodesData;
 	for (NodeElement * const node : nodes) {
 		nodesData << node->data();
 	}
@@ -84,9 +87,25 @@ void ClipboardHandler::addChildren(NodeElement *node, QList<NodeElement *> &node
 	}
 }
 
-QList<EdgeData> ClipboardHandler::getEdgesData()
+QPointF ClipboardHandler::currentMousePosInSceneCoordinates() const
 {
-	QList<EdgeData> edgesData;
+	const EditorView *editor = nullptr;
+	for (const QGraphicsView * const view : mScene.views()) {
+		if ((editor = dynamic_cast<const EditorView *>(view))) {
+			break;
+		}
+	}
+
+	if (!editor) {
+		return QPointF();
+	}
+
+	return editor->mapToScene(editor->mapFromGlobal(QCursor::pos()));
+}
+
+QList<EdgeInfo> ClipboardHandler::getEdgesData()
+{
+	QList<EdgeInfo> edgesData;
 	for (QGraphicsItem *item : mScene.selectedItems()) {
 		EdgeElement *edge = dynamic_cast<EdgeElement *>(item);
 		if (edge) {
@@ -97,7 +116,7 @@ QList<EdgeData> ClipboardHandler::getEdgesData()
 	return edgesData;
 }
 
-void ClipboardHandler::pushDataToClipboard(QList<NodeData> const &nodesData, QList<EdgeData> const &edgesData)
+void ClipboardHandler::pushDataToClipboard(const QList<NodeInfo> &nodesData, const QList<EdgeInfo> &edgesData)
 {
 	QByteArray data;
 	QDataStream stream(&data, QIODevice::WriteOnly);
@@ -114,7 +133,11 @@ void ClipboardHandler::pushDataToClipboard(QList<NodeData> const &nodesData, QLi
 
 void ClipboardHandler::paste(bool isGraphicalCopy)
 {
-	commands::PasteGroupCommand *pasteCommand = new commands::PasteGroupCommand(&mScene, isGraphicalCopy);
+	qReal::commands::PasteCommand *pasteCommand = new qReal::commands::PasteCommand(
+			mScene.models()
+			, isGraphicalCopy
+			, currentMousePosInSceneCoordinates()
+			, mScene.rootItemId());
 	if (!pasteCommand->isEmpty()) {
 		mController.execute(pasteCommand);
 	}

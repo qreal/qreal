@@ -18,7 +18,6 @@
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
 #include <QtWidgets/QVBoxLayout>
-#include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 
 #include <qrkernel/settingsManager.h>

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,10 +100,8 @@ QModelIndex AbstractModel::index(const AbstractModelItem * const item) const
 {
 	QList<int> rowCoords;
 
-	for (const AbstractModelItem *curItem = item;
-		curItem != mRootItem; curItem = curItem->parent())
-	{
-		rowCoords.append(const_cast<AbstractModelItem *>(curItem)->row());
+	for (const AbstractModelItem *curItem = item; curItem != mRootItem; curItem = curItem->parent()) {
+		rowCoords.append(curItem->row());
 	}
 
 	QModelIndex result;
@@ -144,7 +142,7 @@ const EditorManagerInterface &AbstractModel::editorManagerInterface() const
 
 QModelIndex AbstractModel::indexById(const Id &id) const
 {
-	if (mModelItems.keys().contains(id)) {
+	if (mModelItems.contains(id)) {
 		return index(mModelItems.find(id).value());
 	}
 
@@ -174,27 +172,14 @@ bool AbstractModel::dropMimeData(const QMimeData *data, Qt::DropAction action, i
 
 	AbstractModelItem *parentItem = parentAbstractItem(parent);
 
-	QByteArray dragData = data->data(DEFAULT_MIME_TYPE);
+	ElementInfo element = ElementInfo::fromMimeData(data);
+	Q_ASSERT(element.id.idSize() == 4);
 
-	QDataStream stream(&dragData, QIODevice::ReadOnly);
-	QString idString;
-	QString pathToItem;
-	QString name;
-	QPointF position;
-	bool isFromLogicalModel = false;
-	stream >> idString;
-	stream >> pathToItem;
-	stream >> name;
-	stream >> position;
-	stream >> isFromLogicalModel;
-
-	Id id = Id::loadFromString(idString);
-	Q_ASSERT(id.idSize() == 4);
-
-	if (mModelItems.contains(id)) {
-		modelAssistInterface()->changeParent(id, parentItem->id());
+	if (mModelItems.contains(element.id)) {
+		modelAssistInterface()->changeParent(element.id, parentItem->id());
 	} else {
-		modelAssistInterface()->createElement(parentItem->id(), id, isFromLogicalModel, name, position);
+		element.graphicalParent = element.logicalParent = parentItem->id();
+		modelAssistInterface()->createElements(QList<ElementInfo>() << element);
 	}
 
 	return true;

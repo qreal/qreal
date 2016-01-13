@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ public:
 	Id createElement(const Id &parent, const Id &type) override;
 	Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel, const QString &name
 			, const QPointF &position, const Id &preferedLogicalId = Id()) override;
+	void createElements(QList<ElementInfo> &elements) override;
 
 	Id parent(const Id &element) const;
 	IdList children(const Id &element) const override;

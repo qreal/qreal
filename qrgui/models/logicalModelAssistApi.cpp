@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,9 +53,10 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &type)
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
-	const Id newElementId(type, QUuid::createUuid().toString());
+	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
+	ElementInfo newElement(newElementId, Id(), parent, Id(), {{"name", elementFriendlyName}}, {});
+	mLogicalModel.addElementToModel(newElement);
 	return newElementId;
 }
 
@@ -65,6 +66,11 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &id
 {
 	Q_UNUSED(preferedLogicalId)
 	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
+}
+
+void LogicalModelAssistApi::createElements(QList<ElementInfo> &elements)
+{
+	mLogicalModel.addElementsToModel(elements);
 }
 
 Id LogicalModelAssistApi::parent(const Id &element) const

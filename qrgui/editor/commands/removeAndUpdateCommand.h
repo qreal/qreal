@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,35 +14,25 @@
 
 #pragma once
 
-#include "editor/copyPaste/pasteCommand.h"
-#include "models/commands/createElementCommand.h"
+#include <qrgui/models/commands/removeElementsCommand.h>
 
-namespace qReal
-{
+namespace qReal {
 namespace gui {
 namespace editor {
+class EditorViewScene;
+namespace commands {
 
-namespace commands
-{
-
-class PasteEdgeCommand : public PasteCommand
+/// Makes same as MultipleRemoveCommand and automaticly rearranges created items on the scene.
+/// In other words this command adds view part into the MulipleRemoveCommand.
+class RemoveAndUpdateCommand : public qReal::commands::RemoveElementsCommand
 {
 public:
-	PasteEdgeCommand(EditorViewScene *scene
-			, const EdgeData &data
-			, const QPointF &offset
-			, bool isGraphicalCopy
-			, QHash<qReal::Id, qReal::Id> *copiedIds);
-	virtual ~PasteEdgeCommand() {}
+	RemoveAndUpdateCommand(EditorViewScene &scene, const models::Models &models);
 
-protected:
-	virtual Id pasteNewInstance();
-	virtual Id pasteGraphicalCopy();
-	virtual void restoreElement();
+	void appendGraphicalDelete(const Id &id, QList<ElementInfo> &nodes, QList<ElementInfo> &edges) override;
 
 private:
-	const EdgeData mEdgeData;
-	qReal::commands::CreateElementCommand *mCreateCommand;
+	EditorViewScene &mScene;
 };
 
 }

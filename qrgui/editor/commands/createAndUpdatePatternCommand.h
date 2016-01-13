@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
 
 #pragma once
 
-#include "models/commands/createGroupCommand.h"
-
+#include "models/commands/createPatternCommand.h"
 
 namespace qReal {
 namespace gui {
@@ -25,18 +24,12 @@ namespace commands {
 
 /// Makes same as CreateGroupCommand and automaticly rearranges created items on the scene.
 /// In other words this command adds view part into the CreateGroupCommand.
-class CreateAndUpdateGroupCommand : public qReal::commands::CreateGroupCommand
+class CreateAndUpdatePatternCommand : public qReal::commands::CreatePatternCommand
 {
 public:
-	CreateAndUpdateGroupCommand(EditorViewScene &scene
-			, models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, models::Exploser &exploser
-			, const Id &logicalParent
-			, const Id &graphicalParent
-			, const Id &id
-			, bool isFromLogicalModel
-			, const QPointF &position);
+	CreateAndUpdatePatternCommand(EditorViewScene &scene
+			, const models::Models &models
+			, const ElementInfo &pattern);
 
 private:
 	bool execute() override;
