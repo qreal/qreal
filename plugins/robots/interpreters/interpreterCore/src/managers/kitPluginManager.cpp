@@ -23,8 +23,8 @@
 using namespace interpreterCore;
 using namespace qReal;
 
-KitPluginManager::KitPluginManager(const QString &pluginDirectory)
-	: mPluginManager(PlatformInfo::applicationDirPath(), pluginDirectory)
+KitPluginManager::KitPluginManager(const QString &pluginsDirectory)
+	: mPluginManager(pluginsDirectory)
 {
 	tryToLoadKitPlugins();
 }

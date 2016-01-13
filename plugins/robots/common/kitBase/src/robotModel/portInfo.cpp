@@ -17,6 +17,8 @@
 using namespace kitBase::robotModel;
 
 PortInfo::PortInfo()
+	: mDirection(output)
+	, mReservedVariableType(ReservedVariableType::scalar)
 {
 }
 

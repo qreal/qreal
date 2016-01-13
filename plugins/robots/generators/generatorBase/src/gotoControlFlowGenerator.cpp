@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "gotoControlFlowGenerator.h"
+#include "generatorBase/gotoControlFlowGenerator.h"
 
 using namespace generatorBase;
 using namespace qReal;
@@ -102,6 +102,17 @@ void GotoControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &
 
 void GotoControlFlowGenerator::afterSearch()
 {
+}
+
+void GotoControlFlowGenerator::performGeneration()
+{
+	const Id initialBlock = mSemanticTree->initialBlock();
+	if (initialBlock.element() != "InitialNode") {
+		// Labels for the first nodes are ignored correctly unless we are dealing with threads.
+		mSemanticTree->findNodeFor(initialBlock)->addLabel();
+	}
+
+	ControlFlowGeneratorBase::performGeneration();
 }
 
 SemanticNode *GotoControlFlowGenerator::produceGotoNode(const qReal::Id &id)

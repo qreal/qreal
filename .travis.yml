@@ -1,3 +1,6 @@
+sudo: required
+dist: trusty
+
 language: cpp
 compiler: gcc
 
@@ -15,19 +18,18 @@ env:
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get update -qq; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.9; fi
+  - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.9 -y; fi
   - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50; fi
   - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50; fi
-  - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
-  - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty main"
-  - sudo add-apt-repository "deb http://ppa.launchpad.net/beineri/opt-qt55-trusty/ubuntu trusty main"
+  - sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 10C56D0DE9977759
+  - sudo add-apt-repository "deb http://ppa.launchpad.net/beineri/opt-qt551-trusty/ubuntu trusty main"
   - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
   - sudo apt-get update
-  - sudo apt-get install libboost-system-dev libboost-wave-dev tcl
-  - sudo apt-get install vera++
-  - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev -y
+  - sudo apt-get install libboost-system-dev libboost-wave-dev tcl -y
+  - sudo apt-get install vera++ -y
+  - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script libgl1-mesa-dev libusb-1.0.0-dev -y
   - . /opt/qt55/bin/qt55-env.sh
-  - sudo apt-get install xvfb
+  - sudo apt-get install xvfb -y
   - Xvfb :0 &
   - export DISPLAY=:0
 

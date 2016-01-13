@@ -364,6 +364,11 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\n\n";
 }
 
+QList<Port *> NodeType::ports() const
+{
+	return mPorts;
+}
+
 bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 {
 	GraphicType::generateOneCase(out, isNotFirst);

@@ -5,6 +5,15 @@ set -o errexit
 cd "$(dirname "$0")"
 
 
-cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-ev3-interpreter.so   $PWD/../data/plugins/tools/kitPlugins/
-cp -pr $BIN_DIR/librobots-ev3-kit.so*                                   $PWD/../data
-cp -pr $BIN_DIR/libqextserialport.so*                                   $PWD/../data
+mkdir -p $PWD/../data/lib/plugins/tools/kitPlugins
+cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-ev3-interpreter.so   $PWD/../data/lib/plugins/tools/kitPlugins/
+cp     $BIN_DIR/plugnis/tools/kitPlugins/libev3-rbf-generator.so        $PWD/../data/lib/plugins/tools/kitPlugins/
+cp -pr $BIN_DIR/librobots-ev3-kit.so*                                   $PWD/../data/lib
+cp -pr $BIN_DIR/librobots-ev3-generator-base.so*                        $PWD/../data/lib
+cp -pr $BIN_DIR/libqextserialport.so*                                   $PWD/../data/lib
+
+cp -pr /usr/bin/libusb*                                                 $PWD/../data/lib
+
+# Cleaning up prebuild-common.sh results...
+rm -rf $PWD/../data/plugins/
+mv $PWD/../data/examples $PWD/../data/resources

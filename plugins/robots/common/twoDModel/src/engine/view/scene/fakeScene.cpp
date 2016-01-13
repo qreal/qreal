@@ -65,15 +65,8 @@ void FakeScene::deleteItem(QGraphicsItem * const original)
 QImage view::FakeScene::render(const QRectF &piece)
 {
 	QImage result(piece.size().toSize(), QImage::Format_RGB32);
+	result.fill(Qt::white);
 	QPainter painter(&result);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::white));
-	painter.drawRect(piece.translated(-piece.topLeft()));
-
 	QGraphicsScene::render(&painter, QRectF(), piece);
-
 	return result;
 }

@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <qrkernel/logging.h>
 #include <utils/robotCommunication/robotCommunicationException.h>
+
 #include "windowsFantom.h"
 #include "fantomMethods.h"
 #include "fantom.h"
@@ -22,5 +24,7 @@ using namespace nxt::communication;
 WindowsFantom::WindowsFantom()
 {
 	mFantomLibrary.setFileName("fantom");
-	mFantomLibrary.load();
+	if (!mFantomLibrary.load()) {
+		QLOG_ERROR() << "Fantom resolving error:" << qUtf8Printable(mFantomLibrary.errorString());
+	}
 }

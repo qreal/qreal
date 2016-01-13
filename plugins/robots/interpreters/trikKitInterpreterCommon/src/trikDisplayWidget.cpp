@@ -23,7 +23,7 @@ using namespace trik;
 TrikDisplayWidget::TrikDisplayWidget(QWidget *parent)
 	: twoDModel::engine::TwoDModelDisplayWidget(parent)
 	, mUi(new Ui::TrikDisplayWidget)
-	, mBackground(":/icons/controller.png", "PNG")
+	, mBackground(":/icons/trik_controller.png", "PNG")
 {
 	mUi->setupUi(this);
 	resetLed();

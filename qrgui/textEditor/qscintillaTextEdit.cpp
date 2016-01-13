@@ -51,10 +51,10 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 	mLanguage = language;
 	setIndentationsUseTabs(mLanguage.tabIndentation);
 	setTabWidth(mLanguage.tabSize);
-	setLexer(mLanguage.lexer.data());
+	setLexer(mLanguage.lexer);
 
-	if (mLanguage.lexer.data()) {
-		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer.data());
+	if (mLanguage.lexer) {
+		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer);
 		for (const QString &additionalToken : mLanguage.additionalAutocompletionTokens) {
 			api->add(additionalToken);
 		}
@@ -65,7 +65,8 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 
 void QScintillaTextEdit::init()
 {
-	connect(this, &QsciScintilla::textChanged, this, &QScintillaTextEdit::emitTextWasModified);
+	// For some reason c++11-style connections do not work here!
+	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
 	setDefaultSettings();
 	setCurrentLanguage(Languages::textFileInfo("*.txt"));
 }

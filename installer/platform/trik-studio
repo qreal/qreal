@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Welcome to TRIK Studio! Take it, hold it, love it.
+
+set -o errexit
+
+cd "$(dirname "$0")"
+export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
+cd bin
+./trik-studio $@

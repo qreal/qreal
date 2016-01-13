@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,11 @@
 #include <qrkernel/roles.h>
 
 #include "editor/edgeElement.h"
-#include "models/commands/createElementCommand.h"
+#include "models/commands/createElementsCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -40,12 +42,12 @@ public:
 	void generateColor();
 
 	bool isDirected() const;
-	qReal::Id edgeType() const;
+	Id edgeType() const;
 	NodeElement* master() const;
 
 	void setDirected(const bool directed);
 	void setMaster(NodeElement* const master);
-	void setEdgeType(const qReal::Id & edgeType);
+	void setEdgeType(const Id & edgeType);
 
 	void takePosition(int index, int maxIndex);
 
@@ -69,10 +71,12 @@ private:
 
 	bool mDirected;
 	bool mPressed;
-	qReal::Id mEdgeType;
+	Id mEdgeType;
 
 	QPointF mInitialClickPoint;
-	commands::CreateElementCommand *mCreateEdgeCommand;
+	qReal::commands::CreateElementsCommand *mCreateEdgeCommand;
 };
 
+}
+}
 }

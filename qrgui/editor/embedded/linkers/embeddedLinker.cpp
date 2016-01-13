@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@
 #include "editor/commands/reshapeEdgeCommand.h"
 
 using namespace qReal;
+using namespace qReal::commands;
+using namespace qReal::gui::editor;
 
 EmbeddedLinker::EmbeddedLinker()
 		: mEdge(nullptr)
@@ -139,13 +141,13 @@ void EmbeddedLinker::initTitle()
 //	mTitle->setParentItem(this);
 }
 
-void EmbeddedLinker::setEdgeType(const qReal::Id &edgeType)
+void EmbeddedLinker::setEdgeType(const Id &edgeType)
 {
 	this->mEdgeType = edgeType;
 	generateColor();
 }
 
-qReal::Id EmbeddedLinker::edgeType() const
+Id EmbeddedLinker::edgeType() const
 {
 	return mEdgeType;
 }
@@ -247,7 +249,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (scene->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			mInitialClickPoint = event->scenePos();
-			const Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			const Id edgeId = scene->createElement(type, event->scenePos(), &mCreateEdgeCommand, false);
 			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
@@ -267,7 +269,8 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	hide();
-	mMaster->setSelectionState(false);
+	mMaster->setConnectingState(false);
+	mMaster->setSelected(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
 
 	if (!mPressed && scene && mEdge) {
@@ -277,7 +280,7 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
-		commands::CreateElementCommand *createElementFromMenuCommand = nullptr;
+		CreateElementsCommand *createElementFromMenuCommand = nullptr;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {

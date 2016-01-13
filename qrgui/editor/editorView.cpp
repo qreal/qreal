@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,13 +22,14 @@
 #include <qrgui/models/models.h>
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const int zoomAnimationInterval = 20;
 const int zoomAnimationTimes = 4;
 
 EditorView::EditorView(const models::Models &models
 		, Controller &controller
-		, const SceneCustomizer &customizer
+		, const qReal::gui::editor::SceneCustomizer &customizer
 		, const Id &rootId
 		, QWidget *parent)
 	: QGraphicsView(parent)
@@ -164,11 +165,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	} else {
 		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
 			setDragMode(RubberBandDrag);
-			mScene.itemSelectUpdate();
-		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
-			setDragMode(ScrollHandDrag); //  (see #615)
-			mScene->itemSelectUpdate();*/
-		} else if (event->buttons() & Qt::LeftButton ) {
+		} else if (event->buttons() & Qt::LeftButton) {
 			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl && newEdgeEl->isBreakPointPressed()) {
 				newEdgeEl->breakPointUnpressed();
@@ -204,10 +201,6 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()
 				&& !itemAt(event->pos())) {
 			setDragMode(RubberBandDrag);
-		}
-
-		if (event->modifiers() & Qt::ControlModifier) {
-			mScene.itemSelectUpdate();
 		}
 	}
 }
@@ -305,9 +298,8 @@ void EditorView::zoom(const qreal zoomFactor)
 		mScene.setRealIndexGrid(mScene.realIndexGrid() * zoomFactor);
 	}
 
-	mMVIface.invalidateImagesZoomCache(transform().m11());
-
 	checkGrid();
+	emit zoomChanged(transform().m11());
 }
 
 void EditorView::setSceneFont()

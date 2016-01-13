@@ -45,7 +45,7 @@ public:
 	/// in chunks, each chunk with the new robot transition).
 	Reporter(const QString &messagesFile, const QString &trajectoryFile);
 
-	~Reporter();
+	~Reporter() override;
 
 	/// Returns true if last reported to user message was an error.
 	bool lastMessageIsError();

@@ -20,11 +20,8 @@
 
 using namespace qReal::details;
 
-PluginManagerImplementation::PluginManagerImplementation(const QString &applicationDirPath
-		, const QString &additionalPart)
-	: mPluginsDir(QDir(applicationDirPath))
-	, mApplicationDirectoryPath(applicationDirPath)
-	, mAdditionalPart(additionalPart)
+PluginManagerImplementation::PluginManagerImplementation(const QString &pluginsDirPath)
+	: mPluginsDir(pluginsDirPath)
 {
 }
 
@@ -38,15 +35,10 @@ PluginManagerImplementation::~PluginManagerImplementation()
 
 QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 {
-	QList<QString> splittedDir = mAdditionalPart.split('/');
-	for (const QString &partOfDirectory : splittedDir) {
-		if (!mPluginsDir.exists()) {
-			QLOG_INFO() << "Plugins directory" << mPluginsDir.path()
-					<< "does not exist, maybe we are in 'metamodeling on fly' mode";
-			return {};
-		}
-
-		mPluginsDir.cd(partOfDirectory);
+	if (!mPluginsDir.exists()) {
+		QLOG_INFO() << "Plugins directory" << mPluginsDir.path()
+				<< "does not exist, maybe we are in 'metamodeling on fly' mode";
+		return {};
 	}
 
 	QList<QObject *> listOfPlugins;
@@ -129,6 +121,7 @@ QList<QString> PluginManagerImplementation::namesOfPlugins() const
 	for (const QPair<QString, QPluginLoader *> &currentPair : mLoaders) {
 		listOfNames.append(currentPair.first);
 	}
+
 	return listOfNames;
 }
 

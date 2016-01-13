@@ -33,9 +33,10 @@ public:
 	}
 
 private:
-	void accept(core::AstVisitorInterface &visitor) const override
+	void accept(core::AstVisitorInterface &visitor, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent) override
 	{
-		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(*this);
+		static_cast<LuaAstVisitorInterface *>(&visitor)->visit(qSharedPointerCast<Identifier>(pointer), parent);
 	}
 
 	QString mName;

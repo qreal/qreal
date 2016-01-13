@@ -14,7 +14,6 @@
 
 #include "beepBlock.h"
 
-#include <utils/tracer.h>
 #include <utils/abstractTimer.h>
 
 using namespace ev3::blocks::details;
@@ -35,5 +34,6 @@ int BeepBlock::duration()
 
 void BeepBlock::doJob(ev3::robotModel::parts::Ev3Speaker &speaker)
 {
-	speaker.beep(duration());
+	int const volume = eval<int>("Volume");
+	speaker.beep(volume, duration());
 }

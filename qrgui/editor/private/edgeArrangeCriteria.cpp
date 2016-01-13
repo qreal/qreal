@@ -14,6 +14,8 @@
 
 #include "editor/private/edgeArrangeCriteria.h"
 
+using namespace qReal::gui::editor;
+
 EdgeArrangeCriteria::EdgeArrangeCriteria(int edgeType, qreal yOffset, qreal xOffset)
 		: mEdgeType(edgeType)
 		, mYOffset(yOffset)

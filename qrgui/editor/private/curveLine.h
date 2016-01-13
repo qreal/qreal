@@ -17,6 +17,8 @@
 #include "editor/private/lineHandler.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// @brief A strategy class for handling Bezier curve link
 class CurveLine : public LineHandler
@@ -54,4 +56,6 @@ protected:
 	void drawControlLines(QPainter *painter);
 };
 
+}
+}
 }

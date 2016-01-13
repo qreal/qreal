@@ -27,3 +27,5 @@ HEADERS += \
 
 SOURCES += \
 	testInvocationPlugin.cpp \
+
+links(qrkernel qrutils)

@@ -42,7 +42,10 @@ enum LinkShape
 namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
+
+/// @todo: wt*?!
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
+
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
 typedef QPair<qReal::Id, qReal::Id> ElementPair;
 

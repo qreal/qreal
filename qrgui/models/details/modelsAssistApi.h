@@ -43,6 +43,8 @@ public:
 	ModelsAssistApi(details::modelsImplementation::AbstractModel &model
 			, const EditorManagerInterface &editorManagerInterface);
 	const EditorManagerInterface &editorManagerInterface() const;
+
+	/// @todo: use ElementInfo here.
 	Id createElement(const Id &parent, const Id &id, const Id &logicalId
 			, bool isFromLogicalModel, const QString &name, const QPointF &position);
 

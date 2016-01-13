@@ -75,6 +75,7 @@
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
         <file>templates/functions/atan.t</file>
+        <file>templates/functions/atan2.t</file>
         <file>templates/functions/ceil.t</file>
         <file>templates/functions/cos.t</file>
         <file>templates/functions/exp.t</file>

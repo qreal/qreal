@@ -14,7 +14,6 @@
 
 #include "timerBlock.h"
 
-#include <utils/tracer.h>
 #include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
 

@@ -50,8 +50,12 @@ AbstractItem *CurveItem::clone() const
 {
 	const auto cloned = new CurveItem({x1(), y1()}, {x2(), y2()});
 	AbstractItem::copyTo(cloned);
+	connect(&mMarker1, &Marker::xChanged, &cloned->mMarker1, [=]() { cloned->mMarker1.setX(mMarker1.x()); });
+	connect(&mMarker1, &Marker::yChanged, &cloned->mMarker1, [=]() { cloned->mMarker1.setY(mMarker1.y()); });
+	connect(&mMarker2, &Marker::xChanged, &cloned->mMarker2, [=]() { cloned->mMarker2.setX(mMarker2.x()); });
+	connect(&mMarker2, &Marker::yChanged, &cloned->mMarker2, [=]() { cloned->mMarker2.setY(mMarker2.y()); });
 	cloned->mMarker1.setPos(mMarker1.pos());
-	cloned->mMarker1.setPos(mMarker2.pos());
+	cloned->mMarker2.setPos(mMarker2.pos());
 	return cloned;
 }
 
@@ -184,7 +188,7 @@ QVariant CurveItem::itemChange(QGraphicsItem::GraphicsItemChange change, const Q
 }
 
 CurveItem::Marker::Marker(QGraphicsItem *parent)
-	: QGraphicsItem(parent)
+	: QGraphicsObject(parent)
 {
 	setFlag(ItemSendsGeometryChanges);
 }

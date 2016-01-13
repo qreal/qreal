@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using namespace qReal::commands;
 
 RenameExplosionCommand::RenameExplosionCommand(models::LogicalModelAssistApi &logicalApi
 		, const models::GraphicalModelAssistApi * const graphicalApi
-		, models::Exploser &exploser
+		, const models::Exploser &exploser
 		, const Id &target)
 	: mLogicalApi(logicalApi)
 	, mGraphicalApi(graphicalApi)

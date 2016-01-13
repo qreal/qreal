@@ -29,8 +29,8 @@ class KitPluginManager
 {
 public:
 	/// Constructor.
-	/// @param pluginDirectory - directory where we need to search for plugins.
-	explicit KitPluginManager(const QString &pluginDirectory);
+	/// @param pluginsDirectory - directory where we need to search for plugins.
+	explicit KitPluginManager(const QString &pluginsDirectory);
 
 	~KitPluginManager();
 

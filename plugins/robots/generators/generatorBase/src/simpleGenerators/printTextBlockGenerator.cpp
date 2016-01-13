@@ -32,8 +32,9 @@ PrintTextBlockGenerator::PrintTextBlockGenerator(const qrRepo::RepoApi &repo
 			, (repo.property(id, "Evaluate").toBool()
 					? Binding::createConverting("@@TEXT@@", "PrintText"
 							, customizer.factory()->stringPropertyConverter(id, "PrintText"))
-					: Binding::createStatic("@@TEXT@@"
-							, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))))
+					: Binding::createStaticConverting("@@TEXT@@"
+							, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))
+							, customizer.factory()->stringPropertyConverter(id, "PrintText")))
 			}, parent)
 {
 	// Calling virtual readTemplate() before base class constructor will cause segfault.

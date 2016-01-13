@@ -183,6 +183,12 @@ void LuaToolbox::clear()
 	mSpecialIdentifiers.clear();
 }
 
+bool LuaToolbox::isGeneralization(const QSharedPointer<qrtext::core::types::TypeExpression> &specific
+		, const QSharedPointer<qrtext::core::types::TypeExpression> &general) const
+{
+	return mAnalyzer->isGeneralization(specific, general);
+}
+
 void LuaToolbox::reportErrors()
 {
 	for (const qrtext::core::Error &error : mErrors) {
