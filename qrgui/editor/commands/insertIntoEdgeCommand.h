@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 #include "editor/editorViewScene.h"
 #include "models/graphicalModelAssistApi.h"
 #include "models/logicalModelAssistApi.h"
-#include "models/commands/createElementCommand.h"
-#include "models/commands/removeElementCommand.h"
+#include "models/commands/createElementsCommand.h"
+#include "models/commands/removeElementsCommand.h"
 
 namespace qReal {
 namespace gui {
@@ -29,16 +29,14 @@ class InsertIntoEdgeCommand : public qReal::commands::AbstractCommand
 {
 public:
 	InsertIntoEdgeCommand(EditorViewScene &scene
-			, models::LogicalModelAssistApi &logicalAssistApi
-			, models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::Exploser &exploser
+			, const models::Models &models
 			, const Id &firstElem
 			, const Id &lastElem
 			, const Id &parent
 			, const QPointF &scenePos
 			, const QPointF &shift
 			, bool isFromLogicalModel
-			, qReal::commands::CreateElementCommand *createCommand = 0);
+			, qReal::commands::CreateElementsCommand *createCommand = 0);
 
 	~InsertIntoEdgeCommand();
 
@@ -47,10 +45,11 @@ protected:
 	virtual bool restoreState();
 
 private:
-	void initCommand(qReal::commands::CreateElementCommand *&command, const Id &type);
-	void makeLink(qReal::commands::CreateElementCommand *command, NodeElement *src, NodeElement *dst);
+	void initCommand(qReal::commands::CreateElementsCommand *&command, const Id &type);
+	void makeLink(qReal::commands::CreateElementsCommand *command, NodeElement *src, NodeElement *dst);
 
 	EditorViewScene &mScene;
+	const models::Models &mModels;
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;
 	models::Exploser &mExploser;
@@ -69,11 +68,11 @@ private:
 
 	QMap<Id, QPointF> mElementShifting;
 
-	qReal::commands::CreateElementCommand *mCreateFirst;
-	qReal::commands::CreateElementCommand *mCreateSecond;
-	qReal::commands::RemoveElementCommand *mRemoveOldEdge;
+	qReal::commands::CreateElementsCommand *mCreateFirst;
+	qReal::commands::CreateElementsCommand *mCreateSecond;
+	qReal::commands::RemoveElementsCommand *mRemoveOldEdge;
 
-	qReal::commands::CreateElementCommand *mCreateCommand;
+	qReal::commands::CreateElementsCommand *mCreateCommand;
 };
 
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,6 +94,11 @@ void GraphicType::copyLabels(GraphicType *parent)
 	for (Label *label : parent->mLabels) {
 		mLabels.append(label->clone());
 	}
+}
+
+QList<Port *> GraphicType::ports() const
+{
+	return {};
 }
 
 bool GraphicType::init(const QDomElement &element, const QString &context)

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@
 #include "editor/ports/portFactory.h"
 
 #include "editor/private/resizeHandler.h"
-#include "editor/private/copyHandler.h"
 
 #include "editor/commands/resizeCommand.h"
 #include "editor/commands/foldCommand.h"
@@ -48,14 +47,9 @@ using namespace qReal::commands;
 using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
-NodeElement::NodeElement(ElementImpl *impl
-		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		, models::Exploser &exploser
-		)
-	: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-	, mExploser(exploser)
+NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &models)
+	: Element(impl, id, models)
+	, mExploser(models.exploser())
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mDragState(None)
 	, mResizeCommand(nullptr)
@@ -73,7 +67,7 @@ NodeElement::NodeElement(ElementImpl *impl
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	LabelFactory labelFactory(graphicalAssistApi, mId);
+	LabelFactory labelFactory(models.graphicalModelAssistApi(), mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
@@ -125,19 +119,24 @@ void NodeElement::initPortsVisibility()
 	}
 }
 
-NodeElement *NodeElement::clone(bool toCursorPos, bool searchForParents)
+void NodeElement::connectSceneEvents()
 {
-	CopyHandler copyHandler(*this, mGraphicalAssistApi);
-	return copyHandler.clone(toCursorPos, searchForParents);
-}
+	if (!scene()) {
+		return;
+	}
 
-NodeElement* NodeElement::copyAndPlaceOnDiagram(const QPointF &offset)
-{
-	NodeElement* copy = clone(false, false);
-	QPointF pos = copy->scenePos();
-	copy->setPos(pos.x() + offset.x(), pos.y() + offset.y());
+	const EditorView *editorView = nullptr;
+	for (const QGraphicsView *view : scene()->views()) {
+		if ((editorView = dynamic_cast<const EditorView *>(view))) {
+			break;
+		}
+	}
 
-	return copy;
+	updateBySelection();
+	mRenderer.setZoom(editorView->transform().m11());
+	if (editorView) {
+		connect(editorView, &EditorView::zoomChanged, &mRenderer, &SdfRenderer::setZoom);
+	}
 }
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
@@ -148,11 +147,6 @@ QMap<QString, QVariant> NodeElement::graphicalProperties() const
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
 	return mGraphicalAssistApi.properties(logicalId());
-}
-
-void NodeElement::invalidateImagesZoomCache(qreal zoomFactor)
-{
-	mRenderer.invalidateSvgCache(zoomFactor);
 }
 
 void NodeElement::setName(const QString &value, bool withUndoRedo)
@@ -347,7 +341,8 @@ void NodeElement::alignToGrid()
 	}
 }
 
-void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos) {
+void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos)
+{
 	// in case of unresizable item use switch
 	// Determing parent using corner position, not mouse coordinates
 	QPointF newParentInnerPoint = mouseScenePos;
@@ -524,8 +519,7 @@ void NodeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());
 	commands::InsertIntoEdgeCommand *insertCommand = new commands::InsertIntoEdgeCommand(
-			*evScene, mLogicalAssistApi, mGraphicalAssistApi, mExploser, id(), id(), Id::rootId()
-			, event->scenePos(), boundingRect().bottomRight(), false);
+			*evScene, mModels, id(), id(), Id::rootId(), event->scenePos(), boundingRect().bottomRight(), false);
 
 	bool shouldProcessResize = true;
 
@@ -646,19 +640,19 @@ bool NodeElement::initPossibleEdges()
 		return true;
 	}
 
+	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 	for (const QString &elementName : mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
 			, id().diagram())) {
 		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
 		if (ne == -1) {
-			QList<StringPossibleEdge> const list = mGraphicalAssistApi.editorManagerInterface()
+			const QList<StringPossibleEdge> list = mGraphicalAssistApi.editorManagerInterface()
 					.possibleEdges(id().editor(), elementName);
 			for (const StringPossibleEdge &pEdge : list) {
-				const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 				if (portTypes.contains(pEdge.first.first)
 						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
 				{
 					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
-					QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
+					const QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
 					if (elementPairs.empty()) {
 						continue;
 					}
@@ -731,6 +725,13 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 		if (mDragState == None) {
 			alignToGrid();
 		}
+
+		if (isSelected()) {
+			/// @todo: Actually we must do it when user drags items group. For now the criteria of that is selection
+			/// state, but we need to change it to more trustful one.
+			storeGeometry();
+		}
+
 		adjustLinks();
 		return value;
 
@@ -745,8 +746,22 @@ QVariant NodeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 		updateByNewParent();
 		return value;
 
+	case ItemSelectedChange: {
+		if (connectionInProgress()) {
+			// If we are dragging edge from linker then unselecting this element will cause dragging interruption.
+			// So unselection events must be declined, doing it here...
+			return QGraphicsItem::itemChange(change, true);
+		}
+
+		return QGraphicsItem::itemChange(change, value);
+	}
 	case ItemSelectedHasChanged: {
 		updateBySelection();
+		return QGraphicsItem::itemChange(change, value);
+	}
+
+	case ItemSceneHasChanged: {
+		connectSceneEvents();
 		return QGraphicsItem::itemChange(change, value);
 	}
 
@@ -762,6 +777,7 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
+//	qDebug() << mContents;
 	return mContents.adjusted(-2 * kvadratik, -2 * kvadratik, kvadratik, kvadratik);
 }
 
@@ -1024,7 +1040,7 @@ void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 	resize();
 }
 
-Element* NodeElement::getPlaceholderNextElement()
+Element* NodeElement::getPlaceholderNextElement() const
 {
 	if(mPlaceholder == nullptr) {
 		return nullptr;
@@ -1172,25 +1188,18 @@ void NodeElement::checkConnectionsToPort() // it is strange method
 	mPortHandler->checkConnectionsToPort();
 }
 
-NodeData NodeElement::data()
+NodeInfo NodeElement::data() const
 {
-	NodeData result;
-	result.id = id();
-	result.logicalId = logicalId();
-	result.logicalProperties = logicalProperties();
-	result.graphicalProperties = graphicalProperties();
-	// new element should not have references to links connected to original source element
-	result.graphicalProperties["links"] = IdListHelper::toVariant(IdList());
-	result.pos = mPos;
-	result.contents = mContents;
-	result.explosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	NodeInfo result(id(), logicalId(), mLogicalAssistApi.parent(logicalId()), mGraphicalAssistApi.parent(id())
+			, {}, {}, mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId())
+	);
 
-	NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
-	if (parent) {
-		result.parentId = parent->id();
-	} else {
-		result.parentId = Id::rootId();
-	}
+	result.setAllLogicalProperties(logicalProperties());
+	result.setAllGraphicalProperties(graphicalProperties());
+
+	// new element should not have references to links connected to original source element
+	result.setGraphicalProperty("links", IdListHelper::toVariant(IdList()));
+	result.setGraphicalProperty("position", mPos);
 
 	return result;
 }
@@ -1376,9 +1385,7 @@ QRectF NodeElement::diagramRenderingRect() const
 	const NodeElement *initial = new NodeElement(
 			mLogicalAssistApi.editorManagerInterface().elementImpl(id())
 			, id().sameTypeId()
-			, mGraphicalAssistApi
-			, mLogicalAssistApi
-			, mExploser
+			, mModels
 			);
 
 	const qreal xCoeff = (boundingRect().width() - 3 * kvadratik) / (initial->boundingRect().width() - 3 * kvadratik);

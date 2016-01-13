@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,11 +50,7 @@ class QRGUI_EDITOR_EXPORT Element : public QObject, public QGraphicsItem, public
 public:
 	/// Constructor
 	/// @param elementImpl - pointer to implementation of the element. Takes ownership.
-	Element(ElementImpl *elementImpl
-			, const Id &id
-			, models::GraphicalModelAssistApi &graphicalAssistApi
-			, models::LogicalModelAssistApi &logicalAssistApi
-			);
+	Element(ElementImpl *elementImpl, const Id &id, const models::Models &models);
 
 	virtual ~Element() {}
 
@@ -103,6 +99,7 @@ protected:
 
 	QList<Label *> mLabels;
 
+	const models::Models &mModels;
 	models::LogicalModelAssistApi &mLogicalAssistApi;
 	models::GraphicalModelAssistApi &mGraphicalAssistApi;
 

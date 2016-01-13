@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,38 @@
 
 #pragma once
 
-#include "models/commands/multipleRemoveCommand.h"
+#include <QtCore/QObject>
 
+#include "editor/nodeElement.h"
+#include "editor/edgeElement.h"
 
 namespace qReal {
 namespace gui {
 namespace editor {
-class EditorViewScene;
-namespace commands {
 
-/// Makes same as MultipleRemoveCommand and automaticly rearranges created items on the scene.
-/// In other words this command adds view part into the MulipleRemoveCommand.
-class MultipleRemoveAndUpdateCommand : public qReal::commands::MultipleRemoveCommand
+class EditorViewScene;
+
+class ClipboardHandler
 {
 public:
-	MultipleRemoveAndUpdateCommand(EditorViewScene &scene, const models::Models &models);
+	ClipboardHandler(EditorViewScene &scene, Controller &controller);
+
+	void cut();
+	void copy();
+	void paste(bool isGraphicalCopy);
 
 private:
-	AbstractCommand *graphicalDeleteCommand(const Id &id) override;
+	void pushDataToClipboard(const QList<NodeInfo> &nodesData, const QList<EdgeInfo> &edgesData);
+	QList<NodeElement *> getNodesForCopying();
+	QList<NodeInfo> getNodesData(QList<NodeElement *> const &nodes);
+	QList<EdgeInfo> getEdgesData();
+	void addChildren(NodeElement *node, QList<NodeElement *> &nodes);
+	QPointF currentMousePosInSceneCoordinates() const;
 
 	EditorViewScene &mScene;
+	Controller &mController;
 };
 
-}
 }
 }
 }
