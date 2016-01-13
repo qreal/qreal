@@ -26,7 +26,7 @@
 using namespace qReal;
 
 ConstraintsManager::ConstraintsManager()
-	: mPluginManager(PlatformInfo::applicationDirPath(), "plugins/tools")
+	: mPluginManager(PlatformInfo::invariantPath("pathToToolPlugins"))
 {
 	const QList<ConstraintsPluginInterface *> loadedPlugins =
 			mPluginManager.loadAllPlugins<ConstraintsPluginInterface>();
