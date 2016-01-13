@@ -13,7 +13,8 @@ namespace generatorParts {
 class GeneratorForDiagrams
 {
 public:
-	static QString countRealConstraintOfDiagramElement(const qReal::Id &constraintElement
+	static QString countRealConstraintOfDiagramElement(
+			const qReal::Id &constraintElement
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter);

@@ -1,12 +1,12 @@
 #include "generatorForNodeElements.h"
 #include "generatorForElements.h"
 #include "generatorForProperties.h"
-#include "generatorUtils/auxiliaryMethods.h"
 #include "generatorForListsOfElements.h"
 #include "generatorForEdgeElements.h"
+#include "generatorForExpressions.h"
+#include "generatorForLinks.h"
 
 using namespace constraints::generator::generatorParts;
-using namespace constraints::generator::generatorUtils;
 using namespace qReal;
 using namespace qrRepo;
 
@@ -47,7 +47,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 
 	int additionalDepth = countsOfConstraintElementsInOneConstraint[constraintType];
 
-	if ((!AuxiliaryMethods::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
+	if ((!GeneratorForLinks::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
 		if (constraintType == "Parent") {
 			QPair<QString, QList<QString> > resParentConstraint =
 					countConstraintForParent(constraint, elementName, depth + additionalDepth, addStr
@@ -151,7 +151,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 
 	QPair<QString, QList<QString> > resNeighborsNodes = countNeighborsElementsByOr(
 			constraint
-			, AuxiliaryMethods::conjunctionExpression(resBool)
+			, GeneratorForExpressions::conjunctionExpression(resBool)
 			, usedElements
 			, node, elementName
 			, depth + additionalDepth
@@ -166,7 +166,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 		resBool = resNeighborsNodes.second;
 	}
 
-	allResultBool.append(AuxiliaryMethods::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 
 	return QPair<QString, QList<QString> >(resString, allResultBool);
 }
@@ -208,7 +208,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForBegin
 
 	resBool.push_back("beginNodeRes_" + QString::number(depth));
 
-	allResultBool.append(AuxiliaryMethods::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 	return QPair<QString, QList<QString> >(resultString, allResultBool);
 }
 
@@ -251,7 +251,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForEndNo
 
 	resBool.push_back("endNodeRes_" + QString::number(depth));
 
-	allResultBool.append(AuxiliaryMethods::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 	return QPair<QString, QList<QString> >(resultString, allResultBool);
 }
 
@@ -305,7 +305,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForParen
 
 	resultBool.push_back("parentRes_" + QString::number(depth));
 
-	allResultBool.append(AuxiliaryMethods::conjunctionExpression(resultBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resultBool));
 
 	return QPair<QString, QList<QString> >(resultString, allResultBool);
 }
@@ -354,7 +354,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForMulti
 	QList<QString> curBool;
 	QList<QString> resBool;
 
-	IdList neighborNodes = AuxiliaryMethods::neighborNodesWithGivenType(constraint, "MultiOrEdge", api);
+	IdList neighborNodes = neighborNodesWithGivenType(constraint, "MultiOrEdge", api);
 	usedElements.append(neighborNodes);
 
 	for (const Id element : neighborNodes) {
@@ -387,7 +387,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForMulti
 		curBool.append(resElementConstraint.second);
 	}
 
-	resBool.append(QString("(" + AuxiliaryMethods::disjunctionExpression(curBool) + ")"));
+	resBool.append(QString("(" + GeneratorForExpressions::disjunctionExpression(curBool) + ")"));
 
 	return QPair<QString, QList<QString> >(resString, resBool);
 }
@@ -407,7 +407,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsB
 	QString resString = "";
 	QList<QString> resBool;
 
-	IdList neighborNodes = AuxiliaryMethods::neighborNodesWithGivenType(constraint, "Or", api);
+	IdList neighborNodes = neighborNodesWithGivenType(constraint, "Or", api);
 
 	if (!neighborNodes.isEmpty()) {
 		for (const Id neighbor : neighborNodes) {
@@ -441,10 +441,33 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsB
 				resString += resNeighborsConstraint.first;
 				resBool.append(QString("( %1 || %2 )")
 						.arg(resConstraintBool)
-						.arg(AuxiliaryMethods::conjunctionExpression(resNeighborsConstraint.second)));
+						.arg(GeneratorForExpressions::conjunctionExpression(resNeighborsConstraint.second)));
 			}
 		}
 	}
 
 	return QPair<QString, QList<QString> >(resString, resBool);
+}
+
+IdList GeneratorForNodeElements::neighborNodesWithGivenType(
+		const Id &element
+		, const QString &type
+		, const LogicalRepoApi &api)
+{
+	IdList inNodes;
+
+	for (const Id &inLink : api.incomingLinks(element)) {
+		if (inLink.element() == type) {
+			inNodes.push_back(api.from(inLink));
+		}
+	}
+
+	IdList outNodes;
+	for (Id const &outLink : api.outgoingLinks(element)) {
+		if (outLink.element() == type) {
+			outNodes.push_back(api.to(outLink));
+		}
+	}
+
+	return inNodes << outNodes;
 }

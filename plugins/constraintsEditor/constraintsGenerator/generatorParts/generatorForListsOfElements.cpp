@@ -1,13 +1,12 @@
 #include "generatorForListsOfElements.h"
 
-#include "generatorUtils/auxiliaryMethods.h"
 #include "generatorForProperties.h"
 #include "generatorForEdgeElements.h"
 #include "generatorForNodeElements.h"
+#include "generatorForExpressions.h"
 
 using namespace qReal;
 using namespace constraints::generator::generatorParts;
-using namespace constraints::generator::generatorUtils;
 
 QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForChildrens(
 		const Id &constraint
@@ -259,7 +258,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 		resBool.push_back("count" + resElementName + "Res_" + QString::number(depth));
 	}
 
-	allResultBool.append(AuxiliaryMethods::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 
 	return QPair<QString, QList<QString> >(resultString, allResultBool);
 }

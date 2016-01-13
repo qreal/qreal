@@ -1,10 +1,10 @@
 #include "generatorForEdgeElements.h"
 #include "generatorForElements.h"
 #include "generatorForNodeElements.h"
-#include "generatorUtils/auxiliaryMethods.h"
+#include "generatorForExpressions.h"
+#include "generatorForLinks.h"
 
 using namespace constraints::generator::generatorParts;
-using namespace constraints::generator::generatorUtils;
 using namespace qReal;
 using namespace qrRepo;
 
@@ -43,7 +43,7 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 
 	int additionalDepth = countsOfConstraintElementsInOneConstraint[constraintType];
 
-	if ((!AuxiliaryMethods::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
+	if ((!GeneratorForLinks::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
 		if (constraintType == "BeginNode") {
 			QPair<QString, QList<QString> > resBeginNodeConstraint =
 					GeneratorForNodeElements::countConstraintForBeginNode(
@@ -106,7 +106,7 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 
 	QPair<QString, QList<QString> > resNeighborsNodes = GeneratorForNodeElements::countNeighborsElementsByOr(
 			constraint
-			, AuxiliaryMethods::conjunctionExpression(resBool)
+			, GeneratorForExpressions::conjunctionExpression(resBool)
 			, usedElements
 			, edge
 			, elementName
@@ -122,7 +122,7 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 		resBool.append(resNeighborsNodes.second);
 	}
 
-	allResultBool.append(AuxiliaryMethods::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 
 	return QPair<QString, QList<QString> >(resString, allResultBool);
 }

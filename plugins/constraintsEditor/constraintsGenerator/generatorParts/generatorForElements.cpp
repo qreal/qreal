@@ -1,10 +1,9 @@
 #include "generatorForElements.h"
 #include "generatorForEdgeElements.h"
 #include "generatorForNodeElements.h"
-#include "generatorUtils/auxiliaryMethods.h"
+#include "generatorForExpressions.h"
 
 using namespace constraints::generator::generatorParts;
-using namespace constraints::generator::generatorUtils;
 using namespace qReal;
 using namespace qrRepo;
 
@@ -70,7 +69,7 @@ QString GeneratorForElements::additionalCommonPartForConstraint(
 			.arg(addStr)
 			.arg(resultName)
 			.arg(depth)
-			.arg(AuxiliaryMethods::conjunctionExpression(resBool));
+			.arg(GeneratorForExpressions::conjunctionExpression(resBool));
 
 	return resString;
 }

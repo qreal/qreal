@@ -1,5 +1,4 @@
 #include "concreteGenerator.h"
-#include "generatorUtils/auxiliaryMethods.h"
 #include "generatorParts/generatorForProperties.h"
 #include "generatorParts/generatorForListsOfElements.h"
 #include "generatorParts/generatorForDiagrams.h"
@@ -10,7 +9,6 @@
 #include <QtCore/QDebug>
 
 using namespace constraints::generator;
-using namespace constraints::generator::generatorUtils;
 using namespace constraints::generator::generatorParts;
 using namespace qReal;
 using namespace utils;

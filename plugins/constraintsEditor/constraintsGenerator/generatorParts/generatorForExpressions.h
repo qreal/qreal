@@ -7,9 +7,9 @@
 
 namespace constraints {
 namespace generator {
-namespace generatorUtils {
+namespace generatorParts {
 
-class AuxiliaryMethods
+class GeneratorForExpressions
 {
 public:
 	/// Forms disjunction expression given list of boolean expressions.
@@ -21,26 +21,6 @@ public:
 	/// @param listOfBooleanExpressions - list of expressions.
 	/// @returns boolean expressions list connected by "&&" symbol.
 	static QString conjunctionExpression(QList<QString> listOfBooleanExpressions);
-
-	/// Returns list of neighbor nodes for given element with given type.
-	/// @param element - element id.
-	/// @param type - type of node.
-	/// @param api - information about model.
-	/// @returns list of neighbor nodes ids.
-	static qReal::IdList neighborNodesWithGivenType(
-			const qReal::Id &element
-			, const QString &type
-			, const qrRepo::LogicalRepoApi &api);
-
-	/// Returns true if link with given type and connected to given element exists.
-	/// @param element - element id.
-	/// @param type - needed type.
-	/// @param api - information about model.
-	/// @returns true if needed link exists, otherwise false.
-	static bool linkWithGivenTypeExists(
-			const qReal::Id &element
-			, const QString &type
-			, const qrRepo::LogicalRepoApi &api);
 
 private:
 	static QString formedExpression(
