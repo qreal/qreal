@@ -1,0 +1,1 @@
+AND8(@@LEFT@@, @@RIGHT@@, @@RESULT)

@@ -60,7 +60,7 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/icons/robot.png";
+	return ":/icons/nxt_robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const

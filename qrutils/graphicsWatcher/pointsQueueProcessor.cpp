@@ -86,6 +86,10 @@ qreal PointsQueueProcessor::absoluteValueToPoint(const qreal value) const
 {
 	const int verticalBounds = 10;
 	const int invertCoordSys = -1;
+	if (qFuzzyCompare(mMaxCurrent, mMinCurrent)) {
+		return mNextToDraw.y();
+	}
+
 	return ((value - mMinCurrent) / (mMaxCurrent - mMinCurrent) * mGraphHeight + verticalBounds) * invertCoordSys;
 }
 

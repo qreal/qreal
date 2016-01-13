@@ -310,6 +310,7 @@ MainWindow::~MainWindow()
 	delete mProjectManager;
 	delete mSceneCustomizer;
 	delete mTextManager;
+	delete mUi;
 }
 
 EditorManagerInterface &MainWindow::editorManager()

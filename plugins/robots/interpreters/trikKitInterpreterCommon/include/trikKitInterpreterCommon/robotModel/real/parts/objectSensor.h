@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikObjectSensor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
 
@@ -32,14 +32,14 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT ObjectSensor : public robotModel
 public:
 	ObjectSensor(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &robotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &robotCommunicator);
 
 	void init() override;
 	void detect() override;
 	void read() override;
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

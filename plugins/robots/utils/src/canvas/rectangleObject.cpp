@@ -21,12 +21,14 @@ using namespace utils;
 
 RectangleObject::RectangleObject(QObject *parent)
 	: CanvasObject(parent)
+	, mFilled(false)
 {
 }
 
-RectangleObject::RectangleObject(const QRect &shape, const QColor &color, int thickness, QObject *parent)
+RectangleObject::RectangleObject(const QRect &shape, const QColor &color, int thickness, bool filled, QObject *parent)
 	: CanvasObject(color, thickness, parent)
 	, mShape(shape)
+	, mFilled(filled)
 {
 }
 
@@ -40,9 +42,20 @@ QRect RectangleObject::boundingRect() const
 	return mShape;
 }
 
+bool RectangleObject::filled() const
+{
+	return mFilled;
+}
+
+void RectangleObject::setFilled(bool filled)
+{
+	mFilled = filled;
+}
+
 void RectangleObject::paint(QPainter *painter)
 {
 	CanvasObject::paint(painter);
+	painter->setBrush(mFilled ? QBrush(color(), Qt::SolidPattern) : QBrush());
 	painter->drawRect(mShape);
 }
 

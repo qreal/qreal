@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/parts/trikGamepadPadPressSensor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
 
@@ -38,7 +38,7 @@ public:
 	///        service on a robot.
 	GamepadPadPressSensor(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 
@@ -48,7 +48,7 @@ private slots:
 
 private:
 	/// Communicator object that is used to send/receive data to/from telemetry service on a robot.
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

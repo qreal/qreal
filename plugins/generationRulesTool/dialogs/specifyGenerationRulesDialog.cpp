@@ -40,7 +40,7 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 
 	addPropertiesList();
 
-	mUi->templatesWidget->header()->close();
+	mUi->templatesTree->header()->close();
 	addTemplatesList();
 
 	addOldRule();
@@ -48,7 +48,7 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	connect(mUi->propertiesView, &QListWidget::itemDoubleClicked, this
 			, &SpecifyGenerationRulesDialog::insertPropertyIntoCode);
 
-	connect(mUi->templatesWidget, &QTreeWidget::itemDoubleClicked, this
+	connect(mUi->templatesTree, &QTreeWidget::itemDoubleClicked, this
 			, &SpecifyGenerationRulesDialog::insertTemplateIntoCode);
 
 	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this
@@ -90,30 +90,31 @@ void SpecifyGenerationRulesDialog::addPropertiesList()
 
 void SpecifyGenerationRulesDialog::addTemplatesList()
 {
-	mUi->templatesWidget->setColumnCount(1);
+	mUi->templatesTree->setColumnCount(1);
 
 	addOneTypeTemplates(tr("General templates"), generationRules::keywords::generalTemplates);
 	addOneTypeTemplates(tr("Text templates"), generationRules::keywords::textTemplates);
 	addOneTypeTemplates(tr("Links templates"), generationRules::keywords::linksTemplates);
 
-	mUi->templatesWidget->expandAll();
+	mUi->templatesTree->expandAll();
 }
 
 void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, const QStringList &listOfTemplates)
 {
-	auto * const oneTypeTempatesList = new QTreeWidgetItem(mUi->templatesWidget);
+	auto * const oneTypeTempatesList = new QTreeWidgetItem(mUi->templatesTree);
 	oneTypeTempatesList->setText(0, type);
 
 	QList<QTreeWidgetItem*> templatesItems;
 	for (const auto &templateName : listOfTemplates) {
 		auto * const treeItem = new QTreeWidgetItem();
 		treeItem->setText(0, templateName);
+		treeItem->setToolTip(0, generationRules::keywords::templatesAndTooltips[templateName]);
 		templatesItems.append(treeItem);
 	}
 
 	oneTypeTempatesList->insertChildren(0, templatesItems);
 
-	mUi->templatesWidget->insertTopLevelItem(0, oneTypeTempatesList);
+	mUi->templatesTree->insertTopLevelItem(0, oneTypeTempatesList);
 }
 
 void SpecifyGenerationRulesDialog::addOldRule()
