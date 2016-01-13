@@ -16,7 +16,7 @@ public:
 //	CommonDataForAllGenerators(
 //			const qrRepo::LogicalRepoApi &api
 //			, qReal::ErrorReporterInterface &errorReporter
-//			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+//			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 };
 
 }

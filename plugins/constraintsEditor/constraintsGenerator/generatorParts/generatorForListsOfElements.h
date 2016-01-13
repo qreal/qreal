@@ -14,13 +14,14 @@ namespace generatorParts {
 class GeneratorForListsOfElements
 {
 public:
-	static QPair<QString, QList<QString> > countConstraintForChildrens(const qReal::Id &constraint
+	static QPair<QString, QList<QString> > countConstraintForChildrens(
+			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 	static QPair<QString, QList<QString> > countConstraintForOutgoingLinks(
 			const qReal::Id &constraint
@@ -29,7 +30,7 @@ public:
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 	static QPair<QString, QList<QString> > countConstraintForIncomingLinks(
 			const qReal::Id &constraint
@@ -38,7 +39,7 @@ public:
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 	static QPair<QString, QList<QString> > countConstraintForOutgoingNodes(
 			const qReal::Id &constraint
@@ -47,7 +48,7 @@ public:
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 	static QPair<QString, QList<QString> > countConstraintForIncomingNodes(
 			const qReal::Id &constraint
@@ -56,7 +57,7 @@ public:
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 private:
 	static QPair<QString, QList<QString> > countConstraintForListOfElements(const qReal::Id &constraint
@@ -68,7 +69,7 @@ private:
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 };
 
 }

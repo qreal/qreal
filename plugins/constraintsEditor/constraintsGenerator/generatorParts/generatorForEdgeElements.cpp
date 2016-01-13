@@ -14,7 +14,7 @@ QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(const Id &co
 		, const int depth
 		, const QString &addStr
 		, const LogicalRepoApi &api
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
 	return GeneratorForElements::countRealConstraintForElement(

@@ -15,7 +15,7 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 		, const int depth
 		, const QString &addStr
 		, const LogicalRepoApi &api
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
 	IdList list = api.children(constraintElement);

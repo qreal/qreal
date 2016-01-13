@@ -16,7 +16,7 @@ QString GeneratorForNodeElements::countRealConstraintForNodeElement(const Id &co
 		, const int depth
 		, const QString &addStr
 		, const LogicalRepoApi &api
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
 	return GeneratorForElements::countRealConstraintForElement(
@@ -31,7 +31,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 		, const int depth
 		, const QString &addStr
 		, const LogicalRepoApi &api
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter
 		, const bool isMultiOr)
 {
@@ -261,7 +261,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForParen
 		, const int depth
 		, const QString &additionalString
 		, const LogicalRepoApi &api
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resultString = "";
@@ -348,7 +348,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForMulti
 		, const QString &addStr
 		, const LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	QString resString = "";
 	QList<QString> curBool;
@@ -401,7 +401,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsB
 		, const int depth
 		, const QString &addStr
 		, const LogicalRepoApi &api
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resString = "";

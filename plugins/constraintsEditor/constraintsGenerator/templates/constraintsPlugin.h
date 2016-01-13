@@ -1,6 +1,11 @@
 #pragma once
 
 #include <qrgui/plugins/editorPluginInterface/editorInterface.h>
+#include <qrgui/plugins/constraintsPluginInterface/checkStatus.h>
+#include <qrgui/plugins/constraintsPluginInterface/constraintsPluginInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrRepo/logicalRepoApi.h>
+
 @@includeConstraintsDiagramFiles@@
 namespace constraints {
 

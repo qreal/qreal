@@ -21,7 +21,7 @@ public:
 			, const int depth
 			, const QString &addStr
 			, const qrRepo::LogicalRepoApi &api
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
@@ -31,7 +31,7 @@ public:
 			, const QString &elementName
 			, const int depth
 			, const QString &addStr, const qrRepo::LogicalRepoApi &api
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter
 			, const bool isMultiOr = false
 			);
@@ -60,7 +60,7 @@ public:
 			, const int depth
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
 
 	static QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint
@@ -80,7 +80,7 @@ public:
 			, const QString &addStr
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint);
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 	static QPair<QString, QList<QString> > countNeighborsElementsByOr(
 			const qReal::Id &constraint
@@ -91,7 +91,7 @@ public:
 			, const int depth
 			, const QString &addStr
 			, const qrRepo::LogicalRepoApi &api
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
 };
 

@@ -23,7 +23,7 @@ public:
 			, const int depth
 			, const QString &addStr
 			, const qrRepo::LogicalRepoApi &api
-			, QMap<QString, int> countsOfConstraintElementsInOneConstraint
+			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 

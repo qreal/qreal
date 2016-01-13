@@ -16,7 +16,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForC
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -37,7 +37,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -59,7 +59,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -81,7 +81,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -103,7 +103,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	return countConstraintForListOfElements(
 			constraint
@@ -129,7 +129,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
-		, QMap<QString, int> countsOfConstraintElementsInOneConstraint)
+		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	QString resultString = "";
 	QList<QString> resBool;
