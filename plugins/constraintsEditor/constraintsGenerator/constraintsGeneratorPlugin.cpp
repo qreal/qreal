@@ -128,7 +128,8 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 				buildConfigurationString += "-d";
 			}
 
-			if (mMainWindowInterface->loadConstraintsPlugin(prefix + pluginName + buildConfigurationString + "." + extension)) {
+			if (mMainWindowInterface->loadConstraintsPlugin(prefix + pluginName
+					+ buildConfigurationString + "." + extension)) {
 				progress->setValue(100);
 			}
 		}
