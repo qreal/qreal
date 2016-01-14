@@ -47,16 +47,19 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 
 	int additionalDepth = countsOfConstraintElementsInOneConstraint[constraintType];
 
+	QPair<QString, QList<QString>> listConstraint;
 	if ((!GeneratorForLinks::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
 		if (constraintType == "Parent") {
-			QPair<QString, QList<QString> > resParentConstraint =
-					countConstraintForParent(constraint, elementName, depth + additionalDepth, addStr
-					, api, countsOfConstraintElementsInOneConstraint, errorReporter);
-			resString += resParentConstraint.first;
-			resBool.append(resParentConstraint.second);
+			listConstraint = countConstraintForParent(
+					constraint
+					, elementName
+					, depth + additionalDepth
+					, addStr
+					, api
+					, countsOfConstraintElementsInOneConstraint
+					, errorReporter);
 		} else if (constraintType == "Childrens") {
-			QPair<QString, QList<QString> > resChildrensConstraint =
-					GeneratorForListsOfElements::countConstraintForChildrens(
+			listConstraint = GeneratorForListsOfElements::countConstraintForChildrens(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -64,12 +67,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
-
-			resString += resChildrensConstraint.first;
-			resBool.append(resChildrensConstraint.second);
 		} else if (constraintType == "OutgoingLinks") {
-			QPair<QString, QList<QString> > resOutgoingLinksConstraint =
-					GeneratorForListsOfElements::countConstraintForOutgoingLinks(
+			listConstraint = GeneratorForListsOfElements::countConstraintForOutgoingLinks(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -77,12 +76,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
-
-			resString += resOutgoingLinksConstraint.first;
-			resBool.append(resOutgoingLinksConstraint.second);
 		} else if (constraintType == "IncomingLinks") {
-			QPair<QString, QList<QString> > resIncomingLinksConstraint =
-					GeneratorForListsOfElements::countConstraintForIncomingLinks(
+			listConstraint = GeneratorForListsOfElements::countConstraintForIncomingLinks(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -90,12 +85,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
-
-			resString += resIncomingLinksConstraint.first;
-			resBool.append(resIncomingLinksConstraint.second);
 		} else if (constraintType == "OutgoingNodes") {
-			QPair<QString, QList<QString> > resOutgoingNodesConstraint =
-					GeneratorForListsOfElements::countConstraintForOutgoingNodes(
+			listConstraint = GeneratorForListsOfElements::countConstraintForOutgoingNodes(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -103,12 +94,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
-
-			resString += resOutgoingNodesConstraint.first;
-			resBool.append(resOutgoingNodesConstraint.second);
 		} else if (constraintType == "IncomingNodes") {
-			QPair<QString, QList<QString> > resIncomingNodesConstraint =
-					GeneratorForListsOfElements::countConstraintForIncomingNodes(
+			listConstraint = GeneratorForListsOfElements::countConstraintForIncomingNodes(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -116,23 +103,17 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
-
-			resString += resIncomingNodesConstraint.first;
-			resBool.append(resIncomingNodesConstraint.second);
 		} else if (constraintType == "PropertyNode") {
-			QPair<QString, QList<QString> > resPropertyNodeConstraint = countConstraintForPropertyNode(
+			listConstraint = countConstraintForPropertyNode(
 					constraint
 					, elementName
 					, depth + additionalDepth
 					, addStr
 					, api
 					, errorReporter);
-
-			resString += resPropertyNodeConstraint.first;
-			resBool.append(resPropertyNodeConstraint.second);
 		}
 	} else if (constraintType == "MultiOrNode") {
-		QPair<QString, QList<QString> > resMultiOrNodeConstraint = countConstraintForMultiOrNode(
+		listConstraint = countConstraintForMultiOrNode(
 				constraint
 				, usedElements
 				, node
@@ -142,10 +123,10 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 				, api
 				, errorReporter
 				, countsOfConstraintElementsInOneConstraint);
-
-		resString += resMultiOrNodeConstraint.first;
-		resBool.append(resMultiOrNodeConstraint.second);
 	}
+
+	resString += listConstraint.first;
+	resBool.append(listConstraint.second);
 
 	countsOfConstraintElementsInOneConstraint[constraintType]++;
 

@@ -117,7 +117,6 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-
 QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForListOfElements(
 		const Id &constraint
 		, const QString &elementName

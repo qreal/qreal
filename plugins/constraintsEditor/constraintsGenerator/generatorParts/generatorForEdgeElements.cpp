@@ -45,10 +45,10 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 
 	int additionalDepth = countsOfConstraintElementsInOneConstraint[constraintType];
 
+	QPair<QString, QList<QString> > nodeConstraint;
 	if ((!GeneratorForLinks::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
 		if (constraintType == "BeginNode") {
-			QPair<QString, QList<QString> > resBeginNodeConstraint =
-					GeneratorForNodeElements::countConstraintForBeginNode(
+			nodeConstraint = GeneratorForNodeElements::countConstraintForBeginNode(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -56,13 +56,8 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 					, api
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter);
-
-			resString += resBeginNodeConstraint.first;
-			resBool.append(resBeginNodeConstraint.second);
-
 		} else if (constraintType == "EndNode") {
-			QPair<QString, QList<QString> > resEndNodeConstraint =
-					GeneratorForNodeElements::countConstraintForEndNode(
+			nodeConstraint = GeneratorForNodeElements::countConstraintForEndNode(
 					constraint
 					, elementName
 					, depth + additionalDepth
@@ -70,26 +65,17 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 					, api
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter);
-
-			resString += resEndNodeConstraint.first;
-			resBool.append(resEndNodeConstraint.second);
-
 		} else if (constraintType == "PropertyNode") {
-			QPair<QString, QList<QString> > resPropertyNodeConstraint =
-					GeneratorForNodeElements::countConstraintForPropertyNode(
+			nodeConstraint = GeneratorForNodeElements::countConstraintForPropertyNode(
 					constraint
 					, elementName
 					, depth + additionalDepth
 					, addStr
 					, api
 					, errorReporter);
-
-			resString += resPropertyNodeConstraint.first;
-			resBool.append(resPropertyNodeConstraint.second);
 		}
 	} else if (constraintType == "MultiOrNode") {
-		QPair<QString, QList<QString> > resMultiOrNodeConstraint =
-				GeneratorForNodeElements::countConstraintForMultiOrNode(
+		nodeConstraint = GeneratorForNodeElements::countConstraintForMultiOrNode(
 				constraint
 				, usedElements
 				, edge
@@ -99,10 +85,10 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 				, api
 				, errorReporter
 				, countsOfConstraintElementsInOneConstraint);
-
-		resString += resMultiOrNodeConstraint.first;
-		resBool.append(resMultiOrNodeConstraint.second);
 	}
+
+	resString += nodeConstraint.first;
+	resBool.append(nodeConstraint.second);
 
 	countsOfConstraintElementsInOneConstraint[constraintType]++;
 

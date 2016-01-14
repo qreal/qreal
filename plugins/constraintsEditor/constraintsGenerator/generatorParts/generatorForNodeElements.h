@@ -82,6 +82,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
+	/// TODO: this method has to be somewhere else (used in nodeElements and edgeElements generator)
 	static QPair<QString, QList<QString> > countNeighborsElementsByOr(
 			const qReal::Id &constraint
 			, const QString &resConstraintBool

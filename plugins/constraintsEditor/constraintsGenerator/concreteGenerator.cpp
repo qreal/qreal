@@ -1,6 +1,4 @@
 #include "concreteGenerator.h"
-#include "generatorParts/generatorForProperties.h"
-#include "generatorParts/generatorForListsOfElements.h"
 #include "generatorParts/generatorForDiagrams.h"
 
 #include <qrutils/nameNormalizer.h>
