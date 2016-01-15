@@ -531,9 +531,8 @@ p, li { white-space: pre-wrap; }
         <translation type="obsolete">Дисплей</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="52"/>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
-        <translation>Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
+        <translation type="vanished">Конфигурация сенсоров противоречива. Проверьте, что в указанные в программе используются два разных сенсора на одном порту</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="30"/>
@@ -752,6 +751,15 @@ p, li { white-space: pre-wrap; }
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/exerciseExportManager.cpp" line="67"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файл сохранения TRIK Studio (*.qrs)</translation>
+    </message>
+    <message>
+        <source>Sensor on port %1 does not correspond to blocks on the digram.</source>
+        <translation type="vanished">Выставленный на порту %1 сенсор не соответствует блокам на диаграмме.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="52"/>
+        <source>Sensor on port %1 does not correspond to blocks on the diagram.</source>
+        <translation>Выставленный на порту %1 сенсор не соответствует блокам на диаграмме.</translation>
     </message>
 </context>
 <context>
