@@ -45,7 +45,7 @@ private:
 			, QList<NodeInfo> &nodesData, const QPointF &offset);
 	QPointF newPos(const NodeInfo &nodeData, const QHash<Id, Id> &copiedIds, const QPointF &offset) const;
 	QPointF newGraphicalPos(const NodeInfo &nodeData, const QHash<Id, Id> &copiedIds, const QPointF &offset) const;
-	qReal::Id newGraphicalParent(const NodeInfo &nodeData, const QHash<Id, Id> &copiedIds) const;
+	qReal::Id newGraphicalParent(const ElementInfo &data, const QHash<Id, Id> &copiedIds) const;
 	QPointF vectorFromContainer(const NodeInfo &nodeData) const;
 
 	void prepareEdge(EdgeInfo &edgeData, const QPointF &offset, const QHash<Id, Id> &copiedIds);

@@ -100,6 +100,7 @@ void PasteCommand::prepareEdge(EdgeInfo &edgeData, const QPointF &offset, const 
 	edgeData.setSrcId(copiedIds.contains(edgeData.srcId()) ? copiedIds[edgeData.srcId()] : Id::rootId());
 	edgeData.setDstId(copiedIds.contains(edgeData.dstId()) ? copiedIds[edgeData.dstId()] : Id::rootId());
 	edgeData.setPos(edgeData.position() + offset);
+	edgeData.setGraphicalParent(newGraphicalParent(edgeData, copiedIds));
 }
 
 void PasteCommand::pullDataFromClipboard(QList<NodeInfo> &nodesData, QList<EdgeInfo> &edgesData) const
@@ -126,10 +127,10 @@ QPointF PasteCommand::newGraphicalPos(const NodeInfo &nodeData
 	return nodeData.position() + (copiedIds.contains(nodeData.parent()) ? QPointF() : offset);
 }
 
-qReal::Id PasteCommand::newGraphicalParent(const NodeInfo &nodeData, const QHash<Id, Id> &copiedIds) const
+qReal::Id PasteCommand::newGraphicalParent(const ElementInfo &data, const QHash<Id, Id> &copiedIds) const
 {
-	return copiedIds.contains(nodeData.graphicalParent())
-			? copiedIds[nodeData.graphicalParent()]
+	return copiedIds.contains(data.graphicalParent())
+			? copiedIds[data.graphicalParent()]
 			: mRootDiagramGraphicalId;
 }
 
