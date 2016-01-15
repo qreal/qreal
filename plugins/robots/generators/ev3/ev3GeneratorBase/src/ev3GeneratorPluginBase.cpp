@@ -30,7 +30,7 @@ Ev3GeneratorPluginBase::Ev3GeneratorPluginBase(const QString &usbRobotName, cons
 	, mBluetoothRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId(), "ev3BluetoothGeneratorRobot"
 			, bluetoothRobotName, bluetoothRobotFriendlyName
 			, bluetoothPriority, new communication::BluetoothRobotCommunicationThread))
-	, mBlocksFactory(new blocks::Ev3BlocksFactory)
+	, mBlocksFactory(new blocks::Ev3BlocksFactory({}))
 {
 }
 
@@ -51,8 +51,11 @@ QList<kitBase::robotModel::RobotModelInterface *> Ev3GeneratorPluginBase::robotM
 kitBase::blocksBase::BlocksFactoryInterface *Ev3GeneratorPluginBase::blocksFactoryFor(
 		const kitBase::robotModel::RobotModelInterface *model)
 {
-	Q_UNUSED(model)
-	return mBlocksFactory;
+	if (robotModels().contains(const_cast<kitBase::robotModel::RobotModelInterface *>(model))) {
+		return mBlocksFactory;
+	} else {
+		return nullptr;
+	}
 }
 
 QList<kitBase::AdditionalPreferences *> Ev3GeneratorPluginBase::settingsWidgets()

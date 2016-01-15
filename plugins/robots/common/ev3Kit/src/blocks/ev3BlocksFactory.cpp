@@ -44,6 +44,11 @@ using namespace ev3::blocks;
 using namespace details;
 using namespace kitBase::blocksBase::common;
 
+Ev3BlocksFactory::Ev3BlocksFactory(const QStringList &interpretedModels)
+	: mInterpretedModels(interpretedModels)
+{
+}
+
 qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(const qReal::Id &element)
 {
 	if (elementMetatypeIs(element, "Ev3Beep")) {
@@ -128,9 +133,11 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 		result
 				<< id("Ev3WaitForSound")
 				;
+	} else {
+		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {
+			result << id("Join") << id("SendMessageThreads") << id("ReceiveMessageThreads") << id("KillThread");
+		}
 	}
-
-	result << id("Join") << id("SendMessageThreads") << id("ReceiveMessageThreads") << id("KillThread");
 
 	return result;
 }

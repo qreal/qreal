@@ -29,7 +29,7 @@ Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 	: mUsbRealRobotModel(kitId(), "ev3KitUsbRobot") // todo: somewhere generate robotId for each robot
 	, mBluetoothRealRobotModel(kitId(), "ev3KitBluetoothRobot")
 	, mTwoDRobotModel(mUsbRealRobotModel)
-	, mBlocksFactory(new blocks::Ev3BlocksFactory)
+	, mBlocksFactory(new blocks::Ev3BlocksFactory({"ev3KitUsbRobot", "ev3KitBluetoothRobot"}))
 {
 	mAdditionalPreferences = new Ev3AdditionalPreferences;
 
@@ -109,9 +109,12 @@ QList<kitBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robot
 kitBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
 		const kitBase::robotModel::RobotModelInterface *model)
 {
-	Q_UNUSED(model)
-	mOwnsBlocksFactory = false;
-	return mBlocksFactory;
+	if (robotModels().contains(const_cast<kitBase::robotModel::RobotModelInterface *>(model))) {
+		mOwnsBlocksFactory = false;
+		return mBlocksFactory;
+	} else {
+		return nullptr;
+	}
 }
 
 kitBase::robotModel::RobotModelInterface *Ev3KitInterpreterPlugin::defaultRobotModel()
