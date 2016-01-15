@@ -2192,7 +2192,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.  If 'Evaluate' property is set to true then the value of 'Text' property is interpreted as a formula, otherwise it is interpreted as plain string.">
+			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. The value of 'Text' property is interpreted as a plain text unless 'Evaluate' property is set to true, then it will be interpreted as an expression (that may be useful for example when debugging variables values).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
