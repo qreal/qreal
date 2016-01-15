@@ -801,14 +801,14 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="52"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="82"/>
         <source>Wait for Sound Sensor</source>
-        <translation>Ждать сенсор звука</translation>
+        <translation>Ждать датчик звука</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="53"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="83"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="130"/>
         <source>Wait for Touch Sensor</source>
-        <translation>Ждать сенсор касания</translation>
+        <translation>Ждать датчик касания</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="89"/>
@@ -1700,7 +1700,7 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1174"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1204"/>
         <source>Waits till the color sensor on the given port will recognize the given color.</source>
-        <translation>Ждать, пока сенсор цвета в режиме распознавания цветов не вернет указанный цвет.</translation>
+        <translation>Ждать, пока датчик цвета в режиме распознавания цветов не вернет указанный цвет.</translation>
     </message>
     <message>
         <source>Waits till the value returned by the color sensor on the given port will be greater or lower then the given in the &apos;Intensity&apos; parameter value (the intensity is specified in percents, 0 to 100).</source>
@@ -1735,7 +1735,7 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1210"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1254"/>
         <source>Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).</source>
-        <translation>Ждать, пока не сработает сенсор касания. Параметром указывается номер порта, к которому подключен сенсор касания. Допустимые значения: 1, 2, 3, 4.</translation>
+        <translation>Ждать, пока не сработает датчик касания. Параметром указывается номер порта, к которому подключен датчик. Допустимые значения: 1, 2, 3, 4.</translation>
     </message>
     <message>
         <source>Subprogram call. Subprograms are used for splitting repetitive program parts into a separate diagram and then calling it from main diagram or other subprograms. When this block is added into a diagram it will be suggested to enter subprogram name. The double click on subprogram call block may open the corresponding subprogram diagram. Moreover user palette will appear containing existing subrpograms, they can be dragged into a diagram like the usial blocks.</source>
@@ -2063,7 +2063,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1252"/>
         <source>Waits till the motion sensor on the given port is triggered.</source>
-        <translation>Ждет, пока не сработает сенсор движения.</translation>
+        <translation>Ждет, пока не сработает датчик движения.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="301"/>
@@ -2282,12 +2282,12 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1207"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1250"/>
         <source>Waits till the value returned by the light sensor on the given port will be greater or less than the given in the &apos;Percents&apos; parameter value (0 to 100).</source>
-        <translation>Ждать, пока значение, возвращаемое сенсором света на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Проценты&apos;. Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра &apos;Проценты&apos;.</translation>
+        <translation>Ждать, пока значение, возвращаемое датчиком света на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Проценты&apos;. Еще один парамер — номер порта, к которому подключен датчик цвета. Также параметром указывается операция, которая будет использоваться для сравнения со значением параметра &apos;Проценты&apos;.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1178"/>
         <source>Waits till the value returned by the ultrasonic or infrared range sensor on the given port will be greater or less than the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
-        <translation>Ждать, пока расстояние, возвращаемое ультразвуковым или инфракрасным сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos; (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
+        <translation>Ждать, пока расстояние, возвращаемое ультразвуковым или инфракрасным датчиком расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos; (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1181"/>
@@ -2297,7 +2297,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1183"/>
         <source>Separates program execution into a number of threads that will be executed concurrently from the programmers`s point of view. For example in such way signal from sensor and some time interval can be waited synchroniously. This block must have at least two outgoing links. &apos;Guard&apos; property of every link must contain unique thread identifiers, and one of those identifiers must be the same as the identifier of a thread where fork is placed (it must be &apos;main&apos; if it is the first fork in a program.</source>
-        <translation>Разделяет исполнение программы на несколько задач, которые будут исполняться параллельно с точки зрения программиста. К примеру, в этом случае ожидание сигнала от сенсора или истечения некоторого промежутка времени могут происходить одновременно. Этот блок должен иметь как минимум две исходящие связи. Свойство &quot;Условие&quot; всех исходящих связей должно содержать уникальные идентификаторы задач, и один из этих идентификаторов должен совпадать с идентификатором задачи, из которой вызван этот блок (считается, что первый блок в программе вызывается из задачи с идентификатором &apos;main&apos;).</translation>
+        <translation>Разделяет исполнение программы на несколько задач, которые будут исполняться параллельно с точки зрения программиста. К примеру, в этом случае ожидание сигнала от датчика или истечения некоторого промежутка времени могут происходить одновременно. Этот блок должен иметь как минимум две исходящие связи. Свойство &quot;Условие&quot; всех исходящих связей должно содержать уникальные идентификаторы задач, и один из этих идентификаторов должен совпадать с идентификатором задачи, из которой вызван этот блок (считается, что первый блок в программе вызывается из задачи с идентификатором &apos;main&apos;).</translation>
     </message>
     <message>
         <source>Assigns a given variable a value of pressed button.</source>
@@ -2322,13 +2322,13 @@
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1175"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1205"/>
         <source>Waits till the value returned by the color sensor on the given port will be greater or less than the given in the &apos;Intensity&apos; parameter value (the intensity is specified in percents, 0 to 100).</source>
-        <translation>Ждать, пока значение, возвращаемое сенсором цвета на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Интенсивность&apos; (задается в процентах). Еще один парамер — номер порта, к которому подключен сенсор цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.</translation>
+        <translation>Ждать, пока значение, возвращаемое датчиком цвета на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Интенсивность&apos; (задается в процентах). Еще один парамер — номер порта, к которому подключен датчик цвета. Также параметром указывается операция, которая будет использоваться для сравнения с введенной интенсивностью.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1208"/>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1253"/>
         <source>Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
-        <translation>Ждать, пока расстояние, возвращаемое ультразвуковым сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos; (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
+        <translation>Ждать, пока расстояние, возвращаемое ультразвуковым датчиком расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos; (расстояние задается в сантиметрах, от 0 до 255). Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1179"/>
@@ -2398,7 +2398,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1249"/>
         <source>Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the &apos;Distance&apos; parameter value (the distance is specified in centimeters, 0 to 255).</source>
-        <translation>Ждать, пока расстояние, возвращаемое инфракрасным сенсором расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos;. Еще один парамер — номер порта, к которому подключен датчик расстояния. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
+        <translation>Ждать, пока расстояние, возвращаемое инфракрасным датчиком расстояния, не будет сравнимо с указанным в значении параметра &apos;Расстояние&apos;. Еще один парамер — номер порта, к которому подключен датчик. Также параметром указывается операция, которая будет использоваться для сравнения с введенным расстоянием.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/generated/generated/pluginInterface.cpp" line="1251"/>
