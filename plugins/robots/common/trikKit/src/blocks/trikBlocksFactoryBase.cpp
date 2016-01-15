@@ -59,6 +59,7 @@
 #include "details/removeFileBlock.h"
 
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
+#include "trikKit/robotModel/parts/trikSonarSensor.h"
 
 using namespace trik::blocks;
 using namespace trik::blocks::details;
@@ -105,8 +106,7 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForSonarDistance")) {
 		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
-				, kitBase::robotModel::DeviceInfo::create<
-						kitBase::robotModel::robotParts::RangeSensor>());
+				, kitBase::robotModel::DeviceInfo::create<robotModel::parts::TrikSonarSensor>());
 	} else if (elementMetatypeIs(element, "TrikWaitForGyroscope")) {
 		return new WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitForAccelerometer")) {
