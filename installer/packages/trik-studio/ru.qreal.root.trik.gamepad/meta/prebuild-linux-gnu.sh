@@ -7,7 +7,7 @@ cd "$(dirname "$0")"
 git clone --depth 1 https://github.com/trikset/trik-desktop-gamepad.git gamepad-build
 
 cd gamepad-build
-qmake CONFIG+=release
+$QT_DIR/bin/qmake CONFIG+=release
 make -j4
 
 cd ..
