@@ -59,7 +59,7 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 		return false;
 	}
 
-	QMouseEvent * const mouseEvent = static_cast<QMouseEvent *>(event);
+	QMouseEvent * const mouseEvent = dynamic_cast<QMouseEvent *>(event);
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 3, 0))
 	if (isMouseEvent && mouseEvent->source() != Qt::MouseEventNotSynthesized) {
 		// Starting from version 5.3.0 Qt generates extra mouse events even on
