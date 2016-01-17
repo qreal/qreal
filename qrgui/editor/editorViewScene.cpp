@@ -251,6 +251,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
+	clearSelection();
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
@@ -392,6 +393,9 @@ void EditorViewScene::createElement(const QMimeData *mimeData
 {
 	ElementInfo elementInfo = ElementInfo::fromMimeData(mimeData);
 	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);
+	if (Element * const element = getElem(elementInfo.id())) {
+		element->setSelected(true);
+	}
 }
 
 void EditorViewScene::createElement(const ElementInfo &elementInfo
