@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "constraintsGeneratorPlugin.h"
 #include <QtCore/QProcess>
 #include <QtWidgets/QMessageBox>
@@ -6,7 +20,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 using namespace constraints::generator;
 using namespace qReal;
@@ -30,7 +44,7 @@ void ConstraintsGeneratorPlugin::init(PluginConfigurator const &configurator)
 
 QList<ActionInfo> ConstraintsGeneratorPlugin::actions()
 {
-	QAction * const generateAction = new QAction(tr("Generate constraints"), NULL);
+	QAction * const generateAction = new QAction(tr("Generate constraints"), nullptr);
 	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
 	connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
 
@@ -50,7 +64,8 @@ void ConstraintsGeneratorPlugin::generate()
 		QString const constraintNormalizerModelName = mGenerator.constraintNormalizerConstraintsModelName();
 		QString const constraintModelId = mGenerator.constraintModelId();
 
-		QPair<QString, QString> const constraintModelNames = QPair<QString, QString>(constraintModelName, constraintNormalizerModelName);
+		QPair<QString, QString> const constraintModelNames = QPair<QString, QString>(constraintModelName
+				, constraintNormalizerModelName);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
@@ -136,7 +151,8 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	}
 
 	if (progress->value() != 100) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("cannot load new constraints plugin"));
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error")
+				, tr("cannot load new constraints plugin"));
 //		deleteGeneratedFiles(directoryName, normalizerPluginName); //qwerty_temp
 	}
 	progress->setValue(100);

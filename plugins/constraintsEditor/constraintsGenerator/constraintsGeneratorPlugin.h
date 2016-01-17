@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QTranslator>
@@ -28,13 +42,15 @@ private slots:
 private:
 	/// Compiles and loads to QReal new editor plugin
 	void loadNewEditor(
-			QString const &directoryName  ///< Directory where editor was generated (containing .pro file of that constraint)
+			QString const &directoryName
+			///< Directory where editor was generated (containing .pro file of that constraint)
 			, QPair<QString, QString> const &pluginsNames /// ConstraintsPluginNames
 			, QString const &pluginId /// ConstraintsPluginId
 			, QString const &commandFirst  ///< qmake command
 			, QString const &commandSecond  ///< make command
 			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
-			, QString const &prefix  ///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
+			, QString const &prefix
+			///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
 			, QString const &buildConfiguration ///< debug or release, passed to CONFIG variable of qmake
 			);
 

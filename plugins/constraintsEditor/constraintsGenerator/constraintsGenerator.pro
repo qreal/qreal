@@ -29,7 +29,7 @@ HEADERS = \
 	generatorUtils/commonDataForAllGenerators.h \
 	generatorParts/generatorForDiagrams.h \
 	generatorParts/generatorForExpressions.h \
-	generatorParts/generatorForLinks.h
+	generatorParts/generatorForLinks.h \
 
 SOURCES = \
 	constraintsGeneratorPlugin.cpp \
@@ -43,7 +43,7 @@ SOURCES = \
 	generatorUtils/commonDataForAllGenerators.cpp \
 	generatorParts/generatorForDiagrams.cpp \
 	generatorParts/generatorForExpressions.cpp \
-	generatorParts/generatorForLinks.cpp
+	generatorParts/generatorForLinks.cpp \
 
 win32 {
 	QMAKE_POST_LINK = "xcopy templates ..\\..\\..\\bin\\templates /s /e /q /y /i "
