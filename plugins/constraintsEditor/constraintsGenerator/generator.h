@@ -31,21 +31,33 @@ public:
 	virtual ~Generator();
 
 	/// Initializes generator with logical model reference and means to report errors.
-	void init(qReal::LogicalModelAssistInterface const &logicalModel
+	/// @param logical model - information about logical model.
+	/// @param errorReporter - reporter resposible for reporting error.
+	void init(
+			const qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
 	/// Starts generation process.
-	void generate(qReal::Id const &metamodel);
+	void generate(const qReal::Id &metamodel);
 
-	QString constraintModelFullName();
-	QString constraintConstraintsModelName();
-	QString constraintNormalizerConstraintsModelName();
-	QString constraintModelId();
-	QString buildConfiguration();
+	/// Returns full name of constraint model.
+	QString constraintModelFullName() const;
+
+	/// Returns constraints model name.
+	QString constraintConstraintsModelName() const;
+
+	/// Returns normalized constraints model name.
+	QString constraintNormalizedConstraintsModelName() const;
+
+	/// Returns constraint model id.
+	QString constraintModelId() const;
+
+	/// Returns build configuration.
+	QString buildConfiguration() const;
 
 private:
-	bool isCorrectedName(QString const &name);
+	bool isCorrectName(const QString &name) const;
 
 	/// Logical model, from which generator takes all information.
 	qReal::LogicalModelAssistInterface const *mLogicalModel;

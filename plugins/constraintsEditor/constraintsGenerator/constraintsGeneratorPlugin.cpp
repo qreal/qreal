@@ -13,6 +13,7 @@
  * limitations under the License. */
 
 #include "constraintsGeneratorPlugin.h"
+
 #include <QtCore/QProcess>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QProgressBar>
@@ -35,7 +36,7 @@ ConstraintsGeneratorPlugin::~ConstraintsGeneratorPlugin()
 {
 }
 
-void ConstraintsGeneratorPlugin::init(PluginConfigurator const &configurator)
+void ConstraintsGeneratorPlugin::init(const PluginConfigurator &configurator)
 {
 	mMainWindowInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModel = &configurator.logicalModelApi();
@@ -44,61 +45,67 @@ void ConstraintsGeneratorPlugin::init(PluginConfigurator const &configurator)
 
 QList<ActionInfo> ConstraintsGeneratorPlugin::actions()
 {
-	QAction * const generateAction = new QAction(tr("Generate constraints"), nullptr);
-	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
-	connect(generateAction, SIGNAL(triggered()), this, SLOT(generate()));
+	auto const generateAction = new QAction(tr("Generate constraints"), nullptr);
+	connect(generateAction, &QAction::triggered, this, &ConstraintsGeneratorPlugin::generate);
 
-	return QList<ActionInfo>() << generateActionInfo;
+	ActionInfo generateActionInfo(generateAction, "interpreters", "tools");
+
+	return {generateActionInfo};
 }
 
 void ConstraintsGeneratorPlugin::generate()
 {
-	foreach (qReal::Id const &metamodel, mLogicalModel->logicalRepoApi().elementsByType("MetamodelConstraints")) {
+	for (const qReal::Id &metamodel : mLogicalModel->logicalRepoApi().elementsByType("MetamodelConstraints")) {
 		if (!mLogicalModel->logicalRepoApi().isLogicalElement(metamodel)) {
 			continue;
 		}
+
 		mGenerator.generate(metamodel);
 
-		QString const constraintModelFullName =  mGenerator.constraintModelFullName();
-		QString const constraintModelName = mGenerator.constraintConstraintsModelName();
-		QString const constraintNormalizerModelName = mGenerator.constraintNormalizerConstraintsModelName();
-		QString const constraintModelId = mGenerator.constraintModelId();
+		const QString constraintModelFullName =  mGenerator.constraintModelFullName();
+		const QString constraintModelName = mGenerator.constraintConstraintsModelName();
+		const QString constraintNormalizerModelName = mGenerator.constraintNormalizedConstraintsModelName();
+		const QString constraintModelId = mGenerator.constraintModelId();
 
-		QPair<QString, QString> const constraintModelNames = QPair<QString, QString>(constraintModelName
+		const QPair<QString, QString> constraintModelNames = QPair<QString, QString>(constraintModelName
 				, constraintNormalizerModelName);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-									  , tr("loading.."), QString(tr("Do you want to load generated constraints?")),
-									  QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+					, tr("loading.."), QString(tr("Do you want to load generated constraints?")),
+					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				return;
 			}
-			loadNewEditor(constraintModelFullName, constraintModelNames, constraintModelId
-						  , SettingsManager::value("pathToQmake", "").toString()
-						  , SettingsManager::value("pathToMake", "").toString()
-						  , SettingsManager::value("pluginExtension", "").toString()
-						  , SettingsManager::value("prefix", "").toString()
-						  , mGenerator.buildConfiguration());
+
+			loadNewEditor(constraintModelFullName
+					, constraintModelNames
+					, constraintModelId
+					, SettingsManager::value("pathToQmake", "").toString()
+					, SettingsManager::value("pathToMake", "").toString()
+					, SettingsManager::value("pluginExtension", "").toString()
+					, SettingsManager::value("prefix", "").toString()
+					, mGenerator.buildConfiguration());
 		}
 	}
 }
 
-void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
-		, QPair<QString, QString> const &pluginsNames
-		, QString const &pluginId
-		, QString const &commandFirst
-		, QString const &commandSecond
-		, QString const &extension
-		, QString const &prefix
-		, QString const &buildConfiguration
+void ConstraintsGeneratorPlugin::loadNewEditor(
+		const QString &directoryName
+		, const QPair<QString, QString> &pluginsNames
+		, const QString &pluginId
+		, const QString &commandFirst
+		, const QString &commandSecond
+		, const QString &extension
+		, const QString &prefix
+		, const QString &buildConfiguration
 		)
 {
-	int const progressBarWidth = 240;
-	int const progressBarHeight = 20;
+	const int progressBarWidth = 240;
+	const int progressBarHeight = 20;
 
-	QString const pluginName = pluginsNames.first;
-	QString const normalizerPluginName = pluginsNames.second;
+	const QString pluginName = pluginsNames.first;
+	const QString normalizerPluginName = pluginsNames.second;
 
 	if ((commandFirst == "") || (commandSecond == "") || (extension == "")) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("please, fill compiler settings"));
@@ -110,7 +117,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 
 	QApplication::processEvents();
 
-	QRect const screenRect = qApp->desktop()->availableGeometry();
+	const QRect screenRect = qApp->desktop()->availableGeometry();
 	progress->move(screenRect.width() / 2 - progressBarWidth / 2, screenRect.height() / 2 - progressBarHeight / 2);
 	progress->setFixedWidth(progressBarWidth);
 	progress->setFixedHeight(progressBarHeight);
@@ -122,6 +129,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 		deleteGeneratedFiles(directoryName, normalizerPluginName);
 		progress->close();
 		delete progress;
+
 		return;
 	}
 
@@ -137,11 +145,7 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 
 		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
 			progress->setValue(80);
-
-			QString buildConfigurationString = "";
-			if (buildConfiguration == "debug") {
-				buildConfigurationString += "-d";
-			}
+			const QString buildConfigurationString = (buildConfiguration == "debug") ? "-d" : "";
 
 			if (mMainWindowInterface->loadConstraintsPlugin(prefix + pluginName
 					+ buildConfigurationString + "." + extension)) {
@@ -153,14 +157,17 @@ void ConstraintsGeneratorPlugin::loadNewEditor(QString const &directoryName
 	if (progress->value() != 100) {
 		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error")
 				, tr("cannot load new constraints plugin"));
-//		deleteGeneratedFiles(directoryName, normalizerPluginName); //qwerty_temp
+		deleteGeneratedFiles(directoryName, normalizerPluginName);
 	}
+
 	progress->setValue(100);
 	progress->close();
 	delete progress;
 }
 
-void ConstraintsGeneratorPlugin::deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName)
+void ConstraintsGeneratorPlugin::deleteGeneratedFiles(
+		const QString &directoryName
+		, const QString &fileBaseName)
 {
 	QFile filePro(directoryName + "/" + fileBaseName + ".pro");
 	filePro.remove();

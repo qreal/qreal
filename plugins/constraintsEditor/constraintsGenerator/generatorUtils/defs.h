@@ -29,6 +29,9 @@ const QString keywordForAllEdges = "AllEdges";
 const QString keywordForAllNodes = "AllNodes";
 const QString keywordForAllLanguages = "AllLanguages";
 
+const QString keywordForAllMetamodels = "AllMetamodels";
+const QString templateDir = "../templates"; // TODO_CONSTRAINTS: check all paths
+
 enum metaType {
 	node,
 	edge,

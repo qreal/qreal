@@ -90,7 +90,8 @@ QList<QString> ConstraintsManager::pluginsNames() const
 	return mPluginManager.namesOfPlugins();
 }
 
-QList<CheckStatus> ConstraintsManager::check(const Id &element
+QList<CheckStatus> ConstraintsManager::check(
+		const Id &element
 		, const qrRepo::LogicalRepoApi &logicalApi
 		, const EditorManagerInterface &editorManager)
 {
@@ -105,7 +106,8 @@ QList<CheckStatus> ConstraintsManager::check(const Id &element
 	return checkings;
 }
 
-void ConstraintsManager::insertNewPluginIntoList(ConstraintsPluginInterface *pluginInterface
+void ConstraintsManager::insertNewPluginIntoList(
+		ConstraintsPluginInterface *pluginInterface
 		, const QString &pluginName
 		, const QString &pluginId)
 {

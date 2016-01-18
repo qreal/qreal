@@ -16,8 +16,9 @@
 
 #include <QtCore/QPluginLoader>
 #include "editorManager.h"
-#include "qrrepo/logicalRepoApi.h"
-#include "plugins/constraintsPluginInterface/constraintsPluginInterface.h"
+
+#include <qrrepo/logicalRepoApi.h>
+#include <plugins/constraintsPluginInterface/constraintsPluginInterface.h>
 
 namespace qReal {
 
@@ -26,18 +27,20 @@ class QRGUI_PLUGINS_MANAGER_EXPORT ConstraintsManager
 public:
 	ConstraintsManager();
 
-	QList<CheckStatus> check(const Id &element
+	QList<CheckStatus> check(
+			const Id &element
 			, const qrRepo::LogicalRepoApi &logicalApi
 			, const EditorManagerInterface &editorManager);
 
-	bool loadPlugin(QString const &pluginName);
-	bool unloadPlugin(QString const &pluginId);
+	bool loadPlugin(const QString &pluginName);
+	bool unloadPlugin(const QString &pluginId);
 
 	IdList pluginsIds() const;
 	QList<QString> pluginsNames() const;
 
 private:
-	void insertNewPluginIntoList(ConstraintsPluginInterface *pluginInterface
+	void insertNewPluginIntoList(
+			ConstraintsPluginInterface *pluginInterface
 			, const QString &pluginName
 			, const QString &pluginId);
 

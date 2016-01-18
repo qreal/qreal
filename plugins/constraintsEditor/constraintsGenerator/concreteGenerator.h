@@ -30,7 +30,8 @@ public:
 	  @param logicalModel - Logical model reference.
 	  @param errorReporter - Object to return errors to.
 	  */
-	ConcreteGenerator(const QString &templateDirPath
+	ConcreteGenerator(
+			const QString &templateDirPath
 			, const QString &outputDirPath
 			, const QString &pathToQReal
 			, const qReal::LogicalModelAssistInterface &logicalModel

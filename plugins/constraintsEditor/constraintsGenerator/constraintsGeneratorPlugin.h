@@ -32,7 +32,7 @@ public:
 	~ConstraintsGeneratorPlugin() override;
 
 	/// Initializes generator with ref to logical model.
-	void init(qReal::PluginConfigurator const &configurator) override;
+	void init(const qReal::PluginConfigurator &configurator) override;
 
 	/// Returns list containing "generate" action, which runs a generator.
 	QList<qReal::ActionInfo> actions() override;
@@ -41,20 +41,28 @@ private slots:
 	void generate();
 private:
 	/// Compiles and loads to QReal new editor plugin
+	/// @param directoryName - directory where editor was generated (containing .pro file).
+	/// @param pluginsNames - constraints plugin names.
+	/// @param pluginId - constraints plugin id.
+	/// @param commandFirst - qmake command.
+	/// @param commandSecond - make command.
+	/// @param extension - extension of resulting binary file with editor plugin (.dll/.so).
+	/// @param prefix - optional OS-dependent prefix for resulting binary file (lib for linux, for example).
+	/// @param buildConfiguration - debug or release, passed to CONFIG variable of qmake.
 	void loadNewEditor(
-			QString const &directoryName
-			///< Directory where editor was generated (containing .pro file of that constraint)
-			, QPair<QString, QString> const &pluginsNames /// ConstraintsPluginNames
-			, QString const &pluginId /// ConstraintsPluginId
-			, QString const &commandFirst  ///< qmake command
-			, QString const &commandSecond  ///< make command
-			, QString const &extension  ///< Extension of the resulting binary file with editor plugin (.dll/.so)
-			, QString const &prefix
-			///< Optional OS-dependent prefix for resulting binary file (lib for linux, for example)
-			, QString const &buildConfiguration ///< debug or release, passed to CONFIG variable of qmake
+			const QString &directoryName
+			, const QPair<QString, QString> &pluginsNames
+			, const QString &pluginId
+			, const QString &commandFirst
+			, const QString &commandSecond
+			, const QString &extension
+			, const QString &prefix
+			, const QString &buildConfiguration
 			);
 
-	void deleteGeneratedFiles(QString const &directoryName, QString const &fileBaseName);//qwerty_deleteFiles
+	void deleteGeneratedFiles(
+			const QString &directoryName
+			, const QString &fileBaseName);
 
 	Generator mGenerator;
 
