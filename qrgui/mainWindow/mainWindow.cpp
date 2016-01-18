@@ -175,9 +175,9 @@ MainWindow::MainWindow(const QString &fileToOpen)
 			, this, static_cast<void (MainWindow::*) (Id const &)>(&MainWindow::checkConstraints));
 	connect(&models().logicalModelAssistApi(), &qReal::models::LogicalModelAssistApi::addedElementToModel
 			, this, static_cast<void (MainWindow::*) (Id const &)>(&MainWindow::checkConstraints));
-	connect(&models().logicalModelAssistApi(), qReal::models::LogicalModelAssistApi::elementRemoved
+	connect(&models().logicalModelAssistApi(), &qReal::models::LogicalModelAssistApi::elementRemoved
 			, this, &MainWindow::removeConstraintsError);
-	connect(&models().graphicalModelAssistApi(), qReal::models::GraphicalModelAssistApi::elementRemoved
+	connect(&models().graphicalModelAssistApi(), &qReal::models::GraphicalModelAssistApi::elementRemoved
 			, this, &MainWindow::removeConstraintsError);
 }
 
