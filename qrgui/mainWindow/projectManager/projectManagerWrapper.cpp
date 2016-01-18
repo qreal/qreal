@@ -15,16 +15,21 @@
 #include "projectManagerWrapper.h"
 
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QTreeView>
 
 #include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
 
 #include "mainWindow/mainWindow.h"
 
-#include <models/models.h>
-#include <editor/editorViewScene.h>
-#include <editor/editorView.h>
-#include <dialogs/projectManagement/suggestToCreateDiagramDialog.h>
+#include <qrgui/dialogs/projectManagement/suggestToCreateDiagramDialog.h>
+#include <qrgui/editor/editorView.h>
+#include <qrgui/editor/editorViewScene.h>
+#include <qrgui/editor/propertyEditorView.h>
+#include <qrgui/models/models.h>
+#include <qrgui/models/propertyEditorModel.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 using namespace qReal;
 using namespace utils;
@@ -191,12 +196,14 @@ void ProjectManagerWrapper::close()
 	if (mMainWindow->propertyEditor()->model()) {
 		static_cast<PropertyEditorModel *>(mMainWindow->propertyEditor()->model())->clearModelIndexes();
 	}
+
 	mMainWindow->graphicalModelExplorer()->setModel(nullptr);
 	mMainWindow->logicalModelExplorer()->setModel(nullptr);
 
 	if (mMainWindow->getCurrentTab()) {
 		static_cast<qReal::gui::editor::EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
 	}
+
 	mMainWindow->closeAllTabs();
 	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());
 

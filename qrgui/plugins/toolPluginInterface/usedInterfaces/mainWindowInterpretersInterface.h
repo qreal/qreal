@@ -15,14 +15,17 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <QtCore/QFileInfo>
 
 #include <qrkernel/ids.h>
-#include <qrutils/invocationUtils/longOperation.h>
 
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+namespace invocation {
+class LongOperation;
+}
 
 namespace qReal {
+
+class ErrorReporterInterface;
+
 namespace gui {
 
 class PreferencesPage;

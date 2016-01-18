@@ -14,10 +14,14 @@
 
 #include "startWidget.h"
 
+#include <QtCore/QSignalMapper>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QScrollArea>
 
 #include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 #include "mainWindow/mainWindow.h"
 #include "styledButton.h"

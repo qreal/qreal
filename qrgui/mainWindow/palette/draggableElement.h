@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
+#include <QtCore/QThread>
 #include <QtCore/QSettings>
 #include <QtWidgets/QWidget>
 #include <QtGui/QIcon>

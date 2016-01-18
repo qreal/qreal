@@ -26,6 +26,8 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 
+#include <qrgui/models/models.h>
+
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
