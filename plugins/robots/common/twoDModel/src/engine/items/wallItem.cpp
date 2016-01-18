@@ -248,9 +248,8 @@ void WallItem::recalculateBorders()
 
 void WallItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (event->modifiers() & Qt::ShiftModifier) {
-		setX2(event->scenePos().x());
-		setY2(event->scenePos().y());
+	if (event->modifiers() & Qt::ShiftModifier && (dragState() == TopLeft || dragState() == BottomRight)) {
+		AbstractItem::resizeItem(event);
 		reshapeRectWithShift();
 	} else {
 		if (SettingsManager::value("2dShowGrid").toBool() && (dragState() == TopLeft || dragState() == BottomRight)) {
@@ -261,6 +260,39 @@ void WallItem::resizeItem(QGraphicsSceneMouseEvent *event)
 			} else {
 				setFlag(QGraphicsItem::ItemIsMovable, true);
 			}
+		}
+	}
+}
+
+void WallItem::reshapeRectWithShift()
+{
+	const qreal differenceX = qAbs(x2() - x1());
+	const qreal differenceY = qAbs(y2() - y1());
+	const qreal differenceXY = qAbs(differenceX - differenceY);
+	const qreal size = qMax(differenceX, differenceY);
+	const int delta = size / 2;
+	if (differenceXY > delta) {
+		const qreal corner1X = dragState() == TopLeft ? x2() : x1();
+		const qreal corner1Y = dragState() == TopLeft ? y2() : y1();
+		const qreal corner2X = dragState() == TopLeft ? x1() : x2();
+		const qreal corner2Y = dragState() == TopLeft ? y1() : y2();
+		const QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(corner1X, corner1Y, corner2X, corner2Y
+				, differenceX, differenceY, size);
+		if (dragState() == TopLeft) {
+			setX1(res.first);
+			setY1(res.second);
+		} else {
+			setX2(res.first);
+			setY2(res.second);
+		}
+	} else {
+		const qreal size = qMax(qAbs(x2() - x1()), qAbs(y2() - y1()));
+		if (dragState() == TopLeft) {
+			setX1(x1() > x2() ? x2() + size : x2() - size);
+			setY1(y1() > y2() ? y2() + size : y2() - size);
+		} else {
+			setX2(x2() > x1() ? x1() + size : x1() - size);
+			setY2(y2() > y1() ? y1() + size : y1() - size);
 		}
 	}
 }
