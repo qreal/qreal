@@ -85,16 +85,17 @@ public:
 	QMap<Id, Version> editorVersions() const;
 
 public slots:
-	void propertyChangedSlot(Id const &elem);
-	void parentChangedSlot(IdList const &elements);
-	void nameChangedSlot(Id const &element);
-	void addedElementToModelSlot(Id const &element);
+	void propertyChangedSlot(const Id &element);
+	void parentChangedSlot(const IdList &elements);
+	void nameChangedSlot(const Id &element);
+	void addedElementToModelSlot(const Id &element);
 
 signals:
-	void propertyChanged(Id const &elem);
+	void propertyChanged(const Id &element);
 	void parentChanged(IdList const &elements);
-	void nameChanged(Id const &element);
-	void addedElementToModel(Id const &element);
+	void nameChanged(const Id &element);
+	void addedElementToModel(const Id &element);
+	void elementRemoved(const Id &element);
 
 	/// Emitted each time when new element was added into the logical model.
 	void elementAdded(const Id &id);

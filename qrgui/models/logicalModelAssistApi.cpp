@@ -25,33 +25,41 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 	: mModelsAssistApi(logicalModel, editorManagerInterface)
 	, mLogicalModel(logicalModel)
 {
-	QObject::connect(&mModelsAssistApi, SIGNAL(propertyChangedInModelApi(Id)), this, SLOT(propertyChangedSlot(Id)));
-	QObject::connect(&mLogicalModel, SIGNAL(parentChanged(IdList)), this, SLOT(parentChangedSlot(IdList)));
-	QObject::connect(&mLogicalModel, SIGNAL(nameChanged(Id)), this, SLOT(nameChangedSlot(Id)));
-	QObject::connect(&mLogicalModel, SIGNAL(addedElementToModel(Id)), this, SLOT(addedElementToModelSlot(Id)));
-	QObject::connect(&mLogicalModel, SIGNAL(propertyChanged(Id)), this, SLOT(propertyChangedSlot(Id)));
-	connect(&logicalModel, &LogicalModel::elementAdded, this, &LogicalModelAssistApi::elementAdded);
+	connect(&mModelsAssistApi, &details::ModelsAssistApi::propertyChangedInModelApi
+			, this, &LogicalModelAssistApi::propertyChangedSlot);
+	connect(&mLogicalModel, &LogicalModel::parentChanged
+			, this, &LogicalModelAssistApi::parentChangedSlot);
+	connect(&mLogicalModel, &LogicalModel::nameChanged
+			, this, &LogicalModelAssistApi::nameChangedSlot);
+	connect(&mLogicalModel, &LogicalModel::addedElementToModel
+			, this, &LogicalModelAssistApi::addedElementToModelSlot);
+	connect(&mLogicalModel, &LogicalModel::propertyChanged
+			, this, &LogicalModelAssistApi::propertyChangedSlot);
+	connect(&logicalModel, &LogicalModel::elementAdded
+			, this, &LogicalModelAssistApi::addedElementToModelSlot);
+	connect(&logicalModel, &LogicalModel::elementAdded
+			, this, &LogicalModelAssistApi::elementAdded);
 }
 LogicalModelAssistApi::~LogicalModelAssistApi()
 {
 }
 
-void LogicalModelAssistApi::propertyChangedSlot(Id const &elem)
+void LogicalModelAssistApi::propertyChangedSlot(const Id &element)
 {
-	emit propertyChanged(elem);
+	emit propertyChanged(element);
 }
 
-void LogicalModelAssistApi::parentChangedSlot(IdList const &elements)
+void LogicalModelAssistApi::parentChangedSlot(const IdList &elements)
 {
 	emit parentChanged(elements);
 }
 
-void LogicalModelAssistApi::nameChangedSlot(Id const &element)
+void LogicalModelAssistApi::nameChangedSlot(const Id &element)
 {
 	emit nameChanged(element);
 }
 
-void LogicalModelAssistApi::addedElementToModelSlot(Id const &element)
+void LogicalModelAssistApi::addedElementToModelSlot(const Id &element)
 {
 	emit addedElementToModel(element);
 }
@@ -254,6 +262,8 @@ void LogicalModelAssistApi::removeElement(const Id &logicalId)
 		removeReferencesTo(logicalId);
 		mLogicalModel.removeRow(index.row(), index.parent());
 	}
+
+	emit elementRemoved(logicalId);
 }
 
 QMap<Id, Version> LogicalModelAssistApi::editorVersions() const

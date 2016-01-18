@@ -227,6 +227,8 @@ public slots:
 	void checkConstraints(const QModelIndex &index);
 	void checkConstraints(const IdList &idList);
 
+	void removeConstraintsError(const Id &id);
+
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram

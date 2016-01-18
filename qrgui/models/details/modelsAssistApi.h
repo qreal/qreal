@@ -54,7 +54,6 @@ public:
 	void setTo(const Id &elem, const Id &newValue);
 	Id to(const Id &elem) const;
 
-
 	void setFrom(const Id &elem, const Id &newValue);
 	Id from(const Id &elem) const;
 

@@ -175,6 +175,10 @@ MainWindow::MainWindow(const QString &fileToOpen)
 			, this, static_cast<void (MainWindow::*) (Id const &)>(&MainWindow::checkConstraints));
 	connect(&models().logicalModelAssistApi(), &qReal::models::LogicalModelAssistApi::addedElementToModel
 			, this, static_cast<void (MainWindow::*) (Id const &)>(&MainWindow::checkConstraints));
+	connect(&models().logicalModelAssistApi(), qReal::models::LogicalModelAssistApi::elementRemoved
+			, this, &MainWindow::removeConstraintsError);
+	connect(&models().graphicalModelAssistApi(), qReal::models::GraphicalModelAssistApi::elementRemoved
+			, this, &MainWindow::removeConstraintsError);
 }
 
 void MainWindow::connectActions()
@@ -2243,7 +2247,7 @@ void MainWindow::checkOwnConstraints(const Id &id)
 	}
 }
 
-void MainWindow::checkConstraints(Id const &id)
+void MainWindow::checkConstraints(const Id &id)
 {
 	const auto metaType = editorManagerProxy().metaTypeOfElement(id);
 	checkOwnConstraints(id);
@@ -2267,6 +2271,11 @@ void MainWindow::checkConstraints(const IdList &idList)
 	for (const auto &id : idList) {
 		checkConstraints(id);
 	}
+}
+
+void MainWindow::removeConstraintsError(const Id &id)
+{
+	mErrorReporter->delAllErrorOfElement(id);
 }
 
 void MainWindow::checkParentsConstraints(const QModelIndex &index)

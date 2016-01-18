@@ -153,6 +153,9 @@ signals:
 	/// Emitted each time when new element was added into the graphical model.
 	void elementAdded(const Id &id);
 
+	/// Emitted each time when element was removed from graphical model.
+	void elementRemoved(const Id &id);
+
 private:
 	GraphicalModelAssistApi(const GraphicalModelAssistApi &);
 	GraphicalModelAssistApi& operator =(const GraphicalModelAssistApi &);

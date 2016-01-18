@@ -280,6 +280,8 @@ void GraphicalModelAssistApi::removeElement(const Id &graphicalId)
 	if (graphicalRepoApi().exist(graphicalId) && index.isValid()) {
 		mGraphicalModel.removeRow(index.row(), index.parent());
 	}
+
+	emit elementRemoved(graphicalId);
 }
 
 bool GraphicalModelAssistApi::hasLabel(const Id &graphicalId, int index)
