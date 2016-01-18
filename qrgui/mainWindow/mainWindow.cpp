@@ -2225,14 +2225,10 @@ void MainWindow::checkOwnConstraints(const Id &id)
 		const QString errorMessage = check.message();
 
 		if (check.checkStatus()) {
-			if (errorSeverity != gui::Error::warning) {
-				mErrorReporter->delUniqueError(errorMessage, errorSeverity, id);
-			}
+			mErrorReporter->delUniqueError(errorMessage, errorSeverity, id);
 		} else {
 			checkStatus = false;
-			if (errorSeverity != gui::Error::warning) {
-				mErrorReporter->addUniqueError(errorMessage, errorSeverity, id);
-			}
+			mErrorReporter->addUniqueError(errorMessage, errorSeverity, id);
 		}
 	}
 
