@@ -151,7 +151,6 @@ SOURCES += \
 	../../qrgui/mainWindow/error.cpp \
 	../../qrgui/mainWindow/errorListWidget.cpp \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
-	../../qrgui/plugins/pluginManager/sdfRenderer.cpp \
 	../../qrgui/plugins/pluginManager/details/interpreterElementImpl.cpp \
 	../../qrgui/plugins/pluginManager/details/interpreterPortImpl.cpp \
 	../../qrgui/plugins/pluginManager/details/patternParser.cpp \

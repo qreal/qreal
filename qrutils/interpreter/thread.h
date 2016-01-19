@@ -28,6 +28,8 @@
 #include <qrutils/interpreter/stopReason.h>
 #include <qrutils/utilsDeclSpec.h>
 
+class QTimer;
+
 namespace qReal {
 namespace interpretation {
 

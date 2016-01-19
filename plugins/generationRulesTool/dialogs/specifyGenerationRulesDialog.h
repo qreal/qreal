@@ -20,6 +20,8 @@
 #include "mainWindow/mainWindow.h"
 #include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
+class QTreeWidgetItem;
+
 namespace Ui {
 class SpecifyGenerationRulesDialog;
 }

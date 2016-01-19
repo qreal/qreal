@@ -12,11 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include "testInvocationPlugin.h"
+
 #include <QtCore/QDebug>
 #include <QtCore/QWaitCondition>
 #include <QtCore/QMutex>
 
-#include "testInvocationPlugin.h"
 #include <qrutils/invocationUtils/functorOperation.h>
 
 using namespace testInvocation;

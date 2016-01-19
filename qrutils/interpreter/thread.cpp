@@ -15,6 +15,8 @@
 #include "thread.h"
 
 #include <QtWidgets/QApplication>
+#include <QtCore/QTimer>
+
 #include <qrkernel/settingsManager.h>
 
 #include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
