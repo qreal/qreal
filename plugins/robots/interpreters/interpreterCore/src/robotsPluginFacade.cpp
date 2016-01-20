@@ -275,7 +275,7 @@ void RobotsPluginFacade::initSensorWidgets()
 	hideVariables();
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
 
-	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
+	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, mRobotModelManager, this);
 	connect(mInterpreter, &interpreter::InterpreterInterface::started
 			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStart);
 	connect(mInterpreter, &interpreter::InterpreterInterface::stopped
