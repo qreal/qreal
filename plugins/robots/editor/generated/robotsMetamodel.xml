@@ -1816,7 +1816,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, from 0 to 300).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1843,7 +1843,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value. By default on ports A1 and A2 the distance is specified in centimeters (from 0 to 100), on other ports raw value must be specified.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
