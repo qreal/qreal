@@ -17,6 +17,7 @@
 #include <QtWidgets/QMainWindow>
 
 #include "scriptAPI/scriptAPI.h"
+#include "error.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
