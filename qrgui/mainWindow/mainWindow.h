@@ -14,50 +14,40 @@
 
 #pragma once
 
-#include <QtCore/QSignalMapper>
-#include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSplashScreen>
-#include <QtWidgets/QProgressBar>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QTreeView>
-#include <QtSql/QSqlDatabase>
 
-#include <qrkernel/settingsManager.h>
-
-#include "findManager.h"
-#include "referenceList.h"
-#include "projectManager/projectManagerWrapper.h"
-#include "tabWidget.h"
-#include "startWidget/startWidget.h"
 #include "scriptAPI/scriptAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/editorManager.h>
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
-#include <qrgui/plugins/pluginManager/toolPluginManager.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
 #include <qrgui/plugins/pluginManager/constraintsManager.h>
 
-#include <qrgui/systemFacade/systemFacade.h>
-#include <qrgui/editor/propertyEditorView.h>
-#include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/controller/controller.h>
-
 #include <qrgui/preferencesDialog/preferencesDialog.h>
-#include <qrgui/dialogs/findReplaceDialog.h>
 
 class QGraphicsView;
+class QSignalMapper;
+class QListWidget;
+class QTreeView;
+
+class PropertyEditorModel;
+class FindManager;
+class FindReplaceDialog;
 
 namespace Ui {
 class MainWindowUi;
 }
 
 namespace qReal {
+class Controller;
+class EditorManagerInterface;
+class InterpretedPluginsLoader;
+class ProjectManagerWrapper;
+class ProxyEditorManager;
 class SplashScreen;
+class StartWidget;
+class SystemFacade;
+class ToolPluginManager;
+class ActionInfo;
 
 namespace gui {
 class ErrorReporter;
@@ -66,6 +56,7 @@ class PaletteTree;
 namespace editor {
 class SceneCustomizer;
 class EditorView;
+class PropertyEditorView;
 }
 }
 
@@ -88,11 +79,11 @@ public:
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
-	qReal::gui::editor::EditorView *getCurrentTab() const;
+	gui::editor::EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
-	qReal::gui::editor::PropertyEditorView *propertyEditor() const;
+	gui::editor::PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
 	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
@@ -391,7 +382,7 @@ private:
 	void setVersion(const QString &version);
 
 	Ui::MainWindowUi *mUi;
-	SystemFacade mFacade;
+	QScopedPointer<SystemFacade> mFacade;
 
 	QScopedPointer<SplashScreen> mSplashScreen;
 
@@ -402,10 +393,10 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	Controller *mController;
-	ToolPluginManager mToolManager;
 	ConstraintsManager mConstraintsManager;
-	InterpretedPluginsLoader mInterpretedPluginLoader;
-	PropertyEditorModel mPropertyModel;
+	QScopedPointer<ToolPluginManager> mToolManager;
+	QScopedPointer<InterpretedPluginsLoader> mInterpretedPluginLoader;
+	QScopedPointer<PropertyEditorModel> mPropertyModel;
 	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;

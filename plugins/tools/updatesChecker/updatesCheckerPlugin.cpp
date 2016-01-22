@@ -21,6 +21,8 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/logging.h>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 #include "updater.h"
 #include "updateVersionDialog.h"
 

@@ -14,15 +14,22 @@
 
 #include "interpreterCore/managers/graphicsWatcherManager.h"
 
+#include "interpreterCore/managers/robotModelManager.h"
+
 using namespace interpreterCore;
 using namespace utils;
 using namespace kitBase::robotModel;
 
-GraphicsWatcherManager::GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent)
+GraphicsWatcherManager::GraphicsWatcherManager(const qrtext::DebuggerInterface &parser
+		, RobotModelManager &robotManager, QObject *parent)
 	: QObject(parent)
 	, mWatcher(new sensorsGraph::SensorsGraph(parser))
+	, mRobotManager(robotManager)
 {
 	mWatcher->setStartStopButtonsVisible(false);
+	connect(&mRobotManager, &RobotModelManagerInterface::robotModelChanged, this, [=](RobotModelInterface &model) {
+		updateSensorsList(model.robotId());
+	});
 }
 
 QWidget *GraphicsWatcherManager::widget()
@@ -47,7 +54,9 @@ void GraphicsWatcherManager::onDeviceConfigurationChanged(const QString &robotMo
 	Q_UNUSED(sensor)
 	Q_UNUSED(reason)
 
-	updateSensorsList(robotModel);
+	if (robotModel == mRobotManager.model().robotId()) {
+		updateSensorsList(robotModel);
+	}
 }
 
 void GraphicsWatcherManager::updateSensorsList(const QString &currentRobotModel)
