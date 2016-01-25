@@ -1809,16 +1809,20 @@ void MainWindow::customizeActionsVisibility()
 
 void MainWindow::initInterpretedPlugins()
 {
-	mInterpretedPluginLoader->init(editorManagerProxy().proxiedEditorManager(), PluginConfigurator(
-			models().repoControlApi()
-			, models().graphicalModelAssistApi()
-			, models().logicalModelAssistApi()
-			, *this
-			, *this
-			, *mProjectManager
-			, *mSceneCustomizer
-			, mFacade->events()
-			, *mTextManager));
+	mInterpretedPluginLoader.reset(new InterpretedPluginsLoader(
+			editorManagerProxy().proxiedEditorManager()
+			, PluginConfigurator(
+					models().repoControlApi()
+					, models().graphicalModelAssistApi()
+					, models().logicalModelAssistApi()
+					, *this
+					, *this
+					, *mProjectManager
+					, *mSceneCustomizer
+					, mFacade->events()
+					, *mTextManager)
+			)
+	);
 
 	const QList<ActionInfo> actions = mInterpretedPluginLoader->listOfActions();
 	mListOfAdditionalActions = mInterpretedPluginLoader->menuActionsList();
