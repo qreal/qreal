@@ -232,17 +232,17 @@ void ElementInfo::setAllGraphicalProperties(const QMap<QString, QVariant> &graph
 	mGraphicalProperties = graphicalProperties;
 }
 
-QDataStream &operator<< (QDataStream &out, const ElementInfo &data)
+QDataStream &qReal::operator<< (QDataStream &out, const ElementInfo &data)
 {
 	return data.serialize(out);
 }
 
-QDataStream &operator>> (QDataStream &in, ElementInfo &data)
+QDataStream &qReal::operator>> (QDataStream &in, ElementInfo &data)
 {
 	return data.deserialize(in);
 }
 
-bool operator==(const ElementInfo &first, const ElementInfo &second)
+bool qReal::operator==(const ElementInfo &first, const ElementInfo &second)
 {
 	return first.equals(second);
 }

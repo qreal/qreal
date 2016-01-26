@@ -30,8 +30,12 @@ win32 {
 	LIBS += -llibusb-1.0
 }
 
-unix {
+unix:!macx {
 	LIBS += -L /usr/bin -lusb-1.0
+}
+
+macx {
+	LIBS += -lusb-1.0
 }
 
 HEADERS += \

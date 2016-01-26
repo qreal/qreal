@@ -16,4 +16,10 @@ TEMPLATE = subdirs
 
 include(../../../../global.pri)
 
-copyToDestdir(MinGW32/dll/libusb-1.0.dll, NOW)
+win32 {
+	copyToDestdir(MinGW32/dll/libusb-1.0.dll, NOW)
+}
+
+macx {
+	copyToDestdir(libusb-1.0.dylib, NOW)
+}
