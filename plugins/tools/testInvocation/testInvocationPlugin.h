@@ -18,8 +18,9 @@
 
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
-namespace testInvocation
-{
+#include <qrutils/invocationUtils/longOperation.h>
+
+namespace testInvocation {
 
 /// This plugin shows how to use invocation framework
 class TestInvocationPlugin : public QObject, public qReal::ToolPluginInterface

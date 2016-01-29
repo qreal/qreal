@@ -29,6 +29,7 @@ Models::Models(const QString &workingCopy, const EditorManagerInterface &editorM
 			= new GraphicalModelAssistApi(*mGraphicalModel, *mGraphicalPartModel, editorManager);
 
 	mGraphicalModel->setAssistApi(graphicalAssistApi);
+	mGraphicalModel->reinit();
 
 	QObject::connect(mGraphicalModel, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int))
 			, mGraphicalPartModel, SLOT(rowsAboutToBeRemovedInGraphicalModel(QModelIndex, int, int)));

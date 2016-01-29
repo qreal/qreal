@@ -168,8 +168,8 @@ private:
 	bool mIsEdge = false;
 };
 
-}
-
 QRGUI_MODELS_EXPORT QDataStream &operator<< (QDataStream &out, const qReal::ElementInfo &data);
 QRGUI_MODELS_EXPORT QDataStream &operator>> (QDataStream &in, qReal::ElementInfo &data);
 QRGUI_MODELS_EXPORT bool operator== (const qReal::ElementInfo &first, const qReal::ElementInfo &second);
+
+}

@@ -478,8 +478,8 @@ QString LuaPrinter::to(const QSharedPointer<qrtext::core::types::TypeExpression>
 		return value;
 	}
 
-	QString castTemplate = readTemplate("types/cast.t");
-	const QString typeName = readTemplate(QString("types/%1.t").arg(templateName));
+	QString castTemplate = readTemplate("../types/cast.t");
+	const QString typeName = readTemplate(QString("../types/%1.t").arg(templateName));
 	return castTemplate.replace("@@TYPE@@", typeName).replace("@@EXPRESSION@@", value);
 }
 

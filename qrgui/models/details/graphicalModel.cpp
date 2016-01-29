@@ -32,7 +32,6 @@ GraphicalModel::GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
 	, mGraphicalAssistApi(nullptr)
 {
 	mRootItem = new GraphicalModelItem(Id::rootId(), Id(), nullptr);
-	init();
 }
 
 GraphicalModel::~GraphicalModel()

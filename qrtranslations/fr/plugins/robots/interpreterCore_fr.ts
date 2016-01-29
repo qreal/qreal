@@ -151,9 +151,8 @@
         <translation>La liste de tous les sous-programmes du projet</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="52"/>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
-        <translation>Conflit de configuration des capteurs, verifiez que les ports des capteurs soient utilisés de manière consistente dans le programme</translation>
+        <translation type="vanished">Conflit de configuration des capteurs, verifiez que les ports des capteurs soient utilisés de manière consistente dans le programme</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="30"/>
@@ -249,6 +248,11 @@
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/textLanguage/robotsBlockParser.cpp" line="32"/>
         <source>time</source>
         <translation>temps</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="52"/>
+        <source>Sensor on port %1 does not correspond to blocks on the diagram.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

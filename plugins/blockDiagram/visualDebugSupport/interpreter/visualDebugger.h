@@ -23,6 +23,8 @@
 
 #include "blockParser.h"
 
+class QFile;
+
 namespace qReal {
 
 /// Visual debugger provides an opportunity to interpret and check correctness

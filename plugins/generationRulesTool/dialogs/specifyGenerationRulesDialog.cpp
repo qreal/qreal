@@ -15,6 +15,8 @@
 #include "specifyGenerationRulesDialog.h"
 #include "ui_specifyGenerationRulesDialog.h"
 
+#include <QtWidgets/QPushButton>
+
 #include "appearance/ruleHighlighter.h"
 #include "appearance/keywords.h"
 
