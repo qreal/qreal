@@ -63,14 +63,20 @@ void NullErrorReporter::clearErrors()
 	mWereErrors = false;
 }
 
-void NullErrorReporter::addUniqueError(const QString &message, const gui::Error::Severity &severity, const Id &position)
+void NullErrorReporter::addUniqueError(
+		const QString &message
+		, const gui::Error::Severity &severity
+		, const Id &position)
 {
 	Q_UNUSED(message);
 	Q_UNUSED(severity);
 	Q_UNUSED(position);
 }
 
-void NullErrorReporter::delUniqueError(const QString &message, const gui::Error::Severity &severity, const Id &position)
+void NullErrorReporter::delUniqueError(
+		const QString &message
+		, const gui::Error::Severity &severity
+		, const Id &position)
 {
 	Q_UNUSED(message);
 	Q_UNUSED(severity);

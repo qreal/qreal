@@ -42,14 +42,16 @@ public:
 	virtual bool wereErrors() = 0;
 
 	virtual void addUniqueError(
-			QString const &message
-			, gui::Error::Severity const &severity = gui::Error::error
-			, Id const &position = Id::rootId()) = 0;
+			const QString &message
+			, const gui::Error::Severity &severity = gui::Error::error
+			, const Id &position = Id::rootId()) = 0;
+
 	virtual void delUniqueError(
-			QString const &message
-			, gui::Error::Severity const &severity = gui::Error::error
-			, Id const &position = Id::rootId()) = 0;
-	virtual void delAllErrorOfElement(Id const &position) = 0;
+			const QString &message
+			, const gui::Error::Severity &severity = gui::Error::error
+			, const Id &position = Id::rootId()) = 0;
+
+	virtual void delAllErrorOfElement(const Id &position) = 0;
 
 };
 
