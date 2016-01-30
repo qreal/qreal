@@ -119,8 +119,8 @@ void ErrorReporter::delUniqueError(
 		if (currentError.position() != position
 				|| currentError.severity() != severity
 				|| currentError.message() != message) {
-			mErrors.append(curError);
-			showError(curError, mErrorListWidget);
+			mErrors.append(currentError);
+			showError(currentError, mErrorListWidget);
 		}
 	}
 }
