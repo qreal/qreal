@@ -72,7 +72,6 @@ void ConsoleErrorReporter::addUniqueError(
 		, const gui::Error::Severity &severity
 		, const Id &position)
 {
-	// TODO_CONSTRAINTS
 	Q_UNUSED(severity);
 	Q_UNUSED(position);
 
@@ -84,7 +83,6 @@ void ConsoleErrorReporter::delUniqueError(
 		, const gui::Error::Severity &severity
 		, const Id &position)
 {
-	// TODO_CONSTRAINTS
 	Q_UNUSED(message);
 	Q_UNUSED(severity);
 	Q_UNUSED(position);
@@ -92,6 +90,5 @@ void ConsoleErrorReporter::delUniqueError(
 
 void ConsoleErrorReporter::delAllErrorOfElement(const Id &position)
 {
-	// TODO_CONSTRAINTS
 	Q_UNUSED(position);
 }
