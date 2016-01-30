@@ -88,10 +88,15 @@ void ErrorReporter::addCritical(const QString &message, const Id &position)
 	emit criticalAdded(message, position);
 }
 
-void ErrorReporter::addUniqueError(QString const &message, Error::Severity const &severity, Id const &position)
+void ErrorReporter::addUniqueError(
+		const QString &message
+		, const Error::Severity &severity
+		, const Id &position)
 {
-	foreach (Error const &curError, mErrors) {
-		if (curError.position() == position && curError.severity() == severity && curError.message() == message) {
+	for (const Error &currentError : mErrors) {
+		if (currentError.position() == position
+				&& currentError.severity() == severity
+				&& currentError.message() == message) {
 			return;
 		}
 	}
@@ -101,13 +106,19 @@ void ErrorReporter::addUniqueError(QString const &message, Error::Severity const
 	showError(error, mErrorListWidget);
 }
 
-void ErrorReporter::delUniqueError(QString const &message, Error::Severity const &severity, Id const &position)
+void ErrorReporter::delUniqueError(
+		const QString &message
+		, const Error::Severity &severity
+		, const Id &position)
 {
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();
 	clear();
-	foreach (Error const &curError, tempErrorList) {
-		if (curError.position() != position || curError.severity() != severity || curError.message() != message) {
+
+	for (const Error &currentError : tempErrorList) {
+		if (currentError.position() != position
+				|| currentError.severity() != severity
+				|| currentError.message() != message) {
 			mErrors.append(curError);
 			showError(curError, mErrorListWidget);
 		}
@@ -119,10 +130,11 @@ void ErrorReporter::delAllErrorOfElement(Id const &position)
 	QList<Error> tempErrorList = mErrors;
 	mErrors.clear();
 	clear();
-	foreach (Error const &curError, tempErrorList) {
-		if (curError.position() != position) {
-			mErrors.append(curError);
-			showError(curError, mErrorListWidget);
+
+	for (const Error &currentError : tempErrorList) {
+		if (currentError.position() != position) {
+			mErrors.append(currentError);
+			showError(currentError, mErrorListWidget);
 		}
 	}
 }

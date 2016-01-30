@@ -45,11 +45,17 @@ public:
 	bool showErrors(ErrorListWidget * const errorListWidget, QDockWidget * const errorList) const;
 	void updateVisibility(bool isVisible);
 
-	void addUniqueError(QString const &message, Error::Severity const &severity = Error::error
-						, Id const &position = Id::rootId()) override;
-	void delUniqueError(QString const &message, Error::Severity const &severity = Error::error
-						, Id const &position = Id::rootId()) override;
-	void delAllErrorOfElement(Id const &position) override;
+	void addUniqueError(
+			const QString &message
+			, const Error::Severity &severity = Error::error
+			, const Id &position = Id::rootId()) override;
+
+	void delUniqueError(
+			const QString &message
+			, const Error::Severity &severity = Error::error
+			, const Id &position = Id::rootId()) override;
+
+	void delAllErrorOfElement(const Id &position) override;
 
 signals:
 	/// Emitted when new message with level 'Info' added to error reporter.
