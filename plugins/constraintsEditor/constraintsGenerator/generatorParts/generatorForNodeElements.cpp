@@ -49,8 +49,8 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 		, ErrorReporterInterface &errorReporter
 		, const bool isMultiOr)
 {
-	QString resString = "";
-	QStringList resBool;
+	QString resultString = "";
+	QStringList listOfBooleanExpressions;
 	QStringList allResultBool;
 
 	QString constraintType = constraint.element();
@@ -139,14 +139,14 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 				, countsOfConstraintElementsInOneConstraint);
 	}
 
-	resString += listConstraint.first;
-	resBool.append(listConstraint.second);
+	resultString += listConstraint.first;
+	listOfBooleanExpressions.append(listConstraint.second);
 
 	countsOfConstraintElementsInOneConstraint[constraintType]++;
 
-	QPair<QString, QStringList> resNeighborsNodes = countNeighborsElementsByOr(
+	QPair<QString, QStringList> resultNeighborsNodes = countNeighborsElementsByOr(
 			constraint
-			, GeneratorForExpressions::conjunctionExpression(resBool)
+			, GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions)
 			, usedElements
 			, node, elementName
 			, depth + additionalDepth
@@ -155,15 +155,15 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 			, countsOfConstraintElementsInOneConstraint
 			, errorReporter);
 
-	resString += resNeighborsNodes.first;
+	resultString += resultNeighborsNodes.first;
 
-	if (!resNeighborsNodes.second.isEmpty()) {
-		resBool = resNeighborsNodes.second;
+	if (!resultNeighborsNodes.second.isEmpty()) {
+		listOfBooleanExpressions = resultNeighborsNodes.second;
 	}
 
-	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions));
 
-	return QPair<QString, QStringList>(resString, allResultBool);
+	return {resultString, allResultBool};
 }
 
 QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForBeginNode(const Id &constraint
@@ -175,7 +175,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForBeginNod
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resultString = "";
-	QStringList resBool;
+	QStringList listOfBooleanExpressions;
 	QStringList allResultBool;
 
 	resultString += QString("%1qReal::Id newBeginNodeName_%2 = logicalApi.from(%3);\n")
@@ -192,7 +192,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForBeginNod
 			, countsOfConstraintElementsInOneConstraint
 			, errorReporter);
 
-	resBool.push_back("beginNodeRes_" + QString::number(depth + 1));
+	listOfBooleanExpressions.push_back("beginNodeRes_" + QString::number(depth + 1));
 
 	resultString += GeneratorForProperties::generateExistsProperty("beginNodeRes"
 			, "newBeginNodeName"
@@ -201,9 +201,9 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForBeginNod
 			, additionalString
 			, api);
 
-	resBool.push_back("beginNodeRes_" + QString::number(depth));
+	listOfBooleanExpressions.push_back("beginNodeRes_" + QString::number(depth));
 
-	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions));
 	return {resultString, allResultBool};
 }
 
@@ -216,7 +216,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForEndNode(
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resultString = "";
-	QStringList resBool;
+	QStringList listOfBooleanExpressions;
 	QStringList allResultBool;
 
 	resultString += QString("%1qReal::Id newEndNodeName_%2 = logicalApi.to(%3);\n")
@@ -235,7 +235,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForEndNode(
 			, errorReporter
 			);
 
-	resBool.push_back("endNodeRes_" + QString::number(depth + 1));
+	listOfBooleanExpressions.push_back("endNodeRes_" + QString::number(depth + 1));
 
 	resultString += GeneratorForProperties::generateExistsProperty("endNodeRes"
 			, "newEndNodeName"
@@ -244,10 +244,10 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForEndNode(
 			, additionalString
 			, api);
 
-	resBool.push_back("endNodeRes_" + QString::number(depth));
+	listOfBooleanExpressions.push_back("endNodeRes_" + QString::number(depth));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions));
 
-	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
-	return QPair<QString, QStringList >(resultString, allResultBool);
+	return {resultString, allResultBool};
 }
 
 QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForParent(
@@ -302,7 +302,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForParent(
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resultBool));
 
-	return QPair<QString, QStringList >(resultString, allResultBool);
+	return {resultString, allResultBool};
 }
 
 QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForPropertyNode(const Id &constraint
@@ -328,10 +328,10 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForProperty
 			, additionalString
 			, errorReporter);
 
-	QStringList resBool;
-	resBool.push_back(res.second);
+	QStringList listOfBooleanExpressions;
+	listOfBooleanExpressions.push_back(res.second);
 
-	return QPair<QString, QStringList >(res.first, resBool);
+	return {res.first, listOfBooleanExpressions};
 }
 
 QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrNode(
@@ -345,9 +345,9 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrN
 		, ErrorReporterInterface &errorReporter
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
-	QString resString = "";
+	QString resultString = "";
 	QStringList curBool;
-	QStringList resBool;
+	QStringList listOfBooleanExpressions;
 
 	IdList neighborNodes = neighborNodesWithGivenType(constraint, "MultiOrEdge", api);
 	usedElements.append(neighborNodes);
@@ -378,13 +378,13 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrN
 						, true);
 		}
 
-		resString += resElementConstraint.first;
+		resultString += resElementConstraint.first;
 		curBool.append(resElementConstraint.second);
 	}
 
-	resBool.append(QString("(" + GeneratorForExpressions::disjunctionExpression(curBool) + ")"));
+	listOfBooleanExpressions.append(QString("(" + GeneratorForExpressions::disjunctionExpression(curBool) + ")"));
 
-	return QPair<QString, QStringList >(resString, resBool);
+	return {resultString, listOfBooleanExpressions};
 }
 
 QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr(
@@ -399,8 +399,8 @@ QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
-	QString resString = "";
-	QStringList resBool;
+	QString resultString = "";
+	QStringList listOfBooleanExpressions;
 
 	IdList neighborNodes = neighborNodesWithGivenType(constraint, "Or", api);
 
@@ -433,15 +433,15 @@ QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr
 							, errorReporter);
 				}
 
-				resString += resNeighborsConstraint.first;
-				resBool.append(QString("( %1 || %2 )")
+				resultString += resNeighborsConstraint.first;
+				listOfBooleanExpressions.append(QString("( %1 || %2 )")
 						.arg(resConstraintBool)
 						.arg(GeneratorForExpressions::conjunctionExpression(resNeighborsConstraint.second)));
 			}
 		}
 	}
 
-	return QPair<QString, QStringList >(resString, resBool);
+	return {resultString, listOfBooleanExpressions};
 }
 
 IdList GeneratorForNodeElements::neighborNodesWithGivenType(

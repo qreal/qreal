@@ -34,8 +34,8 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 		, ErrorReporterInterface &errorReporter)
 {
 	IdList list = api.children(constraintElement);
-	QString resString = "";
-	QStringList resBool;
+	QString resultString = "";
+	QStringList listOfBooleanExpressions;
 	IdList usedElements;
 
 	for (const Id &constraint : list) {
@@ -63,29 +63,29 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 						, errorReporter);
 			}
 
-			resString += resOneConstraint.first;
-			resBool.append(resOneConstraint.second);
+			resultString += resOneConstraint.first;
+			listOfBooleanExpressions.append(resOneConstraint.second);
 		}
 	}
 
-	resString += additionalCommonPartForConstraint(resBool, resultName, depth, additionalString);
+	resultString += additionalCommonPartForConstraint(listOfBooleanExpressions, resultName, depth, additionalString);
 
-	return resString;
+	return resultString;
 }
 
 QString GeneratorForElements::additionalCommonPartForConstraint(
-		const QStringList &resBool
+		const QStringList &listOfBooleanExpressions
 		, const QString &resultName
 		, const int depth
 		, const QString &additionalString)
 {
-	QString resString = "";
+	QString resultString = "";
 
-	resString += QString("%1	bool %2_%3 = %4;\n")
+	resultString += QString("%1	bool %2_%3 = %4;\n")
 			.arg(additionalString)
 			.arg(resultName)
 			.arg(depth)
-			.arg(GeneratorForExpressions::conjunctionExpression(resBool));
+			.arg(GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions));
 
-	return resString;
+	return resultString;
 }

@@ -28,7 +28,7 @@ namespace generatorParts {
 class GeneratorForListsOfElements
 {
 public:
-	static QPair<QString, QStringList > countConstraintForChildrens(
+	static QPair<QString, QStringList> countConstraintForChildrens(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
@@ -37,7 +37,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
-	static QPair<QString, QStringList > countConstraintForOutgoingLinks(
+	static QPair<QString, QStringList> countConstraintForOutgoingLinks(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
@@ -46,7 +46,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
-	static QPair<QString, QStringList > countConstraintForIncomingLinks(
+	static QPair<QString, QStringList> countConstraintForIncomingLinks(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
@@ -55,7 +55,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
-	static QPair<QString, QStringList > countConstraintForOutgoingNodes(
+	static QPair<QString, QStringList> countConstraintForOutgoingNodes(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
@@ -64,7 +64,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
-	static QPair<QString, QStringList > countConstraintForIncomingNodes(
+	static QPair<QString, QStringList> countConstraintForIncomingNodes(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
@@ -74,7 +74,7 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 private:
-	static QPair<QString, QStringList > countConstraintForListOfElements(
+	static QPair<QString, QStringList> countConstraintForListOfElements(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const QString &resElementName
@@ -85,6 +85,13 @@ private:
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
+
+	static QString codeForOutgoingOfIncomingNodes(
+			const QString &listOfLinks
+			, const QString &elementId
+			, const QString &additionalString
+			, const QString &resElementName
+			, const int depth);
 };
 
 }

@@ -21,15 +21,18 @@
 namespace constraints {
 namespace generator {
 
+/// This class is responsible for code generation for constraints.
 class ConcreteGenerator : public utils::AbstractGenerator
 {
 public:
-	/** Constructor.
-	  @param templateDirPath - Path to a directory with generation template.
-	  @param outputDirPath - Path to a directory.
-	  @param logicalModel - Logical model reference.
-	  @param errorReporter - Object to return errors to.
-	  */
+	/// Constructor.
+	/// @param templateDirPath - path to a directory with generation template.
+	/// @param outputDirPath - path to a directory.
+	/// @param pathToQReal - path to QReal sources.
+	/// @param logicalModel - logical model reference.
+	/// @param errorReporter - object to return errors to.
+	/// @param metamodelLanguageName - metamodel language name.
+	/// @param constraintsMetamodelName - name of constraints metamodel.
 	ConcreteGenerator(
 			const QString &templateDirPath
 			, const QString &outputDirPath
@@ -44,12 +47,16 @@ public:
 
 	void generate() override;
 
+	/// Returns full name of constraint model.
 	QString constraintModelFullName() const;
+
+	/// Returns name of constraints model.
 	QString constraintModelName() const;
-	QString constraintConstraintsModelName() const; //i.e. pluginName
-	QString normalizedConstraintModelName() const; //i.e. fileBase
-	QString normalizedConstraintConstraintsModelName() const; //i.e. normalizerPluginName
-	QString constraintModelId() const; //i.e. pluginId
+
+	QString constraintConstraintsModelName() const;
+	QString normalizedConstraintModelName() const;
+	QString normalizedConstraintConstraintsModelName() const;
+	QString constraintModelId() const;
 
 private :
 	struct NeededStringsForConcreteGenerate {

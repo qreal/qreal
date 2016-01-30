@@ -55,8 +55,8 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 		, ErrorReporterInterface &errorReporter
 		, const bool isMultiOr)
 {
-	QString resString = "";
-	QStringList resBool;
+	QString resultString = "";
+	QStringList listOfBooleanExpressions;
 	QStringList allResultBool;
 
 	QString constraintType = constraint.element();
@@ -108,14 +108,14 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 				, countsOfConstraintElementsInOneConstraint);
 	}
 
-	resString += nodeConstraint.first;
-	resBool.append(nodeConstraint.second);
+	resultString += nodeConstraint.first;
+	listOfBooleanExpressions.append(nodeConstraint.second);
 
 	countsOfConstraintElementsInOneConstraint[constraintType]++;
 
-	QPair<QString, QStringList > resNeighborsNodes = GeneratorForNodeElements::countNeighborsElementsByOr(
+	QPair<QString, QStringList > resultNeighborsNodes = GeneratorForNodeElements::countNeighborsElementsByOr(
 			constraint
-			, GeneratorForExpressions::conjunctionExpression(resBool)
+			, GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions)
 			, usedElements
 			, edge
 			, elementName
@@ -125,13 +125,13 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 			, countsOfConstraintElementsInOneConstraint
 			, errorReporter);
 
-	resString += resNeighborsNodes.first;
+	resultString += resultNeighborsNodes.first;
 
-	if (!resNeighborsNodes.second.isEmpty()) {
-		resBool.append(resNeighborsNodes.second);
+	if (!resultNeighborsNodes.second.isEmpty()) {
+		listOfBooleanExpressions.append(resultNeighborsNodes.second);
 	}
 
-	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
+	allResultBool.append(GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions));
 
-	return {resString, allResultBool};
+	return {resultString, allResultBool};
 }

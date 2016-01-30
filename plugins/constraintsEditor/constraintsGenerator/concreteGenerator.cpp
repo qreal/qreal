@@ -50,7 +50,7 @@ ConcreteGenerator::~ConcreteGenerator()
 
 QString ConcreteGenerator::constraintModelFullName() const
 {
-	return mOutputDirPath; // + "constraints" + mMetamodelName + ".pro";
+	return mOutputDirPath;
 }
 
 QString ConcreteGenerator::constraintModelName() const

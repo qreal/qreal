@@ -106,7 +106,7 @@ QPair<bool, QString> GeneratorForDiagrams::handleConstraintsSelection(
 
 	if (constraintElementType == "EdgesConstraint" || constraintElementType == "NodesConstraint") {
 		QString resultString = "";
-		QStringList resBool;
+		QStringList listOfBooleanExpressions;
 
 		bool neededSelectionByProperty  = false;
 
@@ -130,12 +130,12 @@ QPair<bool, QString> GeneratorForDiagrams::handleConstraintsSelection(
 						, errorReporter);
 
 				resultString += selectionResByProperty.first;
-				resBool.push_back(selectionResByProperty.second);
+				listOfBooleanExpressions.push_back(selectionResByProperty.second);
 			}
 		}
 
-		if (resBool.size() == 1) {
-			resultString += QString("	if (%1) {\n").arg(resBool.at(0));
+		if (listOfBooleanExpressions.size() == 1) {
+			resultString += QString("	if (%1) {\n").arg(listOfBooleanExpressions.at(0));
 		} else {
 			resultString += "	if (true) {\n";
 		}
