@@ -43,7 +43,7 @@ public:
 
 	void delUniqueError(
 			const QString &message
-			, const gui::Error::Severity &severity = qui::Error::error
+			, const gui::Error::Severity &severity = gui::Error::error
 			, const Id &position = Id::rootId()) override;
 
 	void delAllErrorOfElement(const Id &position) override;

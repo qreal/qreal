@@ -57,8 +57,8 @@ public:
 
 	bool pluginLoaded(const QString &pluginName) override;
 
-	bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) override;
-	bool loadConstraintsPlugin(QString const &fileName) override;
+	bool unloadConstraintsPlugin(const QString &pluginName, const QString &pluginId) override;
+	bool loadConstraintsPlugin(const QString &fileName) override;
 
 	void saveDiagramAsAPictureToFile(const QString &fileName) override;
 
