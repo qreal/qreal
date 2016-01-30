@@ -44,7 +44,8 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForChil
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForOutgoingLinks(const Id &constraint
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForOutgoingLinks(
+		const Id &constraint
 		, const QString &elementName
 		, const int depth
 		, const QString &additionalString
@@ -136,7 +137,7 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 		, const QString &elementName
 		, const QString &resultElementName
 		, const QString &functionName
-		, const QString &resType
+		, const QString &resultType
 		, const int depth
 		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
@@ -195,14 +196,14 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 			.arg(resultElementName)
 			.arg(depth + 1);
 
-	const QString curElementOfList = resType
+	const QString currentListElement = resultType
 			+ resultElementName
 			+ "_"
 			+ QString::number(depth);
 
 	resultString += QString("%1foreach (qReal::Id const &%2, new%3NamesList_%4) {\n")
 			.arg(additionalString)
-			.arg(curElementOfList)
+			.arg(currentListElement)
 			.arg(resultElementName)
 			.arg(depth);
 
@@ -218,7 +219,7 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 				, selectionList.at(0)
 				, selectionList.at(1)
 				, selectionList.at(2)
-				, curElementOfList
+				, currentListElement
 				, depth
 				, additionalString + "	"
 				, errorReporter);
@@ -229,20 +230,20 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 				.arg(selectionRes.second);
 	}
 
-	if (resType == "node") {
+	if (resultType == "node") {
 		resultString += GeneratorForNodeElements::countRealConstraintForNodeElement(
 				constraint
-				, curElementOfList
+				, currentListElement
 				, functionName + "Res"
 				, depth + 1
 				, additionalString + "	"
 				, api
 				, countsOfConstraintElementsInOneConstraint
 				, errorReporter);
-	} else if (resType == "edge") {
+	} else if (resultType == "edge") {
 		resultString += GeneratorForEdgeElements::countRealConstraintForEdgeElement(
 				constraint
-				, curElementOfList
+				, currentListElement
 				, functionName + "Res"
 				, depth + 1
 				, additionalString + "	"

@@ -79,7 +79,7 @@ private:
 			, const QString &elementName
 			, const QString &resultElementName
 			, const QString &functionName
-			, const QString &resType
+			, const QString &resultType
 			, const int depth
 			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
