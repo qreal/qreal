@@ -58,10 +58,10 @@ public:
 	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
 
 signals:
-	void parentChanged(IdList const &idList);
-	void nameChanged(Id const &id);
-	void addedElementToModel(Id const &id);
-	void propertyChanged(Id const &id);
+	void parentChanged(const IdList &idList);
+	void nameChanged(const Id &id);
+	void addedElementToModel(const Id &id);
+	void propertyChanged(const Id &id);
 
 private:
 	virtual void init();

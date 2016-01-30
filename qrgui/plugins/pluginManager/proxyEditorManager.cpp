@@ -26,7 +26,7 @@ ProxyEditorManager::~ProxyEditorManager()
 	delete mProxiedEditorManager;
 }
 
-ProxyEditorManager::MetaType ProxyEditorManager::metaTypeOfElement(qReal::Id const& element) const
+ProxyEditorManager::MetaType ProxyEditorManager::metaTypeOfElement(const qReal::Id &element) const
 {
 	return mProxiedEditorManager->metaTypeOfElement(element);
 }

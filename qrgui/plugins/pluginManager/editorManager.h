@@ -96,7 +96,7 @@ public:
 	Id findElementByType(const QString &type) const override;
 	QList<ListenerInterface *> listeners() const override;
 
-	MetaType metaTypeOfElement(Id const& element) const;
+	MetaType metaTypeOfElement(const Id &element) const;
 
 	bool isDiagramNode(Id const &id) const override;
 

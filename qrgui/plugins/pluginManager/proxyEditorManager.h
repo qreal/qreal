@@ -47,7 +47,7 @@ public:
 	explicit ProxyEditorManager(EditorManagerInterface *editorManagerInterface);
 	~ProxyEditorManager() override;
 
-	MetaType metaTypeOfElement(qReal::Id const& element) const;
+	MetaType metaTypeOfElement(const qReal::Id &element) const;
 
 	IdList editors() const override;
 	IdList diagrams(const Id &editor) const override;

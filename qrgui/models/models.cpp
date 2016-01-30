@@ -101,11 +101,11 @@ void Models::reinit()
 	mGraphicalPartModel->reinit();
 }
 
-Id Models::logicalId(Id const &element) const
+Id Models::logicalId(const Id &element) const
 {
 	if (mLogicalModel->logicalModelAssistApi().isLogicalId(element)) {
 		return element;
-	} else {
-		return mGraphicalModel->graphicalModelAssistApi().logicalId(element);
 	}
+
+	return mGraphicalModel->graphicalModelAssistApi().logicalId(element);
 }

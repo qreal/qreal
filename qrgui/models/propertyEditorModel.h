@@ -69,7 +69,7 @@ public:
 	qReal::Id idByIndex(const QModelIndex &index) const;
 
 signals:
-	void propertyChangedFromPropertyEditor(QModelIndex const &index);
+	void propertyChangedFromPropertyEditor(const QModelIndex &index);
 
 private slots:
 	void rereadData(const QModelIndex &, const QModelIndex &);

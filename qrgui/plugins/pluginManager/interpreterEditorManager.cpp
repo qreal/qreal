@@ -47,14 +47,15 @@ InterpreterEditorManager::~InterpreterEditorManager()
 	}
 }
 
-EditorManagerInterface::MetaType InterpreterEditorManager::metaTypeOfElement(qReal::Id const& element) const
+EditorManagerInterface::MetaType InterpreterEditorManager::metaTypeOfElement(const Id &element) const
 {
-	foreach (qrRepo::RepoApi *repo, mEditorRepoApi.values()) {
-		foreach (Id const &currentElement,  repo->elementsByType(element.element())) {
+	for (qrRepo::RepoApi *repo : mEditorRepoApi.values()) {
+		for (const Id &currentElement : repo->elementsByType(element.element())) {
 			if (currentElement.editor() == element.editor()
 					&& currentElement.diagram() == element.diagram()
 					&& repo->isLogicalElement(currentElement)) {
 				int isNodeOrEdge = 0; // qwerty_TODO
+
 				if (isNodeOrEdge == -1) {
 					return EditorManagerInterface::edge;
 				} else if (isNodeOrEdge == 1) {

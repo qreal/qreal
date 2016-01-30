@@ -50,7 +50,7 @@ public:
 
 	void reinit();
 
-	Id logicalId(Id const &element) const;
+	Id logicalId(const Id &element) const;
 
 private:
 	models::details::GraphicalModel *mGraphicalModel;
