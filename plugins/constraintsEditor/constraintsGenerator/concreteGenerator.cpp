@@ -25,7 +25,8 @@ using namespace constraints::generator::generatorParts;
 using namespace qReal;
 using namespace utils;
 
-ConcreteGenerator::ConcreteGenerator(const QString &templateDirPath
+ConcreteGenerator::ConcreteGenerator(
+		const QString &templateDirPath
 		, const QString &outputDirPath
 		, const QString &pathToQReal
 		, const qReal::LogicalModelAssistInterface &logicalModel
@@ -92,7 +93,7 @@ void ConcreteGenerator::generateCodeForProFile()
 			.replace("@@constraintsDiagramHFiles@@", hFiles)
 			.replace("@@constraintsDiagramCppFiles@@", cppFiles);
 
-	saveOutputFile(QString(normalizedConstraintConstraintsModelName() + "Plugin.pro"), resultPRO);
+	saveOutputFile(QString(normalizedConstraintConstraintsModelName() + ".pro"), resultPRO);
 }
 
 void ConcreteGenerator::generateCodeForConstraintsPluginHFile()

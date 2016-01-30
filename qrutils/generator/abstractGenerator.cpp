@@ -161,6 +161,7 @@ void AbstractGenerator::saveOutputFile(const QString &fileName, const QString &c
 	if (!dir.exists(mOutputDirPath)) {
 		dir.mkdir(mOutputDirPath);
 	}
+
 	dir.cd(mOutputDirPath);
 
 	const QString outputFileName = dir.absoluteFilePath(fileName);

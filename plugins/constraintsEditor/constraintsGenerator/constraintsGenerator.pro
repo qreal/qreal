@@ -18,7 +18,6 @@ QT += xml widgets
 
 TEMPLATE = lib
 CONFIG += plugin
-DESTDIR = $$DESTDIR/plugins/tools
 
 links(qrkernel qrutils qrmc)
 includes(qrgui)
@@ -52,4 +51,6 @@ SOURCES += \
 	generatorParts/generatorForExpressions.cpp \
 	generatorParts/generatorForLinks.cpp \
 
-copyToDestdir(templates, now)
+copyToDestdir(templates/, now)
+
+DESTDIR = $$DESTDIR/plugins/tools

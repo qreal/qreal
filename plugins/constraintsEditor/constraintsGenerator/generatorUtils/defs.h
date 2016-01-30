@@ -30,7 +30,7 @@ const QString keywordForAllNodes = "AllNodes";
 const QString keywordForAllLanguages = "AllLanguages";
 
 const QString keywordForAllMetamodels = "AllMetamodels";
-const QString templateDir = "../templates";
+const QString templateDir = "templates";
 
 enum metaType {
 	node,

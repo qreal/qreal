@@ -79,7 +79,8 @@ void Generator::generate(const qReal::Id &metamodel)
 	}
 
 	if ((metamodelName.compare("all", Qt::CaseInsensitive) == 0)
-			|| (metamodelName.compare(keywordForAllMetamodels, Qt::CaseInsensitive) == 0)) {
+			|| (metamodelName.compare(keywordForAllMetamodels, Qt::CaseInsensitive) == 0))
+	{
 		metamodelName = keywordForAllMetamodels;
 	}
 

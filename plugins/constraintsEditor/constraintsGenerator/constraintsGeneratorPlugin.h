@@ -39,6 +39,7 @@ public:
 
 private slots:
 	void generate();
+
 private:
 	/// Compiles and loads to QReal new editor plugin
 	/// @param directoryName - directory where editor was generated (containing .pro file).
@@ -70,7 +71,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;  // Does not have ownership
 
 	/// Logical model, from which generator takes all information.
-	qReal::LogicalModelAssistInterface const *mLogicalModel;
+	const qReal::LogicalModelAssistInterface *mLogicalModel;
 
 	/// Thanslator object for this plugin, provides localisation
 	QTranslator mAppTranslator;
