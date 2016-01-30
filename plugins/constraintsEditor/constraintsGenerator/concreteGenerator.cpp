@@ -92,7 +92,7 @@ void ConcreteGenerator::generateCodeForProFile()
 			.replace("@@constraintsDiagramHFiles@@", hFiles)
 			.replace("@@constraintsDiagramCppFiles@@", cppFiles);
 
-	saveOutputFile(QString(normalizedConstraintConstraintsModelName() + ".pro"), resultPRO);
+	saveOutputFile(QString(normalizedConstraintConstraintsModelName() + "Plugin.pro"), resultPRO);
 }
 
 void ConcreteGenerator::generateCodeForConstraintsPluginHFile()
@@ -109,7 +109,7 @@ void ConcreteGenerator::generateCodeForConstraintsPluginHFile()
 	resultPluginH.replace("@@pathToQReal@@", mPathToQReal);
 
 	QString fileBaseName = normalizedConstraintModelName();
-	saveOutputFile(QString(fileBaseName+ "Plugin.h"), resultPluginH);
+	saveOutputFile(QString(fileBaseName + "Plugin.h"), resultPluginH);
 }
 
 void ConcreteGenerator::generateCodeForConstraintsPluginCppFile()

@@ -43,7 +43,7 @@ public:
 
 private:
 	static QString additionalCommonPartForConstraint(
-			const QList<QString> &resBool
+			const QStringList &resBool
 			, const QString &resultName
 			, const int depth
 			, const QString &addStr);

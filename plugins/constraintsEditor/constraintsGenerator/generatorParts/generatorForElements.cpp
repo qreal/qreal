@@ -17,6 +17,8 @@
 #include "generatorForNodeElements.h"
 #include "generatorForExpressions.h"
 
+#include "generatorUtils/defs.h"
+
 using namespace constraints::generator::generatorParts;
 using namespace qReal;
 using namespace qrRepo;
@@ -33,12 +35,12 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 {
 	IdList list = api.children(constraintElement);
 	QString resString = "";
-	QList<QString> resBool;
+	QStringList resBool;
 	IdList usedElements;
 
 	for (const Id &constraint : list) {
 		if (!usedElements.contains(constraint)) {
-			QPair<QString, QList<QString> > resOneConstraint;
+			QPair<QString, QStringList > resOneConstraint;
 			if (type == edge) {
 				resOneConstraint = GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(
 						constraint
@@ -66,13 +68,13 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 		}
 	}
 
-	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr); //сбрасываем resBool в resString
+	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr);
 
 	return resString;
 }
 
 QString GeneratorForElements::additionalCommonPartForConstraint(
-		const QList<QString> &resBool
+		const QStringList &resBool
 		, const QString &resultName
 		, const int depth
 		, const QString &addStr)

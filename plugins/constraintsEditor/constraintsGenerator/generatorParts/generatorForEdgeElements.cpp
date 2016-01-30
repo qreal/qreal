@@ -33,11 +33,18 @@ QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(
 		, ErrorReporterInterface &errorReporter)
 {
 	return GeneratorForElements::countRealConstraintForElement(
-			constraintElement, edge, elementName, resultName, depth, addStr, api
-			, countsOfConstraintElementsInOneConstraint, errorReporter);
+			constraintElement
+			, edge
+			, elementName
+			, resultName
+			, depth
+			, addStr
+			, api
+			, countsOfConstraintElementsInOneConstraint
+			, errorReporter);
 }
 
-QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(
+QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(
 		const Id &constraint
 		, IdList &usedElements
 		, const QString &elementName
@@ -49,8 +56,8 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 		, const bool isMultiOr)
 {
 	QString resString = "";
-	QList<QString> resBool;
-	QList<QString> allResultBool;
+	QStringList resBool;
+	QStringList allResultBool;
 
 	QString constraintType = constraint.element();
 	if (!countsOfConstraintElementsInOneConstraint.contains(constraintType)) {
@@ -59,7 +66,7 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 
 	int additionalDepth = countsOfConstraintElementsInOneConstraint[constraintType];
 
-	QPair<QString, QList<QString> > nodeConstraint;
+	QPair<QString, QStringList > nodeConstraint;
 	if ((!GeneratorForLinks::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
 		if (constraintType == "BeginNode") {
 			nodeConstraint = GeneratorForNodeElements::countConstraintForBeginNode(
@@ -106,7 +113,7 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 
 	countsOfConstraintElementsInOneConstraint[constraintType]++;
 
-	QPair<QString, QList<QString> > resNeighborsNodes = GeneratorForNodeElements::countNeighborsElementsByOr(
+	QPair<QString, QStringList > resNeighborsNodes = GeneratorForNodeElements::countNeighborsElementsByOr(
 			constraint
 			, GeneratorForExpressions::conjunctionExpression(resBool)
 			, usedElements
@@ -126,5 +133,5 @@ QPair<QString, QList<QString>> GeneratorForEdgeElements::countRealConstraintForO
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 
-	return QPair<QString, QList<QString> >(resString, allResultBool);
+	return {resString, allResultBool};
 }

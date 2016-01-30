@@ -113,7 +113,7 @@ bool AbstractGenerator::loadUtilsFromDir()
 
 	const QStringList files = dir.entryList(QStringList());
 
-	foreach (const QString &fileName, files) {
+	for (const QString &fileName : files) {
 		if (fileName == "." || fileName == "..") {
 			continue;
 		}

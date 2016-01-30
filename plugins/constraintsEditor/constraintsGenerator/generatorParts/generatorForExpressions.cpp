@@ -16,18 +16,18 @@
 
 using namespace constraints::generator::generatorParts;
 
-QString GeneratorForExpressions::disjunctionExpression(QList<QString> listOfBooleanExpressions)
+QString GeneratorForExpressions::disjunctionExpression(QStringList listOfBooleanExpressions)
 {
 	return formedExpression(listOfBooleanExpressions, "false", " || ");
 }
 
-QString GeneratorForExpressions::conjunctionExpression(QList<QString> listOfBooleanExpressions)
+QString GeneratorForExpressions::conjunctionExpression(QStringList listOfBooleanExpressions)
 {
 	return formedExpression(listOfBooleanExpressions, "true", " && ");
 }
 
 QString GeneratorForExpressions::formedExpression(
-		QList<QString> listOfBooleanExpressions
+		QStringList listOfBooleanExpressions
 		, const QString &firstElement
 		, const QString &connectingSymbol)
 {

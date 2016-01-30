@@ -22,7 +22,7 @@
 using namespace qReal;
 using namespace constraints::generator::generatorParts;
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForChildrens(
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForChildrens(
 		const Id &constraint
 		, const QString &elementName
 		, const int depth
@@ -44,7 +44,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForC
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForOutgoingLinks(const Id &constraint
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForOutgoingLinks(const Id &constraint
 		, const QString &elementName
 		, const int depth
 		, const QString &additionalString
@@ -65,7 +65,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForIncomingLinks(
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForIncomingLinks(
 		const Id &constraint
 		, const QString &elementName
 		, const int depth
@@ -87,7 +87,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForOutgoingNodes(
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForOutgoingNodes(
 		const Id &constraint
 		, const QString &elementName
 		, const int depth
@@ -109,7 +109,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForO
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForIncomingNodes(
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForIncomingNodes(
 		const Id &constraint
 		, const QString &elementName
 		, const int depth
@@ -131,7 +131,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForI
 			, countsOfConstraintElementsInOneConstraint);
 }
 
-QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForListOfElements(
+QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForListOfElements(
 		const Id &constraint
 		, const QString &elementName
 		, const QString &resElementName
@@ -144,8 +144,8 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	QString resultString = "";
-	QList<QString> resBool;
-	QList<QString> allResultBool;
+	QStringList resBool;
+	QStringList allResultBool;
 
 	QString count = api.property(constraint, "count").toString();
 	bool neededCount  = (!count.isEmpty());
@@ -191,7 +191,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 	const bool neededSelection  = (!selection.isEmpty()) && (selection.compare("all", Qt::CaseInsensitive) != 0);
 
 	if (neededSelection) {
-		QList<QString> selectionList = selection.split(" ");
+		QStringList selectionList = selection.split(" ");
 		QPair<QString, QString> selectionRes = GeneratorForProperties::countPropertyCharacteristicForConstraintElement(
 				constraint
 				, resElementName.at(0).toLower() + resElementName.mid(1) + "Selection"
@@ -253,7 +253,7 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 	resBool.push_back("main" + resElementName + "Res_" + QString::number(depth + 1));
 
 	if (neededCount) {
-		QList<QString> countList = count.split(" ");
+		QStringList countList = count.split(" ");
 		QString sign = countList.at(0);
 
 		if (sign == "=") {
@@ -273,5 +273,5 @@ QPair<QString, QList<QString> > GeneratorForListsOfElements::countConstraintForL
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 
-	return QPair<QString, QList<QString> >(resultString, allResultBool);
+	return QPair<QString, QStringList >(resultString, allResultBool);
 }

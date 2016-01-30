@@ -39,7 +39,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
-	static QPair<QString, QList<QString>> countRealConstraintForOneNodeElement(
+	static QPair<QString, QStringList> countRealConstraintForOneNodeElement(
 			const qReal::Id &constraint
 			, qReal::IdList &usedElements
 			, const QString &elementName
@@ -50,7 +50,7 @@ public:
 			, const bool isMultiOr = false
 			);
 
-	static QPair<QString, QList<QString>> countConstraintForBeginNode(qReal::Id const &constraint
+	static QPair<QString, QStringList> countConstraintForBeginNode(qReal::Id const &constraint
 			, const QString &elementName
 			, const int depth
 			, const QString &additionalString
@@ -59,7 +59,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
-	static QPair<QString, QList<QString> > countConstraintForEndNode(
+	static QPair<QString, QStringList > countConstraintForEndNode(
 			qReal::Id const &constraint
 			, const QString &elementName
 			, int depth
@@ -68,7 +68,7 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
 
-	static QPair<QString, QList<QString> > countConstraintForParent(
+	static QPair<QString, QStringList > countConstraintForParent(
 			const qReal::Id &constraint
 			, const QString &elementName
 			, const int depth
@@ -77,7 +77,7 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
 
-	static QPair<QString, QList<QString> > countConstraintForPropertyNode(qReal::Id const &constraint
+	static QPair<QString, QStringList > countConstraintForPropertyNode(qReal::Id const &constraint
 			, const QString &elementName
 			, const int depth
 			, const QString &addStr
@@ -85,7 +85,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			);
 
-	static QPair<QString, QList<QString> > countConstraintForMultiOrNode(
+	static QPair<QString, QStringList > countConstraintForMultiOrNode(
 			const qReal::Id &constraint
 			, qReal::IdList &usedElements
 			, const metaType &type
@@ -97,7 +97,7 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
 
 	/// TODO: this method has to be somewhere else (used in nodeElements and edgeElements generator)
-	static QPair<QString, QList<QString> > countNeighborsElementsByOr(
+	static QPair<QString, QStringList > countNeighborsElementsByOr(
 			const qReal::Id &constraint
 			, const QString &resConstraintBool
 			, qReal::IdList &usedElements

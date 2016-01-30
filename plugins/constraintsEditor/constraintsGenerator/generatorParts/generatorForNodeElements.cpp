@@ -38,7 +38,7 @@ QString GeneratorForNodeElements::countRealConstraintForNodeElement(const Id &co
 			, countsOfConstraintElementsInOneConstraint, errorReporter);
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForOneNodeElement(
+QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneNodeElement(
 		const Id &constraint
 		, IdList &usedElements
 		, const QString &elementName
@@ -50,8 +50,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 		, const bool isMultiOr)
 {
 	QString resString = "";
-	QList<QString> resBool;
-	QList<QString> allResultBool;
+	QStringList resBool;
+	QStringList allResultBool;
 
 	QString constraintType = constraint.element();
 
@@ -61,7 +61,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 
 	int additionalDepth = countsOfConstraintElementsInOneConstraint[constraintType];
 
-	QPair<QString, QList<QString>> listConstraint;
+	QPair<QString, QStringList> listConstraint;
 	if ((!GeneratorForLinks::linkWithGivenTypeExists(constraint, "MultiOrEdge", api)) || isMultiOr) {
 		if (constraintType == "Parent") {
 			listConstraint = countConstraintForParent(
@@ -144,7 +144,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 
 	countsOfConstraintElementsInOneConstraint[constraintType]++;
 
-	QPair<QString, QList<QString> > resNeighborsNodes = countNeighborsElementsByOr(
+	QPair<QString, QStringList> resNeighborsNodes = countNeighborsElementsByOr(
 			constraint
 			, GeneratorForExpressions::conjunctionExpression(resBool)
 			, usedElements
@@ -163,10 +163,10 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countRealConstraintForO
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
 
-	return QPair<QString, QList<QString> >(resString, allResultBool);
+	return QPair<QString, QStringList>(resString, allResultBool);
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForBeginNode(const Id &constraint
+QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForBeginNode(const Id &constraint
 		, const QString &elementName
 		, const int depth
 		, const QString &additionalString
@@ -175,8 +175,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForBegin
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resultString = "";
-	QList<QString> resBool;
-	QList<QString> allResultBool;
+	QStringList resBool;
+	QStringList allResultBool;
 
 	resultString += QString("%1qReal::Id newBeginNodeName_%2 = logicalApi.from(%3);\n")
 			.arg(additionalString)
@@ -204,10 +204,10 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForBegin
 	resBool.push_back("beginNodeRes_" + QString::number(depth));
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
-	return QPair<QString, QList<QString> >(resultString, allResultBool);
+	return {resultString, allResultBool};
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForEndNode(const Id &constraint
+QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForEndNode(const Id &constraint
 		, const QString &elementName
 		, int depth
 		, const QString &additionalString
@@ -216,8 +216,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForEndNo
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resultString = "";
-	QList<QString> resBool;
-	QList<QString> allResultBool;
+	QStringList resBool;
+	QStringList allResultBool;
 
 	resultString += QString("%1qReal::Id newEndNodeName_%2 = logicalApi.to(%3);\n")
 			.arg(additionalString)
@@ -247,10 +247,10 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForEndNo
 	resBool.push_back("endNodeRes_" + QString::number(depth));
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resBool));
-	return QPair<QString, QList<QString> >(resultString, allResultBool);
+	return QPair<QString, QStringList >(resultString, allResultBool);
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForParent(
+QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForParent(
 		const Id &constraint
 		, const QString &elementName
 		, const int depth
@@ -260,8 +260,8 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForParen
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resultString = "";
-	QList<QString> resultBool;
-	QList<QString> allResultBool;
+	QStringList resultBool;
+	QStringList allResultBool;
 
 	resultString += QString("%1qReal::Id newParentName_%2 = logicalApi.parent(%3);\n"
 			"%1bool mainParentRes_%2 = true;\n"
@@ -302,10 +302,10 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForParen
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(resultBool));
 
-	return QPair<QString, QList<QString> >(resultString, allResultBool);
+	return QPair<QString, QStringList >(resultString, allResultBool);
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForPropertyNode(const Id &constraint
+QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForPropertyNode(const Id &constraint
 		, const QString &elementName
 		, const int depth
 		, const QString &addStr
@@ -328,13 +328,13 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForPrope
 			, addStr
 			, errorReporter);
 
-	QList<QString> resBool;
+	QStringList resBool;
 	resBool.push_back(res.second);
 
-	return QPair<QString, QList<QString> >(res.first, resBool);
+	return QPair<QString, QStringList >(res.first, resBool);
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForMultiOrNode(
+QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrNode(
 		const Id &constraint
 		, IdList &usedElements
 		, const metaType &type
@@ -346,14 +346,14 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForMulti
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
 {
 	QString resString = "";
-	QList<QString> curBool;
-	QList<QString> resBool;
+	QStringList curBool;
+	QStringList resBool;
 
 	IdList neighborNodes = neighborNodesWithGivenType(constraint, "MultiOrEdge", api);
 	usedElements.append(neighborNodes);
 
 	for (const Id element : neighborNodes) {
-		QPair<QString, QList<QString> > resElementConstraint;
+		QPair<QString, QStringList > resElementConstraint;
 		if (type == edge) {
 			resElementConstraint = GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(
 						element
@@ -384,10 +384,10 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countConstraintForMulti
 
 	resBool.append(QString("(" + GeneratorForExpressions::disjunctionExpression(curBool) + ")"));
 
-	return QPair<QString, QList<QString> >(resString, resBool);
+	return QPair<QString, QStringList >(resString, resBool);
 }
 
-QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsByOr(
+QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr(
 		const Id &constraint
 		, const QString &resConstraintBool
 		, IdList &usedElements
@@ -400,7 +400,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsB
 		, ErrorReporterInterface &errorReporter)
 {
 	QString resString = "";
-	QList<QString> resBool;
+	QStringList resBool;
 
 	IdList neighborNodes = neighborNodesWithGivenType(constraint, "Or", api);
 
@@ -408,7 +408,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsB
 		for (const Id neighbor : neighborNodes) {
 			if (!usedElements.contains(neighbor)) {
 				usedElements.append(neighbor);
-				QPair<QString, QList<QString> > resNeighborsConstraint;
+				QPair<QString, QStringList > resNeighborsConstraint;
 
 				if (type == edge) {
 					resNeighborsConstraint = GeneratorForEdgeElements::countRealConstraintForOneEdgeElement(
@@ -441,7 +441,7 @@ QPair<QString, QList<QString>> GeneratorForNodeElements::countNeighborsElementsB
 		}
 	}
 
-	return QPair<QString, QList<QString> >(resString, resBool);
+	return QPair<QString, QStringList >(resString, resBool);
 }
 
 IdList GeneratorForNodeElements::neighborNodesWithGivenType(

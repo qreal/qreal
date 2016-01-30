@@ -39,7 +39,7 @@ public:
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
 
-	static QPair<QString, QList<QString>> countRealConstraintForOneEdgeElement(
+	static QPair<QString, QStringList> countRealConstraintForOneEdgeElement(
 			const qReal::Id &constraint
 			, qReal::IdList &usedElements
 			, const QString &elementName

@@ -27,11 +27,12 @@ QString GeneratorForDiagrams::countRealConstraintOfDiagramElement(
 {
 	QString resultString = "";
 
-	for (const QString &nameOfConstrainElement : countsOfConstraintElementsInOneConstraint.keys()) {
-		countsOfConstraintElementsInOneConstraint[nameOfConstrainElement] = 0;
+	for (const QString &nameOfConstraintElement : countsOfConstraintElementsInOneConstraint.keys()) {
+		countsOfConstraintElementsInOneConstraint[nameOfConstraintElement] = 0;
 	}
 
-	QPair<bool, QString> selectionResult = handleConstraintsSelection(constraintElement, api, errorReporter);
+	const QPair<bool, QString> selectionResult = handleConstraintsSelection(constraintElement, api, errorReporter);
+
 	if (selectionResult.first) {
 		resultString += selectionResult.second;
 	}
@@ -47,8 +48,8 @@ QString GeneratorForDiagrams::countRealConstraintOfDiagramElement(
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter
 					);
-		resultString += "	res = edgeRes_1;\n";
 
+		resultString += "	res = edgeRes_1;\n";
 	} else if (constraintElement.element() == "NodeConstraint") {
 		resultString += GeneratorForNodeElements::countRealConstraintForNodeElement(
 					constraintElement
@@ -60,8 +61,8 @@ QString GeneratorForDiagrams::countRealConstraintOfDiagramElement(
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter
 					);
-		resultString += "	res = nodeRes_1;\n";
 
+		resultString += "	res = nodeRes_1;\n";
 	} else if (constraintElement.element() == "EdgesConstraint") {
 		resultString += GeneratorForEdgeElements::countRealConstraintForEdgeElement(
 					constraintElement
@@ -73,8 +74,8 @@ QString GeneratorForDiagrams::countRealConstraintOfDiagramElement(
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter
 					);
-		resultString += "	res = allEdgesRes_1;\n";
 
+		resultString += "	res = allEdgesRes_1;\n";
 	} else if (constraintElement.element() == "NodesConstraint") {
 		resultString += GeneratorForNodeElements::countRealConstraintForNodeElement(
 					constraintElement
@@ -85,6 +86,7 @@ QString GeneratorForDiagrams::countRealConstraintOfDiagramElement(
 					, api
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter);
+
 		resultString += "	res = allNodesRes_1;\n";
 	}
 
@@ -104,7 +106,7 @@ QPair<bool, QString> GeneratorForDiagrams::handleConstraintsSelection(
 
 	if (constraintElementType == "EdgesConstraint" || constraintElementType == "NodesConstraint") {
 		QString resultString = "";
-		QList<QString> resBool;
+		QStringList resBool;
 
 		bool neededSelectionByProperty  = false;
 
@@ -113,8 +115,8 @@ QPair<bool, QString> GeneratorForDiagrams::handleConstraintsSelection(
 			neededSelectionByProperty  = (!selection.isEmpty()) && (selection.compare("all", Qt::CaseInsensitive) != 0);
 
 			if (neededSelectionByProperty) {
-				QList<QString> selectionList = selection.split(" ");
-				QPair<QString, QString > selectionResByProperty =
+				QStringList selectionList = selection.split(" ");
+				QPair<QString, QString> selectionResByProperty =
 						GeneratorForProperties::countPropertyCharacteristicForConstraintElement(
 						constraintElement
 						, "elementsSelectionByProperty"
@@ -138,8 +140,8 @@ QPair<bool, QString> GeneratorForDiagrams::handleConstraintsSelection(
 			resultString += "	if (true) {\n";
 		}
 
-		return QPair<bool, QString>(neededSelectionByProperty, resultString);
+		return {neededSelectionByProperty, resultString};
 	} else {
-		return QPair<bool, QString>(false, "");
+		return {false, ""};
 	}
 }

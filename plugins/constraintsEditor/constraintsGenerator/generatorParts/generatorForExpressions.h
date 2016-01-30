@@ -30,16 +30,16 @@ public:
 	/// Forms disjunction expression given list of boolean expressions.
 	/// @param listOfBooleanExpressions - list of expressions.
 	/// @returns boolean expressions list connected by "||" symbol.
-	static QString disjunctionExpression(QList<QString> listOfBooleanExpressions);
+	static QString disjunctionExpression(QStringList listOfBooleanExpressions);
 
 	/// Forms conjunction expression given list of boolean expressions.
 	/// @param listOfBooleanExpressions - list of expressions.
 	/// @returns boolean expressions list connected by "&&" symbol.
-	static QString conjunctionExpression(QList<QString> listOfBooleanExpressions);
+	static QString conjunctionExpression(QStringList listOfBooleanExpressions);
 
 private:
 	static QString formedExpression(
-			QList<QString> listOfBooleanExpressions
+			QStringList listOfBooleanExpressions
 			, const QString &firstElement
 			, const QString &connectingSymbol);
 };
