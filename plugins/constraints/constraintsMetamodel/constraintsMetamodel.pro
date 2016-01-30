@@ -13,7 +13,7 @@
 # limitations under the License.
 
 QREAL_XML = constraintsMetamodel.xml
-QREAL_EDITOR_PATH = constraintsEditor/constraintsMetamodel
+QREAL_EDITOR_PATH = constraints/constraintsMetamodel
 ROOT = ../../..
 
 include (../../../plugins/editorsSdk/editorsCommon.pri)
