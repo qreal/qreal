@@ -134,7 +134,7 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForInco
 QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForListOfElements(
 		const Id &constraint
 		, const QString &elementName
-		, const QString &resElementName
+		, const QString &resultElementName
 		, const QString &functionName
 		, const QString &resType
 		, const int depth
@@ -163,7 +163,7 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 	if (neededCount) {
 		resultString += QString("%1int tempCount%2_%3 = 0;\n")
 				.arg(additionalString)
-				.arg(resElementName)
+				.arg(resultElementName)
 				.arg(depth);
 	}
 
@@ -172,19 +172,19 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 				"outgoingLinks"
 				, elementName
 				, additionalString
-				, resElementName
+				, resultElementName
 				, depth);
 	} else if (functionName == "incomingNodes") {
 		resultString += codeForOutgoingOfIncomingNodes(
 				"incomingLinks"
 				, elementName
 				, additionalString
-				, resElementName
+				, resultElementName
 				, depth);
 	} else {
 		resultString += QString("%1qReal::IdList new%2NamesList_%3 = logicalApi.%4(%5);\n")
 				.arg(additionalString)
-				.arg(resElementName)
+				.arg(resultElementName)
 				.arg(depth)
 				.arg(functionName)
 				.arg(elementName);
@@ -192,18 +192,18 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 
 	resultString += QString("%1bool main%2Res_%3 = true;\n")
 			.arg(additionalString)
-			.arg(resElementName)
+			.arg(resultElementName)
 			.arg(depth + 1);
 
 	const QString curElementOfList = resType
-			+ resElementName
+			+ resultElementName
 			+ "_"
 			+ QString::number(depth);
 
 	resultString += QString("%1foreach (qReal::Id const &%2, new%3NamesList_%4) {\n")
 			.arg(additionalString)
 			.arg(curElementOfList)
-			.arg(resElementName)
+			.arg(resultElementName)
 			.arg(depth);
 
 	const QString selection = api.property(constraint, "selection").toString();
@@ -213,7 +213,7 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 		QStringList selectionList = selection.split(" ");
 		QPair<QString, QString> selectionRes = GeneratorForProperties::countPropertyCharacteristicForConstraintElement(
 				constraint
-				, resElementName.at(0).toLower() + resElementName.mid(1) + "Selection"
+				, resultElementName.at(0).toLower() + resultElementName.mid(1) + "Selection"
 				, "false"
 				, selectionList.at(0)
 				, selectionList.at(1)
@@ -253,13 +253,13 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 
 	resultString += QString("%1	main%2Res_%3 = main%2Res_%3 && %4Res_%3;\n")
 			.arg(additionalString)
-			.arg(resElementName)
+			.arg(resultElementName)
 			.arg(depth + 1)
 			.arg(functionName);
 
 	if (neededCount) {
 		resultString += QString("%1	tempCount%2_%3++;\n")
-				.arg(resElementName)
+				.arg(resultElementName)
 				.arg(additionalString)
 				.arg(depth);
 	}
@@ -269,7 +269,7 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 	}
 
 	resultString += additionalString + "}\n";
-	listOfBooleanExpressions.push_back("main" + resElementName + "Res_" + QString::number(depth + 1));
+	listOfBooleanExpressions.push_back("main" + resultElementName + "Res_" + QString::number(depth + 1));
 
 	if (neededCount) {
 		QStringList countList = count.split(" ");
@@ -283,11 +283,11 @@ QPair<QString, QStringList > GeneratorForListsOfElements::countConstraintForList
 
 		resultString += QString("%1bool count%2Res_%3 = (tempCount%2_%3 %4 %5);\n")
 				.arg(additionalString)
-				.arg(resElementName)
+				.arg(resultElementName)
 				.arg(depth)
 				.arg(sign)
 				.arg(countList.at(1));
-		listOfBooleanExpressions.push_back("count" + resElementName + "Res_" + QString::number(depth));
+		listOfBooleanExpressions.push_back("count" + resultElementName + "Res_" + QString::number(depth));
 	}
 
 	allResultBool.append(GeneratorForExpressions::conjunctionExpression(listOfBooleanExpressions));
@@ -299,7 +299,7 @@ QString GeneratorForListsOfElements::codeForOutgoingOfIncomingNodes(
 		const QString &listOfLinks
 		, const QString &elementName
 		, const QString &additionalString
-		, const QString &resElementName
+		, const QString &resultElementName
 		, const int depth)
 {
 	QString resultString;
@@ -313,7 +313,7 @@ QString GeneratorForListsOfElements::codeForOutgoingOfIncomingNodes(
 			.arg(elementName);
 
 	const QString listName = QString("new%1NamesList_%2")
-			.arg(resElementName)
+			.arg(resultElementName)
 			.arg(depth);
 
 	resultString += QString("%1qReal::IdList %2;\n")

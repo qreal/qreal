@@ -77,7 +77,7 @@ private:
 	static QPair<QString, QStringList> countConstraintForListOfElements(
 			const qReal::Id &constraint
 			, const QString &elementName
-			, const QString &resElementName
+			, const QString &resultElementName
 			, const QString &functionName
 			, const QString &resType
 			, const int depth
@@ -90,7 +90,7 @@ private:
 			const QString &listOfLinks
 			, const QString &elementId
 			, const QString &additionalString
-			, const QString &resElementName
+			, const QString &resultElementName
 			, const int depth);
 };
 

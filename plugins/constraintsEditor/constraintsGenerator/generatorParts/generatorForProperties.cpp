@@ -110,7 +110,7 @@ QPair<QString, QString> GeneratorForProperties::countPropertyCharacteristicForCo
 }
 
 QString GeneratorForProperties::generateExistsProperty(
-		const QString &resElementName
+		const QString &resultElementName
 		, const QString &elementName
 		, const Id &constraint
 		, const int depth
@@ -123,7 +123,7 @@ QString GeneratorForProperties::generateExistsProperty(
 
 	resultString += QString("%1bool %2_%3 = ")
 			.arg(additionalString)
-			.arg(resElementName)
+			.arg(resultElementName)
 			.arg(depth);
 
 	if (exists == "true" || exists == "false") {

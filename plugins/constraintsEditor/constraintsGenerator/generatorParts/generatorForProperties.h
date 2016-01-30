@@ -40,7 +40,7 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter);
 
 	static QString generateExistsProperty(
-			const QString &resElementName
+			const QString &resultElementName
 			, const QString &elementName
 			, const qReal::Id &constraint
 			, const int depth
