@@ -2218,15 +2218,16 @@ bool MainWindow::loadConstraintsPlugin(QString const &fileName)
 	return mConstraintsManager.loadPlugin(fileName);
 }
 
-gui::Error::Severity MainWindow::severityByErrorType(CheckStatus::ErrorType const &errorType)
+gui::Error::Severity MainWindow::severityByErrorType(const CheckStatus::ErrorType &errorType)
 {
 	if (errorType == CheckStatus::warning) {
 		return gui::Error::warning;
 	} else if (errorType == CheckStatus::critical) {
 		return gui::Error::critical;
 	} else if (errorType == CheckStatus::verification) {
-		return gui::Error::error; //else gui::Error::warning
+		return gui::Error::error;
 	}
+
 	return gui::Error::warning;
 }
 

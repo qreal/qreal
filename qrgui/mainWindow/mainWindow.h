@@ -124,8 +124,8 @@ public:
 	virtual bool loadPlugin(const QString &fileName, const QString &pluginName);
 	virtual bool pluginLoaded(const QString &pluginName);
 
-	bool unloadConstraintsPlugin(QString const &pluginName, QString const &pluginId) override;
-	bool loadConstraintsPlugin(QString const &fileName) override;
+	bool unloadConstraintsPlugin(const QString &pluginName, const QString &pluginId) override;
+	bool loadConstraintsPlugin(const QString &fileName) override;
 
 	virtual void saveDiagramAsAPictureToFile(QString const &fileName);
 	virtual void arrangeElementsByDotRunner(QString const &algorithm, QString const &absolutePathToDotFiles);
@@ -294,7 +294,7 @@ private slots:
 	void setTextChanged(bool changed);
 
 private:
-	gui::Error::Severity severityByErrorType(CheckStatus::ErrorType const &errorType); //forCheckConstraints
+	gui::Error::Severity severityByErrorType(const CheckStatus::ErrorType &errorType);
 	void checkOwnConstraints(const Id &id);
 	void checkParentsConstraints(const QModelIndex &index);
 	void checkChildrensConstraints(const Id &id);
