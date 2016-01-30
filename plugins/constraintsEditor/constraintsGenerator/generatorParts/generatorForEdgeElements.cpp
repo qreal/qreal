@@ -27,7 +27,7 @@ QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(
 		, const QString &elementName
 		, const QString &resultName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
@@ -38,7 +38,7 @@ QString GeneratorForEdgeElements::countRealConstraintForEdgeElement(
 			, elementName
 			, resultName
 			, depth
-			, addStr
+			, additionalString
 			, api
 			, countsOfConstraintElementsInOneConstraint
 			, errorReporter);
@@ -49,7 +49,7 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 		, IdList &usedElements
 		, const QString &elementName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const qrRepo::LogicalRepoApi &api
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter
@@ -73,7 +73,7 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter);
@@ -82,7 +82,7 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter);
@@ -91,7 +91,7 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter);
 		}
@@ -102,7 +102,7 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 				, edge
 				, elementName
 				, depth + additionalDepth
-				, addStr
+				, additionalString
 				, api
 				, errorReporter
 				, countsOfConstraintElementsInOneConstraint);
@@ -120,7 +120,7 @@ QPair<QString, QStringList> GeneratorForEdgeElements::countRealConstraintForOneE
 			, edge
 			, elementName
 			, depth + additionalDepth
-			, addStr
+			, additionalString
 			, api
 			, countsOfConstraintElementsInOneConstraint
 			, errorReporter);

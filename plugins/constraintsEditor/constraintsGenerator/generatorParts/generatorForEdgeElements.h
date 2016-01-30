@@ -34,7 +34,7 @@ public:
 			, const QString &elementName
 			, const QString &resultName
 			, const int depth
-			, const QString &addStr
+			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
@@ -44,7 +44,7 @@ public:
 			, qReal::IdList &usedElements
 			, const QString &elementName
 			, const int depth
-			, const QString &addStr
+			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter

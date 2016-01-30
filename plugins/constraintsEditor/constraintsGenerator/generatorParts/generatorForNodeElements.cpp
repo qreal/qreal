@@ -28,13 +28,13 @@ QString GeneratorForNodeElements::countRealConstraintForNodeElement(const Id &co
 		, const QString &elementName
 		, const QString &resultName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
 {
 	return GeneratorForElements::countRealConstraintForElement(
-			constraintElement, node, elementName, resultName, depth, addStr, api
+			constraintElement, node, elementName, resultName, depth, additionalString, api
 			, countsOfConstraintElementsInOneConstraint, errorReporter);
 }
 
@@ -43,7 +43,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 		, IdList &usedElements
 		, const QString &elementName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter
@@ -68,7 +68,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, countsOfConstraintElementsInOneConstraint
 					, errorReporter);
@@ -77,7 +77,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
@@ -86,7 +86,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
@@ -95,7 +95,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
@@ -104,7 +104,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
@@ -113,7 +113,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter
 					, countsOfConstraintElementsInOneConstraint);
@@ -122,7 +122,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 					constraint
 					, elementName
 					, depth + additionalDepth
-					, addStr
+					, additionalString
 					, api
 					, errorReporter);
 		}
@@ -133,7 +133,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 				, node
 				, elementName
 				, depth + additionalDepth
-				, addStr
+				, additionalString
 				, api
 				, errorReporter
 				, countsOfConstraintElementsInOneConstraint);
@@ -150,7 +150,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countRealConstraintForOneN
 			, usedElements
 			, node, elementName
 			, depth + additionalDepth
-			, addStr
+			, additionalString
 			, api
 			, countsOfConstraintElementsInOneConstraint
 			, errorReporter);
@@ -308,7 +308,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForParent(
 QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForPropertyNode(const Id &constraint
 		, const QString &elementName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter)
 {
@@ -325,7 +325,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForProperty
 			, value
 			, elementName
 			, depth
-			, addStr
+			, additionalString
 			, errorReporter);
 
 	QStringList resBool;
@@ -340,7 +340,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrN
 		, const metaType &type
 		, const QString &elementName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, ErrorReporterInterface &errorReporter
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint)
@@ -360,7 +360,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrN
 						, usedElements
 						, elementName
 						, depth + 1
-						, addStr
+						, additionalString
 						, api
 						, countsOfConstraintElementsInOneConstraint
 						, errorReporter
@@ -371,7 +371,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countConstraintForMultiOrN
 						, usedElements
 						, elementName
 						, depth + 1
-						, addStr
+						, additionalString
 						, api
 						, countsOfConstraintElementsInOneConstraint
 						, errorReporter
@@ -394,7 +394,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr
 		, const metaType &type
 		, const QString &elementName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
@@ -416,7 +416,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr
 							, usedElements
 							, elementName
 							, depth
-							, addStr
+							, additionalString
 							, api
 							, countsOfConstraintElementsInOneConstraint
 							, errorReporter
@@ -427,7 +427,7 @@ QPair<QString, QStringList> GeneratorForNodeElements::countNeighborsElementsByOr
 							, usedElements
 							, elementName
 							, depth
-							, addStr
+							, additionalString
 							, api
 							, countsOfConstraintElementsInOneConstraint
 							, errorReporter);

@@ -28,7 +28,7 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 		, const QString &elementName
 		, const QString &resultName
 		, const int depth
-		, const QString &addStr
+		, const QString &additionalString
 		, const LogicalRepoApi &api
 		, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 		, ErrorReporterInterface &errorReporter)
@@ -47,7 +47,7 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 						, usedElements
 						, elementName
 						, depth
-						, addStr
+						, additionalString
 						, api
 						, countsOfConstraintElementsInOneConstraint
 						, errorReporter);
@@ -57,7 +57,7 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 						, usedElements
 						, elementName
 						, depth
-						, addStr
+						, additionalString
 						, api
 						, countsOfConstraintElementsInOneConstraint
 						, errorReporter);
@@ -68,7 +68,7 @@ QString GeneratorForElements::countRealConstraintForElement(const Id &constraint
 		}
 	}
 
-	resString += additionalCommonPartForConstraint(resBool, resultName, depth, addStr);
+	resString += additionalCommonPartForConstraint(resBool, resultName, depth, additionalString);
 
 	return resString;
 }
@@ -77,12 +77,12 @@ QString GeneratorForElements::additionalCommonPartForConstraint(
 		const QStringList &resBool
 		, const QString &resultName
 		, const int depth
-		, const QString &addStr)
+		, const QString &additionalString)
 {
 	QString resString = "";
 
 	resString += QString("%1	bool %2_%3 = %4;\n")
-			.arg(addStr)
+			.arg(additionalString)
 			.arg(resultName)
 			.arg(depth)
 			.arg(GeneratorForExpressions::conjunctionExpression(resBool));

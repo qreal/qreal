@@ -33,7 +33,7 @@ public:
 			, const QString &elementName
 			, const QString &resultName
 			, const int depth
-			, const QString &addStr
+			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter
@@ -44,7 +44,7 @@ public:
 			, qReal::IdList &usedElements
 			, const QString &elementName
 			, const int depth
-			, const QString &addStr, const qrRepo::LogicalRepoApi &api
+			, const QString &additionalString, const qrRepo::LogicalRepoApi &api
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter
 			, const bool isMultiOr = false
@@ -80,7 +80,7 @@ public:
 	static QPair<QString, QStringList > countConstraintForPropertyNode(qReal::Id const &constraint
 			, const QString &elementName
 			, const int depth
-			, const QString &addStr
+			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
 			);
@@ -91,7 +91,7 @@ public:
 			, const metaType &type
 			, const QString &elementName
 			, const int depth
-			, const QString &addStr
+			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, qReal::ErrorReporterInterface &errorReporter
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint);
@@ -104,7 +104,7 @@ public:
 			, const metaType &type
 			, const QString &elementName
 			, const int depth
-			, const QString &addStr
+			, const QString &additionalString
 			, const qrRepo::LogicalRepoApi &api
 			, QMap<QString, int> &countsOfConstraintElementsInOneConstraint
 			, qReal::ErrorReporterInterface &errorReporter);
