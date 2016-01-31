@@ -48,7 +48,9 @@
                         <contains type="abstractErrorTypeNode"/>
                     </container>
                     <properties>
-                        <property displayedName="Language Name" name="languageName" type="string"/>
+                        <property displayedName="Language Name" name="languageName" type="string">
+				<default>AllLanguages</default>	
+			</property>
                     </properties>
                     <explodesTo/>
                 </logic>
@@ -601,7 +603,9 @@
                         <contains type="constraintsDiagram"/>
                     </container>
                     <properties>
-                        <property displayedName="Metamodel Name" name="metamodelName" type="string"/>
+                        <property displayedName="Metamodel Name" name="metamodelName" type="string">
+				<default>AllMetamodels</default>
+			</property>
                         <property displayedName="Output Dir Path" name="outputDirPath" type="DirectoryPath"/>
                         <property displayedName="Dir Path to QReal" name="pathToQReal" type="DirectoryPath"/>
                         <property displayedName="Build Configuration" name="buildConfiguration" type="buildConfiguration">
