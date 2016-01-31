@@ -919,11 +919,10 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 			mContextMenu.addSeparator();
 		}
 
-		QString str = e->name();
 		if (e->name() == "Table") {
 			mSelectedTableId = e->id();
 			QAction *tableMenuAction = new QAction(this);
-			tableMenuAction->setText("Entity menu");
+			tableMenuAction->setText("Table menu");
 			connect(tableMenuAction, SIGNAL(triggered()), this, SLOT(createTableMenuWidget()), Qt::UniqueConnection);
 			mContextMenu.addAction(tableMenuAction);
 		}

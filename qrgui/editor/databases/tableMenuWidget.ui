@@ -32,12 +32,23 @@
     <widget class="QTableWidget" name="columnDataTable">
      <property name="geometry">
       <rect>
-       <x>30</x>
-       <y>60</y>
+       <x>20</x>
+       <y>70</y>
        <width>401</width>
        <height>192</height>
       </rect>
      </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <column>
+      <property name="text">
+       <string>id</string>
+      </property>
+     </column>
      <column>
       <property name="text">
        <string>name</string>
@@ -45,12 +56,47 @@
      </column>
      <column>
       <property name="text">
-       <string>type</string>
+       <string>datatype</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>id</string>
+       <string>is primary key</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is unique</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>not null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>default</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>with compression</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>with comp</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>auto increment</string>
       </property>
      </column>
     </widget>

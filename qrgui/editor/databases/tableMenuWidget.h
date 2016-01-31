@@ -25,8 +25,24 @@ public slots:
 	void open();
 	void close();
 	void updateColumn(QTableWidgetItem *item);
+	// Fill columnNames depending on the dbms (different set of properties)
+	void setColumnPropertiesForDbms();
 
 private:
+	enum { ElementId
+		 , Name
+		 , DataType
+		 , IsPrimaryKey
+		 , IsUnique
+		 , NotNull
+		 , Null
+		 , Default
+		 , WithCompression
+		 , WithComp
+		 , AutoIncrement };
+
+	QString mDbmsName;
+
 	void fillGeneralTab();
 
 	Ui::TableMenuWidget *mUi;
