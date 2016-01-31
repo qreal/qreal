@@ -17,8 +17,6 @@
 #include <QtCore/QStateMachine>
 #include <QtCore/QTimer>
 
-#include "utils/robotCommunication/tcpRobotCommunicator.h"
-
 using namespace utils::robotCommunication;
 
 Protocol::Protocol(TcpRobotCommunicator &communicator, int timeout)

@@ -51,7 +51,7 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
 	});
-	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError, [&errorReporter](const QString &message) {
+	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError, [this, &errorReporter](const QString &message) {
 		errorReporter.addCritical(tr("Error in checker: %1").arg(message));
 	});
 }

@@ -17,7 +17,6 @@
 #include <QtCore/QState>
 #include <QtCore/QFileInfo>
 
-#include "utils/robotCommunication/tcpRobotCommunicator.h"
 #include "src/robotCommunication/protocol.h"
 
 using namespace utils::robotCommunication;
@@ -43,11 +42,11 @@ RunProgramProtocol::~RunProgramProtocol()
 
 void RunProgramProtocol::run(const QFileInfo &fileToRun)
 {
-	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](auto &communicator) {
+	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](TcpRobotCommunicator &communicator) {
 		communicator.uploadProgram(fileToRun.canonicalFilePath());
 	});
 
-	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](auto &communicator) {
+	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](TcpRobotCommunicator &communicator) {
 		communicator.runProgram(fileToRun.fileName());
 	});
 

@@ -14,6 +14,8 @@
 
 #include "consoleErrorReporter.h"
 
+#include <qrkernel/definitions.h>
+
 using namespace qReal;
 
 void ConsoleErrorReporter::addInformation(const QString &message, const Id &position)
