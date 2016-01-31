@@ -67,8 +67,7 @@ void DatabasesPreferencesPage::browseCodeGenerationFilename()
 
 QString const &DatabasesPreferencesPage::getCodeGenerationFilename() const
 {
-	QString const &str = mUi->codeGenerationFilePath->toPlainText();
-	return str;
+	return mUi->codeGenerationFilePath->toPlainText();
 }
 
 bool DatabasesPreferencesPage::needToOpenFileAfterGeneration() const

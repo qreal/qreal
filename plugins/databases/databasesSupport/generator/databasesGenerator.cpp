@@ -22,8 +22,6 @@ QString const databases = "Databases";
 DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator
 		, DatabasesPreferencesPage const *preferencesPage)
 	: mCurrentDiagram(Id::rootId())
-	, mCodeFileName("code.txt")
-	, mWorkDir("")
 	, mLogicalModelApi(configurator.logicalModelApi())
 	, mGraphicalModelApi(configurator.graphicalModelApi())
 	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
@@ -44,18 +42,6 @@ void DatabasesGenerator::clearPhysicalModel()
 	IdList tableNodes = findNodes("DatabasesPhysicalNode");
 	for (Id const &id : tableNodes) {
 		mLogicalModelApi.removeElement(id);
-	}
-}
-
-void DatabasesGenerator::setCodeFileName(QString const &name)
-{
-	mCodeFileName = name;
-}
-
-void DatabasesGenerator::setWorkDir(QString const &path)
-{
-	if (!path.isEmpty()) {
-		mWorkDir = path + "/";
 	}
 }
 
@@ -556,9 +542,16 @@ void DatabasesGenerator::generateSQLCode()
 {
 	mErrorReporter->clear();
 
-	codeFile.setFileName(mWorkDir + mCodeFileName);
-	if (!codeFile.open(QIODevice::WriteOnly))
+	QString const &codeFileName = mPreferencesPage->getCodeGenerationFilename();
+	if (codeFileName.isEmpty()) {
+		mErrorReporter->addError(QString("Code file name is empty. Check preferences"));
 		return;
+	}
+	codeFile.setFileName(codeFileName);
+	if (!codeFile.open(QIODevice::WriteOnly)) {
+		mErrorReporter->addError(QString("File didn't open"));
+		return;
+	}
 
 	if (mDbms == "sqlServer2008")
 		generateWithSqlServer2008();
@@ -572,10 +565,22 @@ void DatabasesGenerator::generateSQLCode()
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
 
+	QString codeFileNameForEditor;
+	int strSize = codeFileName.size();
+	for (int i = 0; i < strSize; i++) {
+		QChar ch = codeFileName.at(i);
+		if (ch != QChar('/')) {
+			codeFileNameForEditor.append(ch);
+		}
+		else {
+			codeFileNameForEditor.append(QString("\\"));
+		}
+	}
 	if (mPreferencesPage->needToOpenFileAfterGeneration()) {
 		// Windows
 		QProcess *proc = new QProcess();
 		proc->start("explorer C:\\Coursework\\qreal\\bin\\debug\\code.txt");
+		// proc->start("see /home/alex/Report.doc");
 	}
 
 }

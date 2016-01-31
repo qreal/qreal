@@ -99,10 +99,6 @@ private:
 			, IdList setTables
 			, Id const &logicalDiagramId);
 
-
-	void setCodeFileName(QString const &name);
-	void setWorkDir(QString const &path);
-
 	// Finds element of diagram with specified name
 	IdList findNodes(QString const &name);
 	QVariant getProperty(Id const &id, QString const &propertyName);
@@ -127,8 +123,6 @@ private:
 	qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	Id mCurrentDiagram;
 	IdList mPassedElements;
-	QString mCodeFileName;
-	QString mWorkDir;
 	QFile codeFile;
 	QString mDbms;
 	int **mRelMatrix; // Relationship matrix
