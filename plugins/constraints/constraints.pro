@@ -15,7 +15,7 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	constraintsMetamodel \
+	constraintsEditor \
 	constraintsGenerator \
 	constraintsAllMetamodels \
 
