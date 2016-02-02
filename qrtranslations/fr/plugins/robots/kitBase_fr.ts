@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>QObject</name>
     <message>
@@ -12,17 +12,17 @@
 <context>
     <name>kitBase::DevicesConfigurationWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="101"/>
         <source>%1:</source>
         <translation>%1 :</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="101"/>
         <source>Port %1:</source>
         <translation>Port %1 :</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="104"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="112"/>
         <source>Unused</source>
         <translation>Pas utilisé</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>kitBase::blocksBase::common::WaitForButtonBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForButtonBlock.cpp" line="36"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForButtonBlock.cpp" line="37"/>
         <source>Incorrect button port %1</source>
         <translation>Le port de bouton %1 n&apos;est pas correct</translation>
     </message>
@@ -71,7 +71,7 @@
 <context>
     <name>kitBase::blocksBase::common::WaitForSensorBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForSensorBlock.cpp" line="43"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForSensorBlock.cpp" line="47"/>
         <source>%1 is not configured on port %2</source>
         <translation>%1 n&apos;est pas configuré sur le port %2</translation>
     </message>
@@ -181,11 +181,27 @@
     </message>
 </context>
 <context>
+    <name>kitBase::robotModel::robotParts::Random</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/random.h" line="30"/>
+        <source>Random</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>kitBase::robotModel::robotParts::RangeSensor</name>
     <message>
         <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/rangeSensor.h" line="30"/>
         <source>Range sensor</source>
         <translation>Capteur de distance</translation>
+    </message>
+</context>
+<context>
+    <name>kitBase::robotModel::robotParts::Shell</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/shell.h" line="28"/>
+        <source>Shell</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

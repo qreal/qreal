@@ -12,85 +12,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <utils/robotCommunication/robotCommunicationException.h>
+#include <qrkernel/logging.h>
+#include <qrkernel/settingsManager.h>
 #include "macFantom.h"
-
-#include <QtCore/QObject>
+#include "fantomMethods.h"
+#include "fantom.h"
 
 using namespace nxt::communication;
 
-bool Fantom::isAvailable()
+MacFantom::MacFantom()
 {
-	return false;
+	mFantomLibrary.setFileName("/Library/Frameworks/Fantom.framework/Versions/1/Fantom");
+	if (!mFantomLibrary.load()) {
+		QLOG_INFO() << mFantomLibrary.errorString();
+	}
+	if (mFantomLibrary.isLoaded()) {
+		mAvailability = Status::available;
+	} else {
+		mAvailability = mFantomLibrary.errorString().contains("no matching architecture in universal wrapper")
+				? Status::x64 : Status::notFound;
+	}
 }
 
-unsigned long Fantom::nFANTOM100_createNXT(char resString[], int status, unsigned char checkFVersion)
+MacFantom::Status MacFantom::availability() const
 {
-	Q_UNUSED(resString);
-	Q_UNUSED(status);
-	Q_UNUSED(checkFVersion);
-	return 0;
+	return mAvailability;
 }
 
-void Fantom::nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle
-		, bool requireResponse
-		, const char *inputBufferPtr
-		, int inputBufferSize
-		, char *outputBufferPtr
-		, int outputBufferSize
-		, int &status)
+bool MacFantom::isAvailable() const
 {
-	Q_UNUSED(nxtHandle);
-	Q_UNUSED(requireResponse);
-	Q_UNUSED(inputBufferPtr);
-	Q_UNUSED(inputBufferSize);
-	Q_UNUSED(outputBufferPtr);
-	Q_UNUSED(outputBufferSize);
-	Q_UNUSED(status);
+	return mFantomLibrary.isLoaded();
 }
 
-unsigned long Fantom::nFANTOM100_createNXTIterator(unsigned char searchBluetooth
-		, unsigned long bluetoothSearchTimeout, int &status)
+void MacFantom::checkConsistency()
 {
-	Q_UNUSED(searchBluetooth);
-	Q_UNUSED(bluetoothSearchTimeout);
-	Q_UNUSED(status);
-	return 0;
-}
+	if (availability() == MacFantom::Status::x64) {
+		const QString errorMessage = tr("Usb connection to robot is impossible. "
+				"Lego doesn't have Fantom Driver for 64-bit Mac. "
+				"You will only be able to connect to NXT via Bluetooth.");
+		emit errorOccured(errorMessage);
+		return;
+	}
 
-void Fantom::nFANTOM100_iNXTIterator_getName(unsigned long NXTIterHandle, char resString[], int &status)
-{
-	Q_UNUSED(NXTIterHandle);
-	Q_UNUSED(resString);
-	Q_UNUSED(status);
-}
-
-unsigned long Fantom::nFANTOM100_iNXTIterator_getNXT(unsigned long nxtIterHandle, int &status)
-{
-	Q_UNUSED(nxtIterHandle);
-	Q_UNUSED(status);
-	return 0;
-}
-
-void Fantom::nFANTOM100_destroyNXTIterator(unsigned long nxtIteratorHandle, int &status)
-{
-	Q_UNUSED(nxtIteratorHandle);
-	Q_UNUSED(status);
-}
-
-void Fantom::nFANTOM100_iNXTIterator_advance(unsigned long NXTIterHandle, int &status)
-{
-	Q_UNUSED(NXTIterHandle);
-	Q_UNUSED(status);
-}
-
-void Fantom::nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(char resString[], int &status)
-{
-	Q_UNUSED(resString);
-	Q_UNUSED(status);
-}
-
-void Fantom::nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status)
-{
-	Q_UNUSED(nxtHandle);
-	Q_UNUSED(status);
+	if (availability() == MacFantom::Status::notFound) {
+		Fantom::checkConsistency();
+	}
 }

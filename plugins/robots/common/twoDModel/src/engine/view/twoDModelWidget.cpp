@@ -44,6 +44,8 @@
 #include "scene/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/curveItem.h"
+#include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 
@@ -71,7 +73,10 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	, mActions(new ActionsBox)
 	, mModel(model)
 	, mDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
+	, mNullDisplay(new twoDModel::engine::NullTwoDModelDisplayWidget())
 	, mCurrentSpeed(defaultSpeedFactorIndex)
+	, mNoneCursorType(noDrag)
+	, mCursorType(noDrag)
 {
 	setWindowIcon(QIcon(":/icons/2d-model.svg"));
 
@@ -158,6 +163,7 @@ void TwoDModelWidget::initWidget()
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, Qt::NoBrush);
 	});
+	connect(mColorFieldItemPopup, &ColorItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;
@@ -191,16 +197,22 @@ void TwoDModelWidget::initPalette()
 {
 	QAction * const wallTool = items::WallItem::wallTool();
 	QAction * const lineTool = items::LineItem::lineTool();
+	QAction * const bezierTool = items::CurveItem::curveTool();
+	QAction * const rectangleTool = items::RectangleItem::rectangleTool();
 	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
 	QAction * const stylusTool = items::StylusItem::stylusTool();
 
 	mUi->palette->registerTool(wallTool);
 	mUi->palette->registerTool(lineTool);
+	mUi->palette->registerTool(bezierTool);
+	mUi->palette->registerTool(rectangleTool);
 	mUi->palette->registerTool(ellipseTool);
 	mUi->palette->registerTool(stylusTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
+	connect(bezierTool, &QAction::triggered, mScene, &TwoDModelScene::addBezier);
+	connect(rectangleTool, &QAction::triggered, mScene, &TwoDModelScene::addRectangle);
 	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
 	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
@@ -254,6 +266,9 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->initialStateButton, &QAbstractButton::clicked, this, &TwoDModelWidget::returnToStartMarker);
 	connect(mUi->toggleDetailsButton, &QAbstractButton::clicked, this, &TwoDModelWidget::toggleDetailsVisibility);
 
+	connect(mUi->trainingModeButton, &QAbstractButton::toggled, this, &TwoDModelWidget::trainingModeChanged);
+	mUi->trainingModeButton->setChecked(false);
+
 	initRunStopButtons();
 }
 
@@ -298,9 +313,18 @@ void TwoDModelWidget::unsetPortsGroupBoxAndWheelComboBoxes()
 
 void TwoDModelWidget::returnToStartMarker()
 {
+	mModel.worldModel().clearRobotTrace();
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
 	}
+}
+
+void TwoDModelWidget::trainingModeChanged(bool enabled)
+{
+	mUi->trainingModeButton->setToolTip(enabled
+			? tr("Training mode: solution will not be checked")
+			: tr("Checking mode: solution will be checked, errors will be reported"));
+	mModel.setConstraintsEnabled(!enabled);
 }
 
 void TwoDModelWidget::keyPressEvent(QKeyEvent *event)
@@ -571,6 +595,7 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 	updateWheelComboBoxes();
+	mUi->trainingModeButton->setVisible(mModel.hasConstraints());
 }
 
 Model &TwoDModelWidget::model() const
@@ -891,7 +916,6 @@ void TwoDModelWidget::setSelectedRobotItem(RobotItem *robotItem)
 	updateWheelComboBoxes();
 
 	mUi->detailsTab->setDisplay(nullptr);
-	delete mDisplay;
 	mDisplay = mSelectedRobotItem->robotModel().info().displayWidget();
 	mDisplay->setParent(this);
 	mDisplay->setMinimumSize(displaySize);
@@ -915,8 +939,7 @@ void TwoDModelWidget::unsetSelectedRobotItem()
 	}
 
 	mUi->detailsTab->setDisplay(nullptr);
-	delete mDisplay;
-	mDisplay = new twoDModel::engine::NullTwoDModelDisplayWidget();
+	mDisplay = mNullDisplay;
 	mUi->detailsTab->setDisplay(mDisplay);
 }
 

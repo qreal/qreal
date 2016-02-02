@@ -20,8 +20,8 @@ using namespace qrTest;
 using namespace qrRepo;
 using namespace qReal;
 
-Id const logicalElement("editor", "diagram", "element", "id");
-Id const graphicalElement("editor", "diagram", "element", "graphicalId");
+const Id logicalElement("editor", "diagram", "element", "id");
+const Id graphicalElement("editor", "diagram", "element", "graphicalId");
 
 void RepoApiTest::SetUp()
 {

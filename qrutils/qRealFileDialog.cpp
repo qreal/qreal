@@ -41,15 +41,13 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 		, const QString &caption
 		, const QString &dir
 		, const QString &filter
+		, const QString &defaultFile
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
 	if (qReal::SettingsManager::value("guiTest").toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
-	}
-
-	const QString lastDir = lastSelectedDirectory(id, dir);
-	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
+	}	const QString lastDir = lastSelectedDirectory(id, dir) + "/" + defaultFile;	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
 	return result;
 }

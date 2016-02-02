@@ -138,6 +138,8 @@ private slots:
 
 	void returnToStartMarker();
 
+	void trainingModeChanged(bool enabled);
+
 private:
 	enum CursorType
 	{
@@ -214,6 +216,7 @@ private:
 	model::Model &mModel;
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
+	engine::TwoDModelDisplayWidget *mNullDisplay = nullptr;
 
 	int mCurrentSpeed;
 

@@ -42,7 +42,10 @@ enum LinkShape
 namespace qReal {
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
+
+/// @todo: wt*?!
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
+
 typedef QPair<bool, qReal::Id> PossibleEdgeType;
 typedef QPair<qReal::Id, qReal::Id> ElementPair;
 
@@ -88,8 +91,6 @@ public:
 	virtual bool createChildrenFromMenu() const = 0;
 
 	virtual QList<qreal> border() const = 0;
-
-	virtual QStringList bonusContextMenuFields() const = 0;
 
 	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
 	virtual void updateRendererContent(const QString &shape)

@@ -16,6 +16,8 @@
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QMenu>
+#include <QtGui/QTextDocument>
 #include <QtGui/QClipboard>
 
 #include "mainWindow/mainWindow.h"

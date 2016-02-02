@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
+#include <QtCore/QThread>
 #include <QtCore/QSettings>
 #include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
@@ -79,7 +80,7 @@ protected:
 
 private:
 #ifdef Q_OS_WIN
-	/// This class performs win8 drag manager hack for workarround of
+	/// This class performs win8 drag manager hack for workaround of
 	/// https://github.com/qreal/qreal/issues/1014
 	class HackTouchDragThread : public QThread
 	{

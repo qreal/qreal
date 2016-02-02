@@ -45,6 +45,15 @@ HEADERS += \
 	$$PWD/logicalRepoApi.h \
 	$$PWD/repoControlInterface.h \
 	$$PWD/commonRepoApi.h \
+	$$PWD/exceptions/corruptSavefileException.h \
+	$$PWD/exceptions/couldNotCreateDestinationFolderException.h \
+	$$PWD/exceptions/couldNotCreateOutFileException.h \
+	$$PWD/exceptions/qrrepoException.h \
+	$$PWD/exceptions/saveFileNotFoundException.h \
+	$$PWD/exceptions/saveFileNotReadableException.h \
+	$$PWD/exceptions/sourceFolderNotFoundException.h \
+	$$PWD/exceptions/couldNotOpenDestinationFileException.h \
+	$$PWD/exceptions/couldNotOpenInputFileException.h \
 
 DEFINES += QRREPO_LIBRARY
 

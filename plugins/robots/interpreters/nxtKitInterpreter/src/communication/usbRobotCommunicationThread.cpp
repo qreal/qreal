@@ -19,9 +19,9 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
-#include <utils/tracer.h>
 
 #include "commandConstants.h"
+#include "fantom.h"
 
 using namespace nxt::communication;
 
@@ -30,10 +30,12 @@ const unsigned packetHeaderSize = 3;
 UsbRobotCommunicationThread::UsbRobotCommunicationThread()
 	: mActive(false)
 	, mNXTHandle(0)
+	, mFantom(Fantom::correctFantom())
 	, mKeepAliveTimer(new QTimer(this))
 	, mStopped(false)
 {
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
+	QObject::connect(mFantom, &Fantom::errorOccured, this, &UsbRobotCommunicationThread::errorOccured);
 }
 
 UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
@@ -45,12 +47,13 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 
 bool UsbRobotCommunicationThread::isOpen()
 {
-	return mActive && mFantom.isAvailable();
+	return mActive && mFantom->isAvailable();
+	return false;
 }
 
 void UsbRobotCommunicationThread::connect()
 {
-	if (!mFantom.isAvailable()) {
+	if (!(mFantom->isAvailable())) {
 		return;
 	}
 
@@ -60,10 +63,10 @@ void UsbRobotCommunicationThread::connect()
 	if (!isOpen()) {
 		mActive = false;
 		int status = 0;
-		nxtIterator = mFantom.nFANTOM100_createNXTIterator(false, 30, status);
+		nxtIterator = mFantom->nFANTOM100_createNXTIterator(false, 30, status);
 		while (status == kStatusNoError) {
 			int status2 = 0;
-			mFantom.nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
+			mFantom->nFANTOM100_iNXTIterator_getName(nxtIterator, resNamePC, status2);
 			QString resName = QString(resNamePC);
 			if (resName.toUpper().contains("USB")) {
 				break;
@@ -73,10 +76,10 @@ void UsbRobotCommunicationThread::connect()
 			}
 		}
 		if (status == kStatusNoError) {
-			mNXTHandle = mFantom.nFANTOM100_iNXTIterator_getNXT(nxtIterator, status);
+			mNXTHandle = mFantom->nFANTOM100_iNXTIterator_getNXT(nxtIterator, status);
 			mActive = status == kStatusNoError;
 		}
-		mFantom.nFANTOM100_destroyNXTIterator(nxtIterator, status);
+		mFantom->nFANTOM100_destroyNXTIterator(nxtIterator, status);
 	}
 	emit connected(mActive, QString());
 
@@ -101,8 +104,6 @@ void UsbRobotCommunicationThread::send(QObject *addressee
 void UsbRobotCommunicationThread::send(const QByteArray &buffer
 		, const unsigned responseSize, QByteArray &outputBuffer)
 {
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::send", "Sending:");
-
 	int status = 0;
 	QByteArray newBuffer;
 	for (int i = packetHeaderSize; i < buffer.length(); i++) {
@@ -110,7 +111,8 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer
 	}
 
 	if (!isResponseNeeded(buffer)) {
-		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer, newBuffer.length(), nullptr, 0, status);
+		mFantom->nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, false, newBuffer
+				, newBuffer.length(), nullptr, 0, status);
 	} else {
 		const unsigned temporaryOutputBufferSize = 200;
 		char *outputBufferPtr2 = new char[temporaryOutputBufferSize];
@@ -130,10 +132,10 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer
 			command[3] = enums::commandCode::RESETINPUTSCALEDVALUE;
 			command[4] = port;
 
-			mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
+			mFantom->nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, command, 2, outputBufferPtr2, 2, status);
 		}
 
-		mFantom.nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer
+		mFantom->nFANTOM100_iNXT_sendDirectCommand(mNXTHandle, true, newBuffer
 				, newBuffer.length(), outputBufferPtr2, responseSize - 3, status);
 
 		outputBuffer[0] = responseSize - 2;
@@ -143,7 +145,6 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer
 			outputBuffer[i + packetHeaderSize] = outputBufferPtr2[i];
 		}
 		delete outputBufferPtr2;
-		debugPrint(outputBuffer, false);
 	}
 }
 
@@ -154,13 +155,13 @@ void UsbRobotCommunicationThread::reconnect()
 
 void UsbRobotCommunicationThread::disconnect()
 {
-	if (!mFantom.isAvailable()) {
+	if (!(mFantom->isAvailable())) {
 		return;
 	}
 
 	mKeepAliveTimer->stop();
 	int status = 0;
-	mFantom.nFANTOM100_destroyNXT(mNXTHandle, status);
+	mFantom->nFANTOM100_destroyNXT(mNXTHandle, status);
 	mNXTHandle = 0;
 	mActive = false;
 	emit disconnected();
@@ -169,17 +170,6 @@ void UsbRobotCommunicationThread::disconnect()
 void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 {
 	mStopped = !allow;
-}
-
-void UsbRobotCommunicationThread::debugPrint(const QByteArray &buffer, bool out)
-{
-	QString tmp = "";
-	for (int i = 0; i < buffer.length(); i++) {
-		tmp += QString::number(static_cast<unsigned char>(buffer[i]));
-		tmp += " ";
-	}
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "UsbRobotCommunicationThread::debugPrint"
-			, (out ? ">" : "<") + tmp);
 }
 
 void UsbRobotCommunicationThread::checkForConnection()
@@ -207,24 +197,5 @@ bool UsbRobotCommunicationThread::isResponseNeeded(const QByteArray &buffer)
 
 void UsbRobotCommunicationThread::checkConsistency()
 {
-	const QString selectedKit = qReal::SettingsManager::value("SelectedRobotKit").toString();
-	if (selectedKit != "nxtKit") {
-		return;
-	}
-
-	const QString selectedRobotModel = qReal::SettingsManager::value("SelectedModelFor" + selectedKit).toString();
-	if (selectedRobotModel != "NxtUsbRealRobotModel") {
-		return;
-	}
-
-	if (!mFantom.isAvailable()) {
-		const QString fantomDownloadLink = qReal::SettingsManager::value("fantomDownloadLink").toString();
-		QString errorMessage = tr("Fantom Driver is unavailable. Usb connection to robot is impossible.");
-		if (!fantomDownloadLink.isEmpty()) {
-			errorMessage += tr(" You can download Fantom Driver on <a href='%1'>Lego website</a>")
-					.arg(fantomDownloadLink);
-		}
-
-		emit errorOccured(errorMessage);
-	}
+	mFantom->checkConsistency();
 }

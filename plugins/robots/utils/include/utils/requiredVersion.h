@@ -18,6 +18,6 @@
 
 namespace utils {
 
-const QString requiredVersion = "3.1.1";
+const QString requiredVersion = "3.1.3";
 
 }

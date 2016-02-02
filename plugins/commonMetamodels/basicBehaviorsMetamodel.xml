@@ -14,7 +14,7 @@
 			<node name="Behavior" displayedName="Behavior">
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::Class"/>
+						<parent parentName="KernelDiagram::Class" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="text" name="body"/>
@@ -25,7 +25,7 @@
 			<node name="BehavioredClassifier" displayedName="Behaviored Classifier">
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::Classifier"/>
+						<parent parentName="KernelDiagram::Classifier" overrides = "all"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -59,7 +59,7 @@
 			<node name="BehavioralFeature" displayedName="Behavioral Feature">
 				<logic>
 					<generalizations>
-						<parent parentName="KernelDiagram::BehavioralFeature"/>
+						<parent parentName="KernelDiagram::BehavioralFeature" overrides = "all"/>
 					</generalizations>
 					<properties>
 						<property type="CallConcurrencyKind" name="concurrency">

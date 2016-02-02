@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #include "sonarSensor.h"
-#include <utils/tracer.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -58,8 +57,7 @@ void SonarSensor::doConfiguration()
 void SonarSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
-				, "Something is wrong, response is empty");
+		/// @todo: log trace error?
 	} else if (reading.size() == 1 && reading[0] == 0) {
 		// Sensor configured, now we can send actual request.
 		QByteArray command(2, 0);
@@ -67,11 +65,8 @@ void SonarSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 		command[1] = enums::sonarRegisters::RESULT_1;
 		sendCommand(command, 1);
 	} else if (reading.size() == 1 && reading[0] != 0) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
-				, "Reading malformed: " + QString::number(static_cast<unsigned int>(reading[0])));
+		/// @todo: log trace error?
 	} else {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
-				, "Data received: " + QString::number(0xff & reading[1]) + " cm");
 		mImplementation.setState(NxtInputDevice::idle);
 		emit newData(0xff & reading[1]);
 	}

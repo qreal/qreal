@@ -14,8 +14,6 @@
 
 #include "repository.h"
 
-#include <QtCore/QDebug>
-
 #include <qrkernel/exception/exception.h>
 #include "singleXmlSerializer.h"
 

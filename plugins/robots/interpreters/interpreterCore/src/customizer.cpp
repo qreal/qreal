@@ -33,13 +33,13 @@ QIcon Customizer::applicationIcon() const
 
 QImage Customizer::applicationLogo() const
 {
-	return QImage(":/icons/splashscreen.png");
+	return QImage(":/icons/TRIKStudioLogo.png");
 }
 
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.1.1";
+	return "3.1.3";
 }
 
 QString Customizer::aboutText() const
@@ -49,7 +49,7 @@ QString Customizer::aboutText() const
 
 QString Customizer::examplesDirectory() const
 {
-	return qReal::PlatformInfo::applicationDirPath() + "/examples";
+	return qReal::PlatformInfo::invariantSettingsPath("pathToExamples");
 }
 
 QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() const

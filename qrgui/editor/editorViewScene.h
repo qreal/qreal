@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,16 +24,19 @@
 #include <qrgui/mouseGestures/mouseMovementManagerInterface.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
-#include "qrgui/editor/copyPaste/clipboardHandler.h"
+#include "qrgui/editor/private/clipboardHandler.h"
 #include "qrgui/editor/private/exploserView.h"
 
 namespace qReal {
 
-const int arrowMoveOffset = 5;
-
 namespace commands {
-class CreateElementCommand;
+class CreateElementsCommand;
 }
+
+namespace gui {
+namespace editor {
+
+const int arrowMoveOffset = 5;
 
 class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 {
@@ -50,33 +53,30 @@ public:
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, bool canBeConnected, commands::CreateElementCommand **elementCommand = 0);
+			, bool canBeConnected, qReal::commands::CreateElementsCommand **elementCommand = 0);
+
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
-	virtual qReal::Id createElement(const QString &
+	virtual Id createElement(const QString &idString
 			, const QPointF &scenePos
-			, bool searchForParents = true
-			, commands::CreateElementCommand **createCommand = 0
-			, bool executeImmediately = true
-			, const QPointF &shiftToParent = QPointF()
-			, const QString &explosionTargetUuid = QString());
+			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
+			, bool executeImmediately = true);
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
-			, bool searchForParents = true
-			, commands::CreateElementCommand **createCommandPointer = 0
+			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
 			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
 	// including the scene (with dependencies) there
-	virtual Element *getElem(const qReal::Id &id) const;
+	virtual Element *getElem(const Id &id) const;
 	Element *findElemAt(const QPointF &position) const;
 	NodeElement *findNodeAt(const QPointF &position) const;
 
-	virtual qReal::Id rootItemId() const;
+	virtual Id rootItemId() const;
 	/// @todo: remove theese getters
 	const models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
-	const SceneCustomizer &customizer() const;
+	const qReal::gui::editor::SceneCustomizer &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -88,31 +88,29 @@ public:
 	qreal realIndexGrid();
 	void setRealIndexGrid(qreal newIndexGrid);
 
-	bool canBeContainedBy(const qReal::Id &container, const qReal::Id &candidate) const;
+	bool canBeContainedBy(const Id &container, const Id &candidate) const;
 
 	Element *lastCreatedFromLinker() const;
 
 	/// Removes items selected by user with undo possibility.
 	void deleteSelectedItems();
 
-	void highlight(const qReal::Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
-	void dehighlight(const qReal::Id &graphicalId);
+	void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
+	void dehighlight(const Id &graphicalId);
 	void dehighlight();
 
-	QPointF getMousePos() const;
 	static QGraphicsRectItem *getPlaceholder();
 	NodeElement *findNewParent(QPointF newParentInnerPoint, NodeElement *node);
 
-	void createSingleElement(const Id &id, const QString &name
-			, bool isNode, const QPointF &position
-			, const Id &parentId, bool isFromLogicalModel
-			, const Id &explosionTarget = Id()
-			, commands::CreateElementCommand **createCommandPointer = nullptr
+	void createSingleElement(const ElementInfo &element
+			, qReal::commands::CreateElementsCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
 	EdgeElement *edgeForInsertion(const QPointF &scenePos);
+
 	void resolveOverlaps(NodeElement* node, const QPointF &scenePos, const QPointF &shift
-			, QMap<qReal::Id, QPointF> &shifting) const;
+			, QMap<Id, QPointF> &shifting) const;
+
 	void returnElementsToOldPositions(QMap<Id, QPointF> const &shifting) const;
 
 	QList<NodeElement*> getCloseNodes(NodeElement* node) const;
@@ -120,10 +118,8 @@ public:
 	void reConnectLink(EdgeElement * edgeElem);
 	void arrangeNodeLinks(NodeElement* node) const;
 
-	NodeElement* getNodeById(const qReal::Id &itemId) const;
-	EdgeElement* getEdgeById(const qReal::Id &itemId) const;
-
-	void itemSelectUpdate();
+	NodeElement* getNodeById(const Id &itemId) const;
+	EdgeElement* getEdgeById(const Id &itemId) const;
 
 	/// update (for a beauty) all edges when tab is opening
 	void initNodes();
@@ -145,7 +141,7 @@ public:
 	void enableMouseGestures(bool enabled);
 
 public slots:
-	qReal::Id createElement(const QString &type);
+	Id createElement(const QString &type);
 
 	void cut();
 	void copy();
@@ -179,9 +175,6 @@ signals:
 		, const EditorManagerInterface *editorManagerProxy
 		, bool useTypedPorts);
 
-	/// Emitted a set of selected editor elements has changed.
-	void sceneSelectionChanged(const QList<Element *> &elements);
-
 protected:
 	void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
 	void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
@@ -202,22 +195,21 @@ protected:
 	virtual void drawBackground(QPainter *painter, const QRectF &rect);
 
 private slots:
-	void createEdge(const QString &id);
+	void createEdge(const Id &id);
 
 	/// Creates an object on a diagram by currently drawn mouse gesture. Stops gesture timer.
 	void getObjectByGesture();
 	/// Updates repository after the move. Controled by the timer.
 	void updateMovedElements();
 
-	void onSelectionChanged();
 	void deselectLabels();
 
 private:
-	void deleteElements(IdList &idsToDelete);
+	void deleteElements(const IdList &idsToDelete);
 
 	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
 	void drawGesture();
-	void createEdgeMenu(QList<QString> const &ids);
+	void createEdgeMenu(const QList<Id> &ids);
 
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene
 	/// (to keep ability of scene rect to grow automatically)
@@ -237,6 +229,11 @@ private:
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
 
+	void createElement(const ElementInfo &elementInfo
+			, const QPointF &scenePos
+			, qReal::commands::CreateElementsCommand **createCommandPointer
+			, bool executeImmediately);
+
 	const models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
@@ -244,7 +241,9 @@ private:
 	const Id mRootId;
 
 	Id mLastCreatedFromLinker;
-	commands::CreateElementCommand *mLastCreatedFromLinkerCommand;
+
+	/// Does not have ownership.
+	qReal::commands::CreateElementsCommand *mLastCreatedFromLinkerCommand;
 
 	ClipboardHandler mClipboardHandler;
 
@@ -262,7 +261,6 @@ private:
 
 	QList<QAction *> mEditorActions;
 
-	QPointF mCurrentMousePos;
 	QPointF mCreatePoint;
 
 	QScopedPointer<gestures::MouseMovementManagerInterface> mMouseMovementManager;
@@ -283,10 +281,6 @@ private:
 	QGraphicsRectItem *mTopLeftCorner;
 	QGraphicsRectItem *mBottomRightCorner;
 
-	/** @brief list of selected items for additional selection */
-	QList<QGraphicsItem* > mSelectList;
-
-	bool mIsSelectEvent;
 	bool mMouseGesturesEnabled;
 
 	QMenu mContextMenu;
@@ -299,4 +293,6 @@ private:
 	QAction mActionPasteReference;
 };
 
+}
+}
 }

@@ -14,7 +14,7 @@
 
 #include "arrangeLinksCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 ArrangeLinksCommand::ArrangeLinksCommand(const EditorViewScene *scene
 		, const Id &id, bool needAdjusting)
@@ -37,6 +37,7 @@ bool ArrangeLinksCommand::execute()
 	if (!ElementCommand::execute()) {
 		return false;
 	}
+
 	arrange();
 	return true;
 }
@@ -46,6 +47,7 @@ bool ArrangeLinksCommand::restoreState()
 	if (!ElementCommand::restoreState()) {
 		return false;
 	}
+
 	arrange();
 	return true;
 }
@@ -57,12 +59,14 @@ void ArrangeLinksCommand::arrange()
 	if (node) {
 		arrange(node);
 	}
+
 	if (edge) {
 		NodeElement *src = edge->src();
 		NodeElement *dst = edge->dst();
 		if (src) {
 			arrange(src);
 		}
+
 		if (dst) {
 			arrange(dst);
 		}

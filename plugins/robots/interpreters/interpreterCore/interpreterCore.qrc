@@ -3,7 +3,7 @@
         <file>interpreterCoreDefaultSettings.ini</file>
         <file>icons/kroki.png</file>
         <file>icons/preferences/robot.svg</file>
-        <file>icons/robot.png</file>
+        <file>icons/nxt_robot.png</file>
         <file>icons/beepRobot.png</file>
         <file>icons/2d_clear.png</file>
         <file>icons/2d_clear_floor.svg</file>
@@ -20,11 +20,14 @@
         <file>icons/2d_multiselection.png</file>
         <file>icons/2d_open.png</file>
         <file>icons/2d_ruler.png</file>
+        <file>icons/2d_rectangle.svg</file>
+        <file>icons/2d_bezier.svg</file>
         <file>icons/2d_save.png</file>
         <file>icons/2d_target.png</file>
         <file>icons/2d_robot_back.png</file>
         <file>icons/2d_plus.svg</file>
         <file>icons/2d_minus.svg</file>
+        <file>icons/2d_training.svg</file>
         <file>icons/sensors/2d_light.png</file>
         <file>icons/sensors/2d_sonar.png</file>
         <file>icons/sensors/2d_touch.png</file>
@@ -56,5 +59,6 @@
         <file>icons/main_tabbar_edit.svg</file>
         <file>icons/main_tabbar_debug.svg</file>
         <file>icons/home.svg</file>
+        <file>icons/TRIKStudioLogo.png</file>
     </qresource>
 </RCC>

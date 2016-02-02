@@ -183,19 +183,18 @@
         <translation type="vanished">Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели слева.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="58"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="64"/>
         <source>Device on port %1 is not configured. Please select it on the &quot;Configure devices&quot; panel on the right-hand side.</source>
         <translation>Сенсор на порту %1 не сконфигурирован. Выберите его тип на панели &quot;Настройки сенсоров&quot; справа.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="62"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="68"/>
         <source>/* ERROR: SELECT DEVICE TYPE */</source>
         <translation>/* ОШИБКА: ВЫБЕРИТЕ ТИП СЕНСОРА */</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/portNameConverter.cpp" line="45"/>
         <source>Port %1 is unknown. It will be generated as-is.</source>
-        <translation>Порт %1 неизвестен системе. Он будет сгенерирован в код в таком виде.</translation>
+        <translation type="vanished">Порт %1 неизвестен системе. Он будет сгенерирован в код в таком виде.</translation>
     </message>
 </context>
 <context>

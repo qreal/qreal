@@ -25,7 +25,10 @@
 
 #include <qrutils/interpreter/blockInterface.h>
 #include <qrutils/interpreter/blocksTableInterface.h>
+#include <qrutils/interpreter/stopReason.h>
 #include <qrutils/utilsDeclSpec.h>
+
+class QTimer;
 
 namespace qReal {
 namespace interpretation {
@@ -67,8 +70,8 @@ public:
 	/// Starts interpretation process starting from the block specified in one of the constructors.
 	void interpret();
 
-	/// Stops interpretation.
-	void stop();
+	/// Stops interpretation. Optionally reason may be specified.
+	void stop(qReal::interpretation::StopReason reason = qReal::interpretation::StopReason::finised);
 
 	/// Inserts a message to a message queue.
 	void newMessage(const QString &message);
@@ -82,7 +85,7 @@ public:
 
 signals:
 	/// Emitted when interpretation process was terminated (correctly or due to errors).
-	void stopped();
+	void stopped(qReal::interpretation::StopReason reason);
 
 	/// Emitted when one of the blocks interpreted by this thread requested new thread.
 	void newThread(const qReal::Id &startBlockId, const QString &threadId);

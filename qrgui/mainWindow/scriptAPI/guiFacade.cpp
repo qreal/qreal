@@ -24,7 +24,8 @@
 
 #include "qrgui/mainWindow/mainWindow.h"
 #include "qrgui/mainWindow/palette/draggableElement.h"
-
+#include <qrgui/editor/propertyEditorView.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
 using namespace qReal;
 using namespace gui;
 
@@ -112,7 +113,7 @@ QWidget *GuiFacade::mainWindow() const
 
 QWidget *GuiFacade::propertyEditor() const
 {
-	const PropertyEditorView * const propertyEditor = mMainWindow.propertyEditor();
+	const qReal::gui::editor::PropertyEditorView * const propertyEditor = mMainWindow.propertyEditor();
 	return propertyEditor->
 			findChild<QtTreePropertyBrowser *>()->
 			findChild<QTreeWidget *>()->viewport();

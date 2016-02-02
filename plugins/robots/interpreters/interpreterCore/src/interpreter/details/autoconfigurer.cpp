@@ -18,7 +18,6 @@
 
 #include <kitBase/blocksBase/robotsBlock.h>
 #include <kitBase/robotModel/robotModelInterface.h>
-#include <utils/tracer.h>
 
 using namespace interpreterCore::interpreter::details;
 using namespace qReal;
@@ -50,8 +49,8 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, const QString &
 				const DeviceInfo device = usedDevices[port];
 				const DeviceInfo existingDevice = currentConfiguration(robotModelName, port);
 				if (!existingDevice.isNull() && !existingDevice.isA(device)) {
-					mErrorReporter.addError(QObject::tr("Sensor configuration conflict, please check that sensor"\
-							" ports are used consistently in a program"), child);
+					mErrorReporter.addError(QObject::tr("Sensor on port %1 does not correspond to blocks "\
+							"on the diagram.").arg(port.name()), child);
 					return false;
 				} else if (existingDevice.isNull()) {
 					/// @todo: Do it loudly, user must notice it

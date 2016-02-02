@@ -14,10 +14,14 @@
 
 #include "startWidget.h"
 
+#include <QtCore/QSignalMapper>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QScrollArea>
 
 #include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 #include "mainWindow/mainWindow.h"
 #include "styledButton.h"
@@ -80,9 +84,10 @@ QWidget *StartWidget::createHeader()
 	appName->setStyleSheet(BrandManager::styles()->startTabLabelLevel1Style());
 
 	QLabel * const appLogo = new QLabel;
-	appLogo->setPixmap(QPixmap::fromImage(BrandManager::applicationLogo()));
-	appLogo->setScaledContents(true);
 	appLogo->setFixedSize(200, 100);
+	appLogo->setScaledContents(false);
+	appLogo->setPixmap(QPixmap::fromImage(BrandManager::applicationLogo()).scaled(appLogo->size()
+			, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
 	QHBoxLayout * const headerLayout = new QHBoxLayout;
 	headerLayout->addWidget(appName);

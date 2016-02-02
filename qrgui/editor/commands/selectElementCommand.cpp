@@ -14,7 +14,7 @@
 
 #include "selectElementCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 SelectElementCommand::SelectElementCommand(const EditorViewScene *scene
 		, const Id &id, bool shouldSelect, bool forceValueChange)
@@ -41,6 +41,7 @@ bool SelectElementCommand::execute()
 	if (!ElementCommand::execute()) {
 		return false;
 	}
+
 	mOldState = isSelected();
 	return setSelectionState(mNewState);
 }
@@ -55,9 +56,11 @@ bool SelectElementCommand::setSelectionState(bool select)
 	if (!mElement) {
 		return false;
 	}
+
 	if (mForceValueChange) {
 		mElement->setSelected(!isSelected());
 	}
+
 	mElement->setSelected(select);
 	return true;
 }

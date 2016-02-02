@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Refactorings</DisplayName>
+    <DisplayName xml:lang="ru_ru">Рефакторинги</DisplayName>
+    <Description>Components for visual specification and execution of refactorings on models.</Description>
+    <Description xml:lang="ru_ru">Средство задания и исполнения рефакторингов.</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2015-12-12</ReleaseDate>
+    <Licenses/>
+    <SortingPriority>20</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

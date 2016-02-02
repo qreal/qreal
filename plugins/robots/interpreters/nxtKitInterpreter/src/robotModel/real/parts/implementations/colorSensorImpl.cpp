@@ -14,8 +14,6 @@
 
 #include "colorSensorImpl.h"
 
-#include <utils/tracer.h>
-
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
@@ -65,16 +63,8 @@ void ColorSensorImpl::doConfiguration()
 void ColorSensorImpl::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse"
-				, "Something is wrong, response is empty");
+		/// @todo: log trace error?
 	} else {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothColorSensorImplementation::sensorSpecificProcessResponse"
-				, "Data received "
-				+ QString::number((0xff & reading[8])) + " " + QString::number((0xff & reading[9])) + " "
-				+ QString::number((0xff & reading[10])) + " " + QString::number((0xff & reading[11])) + " "
-				+ QString::number((0xff & reading[12])) + " " + QString::number((0xff & reading[13])) + " "
-				+ QString::number((0xff & reading[14])) + " " + QString::number((0xff & reading[15])) + " "
-			);
 		mImplementation.setState(NxtInputDevice::idle);
 		if (mLowLevelType == enums::lowLevelSensorType::COLORFULL) {
 			emit newData(0xff & reading[14]);  // Scaled value, used in ColorFull mode.

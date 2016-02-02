@@ -14,7 +14,9 @@
 
 #include "elementCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal;
+using namespace qReal::gui::editor;
+using namespace qReal::gui::editor::commands;
 
 ElementCommand::ElementCommand(const EditorViewScene *scene, const Id &id)
 	: mElement(nullptr), mScene(scene), mId(id), mSceneWasRemoved(false)

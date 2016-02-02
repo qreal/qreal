@@ -62,7 +62,7 @@ public:
 
 public slots:
 	void onStartInterpretation() override;
-	void onStopInterpretation() override;
+	void onStopInterpretation(qReal::interpretation::StopReason reason) override;
 
 private:
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);

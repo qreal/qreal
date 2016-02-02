@@ -15,6 +15,8 @@
 #include "virtualCursor.h"
 
 #include <QtCore/QPropertyAnimation>
+#include <QtCore/QTimer>
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 
 #include "qrgui/mainWindow/mainWindow.h"

@@ -18,6 +18,8 @@
 
 #include "editor/editorViewScene.h"
 
+using namespace qReal::gui::editor;
+
 ResizeHandler::ResizeHandler(NodeElement * const resizingNode)
 		: mTargetNode(resizingNode)
 		, mElementImpl(resizingNode->elementImpl())
@@ -52,13 +54,14 @@ void ResizeHandler::resize(QRectF newContents, QPointF newPos, bool needResizePa
 qreal ResizeHandler::maxChildWidth() const
 {
 	qreal maxChildWidthValue = 0;
-	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	for (const QGraphicsItem * const childItem : mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
 		if (!curItem) {
 			continue;
 		}
 		maxChildWidthValue = qMax(maxChildWidthValue, curItem->contentsRect().width());
 	}
+
 	if (maxChildWidthValue == 0) {
 		maxChildWidthValue = mTargetNode->childrenBoundingRect().width();
 	}
@@ -80,7 +83,7 @@ void ResizeHandler::sortChildrenIfNeeded() const
 	const qreal maxChildWidthValue = maxChildWidth();
 
 	QList<NodeElement *> children = sortedChildrenList();
-	foreach (QGraphicsItem * const childItem, children) {
+	for (QGraphicsItem * const childItem : children) {
 		QGraphicsRectItem * const placeholder = mTargetNode->placeholder();
 
 		if(placeholder != nullptr && childItem == placeholder) {
@@ -152,7 +155,7 @@ QPointF ResizeHandler::childDeflection() const
 	int forestallingTop = sizeOfForestalling[1];
 	int forestallingLeft = sizeOfForestalling[0];
 
-	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	for (const QGraphicsItem * const childItem : mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
 		if (!curItem) {
 			continue;
@@ -167,7 +170,7 @@ QPointF ResizeHandler::childDeflection() const
 
 void ResizeHandler::printChildPos() const
 {
-	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	for (const QGraphicsItem * const childItem : mTargetNode->childItems()) {
 		const NodeElement * const curItem = dynamic_cast<const NodeElement * const>(childItem);
 		if (!curItem) {
 			continue;
@@ -181,7 +184,7 @@ void ResizeHandler::moveChildren(const QPointF &shift) const
 	qreal forestallingTop = sizeOfForestalling[1];
 	qreal forestallingLeft = sizeOfForestalling[0];
 
-	foreach (QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	for (QGraphicsItem * const childItem : mTargetNode->childItems()) {
 		NodeElement * const curItem = dynamic_cast<NodeElement * const>(childItem);
 		if (!curItem) {
 			continue;
@@ -200,7 +203,7 @@ void ResizeHandler::expandByChildren(QRectF &contents) const
 {
 	QVector<int> const sizeOfForestalling = mElementImpl->sizeOfForestalling();
 
-	foreach (const QGraphicsItem * const childItem, mTargetNode->childItems()) {
+	for (const QGraphicsItem * const childItem : mTargetNode->childItems()) {
 		QRectF curChildItemBoundingRect = childBoundingRect(childItem, contents);
 
 		if (curChildItemBoundingRect.width() == 0 || curChildItemBoundingRect.height() == 0) {
@@ -250,7 +253,7 @@ QList<NodeElement *> ResizeHandler::sortedChildrenList() const
 
 	IdList childrenIds = mTargetNode->sortedChildren();
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(mTargetNode->scene());
-	foreach (const Id &id, childrenIds) {
+	for (const Id &id : childrenIds) {
 		NodeElement *child = evScene->getNodeById(id);
 		if (child) {
 			result << child;

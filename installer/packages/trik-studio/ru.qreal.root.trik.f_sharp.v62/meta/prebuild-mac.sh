@@ -5,5 +5,9 @@ set -o errexit
 cd "$(dirname "$0")"
 source $INSTALLER_ROOT/utils/mac_utils.sh
 
-fix_dependencies $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-f-sharp-generator.dylib     $QT_DIR/lib @executable_path/../../..
-cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-f-sharp-generator.dylib               $PWD/../data/plugins/tools/kitPlugins/
+mkdir -p "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins"
+cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-f-sharp-generator.dylib               "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins/"
+fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins/librobots-trik-v62-f-sharp-generator.dylib"
+
+# Cleaning up prebuild-common.sh results...
+rm -rf $PWD/../data/plugins/

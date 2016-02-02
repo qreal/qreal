@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Metaeditor</DisplayName>
+    <DisplayName xml:lang="ru_ru">Метаредактор</DisplayName>
+    <Description>Metaeditor.</Description>
+    <Description xml:lang="ru_ru">Метаредактор. Может быть использован для создания метамодели для интерпретатора или для генерации редактора (тогда требуется установка дополнительного пакета).</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2015-12-12</ReleaseDate>
+    <Licenses/>
+    <SortingPriority>20</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

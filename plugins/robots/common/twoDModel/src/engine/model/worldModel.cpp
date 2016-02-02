@@ -20,6 +20,8 @@
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/curveItem.h"
+#include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/regions/ellipseRegion.h"
@@ -260,10 +262,10 @@ void WorldModel::deserialize(const QDomElement &element)
 
 	clear();
 
-	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull();
-			traceNode = traceNode.nextSiblingElement("trace")) {
-		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull();
-				segmentNode = segmentNode.nextSiblingElement("segment")) {
+	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull()
+			; traceNode = traceNode.nextSiblingElement("trace")) {
+		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull()
+				; segmentNode = segmentNode.nextSiblingElement("segment")) {
 			const QPointF from(segmentNode.attribute("x1").toDouble(), segmentNode.attribute("y1").toDouble());
 			const QPointF to(segmentNode.attribute("x2").toDouble(), segmentNode.attribute("y2").toDouble());
 			QPen pen;
@@ -273,34 +275,49 @@ void WorldModel::deserialize(const QDomElement &element)
 		}
 	}
 
-	for (QDomElement wallsNode = element.firstChildElement("walls"); !wallsNode.isNull();
-			wallsNode = wallsNode.nextSiblingElement("walls")) {
-		for (QDomElement wallNode = wallsNode.firstChildElement("wall"); !wallNode.isNull();
-				wallNode = wallNode.nextSiblingElement("wall")) {
+	for (QDomElement wallsNode = element.firstChildElement("walls"); !wallsNode.isNull()
+			; wallsNode = wallsNode.nextSiblingElement("walls")) {
+		for (QDomElement wallNode = wallsNode.firstChildElement("wall"); !wallNode.isNull()
+				; wallNode = wallNode.nextSiblingElement("wall")) {
 			items::WallItem *wall = new items::WallItem(QPointF(0, 0), QPointF(0, 0));
 			wall->deserialize(wallNode);
 			addWall(wall);
 		}
 	}
 
-	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull();
-			colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
-		for (QDomElement ellipseNode = colorFieldsNode.firstChildElement("ellipse"); !ellipseNode.isNull();
-				ellipseNode = ellipseNode.nextSiblingElement("ellipse")) {
+	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull()
+			; colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
+
+		for (QDomElement rectangleNode = colorFieldsNode.firstChildElement("rectangle"); !rectangleNode.isNull()
+				; rectangleNode = rectangleNode.nextSiblingElement("rectangle")) {
+			items::RectangleItem *rectangleItem = new items::RectangleItem(QPointF(0, 0), QPointF(0, 0));
+			rectangleItem->deserialize(rectangleNode);
+			addColorField(rectangleItem);
+		}
+
+		for (QDomElement ellipseNode = colorFieldsNode.firstChildElement("ellipse"); !ellipseNode.isNull()
+				; ellipseNode = ellipseNode.nextSiblingElement("ellipse")) {
 			items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(0, 0), QPointF(0, 0));
 			ellipseItem->deserialize(ellipseNode);
 			addColorField(ellipseItem);
 		}
 
-		for (QDomElement lineNode = colorFieldsNode.firstChildElement("line"); !lineNode.isNull();
-				lineNode = lineNode.nextSiblingElement("line")) {
+		for (QDomElement lineNode = colorFieldsNode.firstChildElement("line"); !lineNode.isNull()
+				; lineNode = lineNode.nextSiblingElement("line")) {
 			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
 			lineItem->deserialize(lineNode);
 			addColorField(lineItem);
 		}
 
-		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull();
-				stylusNode = stylusNode.nextSiblingElement("stylus")) {
+		for (QDomElement curveNode = colorFieldsNode.firstChildElement("cubicBezier"); !curveNode.isNull()
+				; curveNode = curveNode.nextSiblingElement("cubicBezier")) {
+			items::CurveItem *curveItem = new items::CurveItem(QPointF(0, 0), QPointF(0, 0));
+			curveItem->deserialize(curveNode);
+			addColorField(curveItem);
+		}
+
+		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull()
+				; stylusNode = stylusNode.nextSiblingElement("stylus")) {
 			items::StylusItem *stylusItem = new items::StylusItem(0, 0);
 			stylusItem->deserialize(stylusNode);
 			addColorField(stylusItem);

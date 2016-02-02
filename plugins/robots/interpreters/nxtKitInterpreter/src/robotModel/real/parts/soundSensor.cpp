@@ -13,7 +13,6 @@
  * limitations under the License. */
 
 #include "soundSensor.h"
-#include <utils/tracer.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -60,8 +59,7 @@ void SoundSensor::doConfiguration()
 void SoundSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSoundSensorImplementation::sensorSpecificProcessResponse"
-				, "Something is wrong, response is empty");
+		/// @todo: log trace error?
 	} else {
 		const int sensorValue = (0xff & reading[13]) << 8 | (0xff & reading[14]);
 		mImplementation.setState(NxtInputDevice::idle);

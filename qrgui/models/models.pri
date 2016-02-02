@@ -24,11 +24,14 @@ HEADERS += \
 	$$PWD/logicalModelAssistApi.h \
 	$$PWD/exploser.h \
 	$$PWD/propertyEditorModel.h \
-	$$PWD/commands/createElementCommand.h \
-	$$PWD/commands/removeElementCommand.h \
-	$$PWD/commands/multipleRemoveCommand.h \
+	$$PWD/elementInfo.h \
+	$$PWD/nodeInfo.h \
+	$$PWD/edgeInfo.h \
+	$$PWD/commands/createElementsCommand.h \
+	$$PWD/commands/createPatternCommand.h \
+	$$PWD/commands/removeElementsCommand.h \
 	$$PWD/commands/createRemoveCommandImplementation.h \
-	$$PWD/commands/createGroupCommand.h \
+	$$PWD/commands/pasteCommand.h \
 	$$PWD/commands/changePropertyCommand.h \
 	$$PWD/commands/changeParentCommand.h \
 	$$PWD/commands/renameCommand.h \
@@ -55,11 +58,14 @@ SOURCES += \
 	$$PWD/logicalModelAssistApi.cpp \
 	$$PWD/exploser.cpp \
 	$$PWD/propertyEditorModel.cpp \
-	$$PWD/commands/createElementCommand.cpp \
-	$$PWD/commands/removeElementCommand.cpp \
-	$$PWD/commands/multipleRemoveCommand.cpp \
+	$$PWD/elementInfo.cpp \
+	$$PWD/nodeInfo.cpp \
+	$$PWD/edgeInfo.cpp \
+	$$PWD/commands/createElementsCommand.cpp \
+	$$PWD/commands/removeElementsCommand.cpp \
+	$$PWD/commands/createPatternCommand.cpp \
 	$$PWD/commands/createRemoveCommandImplementation.cpp \
-	$$PWD/commands/createGroupCommand.cpp \
+	$$PWD/commands/pasteCommand.cpp \
 	$$PWD/commands/changePropertyCommand.cpp \
 	$$PWD/commands/changeParentCommand.cpp \
 	$$PWD/commands/renameCommand.cpp \

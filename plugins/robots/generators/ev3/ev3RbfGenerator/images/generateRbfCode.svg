@@ -1,0 +1,34 @@
+<svg width="10058" height="13876" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd">
+ <defs>
+  <linearGradient y2="0.50011" x2="1" y1="0.50011" x1="0" id="imagebot_11">
+   <stop stop-color="#6699FF" id="imagebot_24" offset="0"/>
+   <stop stop-color="#6666CC" id="imagebot_23" offset="1"/>
+  </linearGradient>
+  <linearGradient y2="0.00001" x2="0.50001" y1="1.00001" x1="0.50001" id="imagebot_15">
+   <stop stop-color="#E6E6E6" id="imagebot_22" offset="0"/>
+   <stop stop-color="white" id="imagebot_21" offset="1"/>
+  </linearGradient>
+  <linearGradient y2="0.00209" x2="0.19859" y1="0.99766" x1="0.80148" id="imagebot_13">
+   <stop stop-color="#B3B3B3" id="imagebot_20" offset="0"/>
+   <stop stop-color="#E6E6E6" id="imagebot_19" offset="0.56863"/>
+   <stop stop-color="#E6E6E6" id="imagebot_18" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata id="imagebot_17">image/svg+xml</metadata>
+ <g id="imagebot_4">
+  <metadata id="imagebot_16"/>
+  <polygon transform="translate(-2462 -640)" fill="url(#imagebot_15)" stroke-width="127px" stroke="rgb(102, 102, 102)" id="imagebot_14" points="2462,640 12517,640 12517,11554 11100,12326 9802,13945 9686,13975 2462,13975 "/>
+  <path fill="url(#imagebot_13)" stroke-width="127px" stroke="rgb(102, 102, 102)" id="imagebot_12" d="M 7291 13324 C 8289 13151 9701 11788 10058 10931 C 10058 10931 7396 10934 7356 10961 C 7316 10987 7292 13324 7292 13324 L 7291 13324 Z"/>
+  <rect fill="url(#imagebot_11)" id="imagebot_10" height="1005" width="9525" y="144" x="276"/>
+  <path fill="rgb(128, 128, 128)" stroke-width="79.375px" stroke="rgb(51, 51, 51)" id="imagebot_9" d="M 5122 9042 C 6544 8956 7670 7776 7670 6333 C 7670 4834 6559 4760 5008 4466 C 3457 4172 2242 4834 2242 6333 C 2242 7590 3096 8647 4256 8956 C 4364 8985 4073 9310 4186 9325 L 4794 9488 L 5096 9408 L 5121 9042 L 5122 9042 Z"/>
+  <polygon transform="translate(-2462 -640)" fill="rgb(128, 128, 128)" stroke-width="39.69px" stroke="rgb(51, 51, 51)" id="imagebot_8" points="8084,3831 8520,3866 8438,4760 7829,4782 "/>
+  <path fill="rgb(152, 241, 11)" stroke-width="79.375px" stroke="rgb(51, 51, 51)" id="imagebot_7" d="M 3581 4304 C 3971 4101 4121 3989 4687 3906 L 4704 3128 L 5845 3232 L 5741 3993 C 6195 4242 6489 4413 6856 4779 L 7565 4520 L 7963 5626 L 7323 5773 C 7275 5852 7516 6571 6917 7640 L 7496 8176 L 6805 8885 L 6226 8358 C 5788 8555 5270 8708 4809 8721 L 4748 9482 L 3616 9283 L 3737 8384 C 3321 8039 3142 7930 2760 7321 L 1861 7572 L 1636 6613 L 2543 6388 C 2571 5855 2641 5380 2923 4962 L 2283 4443 L 2888 3786 L 3579 4305 L 3581 4304 Z"/>
+  <circle fill="rgb(128, 128, 128)" stroke-width="79.375px" stroke="rgb(51, 51, 51)" id="imagebot_6" r="951" cy="6354" cx="4870"/>
+  <path fill="rgb(255, 255, 255)" stroke-width="79.375px" stroke="rgb(51, 51, 51)" id="imagebot_5" d="M 4870 7305 C 5395 7305 5821 6879 5821 6354 C 5821 6149 5395 5792 4870 5792 C 4345 5792 3919 6097 3919 6354 C 3919 6879 4345 7305 4870 7305 Z"/>
+  <title>imagebot_4</title>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <text transform="translate(355.271 -994.76) matrix(0.703965 0 0 0.703965 -1721.67 4073.01)" font-size="4000px" font-style="normal" font-weight="bold" fill="#000000" font-family="Sans" id="imagebot_2" y="13651.172" x="2571.875" xml:space="preserve">Rbf</text>
+ </g>
+</svg>

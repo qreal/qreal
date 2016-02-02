@@ -37,8 +37,6 @@ public:
 	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 private:
-	robotModel::TrikV6GeneratorRobotModel *initModel(robotModel::TrikV6GeneratorRobotModel * const model);
-
 	/// Temporary storage for robot model to be able to correctly initialize it.
 	/// Does not have ownership.
 	robotModel::TrikV6GeneratorRobotModel *mModel;

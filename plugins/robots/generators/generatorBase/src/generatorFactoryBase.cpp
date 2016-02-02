@@ -35,9 +35,9 @@
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/finalNodeGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
-#include "simpleGenerators/waitForColorIntensityBlockGenerator.h"
 #include "simpleGenerators/clearScreenBlockGenerator.h"
 #include "simpleGenerators/printTextBlockGenerator.h"
+#include "simpleGenerators/waitForColorIntensityBlockGenerator.h"
 #include "simpleGenerators/waitForLightBlockGenerator.h"
 #include "simpleGenerators/waitForSonarBlockGenerator.h"
 #include "simpleGenerators/waitForEncoderBlockGenerator.h"
@@ -56,6 +56,8 @@
 #include "simpleGenerators/sendMessageThreadsGenerator.h"
 #include "simpleGenerators/receiveMessageThreadsGenerator.h"
 #include "simpleGenerators/getButtonCodeGenerator.h"
+#include "generatorBase/simpleGenerators/waitForButtonGenerator.h"
+#include "generatorBase/simpleGenerators/randomIdGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -277,6 +279,8 @@ AbstractSimpleGenerator *GeneratorFactoryBase::simpleGenerator(const qReal::Id &
 		return new InitialNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("ClearEncoder")) {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
+	} else if (elementType.contains("WaitForButton")) {
+		return new WaitForButtonGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForColorIntensity")) {
 		return new WaitForColorIntensityBlockGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("WaitForLight")) {
@@ -346,12 +350,17 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(const qReal::I
 	return new FinalNodeGenerator(mRepo, customizer, id, fromMainGenerator, this);
 }
 
+AbstractSimpleGenerator *GeneratorFactoryBase::randomIdGenerator(AbstractSimpleGenerator *other)
+{
+	return new RandomIdGenerator(other);
+}
+
 // Converters can be instantiated without taking ownership because binders do this
 
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(const Id &id, const QString &property) const
 {
 	return new converters::IntPropertyConverter(pathsToTemplates(), mLuaTranslator, id
-			, property, reservedVariableNameConverter(), typeConverter());
+			, property, reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::floatPropertyConverter(const Id &id, const QString &property) const

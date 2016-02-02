@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<metamodel xmlns="http://schema.real.com/schema/" version="3.1.1">
+<metamodel xmlns="http://schema.real.com/schema/" version="3.1.3">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
 	<include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
@@ -11,6 +11,18 @@
 				<value name="2" displayedName="2"/>
 				<value name="3" displayedName="3"/>
 				<value name="4" displayedName="4"/>
+			</enum>
+			<enum name="Ev3SensorPort">
+				<value name="1" displayedName="1"/>
+				<value name="2" displayedName="2"/>
+				<value name="3" displayedName="3"/>
+				<value name="4" displayedName="4"/>
+			</enum>
+			<enum name="Ev3MotorPort">
+				<value name="A" displayedName="A"/>
+				<value name="B" displayedName="B"/>
+				<value name="C" displayedName="C"/>
+				<value name="D" displayedName="D"/>
 			</enum>
 			<enum name="TrikV6DigitalSensorPort">
 				<value name="D1"/>
@@ -65,7 +77,19 @@
 				<value name="break" displayedName="break"/>
 				<value name="float" displayedName="float"/>
 			</enum>
-			<enum name="LedColor">
+			<enum name="Ev3LedColor">
+				<value name="off" displayedName="off"/>
+				<value name="green" displayedName="green"/>
+				<value name="red" displayedName="red"/>
+				<value name="orange" displayedName="orange"/>
+				<value name="green_flash" displayedName="green flash"/>
+				<value name="red_flash" displayedName="red flash"/>
+				<value name="orange_flash" displayedName="orange flash"/>
+				<value name="green_pulse" displayedName="green pulse"/>
+				<value name="red_pulse" displayedName="red pulse"/>
+				<value name="orange_pulse" displayedName="orange pulse"/>
+			</enum>
+			<enum name="TrikLedColor">
 				<value name="green" displayedName="green"/>
 				<value name="red" displayedName="red"/>
 				<value name="off" displayedName="off"/>
@@ -461,7 +485,9 @@
 				<logic>
 					<container/>
 					<properties>
-						<property name="Thread" displayedName="Thread" type="string"/>
+						<property name="Thread" displayedName="Thread" type="string">
+							<default>main</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -672,7 +698,7 @@
 					</picture>
 					<labels>
 						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
-						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" siffux="%"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -956,7 +982,8 @@
 						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="70" y="60" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
+					<label x="60" y="-35" textBinded="Volume" hard="true" background="white" prefix="Volume:" siffix="%"/>
+					<label x="70" y="60" textBinded="WaitForCompletion" background="white" prefix="Wait for Completion:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -965,6 +992,9 @@
 					<properties>
 						<property displayedName="Wait for Completion" type="bool" name="WaitForCompletion">
 							<default>true</default>
+						</property>
+						<property displayedName="Volume" type="string" name="Volume">
+							<default>50</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1043,6 +1073,28 @@
 					<properties>
 						<property displayedName="Ports" type="string" name="Ports">
 							<default>A, B, C</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Clear Encoder" name="Ev3ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>A, B, C, D</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1146,6 +1198,22 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Enable Video Streaming" name="TrikInitVideoStreaming" description="Enables video stream on robot. Video then can be watched on TRIK gamepad or in browser using URL http://ROBOT.IP.ADDRESS:8080/?action=stream">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initVideoStreamingBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-25" y="60" text="Enable Video Streaming" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1212,7 +1280,9 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Led" name="TrikLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the led on the robot`s front panel.">
+
+
+			<node displayedName="Led" name="Ev3Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
@@ -1224,7 +1294,29 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Color" type="LedColor" name="Color">
+						<property displayedName="Color" type="Ev3LedColor" name="Color">
+							<default>red</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Led" name="TrikLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-35" textBinded="Color" hard="true" background="white" prefix="Color:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Color" type="TrikLedColor" name="Color">
 							<default>red</default>
 						</property>
 					</properties>
@@ -1266,6 +1358,33 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Sound Sensor" name="Ev3WaitForSound" path="12, 178 : 117, 178 :  | 117, 96 : 117, 178 :  | 13, 96 : 117, 96 :  | 13, 12 : 13, 96 :  | 13, 12 : 118, 12 : " description="Waits till the loudness obtained by the sound sensor on the given port will be greater or less than the given value.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSoundSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="50" y="60" textBinded="Volume" background="white" prefix="Volume:"/>
+						<label x="50" y="90" textBinded="Sign" background="white" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Volume" type="string" name="Volume">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Wait for Color" name="Ev3WaitForColor" path="196, 12 : 196, 154 :  | 12, 12 : 380, 12 : 380, 154 : 12, 154 : 12, 12 : " description="Waits till the color sensor on the given port will recognize the given color.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1282,6 +1401,33 @@
 					<properties>
 						<property displayedName="Color" type="Color" name="Color">
 							<default>red</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Color Intensity" name="Ev3WaitForColorIntensity" path="201, 137 : 200, 143 : 199, 149 : 198, 154 : 196, 160 : 193, 166 : 190, 171 : 186, 176 : 182, 180 : 178, 184 : 173, 188 : 168, 191 : 162, 194 : 156, 196 : 151, 197 : 145, 198 : 139, 198 : 133, 198 : 127, 197 : 122, 196 : 116, 194 : 110, 191 : 105, 188 : 100, 184 : 96, 180 : 92, 176 : 88, 171 : 85, 166 : 82, 160 : 80, 154 : 79, 149 : 78, 143 : 78, 137 : 78, 131 : 79, 125 : 80, 120 : 82, 114 : 85, 108 : 88, 103 : 92, 98 : 96, 94 : 100, 90 : 105, 86 : 110, 83 : 116, 80 : 122, 78 : 127, 77 : 133, 76 : 139, 76 : 145, 76 : 151, 77 : 156, 78 : 162, 80 : 168, 83 : 173, 86 : 178, 90 : 182, 94 : 186, 98 : 190, 103 : 193, 108 : 196, 114 : 198, 120 : 199, 125 : 200, 131 : 201, 137 :  | 260, 136 : 259, 148 : 257, 160 : 254, 171 : 250, 183 : 245, 194 : 239, 204 : 231, 214 : 223, 223 : 214, 231 : 204, 239 : 194, 245 : 183, 250 : 171, 254 : 160, 257 : 148, 259 : 136, 259 : 124, 259 : 112, 257 : 101, 254 : 89, 250 : 78, 245 : 68, 239 : 58, 231 : 49, 223 : 41, 214 : 33, 204 : 27, 194 : 22, 183 : 18, 171 : 15, 160 : 13, 148 : 13, 136 : 13, 124 : 15, 112 : 18, 101 : 22, 89 : 27, 78 : 33, 68 : 41, 58 : 49, 49 : 58, 41 : 68, 33 : 78, 27 : 89, 22 : 101, 18 : 112, 15 : 124, 13 : 136, 13 : 148, 13 : 160, 15 : 171, 18 : 183, 22 : 194, 27 : 204, 33 : 214, 41 : 223, 49 : 231, 58 : 239, 68 : 245, 78 : 250, 89 : 254, 101 : 257, 112 : 259, 124 : 260, 136 : " description="Waits till the value returned by the color sensor on the given port will be greater or less than the given in the 'Intensity' parameter value (the intensity is specified in percents, 0 to 100).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForColorIntensityBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Intensity" background="white" prefix="Intensity:"/>
+						<label x="55" y="90" textBinded="Sign" background="white" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Intensity" type="string" name="Intensity">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1316,7 +1462,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Range Sensor" name="Ev3WaitForRangeSensor" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic or infrared range sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Range Sensor" name="Ev3WaitForSonarDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the ultrasonic or infrared range sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1340,6 +1486,34 @@
 					</properties>
 					<generalizations>
 						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Encoder" name="Ev3WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="Ev3MotorPort" name="Port">
+							<default>B</default>
+						</property>
+						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -1536,7 +1710,7 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
 						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
-						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1642,7 +1816,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, from 0 to 300).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1669,7 +1843,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, 0 to 255).">
+			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value. By default on ports A1 and A2 the distance is specified in centimeters (from 0 to 100). It is not recommended to plug IR sensor into other ports because its raw value will be processed by software on robot with expectation of another sensor type.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
@@ -1696,6 +1870,24 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Touch Sensor" name="TrikWaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikAnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+
 			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="TrikWaitForGyroscope" description="Waits till the value returned by the gyroscope on the given port will be greater or less than the given in the 'Degrees/sec' parameter value.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -1777,7 +1969,7 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
 						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
-						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2000,7 +2192,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. '$' token can be used in front of the identifier for printing its value. This feature is ignored in case when backslash ('\\') is written before the '$' token. Example: '\\$a = $a' expression will print '$a = 5' if the value of the variable 'a' is 5.  If 'Evaluate' property is set to true then the value of 'Text' property is interpreted as a formula, otherwise it is interpreted as plain string.">
+			<node displayedName="Print Text" name="PrintText" description="Prints a given line in the specified coordinates on the robot`s screen. The value of 'Text' property is interpreted as a plain text unless 'Evaluate' property is set to true, then it will be interpreted as an expression (that may be useful for example when debugging variables values).">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/printTextBlock.png" x1="0" y2="50" x2="50"/>
@@ -2227,10 +2419,10 @@
 					<container/>
 					<properties>
 						<property displayedName="X" type="int" name="XCoordinatePix">
-							<default>0</default>
+							<default>90</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinatePix">
-							<default>0</default>
+							<default>70</default>
 						</property>
 						<property displayedName="Redraw" type="bool" name="Redraw">
 							<default>true</default>
@@ -2258,16 +2450,16 @@
 				<container/>
 				<properties>
 					<property displayedName="X1" type="int" name="X1CoordinateLine">
-						<default>0</default>
+						<default>20</default>
 					</property>
 					<property displayedName="Y1" type="int" name="Y1CoordinateLine">
-						<default>0</default>
+						<default>90</default>
 					</property>
 					<property displayedName="X2" type="int" name="X2CoordinateLine">
-						 <default>10</default>
+						 <default>150</default>
 					</property>
 					<property displayedName="Y2" type="int" name="Y2CoordinateLine">
-						<default>10</default>
+						<default>20</default>
 					</property>
 					<property displayedName="Redraw" type="bool" name="Redraw">
 						<default>true</default>
@@ -2296,16 +2488,16 @@
 					<container/>
 					<properties>
 						<property displayedName="X" type="int" name="XCoordinateRect">
-							<default>0</default>
+							<default>75</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinateRect">
-							<default>0</default>
+							<default>50</default>
 						</property>
 						<property displayedName="Width" type="int" name="WidthRect">
-							<default>5</default>
+							<default>40</default>
 						</property>
-							<property displayedName="Height" type="int" name="HeightRect">
-								<default>5</default>
+						<property displayedName="Height" type="int" name="HeightRect">
+							<default>30</default>
 						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
@@ -2336,13 +2528,13 @@
 				<container/>
 				<properties>
 						<property displayedName="X" type="int" name="XCoordinateCircle">
-							<default>0</default>
+							<default>85</default>
 						</property>
 						<property displayedName="Y" type="int" name="YCoordinateCircle">
-							<default>0</default>
+							<default>70</default>
 						</property>
 						<property displayedName="Radius" type="int" name="CircleRadius">
-							<default>5</default>
+							<default>40</default>
 						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
@@ -2769,7 +2961,7 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
 						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
-						<label x="60" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -2820,6 +3012,8 @@
 				<element name="Ev3EnginesForward"/>
 				<element name="Ev3EnginesBackward"/>
 				<element name="Ev3EnginesStop"/>
+				<element name="Ev3ClearEncoder"/>
+				<element name="Ev3Led"/>
 				<element name="TrikPlayTone"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
@@ -2834,6 +3028,7 @@
 				<element name="TrikInitCamera" />
 				<element name="TrikDetect" />
 				<element name="TrikDetectorToVariable" />
+				<element name="TrikInitVideoStreaming" />
 				<element name="TrikSendMessage" />
 				<element name="SendMessageThreads"/>
 				<element name="TrikWriteToFile"/>
@@ -2843,10 +3038,13 @@
 			<group name="Wait">
 				<element name="Timer"/>
 				<element name="Ev3WaitForTouchSensor"/>
-<!--				<element name="Ev3WaitForColor"/>
-				<element name="Ev3WaitForLight"/>-->
-				<element name="Ev3WaitForRangeSensor"/>
+				<element name="Ev3WaitForEncoder"/>
+				<element name="Ev3WaitForColor"/>
+				<element name="Ev3WaitForColorIntensity"/>
+				<element name="Ev3WaitForLight"/>
+				<element name="Ev3WaitForSonarDistance"/>
 				<element name="Ev3WaitForButton"/>
+				<element name="Ev3WaitForSound"/>
 				<element name="NxtWaitForTouchSensor"/>
 				<element name="NxtWaitForSonarDistance"/>
 				<element name="NxtWaitForColor"/>
@@ -2855,6 +3053,7 @@
 				<element name="NxtWaitForLight"/>
 				<element name="NxtWaitForSound"/>
 				<element name="NxtWaitForButton"/>
+				<element name="TrikWaitForTouchSensor"/>
 				<element name="TrikWaitForLight"/>
 				<element name="TrikWaitForSonarDistance"/>
 				<element name="TrikWaitForIRDistance"/>

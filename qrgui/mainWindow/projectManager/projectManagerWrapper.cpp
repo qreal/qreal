@@ -15,17 +15,21 @@
 #include "projectManagerWrapper.h"
 
 #include <QtWidgets/QMessageBox>
+#include <QtWidgets/QTreeView>
 
-#include <qrkernel/logging.h>
-#include <qrutils/outFile.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
 
 #include "mainWindow/mainWindow.h"
 
-#include <models/models.h>
-#include <editor/editorViewScene.h>
-#include <editor/editorView.h>
-#include <dialogs/projectManagement/suggestToCreateDiagramDialog.h>
+#include <qrgui/dialogs/projectManagement/suggestToCreateDiagramDialog.h>
+#include <qrgui/editor/editorView.h>
+#include <qrgui/editor/editorViewScene.h>
+#include <qrgui/editor/propertyEditorView.h>
+#include <qrgui/models/models.h>
+#include <qrgui/models/propertyEditorModel.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 using namespace qReal;
 using namespace utils;
@@ -85,7 +89,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 
 	const QFileInfo fileInfo(dequotedFileName);
 
-	if (fileInfo.suffix() == "qrs" || fileInfo.baseName().isEmpty()) {
+	if (fileInfo.suffix() == "qrs" || fileInfo.completeBaseName().isEmpty()) {
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
@@ -192,12 +196,14 @@ void ProjectManagerWrapper::close()
 	if (mMainWindow->propertyEditor()->model()) {
 		static_cast<PropertyEditorModel *>(mMainWindow->propertyEditor()->model())->clearModelIndexes();
 	}
+
 	mMainWindow->graphicalModelExplorer()->setModel(nullptr);
 	mMainWindow->logicalModelExplorer()->setModel(nullptr);
 
 	if (mMainWindow->getCurrentTab()) {
-		static_cast<EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
+		static_cast<qReal::gui::editor::EditorViewScene *>(mMainWindow->getCurrentTab()->scene())->clearScene();
 	}
+
 	mMainWindow->closeAllTabs();
 	mMainWindow->setWindowTitle(mMainWindow->toolManager().customizer()->windowTitle());
 
@@ -271,8 +277,12 @@ QString ProjectManagerWrapper::openFileName(const QString &dialogWindowTitle) co
 
 QString ProjectManagerWrapper::saveFileName(const QString &dialogWindowTitle) const
 {
+	const QString oldFileName = QFileInfo(saveFilePath()).fileName();
+	const QString defaultSaveFilePath = mAutosaver.isTempFile(mSaveFilePath)
+			? PlatformInfo::invariantSettingsPath("pathToDefaultSaves")
+			: QFileInfo(mSaveFilePath).absoluteDir().absolutePath();
 	QString fileName = QRealFileDialog::getSaveFileName("SaveQRSProject", mMainWindow, dialogWindowTitle
-			, QFileInfo(mSaveFilePath).absoluteDir().absolutePath(), tr("QReal Save File(*.qrs)"));
+			, defaultSaveFilePath, tr("QReal Save File(*.qrs)"), oldFileName);
 
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 		fileName += ".qrs";

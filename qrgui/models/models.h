@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include "qrgui/models/details/graphicalModel.h"
 #include "qrgui/models/details/logicalModel.h"
 #include "qrgui/models/graphicalModelAssistApi.h"
@@ -22,6 +24,8 @@
 
 namespace qReal {
 namespace models {
+
+class Exploser;
 
 class QRGUI_MODELS_EXPORT Models
 {
@@ -51,7 +55,7 @@ private:
 	models::details::GraphicalPartModel *mGraphicalPartModel;
 	models::details::LogicalModel *mLogicalModel;
 	qrRepo::RepoControlInterface *mRepoApi;
-	Exploser *mExploser;
+	QScopedPointer<Exploser> mExploser;
 };
 
 }

@@ -19,6 +19,8 @@
 using namespace enums;
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// A factory for creation of specific LineHandler's subclasses.
 /// It also groups all the methods that must be changed to support a new LineHandler's subclass.
@@ -49,4 +51,6 @@ private:
 	EdgeElement *mEdge; // Doesn't take ownership
 };
 
+}
+}
 }

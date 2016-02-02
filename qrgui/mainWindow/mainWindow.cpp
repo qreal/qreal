@@ -18,6 +18,7 @@
 #include <QtCore/QProcess>
 #include <QtCore/QPluginLoader>
 #include <QtCore/QMetaType>
+#include <QtCore/QSignalMapper>
 #include <QtGui/QDesktopServices>
 #include <QtGui/QKeySequence>
 #include <QtWidgets/QDialog>
@@ -29,6 +30,7 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QAbstractButton>
 #include <QtWidgets/QAction>
+#include <QtWidgets/QTreeView>
 #include <QtPrintSupport/QPrinter>
 #include <QtPrintSupport/QPrintDialog>
 #include <QtSvg/QSvgGenerator>
@@ -44,15 +46,23 @@
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 
-#include <plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/controller/controller.h>
+#include <qrgui/dialogs/findReplaceDialog.h>
+#include <qrgui/editor/propertyEditorView.h>
+#include <qrgui/models/propertyEditorModel.h>
+#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
+#include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/systemFacade/systemFacade.h>
 
 #include <dialogs/projectManagement/suggestToCreateProjectDialog.h>
 #include <dialogs/progressDialog/progressDialog.h>
 
 #include <models/models.h>
-#include <models/commands/createGroupCommand.h>
-#include <models/commands/multipleRemoveCommand.h>
-#include <models/commands/removeElementCommand.h>
+#include <models/commands/createPatternCommand.h>
+#include <models/commands/removeElementsCommand.h>
 
 #include <editor/editorView.h>
 #include <editor/sceneCustomizer.h>
@@ -75,45 +85,52 @@
 #include "referenceList.h"
 #include "splashScreen.h"
 #include "dotRunner.h"
+#include "findManager.h"
+#include "projectManager/projectManagerWrapper.h"
 
 using namespace qReal;
+using namespace qReal::gui;
 using namespace qReal::commands;
-using namespace gui;
+using namespace qReal::gui::editor;
 
 MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
+	, mSplashScreen(new SplashScreen(SettingsManager::value("Splashscreen").toBool()))
 	, mController(new Controller)
-	, mPropertyModel(mFacade.editorManager())
-	, mTextManager(new text::TextManager(mFacade.events(), *this))
 	, mRootIndex(QModelIndex())
 	, mErrorReporter(nullptr)
 	, mIsFullscreen(false)
 	, mPreferencesDialog(this)
 	, mRecentProjectsLimit(SettingsManager::value("recentProjectsLimit").toInt())
 	, mRecentProjectsMapper(new QSignalMapper())
-	, mProjectManager(new ProjectManagerWrapper(this, mTextManager))
 	, mStartWidget(nullptr)
-	, mSceneCustomizer(new SceneCustomizer)
+	, mSceneCustomizer(new SceneCustomizer())
 	, mInitialFileToOpen(fileToOpen)
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
 	setWindowTitle("QReal");
 	registerMetaTypes();
-	SplashScreen splashScreen(SettingsManager::value("Splashscreen").toBool());
-	splashScreen.setVisible(false);
-	splashScreen.setProgress(5);
+	mSplashScreen->activateWindow();
+	mSplashScreen->setProgress(5);
+
+	QApplication::processEvents();
+
+	mFacade.reset(new SystemFacade());
+	mPropertyModel.reset(new PropertyEditorModel(mFacade->editorManager()));
+	mTextManager = new text::TextManager(mFacade->events(), *this);
+	mProjectManager = new ProjectManagerWrapper(this, mTextManager);
 
 	initRecentProjectsMenu();
 	initToolManager();
 	initTabs();
 
-	splashScreen.setProgress(20);
+	mSplashScreen->setProgress(20);
 
 	initMiniMap();
 	initGridProperties();
 
-	splashScreen.setProgress(40);
+	mSplashScreen->setProgress(40);
 
 	initDocks();
 
@@ -124,29 +141,26 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mPreferencesDialog.init();
 
-
-	splashScreen.setProgress(60);
+	mSplashScreen->setProgress(60);
 
 	loadPlugins();
 
-
-	splashScreen.setProgress(70);
+	mSplashScreen->setProgress(70);
 
 	mDocksVisibility.clear();
 
 
-	splashScreen.setProgress(80);
+	mSplashScreen->setProgress(80);
 
 	initActionsFromSettings();
 
-	splashScreen.setProgress(100);
+	mSplashScreen->setProgress(100);
 	if (!SettingsManager::value("maximized").toBool()) {
 		showNormal();
 		restoreGeometry(SettingsManager::value("mainWindowGeometry").toByteArray());
 	} else {
 		showMaximized();
 	}
-	splashScreen.close();
 
 	mFindReplaceDialog = new FindReplaceDialog(models().logicalRepoApi(), this);
 	mFindHelper = new FindManager(models().repoControlApi()
@@ -231,7 +245,7 @@ void MainWindow::connectActions()
 	SettingsListener::listen("PaletteIconsInARowCount", this, &MainWindow::changePaletteRepresentation);
 	SettingsListener::listen("toolbarSize", this, &MainWindow::resetToolbarSize);
 	SettingsListener::listen("pathToImages", this, &MainWindow::updatePaletteIcons);
-	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &MainWindow::applySettings);
+	connect(&mPreferencesDialog, &PreferencesDialog::settingsApplied, this, &qReal::MainWindow::applySettings);
 
 	connect(mController, SIGNAL(canUndoChanged(bool)), mUi->actionUndo, SLOT(setEnabled(bool)));
 	connect(mController, SIGNAL(canRedoChanged(bool)), mUi->actionRedo, SLOT(setEnabled(bool)));
@@ -262,13 +276,13 @@ void MainWindow::connectActions()
 
 void MainWindow::connectSystemEvents()
 {
-	connect(mErrorReporter, &ErrorReporter::informationAdded, &mFacade.events(), &SystemEvents::informationAdded);
-	connect(mErrorReporter, &ErrorReporter::warningAdded, &mFacade.events(), &SystemEvents::warningAdded);
-	connect(mErrorReporter, &ErrorReporter::errorAdded, &mFacade.events(), &SystemEvents::errorAdded);
-	connect(mErrorReporter, &ErrorReporter::criticalAdded, &mFacade.events(), &SystemEvents::criticalAdded);
+	connect(mErrorReporter, &ErrorReporter::informationAdded, &mFacade->events(), &SystemEvents::informationAdded);
+	connect(mErrorReporter, &ErrorReporter::warningAdded, &mFacade->events(), &SystemEvents::warningAdded);
+	connect(mErrorReporter, &ErrorReporter::errorAdded, &mFacade->events(), &SystemEvents::errorAdded);
+	connect(mErrorReporter, &ErrorReporter::criticalAdded, &mFacade->events(), &SystemEvents::criticalAdded);
 
 	connect(static_cast<QRealApplication *>(qApp), &QRealApplication::lowLevelEvent
-			, &mFacade.events(), &SystemEvents::lowLevelEvent);
+			, &mFacade->events(), &SystemEvents::lowLevelEvent);
 }
 
 void MainWindow::initActionsFromSettings()
@@ -312,11 +326,12 @@ MainWindow::~MainWindow()
 	delete mProjectManager;
 	delete mSceneCustomizer;
 	delete mTextManager;
+	delete mUi;
 }
 
 EditorManagerInterface &MainWindow::editorManager()
 {
-	return mFacade.editorManager();
+	return mFacade->editorManager();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -333,7 +348,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	SettingsManager::setValue("mainWindowGeometry", saveGeometry());
 
 	QLOG_INFO() << "Closing main window...";
-	emit mFacade.events().closedMainWindow();
+	emit mFacade->events().closedMainWindow();
 }
 
 void MainWindow::loadPlugins()
@@ -377,7 +392,7 @@ void MainWindow::selectItemWithError(const Id &id)
 		graphicalId = graphicalIds.isEmpty() ? Id() : graphicalIds.at(0);
 	}
 
-	emit mFacade.events().ensureDiagramVisible();
+	emit mFacade->events().ensureDiagramVisible();
 	selectItemOrDiagram(graphicalId);
 	setIndexesOfPropertyEditor(graphicalId);
 	centerOn(graphicalId);
@@ -409,7 +424,7 @@ void MainWindow::activateItemOrDiagram(const QModelIndex &idx, bool setSelected)
 	if (numTab != -1) {
 		mUi->tabs->setCurrentIndex(numTab);
 		const Id currentTabId = getCurrentTab()->editorViewScene().rootItemId();
-		mToolManager.activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
+		mToolManager->activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
 	} else {
 		openNewTab(idx);
 	}
@@ -452,20 +467,27 @@ void MainWindow::activateItemOrDiagram(const Id &id, bool setSelected)
 	}
 }
 
-void MainWindow::sceneSelectionChanged(const QList<Element *> &elements)
+void MainWindow::sceneSelectionChanged()
 {
 	if (!getCurrentTab()) {
 		return;
 	}
 
-	if (elements.isEmpty()) {
-		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
-		mPropertyModel.clearModelIndexes();
-	} else if (elements.length() == 1) {
-		Element * const singleSelected = elements.at(0);
-		setIndexesOfPropertyEditor(singleSelected->id());
+	IdList selectedIds;
+	for (const QGraphicsItem *item : static_cast<QGraphicsScene *>(sender())->selectedItems()) {
+		if (const Element *element = dynamic_cast<const Element *>(item)) {
+			selectedIds << element->id();
+		}
+	}
 
-		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected->id());
+	if (selectedIds.isEmpty()) {
+		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
+		mPropertyModel->clearModelIndexes();
+	} else if (selectedIds.length() == 1) {
+		const Id singleSelected = selectedIds.first();
+		setIndexesOfPropertyEditor(singleSelected);
+
+		const QModelIndex index = models().graphicalModelAssistApi().indexById(singleSelected);
 		if (index.isValid()) {
 			mUi->graphicalModelExplorer->setCurrentIndex(index);
 		}
@@ -647,11 +669,9 @@ void MainWindow::closeDiagramTab(const Id &id)
 
 void MainWindow::deleteFromLogicalExplorer()
 {
-	const QModelIndex index = mUi->logicalModelExplorer->currentIndex();
-	if (index.isValid()) {
-		/// @todo: rewrite it with just MultipleRemoveCommand.
-		MultipleRemoveCommand factory(models());
-		mController->executeGlobal(factory.logicalDeleteCommand(index));
+	const Id id = models().logicalModelAssistApi().idByIndex(mUi->logicalModelExplorer->currentIndex());
+	if (!id.isNull()) {
+		mController->executeGlobal((new RemoveElementsCommand(models()))->withLogicalItemToDelete({id}));
 	}
 }
 
@@ -659,15 +679,13 @@ void MainWindow::deleteFromGraphicalExplorer()
 {
 	const Id id = models().graphicalModelAssistApi().idByIndex(mUi->graphicalModelExplorer->currentIndex());
 	if (!id.isNull()) {
-		MultipleRemoveCommand * const command = new MultipleRemoveCommand(models());
-		command->setItemsToDelete(IdList() << id);
-		mController->executeGlobal(command);
+		mController->executeGlobal((new RemoveElementsCommand(models()))->withItemsToDelete({id}));
 	}
 }
 
 void MainWindow::changeWindowTitle()
 {
-	const QString windowTitle = mToolManager.customizer()->windowTitle();
+	const QString windowTitle = mToolManager->customizer()->windowTitle();
 
 	text::QScintillaTextEdit *area = dynamic_cast<text::QScintillaTextEdit *>(currentTab());
 	if (area) {
@@ -683,7 +701,7 @@ void MainWindow::changeWindowTitle()
 void MainWindow::setTextChanged(bool changed)
 {
 	text::QScintillaTextEdit *area = static_cast<text::QScintillaTextEdit *>(currentTab());
-	const QString windowTitle = mToolManager.customizer()->windowTitle();
+	const QString windowTitle = mToolManager->customizer()->windowTitle();
 	const QString filePath = mTextManager->path(area);
 	const QString chIndicator = changed ? "*" : "";
 	setWindowTitle(windowTitle + " " + chIndicator + filePath);
@@ -699,12 +717,13 @@ void MainWindow::removeReferences(const Id &id)
 
 void MainWindow::showAbout()
 {
-	QMessageBox::about(this, tr("About QReal"), mToolManager.customizer()->aboutText());
+	QMessageBox::about(this, tr("About QReal"), mToolManager->customizer()->aboutText());
 }
 
 void MainWindow::showHelp()
 {
-	const QString url = QString("file:///%1/help/index.html").arg(PlatformInfo::applicationDirPath());
+	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp");
+	const QString url = QString("file:///%1/index.html").arg(pathToHelp);
 	QDesktopServices::openUrl(QUrl(url));
 }
 
@@ -779,9 +798,9 @@ void MainWindow::closeTab(int index)
 	if (diagram) {
 		const Id diagramId = diagram->editorViewScene().rootItemId();
 		mController->diagramClosed(diagramId);
-		emit mFacade.events().diagramClosed(diagramId);
+		emit mFacade->events().diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
-		emit mFacade.events().codeTabClosed(QFileInfo(path));
+		emit mFacade->events().codeTabClosed(QFileInfo(path));
 	} else {
 		// TODO: process other tabs (for example, start tab)
 	}
@@ -793,7 +812,7 @@ void MainWindow::closeTab(int index)
 void MainWindow::showPreferencesDialog()
 {
 	if (mPreferencesDialog.exec() == QDialog::Accepted) {
-		mToolManager.updateSettings();
+		mToolManager->updateSettings();
 	}
 
 	mProjectManager->reinitAutosaver();
@@ -1005,7 +1024,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		const Id diagramId = models().graphicalModelAssistApi().idByIndex(index);
 		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, diagramId, this);
 		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
-		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()) ,&EditorViewScene::enableMouseGestures);
+		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()), &EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
 		mController->diagramOpened(diagramId);
 		initCurrentTab(view, index);
@@ -1068,7 +1087,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	tab->mutableMvIface().setRootIndex(index);
 
 	// Connect after setModel etc. because of signal selectionChanged was sent when there were old indexes
-	connect(&tab->editorViewScene(), &EditorViewScene::sceneSelectionChanged, this, &MainWindow::sceneSelectionChanged);
+	connect(&tab->editorViewScene(), &EditorViewScene::selectionChanged, this, &MainWindow::sceneSelectionChanged);
 	connect(mUi->actionAntialiasing, SIGNAL(toggled(bool)), tab, SLOT(toggleAntialiasing(bool)));
 	connect(models().graphicalModel(), SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int))
 			, &tab->mvIface(), SLOT(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)));
@@ -1175,13 +1194,13 @@ void MainWindow::currentTabChanged(int newIndex)
 
 	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
-		mToolManager.activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
+		mToolManager->activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
 		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 	} else if (text::QScintillaTextEdit * const text = dynamic_cast<text::QScintillaTextEdit *>(currentTab())) {
-		mToolManager.activeTabChanged(TabInfo(mTextManager->path(text), text));
+		mToolManager->activeTabChanged(TabInfo(mTextManager->path(text), text));
 	} else {
-		mToolManager.activeTabChanged(TabInfo(currentTab()));
+		mToolManager->activeTabChanged(TabInfo(currentTab()));
 	}
 
 	emit rootDiagramChanged();
@@ -1232,7 +1251,7 @@ bool MainWindow::closeTab(const QModelIndex &graphicsIndex)
 
 models::Models &MainWindow::models()
 {
-	return mFacade.models();
+	return mFacade->models();
 }
 
 Controller *MainWindow::controller() const
@@ -1257,12 +1276,12 @@ QTreeView *MainWindow::logicalModelExplorer() const
 
 PropertyEditorModel &MainWindow::propertyModel()
 {
-	return mPropertyModel;
+	return *mPropertyModel;
 }
 
 ToolPluginManager &MainWindow::toolManager()
 {
-	return mToolManager;
+	return *mToolManager;
 }
 
 void MainWindow::showGrid(bool isChecked)
@@ -1373,9 +1392,8 @@ void MainWindow::createDiagram(const QString &idString)
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
-		CreateGroupCommand createGroupCommand(models().logicalModelAssistApi()
-				, models().graphicalModelAssistApi(), models().exploser(), Id::rootId(), Id::rootId()
-				, id, false, QPointF());
+		const ElementInfo toCreate(id, Id(), Id::rootId(), Id::rootId(), {}, {}, Id(), false);
+		CreatePatternCommand createGroupCommand(models(), {toCreate});
 		createGroupCommand.redo();
 		created = createGroupCommand.rootId();
 	}
@@ -1437,12 +1455,12 @@ void MainWindow::setIndexesOfPropertyEditor(const Id &id)
 		const Id logicalId = models().graphicalModelAssistApi().logicalId(id);
 		const QModelIndex logicalIndex = models().logicalModelAssistApi().indexById(logicalId);
 		const QModelIndex graphicalIndex = models().graphicalModelAssistApi().indexById(id);
-		mPropertyModel.setModelIndexes(logicalIndex, graphicalIndex);
+		mPropertyModel->setModelIndexes(logicalIndex, graphicalIndex);
 	} else if (models().logicalModelAssistApi().isLogicalId(id)) {
 		const QModelIndex logicalIndex = models().logicalModelAssistApi().indexById(id);
-		mPropertyModel.setModelIndexes(logicalIndex, QModelIndex());
+		mPropertyModel->setModelIndexes(logicalIndex, QModelIndex());
 	} else {
-		mPropertyModel.clearModelIndexes();
+		mPropertyModel->clearModelIndexes();
 	}
 }
 
@@ -1635,7 +1653,7 @@ void MainWindow::initPluginsAndStartWidget()
 		initScriptAPI();
 	}
 
-	BrandManager::configure(&mToolManager);
+	BrandManager::configure(mToolManager.data());
 	mPreferencesDialog.setWindowIcon(BrandManager::applicationIcon());
 	PreferencesPage *hotKeyManagerPage = new PreferencesHotKeyManagerPage(this);
 	mPreferencesDialog.registerPage(tr("Shortcuts"), hotKeyManagerPage);
@@ -1645,6 +1663,8 @@ void MainWindow::initPluginsAndStartWidget()
 	{
 		openStartTab();
 	}
+
+	mSplashScreen->close();
 }
 
 void MainWindow::initActionWidgetsNames()
@@ -1716,20 +1736,20 @@ ScriptAPIWrapper* MainWindow::createScriptAPIWrapper()
 
 void MainWindow::initToolPlugins()
 {
-	mToolManager.init(PluginConfigurator(models().repoControlApi()
+	mToolManager->init(PluginConfigurator(models().repoControlApi()
 		, models().graphicalModelAssistApi()
 		, models().logicalModelAssistApi()
 		, *this
 		, *this
 		, *mProjectManager
 		, *mSceneCustomizer
-		, mFacade.events()
+		, mFacade->events()
 		, *mTextManager));
 
-	QList<ActionInfo> const actions = mToolManager.actions();
+	QList<ActionInfo> const actions = mToolManager->actions();
 	traverseListOfActions(actions);
 
-	for (const HotKeyActionInfo &actionInfo : mToolManager.hotKeyActions()) {
+	for (const HotKeyActionInfo &actionInfo : mToolManager->hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
 	}
 
@@ -1741,7 +1761,7 @@ void MainWindow::initToolPlugins()
 		mUi->interpretersToolbar->hide();
 	}
 
-	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager.preferencesPages();
+	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager->preferencesPages();
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;
 	foreach (const PageDescriptor page, preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
@@ -1796,19 +1816,23 @@ void MainWindow::customizeActionsVisibility()
 
 void MainWindow::initInterpretedPlugins()
 {
-	mInterpretedPluginLoader.init(editorManagerProxy().proxiedEditorManager(), PluginConfigurator(
-			models().repoControlApi()
-			, models().graphicalModelAssistApi()
-			, models().logicalModelAssistApi()
-			, *this
-			, *this
-			, *mProjectManager
-			, *mSceneCustomizer
-			, mFacade.events()
-			, *mTextManager));
+	mInterpretedPluginLoader.reset(new InterpretedPluginsLoader(
+			editorManagerProxy().proxiedEditorManager()
+			, PluginConfigurator(
+					models().repoControlApi()
+					, models().graphicalModelAssistApi()
+					, models().logicalModelAssistApi()
+					, *this
+					, *this
+					, *mProjectManager
+					, *mSceneCustomizer
+					, mFacade->events()
+					, *mTextManager)
+			)
+	);
 
-	const QList<ActionInfo> actions = mInterpretedPluginLoader.listOfActions();
-	mListOfAdditionalActions = mInterpretedPluginLoader.menuActionsList();
+	const QList<ActionInfo> actions = mInterpretedPluginLoader->listOfActions();
+	mListOfAdditionalActions = mInterpretedPluginLoader->menuActionsList();
 
 	traverseListOfActions(actions);
 }
@@ -1836,7 +1860,8 @@ QWidget *MainWindow::windowWidget()
 
 void MainWindow::initToolManager()
 {
-	const Customizer * const customizer = mToolManager.customizer();
+	mToolManager.reset(new ToolPluginManager());
+	const Customizer * const customizer = mToolManager->customizer();
 	if (customizer) {
 		setWindowTitle(customizer->windowTitle());
 		setWindowIcon(customizer->applicationIcon());
@@ -1878,7 +1903,7 @@ void MainWindow::initGridProperties()
 void MainWindow::initExplorers()
 {
 	mUi->propertyEditor->init(models().logicalModelAssistApi(), *mController);
-	mUi->propertyEditor->setModel(&mPropertyModel);
+	mUi->propertyEditor->setModel(mPropertyModel.data());
 
 	mUi->graphicalModelExplorer->setModel(models().graphicalModel());
 	mUi->graphicalModelExplorer->setController(mController);
@@ -1890,7 +1915,7 @@ void MainWindow::initExplorers()
 	mUi->logicalModelExplorer->setAssistApi(&models().logicalModelAssistApi());
 	mUi->logicalModelExplorer->setExploser(models().exploser());
 
-	mPropertyModel.setSourceModels(models().logicalModel(), models().graphicalModel());
+	mPropertyModel->setSourceModels(models().logicalModel(), models().graphicalModel());
 
 	connect(&models().graphicalModelAssistApi(), SIGNAL(nameChanged(const Id &))
 			, this, SLOT(updateTabName(const Id &)));
@@ -2089,7 +2114,7 @@ void MainWindow::openStartTab()
 	const bool hadTabs = mUi->tabs->count() > 0;
 	mUi->tabs->insertTab(0, mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(hadTabs);
-	mStartWidget->setVisibleForInterpreterButton(mToolManager.customizer()->showInterpeterButton());
+	mStartWidget->setVisibleForInterpreterButton(mToolManager->customizer()->showInterpeterButton());
 }
 
 void MainWindow::initScriptAPI()
@@ -2103,7 +2128,7 @@ void MainWindow::initScriptAPI()
 	connect(evalAction, &QAction::triggered, &mScriptAPI, &ScriptAPI::evaluate, Qt::DirectConnection);
 	addAction(evalAction);
 
-	connect(&mFacade.events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
+	connect(&mFacade->events(), &SystemEvents::closedMainWindow, scriptAPIthread, &QThread::quit);
 	mScriptAPI.moveToThread(scriptAPIthread);
 	scriptAPIthread->start();
 }

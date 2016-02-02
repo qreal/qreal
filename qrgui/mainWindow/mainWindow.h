@@ -14,59 +14,54 @@
 
 #pragma once
 
-#include <QtCore/QSignalMapper>
-#include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSplashScreen>
-#include <QtWidgets/QProgressBar>
-#include <QtWidgets/QListWidget>
-#include <QtSql/QSqlDatabase>
 
-#include <qrkernel/settingsManager.h>
-
-#include "findManager.h"
-#include "referenceList.h"
-#include "projectManager/projectManagerWrapper.h"
-#include "tabWidget.h"
-#include "startWidget/startWidget.h"
 #include "scriptAPI/scriptAPI.h"
 #include "scriptAPIWrapper.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/editorManager.h>
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
-#include <qrgui/plugins/pluginManager/toolPluginManager.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
-
-#include <qrgui/systemFacade/systemFacade.h>
-#include <qrgui/editor/propertyEditorView.h>
-#include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/controller/controller.h>
 
 #include <qrgui/preferencesDialog/preferencesDialog.h>
-#include <qrgui/dialogs/findReplaceDialog.h>
 
 class QGraphicsView;
+class QSignalMapper;
+class QListWidget;
+class QTreeView;
+
+class PropertyEditorModel;
+class FindManager;
+class FindReplaceDialog;
 
 namespace Ui {
 class MainWindowUi;
 }
 
 namespace qReal {
-
-class EditorView;
-class SceneCustomizer;
-
-namespace models {
-class Models;
-}
+class Controller;
+class EditorManagerInterface;
+class InterpretedPluginsLoader;
+class ProjectManagerWrapper;
+class ProxyEditorManager;
+class SplashScreen;
+class StartWidget;
+class SystemFacade;
+class ToolPluginManager;
+class ActionInfo;
 
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+
+namespace editor {
+class SceneCustomizer;
+class EditorView;
+class PropertyEditorView;
+}
+}
+
+namespace models {
+class Models;
 }
 
 namespace text {
@@ -84,11 +79,11 @@ public:
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
-	EditorView *getCurrentTab() const;
+	gui::editor::EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
-	PropertyEditorView *propertyEditor() const;
+	gui::editor::PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
 	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
@@ -251,7 +246,7 @@ private slots:
 	void makeSvg();
 	void showGrid(bool isChecked);
 
-	void sceneSelectionChanged(const QList<Element *> &elements);
+	void sceneSelectionChanged();
 
 	void applySettings();
 	void resetToolbarSize(int size);
@@ -296,11 +291,11 @@ private:
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized
 	/// @param rootIndex Index of a graphical model element that will be root of a diagram shown in this tab
-	void initCurrentTab(EditorView * const tab, const QModelIndex &rootIndex);
+	void initCurrentTab(qReal::gui::editor::EditorView * const tab, const QModelIndex &rootIndex);
 
 	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
 	/// @param tab Tab to be initialized with shortcuts
-	void setShortcuts(EditorView * const tab);
+	void setShortcuts(qReal::gui::editor::EditorView * const tab);
 
 	void setDefaultShortcuts();
 
@@ -375,7 +370,9 @@ private:
 	void setVersion(const QString &version);
 
 	Ui::MainWindowUi *mUi;
-	SystemFacade mFacade;
+	QScopedPointer<SystemFacade> mFacade;
+
+	QScopedPointer<SplashScreen> mSplashScreen;
 
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;
@@ -384,9 +381,9 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	Controller *mController;
-	ToolPluginManager mToolManager;
-	InterpretedPluginsLoader mInterpretedPluginLoader;
-	PropertyEditorModel mPropertyModel;
+	QScopedPointer<ToolPluginManager> mToolManager;
+	QScopedPointer<InterpretedPluginsLoader> mInterpretedPluginLoader;
+	QScopedPointer<PropertyEditorModel> mPropertyModel;
 	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
@@ -403,7 +400,7 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mTempDir;
-	gui::PreferencesDialog mPreferencesDialog;
+	qReal::gui::PreferencesDialog mPreferencesDialog;
 
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
@@ -413,7 +410,7 @@ private:
 	ProjectManagerWrapper *mProjectManager;
 	StartWidget *mStartWidget;
 
-	SceneCustomizer *mSceneCustomizer;
+	qReal::gui::editor::SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 

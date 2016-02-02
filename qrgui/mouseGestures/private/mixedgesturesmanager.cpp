@@ -30,8 +30,8 @@ MixedGesturesManager::MixedGesturesManager()
 MixedGesturesManager::~MixedGesturesManager()
 {
 	for (const QString &object : mGestures.keys()) {
-		delete mGestures[object].first;
-		delete mGestures[object].second;
+		delete[] mGestures[object].first;
+		delete[] mGestures[object].second;
 		mGestures.remove(object);
 	}
 }

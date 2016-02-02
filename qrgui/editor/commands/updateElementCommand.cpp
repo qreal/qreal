@@ -14,7 +14,7 @@
 
 #include "updateElementCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 UpdateElementCommand::UpdateElementCommand(const EditorViewScene *scene, const Id &id)
 	: ElementCommand(scene, id)
@@ -52,6 +52,7 @@ bool UpdateElementCommand::update()
 		mElement->checkConnectionsToPort();
 		return true;
 	}
+
 	return false;
 }
 
@@ -61,5 +62,6 @@ bool UpdateElementCommand::equals(const AbstractCommand &other) const
 	if (updateCommand) {
 		return scene() == updateCommand->scene() && elementId() == updateCommand->elementId();
 	}
+
 	return false;
 }

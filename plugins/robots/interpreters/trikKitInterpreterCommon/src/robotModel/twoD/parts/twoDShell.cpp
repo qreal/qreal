@@ -70,6 +70,11 @@ void Shell::print(const QString &text)
 	emit textPrinted(text);
 }
 
+void Shell::initVideoStreaming()
+{
+	// Video streaming has no sense here (for now at least).
+}
+
 void Shell::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
 	mErrorReporter = &errorReporter;

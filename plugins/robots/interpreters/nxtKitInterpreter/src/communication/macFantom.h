@@ -14,30 +14,33 @@
 
 #pragma once
 
+#include "fantom.h"
+
+#include <QtCore/QLibrary>
+
 namespace nxt {
 namespace communication {
 
-/// Fantom driver is not available for Mac OS X, so there is empty implementation.
-class Fantom
+class MacFantom : public Fantom
 {
+	Q_OBJECT
 public:
+	/// Constructor. Tries to load a dylib.
+	MacFantom();
+
 	/// Returns true if fantom driver is available, false otherwise.
-	bool isAvailable();
+	virtual bool isAvailable() const;
+	virtual void checkConsistency();
 
-	// Fantom library methods
+private:
+	/// Returns available if fantom driver is available, notFound otherwise. Return x64 if it's 64-bit Mac.
+	enum class Status { available, notFound, x64 };
+	Status availability() const;
 
-	unsigned long nFANTOM100_createNXT(char resString[], int status, unsigned char checkFVersion);
-	void nFANTOM100_iNXT_sendDirectCommand(unsigned long nxtHandle, bool requireResponse, const char *inputBufferPtr
-			, int inputBufferSize, char *outputBufferPtr, int outputBufferSize, int &status);
+	unsigned long onDriverUnavailable();
 
-	unsigned long nFANTOM100_createNXTIterator(unsigned char searchBluetooth
-			, unsigned long bluetoothSearchTimeout, int &status);
-	void nFANTOM100_iNXTIterator_getName(unsigned long NXTIterHandle, char resString[], int &status);
-	unsigned long nFANTOM100_iNXTIterator_getNXT(unsigned long nxtIterHandle, int &status);
-	void nFANTOM100_destroyNXTIterator(unsigned long nxtIteratorHandle, int &status);
-	void nFANTOM100_iNXTIterator_advance(unsigned long NXTIterHandle, int &status);
-	void nFANTOM100_iNXT_findDeviceInFirmwareDownloadMode(char resString[], int &status);
-	void nFANTOM100_destroyNXT(unsigned long nxtHandle, int &status);
+	Status mAvailability;
+
 };
 
 }

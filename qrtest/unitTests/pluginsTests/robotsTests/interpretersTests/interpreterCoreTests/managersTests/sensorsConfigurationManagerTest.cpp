@@ -34,7 +34,7 @@ void SensorsConfigurationManagerTest::SetUp()
 	mManager.reset(new DevicesConfigurationManager(mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()
-			, mQrguiFacade->systemEvents()
+			, mQrguiFacade->projectManagementInterface()
 			));
 
 	mConfigurer1.reset(new DummySensorsConfigurer("testConfigurer1"));
@@ -81,9 +81,10 @@ TEST_F(SensorsConfigurationManagerTest, serializationTest)
 	// This must restore configuration from repo
 	mQrguiFacade->setActiveTab(oldDiagram);
 
-	// Checking that old configuration was restored...
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1", input)), device1);
-	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2", input)), DeviceInfo());
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A", output)), device1);
-	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B", output)), device2);
+	// It was an old practice to switch devices configuration when switching between tabs.
+	// Now configuration is beeng modified only when .qrs projects are opened or closed.
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("1", input)), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model1", PortInfo("2", input)), device2);
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("A", output)), DeviceInfo());
+	ASSERT_EQ(mConfigurer2->device("model2", PortInfo("B", output)), DeviceInfo());
 }

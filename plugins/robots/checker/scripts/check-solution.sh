@@ -15,20 +15,22 @@
 
 function show_help {
 	echo "Usage: check-solution.sh path/to/save/file"
-	echo "It will launch checker for all fields found in 'fields/<save file base name>' folder, return 0 if on all fields"
-	echo "a program in a save is working correctly or return 1 if it fails on at least one field."
-	echo "Detailed report can be found in 'reports/<save file base name>/<field base name> file."
+	echo "It will launch checker for all fields found in 'fields/<save file base name>' folder located in the same folder as the save file."
+	echo "If a custom fields folder doesn't exist the default fields are taken from '<trikStudio-checker>/fields/<save file base name>' folder,"
+	echo "return 0 if on all fields a program in a save is working correctly or return 1 if it fails on at least one"
+	echo "field. Detailed report can be found in 'reports/<save file base name>/<field base name> file."
 	echo "Robot trajectory can be found in 'trajectories/<save file base name>/<field base name> file."
 	echo "Example: check-solution.sh examples/solutions/alongTheBox.qrs"
 	echo "See bin/2D-model --help for detailed information"
 	exit 0;
 }
 
-savedPwd=$(pwd)
+binFolder="$(dirname "$0")"
+fileFolder=$(dirname "$1")
+fieldsFolder="$fileFolder/fields"
+[ ! -d "$fieldsFolder" ] && fieldsFolder=$binFolder/../fields
 
-cd "$(dirname "$0")"
-
-logFile=$savedPwd/checker-log.txt
+logFile=$(pwd)/checker-log.txt
 
 function log {
 	echo $1 >> "$logFile"
@@ -36,17 +38,18 @@ function log {
 
 log "$( date "+%F %T" ): Check started ================================================================================"
 
-reportFile=$savedPwd/report
-trajectoryFile=$savedPwd/trajectory
-failedFieldFile=$savedPwd/failed-field
+reportFile=$(pwd)/report
+trajectoryFile=$(pwd)/trajectory
+failedFieldFile=$(pwd)/failed-field
 
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
+incorrectSaveFileMessage="[ { \"level\": \"error\", \"message\": \"Некорректный или испорченный файл с сохранением\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
 solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение неправильно работает на одном из тестовых полей\" } ]"
 
 [ "$#" -lt 1 ] && show_help || :
 
-fileWithPath=$savedPwd/$1
+fileWithPath=$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
@@ -56,64 +59,74 @@ if ! [ -f "$fileWithPath" ]; then
 	exit 2
 fi
 
-if [ -f ./2D-model ]; then
-	twoDModel=./2D-model
-	patcher=./patcher
+if [ -f $binFolder/2D-model ]; then
+	twoDModel=$binFolder/2D-model
+	patcher=$binFolder/patcher
 else
-	twoDModel=./2D-model-d
-	patcher=./patcher-d
+	twoDModel=$binFolder/2D-model-d
+	patcher=$binFolder/patcher-d
 fi
 
-chmod +x "$twoDModel"
-chmod +x "$patcher"
+export LD_LIBRARY_PATH=$binFolder
 
-export LD_LIBRARY_PATH=.
-
-rm -rf "$savedPwd/reports/$fileNameWithoutExtension"
-rm -rf "$savedPwd/trajectories/$fileNameWithoutExtension"
+rm -rf "$(pwd)/reports/$fileNameWithoutExtension"
+rm -rf "$(pwd)/trajectories/$fileNameWithoutExtension"
 
 rm -f "$reportFile"
 rm -f "$trajectory"
 rm -f "$failedFieldFile"
 
-mkdir -p "$savedPwd/reports/$fileNameWithoutExtension"
-mkdir -p "$savedPwd/trajectories/$fileNameWithoutExtension"
+mkdir -p "$(pwd)/reports/$fileNameWithoutExtension"
+mkdir -p "$(pwd)/trajectories/$fileNameWithoutExtension"
 
-if [ ! -f "$savedPwd/fields/$fileNameWithoutExtension/no-check-self" ]; then
+if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
-			--report "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
+			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
+			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
 
 	exitCode=$?
 
-	cat "$savedPwd/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" > "$reportFile"
-	cat "$savedPwd/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" > "$trajectoryFile"
+	if [ $exitCode -eq 2 ]; then
+		log "Incorrect or corrupt save file $fileWithPath"
+		echo $incorrectSaveFileMessage
+		exit 1
+	fi
+
+	if [ $exitCode -gt 100 ]; then
+		log "Checker internal error, exit code: $exitCode"
+		echo $internalErrorMessage
+		exit 1
+	fi
+
+	cat "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" > "$reportFile"
+	cat "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" > "$trajectoryFile"
 
 	if [ $exitCode -ne 0 ]; then
 		log "Solution failed on its own field, aborting"
 		echo $solutionFailedOnOwnFieldMessage
+		sync
 		cat "$reportFile"
 		exit 1
 	fi
 fi
 
-log "Looking for prepared testing fields..."
+log "Looking for prepared testing fields in $fieldsFolder..."
 
-if [ -d "$savedPwd/fields/$fileNameWithoutExtension" ]; then
-	log "Found $savedPwd/fields/$fileNameWithoutExtension folder"
+if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
+	log "Found $fieldsFolder/$fileNameWithoutExtension folder"
 
 	solutionCopy=$fileNameWithoutExtension-copy.qrs
 	cp -f $fileWithPath ./$solutionCopy
 
-	for i in $( ls "$savedPwd/fields/$fileNameWithoutExtension" ); do
+	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
 		if [ "$i" == "no-check-self" ]; then
 			continue
 		fi
 
-		log "Field: $i, running $patcher $solutionCopy $savedPwd/fields/$fileNameWithoutExtension/$i..."
-		$patcher "$solutionCopy" "$savedPwd/fields/$fileNameWithoutExtension/$i"
+		log "Field: $i, running $patcher $solutionCopy $fieldsFolder/$fileNameWithoutExtension/$i..."
+		$patcher "$solutionCopy" "$fieldsFolder/$fileNameWithoutExtension/$i"
 		if [ $? -ne 0 ]; then
 			echo $internalErrorMessage
 			log "Patching failed, aborting"
@@ -123,21 +136,29 @@ if [ -d "$savedPwd/fields/$fileNameWithoutExtension" ]; then
 		log "Running Checker"
 		currentField="${i%.*}"
 		$twoDModel --platform minimal -b "./$solutionCopy" \
-				--report "$savedPwd/reports/$fileNameWithoutExtension/$currentField" \
-				--trajectory "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField"
+				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
+				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField"
 
 		exitCode=$?
+
+		if [ $exitCode -gt 100 ]; then
+			log "Checker internal error, exit code: $exitCode"
+			echo $internalErrorMessage
+			exit 1
+		fi
+
 		if [ ! -f $reportFile ]; then
-			cat "$savedPwd/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
-			cat "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
+			cat "$(pwd)/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
+			cat "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
 		fi
 
 		if [ $exitCode -ne 0 ]; then
 			echo $solutionFailedOnOtherFieldMessage
 			log "Test $currentField failed, aborting"
-			cat "$savedPwd/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
-			cat "$savedPwd/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
-			echo "$savedPwd/fields/$fileNameWithoutExtension/$i" > "$failedFieldFile"
+			cat "$(pwd)/reports/$fileNameWithoutExtension/$currentField" > "$reportFile"
+			cat "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" > "$trajectoryFile"
+			echo "$(pwd)/fields/$fileNameWithoutExtension/$i" > "$failedFieldFile"
+			sync
 			cat "$reportFile"
 			rm -f "$solutionCopy"
 			exit 1
@@ -151,5 +172,6 @@ else
 	log "No testing fields found"
 fi
 
+sync
 cat "$reportFile"
 exit 0

@@ -29,6 +29,5 @@ Accelerometer::Accelerometer(const DeviceInfo &info
 
 void Accelerometer::read()
 {
-	/// @todo: Emulate accelerometer in 2D model
-	emit newData(0);
+	emit newData(mEngine.readAccelerometerSensor());
 }
