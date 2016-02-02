@@ -58,7 +58,7 @@ qrxc_resource.variable_out = NEW_RESOURCES
 QMAKE_EXTRA_COMPILERS += qrxc_resource
 
 
-MOC_PATH = $$system(pkg-config --variable=moc Qt$$QT_MAJOR_VERSION)
+MOC_PATH = $$system(pkg-config --variable=prefix Qt$$QT_MAJOR_VERSION)/bin/moc
 
 
 # Here we need to call moc explicitly because by default it will be called before any files were generated
