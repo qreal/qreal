@@ -19,5 +19,6 @@ include(../../../../global.pri)
 TEMPLATE = lib
 
 copyToDestdir($$PWD/icons/splashscreen.png)
+#copyToDestdir($$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/bin/x86-$$CONFIGURATION)
 
 include(interpreterCore.pri)

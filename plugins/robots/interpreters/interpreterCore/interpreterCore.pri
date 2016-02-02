@@ -17,6 +17,10 @@ QT += svg xml widgets
 includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/common/kitBase \
 		plugins/robots/common/twoDModel \
+#rework later
+		plugins/robots/common/trikKit \
+		plugins/robots/interpreters/trikKitInterpreterCommon \
+#
 		plugins/robots/utils \
 		qrtext \
 		plugins/robots/thirdparty/trikRuntime/trikControl \
@@ -61,7 +65,9 @@ HEADERS += \
 	$$PWD/src/ui/robotsSettingsPage.h \
 	$$PWD/src/ui/modeStripe.h \
 	$$PWD/include/interpreterCore/interpreter/qtsinterpreter.h \
-	$$PWD/include/interpreterCore/interpreter/trikbrick.h
+	$$PWD/include/interpreterCore/interpreter/trikbrick.h \
+	$$PWD/include/interpreterCore/interpreter/trikEmulation/displaywidgetemu.h
+
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -95,7 +101,9 @@ SOURCES += \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 	$$PWD/src/ui/modeStripe.cpp \
-	$$PWD/src/interpreter/qtsinterpreter.cpp
+	$$PWD/src/interpreter/qtsinterpreter.cpp \
+	$$PWD/src/interpreter/trikbrick.cpp \
+	$$PWD/src/interpreter/trikEmulation/displaywidgetemu.cpp
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \
