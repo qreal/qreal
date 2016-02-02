@@ -1,12 +1,15 @@
 #pragma once
 
-#include <plugins/robots/thirdparty/trikRuntime/trikControl/include/trikControl/brickInterface.h>
+#include <trikControl/brickInterface.h>
+/// TODO: factor everything out to trikit common, leave only textinterp.
+#include <kitBase/robotModel/robotModelInterface.h>
 
 class TrikBrick : public trikControl::BrickInterface {
 
 
 	// BrickInterface interface
 public:
+	TrikBrick(kitBase::robotModel::RobotModelInterface *model);
 	void reset() override {}
 	trikControl::DisplayWidgetInterface &graphicsWidget() override {
 		trikControl::DisplayWidgetInterface temp;
@@ -34,7 +37,11 @@ public slots:
 	trikControl::EncoderInterface *encoder(const QString &port) override {return nullptr;}
 	trikControl::BatteryInterface *battery() override {return nullptr;}
 	trikControl::KeysInterface *keys() override {return nullptr;}
-	trikControl::DisplayInterface *display() override {return nullptr;}
+	trikControl::DisplayInterface *display() override;
 	trikControl::LedInterface *led() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
+
+private:
+	kitBase::robotModel::RobotModelInterface *mTwoDModel;
+
 };

@@ -47,7 +47,7 @@ QtsInterpreter::QtsInterpreter(const GraphicalModelAssistInterface &graphicalMod
 	, mSensorVariablesUpdater(robotModelManager, languageToolbox)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 	, mLanguageToolbox(languageToolbox)
-	, mBrick()
+	, mBrick(&robotModelManager.model())
 	, mScriptExecControl()
 	, mScriptEngine(mBrick, nullptr, nullptr, mScriptExecControl)
 {
