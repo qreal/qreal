@@ -19,7 +19,7 @@
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node displayedName="Constraints Diagram" description="Элемент для описания ограничений на конкретный язык. В его свойствах указывается имя соответсвующего языка. Должен вкладываться в Metamodel Constraints" name="constraintsDiagram">
+			<node displayedName="Constraints Diagram" description="Элемент для описания ограничений на конкретный язык. В его свойствах указывается имя соответствующего языка. Должен вкладываться в Metamodel Constraints" name="constraintsDiagram">
 				<graphics>
 					<picture sizex="200" sizey="200">
 						<line stroke-style="solid" fill-style="none" stroke-width="0" fill="#000000" y1="40" stroke="#000000" y2="159" x1="-1" x2="0"/>
@@ -49,8 +49,9 @@
 					</container>
 					<properties>
 						<property displayedName="Language Name" name="languageName" type="string">
-				<default>AllLanguages</default>
-			</property>
+							<default>AllLanguages</default>
+							<description>Имя языка, для которого задаются ограничения (по умолчанию это все языки)</description>
+						</property>
 					</properties>
 					<explodesTo/>
 				</logic>
@@ -604,8 +605,9 @@
 					</container>
 					<properties>
 						<property displayedName="Metamodel Name" name="metamodelName" type="string">
-				<default>AllMetamodels</default>
-			</property>
+							<default>AllMetamodels</default>
+							<description>Имя метамодели, для которой задаются ограничения (по умолчанию все метамодели)</description>
+						</property>
 						<property displayedName="Output Dir Path" name="outputDirPath" type="DirectoryPath"/>
 						<property displayedName="Dir Path to QReal" name="pathToQReal" type="DirectoryPath"/>
 						<property displayedName="Build Configuration" name="buildConfiguration" type="buildConfiguration">
