@@ -46,7 +46,7 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 	disconnect();
 }
 
-void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, unsigned responseSize)
+void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mHandle) {
 		emit response(addressee, QByteArray());
@@ -82,12 +82,14 @@ void UsbRobotCommunicationThread::connect()
 	}
 
 	if (libusb_set_configuration(mHandle, EV3_CONFIGURATION_NB) < 0) {
-		emit connected(false, tr("USB Device configuration problem. Please contact developers."));
+		emit connected(false, tr("USB device configuration problem. Please contact developers."));
+		mHandle = nullptr;
 		return;
 	}
 
 	if (libusb_claim_interface(mHandle, EV3_INTERFACE_NUMBER) < 0) {
-		emit connected(false, tr("USB Device interface problem. Please contact developers."));
+		emit connected(false, tr("USB device interface problem. Please contact developers."));
+		mHandle = nullptr;
 		return;
 	}
 
@@ -128,7 +130,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 	}
 
 	// Sending "Keep alive" command to check connection.
-	unsigned char command[10];
+	uchar command[10];
 	command[0] = 8;
 	command[1] = 0;
 	command[2] = 0;
@@ -149,7 +151,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 	}
 }
 
-void UsbRobotCommunicationThread::send(const QByteArray &buffer, unsigned responseSize, QByteArray &outputBuffer)
+void UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);
@@ -166,12 +168,8 @@ QByteArray UsbRobotCommunicationThread::receive(int size) const
 {
 	// It's strange, but regardless of kind of response, it must have size = 1024 (EV3_PACKET_SIZE)
 	// If we set another size(For example, response[10]), program will throw error.
-	unsigned char response[EV3_PACKET_SIZE];
+	uchar response[EV3_PACKET_SIZE];
 	int actualLength = 0;
 	libusb_bulk_transfer(mHandle, EV3_EP_IN, response, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
 	return QByteArray::fromRawData(reinterpret_cast<char *>(response), size);
-}
-
-void UsbRobotCommunicationThread::checkConsistency()
-{
 }

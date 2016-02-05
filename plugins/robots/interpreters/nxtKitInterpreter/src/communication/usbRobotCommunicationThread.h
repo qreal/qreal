@@ -20,9 +20,7 @@
 
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
-#include "fantom.h"
-
-class QextSerialPort;
+class libusb_device_handle;
 
 namespace nxt {
 namespace communication {
@@ -36,12 +34,11 @@ public:
 	~UsbRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
-	void connect();
-	void reconnect();
-	void disconnect();
-	void allowLongJobs(bool allow = true);
-	void checkConsistency();
+	void send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
+	void connect() override;
+	void reconnect() override;
+	void disconnect() override;
+	void allowLongJobs(bool allow = true) override;
 
 private slots:
 	/// Checks if robot is connected
@@ -54,14 +51,9 @@ private slots:
 private:
 	static const int kStatusNoError = 0;
 
-	bool isOpen();
+	void send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
 
-	void send(const QByteArray &buffer, const unsigned responseSize
-			, QByteArray &outputBuffer);
-
-	bool mActive;
-	unsigned long mNXTHandle;
-	Fantom *mFantom;
+	libusb_device_handle *mHandle;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;

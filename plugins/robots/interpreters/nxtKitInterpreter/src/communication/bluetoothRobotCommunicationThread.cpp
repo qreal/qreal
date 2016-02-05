@@ -24,8 +24,8 @@
 
 #include "commandConstants.h"
 
-const unsigned keepAliveResponseSize = 9;
-const unsigned getFirmwareVersionResponseSize = 9;
+const int keepAliveResponseSize = 9;
+const int getFirmwareVersionResponseSize = 9;
 
 using namespace nxt::communication;
 
@@ -41,8 +41,7 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 	disconnect();
 }
 
-void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, const unsigned responseSize)
+void BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -113,8 +112,7 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow)
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
-		, const unsigned responseSize, QByteArray &outputBuffer)
+void BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);
@@ -150,8 +148,4 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 	if (response == QByteArray()) {
 		emit disconnected();
 	}
-}
-
-void BluetoothRobotCommunicationThread::checkConsistency()
-{
 }

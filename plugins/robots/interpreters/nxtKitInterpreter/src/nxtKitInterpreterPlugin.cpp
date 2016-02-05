@@ -63,13 +63,6 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, [this](const QString &modelName)
 	{
 		mCurrentlySelectedModelName = modelName;
-		if (modelName == mUsbRealRobotModel.name()) {
-			mUsbRealRobotModel.checkConnection();
-		}
-
-		if (modelName == mBluetoothRealRobotModel.name()) {
-			mBluetoothRealRobotModel.checkConnection();
-		}
 	});
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface

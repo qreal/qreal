@@ -25,7 +25,7 @@
 #include "ev3Kit/communication/commandConstants.h"
 #include "ev3Kit/communication/ev3DirectCommand.h"
 
-const unsigned keepAliveResponseSize = 5;
+const int keepAliveResponseSize = 5;
 
 using namespace ev3::communication;
 
@@ -41,8 +41,7 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 	disconnect();
 }
 
-void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, const unsigned responseSize)
+void BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
@@ -109,8 +108,7 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow);
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
-		, const unsigned responseSize, QByteArray &outputBuffer)
+void BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
 	send(buffer);
 	outputBuffer = receive(responseSize);
@@ -151,8 +149,4 @@ void BluetoothRobotCommunicationThread::keepAlive()
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::KEEP_ALIVE, command, index);
 	Ev3DirectCommand::addByteParameter(10, command, index); // 10 - Number of minutes before entering sleep mode.
 	send(command);
-}
-
-void BluetoothRobotCommunicationThread::checkConsistency()
-{
 }

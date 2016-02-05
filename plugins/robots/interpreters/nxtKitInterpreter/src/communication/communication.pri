@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2012-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,39 +15,9 @@
 HEADERS += \
 	$$PWD/bluetoothRobotCommunicationThread.h \
 	$$PWD/usbRobotCommunicationThread.h \
-	$$PWD/fantom.h \
-	$$PWD/fantomMethods.h \
 	$$PWD/i2cCommunicator.h \
 
 SOURCES += \
 	$$PWD/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/usbRobotCommunicationThread.cpp \
 	$$PWD/i2cCommunicator.cpp \
-	$$PWD/fantom.cpp \
-
-win32 {
-	HEADERS += \
-		$$PWD/windowsFantom.h \
-
-	SOURCES += \
-		$$PWD/windowsFantom.cpp \
-
-}
-
-unix:!macx {
-	HEADERS += \
-		$$PWD/linuxFantom.h \
-
-	SOURCES += \
-		$$PWD/linuxFantom.cpp \
-
-}
-
-macx {
-	HEADERS += \
-		$$PWD/macFantom.h \
-
-	SOURCES += \
-		$$PWD/macFantom.cpp \
-
-}

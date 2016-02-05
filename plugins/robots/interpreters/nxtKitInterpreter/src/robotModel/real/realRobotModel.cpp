@@ -62,11 +62,6 @@ void RealRobotModel::disconnectFromRobot()
 	mRobotCommunicator->disconnect();
 }
 
-void RealRobotModel::checkConnection()
-{
-	mRobotCommunicator->checkConsistency();
-}
-
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA(displayInfo())) {

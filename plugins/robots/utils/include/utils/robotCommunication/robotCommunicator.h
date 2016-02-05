@@ -42,9 +42,6 @@ public:
 	RobotCommunicationThreadInterface *currentCommunicator() const;
 	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
-	/// Checks if connection can be established or emits errorOccured();
-	void checkConsistency();
-
 signals:
 	void errorOccured(const QString &message);
 	void connected(bool success, const QString &errorString);
