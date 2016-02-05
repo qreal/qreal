@@ -10,6 +10,12 @@
     <height>446</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -32,14 +38,14 @@
     <widget class="QTableWidget" name="columnDataTable">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>70</y>
-       <width>401</width>
-       <height>192</height>
+       <x>10</x>
+       <y>160</y>
+       <width>681</width>
+       <height>221</height>
       </rect>
      </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -97,6 +103,100 @@
      <column>
       <property name="text">
        <string>auto increment</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QTableWidget" name="tableDataTable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>311</width>
+       <height>131</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>TableName</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Temp</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Temporary</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>If not exists</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Avg row length</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Check sum</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Comment</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Max rows</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Min rows</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Pack keys</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Delay key write</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Auto increment</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Without row id</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>Property value</string>
       </property>
      </column>
     </widget>

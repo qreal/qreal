@@ -13,6 +13,8 @@ namespace qReal {
 
 class EditorViewScene;
 
+class NodeElement;
+
 class TableMenuWidget : public QDialog
 {
 	Q_OBJECT
@@ -24,12 +26,30 @@ public:
 public slots:
 	void open();
 	void close();
+	void updateTable(QTableWidgetItem *item);
 	void updateColumn(QTableWidgetItem *item);
 	// Fill columnNames depending on the dbms (different set of properties)
-	void setColumnPropertiesForDbms();
+	void setPropertiesForDbms();
 
 private:
-	enum { ElementId
+	enum TablePropertyRowNumber {
+		TableName = 0
+		, Temp
+		, Temporary
+		, IfNotExists
+		, AvgRowLength
+		, CheckSum
+		, Comment
+		, MaxRows
+		, MinRows
+		, PackKeys
+		, DelayKeyWrite
+		, TableAutoIncrement
+		, TableType
+		, WithoutRowid
+	};
+	enum ColumnPropertyColumnNumber {
+		ElementId = 0
 		 , Name
 		 , DataType
 		 , IsPrimaryKey
@@ -39,14 +59,16 @@ private:
 		 , Default
 		 , WithCompression
 		 , WithComp
-		 , AutoIncrement };
+		 , ColumnAutoIncrement };
 
 	QString mDbmsName;
 
-	void fillGeneralTab();
+	void fillTableProperties();
+	void fillColumnProperties();
 
 	Ui::TableMenuWidget *mUi;
 	const Id mId;
+	NodeElement *mTableNodeElement;
 	EditorViewScene *mEditorViewScene;
 };
 }

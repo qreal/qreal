@@ -15,10 +15,15 @@ TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene,
 {
 	mUi->setupUi(this);
 	this->setModal(true);
-	fillGeneralTab();
 
-	setColumnPropertiesForDbms();
+	mTableNodeElement = mEditorViewScene->getNodeById(mId);
 
+	fillTableProperties();
+	fillColumnProperties();
+
+	setPropertiesForDbms();
+
+	connect(mUi->tableDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateTable(QTableWidgetItem*)));
 	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
 }
 
@@ -36,6 +41,72 @@ void TableMenuWidget::open()
 void TableMenuWidget::close()
 {
 
+}
+
+void TableMenuWidget::updateTable(QTableWidgetItem *item)
+{
+	int rowNum = item->row();
+	NodeElement *table = mEditorViewScene->getNodeById(mId);
+
+	QString cellContents = item->text();
+	switch(rowNum) {
+	case TableName: {
+		table->setProperty("Name", cellContents);
+		break;
+	}
+	case Temp: {
+		table->setProperty("temp", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Temporary: {
+		table->setProperty("temporary", item->checkState() == Qt::Checked);
+		break;
+	}
+	case IfNotExists: {
+		table->setProperty("if_not_exists", item->checkState() == Qt::Checked);
+		break;
+	}
+	case AvgRowLength: {
+		table->setProperty("avg_row_length", cellContents);
+		break;
+	}
+	case CheckSum: {
+		table->setProperty("check_sum", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Comment: {
+		table->setProperty("comment", cellContents);
+		break;
+	}
+	case MaxRows: {
+		table->setProperty("max_rows", cellContents);
+		break;
+	}
+	case MinRows: {
+		table->setProperty("min_rows", cellContents);
+		break;
+	}
+	case PackKeys: {
+		table->setProperty("pack_keys", item->checkState() == Qt::Checked);
+		break;
+	}
+	case DelayKeyWrite: {
+		table->setProperty("if_not_exists", item->checkState() == Qt::Checked);
+		break;
+	}
+	case TableAutoIncrement: {
+		table->setProperty("auto_increment", item->checkState() == Qt::Checked);
+		break;
+	}
+	case TableType: {
+		table->setProperty("tableType", cellContents);
+		break;
+	}
+	case WithoutRowid: {
+		table->setProperty("without_rowid", item->checkState() == Qt::Checked);
+		break;
+	}
+	}
 }
 
 void TableMenuWidget::updateColumn(QTableWidgetItem *item)
@@ -84,44 +155,159 @@ void TableMenuWidget::updateColumn(QTableWidgetItem *item)
 		column->setProperty("with_comp", item->checkState() == Qt::Checked);
 		break;
 	}
-	case AutoIncrement:
+	case ColumnAutoIncrement:
 		column->setProperty("auto_increment", item->checkState() == Qt::Checked);
 		break;
 	}
 }
 
-void TableMenuWidget::setColumnPropertiesForDbms()
+void TableMenuWidget::setPropertiesForDbms()
 {
 	mUi->columnDataTable->hideColumn(ElementId);
 	if (mDbmsName == "Sqlite") {
 		mUi->columnDataTable->hideColumn(Null);
 		mUi->columnDataTable->hideColumn(WithCompression);
 		mUi->columnDataTable->hideColumn(WithComp);
+
+		mUi->tableDataTable->hideRow(AvgRowLength);
+		mUi->tableDataTable->hideRow(CheckSum);
+		mUi->tableDataTable->hideRow(Comment);
+		mUi->tableDataTable->hideRow(MaxRows);
+		mUi->tableDataTable->hideRow(MinRows);
+		mUi->tableDataTable->hideRow(PackKeys);
+		mUi->tableDataTable->hideRow(DelayKeyWrite);
+		mUi->tableDataTable->hideRow(TableAutoIncrement);
+		mUi->tableDataTable->hideRow(TableType);
 	}
 	else if (mDbmsName == "SqlServer2008") {
 		mUi->columnDataTable->hideColumn(WithCompression);
 		mUi->columnDataTable->hideColumn(WithComp);
-		mUi->columnDataTable->hideColumn(AutoIncrement);
+		mUi->columnDataTable->hideColumn(ColumnAutoIncrement);
+
+		mUi->tableDataTable->hideRow(Temp);
+		mUi->tableDataTable->hideRow(Temporary);
+		mUi->tableDataTable->hideRow(IfNotExists);
+		mUi->tableDataTable->hideRow(AvgRowLength);
+		mUi->tableDataTable->hideRow(CheckSum);
+		mUi->tableDataTable->hideRow(Comment);
+		mUi->tableDataTable->hideRow(MaxRows);
+		mUi->tableDataTable->hideRow(MinRows);
+		mUi->tableDataTable->hideRow(PackKeys);
+		mUi->tableDataTable->hideRow(DelayKeyWrite);
+		mUi->tableDataTable->hideRow(TableAutoIncrement);
+		mUi->tableDataTable->hideRow(TableType);
+		mUi->tableDataTable->hideRow(WithoutRowid);
 	}
 	else if (mDbmsName == "MySql5") {
 
 		mUi->columnDataTable->hideColumn(WithCompression);
 		mUi->columnDataTable->hideColumn(WithComp);
+
+		mUi->tableDataTable->hideRow(Temp);
+		mUi->tableDataTable->hideRow(WithoutRowid);
 	}
 	else if (mDbmsName == "MicrosoftAccess") {
 		mUi->columnDataTable->hideColumn(Null);
 		mUi->columnDataTable->hideColumn(Default);
-		mUi->columnDataTable->hideColumn(AutoIncrement);
+		mUi->columnDataTable->hideColumn(ColumnAutoIncrement);
+
+		mUi->tableDataTable->hideRow(Temp);
+		mUi->tableDataTable->hideRow(IfNotExists);
+		mUi->tableDataTable->hideRow(AvgRowLength);
+		mUi->tableDataTable->hideRow(CheckSum);
+		mUi->tableDataTable->hideRow(Comment);
+		mUi->tableDataTable->hideRow(MaxRows);
+		mUi->tableDataTable->hideRow(MinRows);
+		mUi->tableDataTable->hideRow(PackKeys);
+		mUi->tableDataTable->hideRow(DelayKeyWrite);
+		mUi->tableDataTable->hideRow(TableAutoIncrement);
+		mUi->tableDataTable->hideRow(TableType);
+		mUi->tableDataTable->hideRow(WithoutRowid);
 	}
 }
 
-void TableMenuWidget::fillGeneralTab()
+void TableMenuWidget::fillTableProperties()
 {
-	NodeElement *table = mEditorViewScene->getNodeById(mId);
-	QVariant tableName = table->getProperty("Name");
+	int columnNum = 0;
 
+	QVariant tableName = mTableNodeElement->getProperty("Name");
+	mUi->tableDataTable->setItem(TableName, columnNum, new QTableWidgetItem(tableName.toString()));
 
-	QList<NodeElement *> columns = table->childNodes();
+	QVariant temp = mTableNodeElement->getProperty("temp");
+	mUi->tableDataTable->setItem(Temp, columnNum, new QTableWidgetItem());
+	if (temp.toBool())
+		mUi->tableDataTable->item(Temp, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(Temp, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant temporary = mTableNodeElement->getProperty("temporary");
+	mUi->tableDataTable->setItem(Temporary, columnNum, new QTableWidgetItem());
+	if (temporary.toBool())
+		mUi->tableDataTable->item(Temporary, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(Temporary, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant ifNotExists = mTableNodeElement->getProperty("if_not_exists");
+	mUi->tableDataTable->setItem(IfNotExists, columnNum, new QTableWidgetItem());
+	if (ifNotExists.toBool())
+		mUi->tableDataTable->item(IfNotExists, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(IfNotExists, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant avgRowLength = mTableNodeElement->getProperty("avg_row_length");
+	mUi->tableDataTable->setItem(AvgRowLength, columnNum, new QTableWidgetItem(avgRowLength.toString()));
+
+	QVariant checkSum = mTableNodeElement->getProperty("check_sum");
+	mUi->tableDataTable->setItem(CheckSum, columnNum, new QTableWidgetItem());
+	if (checkSum.toBool())
+		mUi->tableDataTable->item(CheckSum, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(CheckSum, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant comment = mTableNodeElement->getProperty("comment");
+	mUi->tableDataTable->setItem(Comment, columnNum, new QTableWidgetItem(comment.toString()));
+
+	QVariant maxRows = mTableNodeElement->getProperty("max_rows");
+	mUi->tableDataTable->setItem(MaxRows, columnNum, new QTableWidgetItem(maxRows.toString()));
+
+	QVariant minRows = mTableNodeElement->getProperty("min_rows");
+	mUi->tableDataTable->setItem(MinRows, columnNum, new QTableWidgetItem(minRows.toString()));
+
+	QVariant packKeys = mTableNodeElement->getProperty("pack_keys");
+	mUi->tableDataTable->setItem(PackKeys, columnNum, new QTableWidgetItem());
+	if (packKeys.toBool())
+		mUi->tableDataTable->item(PackKeys, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(PackKeys, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant delayKeyWrite = mTableNodeElement->getProperty("delay_key_write");
+	mUi->tableDataTable->setItem(DelayKeyWrite, columnNum, new QTableWidgetItem());
+	if (delayKeyWrite.toBool())
+		mUi->tableDataTable->item(DelayKeyWrite, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(DelayKeyWrite, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant autoIncrement = mTableNodeElement->getProperty("auto_increment");
+	mUi->tableDataTable->setItem(TableAutoIncrement, columnNum, new QTableWidgetItem());
+	if (autoIncrement.toBool())
+		mUi->tableDataTable->item(TableAutoIncrement, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(TableAutoIncrement, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant tableType = mTableNodeElement->getProperty("type");
+	mUi->tableDataTable->setItem(TableType, columnNum, new QTableWidgetItem(tableType.toString()));
+
+	QVariant withoutRowid = mTableNodeElement->getProperty("without_rowid");
+	mUi->tableDataTable->setItem(WithoutRowid, columnNum, new QTableWidgetItem());
+	if (withoutRowid.toBool())
+		mUi->tableDataTable->item(WithoutRowid, columnNum)->setCheckState(Qt::Checked);
+	else
+		mUi->tableDataTable->item(WithoutRowid, columnNum)->setCheckState(Qt::Unchecked);
+}
+
+void TableMenuWidget::fillColumnProperties()
+{
+	QList<NodeElement *> columns = mTableNodeElement->childNodes();
 	for (NodeElement *column : columns) {
 		// invisible id
 		int rowCount = mUi->columnDataTable->rowCount();
@@ -172,7 +358,6 @@ void TableMenuWidget::fillGeneralTab()
 		else
 			mUi->columnDataTable->item(rowCount, WithCompression)->setCheckState(Qt::Unchecked);
 
-
 		QVariant withComp = column->getProperty("with_comp");
 		mUi->columnDataTable->setItem(rowCount, WithComp, new QTableWidgetItem(withComp.toString()));
 		if (withComp.toBool())
@@ -181,11 +366,11 @@ void TableMenuWidget::fillGeneralTab()
 			mUi->columnDataTable->item(rowCount, WithComp)->setCheckState(Qt::Unchecked);
 
 		QVariant autoIncrement = column->getProperty("auto_increment");
-		mUi->columnDataTable->setItem(rowCount, AutoIncrement, new QTableWidgetItem());
+		mUi->columnDataTable->setItem(rowCount, ColumnAutoIncrement, new QTableWidgetItem());
 		if (autoIncrement.toBool())
-			mUi->columnDataTable->item(rowCount, AutoIncrement)->setCheckState(Qt::Checked);
+			mUi->columnDataTable->item(rowCount, ColumnAutoIncrement)->setCheckState(Qt::Checked);
 		else
-			mUi->columnDataTable->item(rowCount, AutoIncrement)->setCheckState(Qt::Unchecked);
+			mUi->columnDataTable->item(rowCount, ColumnAutoIncrement)->setCheckState(Qt::Unchecked);
 	}
 }
 
