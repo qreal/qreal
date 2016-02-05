@@ -82,7 +82,7 @@
 
 						<property type="bool" name="pack_keys" displayedName="Pack keys"/>
 						<property type="bool" name="delay_key_write" displayedName="Delay key write"/>
-						<property type="string" name="auto_increment" displayedName="Auto increment"/>
+						<property type="bool" name="auto_increment" displayedName="Auto increment"/>
 						<property type="tableType" name="type" displayedName="Type"/>
 					</properties>
 				</logic>
