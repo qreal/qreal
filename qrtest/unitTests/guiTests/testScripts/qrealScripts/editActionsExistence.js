@@ -21,14 +21,12 @@ assert(menuEdit != null);
 utils.activateMenu(menuEdit);
 api.wait(200);
 
-var actionUndo = ui.getActionInMenu(menuEdit, "actionUndo");
-checkAction(actionUndo, false, false, false);
-expect(!ui.isSubMenuInMenu(menuEdit, actionUndo));
+function expectAction(actionName) {
+    var action = ui.getActionInMenu(menuEdit, actionName);
+    checkAction(action, false, false, false);
+    expect(!ui.isSubMenuInMenu(menuEdit, action));
+}
 
-var actionRedo = ui.getActionInMenu(menuEdit, "actionRedo");
-checkAction(actionRedo, false, false, false);
-expect(!ui.isSubMenuInMenu(menuEdit, actionRedo));
-
-var actionFind = ui.getActionInMenu(menuEdit, "actionFind");
-checkAction(actionFind, false, false, false);
-expect(!ui.isSubMenuInMenu(menuEdit, actionFind));
+expectAction("actionUndo");
+expectAction("actionRedo");
+expectAction("actionFind");

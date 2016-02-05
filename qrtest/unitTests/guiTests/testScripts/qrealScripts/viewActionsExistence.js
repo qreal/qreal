@@ -47,46 +47,20 @@ api.wait(200);
 var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
-var actionMiniMap = ui.getActionInMenu(subMenuPanels, "Mini Map");
-checkAction(actionMiniMap, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionMiniMap));
+function expectPanelsAction(actionName, isChecked) {
+    var action = ui.getActionInMenu(subMenuPanels, actionName);
+    checkAction(action, true, true, isChecked);
+    expect(!ui.isSubMenuInMenu(subMenuPanels, action));
+}
 
-var actionPalette = ui.getActionInMenu(subMenuPanels, "Palette");
-checkAction(actionPalette, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionPalette));
-
-var actionLogicalExplorer = ui.getActionInMenu(subMenuPanels, "Logical Model Explorer");
-checkAction(actionLogicalExplorer, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionLogicalExplorer));
-
-var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
-checkAction(actionErrors, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionErrors));
-
-var actionGraphicalExplorer = ui.getActionInMenu(subMenuPanels, "Graphical Model Explorer");
-checkAction(actionGraphicalExplorer, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionGraphicalExplorer));
-
-var actionProperty = ui.getActionInMenu(subMenuPanels, "Property Editor");
-checkAction(actionProperty, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionProperty));
-
-var actionFileToolbar = ui.getActionInMenu(subMenuPanels, "File Toolbar");
-checkAction(actionFileToolbar, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionFileToolbar));
-
-var actionEditToolbar = ui.getActionInMenu(subMenuPanels, "Edit Toolbar");
-checkAction(actionEditToolbar, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionEditToolbar));
-
-var actionViewToolbar = ui.getActionInMenu(subMenuPanels, "View Toolbar");
-checkAction(actionViewToolbar, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionViewToolbar));
-
-var actionInterpreterToolbar = ui.getActionInMenu(subMenuPanels, "Interpreter Toolbar");
-checkAction(actionInterpreterToolbar, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionInterpreterToolbar));
-
-var actionGeneratorsToolbar = ui.getActionInMenu(subMenuPanels, "Generators Toolbar");
-checkAction(actionGeneratorsToolbar, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionGeneratorsToolbar));
+expectPanelsAction("Mini Map", false);
+expectPanelsAction("Palette", true);
+expectPanelsAction("Logical Model Explorer", false);
+expectPanelsAction("Errors", false);
+expectPanelsAction("Graphical Model Explorer", false);
+expectPanelsAction("Property Editor", false);
+expectPanelsAction("File Toolbar", true);
+expectPanelsAction("Edit Toolbar", true);
+expectPanelsAction("View Toolbar", true);
+expectPanelsAction("Interpreter Toolbar", false);
+expectPanelsAction("Generators Toolbar", false);

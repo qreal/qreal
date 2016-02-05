@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-// парочку хотя бы?
+// todo: several hotkeys mb?
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 

@@ -21,13 +21,11 @@ assert(menuFile != null);
 utils.activateMenu(menuFile);
 api.wait(200);
 
-var actionNewProject = ui.getActionInMenu(menuFile, "actionNewProject");
-checkAction(actionNewProject, true, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionNewProject));
-
-var actionNewDiagram = ui.getActionInMenu(menuFile, "actionNew_Diagram");
-checkAction(actionNewDiagram, true, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionNewDiagram));
+function expectAction(actionName, enabled) {
+    var action = ui.getActionInMenu(menuFile, actionName);
+    checkAction(action, enabled, false, false);
+    expect(!ui.isSubMenuInMenu(menuFile, action));
+}
 
 var actionRecentProjects = ui.getActionInMenu(menuFile, "Recent projects");
 checkAction(actionRecentProjects, true, false, false);
@@ -35,26 +33,12 @@ assert(ui.isSubMenuInMenu(menuFile, actionRecentProjects));
 var subMenuRecentProject = ui.getMenuContainedByAction(actionRecentProjects);
 expect(subMenuRecentProject != null);
 
-var actionOpen = ui.getActionInMenu(menuFile, "actionOpen");
-checkAction(actionOpen, true, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionOpen));
+expectAction("actionNewProject", true);
+expectAction("actionNew_Diagram", true);
+expectAction("actionOpen", true);
+expectAction("actionQuit", true);
 
-var actionSave = ui.getActionInMenu(menuFile, "actionSave");
-checkAction(actionSave, false, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionSave));
-
-var actionSaveAs = ui.getActionInMenu(menuFile, "actionSave_as");
-checkAction(actionSaveAs, false, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionSaveAs));
-
-var actionPicture = ui.getActionInMenu(menuFile, "actionSave_diagram_as_a_picture");
-checkAction(actionPicture, false, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionPicture));
-
-var actionPrint = ui.getActionInMenu(menuFile, "actionPrint");
-checkAction(actionPrint, false, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionPrint));
-
-var actionQuit = ui.getActionInMenu(menuFile, "actionQuit");
-checkAction(actionQuit, true, false, false);
-expect(!ui.isSubMenuInMenu(menuFile, actionQuit));
+expectAction("actionPrint", false);
+expectAction("actionSave_diagram_as_a_picture", false);
+expectAction("actionSave_as", false);
+expectAction("actionSave", false);

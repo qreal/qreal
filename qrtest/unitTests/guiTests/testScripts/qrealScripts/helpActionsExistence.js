@@ -21,14 +21,12 @@ assert(menuHelp != null);
 utils.activateMenu(menuHelp);
 api.wait(200);
 
-var actionHelp = ui.getActionInMenu(menuHelp, "actionHelp");
-checkAction(actionHelp, true, false, false);
-expect(!ui.isSubMenuInMenu(menuHelp, actionHelp));
+function expectAction(actionName) {
+    var action = ui.getActionInMenu(menuHelp, actionName);
+    checkAction(action, true, false, false);
+    expect(!ui.isSubMenuInMenu(menuHelp, action));
+}
 
-var actionAbout = ui.getActionInMenu(menuHelp, "actionAbout");
-checkAction(actionAbout, true, false, false);
-expect(!ui.isSubMenuInMenu(menuHelp, actionAbout));
-
-var actionAboutQt = ui.getActionInMenu(menuHelp, "actionAboutQt");
-checkAction(actionAboutQt, true, false, false);
-expect(!ui.isSubMenuInMenu(menuHelp, actionAboutQt));
+expectAction("actionHelp");
+expectAction("actionAbout");
+expectAction("actionAboutQt");

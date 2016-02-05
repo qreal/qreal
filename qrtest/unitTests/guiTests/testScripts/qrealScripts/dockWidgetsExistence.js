@@ -30,25 +30,17 @@ closeContextMenuLater = function(msec){
     invokeLater(utils, "closeContextMenu", msec);
 }
 
-var logicalModelDock = ui.widget("QDockWidget", "logicalModelDock");
-closeContextMenuLater(500);
-lrClicks(logicalModelDock);
-api.wait(501);
+function checkDockWidget(dockWidgetName) {
+    var dock = ui.widget("QDockWidget", dockWidgetName);
+    closeContextMenuLater(500);
+    lrClicks(dock);
+    api.wait(501);
+}
 
-var graphicalModelDock = ui.widget("QDockWidget", "graphicalModelDock");
-closeContextMenuLater(500);
-lrClicks(graphicalModelDock);
-api.wait(501);
-
-var propertyDock = ui.widget("QDockWidget", "propertyDock");
-closeContextMenuLater(500);
-lrClicks(propertyDock);
-api.wait(501);
-
-var minimapDock = ui.widget("QDockWidget", "minimapDock");
-closeContextMenuLater(500);
-lrClicks(minimapDock);
-api.wait(501);
+checkDockWidget("logicalModelDock");
+checkDockWidget("graphicalModelDock");
+checkDockWidget("propertyDock");
+checkDockWidget("minimapDock");
 
 var paletteDock = ui.widget("QDockWidget", "paletteDock");
 closeContextMenuLater(500);

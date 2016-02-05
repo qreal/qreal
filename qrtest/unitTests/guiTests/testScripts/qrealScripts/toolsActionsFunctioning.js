@@ -25,6 +25,4 @@ var actionGesturesShow = ui.getActionInMenu(menuTools, "actionGesturesShow");
 checkAction(actionGesturesShow, true, false, false);
 expect(!ui.isSubMenuInMenu(menuTools, actionGesturesShow));
 
-//closeExpectedDialog(mainWindow, "Gestures Show", 3000); ?
-//utils.activateMenuAction(menuTools, actionGesturesShow);
-//api.wait(500);
+// todo: add new checks

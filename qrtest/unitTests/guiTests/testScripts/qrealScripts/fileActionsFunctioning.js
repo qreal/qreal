@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+// todo: ... and save pictures and check that relative files is created
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
-
-// + посохранять картинки, проверить, что нужные файлы появляются

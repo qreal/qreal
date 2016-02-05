@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-// покликать на минимапу в разных местах, убедиться, что на сцене rectangle изменяется
+// todo: click minimap in defferent places and check the scene rectangle changes
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 

@@ -25,22 +25,14 @@ var actionPreferences = ui.getActionInMenu(menuSettings, "actionPreferences");
 checkAction(actionPreferences, true, false, false);
 expect(!ui.isSubMenuInMenu(menuSettings, actionPreferences));
 
-var actionShow_grid = ui.getActionInMenu(menuSettings, "actionShow_grid");
-checkAction(actionShow_grid, true, true, true);
-expect(!ui.isSubMenuInMenu(menuSettings, actionShow_grid));
+function expectAction(actionName, isChecked) {
+    var action = ui.getActionInMenu(menuSettings, actionName);
+    checkAction(action, true, true, isChecked);
+    expect(!ui.isSubMenuInMenu(menuSettings, action));
+}
 
-var actionShow_alignment = ui.getActionInMenu(menuSettings, "actionShow_alignment");
-checkAction(actionShow_alignment, true, true, false);
-expect(!ui.isSubMenuInMenu(menuSettings, actionShow_alignment));
-
-var actionSwitch_on_grid = ui.getActionInMenu(menuSettings, "actionSwitch_on_grid");
-checkAction(actionSwitch_on_grid, true, true, true);
-expect(!ui.isSubMenuInMenu(menuSettings, actionSwitch_on_grid));
-
-var actionSwitch_on_alignment = ui.getActionInMenu(menuSettings, "actionSwitch_on_alignment");
-checkAction(actionSwitch_on_alignment, true, true, false);
-expect(!ui.isSubMenuInMenu(menuSettings, actionSwitch_on_alignment));
-
-var actionShow_all_text = ui.getActionInMenu(menuSettings, "actionShow_all_text");
-checkAction(actionShow_all_text, true, true, true);
-expect(!ui.isSubMenuInMenu(menuSettings, actionShow_all_text));
+expectAction("actionShow_grid", true);
+expectAction("actionShow_alignment", false);
+expectAction("actionSwitch_on_grid", true);
+expectAction("actionSwitch_on_alignment", false);
+expectAction("actionShow_all_text", true);

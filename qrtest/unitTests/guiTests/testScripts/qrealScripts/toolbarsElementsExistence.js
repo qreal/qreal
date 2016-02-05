@@ -15,62 +15,37 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var actionNewProject = ui.widget("QToolButton", "actionNewProject");
-assert(actionNewProject != null);
-assert(utils.isEnabledAndVisible(actionNewProject));
-closeExpectedDialog(mainWindow, "Create project", 500);
-leftClick(actionNewProject);
-api.wait(550);
+function assertDialog(buttonName, dialogName, delay) {
+    var action = ui.widget("QToolButton", buttonName);
+    assert(action != null);
+    assert(utils.isEnabledAndVisible(action));
+    closeExpectedDialog(mainWindow, dialogName, delay);
+    leftClick(action);
+    api.wait(delay + 50);
+}
 
-var actionNew_Diagram = ui.widget("QToolButton", "actionNew_Diagram");
-assert(actionNew_Diagram != null);
-assert(utils.isEnabledAndVisible(actionNew_Diagram));
-closeExpectedDialog(mainWindow, "Create diagram", 500);
-leftClick(actionNew_Diagram);
-api.wait(550);
+assertDialog("actionNewProject", "Create project", 500);
+assertDialog("actionNew_Diagram", "Create diagram", 500);
+assertDialog("actionOpen", "Open existing project", 2000);
 
-var actionOpen = ui.widget("QToolButton", "actionOpen");
-assert(actionOpen != null);
-assert(utils.isEnabledAndVisible(actionOpen));
-closeExpectedDialog(mainWindow, "Open existing project", 2000);
-leftClick(actionOpen);
-api.wait(2500);
+function assertDisabledButton(buttonName) {
+    var action = ui.widget("QToolButton", buttonName);
+    assert(action != null);
+    assert(!utils.isEnabledAndVisible(action));
+    leftClick(action);
+    api.wait(250);
+}
 
-var actionSave = ui.widget("QToolButton", "actionSave");
-assert(actionSave != null);
-assert(!utils.isEnabledAndVisible(actionSave));
-leftClick(actionSave);
-api.wait(150);
-
-var actionUndo = ui.widget("QToolButton", "actionUndo");
-assert(actionUndo != null);
-assert(!utils.isEnabledAndVisible(actionUndo));
-leftClick(actionUndo);
-api.wait(250);
-
-var actionRedo = ui.widget("QToolButton", "actionRedo");
-assert(actionRedo != null);
-assert(!utils.isEnabledAndVisible(actionRedo));
-leftClick(actionRedo);
-api.wait(250);
-
-var actionZoom_In = ui.widget("QToolButton", "actionZoom_In");
-assert(actionZoom_In != null);
-assert(!utils.isEnabledAndVisible(actionZoom_In));
-leftClick(actionZoom_In);
-api.wait(250);
-
-var actionZoom_Out = ui.widget("QToolButton", "actionZoom_Out");
-assert(actionZoom_Out != null);
-assert(!utils.isEnabledAndVisible(actionZoom_Out));
-leftClick(actionZoom_Out);
-api.wait(250);
+assertDisabledButton("actionSave");
+assertDisabledButton("actionUndo");
+assertDisabledButton("actionRedo");
+assertDisabledButton("actionZoom_In");
+assertDisabledButton("actionZoom_Out");
 
 var actionFullscreen = ui.widget("QToolButton", "actionFullscreen");
 assert(actionFullscreen != null);
 leftClick(actionFullscreen);
 api.wait(250);
-
 
 var menu_View = ui.getMenu("menu_View");
 assert(menu_View != null);
@@ -84,46 +59,20 @@ assert(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
-var actionMiniMap = ui.getActionInMenu(subMenuPanels, "Mini Map");
-checkAction(actionMiniMap, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionMiniMap));
+function expectPanelsAction(actionName, isChecked) {
+    var action = ui.getActionInMenu(subMenuPanels, actionName);
+    checkAction(action, true, true, isChecked);
+    expect(!ui.isSubMenuInMenu(subMenuPanels, action));
+}
 
-var actionPalette = ui.getActionInMenu(subMenuPanels, "Palette");
-checkAction(actionPalette, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionPalette));
-
-var actionLogicalExplorer = ui.getActionInMenu(subMenuPanels, "Logical Model Explorer");
-checkAction(actionLogicalExplorer, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionLogicalExplorer));
-
-var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
-checkAction(actionErrors, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionErrors));
-
-var actionGraphicalExplorer = ui.getActionInMenu(subMenuPanels, "Graphical Model Explorer");
-checkAction(actionGraphicalExplorer, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionGraphicalExplorer));
-
-var actionProperty = ui.getActionInMenu(subMenuPanels, "Property Editor");
-checkAction(actionProperty, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionProperty));
-
-var actionFileToolbar = ui.getActionInMenu(subMenuPanels, "File Toolbar");
-checkAction(actionFileToolbar, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionFileToolbar));
-
-var actionEditToolbar = ui.getActionInMenu(subMenuPanels, "Edit Toolbar");
-checkAction(actionEditToolbar, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionEditToolbar));
-
-var actionViewToolbar = ui.getActionInMenu(subMenuPanels, "View Toolbar");
-checkAction(actionViewToolbar, true, true, true);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionViewToolbar));
-
-var actionInterpreterToolbar = ui.getActionInMenu(subMenuPanels, "Interpreter Toolbar");
-checkAction(actionInterpreterToolbar, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionInterpreterToolbar));
-
-var actionGeneratorsToolbar = ui.getActionInMenu(subMenuPanels, "Generators Toolbar");
-checkAction(actionGeneratorsToolbar, true, true, false);
-expect(!ui.isSubMenuInMenu(subMenuPanels, actionGeneratorsToolbar));
+expectPanelsAction("Mini Map", false);
+expectPanelsAction("Palette", true);
+expectPanelsAction("Logical Model Explorer", false);
+expectPanelsAction("Errors", false);
+expectPanelsAction("Graphical Model Explorer", false);
+expectPanelsAction("Property Editor", false);
+expectPanelsAction("File Toolbar", true);
+expectPanelsAction("Edit Toolbar", true);
+expectPanelsAction("View Toolbar", true);
+expectPanelsAction("Interpreter Toolbar", false);
+expectPanelsAction("Generators Toolbar", false);
