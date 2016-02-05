@@ -133,6 +133,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 			vItem->setValue(value);
 			vItem->setToolTip(value.toString());
+
 			if (!values.isEmpty()) {
 				QStringList friendlyNames;
 				for (QPair<QString, QString> const &pair : values) {
@@ -150,6 +151,12 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			}
 
 			item = vItem;
+		}
+
+		const QString description = propertyDescription(i);
+
+		if (!description.isEmpty()) {
+			item->setToolTip(description);
 		}
 
 		mPropertyEditor->addProperty(item);
@@ -175,7 +182,11 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 			}
 
 			setPropertyValue(property, value);
-			property->setToolTip(value.toString());
+
+			const QString description = propertyDescription(i);
+			const QString tooltip = description.isEmpty() ? value.toString() : description;
+
+			property->setToolTip(tooltip);
 		}
 	}
 }
@@ -260,6 +271,12 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 	mChangingPropertyValue = true;
 	property->setValue(value);
 	mChangingPropertyValue = old;
+}
+
+QString PropertyEditorView::propertyDescription(const int cellIndex) const
+{
+	const QModelIndex keyIndex = mModel->index(cellIndex, 0);
+	return mModel->data(keyIndex, Qt::ToolTipRole).toString();
 }
 
 int PropertyEditorView::enumPropertyIndexOf(const QModelIndex &index, const QString &value)
