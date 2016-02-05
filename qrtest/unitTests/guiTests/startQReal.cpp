@@ -22,10 +22,10 @@
 #include <qrkernel/logging.h>
 #include <qrkernel/platformInfo.h>
 
-#include "qrgui/mainWindow/mainWindow.h"
-#include "qrgui/thirdparty/windowsmodernstyle.h"
+#include <qrgui/mainWindow/mainWindow.h>
+#include <qrgui/thirdparty/windowsmodernstyle.h>
 
-#include "qrgui/mainWindow/qrealApplication.h"
+#include <qrgui/mainWindow/qrealApplication.h>
 
 using namespace qReal;
 
@@ -65,6 +65,11 @@ void setDefaultLocale(bool localizationDisabled)
 	}
 }
 
+void setNativeDialogs(bool disabled)
+{
+	QApplication::instance()->setProperty("DontUseNativeDialogs", QVariant(!disabled));
+}
+
 void initLogging()
 {
 	const QDir logsDir(PlatformInfo::applicationDirPath() + "/logs");
@@ -87,6 +92,7 @@ MainWindow* start()
 	// setDefaultLocale(app->arguments().contains("--no-locale"));
 	// commented out because of the bug. FIXME: a bug with QTest::keyClick for no askii characters
 	setDefaultLocale(true);
+	setNativeDialogs(app->arguments().contains("--use-native-dialogs"));
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
@@ -120,7 +126,7 @@ MainWindow* start()
 	#endif
 
 	MainWindow *window = new MainWindow(fileToOpen);
-	SettingsManager::setValue("guiTest", true);
+	SettingsManager::setValue("scriptInterpretation", true);
 	if (!window->isVisible()) {
 		return nullptr;
 	}

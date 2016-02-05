@@ -15,6 +15,7 @@
 #include "qRealFileDialog.h"
 
 #include <qrkernel/settingsManager.h>
+#include <QtWidgets/QApplication>
 
 using namespace utils;
 
@@ -26,7 +27,8 @@ QString QRealFileDialog::getOpenFileName(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
-	if (qReal::SettingsManager::value("guiTest").toBool()) {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 
@@ -45,9 +47,13 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
-	if (qReal::SettingsManager::value("guiTest").toBool()) {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
-	}	const QString lastDir = lastSelectedDirectory(id, dir) + "/" + defaultFile;	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
+	}
+
+	const QString lastDir = lastSelectedDirectory(id, dir) + "/" + defaultFile;
+	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
 	return result;
 }
@@ -58,7 +64,8 @@ QString QRealFileDialog::getExistingDirectory(const QString &id
 		, const QString &dir
 		, QFileDialog::Options options)
 {
-	if (qReal::SettingsManager::value("guiTest").toBool()) {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 
@@ -76,7 +83,8 @@ QStringList QRealFileDialog::getOpenFileNames(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
-	if (qReal::SettingsManager::value("guiTest").toBool()) {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 

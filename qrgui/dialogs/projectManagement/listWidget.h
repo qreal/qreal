@@ -38,8 +38,8 @@ public:
 
 	void highlightFirstItem();
 
-	/// Return general widget who indeed contains all items etc
-	QListWidget *getMainListWidget() const;
+	/// @return the basic widget that indeed contains all items (not a wrapper)
+	QListWidget *mainListWidget() const;
 
 signals:
 	void userDataSelected(const QString &userData);

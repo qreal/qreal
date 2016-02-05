@@ -100,7 +100,7 @@ QStringList SceneAPI::nodeList(const QString &diagram, const QString &element)
 	return result;
 }
 
-QStringList SceneAPI::currentSceneNodeList()
+QStringList SceneAPI::currentSceneNodeList() const
 {
 	if (!mMainWindow.getCurrentTab()) {
 		return {};

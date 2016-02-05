@@ -118,7 +118,6 @@ int main(int argc, char *argv[])
 #endif
 
 	MainWindow window(fileToOpen);
-	SettingsManager::setValue("guiTest", false);
 	int exitCode = 0; // The window decided to not show itself, exiting now.
 
 	if (window.isVisible()) {

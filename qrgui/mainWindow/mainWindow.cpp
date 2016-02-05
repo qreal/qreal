@@ -311,9 +311,7 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
-	if (SettingsManager::value("guiTest").toBool()) {
-		qDebug() << "MainWindow::~MainWindow()";
-	}
+	emit goingToBeDestroyed();
 
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
@@ -1648,7 +1646,7 @@ Id MainWindow::activeDiagram() const
 void MainWindow::initPluginsAndStartWidget()
 {
 	initToolPlugins();
-	if (SettingsManager::value("scriptInterpretation").toBool() || SettingsManager::value("guiTest").toBool()) {
+	if (SettingsManager::value("scriptInterpretation").toBool()) {
 		initActionWidgetsNames();
 		initScriptAPI();
 	}
@@ -1729,9 +1727,9 @@ QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 	return mListOfAdditionalActions;
 }
 
-ScriptAPIWrapper* MainWindow::createScriptAPIWrapper()
+ScriptAPIWrapper *MainWindow::createScriptAPIWrapper()
 {
-	return new ScriptAPIWrapper(&mScriptAPI);
+	return new ScriptAPIWrapper(mScriptAPI);
 }
 
 void MainWindow::initToolPlugins()

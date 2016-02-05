@@ -18,7 +18,7 @@
 using namespace qReal;
 using namespace gui;
 
-ScriptAPIWrapper::ScriptAPIWrapper(ScriptAPI *scriptAPI)
+ScriptAPIWrapper::ScriptAPIWrapper(ScriptAPI &scriptAPI)
 	: mScriptAPI(scriptAPI)
 {
 }
@@ -29,45 +29,45 @@ ScriptAPIWrapper::~ScriptAPIWrapper()
 
 void ScriptAPIWrapper::evaluateScript(const QString &script, const QString &fileName)
 {
-	mScriptAPI->evaluateScript(script, fileName);
+	mScriptAPI.evaluateScript(script, fileName);
 }
 
 void ScriptAPIWrapper::evaluateFileScript(const QString &fileName)
 {
-	mScriptAPI->evaluateFileScript(fileName);
+	mScriptAPI.evaluateFileScript(fileName);
 }
 
 void ScriptAPIWrapper::abortEvaluation()
 {
-	mScriptAPI->abortEvaluation();
+	mScriptAPI.abortEvaluation();
 }
 
 void ScriptAPIWrapper::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &scriptName, int length)
 {
-	mScriptAPI->regNewFunct(fun, scriptName, length);
+	mScriptAPI.registerNewFunction(fun, scriptName, length);
 }
 
-QScriptSyntaxCheckResult ScriptAPIWrapper::checkSyntax(const QString &script)
+QScriptSyntaxCheckResult ScriptAPIWrapper::checkSyntax(const QString &script) const
 {
-	return mScriptAPI->checkSyntax(script);
+	return mScriptAPI.checkSyntax(script);
 }
 
-bool ScriptAPIWrapper::hasUncaughtException()
+bool ScriptAPIWrapper::hasUncaughtException() const
 {
-	return mScriptAPI->hasUncaughtException();
+	return mScriptAPI.hasUncaughtException();
 }
 
 void ScriptAPIWrapper::clearExceptions()
 {
-	mScriptAPI->clearExceptions();
+	mScriptAPI.clearExceptions();
 }
 
-QStringList ScriptAPIWrapper::uncaughtExceptionBacktrace()
+QStringList ScriptAPIWrapper::uncaughtExceptionBacktrace() const
 {
-	return mScriptAPI->uncaughtExceptionBacktrace();
+	return mScriptAPI.uncaughtExceptionBacktrace();
 }
 
-QScriptEngine* ScriptAPIWrapper::getEngine()
+QScriptEngine* ScriptAPIWrapper::engine()
 {
-	return mScriptAPI->getEngine();
+	return mScriptAPI.engine();
 }

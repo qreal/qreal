@@ -37,6 +37,9 @@ public:
 
 	/// Removes a pair of quotes if string starts or end with them.
 	static QString dequote(const QString &string);
+
+	/// Removes keywords-hotkeys (ampersands).
+	static QString deleteAmpersands(const QString &string);
 };
 
 }

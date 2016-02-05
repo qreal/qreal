@@ -130,7 +130,7 @@ QWidget *StartWidget::createProjectsManagementWidget()
 		const QString diagramIdString = mMainWindow->editorManager().diagramNodeNameString(editor, theOnlyDiagram);
 
 		mNewProjectButton = new StyledButton(tr("New project"), ":/mainWindow/images/startTab/new.svg"
-											 , QBoxLayout::LeftToRight, this);
+				, QBoxLayout::LeftToRight, this);
 		mProjectsManagementLayout->addWidget(mNewProjectButton);
 
 		QSignalMapper *newProjectMapper = new QSignalMapper(this);
@@ -274,7 +274,7 @@ QWidget *StartWidget::createPluginButton(const Id &editor, const Id &diagram, QW
 	}
 
 	StyledButton * const result = new StyledButton(tr("Create ") + diagramName
-												   , QString(), QBoxLayout::LeftToRight, this);
+			, QString(), QBoxLayout::LeftToRight, this);
 	result->bindHighlightedOnHover(bindedImage);
 	result->setFocusPolicy(Qt::StrongFocus);
 	result->setStyleSheet(BrandManager::styles()->startTabButtonStyle());

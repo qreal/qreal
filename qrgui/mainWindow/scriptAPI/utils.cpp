@@ -13,17 +13,19 @@
  * limitations under the License. */
 
 #include <QtTest/QTest>
-#include <QtCore/QDebug>
 #include <QtWidgets/QRadioButton>
 #include <QtCore/QPropertyAnimation>
 #include <QtGui/QWidgetList>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QCheckBox>
 
 #include <qrkernel/exception/exception.h>
+#include <qrutils/stringUtils.h>
 #include <qrutils/inFile.h>
 #include <editor/editorView.h>
-#include <models/commands/createElementCommand.h>
 
 #include "qrgui/mainWindow/mainWindow.h"
 #include "qrgui/mainWindow/palette/draggableElement.h"
@@ -48,7 +50,7 @@ Utils::Utils(ScriptAPI &scriptAPI, MainWindow &mainWindow, VirtualCursor &virtua
 {
 }
 
-void Utils::activateMenu(QMenu *menu)
+void Utils::activateMenu(QMenu *menu) noexcept
 {
 	if (menu == nullptr) {
 		throwScriptException("Utils::activateMenu: (menu == nullptr)");
@@ -57,7 +59,7 @@ void Utils::activateMenu(QMenu *menu)
 	QTest::keyClick(&mMainWindow, menu->title().at(1).toLatin1(), Qt::AltModifier);
 }
 
-void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec)
+void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept
 {
 	if (menu == nullptr) {
 		throwScriptException("Utils::activateMenuAction: (menu == nullptr)");
@@ -76,25 +78,26 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec)
 		}
 	}
 
-	throwScriptException("doesnt exist " + actionForExec->objectName() + " " + actionForExec->text() + " action");
+	throwScriptException("Doesn't exist " + actionForExec->objectName() + " " + actionForExec->text() + " action");
 }
 
-void Utils::fillLineEdit(const QString &widgetName, const QString &lineEditObjectName, const QString &text)
+void Utils::fillLineEdit(const QString &widgetName, const QString &lineEditObjectName, const QString &text) noexcept
 {
 	doSmthInWidget(widgetName, lineEditObjectName, text, &Utils::writeIn);
 }
 
-void Utils::clickButton(const QString &widgetName, const QString &buttonType, const QString &buttonText)
+void Utils::clickButton(const QString &widgetName, const QString &buttonType, const QString &buttonText) noexcept
 {
 	doSmthInWidget(widgetName, buttonType, buttonText, &Utils::clickNeededButton);
 }
 
-void Utils::chooseComboBoxItem(const QString &widgetName, const QString &comboBoxObjectName, const QString &itemName)
+void Utils::chooseComboBoxItem(const QString &widgetName, const QString &comboBoxObjectName
+		, const QString &itemName) noexcept
 {
 	doSmthInWidget(widgetName, comboBoxObjectName, itemName, &Utils::pickNeededItem);
 }
 
-void Utils::activateContextMenuAction(const QString &actionName)
+void Utils::activateContextMenuAction(const QString &actionName) noexcept
 {
 	QMenu *contextMenu = dynamic_cast<QMenu *>(QApplication::activePopupWidget());
 	QTest::keyClick(contextMenu, Qt::Key_Down);
@@ -102,10 +105,10 @@ void Utils::activateContextMenuAction(const QString &actionName)
 		throwScriptException("Utils::activateContextMenuAction: contextMenu == nullptr");
 	}
 
-	QList<QAction *> actions = contextMenu->actions();
+	const QList<QAction *> actions = contextMenu->actions();
 	QAction *neededAction = nullptr;
-	for (QAction *action: actions) {
-		if (action->objectName() == actionName || action->text() == actionName) {
+	for (QAction * const action : actions) {
+		if (action->objectName() == actionName || utils::StringUtils::deleteAmpersands(action->text()) == actionName) {
 			neededAction = action;
 		}
 	}
@@ -127,7 +130,7 @@ void Utils::activateContextMenuAction(const QString &actionName)
 	}
 }
 
-void Utils::closeContextMenu()
+void Utils::closeContextMenu() noexcept
 {
 	QMenu *contextMenu = dynamic_cast<QMenu *>(QApplication::activePopupWidget());
 	if (!contextMenu) {
@@ -174,16 +177,16 @@ bool Utils::actionIsCheckable(const QAction *action) const
 
 void Utils::printPaletteElementsInfo() const
 {
-	QList<DraggableElement *> const paletteWidgets = mMainWindow.findChildren<DraggableElement *>();
+	const QList<DraggableElement *> paletteWidgets = mMainWindow.findChildren<DraggableElement *>();
 	for (DraggableElement * const paletteElement : paletteWidgets) {
-		paletteElement->id().toString();
+		qInfo() << paletteElement->id().toString();
 	}
 }
 
-void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text) const
+void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text) const  noexcept
 {
 	const QList<QLineEdit *> lineEditList = widget->findChildren<QLineEdit *>(QString(), Qt::FindChildrenRecursively);
-	for (QLineEdit * lineEdit : lineEditList) {
+	for (QLineEdit * const lineEdit : lineEditList) {
 		if (((!lineEditObjectName.isEmpty() && lineEdit->objectName() == lineEditObjectName)
 				|| lineEditObjectName.isEmpty()) && lineEdit->isEnabled()) {
 			QTest::mouseClick(lineEdit, Qt::LeftButton);
@@ -199,14 +202,12 @@ void Utils::writeIn(QWidget *widget, const QString &lineEditObjectName, const QS
 	throwScriptException("QLineEdit with " + lineEditObjectName + " objectName was not found");
 }
 
-void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const
+void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const noexcept
 {
 	enum class Button { PUSHBUTTON = 1, RADIOBUTTON, CHECKBUTTON };
-	QMap<QString, Button> map;
 
-	map["QPushButton"] = Button::PUSHBUTTON;
-	map["QRadioButton"] = Button::RADIOBUTTON;
-	map["QCheckBox"] = Button::CHECKBUTTON;
+	const QMap<QString, Button> map = { {"QPushButton", Button::PUSHBUTTON}
+			, {"QRadioButton", Button::RADIOBUTTON}, {"QCheckBox",  Button::CHECKBUTTON}};
 
 	if (!map.contains(buttonType)) {
 		throwScriptException("Utils::clickButton: needed type: '" + buttonType + "' was not found");
@@ -230,28 +231,27 @@ void Utils::clickNeededButton(QWidget *widget, const QString &buttonType, const 
 	}
 }
 
-void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName) const
+void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName) const noexcept
 {
 	const QList<QComboBox *> boxList =
 			widget->findChildren<QComboBox *>(QString(), Qt::FindChildrenRecursively);
 	for (QComboBox *box : boxList) {
 		if (box->objectName() == comboBoxObjectName && box->isEnabled() && box->isVisible()) {
 			QTest::mouseClick(box, Qt::LeftButton);
-			int currentIndex = box->currentIndex();
+			const int currentIndex = box->currentIndex();
 			if (currentIndex == -1) {
 				throwScriptException(QString("Utils::pickNeededItem: ") + "box->currentIndex() == -1");
 			}
 
-			int neededIndex = box->findText(itemName, Qt::MatchExactly | Qt::MatchCaseSensitive);
+			const int neededIndex = box->findText(itemName, Qt::MatchExactly | Qt::MatchCaseSensitive);
 			if (neededIndex == -1) {
 				throwScriptException(QString("Utils::pickNeededItem: ") + "neededIndex == -1");
 			}
 
-			Qt::Key	key = (currentIndex >= neededIndex) ? Qt::Key_Up : Qt::Key_Down;
-			int direction = (key == Qt::Key_Up) ? 1 : -1;
-			for (int i = currentIndex; i != neededIndex;) {
+			const Qt::Key key = (currentIndex >= neededIndex) ? Qt::Key_Up : Qt::Key_Down;
+			const int direction = (key == Qt::Key_Up) ? -1 : 1;
+			for (int i = currentIndex; i != neededIndex; i += direction) {
 				QTest::keyClick(box, key);
-				i -= direction;
 			}
 
 			QTest::keyClick(box, Qt::Key_Enter);
@@ -262,12 +262,12 @@ void Utils::pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, c
 	throwScriptException("QComboBox with " + comboBoxObjectName + "objectName was not found");
 }
 
-void Utils::clickPushButton(QWidget *widget, const QString &buttonText) const
+void Utils::clickPushButton(QWidget *widget, const QString &buttonText) const noexcept
 {
 	const QList<QPushButton *> buttonList =
 			widget->findChildren<QPushButton *>(QString(), Qt::FindChildrenRecursively);
-	for (QPushButton * button : buttonList) {
-		if ((button->text() == buttonText || button->objectName() == buttonText)
+	for (QPushButton * const button : buttonList) {
+		if ((utils::StringUtils::deleteAmpersands(button->text()) == buttonText || button->objectName() == buttonText)
 				&& button->isVisible() && button->isEnabled()) {
 			QTest::mouseClick(button, Qt::LeftButton);
 			return;
@@ -277,13 +277,14 @@ void Utils::clickPushButton(QWidget *widget, const QString &buttonText) const
 	throwScriptException("QPushButton (" + buttonText + ") was not found");
 }
 
-void Utils::clickRadioButton(QWidget *widget, const QString &buttonText) const
+void Utils::clickRadioButton(QWidget *widget, const QString &buttonText) const noexcept
 {
 	const QList<QRadioButton *> buttonList =
 			widget->findChildren<QRadioButton *>(QString(), Qt::FindChildrenRecursively);
-	for (QRadioButton * button : buttonList) {
+	for (QRadioButton * const button : buttonList) {
 		if (((button->text() == buttonText || button->objectName() == buttonText))
-			&& button->isVisible() && button->isEnabled()) {
+				&& button->isVisible() && button->isEnabled())
+		{
 			QTest::mouseClick(button, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
 			if (!button->isChecked()) {
 				throwScriptException("Utils::clickRadioButton: !button->isChecked()");
@@ -296,14 +297,14 @@ void Utils::clickRadioButton(QWidget *widget, const QString &buttonText) const
 	throwScriptException("QRadioButton (" + buttonText + ") was not found");
 }
 
-void Utils::clickCheckBox(QWidget *widget, const QString &buttonText) const
+void Utils::clickCheckBox(QWidget *widget, const QString &buttonText) const noexcept
 {
 	const QList<QCheckBox *> buttonList =
 			widget->findChildren<QCheckBox *>(QString(), Qt::FindChildrenRecursively);
 	for (QCheckBox * button : buttonList) {
-		if ((button->text() == buttonText || button->objectName() == buttonText)
+		if ((utils::StringUtils::deleteAmpersands(button->text()) == buttonText || button->objectName() == buttonText)
 				&& button->isVisible() && button->isEnabled()) {
-			bool isChecked = button->isChecked();
+			const bool isChecked = button->isChecked();
 			QTest::mouseClick(button, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
 			if (button->isChecked() == isChecked) {
 					throwScriptException("Utils::clickCheckBox: button->isChecked() == isChecked");
@@ -316,22 +317,22 @@ void Utils::clickCheckBox(QWidget *widget, const QString &buttonText) const
 	throwScriptException("QCheckBox (" + buttonText + ") was not found");
 }
 
-void Utils::throwScriptException(const QString &msg) const
+void Utils::throwScriptException(const QString &msg) const noexcept
 {
-	mScriptAPI.getEngine()->currentContext()->throwError(msg);
+	mScriptAPI.engine()->currentContext()->throwError(msg);
 }
 
 void Utils::doSmthInWidget(const QString &widgetName, const QString &identifier
 		, const QString &associatedAction
-		, std::function<void(const Utils &, QWidget *, const QString &, const QString &)> doAction) const
+		, std::function<void(const Utils &, QWidget *, const QString &, const QString &)> doAction) const noexcept
 {
-	QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
-	for (QWidget * widget : allWidgets) {
+	const QList<QWidget *> allWidgets = mMainWindow.findChildren<QWidget *>();
+	for (QWidget * const widget : allWidgets) {
 		if (widget->windowTitle() == widgetName || widget->objectName() == widgetName) {
 			doAction(*this, widget, identifier, associatedAction);
 			return;
 		}
 	}
 
-	throwScriptException("doesnt exist " + widgetName + " dialog");
+	throwScriptException("Doesn't exist " + widgetName + " dialog");
 }

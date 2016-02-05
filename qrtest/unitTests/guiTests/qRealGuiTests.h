@@ -15,62 +15,65 @@
 #pragma once
 
 #include <QtCore/QStringList>
-#include <gtest/gtest.h>
 
-#include "qrgui/mainWindow/mainWindow.h"
+#include <gtest/gtest.h>
+#include <qrgui/mainWindow/mainWindow.h>
 
 namespace guiTesting {
 
 class TestAgent;
 
-/// Test suite for standard qReal GUI
-/// @warning Test suite can work incorrectly in hidden mode (e.g. scripts are running during ur work in Qt SDK)
-/// @warning Segmantation fault in a single test crushes all tests
-/// @warning Dont forget write reachedEndOfScript(); before quit() if u wanna quit application by himself
+/// Test suite for standard qReal GUI.
+/// @warning Test suite can work incorrectly in hidden mode (e.g. scripts are running during ur work in Qt SDK).
+/// @warning Segmantation fault in a single test crushes all tests.
+/// @warning Don't forget to write reachedEndOfScript(); before quit() if you want to quit application by itself.
 /// @note Either use from common.js: quit(), quitWithoutSave(), quitWithSave().
-/// @note Or just leave the app at the quit()-able state
+/// @note Or just leave the app at the quit()-able state.
 class QRealGuiTests : public testing::Test
 {
 protected:
-	/// SetUp and TearDown are calling before/after every test
+	/// SetUp and TearDown are calling before/after every test.
 	void SetUp() override;
 	void TearDown() override;
 
-	/// start evaluating \a script
-	/// @note Should be invoked once for every TEST
+	/// Starts evaluating \a script.
+	/// @note Should be invoked once for every TEST.
 	void run(const QString &script);
 
-	/// adds common scripts in list of scripts evaluating before main script evaluating
-	/// @note u can include several needed files
-	/// @note all including names should be relative like "common.js"
+	/// Adds common scripts in list of scripts evaluating before main script evaluating.
+	/// @note You can include several needed files.
+	/// @note All including names should be relative like "common.js".
 	void includeCommonScript(const QString &relativeFileName);
 
-	/// adds common scripts in list of scripts evaluating before main script evaluating
-	/// @note u can include several needed files
-	/// @note all including names should be relative like "common.js"
+	/// Adds common scripts in list of scripts evaluating before main script evaluating.
+	/// @note You can include several needed files.
+	/// @note All including names should be relative like "common.js".
 	void includeCommonScript(const QStringList &fileList);
 
-	/// abort evaluating and close the program with the freeze code
+	/// Aborts evaluating and closes the program with the freeze code.
 	void failTest();
 
-	/// @returns folder name with .js scripts for the test suite
-	QString getScriptFolderName() const;
-	/// set up folder name in \a folder. Just the folder name (without the other path)
+	/// @returns folder name with .js scripts for the test suite.
+	QString scriptFolderName() const;
+
+	/// Sets up folder name in \a folder. Just the folder name (without the other path).
 	void setScriptFolderName(const QString &folder);
 
-	/// @returns upper time limit for main window exposing, openning
-	int getTimeToExpose() const;
-	/// set up time limit for main window exposing, openning
+	/// @returns upper time limit for main window exposing, openning.
+	int timeToExpose() const;
+
+	/// Sets up time limit for main window exposing, openning.
 	void setTimeToExpose(const int timeToExpose);
 
-	/// @returns upper time limit for every test
-	int getTimeLimit() const;
-	/// set up timeLimit
+	/// @returns upper time limit for every test.
+	int timeLimit() const;
+
+	/// Sets up timeLimit.
 	void setTimeLimit(const int timeLimit);
 
 private:
-	/// function for running common scripts before main script
-	/// @note u can include several needed files
+	/// This function is for running common scripts before main script.
+	/// @note You can include several needed files.
 	void runCommonScript(const QString &relativeFileName);
 
 	void checkScriptSyntax(const QString &script, const QString &errorMsg);
@@ -79,8 +82,8 @@ private:
 
 	QString readFile(const QString &relativeFileName);
 
-	/// @todo solve this problem using QScriptEngineAgent
-	/// this function is a WORKAROUND
+	/// @todo Solve this problem using QScriptEngineAgent.
+	/// This function is a WORKAROUND.
 	void prepareScriptForRunning(QString &script);
 
 	void exterminate(const int returnCode);
@@ -89,29 +92,29 @@ private:
 	int mTimeToExpose = 7000;
 	int mTimeLimit = 67000;
 
-	/// Doesn't have ownership
-	qReal::MainWindow* mWindow;
+	/// Doesn't have ownership.
+	qReal::MainWindow *mWindow;
 
-	/// Has ownership
-	qReal::gui::ScriptAPIWrapper* mScriptAPIWrapper;
+	/// Has ownership.
+	qReal::gui::ScriptAPIWrapper *mScriptAPIWrapper;
 
-	/// relative names of common scripts evaluating before main script evaluating
+	/// Relative names of common scripts evaluating before main script evaluating.
 	QStringList mCommonScripts;
 	int mReturnCode;
 
-	/// for debugging and statistics
+	// for debugging and statistics
 	QStringList mCurrentIncludedFiles;
 	QString mCurrentTotalProgram;
 	QString mCurrentEvaluatingScript;
 	QString mCurrentEvaluatingScriptFile;
 
-	/// for QTimer connects
+	// for QTimer connects
 	QString mScript;
 	QString mFileName;
 	QString mRelativeName;
 
-	/// for debugging and scripting
-	/// Doesn't have ownership
+	// for debugging and scripting
+	/// Doesn't have ownership.
 	TestAgent *mTestAgent;
 };
 

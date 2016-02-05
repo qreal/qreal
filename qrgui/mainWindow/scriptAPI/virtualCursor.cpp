@@ -112,7 +112,7 @@ void VirtualCursor::sceneMoveTo(QWidget *target, int duration, int xSceneCoord, 
 
 void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 {
-	QPoint clickPosition = widgetPos(target);
+	const QPoint clickPosition = widgetPos(target);
 	if (QApplication::activePopupWidget() 
 		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
 		QApplication::activePopupWidget()->close();
@@ -126,7 +126,7 @@ void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 
 void VirtualCursor::leftButtonRelease(QWidget *target, int delay)
 {
-	QPoint clickPosition = widgetPos(target);
+	const QPoint clickPosition = widgetPos(target);
 	simulateMouse(target, QEvent::MouseButtonRelease, clickPosition, Qt::LeftButton);
 
 	if (delay >= 0) {
@@ -136,7 +136,7 @@ void VirtualCursor::leftButtonRelease(QWidget *target, int delay)
 
 void VirtualCursor::rightButtonPress(QWidget *target, int delay)
 {
-	QPoint clickPosition = widgetPos(target);
+	const QPoint clickPosition = widgetPos(target);
 	mRightButtonPressed = true;
 	simulateMouse(target, QEvent::MouseButtonPress,  clickPosition, Qt::RightButton);
 
@@ -147,13 +147,13 @@ void VirtualCursor::rightButtonPress(QWidget *target, int delay)
 
 void VirtualCursor::rightButtonRelease(QWidget *target, int delay)
 {
-	QPoint clickPosition = widgetPos(target);
+	const QPoint clickPosition = widgetPos(target);
 	mRightButtonPressed = false;
 
 	simulateMouse(target, QEvent::MouseButtonRelease, clickPosition, Qt::RightButton);
 	if (!QApplication::activePopupWidget()) {
-		QPoint globalPos = target->mapToGlobal(clickPosition);
-		QEvent *contextMenuEvent = new QContextMenuEvent(QContextMenuEvent::Mouse, clickPosition, globalPos);
+		const QPoint globalPos = target->mapToGlobal(clickPosition);
+		QEvent * const contextMenuEvent = new QContextMenuEvent(QContextMenuEvent::Mouse, clickPosition, globalPos);
 		QApplication::postEvent(target, contextMenuEvent);
 	}
 
@@ -164,7 +164,7 @@ void VirtualCursor::rightButtonRelease(QWidget *target, int delay)
 
 void VirtualCursor::leftButtonDoubleClick(QWidget *target, int delay)
 {
-	QPoint clickPosition = widgetPos(target);
+	const QPoint clickPosition = widgetPos(target);
 	if (QApplication::activePopupWidget() 
 		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
 		QApplication::activePopupWidget()->close();

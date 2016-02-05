@@ -14,9 +14,9 @@
 
 #include <gtest/gtest.h>
 
-#include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
-#include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
-#include "./qrgui/mainWindow/mainWindow.h"
+#include <dialogs/projectManagement/suggestToCreateProjectDialog.h>
+#include <dialogs/projectManagement/suggestToCreateDiagramWidget.h>
+#include <./qrgui/mainWindow/mainWindow.h>
 
 #include <QtTest/QTest>
 #include <QtCore/QTimer>
@@ -42,15 +42,15 @@ QScriptValue guiTesting::workarounds::reachedEndOfScript(QScriptContext *context
 }
 
 QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *context
-																  , QScriptEngine *engine)
+		, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
-	QString dialogTitle = context->argument(1).toString();
-	int mces = context->argument(2).toInt32();
-	MainWindow *mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
+	const QString dialogTitle = context->argument(1).toString();
+	const int mces = context->argument(2).toInt32();
+	MainWindow * const mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
 	QTimer::singleShot(mces, [=]() {
 		QList<QDialog *> allDialogs = mainWindow->findChildren<QDialog *>();
-		for (QDialog * dialog : allDialogs) {
+		for (QDialog * const dialog : allDialogs) {
 			if (dialog->windowTitle() == dialogTitle || dialog->objectName() == dialogTitle) {
 				dialog->close(); // here gui workaround
 				return;
@@ -61,8 +61,9 @@ QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *contex
 	return {};
 }
 
+// Structure of the object: mainwindow->dialog->widgetList->diagrams. Looks in depth.
 QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext *context
-																		 , QScriptEngine *engine)
+		, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
 
@@ -91,13 +92,13 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 		return {};
 	}
 
-	QString diagramName = context->argument(2).toString();
-	QString dialogTitle = context->argument(1).toString();
-	int mces = context->argument(3).toInt32();
-	MainWindow *mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
+	const QString diagramName = context->argument(2).toString();
+	const QString dialogTitle = context->argument(1).toString();
+	const int mces = context->argument(3).toInt32();
+	MainWindow * const mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
 	QTimer::singleShot(mces, [=]() {
 		EXPECT_GT(mces, 0);
-		ASSERT_TRUE(mainWindow != NULL);
+		ASSERT_TRUE(mainWindow != nullptr);
 		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
 		ASSERT_FALSE(allDialogs.isEmpty());
 		for (int i = 0; i < allDialogs.length(); ++i) {
@@ -109,20 +110,14 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 				for (int k = 0; k < listWidget.length(); ++k) {
 					if (listWidget.at(k) != nullptr) {
 						SuggestToCreateDiagramWidget *suggestWidget = listWidget.at(k);
-						for (int m = 0; m < suggestWidget->getMainListWidget()->count(); ++m) {
-							if (suggestWidget->getMainListWidget()->item(m)->text() == diagramName) {
-/*here gui workaround*/			suggestWidget->getMainListWidget()->itemDoubleClicked(suggestWidget->getMainListWidget()->item(m));
+						for (int m = 0; m < suggestWidget->mainListWidget()->count(); ++m) {
+							if (suggestWidget->mainListWidget()->item(m)->text() == diagramName) {
+/*here gui workaround*/			suggestWidget->mainListWidget()->itemDoubleClicked(suggestWidget->mainListWidget()->item(m));
 								break;
-
-								/*QPoint pos = listWidget.at(k)->visualItemRect(listWidget.at(k)->item(m)).topLeft();
-								QMouseEvent *mouseEvent = new QMouseEvent(QEvent::MouseButtonDblClick,
-															  pos,
-															  Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
-								QApplication::postEvent(listWidget.at(k)->getMainWidget()->parent(), mouseEvent);*/
 							}
 
-							if (m == suggestWidget->getMainListWidget()->count() - 1) {
-								FAIL() << "doesnt exist " << diagramName.toStdString() << " diagram";
+							if (m == suggestWidget->mainListWidget()->count() - 1) {
+								FAIL() << "Doesn't exist " << diagramName.toStdString() << " diagram";
 							}
 						}
 
@@ -134,10 +129,10 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 			}
 
 			if (i == allDialogs.length() - 1) {
-				FAIL() << "doesnt exist " << dialogTitle.toStdString() << " dialog";
+				FAIL() << "Doesn't exist " << dialogTitle.toStdString() << " dialog";
 			}
 		}
-	});
+	} );
 
 	return {};
 }

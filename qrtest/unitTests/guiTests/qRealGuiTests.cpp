@@ -17,13 +17,13 @@ static const int FREEZECODE = -2;
 
 #include "qRealGuiTests.h"
 
-#include "startQreal.cpp"
-#include "dialogs/projectManagement/suggestToCreateProjectDialog.h"
-#include "dialogs/projectManagement/suggestToCreateDiagramWidget.h"
-#include "qrgui/mainWindow/qrealApplication.h"
+#include "startQReal.cpp"
 #include "workaroundTestFunctions.h"
 #include "testAgent.h"
-#include "mainWindow/scriptAPIWrapper.h"
+#include <dialogs/projectManagement/suggestToCreateProjectDialog.h>
+#include <dialogs/projectManagement/suggestToCreateDiagramWidget.h>
+#include <qrgui/mainWindow/qrealApplication.h>
+#include <mainWindow/scriptAPIWrapper.h>
 #include <qrutils/widgetFinder.h>
 
 #include <QtScript/QScriptContext>
@@ -36,7 +36,6 @@ static const int FREEZECODE = -2;
 #include <QtCore/QTimer>
 #include <QtCore/QThread>
 #include <QtWidgets/QWidget>
-#include <QtCore/QDebug>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QListWidget>
 #include <QtTest/QTest>
@@ -63,6 +62,7 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 		context->throwError("assert failure");
 		return {};
 	}
+
 	return {};
 }
 
@@ -75,6 +75,7 @@ QScriptValue scriptFail(QScriptContext *context, QScriptEngine *engine)
 		context->throwError("failed when fail() was invoked: more than one arg");
 		return {};
 	}
+
 	if (context->argumentCount() == 1) {
 		if (!(context->argument(0).isValid() && context->argument(0).isString())) {
 			ADD_FAILURE() << "incorrect fail() at\n"
@@ -100,6 +101,7 @@ QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 		ADD_FAILURE() << "'add_failure()' shall have exactly 0 or 1 argument";
 		return {};
 	}
+
 	if (context->argumentCount() == 1) {
 		if (!(context->argument(0).isValid() && context->argument(0).isString())) {
 			ADD_FAILURE() << "incorrect add_failure() at\n"
@@ -108,7 +110,7 @@ QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 		}
 	}
 
-	QString errorMsg = (context->argumentCount() == 1) ? context->argument(0).toString() : "";
+	const QString errorMsg = (context->argumentCount() == 1) ? context->argument(0).toString() : "";
 	ADD_FAILURE() << "add_failure() at\n"
 			<< QStringList(context->backtrace().mid(1)).join("\n").toStdString()
 			<< "with a msg:\n" << errorMsg.toStdString();
@@ -130,6 +132,7 @@ QScriptValue scriptExpect(QScriptContext *context, QScriptEngine *engine)
 				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
 		return {};
 	}
+
 	return {};
 }
 
@@ -139,7 +142,9 @@ void QRealGuiTests::SetUp()
 	if (mWindow == nullptr) {
 		FAIL() << "MainWindow is not found";
 	}
+
 	mWindow->setAttribute(Qt::WA_DeleteOnClose);
+	QObject::connect(mWindow, &MainWindow::goingToBeDestroyed, [this] () { qInfo() << "MainWindow is closing..."; } );
 
 	mScriptAPIWrapper = mWindow->createScriptAPIWrapper();
 	if (mScriptAPIWrapper == nullptr) {
@@ -156,7 +161,7 @@ void QRealGuiTests::SetUp()
 	mScriptAPIWrapper->registerNewFunction(closeExpectedDialog, "closeExpectedDialog");
 	mScriptAPIWrapper->registerNewFunction(chooseExpectedDialogDiagram, "chooseExpectedDialogDiagram");
 
-	QScriptEngine *engine = mScriptAPIWrapper->getEngine();
+	QScriptEngine *engine = mScriptAPIWrapper->engine();
 	mTestAgent = new TestAgent(engine);
 	// engine->setAgent(mTestAgent); // for writting and debugging. dont remove!
 
@@ -187,6 +192,7 @@ void QRealGuiTests::TearDown()
 	if (mReturnCode) {
 		ADD_FAILURE() << "ERROR: returnCode of the last app = " << std::to_string(mReturnCode);
 	}
+
 	if (!SettingsManager::value("reachedEndOfFile").toBool()) {
 		FAIL() << "Failed coz end of the script has not been reached\n";
 	}
@@ -194,14 +200,16 @@ void QRealGuiTests::TearDown()
 
 void QRealGuiTests::run(const QString &relativeFileName)
 {
-	QString scriptDirName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/" + mScriptFolderName + "/";
-	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
+	const QString scriptDirName = PlatformInfo::applicationDirPath() +
+			"/../../qrtest/unitTests/guiTests/testScripts/" + mScriptFolderName + "/";
+
+	const QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
 	QString script = readFile(fileName);
 	prepareScriptForRunning(script);
 	if (::testing::Test::HasFailure()) {
 		return;
 	}
+
 	checkScriptSyntax(script, relativeFileName);
 	if (::testing::Test::HasFailure()) {
 		return;
@@ -217,6 +225,7 @@ void QRealGuiTests::run(const QString &relativeFileName)
 		if (::testing::Test::HasFailure()) {
 			return;
 		}
+
 		for (QString scriptName : mCommonScripts) {
 			runCommonScript(scriptName);
 			if (::testing::Test::HasFailure()) {
@@ -233,11 +242,14 @@ void QRealGuiTests::run(const QString &relativeFileName)
 		if (::testing::Test::HasFailure()) {
 			return;
 		}
+
 		if (QApplication::activePopupWidget()) {
 			QApplication::activePopupWidget()->close();
 		}
+
 		QApplication::closeAllWindows();
-	});
+	} );
+
 	timer->start(mTimeToExpose);
 	mReturnCode = QApplication::exec();
 }
@@ -255,11 +267,11 @@ void QRealGuiTests::includeCommonScript(const QStringList &fileList)
 void QRealGuiTests::failTest()
 {
 	mScriptAPIWrapper->abortEvaluation();
-	mScriptAPIWrapper->getEngine()->currentContext()->throwError("failTest: freeze");
+	mScriptAPIWrapper->engine()->currentContext()->throwError("failTest: freeze");
 	exterminate(FREEZECODE);
 }
 
-QString QRealGuiTests::getScriptFolderName() const
+QString QRealGuiTests::scriptFolderName() const
 {
 	return mScriptFolderName;
 }
@@ -269,7 +281,7 @@ void QRealGuiTests::setScriptFolderName(const QString &folder)
 	mScriptFolderName = folder;
 }
 
-int QRealGuiTests::getTimeToExpose() const
+int QRealGuiTests::timeToExpose() const
 {
 	return mTimeToExpose;
 }
@@ -279,7 +291,7 @@ void QRealGuiTests::setTimeToExpose(const int timeToExpose)
 	mTimeToExpose = timeToExpose;
 }
 
-int QRealGuiTests::getTimeLimit() const
+int QRealGuiTests::timeLimit() const
 {
 	return mTimeLimit;
 }
@@ -291,9 +303,9 @@ void QRealGuiTests::setTimeLimit(const int timeLimit)
 
 void QRealGuiTests::runCommonScript(const QString &relativeFileName)
 {
-	QString scriptDirName = QApplication::applicationFilePath() +
-			"/../../../qrtest/unitTests/guiTests/testScripts/";
-	QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
+	const QString scriptDirName = PlatformInfo::applicationDirPath() +
+			"/../../qrtest/unitTests/guiTests/testScripts/";
+	const QString fileName = QDir::cleanPath(scriptDirName) + "/" + relativeFileName;
 	QString script = readFile(fileName);
 	mCurrentEvaluatingScriptFile = relativeFileName;
 	mCurrentIncludedFiles << fileName;
@@ -303,17 +315,19 @@ void QRealGuiTests::runCommonScript(const QString &relativeFileName)
 	if (::testing::Test::HasFailure()) {
 		return;
 	}
+
 	checkScriptSyntax(script, relativeFileName);
 	if (::testing::Test::HasFailure()) {
 		return;
 	}
+
 	mScriptAPIWrapper->evaluateScript(script, fileName);
 	checkLastEvaluating(relativeFileName);
 }
 
 void QRealGuiTests::checkScriptSyntax(const QString &script, const QString &errorMsg)
 {
-	QScriptSyntaxCheckResult checkResult = mScriptAPIWrapper->checkSyntax(script);
+	const QScriptSyntaxCheckResult checkResult = mScriptAPIWrapper->checkSyntax(script);
 	if (checkResult.state() != QScriptSyntaxCheckResult::Valid) {
 		QApplication::quit();
 		FAIL() << "Failed coz code is invalide\n" << checkResult.errorMessage().toStdString()
@@ -324,11 +338,12 @@ void QRealGuiTests::checkScriptSyntax(const QString &script, const QString &erro
 void QRealGuiTests::checkLastEvaluating(const QString &errorMsg)
 {
 	if (mScriptAPIWrapper->hasUncaughtException()) {
-		std::string backtrace = mScriptAPIWrapper->uncaughtExceptionBacktrace().join('\n').toStdString();
+		const std::string backtrace = mScriptAPIWrapper->uncaughtExceptionBacktrace().join('\n').toStdString();
 		mScriptAPIWrapper->clearExceptions();
 		if (QApplication::activePopupWidget()) {
 			QApplication::activePopupWidget()->close();
 		}
+
 		QApplication::closeAllWindows();
 		FAIL() << "Failed. Uncaught exception of the last evaluating was thrown\n"
 			   << backtrace << "\n" << errorMsg.toStdString();
@@ -339,10 +354,11 @@ QString QRealGuiTests::readFile(const QString &fileName)
 {
 	QFile scriptFile(fileName);
 	if (!scriptFile.open(QIODevice::ReadOnly)) {
-		ADD_FAILURE() << "Cant open file for reading for gui test: " << fileName.toStdString();
+		ADD_FAILURE() << "Can't open file for reading for gui test: " << fileName.toStdString();
 	}
+
 	QTextStream stream(&scriptFile);
-	QString contents = stream.readAll();
+	const QString contents = stream.readAll();
 	scriptFile.close();
 	return contents;
 }
@@ -358,13 +374,14 @@ void QRealGuiTests::exterminate(const int returnCode)
 	while (QApplication::activePopupWidget()) {
 		QApplication::activePopupWidget()->close();
 	}
+
 	while (QApplication::activeModalWidget()) {
 		QApplication::activeModalWidget()->close();
 	}
+
 	QApplication::instance()->exit(returnCode);
 }
 
-// Existence
 //TEST_F(QRealGuiTests, dockWidgetsExistence)
 //{
 //	includeCommonScript("common.js");
@@ -431,7 +448,6 @@ TEST_F(QRealGuiTests, toolsActionsExistence)
 //	run("viewActionsExistence.js");
 //}
 
-// Functioning
 TEST_F(QRealGuiTests, dockWidgetsFunctioning)
 {
 	includeCommonScript("common.js");
@@ -486,7 +502,6 @@ TEST_F(QRealGuiTests, viewActionsFunctioning)
 	run("viewActionsFunctioning.js");
 }
 
-// Different complicated scripts
 TEST_F(QRealGuiTests, autoSaveWork)
 {
 	includeCommonScript("common.js");

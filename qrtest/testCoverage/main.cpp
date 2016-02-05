@@ -15,8 +15,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QRegExp>
-#include <QtCore/QDebug>
-#include <QtCore/QTime>
+#include <QtCore/QTextStream>
 #include <QtCore/QList>
 #include <QtCore/QPair>
 #include <QtCore/QVariant>
@@ -396,9 +395,6 @@ int main(int argc, char *argv[])
 	Q_UNUSED(argc);
 	Q_UNUSED(argv);
 
-	QTime time;
-	time.start();
-
 	readFromFileToList("~testignore", ignoreFiles);
 	readFromFileToList("testpathes", testpathes);
 	for (int j = 0; j < testpathes.length(); ++j) {
@@ -435,6 +431,5 @@ int main(int argc, char *argv[])
 		listOfTests.clear();
 	}
 
-	qDebug() << "time of execution: " + QString::number(time.elapsed()) + " ms";
 	return 0;
 }

@@ -25,7 +25,7 @@ class ScriptAPI;
 class ScriptAPIWrapper
 {
 public:
-	explicit ScriptAPIWrapper(ScriptAPI *scriptAPI);
+	explicit ScriptAPIWrapper(ScriptAPI &scriptAPI);
 	~ScriptAPIWrapper();
 
 	/// Evaluates script with current ScriptAPI
@@ -45,27 +45,26 @@ public:
 	/// @param length is the number of arguments that fun expects;
 	/// this becomes the length property of the created QScriptValue.
 	void registerNewFunction(QScriptEngine::FunctionSignature fun
-									 , const QString &scriptName, int length = 0);
+			, const QString &scriptName, int length = 0);
 
 	/// Checks the syntax of the given script.
 	/// @return a QScriptSyntaxCheckResult object that contains the result of the check.
-	QScriptSyntaxCheckResult checkSyntax(const QString &script);
+	QScriptSyntaxCheckResult checkSyntax(const QString &script) const;
 
 	/// @return true if the last script evaluation resulted in an uncaught exception; otherwise returns false.
-	bool hasUncaughtException();
+	bool hasUncaughtException() const;
 
 	/// Clears any uncaught exceptions in corresponding engine.
 	void clearExceptions();
 
 	/// @return a human-readable backtrace of the last uncaught exception.
-	QStringList uncaughtExceptionBacktrace();
+	QStringList uncaughtExceptionBacktrace() const;
 
 	/// @return QScriptEngine pointer for ScriptAPI engine
-	QScriptEngine* getEngine();
+	QScriptEngine* engine();
 
 private:
-	// Doesn't have ownership
-	ScriptAPI *mScriptAPI;
+	ScriptAPI &mScriptAPI;
 };
 
 }

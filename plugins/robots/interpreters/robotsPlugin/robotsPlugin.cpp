@@ -30,10 +30,6 @@ RobotsPlugin::RobotsPlugin()
 	mRobotsPluginFacade.reset(new interpreterCore::RobotsPluginFacade);
 }
 
-RobotsPlugin::~RobotsPlugin()
-{
-}
-
 void RobotsPlugin::init(const PluginConfigurator &configurator)
 {
 	mRobotsPluginFacade->init(configurator);

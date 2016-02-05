@@ -55,3 +55,14 @@ QString StringUtils::dequote(const QString &string)
 		? string.mid(1, string.length() - 2)
 		: string;
 }
+
+QString utils::StringUtils::deleteAmpersands(const QString &string)
+{
+	QString result(string);
+	for (int i = 0; i < result.count(); ++i) {
+		if (result[i] == '&') {
+			result.remove(i, 1);
+		}
+	}
+	return result;
+}

@@ -17,43 +17,42 @@
 #include <QtScript/QScriptEngineAgent>
 #include <QtScript/QScriptValue>
 #include <QtScript/QScriptEngine>
-#include <QtCore/QString>
 
 namespace guiTesting {
 
-/// Helps for debugging and scripting
+/// Helps for debugging and scripting.
 class TestAgent : public QScriptEngineAgent
 {
 public:
-	/// @see QScriptEngineAgent
+	/// @see QScriptEngineAgent.
 	explicit TestAgent(QScriptEngine *engine);
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void exceptionCatch(qint64 scriptId, const QScriptValue & exception) override;
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void exceptionThrow(qint64 scriptId, const QScriptValue & exception, bool hasHandler) override;
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void positionChange(qint64 scriptId, int lineNumber, int columnNumber) override;
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void scriptLoad(qint64 id, const QString & program, const QString & fileName, int baseLineNumber) override;
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void functionEntry(qint64 scriptId) override;
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void contextPop() override;
 
-	/// @see QScriptEngineAgent
-	/// output relative info with qDebug()
+	/// @see QScriptEngineAgent.
+	/// Outputs relative info with qInfo().
 	void contextPush() override;
 };
 

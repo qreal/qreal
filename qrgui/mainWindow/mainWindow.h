@@ -184,10 +184,11 @@ public:
 	QList<QAction *> optionalMenuActionsForInterpretedPlugins();
 
 	/// @returns the pointer to the new ScriptAPIWrapper, mainWindow doesn't have ownership of one
-	qReal::gui::ScriptAPIWrapper* createScriptAPIWrapper();
+	qReal::gui::ScriptAPIWrapper *createScriptAPIWrapper();
 
 signals:
 	void rootDiagramChanged();
+	void goingToBeDestroyed();
 
 public slots:
 	void propertyEditorScrollTo(const QModelIndex &index);

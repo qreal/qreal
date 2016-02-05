@@ -35,9 +35,9 @@ class PaletteAPI;
 class HintAPI;
 class Utils;
 
-/// @warning Should not throw C++ except-s in q_invokable methods, a script engine cann't propagate ones up the stack.
-/// All asserts for such functions, for passed parameters should be done in a script, using script's assert();
-/// This applies to all invokable functions of the scriptAPI module, functions are invokable from ui(), utils(), etc.;
+/// @warning Should not throw C++ except-s in q_invokable methods, a script engine can't propagate ones up the stack.
+/// All asserts for such functions, for passed parameters should be done in a script, using script's assert().
+/// This applies to all invokable functions of the scriptAPI module, functions are invokable from ui(), utils(), etc.
 /// Represents scripting API for interaction with QReal graphical user interface. This class provides access to
 /// controling virtual devices (see VirtualCursor, VirtualKeyboard), API for some elements of graphical
 /// user interface (see PaletteAPI, SceneAPI), GUI facades for system and plugins (see GuiFacade,
@@ -65,43 +65,43 @@ public:
 	/// Starts evaluatiion of the script with script engine located in "fileName".
 	void evaluateFileScript(const QString &fileName);
 
-	/// Registres new function fun in QScriptEngine for using fun in scripts
-	void regNewFunct(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length = 0);
+	/// Registres new function fun in QScriptEngine for using fun in scripts.
+	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length = 0);
 
 	/// Checks the syntax of the given script.
-	QScriptSyntaxCheckResult checkSyntax(const QString &script);
+	QScriptSyntaxCheckResult checkSyntax(const QString &script) const;
 
-	/// Checks UncaughtException
-	bool hasUncaughtException();
+	/// Checks an existence of uncaught exception.
+	bool hasUncaughtException() const;
 
 	/// Clears any uncaught exceptions in corresponding engine.
 	void clearExceptions();
 
 	/// Returns a human-readable backtrace of the last uncaught exception.
-	QStringList uncaughtExceptionBacktrace();
+	QStringList uncaughtExceptionBacktrace() const;
 
-	/// Returns ScriptAPI engine pointer
-	QScriptEngine* getEngine();
+	/// Returns ScriptAPI engine pointer.
+	QScriptEngine *engine();
 
 	/// Freezes execution for duration. Starting event loop breaking when duration time ellapsed.
-	Q_INVOKABLE void wait(int duration);
+	Q_INVOKABLE void wait(int duration) noexcept;
 
 	/// Attaches virtual cursor to a new top-level window.
 	/// @todo: move it to VirtualCursor.
-	Q_INVOKABLE void switchToWindow(QWidget *parent);
+	Q_INVOKABLE void switchToWindow(QWidget *parent) noexcept;
 
 	/// Attaches virtual cursor to a mainWindow.
 	/// @todo: move it to VirtualCursor.
-	Q_INVOKABLE void switchToMainWindow();
+	Q_INVOKABLE void switchToMainWindow() noexcept;
 
 	/// Picks combo box item. Virtual cursor can pick any item in its sight of view.
 	/// Temporary doesn`t work with scroll bars.
 	/// @todo: move it to Utils as a action.
-	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration);
+	Q_INVOKABLE void pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration) noexcept;
 
 	/// Changes QAbstractScrollArea viewport to make target widget visible. Can work only with vertical sliders.
 	/// @todo: move it to Utils as a action.
-	Q_INVOKABLE void scroll(QAbstractScrollArea *area, QWidget *widget, int duration);
+	Q_INVOKABLE void scroll(QAbstractScrollArea *area, QWidget *widget, int duration) noexcept;
 
 	/// Provides operations for obtaining different UI parts of some plugin.
 	Q_INVOKABLE QScriptValue pluginUi(const QString &pluginName);

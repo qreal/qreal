@@ -63,9 +63,9 @@ int ProjectManagerWrapper::suggestToSaveOrCancelMessage()
 {
 	QMessageBox offerSave(mMainWindow);
 	offerSave.setWindowTitle(tr("Save"));
-	offerSave.addButton(tr("Save"), QMessageBox::AcceptRole);
-	offerSave.addButton(tr("Cancel"), QMessageBox::RejectRole);
-	offerSave.addButton(tr("Discard"), QMessageBox::DestructiveRole);
+	offerSave.addButton(tr("&Save"), QMessageBox::AcceptRole);
+	offerSave.addButton(tr("&Cancel"), QMessageBox::RejectRole);
+	offerSave.addButton(tr("&Discard"), QMessageBox::DestructiveRole);
 	offerSave.setText(tr("Do you want to save current project?"));
 	return offerSave.exec();
 }

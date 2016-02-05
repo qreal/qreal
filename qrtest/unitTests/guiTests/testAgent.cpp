@@ -26,19 +26,19 @@ TestAgent::TestAgent(QScriptEngine *engine)
 void TestAgent::exceptionCatch(qint64 scriptId, const QScriptValue & exception)
 {
 	Q_UNUSED(scriptId);
-	qDebug() << "Agent::exceptionCatch" << exception.toString();
+	qInfo() << "Agent::exceptionCatch" << exception.toString();
 }
 
 void TestAgent::exceptionThrow(qint64 scriptId, const QScriptValue & exception, bool hasHandler)
 {
 	Q_UNUSED(scriptId);
-	qDebug() << "Agent::exceptionThrow" << exception.toString() << hasHandler;
+	qInfo() << "Agent::exceptionThrow" << exception.toString() << hasHandler;
 }
 
 void TestAgent::positionChange(qint64 scriptId, int lineNumber, int columnNumber)
 {
 	Q_UNUSED(scriptId);
-	qDebug() << "Agent::positionChange" << lineNumber << " " << columnNumber;
+	qInfo() << "Agent::positionChange" << lineNumber << " " << columnNumber;
 }
 
 void TestAgent::scriptLoad(qint64 id, const QString & program, const QString & fileName, int baseLineNumber)
@@ -46,21 +46,21 @@ void TestAgent::scriptLoad(qint64 id, const QString & program, const QString & f
 	Q_UNUSED(id);
 	Q_UNUSED(program);
 	Q_UNUSED(baseLineNumber);
-	qDebug() << "Agent::scriptLoad " << fileName;
+	qInfo() << "Agent::scriptLoad " << fileName;
 }
 
 void TestAgent::functionEntry(qint64 scriptId)
 {
 	Q_UNUSED(scriptId);
-	qDebug() << "Agent::functionEntry";
+	qInfo() << "Agent::functionEntry";
 }
 
 void TestAgent::contextPop()
 {
-	qDebug() << "Agent::contextPop";
+	qInfo() << "Agent::contextPop";
 }
 
 void TestAgent::contextPush()
 {
-	qDebug() << "Agent::contextPush";
+	qInfo() << "Agent::contextPush";
 }

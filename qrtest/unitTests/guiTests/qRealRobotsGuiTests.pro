@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../commonGui.pri) #because "SOURCES -=" doesnt work. (bug?)
+include(../commonGui.pri) #because "SOURCES -=" doesn't work. (bug?)
 
 QT += script
 
