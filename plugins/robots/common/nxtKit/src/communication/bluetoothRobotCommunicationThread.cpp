@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "bluetoothRobotCommunicationThread.h"
+#include "nxtKit/communication/bluetoothRobotCommunicationThread.h"
 
 #include <QtCore/QMetaType>
 #include <QtCore/QTimer>
@@ -22,7 +22,7 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 
-#include "commandConstants.h"
+#include "nxtKit/communication/nxtCommandConstants.h"
 
 const int keepAliveResponseSize = 9;
 const int getFirmwareVersionResponseSize = 9;
@@ -57,7 +57,7 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArra
 	}
 }
 
-void BluetoothRobotCommunicationThread::connect()
+bool BluetoothRobotCommunicationThread::connect()
 {
 	if (mPort) {
 		disconnect();
@@ -84,10 +84,11 @@ void BluetoothRobotCommunicationThread::connect()
 
 	send(command);
 	const QByteArray response = receive(getFirmwareVersionResponseSize);
-
-	emit connected(response != QByteArray(), QString());
+	emit connected(!response.isEmpty(), QString());
 
 	mKeepAliveTimer->start(500);
+
+	return !response.isEmpty();
 }
 
 void BluetoothRobotCommunicationThread::reconnect()

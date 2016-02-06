@@ -18,14 +18,6 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base robots-2d-model robots-nxt-kit qextserialport qslog \
 		)
 
-win32 {
-	LIBS += -llibusb-1.0
-}
-
-unix {
-	LIBS += -lusb-1.0
-}
-
 includes(plugins/robots/common/kitBase \
 		plugins/robots/common/twoDModel \
 		plugins/robots/common/nxtKit \
@@ -96,8 +88,6 @@ SOURCES += \
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
 	$$PWD/nxtDisplayWidget.ui \
-
-include($$PWD/communication/communication.pri)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts \

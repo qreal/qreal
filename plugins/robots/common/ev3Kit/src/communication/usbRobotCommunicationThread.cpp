@@ -62,11 +62,11 @@ void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buf
 	}
 }
 
-void UsbRobotCommunicationThread::connect()
+bool UsbRobotCommunicationThread::connect()
 {
 	if (mHandle) {
 		emit connected(true, QString());
-		return;
+		return true;
 	}
 
 	libusb_init(nullptr);
@@ -74,7 +74,7 @@ void UsbRobotCommunicationThread::connect()
 	mHandle = libusb_open_device_with_vid_pid(nullptr, EV3_VID, EV3_PID);
 	if (!mHandle) {
 		emit connected(false, tr("Cannot find EV3 device. Check robot connected and turned on and try again."));
-		return;
+		return false;
 	}
 
 	if (libusb_kernel_driver_active(mHandle,EV3_INTERFACE_NUMBER)) {
@@ -84,13 +84,13 @@ void UsbRobotCommunicationThread::connect()
 	if (libusb_set_configuration(mHandle, EV3_CONFIGURATION_NB) < 0) {
 		emit connected(false, tr("USB device configuration problem. Please contact developers."));
 		mHandle = nullptr;
-		return;
+		return false;
 	}
 
 	if (libusb_claim_interface(mHandle, EV3_INTERFACE_NUMBER) < 0) {
 		emit connected(false, tr("USB device interface problem. Please contact developers."));
 		mHandle = nullptr;
-		return;
+		return false;
 	}
 
 	emit connected(true, QString());
@@ -98,6 +98,7 @@ void UsbRobotCommunicationThread::connect()
 	mKeepAliveTimer->disconnect();
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 	mKeepAliveTimer->start(500);
+	return true;
 }
 
 void UsbRobotCommunicationThread::reconnect()

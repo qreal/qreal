@@ -57,11 +57,11 @@ void BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArra
 	}
 }
 
-void BluetoothRobotCommunicationThread::connect()
+bool BluetoothRobotCommunicationThread::connect()
 {
 	if (mPort && mPort->isOpen()) {
 		emit connected(true, QString());
-		return;
+		return true;
 	}
 
 	const QString portName = qReal::SettingsManager::value("Ev3BluetoothPortName").toString();
@@ -78,12 +78,14 @@ void BluetoothRobotCommunicationThread::connect()
 	// Sending "Keep alive" command to check connection.
 	keepAlive();
 	const QByteArray response = receive(keepAliveResponseSize);
+	emit connected(!response.isEmpty(), QString());
 
-	emit connected(response != QByteArray(), QString());
 	mKeepAliveTimer->moveToThread(this->thread());
 	mKeepAliveTimer->disconnect();
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 	mKeepAliveTimer->start(500);
+
+	return !response.isEmpty();
 }
 
 void BluetoothRobotCommunicationThread::reconnect()

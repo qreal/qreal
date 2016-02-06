@@ -32,7 +32,7 @@ public:
 
 public slots:
 	void send(QObject *addressee, const QByteArray &buffer, int responseSize);
-	void connect();
+	bool connect();
 	void reconnect();
 	void disconnect();
 

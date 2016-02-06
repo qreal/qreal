@@ -17,8 +17,7 @@
 #include <kitBase/robotModel/portInfo.h>
 #include <utils/robotCommunication/robotCommunicator.h>
 #include <nxtKit/robotModel/parts/nxtMotor.h>
-
-#include "commandConstants.h"
+#include <nxtKit/communication/nxtCommandConstants.h>
 
 namespace nxt {
 namespace robotModel {

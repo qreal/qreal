@@ -18,6 +18,7 @@
 #include <QtCore/QFileInfo>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
 namespace nxt {
 
@@ -33,49 +34,65 @@ public:
 		, NeverRun
 	};
 
-	explicit NxtFlashTool(qReal::ErrorReporterInterface *errorReporter);
+	NxtFlashTool(qReal::ErrorReporterInterface &errorReporter
+			, utils::robotCommunication::RobotCommunicationThreadInterface &communicator);
 
 public slots:
-	void flashRobot();
-	void uploadProgram(const QFileInfo &fileInfo);
-	void runProgram(const QFileInfo &fileInfo);
-	void runLastProgram();
+	/// Searches for the firmware image in nxt-tools/nexttool directory and flashes it into NXT brick.
+	/// NXT brick must be reseted before this method is called. If multiple images found in nxt-tools/nexttool
+	/// then latest (greatest lexicographically) will be flashed. Flashing is performed through the raw libusb or
+	/// qextserialport connection, fantom driver and NeXTTool are not required.
+	bool flashRobot();
+
+	/// Compiles and uploads program with the given source \a fileInfo into NXT brick. Makefile should be placed
+	/// next to \a fileInfo. Executable .rxe file will be built with cygwin make tool. Flashing is performed through
+	/// the raw libusb or qextserialport connection, fantom driver and NeXTTool are not required.
+	bool uploadProgram(const QFileInfo &fileInfo);
+
+	/// Starts program with compiled from the given source \a fileInfo on NXT brick. Communication is performed
+	/// through the raw libusb or qextserialport connection, fantom driver and NeXTTool are not required.
+	/// @note \a fileInfo base name will be used and will be cropped to 15 symbols cause NXT do that.
+	bool runProgram(const QFileInfo &fileInfo);
+
+	/// Starts last program with compiled and uploaded with uploadRobot on NXT brick. Communication is performed
+	/// through the raw libusb or qextserialport connection, fantom driver and NeXTTool are not required.
+	/// @note \a fileInfo base name will be used and will be cropped to 15 symbols cause NXT do that.
+	bool runLastProgram();
 
 	void error(QProcess::ProcessError error);
-	void readNxtFlashData();
+//	void readNxtFlashData();
 	bool askToRun(QWidget *parent);
 	void nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus);
-	void readNxtUploadData();
-	void nxtUploadingFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 signals:
 	void flashingComplete(bool success);
 	void uploadingComplete(bool success);
 
 private:
-	enum UploadState {
+	enum CompileState {
 		clean,
 		compile,
 		compilationError,
 		link,
-		uploadStart,
-		flash,
 		done
 	};
 
 	const QString path(const QString &file = QString()) const;
+	bool uploadToBrick(const QString &program);
 
-	qReal::ErrorReporterInterface *mErrorReporter;
-	QProcess mFlashProcess;
-	QProcess mUploadProcess;
-	QProcess mRunProcess;
+	void nxtCompilationFinished(int exitCode, QProcess::ExitStatus exitStatus);
+	void readNxtCompileData();
+
+	qReal::ErrorReporterInterface &mErrorReporter;
+	utils::robotCommunication::RobotCommunicationThreadInterface &mCommunicator;
+	QProcess mCompileProcess;
 
 	bool mIsFlashing;
 	bool mIsUploading;
 
 	QFileInfo mSource;
 
-	UploadState mUploadState;
+	CompileState mCompileState;
 };
 
 }

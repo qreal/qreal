@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "usbRobotCommunicationThread.h"
+#include "nxtKit/communication/usbRobotCommunicationThread.h"
 
 #include <time.h>
 
@@ -20,7 +20,7 @@
 #include <qrkernel/logging.h>
 #include <plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0/libusb.h>
 
-#include "commandConstants.h"
+#include "nxtKit/communication/nxtCommandConstants.h"
 
 using namespace nxt::communication;
 
@@ -50,11 +50,11 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 	}
 }
 
-void UsbRobotCommunicationThread::connect()
+bool UsbRobotCommunicationThread::connect()
 {
 	if (mHandle) {
 		emit connected(true, QString());
-		return;
+		return true;
 	}
 
 	libusb_init(nullptr);
@@ -62,7 +62,7 @@ void UsbRobotCommunicationThread::connect()
 	mHandle = libusb_open_device_with_vid_pid(nullptr, NXT_VID, NXT_PID);
 	if (!mHandle) {
 		emit connected(false, tr("Cannot find NXT device. Check robot connected and turned on and try again."));
-		return;
+		return false;
 	}
 
 	if (libusb_kernel_driver_active(mHandle, NXT_INTERFACE_NUMBER)) {
@@ -73,14 +73,14 @@ void UsbRobotCommunicationThread::connect()
 		emit connected(false, tr("USB Device configuration problem. Please contact developers."));
 		libusb_close(mHandle);
 		mHandle = nullptr;
-		return;
+		return false;
 	}
 
 	if (libusb_claim_interface(mHandle, NXT_INTERFACE_NUMBER) < 0) {
 		emit connected(false, tr("NXT device is already used by another software."));
 		libusb_close(mHandle);
 		mHandle = nullptr;
-		return;
+		return false;
 	}
 
 	QByteArray getFirmwareCommand(4, 0);
@@ -95,12 +95,14 @@ void UsbRobotCommunicationThread::connect()
 		emit connected(false, tr("NXT handshake procedure failed. Please contact developers."));
 		libusb_close(mHandle);
 		mHandle = nullptr;
-		return;
+		return false;
 	}
 
 	emit connected(true, QString());
 	mKeepAliveTimer->moveToThread(thread());
 	mKeepAliveTimer->start(500);
+
+	return true;
 }
 
 void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)

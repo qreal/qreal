@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,51 +14,43 @@
 
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QThread>
-#include <QtCore/QTimer>
-
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
-class libusb_device_handle;
+class QextSerialPort;
+class QTimer;
 
 namespace nxt {
 namespace communication {
 
-class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
+class BluetoothRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
 	Q_OBJECT
 
 public:
-	UsbRobotCommunicationThread();
-	~UsbRobotCommunicationThread();
+	BluetoothRobotCommunicationThread();
+	~BluetoothRobotCommunicationThread();
 
 public slots:
 	void send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
-	void connect() override;
+	bool connect() override;
 	void reconnect() override;
 	void disconnect() override;
+
 	void allowLongJobs(bool allow = true) override;
 
 private slots:
 	/// Checks if robot is connected
 	void checkForConnection();
 
-	/// Checks that message requires response or not.
-	/// @returns true, if there shall be a response.
-	static bool isResponseNeeded(const QByteArray &buffer);
-
 private:
-	static const int kStatusNoError = 0;
-
 	void send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
+	void send(const QByteArray &buffer) const;
+	QByteArray receive(int size) const;
 
-	libusb_device_handle *mHandle;
+	QextSerialPort *mPort;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;
-
-	bool mStopped;
 };
 
 }
