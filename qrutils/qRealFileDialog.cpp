@@ -28,7 +28,9 @@ QString QRealFileDialog::getOpenFileName(const QString &id
 		, QFileDialog::Options options)
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
-	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 
@@ -48,7 +50,9 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 		, QFileDialog::Options options)
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
-	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 
@@ -65,7 +69,9 @@ QString QRealFileDialog::getExistingDirectory(const QString &id
 		, QFileDialog::Options options)
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
-	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 
@@ -84,7 +90,9 @@ QStringList QRealFileDialog::getOpenFileNames(const QString &id
 		, QFileDialog::Options options)
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
-	if (dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool()) {
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
 

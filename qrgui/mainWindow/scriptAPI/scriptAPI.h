@@ -80,6 +80,11 @@ public:
 	/// Returns a human-readable backtrace of the last uncaught exception.
 	QStringList uncaughtExceptionBacktrace() const;
 
+	/// Returns the current uncaught exception, or an invalid QScriptValue if there is no uncaught exception.
+	///	The exception value is typically an Error object; in that case,
+	/// you can call toString() on the return value to obtain an error message.
+	QScriptValue uncaughtException() const;
+
 	/// Returns ScriptAPI engine pointer.
 	QScriptEngine *engine();
 

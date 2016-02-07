@@ -56,9 +56,33 @@ QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *contex
 				return;
 			}
 		}
-	});
+	} );
 
 	return {};
+}
+
+void chooseDiagram(QDialog * const listDialog, const QString &diagramName)
+{
+	QList<SuggestToCreateDiagramWidget *> listWidget = listDialog->findChildren<SuggestToCreateDiagramWidget *>();
+	ASSERT_FALSE(listWidget.isEmpty());
+	for (int k = 0; k < listWidget.length(); ++k) {
+		if (listWidget.at(k) != nullptr) {
+			SuggestToCreateDiagramWidget *suggestWidget = listWidget.at(k);
+			for (int m = 0; m < suggestWidget->mainListWidget()->count(); ++m) {
+				if (suggestWidget->mainListWidget()->item(m)->text() == diagramName) {
+					// here gui workaround
+					suggestWidget->mainListWidget()->itemDoubleClicked(suggestWidget->mainListWidget()->item(m));
+					break;
+				}
+
+				if (m == suggestWidget->mainListWidget()->count() - 1) {
+					FAIL() << "Doesn't exist " << diagramName.toStdString() << " diagram";
+				}
+			}
+
+			break;
+		}
+	}
 }
 
 // Structure of the object: mainwindow->dialog->widgetList->diagrams. Looks in depth.
@@ -66,29 +90,26 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 		, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
-
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() != 4) {
 		ADD_FAILURE() << "'expectDialog' shall have exactly 4 arguments";
 		return {};
 	}
 
 	if (!(context->argument(0).isValid() && !context->argument(0).isNull())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+		ADD_FAILURE() << "Assertion failure at\n" << backtrace.toStdString();
 		return {};
 	}
 
 	for (int i = 1; i <= 2; ++i) {
 		if (!(context->argument(i).isValid() && context->argument(i).isString())) {
-			ADD_FAILURE() << "Assertion failure at\n"
-					<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+			ADD_FAILURE() << "Assertion failure at\n" << backtrace.toStdString();
 			return {};
 		}
 	}
 
 	if (!(context->argument(3).isValid() && context->argument(3).isNumber())) {
-		ADD_FAILURE() << "Assertion failure at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+		ADD_FAILURE() << "Assertion failure at\n" << backtrace.toStdString();
 		return {};
 	}
 
@@ -103,28 +124,9 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 		ASSERT_FALSE(allDialogs.isEmpty());
 		for (int i = 0; i < allDialogs.length(); ++i) {
 			if (allDialogs.at(i)->windowTitle() == dialogTitle || allDialogs.at(i)->objectName() == dialogTitle) {
-				SuggestToCreateProjectDialog *listDialog = dynamic_cast <SuggestToCreateProjectDialog *>(allDialogs.at(i));
-				ASSERT_TRUE(listDialog != NULL);
-				QList<SuggestToCreateDiagramWidget *> listWidget = listDialog->findChildren<SuggestToCreateDiagramWidget *>();
-				ASSERT_FALSE(listWidget.isEmpty());
-				for (int k = 0; k < listWidget.length(); ++k) {
-					if (listWidget.at(k) != nullptr) {
-						SuggestToCreateDiagramWidget *suggestWidget = listWidget.at(k);
-						for (int m = 0; m < suggestWidget->mainListWidget()->count(); ++m) {
-							if (suggestWidget->mainListWidget()->item(m)->text() == diagramName) {
-/*here gui workaround*/			suggestWidget->mainListWidget()->itemDoubleClicked(suggestWidget->mainListWidget()->item(m));
-								break;
-							}
-
-							if (m == suggestWidget->mainListWidget()->count() - 1) {
-								FAIL() << "Doesn't exist " << diagramName.toStdString() << " diagram";
-							}
-						}
-
-						break;
-					}
-				}
-
+				QDialog *listDialog = dynamic_cast <QDialog *>(allDialogs.at(i));
+				ASSERT_TRUE(listDialog != nullptr);
+				chooseDiagram(listDialog, diagramName);
 				break;
 			}
 

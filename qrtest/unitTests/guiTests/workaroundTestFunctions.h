@@ -21,16 +21,16 @@
 namespace guiTesting {
 namespace workarounds {
 
-/// this function is a WORKAROUND
-/// Function for determining, reached end of the script or not
+/// This function is a WORKAROUND.
+/// Function for determining, reached end of the script or not.
 QScriptValue reachedEndOfScript(QScriptContext *context, QScriptEngine *engine);
 
-/// this function is a WORKAROUND
+/// This function is a WORKAROUND.
 /// Close dialog invoking close() slot.
 QScriptValue closeExpectedDialog(QScriptContext *context, QScriptEngine *engine);
 
-/// this function is a WORKAROUND
-/// Usefull method for open diagram from corresponding list in "suggesting dialog"
+/// This function is a WORKAROUND.
+/// Usefull method for open diagram from corresponding list in "suggesting dialog".
 QScriptValue chooseExpectedDialogDiagram(QScriptContext *context, QScriptEngine *engine);
 
 }

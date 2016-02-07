@@ -67,7 +67,12 @@ QStringList ScriptAPIWrapper::uncaughtExceptionBacktrace() const
 	return mScriptAPI.uncaughtExceptionBacktrace();
 }
 
-QScriptEngine* ScriptAPIWrapper::engine()
+QScriptValue ScriptAPIWrapper::uncaughtException() const
+{
+	return mScriptAPI.uncaughtException();
+}
+
+QScriptEngine *ScriptAPIWrapper::engine()
 {
 	return mScriptAPI.engine();
 }

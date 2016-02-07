@@ -21,29 +21,29 @@ namespace gui {
 
 class ScriptAPI;
 
-/// @brief ScriptAPIWrapper provides work with ScriptAPI for different classes
+/// @brief ScriptAPIWrapper provides work with ScriptAPI for different classes.
 class ScriptAPIWrapper
 {
 public:
 	explicit ScriptAPIWrapper(ScriptAPI &scriptAPI);
 	~ScriptAPIWrapper();
 
-	/// Evaluates script with current ScriptAPI
+	/// Evaluates script with current ScriptAPI.
 	/// @param ready script for evaluating, \a fileName is used for error reporting.
 	void evaluateScript(const QString &script, const QString &fileName);
 
-	/// Evaluates script located in the file
-	/// @param the full path to the file
+	/// Evaluates script located in the file.
+	/// @param the full path to the file.
 	void evaluateFileScript(const QString &fileName);
 
-	/// Abort evaluation of the script
+	/// Aborts evaluation of the script.
 	void abortEvaluation();
 
-	/// Register new function in QtScriptEngine object getting in MainWindow
+	/// Registers new function in QtScriptEngine object getting in MainWindow.
 	/// @param Creates a QScriptValue that wraps a native (C++) function. 
-	/// fun must be a C++ function with signature QScriptEngine::FunctionSignature.
+	/// \a fun must be a C++ function with signature QScriptEngine::FunctionSignature.
 	/// @param length is the number of arguments that fun expects;
-	/// this becomes the length property of the created QScriptValue.
+	/// This becomes the length property of the created QScriptValue.
 	void registerNewFunction(QScriptEngine::FunctionSignature fun
 			, const QString &scriptName, int length = 0);
 
@@ -60,8 +60,13 @@ public:
 	/// @return a human-readable backtrace of the last uncaught exception.
 	QStringList uncaughtExceptionBacktrace() const;
 
-	/// @return QScriptEngine pointer for ScriptAPI engine
-	QScriptEngine* engine();
+	/// @return the current uncaught exception, or an invalid QScriptValue if there is no uncaught exception.
+	///	The exception value is typically an Error object; in that case,
+	/// you can call toString() on the return value to obtain an error message.
+	QScriptValue uncaughtException() const;
+
+	/// @return QScriptEngine pointer for ScriptAPI engine.
+	QScriptEngine *engine();
 
 private:
 	ScriptAPI &mScriptAPI;

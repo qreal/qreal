@@ -39,31 +39,34 @@ using namespace gui;
 using namespace scriptUtils;
 using namespace utils;
 
-/// Invokes over time a function passed in parameters with the relative obj
+/// Invokes over time a function passed in parameters with the relative obj.
 QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcept
 {
 	Q_UNUSED(engine);
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() < 3) {
-		context->throwError("'invokeLater' shall have 3 or more arguments");
+		context->throwError(QObject::tr("Function invokeLater(...) shall have 3 or more arguments at %1")
+				.arg(backtrace));
 		return {};
 	}
 
 	const int lastButOne = context->argumentCount() - 1;
-
 	if (!(context->argument(0).isValid() && !context->argument(0).toString().isEmpty())) {
-		context->throwError("thisObject failure at " + QStringList(context->backtrace().mid(1)).join("\n"));
+		context->throwError(QObject::tr("'thisObject' name in invokeLater(...) is failed at %1").arg(backtrace));
 		return {};
 	}
 
 	if (!(context->argument(1).isValid() && context->argument(1).isString()
-			&& !context->argument(1).toString().isEmpty())) {
-		context->throwError("propertyName failure at " + QStringList(context->backtrace().mid(1)).join("\n"));
+			&& !context->argument(1).toString().isEmpty()))
+	{
+		context->throwError(QObject::tr("Property name in invokeLater(...) is failed at %1").arg(backtrace));
 		return {};
 	}
 
 	if (!(context->argument(lastButOne).isValid() && context->argument(lastButOne).isNumber()
-			&& context->argument(lastButOne).toInt32() > 0)) {
-		context->throwError("waitingTime failure at " + QStringList(context->backtrace().mid(1)).join("\n"));
+			&& context->argument(lastButOne).toInt32() > 0))
+	{
+		context->throwError(QObject::tr("Waiting time in invokeLater(...) is failed at %1").arg(backtrace));
 		return {};
 	}
 
@@ -77,7 +80,7 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 
 	QTimer::singleShot(mces, [=]() {
 		thisObject.property(propertyName).call(QScriptValue(), args);
-	});
+	} );
 
 	return {};
 }
@@ -167,6 +170,11 @@ void ScriptAPI::clearExceptions()
 QStringList ScriptAPI::uncaughtExceptionBacktrace() const
 {
 	return mScriptEngine.uncaughtExceptionBacktrace();
+}
+
+QScriptValue ScriptAPI::uncaughtException() const
+{
+	return mScriptEngine.uncaughtException();
 }
 
 QScriptEngine *ScriptAPI::engine()

@@ -66,6 +66,7 @@ OTHER_FILES += \
 	$$PWD/testScripts/qrealScripts/hotKeysExistenceAndFunctioning.js \
 	$$PWD/testScripts/qrealScripts/createDiagramInCurrentModel.js \
 	$$PWD/testScripts/qrealScripts/verySimpleShapeEditorTest.js \
+	$$PWD/testScripts/qrealScripts/creatingNewDiagrams.js \
 	$$PWD/testScripts/common.js \
 
 copyToDestdir($$PWD/testScripts/qrealScripts/, now)

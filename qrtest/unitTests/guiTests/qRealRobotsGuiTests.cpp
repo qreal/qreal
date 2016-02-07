@@ -34,6 +34,5 @@ void QRealRobotsGuiTests::TearDown()
 
 TEST_F(QRealRobotsGuiTests, alongTheLineTest)
 {
-	includeCommonScript("common.js");
 	run("alongTheLineTest.js");
 }

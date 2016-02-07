@@ -48,18 +48,16 @@ using namespace qReal::gui;
 QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
-
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() != 1) {
-		ADD_FAILURE() << "'assert' shall have exactly one argument. Fail at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-		context->throwError("incorrect assert failure: more than one arg");
+		ADD_FAILURE() << "'assert(...)' shall have exactly one argument. Fail at\n" << backtrace.toStdString();
+		context->throwError(QObject::tr("Incorrect assert failure: more than one argument at %1").arg(backtrace));
 		return {};
 	}
 
 	if (!context->argument(0).toBool()) {
-		ADD_FAILURE() << "Fail at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-		context->throwError("assert failure");
+		ADD_FAILURE() << "Fail at\n" << backtrace.toStdString();
+		context->throwError(QObject::tr("Assert failure at %1").arg(backtrace));
 		return {};
 	}
 
@@ -69,34 +67,32 @@ QScriptValue scriptAssert(QScriptContext *context, QScriptEngine *engine)
 QScriptValue scriptFail(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
-
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() > 1) {
-		ADD_FAILURE() << "'fail' shall have exactly 0 or 1 argument";
-		context->throwError("failed when fail() was invoked: more than one arg");
+		ADD_FAILURE() << "'fail(...)' shall have exactly 0 or 1 argument";
+		context->throwError(QObject::tr("Failed when fail() was invoked: more than one argument, at %1")
+				.arg(backtrace));
 		return {};
 	}
 
 	if (context->argumentCount() == 1) {
 		if (!(context->argument(0).isValid() && context->argument(0).isString())) {
-			ADD_FAILURE() << "incorrect fail() at\n"
-					<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
-			context->throwError("incorrect fail()");
+			ADD_FAILURE() << "incorrect fail() at\n" << backtrace.toStdString();
+			context->throwError(QObject::tr("Incorrect fail() called at %1").arg(backtrace));
 			return {};
 		}
 	}
 
 	QString errorMsg = (context->argumentCount() == 1) ? context->argument(0).toString() : "";
-	ADD_FAILURE() << "fail() at\n"
-			<< QStringList(context->backtrace().mid(1)).join("\n").toStdString()
-			<< "with a msg:\n" << errorMsg.toStdString();
-	context->throwError("fail() with msg: " + errorMsg);
+	ADD_FAILURE() << "fail() at\n" << backtrace.toStdString() << "with a msg:\n" << errorMsg.toStdString();
+	context->throwError(QObject::tr("fail() with the message: %1 \nat %2").arg(errorMsg).arg(backtrace));
 	return {};
 }
 
 QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
-
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() > 1) {
 		ADD_FAILURE() << "'add_failure()' shall have exactly 0 or 1 argument";
 		return {};
@@ -104,32 +100,27 @@ QScriptValue scriptAddFailure(QScriptContext *context, QScriptEngine *engine)
 
 	if (context->argumentCount() == 1) {
 		if (!(context->argument(0).isValid() && context->argument(0).isString())) {
-			ADD_FAILURE() << "incorrect add_failure() at\n"
-					<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+			ADD_FAILURE() << "incorrect add_failure() at\n" << backtrace.toStdString();
 			return {};
 		}
 	}
 
 	const QString errorMsg = (context->argumentCount() == 1) ? context->argument(0).toString() : "";
-	ADD_FAILURE() << "add_failure() at\n"
-			<< QStringList(context->backtrace().mid(1)).join("\n").toStdString()
-			<< "with a msg:\n" << errorMsg.toStdString();
+	ADD_FAILURE() << "add_failure() at\n" << backtrace.toStdString() << "with a msg:\n" << errorMsg.toStdString();
 	return {};
 }
 
 QScriptValue scriptExpect(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
-
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() != 1) {
-		ADD_FAILURE() << "'expect()' shall have exactly one argument. Fail at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+		ADD_FAILURE() << "'expect()' shall have exactly one argument. Fail at\n" << backtrace.toStdString();
 		return {};
 	}
 
 	if (!context->argument(0).toBool()) {
-		ADD_FAILURE() << "Unexpected value at\n"
-				<< QStringList(context->backtrace().mid(1)).join("\n").toStdString();
+		ADD_FAILURE() << "Unexpected value at\n" << backtrace.toStdString();
 		return {};
 	}
 
@@ -200,6 +191,7 @@ void QRealGuiTests::TearDown()
 
 void QRealGuiTests::run(const QString &relativeFileName)
 {
+	includeCommonScript("common.js");
 	const QString scriptDirName = PlatformInfo::applicationDirPath() +
 			"/../../qrtest/unitTests/guiTests/testScripts/" + mScriptFolderName + "/";
 
@@ -267,7 +259,7 @@ void QRealGuiTests::includeCommonScript(const QStringList &fileList)
 void QRealGuiTests::failTest()
 {
 	mScriptAPIWrapper->abortEvaluation();
-	mScriptAPIWrapper->engine()->currentContext()->throwError("failTest: freeze");
+	mScriptAPIWrapper->engine()->currentContext()->throwError(QObject::tr("Test is failed because of freeze"));
 	exterminate(FREEZECODE);
 }
 
@@ -339,6 +331,7 @@ void QRealGuiTests::checkLastEvaluating(const QString &errorMsg)
 {
 	if (mScriptAPIWrapper->hasUncaughtException()) {
 		const std::string backtrace = mScriptAPIWrapper->uncaughtExceptionBacktrace().join('\n').toStdString();
+		const std::string exceptionMsg = mScriptAPIWrapper->uncaughtException().toString().toStdString();
 		mScriptAPIWrapper->clearExceptions();
 		if (QApplication::activePopupWidget()) {
 			QApplication::activePopupWidget()->close();
@@ -346,7 +339,7 @@ void QRealGuiTests::checkLastEvaluating(const QString &errorMsg)
 
 		QApplication::closeAllWindows();
 		FAIL() << "Failed. Uncaught exception of the last evaluating was thrown\n"
-			   << backtrace << "\n" << errorMsg.toStdString();
+			   << backtrace << "\n" << errorMsg.toStdString() << "\n" << exceptionMsg << "\n";
 	}
 }
 
@@ -384,199 +377,170 @@ void QRealGuiTests::exterminate(const int returnCode)
 
 //TEST_F(QRealGuiTests, dockWidgetsExistence)
 //{
-//	includeCommonScript("common.js");
 //	run("dockWidgetsExistence.js");
 //}
 
 TEST_F(QRealGuiTests, editActionsExistence)
 {
-	includeCommonScript("common.js");
 	run("editActionsExistence.js");
 }
 
 TEST_F(QRealGuiTests, fileActionsExistence)
 {
-	includeCommonScript("common.js");
 	run("fileActionsExistence.js");
 }
 
 TEST_F(QRealGuiTests, findDialogElementsExistence)
 {
-	includeCommonScript("common.js");
 	run("findDialogElementsExistence.js");
 }
 
 TEST_F(QRealGuiTests, helpActionsExistence)
 {
-	includeCommonScript("common.js");
 	run("helpActionsExistence.js");
 }
 
 TEST_F(QRealGuiTests, mouseGesturesElementsExistence)
 {
-	includeCommonScript("common.js");
 	run("mouseGesturesElementsExistence.js");
 }
 
 TEST_F(QRealGuiTests, preferenceDialogElementsExistence)
 {
-	includeCommonScript("common.js");
 	run("preferenceDialogElementsExistence.js");
 }
 
 TEST_F(QRealGuiTests, settingsActionsExistence)
 {
-	includeCommonScript("common.js");
 	run("settingsActionsExistence.js");
 }
 
 TEST_F(QRealGuiTests, toolbarsElementsExistence)
 {
-	includeCommonScript("common.js");
 	run("toolbarsElementsExistence.js");
 }
 
 TEST_F(QRealGuiTests, toolsActionsExistence)
 {
-	includeCommonScript("common.js");
 	run("toolsActionsExistence.js");
 }
 
 //TEST_F(QRealGuiTests, viewActionsExistence)
 //{
-//	includeCommonScript("common.js");
 //	run("viewActionsExistence.js");
 //}
 
 TEST_F(QRealGuiTests, dockWidgetsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("dockWidgetsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, editActionsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("editActionsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, fileActionsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("fileActionsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, findDialogElementsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("findDialogElementsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, helpActionsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("helpActionsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, preferenceDialogElementsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("preferenceDialogElementsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, toolbarsElementsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("toolbarsElementsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, toolsActionsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("toolsActionsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, viewActionsFunctioning)
 {
-	includeCommonScript("common.js");
 	run("viewActionsFunctioning.js");
 }
 
 TEST_F(QRealGuiTests, autoSaveWork)
 {
-	includeCommonScript("common.js");
 	run("autoSaveWork.js");
 }
 
 TEST_F(QRealGuiTests, createDiagramInCurrentModel)
 {
-	includeCommonScript("common.js");
 	run("createDiagramInCurrentModel.js");
 }
 
 TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
 {
-	includeCommonScript("common.js");
 	run("createRootElementOnSceneAndQuit.js");
 }
 
 //TEST_F(QRealGuiTests, fullscreenModeScript)
 //{
-//	includeCommonScript("common.js");
 //	run("fullscreenModeScript.js");
 //}
 
 TEST_F(QRealGuiTests, linkNodeCooperationScript)
 {
-	includeCommonScript("common.js");
 	run("linkNodeCooperationScript.js");
 }
 
 TEST_F(QRealGuiTests, logicalGraphicalModelsAndSceneInteraction)
 {
-	includeCommonScript("common.js");
 	run("logicalGraphicalModelsAndSceneInteraction.js");
 }
 
 TEST_F(QRealGuiTests, miniMapWorkScript)
 {
-	includeCommonScript("common.js");
 	run("miniMapWorkScript.js");
 }
 
 TEST_F(QRealGuiTests, paletteAndEditorPropertiesConcordance)
 {
-	includeCommonScript("common.js");
 	run("paletteAndEditorPropertiesConcordance.js");
 }
 
 TEST_F(QRealGuiTests, paletteSearchScript)
 {
-	includeCommonScript("common.js");
 	run("paletteSearchScript.js");
 }
 
 TEST_F(QRealGuiTests, propertyEditorScript)
 {
-	includeCommonScript("common.js");
 	run("propertyEditorScript.js");
 }
 
 TEST_F(QRealGuiTests, rightclickAllScreenScript)
 {
-	includeCommonScript("common.js");
 	run("rightclickAllScreenScript.js");
 }
 
 TEST_F(QRealGuiTests, saveOpenScript)
 {
-	includeCommonScript("common.js");
 	run("saveOpenScript.js");
 }
 
 TEST_F(QRealGuiTests, verySimpleShapeEditorTest)
 {
-	includeCommonScript("common.js");
 	run("verySimpleShapeEditorTest.js");
 }
 
+TEST_F(QRealGuiTests, creatingNewDiagrams)
+{
+	run("creatingNewDiagrams.js");
+}

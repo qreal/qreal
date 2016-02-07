@@ -67,7 +67,7 @@ void setDefaultLocale(bool localizationDisabled)
 
 void setNativeDialogs(bool disabled)
 {
-	QApplication::instance()->setProperty("DontUseNativeDialogs", QVariant(!disabled));
+	QApplication::instance()->setProperty("DontUseNativeDialogs", QVariant(disabled));
 }
 
 void initLogging()
@@ -92,7 +92,7 @@ MainWindow* start()
 	// setDefaultLocale(app->arguments().contains("--no-locale"));
 	// commented out because of the bug. FIXME: a bug with QTest::keyClick for no askii characters
 	setDefaultLocale(true);
-	setNativeDialogs(app->arguments().contains("--use-native-dialogs"));
+	setNativeDialogs(true);
 
 	initLogging();
 	QLOG_INFO() << "------------------- APPLICATION STARTED --------------------";
