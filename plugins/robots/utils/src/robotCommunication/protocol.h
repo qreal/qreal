@@ -15,11 +15,17 @@
 #pragma once
 
 #include <functional>
+
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
+#include <QtCore/QSharedPointer>
 #include <QtCore/QState>
 #include <QtCore/QFinalState>
 #include <QtCore/QSet>
+
+#include <qrutils/functionTraits.h>
+
+#include "guardSignalGenerator.h"
 
 class QStateMachine;
 class QTimer;
@@ -27,7 +33,7 @@ class QTimer;
 namespace utils {
 namespace robotCommunication {
 
-class TcpRobotCommunicator;
+class TcpRobotCommunicatorInterface;
 
 /// Abstract state machine-based protocol of interaction with robot. Uses states to track phase of interaction,
 /// transitions initiated by TcpRobotCommunicator signals to move between states and actions on entering in state
@@ -47,7 +53,7 @@ public:
 	/// @param timeout - safety timeout that aborts protocol execution. Since network timeouts will be properly reported
 	///        by TcpRobotCommunicator as errors, hitting this timeout means that something is wrong in
 	///        TcpRobotCommunicator or protocol itself (incorrect state machine, for example).
-	explicit Protocol(TcpRobotCommunicator &communicator, int timeout = 4000);
+	explicit Protocol(TcpRobotCommunicatorInterface &communicator, int timeout = 4000);
 
 	~Protocol() override;
 
@@ -73,9 +79,46 @@ public:
 		source->addTransition(&mCommunicator, signal, mSuccess);
 	}
 
+	template<typename Trigger, typename GuardFunc>
+	void addGuardedTranstion(QState *source, Trigger signal, GuardFunc guard, QState *destination)
+	{
+		registerStateIfNeeded(source);
+		registerStateIfNeeded(destination);
+
+		typedef typename function_traits<GuardFunc>::template arg<0>::type ParamType;
+
+		QSharedPointer<GuardSignalGenerator> guardSignalGenerator(new GuardSignalGenerator{});
+
+		source->addTransition(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, destination);
+
+		connect(&mCommunicator, signal, [guard, guardSignalGenerator](const ParamType &&param) {
+			if (guard(param)) {
+				guardSignalGenerator->onTrigger();
+			}
+		});
+	}
+
+	template<typename Trigger, typename GuardFunc>
+	void addGuardedErrorTranstion(QState *source, Trigger signal, GuardFunc guard)
+	{
+		registerStateIfNeeded(source);
+
+		typedef typename function_traits<GuardFunc>::template arg<0>::type ParamType;
+
+		QSharedPointer<GuardSignalGenerator> guardSignalGenerator(new GuardSignalGenerator{});
+
+		source->addTransition(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, mErrored);
+
+		connect(&mCommunicator, signal, [guard, guardSignalGenerator](const ParamType &&param) {
+			if (guard(param)) {
+				guardSignalGenerator->onTrigger();
+			}
+		});
+	}
+
 	/// Sets action that shall be done when entering a state. Action receives communicator to be able to send
 	/// something over network.
-	void setAction(QState *state, const std::function<void(TcpRobotCommunicator &communicator)> &action);
+	void setAction(QState *state, const std::function<void(TcpRobotCommunicatorInterface &communicator)> &action);
 
 	/// Executes configured protocol asyncronously.
 	void run();
@@ -110,7 +153,7 @@ private:
 	QFinalState *mErrored = nullptr;
 
 	/// Network communicator over which protocol works.
-	TcpRobotCommunicator &mCommunicator;
+	TcpRobotCommunicatorInterface &mCommunicator;
 
 	/// State machine used to track protocol state.
 	QScopedPointer<QStateMachine> mStateMachine;

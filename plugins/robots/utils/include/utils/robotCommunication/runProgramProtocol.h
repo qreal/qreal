@@ -25,7 +25,7 @@ class QFileInfo;
 namespace utils {
 namespace robotCommunication {
 
-class TcpRobotCommunicator;
+class TcpRobotCommunicatorInterface;
 class Protocol;
 
 /// Protocol for uploading and running program on a robot. Uses state machine to do it asynchronously and track
@@ -37,7 +37,7 @@ class ROBOTS_UTILS_EXPORT RunProgramProtocol : public QObject
 public:
 	/// Constructor.
 	/// @param communicator - network communicator over which protocol will work.
-	explicit RunProgramProtocol(TcpRobotCommunicator &communicator);
+	RunProgramProtocol(TcpRobotCommunicatorInterface &communicator, const QString &configVersion);
 
 	~RunProgramProtocol() override;
 
@@ -59,11 +59,15 @@ private:
 	/// Underlying abstract protocol.
 	QScopedPointer<Protocol> mProtocol;
 
-	/// First phase of a protocol --- uploading program.
+	/// First phase of a protocol --- checking TRIK casing model.
+	/// Does not have direct ownership (will be disposed by mProtocol).
+	QState *mWaitingForCasingModel = nullptr;
+
+	/// Second phase of a protocol --- uploading program.
 	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForUploadingComplete = nullptr;
 
-	/// Second phase of a protocol --- sending "run program" command on robot.
+	/// Third phase of a protocol --- sending "run program" command on robot.
 	/// Does not have direct ownership (will be disposed by mProtocol).
 	QState *mWaitingForRunComplete = nullptr;
 };

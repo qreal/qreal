@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Yurii Litvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TARGET = robots-utils
+TARGET = robots_utils_unittests
 
-include(../../../global.pri)
+include(../../../common.pri)
 
-TEMPLATE = lib
+include(../../../../../plugins/robots/utils/utils.pri)
 
-include(utils.pri)
+links(qslog)
+
+INCLUDEPATH += \
+	../../../../../plugins/robots/utils \
+	../../../../../plugins/robots/utils/include \
+
+# Tests
+HEADERS += \
+
+SOURCES += \
+	$$PWD/robotCommunicationTests/runProgramProtocolTest.cpp \
+
+# Support classes
+HEADERS += \
+	$$PWD/support/tcpRobotCommunicatorMock.h \
+
+SOURCES += \

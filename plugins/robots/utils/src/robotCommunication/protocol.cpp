@@ -21,7 +21,7 @@
 
 using namespace utils::robotCommunication;
 
-Protocol::Protocol(TcpRobotCommunicator &communicator, int timeout)
+Protocol::Protocol(TcpRobotCommunicatorInterface &communicator, int timeout)
 	: mSuccess(new QFinalState())
 	, mErrored(new QFinalState())
 	, mCommunicator(communicator)
@@ -51,7 +51,7 @@ Protocol::~Protocol()
 {
 }
 
-void Protocol::setAction(QState *state, const std::function<void(TcpRobotCommunicator &communicator)> &action)
+void Protocol::setAction(QState *state, const std::function<void(TcpRobotCommunicatorInterface &)> &action)
 {
 	state->disconnect();
 	connect(state, &QState::entered, [this, action](){ action(mCommunicator); });

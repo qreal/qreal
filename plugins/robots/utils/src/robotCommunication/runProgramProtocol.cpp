@@ -17,20 +17,43 @@
 #include <QtCore/QState>
 #include <QtCore/QFileInfo>
 
-#include "utils/robotCommunication/tcpRobotCommunicator.h"
+#include "utils/robotCommunication/tcpRobotCommunicatorInterface.h"
 #include "src/robotCommunication/protocol.h"
 
 using namespace utils::robotCommunication;
 
-RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicator &communicator)
+RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicator, const QString &configVersion)
 	: mProtocol(new Protocol(communicator))
+	, mWaitingForCasingModel(new QState())
 	, mWaitingForUploadingComplete(new QState())
 	, mWaitingForRunComplete(new QState())
 {
+	mProtocol->setAction(mWaitingForCasingModel, [this](TcpRobotCommunicatorInterface &communicator) {
+		communicator.requestCasingVersion();
+	});
+
+	mProtocol->addGuardedTranstion(
+			mWaitingForCasingModel
+			, &TcpRobotCommunicatorInterface::casingVersionReceived
+			, [configVersion](const QString &casingModel){ return casingModel == configVersion; }
+			, mWaitingForUploadingComplete
+	);
+
+	mProtocol->addGuardedErrorTranstion(mWaitingForCasingModel, &TcpRobotCommunicatorInterface::casingVersionReceived
+			, [this, configVersion](const QString &casingModel)
+	{
+		if (casingModel != configVersion) {
+			emit error();
+			return true;
+		}
+
+		return false;
+	});
+
 	mProtocol->addTransition(mWaitingForUploadingComplete
-			, &TcpRobotCommunicator::uploadProgramDone, mWaitingForRunComplete);
-	mProtocol->addErrorTransition(mWaitingForUploadingComplete, &TcpRobotCommunicator::uploadProgramError);
-	mProtocol->addSuccessTransition(mWaitingForRunComplete, &TcpRobotCommunicator::startedRunning);
+			, &TcpRobotCommunicatorInterface::uploadProgramDone, mWaitingForRunComplete);
+	mProtocol->addErrorTransition(mWaitingForUploadingComplete, &TcpRobotCommunicatorInterface::uploadProgramError);
+	mProtocol->addSuccessTransition(mWaitingForRunComplete, &TcpRobotCommunicatorInterface::startedRunning);
 
 	connect(mProtocol.data(), &Protocol::success, this, &RunProgramProtocol::success);
 	connect(mProtocol.data(), &Protocol::error, this, &RunProgramProtocol::error);
@@ -43,11 +66,11 @@ RunProgramProtocol::~RunProgramProtocol()
 
 void RunProgramProtocol::run(const QFileInfo &fileToRun)
 {
-	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](auto &communicator) {
+	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](TcpRobotCommunicatorInterface &communicator) {
 		communicator.uploadProgram(fileToRun.canonicalFilePath());
 	});
 
-	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](auto &communicator) {
+	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](TcpRobotCommunicatorInterface &communicator) {
 		communicator.runProgram(fileToRun.fileName());
 	});
 

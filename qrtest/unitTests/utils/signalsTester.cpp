@@ -32,6 +32,12 @@ SignalsTester::SignalsTester(OrderEnum order)
 
 SignalsTester::~SignalsTester()
 {
+	for (const auto &signal : mSignals.keys()) {
+		if (mSignals.value(signal) == 0) {
+			qDebug() << "Signal" << signal << "is not called as expected";
+		}
+	}
+
 	qDeleteAll(mSenders);
 }
 

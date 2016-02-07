@@ -52,9 +52,11 @@ public:
 protected:
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 
-	QScopedPointer<kitBase::robotModel::RobotModelInterface> mRobotModel;
+	kitBase::robotModel::RobotModelInterface &robotModel() const;
 
 private:
+	QScopedPointer<kitBase::robotModel::RobotModelInterface> mRobotModel;
+
 	/// Does not have ownership.
 	kitBase::blocksBase::BlocksFactoryInterface *mBlocksFactory;
 };

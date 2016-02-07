@@ -106,6 +106,11 @@ void TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool a
 			, Q_ARG(QString, directCommand), Q_ARG(bool, asScript));
 }
 
+void TcpRobotCommunicator::requestCasingVersion()
+{
+	/// @todo
+}
+
 void TcpRobotCommunicator::stopRobot()
 {
 	QMetaObject::invokeMethod(mWorker.data(), "stopRobot");

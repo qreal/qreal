@@ -23,6 +23,7 @@ HEADERS += \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
 	$$PWD/fileSystemUtils.h \
+	$$PWD/functionTraits.h \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \

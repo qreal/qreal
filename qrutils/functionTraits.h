@@ -16,8 +16,7 @@
 
 #include <tuple>
 
-namespace qrtext {
-namespace core {
+namespace utils {
 
 /// Very useful template to determine lambda function traits like type of return value, types of arguments and so on.
 /// Taken from here:
@@ -48,5 +47,4 @@ struct function_traits<ReturnType(ClassType::*)(Args...) const>
 	};
 };
 
-}
 }

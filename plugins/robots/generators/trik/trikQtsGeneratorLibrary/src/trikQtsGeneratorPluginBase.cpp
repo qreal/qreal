@@ -62,7 +62,7 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 	NetworkCommunicationErrorReporter::connectErrorReporter(*mCommunicator, *errorReporter);
 
 	mUploadProgramProtocol.reset(new UploadProgramProtocol(*mCommunicator));
-	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator));
+	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator, "test"));
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
 	const auto timeout = [this, errorReporter]() {

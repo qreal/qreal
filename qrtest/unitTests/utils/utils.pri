@@ -13,8 +13,10 @@
 # limitations under the License.
 
 HEADERS += \
+	$$PWD/delay.h \
 	$$PWD/signalsTester.h \
 	$$PWD/details/fakeSender.h \
 
 SOURCES += \
+	$$PWD/delay.cpp \
 	$$PWD/signalsTester.cpp \
