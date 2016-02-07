@@ -1238,12 +1238,13 @@ void MainWindow::updateTabName(const Id &id)
 bool MainWindow::closeTab(const QModelIndex &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab->mvIface().rootIndex() == graphicsIndex) {
+		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && tab->mvIface().rootIndex() == graphicsIndex) {
 			closeTab(i);
 			return true;
 		}
 	}
+
 	return false;
 }
 
