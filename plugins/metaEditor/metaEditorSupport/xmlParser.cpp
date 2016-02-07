@@ -429,8 +429,8 @@ void XmlParser::setEdgeConfigurations(const QDomElement &tag, const Id &edgeId)
 			setGeneralization(attribute, edgeId);
 		else if (attribute.tagName() == "properties")
 			setProperties(attribute, edgeId);
-		else if (attribute.tagName() == "associations")
-			setAssociations(attribute, edgeId);
+	//	else if (attribute.tagName() == "associations")
+	//		setAssociations(attribute, edgeId);
 		else if (attribute.tagName() == "possibleEdges")
 			setPossibleEdges(attribute, edgeId);
 	}
@@ -564,10 +564,10 @@ void XmlParser::setAssociations(const QDomElement &element, const Id &elementId)
 	setStandartConfigurations(associationId, elementId, association.attribute("name", ""),
 			association.attribute("displayedName", ""));
 
-	mApi.setProperty(associationId, "beginType", element.attribute("beginType", ""));
-	mApi.setProperty(associationId, "endType", element.attribute("endType", ""));
-	mApi.setProperty(associationId, "beginName", association.attribute("beginName", ""));
-	mApi.setProperty(associationId, "endName", association.attribute("endName", ""));
+	mApi.setProperty(elementId, "beginType", association.attribute("beginType", ""));
+	mApi.setProperty(elementId, "endType", association.attribute("endType", ""));
+	mApi.setProperty(elementId, "beginName", association.attribute("beginName", ""));
+	mApi.setProperty(elementId, "endName", association.attribute("endName", ""));
 }
 
 void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId)
@@ -606,7 +606,6 @@ void XmlParser::initProperty(const QDomElement &property, const Id &elementId)
 
 	setStandartConfigurations(propertyId, elementId, property.attribute("name", ""),
 			property.attribute("displayedName", ""));
-
 	mApi.setProperty(propertyId, "type", property.attribute("type", ""));
 	mApi.setProperty(propertyId, "attributeType", property.attribute("type", "0"));
 
