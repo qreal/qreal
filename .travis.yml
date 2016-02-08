@@ -1,6 +1,9 @@
 sudo: required
 dist: trusty
 
+git:
+  depth: 1
+
 language: cpp
 compiler: gcc
 
@@ -26,6 +29,9 @@ before_install:
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../qrealTest/qreal/; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo `pwd`/ > ./../../qreal/qrtest/testCoverage/testpathes; fi
   - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../../qreal/; fi
+
+before_install:
+  - if [ "$TESTS" != "true" ]; then pip install --user codecov; fi
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
@@ -71,3 +77,6 @@ notifications:
   email:
     recipients:
       - qreal-build-reports@googlegroups.com
+
+after_success:
+  - if [ "$TESTS" != "true" ]; then codecov; fi
