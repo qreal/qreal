@@ -16,13 +16,15 @@
 
 #include <QtCore/QObject>
 
+#include "testUtils/declSpec.h"
+
 namespace qrTest {
 namespace details {
 
 /// Helper class that relays incoming signals. Needed to simulate different sender() for QSignalMapper when we want to
 /// map different signals of the same object. See http://www.qtcentre.org/threads/39596-QSignalMapper-One-single-Object
 /// for discussion of a similar task and https://github.com/minirop/SignalsSpy for similar solution.
-class FakeSender : public QObject
+class TEST_UTILS_EXPORT FakeSender : public QObject
 {
 	Q_OBJECT
 

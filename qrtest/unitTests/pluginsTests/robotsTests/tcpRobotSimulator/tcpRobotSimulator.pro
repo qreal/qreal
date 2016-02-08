@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TARGET = tcp-robot-simulator
+
 include($$PWD/../../../../../global.pri)
 
 QT += network
 
 DEFINES += TCP_ROBOT_SIMULATOR_LIBRARY
-
-TARGET = tcp-robot-simulator
 
 TEMPLATE = lib
 

@@ -21,12 +21,13 @@
 #include <QtCore/QSignalMapper>
 #include <QtCore/QList>
 
-#include "details/fakeSender.h"
+#include "testUtils/fakeSender.h"
+#include "testUtils/declSpec.h"
 
 namespace qrTest {
 
 /// Helper class for checking that some signals were emitted, and emitted in required order.
-class SignalsTester : public QObject
+class TEST_UTILS_EXPORT SignalsTester : public QObject
 {
 	Q_OBJECT
 

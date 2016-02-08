@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,11 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TARGET = test-utils
+
+include($$PWD/../../../global.pri)
+
+DEFINES += TEST_UTILS_LIBRARY
+
+TEMPLATE = lib
+
 HEADERS += \
-	$$PWD/delay.h \
-	$$PWD/signalsTester.h \
-	$$PWD/details/fakeSender.h \
+	$$PWD/include/testUtils/declSpec.h \
+	$$PWD/include/testUtils/delay.h \
+	$$PWD/include/testUtils/fakeSender.h \
+	$$PWD/include/testUtils/signalsTester.h \
 
 SOURCES += \
-	$$PWD/delay.cpp \
-	$$PWD/signalsTester.cpp \
+	$$PWD/src/delay.cpp \
+	$$PWD/src/signalsTester.cpp \

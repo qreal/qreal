@@ -32,7 +32,6 @@ INCLUDEPATH += \
 	$$PWD/../../ \
 	$$PWD/../thirdparty/gmock-1.6.0/include \
 	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
+	$$PWD/testUtils/include \
 
-links(gmock)
-
-include($$PWD/utils/utils.pri)
+links(gmock test-utils)

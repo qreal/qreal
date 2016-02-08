@@ -12,11 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "delay.h"
+#pragma once
 
-#include <QtCore/QTimer>
+#include <functional>
+#include <QtCore/qglobal.h>
 
-void qrTest::delay(std::function<void()> action)
-{
-	QTimer::singleShot(0, action);
+#include "testUtils/declSpec.h"
+
+namespace qrTest {
+
+/// Execute some action after control returns to event loop.
+TEST_UTILS_EXPORT void delay(std::function<void()> action);
+
 }

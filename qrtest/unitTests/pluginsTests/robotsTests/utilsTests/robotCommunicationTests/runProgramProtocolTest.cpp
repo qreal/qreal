@@ -18,8 +18,8 @@
 
 #include <QtCore/QFileInfo>
 
-#include <utils/signalsTester.h>
-#include <utils/delay.h>
+#include <testUtils/signalsTester.h>
+#include <testUtils/delay.h>
 
 #include "support/tcpRobotCommunicatorMock.h"
 

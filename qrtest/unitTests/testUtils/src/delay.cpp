@@ -1,4 +1,4 @@
-/* Copyright 2016 Yurii Litvinov
+/* Copyright 2016 Yurii Litvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,13 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "testUtils/delay.h"
 
-#include <functional>
+#include <QtCore/QTimer>
 
-namespace qrTest {
-
-/// Execute some action after control returns to event loop.
-void delay(std::function<void()> action);
-
+void qrTest::delay(std::function<void()> action)
+{
+	QTimer::singleShot(0, action);
 }
