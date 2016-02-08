@@ -23,6 +23,7 @@
 #include <qrkernel/logging.h>
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
+#include <trikKit/robotModel/trikRobotModelBase.h>
 #include <utils/robotCommunication/tcpRobotCommunicator.h>
 #include <utils/robotCommunication/runProgramProtocol.h>
 #include <utils/robotCommunication/stopRobotProtocol.h>
@@ -38,7 +39,7 @@ using namespace qReal;
 using namespace utils::robotCommunication;
 
 TrikQtsGeneratorPluginBase::TrikQtsGeneratorPluginBase(
-		kitBase::robotModel::RobotModelInterface * const robotModel
+		trik::robotModel::TrikRobotModelBase * const robotModel
 		, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory
 		, const QStringList &pathsToTemplates)
 	: TrikGeneratorPluginBase(robotModel, blocksFactory)
@@ -46,6 +47,7 @@ TrikQtsGeneratorPluginBase::TrikQtsGeneratorPluginBase(
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
+	, mRobotModel(*robotModel)
 	, mPathsToTemplates(pathsToTemplates)
 {
 }
@@ -62,7 +64,7 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 	NetworkCommunicationErrorReporter::connectErrorReporter(*mCommunicator, *errorReporter);
 
 	mUploadProgramProtocol.reset(new UploadProgramProtocol(*mCommunicator));
-	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator, "test"));
+	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator, mRobotModel.robotConfigFileVersion()));
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
 	const auto timeout = [this, errorReporter]() {

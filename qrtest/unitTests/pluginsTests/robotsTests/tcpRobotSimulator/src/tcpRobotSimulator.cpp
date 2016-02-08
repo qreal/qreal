@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "tcpRobotSimulator/tcpRobotSimulator.h"
 
-#include "trikRobotModelBase.h"
+using namespace tcpRobotSimulator;
 
-namespace trik {
-namespace robotModel {
-
-class TrikRobotModelV6 : public TrikRobotModelBase
-{
-	Q_OBJECT
-
-public:
-	TrikRobotModelV6(const QString &kitId, const QString &robotId);
-
-	QString robotConfigFileVersion() const override;
-};
-
-}
-}

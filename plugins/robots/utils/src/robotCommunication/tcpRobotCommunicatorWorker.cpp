@@ -104,6 +104,16 @@ void TcpRobotCommunicatorWorker::stopRobot()
 	emit stopRobotDone();
 }
 
+void TcpRobotCommunicatorWorker::requestCasingVersion()
+{
+	connect();
+	if (!mControlConnection->isConnected()) {
+		return;
+	}
+
+	mControlConnection->send("configVersion");
+}
+
 void TcpRobotCommunicatorWorker::requestData(const QString &sensor)
 {
 	if (!mTelemetryConnection->isConnected()) {
@@ -119,6 +129,7 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 	const QString infoMarker("info: ");
 	const QString versionMarker("version: ");
 	const QString printMarker("print: ");
+	const QString configVersionMarker("configVersion: ");
 
 	if (message.startsWith(versionMarker)) {
 		mVersionTimer->stop();
@@ -134,6 +145,9 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 		emit messageFromRobot(MessageKind::text, message.mid(printMarker.length()));
 	} else if (message == "keepalive") {
 		// Just ignoring it
+	} else if (message.startsWith(configVersionMarker)) {
+		const QString configVersion = message.mid(configVersionMarker.length());
+		emit casingVersionReceived(configVersion);
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
 	}

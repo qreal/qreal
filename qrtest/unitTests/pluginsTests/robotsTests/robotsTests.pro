@@ -16,5 +16,7 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	commonTests \
+	generatorsTests \
 	interpretersTests \
 	utilsTests \
+	tcpRobotSimulator \

@@ -64,6 +64,9 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	Q_INVOKABLE void stopRobot();
 
+	/// Requests casing version from robot, emits casingVersionReceived() when robot responds.
+	Q_INVOKABLE void requestCasingVersion();
+
 	/// Requests telemetry data for given sensor.
 	Q_INVOKABLE void requestData(const QString &sensor);
 
@@ -113,6 +116,9 @@ signals:
 
 	/// Emitted when direct command is sent.
 	void runDirectCommandDone();
+
+	/// Emitted when received TRIK casing version (model 2014 or model 2015) from robot.
+	void casingVersionReceived(const QString &casingVersion);
 
 private slots:
 	void processControlMessage(const QString &message);

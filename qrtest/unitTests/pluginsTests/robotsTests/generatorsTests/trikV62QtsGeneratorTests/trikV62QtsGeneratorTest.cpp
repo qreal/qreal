@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "trikV62QtsGeneratorTest.h"
 
-#include "trikRobotModelBase.h"
+#include <trikV62QtsGeneratorPlugin.h>
 
-namespace trik {
-namespace robotModel {
+using namespace qrTest;
+using namespace qrTest::robotsTests::trikV62QtsGeneratorTests;
+using namespace trik::qts;
 
-class TrikRobotModelV6 : public TrikRobotModelBase
+void TrikV62QtsGeneratorTest::SetUp()
 {
-	Q_OBJECT
-
-public:
-	TrikRobotModelV6(const QString &kitId, const QString &robotId);
-
-	QString robotConfigFileVersion() const override;
-};
-
 }
+
+TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
+{
 }

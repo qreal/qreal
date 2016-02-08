@@ -14,7 +14,7 @@
 
 QT += widgets network
 
-links(qslog qrkernel qrutils qextserialport)
+links(qrkernel qrutils qextserialport)
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 
@@ -23,7 +23,18 @@ HEADERS += \
 	$$PWD/include/utils/abstractTimer.h \
 	$$PWD/include/utils/realTimeline.h \
 	$$PWD/include/utils/realTimer.h \
+	$$PWD/include/utils/requiredVersion.h \
 	$$PWD/include/utils/objectsSet.h \
+	$$PWD/include/utils/uploaderTool.h \
+	$$PWD/include/utils/utilsDeclSpec.h \
+	$$PWD/include/utils/canvas/canvas.h \
+	$$PWD/include/utils/canvas/canvasObject.h \
+	$$PWD/include/utils/canvas/pointObject.h \
+	$$PWD/include/utils/canvas/lineObject.h \
+	$$PWD/include/utils/canvas/rectangleObject.h \
+	$$PWD/include/utils/canvas/ellipseObject.h \
+	$$PWD/include/utils/canvas/arcObject.h \
+	$$PWD/include/utils/canvas/textObject.h \
 	$$PWD/include/utils/robotCommunication/networkCommunicationErrorReporter.h \
 	$$PWD/include/utils/robotCommunication/robotCommunicationThreadInterface.h \
 	$$PWD/include/utils/robotCommunication/robotCommunicator.h \
@@ -33,16 +44,6 @@ HEADERS += \
 	$$PWD/include/utils/robotCommunication/tcpRobotCommunicator.h \
 	$$PWD/include/utils/robotCommunication/tcpRobotCommunicatorInterface.h \
 	$$PWD/include/utils/robotCommunication/uploadProgramProtocol.h \
-	$$PWD/include/utils/requiredVersion.h \
-	$$PWD/include/utils/uploaderTool.h \
-	$$PWD/include/utils/canvas/canvas.h \
-	$$PWD/include/utils/canvas/canvasObject.h \
-	$$PWD/include/utils/canvas/pointObject.h \
-	$$PWD/include/utils/canvas/lineObject.h \
-	$$PWD/include/utils/canvas/rectangleObject.h \
-	$$PWD/include/utils/canvas/ellipseObject.h \
-	$$PWD/include/utils/canvas/arcObject.h \
-	$$PWD/include/utils/canvas/textObject.h \
 	$$PWD/include/utils/widgets/comPortPicker.h \
 
 HEADERS += \

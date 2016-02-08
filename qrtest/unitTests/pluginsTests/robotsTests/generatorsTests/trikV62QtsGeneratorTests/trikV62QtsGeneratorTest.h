@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@
 
 #pragma once
 
-#include "trikRobotModelBase.h"
+#include <gtest/gtest.h>
 
-namespace trik {
-namespace robotModel {
+namespace qrTest {
+namespace robotsTests {
+namespace trikV62QtsGeneratorTests {
 
-class TrikRobotModelV6 : public TrikRobotModelBase
+class TrikV62QtsGeneratorTest : public testing::Test
 {
-	Q_OBJECT
-
-public:
-	TrikRobotModelV6(const QString &kitId, const QString &robotId);
-
-	QString robotConfigFileVersion() const override;
+protected:
+	void SetUp() override;
 };
 
+}
 }
 }
