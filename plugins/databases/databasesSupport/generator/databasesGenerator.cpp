@@ -561,6 +561,8 @@ void DatabasesGenerator::generateSQLCode()
 		generateWithSqlite();
 	else if (mDbms == "microsoftAccess")
 		generateWithMicrosoftAccess();
+	else if (mDbms == "postgreSql")
+		generateWithPostgreSql();
 
 	codeFile.close();
 	mErrorReporter->addInformation(tr("Code was generated successfully"));
@@ -804,6 +806,108 @@ void DatabasesGenerator::generateWithMicrosoftAccess()
 					codeFile.write(" WITH COMP");
 
 			}
+			codeFile.write("\r\n);\r\n\r\n");
+		}
+}
+
+void DatabasesGenerator::generateWithPostgreSql()
+{
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+			codeFile.write("CREATE ");
+
+			if (getProperty(tableId, "global").toBool())
+				codeFile.write("GLOBAL ");
+			else if (getProperty(tableId, "local").toBool())
+					codeFile.write("LOCAL ");
+
+			if (getProperty(tableId, "temporary").toBool())
+				codeFile.write("TEMPORARY ");
+			else if (getProperty(tableId, "temp").toBool())
+					codeFile.write("TEMP ");
+
+			if (getProperty(tableId, "unlogged").toBool())
+				codeFile.write("UNLOGGED ");
+
+			codeFile.write("TABLE ");
+
+			codeFile.write(getProperty(tableId, "Name").toByteArray());
+			codeFile.write("\r\n(");
+			IdList rowsSet = getChildren(tableId);
+
+			bool first = true;
+			for (Id const &rowId : rowsSet) {
+				if (!first) {
+					codeFile.write(",");
+				}
+				first = false;
+				codeFile.write("\r\n");
+				codeFile.write(getProperty(rowId, "Name").toByteArray());
+				codeFile.write(" ");
+				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+				if (getProperty(rowId, "notNull").toBool())
+					codeFile.write(" NOT NULL");
+
+				if (getProperty(rowId, "null").toBool())
+					codeFile.write(" NULL");
+
+				QByteArray checkExpression = getProperty(rowId, "check").toByteArray();
+				if (!checkExpression.isEmpty()) {
+					codeFile.write(" CHECK");
+					codeFile.write(checkExpression);
+					codeFile.write(" ");
+				}
+
+				QByteArray defaultValue = getProperty(rowId, "default").toByteArray();
+				if (!defaultValue.isEmpty()) {
+					codeFile.write(" DEFAULT");
+					codeFile.write(defaultValue);
+					codeFile.write(" ");
+				}
+
+				if (getProperty(rowId, "isPrimaryKey").toBool());
+					codeFile.write(" PRIMARY KEY");
+
+				if (getProperty(rowId, "unique").toBool())
+					codeFile.write(" UNIQUE");
+
+			}
+
+			QByteArray inherits = getProperty(tableId, "inherits").toByteArray();
+			if (!inherits.isEmpty()) {
+				codeFile.write(" INHERITS ");
+				codeFile.write(inherits);
+				codeFile.write(" ");
+			}
+
+			QByteArray with = getProperty(tableId, "with").toByteArray();
+			if (!inherits.isEmpty()) {
+				codeFile.write(" WITH ");
+				codeFile.write(with);
+				codeFile.write(" ");
+			}
+			else if (getProperty(tableId, "with_oids").toBool()) {
+				codeFile.write(" WITH OIDS ");
+			}
+			else if (getProperty(tableId, "without_oids").toBool()) {
+				codeFile.write(" WITHOUT OIDS ");
+			}
+
+			QByteArray onCommit = getProperty(tableId, "on_commit").toByteArray();
+			if (!inherits.isEmpty()) {
+				codeFile.write(" ON COMMIT ");
+				codeFile.write(onCommit);
+				codeFile.write(" ");
+			}
+
+			QByteArray tablespace = getProperty(tableId, "tablespace").toByteArray();
+			if (!inherits.isEmpty()) {
+				codeFile.write(" TABLESPACE ");
+				codeFile.write(tablespace);
+				codeFile.write(" ");
+			}
+
 			codeFile.write("\r\n);\r\n\r\n");
 		}
 }

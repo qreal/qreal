@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<namespace>UML 2.0</namespace>
+	<diagram nodeName="DatabasesPhysicalNode" name="DatabasesPhysicalModelMetamodel" displayedName="Databases Physical Model (PostgreSql)">
+		<nonGraphicTypes>
+			<port name="TableLeft"/>
+			<port name="TableVertical"/>
+			<port name="TableRight"/>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<node name="DatabasesPhysicalNode" displayedName="Databases Diagram">
+				<graphics>
+					<picture/>
+					<labels/>
+					<ports/>
+				 </graphics>
+				<logic>
+					<container>
+						<contains type="DatabasesPhysicalModelMetamodel::Table"/>
+						<contains type="DatabasesPhysicalModelMetamodel::Column"/>
+						<contains type="DatabasesPhysicalModelMetamodel::PhysicalOneToManyRelationship"/>
+						<contains type="DatabasesPhysicalModelMetamodel::PhysicalManyToManyRelationship"/>
+					</container>
+				</logic>
+			</node>
+			<node name="Table" displayedName="Table">
+				<graphics>
+					<picture sizex="160" sizey="90">
+						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="90" x2="160"/>
+					</picture>
+					<labels>
+						<label x="5a" y="3a" textBinded="Name"/>
+					</labels>
+					<ports>
+						<linePort type="TableLeft">
+							<start startx="0" starty="0"/>
+							<end endx="0" endy="90"/>
+						</linePort>
+						<linePort type="TableRight">
+							<start startx="160" starty="0"/>
+							<end endx="160" endy="90"/>
+						</linePort>
+						<linePort type="TableVertical">
+							<start startx="0" starty="0"/>
+							<end endx="160" endy="0"/>
+						</linePort>
+						<linePort type="TableVertical">
+							<start startx="0" starty="90"/>
+							<end endx="160" endy="90"/>
+						</linePort>
+					</ports>
+				</graphics>
+				<logic>
+					<container>
+						<contains type="DatabasesPhysicalModelMetamodel::Column"/>
+						 <properties>
+							<sortContainer/>
+							<minimizeToChildren/>
+							<banChildrenMove/>
+							<forestalling size="0,35,0,0"/>
+							<childrenForestalling size="0"/>
+						 </properties>
+					</container>
+					<properties>
+						<property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="local" displayedName="local"/>
+						<property type="bool" name="global" displayedName="global"/>
+						<property type="bool" name="temp" displayedName="Temp"/>
+						<property type="bool" name="temporary" displayedName="Temporary"/>
+						<property type="bool" name="unlogged" displayedName="unlogged"/>
+						<property type="bool" name="if_not_exists" displayedName="If not exists"/>
+						<property type="string" name="inherits" displayedName="inherits"/>
+						<property type="string" name="with" displayedName="with"/>
+						<property type="bool" name="with_oids" displayedName="With oids"/>
+						<property type="bool" name="without_oids" displayedName="Without oids"/>
+						<property type="string" name="on_commit" displayedName="On commit"/>
+						<property type="string" name="tablespace" displayedName="Tablespace"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Column" displayedName="Column">
+				<graphics>
+					<picture sizex="150" sizey="31">
+						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="31" x2="150"/>
+						<rectangle stroke-style="solid" stroke="#000000" y1="8" stroke-width="0" x1="136" y2="13" x2="140">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</rectangle>
+						<ellipse fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="4" y2="17" fill-style="none" x1="132" x2="144">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</ellipse>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="17" y2="25" fill-style="none" x1="139" x2="139">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="17" y2="17" fill-style="none" x1="137" x2="139">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="17" y2="25" fill-style="none" x1="137" x2="137">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="23" y2="23" fill-style="none" x1="134" x2="136">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</line>
+						<line fill="#ffffff" stroke="#000000" stroke-style="solid" stroke-width="0" y1="20" y2="20" fill-style="none" x1="133" x2="136">
+							<showIf value="true" property="isPrimaryKey" sign="="/>
+						</line>
+					</picture>
+					<labels>
+						<label x="10a" y="1a" textBinded="Name"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property type="string" name="Name" displayedName="Name"/>
+						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
+						<property type="bool" name="isUnique" displayedName="Unique"/>
+						<property type="bool" name="notNull" displayedName="Not null"/>
+						<property type="bool" name="null" displayedName="Null"/>
+						<property type="string" name="check" displayedName="Check"/>
+						<property type="string" name="default" displayedName="Default"/>
+						<property type="string" name="DataType" displayedName="Data Type"/>
+					</properties>
+				</logic>
+			</node>
+			<edge name="PhysicalOneToManyRelationship" displayedName="One-to-many">
+				<graphics>
+					<lineType type="solidLine"/>
+					<labels>
+						<label textBinded="Name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<dividability isDividable="true"/>
+					<associations endType="one_relationship" beginType="many_relationship">
+						<association endName="end" beginName="start"/>
+					</associations>
+					<properties>
+						<property type="string" displayedName="Name" name="Name"/>
+						<property type="string" displayedName="Column Name" name="ColumnName"/>
+					</properties>
+					<fromPorts>
+						<port type="TableRight"/>
+						<port type="TableVertical"/>
+						<port type="TableLeft"/>
+					</fromPorts>
+					<toPorts>
+						<port type="TableRight"/>
+						<port type="TableVertical"/>
+						<port type="TableLeft"/>
+					</toPorts>
+					<possibleEdges>
+						<possibleEdge beginName="TableRight" directed="true" endName="TableLeft"/>
+						<possibleEdge beginName="TableRight" directed="true" endName="TableRight"/>
+						<possibleEdge beginName="TableRight" directed="true" endName="TableVertical"/>
+						<possibleEdge beginName="TableLeft" directed="true" endName="TableLeft"/>
+						<possibleEdge beginName="TableLeft" directed="true" endName="TableVertical"/>
+						<possibleEdge beginName="TableVertical" directed="true" endName="TableVertical"/>
+					</possibleEdges>
+				</logic>
+			</edge>
+			<edge name="PhysicalManyToManyRelationship" displayedName="Many-to-many (with new middle table)">
+				<graphics>
+					<lineType type="solidLine"/>
+					<labels>
+						<label textBinded="Name"/>
+					</labels>
+				</graphics>
+				<logic>
+					<dividability isDividable="true"/>
+					<associations endType="no_arrow" beginType="no_arrow">
+						<association endName="end" beginName="start"/>
+					</associations>
+					<properties>
+						<property type="string" displayedName="Name" name="Name"/>
+						<property type="bool" name="Merging" displayedName="Merging into a single table">
+							<default>true</default>
+						</property>
+					</properties>
+					<fromPorts>
+						<port type="TableRight"/>
+						<port type="TableVertical"/>
+						<port type="TableLeft"/>
+					</fromPorts>
+					<toPorts>
+						<port type="TableRight"/>
+						 <port type="TableVertical"/>
+						<port type="TableLeft"/>
+					</toPorts>
+					<possibleEdges>
+						<possibleEdge beginName="TableRight" directed="true" endName="TableLeft"/>
+						<possibleEdge beginName="TableRight" directed="true" endName="TableRight"/>
+						<possibleEdge beginName="TableRight" directed="true" endName="TableVertical"/>
+						<possibleEdge beginName="TableLeft" directed="true" endName="TableLeft"/>
+						<possibleEdge beginName="TableLeft" directed="true" endName="TableVertical"/>
+						<possibleEdge beginName="TableVertical" directed="true" endName="TableVertical"/>
+					</possibleEdges>
+				</logic>
+			</edge>
+		</graphicTypes>
+		<palette>
+		<group name="Tables and Columns">
+				<element name="Table"/>
+				<element name="Column"/>
+			</group>
+			<group name="Relationships">
+				<element name="PhysicalManyToManyRelationship"/>
+				<element name="PhysicalOneToManyRelationship"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>
