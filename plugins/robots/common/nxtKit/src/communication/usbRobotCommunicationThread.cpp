@@ -206,5 +206,6 @@ void UsbRobotCommunicationThread::checkForConnection()
 
 bool UsbRobotCommunicationThread::isResponseNeeded(const QByteArray &buffer)
 {
-	return buffer.size() >= 3 && buffer[2] == 0;
+	return buffer.size() >= 3 && (buffer[2] == enums::telegramType::directCommandResponseRequired
+			|| buffer[2] == enums::telegramType::systemCommandResponseRequired);
 }

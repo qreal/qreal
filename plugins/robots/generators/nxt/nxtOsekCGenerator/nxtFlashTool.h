@@ -70,6 +70,7 @@ signals:
 
 private:
 	enum CompileState {
+		idle,
 		clean,
 		compile,
 		compilationError,
@@ -77,8 +78,18 @@ private:
 		done
 	};
 
-	const QString path(const QString &file = QString()) const;
-	bool uploadToBrick(const QString &program);
+	QString path(const QString &file = QString()) const;
+	QString nxtProgramName(const QFileInfo &srcFile) const;
+
+	bool deleteFileFromBrick(const QString &fileOnBrick);
+	bool createFileOnBrick(const QString &fileOnBrick, int fileSize, quint8 &handle);
+	bool downloadStreamToBrick(quint8 handle, QDataStream &stream, int fileSize);
+	bool closeFileOnBrick(quint8 handle);
+	bool uploadToBrick(const QFileInfo &fileOnHost);
+
+	/// Creates telegram with direct or system command (specified by \a commandType) invoking \a command on a brick
+	/// with \a fileName. \a size used to specify file size, if zero then it will not be packed into telegram.
+	QByteArray fileNameTelegram(quint8 commandType, quint8 command, const QString &fileName, int size) const;
 
 	void nxtCompilationFinished(int exitCode, QProcess::ExitStatus exitStatus);
 	void readNxtCompileData();
