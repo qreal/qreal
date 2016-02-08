@@ -26,6 +26,7 @@ INCLUDEPATH += \
 
 # Tests
 HEADERS += \
+	$$PWD/robotCommunicationTests/runProgramProtocolTest.h \
 
 SOURCES += \
 	$$PWD/robotCommunicationTests/runProgramProtocolTest.cpp \

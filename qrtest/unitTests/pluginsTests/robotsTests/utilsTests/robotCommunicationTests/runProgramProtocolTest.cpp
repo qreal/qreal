@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include "runProgramProtocolTest.h"
+
 #include <utils/robotCommunication/runProgramProtocol.h>
 
 #include <QtCore/QFileInfo>
-
-#include <gtest/gtest.h>
 
 #include <utils/signalsTester.h>
 #include <utils/delay.h>
@@ -25,46 +25,72 @@
 
 using namespace utils::robotCommunication;
 using namespace qrTest;
+using namespace qrTest::robotsTests::utilsTests;
 using namespace ::testing;
 
-TEST(runProgramProtocolTest, mainExecutionTest)
+void RunProgramProtocolTest::SetUp()
+{
+	mCommunicator.reset(new TcpRobotCommunicatorMock{});
+
+	ON_CALL(*mCommunicator, requestCasingVersion()).WillByDefault(
+		Invoke([this]() {
+			delay([this](){ emit mCommunicator->casingVersionReceived("model-2015"); });
+		})
+	);
+
+	ON_CALL(*mCommunicator, uploadProgram(_)).WillByDefault(
+		Invoke([this](const QString &name) {
+			Q_UNUSED(name)
+			delay([this]() { emit mCommunicator->uploadProgramDone(); });
+		})
+	);
+
+	ON_CALL(*mCommunicator, runProgram(_)).WillByDefault(
+		Invoke([this](const QString &name) {
+			Q_UNUSED(name)
+			delay([this]() { emit mCommunicator->startedRunning(); });
+		})
+	);
+}
+
+TEST_F(RunProgramProtocolTest, mainExecutionTest)
 {
 	SignalsTester signalsTester{};
 
 	const QString configVersion = "model-2015";
-	TcpRobotCommunicatorMock communicator;
 
-	ON_CALL(communicator, requestCasingVersion()).WillByDefault(
-		Invoke([&communicator]() {
-			delay([&communicator](){ emit communicator.casingVersionReceived("model-2015"); });
-		})
-	);
+	EXPECT_CALL(*mCommunicator, requestCasingVersion()).Times(1);
+	EXPECT_CALL(*mCommunicator, uploadProgram(_)).Times(1);
+	EXPECT_CALL(*mCommunicator, runProgram(_)).Times(1);
 
-	ON_CALL(communicator, uploadProgram(_)).WillByDefault(
-		Invoke([&communicator](const QString &name) {
-			Q_UNUSED(name)
-			delay([&communicator]() { emit communicator.uploadProgramDone(); });
-		})
-	);
-
-	ON_CALL(communicator, runProgram(_)).WillByDefault(
-		Invoke([&communicator](const QString &name) {
-			Q_UNUSED(name)
-			delay([&communicator]() { emit communicator.startedRunning(); });
-		})
-	);
-
-	EXPECT_CALL(communicator, requestCasingVersion()).Times(1);
-	EXPECT_CALL(communicator, uploadProgram(_)).Times(1);
-	EXPECT_CALL(communicator, runProgram(_)).Times(1);
-
-	RunProgramProtocol protocol(communicator, configVersion);
+	RunProgramProtocol protocol(*mCommunicator, configVersion);
 
 	signalsTester.expectSignal(&protocol, &RunProgramProtocol::success, "success");
 
 	protocol.run(QFileInfo("test"));
 
-	signalsTester.wait(1);
+	signalsTester.wait(100);
+
+	ASSERT_TRUE(signalsTester.allIsGood());
+}
+
+TEST_F(RunProgramProtocolTest, incorrectCasingVersion)
+{
+	SignalsTester signalsTester{};
+
+	const QString configVersion = "model-2014";
+
+	EXPECT_CALL(*mCommunicator, requestCasingVersion()).Times(1);
+	EXPECT_CALL(*mCommunicator, uploadProgram(_)).Times(0);
+	EXPECT_CALL(*mCommunicator, runProgram(_)).Times(0);
+
+	RunProgramProtocol protocol(*mCommunicator, configVersion);
+
+	signalsTester.expectSignal(&protocol, &RunProgramProtocol::error, "error");
+
+	protocol.run(QFileInfo("test"));
+
+	signalsTester.wait(100);
 
 	ASSERT_TRUE(signalsTester.allIsGood());
 }
