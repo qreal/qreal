@@ -540,7 +540,7 @@ TEST_F(QRealGuiTests, verySimpleShapeEditorTest)
 	run("verySimpleShapeEditorTest.js");
 }
 
-TEST_F(QRealGuiTests, creatingNewDiagrams)
-{
-	run("creatingNewDiagrams.js");
-}
+//TEST_F(QRealGuiTests, creatingNewDiagrams)
+//{
+//	run("creatingNewDiagrams.js");
+//}

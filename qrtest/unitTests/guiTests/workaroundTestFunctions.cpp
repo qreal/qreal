@@ -46,9 +46,14 @@ QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *contex
 {
 	Q_UNUSED(engine);
 	const QString dialogTitle = context->argument(1).toString();
-	const int mces = context->argument(2).toInt32();
+	const int msec = context->argument(2).toInt32();
 	MainWindow * const mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
-	QTimer::singleShot(mces, [=]() {
+
+	QTimer *timer = new QTimer();
+	timer->setSingleShot(true);
+
+	QObject::connect(timer, &QTimer::timeout, [=]() {
+		timer->deleteLater();
 		QList<QDialog *> allDialogs = mainWindow->findChildren<QDialog *>();
 		for (QDialog * const dialog : allDialogs) {
 			if (dialog->windowTitle() == dialogTitle || dialog->objectName() == dialogTitle) {
@@ -58,6 +63,7 @@ QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *contex
 		}
 	} );
 
+	timer->start(msec);
 	return {};
 }
 
@@ -115,10 +121,15 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 
 	const QString diagramName = context->argument(2).toString();
 	const QString dialogTitle = context->argument(1).toString();
-	const int mces = context->argument(3).toInt32();
+	const int msec = context->argument(3).toInt32();
 	MainWindow * const mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
-	QTimer::singleShot(mces, [=]() {
-		EXPECT_GT(mces, 0);
+
+	QTimer *timer = new QTimer();
+	timer->setSingleShot(true);
+
+	QObject::connect(timer, &QTimer::timeout, [=]() {
+		timer->deleteLater();
+		EXPECT_GT(msec, 0);
 		ASSERT_TRUE(mainWindow != nullptr);
 		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
 		ASSERT_FALSE(allDialogs.isEmpty());
@@ -136,5 +147,6 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 		}
 	} );
 
+	timer->start(msec);
 	return {};
 }

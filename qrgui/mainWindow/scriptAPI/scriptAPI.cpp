@@ -72,16 +72,21 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 
 	QScriptValue thisObject = context->argument(0);
 	const QString propertyName = context->argument(1).toString();
-	const int mces = context->argument(lastButOne).toInt32();
+	const int msec = context->argument(lastButOne).toInt32();
 	QScriptValueList args;
 	for (int i = 2; i < lastButOne; ++i) {
 		args << context->argument(i);
 	}
 
-	QTimer::singleShot(mces, [=]() {
+	QTimer *timer = new QTimer();
+	timer->setSingleShot(true);
+
+	QObject::connect(timer, &QTimer::timeout, [=]() {
+		timer->deleteLater();
 		thisObject.property(propertyName).call(QScriptValue(), args);
 	} );
 
+	timer->start(msec);
 	return {};
 }
 
