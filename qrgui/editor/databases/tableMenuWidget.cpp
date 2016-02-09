@@ -224,6 +224,9 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->tableDataTable->hideRow(TableType);
 		mUi->tableDataTable->hideRow(WithoutRowid);
 	}
+	else if (mDbmsName == "PostgreSql") {
+
+	}
 }
 
 void TableMenuWidget::fillTableProperties()
@@ -239,6 +242,7 @@ void TableMenuWidget::fillTableProperties()
 		mUi->tableDataTable->item(Temp, columnNum)->setCheckState(Qt::Checked);
 	else
 		mUi->tableDataTable->item(Temp, columnNum)->setCheckState(Qt::Unchecked);
+	mUi->tableDataTable->item(Temp, columnNum)->setFlags(Qt::NoItemFlags | Qt::ItemIsUserCheckable);
 
 	QVariant temporary = mTableNodeElement->getProperty("temporary");
 	mUi->tableDataTable->setItem(Temporary, columnNum, new QTableWidgetItem());

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>735</width>
-    <height>446</height>
+    <width>800</width>
+    <height>472</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -24,95 +24,24 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>701</width>
-     <height>411</height>
+     <width>781</width>
+     <height>451</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
-     <string>General</string>
+     <string>Table properties</string>
     </attribute>
-    <widget class="QTableWidget" name="columnDataTable">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>160</y>
-       <width>681</width>
-       <height>221</height>
-      </rect>
-     </property>
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <column>
-      <property name="text">
-       <string>id</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>name</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>datatype</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>is primary key</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>is unique</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>not null</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>null</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>default</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>with compression</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>with comp</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>auto increment</string>
-      </property>
-     </column>
-    </widget>
     <widget class="QTableWidget" name="tableDataTable">
      <property name="geometry">
       <rect>
        <x>20</x>
        <y>20</y>
-       <width>311</width>
-       <height>131</height>
+       <width>241</width>
+       <height>391</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -197,6 +126,82 @@
      <column>
       <property name="text">
        <string>Property value</string>
+      </property>
+     </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_6">
+    <attribute name="title">
+     <string>Column properties</string>
+    </attribute>
+    <widget class="QTableWidget" name="columnDataTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>751</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <column>
+      <property name="text">
+       <string>id</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>datatype</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is primary key</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is unique</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>not null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>default</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>with compression</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>with comp</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>auto increment</string>
       </property>
      </column>
     </widget>

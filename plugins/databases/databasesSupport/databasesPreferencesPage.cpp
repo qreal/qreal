@@ -42,7 +42,7 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 		emit dbmsChanged("mySql5");
 	else if (dbmsName == "Microsoft Access")
 		emit dbmsChanged("microsoftAccess");
-	else if (dbmsName == "PostgreSql")
+	else if (dbmsName == "PostgreSQL")
 		emit dbmsChanged("postgreSql");
 }
 
@@ -67,9 +67,9 @@ void DatabasesPreferencesPage::browseCodeGenerationFilename()
 	mUi->codeGenerationFilePath->setText(path);
 }
 
-QString const &DatabasesPreferencesPage::getCodeGenerationFilename() const
+QString DatabasesPreferencesPage::getCodeGenerationFilename() const
 {
-	return mUi->codeGenerationFilePath->toPlainText();
+	return mUi->codeGenerationFilePath->toPlainText().toUtf8();
 }
 
 bool DatabasesPreferencesPage::needToOpenFileAfterGeneration() const

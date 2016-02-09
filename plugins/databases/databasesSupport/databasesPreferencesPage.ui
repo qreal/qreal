@@ -55,6 +55,11 @@
         <string>Microsoft Access</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>PostgreSQL</string>
+       </property>
+      </item>
      </widget>
     </item>
    </layout>
@@ -96,7 +101,7 @@
      <x>10</x>
      <y>180</y>
      <width>471</width>
-     <height>51</height>
+     <height>92</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -164,11 +169,6 @@
     </item>
    </layout>
   </widget>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>verticalLayoutWidget_2</zorder>
-  <zorder>gridLayoutWidget</zorder>
-  <zorder>horizontalLayoutWidget</zorder>
-  <zorder>dialectLabel_2</zorder>
  </widget>
  <resources/>
  <connections/>

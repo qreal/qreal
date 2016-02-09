@@ -42,7 +42,7 @@ public:
 
 	void save();
 	virtual void restoreSettings();
-	QString const &getCodeGenerationFilename() const;
+	QString getCodeGenerationFilename() const;
 	bool needToOpenFileAfterGeneration() const;
 public slots:
 	void dbmsChanging(QString const &dbmsName);

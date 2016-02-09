@@ -542,7 +542,7 @@ void DatabasesGenerator::generateSQLCode()
 {
 	mErrorReporter->clear();
 
-	QString const &codeFileName = mPreferencesPage->getCodeGenerationFilename();
+	QString codeFileName = mPreferencesPage->getCodeGenerationFilename();
 	if (codeFileName.isEmpty()) {
 		mErrorReporter->addError(QString("Code file name is empty. Check preferences"));
 		return;
