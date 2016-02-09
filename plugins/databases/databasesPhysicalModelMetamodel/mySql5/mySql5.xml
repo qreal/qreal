@@ -85,6 +85,7 @@
 						<property type="bool" name="auto_increment" displayedName="Auto increment"/>
 						<property type="tableType" name="type" displayedName="Type"/>
 						<property type="string" name="comment" displayedName="Comment"/>
+						<property type="text" name="query" displayedName="Sql-query"/>
 					</properties>
 				</logic>
 			</node>

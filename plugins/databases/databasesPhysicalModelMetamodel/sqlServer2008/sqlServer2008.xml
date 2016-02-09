@@ -64,6 +64,7 @@
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
 						<property type="string" name="comment" displayedName="Comment"/>
+						<property type="text" name="query" displayedName="Sql-query"/>
 					</properties>
 				</logic>
 			</node>

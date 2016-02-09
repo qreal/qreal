@@ -624,6 +624,12 @@ void DatabasesGenerator::generateWithSqlServer2008()
 				codeFile.write(" UNIQUE");
 		}
 		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
 	}
 }
 
@@ -713,6 +719,12 @@ void DatabasesGenerator::generateWithMySql5()
 
 		if (getProperty(tableId, "delay_key_write").toBool())
 			codeFile.write(" DELAY_KEY_WRITE");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
 	}
 }
 
@@ -774,6 +786,12 @@ void DatabasesGenerator::generateWithSqlite()
 
 		if (getProperty(tableId, "without_rowid").toBool())
 			codeFile.write(" WITHOUT ROWID");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
 	}
 }
 
@@ -824,6 +842,12 @@ void DatabasesGenerator::generateWithMicrosoftAccess()
 
 		}
 		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
 	}
 }
 
@@ -931,6 +955,12 @@ void DatabasesGenerator::generateWithPostgreSql()
 		}
 
 		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
 	}
 }
 
