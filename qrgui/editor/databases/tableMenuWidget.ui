@@ -29,7 +29,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>6</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -81,11 +81,6 @@
      <row>
       <property name="text">
        <string>Check sum</string>
-      </property>
-     </row>
-     <row>
-      <property name="text">
-       <string>Comment</string>
       </property>
      </row>
      <row>
@@ -218,8 +213,18 @@
    </widget>
    <widget class="QWidget" name="tab_2">
     <attribute name="title">
-     <string>Comments</string>
+     <string>Comment</string>
     </attribute>
+    <widget class="QTextEdit" name="commentText">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>511</width>
+       <height>211</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_4">
     <attribute name="title">
@@ -230,6 +235,16 @@
     <attribute name="title">
      <string>SQL-query</string>
     </attribute>
+    <widget class="QTextEdit" name="sqlQueryText">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>521</width>
+       <height>261</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
  </widget>

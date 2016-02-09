@@ -28,6 +28,7 @@ public slots:
 	void close();
 	void updateTable(QTableWidgetItem *item);
 	void updateColumn(QTableWidgetItem *item);
+	void updateComment();
 	// Fill columnNames depending on the dbms (different set of properties)
 	void setPropertiesForDbms();
 
@@ -39,7 +40,6 @@ private:
 		, IfNotExists
 		, AvgRowLength
 		, CheckSum
-		, Comment
 		, MaxRows
 		, MinRows
 		, PackKeys

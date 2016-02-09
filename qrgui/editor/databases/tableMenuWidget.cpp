@@ -25,6 +25,7 @@ TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene,
 
 	connect(mUi->tableDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateTable(QTableWidgetItem*)));
 	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
+	connect(mUi->commentText, SIGNAL(textChanged()), this, SLOT(updateComment()));
 }
 
 TableMenuWidget::~TableMenuWidget()
@@ -72,10 +73,6 @@ void TableMenuWidget::updateTable(QTableWidgetItem *item)
 	}
 	case CheckSum: {
 		table->setProperty("check_sum", item->checkState() == Qt::Checked);
-		break;
-	}
-	case Comment: {
-		table->setProperty("comment", cellContents);
 		break;
 	}
 	case MaxRows: {
@@ -161,6 +158,13 @@ void TableMenuWidget::updateColumn(QTableWidgetItem *item)
 	}
 }
 
+void TableMenuWidget::updateComment()
+{
+	QString comment = mUi->commentText->toPlainText();
+	NodeElement *table = mEditorViewScene->getNodeById(mId);
+	table->setProperty("comment", comment);
+}
+
 void TableMenuWidget::setPropertiesForDbms()
 {
 	mUi->columnDataTable->hideColumn(ElementId);
@@ -171,7 +175,6 @@ void TableMenuWidget::setPropertiesForDbms()
 
 		mUi->tableDataTable->hideRow(AvgRowLength);
 		mUi->tableDataTable->hideRow(CheckSum);
-		mUi->tableDataTable->hideRow(Comment);
 		mUi->tableDataTable->hideRow(MaxRows);
 		mUi->tableDataTable->hideRow(MinRows);
 		mUi->tableDataTable->hideRow(PackKeys);
@@ -189,7 +192,6 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->tableDataTable->hideRow(IfNotExists);
 		mUi->tableDataTable->hideRow(AvgRowLength);
 		mUi->tableDataTable->hideRow(CheckSum);
-		mUi->tableDataTable->hideRow(Comment);
 		mUi->tableDataTable->hideRow(MaxRows);
 		mUi->tableDataTable->hideRow(MinRows);
 		mUi->tableDataTable->hideRow(PackKeys);
@@ -215,7 +217,6 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->tableDataTable->hideRow(IfNotExists);
 		mUi->tableDataTable->hideRow(AvgRowLength);
 		mUi->tableDataTable->hideRow(CheckSum);
-		mUi->tableDataTable->hideRow(Comment);
 		mUi->tableDataTable->hideRow(MaxRows);
 		mUi->tableDataTable->hideRow(MinRows);
 		mUi->tableDataTable->hideRow(PackKeys);
@@ -269,7 +270,7 @@ void TableMenuWidget::fillTableProperties()
 		mUi->tableDataTable->item(CheckSum, columnNum)->setCheckState(Qt::Unchecked);
 
 	QVariant comment = mTableNodeElement->getProperty("comment");
-	mUi->tableDataTable->setItem(Comment, columnNum, new QTableWidgetItem(comment.toString()));
+	mUi->commentText->setText(comment.toString());
 
 	QVariant maxRows = mTableNodeElement->getProperty("max_rows");
 	mUi->tableDataTable->setItem(MaxRows, columnNum, new QTableWidgetItem(maxRows.toString()));

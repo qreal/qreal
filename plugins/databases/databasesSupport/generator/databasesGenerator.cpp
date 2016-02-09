@@ -696,7 +696,7 @@ void DatabasesGenerator::generateWithMySql5()
 		if (getProperty(tableId, "check_sum").toBool())
 			codeFile.write(" CHECKSUM");
 
-		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+//		QByteArray comment = getProperty(tableId, "comment").toByteArray();
 		if (!comment.isEmpty())
 			codeFile.write(" COMMENT " + comment);
 
