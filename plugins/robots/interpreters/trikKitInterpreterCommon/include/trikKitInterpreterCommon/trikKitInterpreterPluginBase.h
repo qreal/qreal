@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QScopedPointer>
+#include <QtCore/QSharedPointer>
 
 #include <kitBase/kitPluginInterface.h>
 #include <twoDModel/robotModel/twoDRobotModel.h>
@@ -25,6 +26,8 @@
 
 #include "robotModel/twoD/trikTwoDRobotModel.h"
 #include "trikAdditionalPreferences.h"
+
+#include <trikKitInterpreterCommon/trikqtsinterpreter.h>
 
 #include "declSpec.h"
 
@@ -63,6 +66,8 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
+	TrikQtsInterpreter * qtsInterpreter() const;
+
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
@@ -77,7 +82,9 @@ protected:
 private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
-	QScopedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+
+	QScopedPointer<TrikQtsInterpreter> mQtsInterpreter;
 
 	/// @todo Use shared pointers instead of this sh~.
 	/// Ownership depends on mOwnsBlocksFactory flag.

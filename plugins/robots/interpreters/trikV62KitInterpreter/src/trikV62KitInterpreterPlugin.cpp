@@ -27,7 +27,7 @@ using namespace trik;
 const QString kitIdString = "trikV62Kit";
 
 TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
-	: TrikKitInterpreterPluginBase(), mAction(tr("TEST"), nullptr)
+	: TrikKitInterpreterPluginBase(), mAction(tr("TEST QTS"), nullptr)
 {
 	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
@@ -54,9 +54,10 @@ QList<qReal::ActionInfo> TrikV62KitInterpreterPlugin::customActions()
 
 void TrikV62KitInterpreterPlugin::testSmile()
 {
-	auto model = defaultRobotModel();
-	robotModel::parts::TrikDisplay * const display =
-			kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*model, "DisplayPort");
-	if (display) display->drawSmile(false);
-	qDebug(defaultRobotModel()->name().toStdString().c_str());
+//	auto model = defaultRobotModel();
+//	robotModel::parts::TrikDisplay * const display =
+//			kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*model, "DisplayPort");
+//	if (display) display->drawSmile(false);
+//	qDebug(defaultRobotModel()->name().toStdString().c_str());
+	qtsInterpreter()->interpretStringScript("brick.smile()");
 }
