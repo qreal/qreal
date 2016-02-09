@@ -26,6 +26,7 @@ TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene,
 	connect(mUi->tableDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateTable(QTableWidgetItem*)));
 	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
 	connect(mUi->commentText, SIGNAL(textChanged()), this, SLOT(updateComment()));
+	connect(mUi->sqlQueryText, SIGNAL(textChanged()), this, SLOT(updateQuery()));
 }
 
 TableMenuWidget::~TableMenuWidget()
@@ -163,6 +164,13 @@ void TableMenuWidget::updateComment()
 	QString comment = mUi->commentText->toPlainText();
 	NodeElement *table = mEditorViewScene->getNodeById(mId);
 	table->setProperty("comment", comment);
+}
+
+void TableMenuWidget::updateQuery()
+{
+	QString query = mUi->sqlQueryText->toPlainText();
+	NodeElement *table = mEditorViewScene->getNodeById(mId);
+	table->setProperty("query", query);
 }
 
 void TableMenuWidget::setPropertiesForDbms()
@@ -308,6 +316,9 @@ void TableMenuWidget::fillTableProperties()
 		mUi->tableDataTable->item(WithoutRowid, columnNum)->setCheckState(Qt::Checked);
 	else
 		mUi->tableDataTable->item(WithoutRowid, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant query = mTableNodeElement->getProperty("query");
+	mUi->sqlQueryText->setText(query.toString());
 }
 
 void TableMenuWidget::fillColumnProperties()

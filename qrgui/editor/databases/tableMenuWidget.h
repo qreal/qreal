@@ -29,6 +29,7 @@ public slots:
 	void updateTable(QTableWidgetItem *item);
 	void updateColumn(QTableWidgetItem *item);
 	void updateComment();
+	void updateQuery();
 	// Fill columnNames depending on the dbms (different set of properties)
 	void setPropertiesForDbms();
 
