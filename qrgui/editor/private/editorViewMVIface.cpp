@@ -144,14 +144,17 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		if (!isDescendentOf(current, rootIndex())) {
 			continue;
 		}
+
 		Id currentId = current.data(roles::idRole).value<Id>();
 		if (currentId == Id::rootId()) {
 			continue;
 		}
+
 		Id parentUuid;
 		if (parent != rootIndex()) {
 			parentUuid = parent.data(roles::idRole).value<Id>();
 		}
+
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
