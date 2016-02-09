@@ -592,9 +592,11 @@ void DatabasesGenerator::generateWithSqlServer2008()
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
-		codeFile.write("-- ");
-		codeFile.write(comment);
-		codeFile.write("\r\n");
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
 
 		codeFile.write("CREATE TABLE ");
 		codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
@@ -638,9 +640,11 @@ void DatabasesGenerator::generateWithMySql5()
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
-		codeFile.write("-- ");
-		codeFile.write(comment);
-		codeFile.write("\r\n");
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
 
 		codeFile.write("CREATE ");
 
@@ -733,9 +737,11 @@ void DatabasesGenerator::generateWithSqlite()
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
-		codeFile.write("-- ");
-		codeFile.write(comment);
-		codeFile.write("\r\n");
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
 
 		codeFile.write("CREATE ");
 
@@ -800,9 +806,11 @@ void DatabasesGenerator::generateWithMicrosoftAccess()
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
-		codeFile.write("-- ");
-		codeFile.write(comment);
-		codeFile.write("\r\n");
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
 
 		codeFile.write("CREATE ");
 
@@ -856,9 +864,11 @@ void DatabasesGenerator::generateWithPostgreSql()
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
-		codeFile.write("-- ");
-		codeFile.write(comment);
-		codeFile.write("\r\n");
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
 
 		codeFile.write("CREATE ");
 
