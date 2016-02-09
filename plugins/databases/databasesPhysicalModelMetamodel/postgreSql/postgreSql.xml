@@ -75,6 +75,7 @@
 						<property type="bool" name="without_oids" displayedName="Without oids"/>
 						<property type="string" name="on_commit" displayedName="On commit"/>
 						<property type="string" name="tablespace" displayedName="Tablespace"/>
+						<property type="string" name="comment" displayedName="Comment"/>
 					</properties>
 				</logic>
 			</node>

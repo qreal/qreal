@@ -84,6 +84,7 @@
 						<property type="bool" name="delay_key_write" displayedName="Delay key write"/>
 						<property type="bool" name="auto_increment" displayedName="Auto increment"/>
 						<property type="tableType" name="type" displayedName="Type"/>
+						<property type="string" name="comment" displayedName="Comment"/>
 					</properties>
 				</logic>
 			</node>

@@ -63,6 +63,7 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
+						<property type="string" name="comment" displayedName="Comment"/>
 					</properties>
 				</logic>
 			</node>

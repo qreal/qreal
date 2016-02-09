@@ -591,68 +591,77 @@ void DatabasesGenerator::generateWithSqlServer2008()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
-			codeFile.write("CREATE TABLE ");
-			codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
-			codeFile.write("\r\n(");
-			IdList rowsSet = getChildren(tableId);
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		codeFile.write("-- ");
+		codeFile.write(comment);
+		codeFile.write("\r\n");
 
-			bool first = true;
-			for (Id const &rowId : rowsSet) {
-				if (!first) {
-					codeFile.write(",");
-				}
-				first = false;
-				codeFile.write("\r\n");
-				codeFile.write(getProperty(rowId, "Name").toByteArray());
-				codeFile.write(" ");
-				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+		codeFile.write("CREATE TABLE ");
+		codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
 
-				if (getProperty(rowId, "null").toBool())
-					codeFile.write(" NULL");
-				else if (getProperty(rowId, "notNull").toBool())
-					codeFile.write(" NOT NULL");
-
-				if (getProperty(rowId, "isPrimaryKey").toBool())
-					codeFile.write(" PRIMARY KEY");
-
-				if (getProperty(rowId, "unique").toBool())
-					codeFile.write(" UNIQUE");
-
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
 			}
-			codeFile.write("\r\n);\r\n\r\n");
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "null").toBool())
+				codeFile.write(" NULL");
+			else if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "isPrimaryKey").toBool())
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
 		}
+		codeFile.write("\r\n);\r\n\r\n");
+	}
 }
 
 void DatabasesGenerator::generateWithMySql5()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
-			codeFile.write("CREATE ");
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		codeFile.write("-- ");
+		codeFile.write(comment);
+		codeFile.write("\r\n");
 
-			if (getProperty(tableId, "temporary").toBool())
-				codeFile.write("TEMPORARY ");
+		codeFile.write("CREATE ");
 
-			codeFile.write("TABLE ");
+		if (getProperty(tableId, "temporary").toBool())
+			codeFile.write("TEMPORARY ");
 
-			if (getProperty(tableId, "if_not_exists").toBool())
-				codeFile.write("IF NOT EXISTS ");
+		codeFile.write("TABLE ");
 
-			codeFile.write(getProperty(tableId, "Name").toByteArray());
-			codeFile.write("\r\n(");
-			IdList rowsSet = getChildren(tableId);
+		if (getProperty(tableId, "if_not_exists").toBool())
+			codeFile.write("IF NOT EXISTS ");
 
-			bool first = true;
-			for (Id const &rowId : rowsSet) {
-				if (!first) {
-					codeFile.write(",");
-				}
-				first = false;
-				codeFile.write("\r\n");
-				codeFile.write(getProperty(rowId, "Name").toByteArray());
-				codeFile.write(" ");
-				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
 
-				if (getProperty(rowId, "null").toBool())
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
+			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "null").toBool())
 					codeFile.write(" NULL");
 				else if (getProperty(rowId, "notNull").toBool())
 					codeFile.write(" NOT NULL");
@@ -669,247 +678,260 @@ void DatabasesGenerator::generateWithMySql5()
 
 				if (getProperty(rowId, "auto_increment").toBool())
 					codeFile.write(" AUTO_INCREMENT");
-
-			}
-			codeFile.write("\r\n);\r\n\r\n");
-
-			QByteArray tableType = getProperty(tableId, "type").toByteArray();
-			if (!tableType.isEmpty())
-				codeFile.write(" TYPE " + tableType);
-
-			QByteArray autoIncrementValue = getProperty(tableId, "auto_increment").toByteArray();
-			if (!autoIncrementValue.isEmpty())
-				codeFile.write(" AUTO_INCREMENT " + autoIncrementValue);
-
-			QByteArray avgColumnLength = getProperty(tableId, "avg_row_length").toByteArray();
-			if (!avgColumnLength.isEmpty())
-				codeFile.write(" AVG_ROW_LENGTH " + avgColumnLength);
-
-			if (getProperty(tableId, "check_sum").toBool())
-				codeFile.write(" CHECKSUM");
-
-			QByteArray comment = getProperty(tableId, "comment").toByteArray();
-			if (!comment.isEmpty())
-				codeFile.write(" COMMENT " + comment);
-
-			QByteArray maxColumns = getProperty(tableId, "max_rows").toByteArray();
-			if (!maxColumns.isEmpty())
-				codeFile.write(" MAX_ROWS " + maxColumns);
-
-			QByteArray minColumns = getProperty(tableId, "min_rows").toByteArray();
-			if (!minColumns.isEmpty())
-				codeFile.write(" MIN_ROWS " + minColumns);
-
-			if (getProperty(tableId, "pack_keys").toBool())
-				codeFile.write(" PACK_KEYS");
-
-			if (getProperty(tableId, "delay_key_write").toBool())
-				codeFile.write(" DELAY_KEY_WRITE");
 		}
+		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray tableType = getProperty(tableId, "type").toByteArray();
+		if (!tableType.isEmpty())
+			codeFile.write(" TYPE " + tableType);
+
+		QByteArray autoIncrementValue = getProperty(tableId, "auto_increment").toByteArray();
+		if (!autoIncrementValue.isEmpty())
+			codeFile.write(" AUTO_INCREMENT " + autoIncrementValue);
+
+		QByteArray avgColumnLength = getProperty(tableId, "avg_row_length").toByteArray();
+		if (!avgColumnLength.isEmpty())
+			codeFile.write(" AVG_ROW_LENGTH " + avgColumnLength);
+
+		if (getProperty(tableId, "check_sum").toBool())
+			codeFile.write(" CHECKSUM");
+
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		if (!comment.isEmpty())
+			codeFile.write(" COMMENT " + comment);
+
+		QByteArray maxColumns = getProperty(tableId, "max_rows").toByteArray();
+		if (!maxColumns.isEmpty())
+			codeFile.write(" MAX_ROWS " + maxColumns);
+
+		QByteArray minColumns = getProperty(tableId, "min_rows").toByteArray();
+		if (!minColumns.isEmpty())
+			codeFile.write(" MIN_ROWS " + minColumns);
+
+		if (getProperty(tableId, "pack_keys").toBool())
+			codeFile.write(" PACK_KEYS");
+
+		if (getProperty(tableId, "delay_key_write").toBool())
+			codeFile.write(" DELAY_KEY_WRITE");
+	}
 }
 
 void DatabasesGenerator::generateWithSqlite()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
-			codeFile.write("CREATE ");
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		codeFile.write("-- ");
+		codeFile.write(comment);
+		codeFile.write("\r\n");
 
-			if (getProperty(tableId, "temporary").toBool())
-				codeFile.write("TEMPORARY ");
-			else if (getProperty(tableId, "temp").toBool())
-				codeFile.write("TEMP ");
+		codeFile.write("CREATE ");
 
-			codeFile.write("TABLE ");
+		if (getProperty(tableId, "temporary").toBool())
+			codeFile.write("TEMPORARY ");
+		else if (getProperty(tableId, "temp").toBool())
+			codeFile.write("TEMP ");
 
-			if (getProperty(tableId, "if_not_exists").toBool())
-				codeFile.write("IF NOT EXISTS ");
+		codeFile.write("TABLE ");
 
-			codeFile.write(getProperty(tableId, "Name").toByteArray());
-			codeFile.write("\r\n(");
-			IdList rowsSet = getChildren(tableId);
+		if (getProperty(tableId, "if_not_exists").toBool())
+			codeFile.write("IF NOT EXISTS ");
 
-			bool first = true;
-			for (Id const &rowId : rowsSet) {
-				if (!first) {
-					codeFile.write(",");
-				}
-				first = false;
-				codeFile.write("\r\n");
-				codeFile.write(getProperty(rowId, "Name").toByteArray());
-				codeFile.write(" ");
-				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
 
-				if (getProperty(rowId, "null").toBool())
-					codeFile.write(" NULL");
-				else if (getProperty(rowId, "notNull").toBool())
-					codeFile.write(" NOT NULL");
-
-				if (getProperty(rowId, "isPrimaryKey").toBool())
-					codeFile.write(" PRIMARY KEY");
-
-				if (getProperty(rowId, "unique").toBool())
-					codeFile.write(" UNIQUE");
-
-				QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
-				if (!defaultValue.isEmpty())
-					codeFile.write(" DEFAULT '" + defaultValue + "'");
-
-				if (getProperty(rowId, "auto_increment").toBool())
-					codeFile.write(" AUTO_INCREMENT");
-
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
 			}
-			codeFile.write("\r\n);\r\n\r\n");
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
-			if (getProperty(tableId, "without_rowid").toBool())
-				codeFile.write(" WITHOUT ROWID");
+			if (getProperty(rowId, "null").toBool())
+				codeFile.write(" NULL");
+			else if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "isPrimaryKey").toBool())
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+
+			QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
+			if (!defaultValue.isEmpty())
+				codeFile.write(" DEFAULT '" + defaultValue + "'");
+
+			if (getProperty(rowId, "auto_increment").toBool())
+				codeFile.write(" AUTO_INCREMENT");
 		}
+		codeFile.write("\r\n);\r\n\r\n");
+
+		if (getProperty(tableId, "without_rowid").toBool())
+			codeFile.write(" WITHOUT ROWID");
+	}
 }
 
 void DatabasesGenerator::generateWithMicrosoftAccess()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
-			codeFile.write("CREATE ");
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		codeFile.write("-- ");
+		codeFile.write(comment);
+		codeFile.write("\r\n");
 
-			if (getProperty(tableId, "temporary").toBool())
-				codeFile.write("TEMPORARY ");
+		codeFile.write("CREATE ");
 
-			codeFile.write("TABLE ");
+		if (getProperty(tableId, "temporary").toBool())
+			codeFile.write("TEMPORARY ");
 
-			codeFile.write(getProperty(tableId, "Name").toByteArray());
-			codeFile.write("\r\n(");
-			IdList rowsSet = getChildren(tableId);
+		codeFile.write("TABLE ");
 
-			bool first = true;
-			for (Id const &rowId : rowsSet) {
-				if (!first) {
-					codeFile.write(",");
-				}
-				first = false;
-				codeFile.write("\r\n");
-				codeFile.write(getProperty(rowId, "Name").toByteArray());
-				codeFile.write(" ");
-				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
 
-				if (getProperty(rowId, "notNull").toBool())
-					codeFile.write(" NOT NULL");
-
-				if (getProperty(rowId, "isPrimaryKey").toBool())
-					codeFile.write(" PRIMARY KEY");
-
-				if (getProperty(rowId, "unique").toBool())
-					codeFile.write(" UNIQUE");
-
-				if (getProperty(rowId, "with_compression").toBool())
-					codeFile.write(" WITH COMPRESSION");
-				else if (getProperty(rowId, "with_comp").toBool())
-					codeFile.write(" WITH COMP");
-
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
 			}
-			codeFile.write("\r\n);\r\n\r\n");
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "isPrimaryKey").toBool())
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+
+			if (getProperty(rowId, "with_compression").toBool())
+				codeFile.write(" WITH COMPRESSION");
+			else if (getProperty(rowId, "with_comp").toBool())
+				codeFile.write(" WITH COMP");
+
 		}
+		codeFile.write("\r\n);\r\n\r\n");
+	}
 }
 
 void DatabasesGenerator::generateWithPostgreSql()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
-			codeFile.write("CREATE ");
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		codeFile.write("-- ");
+		codeFile.write(comment);
+		codeFile.write("\r\n");
 
-			if (getProperty(tableId, "global").toBool())
-				codeFile.write("GLOBAL ");
-			else if (getProperty(tableId, "local").toBool())
-					codeFile.write("LOCAL ");
+		codeFile.write("CREATE ");
 
-			if (getProperty(tableId, "temporary").toBool())
-				codeFile.write("TEMPORARY ");
-			else if (getProperty(tableId, "temp").toBool())
-					codeFile.write("TEMP ");
+		if (getProperty(tableId, "global").toBool())
+			codeFile.write("GLOBAL ");
+		else if (getProperty(tableId, "local").toBool())
+			codeFile.write("LOCAL ");
 
-			if (getProperty(tableId, "unlogged").toBool())
-				codeFile.write("UNLOGGED ");
+		if (getProperty(tableId, "temporary").toBool())
+			codeFile.write("TEMPORARY ");
+		else if (getProperty(tableId, "temp").toBool())
+			codeFile.write("TEMP ");
 
-			codeFile.write("TABLE ");
+		if (getProperty(tableId, "unlogged").toBool())
+			codeFile.write("UNLOGGED ");
 
-			codeFile.write(getProperty(tableId, "Name").toByteArray());
-			codeFile.write("\r\n(");
-			IdList rowsSet = getChildren(tableId);
+		codeFile.write("TABLE ");
 
-			bool first = true;
-			for (Id const &rowId : rowsSet) {
-				if (!first) {
-					codeFile.write(",");
-				}
-				first = false;
-				codeFile.write("\r\n");
-				codeFile.write(getProperty(rowId, "Name").toByteArray());
-				codeFile.write(" ");
-				codeFile.write(getProperty(rowId, "DataType").toByteArray());
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
 
-				if (getProperty(rowId, "notNull").toBool())
-					codeFile.write(" NOT NULL");
-
-				if (getProperty(rowId, "null").toBool())
-					codeFile.write(" NULL");
-
-				QByteArray checkExpression = getProperty(rowId, "check").toByteArray();
-				if (!checkExpression.isEmpty()) {
-					codeFile.write(" CHECK");
-					codeFile.write(checkExpression);
-					codeFile.write(" ");
-				}
-
-				QByteArray defaultValue = getProperty(rowId, "default").toByteArray();
-				if (!defaultValue.isEmpty()) {
-					codeFile.write(" DEFAULT");
-					codeFile.write(defaultValue);
-					codeFile.write(" ");
-				}
-
-				if (getProperty(rowId, "isPrimaryKey").toBool());
-					codeFile.write(" PRIMARY KEY");
-
-				if (getProperty(rowId, "unique").toBool())
-					codeFile.write(" UNIQUE");
-
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
 			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
-			QByteArray inherits = getProperty(tableId, "inherits").toByteArray();
-			if (!inherits.isEmpty()) {
-				codeFile.write(" INHERITS ");
-				codeFile.write(inherits);
+			if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "null").toBool())
+				codeFile.write(" NULL");
+
+			QByteArray checkExpression = getProperty(rowId, "check").toByteArray();
+			if (!checkExpression.isEmpty()) {
+				codeFile.write(" CHECK");
+				codeFile.write(checkExpression);
 				codeFile.write(" ");
 			}
 
-			QByteArray with = getProperty(tableId, "with").toByteArray();
-			if (!inherits.isEmpty()) {
-				codeFile.write(" WITH ");
-				codeFile.write(with);
-				codeFile.write(" ");
-			}
-			else if (getProperty(tableId, "with_oids").toBool()) {
-				codeFile.write(" WITH OIDS ");
-			}
-			else if (getProperty(tableId, "without_oids").toBool()) {
-				codeFile.write(" WITHOUT OIDS ");
-			}
-
-			QByteArray onCommit = getProperty(tableId, "on_commit").toByteArray();
-			if (!inherits.isEmpty()) {
-				codeFile.write(" ON COMMIT ");
-				codeFile.write(onCommit);
+			QByteArray defaultValue = getProperty(rowId, "default").toByteArray();
+			if (!defaultValue.isEmpty()) {
+				codeFile.write(" DEFAULT");
+				codeFile.write(defaultValue);
 				codeFile.write(" ");
 			}
 
-			QByteArray tablespace = getProperty(tableId, "tablespace").toByteArray();
-			if (!inherits.isEmpty()) {
-				codeFile.write(" TABLESPACE ");
-				codeFile.write(tablespace);
-				codeFile.write(" ");
-			}
+			if (getProperty(rowId, "isPrimaryKey").toBool());
+				codeFile.write(" PRIMARY KEY");
 
-			codeFile.write("\r\n);\r\n\r\n");
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+
 		}
+
+		QByteArray inherits = getProperty(tableId, "inherits").toByteArray();
+		if (!inherits.isEmpty()) {
+			codeFile.write(" INHERITS ");
+			codeFile.write(inherits);
+			codeFile.write(" ");
+		}
+
+		QByteArray with = getProperty(tableId, "with").toByteArray();
+		if (!inherits.isEmpty()) {
+			codeFile.write(" WITH ");
+			codeFile.write(with);
+			codeFile.write(" ");
+		}
+		else if (getProperty(tableId, "with_oids").toBool()) {
+			codeFile.write(" WITH OIDS ");
+		}
+		else if (getProperty(tableId, "without_oids").toBool()) {
+			codeFile.write(" WITHOUT OIDS ");
+		}
+
+		QByteArray onCommit = getProperty(tableId, "on_commit").toByteArray();
+		if (!inherits.isEmpty()) {
+			codeFile.write(" ON COMMIT ");
+			codeFile.write(onCommit);
+			codeFile.write(" ");
+		}
+
+		QByteArray tablespace = getProperty(tableId, "tablespace").toByteArray();
+		if (!inherits.isEmpty()) {
+			codeFile.write(" TABLESPACE ");
+			codeFile.write(tablespace);
+			codeFile.write(" ");
+		}
+
+		codeFile.write("\r\n);\r\n\r\n");
+	}
 }
 
 void DatabasesGenerator::changeEditor(QString const &dbmsName)
