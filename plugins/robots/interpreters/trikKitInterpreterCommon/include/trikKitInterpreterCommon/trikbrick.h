@@ -1,15 +1,16 @@
 #pragma once
 
 #include <trikControl/brickInterface.h>
-/// TODO: factor everything out to trikit common, leave only textinterp.
-#include <kitBase/robotModel/robotModelInterface.h>
+
+#include "robotModel/twoD/trikTwoDRobotModel.h"
+
+namespace trik {
 
 class TrikBrick : public trikControl::BrickInterface {
 
-
 	// BrickInterface interface
 public:
-	TrikBrick(kitBase::robotModel::RobotModelInterface *model);
+	TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
 	void reset() override {}
 	trikControl::DisplayWidgetInterface &graphicsWidget() override {
 		trikControl::DisplayWidgetInterface temp;
@@ -42,6 +43,7 @@ public slots:
 	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
 
 private:
-	kitBase::robotModel::RobotModelInterface *mTwoDModel;
-
+	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 };
+
+}

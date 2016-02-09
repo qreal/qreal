@@ -19,10 +19,14 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
+		plugins/robots/thirdparty/trikRuntime/trikControl \
+		plugins/robots/thirdparty/trikRuntime/trikNetwork \
+		plugins/robots/thirdparty/trikRuntime/trikScriptRunner \
 		)
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
+		trikControl-x86 trikScriptRunner-x86 \
 		)
 
 HEADERS += \
@@ -63,6 +67,9 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikAdditionalPreferences.h \
 	$$PWD/include/trikKitInterpreterCommon/trikDisplayWidget.h \
 	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h \
+	$$PWD/include/trikKitInterpreterCommon/trikbrick.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/displaywidgetemu.h \
+    $$PWD/include/trikKitInterpreterCommon/trikQtsInterpreter.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -101,6 +108,9 @@ SOURCES += \
 	$$PWD/src/trikAdditionalPreferences.cpp \
 	$$PWD/src/trikDisplayWidget.cpp \
 	$$PWD/src/trikKitInterpreterPluginBase.cpp \
+	$$PWD/src/trikbrick.cpp \
+	$$PWD/src/trikEmulation/displaywidgetemu.cpp \
+    $$PWD/src/trikQtsInterpreter.cpp
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \

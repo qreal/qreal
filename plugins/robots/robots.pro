@@ -33,6 +33,7 @@ SUBDIRS = \
 	$$PWD/thirdparty/trikRuntime/translations \
 
 qslog.file = $$PWD/thirdparty/trikRuntime/qslog/QsLogSharedLibrary.pro
+#qslog.file = $$PWD/../../thirdparty/qslog/QsLogSharedLibrary.pro
 
 trikScriptRunner.subdir = $$PWD/thirdparty/trikRuntime/trikScriptRunner
 trikKernel.subdir = $$PWD/thirdparty/trikRuntime/trikKernel

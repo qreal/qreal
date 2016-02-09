@@ -23,8 +23,6 @@ includes(plugins/robots/interpreters/interpreterCore \
 #
 		plugins/robots/utils \
 		qrtext \
-		plugins/robots/thirdparty/trikRuntime/trikControl \
-		plugins/robots/thirdparty/trikRuntime/trikNetwork \
 )
 
 LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/bin/x86-$$CONFIGURATION
@@ -32,7 +30,6 @@ LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/bin/x86-$$CONFIGURA
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
 		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
-		trikControl-x86 trikScriptRunner-x86\
 )
 
 HEADERS += \
@@ -64,9 +61,7 @@ HEADERS += \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
 	$$PWD/src/ui/modeStripe.h \
-	$$PWD/include/interpreterCore/interpreter/qtsinterpreter.h \
-	$$PWD/include/interpreterCore/interpreter/trikbrick.h \
-	$$PWD/include/interpreterCore/interpreter/trikEmulation/displaywidgetemu.h
+#	$$PWD/include/interpreterCore/interpreter/qtsinterpreter.h \
 
 
 SOURCES += \
@@ -101,9 +96,8 @@ SOURCES += \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
 	$$PWD/src/ui/modeStripe.cpp \
-	$$PWD/src/interpreter/qtsinterpreter.cpp \
-	$$PWD/src/interpreter/trikbrick.cpp \
-	$$PWD/src/interpreter/trikEmulation/displaywidgetemu.cpp
+#	$$PWD/src/interpreter/qtsinterpreter.cpp \
+
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \

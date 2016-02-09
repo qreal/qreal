@@ -58,6 +58,13 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 	mTwoDModel.reset(modelEngine);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel->name() });
+
+	mQtsInterpreter.reset(new TrikQtsInterpreter(mTwoDRobotModel));
+}
+
+TrikQtsInterpreter * TrikKitInterpreterPluginBase::qtsInterpreter() const
+{
+	return mQtsInterpreter.data();
 }
 
 void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
