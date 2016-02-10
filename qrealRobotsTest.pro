@@ -36,3 +36,7 @@ robotsTests.depends = \
 	qrutils \
 	thirdparty \
 	testUtils \
+
+testUtils.depends = \
+	gmock \
+	qrgui \

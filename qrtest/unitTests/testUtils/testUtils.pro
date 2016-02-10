@@ -14,7 +14,7 @@
 
 TARGET = test-utils
 
-include($$PWD/../../../global.pri)
+include($$PWD/../common.pri)
 
 DEFINES += TEST_UTILS_LIBRARY
 
@@ -24,8 +24,16 @@ HEADERS += \
 	$$PWD/include/testUtils/declSpec.h \
 	$$PWD/include/testUtils/delay.h \
 	$$PWD/include/testUtils/fakeSender.h \
+	$$PWD/include/testUtils/qrguiFacade.h \
 	$$PWD/include/testUtils/signalsTester.h \
 
 SOURCES += \
 	$$PWD/src/delay.cpp \
+	$$PWD/src/qrguiFacade.cpp \
 	$$PWD/src/signalsTester.cpp \
+
+links(qrgui-tool-plugin-interface qrgui-models)
+
+#links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
+#		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
+#)
