@@ -143,7 +143,7 @@ public:
 	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
-	void loadPlugins();
+	void loadEditorPlugins();
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();

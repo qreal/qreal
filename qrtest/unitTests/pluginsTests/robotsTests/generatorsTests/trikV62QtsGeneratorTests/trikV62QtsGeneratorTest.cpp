@@ -16,6 +16,8 @@
 
 #include <trikV62QtsGeneratorPlugin.h>
 
+#include <testUtils/qrguiFacade.h>
+
 using namespace qrTest;
 using namespace qrTest::robotsTests::trikV62QtsGeneratorTests;
 using namespace trik::qts;
@@ -26,4 +28,5 @@ void TrikV62QtsGeneratorTest::SetUp()
 
 TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 {
+	QrguiFacade facade("unittests/basicTest.qrs");
 }

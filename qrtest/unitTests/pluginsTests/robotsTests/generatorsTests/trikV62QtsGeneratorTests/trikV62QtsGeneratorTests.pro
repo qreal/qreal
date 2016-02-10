@@ -18,6 +18,8 @@ include($$PWD/../../../../common.pri)
 
 include($$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator/trikV62QtsGenerator.pri)
 
+links(test-utils)
+
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator \
 
@@ -26,3 +28,5 @@ HEADERS += \
 
 SOURCES += \
 	$$PWD/trikV62QtsGeneratorTest.cpp \
+
+copyToDestdir($$PWD/support/testData/unittests, NOW)

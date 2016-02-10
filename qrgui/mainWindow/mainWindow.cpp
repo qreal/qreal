@@ -145,7 +145,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mSplashScreen->setProgress(60);
 
-	loadPlugins();
+	loadEditorPlugins();
 
 	mSplashScreen->setProgress(70);
 
@@ -349,7 +349,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	emit mFacade->events().closedMainWindow();
 }
 
-void MainWindow::loadPlugins()
+void MainWindow::loadEditorPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
@@ -1094,7 +1094,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(const QModelIndex &)>(&MainWindow::closeTab));
 	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](const Id &id) { activateItemOrDiagram(id); });
-	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadPlugins);
+	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadEditorPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
 			(const Id &, const QString &, const EditorManagerInterface *, bool)>(&MainWindow::openShapeEditor));
 
@@ -1513,7 +1513,7 @@ void MainWindow::updatePaletteIcons()
 	mUi->logicalModelExplorer->viewport()->update();
 
 	const Id currentId = mUi->paletteTree->currentEditor();
-	loadPlugins();
+	loadEditorPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
 	mUi->paletteTree->setComboBox(currentId);
@@ -1962,7 +1962,7 @@ void MainWindow::changePaletteRepresentation()
 	if (SettingsManager::value("PaletteRepresentation").toBool() != mUi->paletteTree->iconsView()
 			|| SettingsManager::value("PaletteIconsInARowCount").toInt() != mUi->paletteTree->itemsCountInARow())
 	{
-		loadPlugins();
+		loadEditorPlugins();
 	}
 }
 
