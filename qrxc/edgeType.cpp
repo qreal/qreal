@@ -275,7 +275,9 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty()) {
-		mLabels[0]->generateCodeForConstructor(out);
+		for (int i = 0; i < mLabels.length(); i++) {
+			mLabels[i]->generateCodeForConstructor(out);
+		}
 	} else {
 		out() << "\t\t\tQ_UNUSED(titles);\n" << "\t\t\tQ_UNUSED(factory);\n";
 	}
@@ -348,7 +350,9 @@ void EdgeType::generateCode(OutFile &out)
 	if (mLabels.isEmpty()) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";
 	} else {
-		mLabels[0]->generateCodeForUpdateData(out);
+		for (int i = 0; i < mLabels.length(); i++) {
+			mLabels[i]->generateCodeForUpdateData(out);
+		}
 	}
 
 	out() << "\t\t}\n\n";
@@ -359,7 +363,9 @@ void EdgeType::generateCode(OutFile &out)
 	}
 
 	if (!mLabels.isEmpty()) {
-		mLabels[0]->generateCodeForFields(out);
+		for (int i = 0; i < mLabels.length(); i++) {
+			mLabels[i]->generateCodeForFields(out);
+		}
 	}
 
 	out() << "\t};\n\n";
