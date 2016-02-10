@@ -36,8 +36,11 @@ public slots:
 private:
 	enum TablePropertyRowNumber {
 		TableName = 0
+		, Local
+		, Global
 		, Temp
 		, Temporary
+		, Unlogged
 		, IfNotExists
 		, AvgRowLength
 		, CheckSum
@@ -48,6 +51,12 @@ private:
 		, TableAutoIncrement
 		, TableType
 		, WithoutRowid
+		, Inherits
+		, With
+		, WithOids
+		, WithoutOids
+		, OnCommit
+		, Tablespace
 	};
 	enum ColumnPropertyColumnNumber {
 		ElementId = 0
@@ -60,7 +69,9 @@ private:
 		 , Default
 		 , WithCompression
 		 , WithComp
-		 , ColumnAutoIncrement };
+		 , ColumnAutoIncrement
+		 , Check
+	};
 
 	QString mDbmsName;
 

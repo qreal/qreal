@@ -175,66 +175,107 @@ void TableMenuWidget::updateQuery()
 
 void TableMenuWidget::setPropertiesForDbms()
 {
+	mUi->tableDataTable->hideRow(Local);
+	mUi->tableDataTable->hideRow(Global);
+	mUi->tableDataTable->hideRow(Temp);
+	mUi->tableDataTable->hideRow(Temporary);
+	mUi->tableDataTable->hideRow(Unlogged);
+	mUi->tableDataTable->hideRow(IfNotExists);
+	mUi->tableDataTable->hideRow(AvgRowLength);
+	mUi->tableDataTable->hideRow(CheckSum);
+	mUi->tableDataTable->hideRow(MaxRows);
+	mUi->tableDataTable->hideRow(MinRows);
+	mUi->tableDataTable->hideRow(PackKeys);
+	mUi->tableDataTable->hideRow(DelayKeyWrite);
+	mUi->tableDataTable->hideRow(TableAutoIncrement);
+	mUi->tableDataTable->hideRow(TableType);
+	mUi->tableDataTable->hideRow(WithoutRowid);
+	mUi->tableDataTable->hideRow(Inherits);
+	mUi->tableDataTable->hideRow(With);
+	mUi->tableDataTable->hideRow(WithOids);
+	mUi->tableDataTable->hideRow(WithoutOids);
+	mUi->tableDataTable->hideRow(OnCommit);
+	mUi->tableDataTable->hideRow(Tablespace);
+
+	mUi->columnDataTable->hideColumn(ElementId);
+	mUi->columnDataTable->hideColumn(IsPrimaryKey);
+	mUi->columnDataTable->hideColumn(IsUnique);
+	mUi->columnDataTable->hideColumn(NotNull);
+	mUi->columnDataTable->hideColumn(Null);
+	mUi->columnDataTable->hideColumn(Default);
+	mUi->columnDataTable->hideColumn(WithCompression);
+	mUi->columnDataTable->hideColumn(WithComp);
+	mUi->columnDataTable->hideColumn(ColumnAutoIncrement);
+	mUi->columnDataTable->hideColumn(Check);
+
 	mUi->columnDataTable->hideColumn(ElementId);
 	if (mDbmsName == "Sqlite") {
-		mUi->columnDataTable->hideColumn(Null);
-		mUi->columnDataTable->hideColumn(WithCompression);
-		mUi->columnDataTable->hideColumn(WithComp);
+		mUi->tableDataTable->showRow(Temp);
+		mUi->tableDataTable->showRow(Temporary);
+		mUi->tableDataTable->showRow(IfNotExists);
+		mUi->tableDataTable->showRow(WithoutRowid);
 
-		mUi->tableDataTable->hideRow(AvgRowLength);
-		mUi->tableDataTable->hideRow(CheckSum);
-		mUi->tableDataTable->hideRow(MaxRows);
-		mUi->tableDataTable->hideRow(MinRows);
-		mUi->tableDataTable->hideRow(PackKeys);
-		mUi->tableDataTable->hideRow(DelayKeyWrite);
-		mUi->tableDataTable->hideRow(TableAutoIncrement);
-		mUi->tableDataTable->hideRow(TableType);
+		mUi->columnDataTable->showColumn(IsPrimaryKey);
+		mUi->columnDataTable->showColumn(IsUnique);
+		mUi->columnDataTable->showColumn(NotNull);
+		mUi->columnDataTable->showColumn(ColumnAutoIncrement);
+		mUi->columnDataTable->showColumn(Default);
 	}
 	else if (mDbmsName == "SqlServer2008") {
-		mUi->columnDataTable->hideColumn(WithCompression);
-		mUi->columnDataTable->hideColumn(WithComp);
-		mUi->columnDataTable->hideColumn(ColumnAutoIncrement);
-
-		mUi->tableDataTable->hideRow(Temp);
-		mUi->tableDataTable->hideRow(Temporary);
-		mUi->tableDataTable->hideRow(IfNotExists);
-		mUi->tableDataTable->hideRow(AvgRowLength);
-		mUi->tableDataTable->hideRow(CheckSum);
-		mUi->tableDataTable->hideRow(MaxRows);
-		mUi->tableDataTable->hideRow(MinRows);
-		mUi->tableDataTable->hideRow(PackKeys);
-		mUi->tableDataTable->hideRow(DelayKeyWrite);
-		mUi->tableDataTable->hideRow(TableAutoIncrement);
-		mUi->tableDataTable->hideRow(TableType);
-		mUi->tableDataTable->hideRow(WithoutRowid);
+		mUi->columnDataTable->showColumn(IsPrimaryKey);
+		mUi->columnDataTable->showColumn(IsUnique);
+		mUi->columnDataTable->showColumn(NotNull);
+		mUi->columnDataTable->showColumn(Null);
+		mUi->columnDataTable->showColumn(Default);
 	}
 	else if (mDbmsName == "MySql5") {
+		mUi->tableDataTable->showRow(Temporary);
+		mUi->tableDataTable->showRow(IfNotExists);
+		mUi->tableDataTable->showRow(AvgRowLength);
+		mUi->tableDataTable->showRow(CheckSum);
+		mUi->tableDataTable->showRow(MaxRows);
+		mUi->tableDataTable->showRow(MinRows);
+		mUi->tableDataTable->showRow(PackKeys);
+		mUi->tableDataTable->showRow(DelayKeyWrite);
+		mUi->tableDataTable->showRow(TableAutoIncrement);
+		mUi->tableDataTable->showRow(TableType);
 
-		mUi->columnDataTable->hideColumn(WithCompression);
-		mUi->columnDataTable->hideColumn(WithComp);
-
-		mUi->tableDataTable->hideRow(Temp);
-		mUi->tableDataTable->hideRow(WithoutRowid);
+		mUi->columnDataTable->showColumn(IsPrimaryKey);
+		mUi->columnDataTable->showColumn(IsUnique);
+		mUi->columnDataTable->showColumn(NotNull);
+		mUi->columnDataTable->showColumn(Null);
+		mUi->columnDataTable->showColumn(ColumnAutoIncrement);
+		mUi->columnDataTable->showColumn(Default);
 	}
 	else if (mDbmsName == "MicrosoftAccess") {
-		mUi->columnDataTable->hideColumn(Null);
-		mUi->columnDataTable->hideColumn(Default);
-		mUi->columnDataTable->hideColumn(ColumnAutoIncrement);
+		mUi->tableDataTable->showRow(Temporary);
 
-		mUi->tableDataTable->hideRow(Temp);
-		mUi->tableDataTable->hideRow(IfNotExists);
-		mUi->tableDataTable->hideRow(AvgRowLength);
-		mUi->tableDataTable->hideRow(CheckSum);
-		mUi->tableDataTable->hideRow(MaxRows);
-		mUi->tableDataTable->hideRow(MinRows);
-		mUi->tableDataTable->hideRow(PackKeys);
-		mUi->tableDataTable->hideRow(DelayKeyWrite);
-		mUi->tableDataTable->hideRow(TableAutoIncrement);
-		mUi->tableDataTable->hideRow(TableType);
-		mUi->tableDataTable->hideRow(WithoutRowid);
+		mUi->columnDataTable->showColumn(IsPrimaryKey);
+		mUi->columnDataTable->showColumn(IsUnique);
+		mUi->columnDataTable->showColumn(NotNull);
+		mUi->columnDataTable->showColumn(WithCompression);
+		mUi->columnDataTable->showColumn(WithComp);
 	}
 	else if (mDbmsName == "PostgreSql") {
+		mUi->tableDataTable->showRow(Local);
+		mUi->tableDataTable->showRow(Global);
+		mUi->tableDataTable->showRow(Temp);
+		mUi->tableDataTable->showRow(Temporary);
+		mUi->tableDataTable->showRow(Unlogged);
+		mUi->tableDataTable->showRow(IfNotExists);
+		mUi->tableDataTable->showRow(Inherits);
+		mUi->tableDataTable->showRow(With);
+		mUi->tableDataTable->showRow(WithOids);
+		mUi->tableDataTable->showRow(WithoutOids);
+		mUi->tableDataTable->showRow(OnCommit);
+		mUi->tableDataTable->showRow(Tablespace);
 
+		mUi->columnDataTable->showColumn(IsPrimaryKey);
+		mUi->columnDataTable->showColumn(IsUnique);
+		mUi->columnDataTable->showColumn(NotNull);
+		mUi->columnDataTable->showColumn(Null);
+		mUi->columnDataTable->showColumn(Check);
+		mUi->columnDataTable->showColumn(Default);
 	}
 }
 

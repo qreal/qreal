@@ -113,13 +113,13 @@
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
+						<property type="bool" name="isUnique" displayedName="Unique"/>
 						<property type="bool" name="notNull" displayedName="Not null"/>
 						<property type="bool" name="with_compression" displayedName="With compression"/>
 						<property type="bool" name="with_comp" displayedName="With comp"/>
 						<property type="string" name="DataType" displayedName="Data Type">
 							<default>INT</default>
 						</property>
-						<property type="bool" name="isUnique" displayedName="Unique"/>
 					</properties>
 				</logic>
 			</node>

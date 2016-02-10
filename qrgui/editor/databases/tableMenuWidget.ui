@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>546</height>
+    <height>620</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,8 +25,14 @@
      <x>10</x>
      <y>10</y>
      <width>781</width>
-     <height>471</height>
+     <height>541</height>
     </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
    </property>
    <property name="currentIndex">
     <number>0</number>
@@ -35,100 +41,139 @@
     <attribute name="title">
      <string>Table properties</string>
     </attribute>
-    <widget class="QWidget" name="horizontalLayoutWidget">
+    <widget class="QTableWidget" name="tableDataTable">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>0</y>
-       <width>341</width>
-       <height>421</height>
+       <x>30</x>
+       <y>20</y>
+       <width>256</width>
+       <height>481</height>
       </rect>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QTableWidget" name="tableDataTable">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <attribute name="horizontalHeaderVisible">
-         <bool>false</bool>
-        </attribute>
-        <row>
-         <property name="text">
-          <string>TableName</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Temp</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Temporary</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>If not exists</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Avg row length</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Check sum</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Max rows</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Min rows</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Pack keys</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Delay key write</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Auto increment</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Type</string>
-         </property>
-        </row>
-        <row>
-         <property name="text">
-          <string>Without row id</string>
-         </property>
-        </row>
-        <column>
-         <property name="text">
-          <string>Property value</string>
-         </property>
-        </column>
-       </widget>
-      </item>
-     </layout>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>TableName</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Local</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Global</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Temp</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Temporary</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Unlogged</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>If not exists</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Avg row length</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Check sum</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Max rows</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Min rows</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Pack keys</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Delay key write</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Auto increment</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Without row id</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Inherits</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>With</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>With oids</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Without oids</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>On commit</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Tablespace</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>Property value</string>
+      </property>
+     </column>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_6">
@@ -203,6 +248,11 @@
      <column>
       <property name="text">
        <string>auto increment</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>check</string>
       </property>
      </column>
     </widget>
