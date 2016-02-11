@@ -21,3 +21,4 @@ SUBDIRS = \
 	databasesPhysicalModelMetamodel/mySql5/mySql5.pro \
 	databasesPhysicalModelMetamodel/sqlite/sqlite.pro \
 	databasesPhysicalModelMetamodel/microsoftAccess/microsoftAccess.pro \
+	databasesPhysicalModelMetamodel/postgreSql/postgreSql.pro \
