@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/ev3/interpreter">
+        <file>images/ev3-robot.png</file>
+        <file>images/ev3-touch.png</file>
+        <file>images/ev3-sonar.png</file>
+        <file>images/ev3-brick.png</file>
+        <file>images/ev3-up-button.png</file>
+        <file>images/ev3-up-button-pressed.png</file>
+        <file>images/ev3-down-button.png</file>
+        <file>images/ev3-down-button-pressed.png</file>
+        <file>images/ev3-left-button.png</file>
+        <file>images/ev3-left-button-pressed.png</file>
+        <file>images/ev3-right-button.png</file>
+        <file>images/ev3-right-button-pressed.png</file>
+        <file>images/ev3-enter-button.png</file>
+        <file>images/ev3-enter-button-pressed.png</file>
+        <file>images/ev3-escape-button.png</file>
+        <file>images/ev3-escape-button-pressed.png</file>
+        <file>images/switch-real-ev3-usb.svg</file>
+        <file>images/switch-real-ev3-bluetooth.svg</file>
+        <file>images/switch-2d.svg</file>
+    </qresource>
+</RCC>

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@
 #include <QtCore/QPair>
 
 #include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/models/edgeInfo.h>
 
 #include "qrgui/editor/element.h"
-#include "qrgui/editor/serializationData.h"
 #include "qrgui/editor/private/edgeArrangeCriteria.h"
 
 namespace qReal {
@@ -55,10 +55,7 @@ public:
 		, bottom
 	};
 
-	EdgeElement(ElementImpl *impl
-			, const Id &id
-			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+	EdgeElement(ElementImpl *impl, const Id &id, const models::Models &models);
 
 	virtual ~EdgeElement();
 
@@ -131,7 +128,7 @@ public:
 
 	void highlight(const QColor &color = Qt::red);
 
-	EdgeData data();
+	EdgeInfo data();
 
 	/// Change link type and redraw it
 	void changeShapeType(const enums::linkShape::LinkShape shapeType);

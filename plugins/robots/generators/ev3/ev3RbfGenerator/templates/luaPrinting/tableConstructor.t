@@ -1,0 +1,1 @@
+ARRAY(CREATE@@TYPE@@, 255, @@RESULT@@)

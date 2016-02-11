@@ -20,11 +20,12 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 Shell::Shell(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikShell(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::printText, this, &Shell::textPrinted);
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::printText
+			, this, &Shell::textPrinted);
 }
 
 void Shell::say(const QString &text)

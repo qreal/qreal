@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,6 +94,11 @@ void GraphicType::copyLabels(GraphicType *parent)
 	for (Label *label : parent->mLabels) {
 		mLabels.append(label->clone());
 	}
+}
+
+QList<Port *> GraphicType::ports() const
+{
+	return {};
 }
 
 bool GraphicType::init(const QDomElement &element, const QString &context)
@@ -370,15 +375,19 @@ bool GraphicType::addProperty(Property *property)
 {
 	const QString propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
+		// This will automaticly dispose property in this branch.
+		QScopedPointer<Property> propertyDisposer(property);
+		Q_UNUSED(propertyDisposer)
 		/// @todo Good for overriding parent properties, but bad in multiple inheritance case
 		/// --- we can allow invalid rhomb inheritance.
 		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property) {
-			qDebug() << "WARNING: property" << propertyName << "duplicated with different attributes";
-			delete property;
+			qWarning() << "Property" << propertyName << "duplicated with different attributes";
+			return false;
 		}
 	} else {
 		mProperties[propertyName] = property;
 	}
+
 	return true;
 }
 

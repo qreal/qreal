@@ -14,17 +14,28 @@
 
 #pragma once
 
+#include <QtCore/QStringList>
+
 #include <kitBase/blocksBase/commonBlocksFactory.h>
 
 namespace ev3 {
 namespace blocks {
 
+/// Block factory that creates blocks for EV3 kit.
 class Ev3BlocksFactory : public kitBase::blocksBase::CommonBlocksFactory
 {
 public:
+	/// Constructor.
+	/// @param interpretedModels - a list of robot ids which are handled by interpreter, so parallel tasks
+	///        may be enabled for them.
+	Ev3BlocksFactory(const QStringList &interpretedModels);
+
 	qReal::interpretation::Block *produceBlock(const qReal::Id &element) override;
 	qReal::IdList providedBlocks() const override;
 	qReal::IdList blocksToDisable() const override;
+
+private:
+	const QStringList mInterpretedModels;
 };
 
 }

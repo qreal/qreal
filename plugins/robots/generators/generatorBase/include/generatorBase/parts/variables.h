@@ -53,6 +53,7 @@ public:
 
 protected:
 	QString typeExpression(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
+	QString typeName(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 	QString constantDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 	QString variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 

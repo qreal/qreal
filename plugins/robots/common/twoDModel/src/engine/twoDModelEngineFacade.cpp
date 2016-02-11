@@ -23,6 +23,8 @@
 #include "twoDModelEngineApi.h"
 #include "threeDModelEngineApi.h"
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)

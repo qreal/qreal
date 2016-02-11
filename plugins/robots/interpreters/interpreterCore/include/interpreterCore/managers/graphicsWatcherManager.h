@@ -23,14 +23,19 @@
 
 namespace interpreterCore {
 
+class RobotModelManager;
+
 /// Incapsulates inner operations on managing graphics watcher in the dock window.
 class GraphicsWatcherManager : public QObject, public kitBase::DevicesConfigurationProvider
 {
 public:
 	/// Constructor.
 	/// @param parser - blocks parser, used to show values of variables on graphs.
+	/// @param robotManager - object that controls currently selected robot model.
 	/// @param parent - parent of this widget in Qt widget hierarchy.
-	explicit GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent = 0);
+	GraphicsWatcherManager(const qrtext::DebuggerInterface &parser
+			, RobotModelManager &robotManager
+			, QObject *parent = 0);
 
 	/// Returns the graphics watcher widget itself for placing it into dock.
 	/// Note that if this method will not be called, nobody will delete a widget, which will result in memleak.
@@ -52,6 +57,7 @@ private:
 	void updateSensorsList(const QString &currentRobotModel);
 
 	utils::sensorsGraph::SensorsGraph *mWatcher;  // Doesn`t have ownership
+	RobotModelManager &mRobotManager;
 };
 
 }

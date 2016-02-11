@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Desktop Gamepad for TRIK</DisplayName>
+    <DisplayName xml:lang="ru_ru">Пультик для ТРИК</DisplayName>
+    <Description>Simple desktop gamepad for TRIK</Description>
+    <Description xml:lang="ru_ru">Простой пультик для ТРИК</Description>
+    <Version>3.1.3-4</Version>
+    <ReleaseDate>2016-01-22</ReleaseDate>
+    <SortingPriority>3</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

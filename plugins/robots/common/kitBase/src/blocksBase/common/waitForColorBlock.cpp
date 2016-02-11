@@ -29,17 +29,17 @@ void WaitForColorBlock::responseSlot(int reading)
 	const QString targetColor = stringProperty("Color");
 	QString color;
 	switch (reading) {
-	case 1: color = tr("Black");
+	case 1: color = "black";
 		break;
-	case 2: color = tr("Blue");
+	case 2: color = "blue";
 		break;
-	case 3: color = tr("Green");
+	case 3: color = "green";
 		break;
-	case 4: color = tr("Yellow");
+	case 4: color = "yellow";
 		break;
-	case 5: color = tr("Red");
+	case 5: color = "red";
 		break;
-	case 6: color = tr("White");
+	case 6: color = "white";
 		break;
 	default:
 		return;

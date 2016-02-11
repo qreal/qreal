@@ -19,6 +19,7 @@
 #include <QtCore/QDebug>
 
 #include <qrtext/languageToolboxInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 using namespace qReal;
 using namespace interpretation;

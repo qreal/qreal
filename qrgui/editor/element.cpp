@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 #include <QtWidgets/QGraphicsColorizeEffect>
 
 #include <qrkernel/settingsListener.h>
+#include <qrgui/models/models.h>
 #include <qrgui/models/commands/changePropertyCommand.h>
 
 #include "qrgui/editor/labels/label.h"
@@ -27,17 +28,14 @@ using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
-Element::Element(ElementImpl *elementImpl
-		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		)
+Element::Element(ElementImpl *elementImpl, const Id &id, const models::Models &models)
 	: mMoving(false)
 	, mEnabled(true)
 	, mId(id)
 	, mElementImpl(elementImpl)
-	, mLogicalAssistApi(logicalAssistApi)
-	, mGraphicalAssistApi(graphicalAssistApi)
+	, mModels(models)
+	, mLogicalAssistApi(models.logicalModelAssistApi())
+	, mGraphicalAssistApi(models.graphicalModelAssistApi())
 	, mController(nullptr)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemClipsChildrenToShape |
@@ -133,7 +131,7 @@ void Element::updateEnabledState()
 void Element::setHideNonHardLabels(bool hide)
 {
 	for (Label * const label : mLabels) {
-		label->setVisible(label->isHard() || !hide);
+		label->setVisible(label->isHard() || !hide || label->isSelected());
 	}
 }
 

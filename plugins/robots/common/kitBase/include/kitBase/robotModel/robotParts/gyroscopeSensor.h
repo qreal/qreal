@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "scalarSensor.h"
+#include "vectorSensor.h"
 #include "kitBase/kitBaseDeclSpec.h"
 
 namespace kitBase {
@@ -22,7 +22,7 @@ namespace robotModel {
 namespace robotParts {
 
 /// Base class for gyroscope sensors.
-class ROBOTS_KIT_BASE_EXPORT GyroscopeSensor : public ScalarSensor
+class ROBOTS_KIT_BASE_EXPORT GyroscopeSensor : public VectorSensor
 {
 	Q_OBJECT
 	Q_CLASSINFO("name", "gyroscope")

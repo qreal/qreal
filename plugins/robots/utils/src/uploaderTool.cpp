@@ -21,6 +21,7 @@
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 using namespace trik;
 

@@ -15,11 +15,9 @@
 #include "serializer.h"
 
 #include <QtCore/QDir>
-#include <QtCore/QDebug>
-#include <QtCore/QPointF>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QUuid>
-#include <QtGui/QPolygon>
+#include <QtCore/QFileInfo>
 
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
@@ -38,11 +36,12 @@ using namespace qReal;
 
 const QString unsavedDir = "%1/unsaved/%2";
 
-Serializer::Serializer(const QString &saveDirName)
+Serializer::Serializer(const QString &workingFile)
 	// Syncroniously running instances of QReal can clear temp dirs of each other.
 	// So generating new UUID as temp dir name.
-	: mWorkingDir(unsavedDir.arg(PlatformInfo::applicationDirPath(), QUuid::createUuid().toString()))
-	, mWorkingFile(saveDirName)
+	: mWorkingDir(unsavedDir.arg(PlatformInfo::invariantSettingsPath("pathToTempFolder")
+			, QUuid::createUuid().toString()))
+	, mWorkingFile(workingFile)
 {
 	clearWorkingDir();
 	QDir dir(PlatformInfo::applicationDirPath());
@@ -120,7 +119,7 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)
 {
 	clearWorkingDir();
-	if (!mWorkingFile.isEmpty()) {
+	if (QFileInfo::exists(mWorkingFile)) {
 		decompressFile(mWorkingFile);
 	}
 

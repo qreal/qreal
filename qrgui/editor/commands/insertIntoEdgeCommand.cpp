@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,27 @@
 
 #include "insertIntoEdgeCommand.h"
 
+#include <qrgui/models/models.h>
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;
 
 InsertIntoEdgeCommand::InsertIntoEdgeCommand(EditorViewScene &scene
-		, models::LogicalModelAssistApi &logicalAssistApi
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::Exploser &exploser
+		, const models::Models &models
 		, const Id &firstElem
 		, const Id &lastElem
 		, const Id &parent
 		, const QPointF &scenePos
 		, const QPointF &shift
 		, bool isFromLogicalModel
-		, CreateElementCommand *createCommand)
+		, CreateElementsCommand *createCommand)
 	: AbstractCommand()
 	, mScene(scene)
-	, mLogicalAssistApi(logicalAssistApi)
-	, mGraphicalAssistApi(graphicalAssistApi)
-	, mExploser(exploser)
+	, mModels(models)
+	, mLogicalAssistApi(models.logicalModelAssistApi())
+	, mGraphicalAssistApi(models.graphicalModelAssistApi())
+	, mExploser(models.exploser())
 	, mFirstId(firstElem)
 	, mLastId(lastElem)
 	, mParentId(parent)
@@ -62,8 +63,8 @@ bool InsertIntoEdgeCommand::execute()
 {
 	if (mCreateCommand) {
 		mCreateCommand->redo();
-		mFirstId = mCreateCommand->result();
-		mLastId = mCreateCommand->result();
+		mFirstId = mCreateCommand->results().first().id();
+		mLastId = mCreateCommand->results().first().id();
 	}
 
 	EdgeElement *edge = mRemoveOldEdge ? mScene.getEdgeById(mOldEdge) : mScene.edgeForInsertion(mPos);
@@ -86,9 +87,12 @@ bool InsertIntoEdgeCommand::execute()
 
 		mConfiguration = mGraphicalAssistApi.configuration(edge->id());
 		if (!mRemoveOldEdge) {
-			mRemoveOldEdge = new RemoveElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mExploser
-					, mScene.rootItemId(), mParentId, edge->id(), mIsLogical
-					, mGraphicalAssistApi.name(edge->id()), mGraphicalAssistApi.position(edge->id()));
+			mRemoveOldEdge = new RemoveElementsCommand(mModels);
+			if (mIsLogical) {
+				mRemoveOldEdge->withLogicalItemToDelete(edge->id());
+			} else {
+				mRemoveOldEdge->withItemsToDelete({edge->id()});
+			}
 		}
 
 		mRemoveOldEdge->redo();
@@ -108,10 +112,10 @@ bool InsertIntoEdgeCommand::restoreState()
 
 		mRemoveOldEdge->undo();
 
-		mOldEdge = mRemoveOldEdge->elementId();
+		mOldEdge = mRemoveOldEdge->results().first().id();
 		EdgeElement *edge = mScene.getEdgeById(mOldEdge);
-		edge->setSrc(mScene.getEdgeById(mCreateFirst->result())->src());
-		edge->setDst(mScene.getEdgeById(mCreateSecond->result())->dst());
+		edge->setSrc(mScene.getEdgeById(mCreateFirst->results().first().id())->src());
+		edge->setDst(mScene.getEdgeById(mCreateSecond->results().first().id())->dst());
 		mScene.reConnectLink(edge);
 		mGraphicalAssistApi.setConfiguration(edge->id(), mConfiguration);
 
@@ -126,19 +130,21 @@ bool InsertIntoEdgeCommand::restoreState()
 	return true;
 }
 
-void InsertIntoEdgeCommand::initCommand(CreateElementCommand *&command, const Id &type)
+void InsertIntoEdgeCommand::initCommand(CreateElementsCommand *&command, const Id &type)
 {
 	if (!command) {
 		const QString name = mLogicalAssistApi.editorManagerInterface().friendlyName(type);
-		command = new CreateElementCommand(mLogicalAssistApi, mGraphicalAssistApi, mExploser, mScene.rootItemId()
-				, mParentId, Id(type, QUuid::createUuid().toString()), mIsLogical, name, mPos);
+		const Id newId = type.sameTypeId();
+		const ElementInfo element(newId, mIsLogical ? newId : Id(), mScene.rootItemId(), mParentId
+				, {{"name", name}}, {{"position", mPos}}, Id(), false);
+		command = new CreateElementsCommand(mModels, {element});
 	}
 }
 
-void InsertIntoEdgeCommand::makeLink(CreateElementCommand *command, NodeElement *src, NodeElement *dst)
+void InsertIntoEdgeCommand::makeLink(CreateElementsCommand *command, NodeElement *src, NodeElement *dst)
 {
 	command->redo();
-	Id newLink = command->result();
+	Id newLink = command->results().first().id();
 	if (src) {
 		mGraphicalAssistApi.setFrom(newLink, src->id());
 	}

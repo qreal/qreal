@@ -1,0 +1,1 @@
+ARRAY_READ(@@TABLE@@, @@INDEX@@, @@RESULT@@)

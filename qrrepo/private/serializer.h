@@ -31,7 +31,7 @@ namespace details {
 class Serializer
 {
 public:
-	explicit Serializer(const QString &saveDirName);
+	explicit Serializer(const QString &workingFile);
 	~Serializer();
 
 	/// Returns a directory where save files will be temporary unpacked.
@@ -44,13 +44,14 @@ public:
 	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
+	/// Decompresses given file into working directory.
 	void decompressFile(const QString &fileName);
 
 private:
 	void loadFromDisk(const QString &currentPath, QHash<qReal::Id, Object *> &objectsHash);
 	void loadModel(const QDir &dir, QHash<qReal::Id, Object *> &objectsHash);
 
-	void saveMetaInfo(QHash<QString, QVariant> const &metaInfo) const;
+	void saveMetaInfo(const QHash<QString, QVariant> &metaInfo) const;
 	void loadMetaInfo(QHash<QString, QVariant> &metaInfo) const;
 
 	QString pathToElement(const qReal::Id &id) const;

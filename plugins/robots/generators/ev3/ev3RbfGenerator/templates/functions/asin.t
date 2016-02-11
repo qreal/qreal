@@ -1,0 +1,1 @@
+MATH(ASIN, @@ARGUMENT@@, @@RESULT@@)

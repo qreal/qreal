@@ -1,0 +1,1 @@
+/* Method calls are not supported in EV3 bytecode */

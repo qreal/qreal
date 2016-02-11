@@ -14,24 +14,25 @@
 
 #pragma once
 
-#include "robotModel/parts/nxtMotor.h"
+#include <ev3Kit/robotModel/parts/ev3Motor.h>
 
-#include <commonTwoDModel/engine/twoDModelEngineInterface.h>
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 
-namespace nxtKitInterpreter {
+namespace ev3 {
 namespace robotModel {
 namespace twoD {
 namespace parts {
 
-class TwoDMotor : public robotModel::parts::NxtMotor
+class TwoDMotor : public robotModel::parts::Ev3Motor
 {
 public:
 	TwoDMotor(kitBase::robotModel::DeviceInfo const &info
 			, kitBase::robotModel::PortInfo const &port
 			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
-	void on(int speed, long unsigned int degrees, bool breakMode) override;
-	void stop(bool breakMode) override;
+	void on(int speed) override;
+	void stop() override;
+	void off() override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

@@ -88,6 +88,8 @@ private:
 	int enumPropertyIndexOf(const QModelIndex &, const QString &);
 	void setPropertyValue(QtVariantProperty *property, const QVariant &value);
 
+	QString propertyDescription(const int cellIndex) const;
+
 	bool mChangingPropertyValue;
 	PropertyEditorModel *mModel;
 	QtTreePropertyBrowser *mPropertyEditor;

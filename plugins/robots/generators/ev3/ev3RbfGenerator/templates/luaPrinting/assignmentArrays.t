@@ -1,0 +1,1 @@
+MOVE32_32(@@VALUE@@, @@VARIABLE@@)
