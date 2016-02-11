@@ -25,7 +25,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/qRealRobotsGuiTests.cpp \
 	$$PWD/qRealGuiTests.cpp \
-	$$PWD/startQreal.cpp \
+	$$PWD/startQReal.cpp \
 	$$PWD/testAgent.cpp \
 	$$PWD/workaroundTestFunctions.cpp \
 	$$PWD/mainRobotsGuiTest.cpp
