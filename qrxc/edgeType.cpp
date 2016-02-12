@@ -233,7 +233,10 @@ void EdgeType::initPortTypes(const QDomElement &portsElement, QStringList &ports
 
 bool EdgeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {
-	return label->init(element, count, false, mWidth, mHeight);
+	QDomElement newElement = element;
+	newElement.setAttribute("x", 70);
+	newElement.setAttribute("y", count + count * 25);
+	return label->init(newElement, count, false, 100, 100);
 }
 
 void EdgeType::generateGraphics() const

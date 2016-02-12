@@ -201,7 +201,8 @@ private:
 	void setEdgePainter(QPainter *painter, QPen pen, qreal opacity) const;
 
 	NodeElement *innermostChild(const QList<QGraphicsItem *> &items, NodeElement * const element) const;
-	void updateLongestPart();
+
+	void updateBeginAndEnd();
 
 	bool reverseActionIsPossible() const;
 	bool canConnect(const NodeElement * const node, bool from) const;
