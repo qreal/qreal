@@ -38,6 +38,9 @@ signals:
 	/// Emitted when communicator throws an error to be displayed with error reporter.
 	void errorOccured(const QString &text);
 
+	/// Emitted when communicator wants to display user some informational message.
+	void messageArrived(const QString &text);
+
 private:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port

@@ -43,6 +43,7 @@ signals:
 	void disconnected();
 	void response(QObject *addressee, const QByteArray &buffer);
 	void errorOccured(const QString &message);
+	void messageArrived(const QString &message);
 };
 
 }

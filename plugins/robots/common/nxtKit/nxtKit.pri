@@ -43,6 +43,7 @@ HEADERS += \
 	$$PWD/include/nxtKit/communication/bluetoothRobotCommunicationThread.h \
 	$$PWD/include/nxtKit/communication/usbRobotCommunicationThread.h \
 	$$PWD/include/nxtKit/communication/i2cCommunicator.h \
+	$$PWD/include/nxtKit/communication/nxtUsbDriverInstaller.h \
 	$$PWD/src/blocks/details/speakerBlock.h \
 	$$PWD/src/blocks/details/beepBlock.h \
 	$$PWD/src/blocks/details/playToneBlock.h \
@@ -71,6 +72,7 @@ SOURCES += \
 	$$PWD/src/communication/bluetoothRobotCommunicationThread.cpp \
 	$$PWD/src/communication/usbRobotCommunicationThread.cpp \
 	$$PWD/src/communication/i2cCommunicator.cpp \
+	$$PWD/src/communication/nxtUsbDriverInstaller.cpp \
 
 TRANSLATIONS = \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/nxtKit_ru.ts \

@@ -87,6 +87,8 @@ private:
 	bool closeFileOnBrick(quint8 handle);
 	bool uploadToBrick(const QFileInfo &fileOnHost);
 
+	QFileInfo findLatestFirmware() const;
+
 	/// Creates telegram with direct or system command (specified by \a commandType) invoking \a command on a brick
 	/// with \a fileName. \a size used to specify file size, if zero then it will not be packed into telegram.
 	QByteArray fileNameTelegram(quint8 commandType, quint8 command, const QString &fileName, int size) const;

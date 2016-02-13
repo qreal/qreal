@@ -86,4 +86,6 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 			, this, &RobotCommunicator::response);
 	QObject::connect(mRobotCommunicationThreadObject, &RobotCommunicationThreadInterface::errorOccured
 			, this, &RobotCommunicator::errorOccured);
+	QObject::connect(mRobotCommunicationThreadObject, &RobotCommunicationThreadInterface::messageArrived
+			, this, &RobotCommunicator::messageArrived);
 }

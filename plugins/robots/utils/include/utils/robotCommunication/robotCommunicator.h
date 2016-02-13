@@ -44,6 +44,7 @@ public:
 
 signals:
 	void errorOccured(const QString &message);
+	void messageArrived(const QString &message);
 	void connected(bool success, const QString &errorString);
 	void disconnected();
 	void response(QObject *addressee, const QByteArray &buffer);
