@@ -35,6 +35,8 @@
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
 
+#include <plugins/pluginManager/toolPluginManager.h>
+
 using namespace qReal;
 using namespace gui;
 

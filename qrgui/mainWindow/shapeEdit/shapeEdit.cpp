@@ -30,6 +30,8 @@
 #include "mainWindow/shapeEdit/xmlLoader.h"
 #include "mainWindow/mainWindow.h"
 
+#include <models/models.h>
+
 using namespace qReal;
 using namespace utils;
 
