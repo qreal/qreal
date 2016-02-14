@@ -160,7 +160,7 @@ private:
 };
 
 /// Constructs QIcon instance by a given sdf description
-class SdfIconEngineV2 : public SdfIconEngineV2Interface
+class QRGUI_PLUGINS_MANAGER_EXPORT SdfIconEngineV2 : public SdfIconEngineV2Interface
 {
 public:
 	explicit SdfIconEngineV2(const QString &file);
