@@ -84,11 +84,11 @@ int TwoDModelEngineApi::readTouchSensor(const PortInfo &port) const
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	const QPointF position(neededPosDir.first);
 	const qreal rotation = neededPosDir.second / 180 * mathUtils::pi;
-	const QSizeF size = mModel.robotModels()[0]->sensorRect(port, position).size();
+	const QRectF rect = mModel.robotModels()[0]->sensorRect(port, position);
 
 	QPainterPath sensorPath;
-	const qreal touchRegionRadius = size.height() / 2;
-	const qreal stickCenter = size.width() / 2 - touchRegionRadius;
+	const qreal touchRegionRadius = qCeil(rect.height() / qSqrt(2));
+	const qreal stickCenter = rect.width() / 2 - rect.height() / 2;
 	// (0,0) in sensor coordinates is sensor`s center
 	const QPointF ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
 	sensorPath.addEllipse(position + ellipseCenter, touchRegionRadius, touchRegionRadius);
@@ -103,6 +103,16 @@ int TwoDModelEngineApi::readSonarSensor(const PortInfo &port) const
 	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
 	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+}
+
+QVector<int> TwoDModelEngineApi::readAccelerometerSensor() const
+{
+	return mModel.robotModels()[0]->accelerometerReading();
+}
+
+QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
+{
+	return mModel.robotModels()[0]->gyroscopeReading();
 }
 
 int TwoDModelEngineApi::spoilSonarReading(const int distance) const

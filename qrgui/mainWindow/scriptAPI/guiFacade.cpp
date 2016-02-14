@@ -18,6 +18,9 @@
 #include <editor/editorView.h>
 #include <qrutils/widgetFinder.h>
 
+#include <qrgui/editor/propertyEditorView.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+
 #include "mainWindow.h"
 #include "palette/draggableElement.h"
 

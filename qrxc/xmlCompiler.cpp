@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
+#include <qrutils/stringUtils.h>
 
 #include "editor.h"
 #include "nameNormalizer.h"
@@ -242,9 +243,11 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initPlugin();\n"
 		<< "\tvirtual void initMouseGestureMap();\n"
 		<< "\tvirtual void initNameMap();\n"
+		<< "\tvirtual void initNodesAndEdgesSets();\n"
 		<< "\tvirtual void initPropertyMap();\n"
 		<< "\tvirtual void initPropertyDefaultsMap();\n"
 		<< "\tvirtual void initDescriptionMap();\n"
+		<< "\tvirtual void initPortTypes();\n"
 		<< "\tvirtual void initParentsMap();\n"
 		<< "\tvirtual void initPaletteGroupsMap();\n"
 		<< "\tvirtual void initPaletteGroupsDescriptionMap();\n"
@@ -254,7 +257,10 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNodeNameMap;\n"
+		<< "\tQSet<QString> mNodes;  // A set of nodes in this editor. Useful for deciding is element node or edge.\n"
+		<< "\tQSet<QString> mEdges;  // A set of edges in this editor. Useful for deciding is element node or edge.\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mPropertyTypes;\n"
+		<< "\tQMap<QString, QStringList> mPortTypes;\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mPropertyDefault;\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mElementsNameMap;\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mElementsDescriptionMap;\n"
@@ -321,10 +327,12 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
 		<< "\tinitNameMap();\n"
+		<< "\tinitNodesAndEdgesSets();\n"
 		<< "\tinitMouseGestureMap();\n"
 		<< "\tinitPropertyMap();\n"
 		<< "\tinitPropertyDefaultsMap();\n"
 		<< "\tinitDescriptionMap();\n"
+		<< "\tinitPortTypes();\n"
 		<< "\tinitParentsMap();\n"
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"
@@ -333,12 +341,14 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "}\n\n";
 
 	generateNameMappings(out);
+	generateNodesAndEdgesSets(out);
 	generatePaletteGroupsLists(out);
 	generatePaletteGroupsDescriptions(out);
 	generateMouseGestureMap(out);
 	generatePropertyMap(out);
 	generatePropertyDefaultsMap(out);
 	generateDescriptionMappings(out);
+	generatePortTypeMappings(out);
 	generateParentsMappings(out);
 	generateShallPaletteBeSorted(out);
 	generateExplosionsMappings(out);
@@ -371,6 +381,28 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 		}
 	}
 
+	out() << "}\n\n";
+}
+
+void XmlCompiler::generateNodesAndEdgesSets(OutFile &out)
+{
+	QSet<QString> nodes;
+	QSet<QString> edges;
+	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+		for (Type *type : diagram->types().values()) {
+			if (dynamic_cast<NodeType*>(type)) {
+				nodes.insert(NameNormalizer::normalize(type->qualifiedName()));
+			} else if (dynamic_cast<EdgeType*>(type)) {
+				edges.insert(NameNormalizer::normalize(type->qualifiedName()));
+			}
+		}
+	}
+
+	out() << "void " << mPluginName << "Plugin::initNodesAndEdgesSets()\n{\n";
+	out() << "\tmNodes = ";
+	generateStringSet(out, nodes);
+	out() << "\tmEdges = ";
+	generateStringSet(out, edges);
 	out() << "}\n\n";
 }
 
@@ -454,6 +486,29 @@ void XmlCompiler::generateDescriptionMappings(OutFile &out)
 		}
 
 	out() << "}\n\n";
+}
+
+void XmlCompiler::generatePortTypeMappings(OutFile &out)
+{
+	QMap<QString, QStringList> result;
+	for (const Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+		for (const Type *type : diagram->types().values()) {
+			const QString elementName = NameNormalizer::normalize(type->qualifiedName());
+			if (const GraphicType *graphicsType = dynamic_cast<const GraphicType *>(type)) {
+				QSet<QString> portTypes;
+				for (const Port *port : graphicsType->ports()) {
+					portTypes.insert(port->type());
+				}
+
+				result[elementName] = portTypes.toList();
+			}
+		}
+	}
+
+	out() << "void " << mPluginName << "Plugin::initPortTypes()\n{\n";
+	out() << "\tmPortTypes = ";
+	generateStringListMap(out, result);
+	out() << ";\n}\n\n";
 }
 
 void XmlCompiler::generateParentsMappings(OutFile &out)
@@ -756,7 +811,39 @@ void XmlCompiler::generateListMethod(OutFile &out, const QString &signature, con
 	if (!isNotFirst)
 		out() << "\tQ_UNUSED(element);\n";
 	out() << "\treturn result;\n"
-		<< "}\n\n";
+		  << "}\n\n";
+}
+
+void XmlCompiler::generateStringSet(OutFile &out, const QSet<QString> &set) const
+{
+	out() << "QSet<QString>({\n";
+	for (const QString &element : set) {
+		out() << "\t\t\"" << element << "\",\n";
+	}
+
+	out() << "\t});\n";
+}
+
+void XmlCompiler::generateStringList(OutFile &out, const QStringList &list) const
+{
+	out() << "{";
+	for (const QString &string : list) {
+		out() << "\"" << string << "\", ";
+	}
+
+	out() << "}";
+}
+
+void XmlCompiler::generateStringListMap(OutFile &out, const QMap<QString, QStringList> &map) const
+{
+	out() << "QMap<QString, QStringList>({\n";
+	for (const QString &key : map.keys()) {
+		out() << "\t\t{" << StringUtils::wrap(key) << ", ";
+		generateStringList(out, map[key]);
+		out() << "},\n";
+	}
+
+	out() << "\t})";
 }
 
 void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
@@ -781,31 +868,8 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
 {
 	out() << "//(-1) means \"edge\", (+1) means \"node\"\n";
-	out() << "int " << mPluginName << "Plugin::isNodeOrEdge(const QString &element) const\n"
-		<< "{\n";
-	bool isFirst = true;
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type* type, diagram->types().values()) {
-			int result = 0;
-			EdgeType* edge = dynamic_cast<EdgeType*>(type);
-			NodeType* node = dynamic_cast<NodeType*>(type);
-			if (edge)
-				result = (-1);
-			else if (node)
-				result = 1;
-
-			if (!isFirst)
-				out() << "\telse ";
-			else {
-				isFirst = false;
-				out() << "\t";
-			}
-			out() << "if (element == \""
-				<< NameNormalizer::normalize(type->qualifiedName())
-				<< "\")\n"
-				<< "\t\treturn " << result << ";\n";
-		}
-	out() << "\treturn 0;\n}\n";
+	out() << "int " << mPluginName << "Plugin::isNodeOrEdge(const QString &element) const\n{\n";
+	out() << "\treturn mNodes.contains(element) ? 1 : (mEdges.contains(element) ? -1 : 0);\n}\n";
 }
 
 void XmlCompiler::generateProperties(OutFile &out)
@@ -816,7 +880,10 @@ void XmlCompiler::generateProperties(OutFile &out)
 
 void XmlCompiler::generatePortTypes(OutFile &out)
 {
-	generateListMethod(out, "getPortTypes(const QString &/*diagram*/, const QString &element)", PortsGenerator());
+	out() << "QStringList " << mPluginName << "Plugin::getPortTypes(const QString &/*diagram*/, const QString &element)"
+		<< " const\n{\n";
+	out() << "\treturn mPortTypes[element];\n";
+	out() << "}\n\n";
 }
 
 void XmlCompiler::generateReferenceProperties(OutFile &out)
@@ -876,7 +943,7 @@ void XmlCompiler::generateEditableEnums(OutFile &out)
 	QStringList editableEnums;
 	for (const EnumType *type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
 		if (type->isEditable()) {
-			editableEnums << "\"" + type->name() + "\"";
+			editableEnums << StringUtils::wrap(type->name());
 		}
 	}
 

@@ -21,8 +21,7 @@ namespace generatorBase {
 namespace converters {
 
 /// Processes input string treating it as an expression of the bool type.
-/// Inverts this expression if it was specified in constructor. Inversion
-/// code must be specified in "conditional/negation.t" template.
+/// Inverts this expression if it was specified in constructor.
 class BoolPropertyConverter : public CodeConverterBase, public TemplateParametrizedEntity
 {
 public:
@@ -33,11 +32,9 @@ public:
 			, simple::Binding::ConverterInterface *reservedVariablesConverter
 			, bool needInverting);
 
-	QString convert(const QString &data) const override;
+	QString convert(const QString &luaCode) const override;
 
 private:
-	QString invert(const QString &expression) const;
-
 	bool mNeedInverting;
 };
 

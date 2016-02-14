@@ -28,7 +28,7 @@ public:
 			, const QString &propertyName
 			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 
-	QString convert(const QString &expression) const override;
+	QString convert(const QString &luaCode) const override;
 };
 
 }

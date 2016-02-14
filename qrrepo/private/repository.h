@@ -56,11 +56,11 @@ public:
 
 	qReal::IdList children(const qReal::Id &id) const;
 	qReal::Id parent(const qReal::Id &id) const;
-	/**
-	  Clones object recursively in internal structures.
-	  This doesn't mean it'll appear on your diagrams
-	  */
+
+	/// Clones object recursively in internal structures.
+	/// This doesn't mean it'll appear on your diagrams
 	qReal::Id cloneObject(const qReal::Id &id);
+
 	void setParent(const qReal::Id &id, const qReal::Id &parent);
 	void addChild(const qReal::Id &id, const qReal::Id &child);
 	void addChild(const qReal::Id &id, const qReal::Id &child, const qReal::Id &logicalId);

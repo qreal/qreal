@@ -20,11 +20,11 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 EncoderSensor::EncoderSensor(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: kitBase::robotModel::robotParts::EncoderSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newScalarSensorData
 			, this, &EncoderSensor::onIncomingData);
 }
 

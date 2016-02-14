@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,6 +53,7 @@ public:
 	virtual bool copyPorts(NodeType *parent) = 0;
 	void copyLabels(GraphicType *parent);
 	virtual bool copyPictures(GraphicType *parent) = 0;
+	virtual QList<Port *> ports() const;
 
 	QString description() const;
 	void setDescription(const QString &description);

@@ -1,0 +1,1 @@
+DIV32(@@LEFT@@, @@RIGHT@@, @@RESULT@@)

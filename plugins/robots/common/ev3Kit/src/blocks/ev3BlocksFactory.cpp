@@ -30,6 +30,7 @@
 
 #include "details/beepBlock.h"
 #include "details/playToneBlock.h"
+#include "details/ledBlock.h"
 
 #include "details/ev3EnginesForwardBlock.h"
 #include "details/ev3EnginesBackwardBlock.h"
@@ -42,6 +43,11 @@
 using namespace ev3::blocks;
 using namespace details;
 using namespace kitBase::blocksBase::common;
+
+Ev3BlocksFactory::Ev3BlocksFactory(const QStringList &interpretedModels)
+	: mInterpretedModels(interpretedModels)
+{
+}
 
 qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(const qReal::Id &element)
 {
@@ -57,10 +63,12 @@ qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(const qReal::Id &el
 		return new EnginesStopBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "Ev3ClearEncoder")) {
 		return new ClearEncoderBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "Ev3Led")) {
+		return new LedBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "Ev3WaitForTouchSensor")) {
 		return new WaitForTouchSensorBlock(mRobotModelManager->model());
-	} else if (elementMetatypeIs(element, "Ev3WaitForRangeSensor")) {
+	} else if (elementMetatypeIs(element, "Ev3WaitForSonarDistance")) {
 		return new WaitForSonarDistanceBlock(mRobotModelManager->model()
 				, kitBase::robotModel::DeviceInfo::create<
 						kitBase::robotModel::robotParts::RangeSensor>());
@@ -99,9 +107,11 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3EnginesBackward")
 		, id("Ev3EnginesStop")
 		, id("Ev3ClearEncoder")
+		, id("Ev3Led")
 
 		, id("Ev3WaitForTouchSensor")
-		, id("Ev3WaitForRangeSensor")
+		, id("Ev3WaitForSonarDistance")
+		, id("Ev3WaitForLight")
 		, id("Ev3WaitForColor")
 		, id("Ev3WaitForColorIntensity")
 		, id("Ev3WaitForEncoder")
@@ -123,9 +133,11 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 		result
 				<< id("Ev3WaitForSound")
 				;
+	} else {
+		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {
+			result << id("Join") << id("SendMessageThreads") << id("ReceiveMessageThreads") << id("KillThread");
+		}
 	}
-
-	result << id("Join") << id("SendMessageThreads") << id("ReceiveMessageThreads") << id("KillThread");
 
 	return result;
 }

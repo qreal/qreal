@@ -36,6 +36,7 @@ public:
 	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
 	bool copyPorts(NodeType *port) override;
 	bool copyPictures(GraphicType *parent) override;
+	QList<Port *> ports() const override;
 
 private:
 	QList<Port*> mPorts;

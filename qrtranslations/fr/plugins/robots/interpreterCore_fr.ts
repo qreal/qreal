@@ -2,6 +2,55 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>ActionsManager</name>
+    <message>
+        <source>Real robot</source>
+        <translation type="obsolete">Robot réel</translation>
+    </message>
+    <message>
+        <source>2D model</source>
+        <translation type="obsolete">Modèle 2D</translation>
+    </message>
+</context>
+<context>
+    <name>DefaultRobotModel</name>
+    <message>
+        <source>Empty model</source>
+        <translation type="obsolete">Modèle vide</translation>
+    </message>
+</context>
+<context>
+    <name>Interpreter</name>
+    <message>
+        <source>No connection to robot</source>
+        <translation type="obsolete">Pas de connexion au robot</translation>
+    </message>
+    <message>
+        <source>Interpreter is already running</source>
+        <translation type="obsolete">L&apos;interprétateur est deja lancé</translation>
+    </message>
+    <message>
+        <source>Connected successfully</source>
+        <translation type="obsolete">Connexion reussie</translation>
+    </message>
+    <message>
+        <source>Can&apos;t connect to a robot.</source>
+        <translation type="obsolete">La connexion au robot a échoué.</translation>
+    </message>
+    <message>
+        <source>Cannot create new thread with already occupied id %1</source>
+        <translation type="obsolete">Impossible de créer un nouveau thread avec un identificateur deja utilisé %1</translation>
+    </message>
+    <message>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation type="obsolete">Le nombre limite de threads est atteint. La limite est de %1 </translation>
+    </message>
+    <message>
+        <source>Killing non-existent thread %1</source>
+        <translation type="obsolete">Terminaison du thread non existant %1</translation>
+    </message>
+</context>
+<context>
     <name>PreferencesRobotSettingsPage</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="23"/>
@@ -54,37 +103,32 @@
         <translation>Configuration des capteurs</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="205"/>
         <source>Noise</source>
-        <translation>Bruit</translation>
+        <translation type="vanished">Bruit</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="211"/>
         <source>Realistic engines</source>
-        <translation>Des moteurs réalistes</translation>
+        <translation type="vanished">Des moteurs réalistes</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="218"/>
         <source>For higher value the behaviour is closer to realistic but performance is lower.</source>
-        <translation>Pour les valeurs plus élevées le comportement des moteurs et des capteurs est plus réaliste, mais les peformances diminuent.</translation>
+        <translation type="vanished">Pour les valeurs plus élevées le comportement des moteurs et des capteurs est plus réaliste, mais les peformances diminuent.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="221"/>
         <source>Approximation level</source>
-        <translation>Niveau d&apos;approximation</translation>
+        <translation type="vanished">Niveau d&apos;approximation</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="228"/>
         <source>Realistic sensors</source>
-        <translation>Capteurs réalistes</translation>
+        <translation type="vanished">Capteurs réalistes</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="291"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="233"/>
         <source>Type of constructor kit</source>
         <translation>Type du kit de jeu de construction</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="305"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.ui" line="247"/>
         <source>Type of robot model</source>
         <translation>Type de modèle de robot</translation>
     </message>
@@ -107,9 +151,8 @@
         <translation>La liste de tous les sous-programmes du projet</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="53"/>
         <source>Sensor configuration conflict, please check that sensor ports are used consistently in a program</source>
-        <translation>Conflit de configuration des capteurs, verifiez que les ports des capteurs soient utilisés de manière consistente dans le programme</translation>
+        <translation type="vanished">Conflit de configuration des capteurs, verifiez que les ports des capteurs soient utilisés de manière consistente dans le programme</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="30"/>
@@ -206,6 +249,18 @@
         <source>time</source>
         <translation>temps</translation>
     </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/details/autoconfigurer.cpp" line="52"/>
+        <source>Sensor on port %1 does not correspond to blocks on the diagram.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RobotsPluginFacade</name>
+    <message>
+        <source>Robots</source>
+        <translation type="obsolete">Robots</translation>
+    </message>
 </context>
 <context>
     <name>interpreterCore::ActionsManager</name>
@@ -236,12 +291,12 @@
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="131"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="132"/>
         <source>Robots</source>
         <translation>Robots</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="293"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="294"/>
         <source>Toggle robot console panel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -269,17 +324,17 @@
         <translation>mode de débogage</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="239"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="245"/>
         <source>Edit mode</source>
         <translation>Mode d&apos;édition</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="242"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="248"/>
         <source>Debug mode</source>
         <translation>Mode de débogage</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="347"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="354"/>
         <source>Modes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -287,13 +342,13 @@
 <context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="87"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="160"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="86"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="155"/>
         <source>No connection to robot</source>
         <translation>Pas de connexion au robot</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="92"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="91"/>
         <source>Interpreter is already running</source>
         <translation>L&apos;interprétateur est deja lancé</translation>
     </message>
@@ -303,22 +358,22 @@
         <translation>Connexion reussie</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="145"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="143"/>
         <source>Can&apos;t connect to a robot.</source>
         <translation>La connexion au robot a échoué.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="200"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
         <source>Cannot create new thread with already occupied id %1</source>
         <translation>Impossible de créer un nouveau thread avec un identificateur deja utilisé %1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="214"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="206"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Le nombre limite de threads est atteint. La limite est de %1 </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="236"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="228"/>
         <source>Killing non-existent thread %1</source>
         <translation>Terminaison du thread non existant %1</translation>
     </message>
@@ -382,7 +437,7 @@
         <translation>Aucune extension n&apos;est chargée</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="212"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/ui/robotsSettingsPage.cpp" line="205"/>
         <source>No robot models available for </source>
         <translation>Modèle de robot n&apos;est pas défini dans l&apos;extension</translation>
     </message>

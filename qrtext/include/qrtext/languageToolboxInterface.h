@@ -95,6 +95,10 @@ public:
 	/// all remembered information except caches.
 	virtual void clear() = 0;
 
+	/// Returns true if \a specific type is a subtype of \a general type, including case when they are equivalent.
+	virtual bool isGeneralization(const QSharedPointer<core::types::TypeExpression> &specific
+			, const QSharedPointer<core::types::TypeExpression> &general) const = 0;
+
 private:
 	/// Interprets given AST. Returns result of an expression. Must be implemented for concrete language.
 	virtual QVariant interpret(const QSharedPointer<core::ast::Node> &root) = 0;

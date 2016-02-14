@@ -21,7 +21,8 @@
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Display::Display(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+Display::Display(const DeviceInfo &info, const PortInfo &port
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikDisplay(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {

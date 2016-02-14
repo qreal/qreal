@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@
 #include <math.h>
 #include <qrkernel/logging.h>
 #include <qrutils/mathUtils/geometry.h>
+#include <models/models.h>
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
@@ -49,26 +50,24 @@ const int maxReductCoeff = 16;
 EdgeElement::EdgeElement(
 		ElementImpl *impl
 		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		)
-		: Element(impl, id, graphicalAssistApi, logicalAssistApi)
-		, mPenStyle(Qt::SolidLine)
-		, mPenWidth(1)
-		, mPenColor(Qt::black)
-		, mSrc(nullptr)
-		, mDst(nullptr)
-		, mLineFactory(new LineFactory(this))
-		, mHandler(nullptr)
-		, mPortFrom(0)
-		, mPortTo(0)
-		, mDragType(noPort)
-		, mLongPart(0)
-		, mReverseAction(tr("Reverse"), this)
-		, mChangeShapeAction(tr("Change shape type"), this)
-		, mBreakPointPressed(false)
-		, mModelUpdateIsCalled(false)
-		, mIsLoop(false)
+		, const models::Models &models)
+	: Element(impl, id, models)
+	, mPenStyle(Qt::SolidLine)
+	, mPenWidth(1)
+	, mPenColor(Qt::black)
+	, mSrc(nullptr)
+	, mDst(nullptr)
+	, mLineFactory(new LineFactory(this))
+	, mHandler(nullptr)
+	, mPortFrom(0)
+	, mPortTo(0)
+	, mDragType(noPort)
+	, mLongPart(0)
+	, mReverseAction(tr("Reverse"), this)
+	, mChangeShapeAction(tr("Change shape type"), this)
+	, mBreakPointPressed(false)
+	, mModelUpdateIsCalled(false)
+	, mIsLoop(false)
 {
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
@@ -83,7 +82,7 @@ EdgeElement::EdgeElement(
 
 	setAcceptHoverEvents(true);
 
-	LabelFactory factory(graphicalAssistApi, mId);
+	LabelFactory factory(models.graphicalModelAssistApi(), mId);
 	QList<LabelInterface*> titles;
 
 	mElementImpl->init(factory, titles);
@@ -644,6 +643,8 @@ NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 	const int searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
 	const QPointF positionInSceneCoordinates = mapToScene(position);
 	circlePath.addEllipse(positionInSceneCoordinates, searchAreaRadius, searchAreaRadius);
+//	qDebug() << scene()->items();
+//	qDebug() << circlePath;
 	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
 	qreal minimalDistance = 10e10;  // Very large number
@@ -966,8 +967,9 @@ void EdgeElement::placeEndTo(const QPointF &place)
 	updateLongestPart();
 }
 
-void EdgeElement::moveConnection(NodeElement *node, const qreal portId) {
-	//expected that the id will change only fractional part
+void EdgeElement::moveConnection(NodeElement *node, const qreal portId)
+{
+	// Expected that the id will change only fractional part
 	if ((!mIsLoop || ((int) mPortFrom == (int) portId)) && (node == mSrc)) {
 		setFromPort(portId);
 	}
@@ -1011,28 +1013,29 @@ void EdgeElement::highlight(const QColor &color)
 	update();
 }
 
-EdgeData EdgeElement::data()
+EdgeInfo EdgeElement::data()
 {
-	EdgeData result;
-	result.id = id();
-	result.logicalId = logicalId();
-	result.srcId = src() ? src()->id() : Id::rootId();
-	result.dstId = dst() ? dst()->id() : Id::rootId();
+	EdgeInfo result(id()
+			, logicalId()
+			, mLogicalAssistApi.parent(logicalId())
+			, mGraphicalAssistApi.parent(id())
+			, mPortFrom
+			, mPortTo
+			, mGraphicalAssistApi.configuration(mId)
+			, mShapeType
+	);
 
-	result.portFrom = mPortFrom;
-	result.portTo = mPortTo;
+	result.setSrcId(src() ? src()->id() : Id::rootId());
+	result.setDstId(dst() ? dst()->id() : Id::rootId());
 
-	result.configuration = mGraphicalAssistApi.configuration(mId);
-	result.pos = mGraphicalAssistApi.position(mId);
-
-	result.shapeType = mShapeType;
-
-	QMap<QString, QVariant> const properties = mGraphicalAssistApi.properties(logicalId());
+	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {
 		if (property != "from" && property != "to") {
-			result.logicalProperties[property] = properties[property];
+			result.setLogicalProperty(property, properties[property]);
 		}
 	}
+
+	result.setGraphicalProperty("position", mGraphicalAssistApi.position(mId));
 
 	return result;
 }

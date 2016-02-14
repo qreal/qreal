@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,8 @@ public:
 	void connect();
 	void disconnect();
 
+	/// Returns a pointer to communication thread object that currently implementing this communicator.
+	RobotCommunicationThreadInterface *currentCommunicator() const;
 	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
 	/// Checks if connection can be established or emits errorOccured();

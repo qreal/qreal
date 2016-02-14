@@ -1,1 +1,1 @@
-systick_wait_ms(@@DELAY@@);
+wait(@@DELAY@@);

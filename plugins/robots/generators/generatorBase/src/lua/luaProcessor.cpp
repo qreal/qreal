@@ -45,14 +45,15 @@ QString LuaProcessor::translate(const QString &data
 }
 
 
-QString LuaProcessor::castToString(const QString &data
+QString LuaProcessor::castTo(const QSharedPointer<qrtext::core::types::TypeExpression> &type
+		, const QString &data
 		, const Id &id
 		, const QString &propertyName
 		, const simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
 	const QSharedPointer<qrtext::core::ast::Node> tree = parse(data, id, propertyName);
 	return lua::LuaPrinter(pathsToRoot(), mTextLanguage
-			, precedenceConverter(), reservedVariablesConverter).castToString(tree);
+			, precedenceConverter(), reservedVariablesConverter).castTo(type, tree);
 }
 
 QSharedPointer<qrtext::core::ast::Node> LuaProcessor::parse(const QString &data

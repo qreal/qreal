@@ -31,9 +31,6 @@ public:
 
 private:
 	unsigned long onDriverUnavailable();
-
-	/// Instance of the Fantom library, if it is present.
-	QLibrary mFantomLibrary;
 };
 
 }
