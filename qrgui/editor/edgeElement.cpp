@@ -301,8 +301,8 @@ void EdgeElement::updateBeginAndEnd()
 		Label *title = mLabels[i];
 		qreal x = (mLine[firstIdx].x() + 20 * (i + 1));
 		qreal y = (mLine[firstIdx].y() + 20 * (i + 1));
-		x -= title->boundingRect().width() / 2;
-		y -= title->boundingRect().height() / 2;
+//		x += title->boundingRect().width();
+//		y += title->boundingRect().height();
 		title->setPos(x, y);
 	}
 
@@ -310,8 +310,8 @@ void EdgeElement::updateBeginAndEnd()
 		Label *title = mLabels[i];
 		qreal x = (mLine[lastIdx + 1].x() - 20 * (i + 1));
 		qreal y = (mLine[lastIdx + 1].y() - 20 * (i + 1));
-		x += title->boundingRect().width();
-		y += title->boundingRect().height();
+//		x -= title->boundingRect().width();
+//		y -= title->boundingRect().height();
 		title->setPos(x, y);
 	}
 }

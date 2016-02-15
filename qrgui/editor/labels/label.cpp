@@ -125,8 +125,8 @@ void Label::scaleCoordinates(const QRectF &contents)
 		return;
 	}
 
-	const qreal x = mProperties.x() * (mProperties.scalingX() ? mContents.width() : contents.width());
-	const qreal y = mProperties.y() * (mProperties.scalingY() ? mContents.height() : contents.height());
+	const qreal x = mProperties.x() * (!mProperties.scalingX() ? mContents.width() : contents.width());
+	const qreal y = mProperties.y() * (!mProperties.scalingY() ? mContents.height() : contents.height());
 
 	setPos(x, y);
 }

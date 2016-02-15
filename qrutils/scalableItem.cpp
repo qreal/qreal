@@ -22,12 +22,12 @@ ScalableCoordinate ScalableItem::initCoordinate(const QString &coordinate, int m
 	QString coord = coordinate;
 	if (coord.endsWith("a")) {
 		coord.remove(coord.length() - 1, 1);
-		field = ScalableCoordinate(static_cast<qreal>(coord.toInt()) / maxValue, true);
+		field = ScalableCoordinate(static_cast<qreal>(coord.toInt()) / maxValue, false);
 	} else if (coord.endsWith("%")) {
 		coord.remove(coord.length() - 1, 1);
-		field = ScalableCoordinate(static_cast<qreal>(coord.toInt()) / 100, false);
+		field = ScalableCoordinate(static_cast<qreal>(coord.toInt()) / 100, true);
 	} else {
-		field = ScalableCoordinate(static_cast<qreal>(coord.toInt()) / maxValue, false);
+		field = ScalableCoordinate(static_cast<qreal>(coord.toInt()) / maxValue, true);
 	}
 	return field;
 }
