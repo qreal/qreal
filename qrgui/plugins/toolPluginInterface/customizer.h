@@ -39,13 +39,13 @@ public:
 	/// Tells if we can change subprogram labels
 	virtual bool allowSubprogramLabelsChanging() const
 	{
-		return false;
+		return true;
 	}
 
 	/// Tells if we can change subprogram picture
 	virtual bool allowSubprogramShapeChanging() const
 	{
-		return false;
+		return true;
 	}
 
 	/// Tells if we should show the button of opening the interpreted diagram or not
