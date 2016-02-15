@@ -95,6 +95,8 @@ signals:
 
 	///Emitted when explosion target changes "dynamic" labels
 	void explosionTargetCouldChangeLabels(const Id &target);
+	///Emitted when explosion target changes "shape"
+	void explosionTargetCouldChangeShape(const Id &target);
 
 private:
 	/// This method takes one of the elements of the diagram and tries

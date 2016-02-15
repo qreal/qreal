@@ -114,7 +114,7 @@ void PaletteTreeWidgets::addTopItemType(const PaletteElement &data, QTreeWidget 
 {
 	QTreeWidgetItem *item = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(*mMainWindow, data
-			, mParentPalette->iconsView(), *mEditorManager);
+			, mParentPalette->iconsView(), false, *mEditorManager);
 
 	mPaletteElements.insert(data.id(), element);
 

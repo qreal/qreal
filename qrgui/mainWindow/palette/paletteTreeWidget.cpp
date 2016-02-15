@@ -87,7 +87,7 @@ void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem 
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
 	DraggableElement *element = new DraggableElement(mMainWindow, data
-			, mPaletteTree.iconsView(), *mEditorManager);
+			, mPaletteTree.iconsView(), mEditable, *mEditorManager);
 
 	mPaletteElements.insert(data.id(), element);
 	mPaletteItems.insert(data.id(), leaf);
@@ -111,7 +111,7 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 		QHBoxLayout *layout = new QHBoxLayout;
 		int count = mPaletteTree.itemsCountInARow();
 		for (; it != items.end() && --count > 0; ++it) {
-			DraggableElement *element = new DraggableElement(mMainWindow, *it, true, *mEditorManager);
+			DraggableElement *element = new DraggableElement(mMainWindow, *it, true, mEditable, *mEditorManager);
 			element->setToolTip((*it).description());
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}

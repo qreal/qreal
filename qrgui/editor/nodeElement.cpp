@@ -142,19 +142,23 @@ void NodeElement::connectSceneEvents()
 	}
 }
 
-void NodeElement::updateShape()
+void NodeElement::initExplosionConnections()
 {
-	const Id target = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this, &NodeElement::updateDynamicLabels);
+	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeShape, this, &NodeElement::updateDynamicShape);
+}
+
+void NodeElement::updateDynamicShape(const Id &target)
+{
+	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
+		return;
+	}
+
 	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
 	QDomDocument picture;
 	picture.setContent(shape);
 	mRenderer.load(picture);
 	mExploser.explosionsSetCouldChange();
-}
-
-void NodeElement::initExplosionConnections()
-{
-	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this, &NodeElement::updateDynamicLabels);
 }
 
 void NodeElement::updateDynamicLabels(const Id &target)

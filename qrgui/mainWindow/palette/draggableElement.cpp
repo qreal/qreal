@@ -43,10 +43,10 @@ using namespace gui;
 
 const int gestureTipSize = 30;
 
-DraggableElement::DraggableElement(
-		MainWindow &mainWindow
+DraggableElement::DraggableElement(MainWindow &mainWindow
 		, const PaletteElement &data
 		, bool iconsOnly
+		, bool inUserPalette
 		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
 		)
@@ -54,6 +54,7 @@ DraggableElement::DraggableElement(
 	, mData(data)
 	, mEditorManagerProxy(editorManagerProxy)
 	, mMainWindow(mainWindow)
+	, mInUserPalette(inUserPalette)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);
@@ -352,7 +353,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			}
 
 			menu->exec(QCursor::pos());
-		} else if (elementId.element() == "Subprogram" && explosionTarget().idSize() == 4) {
+		} else if (elementId.element() == "Subprogram" && mInUserPalette) {
 			QMenu * const menu = new QMenu();
 			if (mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging()) {
 				QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));

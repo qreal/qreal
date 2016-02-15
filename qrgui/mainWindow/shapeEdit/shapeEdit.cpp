@@ -342,15 +342,7 @@ void ShapeEdit::save()
 		//generateGraphics().at(0) == <picture>, here we don't need "all" <graphics>
 		mDocument.appendChild(generateGraphics().at(0));
 		mMainWindow->models().mutableLogicalRepoApi().setProperty(mId, "shape", mDocument.toString(4));
-
-		for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
-			qReal::gui::editor::NodeElement * const element = dynamic_cast<qReal::gui::editor::NodeElement *>(item);
-			if (element) {
-				if (mMainWindow->models().mutableLogicalRepoApi().outgoingExplosion(element->logicalId()) == mId) {
-					element->updateShape();
-				}
-			}
-		}
+		mMainWindow->models().exploser().explosionTargetCouldChangeShape(mId);
 	} else {
 		mEditorManager->updateShape(mId, mDocument.toString(4));
 		foreach (const Id graphicalElement, mGraphicalElements) {

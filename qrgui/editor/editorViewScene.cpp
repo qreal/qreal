@@ -482,7 +482,7 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 
 			if (element.explosionTarget() != Id()) {
 				NodeElement * const elem = getNodeById(element.id());
-				elem->updateShape();
+				elem->updateDynamicShape(element.explosionTarget());
 				elem->updateDynamicLabels(element.explosionTarget());
 			}
 
@@ -490,9 +490,6 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 			{
 				getNodeById(element.id())->initExplosionConnections();
 			}
-
-			qDebug() << element.explosionTarget();
-			qDebug() << mModels.logicalRepoApi().outgoingExplosion(mModels.graphicalModelAssistApi().logicalId(element.id()));
 		}
 	}
 }

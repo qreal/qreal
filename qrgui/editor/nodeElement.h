@@ -183,13 +183,13 @@ public:
 	 */
 	IdList sortedChildren() const;
 
-	/// Updates subprogram shape, shape is stored in the target property "shape"
-	void updateShape();
 	void initExplosionConnections();
 
 public slots:
 	void switchGrid(bool isChecked);
 	void updateDynamicLabels(const Id &target);
+	/// Updates subprogram shape, shape is stored in the target property "shape"
+	void updateDynamicShape(const Id &target);
 
 private slots:
 	void updateNodeEdges();
