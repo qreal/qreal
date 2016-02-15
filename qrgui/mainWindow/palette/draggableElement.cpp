@@ -364,7 +364,8 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 
 			if (mMainWindow.toolManager().customizer()->allowSubprogramLabelsChanging()) {
 				QAction * const changeLabelsAction = menu->addAction(tr("Change Labels"));
-				connect(changeLabelsAction, &QAction::triggered, this, &DraggableElement::changeLabelsPaletteActionTriggered);
+				connect(changeLabelsAction, &QAction::triggered, this
+						, &DraggableElement::changeLabelsPaletteActionTriggered);
 				changeLabelsAction->setData(explosionTarget().toVariant());
 			}
 

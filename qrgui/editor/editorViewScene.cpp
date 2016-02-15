@@ -486,7 +486,8 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 				elem->updateDynamicLabels(element.explosionTarget());
 			}
 
-			if (mModels.logicalRepoApi().outgoingExplosion(mModels.graphicalModelAssistApi().logicalId(element.id())) != Id())
+			if (mModels.logicalRepoApi().outgoingExplosion(mModels.graphicalModelAssistApi().logicalId(element.id()))
+					!= Id())
 			{
 				getNodeById(element.id())->initExplosionConnections();
 			}

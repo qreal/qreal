@@ -168,7 +168,8 @@ void Label::updateData(bool withUndoRedo)
 	if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
-		const QString properties = mGraphicalModelAssistApi.mutableGraphicalRepoApi().property(mId, "dynamicProperties").toString();
+		const QString properties = mGraphicalModelAssistApi.mutableGraphicalRepoApi().property(mId, "dynamicProperties")
+				.toString();
 		if (!properties.isEmpty()) {
 			QDomDocument dynamicProperties;
 			dynamicProperties.setContent(properties);
@@ -193,7 +194,8 @@ void Label::updateData(bool withUndoRedo)
 				}
 			}
 
-			mGraphicalModelAssistApi.mutableGraphicalRepoApi().setProperty(mId, "dynamicProperties", dynamicProperties.toString(4));
+			mGraphicalModelAssistApi.mutableGraphicalRepoApi().setProperty(mId, "dynamicProperties"
+					, dynamicProperties.toString(4));
 		} else {
 			parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
 		}
