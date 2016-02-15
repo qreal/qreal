@@ -24,6 +24,8 @@
 
 using namespace nxt::communication;
 
+const QString bossaDriverDescription = "Arduino Srl \\(www\\.arduino\\.org\\)";
+
 QString NxtUsbDriverInstaller::path(const QString &file) const
 {
 	return QDir::toNativeSeparators(qReal::PlatformInfo::invariantSettingsPath("pathToNxtTools") + "/" + file);
@@ -61,10 +63,15 @@ bool NxtUsbDriverInstaller::installUsbDriver()
 
 	disconnect(&mInstallationProcess);
 
+	const QString bossaDriverName = findBossaProgramPortDriver();
+	const QString deleteBossaDriverCmd = bossaDriverName.isEmpty()
+			? QString()
+			: QString("PnPutil.exe -f -d %1 & ").arg(bossaDriverName);
+
 	// Installation process is just running .inf files with administrator permissions.
 	// elevate.exe calls UAC screen and executes pnputil to install drivers from 'driver' folder of nxt-tools.
-	const QString installDriversCmd = QString("%1 -w -c \"\"cmd /q /c \"\"PnPutil.exe -i -a %2\\*.inf\"\" \"\"")
-			.arg(path("driver\\elevate.exe"), path(QString("driver")));
+	const QString installDriversCmd = QString("%1 -w -c \"\"cmd /q /c \"\"%2PnPutil.exe -i -a %3\\*.inf\"\" \"\"")
+			.arg(path("driver\\elevate.exe"), deleteBossaDriverCmd, path(QString("driver")));
 	QLOG_INFO() << "Elevating pnputil... Using command" << installDriversCmd;
 	connect(&mInstallationProcess, QProcess::readyRead, this, [=]() {
 		QLOG_INFO() << "NXT drivers installer:" << mInstallationProcess.readAll();
@@ -122,9 +129,47 @@ QString NxtUsbDriverInstaller::checkWindowsDriverComponents() const
 
 	for (const QString &component : components) {
 		if (!QFile(component).exists()) {
-			return "%1 does not exist, cannot install drivers.";
+			return QString("%1 does not exist, cannot install drivers.").arg(component);
 		}
 	}
 
 	return QString();
+}
+
+QString NxtUsbDriverInstaller::findBossaProgramPortDriver() const
+{
+#ifdef Q_OS_WIN
+	// In lastest Windows versions Arduino driver attached to resetted NXT by default. This is the reason
+	// why all Lego NXT users have nightmare with resetting NXT firmware. Here we search for the name of Arduino
+	// driver attached to NXT device.
+	QLOG_INFO() << "Searching for Bossa Program Port driver attached...";
+	QStringList data;
+	QString result;
+	QProcess pnpUtil;
+	connect(&pnpUtil, &QProcess::readyRead, this, [&pnpUtil, &data]() { data << pnpUtil.readAll(); });
+	// Simply starting pnputil -e will return answer in default locale, so changin locale to english with 'chcp 437'.
+	pnpUtil.start("cmd", { "/c", "chcp 437 & pnputil.exe -e" }, QProcess::ReadOnly);
+	if (!pnpUtil.waitForStarted()) {
+		QLOG_ERROR() << "Could not spawn pnputil process. Args:" << pnpUtil.arguments();
+		return QString();
+	}
+
+	if (!pnpUtil.waitForFinished()) {
+		QLOG_ERROR() << "pnpUtil.exe timed out (strangely). Args:" << pnpUtil.arguments();
+		return QString();
+	}
+
+	QRegExp driverNameRegexp(QString(".*Published name :\\s+([A-Za-z0-9_\\.]+)\\s+Driver package provider :\\s+%1.*")
+			.arg(bossaDriverDescription));
+	if (driverNameRegexp.exactMatch(data.join('\n'))) {
+		QLOG_INFO() << "Found" << bossaDriverDescription << "entry:" << result;
+		result = driverNameRegexp.cap(1);
+	} else {
+		QLOG_INFO() << bossaDriverDescription << "entry not found";
+	}
+
+	return result;
+#else
+	return QString();
+#endif
 }

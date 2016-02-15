@@ -47,6 +47,8 @@ private:
 	bool promptDriverInstallation() const;
 	QString checkWindowsDriverComponents() const;
 
+	QString findBossaProgramPortDriver() const;
+
 	QProcess mInstallationProcess;
 };
 

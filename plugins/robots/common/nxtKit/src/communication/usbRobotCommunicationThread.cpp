@@ -68,6 +68,7 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		return true;
 	}
 
+	QLOG_INFO() << "Connecting to NXT brick" << (firmwareMode ? "in firmware mode" : "");
 	libusb_init(nullptr);
 	libusb_set_debug(nullptr, DEBUG_LEVEL);
 
@@ -90,7 +91,6 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 
 				return false;
 			} else if (err < 0 || !mHandle) {
-				qDebug() << err << mHandle;
 				QLOG_ERROR() << "libusb_open returned" << err;
 				emit connected(false, notConnectedErrorText);
 				libusb_free_device_list(devices, 1);
@@ -108,7 +108,6 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 	}
 
 	if (libusb_kernel_driver_active(mHandle, NXT_INTERFACE_NUMBER)) {
-		qDebug() << "detaching kernel driver";
 		libusb_detach_kernel_driver(mHandle, NXT_INTERFACE_NUMBER);
 	}
 
@@ -162,14 +161,16 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 	getFirmwareCommand[2] = enums::telegramType::directCommandResponseRequired;
 	getFirmwareCommand[3] = 0x88;
 
-	QByteArray handshakeResponse;
-	send(getFirmwareCommand, 9, handshakeResponse);
-	if (handshakeResponse.isEmpty()) {
-		emit connected(false, tr("NXT handshake procedure failed. Please contact developers."));
-		libusb_close(mHandle);
-		mHandle = nullptr;
-		libusb_free_device_list(devices, 1);
-		return false;
+	if (!firmwareMode) {
+		QByteArray handshakeResponse;
+		send(getFirmwareCommand, 9, handshakeResponse);
+		if (handshakeResponse.isEmpty()) {
+			emit connected(false, tr("NXT handshake procedure failed. Please contact developers."));
+			libusb_close(mHandle);
+			mHandle = nullptr;
+			libusb_free_device_list(devices, 1);
+			return false;
+		}
 	}
 
 	mFirmwareMode = firmwareMode;
@@ -273,72 +274,9 @@ void UsbRobotCommunicationThread::allowLongJobs(bool allow)
 
 bool UsbRobotCommunicationThread::connectFirmware()
 {
-	qDebug() << "connecting to firmware...";
-	if (mHandle) {
-		if (mFirmwareMode) {
-			emit errorOccured(tr("Already connected to NXT that is not in resetted mode."));
-			return false;
-		}
-
-		emit connected(true, QString());
-		return true;
-	}
-
-	libusb_init(nullptr);
-	libusb_set_debug(nullptr, DEBUG_LEVEL);
-	qDebug() << "initted...";
-//	libusb_device **devices;
-//	int count = libusb_get_device_list(nullptr, &devices);
-//	for (int i = 0; i < count; ++i) {
-//		libusb_device_descriptor desc;
-//		libusb_get_device_descriptor(devices[i], &desc);
-//		qDebug() << "DEVICE:" << desc.idProduct << desc.idVendor;
-//	}
-
-	mHandle = libusb_open_device_with_vid_pid(nullptr, ATMEL_VID, SAMBA_PID);
-	if (!mHandle) {
-		emit connected(false, tr("Cannot find NXT device in resetted mode. Check robot resetted, connected "\
-				"and ticking and try again."));
-		return false;
-	}
-
-	if (libusb_kernel_driver_active(mHandle, NXT_INTERFACE_NUMBER)) {
-		libusb_detach_kernel_driver(mHandle, NXT_INTERFACE_NUMBER);
-	}
-
-	if (libusb_set_configuration(mHandle, 1/*NXT_CONFIGURATION_NB*/) < 0) {
-		emit connected(false, tr("USB Device configuration problem. Please contact developers."));
-		libusb_close(mHandle);
-		mHandle = nullptr;
-		return false;
-	}
-
-	if (libusb_claim_interface(mHandle, NXT_INTERFACE_NUMBER) < 0) {
-		emit connected(false, tr("NXT device is already used by another software."));
-		libusb_close(mHandle);
-		mHandle = nullptr;
-		return false;
-	}
-
-	qDebug() << "handshaking...";
-	QByteArray getFirmwareCommand(4, 0);
-	getFirmwareCommand[0] = '\0';
-	getFirmwareCommand[1] = '\0';
-	getFirmwareCommand[2] = enums::telegramType::directCommandResponseRequired;
-	getFirmwareCommand[3] = 0x88;
-
-	QByteArray handshakeResponse;
-	send(getFirmwareCommand, 9, handshakeResponse);
-	if (handshakeResponse.isEmpty()) {
-		emit connected(false, tr("NXT handshake procedure failed. Please contact developers."));
-		libusb_close(mHandle);
-		mHandle = nullptr;
-		return false;
-	}
-
-	mFirmwareMode = true;
-	emit connected(true, QString());
-	return true;
+	const QString error = tr("Cannot find NXT device in resetted mode. Check robot resetted, connected and ticking "\
+			"and try again.");
+	return connectImpl(true, ATMEL_VID, SAMBA_PID, error);
 }
 
 void UsbRobotCommunicationThread::checkForConnection()
