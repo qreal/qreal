@@ -14,21 +14,11 @@ env:
   - CONFIG=release PROJECT=qrealRobots        VERA=false TESTS=true
   - CONFIG=debug   PROJECT=qrealBP            VERA=false TESTS=true
   - CONFIG=release PROJECT=qrealBP            VERA=false TESTS=true
-  - CONFIG=debug   PROJECT=testCoverage       VERA=true  TESTS="./testCoverage-d"
   - CONFIG=debug   PROJECT=qrealTest          VERA=false TESTS="./exampleTests-d && ./qrgui_unittests-d && ./qrrepo_unittests-d && ./qrutils_unittests-d && ./visualDebugSupport_unittests-d && ./qrtext_unittests-d && ./generationRulesTool_unittests-d"
   - CONFIG=release PROJECT=qrealTest          VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests && ./generationRulesTool_unittests"
   - CONFIG=debug   PROJECT=qrealRobotsTest    VERA=false TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./run-simulator-tests.sh"
   - CONFIG=release PROJECT=qrealGuiTest       VERA=false TESTS="./qRealGuiTests"
   - CONFIG=release PROJECT=qrealRobotsGuiTest VERA=false TESTS="./qRealRobotsGuiTests"
-
-before_install:
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master http://github.com/qreal/qreal.wiki.git ./../qreal.wiki/; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then openssl aes-256-cbc -K $encrypted_2c91ba1b7c87_key -iv $encrypted_2c91ba1b7c87_iv -in ./qrtest/testCoverage/loginpass.enc -out ~/.netrc -d; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then chmod 600 ~/.netrc; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git clone --depth=50 --branch=master git://github.com/qreal/qreal.git ./../qrealTest/qreal/; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../qrealTest/qreal/; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo `pwd`/ > ./../../qreal/qrtest/testCoverage/testpathes; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../../qreal/; fi
 
 before_install:
   - if [ "$TESTS" != "true" ]; then pip install --user codecov; fi
@@ -57,21 +47,11 @@ script:
   - qmake --version
   - if [ "$VERA" = "true" ]; then tclsh buildScripts/vera++/generatePaths.tcl; fi
   - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then mkdir -p bin/debug; fi
   - qmake $PROJECT.pro CONFIG+=$CONFIG
   - make -j2
   - cd ./bin/$CONFIG
   - ls -A
   - sh -c "$TESTS"
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cat testCoverage.html > ./../../../qreal.wiki/testCoverage.html; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then cd ./../../../qreal.wiki; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then ls -A; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo -e 'Test_coverage_and_method_Information_for_QReal_project  \nCommit:' "$TRAVIS_COMMIT" '  \nPull_request:' "$TRAVIS_PULL_REQUEST" '  \nBranch:' "$TRAVIS_BRANCH" '  \nTravis_OS_name:' "$TRAVIS_OS_NAME" '  \nCommit_range:' "$TRAVIS_COMMIT_RANGE" '  \nTravis_repos_slug(owner_name/repo_name):' "$TRAVIS_REPO_SLUG" > Statistics.md; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then echo -e "  \n[[Test_covering|https://rawgit.com/wiki/qreal/qreal/testCoverage.html]]  \n[[Test_covering_(additional_link)|https://cdn.rawgit.com/wiki/qreal/qreal/testCoverage.html]]" >> Statistics.md; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git config --global user.name "travis-ci"; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git config --global user.email qreal-build-reports@googlegroups.com; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git commit -am the_statistic_for_QReal_master_commit:_"$TRAVIS_COMMIT"; fi
-  - if [[ "$PROJECT" = "testCoverage" && "$TRAVIS_REPO_SLUG" = "qreal/qreal" ]]; then git push; fi
 
 notifications:
   email:
