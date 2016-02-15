@@ -483,14 +483,6 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 			if (element.explosionTarget() != Id()) {
 				getNodeById(element.id())->updateShape();
 			}
-//<<<<<<< HEAD
-//			if (explosionTarget != Id()) {
-//				getNodeById(id)->updateShape();
-//			}
-//		} else {
-//			mController.execute(createCommand);
-//=======
-//>>>>>>> 7bf1997d1ae6aa34b7f4a53f28651eb4ef00e498
 		}
 	}
 }
