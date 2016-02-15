@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <QtWidgets/QTreeWidget>
 
 #include "mainWindow/palette/paletteElement.h"

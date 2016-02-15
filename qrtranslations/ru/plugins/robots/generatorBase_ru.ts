@@ -193,9 +193,8 @@
         <translation>/* ОШИБКА: ВЫБЕРИТЕ ТИП СЕНСОРА */</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/portNameConverter.cpp" line="45"/>
         <source>Port %1 is unknown. It will be generated as-is.</source>
-        <translation>Порт %1 неизвестен системе. Он будет сгенерирован в код в таком виде.</translation>
+        <translation type="vanished">Порт %1 неизвестен системе. Он будет сгенерирован в код в таком виде.</translation>
     </message>
 </context>
 <context>

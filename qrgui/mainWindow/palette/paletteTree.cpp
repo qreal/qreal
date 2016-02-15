@@ -18,7 +18,6 @@
 #include <QtGui/QMouseEvent>
 #include <QtCore/QtAlgorithms>
 #include <QtWidgets/QVBoxLayout>
-#include <QtCore/QMimeData>
 #include <QtGui/QDrag>
 
 #include <qrkernel/settingsManager.h>
@@ -34,10 +33,10 @@ using namespace gui;
 
 PaletteTree::PaletteTree(QWidget *parent)
 	: QWidget(parent)
+	, mTree(nullptr)
 	, mCurrentEditor(0)
 {
 	initUi();
-	createPaletteTree();
 }
 
 void PaletteTree::initUi()
@@ -113,7 +112,9 @@ void PaletteTree::initDone()
 		mComboBox->show();
 	}
 	setActiveEditor(SettingsManager::value("CurrentIndex", 0).toInt());
-	mTree->resizeIcons();
+	if (mTree) {
+		mTree->resizeIcons();
+	}
 }
 
 void PaletteTree::setComboBox(const Id &id)
@@ -244,7 +245,9 @@ int PaletteTree::itemsCountInARow() const
 
 void PaletteTree::resizeEvent(QResizeEvent *)
 {
-	mTree->resizeIcons();
+	if (mTree) {
+		mTree->resizeIcons();
+	}
 }
 
 int PaletteTree::maxItemsCountInARow() const

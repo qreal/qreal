@@ -27,6 +27,8 @@ macx {
 CONFIG(debug, debug | release) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
+	QMAKE_CXXFLAGS += -coverage
+	QMAKE_LFLAGS += -coverage
 } else {
 	CONFIGURATION = release
 	CONFIGURATION_SUFFIX =
@@ -53,6 +55,25 @@ equals(TEMPLATE, app) {
 macx {
 	QMAKE_CXXFLAGS += -stdlib=libc++
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
+}
+
+unix {
+	CONFIG(debug):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
+		# Ubsan is turned on by default into debug build
+		CONFIG += sanitizer sanitize_undefined
+	}
+
+	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
+		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
+		# That must be disabled. Variables for confguring ubsan are taken from here:
+		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
+		# They can change in some version of Qt, keep track of it.
+		# By the way, simply setting QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS instead of those used below
+		# will not work due to arguments order ("-fsanitize=undefined" must be declared before "-fno-sanitize=vptr").
+		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
+		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
+		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
+	}
 }
 
 OBJECTS_DIR = .build/$$CONFIGURATION/obj

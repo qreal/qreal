@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,10 +43,12 @@ private:
 	void generateIncludes(utils::OutFile &out);
 	void generateInitPlugin(utils::OutFile &out);
 	void generateNameMappings(utils::OutFile &out);
+	void generateNodesAndEdgesSets(utils::OutFile &out);
 	void generateMouseGestureMap(utils::OutFile &out);
 	void generatePropertyMap(utils::OutFile &out);
 	void generatePropertyDefaultsMap(utils::OutFile &out);
 	void generateDescriptionMappings(utils::OutFile &out);
+	void generatePortTypeMappings(utils::OutFile &out);
 	void generateParentsMappings(utils::OutFile &out);
 	void generateExplosionsMappings(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
@@ -78,6 +80,9 @@ private:
 	class EnumValuesGenerator;
 
 	void generateListMethod(utils::OutFile &out, const QString &signature, const ListMethodGenerator &generator);
+	void generateStringSet(utils::OutFile &out, const QSet<QString> &set) const;
+	void generateStringList(utils::OutFile &out, const QStringList &list) const;
+	void generateStringListMap(utils::OutFile &out, const QMap<QString, QStringList> &map) const;
 
 	QMap<QString, Editor *> mEditors;
 	QString mPluginName;

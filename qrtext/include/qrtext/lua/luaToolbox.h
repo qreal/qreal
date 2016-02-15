@@ -114,6 +114,9 @@ public:
 
 	void clear() override;
 
+	bool isGeneralization(const QSharedPointer<core::types::TypeExpression> &specific
+			, const QSharedPointer<core::types::TypeExpression> &general) const override;
+
 protected:
 	/// Tells that the given identifier is a constant and reserved by the system (like 'pi').
 	void markAsSpecialConstant(const QString &identifier);

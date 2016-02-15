@@ -227,6 +227,7 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsTextItem::mousePressEvent(event);
 	parentItem()->setSelected(true);
 	event->accept();
+	setSelected(true);
 }
 
 void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

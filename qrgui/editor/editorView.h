@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,9 @@ public:
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
 	void rootElementRemoved(const QModelIndex &rootGraphicsIndex);
+
+	/// Emitted when current zoom of editor was changed by user.
+	void zoomChanged(qreal zoomFactor);
 
 public slots:
 	void toggleAntialiasing(bool);

@@ -62,10 +62,11 @@ HEADERS += \
 	$$PWD/include/generatorBase/lua/luaProcessor.h \
 	$$PWD/include/generatorBase/lua/precedenceConverterInterface.h \
 	$$PWD/include/generatorBase/lua/precedenceConverter.h \
+	$$PWD/include/generatorBase/lua/reservedFunctionsConverter.h \
+	$$PWD/include/generatorBase/gotoControlFlowGenerator.h \
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
-	$$PWD/src/gotoControlFlowGenerator.h \
 	$$PWD/src/rules/semanticTransformationRule.h \
 	$$PWD/src/rules/simpleRules/simpleBlockRuleBase.h \
 	$$PWD/src/rules/simpleRules/simpleUnvisitedRule.h \
@@ -91,7 +92,6 @@ SOURCES += \
 	$$PWD/src/generatorCustomizer.cpp \
 	$$PWD/src/controlFlowGeneratorBase.cpp \
 	$$PWD/src/readableControlFlowGenerator.cpp \
-	$$PWD/src/gotoControlFlowGenerator.cpp \
 	$$PWD/src/robotsDiagramVisitor.cpp \
 	$$PWD/src/primaryControlFlowValidator.cpp \
 	$$PWD/src/generatorFactoryBase.cpp \
@@ -135,6 +135,7 @@ SOURCES += \
 	$$PWD/src/rules/joinRules/joinRule.cpp \
 	$$PWD/src/rules/switchRules/switchInitializationRule.cpp \
 	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.cpp \
+	$$PWD/src/gotoControlFlowGenerator.cpp \
 
 # Simple element generators & converters
 
@@ -148,6 +149,7 @@ HEADERS += \
 	$$PWD/include/generatorBase/simpleGenerators/binding.h \
 	$$PWD/include/generatorBase/simpleGenerators/bindingGenerator.h \
 	$$PWD/include/generatorBase/simpleGenerators/waitForButtonGenerator.h \
+	$$PWD/include/generatorBase/simpleGenerators/randomIdGenerator.h \
 
 HEADERS += \
 	$$PWD/src/converters/reservedVariablesConverter.h \
@@ -204,7 +206,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/killThreadGenerator.h \
 	$$PWD/src/simpleGenerators/getButtonCodeGenerator.h \
 	$$PWD/src/lua/luaPrinter.h \
-	$$PWD/src/lua/reservedFunctionsConverter.h \
 
 SOURCES += \
 	$$PWD/src/converters/templateParametrizedConverter.cpp \
@@ -269,6 +270,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/receiveMessageThreadsGenerator.cpp \
 	$$PWD/src/simpleGenerators/killThreadGenerator.cpp \
 	$$PWD/src/simpleGenerators/getButtonCodeGenerator.cpp \
+	$$PWD/src/simpleGenerators/randomIdGenerator.cpp \
 	$$PWD/src/lua/luaProcessor.cpp \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \

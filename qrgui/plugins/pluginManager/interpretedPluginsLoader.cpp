@@ -16,14 +16,10 @@
 
 using namespace qReal;
 
-InterpretedPluginsLoader::InterpretedPluginsLoader()
-	: mPluginManager()
-{
-}
-
-void InterpretedPluginsLoader::init(
+InterpretedPluginsLoader::InterpretedPluginsLoader(
 		EditorManagerInterface *editorManager
 		, const PluginConfigurator &configurator)
+	: mPluginManager()
 {
 	mInterpreterEditorManager = static_cast<InterpreterEditorManager *>(editorManager);
 	mEditorRepoApi = mInterpreterEditorManager->listOfMetamodels();

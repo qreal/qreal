@@ -49,6 +49,10 @@ protected:
 	/// Returns a given in constructor path to tempates root.
 	QStringList pathsToRoot() const;
 
+	/// Replaces @@RANDOM_ID@@ occurences to some random c++ identifier.
+	/// Do not make \a templateString const&, replace() will be called on it.
+	QString addRandomIds(QString templateString) const;
+
 private:
 	QStringList mPathsToRoot;
 };

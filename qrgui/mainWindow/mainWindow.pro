@@ -32,7 +32,7 @@ TRANSLATIONS = \
 	$$PWD/../../qrtranslations/fr/qrgui_mainWindow_fr.ts \
 
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
+	QMAKE_LFLAGS+="-Wl,-O1,-rpath,."
 }
 
 HEADERS += \

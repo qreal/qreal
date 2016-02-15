@@ -12,17 +12,17 @@
 <context>
     <name>kitBase::DevicesConfigurationWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="101"/>
         <source>%1:</source>
         <translation>%1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="101"/>
         <source>Port %1:</source>
         <translation>Порт %1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="108"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="112"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
@@ -71,7 +71,7 @@
 <context>
     <name>kitBase::blocksBase::common::WaitForSensorBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForSensorBlock.cpp" line="45"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForSensorBlock.cpp" line="47"/>
         <source>%1 is not configured on port %2</source>
         <translation>%1 не сконфигурирован на порту %2</translation>
     </message>

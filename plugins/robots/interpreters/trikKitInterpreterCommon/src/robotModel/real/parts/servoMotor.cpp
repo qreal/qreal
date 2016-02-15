@@ -20,7 +20,7 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 ServoMotor::ServoMotor(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikServoMotor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {

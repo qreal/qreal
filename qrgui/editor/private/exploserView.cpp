@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrgui/models/models.h>
-#include <qrgui/models/commands/createElementCommand.h>
+#include <qrgui/models/commands/createElementsCommand.h>
 #include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>
 #include <qrgui/dialogs/subprogram/labelPropertiesDialog.h>
 
@@ -36,6 +36,7 @@ ExploserView::ExploserView(const models::Models &models
 		, const Customizer &customizer
 		, QObject *parent)
 	: QObject(parent)
+	, mModels(models)
 	, mLogicalApi(models.logicalModelAssistApi())
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
@@ -154,7 +155,7 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 		}
 	}
 
-	QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
+	const QList<Explosion> explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
 	if (explosions.isEmpty() || (explosions.count() == 1 && explosions[0].requiresImmediateLinkage())) {
 		return;
 	}
@@ -181,28 +182,12 @@ void ExploserView::handleDoubleClick(const Id &id)
 					.findElementByType(explosions[0].target().element());
 			AbstractCommand *createCommand =
 					mExploser.createElementWithIncomingExplosionCommand(
-							id, diagramType, mGraphicalApi);
+							id, diagramType, mModels);
 			mController.executeGlobal(createCommand);
-			outgoingLink = static_cast<CreateElementCommand *>(createCommand)->result();
+			outgoingLink = static_cast<CreateElementsCommand *>(createCommand)->results().first().id();
 		}
 	}
 	goTo(outgoingLink);
-}
-
-void ExploserView::handleCreationWithExplosion(AbstractCommand *createCommand
-		, const Id &source, const Id &target)
-{
-	if (target != Id()) {
-		createCommand->addPostAction(mExploser.addExplosionCommand(source, target, &mGraphicalApi));
-	} else {
-		QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(source);
-		for (const Explosion &explosion : explosions) {
-			if (explosion.source().type() == source.type() && explosion.requiresImmediateLinkage()) {
-				createCommand->addPostAction(mExploser.createElementWithIncomingExplosionCommand(
-						source, explosion.target(), mGraphicalApi));
-			}
-		}
-	}
 }
 
 void ExploserView::addExplosionActionTriggered()
@@ -213,7 +198,7 @@ void ExploserView::addExplosionActionTriggered()
 	const Id destination = connection[1].value<Id>();
 	if (action->text().startsWith(tr("New "))) {
 		mController.execute(mExploser.createElementWithIncomingExplosionCommand(
-				source, destination, mGraphicalApi));
+				source, destination, mModels));
 	} else {
 		mController.execute(mExploser.addExplosionCommand(source, destination));
 	}

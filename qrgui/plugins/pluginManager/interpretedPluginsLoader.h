@@ -27,14 +27,11 @@ namespace qReal {
 class QRGUI_PLUGINS_MANAGER_EXPORT InterpretedPluginsLoader
 {
 public:
-	InterpretedPluginsLoader();
-
-	/// Inits interpreted plugins given editor manager interface and plugin configurator.
+	/// Constructor. Also inits interpreted plugins given editor manager interface and plugin configurator.
 	/// @param editorManager - list of metamodels
 	/// @param configurator - information about models
-	void init(EditorManagerInterface *editorManager
-			, const PluginConfigurator &configurator
-			);
+	InterpretedPluginsLoader(EditorManagerInterface *editorManager
+			, const PluginConfigurator &configurator);
 
 	/// Returns list of actions for all plugins.
 	QList<ActionInfo> listOfActions() const;

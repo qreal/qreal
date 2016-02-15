@@ -17,11 +17,12 @@
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-Gyroscope::Gyroscope(const DeviceInfo &info, const PortInfo &port, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+Gyroscope::Gyroscope(const DeviceInfo &info, const PortInfo &port
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: kitBase::robotModel::robotParts::GyroscopeSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newVectorSensorData
 			, this, &Gyroscope::onIncomingData);
 }
 
@@ -30,7 +31,7 @@ void Gyroscope::read()
 	mRobotCommunicator.requestData(port().name());
 }
 
-void Gyroscope::onIncomingData(const QString &portName, int value)
+void Gyroscope::onIncomingData(const QString &portName, const QVector<int> &value)
 {
 	if (portName == port().name()) {
 		emit newData(value);

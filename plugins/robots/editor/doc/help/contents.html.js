@@ -60,6 +60,7 @@ document.write('\
                     <li><a href="ev3.html#run-programs">Запуск программ</a></li>\
                     <ul>\
                         <li><a href="ev3.html#run-programs-bluetooth">Интерпретация по Bluetooth</a></li>\
+                        <li><a href="ev3.html#run-programs-flashing">Прошивка в робота</a></li>\
                     </ul>\
                 </ul>\
             </li>\

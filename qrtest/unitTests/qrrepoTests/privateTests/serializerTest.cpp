@@ -62,11 +62,11 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 	metaInfo["key1"] = "info1";
 	metaInfo["key2"] = 2;
 
-	Id const id1("editor1", "diagram1", "element1", "id1");
+	const Id id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
 
-	Id const id2("editor1", "diagram2", "element2", "id2");
+	const Id id2("editor1", "diagram2", "element2", "id2");
 	LogicalObject obj2(id2);
 	obj2.setProperty("property2", "value2");
 
@@ -98,11 +98,11 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 // path without parent folder /tree and /logical or /graphical according to id type.
 TEST_F(SerializerTest, removeFromDiskTest)
 {
-	Id const id1("editor1", "diagram1", "element1", "id1");
+	const Id id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
 
-	Id const id2("editor1", "diagram2", "element2", "id2");
+	const Id id2("editor1", "diagram2", "element2", "id2");
 	LogicalObject obj2(id2);
 	obj2.setProperty("property2", "value2");
 
@@ -121,10 +121,10 @@ TEST_F(SerializerTest, removeFromDiskTest)
 
 TEST_F(SerializerTest, saveAndLoadGraphicalPartsTest)
 {
-	Id const element("editor", "diagram", "element", "id");
+	const Id element("editor", "diagram", "element", "id");
 	LogicalObject logicalObj(element);
 
-	Id const graphicalElement("editor", "diagram", "element", "graphicalId");
+	const Id graphicalElement("editor", "diagram", "element", "graphicalId");
 
 	GraphicalObject graphicalObj(graphicalElement, Id(), element);
 

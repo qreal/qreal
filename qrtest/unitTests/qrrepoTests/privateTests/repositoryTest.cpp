@@ -25,27 +25,27 @@ using namespace details;
 using namespace qReal;
 using namespace qrTest;
 
-Id const parent("editor1", "diagram1", "element1", "parent");
-Id const root("editor1", "diagram1", "element2", "root");
+const Id parent("editor1", "diagram1", "element1", "parent");
+const Id root("editor1", "diagram1", "element2", "root");
 
-Id const child1("editor1", "diagram2", "element3", "child1");
-Id const child2("editor1", "diagram2", "element3", "child2");
-Id const child3("editor2", "diagram3", "element4", "child3");
+const Id child1("editor1", "diagram2", "element3", "child1");
+const Id child2("editor1", "diagram2", "element3", "child2");
+const Id child3("editor2", "diagram3", "element4", "child3");
 
-Id const child1_child("editor2", "diagram3", "element5", "child1_child");
-Id const child2_child("editor2", "diagram4", "element6", "child2_child");
-Id const child3_child("editor2", "diagram4", "element7", "child3_child");
+const Id child1_child("editor2", "diagram3", "element5", "child1_child");
+const Id child2_child("editor2", "diagram4", "element6", "child2_child");
+const Id child3_child("editor2", "diagram4", "element7", "child3_child");
 
-Id const rootLogicalId("editor2", "diagram3", "element5", "child1_child");
-Id const child1LogicalId("editor2", "diagram3", "element5", "child1_child");
-Id const child1_childLogicalId("editor2", "diagram4", "element6", "child2_child");
-Id const child2_childLogicalId("editor2", "diagram4", "element6", "child2_child");
+const Id rootLogicalId("editor2", "diagram3", "element5", "child1_child");
+const Id child1LogicalId("editor2", "diagram3", "element5", "child1_child");
+const Id child1_childLogicalId("editor2", "diagram4", "element6", "child2_child");
+const Id child2_childLogicalId("editor2", "diagram4", "element6", "child2_child");
 
-Id const fakeParent("fake", "fake", "fake", "fake");
-Id const notExistingId("1", "1", "1", "1");
+const Id fakeParent("fake", "fake", "fake", "fake");
+const Id notExistingId("1", "1", "1", "1");
 
-Id const newId1("editor1", "diagram1", "element1", "id1");
-Id const newId2("editor2", "diagram2", "element2", "id2");
+const Id newId1("editor1", "diagram1", "element1", "id1");
+const Id newId2("editor2", "diagram2", "element2", "id2");
 
 
 void RepositoryTest::removeDirectory(QString const &dirName)
@@ -273,8 +273,8 @@ TEST_F(RepositoryTest, childOperationsTest) {
 	EXPECT_TRUE(mRepository->children(root).contains(child1_child));
 	EXPECT_EQ(mRepository->parent(child1_child), root);
 
-	Id const child("child", "child", "child", "child");
-	Id const childLogId("child", "child", "child", "childLogId");
+	const Id child("child", "child", "child", "child");
+	const Id childLogId("child", "child", "child", "childLogId");
 	mRepository->addChild(child1_child, child, childLogId);
 
 	ASSERT_EQ(mRepository->children(child1_child).size(), 1);
@@ -363,7 +363,7 @@ TEST_F(RepositoryTest, stackBeforeTest) {
 }
 
 TEST_F(RepositoryTest, cloneObjectTest) {
-	Id const clonedId = mRepository->cloneObject(root);
+	const Id clonedId = mRepository->cloneObject(root);
 	EXPECT_EQ(clonedId.type(), root.type());
 	EXPECT_TRUE(clonedId != root);
 }
@@ -502,9 +502,9 @@ TEST_F(RepositoryTest, copyPropertiesTest) {
 }
 
 TEST_F(RepositoryTest, backReferenceTest) {
-	Id const backReference1("editor", "diagram", "element", "backReference1");
-	Id const backReference2("editor1", "diagram2", "element3", "child1");
-	Id const backReference3("editor1", "diagram2", "element3", "child2");
+	const Id backReference1("editor", "diagram", "element", "backReference1");
+	const Id backReference2("editor1", "diagram2", "element3", "child1");
+	const Id backReference3("editor1", "diagram2", "element3", "child2");
 
 	EXPECT_EQ(mRepository->property(root, "backReferences"), QVariant());
 	EXPECT_THROW(mRepository->removeBackReference(root, backReference1), Exception);
@@ -524,11 +524,11 @@ TEST_F(RepositoryTest, backReferenceTest) {
 }
 
 TEST_F(RepositoryTest, temporaryRemovedLinksTest) {
-	Id const linkTo1("editor", "diagram", "element", "linkTo1");
-	Id const linkTo2("editor", "diagram", "element", "linkTo2");
-	Id const linkFrom1("editor", "diagram", "element", "linkFrom1");
-	Id const linkFrom2("editor", "diagram", "element", "linkFrom2");
-	Id const link("editor", "diagram", "element", "link");
+	const Id linkTo1("editor", "diagram", "element", "linkTo1");
+	const Id linkTo2("editor", "diagram", "element", "linkTo2");
+	const Id linkFrom1("editor", "diagram", "element", "linkFrom1");
+	const Id linkFrom2("editor", "diagram", "element", "linkFrom2");
+	const Id link("editor", "diagram", "element", "link");
 
 	IdList to;
 	IdList from;

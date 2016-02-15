@@ -76,6 +76,24 @@ void DevicesConfigurationManager::load(const QString &configuration)
 	}
 }
 
+Id DevicesConfigurationManager::mainDiagramId() const
+{
+	Id result;
+	const IdList diagrams = mGraphicalModelAssistInterface.children(Id::rootId());
+	for (const Id &logicalDiagramId : diagrams) {
+		if (logicalDiagramId.element() == diagramName && mLogicalModelAssistInterface.isLogicalId(logicalDiagramId)) {
+			if (!result.isNull()) {
+				// Then there are more than two robot diagrams in this save, ignoring all of them...
+				return Id();
+			}
+
+			result = logicalDiagramId;
+		}
+	}
+
+	return result;
+}
+
 void DevicesConfigurationManager::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
@@ -88,11 +106,13 @@ void DevicesConfigurationManager::onDeviceConfigurationChanged(const QString &ro
 	Q_UNUSED(sensor)
 
 	const qReal::Id activeDiagramGraphicalId = mMainWindowInterpretersInterface.activeDiagram();
-	if (activeDiagramGraphicalId.isNull()) {
+	const qReal::Id logicalRootId = activeDiagramGraphicalId.element() != diagramName
+			? mainDiagramId()
+			: mGraphicalModelAssistInterface.logicalId(activeDiagramGraphicalId);
+	if (logicalRootId.isNull()) {
 		return;
 	}
 
-	const qReal::Id logicalRootId = mGraphicalModelAssistInterface.logicalId(activeDiagramGraphicalId);
 	mLogicalModelAssistInterface.setPropertyByRoleName(logicalRootId, save(), "devicesConfiguration");
 }
 

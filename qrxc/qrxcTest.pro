@@ -28,7 +28,7 @@ LIBS += -L../bin -lqrutils
 DESTDIR += ../bin
 
 !macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,$$PWD/../bin"
+	QMAKE_LFLAGS+="-Wl,-O1,-rpath,$$PWD/../bin"
 }
 
 INCLUDEPATH += \
