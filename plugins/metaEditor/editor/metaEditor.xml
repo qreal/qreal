@@ -4,16 +4,6 @@
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 		<nonGraphicTypes>
-			<enum name="associationTypes" displayedName="Association Types">
-				<value name="no_arrow" displayedName="No arrow"/>
-				<value name="open_arrow" displayedName="Opened arrow"/>
-				<value name="empty_arrow" displayedName="Empty arrow"/>
-				<value name="filled_arrow" displayedName="Filled arrow"/>
-				<value name="empty_rhomb" displayedName="Empty rhomb"/>
-				<value name="filled_rhomb" displayedName="Filled rhomb"/>
-				<value name="crossed_line" displayedName="Crossed line"/>
-				<value name="empty_circle" displayedName="Empty circle"/>
-			</enum>
 			<enum name="lineTypes" displayedName="Line Types">
 				<value name="solidLine" displayedName="Solid line"/>
 				<value name="dashLine" displayedName="Dash line"/>
@@ -297,15 +287,6 @@
 						<property type="linkShapeType" name="shape">
 							<default>broken</default>
 						</property>
-      						<property type="associationTypes" name="beginType">
-							<default>no_arrow</default>
-						</property>
-						<property type="associationTypes" name="endType">
-							<default>no_arrow</default>
-						</property>
-                                                        
-						<property type="string" name="beginName"/>
-						<property type="string" name="endName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
@@ -695,7 +676,6 @@
 			</group>
 			<group name="Edge Properties" description="Элементы метаязыка для указания свойств связей создаваемого языка">
 				<element name="MetaEntity Attribute"/>
-				<element name="MetaEntityAssociation"/>
 			</group>
 			<group name="Relationship" description="Связи метаязыка для описания вызимоотношений между элементами создаваемого языка">
 				<element name="Inheritance"/>
