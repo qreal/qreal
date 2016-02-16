@@ -302,6 +302,16 @@
 					</container>
 				</logic>
 			</node>
+			<node name="MetaEntityRole" displayedName="Role" description="Вспомогательный элемент для MetaEntityEdge. Вкладывается в MetaEntityEdge">
+				<graphics>
+					<picture sizex="123" sizey="155">
+                        			<ellipse fill-style="none" y1="0" y2="153" x1="0" x2="121" fill="#ffffffff" stroke="#ff000000" stroke-style="solid" stroke-width="0"/>
+                    			</picture>
+                    			<labels>
+                        			<label x="45" y="11" textBinded="name"/>
+                   			</labels>
+				</graphics>
+			</node>
 			<node name="MetaEntityEnum" displayedName="Enum" description="Элемент для описания перечисляемого типа данных для создаваемого языка (см. Value). Вкладывается в Meta Editor Diagram">
 				<graphics>
 					<picture sizex="100" sizey="100">
