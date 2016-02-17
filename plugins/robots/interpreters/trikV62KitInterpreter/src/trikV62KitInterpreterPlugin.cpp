@@ -59,5 +59,16 @@ void TrikV62KitInterpreterPlugin::testSmile()
 //			kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*model, "DisplayPort");
 //	if (display) display->drawSmile(false);
 //	qDebug(defaultRobotModel()->name().toStdString().c_str());
-	qtsInterpreter()->interpretStringScript("brick.smile()");
+	/// todo: bad
+//	defaultRobotModel()->stopRobot();
+//	devicesConfigurationProvider();
+//	const QString modelName = defaultRobotModel()->robotId();
+
+//	for (const kitBase::robotModel::PortInfo &port : defaultRobotModel()->configurablePorts()) {
+//	//	const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
+//	//	defaultRobotModel()->configureDevice(port, deviceInfo);
+//	}
+	defaultRobotModel()->applyConfiguration();
+	//defaultRobotModel()->timeline().start(
+	qtsInterpreter()->interpretStringScript("while(true){brick.smile();script.wait(1000);}");
 }

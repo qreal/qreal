@@ -18,4 +18,4 @@ include (common.pri)
 
 SUBDIRS += \
 	robots/robots.pro \
-	$$PWD/tools/exterminatus/exterminatus.pro \
+#	$$PWD/tools/exterminatus/exterminatus.pro \
