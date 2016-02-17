@@ -133,6 +133,7 @@
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
 						<contains type="MetaEditor::MetaEntityEdge"/>
+						<contains type="MetaEditor::MetaEntityRole"/>
 						<contains type="MetaEditor::MetaEntityPort"/>
 						<contains type="MetaEditor::MetaEntityEnum"/>
 						<contains type="MetaEditor::MetaEntityGroup"/>
@@ -304,13 +305,32 @@
 			</node>
 			<node name="MetaEntityRole" displayedName="Role" description="Вспомогательный элемент для MetaEntityEdge. Вкладывается в MetaEntityEdge">
 				<graphics>
-					<picture sizex="123" sizey="155">
-                        			<ellipse fill-style="none" y1="0" y2="153" x1="0" x2="121" fill="#ffffffff" stroke="#ff000000" stroke-style="solid" stroke-width="0"/>
-                    			</picture>
-                    			<labels>
-                        			<label x="45" y="11" textBinded="name"/>
-                   			</labels>
+					<picture sizey="147" sizex="129">
+						<line y2="30a" x1="14a" x2="115a" stroke-style="solid" stroke="#ff000000" fill="#ffffffff" stroke-width="0" fill-style="none" y1="30a"/>
+						<ellipse y2="143a" x1="3a" x2="125a" stroke-style="solid" stroke="#ff000000" fill="#ffffffff" stroke-width="0" fill-style="none" y1="0a"/>
+					</picture>
+					<labels>
+						<label x="48a" y="3a" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="22" y="124" type="NonTyped"/>
+						<pointPort x="114" y="30" type="NonTyped"/>
+						<pointPort x="126" y="69" type="NonTyped"/>
+						<pointPort x="110" y="121" type="NonTyped"/>
+						<pointPort x="67" y="144" type="NonTyped"/>
+						<pointPort x="2" y="72" type="NonTyped"/>
+						<pointPort x="14" y="31" type="NonTyped"/>
+						<pointPort x="43" y="4" type="NonTyped"/>
+						<pointPort x="83" y="4" type="NonTyped"/>
+ 					</ports>
 				</graphics>
+				<logic>
+					<generalizations/>
+					<properties>
+						<property type="string" name="ololo"/>
+					</properties>
+					<container/>
+				</logic>
 			</node>
 			<node name="MetaEntityEnum" displayedName="Enum" description="Элемент для описания перечисляемого типа данных для создаваемого языка (см. Value). Вкладывается в Meta Editor Diagram">
 				<graphics>
@@ -670,6 +690,7 @@
 				<element name="MetaEntityPort"/>
 				<element name="MetaEntityEnum"/>
 				<element name="MetaEntityImport"/>
+				<element name="MetaEntityRole"/>
 			</group>
 			<group name="Root Diagrams" description="Корневые элементы">
 				<element name="MetamodelDiagram"/>
