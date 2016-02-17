@@ -3,6 +3,7 @@
 #include <trikControl/brickInterface.h>
 
 #include "robotModel/twoD/trikTwoDRobotModel.h"
+#include "trikEmulation/displayemu.h"
 
 namespace trik {
 
@@ -44,6 +45,9 @@ public slots:
 
 private:
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+
+	TrikDisplayEmu mDisplay;
+
 };
 
 }
