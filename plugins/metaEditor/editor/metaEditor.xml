@@ -4,6 +4,16 @@
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 		<nonGraphicTypes>
+			<enum name="arrowTypes" displayedName="Arrow Types">
+				<value name="no_arrow" displayedName="No arrow"/>
+				<value name="open_arrow" displayedName="Opened arrow"/>
+				<value name="empty_arrow" displayedName="Empty arrow"/>
+				<value name="filled_arrow" displayedName="Filled arrow"/>
+				<value name="empty_rhomb" displayedName="Empty rhomb"/>
+				<value name="filled_rhomb" displayedName="Filled rhomb"/>
+				<value name="crossed_line" displayedName="Crossed line"/>
+				<value name="empty_circle" displayedName="Empty circle"/>
+			</enum>
 			<enum name="lineTypes" displayedName="Line Types">
 				<value name="solidLine" displayedName="Solid line"/>
 				<value name="dashLine" displayedName="Dash line"/>
@@ -262,6 +272,8 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
+						<property type="MetaEntityRole" name="beginRole"/>
+						<property type="MetaEntityRole" name="endRole"/>
 						<property type="string" name="description"/>
 						<property type="string" name="path"/>
 						<property type="bool" name="isDividable">
@@ -327,9 +339,13 @@
 				<logic>
 					<generalizations/>
 					<properties>
-						<property type="string" name="ololo"/>
+						<property type="arrowTypes" name="arrowType">
+							<default>no_arrow</default>
+						</property>
 					</properties>
-					<container/>
+					<container>
+						<contains type="MetaEditor::MetaEntity Attribute"/>
+					</container>
 				</logic>
 			</node>
 			<node name="MetaEntityEnum" displayedName="Enum" description="Элемент для описания перечисляемого типа данных для создаваемого языка (см. Value). Вкладывается в Meta Editor Diagram">
