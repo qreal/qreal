@@ -18,6 +18,7 @@
 #include "enumType.h"
 #include "numericType.h"
 #include "stringType.h"
+#include "roleType.h"
 #include "portType.h"
 #include "nodeType.h"
 #include "edgeType.h"
@@ -147,6 +148,14 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 				return false;
 			}
 			mTypes[portType->qualifiedName()] = portType;
+		} else if  (element.nodeName() == "role") {
+			Type *roleType = new RoleType();
+			if (!roleType->init(element, mDiagramName)) {
+				delete roleType;
+				qDebug() << "Can't parse roleType type";
+				return false;
+			}
+
 		}
 		else {
 			qDebug() << "ERROR: unknown non graphic type" << element.nodeName();
