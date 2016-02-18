@@ -19,7 +19,7 @@ CONFIG += plugin
 
 include(../../../../global.pri)
 
-# ugly, for now
+# ugly, for now, move to thridparty?
 copyToDestdir(../../thirdparty/trikRuntime/bin/x86-$$CONFIGURATION, NOW)
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
