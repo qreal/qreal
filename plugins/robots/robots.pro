@@ -50,4 +50,4 @@ trikControl.depends = trikKernel trikHal qslog
 trikKernel.depends = qslog
 trikNetwork.depends = trikKernel qslog
 trikScriptRunner.depends = trikControl trikKernel trikNetwork qslog
-trikHal.depends = qslog
+trikHal.depends = qslog trikKernel

@@ -34,8 +34,6 @@ public slots:
 private:
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
-	bool isSmiling; // for debug
-
 };
 
 }

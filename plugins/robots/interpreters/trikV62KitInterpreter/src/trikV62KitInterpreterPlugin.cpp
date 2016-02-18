@@ -27,14 +27,18 @@ using namespace trik;
 const QString kitIdString = "trikV62Kit";
 
 TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
-	: TrikKitInterpreterPluginBase(), mAction(tr("TEST QTS"), nullptr)
+	: TrikKitInterpreterPluginBase(), mStart(tr("Start QTS"), nullptr), mStop(tr("Stop QTS"), nullptr)
 {
 	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
 	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
 
 	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, blocksFactory);
-	connect(&mAction, &QAction::triggered, this, &testSmile);
+
+	connectDevicesConfigurationProvider(devicesConfigurationProvider()); // ...
+
+	connect(&mStart, &QAction::triggered, this, &testStart);
+	connect(&mStop, &QAction::triggered, this, &testStop);
 }
 
 QString TrikV62KitInterpreterPlugin::kitId() const
@@ -49,10 +53,10 @@ QString TrikV62KitInterpreterPlugin::friendlyKitName() const
 
 QList<qReal::ActionInfo> TrikV62KitInterpreterPlugin::customActions()
 {
-	return { qReal::ActionInfo(&mAction, "file", "tools") };
+	return { qReal::ActionInfo(&mStart, "file", "tools"), qReal::ActionInfo(&mStop, "file", "tools") };
 }
 
-void TrikV62KitInterpreterPlugin::testSmile()
+void TrikV62KitInterpreterPlugin::testStart()
 {
 //	auto model = defaultRobotModel();
 //	robotModel::parts::TrikDisplay * const display =
@@ -60,15 +64,29 @@ void TrikV62KitInterpreterPlugin::testSmile()
 //	if (display) display->drawSmile(false);
 //	qDebug(defaultRobotModel()->name().toStdString().c_str());
 	/// todo: bad
-//	defaultRobotModel()->stopRobot();
-//	devicesConfigurationProvider();
-//	const QString modelName = defaultRobotModel()->robotId();
+//	qtsInterpreter()->interpretStringScript("block.quit()");
 
-//	for (const kitBase::robotModel::PortInfo &port : defaultRobotModel()->configurablePorts()) {
-//	//	const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
-//	//	defaultRobotModel()->configureDevice(port, deviceInfo);
-//	}
-	defaultRobotModel()->applyConfiguration();
-	//defaultRobotModel()->timeline().start(
-	qtsInterpreter()->interpretStringScript("while(true){brick.smile();script.wait(1000);}");
+	robotModel::twoD::TwoDRobotModel * model = dynamic_cast<robotModel::twoD::TwoDRobotModel*>(defaultRobotModel());
+	model->stopRobot();
+	const QString modelName = model->robotId();
+
+	for (const kitBase::robotModel::PortInfo &port : model->configurablePorts()) {
+		const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
+		model->configureDevice(port, deviceInfo);
+	}
+	model->applyConfiguration();
+	robotModel::parts::TrikDisplay * const display =
+	        kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*model, "DisplayPort");
+	if (display) display->redraw();
+	qtsInterpreter()->interpretStringScript("while(true){brick.smile();script.wait(1000);brick.sadSmile();script.wait(1000)}");
+
+	emit started();
+}
+
+void TrikV62KitInterpreterPlugin::testStop()
+{
+	qtsInterpreter()->interpretStringScript("script.quit()");
+	defaultRobotModel()->stopRobot();
+	emit stopped(qReal::interpretation::StopReason::userStop);
+
 }

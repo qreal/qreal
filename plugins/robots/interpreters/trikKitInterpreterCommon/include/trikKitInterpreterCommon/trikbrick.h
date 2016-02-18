@@ -13,6 +13,7 @@ class TrikBrick : public trikControl::BrickInterface {
 public:
 	TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
 	void reset() override {}
+	QString configVersion() const {return QString();}
 	trikControl::DisplayWidgetInterface &graphicsWidget() override {
 		trikControl::DisplayWidgetInterface temp;
 		return temp;

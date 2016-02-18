@@ -18,7 +18,7 @@
 
 namespace trik {
 
-class TrikV62KitInterpreterPlugin : public TrikKitInterpreterPluginBase
+class TrikV62KitInterpreterPlugin : public TrikKitInterpreterPluginBase, /*for now*/ public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 	Q_INTERFACES(kitBase::KitPluginInterface)
@@ -32,10 +32,12 @@ public:
 	QList<qReal::ActionInfo> customActions() override;
 
 private slots:
-	void testSmile();
+	void testStart();
+	void testStop();
 
 private:
-	QAction mAction;
+	QAction mStart;
+	QAction mStop;
 
 };
 
