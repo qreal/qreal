@@ -31,8 +31,8 @@ public:
 	virtual ~RobotCommunicationThreadInterface() {}
 
 public slots:
-	virtual void send(QObject *addressee, const QByteArray &buffer, int responseSize) = 0;
-	virtual void send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) = 0;
+	virtual bool send(QObject *addressee, const QByteArray &buffer, int responseSize) = 0;
+	virtual bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) = 0;
 	virtual bool connect() = 0;
 	virtual void disconnect() = 0;
 	virtual void reconnect() = 0;

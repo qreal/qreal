@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,6 @@ public slots:
 	bool runLastProgram();
 
 	void error(QProcess::ProcessError error);
-//	void readNxtFlashData();
 	bool askToRun(QWidget *parent);
 	void nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
@@ -81,13 +80,39 @@ private:
 	QString path(const QString &file = QString()) const;
 	QString nxtProgramName(const QFileInfo &srcFile) const;
 
+	//--------------------- Flashing section ----------------------//
+
+	QFileInfo findLatestFirmware() const;
+	bool flashFirmwareStream(QDataStream &firmware);
+	bool flashOneBlock(int orderNumber, const QByteArray &block);
+	bool startNewFirmware();
+	bool prepareFlashing();
+
+	bool jumpInSambaMode(quint32 address);
+	QByteArray sambaCommandTeleram(quint32 address, char type, quint32 data) const;
+
+	bool write8InSambaMode(quint32 address, quint8 data);
+	bool write16InSambaMode(quint32 address, quint16 data);
+	bool write32InSambaMode(quint32 address, quint32 data);
+	bool writeIntegerInSambaMode(quint32 address, char type, quint32 data);
+	bool writeBufferInSambaMode(quint32 address, const QByteArray &data);
+
+	bool read8InSambaMode(quint32 address, quint8 &data);
+	bool read16InSambaMode(quint32 address, quint16 &data);
+	bool read32InSambaMode(quint32 address, quint32 &data);
+	bool readIntegerInSambaMode(quint32 address, char type, int length, quint32 &data);
+
+	bool waitTillFlashingIsReady();
+	bool unlockFlashChip();
+	bool lockOrUnlockRegion(int regionNumber, bool lock);
+
+	//--------------------- Uploading section ----------------------//
+
 	bool deleteFileFromBrick(const QString &fileOnBrick);
 	bool createFileOnBrick(const QString &fileOnBrick, int fileSize, quint8 &handle);
 	bool downloadStreamToBrick(quint8 handle, QDataStream &stream, int fileSize);
 	bool closeFileOnBrick(quint8 handle);
 	bool uploadToBrick(const QFileInfo &fileOnHost);
-
-	QFileInfo findLatestFirmware() const;
 
 	/// Creates telegram with direct or system command (specified by \a commandType) invoking \a command on a brick
 	/// with \a fileName. \a size used to specify file size, if zero then it will not be packed into telegram.

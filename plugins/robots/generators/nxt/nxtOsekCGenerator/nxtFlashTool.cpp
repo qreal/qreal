@@ -1,4 +1,6 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 QReal Research Group
+ *
+ * Acknowledgements to David Anderson for his libnxt masterpiece that influenced our firmware flashing code a lot.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +28,9 @@
 
 using namespace nxt;
 using namespace qReal;
+
+static const quint32 lockRegionCommand = 0x2;
+static const quint32 unlockRegionCommand = 0x4;
 
 NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface &errorReporter
 		, utils::robotCommunication::RobotCommunicationThreadInterface &communicator)
@@ -68,24 +73,57 @@ bool NxtFlashTool::flashRobot()
 		return false;
 	}
 
-	const QFileInfo firmwareBinary = findLatestFirmware();
-	if (!firmwareBinary.exists()) {
+	QLOG_INFO() << "Flashing NXT robot...";
+	const QFileInfo firmwareBinaryName = findLatestFirmware();
+	if (!firmwareBinaryName.exists()) {
+		QLOG_ERROR() << "Could not find firmware binary";
 		mErrorReporter.addError(tr("Firmware file not found in nxt-tools directory."));
 		return false;
 	}
 
 	auto const usbCommunicator = dynamic_cast<nxt::communication::UsbRobotCommunicationThread *>(&mCommunicator);
 	if (!usbCommunicator) {
+		QLOG_ERROR() << "Attempted to flash robot in bluetooth mode";
 		mErrorReporter.addError(tr("Flashing robot is possible only by USB. Please switch to USB mode."));
 		return false;
 	}
 
 	if (!usbCommunicator->connectFirmware()) {
+		QLOG_ERROR() << "Connection to NXT in firmware mode failed, see details above";
+		return false;
+	}
+
+	QFile firmwareBinary(firmwareBinaryName.absoluteFilePath());  // Will be closed when out of scope in destructor.
+	if (!firmwareBinary.open(QFile::ReadOnly)) {
+		QLOG_ERROR() << "Could not open" << firmwareBinaryName.absoluteFilePath()
+				<< "for reading:" << firmwareBinary.errorString();
+		mErrorReporter.addError(tr("Could not open %1 for reading.").arg(firmwareBinaryName.absoluteFilePath()));
+		return false;
+	}
+
+	if (firmwareBinary.size() > 256 * 1024) {
+		QLOG_ERROR() << "Firmware binary file size is" << firmwareBinary.size() << "bytes which is too large for NXT";
+		mErrorReporter.addError(tr("Firmware file is too large to fit into NXT brick memory."));
 		return false;
 	}
 
 	mIsFlashing = true;
 	mErrorReporter.addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
+
+	QDataStream firmwareStream(&firmwareBinary);
+	if (!flashFirmwareStream(firmwareStream)) {
+		QLOG_ERROR() << "Could not flash firmware into NXT brick. See details above";
+		mErrorReporter.addError(tr("Could not write firmware into NXT memory."));
+		return false;
+	}
+
+	if (!startNewFirmware()) {
+		QLOG_ERROR() << "Could not jump to start new firmware";
+		mErrorReporter.addError(tr("Firmware successfully flashed into robot, but starting it failed."));
+		return false;
+	}
+
+	QLOG_INFO() << "Firmware flashed successfully";
 	return true;
 }
 
@@ -102,8 +140,11 @@ bool NxtFlashTool::runProgram(const QFileInfo &fileInfo)
 
 	mSource = fileInfo;
 	QByteArray responce;
-	mCommunicator.send(fileNameTelegram(enums::telegramType::directCommandResponseRequired
-			, enums::commandCode::STARTPROGRAM, programNameOnBrick, 0), 5, responce);
+	if (!mCommunicator.send(fileNameTelegram(enums::telegramType::directCommandResponseRequired
+			, enums::commandCode::STARTPROGRAM, programNameOnBrick, 0), 5, responce))
+	{
+		return false;
+	}
 
 	return responce.length() >= 5 && static_cast<qint8>(responce[4]) == 0;
 }
@@ -259,6 +300,232 @@ QString NxtFlashTool::nxtProgramName(const QFileInfo &srcFile) const
 	return QString("%1.rxe").arg(srcFile.completeBaseName().mid(0, 15));
 }
 
+bool NxtFlashTool::flashFirmwareStream(QDataStream &firmware)
+{
+	if (!prepareFlashing()) {
+		QLOG_ERROR() << "Could not prepare for flashing, see details above";
+		return false;
+	}
+
+	QLOG_INFO() << "Flashing firmware stream...";
+	const int chunkSize = 256;
+	for (int i = 0; i < 1024; ++i) {
+		QByteArray buffer(256, '\0');
+		const int bytesRead = firmware.readRawData(buffer.data(), chunkSize);
+		if (bytesRead < 0) {
+			const QString error = firmware.device()->errorString();
+			QLOG_ERROR() << "Error in reading bytes in firmware stream from" << i * 256 << "to" << ((i+1) * 256 - 1)
+					<< ":" << error;
+			mErrorReporter.addError(tr("Error in reading from firmware file: %1").arg(error));
+			return false;
+		}
+
+		if (!flashOneBlock(i, buffer)) {
+			QLOG_ERROR() << "Flashing block" << i << "failed!";
+			return false;
+		}
+
+		if (bytesRead < chunkSize) {
+			break;
+		}
+	}
+
+	return waitTillFlashingIsReady();
+}
+
+bool NxtFlashTool::flashOneBlock(int orderNumber, const QByteArray &block)
+{
+	// Setting the target block number...
+	if (!write32InSambaMode(0x202300, orderNumber)) {
+		QLOG_ERROR() << "Failed to set block order number for block" << orderNumber;
+		return false;
+	}
+
+	// Sending block data...
+	if (!writeBufferInSambaMode(0x202100, block)) {
+		QLOG_ERROR() << "Failed to flash data for block" << orderNumber;
+		return false;
+	}
+
+	// And finally activating flash writing routine.
+	if (!jumpInSambaMode(0x202000)) {
+		QLOG_ERROR() << "Failed to activate flashing routing for block" << orderNumber;
+		return false;
+	}
+
+	return true;
+}
+
+bool NxtFlashTool::startNewFirmware()
+{
+	return jumpInSambaMode(0x00100000);
+}
+
+bool NxtFlashTool::prepareFlashing()
+{
+	// Putting clock into PPL/2 mode
+	if (!write32InSambaMode(0xFFFFFC30, 0x7)) {
+		QLOG_ERROR() << "Could not put clock into PPL/2 mode";
+		return false;
+	}
+
+	if (!unlockFlashChip()) {
+		QLOG_ERROR() << "Could not unlock flash chip for writing data into it";
+		return false;
+	}
+
+	// We need a help of special flashin routine on the NXT brick side. Flashing it into NXT memory first...
+	QFile flashingRoutine(":/nxt/osek/flash.bin");  // Will be closed when out of scope in destructor.
+	if (!flashingRoutine.open(QFile::ReadOnly)) {
+		QLOG_ERROR() << "Could not open" << flashingRoutine.fileName() << "for reading, that's strange! Error:"
+				<< flashingRoutine.errorString();
+		return false;
+	}
+
+	const QByteArray flashingRoutineData = flashingRoutine.readAll();
+	if (flashingRoutineData.isEmpty()) {
+		QLOG_ERROR() << "Flashing routine is empty, go and buy a new brain";
+		return false;
+	}
+
+	if (!writeBufferInSambaMode(0x202000, flashingRoutineData)) {
+		QLOG_ERROR() << "Could not write flashing routine, giving up!";
+		return false;
+	}
+
+	return true;
+}
+
+bool NxtFlashTool::jumpInSambaMode(quint32 address)
+{
+	const QString command = QString("  G%1#").arg(address, 8, 16, QLatin1Char('0'));
+	QByteArray responce;
+	return mCommunicator.send(command.toLatin1(), 0, responce);
+}
+
+QByteArray NxtFlashTool::sambaCommandTeleram(quint32 address, char type, quint32 data) const
+{
+	return (QString("  ") + type + QString("%1,%2#").arg(address, 8, 16, QLatin1Char('0'))
+			.arg(data, 8, 16, QLatin1Char('0')).toUpper()).toLatin1();
+}
+
+bool NxtFlashTool::write8InSambaMode(quint32 address, quint8 data)
+{
+	return writeIntegerInSambaMode(address, 'O', data);
+}
+
+bool NxtFlashTool::write16InSambaMode(quint32 address, quint16 data)
+{
+	return writeIntegerInSambaMode(address, 'H', data);
+}
+
+bool NxtFlashTool::write32InSambaMode(quint32 address, quint32 data)
+{
+	return writeIntegerInSambaMode(address, 'W', data);
+}
+
+bool NxtFlashTool::writeIntegerInSambaMode(quint32 address, char type, quint32 data)
+{
+	const QByteArray command = sambaCommandTeleram(address, type, data);
+	QByteArray responce;
+	return mCommunicator.send(command, 0, responce);
+}
+
+bool NxtFlashTool::writeBufferInSambaMode(quint32 address, const QByteArray &data)
+{
+	const QByteArray command = sambaCommandTeleram(address, 'S', data.length());
+	QByteArray responce;
+	return mCommunicator.send(command, 0, responce) && mCommunicator.send(QByteArray("  ") + data, 0, responce);
+}
+
+bool NxtFlashTool::read8InSambaMode(quint32 address, quint8 &data)
+{
+	quint32 bigData;
+	if (!readIntegerInSambaMode(address, 'o', 1, bigData)) {
+		return false;
+	}
+
+	data = static_cast<quint8>(bigData);
+	return true;
+}
+
+bool NxtFlashTool::read16InSambaMode(quint32 address, quint16 &data)
+{
+	quint32 bigData;
+	if (!readIntegerInSambaMode(address, 'h', 2, bigData)) {
+		return false;
+	}
+
+	data = static_cast<quint16>(bigData);
+	return true;
+}
+
+bool NxtFlashTool::read32InSambaMode(quint32 address, quint32 &data)
+{
+	return readIntegerInSambaMode(address, 'w', 4, data);
+}
+
+bool NxtFlashTool::readIntegerInSambaMode(quint32 address, char type, int length, quint32 &data)
+{
+	const QByteArray readingCommand = sambaCommandTeleram(address, type, length);
+	QByteArray responce;
+	if (!mCommunicator.send(readingCommand, length + 2, responce) || responce.isEmpty()) {
+		return false;
+	}
+
+	const char *responceBytes = responce.constData();
+	/// @todo: Consider big-endian case?
+	data = *reinterpret_cast<const quint32 *>(responceBytes + 2);
+
+	return true;
+}
+
+bool NxtFlashTool::waitTillFlashingIsReady()
+{
+	quint32 status = 0;
+	do {
+		if (!read32InSambaMode(0xFFFFFF68, status)) {
+			QLOG_ERROR() << "Reading error while waiting for flashing is ready!";
+			return false;
+		}
+	} while (!(status & 0x1));
+	return true;
+}
+
+bool NxtFlashTool::unlockFlashChip()
+{
+	for (int i = 0; i < 16; ++i) {
+		if (!lockOrUnlockRegion(i, false)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool NxtFlashTool::lockOrUnlockRegion(int regionNumber, bool lock)
+{
+	const quint32 lockCommandNumber = lock ? lockRegionCommand : unlockRegionCommand;
+	const quint32 command = (0x5A000000 | ((64 * regionNumber) << 8)) + lockCommandNumber;
+
+	if (!waitTillFlashingIsReady()) {
+		return false;
+	}
+
+	// Flash mode register: FCMN 0x5, FWS 0x1
+	// Flash command register: KEY 0x5A, FCMD = clear-lock-bit (0x4)
+	// Flash mode register: FCMN 0x34, FWS 0x1
+	bool result = true;
+	result &= write32InSambaMode(0xFFFFFF60, 0x00050100);
+	result &= write32InSambaMode(0xFFFFFF64, command);
+	result &= write32InSambaMode(0xFFFFFF60, 0x00340100);
+	if (!result) {
+		QLOG_ERROR() << (lock ? "Locking" : "Unlocking") << "region" << regionNumber << "failed!";
+	}
+
+	return result;
+}
+
 bool NxtFlashTool::uploadToBrick(const QFileInfo &fileOnHost)
 {
 	const QString executableOnHost = fileOnHost.absolutePath() + "/" + fileOnHost.completeBaseName() + ".rxe";
@@ -267,6 +534,7 @@ bool NxtFlashTool::uploadToBrick(const QFileInfo &fileOnHost)
 		return false;
 	}
 
+	// Will be closed when out of scope in destructor.
 	QFile file(executableOnHost);
 	QDataStream stream(&file);
 	if (!file.open(QFile::ReadOnly)) {
@@ -316,9 +584,7 @@ QFileInfo NxtFlashTool::findLatestFirmware() const
 	QString latestFirmware;
 	while (iterator.hasNext()) {
 		const QString currentFirmware = iterator.next();
-		qDebug() << currentFirmware;
 		if (currentFirmware.endsWith(".rfw") && currentFirmware > latestFirmware) {
-			qDebug() << "making" << currentFirmware << "latest";
 			latestFirmware = currentFirmware;
 		}
 	}
@@ -336,9 +602,7 @@ bool NxtFlashTool::deleteFileFromBrick(const QString &fileOnBrick)
 			, enums::systemCommandCode::deleteCommand, fileOnBrick, 0);
 
 	QByteArray responce;
-	mCommunicator.send(buffer, 25, responce);
-
-	return !responce.isEmpty();
+	return mCommunicator.send(buffer, 25, responce);
 }
 
 bool NxtFlashTool::createFileOnBrick(const QString &fileOnBrick, int fileSize, quint8 &handle)
@@ -346,7 +610,6 @@ bool NxtFlashTool::createFileOnBrick(const QString &fileOnBrick, int fileSize, q
 	if (!mCommunicator.connect()) {
 		return false;
 	}
-
 
 	enums::systemCommandCode::SystemCommandCodeEnum fileMode = enums::systemCommandCode::openWrite;
 	if (fileOnBrick.endsWith(".rxe") || fileOnBrick.endsWith(".sys") || fileOnBrick.endsWith(".rtm")
@@ -362,7 +625,10 @@ bool NxtFlashTool::createFileOnBrick(const QString &fileOnBrick, int fileSize, q
 	const QByteArray buffer = fileNameTelegram(enums::telegramType::systemCommandResponseRequired
 			, fileMode, fileOnBrick, fileSize);
 	QByteArray responce;
-	mCommunicator.send(buffer, 6, responce);
+	if (!mCommunicator.send(buffer, 6, responce)) {
+		return false;
+	}
+
 	if (responce.length() >= 6) {
 		if (responce[4]) {
 			QLOG_ERROR() << "Lego NXT answered with error code" << responce[4];
@@ -400,8 +666,7 @@ bool NxtFlashTool::downloadStreamToBrick(quint8 handle, QDataStream &inputStream
 		}
 
 		QByteArray responce;
-		mCommunicator.send(buffer, 8, responce);
-		if (responce.isEmpty()) {
+		if (!mCommunicator.send(buffer, 8, responce)) {
 			return false;
 		}
 	}

@@ -41,20 +41,22 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 	disconnect();
 }
 
-void BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
+bool BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
-		return;
+		return false;
 	}
 
-	send(buffer);
+	const bool result = send(buffer);
 	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
 		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
 	}
+
+	return result;
 }
 
 bool BluetoothRobotCommunicationThread::connect()
@@ -110,17 +112,16 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow);
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
+bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
-	send(buffer);
+	const bool result = send(buffer);
 	outputBuffer = receive(responseSize);
+	return result;
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
+bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	if (mPort) {
-		mPort->write(buffer);
-	}
+	return mPort && (mPort->write(buffer) > 0);
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const

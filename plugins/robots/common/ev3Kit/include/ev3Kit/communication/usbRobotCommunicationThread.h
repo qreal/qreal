@@ -31,7 +31,7 @@ public:
 	~UsbRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, int responseSize);
+	bool send(QObject *addressee, const QByteArray &buffer, int responseSize);
 	bool connect();
 	void reconnect();
 	void disconnect();
@@ -43,8 +43,8 @@ private slots:
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
-	void send(const QByteArray &buffer) const override;
+	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
+	bool send(const QByteArray &buffer) const override;
 
 	QByteArray receive(int size) const override;
 

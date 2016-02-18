@@ -46,20 +46,22 @@ UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
 	disconnect();
 }
 
-void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
+bool UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mHandle) {
 		emit response(addressee, QByteArray());
-		return;
+		return false;
 	}
 
-	send(buffer);
+	const bool result = send(buffer);
 	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
 		const QByteArray result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
 	}
+
+	return result;
 }
 
 bool UsbRobotCommunicationThread::connect()
@@ -152,17 +154,18 @@ void UsbRobotCommunicationThread::checkForConnection()
 	}
 }
 
-void UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
+bool UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
-	send(buffer);
+	const bool result = send(buffer);
 	outputBuffer = receive(responseSize);
+	return result;
 }
 
-void UsbRobotCommunicationThread::send(const QByteArray &buffer) const
+bool UsbRobotCommunicationThread::send(const QByteArray &buffer) const
 {
 	uchar *cmd = reinterpret_cast<uchar *>(const_cast<char *>(buffer.data()));
 	int actualLength = 0;
-	libusb_bulk_transfer(mHandle, EV3_EP_OUT, cmd, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
+	return libusb_bulk_transfer(mHandle, EV3_EP_OUT, cmd, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT) >= 0;
 }
 
 QByteArray UsbRobotCommunicationThread::receive(int size) const

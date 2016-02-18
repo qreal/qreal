@@ -31,7 +31,7 @@ public:
 	~BluetoothRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
+	bool send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
 	bool connect() override;
 	void reconnect() override;
 	void disconnect() override;
@@ -43,8 +43,8 @@ private slots:
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
-	void send(const QByteArray &buffer) const;
+	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
+	bool send(const QByteArray &buffer) const;
 	QByteArray receive(int size) const;
 
 	QextSerialPort *mPort;

@@ -36,7 +36,7 @@ public:
 	~UsbRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
+	bool send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
 	bool connect() override;
 	void reconnect() override;
 	void disconnect() override;
@@ -61,7 +61,7 @@ private:
 	static const int kStatusNoError = 0;
 
 	bool connectImpl(bool firmwareMode, int pid, int vid, const QString &notConnectedErrorText);
-	void send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
+	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
 
 	libusb_device_handle *mHandle;
 	bool mFirmwareMode;

@@ -35,7 +35,7 @@ static const int NXT_USB_TIMEOUT = 2000;
 static const int NXT_EP_OUT = 0x01;
 static const int NXT_EP_IN = 0x82;
 static const int NXT_INTERFACE_NUMBER = 0;
-static const int DEBUG_LEVEL = 4;
+static const int DEBUG_LEVEL = 3;
 
 UsbRobotCommunicationThread::UsbRobotCommunicationThread()
 	: mHandle(nullptr)
@@ -133,7 +133,7 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		return false;
 	}
 
-	const QList<int> interfaces = {0, 1, 2};
+	const QList<int> interfaces = {1, 2};
 	bool interfaceFound = false;
 	for (int interface : interfaces) {
 		const int err = libusb_claim_interface(mHandle, interface);
@@ -155,25 +155,28 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		return false;
 	}
 
+	mFirmwareMode = firmwareMode;
 	QByteArray getFirmwareCommand(4, 0);
 	getFirmwareCommand[0] = '\0';
 	getFirmwareCommand[1] = '\0';
-	getFirmwareCommand[2] = enums::telegramType::directCommandResponseRequired;
-	getFirmwareCommand[3] = 0x88;
+	// Sending direct command telegram to flashed robot or "N#" in samba mode
+	getFirmwareCommand[2] = firmwareMode ? 'N' : static_cast<char>(enums::telegramType::directCommandResponseRequired);
+	getFirmwareCommand[3] = firmwareMode ? '#' : 0x88;
 
-	if (!firmwareMode) {
-		QByteArray handshakeResponse;
-		send(getFirmwareCommand, 9, handshakeResponse);
-		if (handshakeResponse.isEmpty()) {
-			emit connected(false, tr("NXT handshake procedure failed. Please contact developers."));
-			libusb_close(mHandle);
-			mHandle = nullptr;
-			libusb_free_device_list(devices, 1);
-			return false;
-		}
+	QByteArray handshakeResponse;
+	send(getFirmwareCommand, firmwareMode ? 4 : 9, handshakeResponse);
+	// In samba mode NXT should answer "\n\r"
+	const bool correctFirmwareResponce = !firmwareMode ||
+			(handshakeResponse.length() == 4 && handshakeResponse[2] == '\n' && handshakeResponse[3] == '\r');
+	if (handshakeResponse.isEmpty() || !correctFirmwareResponce) {
+		emit connected(false, tr("NXT handshake procedure failed. Please contact developers."));
+		libusb_close(mHandle);
+		mHandle = nullptr;
+		libusb_free_device_list(devices, 1);
+		return false;
 	}
 
-	mFirmwareMode = firmwareMode;
+	QLOG_INFO() << "Connected successfully!";
 	emit connected(true, QString());
 
 	if (!firmwareMode) {
@@ -190,22 +193,24 @@ bool UsbRobotCommunicationThread::connect()
 	return connectImpl(false, NXT_VID, NXT_PID, error);
 }
 
-void UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
+bool UsbRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	QByteArray outputBuffer;
 	outputBuffer.resize(responseSize);
-	send(buffer, responseSize, outputBuffer);
+	const bool result = send(buffer, responseSize, outputBuffer);
 	if (!isResponseNeeded(buffer)) {
 		emit response(addressee, QByteArray());
 	} else {
 		emit response(addressee, outputBuffer);
 	}
+
+	return result;
 }
 
-void UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
+bool UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
 	if (!mHandle) {
-		return;
+		return false;
 	}
 
 	QByteArray newBuffer;
@@ -216,17 +221,21 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSiz
 	uchar *cmd = reinterpret_cast<uchar *>(const_cast<char *>(newBuffer.data()));
 	int actualLength = 0;
 	int err = libusb_bulk_transfer(mHandle, NXT_EP_OUT, cmd, newBuffer.length(), &actualLength, NXT_USB_TIMEOUT);
-	if (err == LIBUSB_ERROR_IO || err == LIBUSB_ERROR_PIPE || err == LIBUSB_ERROR_INTERRUPTED) {
+	if (err == LIBUSB_ERROR_IO || err == LIBUSB_ERROR_PIPE
+			|| err == LIBUSB_ERROR_INTERRUPTED || err == LIBUSB_ERROR_NO_DEVICE)
+	{
+		QLOG_ERROR() << "Connection to NXT lost with code" << err << "during sending buffers";
 		emit errorOccured(tr("Connection to NXT lost"));
 		disconnect();
-		return;
+		return false;
 	} else if (err < 0) {
-		QLOG_TRACE() << "Sending" << buffer << "failed with libusb error" << err;
-		return;
+		QLOG_ERROR() << "Sending" << buffer << "failed with libusb error" << err;
+		return false;
 	}
 
-	if (!isResponseNeeded(buffer)) {
-		return;
+	const bool responceUnneeded = (mFirmwareMode && responseSize == 0) || (!mFirmwareMode && !isResponseNeeded(buffer));
+	if (responceUnneeded) {
+		return true;
 	}
 
 	uchar response[responseSize];
@@ -234,12 +243,13 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSiz
 	outputBuffer = QByteArray(responseSize, '\0');
 	err = libusb_bulk_transfer(mHandle, NXT_EP_IN, response, responseSize, &actualLength, NXT_USB_TIMEOUT);
 	if (err == LIBUSB_ERROR_IO || err == LIBUSB_ERROR_PIPE || err == LIBUSB_ERROR_INTERRUPTED) {
+		QLOG_ERROR() << "Connection to NXT lost with code" << err << "during recieving answer";
 		emit errorOccured(tr("Connection to NXT lost"));
 		disconnect();
-		return;
+		return false;
 	} else if (err < 0) {
 		QLOG_TRACE() << "Recieving answer from command" << buffer << "failed with libusb error" << err;
-		return;
+		return false;
 	}
 
 	outputBuffer[0] = responseSize - 2;
@@ -247,6 +257,8 @@ void UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSiz
 	for (int i = 0; i < responseSize - packetHeaderSize; ++i) {
 		outputBuffer[i + packetHeaderSize] = response[i];
 	}
+
+	return true;
 }
 
 void UsbRobotCommunicationThread::reconnect()
