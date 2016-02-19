@@ -20,6 +20,7 @@ public:
 //	~TrikQtsInterpreter() override;
 
 	void interpretStringScript(const QString &script);
+	void abort();
 
 private:
 	//QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;

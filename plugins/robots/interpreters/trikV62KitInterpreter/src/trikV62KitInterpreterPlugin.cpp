@@ -64,7 +64,7 @@ void TrikV62KitInterpreterPlugin::testStart()
 //	if (display) display->drawSmile(false);
 //	qDebug(defaultRobotModel()->name().toStdString().c_str());
 	/// todo: bad
-//	qtsInterpreter()->interpretStringScript("block.quit()");
+//	qtsInterpreter()->interpretStringScript("brick.stop()");
 
 	robotModel::twoD::TwoDRobotModel * model = dynamic_cast<robotModel::twoD::TwoDRobotModel*>(defaultRobotModel());
 	model->stopRobot();
@@ -74,18 +74,19 @@ void TrikV62KitInterpreterPlugin::testStart()
 		const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
 		model->configureDevice(port, deviceInfo);
 	}
+
 	model->applyConfiguration();
-	robotModel::parts::TrikDisplay * const display =
-	        kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*model, "DisplayPort");
-	if (display) display->redraw();
+
 	qtsInterpreter()->interpretStringScript("while(true){brick.smile();script.wait(1000);brick.sadSmile();script.wait(1000)}");
+	//qtsInterpreter()->interpretStringScript("brick.smile();script.wait(2000);brick.sadSmile();script.wait(2000);script.quit()");
 
 	emit started();
 }
 
 void TrikV62KitInterpreterPlugin::testStop()
 {
-	qtsInterpreter()->interpretStringScript("script.quit()");
+	//qtsInterpreter()->interpretStringScript("script.quit()");
+	qtsInterpreter()->abort();
 	defaultRobotModel()->stopRobot();
 	emit stopped(qReal::interpretation::StopReason::userStop);
 

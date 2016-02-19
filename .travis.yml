@@ -20,6 +20,7 @@ env:
 
 before_install:
   - if [ "$TESTS" != "true" ]; then pip install --user codecov; fi
+  - if [[ $PROJECT == qrealRobots* ]]; then git submodule update --init; fi
 
 install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi

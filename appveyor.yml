@@ -13,6 +13,8 @@ configuration:
   - debug
   - release
 
+before_build:
+  - if %PROJECT_FILE%==qrealRobots git submodule update --init
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
 

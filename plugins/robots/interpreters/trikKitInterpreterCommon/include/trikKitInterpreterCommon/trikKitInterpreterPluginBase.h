@@ -27,7 +27,7 @@
 #include "robotModel/twoD/trikTwoDRobotModel.h"
 #include "trikAdditionalPreferences.h"
 
-#include <trikKitInterpreterCommon/trikqtsinterpreter.h>
+#include <trikKitInterpreterCommon/trikQtsInterpreter.h>
 
 #include "declSpec.h"
 
