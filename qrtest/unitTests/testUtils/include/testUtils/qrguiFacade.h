@@ -19,11 +19,16 @@
 #include <qrgui/models/models.h>
 #include <qrgui/plugins/pluginManager/editorManager.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
+#include <qrgui/editor/sceneCustomizationInterface.h>
+#include <qrgui/textEditor/textManagerInterface.h>
 
-#include <qrtest/unitTests/mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h>
+#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterfaceMock.h>
+#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterfaceMock.h>
 #include <qrtest/unitTests/mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h>
-#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterface/errorReporterMock.h>
+#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 #include <qrtest/unitTests/mocks/qrgui/view/sceneCustomizationInterfaceMock.h>
+#include <qrtest/unitTests/mocks/qrgui/textEditor/textManagerInterfaceMock.h>
 
 namespace qrTest {
 
@@ -33,10 +38,14 @@ public:
 	explicit QrguiFacade(QString const &modelName);
 
 	qReal::gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface();
+	qReal::gui::MainWindowDockInterface &mainWindowDockInterface();
 	qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface();
 	qReal::LogicalModelAssistInterface &logicalModelAssistInterface();
 	qReal::ProjectManagementInterface &projectManagementInterface();
+	qrRepo::RepoControlInterface &repoControlInterface();
 	qReal::SystemEvents &systemEvents();
+	qReal::gui::editor::SceneCustomizationInterface &sceneCustomizer();
+	qReal::TextManagerInterface &textManager();
 
 	void setActiveTab(qReal::Id const &id);
 
@@ -44,9 +53,12 @@ private:
 	qReal::EditorManager mEditorManager;
 	qReal::models::Models mModels;
 	qReal::SystemEvents mSystemEvents;
-	qrTest::MainWindowInterpretersInterfaceMock mMainWindowInterpretersInterfaceMock;
-	qrTest::ProjectManagementInterfaceMock mProjectManagementInterfaceMock;
-	qrTest::ErrorReporterMock mErrorReporterMock;
+	MainWindowInterpretersInterfaceMock mMainWindowInterpretersInterfaceMock;
+	MainWindowDockInterfaceMock mMainWindowDockInterfaceMock;
+	SceneCustomizationInterfaceMock mSceneCustomizationInterfaceMock;
+	ProjectManagementInterfaceMock mProjectManagementInterfaceMock;
+	ErrorReporterMock mErrorReporterMock;
+	TextManagerInterfaceMock mTextManagerMock;
 
 	qReal::Id mActiveTab;
 };

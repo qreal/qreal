@@ -32,8 +32,12 @@ SOURCES += \
 	$$PWD/src/qrguiFacade.cpp \
 	$$PWD/src/signalsTester.cpp \
 
-links(qrgui-tool-plugin-interface qrgui-models)
+# Mocks
+HEADERS += \
+	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterfaceMock.h \
+	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterfaceMock.h \
+	$$PWD/../mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h \
+	$$PWD/../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
+	$$PWD/../mocks/qrgui/textEditor/textManagerInterfaceMock.h \
 
-#links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
-#		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
-#)
+links(qrgui-tool-plugin-interface qrgui-models qrgui-text-editor)

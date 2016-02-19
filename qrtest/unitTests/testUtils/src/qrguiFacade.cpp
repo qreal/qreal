@@ -48,6 +48,11 @@ qReal::gui::MainWindowInterpretersInterface &QrguiFacade::mainWindowInterpreters
 	return mMainWindowInterpretersInterfaceMock;
 }
 
+qReal::gui::MainWindowDockInterface &QrguiFacade::mainWindowDockInterface()
+{
+	return mMainWindowDockInterfaceMock;
+}
+
 qReal::GraphicalModelAssistInterface &QrguiFacade::graphicalModelAssistInterface()
 {
 	return mModels.graphicalModelAssistApi();
@@ -63,9 +68,24 @@ qReal::ProjectManagementInterface &QrguiFacade::projectManagementInterface()
 	return mProjectManagementInterfaceMock;
 }
 
+qrRepo::RepoControlInterface &QrguiFacade::repoControlInterface()
+{
+	return mModels.repoControlApi();
+}
+
 qReal::SystemEvents &QrguiFacade::systemEvents()
 {
 	return mSystemEvents;
+}
+
+qReal::gui::editor::SceneCustomizationInterface &QrguiFacade::sceneCustomizer()
+{
+	return mSceneCustomizationInterfaceMock;
+}
+
+qReal::TextManagerInterface &QrguiFacade::textManager()
+{
+	return mTextManagerMock;
 }
 
 void QrguiFacade::setActiveTab(qReal::Id const &id)

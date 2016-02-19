@@ -18,7 +18,7 @@ include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
 
-links(qrkernel qslog test-utils)
+links(qrkernel qslog test-utils qrgui-text-editor)
 
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/interpreters \

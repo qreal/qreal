@@ -25,6 +25,20 @@ namespace qrTest {
 class SceneCustomizationInterfaceMock : public qReal::gui::editor::SceneCustomizationInterface
 {
 public:
+	MOCK_CONST_METHOD0(addExplosionMenuName, QString());
+	MOCK_CONST_METHOD0(changeExplosionMenuName, QString());
+	MOCK_CONST_METHOD0(deleteExplosionMenuName, QString());
+	MOCK_CONST_METHOD0(goToConnectedMenuName, QString());
+	MOCK_CONST_METHOD0(showExpandConnectionAction, bool());
+	MOCK_CONST_METHOD0(expandExplosionActionText, QString());
+	MOCK_CONST_METHOD0(collapseExplosionActionText, QString());
+	MOCK_METHOD1(setAddExplosionMenuName, void(const QString &));
+	MOCK_METHOD1(setChangeExplosionMenuName, void(const QString &));
+	MOCK_METHOD1(setDeleteExplosionMenuName, void(const QString &));
+	MOCK_METHOD1(setGoToConnectedMenuName, void(const QString &));
+	MOCK_METHOD1(setShowExpandConnectionAction, void(bool));
+	MOCK_METHOD1(setExpandExplosionActionText, void(const QString &));
+	MOCK_METHOD1(setCollapseExplosionActionText, void(const QString &));
 };
 
 }

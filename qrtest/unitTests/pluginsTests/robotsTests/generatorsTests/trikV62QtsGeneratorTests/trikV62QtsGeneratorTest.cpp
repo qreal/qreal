@@ -28,5 +28,17 @@ void TrikV62QtsGeneratorTest::SetUp()
 
 TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 {
-	QrguiFacade facade("unittests/basicTest.qrs");
+	QrguiFacade facade("unittests/smile.qrs");
+
+	qReal::PluginConfigurator configurer(
+			facade.repoControlInterface()
+			, facade.graphicalModelAssistInterface()
+			, facade.logicalModelAssistInterface()
+			, facade.mainWindowInterpretersInterface()
+			, facade.mainWindowDockInterface()
+			, facade.projectManagementInterface()
+			, facade.sceneCustomizer()
+			, facade.systemEvents()
+			, facade.textManager()
+			);
 }

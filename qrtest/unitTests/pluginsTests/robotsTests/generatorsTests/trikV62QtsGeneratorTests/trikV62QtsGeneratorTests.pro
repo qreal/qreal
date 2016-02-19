@@ -18,7 +18,7 @@ include($$PWD/../../../../common.pri)
 
 include($$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator/trikV62QtsGenerator.pri)
 
-links(test-utils)
+links(test-utils qrgui-tool-plugin-interface qrgui-models qrgui-plugin-manager qrgui-text-editor)
 
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator \
