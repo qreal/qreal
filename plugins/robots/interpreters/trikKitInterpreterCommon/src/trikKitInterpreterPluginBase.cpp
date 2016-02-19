@@ -90,14 +90,14 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	QObject::connect(
 			this
-			, &started
+			, &TrikKitInterpreterPluginBase::started
 			, &configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			);
 
 	QObject::connect( // test
 			this
-			, &stopped
+			, &TrikKitInterpreterPluginBase::stopped
 			, &configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretationStopped
 			);

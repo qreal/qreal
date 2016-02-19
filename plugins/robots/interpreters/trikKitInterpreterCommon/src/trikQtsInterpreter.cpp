@@ -10,3 +10,8 @@ void trik::TrikQtsInterpreter::interpretStringScript(const QString &script)
 {
 	mScriptRunner.runDirectCommand(script);
 }
+
+void trik::TrikQtsInterpreter::abort()
+{
+	mScriptRunner.abort();
+}
