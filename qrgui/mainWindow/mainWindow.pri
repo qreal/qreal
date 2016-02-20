@@ -1,4 +1,4 @@
-# Copyright 2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ HEADERS += \
 	$$PWD/startWidget/startWidget.h \
 	$$PWD/startWidget/circleWidget.h \
 	$$PWD/startWidget/styledButton.h \
-	$$PWD/scriptAPIWrapper.h \
+	$$PWD/scriptingControlAPI.h \
 
 SOURCES += \
 	$$PWD/qrealApplication.cpp \
@@ -78,7 +78,7 @@ SOURCES += \
 	$$PWD/startWidget/startWidget.cpp \
 	$$PWD/startWidget/circleWidget.cpp \
 	$$PWD/startWidget/styledButton.cpp \
-	$$PWD/scriptAPIWrapper.cpp \
+	$$PWD/scriptingControlAPI.cpp \
 
 win32 {
 	HEADERS += \

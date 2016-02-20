@@ -1728,9 +1728,9 @@ QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 	return mListOfAdditionalActions;
 }
 
-ScriptAPIWrapper *MainWindow::createScriptAPIWrapper()
+ScriptingControlAPI *MainWindow::createScriptingControlAPI()
 {
-	return new ScriptAPIWrapper(mScriptAPI);
+	return new ScriptingControlAPI(mScriptAPI);
 }
 
 void MainWindow::initToolPlugins()

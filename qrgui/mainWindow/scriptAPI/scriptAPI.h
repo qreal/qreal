@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,9 +35,6 @@ class PaletteAPI;
 class HintAPI;
 class Utils;
 
-/// @warning Should not throw C++ except-s in q_invokable methods, a script engine can't propagate ones up the stack.
-/// All asserts for such functions, for passed parameters should be done in a script, using script's assert().
-/// This applies to all invokable functions of the scriptAPI module, functions are invokable from ui(), utils(), etc.
 /// Represents scripting API for interaction with QReal graphical user interface. This class provides access to
 /// controling virtual devices (see VirtualCursor, VirtualKeyboard), API for some elements of graphical
 /// user interface (see PaletteAPI, SceneAPI), GUI facades for system and plugins (see GuiFacade,
@@ -45,11 +42,16 @@ class Utils;
 /// for API and virtual tools) and class HintAPI which allows to add hints and navigation arrows to any graphical
 /// object. All together this API provides commands for QtScript for accessing the graphic user interface and
 /// reproducing some user actions in some order like user will do it himself.
+/// @warning Should not throw C++ except-s in q_invokable methods, a script engine can't propagate ones up the stack.
+/// All asserts for such functions, for passed parameters should be done in a script, using script's assert().
+/// This applies to all invokable functions of the scriptAPI module, functions are invokable from ui(), utils(), etc.
 class ScriptAPI : public QObject
 {
 	Q_OBJECT
 
 public:
+	static const int processEventsInterval = 20;
+
 	ScriptAPI();
 	~ScriptAPI();
 
@@ -66,7 +68,9 @@ public:
 	void evaluateFileScript(const QString &fileName);
 
 	/// Registres new function fun in QScriptEngine for using fun in scripts.
-	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length = 0);
+	/// @param fun must be a C++ function with signature QScriptEngine::FunctionSignature.
+	/// @param length is the number of arguments that \a fun expects.
+	void registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &qScriptName, int length = 0);
 
 	/// Checks the syntax of the given script.
 	QScriptSyntaxCheckResult checkSyntax(const QString &script) const;
@@ -81,11 +85,11 @@ public:
 	QStringList uncaughtExceptionBacktrace() const;
 
 	/// Returns the current uncaught exception, or an invalid QScriptValue if there is no uncaught exception.
-	///	The exception value is typically an Error object; in that case,
+	/// The exception value is typically an Error object; in that case
 	/// you can call toString() on the return value to obtain an error message.
 	QScriptValue uncaughtException() const;
 
-	/// Returns ScriptAPI engine pointer.
+	/// Returns internal Qt scripting engine object used for invoking Qt Script code.
 	QScriptEngine *engine();
 
 	/// Freezes execution for duration. Starting event loop breaking when duration time ellapsed.
@@ -93,11 +97,11 @@ public:
 
 	/// Attaches virtual cursor to a new top-level window.
 	/// @todo: move it to VirtualCursor.
-	Q_INVOKABLE void switchToWindow(QWidget *parent) noexcept;
+	Q_INVOKABLE void switchMouseCursorToWindow(QWidget *parent) noexcept;
 
 	/// Attaches virtual cursor to a mainWindow.
 	/// @todo: move it to VirtualCursor.
-	Q_INVOKABLE void switchToMainWindow() noexcept;
+	Q_INVOKABLE void switchMouseCursorToMainWindow() noexcept;
 
 	/// Picks combo box item. Virtual cursor can pick any item in its sight of view.
 	/// Temporary doesn`t work with scroll bars.
@@ -108,7 +112,7 @@ public:
 	/// @todo: move it to Utils as a action.
 	Q_INVOKABLE void scroll(QAbstractScrollArea *area, QWidget *widget, int duration) noexcept;
 
-	/// Provides operations for obtaining different UI parts of some plugin.
+	/// Provides operations for obtaining different UI parts of some tool plugin.
 	Q_INVOKABLE QScriptValue pluginUi(const QString &pluginName);
 
 	/// Povides operations for obtaining different UI parts.
@@ -129,7 +133,7 @@ public:
 	/// Provides extended operations with QReal palette.
 	Q_INVOKABLE QScriptValue palette();
 
-	/// Provides complicated operations with QReal and usefull functions independent of ui.
+	/// Provides some extended API for interaction with QReal logic and UI.
 	Q_INVOKABLE QScriptValue utils();
 
 	/// Returns GUI facade for obtaining different UI parts.

@@ -50,20 +50,20 @@ api.wait(501);
 var errorDock = ui.widget("QDockWidget", "errorDock");
 assert(errorDock == null);
 
-var menu_View = ui.getMenu("menu_View");
+var menu_View = ui.findMenu("menu_View");
 assert(menu_View != null);
 
 utils.activateMenu(menu_View);
 api.wait(200);
 
-var actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
+var actionMenuPanels = ui.findActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
 assert(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
-var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+var subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
-var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
+var actionErrors = ui.findActionInMenu(subMenuPanels, "Errors");
 utils.activateMenuAction(menu_View, actionMenuPanels);
 utils.activateMenuAction(subMenuPanels, actionErrors);
 api.wait(1000);
@@ -117,7 +117,7 @@ checkClick = function(objName) {
     api.wait(10);
 }
 
-actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
+actionErrors = ui.findActionInMenu(subMenuPanels, "Errors");
 utils.activateMenu(menu_View);
 utils.activateMenuAction(menu_View, actionMenuPanels);
 utils.activateMenuAction(subMenuPanels, actionErrors);

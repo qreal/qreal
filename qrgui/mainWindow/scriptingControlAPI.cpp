@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,67 +12,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "scriptAPIWrapper.h"
+#include "scriptingControlAPI.h"
 #include "scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace gui;
 
-ScriptAPIWrapper::ScriptAPIWrapper(ScriptAPI &scriptAPI)
+ScriptingControlAPI::ScriptingControlAPI(ScriptAPI &scriptAPI)
 	: mScriptAPI(scriptAPI)
 {
 }
 
-ScriptAPIWrapper::~ScriptAPIWrapper()
+ScriptingControlAPI::~ScriptingControlAPI()
 {
 }
 
-void ScriptAPIWrapper::evaluateScript(const QString &script, const QString &fileName)
+void ScriptingControlAPI::evaluateScript(const QString &script, const QString &fileName)
 {
 	mScriptAPI.evaluateScript(script, fileName);
 }
 
-void ScriptAPIWrapper::evaluateFileScript(const QString &fileName)
+void ScriptingControlAPI::evaluateFileScript(const QString &fileName)
 {
 	mScriptAPI.evaluateFileScript(fileName);
 }
 
-void ScriptAPIWrapper::abortEvaluation()
+void ScriptingControlAPI::abortEvaluation()
 {
 	mScriptAPI.abortEvaluation();
 }
 
-void ScriptAPIWrapper::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &scriptName, int length)
+void ScriptingControlAPI::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &scriptName, int length)
 {
 	mScriptAPI.registerNewFunction(fun, scriptName, length);
 }
 
-QScriptSyntaxCheckResult ScriptAPIWrapper::checkSyntax(const QString &script) const
+QScriptSyntaxCheckResult ScriptingControlAPI::checkSyntax(const QString &script) const
 {
 	return mScriptAPI.checkSyntax(script);
 }
 
-bool ScriptAPIWrapper::hasUncaughtException() const
+bool ScriptingControlAPI::hasUncaughtException() const
 {
 	return mScriptAPI.hasUncaughtException();
 }
 
-void ScriptAPIWrapper::clearExceptions()
+void ScriptingControlAPI::clearExceptions()
 {
 	mScriptAPI.clearExceptions();
 }
 
-QStringList ScriptAPIWrapper::uncaughtExceptionBacktrace() const
+QStringList ScriptingControlAPI::uncaughtExceptionBacktrace() const
 {
 	return mScriptAPI.uncaughtExceptionBacktrace();
 }
 
-QScriptValue ScriptAPIWrapper::uncaughtException() const
+QScriptValue ScriptingControlAPI::uncaughtException() const
 {
 	return mScriptAPI.uncaughtException();
 }
 
-QScriptEngine *ScriptAPIWrapper::engine()
+QScriptEngine *ScriptingControlAPI::engine()
 {
 	return mScriptAPI.engine();
 }

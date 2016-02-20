@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,13 @@ public:
 	explicit GuiFacade(MainWindow &mainWindow);
 
 	/// @returns main window child widget by its type (class name) and QObject name.
-	/// @note Doesnt work for QMenu. Use getMenu() instead.
-	/// Dont forget about scrollViewPorts in some cases.
+	/// @note Doesn't work for QMenu. Use findMenu() instead.
+	/// Don't forget about scrollViewPorts in some cases.
 	Q_INVOKABLE QWidget *widget(const QString &type, const QString &objectName = QString()) const;
 
 	/// @returns main window child widget by its type (class name) and QObject name having \a widget in the parent list.
 	/// @see qReal::gui::GuiFacade::widget for more information.
-	Q_INVOKABLE QWidget *widgetClarified(const QWidget *parent
+	Q_INVOKABLE QWidget *findChildWidget(const QWidget *parent
 			, const QString &type, const QString &objectName = QString()) const;
 
 	/// @returns a widget of some action on the toolbar panel.
@@ -73,38 +73,40 @@ public:
 	DraggableElement *draggableElement(const QString &widgetId) const;
 
 	/// @returns facade object of some tool plugin. This object will provide plugin`s parts in plugin`s terms.
-	/// @param: pluginName The name of the plugin specified in its metadata in IID section.
+	/// @param pluginName The name of the plugin specified in its metadata in IID section.
 	QObject *pluginGuiFacade(const QString &pluginName) const;
 
 	/// @returns first available viewport widget pointer with "qt_scrollarea_viewport" name,
 	/// or 0 if there is no such object. The search is performed recursively.
 	/// If there is more than one child matching the search, the most direct ancestor is returned.
 	/// If there are several direct ancestors, it is undefined which one will be returned.
-	/// \a object must be not 0.
+	/// @param object must be not 0.
 	Q_INVOKABLE QWidget *deepViewPort(const QObject *object) const;
 
 	/// @returns viewport widget pointer of this \a widget.
 	Q_INVOKABLE QWidget *viewPort(const QAbstractScrollArea *widget) const;
 
-	/// @returns corresponding menu pointer from the main menuBar, nullptr if such main doesnt exist.
-	/// @note Looks only at the direct children of the object.
-	Q_INVOKABLE QMenu *getMenu(const QString &menuName) const;
+	/// @returns corresponding menu pointer from the main menuBar, nullptr if such main doesn't exist.
+	/// @note Searches only between the direct children of the object.
+	Q_INVOKABLE QMenu *findMenu(const QString &menuName) const;
 
-	/// @returns corresponding action pointer from the main menuBar, nullptr if such action doesnt exist.
+	/// @returns corresponding action pointer from the main menuBar, nullptr if such action doesn't exist.
 	/// @note Looking for by a text or an object name.
-	Q_INVOKABLE QAction *getActionInMenu(const QMenu *menu, const QString &actionName) const;
+	Q_INVOKABLE QAction *findActionInMenu(const QMenu *menu, const QString &actionName) const;
 
-	/// Need repeatedly to call this method (if the menu is opening again) because
-	/// this method emits necessary signal (see warning).
-	/// @warning it needs because the appropriative bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373.
-	Q_INVOKABLE QMenu *getMenuContainedByAction(QAction *action) const;
+	/// @returns Returns the menu contained by this action.
+	/// @warning Need repeatedly to call this method (if the menu is opening again) because
+	/// this method implementation emits necessary signal aboutToShow() (see the bug description).
+	/// In the normal case aboutToShow() should be emitted independently singly.
+	/// @see The appropriative bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373.
+	Q_INVOKABLE QMenu *findMenuContainedByAction(QAction *action) const;
 
 	/// @returns true if \a action is a submenu in \a menu.
 	Q_INVOKABLE bool isSubMenuInMenu(const QMenu *menu, const QAction *action) const;
 
 	/// @returns the widget pointer of visible push button corresponding to \a buttonText and startWidget,
 	/// otherwise returns nullptr.
-	Q_INVOKABLE QWidget *getStartButton(const QString &buttonText) const;
+	Q_INVOKABLE QWidget *findStartButton(const QString &buttonText) const;
 
 private:
 	QTreeWidgetItem *propertyTreeWidgetItem(const QString &name) const;

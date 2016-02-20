@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,8 @@
 
 #include <dialogs/projectManagement/suggestToCreateProjectDialog.h>
 #include <dialogs/projectManagement/suggestToCreateDiagramWidget.h>
-#include <./qrgui/mainWindow/mainWindow.h>
+#include <qrgui/mainWindow/mainWindow.h>
+#include <qrkernel/definitions.h>
 
 #include <QtTest/QTest>
 #include <QtCore/QTimer>
@@ -25,64 +26,47 @@
 
 #include "workaroundTestFunctions.h"
 
+
 using namespace qReal;
 using namespace guiTesting::workarounds;
 
-QScriptValue guiTesting::workarounds::reachedEndOfScript(QScriptContext *context, QScriptEngine *engine)
-{
-	Q_UNUSED(engine);
-
-	if (context->argumentCount() != 0) {
-		ADD_FAILURE() << "'reachedEndOfScript' shall not have any argument";
-		return {};
-	}
-
-	SettingsManager::setValue("reachedEndOfFile", "true"); // here gui workaround
-	return {};
-}
-
-QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *context
-		, QScriptEngine *engine)
+QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
 	const QString dialogTitle = context->argument(1).toString();
 	const int msec = context->argument(2).toInt32();
 	MainWindow * const mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
 
-	QTimer *timer = new QTimer();
-	timer->setSingleShot(true);
-
-	QObject::connect(timer, &QTimer::timeout, [=]() {
-		timer->deleteLater();
+	lambdaSingleShot(msec, [=]() {
 		QList<QDialog *> allDialogs = mainWindow->findChildren<QDialog *>();
 		for (QDialog * const dialog : allDialogs) {
 			if (dialog->windowTitle() == dialogTitle || dialog->objectName() == dialogTitle) {
-				dialog->close(); // here gui workaround
+				dialog->close(); // Here gui workaround. Otherway we can't close supernative windows.
 				return;
 			}
 		}
 	} );
 
-	timer->start(msec);
 	return {};
 }
 
 void chooseDiagram(QDialog * const listDialog, const QString &diagramName)
 {
-	QList<SuggestToCreateDiagramWidget *> listWidget = listDialog->findChildren<SuggestToCreateDiagramWidget *>();
+	const QList<SuggestToCreateDiagramWidget *> listWidget =
+			listDialog->findChildren<SuggestToCreateDiagramWidget *>();
 	ASSERT_FALSE(listWidget.isEmpty());
 	for (int k = 0; k < listWidget.length(); ++k) {
 		if (listWidget.at(k) != nullptr) {
 			SuggestToCreateDiagramWidget *suggestWidget = listWidget.at(k);
 			for (int m = 0; m < suggestWidget->mainListWidget()->count(); ++m) {
 				if (suggestWidget->mainListWidget()->item(m)->text() == diagramName) {
-					// here gui workaround
+					// Here gui workaround. We can't click easyly requested item because of the structure of elements.
 					suggestWidget->mainListWidget()->itemDoubleClicked(suggestWidget->mainListWidget()->item(m));
 					break;
 				}
 
 				if (m == suggestWidget->mainListWidget()->count() - 1) {
-					FAIL() << "Doesn't exist " << diagramName.toStdString() << " diagram";
+					FAIL() << "Doesn't exist " << qPrintable(diagramName) << " diagram";
 				}
 			}
 
@@ -92,8 +76,7 @@ void chooseDiagram(QDialog * const listDialog, const QString &diagramName)
 }
 
 // Structure of the object: mainwindow->dialog->widgetList->diagrams. Looks in depth.
-QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext *context
-		, QScriptEngine *engine)
+QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext *context, QScriptEngine *engine)
 {
 	Q_UNUSED(engine);
 	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
@@ -103,19 +86,19 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 	}
 
 	if (!(context->argument(0).isValid() && !context->argument(0).isNull())) {
-		ADD_FAILURE() << "Assertion failure at\n" << backtrace.toStdString();
+		ADD_FAILURE() << "Assertion failure at\n" << qPrintable(backtrace);
 		return {};
 	}
 
 	for (int i = 1; i <= 2; ++i) {
 		if (!(context->argument(i).isValid() && context->argument(i).isString())) {
-			ADD_FAILURE() << "Assertion failure at\n" << backtrace.toStdString();
+			ADD_FAILURE() << "Assertion failure at\n" << qPrintable(backtrace);
 			return {};
 		}
 	}
 
 	if (!(context->argument(3).isValid() && context->argument(3).isNumber())) {
-		ADD_FAILURE() << "Assertion failure at\n" << backtrace.toStdString();
+		ADD_FAILURE() << "Assertion failure at\n" << qPrintable(backtrace);
 		return {};
 	}
 
@@ -124,14 +107,10 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 	const int msec = context->argument(3).toInt32();
 	MainWindow * const mainWindow = qobject_cast<MainWindow *>(context->argument(0).toQObject());
 
-	QTimer *timer = new QTimer();
-	timer->setSingleShot(true);
-
-	QObject::connect(timer, &QTimer::timeout, [=]() {
-		timer->deleteLater();
+	lambdaSingleShot(msec, [=]() {
 		EXPECT_GT(msec, 0);
 		ASSERT_TRUE(mainWindow != nullptr);
-		QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
+		const QList<QWidget *> allDialogs = mainWindow->findChildren<QWidget *>();
 		ASSERT_FALSE(allDialogs.isEmpty());
 		for (int i = 0; i < allDialogs.length(); ++i) {
 			if (allDialogs.at(i)->windowTitle() == dialogTitle || allDialogs.at(i)->objectName() == dialogTitle) {
@@ -142,11 +121,10 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 			}
 
 			if (i == allDialogs.length() - 1) {
-				FAIL() << "Doesn't exist " << dialogTitle.toStdString() << " dialog";
+				FAIL() << "Doesn't exist " << qPrintable(dialogTitle) << " dialog";
 			}
 		}
 	} );
 
-	timer->start(msec);
 	return {};
 }

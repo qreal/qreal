@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,12 +26,14 @@ class TestAgent;
 /// Test suite for standard qReal GUI.
 /// @warning Test suite can work incorrectly in hidden mode (e.g. scripts are running during ur work in Qt SDK).
 /// @warning Segmantation fault in a single test crushes all tests.
-/// @warning Don't forget to write reachedEndOfScript(); before quit() if you want to quit application by itself.
-/// @note Either use from common.js: quit(), quitWithoutSave(), quitWithSave().
-/// @note Or just leave the app at the quit()-able state.
+/// @note Use common scripts files for easy script writing.
+/// @note You can leave the application at the quit()-able state after an script execution
+/// or quit application by itself using virtual mouse and virtual keyboard.
 class QRealGuiTests : public testing::Test
 {
 protected:
+	QRealGuiTests();
+
 	/// SetUp and TearDown are calling before/after every test.
 	void SetUp() override;
 	void TearDown() override;
@@ -80,23 +82,19 @@ private:
 
 	void checkLastEvaluating(const QString &errorMsg);
 
-	QString readFile(const QString &relativeFileName);
-
-	/// @todo Solve this problem using QScriptEngineAgent.
-	/// This function is a WORKAROUND.
-	void prepareScriptForRunning(QString &script);
+	QString readFile(const QString &relativeFileName) const;
 
 	void exterminate(const int returnCode);
 
-	QString mScriptFolderName = "qrealScripts";
-	int mTimeToExpose = 7000;
-	int mTimeLimit = 67000;
+	QString mScriptFolderName;
+	int mTimeToExpose;
+	int mTimeLimit;
 
 	/// Doesn't have ownership.
 	qReal::MainWindow *mWindow;
 
 	/// Has ownership.
-	qReal::gui::ScriptAPIWrapper *mScriptAPIWrapper;
+	qReal::gui::ScriptingControlAPI *mScriptingControlAPI;
 
 	/// Relative names of common scripts evaluating before main script evaluating.
 	QStringList mCommonScripts;

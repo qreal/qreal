@@ -15,14 +15,14 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menuEdit = ui.getMenu("menuEdit");
+var menuEdit = ui.findMenu("menuEdit");
 assert(menuEdit != null);
 
 utils.activateMenu(menuEdit);
 api.wait(200);
 
 function expectAction(actionName) {
-    var action = ui.getActionInMenu(menuEdit, actionName);
+    var action = ui.findActionInMenu(menuEdit, actionName);
     checkAction(action, false, false, false);
     expect(!ui.isSubMenuInMenu(menuEdit, action));
 }

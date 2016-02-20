@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ QString QRealFileDialog::getOpenFileName(const QString &id
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
 	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
-			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
 	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
@@ -51,7 +51,7 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
 	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
-			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
 	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
@@ -70,7 +70,7 @@ QString QRealFileDialog::getExistingDirectory(const QString &id
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
 	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
-			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
 	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}
@@ -91,7 +91,7 @@ QStringList QRealFileDialog::getOpenFileNames(const QString &id
 {
 	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
 	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
-			|| QCoreApplication::instance()->arguments().contains("--dont-use-native-dialogs"))
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
 	{
 		options = options | QFileDialog::DontUseNativeDialog;
 	}

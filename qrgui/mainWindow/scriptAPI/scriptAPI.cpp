@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
 #include <QtWidgets/QComboBox>
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/definitions.h>
 #include <qrutils/inFile.h>
 #include <editor/editorView.h>
 
@@ -45,32 +46,32 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 	Q_UNUSED(engine);
 	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
 	if (context->argumentCount() < 3) {
-		context->throwError(QObject::tr("Function invokeLater(...) shall have 3 or more arguments at %1")
+		context->throwError(QObject::tr("Function invokeLater(...) must have 3 or more arguments at %1")
 				.arg(backtrace));
 		return {};
 	}
 
 	const int lastButOne = context->argumentCount() - 1;
 	if (!(context->argument(0).isValid() && !context->argument(0).toString().isEmpty())) {
-		context->throwError(QObject::tr("'thisObject' name in invokeLater(...) is failed at %1").arg(backtrace));
+		context->throwError(QObject::tr("Incorrect 'thisObject' name in invokeLater(...) at %1").arg(backtrace));
 		return {};
 	}
 
 	if (!(context->argument(1).isValid() && context->argument(1).isString()
 			&& !context->argument(1).toString().isEmpty()))
 	{
-		context->throwError(QObject::tr("Property name in invokeLater(...) is failed at %1").arg(backtrace));
+		context->throwError(QObject::tr("Incorrect property name in invokeLater(...) at %1").arg(backtrace));
 		return {};
 	}
 
 	if (!(context->argument(lastButOne).isValid() && context->argument(lastButOne).isNumber()
 			&& context->argument(lastButOne).toInt32() > 0))
 	{
-		context->throwError(QObject::tr("Waiting time in invokeLater(...) is failed at %1").arg(backtrace));
+		context->throwError(QObject::tr("Incorrect waiting time in invokeLater(...) at %1").arg(backtrace));
 		return {};
 	}
 
-	QScriptValue thisObject = context->argument(0);
+	const QScriptValue thisObject = context->argument(0);
 	const QString propertyName = context->argument(1).toString();
 	const int msec = context->argument(lastButOne).toInt32();
 	QScriptValueList args;
@@ -78,15 +79,10 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 		args << context->argument(i);
 	}
 
-	QTimer *timer = new QTimer();
-	timer->setSingleShot(true);
-
-	QObject::connect(timer, &QTimer::timeout, [=]() {
-		timer->deleteLater();
+	lambdaSingleShot(msec, [=]() {
 		thisObject.property(propertyName).call(QScriptValue(), args);
 	} );
 
-	timer->start(msec);
 	return {};
 }
 
@@ -120,7 +116,6 @@ void ScriptAPI::init(MainWindow &mainWindow)
 	mScriptEngine.globalObject().setProperty("api", scriptAPI);
 
 	registerDeclaredTypes(&mScriptEngine);
-
 	registerNewFunction(invokeLater, "invokeLater");
 }
 
@@ -132,29 +127,29 @@ void ScriptAPI::evaluate()
 	mVirtualCursor->show();
 	mVirtualCursor->raise();
 
-	mScriptEngine.setProcessEventsInterval(20);
+	mScriptEngine.setProcessEventsInterval(processEventsInterval);
 	mScriptEngine.evaluate(fileContent, fileName);
 }
 
 void ScriptAPI::evaluateScript(const QString &script, const QString &fileName)
 {
-	mScriptEngine.setProcessEventsInterval(20);
+	mScriptEngine.setProcessEventsInterval(processEventsInterval);
 	mScriptEngine.evaluate(script, fileName);
 }
 
 void ScriptAPI::evaluateFileScript(const QString &fileName)
 {
 	const QString fileContent = InFile::readAll(fileName);
-	mScriptEngine.setProcessEventsInterval(20);
+	mScriptEngine.setProcessEventsInterval(processEventsInterval);
 	mScriptEngine.evaluate(fileContent, fileName);
 }
 
-void ScriptAPI::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &QScriptName, int length)
+void ScriptAPI::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &qScriptName, int length)
 {
 	Q_UNUSED(length);
 
-	QScriptValue functionValue = mScriptEngine.newFunction(fun);
-	mScriptEngine.globalObject().setProperty(QScriptName, functionValue);
+	const QScriptValue functionValue = mScriptEngine.newFunction(fun);
+	mScriptEngine.globalObject().setProperty(qScriptName, functionValue);
 }
 
 QScriptSyntaxCheckResult ScriptAPI::checkSyntax(const QString &script) const
@@ -214,7 +209,7 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int d
 	connect(timer, &QTimer::timeout
 			, [this, comboBox]() {
 				mVirtualCursor->moved(comboBox->view()->viewport());
-			});
+			} );
 
 	timer->start();
 	mVirtualCursor->moveToRect(target, duration);
@@ -257,21 +252,16 @@ void ScriptAPI::breakWaiting()
 	mEventLoop.quit();
 }
 
-void ScriptAPI::switchToWindow(QWidget *parent) noexcept
+void ScriptAPI::switchMouseCursorToWindow(QWidget *parent) noexcept
 {
 	mVirtualCursor->setParent(parent);
 	mVirtualCursor->show();
-	mVirtualCursor->leftButtonPress(parent);
-	mVirtualCursor->leftButtonRelease(parent);
+	mVirtualCursor->leftButtonClick(parent); // places parent in the forefront
 }
 
-void ScriptAPI::switchToMainWindow() noexcept
+void ScriptAPI::switchMouseCursorToMainWindow() noexcept
 {
-	QWidget * const mainWindow = mGuiFacade->mainWindow();
-	mVirtualCursor->setParent(mainWindow);
-	mVirtualCursor->show();
-	mVirtualCursor->leftButtonPress(mainWindow);
-	mVirtualCursor->leftButtonRelease(mainWindow);
+	switchMouseCursorToWindow(mGuiFacade->mainWindow());
 }
 
 QScriptValue ScriptAPI::pluginUi(const QString &pluginName)

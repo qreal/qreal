@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ function init() {
     cursor = api.cursor();
     mainWindow = ui.mainWindow();
     assert(mainWindow != null);
-    api.switchToWindow(mainWindow);
+    api.switchMouseCursorToWindow(mainWindow);
     api.wait(200);
 }
 
@@ -54,12 +54,12 @@ function rightClick(widget) {
     cursor.rightButtonRelease(widget);
 }
 
-function fillLineEditLater(dialogName, lineEditObjectName, text, mces) {
-    invokeLater(utils, "fillLineEdit", dialogName, lineEditObjectName, text, mces);
+function fillInputWidgetLater(dialogName, lineEditObjectName, text, mces) {
+    invokeLater(utils, "fillInputWidget", dialogName, lineEditObjectName, text, mces);
 }
 
-function clickButtonLater(dialogName, type, text, mces) {
-    invokeLater(utils, "clickButton", dialogName, type, text, mces);
+function clickButtonLater(dialogName, text, mces) {
+    invokeLater(utils, "clickButton", dialogName, text, mces);
 }
 
 function chooseComboBoxItemLater(dialogName, comboBoxObjectName, itemName, mces) {
@@ -71,19 +71,17 @@ function activateContextMenuActionLater(actionName, mces) {
 }
 
 function quitWithoutSave() {
-    var menuFile = ui.getMenu("menu_File");
+    var menuFile = ui.findMenu("menu_File");
     assert(menuFile != null);
     utils.activateMenu(menuFile);
     api.wait(100);
-    var actionQuit = ui.getActionInMenu(menuFile, "actionQuit");
+    var actionQuit = ui.findActionInMenu(menuFile, "actionQuit");
     checkAction(actionQuit, true, false, false);
     assert(!ui.isSubMenuInMenu(menuFile, actionQuit));
-    clickButtonLater("Save", "QPushButton", "Discard", 1500);
-    reachedEndOfScript();
+    clickButtonLater("Save", "Discard", 1500);
     utils.activateMenuAction(menuFile, actionQuit);
 }
 
-// todo: (before these quit()-s write reachedEndOfScript();)
 // function quit() // just quit action knowing that save window dialog would not called
 // function quitWithSave(fileName)
 // function togglePanelsAction(actionName);

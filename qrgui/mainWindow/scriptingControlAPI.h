@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2015 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,12 +21,12 @@ namespace gui {
 
 class ScriptAPI;
 
-/// @brief ScriptAPIWrapper provides work with ScriptAPI for different classes.
-class ScriptAPIWrapper
+/// @brief This is a brief scripting control API for other QReal components.
+class ScriptingControlAPI
 {
 public:
-	explicit ScriptAPIWrapper(ScriptAPI &scriptAPI);
-	~ScriptAPIWrapper();
+	explicit ScriptingControlAPI(ScriptAPI &scriptAPI);
+	~ScriptingControlAPI();
 
 	/// Evaluates script with current ScriptAPI.
 	/// @param ready script for evaluating, \a fileName is used for error reporting.
@@ -61,7 +61,7 @@ public:
 	QStringList uncaughtExceptionBacktrace() const;
 
 	/// @return the current uncaught exception, or an invalid QScriptValue if there is no uncaught exception.
-	///	The exception value is typically an Error object; in that case,
+	/// The exception value is typically an Error object; in that case,
 	/// you can call toString() on the return value to obtain an error message.
 	QScriptValue uncaughtException() const;
 

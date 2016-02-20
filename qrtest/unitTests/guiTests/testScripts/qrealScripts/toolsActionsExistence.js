@@ -15,12 +15,12 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menuTools = ui.getMenu("menuTools");
+var menuTools = ui.findMenu("menuTools");
 assert(menuTools != null);
 
 utils.activateMenu(menuTools);
 api.wait(200);
 
-var actionGesturesShow = ui.getActionInMenu(menuTools, "actionGesturesShow");
+var actionGesturesShow = ui.findActionInMenu(menuTools, "actionGesturesShow");
 checkAction(actionGesturesShow, true, false, false);
 expect(!ui.isSubMenuInMenu(menuTools, actionGesturesShow));

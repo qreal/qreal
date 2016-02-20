@@ -6,7 +6,7 @@
     <message>
         <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="46"/>
         <source>Clear</source>
-        <translation type="unfinished">Очистить</translation>
+        <translation>Очистить</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="47"/>
@@ -77,7 +77,7 @@
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="49"/>
         <source>&amp;File</source>
-        <translation type="unfinished">&amp;Файл</translation>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="64"/>

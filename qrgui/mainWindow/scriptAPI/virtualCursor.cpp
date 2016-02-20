@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,7 +114,8 @@ void VirtualCursor::leftButtonPress(QWidget *target, int delay)
 {
 	const QPoint clickPosition = widgetPos(target);
 	if (QApplication::activePopupWidget() 
-		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
+			&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+	{
 		QApplication::activePopupWidget()->close();
 	}
 
@@ -134,11 +135,20 @@ void VirtualCursor::leftButtonRelease(QWidget *target, int delay)
 	}
 }
 
+void VirtualCursor::leftButtonClick(QWidget *target, int delay)
+{
+	leftButtonPress(target, -1);
+	leftButtonRelease(target, -1);
+	if (delay >= 0) {
+		mScriptAPI.wait(delay);
+	}
+}
+
 void VirtualCursor::rightButtonPress(QWidget *target, int delay)
 {
 	const QPoint clickPosition = widgetPos(target);
 	mRightButtonPressed = true;
-	simulateMouse(target, QEvent::MouseButtonPress,  clickPosition, Qt::RightButton);
+	simulateMouse(target, QEvent::MouseButtonPress, clickPosition, Qt::RightButton);
 
 	if (delay >= 0) {
 		mScriptAPI.wait(delay);
@@ -166,8 +176,9 @@ void VirtualCursor::leftButtonDoubleClick(QWidget *target, int delay)
 {
 	const QPoint clickPosition = widgetPos(target);
 	if (QApplication::activePopupWidget() 
-		&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition))) {
-		QApplication::activePopupWidget()->close();
+			&& QApplication::activePopupWidget() != QApplication::widgetAt(target->mapToGlobal(clickPosition)))
+	{
+			QApplication::activePopupWidget()->close();
 	}
 
 	simulateMouse(target, QEvent::MouseButtonDblClick, clickPosition, Qt::LeftButton);

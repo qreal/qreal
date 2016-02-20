@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class HintAPI;
 class ScriptAPI;
 
 /// This class provides scripting access to some complicated actions
-/// and usefull methods for test writing, independent of ui, scene, palette etc.
+/// and usefull methods for test writing, independent of UI, scene, palette etc.
 class Utils : public QObject
 {
 	Q_OBJECT
@@ -41,43 +41,42 @@ class Utils : public QObject
 public:
 	Utils(ScriptAPI &scriptAPI, MainWindow &mainWindow, VirtualCursor &virtualCursor, HintAPI &hintAPI);
 
-	// Actions: Don't forget about virtual cursor's moves.
-	/// @note This method works with a keyboard (not a mouse).
+	// ---------- Actions: ----------//
+	// Don't forget about virtual cursor's moves.
 	/// Activates menu getting with pointer.
-	// todo: realise visible mouse moves with hints or virtual cursor.
+	/// @note This method works with a keyboard (not a mouse).
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void activateMenu(QMenu *menu) noexcept;
 
-	/// @warning Use this method only after opening of the assigned menu.
-	/// @note This method works with a keyboard (not a mouse).
 	/// Activates \a actionForExec in corresponding \a menu.
-	// todo: realise visible mouse moves with hints or virtual cursor.
+	/// @warning Use this method only after opening of the assigned menu.
+	/// @note This method interacts with QMenu through the virtual keyboard, not virtual mouse.
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept;
 
-	// todo: realise visible mouse moves with hints or virtual cursor.
 	/// Types \a text in a text field \a lineEditObjectName inside a widget \a widgetName.
-	Q_INVOKABLE void fillLineEdit(const QString &widgetName, const QString &lineEditObjectName
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
+	Q_INVOKABLE void fillInputWidget(const QString &widgetName, const QString &lineEditObjectName
 			, const QString &text) noexcept;
 
-	// todo: realise visible mouse moves with hints or virtual cursor.
-	/// Clicks a button having \a buttonType with \a buttonText printed on the button inside corresponding
-	/// widget with name \a widgetName.
-	Q_INVOKABLE void clickButton(const QString &widgetName, const QString &buttonType
-			, const QString &buttonText) noexcept;
+	/// Clicks a button having \a buttonText printed on the button inside a widget with name \a widgetName.
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
+	Q_INVOKABLE void clickButton(const QString &widgetName, const QString &buttonText) noexcept;
 
-	// todo: realise visible mouse moves with hints or virtual cursor.
 	/// Clicks a certain item in a certain comboBox placed inside a certain widget.
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void chooseComboBoxItem(const QString &widgetName
 			, const QString &comboBoxObjectName, const QString &itemName) noexcept;
 
-	// todo: realise visible mouse moves with hints or virtual cursor.
 	/// By name \a actionName activates some action in a context menu.
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void activateContextMenuAction(const QString &actionName) noexcept;
 
-	// todo: realise visible mouse moves with hints or virtual cursor.
 	/// Closes top level context menu.
+	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void closeContextMenu() noexcept;
 
-	// Returners:
+	// -------- Getters: ---------//
 	/// @returns the geometry of \a action in \a menu.
 	Q_INVOKABLE QRect actionRect(const QMenu *menu, QAction *action) const;
 
@@ -87,7 +86,7 @@ public:
 	/// @returns the number of occurrences of value in the list.
 	Q_INVOKABLE int length(const QStringList &list) const;
 
-	// Checkers:
+	// ----------- Validators: ------------ //
 	/// @returns true if \a action is enabled and visible, otherway returns false.
 	Q_INVOKABLE bool isEnabledAndVisible(const QAction *action) const;
 
@@ -100,18 +99,15 @@ public:
 	/// @returns true if \a action is a checkable action, otherway returns false.
 	Q_INVOKABLE bool actionIsCheckable(const QAction *action) const;
 
-	// Informators:
-	/// @note usefull method for debugging and test scripts writing.
+	// ----------- Debugging: ------------ //
 	/// Prints usefull information about palette elements.
+	/// @note Usefull method for debugging and test scripts writing.
 	Q_INVOKABLE void printPaletteElementsInfo() const;
 
 private:
-	void writeIn(QWidget *widget, const QString &lineEditObjectName, const QString &text) const noexcept;
-	void clickNeededButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const noexcept;
+	void writeInto(QWidget *widget, const QString &editObjectName, const QString &text) const noexcept;
 	void pickNeededItem(QWidget *widget, const QString &comboBoxObjectName, const QString &itemName) const noexcept;
-	void clickPushButton(QWidget *widget, const QString &buttonText) const noexcept;
-	void clickRadioButton(QWidget *widget, const QString &buttonText) const noexcept;
-	void clickCheckBox(QWidget *widget, const QString &buttonText) const noexcept;
+	void clickAbstractButton(QWidget *widget, const QString &buttonType, const QString &buttonText) const noexcept;
 	void throwScriptException(const QString &msg) const noexcept;
 	void doSmthInWidget(const QString &widgetName, const QString &identifier
 			, const QString &buttonText

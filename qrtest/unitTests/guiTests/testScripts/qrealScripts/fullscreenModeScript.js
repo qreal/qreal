@@ -15,13 +15,13 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menu_View = ui.getMenu("menu_View");
+var menu_View = ui.findMenu("menu_View");
 assert(menu_View != null);
 
 utils.activateMenu(menu_View);
 api.wait(200);
 
-var actionFullscreen = ui.getActionInMenu(menu_View, "actionFullscreen");
+var actionFullscreen = ui.findActionInMenu(menu_View, "actionFullscreen");
 utils.activateMenuAction(menu_View, actionFullscreen);
 api.wait(300);
 
@@ -29,15 +29,15 @@ utils.activateMenu(menu_View);
 api.wait(200);
 
 //checks the fullscreen states
-var actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
+var actionMenuPanels = ui.findActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
 assert(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
-var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+var subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
 function expectPanelsAction(actionName, isChecked) {
-    var action = ui.getActionInMenu(subMenuPanels, actionName);
+    var action = ui.findActionInMenu(subMenuPanels, actionName);
     checkAction(action, true, true, isChecked);
     expect(!ui.isSubMenuInMenu(subMenuPanels, action));
 }
@@ -61,11 +61,11 @@ utils.activateMenu(menu_View);
 api.wait(200);
 
 //checks the primordial states
-actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
+actionMenuPanels = ui.findActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
 assert(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
-subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
 expectPanelsAction("Mini Map", true);
@@ -82,10 +82,10 @@ expectPanelsAction("Generators Toolbar", false);
 
 // try to turn on errors dockwidget and turn off palette dockwidget
 utils.activateMenuAction(menu_View, actionMenuPanels);
-var actionErrors = ui.getActionInMenu(subMenuPanels, "Errors");
+var actionErrors = ui.findActionInMenu(subMenuPanels, "Errors");
 utils.activateMenuAction(subMenuPanels, actionErrors);
 utils.activateMenuAction(menu_View, actionMenuPanels);
-var actionPalette = ui.getActionInMenu(subMenuPanels, "Palette");
+var actionPalette = ui.findActionInMenu(subMenuPanels, "Palette");
 utils.activateMenuAction(subMenuPanels, actionPalette);
 
 // changes the fullscreen mode and checks the "Error" action
@@ -106,7 +106,7 @@ api.wait(200);
 
 // checks the error state
 // need repeatedly call getMenuContainedByAction because there the necessary signal is emitted
-subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
 expectPanelsAction("Errors", true);

@@ -15,40 +15,40 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menu_View = ui.getMenu("menu_View");
+var menu_View = ui.findMenu("menu_View");
 assert(menu_View != null);
 
 utils.activateMenu(menu_View);
 api.wait(200);
 
-var actionFullscreen = ui.getActionInMenu(menu_View, "actionFullscreen");
+var actionFullscreen = ui.findActionInMenu(menu_View, "actionFullscreen");
 checkAction(actionFullscreen, true, false, false);
 expect(!ui.isSubMenuInMenu(menu_View, actionFullscreen));
 
-var actionZoom_In = ui.getActionInMenu(menu_View, "actionZoom_In");
+var actionZoom_In = ui.findActionInMenu(menu_View, "actionZoom_In");
 checkAction(actionZoom_In, false, false, false);
 expect(!ui.isSubMenuInMenu(menu_View, actionZoom_In));
 
-var actionZoom_Out = ui.getActionInMenu(menu_View, "actionZoom_Out");
+var actionZoom_Out = ui.findActionInMenu(menu_View, "actionZoom_Out");
 checkAction(actionZoom_Out, false, false, false);
 expect(!ui.isSubMenuInMenu(menu_View, actionZoom_Out));
 
-var actionShowSplash = ui.getActionInMenu(menu_View, "actionShowSplash");
+var actionShowSplash = ui.findActionInMenu(menu_View, "actionShowSplash");
 checkAction(actionShowSplash, true, true, false);
 expect(!ui.isSubMenuInMenu(menu_View, actionShowSplash));
 
-var actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
+var actionMenuPanels = ui.findActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
 expect(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
 utils.activateMenuAction(menu_View, actionMenuPanels);
 api.wait(200);
 
-var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+var subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
 function expectPanelsAction(actionName, isChecked) {
-    var action = ui.getActionInMenu(subMenuPanels, actionName);
+    var action = ui.findActionInMenu(subMenuPanels, actionName);
     checkAction(action, true, true, isChecked);
     expect(!ui.isSubMenuInMenu(subMenuPanels, action));
 }

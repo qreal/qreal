@@ -15,22 +15,22 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menuFile = ui.getMenu("menu_File");
+var menuFile = ui.findMenu("menu_File");
 assert(menuFile != null);
 
 utils.activateMenu(menuFile);
 api.wait(200);
 
 function expectAction(actionName, enabled) {
-    var action = ui.getActionInMenu(menuFile, actionName);
+    var action = ui.findActionInMenu(menuFile, actionName);
     checkAction(action, enabled, false, false);
     expect(!ui.isSubMenuInMenu(menuFile, action));
 }
 
-var actionRecentProjects = ui.getActionInMenu(menuFile, "Recent projects");
+var actionRecentProjects = ui.findActionInMenu(menuFile, "Recent projects");
 checkAction(actionRecentProjects, true, false, false);
 assert(ui.isSubMenuInMenu(menuFile, actionRecentProjects));
-var subMenuRecentProject = ui.getMenuContainedByAction(actionRecentProjects);
+var subMenuRecentProject = ui.findMenuContainedByAction(actionRecentProjects);
 expect(subMenuRecentProject != null);
 
 expectAction("actionNewProject", true);

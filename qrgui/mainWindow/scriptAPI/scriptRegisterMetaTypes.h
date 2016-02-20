@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,11 @@ namespace qReal {
 namespace gui {
 namespace scriptUtils {
 
-QScriptValue QMenuToScriptValue(QScriptEngine *engine, QMenu* const &in);
-void QMenuFromScriptValue(const QScriptValue &object, QMenu* &out);
+QScriptValue qMenuToScriptValue(QScriptEngine *engine, QMenu * const &in);
+void qMenuFromScriptValue(const QScriptValue &object, QMenu *&out);
 
-QScriptValue QActionToScriptValue(QScriptEngine *engine, QAction* const &in);
-void QActionFromScriptValue(const QScriptValue &object, QAction* &out);
+QScriptValue qActionToScriptValue(QScriptEngine *engine, QAction * const &in);
+void qActionFromScriptValue(const QScriptValue &object, QAction *&out);
 
 void registerDeclaredTypes(QScriptEngine *engine);
 

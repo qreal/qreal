@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2015-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,6 @@
 
 namespace guiTesting {
 namespace workarounds {
-
-/// This function is a WORKAROUND.
-/// Function for determining, reached end of the script or not.
-QScriptValue reachedEndOfScript(QScriptContext *context, QScriptEngine *engine);
 
 /// This function is a WORKAROUND.
 /// Close dialog invoking close() slot.

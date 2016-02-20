@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ QWidget *GuiFacade::widget(const QString &type, const QString &objectName) const
 	return utils::WidgetFinder::widget(&mMainWindow, type, objectName);
 }
 
-QWidget *GuiFacade::widgetClarified(const QWidget *parent, const QString &type, const QString &objectName) const
+QWidget *GuiFacade::findChildWidget(const QWidget *parent, const QString &type, const QString &objectName) const
 {
 	return utils::WidgetFinder::widget(parent, type, objectName);
 }
@@ -146,17 +146,17 @@ QWidget *GuiFacade::viewPort(const QAbstractScrollArea *widget) const
 	return widget->viewport();
 }
 
-QMenu *GuiFacade::getMenu(const QString &menuName) const
+QMenu *GuiFacade::findMenu(const QString &menuName) const
 {
-	QMenuBar *menuBar = mMainWindow.findChild<QMenuBar *>();
-	QMenu *menu = menuBar->findChild<QMenu *>(menuName, Qt::FindDirectChildrenOnly);
+	const QMenuBar *menuBar = mMainWindow.findChild<QMenuBar *>();
+	QMenu * const menu = menuBar->findChild<QMenu *>(menuName, Qt::FindDirectChildrenOnly);
 	return menu;
 }
 
-QAction *GuiFacade::getActionInMenu(const QMenu *menu, const QString &actionName) const
+QAction *GuiFacade::findActionInMenu(const QMenu *menu, const QString &actionName) const
 {
-	QList<QAction *> actions = menu->actions();
-	for (QAction * const action: actions) {
+	const QList<QAction *> actions = menu->actions();
+	for (QAction * const action : actions) {
 		if (action->objectName() == actionName || action->text() == actionName) {
 			return action;
 		}
@@ -170,13 +170,13 @@ bool GuiFacade::isSubMenuInMenu(const QMenu *menu, const QAction *action) const
 	return menu->children().contains(action->menu());
 }
 
-QMenu *GuiFacade::getMenuContainedByAction(QAction *action) const
+QMenu *GuiFacade::findMenuContainedByAction(QAction *action) const
 {
-	emit action->menu()->aboutToShow();
+	emit action->menu()->aboutToShow(); // this is a workaround of the bug in qt (see guiFacade.h)
 	return action->menu();
 }
 
-QWidget *GuiFacade::getStartButton(const QString &buttonText) const
+QWidget *GuiFacade::findStartButton(const QString &buttonText) const
 {
 	const QList<QPushButton *> allButtons = mMainWindow.findChildren<QPushButton *>();
 	for (QPushButton * const button : allButtons) {

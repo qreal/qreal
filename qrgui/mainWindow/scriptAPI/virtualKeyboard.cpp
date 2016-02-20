@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ void VirtualKeyboard::printValue(const QString &value, int duration)
 	}
 }
 
-void VirtualKeyboard::clickKey(char c, Qt::KeyboardModifiers modifier)
+void VirtualKeyboard::clickKey(QLatin1Char c, Qt::KeyboardModifiers modifier)
 {
-	QTest::keyClick(QApplication::focusWidget(), QTest::asciiToKey(c), modifier);
+	QTest::keyClick(QApplication::focusWidget(), QTest::asciiToKey(c.toLatin1()), modifier);
 }

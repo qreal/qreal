@@ -15,18 +15,18 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menuSettings = ui.getMenu("menuSettings");
+var menuSettings = ui.findMenu("menuSettings");
 assert(menuSettings != null);
 
 utils.activateMenu(menuSettings);
 api.wait(200);
 
-var actionPreferences = ui.getActionInMenu(menuSettings, "actionPreferences");
+var actionPreferences = ui.findActionInMenu(menuSettings, "actionPreferences");
 checkAction(actionPreferences, true, false, false);
 expect(!ui.isSubMenuInMenu(menuSettings, actionPreferences));
 
 function expectAction(actionName, isChecked) {
-    var action = ui.getActionInMenu(menuSettings, actionName);
+    var action = ui.findActionInMenu(menuSettings, actionName);
     checkAction(action, true, true, isChecked);
     expect(!ui.isSubMenuInMenu(menuSettings, action));
 }

@@ -47,20 +47,20 @@ assert(actionFullscreen != null);
 leftClick(actionFullscreen);
 api.wait(250);
 
-var menu_View = ui.getMenu("menu_View");
+var menu_View = ui.findMenu("menu_View");
 assert(menu_View != null);
 utils.activateMenu(menu_View);
 api.wait(200);
 
-var actionMenuPanels = ui.getActionInMenu(menu_View, "Panels");
+var actionMenuPanels = ui.findActionInMenu(menu_View, "Panels");
 checkAction(actionMenuPanels, true, false, false);
 assert(ui.isSubMenuInMenu(menu_View, actionMenuPanels));
 
-var subMenuPanels = ui.getMenuContainedByAction(actionMenuPanels);
+var subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
 function expectPanelsAction(actionName, isChecked) {
-    var action = ui.getActionInMenu(subMenuPanels, actionName);
+    var action = ui.findActionInMenu(subMenuPanels, actionName);
     checkAction(action, true, true, isChecked);
     expect(!ui.isSubMenuInMenu(subMenuPanels, action));
 }

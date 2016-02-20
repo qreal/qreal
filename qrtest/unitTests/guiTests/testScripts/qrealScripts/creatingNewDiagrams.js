@@ -15,18 +15,25 @@
 // For autocompletion and syntax highlighting
 var mainWindow, ui, utils, keyboard, palette, hints, scene, cursor;
 
-var menuHelp = ui.findMenu("menuHelp");
-assert(menuHelp != null);
-
-utils.activateMenu(menuHelp);
-api.wait(200);
-
-function expectAction(actionName) {
-    var action = ui.findActionInMenu(menuHelp, actionName);
-    checkAction(action, true, false, false);
-    expect(!ui.isSubMenuInMenu(menuHelp, action));
+function assertButton(buttonName) {
+    var button = ui.widget("QToolButton", buttonName);
+    assert(button != null);
+    assert(utils.isEnabledAndVisible(button));
+    leftClick(button);
+    api.wait(50);
 }
 
-expectAction("actionHelp");
-expectAction("actionAbout");
-expectAction("actionAboutQt");
+function chooseNewProjectDiagram(diagramName) {
+    chooseExpectedDialogDiagram(mainWindow, "Create project", diagramName, 1300);
+    assertButton("actionNewProject");
+    api.wait(1700);
+}
+
+function chooseNewDiagramDiagram(diagramName) {
+    chooseExpectedDialogDiagram(mainWindow, "Create diagram", diagramName, 1100);
+    assertButton("actionNew_Diagram");
+    api.wait(1500);
+}
+
+chooseNewProjectDiagram("Block Diagram");
+chooseNewDiagramDiagram("Block Diagram");

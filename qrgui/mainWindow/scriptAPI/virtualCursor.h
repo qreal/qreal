@@ -54,23 +54,34 @@ public:
 	Q_INVOKABLE void sceneMoveTo(QWidget *target, int duration, int xSceneCoord, int ySceneCoord);
 
 	/// Simulates left mouse button press on widget in the current mouse cursor position.
-	/// @param delay How many milliseconds will be delayed after the press event.
+	/// @param delay how namy milliseconds will be delayed after the press event.
+	/// @note If (delay < 0) an event loop doesn't even create.
 	Q_INVOKABLE void leftButtonPress(QWidget *target, int delay = -1);
 
 	/// Simulates left mouse button release on widget in the current mouse cursor position.
-	/// @param delay How many milliseconds will be delayed after the release event.
+	/// @param delay how namy milliseconds will be delayed after the release event.
+	/// @note If (delay < 0) an event loop doesn't even create.
 	Q_INVOKABLE void leftButtonRelease(QWidget *target, int delay = -1);
 
+	/// Simulates left mouse button click on widget in the current mouse cursor position.
+	/// @note Without delay between the press and the release.
+	/// @note If (delay < 0) an event loop doesn't even create.
+	/// @param delay how namy milliseconds will be delayed after the release event.
+	Q_INVOKABLE void leftButtonClick(QWidget *target, int delay = -1);
+
 	/// Simulates right mouse button press on widget in the current mouse cursor position.
-	/// @param delay How many milliseconds will be delayed after the press event.
+	/// @param delay how namy milliseconds will be delayed after the press event.
+	/// @note If (delay < 0) an event loop doesn't even create.
 	Q_INVOKABLE void rightButtonPress(QWidget *target, int delay = -1);
 
 	/// Simulates right mouse button release on widget in the current mouse cursor position.
-	/// @param delay How many milliseconds will be delayed after the release event.
+	/// @param delay how namy milliseconds will be delayed after the release event.
+	/// @note If (delay < 0) an event loop doesn't even create.
 	Q_INVOKABLE void rightButtonRelease(QWidget *target, int delay = -1);
 
 	/// Simulates left mouse button double click on widget in the current mouse cursor position.
-	/// @param delay How many milliseconds will be delayed after the release event.
+	/// @param delay how namy milliseconds will be delayed after the release event.
+	/// @note If (delay < 0) an event loop doesn't even create.
 	Q_INVOKABLE void leftButtonDoubleClick(QWidget *target, int delay = -1);
 
 	/// Posts mouse move event to the \a target widget. That is useful when we either want to generate some
