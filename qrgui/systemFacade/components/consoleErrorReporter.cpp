@@ -66,3 +66,9 @@ void ConsoleErrorReporter::clearErrors()
 {
 	mWereErrors = false;
 }
+
+void ConsoleErrorReporter::reportOperation(const QFuture<void> &operation, const QString &description)
+{
+	Q_UNUSED(operation)
+	Q_UNUSED(description)
+}
