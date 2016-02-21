@@ -15,3 +15,8 @@ void trik::TrikQtsInterpreter::abort()
 {
 	mScriptRunner.abort();
 }
+
+void trik::TrikQtsInterpreter::init()
+{
+	mBrick.init();
+}

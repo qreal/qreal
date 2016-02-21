@@ -18,6 +18,7 @@ public:
 		trikControl::DisplayWidgetInterface temp;
 		return temp;
 	}
+	void init();
 
 public slots:
 	void configure(const QString &portName, const QString &deviceName) override {}

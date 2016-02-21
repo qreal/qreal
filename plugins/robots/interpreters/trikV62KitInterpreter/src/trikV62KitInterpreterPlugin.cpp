@@ -77,7 +77,13 @@ void TrikV62KitInterpreterPlugin::testStart()
 
 	model->applyConfiguration();
 
-	qtsInterpreter()->interpretStringScript("while(true){brick.smile();script.wait(1000);brick.sadSmile();script.wait(1000)}");
+	qtsInterpreter()->init();
+
+	qtsInterpreter()->interpretStringScript(
+	            "brick.display().setBackground(\"white\");"
+	            "brick.display().redraw();"
+	            "while(true){brick.smile();script.wait(1000);brick.sadSmile();script.wait(1000)}"
+	            );
 	//qtsInterpreter()->interpretStringScript("brick.smile();script.wait(2000);brick.sadSmile();script.wait(2000);script.quit()");
 
 	emit started();

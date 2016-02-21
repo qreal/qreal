@@ -22,6 +22,8 @@ public:
 	void interpretStringScript(const QString &script);
 	void abort();
 
+	void init();
+
 private:
 	//QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 	TrikBrick mBrick;
