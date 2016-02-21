@@ -9,6 +9,11 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 {
 }
 
+void TrikBrick::init()
+{
+	mDisplay.init();
+}
+
 trikControl::DisplayInterface *TrikBrick::display() {
 //	trik::robotModel::parts::TrikDisplay * const display =
 //			kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel, "DisplayPort");
