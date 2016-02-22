@@ -18,6 +18,7 @@
 #include <QtGui/QColor>
 
 #include "graphicType.h"
+#include "roleType.h"
 
 class Association;
 namespace utils {
@@ -32,12 +33,16 @@ public:
 	virtual ~EdgeType();
 	virtual void generateCode(utils::OutFile &out);
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
+	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
 	bool copyPorts(NodeType* parent) override;
 	bool copyPictures(GraphicType *parent) override;
 
 private:
-	QString mBeginType;
-	QString mEndType;
+	RoleType* mBeginRole;
+	RoleType* mEndRole;
+
+	QString mBeginRoleName;
+	QString mEndRoleName;
 	QString mLineType;
 	QString mShapeType;
 	QColor mLineColor;
@@ -45,6 +50,7 @@ private:
 	QString mIsDividable;
 	QStringList mFromPorts;
 	QStringList mToPorts;
+	QMap<QString, Type*> mAllExistingTypes;
 
 	virtual bool initRoles();
 	virtual bool initGraphics();

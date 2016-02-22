@@ -18,7 +18,6 @@
 
 #include <qrutils/outFile.h>
 
-#include "association.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"
@@ -34,7 +33,7 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 
 EdgeType::~EdgeType()
 {
-//	qDeleteAll(mAssociations);
+	//qDeleteAll(mAssociations);
 }
 
 
@@ -47,9 +46,8 @@ Type* EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
-
-	result->mBeginType = mBeginType;
-	result->mEndType = mEndType;
+//	result->mBeginType = mBeginType;
+//	result->mEndType = mEndType;
 	result->mLineType = mLineType;
 	result->mShapeType = mShapeType;
 	result->mFromPorts = mFromPorts;
@@ -61,13 +59,12 @@ bool EdgeType::copyPictures(GraphicType *parent)
 {
 	EdgeType *pictureParent = dynamic_cast<EdgeType*>(parent);
 	if (pictureParent != nullptr) {
-
 		mLineType = pictureParent->mLineType;
 		mShapeType = pictureParent->mShapeType;
 		mLineColor = pictureParent->mLineColor;
 		mLineWidth = pictureParent->mLineWidth;
-		mBeginType = pictureParent->mBeginType;
-		mEndType = pictureParent->mEndType;
+//		mBeginType = pictureParent->mBeginType;
+//		mEndType = pictureParent->mEndType;
 		mIsDividable = pictureParent->mIsDividable;
 		mFromPorts = pictureParent->mFromPorts;
 		mToPorts = pictureParent->mToPorts;
@@ -80,9 +77,46 @@ bool EdgeType::copyPictures(GraphicType *parent)
 
 bool EdgeType::initRoles()
 {
+	QDomElement beginRoleElement = mLogic.firstChildElement("beginRole");
+	QDomElement endRoleElement = mLogic.firstChildElement("endRole");
+
+	mBeginRoleName = beginRoleElement.attribute("role");
+	mEndRoleName = endRoleElement.attribute("role");
+	mAllExistingTypes = mDiagram->getAllTypes();
+
+//	for (auto &element : mAllExistingTypes) {
+//		QString name = element->displayedName();
+//		if (name == mBeginRoleName) {
+//			mBeginRole =  dynamic_cast<RoleType *> (element);
+//			//RoleType *sad = ;
+//		} else if (name == mEndRoleName) {
+//			mEndRole =  dynamic_cast<RoleType *> (element);
+//		}
+//	}
 
 	return true;
 }
+
+void EdgeType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)
+{
+	if (mVisible) {
+		const QString diagramName = NameNormalizer::normalize(mDiagram->name());
+		const QString normalizedName = NameNormalizer::normalize(qualifiedName());
+
+		//mBeginRole->getPropertiesOfRole();
+
+//		for (const Property *p : mBeginRole->getPropertiesOfRole()) {
+//			if (!p->displayedName().isEmpty()) {
+//				const QString propertyName = p->name();
+//				const QString propertyDisplayedName = p->displayedName();
+//				out() << "\tmPropertiesDisplayedNamesMap[\"" << diagramName << "\"][\""
+//						<< normalizedName << "\"][\"" << propertyName << "\"] = tr(\""
+//						<< propertyDisplayedName << "\");\n";
+//			}
+//		}
+	}
+}
+
 
 bool EdgeType::initGraphics()
 {
@@ -313,11 +347,11 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\tprotected:\n"
 	<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
-	generateEdgeStyle(mBeginType, out);
+	generateEdgeStyle(mBeginRoleName, out);
 
 	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const\n\t\t{\n";
 
-	generateEdgeStyle(mEndType, out);
+	generateEdgeStyle(mEndRoleName, out);
 
 	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
 
