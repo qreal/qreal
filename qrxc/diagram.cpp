@@ -155,7 +155,7 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 				qDebug() << "Can't parse roleType type";
 				return false;
 			}
-
+			mTypes[roleType->qualifiedName()] = roleType;
 		}
 		else {
 			qDebug() << "ERROR: unknown non graphic type" << element.nodeName();

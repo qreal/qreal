@@ -34,7 +34,7 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 
 EdgeType::~EdgeType()
 {
-	qDeleteAll(mAssociations);
+//	qDeleteAll(mAssociations);
 }
 
 
@@ -47,9 +47,7 @@ Type* EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
-	foreach (Association *association, mAssociations) {
-		result->mAssociations.append(new Association(*association));
-	}
+
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
 	result->mLineType = mLineType;
@@ -63,9 +61,6 @@ bool EdgeType::copyPictures(GraphicType *parent)
 {
 	EdgeType *pictureParent = dynamic_cast<EdgeType*>(parent);
 	if (pictureParent != nullptr) {
-		for (auto association : pictureParent->mAssociations) {
-			mAssociations.append(association->clone());
-		}
 
 		mLineType = pictureParent->mLineType;
 		mShapeType = pictureParent->mShapeType;
@@ -83,32 +78,8 @@ bool EdgeType::copyPictures(GraphicType *parent)
 	return false;
 }
 
-bool EdgeType::initAssociations()
+bool EdgeType::initRoles()
 {
-	QDomElement associationsElement = mLogic.firstChildElement("associations");
-	if (associationsElement.isNull()) {
-		return true;
-	}
-
-	mBeginType = associationsElement.attribute("beginType");
-	mEndType = associationsElement.attribute("endType");
-	if (mBeginType.isEmpty() || mEndType.isEmpty()) {
-		qDebug() << "ERROR: can't parse associations";
-		return false;
-	}
-
-	for (QDomElement element = associationsElement.firstChildElement("association");
-		!element.isNull();
-		element = element.nextSiblingElement("association"))
-	{
-		Association *association = new Association();
-		if (!association->init(element)) {
-			delete association;
-			return false;
-		}
-
-		mAssociations.append(association);
-	}
 
 	return true;
 }

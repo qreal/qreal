@@ -36,7 +36,6 @@ public:
 	bool copyPictures(GraphicType *parent) override;
 
 private:
-	QList<Association*> mAssociations;
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
@@ -47,7 +46,7 @@ private:
 	QStringList mFromPorts;
 	QStringList mToPorts;
 
-	virtual bool initAssociations();
+	virtual bool initRoles();
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();

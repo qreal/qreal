@@ -86,7 +86,7 @@ bool NodeType::copyPictures(GraphicType *parent)
 	return false;
 }
 
-bool NodeType::initAssociations()
+bool NodeType::initRoles()
 {
 	return true;
 }

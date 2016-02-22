@@ -130,7 +130,7 @@ private:
 		, QStringList &resultingList, const QString &fieldName, const bool isNeedToNormalizeAtt) const;
 
 	virtual bool initGraphics() = 0;
-	virtual bool initAssociations() = 0;
+	virtual bool initRoles() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count) = 0;
