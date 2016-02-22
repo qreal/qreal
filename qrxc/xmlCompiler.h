@@ -73,7 +73,7 @@ private:
 
 	void initAllRoleTypes(utils::OutFile &out);
 
-	void generateListOfNamesOfRoles(utils::OutFile &out);
+	void generateListProperiesOfRole(utils::OutFile &out);
 
 	class ListMethodGenerator;
 	class PropertiesGenerator;

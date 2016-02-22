@@ -194,7 +194,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\tQString version() const { return \"" << mPluginVersion << "\"; }\n"
-		<< "\tQStringList getListOfRoles(const QString &element) const override;\n"
+		<< "\tQStringList getListProperiesOfRole(const QString &element) const override;\n"
 		<< "\n"
 		<< "\tQStringList diagrams() const override;\n"
 		<< "\tQStringList elements(const QString &diagram) const override;\n"
@@ -289,7 +289,7 @@ void XmlCompiler::generatePluginSource()
 
 	generateIncludes(out);
 	generateInitPlugin(out);
-	generateListOfNamesOfRoles(out);
+	generateListProperiesOfRole(out);
 	initAllRoleTypes(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
@@ -359,10 +359,31 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generateExplosionsMappings(out);
 }
 
-void XmlCompiler::generateListOfNamesOfRoles(OutFile &out)
+void XmlCompiler::generateListProperiesOfRole(OutFile &out)
 {
 	QString qwerty = "qwerty";
-	out() << "QStringList " << mPluginName << "Plugin::getListOfRoles(const QString &element) const\n{\n";
+	out() << "QStringList " << mPluginName << "Plugin::getListProperiesOfRole(const QString &element) const\n{\n";
+//	out() << "\tQStringList result;\n";
+//	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+//		for (Type *type : diagram->types().values()) {
+//			if (dynamic_cast<EdgeType *>(type)) {
+//				EdgeType *edge = dynamic_cast<EdgeType *>(type);
+//				QList<RoleType *> list = edge->getRoles();
+//				for (auto role : list) {
+//					QString name = role->displayedName();
+//					out() << "\tif (\"" << name << ""\" == element) {\n";
+
+//					if (role->displayedName() == )
+//				}
+
+//			}
+//		}
+//	}
+
+
+
+
+
 	out() << "\tQStringList ololo;\n";
 	out() << "\tololo.append(\"" << qwerty << "\");\n";
 	out() << "\treturn ololo;\n}\n";
