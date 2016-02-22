@@ -51,6 +51,8 @@ public:
 	virtual void initPlugin() = 0;
 	virtual QString id() const = 0;
 	virtual QString version() const = 0;
+	virtual QStringList getListOfRoles(const QString &element) const = 0;
+
 
 	virtual QStringList diagrams() const = 0;
 	virtual QStringList elements(const QString &diagram) const = 0;

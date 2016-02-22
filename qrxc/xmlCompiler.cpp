@@ -193,6 +193,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQString id() const { return \"" << mPluginName << "\"; }\n"
 		<< "\tQString version() const { return \"" << mPluginVersion << "\"; }\n"
+		<< "\tQStringList getListOfRoles(const QString &element) const override;\n"
 		<< "\n"
 		<< "\tQStringList diagrams() const override;\n"
 		<< "\tQStringList elements(const QString &diagram) const override;\n"
@@ -286,6 +287,7 @@ void XmlCompiler::generatePluginSource()
 
 	generateIncludes(out);
 	generateInitPlugin(out);
+	generateListOfNamesOfRoles(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateIsParentOfRequest(out);
@@ -352,6 +354,15 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generateParentsMappings(out);
 	generateShallPaletteBeSorted(out);
 	generateExplosionsMappings(out);
+}
+
+void XmlCompiler::generateListOfNamesOfRoles(OutFile &out)
+{
+	QString qwerty = "qwerty";
+	out() << "QStringList " << mPluginName << "Plugin::getListOfRoles(const QString &element) const\n{\n";
+	out() << "\tQStringList ololo;\n";
+	out() << "\tololo.append(\"" << qwerty << "\");\n";
+	out() << "\treturn ololo;\n}\n";
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)

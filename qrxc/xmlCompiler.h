@@ -71,6 +71,8 @@ private:
 	void generatePaletteGroupsDescriptions(utils::OutFile &out);
 	void generateShallPaletteBeSorted(utils::OutFile &out);
 
+	void generateListOfNamesOfRoles(utils::OutFile &out);
+
 	class ListMethodGenerator;
 	class PropertiesGenerator;
 	class PortsGenerator;
