@@ -31,6 +31,8 @@ public:
 	virtual void generatePropertyDefaults(utils::OutFile &out);
 	virtual void generateMouseGesturesMap(utils::OutFile &out);
 	virtual void generateExplosionsMap(utils::OutFile &out);
+	QString typeOfArrow();
+	QList<Property*> getPropertiesOfRole();
 
 private:
 	QString mArrowType;

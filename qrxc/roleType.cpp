@@ -54,3 +54,14 @@ void RoleType::generateExplosionsMap(utils::OutFile &out)
 {
 
 }
+
+QString RoleType::typeOfArrow()
+{
+	return mArrowType;
+}
+
+
+QList<Property*> RoleType::getPropertiesOfRole()
+{
+	return mProperties;
+}

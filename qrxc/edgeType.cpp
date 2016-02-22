@@ -84,15 +84,15 @@ bool EdgeType::initRoles()
 	mEndRoleName = endRoleElement.attribute("role");
 	mAllExistingTypes = mDiagram->getAllTypes();
 
-//	for (auto &element : mAllExistingTypes) {
-//		QString name = element->displayedName();
-//		if (name == mBeginRoleName) {
-//			mBeginRole =  dynamic_cast<RoleType *> (element);
-//			//RoleType *sad = ;
-//		} else if (name == mEndRoleName) {
-//			mEndRole =  dynamic_cast<RoleType *> (element);
-//		}
-//	}
+	for (auto &element : mAllExistingTypes) {
+		QString name = element->displayedName();
+		if (name == mBeginRoleName) {
+			mBeginRole =  dynamic_cast<RoleType *> (element);
+			//RoleType *sad = ;
+		} else if (name == mEndRoleName) {
+			mEndRole =  dynamic_cast<RoleType *> (element);
+		}
+	}
 
 	return true;
 }
