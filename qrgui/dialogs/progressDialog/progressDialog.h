@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,34 +16,22 @@
 
 #include <QtWidgets/QProgressDialog>
 
-#include "qrgui/dialogs/dialogsDeclSpec.h"
 #include "qrgui/dialogs/progressDialog/progressBar.h"
 
 namespace qReal {
 
-/// @brief Progress dialog capable with invocation utils. Uses @see ProgressBar
-class QRGUI_DIALOGS_EXPORT ProgressDialog : public QProgressDialog
+/// @brief Progress dialog capable with QtConcurrent system. Uses @see ProgressBar
+class QRGUI_DIALOGS_EXPORT ProgressDialog : public QProgressDialog, public ProgressReporterInterface
 {
 	Q_OBJECT
 
 public:
 	explicit ProgressDialog(QWidget *parent = 0);
 
-	/// Returns last connected operation
-	invocation::LongOperation *operation() const;
-	/// Returns if some running operation connected at the moment
-	bool isOperationConnected() const;
-
-	/// Connects specified operation to @see ProgressBar instance.
-	/// NOTE: when operation started blocks gui thread with
-	/// QDialog::exec() call
-	void connectOperation(invocation::LongOperation *operation);
-
-private slots:
-	void onCanceled();
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 
 private:
-	ProgressBar *mProgressBar;
+	ProgressBar *mProgressBar;  // Has ownership
 };
 
 }
