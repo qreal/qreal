@@ -36,10 +36,10 @@ public:
 	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
 	bool copyPorts(NodeType* parent) override;
 	bool copyPictures(GraphicType *parent) override;
+	QList<RoleType*> getRoles();
 
 private:
-	RoleType* mBeginRole;
-	RoleType* mEndRole;
+	QList<RoleType*> mRoles;
 
 	QString mBeginRoleName;
 	QString mEndRoleName;

@@ -86,15 +86,17 @@ bool EdgeType::initRoles()
 
 	for (auto &element : mAllExistingTypes) {
 		QString name = element->displayedName();
-		if (name == mBeginRoleName) {
-			mBeginRole =  dynamic_cast<RoleType *> (element);
-			//RoleType *sad = ;
-		} else if (name == mEndRoleName) {
-			mEndRole =  dynamic_cast<RoleType *> (element);
+		if (name == mBeginRoleName || name == mEndRoleName) {
+			mRoles.append(dynamic_cast<RoleType *> (element));
 		}
 	}
 
 	return true;
+}
+
+QList<RoleType*> EdgeType::getRoles()
+{
+	return mRoles;
 }
 
 void EdgeType::generatePropertyDisplayedNamesMapping(utils::OutFile &out)

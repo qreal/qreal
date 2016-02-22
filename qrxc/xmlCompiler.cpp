@@ -31,6 +31,7 @@
 #include "nodeType.h"
 #include "portType.h"
 #include "enumType.h"
+#include "roleType.h"
 
 using namespace utils;
 
@@ -254,6 +255,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initPaletteGroupsDescriptionMap();\n"
 		<< "\tvirtual void initShallPaletteBeSortedMap();\n"
 		<< "\tvirtual void initExplosionsMap();\n"
+		<< "\tvirtual void initRoleTypes();\n"
 		<< "\n"
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
@@ -275,6 +277,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
+		<< "\tQList<QPair<QString, QStringList>> mAllRoleTypes;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -282,12 +285,12 @@ void XmlCompiler::generatePluginHeader()
 void XmlCompiler::generatePluginSource()
 {
 	QString fileName = "generated/pluginInterface.cpp"; //mPluginName
-
 	OutFile out(fileName);
 
 	generateIncludes(out);
 	generateInitPlugin(out);
 	generateListOfNamesOfRoles(out);
+	initAllRoleTypes(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateIsParentOfRequest(out);
@@ -363,6 +366,35 @@ void XmlCompiler::generateListOfNamesOfRoles(OutFile &out)
 	out() << "\tQStringList ololo;\n";
 	out() << "\tololo.append(\"" << qwerty << "\");\n";
 	out() << "\treturn ololo;\n}\n";
+}
+
+void XmlCompiler::initAllRoleTypes(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initRoleTypes()\n{\n";
+	// << "\tQStringList<QString, QStringList> mAllRollTypes;\n"
+	out() << "\tQPair<QString, QStringList> temp;\n";
+	int i = 0;
+	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+		for (Type *type : diagram->types().values()) {
+			if (dynamic_cast<EdgeType *>(type)) {
+				EdgeType *edge = dynamic_cast<EdgeType *>(type);
+				QList<RoleType *> list = edge->getRoles();
+				QString nameOfEdge = edge->name();
+				QString listName = "namesOfRoles" + i;
+				out() << "\tQStringList " << listName << ";\n";
+				for (auto role : list) {
+					out() << "\t\"" << listName << "\".append(\"" << role->displayedName() << "\");\n";
+				}
+
+				out() << "\ttemp = qMakePair(QString(\"" << nameOfEdge << "\")," << listName << ");\n";
+
+				out() << "\tmAllRoleTypes.append(temp);\n";
+				++i;
+			}
+		}
+	}
+	out() << "\n}\n";
+
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
