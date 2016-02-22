@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,4 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "invocationUtils/functorOperation.h"
+#pragma once
+
+#include <gtest/gtest.h>
+
+#include <utils/circularQueue.h>
+
+namespace qrTest {
+namespace robotsTests {
+namespace utilsTests {
+
+class CircularQueueTests : public testing::Test
+{
+};
+
+}
+}
+}

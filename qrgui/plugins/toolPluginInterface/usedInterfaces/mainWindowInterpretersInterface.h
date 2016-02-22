@@ -18,9 +18,7 @@
 
 #include <qrkernel/ids.h>
 
-namespace invocation {
-class LongOperation;
-}
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/progressReporterInterface.h"
 
 namespace qReal {
 
@@ -31,7 +29,7 @@ namespace gui {
 class PreferencesPage;
 class ErrorReporter;
 
-class MainWindowInterpretersInterface
+class MainWindowInterpretersInterface : public ProgressReporterInterface
 {
 public:
 	virtual ~MainWindowInterpretersInterface() {}
@@ -91,11 +89,6 @@ public:
 	virtual void updateActiveDiagram() = 0;
 
 	virtual void deleteElementFromDiagram(const Id &id) = 0;
-
-	/// Must be called before some long operation start.
-	/// Shows progress bar on operation start
-	/// @param operation Operation that going to be invoced
-	virtual void reportOperation(invocation::LongOperation *operation) = 0;
 
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, const QString &title) = 0;
