@@ -4,7 +4,7 @@
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 		<nonGraphicTypes>
-			<enum name="associationTypes" displayedName="Association Types">
+			<enum name="arrowTypes" displayedName="Arrow Types">
 				<value name="no_arrow" displayedName="No arrow"/>
 				<value name="open_arrow" displayedName="Opened arrow"/>
 				<value name="empty_arrow" displayedName="Empty arrow"/>
@@ -143,6 +143,7 @@
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
 						<contains type="MetaEditor::MetaEntityEdge"/>
+						<contains type="MetaEditor::MetaEntityRole"/>
 						<contains type="MetaEditor::MetaEntityPort"/>
 						<contains type="MetaEditor::MetaEntityEnum"/>
 						<contains type="MetaEditor::MetaEntityGroup"/>
@@ -271,6 +272,8 @@
 					<generalizations/>
 					<properties>
 						<property type="string" name="displayedName"/>
+						<property type="MetaEntityRole" name="beginRole"/>
+						<property type="MetaEntityRole" name="endRole"/>
 						<property type="string" name="description"/>
 						<property type="string" name="path"/>
 						<property type="bool" name="isDividable">
@@ -297,15 +300,6 @@
 						<property type="linkShapeType" name="shape">
 							<default>broken</default>
 						</property>
-      						<property type="associationTypes" name="beginType">
-							<default>no_arrow</default>
-						</property>
-						<property type="associationTypes" name="endType">
-							<default>no_arrow</default>
-						</property>
-                                                        
-						<property type="string" name="beginName"/>
-						<property type="string" name="endName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
@@ -318,6 +312,39 @@
 							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
+					</container>
+				</logic>
+			</node>
+			<node name="MetaEntityRole" displayedName="Role" description="Вспомогательный элемент для MetaEntityEdge. Вкладывается в MetaEntityEdge">
+				<graphics>
+					<picture sizey="147" sizex="129">
+						<line y2="30a" x1="14a" x2="115a" stroke-style="solid" stroke="#ff000000" fill="#ffffffff" stroke-width="0" fill-style="none" y1="30a"/>
+						<ellipse y2="143a" x1="3a" x2="125a" stroke-style="solid" stroke="#ff000000" fill="#ffffffff" stroke-width="0" fill-style="none" y1="0a"/>
+					</picture>
+					<labels>
+						<label x="48a" y="3a" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="22" y="124" type="NonTyped"/>
+						<pointPort x="114" y="30" type="NonTyped"/>
+						<pointPort x="126" y="69" type="NonTyped"/>
+						<pointPort x="110" y="121" type="NonTyped"/>
+						<pointPort x="67" y="144" type="NonTyped"/>
+						<pointPort x="2" y="72" type="NonTyped"/>
+						<pointPort x="14" y="31" type="NonTyped"/>
+						<pointPort x="43" y="4" type="NonTyped"/>
+						<pointPort x="83" y="4" type="NonTyped"/>
+ 					</ports>
+				</graphics>
+				<logic>
+					<generalizations/>
+					<properties>
+						<property type="arrowTypes" name="arrowType">
+							<default>no_arrow</default>
+						</property>
+					</properties>
+					<container>
+						<contains type="MetaEditor::MetaEntity Attribute"/>
 					</container>
 				</logic>
 			</node>
@@ -679,6 +706,7 @@
 				<element name="MetaEntityPort"/>
 				<element name="MetaEntityEnum"/>
 				<element name="MetaEntityImport"/>
+				<element name="MetaEntityRole"/>
 			</group>
 			<group name="Root Diagrams" description="Корневые элементы">
 				<element name="MetamodelDiagram"/>
@@ -695,7 +723,6 @@
 			</group>
 			<group name="Edge Properties" description="Элементы метаязыка для указания свойств связей создаваемого языка">
 				<element name="MetaEntity Attribute"/>
-				<element name="MetaEntityAssociation"/>
 			</group>
 			<group name="Relationship" description="Связи метаязыка для описания вызимоотношений между элементами создаваемого языка">
 				<element name="Inheritance"/>

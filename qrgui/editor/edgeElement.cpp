@@ -121,7 +121,7 @@ EdgeElement::~EdgeElement()
 void EdgeElement::initTitles()
 {
 	Element::initTitles();
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 void EdgeElement::initLineHandler()
@@ -156,7 +156,7 @@ void EdgeElement::setLine(const QPolygonF &line)
 	mLine = line;
 	saveConfiguration();
 	update();
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 qreal EdgeElement::fromPort() const
@@ -281,26 +281,37 @@ QPainterPath EdgeElement::shape() const
 	return path;
 }
 
-void EdgeElement::updateLongestPart()
-{
-	qreal maxLen = 0.0;
-	int maxIdx = 0;
-	for (int i = 0; i < mLine.size() - 1; ++i) {
-		qreal newLen = QLineF(mLine[i], mLine[i + 1]).length();
-		if (newLen > maxLen) {
-			maxLen = newLen;
-			maxIdx = i;
-		}
-	}
 
-	mLongPart = maxIdx;
+void EdgeElement::updateBeginAndEnd()
+{
+	int firstIdx = 0;
+	int lastIdx = mLine.size() - 2;
 
 	if (mLabels.count() == 1) {
-		Label *title = mLabels[0];
-		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
-		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
-		x -= title->boundingRect().width() / 2;
-		y -= title->boundingRect().height() / 2;
+			Label *title = mLabels[0];
+			qreal x = (mLine[firstIdx].x() + mLine[lastIdx + 1].x()) / 2;
+			qreal y = (mLine[firstIdx].y() + mLine[lastIdx + 1].y()) / 2;
+			x -= title->boundingRect().width() / 2;
+			y -= title->boundingRect().height() / 2;
+			title->setPos(x, y);
+			return;
+		}
+
+	for (int i = 0; i < mLabels.size() / 2; ++i) {
+		Label *title = mLabels[i];
+		qreal x = (mLine[firstIdx].x() + 20 * (i + 1));
+		qreal y = (mLine[firstIdx].y() + 20 * (i + 1));
+//		x += title->boundingRect().width();
+//		y += title->boundingRect().height();
+		title->setPos(x, y);
+	}
+
+	for (int i = mLabels.size() / 2;  i < mLabels.size() ; ++i) {
+		Label *title = mLabels[i];
+		qreal x = (mLine[lastIdx + 1].x() - 20 * (i + 1));
+		qreal y = (mLine[lastIdx + 1].y() - 20 * (i + 1));
+//		x -= title->boundingRect().width();
+//		y -= title->boundingRect().height();
 		title->setPos(x, y);
 	}
 }
@@ -920,7 +931,7 @@ void EdgeElement::updateData()
 	mElementImpl->updateData(this);
 
 	update();
-	updateLongestPart();
+	updateBeginAndEnd();
 	highlight(isHanging() ? Qt::red : mPenColor);
 }
 
@@ -964,7 +975,7 @@ void EdgeElement::placeEndTo(const QPointF &place)
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setPosition(id(), this->pos());
 
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 void EdgeElement::moveConnection(NodeElement *node, const qreal portId)
@@ -1060,7 +1071,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 				}
 			}
 
-			updateLongestPart();
+			updateBeginAndEnd();
 			return value;
 		default:
 			return QGraphicsItem::itemChange(change, value);
@@ -1121,7 +1132,7 @@ void EdgeElement::alignToGrid()
 {
 	prepareGeometryChange();
 	mHandler->alignToGrid();
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 
