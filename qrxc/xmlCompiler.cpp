@@ -247,7 +247,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initNameMap();\n"
 		<< "\tvirtual void initNodesAndEdgesSets();\n"
 		<< "\tvirtual void initPropertyMap();\n"
-		<< "\tvirtual void initPropertyDefaultsMap();\n"
+	//	<< "\tvirtual void initPropertyDefaultsMap();\n"
 		<< "\tvirtual void initDescriptionMap();\n"
 		<< "\tvirtual void initPortTypes();\n"
 		<< "\tvirtual void initParentsMap();\n"
@@ -338,9 +338,11 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitNodesAndEdgesSets();\n"
 		<< "\tinitMouseGestureMap();\n"
 		<< "\tinitPropertyMap();\n"
-		<< "\tinitPropertyDefaultsMap();\n"
+//		<< "\tinitPropertyDefaultsMap();\n"
 		<< "\tinitDescriptionMap();\n"
 		<< "\tinitPortTypes();\n"
+		<< "\tinitRoleTypes();\n"
+		<< "\tinitRolesWithProperies();\n"
 		<< "\tinitParentsMap();\n"
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"
@@ -354,7 +356,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generatePaletteGroupsDescriptions(out);
 	generateMouseGestureMap(out);
 	generatePropertyMap(out);
-	generatePropertyDefaultsMap(out);
+	//generatePropertyDefaultsMap(out);
 	generateDescriptionMappings(out);
 	generatePortTypeMappings(out);
 	generateParentsMappings(out);
@@ -368,11 +370,11 @@ void XmlCompiler::generateListProperiesOfRole(OutFile &out)
 	out() << "QStringList " << mPluginName << "Plugin::getListProperiesOfRole(const QString &element) const\n{\n";
 	//	<< "\tQList<QPair<QString, QPair<QString, QStringList>>> mAllRolesWithProperties;\n"
 
-	out() << "\tQStringlist result;\n";
+	out() << "\QStringList result;\n";
 	out() << "\tfor (auto role : mAllRolesWithProperties) {\n";
 	out() << "\t\tif (role.first == element) {\n";
-	out() << "\t\t\t for (auto temp : role.second) {\n";
-	out() << "\t\t\t\t QStringlist tempList = temp.second;\n";
+//	out() << "\t\t\t for (auto temp : role.second) {\n";
+	out() << "\t\t\t\t QStringList tempList = role.second.second;\n";
 	out() << "\t\t\t\t\t for (auto prop : tempList) {\n";
 	out() << "\t\t\t\t\t\t result.append(prop);\n";
 	out() << "\t\t\t\t\t}\n";

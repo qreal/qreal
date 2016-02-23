@@ -156,6 +156,11 @@ QStringList ProxyEditorManager::propertiesWithDefaultValues(const Id &id) const
 	return mProxiedEditorManager->propertiesWithDefaultValues(id);
 }
 
+QStringList ProxyEditorManager::getListProperiesOfRole(const Id &id, const QString &element) const
+{
+	return mProxiedEditorManager->getListProperiesOfRole(id, element);
+}
+
 bool ProxyEditorManager::hasElement(const Id &element) const
 {
 	return mProxiedEditorManager->hasElement(element);

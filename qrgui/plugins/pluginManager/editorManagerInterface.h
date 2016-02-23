@@ -90,6 +90,7 @@ public:
 	virtual QStringList portTypes(const Id &id) const = 0;
 	virtual QString defaultPropertyValue(const Id &id, QString name) const = 0;
 	virtual QStringList propertiesWithDefaultValues(const Id &id) const = 0;
+	virtual QStringList getListProperiesOfRole(const Id &id, const QString &element) const = 0;
 
 	virtual bool hasElement(const Id &element) const = 0;
 

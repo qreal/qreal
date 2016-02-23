@@ -53,6 +53,8 @@ private:
 	utils::ScalableCoordinate mY;
 
 	int mIndex;
+	QString mRoleName;
+	QString mNameOfPropertyRole;
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;

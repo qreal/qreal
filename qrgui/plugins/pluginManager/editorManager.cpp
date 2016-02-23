@@ -357,6 +357,12 @@ QStringList EditorManager::propertiesWithDefaultValues(const Id &id) const
 	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
 }
 
+QStringList EditorManager::getListProperiesOfRole(const Id &id, const QString &element) const
+{
+	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	return mPluginIface[id.editor()]->getListProperiesOfRole(element);
+}
+
 bool EditorManager::hasElement(const Id &elementId) const
 {
 	Q_ASSERT(elementId.idSize() == 3);

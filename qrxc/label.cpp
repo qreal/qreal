@@ -24,6 +24,8 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 {
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);
+	mRoleName = element.attribute("role");
+	mNameOfPropertyRole = element.attribute("nameRoleProperty"); // displayed? (or name)
 
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");

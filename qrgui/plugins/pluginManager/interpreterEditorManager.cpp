@@ -418,6 +418,13 @@ QString InterpreterEditorManager::typeName(const Id &id, const QString &name) co
 	return valueOfProperty(id, name, "attributeType");
 }
 
+QStringList InterpreterEditorManager::getListProperiesOfRole(const Id &id, const QString &element) const
+{
+	QStringList result;
+	return result;
+}
+
+
 Id InterpreterEditorManager::findElementByType(const QString &type) const
 {
 	foreach (const qrRepo::RepoApi * const repo, mEditorRepoApi.values()) {
