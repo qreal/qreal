@@ -366,30 +366,20 @@ void XmlCompiler::generateListProperiesOfRole(OutFile &out)
 {
 	QString qwerty = "qwerty";
 	out() << "QStringList " << mPluginName << "Plugin::getListProperiesOfRole(const QString &element) const\n{\n";
-//	out() << "\tQStringList result;\n";
-//	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
-//		for (Type *type : diagram->types().values()) {
-//			if (dynamic_cast<EdgeType *>(type)) {
-//				EdgeType *edge = dynamic_cast<EdgeType *>(type);
-//				QList<RoleType *> list = edge->getRoles();
-//				for (auto role : list) {
-//					QString name = role->displayedName();
-//					out() << "\tif (\"" << name << ""\" == element) {\n";
+	//	<< "\tQList<QPair<QString, QPair<QString, QStringList>>> mAllRolesWithProperties;\n"
 
-//					if (role->displayedName() == )
-//				}
+	out() << "\tQStringlist result;\n";
+	out() << "\tfor (auto role : mAllRolesWithProperties) {\n";
+	out() << "\t\tif (role.first == element) {\n";
+	out() << "\t\t\t for (auto temp : role.second) {\n";
+	out() << "\t\t\t\t QStringlist tempList = temp.second;\n";
+	out() << "\t\t\t\t\t for (auto prop : tempList) {\n";
+	out() << "\t\t\t\t\t\t result.append(prop);\n";
+	out() << "\t\t\t\t\t}\n";
+	out() << "\t\t\t}\n";
+	out() << "\t}\n\n";
+	out() << "\treturn result;\n}\n\n";
 
-//			}
-//		}
-//	}
-
-
-
-
-
-	out() << "\tQStringList ololo;\n";
-	out() << "\tololo.append(\"" << qwerty << "\");\n";
-	out() << "\treturn ololo;\n}\n";
 }
 
 void XmlCompiler::initAllRoleTypes(OutFile &out)
