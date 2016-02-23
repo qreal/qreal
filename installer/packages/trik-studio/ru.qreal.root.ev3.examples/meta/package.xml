@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Examples</DisplayName>
+    <DisplayName xml:lang="ru_ru">Примеры</DisplayName>
+    <Description>A set of examples for Lego EV3 kit</Description>
+    <Description xml:lang="ru_ru">Набор примеров программ для Lego EV3</Description>
+    <Version>3.1.3-4</Version>
+    <ReleaseDate>2016-01-22</ReleaseDate>
+    <SortingPriority>8</SortingPriority>
+    <Default>true</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>
