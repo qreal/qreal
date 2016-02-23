@@ -7,8 +7,10 @@
 namespace trik {
 
 namespace robotModel {
+namespace twoD {
 namespace parts {
-class TrikDisplay;
+class Display;
+}
 }
 }
 
@@ -24,7 +26,7 @@ public:
 
 public slots:
 	virtual void showImage(const QString &fileName) override;
-	virtual void addLabel(const QString &text, int x, int y) override {}
+	virtual void addLabel(const QString &text, int x, int y) override;
 	virtual void removeLabels() override {}
 	virtual void setPainterColor(const QString &color) override;
 	virtual void setPainterWidth(int penWidth) override;
@@ -36,12 +38,12 @@ public slots:
 	virtual void setBackground(const QString &color) override;
 	virtual void hide() override {}
 	virtual void clear() override;
-	virtual void reset() override {}
+	virtual void reset() override;
 	virtual void redraw() override;
 
 private:
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
-	robotModel::parts::TrikDisplay * mDisplay;
+	robotModel::twoD::parts::Display * mDisplay;
 
 };
 

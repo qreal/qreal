@@ -40,7 +40,7 @@ public:
 	/// with reading as a parameter.
 	/// This call is ignored if sensor works in a "push" mode and always provides readings as soon as they are ready.
 	/// If more than one call of "read" was made before sensor returned values, subsequent calls are ignored.
-	virtual void read() = 0;
+	Q_INVOKABLE virtual void read() = 0;
 
 	/// Returns true if sensor state was locked for writing. That means that last obtained sensor value
 	/// will not be refreshed until setLocked(true) will be called.
