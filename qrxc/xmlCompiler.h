@@ -72,6 +72,7 @@ private:
 	void generateShallPaletteBeSorted(utils::OutFile &out);
 
 	void initAllRoleTypes(utils::OutFile &out);
+	void initAllRolesWithProperties(utils::OutFile &out);
 
 	void generateListProperiesOfRole(utils::OutFile &out);
 

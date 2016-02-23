@@ -256,6 +256,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initShallPaletteBeSortedMap();\n"
 		<< "\tvirtual void initExplosionsMap();\n"
 		<< "\tvirtual void initRoleTypes();\n"
+		<< "\tvirtual void initRolesWithProperies();\n"
 		<< "\n"
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
@@ -278,6 +279,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
 		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
 		<< "\tQList<QPair<QString, QStringList>> mAllRoleTypes;\n"
+		<< "\tQList<QPair<QString, QPair<QString, QStringList>>> mAllRolesWithProperties;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -291,6 +293,7 @@ void XmlCompiler::generatePluginSource()
 	generateInitPlugin(out);
 	generateListProperiesOfRole(out);
 	initAllRoleTypes(out);
+	initAllRolesWithProperties(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateIsParentOfRequest(out);
@@ -404,7 +407,7 @@ void XmlCompiler::initAllRoleTypes(OutFile &out)
 				QString listName = "namesOfRoles" + i;
 				out() << "\tQStringList " << listName << ";\n";
 				for (auto role : list) {
-					out() << "\t\"" << listName << "\".append(\"" << role->displayedName() << "\");\n";
+					out() << "\t" << listName << ".append(\"" << role->displayedName() << "\");\n";
 				}
 
 				out() << "\ttemp = qMakePair(QString(\"" << nameOfEdge << "\")," << listName << ");\n";
@@ -416,6 +419,53 @@ void XmlCompiler::initAllRoleTypes(OutFile &out)
 	}
 	out() << "\n}\n";
 
+}
+
+void XmlCompiler::initAllRolesWithProperties(OutFile &out)
+{
+	out() << "void " << mPluginName << "Plugin::initRolesWithProperies()\n{\n";
+	//	<< "\tQList<QPair<QString, QPair<QString, QStringList>>> mAllRolesWithProperties;\n"
+	QList<RoleType *> list;
+	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
+		for (Type *type : diagram->types().values()) {
+			if (dynamic_cast<EdgeType *>(type)) {
+				EdgeType *edge = dynamic_cast<EdgeType *>(type);
+				QList<RoleType *> tempList = edge->getRoles();
+				for (auto role : tempList) {
+					if (!list.contains(role)) {
+						list.append(role);
+					}
+				}
+			}
+		}
+	}
+
+	out() << "\tQPair<QString, QPair<QString, QStringList>> pair;\n";
+	out() << "\tQPair<QString, QStringList> temp;\n";
+
+	for (auto role : list) {
+		QList<Property *> propertyList = role->getPropertiesOfRole();
+		QString nameOfRole = role->displayedName();
+
+
+		for (auto property : propertyList) {
+			QString name = property->name();
+			out() << "\tQStringList " << name << ";\n";
+			QString displayedName = property->displayedName();
+			QString type = property->type();
+			QString defaultValue = property->defaultValue();
+			out() << "\t" << name << ".append(QString(\"" << displayedName << "\"));\n";
+			out() << "\t" << name << ".append(QString(\"" << type << "\"));\n";
+			out() << "\t" << name << ".append(QString(\"" << defaultValue << "\"));\n";
+
+			out() << "\ttemp = qMakePair(QString(\"" << name << "\")," << name << ");\n";
+
+			out() << "\tpair = qMakePair(QString(\"" << nameOfRole << "\"), temp);\n";
+			out() << "\mAllRolesWithProperties.append(pair);\n\n";
+
+		}
+	}
+	out() << "\n}\n";
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
