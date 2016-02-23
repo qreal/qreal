@@ -1,4 +1,4 @@
-#include <trikKitInterpreterCommon/trikEmulation/displayemu.h>
+#include <trikKitInterpreterCommon/trikEmulation/trikdisplayemu.h>
 
 #include <kitBase/robotModel/robotModelUtils.h>
 ///todo:
@@ -17,7 +17,7 @@ trikControl::DisplayWidgetInterface &TrikDisplayEmu::graphicsWidget() {
 
 void TrikDisplayEmu::init()
 {
-	mDisplay = kitBase::robotModel::RobotModelUtils::findDevice<robotModel::parts::TrikDisplay>(*mTwoDRobotModel, "DisplayPort");
+	mDisplay = kitBase::robotModel::RobotModelUtils::findDevice<robotModel::twoD::parts::Display>(*mTwoDRobotModel, "DisplayPort");
 }
 
 void TrikDisplayEmu::showImage(const QString &fileName)
@@ -28,6 +28,15 @@ void TrikDisplayEmu::showImage(const QString &fileName)
 		bool res = QMetaObject::invokeMethod(mDisplay,
 		                                     "drawSmile",
 		                                     Q_ARG(bool, smile));
+}
+
+void TrikDisplayEmu::addLabel(const QString &text, int x, int y)
+{
+	QMetaObject::invokeMethod(mDisplay,
+	                          "printText",
+	                          Q_ARG(int, x),
+	                          Q_ARG(int, y),
+	                          Q_ARG(const QString &, text));
 }
 
 void TrikDisplayEmu::setPainterColor(const QString &color)
@@ -105,6 +114,12 @@ void TrikDisplayEmu::clear()
 {
 	QMetaObject::invokeMethod(mDisplay,
 	                          "clearScreen");
+}
+
+void TrikDisplayEmu::reset()
+{
+	QMetaObject::invokeMethod(mDisplay,
+	                          "reset");
 }
 
 void TrikDisplayEmu::redraw()

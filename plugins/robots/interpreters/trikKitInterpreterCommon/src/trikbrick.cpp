@@ -12,10 +12,36 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 void TrikBrick::init()
 {
 	mDisplay.init();
+	mMotors.clear(); // needed?
+	mSensors.clear();
 }
 
-trikControl::DisplayInterface *TrikBrick::display() {
-//	trik::robotModel::parts::TrikDisplay * const display =
+trikControl::MotorInterface *TrikBrick::motor(const QString &port)
+{
+	using namespace kitBase::robotModel;
+	if (!mMotors.contains(port)) {
+		robotParts::Motor * mot =
+		        RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
+		mMotors[port] = new TrikMotorEmu(mot);
+	}
+	return mMotors[port];
+}
+
+trikControl::SensorInterface *TrikBrick::sensor(const QString &port)
+{
+	//testing
+	using namespace kitBase::robotModel;
+	if (!mSensors.contains(port)) {
+		robotParts::ScalarSensor * sens =
+		        RobotModelUtils::findDevice<robotParts::ScalarSensor>(*mTwoDRobotModel, port);
+		mSensors[port] = new TrikSensorEmu(sens);
+	}
+	return mSensors[port];
+}
+
+trikControl::DisplayInterface *TrikBrick::display()
+{
+	//	trik::robotModel::parts::TrikDisplay * const display =
 //			kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel, "DisplayPort");
 //	if (display) {
 //		bool res = QMetaObject::invokeMethod(display,

@@ -1,9 +1,14 @@
 #pragma once
 
+#include <QHash>
+
 #include <trikControl/brickInterface.h>
 
 #include "robotModel/twoD/trikTwoDRobotModel.h"
-#include "trikEmulation/displayemu.h"
+
+#include "trikEmulation/trikdisplayemu.h"
+#include "trikEmulation/triksensoremu.h"
+#include "trikEmulation/trikmotoremu.h"
 
 namespace trik {
 
@@ -25,9 +30,9 @@ public slots:
 	void playSound(const QString &soundFileName) override {}
 	void say(const QString &text) override {}
 	void stop() override {}
-	trikControl::MotorInterface *motor(const QString &port) override {return nullptr;}
+	trikControl::MotorInterface *motor(const QString &port) override;
 	trikControl::PwmCaptureInterface *pwmCapture(const QString &port) override {return nullptr;}
-	trikControl::SensorInterface *sensor(const QString &port) override {return nullptr;}
+	trikControl::SensorInterface *sensor(const QString &port) override;
 	QStringList motorPorts(trikControl::MotorInterface::Type type) const override {return {};}
 	QStringList pwmCapturePorts() const override {return {};}
 	QStringList sensorPorts(trikControl::SensorInterface::Type type) const override {return {};}
@@ -49,6 +54,9 @@ private:
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
 	TrikDisplayEmu mDisplay;
+
+	QHash<QString, TrikMotorEmu *> mMotors;
+	QHash<QString, TrikSensorEmu *> mSensors;
 
 };
 

@@ -24,6 +24,8 @@ using namespace trik;
 
 #include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h"
 
+#include <QFileDialog>
+
 const QString kitIdString = "trikV62Kit";
 
 TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
@@ -66,6 +68,14 @@ void TrikV62KitInterpreterPlugin::testStart()
 	/// todo: bad
 //	qtsInterpreter()->interpretStringScript("brick.stop()");
 
+	QString script = QFileDialog::getOpenFileName(nullptr,
+	                                              tr("Open QtScript file"),
+	                                              QString(),
+	                                              tr("Script Files (*.qts *.js *.txt)"));
+	if (script.isNull()) {
+		return;
+	}
+
 	robotModel::twoD::TwoDRobotModel * model = dynamic_cast<robotModel::twoD::TwoDRobotModel*>(defaultRobotModel());
 	model->stopRobot();
 	const QString modelName = model->robotId();
@@ -77,16 +87,32 @@ void TrikV62KitInterpreterPlugin::testStart()
 
 	model->applyConfiguration();
 
+
 	qtsInterpreter()->init();
 
-	qtsInterpreter()->interpretStringScript(
-	            "brick.display().setBackground(\"white\");"
-	            "brick.display().redraw();"
-	            "while(true){brick.smile();script.wait(1000);brick.sadSmile();script.wait(1000)}"
-	            );
-	//qtsInterpreter()->interpretStringScript("brick.smile();script.wait(2000);brick.sadSmile();script.wait(2000);script.quit()");
+	QFile scriptFile(script);
 
-	emit started();
+	if (scriptFile.open(QIODevice::ReadOnly)) {
+		QTextStream in(&scriptFile);
+
+		emit started(); // test
+		qtsInterpreter()->interpretStringScript(in.readAll());
+	}
+
+//	qtsInterpreter()->interpretStringScript(
+//	            "brick.display().setBackground(\"white\");"
+//	            "brick.display().redraw();"
+//	            "while(true)"
+//	            "{"
+//	            "	if (brick.sensor(A1).read() < 40) {"
+//	            "		brick.sadSmile();"
+//				"	} else {"
+//				"		brick.smile();"
+//				"	};"
+//	            "	script.wait(1000)"
+//	            "}"
+//	            );
+	//qtsInterpreter()->interpretStringScript("brick.smile();script.wait(2000);brick.sadSmile();script.wait(2000);script.quit()");
 }
 
 void TrikV62KitInterpreterPlugin::testStop()

@@ -69,8 +69,10 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h \
 	$$PWD/include/trikKitInterpreterCommon/trikbrick.h \
 	$$PWD/include/trikKitInterpreterCommon/trikQtsInterpreter.h \
-	$$PWD/include/trikKitInterpreterCommon/trikEmulation/displayemu.h \
-	$$PWD/include/trikKitInterpreterCommon/trikEmulation/displaywidgetemu.h
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/displaywidgetemu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikdisplayemu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/triksensoremu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikmotoremu.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -111,7 +113,9 @@ SOURCES += \
 	$$PWD/src/trikKitInterpreterPluginBase.cpp \
 	$$PWD/src/trikbrick.cpp \
 	$$PWD/src/trikQtsInterpreter.cpp \
-	$$PWD/src/trikEmulation/displayemu.cpp
+	$$PWD/src/trikEmulation/triksensoremu.cpp \
+	$$PWD/src/trikEmulation/trikdisplayemu.cpp \
+	$$PWD/src/trikEmulation/trikmotoremu.cpp
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \
