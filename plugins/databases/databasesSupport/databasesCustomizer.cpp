@@ -21,5 +21,55 @@ DatabasesCustomizer::~DatabasesCustomizer()
 {
 }
 
+QString DatabasesCustomizer::windowTitle() const
+{
+	return QObject::tr("QReal:Databases") + " " + productVersion();
+}
+
+QIcon DatabasesCustomizer::applicationIcon() const
+{
+	return QIcon(":/icons/kroki.png");
+}
+
+QString DatabasesCustomizer::productVersion() const
+{
+	return "1.0";
+}
+
+QString DatabasesCustomizer::aboutText() const
+{
+	return "<b>" + windowTitle();
+}
+
+bool DatabasesCustomizer::showInterpeterButton() const
+{
+	return false;
+}
+
+void DatabasesCustomizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
+{
+	mDockInterface = dockInterface;
+	mDockInterface->logicalModelDock()->hide();
+
+	dockInterface->propertyEditorDock()->setMaximumWidth(260);
+}
+
+QDockWidget *DatabasesCustomizer::produceDockWidget(QString const &title, QWidget *content) const
+{
+	QDockWidget *dock = new QDockWidget(title);
+	dock->setWidget(content);
+	return dock;
+}
+
+QString DatabasesCustomizer::userPaletteTitle() const
+{
+	return QObject::tr("Databases");
+}
+
+QString DatabasesCustomizer::userPaletteDescription() const
+{
+	return QObject::tr("The list of all declared elements in the project");
+}
+
 }
 }

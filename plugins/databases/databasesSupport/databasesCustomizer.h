@@ -21,6 +21,7 @@
 
 #include <../../../qrkernel/settingsManager.h>
 #include <qrgui/plugins/toolPluginInterface/customizer.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 
 namespace qReal {
 namespace databasesSupport {
@@ -33,9 +34,19 @@ class DatabasesCustomizer : public QObject, public qReal::Customizer
 public:
 	~DatabasesCustomizer();
 
-signals:
+	virtual QString windowTitle() const;
+	virtual QIcon applicationIcon() const;
+	virtual QString productVersion() const;
+	virtual QString aboutText() const;
+	virtual void customizeDocks(qReal::gui::MainWindowDockInterface *dockInterface);
+	virtual bool showInterpeterButton() const;
 
-public slots:
+	virtual QString userPaletteTitle() const;
+	virtual QString userPaletteDescription() const;
+
+private:
+	QDockWidget *produceDockWidget(QString const &title, QWidget *content) const;
+	gui::MainWindowDockInterface *mDockInterface;
 
 };
 
