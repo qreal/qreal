@@ -165,7 +165,7 @@ void QRealGuiTests::SetUp()
 	// engine->setAgent(mTestAgent); // For writting and debugging. Don't remove!
 
 	mReturnCode = CRASHCODE;
-	lambdaSingleShot(mTimeLimit, [this]() { failTest(); } );
+	lambdaSingleShot(mTimeLimit, [this]() { failTest(); } , mWindow);
 }
 
 // It may be usefull to use the LOG for some information about a failed/passed/running test
@@ -238,7 +238,7 @@ void QRealGuiTests::run(const QString &relativeFileName)
 		}
 
 		QApplication::closeAllWindows();
-	} );
+	} , mWindow);
 
 	mReturnCode = QApplication::exec();
 }

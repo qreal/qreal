@@ -29,9 +29,9 @@ const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
 
 /// Singleshot() on lambda for Qt 5.3
 template<typename Func>
-void lambdaSingleShot(int msec, Func lambda)
+void lambdaSingleShot(int msec, Func lambda, QObject *parent = 0)
 {
-	QTimer *timer = new QTimer();
+	QTimer *timer = new QTimer(parent);
 	timer->setSingleShot(true);
 	QObject::connect(timer, &QTimer::timeout, lambda);
 	QObject::connect(timer, SIGNAL(timeout()), timer, SLOT(deleteLater()));

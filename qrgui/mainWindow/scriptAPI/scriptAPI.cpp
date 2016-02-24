@@ -52,7 +52,9 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 	}
 
 	const int lastButOne = context->argumentCount() - 1;
-	if (!(context->argument(0).isValid() && !context->argument(0).toString().isEmpty())) {
+	if (!(context->argument(0).isValid() && !context->argument(0).toString().isEmpty()
+			&& context->argument(0).isQObject() && context->argument(0).toQObject()))
+	{
 		context->throwError(QObject::tr("Incorrect 'thisObject' name in invokeLater(...) at %1").arg(backtrace));
 		return {};
 	}
@@ -81,7 +83,7 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 
 	lambdaSingleShot(msec, [=]() {
 		thisObject.property(propertyName).call(QScriptValue(), args);
-	} );
+	} , thisObject.toQObject());
 
 	return {};
 }
