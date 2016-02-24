@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>Business Processes Plugin</DisplayName>
+    <DisplayName xml:lang="ru_ru">Плагин для языка BPMN</DisplayName>
+    <Description>Business Processes Plugin.</Description>
+    <Description xml:lang="ru_ru">Плагин для языка BPMN.</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2016-01-27</ReleaseDate>
+    <Licenses/>
+    <SortingPriority>20</SortingPriority>
+    <ForcedInstallation>true</ForcedInstallation>
+</Package>
