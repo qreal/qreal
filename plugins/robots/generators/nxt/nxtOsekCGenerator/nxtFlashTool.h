@@ -20,6 +20,9 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
+template<typename T>
+class QFutureInterface;
+
 namespace nxt {
 
 /// Class that handles flashing NXT robot via USB.
@@ -59,9 +62,7 @@ public slots:
 	/// @note \a fileInfo base name will be used and will be cropped to 15 symbols cause NXT do that.
 	bool runLastProgram();
 
-	void error(QProcess::ProcessError error);
 	bool askToRun(QWidget *parent);
-	void nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 signals:
 	void flashingComplete(bool success);
@@ -80,10 +81,13 @@ private:
 	QString path(const QString &file = QString()) const;
 	QString nxtProgramName(const QFileInfo &srcFile) const;
 
+	void information(const QString &message);
+	void error(const QString &message);
+
 	//--------------------- Flashing section ----------------------//
 
 	QFileInfo findLatestFirmware() const;
-	bool flashFirmwareStream(QDataStream &firmware);
+	bool flashFirmwareStream(QDataStream &firmware, QFutureInterface<void> &progressTracker);
 	bool flashOneBlock(int orderNumber, const QByteArray &block);
 	bool startNewFirmware();
 	bool prepareFlashing();

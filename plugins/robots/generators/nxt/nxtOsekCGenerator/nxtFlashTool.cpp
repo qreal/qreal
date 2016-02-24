@@ -16,6 +16,7 @@
 
 #include "nxtFlashTool.h"
 
+#include <QtCore/QFuture>
 #include <QtCore/QDirIterator>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMessageBox>
@@ -23,6 +24,7 @@
 #include <qrkernel/logging.h>
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
+#include <thirdparty/runExtensions.h>
 #include <nxtKit/communication/nxtCommandConstants.h>
 #include <nxtKit/communication/usbRobotCommunicationThread.h>
 
@@ -48,20 +50,18 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface &errorReporter
 	mCompileProcess.setProcessEnvironment(environment);
 
 	connect(&mCompileProcess, &QProcess::readyRead, this, &NxtFlashTool::readNxtCompileData);
-	connect(&mCompileProcess, static_cast<void (QProcess::*)(QProcess::ProcessError)>(&QProcess::error)
-			, this, &NxtFlashTool::error);
 	connect(&mCompileProcess, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
 			, this, &NxtFlashTool::nxtCompilationFinished);
 
 	connect(&mCommunicator, &utils::robotCommunication::RobotCommunicationThreadInterface::errorOccured
-			, this, [=](const QString &message) { mErrorReporter.addError(message); });
+			, this, &NxtFlashTool::error);
 	connect(&mCommunicator, &utils::robotCommunication::RobotCommunicationThreadInterface::messageArrived
-			, this, [=](const QString &message) { mErrorReporter.addInformation(message); });
+			, this, &NxtFlashTool::information);
 	connect(&mCommunicator, &utils::robotCommunication::RobotCommunicationThreadInterface::connected
-			, this, [=](bool success, const QString &errorString)
+			, this, [this](bool success, const QString &errorString)
 	{
 		if (!success) {
-			mErrorReporter.addError(errorString);
+			error(errorString);
 		}
 	});
 }
@@ -69,7 +69,7 @@ NxtFlashTool::NxtFlashTool(qReal::ErrorReporterInterface &errorReporter
 bool NxtFlashTool::flashRobot()
 {
 	if (mIsFlashing) {
-		mErrorReporter.addInformation(tr("Robot is already being flashed"));
+		information(tr("Robot is already being flashed"));
 		return false;
 	}
 
@@ -77,14 +77,14 @@ bool NxtFlashTool::flashRobot()
 	const QFileInfo firmwareBinaryName = findLatestFirmware();
 	if (!firmwareBinaryName.exists()) {
 		QLOG_ERROR() << "Could not find firmware binary";
-		mErrorReporter.addError(tr("Firmware file not found in nxt-tools directory."));
+		error(tr("Firmware file not found in nxt-tools directory."));
 		return false;
 	}
 
 	auto const usbCommunicator = dynamic_cast<nxt::communication::UsbRobotCommunicationThread *>(&mCommunicator);
 	if (!usbCommunicator) {
 		QLOG_ERROR() << "Attempted to flash robot in bluetooth mode";
-		mErrorReporter.addError(tr("Flashing robot is possible only by USB. Please switch to USB mode."));
+		error(tr("Flashing robot is possible only by USB. Please switch to USB mode."));
 		return false;
 	}
 
@@ -93,37 +93,51 @@ bool NxtFlashTool::flashRobot()
 		return false;
 	}
 
-	QFile firmwareBinary(firmwareBinaryName.absoluteFilePath());  // Will be closed when out of scope in destructor.
-	if (!firmwareBinary.open(QFile::ReadOnly)) {
-		QLOG_ERROR() << "Could not open" << firmwareBinaryName.absoluteFilePath()
-				<< "for reading:" << firmwareBinary.errorString();
-		mErrorReporter.addError(tr("Could not open %1 for reading.").arg(firmwareBinaryName.absoluteFilePath()));
-		return false;
-	}
-
-	if (firmwareBinary.size() > 256 * 1024) {
-		QLOG_ERROR() << "Firmware binary file size is" << firmwareBinary.size() << "bytes which is too large for NXT";
-		mErrorReporter.addError(tr("Firmware file is too large to fit into NXT brick memory."));
-		return false;
-	}
-
 	mIsFlashing = true;
-	mErrorReporter.addInformation(tr("Firmware flash started. Please don't disconnect robot during the process"));
+	information(tr("Firmware flash started. Please don't disconnect robot during the process"));
 
-	QDataStream firmwareStream(&firmwareBinary);
-	if (!flashFirmwareStream(firmwareStream)) {
-		QLOG_ERROR() << "Could not flash firmware into NXT brick. See details above";
-		mErrorReporter.addError(tr("Could not write firmware into NXT memory."));
-		return false;
-	}
+	// This lambda will be invoked in separete thread via QtConcurrent, progress will be reported.
+	std::function<void(QFutureInterface<void> &)> flashProcess = [=](QFutureInterface<void> &future) {
+		future.setProgressRange(0, 1150);  // preparation (50) + flashing 1024 + starting(76)
+		future.setProgressValue(0);
 
-	if (!startNewFirmware()) {
-		QLOG_ERROR() << "Could not jump to start new firmware";
-		mErrorReporter.addError(tr("Firmware successfully flashed into robot, but starting it failed."));
-		return false;
-	}
+		QFile firmwareBinary(firmwareBinaryName.absoluteFilePath());  // Will be closed when out of scope in destructor.
+		if (!firmwareBinary.open(QFile::ReadOnly)) {
+			QLOG_ERROR() << "Could not open" << firmwareBinaryName.absoluteFilePath()
+					<< "for reading:" << firmwareBinary.errorString();
+			error(tr("Could not open %1 for reading.").arg(firmwareBinaryName.absoluteFilePath()));
+			return false;
+		}
 
-	QLOG_INFO() << "Firmware flashed successfully";
+		if (firmwareBinary.size() > 256 * 1024) {
+			QLOG_ERROR() << "Firmware binary file size is" << firmwareBinary.size() << "bytes which is too large for NXT";
+			error(tr("Firmware file is too large to fit into NXT brick memory."));
+			return false;
+		}
+
+		QDataStream firmwareStream(&firmwareBinary);
+		future.setProgressValue(25);
+
+		if (!flashFirmwareStream(firmwareStream, future)) {
+			QLOG_ERROR() << "Could not flash firmware into NXT brick. See details above";
+			error(tr("Could not write firmware into NXT memory."));
+			return false;
+		}
+
+		if (!startNewFirmware()) {
+			QLOG_ERROR() << "Could not jump to start new firmware";
+			error(tr("Firmware successfully flashed into robot, but starting it failed."));
+			return false;
+		}
+
+		future.setProgressValue(future.progressMaximum());
+		information(tr("Flashing process completed successfully."));
+		QLOG_INFO() << "Firmware flashed successfully";
+		usbCommunicator->disconnect();
+		return true;
+	};
+
+	mErrorReporter.reportOperation(QtConcurrent::run(flashProcess), tr("Flashing NXT brick..."));
 	return true;
 }
 
@@ -154,27 +168,30 @@ bool NxtFlashTool::runLastProgram()
 	return mSource != QFileInfo() && runProgram(mSource);
 }
 
-void NxtFlashTool::error(QProcess::ProcessError error)
+void NxtFlashTool::information(const QString &message)
 {
-	Q_UNUSED(error)
-	mErrorReporter.addInformation(tr("Some error occured. Make sure you are running QReal with superuser privileges"));
+	if (QThread::currentThread() == qApp->thread()) {
+		// We are currently in GUI thread, simply calling method of error reporter.
+		mErrorReporter.addInformation(message);
+	} else if (QObject * const object = dynamic_cast<QObject *>(&mErrorReporter)) {
+		// We are not in GUI thread, calling of error reporter asynchroniously.
+		QMetaObject::invokeMethod(object, "addInformation", Q_ARG(QString, message));
+	} else {
+		QLOG_ERROR() << "Cannot display" << message << "in non-gui thread cause mErrorReporter is not QObject";
+	}
 }
 
-void NxtFlashTool::nxtFlashingFinished(int exitCode, QProcess::ExitStatus exitStatus)
+void NxtFlashTool::error(const QString &message)
 {
-	Q_UNUSED(exitStatus)
-
-	mIsFlashing = false;
-
-	if (exitCode == 0) {
-		mErrorReporter.addInformation(tr("Flashing process completed."));
-	} else if (exitCode == 127) {
-		mErrorReporter.addError(tr("flash.sh not found. Make sure it is present in QReal installation directory"));
-	} else if (exitCode == 139) {
-		mErrorReporter.addError(tr("QReal requires superuser privileges to flash NXT robot"));
+	if (QThread::currentThread() == qApp->thread()) {
+		// We are currently in GUI thread, simply calling method of error reporter.
+		mErrorReporter.addError(message);
+	} else if (QObject * const object = dynamic_cast<QObject *>(&mErrorReporter)) {
+		// We are not in GUI thread, calling of error reporter asynchroniously.
+		QMetaObject::invokeMethod(object, "addError", Q_ARG(QString, message));
+	} else {
+		QLOG_ERROR() << "Cannot display" << message << "in non-gui thread cause mErrorReporter is not QObject";
 	}
-
-//	emit flashingComplete(mFlashProcess.exitStatus() == QProcess::NormalExit);
 }
 
 bool NxtFlashTool::askToRun(QWidget *parent)
@@ -183,25 +200,10 @@ bool NxtFlashTool::askToRun(QWidget *parent)
 			, tr("Do you want to run it?")) == QMessageBox::Yes;
 }
 
-//void NxtFlashTool::readNxtFlashData()
-//{
-//	const QStringList output = QString(mFlashProcess.readAll()).split("\n", QString::SkipEmptyParts);
-
-//	for (const QString &error : output) {
-//		if (error == "NXT not found. Is it properly plugged in via USB?") {
-//			mErrorReporter->addError(tr("NXT not found. Check USB connection and make sure the robot is ON"));
-//		} else if (error == "NXT found, but not running in reset mode.") {
-//			mErrorReporter->addError(tr("NXT is not in reset mode. Please reset your NXT manually and try again"));
-//		} else if (error == "Firmware flash complete.") {
-//			mErrorReporter->addInformation(tr("Firmware flash complete!"));
-//		}
-//	}
-//}
-
 bool NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 {
 	if (mIsUploading) {
-		mErrorReporter.addInformation(tr("Uploading is already running"));
+		information(tr("Uploading is already running"));
 		return false;
 	}
 
@@ -219,7 +221,7 @@ bool NxtFlashTool::uploadProgram(const QFileInfo &fileInfo)
 	mCompileProcess.start("sh", { path("compile.sh") });
 #endif
 
-	mErrorReporter.addInformation(tr("Uploading program started. Please don't disconnect robot during the process"));
+	information(tr("Uploading program started. Please don't disconnect robot during the process"));
 	return true;
 }
 
@@ -230,9 +232,9 @@ void NxtFlashTool::nxtCompilationFinished(int exitCode, QProcess::ExitStatus exi
 	mIsUploading = false;
 
 	if (exitCode == 127) { // most likely wineconsole didn't start and generate files needed to proceed compilation
-		mErrorReporter.addError(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
+		error(tr("Uploading failed. Make sure that X-server allows root to run GUI applications"));
 	} else if (exitCode == 139) {
-		mErrorReporter.addError(tr("QReal requires superuser privileges to flash NXT robot"));
+		error(tr("You need to have superuser privileges to flash NXT robot"));
 	}
 
 	if (mCompileState != done) {
@@ -243,10 +245,10 @@ void NxtFlashTool::nxtCompilationFinished(int exitCode, QProcess::ExitStatus exi
 void NxtFlashTool::readNxtCompileData()
 {
 	const QStringList output = QString(mCompileProcess.readAll()).split("\n", QString::SkipEmptyParts);
-	const QString error = mCompileProcess.readAllStandardError();
+	const QString processError = mCompileProcess.readAllStandardError();
 	QLOG_INFO() << "NXT flash tool:" << output;
-	if (!error.isEmpty()) {
-		QLOG_ERROR() << "NXT flash tool: error:" << error;
+	if (!processError.isEmpty()) {
+		QLOG_ERROR() << "NXT flash tool: error:" << processError;
 	}
 
 	/* each command produces its own output, so thousands of 'em. using UploadState enum
@@ -275,15 +277,15 @@ void NxtFlashTool::readNxtCompileData()
 				mCompileState = done;
 				uploadToBrick(mSource);
 			} else if (mCompileState == compilationError) {
-				mErrorReporter.addError(tr("Compilation error occured. Please check your function blocks syntax. "
+				error(tr("Compilation error occured. Please check your function blocks syntax. "
 						"If you sure in their validness contact developers"));
 			} else {
-				mErrorReporter.addError(tr("Could not upload program. Make sure the robot is connected and ON"));
+				error(tr("Could not upload program. Make sure the robot is connected and ON"));
 			}
 		}
 
 		if (message.contains("An unhandled exception occurred")) {
-			mErrorReporter.addError(tr("QReal requires superuser privileges to upload programs on NXT robot"));
+			error(tr("QReal requires superuser privileges to upload programs on NXT robot"));
 			break;
 		}
 	}
@@ -300,23 +302,24 @@ QString NxtFlashTool::nxtProgramName(const QFileInfo &srcFile) const
 	return QString("%1.rxe").arg(srcFile.completeBaseName().mid(0, 15));
 }
 
-bool NxtFlashTool::flashFirmwareStream(QDataStream &firmware)
+bool NxtFlashTool::flashFirmwareStream(QDataStream &firmware, QFutureInterface<void> &progressTracker)
 {
 	if (!prepareFlashing()) {
 		QLOG_ERROR() << "Could not prepare for flashing, see details above";
 		return false;
 	}
 
+	progressTracker.setProgressValue(50);
 	QLOG_INFO() << "Flashing firmware stream...";
 	const int chunkSize = 256;
 	for (int i = 0; i < 1024; ++i) {
 		QByteArray buffer(256, '\0');
 		const int bytesRead = firmware.readRawData(buffer.data(), chunkSize);
 		if (bytesRead < 0) {
-			const QString error = firmware.device()->errorString();
+			const QString errorString = firmware.device()->errorString();
 			QLOG_ERROR() << "Error in reading bytes in firmware stream from" << i * 256 << "to" << ((i+1) * 256 - 1)
-					<< ":" << error;
-			mErrorReporter.addError(tr("Error in reading from firmware file: %1").arg(error));
+					<< ":" << errorString;
+			error(tr("Error in reading from firmware file: %1").arg(errorString));
 			return false;
 		}
 
@@ -325,6 +328,7 @@ bool NxtFlashTool::flashFirmwareStream(QDataStream &firmware)
 			return false;
 		}
 
+		progressTracker.setProgressValue(51 + i);
 		if (bytesRead < chunkSize) {
 			break;
 		}
@@ -538,8 +542,7 @@ bool NxtFlashTool::uploadToBrick(const QFileInfo &fileOnHost)
 	QFile file(executableOnHost);
 	QDataStream stream(&file);
 	if (!file.open(QFile::ReadOnly)) {
-		mErrorReporter.addError(tr("Could not find %1. Check your program was compiled and try again.")
-				.arg(executableOnHost));
+		error(tr("Could not find %1. Check your program was compiled and try again.").arg(executableOnHost));
 		emit uploadingComplete(false);
 		return false;
 	}
@@ -548,32 +551,32 @@ bool NxtFlashTool::uploadToBrick(const QFileInfo &fileOnHost)
 	quint8 handle;
 
 	if (!deleteFileFromBrick(fileOnBrick)) {
-		mErrorReporter.addError(tr("Could not delete old file. Make sure the robot is connected, turned on."));
+		error(tr("Could not delete old file. Make sure the robot is connected, turned on."));
 		emit uploadingComplete(false);
 		return false;
 	}
 
 	if (!createFileOnBrick(fileOnBrick, file.size(), handle)) {
-		mErrorReporter.addError(tr("Could not upload program. Make sure the robot is connected, turned on and has "\
+		error(tr("Could not upload program. Make sure the robot is connected, turned on and has "\
 				"enough free memory."));
 		emit uploadingComplete(false);
 		return false;
 	}
 
 	if (!downloadStreamToBrick(handle, stream, file.size())) {
-		mErrorReporter.addError("Could not write file data to a robot.  Make sure robot is connected and turned on.");
+		error("Could not write file data to a robot.  Make sure robot is connected and turned on.");
 		emit uploadingComplete(false);
 		return false;
 	}
 
 	if (!closeFileOnBrick(handle)) {
-		mErrorReporter.addError(tr("Could not close file on brick. Probably connection to NXT lost at "\
+		error(tr("Could not close file on brick. Probably connection to NXT lost at "\
 				"the last stage of uploading"));
 		emit uploadingComplete(false);
 		return false;
 	}
 
-	mErrorReporter.addInformation(tr("Uploading completed successfully"));
+	information(tr("Uploading completed successfully"));
 	emit uploadingComplete(true);
 	return true;
 }

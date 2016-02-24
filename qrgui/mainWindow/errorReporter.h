@@ -35,6 +35,7 @@ public:
 	ErrorReporter();
 	ErrorReporter(ErrorListWidget * const errorListWidget, QDockWidget * const errorList);
 
+public slots:
 	void addInformation(const QString &message, const Id &position = Id::rootId()) override;
 	void addWarning(const QString &message, const Id &position = Id::rootId()) override;
 	void addError(const QString &message, const Id &position = Id::rootId()) override;
