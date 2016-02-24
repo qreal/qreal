@@ -42,7 +42,8 @@ void ScriptingControlAPI::abortEvaluation()
 	mScriptAPI.abortEvaluation();
 }
 
-void ScriptingControlAPI::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &scriptName, int length)
+void ScriptingControlAPI::registerNewFunction(QScriptEngine::FunctionSignature fun
+		, const QString &scriptName, int length)
 {
 	mScriptAPI.registerNewFunction(fun, scriptName, length);
 }
