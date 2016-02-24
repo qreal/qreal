@@ -27,8 +27,10 @@ macx {
 CONFIG(debug, debug | release) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
-	QMAKE_CXXFLAGS += -coverage
-	QMAKE_LFLAGS += -coverage
+	unix {
+		QMAKE_CXXFLAGS += -coverage
+		QMAKE_LFLAGS += -coverage
+	}
 } else {
 	CONFIGURATION = release
 	CONFIGURATION_SUFFIX =
