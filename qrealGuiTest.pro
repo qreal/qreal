@@ -46,9 +46,6 @@ qrgui.depends = \
 	qrmc \
 	thirdparty \
 
-
-CONFIG += c++11
-
 SUBDIRS += \
 	qrtest \
 

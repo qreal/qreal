@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../../global.pri)
-links(qrutils)
+TARGET = robots_utils_unittests
 
-TEMPLATE = lib
+include(../../../common.pri)
 
-CONFIG += plugin
+include(../../../../../plugins/robots/utils/utils.pri)
 
-QT += widgets
+links(qslog)
 
-DESTDIR = $$DESTDIR/plugins/tools
+includes(plugins/robots/utils)
 
+# Tests
 HEADERS += \
-	testInvocationPlugin.h \
+	$$PWD/circularQueueTest.h \
 
 SOURCES += \
-	testInvocationPlugin.cpp \
-
-links(qrkernel qrutils)
+	$$PWD/circularQueueTest.cpp \
