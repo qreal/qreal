@@ -25,6 +25,8 @@ TEMPLATE = lib
 HEADERS += \
 	$$PWD/include/tcpRobotSimulator/declSpec.h \
 	$$PWD/include/tcpRobotSimulator/tcpRobotSimulator.h \
+	$$PWD/src/connection.h \
 
 SOURCES += \
 	$$PWD/src/tcpRobotSimulator.cpp \
+	$$PWD/src/connection.cpp \

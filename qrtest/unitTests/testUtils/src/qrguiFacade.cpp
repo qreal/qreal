@@ -20,6 +20,8 @@ using namespace ::testing;
 QrguiFacade::QrguiFacade(QString const &modelName)
 	: mModels(modelName, mEditorManager)
 {
+	mActiveTab = mModels.graphicalModelAssistApi().children(mModels.graphicalModelAssistApi().rootId())[0];
+
 	ON_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).WillByDefault(Return(&mErrorReporterMock));
 
 	ON_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram()).WillByDefault(Invoke(
@@ -29,6 +31,20 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 	ON_CALL(mMainWindowInterpretersInterfaceMock, highlight(_, _, _)).WillByDefault(Return());
 	ON_CALL(mMainWindowInterpretersInterfaceMock, dehighlight(_)).WillByDefault(Return());
 	ON_CALL(mMainWindowInterpretersInterfaceMock, dehighlight()).WillByDefault(Return());
+
+	ON_CALL(mProjectManagementInterfaceMock, saveFilePath()).WillByDefault(Return(QString("./test")));
+
+	ON_CALL(mTextManagerMock, showInTextEditor(_, _, _)).WillByDefault(Invoke(
+			[this](const QFileInfo &file, const QString & genName, const qReal::text::LanguageInfo &language) {
+				Q_UNUSED(genName)
+				Q_UNUSED(language)
+				emit mSystemEvents.newCodeAppeared(mActiveTab, QFileInfo(file));
+			}
+			));
+
+	ON_CALL(mTextManagerMock, isDefaultPath(_)).WillByDefault(Return(true));
+	ON_CALL(mTextManagerMock, isModifiedEver(_)).WillByDefault(Return(false));
+	ON_CALL(mTextManagerMock, generatorName(_)).WillByDefault(Return(QString("trikQts")));
 
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).Times(AtLeast(0));
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram()).Times(AtLeast(0));

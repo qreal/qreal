@@ -28,14 +28,12 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicat
 	, mWaitingForUploadingComplete(new QState())
 	, mWaitingForRunComplete(new QState())
 {
-	mProtocol->setAction(mWaitingForCasingModel, [this](TcpRobotCommunicatorInterface &communicator) {
-		communicator.requestCasingVersion();
-	});
-
 	mProtocol->addGuardedTranstion(
 			mWaitingForCasingModel
 			, &TcpRobotCommunicatorInterface::casingVersionReceived
-			, [configVersion](const QString &casingModel){ return casingModel == configVersion; }
+			, [configVersion](const QString &casingModel){
+				return casingModel == configVersion;
+			}
 			, mWaitingForUploadingComplete
 	);
 
@@ -66,11 +64,18 @@ RunProgramProtocol::~RunProgramProtocol()
 
 void RunProgramProtocol::run(const QFileInfo &fileToRun)
 {
+	mProtocol->setAction(mWaitingForCasingModel, [](TcpRobotCommunicatorInterface &communicator) {
+		qDebug() << "Entering mWaitingForCasingModel";
+		communicator.requestCasingVersion();
+	});
+
 	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](TcpRobotCommunicatorInterface &communicator) {
+		qDebug() << "Entering mWaitingForUploadingComplete";
 		communicator.uploadProgram(fileToRun.canonicalFilePath());
 	});
 
 	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](TcpRobotCommunicatorInterface &communicator) {
+		qDebug() << "Entering mWaitingForRunComplete";
 		communicator.runProgram(fileToRun.fileName());
 	});
 

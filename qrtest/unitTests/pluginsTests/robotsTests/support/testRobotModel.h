@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,30 +14,38 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotModelManagerInterface.h>
-#include <kitBase/robotModel/configuration.h>
-
-#include <gmock/gmock.h>
+#include <kitBase/robotModel/commonRobotModel.h>
 
 namespace qrTest {
 
-class RobotModelManagerInterfaceMock : public kitBase::robotModel::RobotModelManagerInterface
+class TestRobotModel : public kitBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT
 
 public:
-	MOCK_CONST_METHOD0(model, kitBase::robotModel::RobotModelInterface &());
-
-	void emitConnected() {
-		emit connected(true, "");
+	TestRobotModel()
+		: kitBase::robotModel::CommonRobotModel("TestKit", "TestRobot")
+	{
 	}
 
-	void emitAllDevicesConfigured() {
-		emit allDevicesConfigured();
+	QString name() const override
+	{
+		return "TestModel";
 	}
 
-	void emitDisconnected() {
-		emit disconnected();
+	QString friendlyName() const override
+	{
+		return tr("Test model");
+	}
+
+	bool needsConnection() const override
+	{
+		return false;
+	}
+
+	int priority() const override
+	{
+		return 0;
 	}
 };
 

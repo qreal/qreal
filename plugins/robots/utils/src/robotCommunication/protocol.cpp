@@ -63,12 +63,15 @@ void Protocol::run()
 		return;
 	}
 
+	qDebug() << "Run";
+
 	mStateMachine->start();
 	mTimeoutTimer->start();
 }
 
 void Protocol::onTimeout()
 {
+	qDebug() << "Timeout";
 	mStateMachine->stop();
 	emit timeout();
 }

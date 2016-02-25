@@ -63,6 +63,8 @@ private slots:
 	/// Reports successful connection.
 	void onConnected();
 
+	void onCasingVersionReceived(const QString &casingVersion);
+
 private:
 	/// Worker object that handles all robot communication in separate thread.
 	QScopedPointer<TcpRobotCommunicatorWorker> mWorker;

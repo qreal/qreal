@@ -106,7 +106,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	} while (!canGenerateTo(projectName));
 
 	QFileInfo fileInfo = generationTarget(projectName);
-	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
+	const QList<QFileInfo> pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {
 		for (const QFileInfo &path : pathsList) {

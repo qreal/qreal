@@ -14,5 +14,48 @@
 
 #include "tcpRobotSimulator/tcpRobotSimulator.h"
 
+#include <QtCore/QThread>
+
+#include <QtCore/QDebug>
+
+#include "connection.h"
+
 using namespace tcpRobotSimulator;
 
+static const int port = 8888;
+
+TcpRobotSimulator::TcpRobotSimulator()
+{
+	listen(QHostAddress::LocalHost, port);
+}
+
+TcpRobotSimulator::~TcpRobotSimulator()
+{
+}
+
+void TcpRobotSimulator::incomingConnection(qintptr socketDescriptor)
+{
+	qDebug() << "TcpRobotSimulator::incomingConnection";
+
+	mConnection.reset(new Connection(Protocol::messageLength, Heartbeat::use));
+	mConnectionThread.reset(new QThread());
+	connect(mConnectionThread.data(), &QThread::finished, mConnectionThread.data(), &QThread::deleteLater);
+	mConnection->moveToThread(mConnectionThread.data());
+	mConnectionThread->start();
+	QMetaObject::invokeMethod(mConnection.data(), "init", Q_ARG(int, socketDescriptor));
+}
+
+bool TcpRobotSimulator::runProgramRequestReceived() const
+{
+	return mConnection->runProgramRequestReceived();
+}
+
+bool TcpRobotSimulator::configVersionRequestReceived() const
+{
+	return mConnection->configVersionRequestReceived();
+}
+
+bool TcpRobotSimulator::versionRequestReceived() const
+{
+	return mConnection->versionRequestReceived();
+}

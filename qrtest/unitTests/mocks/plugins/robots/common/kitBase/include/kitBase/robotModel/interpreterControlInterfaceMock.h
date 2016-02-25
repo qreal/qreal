@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,19 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotModelManagerInterface.h>
-#include <kitBase/robotModel/configuration.h>
+#include <kitBase/interpreterControlInterface.h>
 
 #include <gmock/gmock.h>
 
 namespace qrTest {
 
-class RobotModelManagerInterfaceMock : public kitBase::robotModel::RobotModelManagerInterface
+class InterpreterControlInterfaceMock : public kitBase::InterpreterControlInterface
 {
 	Q_OBJECT
 
 public:
-	MOCK_CONST_METHOD0(model, kitBase::robotModel::RobotModelInterface &());
-
-	void emitConnected() {
-		emit connected(true, "");
-	}
-
-	void emitAllDevicesConfigured() {
-		emit allDevicesConfigured();
-	}
-
-	void emitDisconnected() {
-		emit disconnected();
-	}
+	MOCK_METHOD0(interpret, void());
+	MOCK_METHOD1(stopRobot, void(qReal::interpretation::StopReason));
 };
 
 }

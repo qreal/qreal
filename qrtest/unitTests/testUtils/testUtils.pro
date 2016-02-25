@@ -26,11 +26,13 @@ HEADERS += \
 	$$PWD/include/testUtils/fakeSender.h \
 	$$PWD/include/testUtils/qrguiFacade.h \
 	$$PWD/include/testUtils/signalsTester.h \
+	$$PWD/include/testUtils/wait.h \
 
 SOURCES += \
 	$$PWD/src/delay.cpp \
 	$$PWD/src/qrguiFacade.cpp \
 	$$PWD/src/signalsTester.cpp \
+	$$PWD/src/wait.cpp \
 
 # Mocks
 HEADERS += \

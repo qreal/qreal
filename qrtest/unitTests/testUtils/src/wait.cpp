@@ -12,36 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "testUtils/wait.h"
 
-#include <QtNetwork/QTcpServer>
-#include <QtCore/QScopedPointer>
+#include <QtCore/QEventLoop>
+#include <QtCore/QTimer>
 
-#include "declSpec.h"
+using namespace qrTest;
 
-class QThread;
-
-namespace tcpRobotSimulator {
-
-class Connection;
-
-class TCP_ROBOT_SIMULATOR_EXPORT TcpRobotSimulator : public QTcpServer
+void Wait::wait(int msecs)
 {
-	Q_OBJECT
-
-public:
-	TcpRobotSimulator();
-	~TcpRobotSimulator() override;
-
-	bool runProgramRequestReceived() const;
-	bool configVersionRequestReceived() const;
-	bool versionRequestReceived() const;
-
-private:
-	void incomingConnection(qintptr socketDescriptor) override;
-
-	QScopedPointer<QThread> mConnectionThread;
-	QScopedPointer<Connection> mConnection;
-};
-
+	QEventLoop loop;
+	QTimer::singleShot(msecs, &loop, SLOT(quit()));
+	loop.exec();
 }

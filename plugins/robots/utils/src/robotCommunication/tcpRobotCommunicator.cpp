@@ -58,6 +58,11 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::runDirectCommandDone
 			, this, &TcpRobotCommunicator::runDirectCommandDone, Qt::QueuedConnection);
 
+	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
+			, this, &TcpRobotCommunicator::casingVersionReceived, Qt::QueuedConnection);
+	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
+			, this, &TcpRobotCommunicator::onCasingVersionReceived, Qt::QueuedConnection);
+
 	mWorkerThread.start();
 
 	QMetaObject::invokeMethod(mWorker.data(), "init");
@@ -108,7 +113,7 @@ void TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool a
 
 void TcpRobotCommunicator::requestCasingVersion()
 {
-	/// @todo
+	QMetaObject::invokeMethod(mWorker.data(), "requestCasingVersion");
 }
 
 void TcpRobotCommunicator::stopRobot()
@@ -161,4 +166,9 @@ void TcpRobotCommunicator::onConnectionError(const QString &error)
 void TcpRobotCommunicator::onConnected()
 {
 	emit connected(true, "");
+}
+
+void TcpRobotCommunicator::onCasingVersionReceived(const QString &casingVersion)
+{
+	qDebug() << "Casing version received:" << casingVersion;
 }

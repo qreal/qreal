@@ -22,6 +22,10 @@
 #include <QtCore/QState>
 #include <QtCore/QFinalState>
 #include <QtCore/QSet>
+#include <QtCore/QSignalTransition>
+#include <QtCore/QAbstractTransition>
+
+#include <QtCore/QDebug>
 
 #include <qrutils/functionTraits.h>
 
@@ -91,8 +95,13 @@ public:
 
 		source->addTransition(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, destination);
 
-		connect(&mCommunicator, signal, [guard, guardSignalGenerator](const ParamType &&param) {
+		connect(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, [](){
+			qDebug() << "Guard ok";
+		});
+
+		connect(&mCommunicator, signal, [source, guard, guardSignalGenerator](const ParamType &&param) {
 			if (guard(param)) {
+				qDebug() << "Sending signal to move to destination state";
 				guardSignalGenerator->onTrigger();
 			}
 		});
@@ -111,6 +120,7 @@ public:
 
 		connect(&mCommunicator, signal, [guard, guardSignalGenerator](const ParamType &&param) {
 			if (guard(param)) {
+				qDebug() << "Sending signal to move to mErrored state";
 				guardSignalGenerator->onTrigger();
 			}
 		});

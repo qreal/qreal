@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,17 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotModelManagerInterface.h>
-#include <kitBase/robotModel/configuration.h>
-
-#include <gmock/gmock.h>
+#include "declSpec.h"
 
 namespace qrTest {
 
-class RobotModelManagerInterfaceMock : public kitBase::robotModel::RobotModelManagerInterface
+/// Utility class that provides event loop based waiting.
+class TEST_UTILS_EXPORT Wait
 {
-	Q_OBJECT
-
 public:
-	MOCK_CONST_METHOD0(model, kitBase::robotModel::RobotModelInterface &());
-
-	void emitConnected() {
-		emit connected(true, "");
-	}
-
-	void emitAllDevicesConfigured() {
-		emit allDevicesConfigured();
-	}
-
-	void emitDisconnected() {
-		emit disconnected();
-	}
+	/// Wait for given amount of milliseconds. Launches event loop so thread is not blocked and can still process
+	/// messages.
+	static TEST_UTILS_EXPORT void wait(int msecs);
 };
 
 }

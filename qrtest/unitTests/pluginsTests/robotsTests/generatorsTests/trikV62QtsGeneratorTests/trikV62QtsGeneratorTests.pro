@@ -18,15 +18,23 @@ include($$PWD/../../../../common.pri)
 
 include($$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator/trikV62QtsGenerator.pri)
 
-links(test-utils qrgui-tool-plugin-interface qrgui-models qrgui-plugin-manager qrgui-text-editor)
+links(test-utils qrgui-tool-plugin-interface qrgui-models qrgui-plugin-manager qrgui-text-editor qrtext \
+		tcp-robot-simulator)
 
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator \
+	$$PWD/../../../../../../plugins/robots/generators/trik/trikV62QtsGenerator \
+	$$PWD/../../tcpRobotSimulator/include \
 
 HEADERS += \
 	$$PWD/trikV62QtsGeneratorTest.h \
 
 SOURCES += \
 	$$PWD/trikV62QtsGeneratorTest.cpp \
+
+HEADERS += \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/interpreterControlInterfaceMock.h \
+	$$PWD/../../support/testRobotModel.h \
 
 copyToDestdir($$PWD/support/testData/unittests, NOW)
