@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Dmitry Mordvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+DEFINES += QRGRAPH_LIBRARY
 
-SUBDIRS = \
-	exampleTests \
-	pluginsTests \
-	qrguiTests \
-	qrkernelTests \
-	qrgraphTests \
-	qrrepoTests \
-	qrutilsTests \
-	qrtextTests \
+includes(qrgraph)
+
+HEADERS += \
+	$$PWD/include/qrgraph/multigraph.h \
+	$$PWD/include/qrgraph/node.h \
+	$$PWD/include/qrgraph/edge.h \
+
+SOURCES += \
+	$$PWD/src/multigraph.cpp \
+	$$PWD/src/node.cpp \
+	$$PWD/src/edge.cpp \
