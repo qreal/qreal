@@ -12,7 +12,9 @@
 
 namespace trik {
 
-class TrikBrick : public trikControl::BrickInterface {
+class TrikBrick : public trikControl::BrickInterface
+{
+	Q_OBJECT
 
 	// BrickInterface interface
 public:
@@ -33,9 +35,9 @@ public slots:
 	trikControl::MotorInterface *motor(const QString &port) override;
 	trikControl::PwmCaptureInterface *pwmCapture(const QString &port) override {return nullptr;}
 	trikControl::SensorInterface *sensor(const QString &port) override;
-	QStringList motorPorts(trikControl::MotorInterface::Type type) const override {return {};}
+	QStringList motorPorts(trikControl::MotorInterface::Type type) const override;
 	QStringList pwmCapturePorts() const override {return {};}
-	QStringList sensorPorts(trikControl::SensorInterface::Type type) const override {return {};}
+	QStringList sensorPorts(trikControl::SensorInterface::Type type) const override;
 	QStringList encoderPorts() const override {return {};}
 	trikControl::VectorSensorInterface *accelerometer() override {return nullptr;}
 	trikControl::VectorSensorInterface *gyroscope() override {return nullptr;}
@@ -50,7 +52,11 @@ public slots:
 	trikControl::LedInterface *led() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
 
+signals:
+	void error(const QString &msg);
+
 private:
+
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
 	TrikDisplayEmu mDisplay;

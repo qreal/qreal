@@ -88,6 +88,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 	mTwoDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 
+	mQtsInterpreter->setErrorReporter(*interpretersInterface.errorReporter());
+
 	QObject::connect(
 			this
 			, &TrikKitInterpreterPluginBase::started

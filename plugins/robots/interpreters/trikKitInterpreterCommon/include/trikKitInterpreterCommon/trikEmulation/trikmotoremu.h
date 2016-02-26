@@ -6,7 +6,8 @@
 
 namespace trik {
 
-class TrikMotorEmu : public trikControl::MotorInterface {
+class TrikMotorEmu : public trikControl::MotorInterface
+{
 	Q_OBJECT
 
 	// DeviceInterface interface

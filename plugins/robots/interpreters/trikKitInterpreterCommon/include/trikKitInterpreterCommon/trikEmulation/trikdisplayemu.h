@@ -14,7 +14,8 @@ class Display;
 }
 }
 
-class TrikDisplayEmu : public trikControl::DisplayInterface {
+class TrikDisplayEmu : public trikControl::DisplayInterface
+{
 	Q_OBJECT
 
 	// DisplayInterface interface

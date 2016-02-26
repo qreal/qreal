@@ -112,18 +112,15 @@ void TrikDisplayEmu::setBackground(const QString &color)
 
 void TrikDisplayEmu::clear()
 {
-	QMetaObject::invokeMethod(mDisplay,
-	                          "clearScreen");
+	QMetaObject::invokeMethod(mDisplay, "clearScreen");
 }
 
 void TrikDisplayEmu::reset()
 {
-	QMetaObject::invokeMethod(mDisplay,
-	                          "reset");
+	QMetaObject::invokeMethod(mDisplay, "reset");
 }
 
 void TrikDisplayEmu::redraw()
 {
-	QMetaObject::invokeMethod(mDisplay,
-	                          "redraw");
+	QMetaObject::invokeMethod(mDisplay, "redraw");
 }

@@ -24,10 +24,16 @@ public:
 
 	void init();
 
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
+
+private slots:
+	void reportError(const QString &msg);
+
 private:
 	//QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 	TrikBrick mBrick;
 	trikScriptRunner::TrikScriptRunner mScriptRunner;
+	qReal::ErrorReporterInterface *mErrorReporter;
 };
 
 }
