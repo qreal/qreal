@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets
+QT += xml widgets
 
 links(qrkernel qrrepo qrgui-plugin-manager qrgui-controller)
 includes(qrgui)

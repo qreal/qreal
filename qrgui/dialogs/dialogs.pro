@@ -18,7 +18,7 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-QT += widgets
+QT += xml widgets
 
 links(qrkernel qrutils qrgui-models)
 includes(qrgui)
