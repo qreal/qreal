@@ -52,9 +52,6 @@ public:
 	Diagram *findDiagram(const QString &name);
 	QMap<QString, Diagram*> diagrams();
 
-	void generateListenerIncludes(utils::OutFile &out) const;
-	void generateListenerFactory(utils::OutFile &out, const QString &pluginName) const;
-
 private:
 	XmlCompiler *mXmlCompiler;
 	QDomDocument mXmlDomDocument;
@@ -62,5 +59,4 @@ private:
 	QString mVersion;
 	QList<Editor*> mIncludes;
 	QMap<QString, Diagram*> mDiagrams;
-	QList<QPair<QString, QString> > mListeners;
 };

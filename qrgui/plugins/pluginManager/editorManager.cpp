@@ -387,15 +387,6 @@ Id EditorManager::findElementByType(const QString &type) const
 	throw Exception("No type " + type + " in loaded plugins");
 }
 
-QList<ListenerInterface*> EditorManager::listeners() const
-{
-	QList<ListenerInterface*> result;
-	foreach (EditorInterface *editor, mPluginIface.values()) {
-		result << editor->listeners();
-	}
-	return result;
-}
-
 EditorInterface* EditorManager::editorInterface(const QString &editor) const
 {
 	return mPluginIface[editor];

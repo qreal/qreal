@@ -21,7 +21,6 @@
 
 #include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
 #include "qrgui/plugins/editorPluginInterface/elementImpl.h"
-#include "qrgui/plugins/editorPluginInterface/listenerInterface.h"
 
 namespace qReal {
 
@@ -84,7 +83,6 @@ public:
 			, const QString &property) const = 0;
 	virtual QString propertyDisplayedName(const QString &diagram, const QString &element
 			, const QString &property) const = 0;
-	virtual QList<qReal::ListenerInterface*> listeners() const = 0;
 
 	virtual bool isParentOf(const QString &parentDiagram, const QString &parentElement
 			, const QString &childDiagram, const QString &childElement) const = 0;

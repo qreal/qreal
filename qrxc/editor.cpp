@@ -67,15 +67,6 @@ bool Editor::load(const QDir &currentDir)
 		mIncludes.append(includeFile);
 	}
 
-	//Load listeners
-	for (QDomElement listenerElement = metamodel.firstChildElement("listener"); !listenerElement.isNull();
-		listenerElement = listenerElement.nextSiblingElement("listener"))
-	{
-		QString fileName = listenerElement.attribute("file");
-		QString className = listenerElement.attribute("class");
-		mListeners << QPair<QString, QString>(fileName, className);
-	}
-
 	// Load diagrams part one: don't process inherited properties.
 	for (QDomElement diagramElement = metamodel.firstChildElement("diagram"); !diagramElement.isNull();
 		diagramElement = diagramElement.nextSiblingElement("diagram"))
@@ -188,27 +179,4 @@ Diagram* Editor::findDiagram(const QString &name)
 QMap<QString, Diagram*> Editor::diagrams()
 {
 	return mDiagrams;
-}
-
-void Editor::generateListenerIncludes(utils::OutFile &out) const
-{
-	typedef QPair<QString, QString> StringPair;
-	foreach (StringPair listener, mListeners) {
-		out() << "#include \"../" << listener.first << ".h\"\n";
-	}
-	out() << "\n";
-}
-
-void Editor::generateListenerFactory(utils::OutFile &out, const QString &pluginName) const
-{
-	out() << "QList<qReal::ListenerInterface*> " + pluginName + "Plugin::listeners() const\n"
-		<< "{\n"
-		<< "\tQList<qReal::ListenerInterface*> result;\n";
-
-	typedef QPair<QString, QString> StringPair;
-	foreach (StringPair listener, mListeners)
-		out() << "\tresult << new " + listener.second + ";\n";
-
-	out() << "\treturn result;\n"
-		<< "}\n";
 }

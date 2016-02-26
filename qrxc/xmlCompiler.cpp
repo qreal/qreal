@@ -229,8 +229,6 @@ void XmlCompiler::generatePluginHeader()
 				"&property) const override;\n"
 		<< "\tQString elementMouseGesture(const QString &digram, const QString &element) const override;\n"
 		<< "\n"
-		<< "\tQList<qReal::ListenerInterface*> listeners() const override;\n"
-		<< "\n"
 		<< "\tbool isParentOf(const QString &parentDiagram, const QString &parentElement, const QString "
 				"&childDiagram, const QString &childElement) const override;\n"
 		<< "\n"
@@ -301,8 +299,6 @@ void XmlCompiler::generatePluginSource()
 	generateEditableEnums(out);
 	generatePropertyTypesRequests(out);
 	generatePropertyDefaultsRequests(out);
-
-	mEditors[mCurrentEditor]->generateListenerFactory(out, mPluginName);
 }
 
 void XmlCompiler::generateIncludes(OutFile &out)
@@ -313,8 +309,6 @@ void XmlCompiler::generateIncludes(OutFile &out)
 	out() << "#include \"" << "elements.h" << "\"\n";
 
 	out() << "\n";
-
-	mEditors[mCurrentEditor]->generateListenerIncludes(out);
 
 	out()
 		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"

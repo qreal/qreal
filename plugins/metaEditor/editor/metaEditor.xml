@@ -653,24 +653,6 @@
 				<properties/>
 				</logic>
 			</node>
-			<node name="Listener" displayedName="Listener" description="Не поддерживается">
-				<graphics>
-					<picture sizex="250" sizey="80">
-						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="80" stroke-width="1" x2="250" fill-style="solid"/>
-					</picture>
-					<labels>
-						<label x="5" y="3" textBinded="class" center="true"/>
-						<label x="5" y="50" textBinded="file" center="true"/>
-					</labels>
-					<ports/>
-				</graphics>
-				<logic>
-					<properties>
-						<property type="string" name="class"/>
-						<property type="string" name="file"/>
-					</properties>
-				</logic>
-			</node>
 		</graphicTypes>
 				<palette>
 			<group name="DSL Elements" description="Элементы метаязыка для описания узлов и связей создаваемого языка">

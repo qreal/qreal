@@ -622,11 +622,6 @@ QStringList InterpreterEditorManager::propertiesWithDefaultValues(const Id &id) 
 	return result;
 }
 
-QList<ListenerInterface *> InterpreterEditorManager::listeners() const
-{
-	return QList<ListenerInterface *>();
-}
-
 bool InterpreterEditorManager::isDiagramNode(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);

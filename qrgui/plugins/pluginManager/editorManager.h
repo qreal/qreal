@@ -94,7 +94,6 @@ public:
 	bool hasElement(const Id &element) const override;
 
 	Id findElementByType(const QString &type) const override;
-	QList<ListenerInterface *> listeners() const override;
 
 	bool isDiagramNode(const Id &id) const override;
 

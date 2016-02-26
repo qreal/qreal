@@ -64,7 +64,7 @@ public:
 	virtual QString propertyDescription(const Id &id, const QString &propertyName) const = 0;
 	virtual QString propertyDisplayedName(const Id &id, const QString &propertyName) const = 0;
 	virtual QIcon icon(const Id &id) const = 0;
-	virtual ElementImpl* elementImpl(const Id &id) const = 0;
+	virtual ElementImpl *elementImpl(const Id &id) const = 0;
 
 	virtual IdList containedTypes(const Id &id) const = 0;
 	virtual QList<Explosion> explosions(const Id &source) const = 0;
@@ -94,7 +94,6 @@ public:
 	virtual bool hasElement(const Id &element) const = 0;
 
 	virtual Id findElementByType(const QString &type) const = 0;
-	virtual QList<ListenerInterface *> listeners() const = 0;
 
 	virtual bool isDiagramNode(const Id &id) const = 0;
 

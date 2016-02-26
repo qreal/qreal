@@ -77,8 +77,6 @@ bool Editor::load()
 		mIncludes.append(includedEditor);
 	}
 
-	// TODO: load listeners
-
 	// load diagrams (no resolving yet)
 	IdList children = mApi->children(mId);
 	IdList diagrams;

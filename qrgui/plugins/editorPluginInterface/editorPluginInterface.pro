@@ -21,6 +21,4 @@ HEADERS += \
 	$$PWD/labelInterface.h \
 	$$PWD/labelFactoryInterface.h \
 	$$PWD/sdfRendererInterface.h \
-	$$PWD/listenerInterface.h \
-	$$PWD/listenerApiInterface.h \
 	$$PWD/portHelpers.h

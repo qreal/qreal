@@ -221,12 +221,6 @@ void EditorGenerator::createDiagrams(QDomElement &parent, Id const &id)
 			serializeObjects(diagram, typeElement);
 			mElements.clear();
 		}
-		else if (objectType == "Listener") {
-			QDomElement listener = mDocument.createElement("listener");
-			ensureCorrectness(typeElement, listener, "class", mApi.stringProperty(typeElement, "class"));
-			ensureCorrectness(typeElement, listener, "file", mApi.stringProperty(typeElement, "file"));
-			parent.appendChild(listener);
-		}
 	}
 }
 

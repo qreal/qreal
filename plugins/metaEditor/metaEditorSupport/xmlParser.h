@@ -38,7 +38,6 @@ private:
 	qReal::Id getPackageId();
 	void initMetamodel(QDomDocument const &document, QString const &directoryName
 			, QString const &baseName, QString const &pathToRoot, qReal::Id const &id);
-	qReal::Id initListener(QString const &name, QString const &className, QString const &fileName);
 	void createDiagramAttributes(QDomElement const &diagram, qReal::Id const &diagramId);
 	void createNonGraphicElements(QDomElement const &type, qReal::Id const &diagramId);
 	void createGraphicElements(QDomElement const &type, qReal::Id const &diagramId);

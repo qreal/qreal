@@ -166,11 +166,6 @@ Id ProxyEditorManager::findElementByType(const QString &type) const
 	return mProxiedEditorManager->findElementByType(type);
 }
 
-QList<ListenerInterface *> ProxyEditorManager::listeners() const
-{
-	return mProxiedEditorManager->listeners();
-}
-
 bool ProxyEditorManager::isDiagramNode(const Id &id) const
 {
 	return mProxiedEditorManager->isDiagramNode(id);
