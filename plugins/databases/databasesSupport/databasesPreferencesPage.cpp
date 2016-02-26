@@ -35,15 +35,15 @@ DatabasesPreferencesPage::~DatabasesPreferencesPage()
 void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 {
 	if (dbmsName == "SQLite")
-		emit dbmsChanged("sqlite");
+		emit dbmsChanged("Sqlite");
 	else if (dbmsName == "Microsoft SQL Server 2008")
-		emit dbmsChanged("sqlServer2008");
+		emit dbmsChanged("SqlServer2008");
 	else if (dbmsName == "MySQL 5")
-		emit dbmsChanged("mySql5");
+		emit dbmsChanged("MySql5");
 	else if (dbmsName == "Microsoft Access")
-		emit dbmsChanged("microsoftAccess");
+		emit dbmsChanged("MicrosoftAccess");
 	else if (dbmsName == "PostgreSQL")
-		emit dbmsChanged("postgreSql");
+		emit dbmsChanged("PostgreSql");
 }
 
 void DatabasesPreferencesPage::changeReverseEngineerFilePath(QString const &path)

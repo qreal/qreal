@@ -26,7 +26,7 @@ DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator
 	, mGraphicalModelApi(configurator.graphicalModelApi())
 	, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 	, mErrorReporter(configurator.mainWindowInterpretersInterface().errorReporter())
-	, mDbms(QString("sqlServer2008"))
+	, mDbms(QString("SqlServer2008"))
 	, mPreferencesPage(preferencesPage)
 	, mMainWindowInterface(configurator.mainWindowInterpretersInterface())
 {
@@ -261,8 +261,6 @@ bool DatabasesGenerator::checkCorrectness()
 	return checkOne && checkTwo && checkThree;
 }
 
-
-
 qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
 		, QPointF coord
 		, Id const &parentLogicalId
@@ -486,11 +484,7 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 
 void DatabasesGenerator::generatePhysicalModel()
 {
-	QString curEditorName = mDbms;
-	mDbms = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
-
-
-	//clearPhysicalModel();
+	clearPhysicalModel();
 	mErrorReporter->clear();
 
 	if (!checkCorrectness()) {
@@ -534,7 +528,6 @@ void DatabasesGenerator::generatePhysicalModel()
 		delete[] mRelMatrix[i];
 	}
 	delete[] mRelMatrix;
-	mDbms = curEditorName;
 	mErrorReporter->addInformation(tr("Physical model was generated successfully"));
 }
 
