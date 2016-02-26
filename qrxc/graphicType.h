@@ -101,6 +101,7 @@ protected:
 	virtual bool isResolving() const;
 
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
+	bool addProperty(Property *property);
 
 private:
 	class ResolvingHelper {
@@ -131,11 +132,12 @@ private:
 
 	virtual bool initGraphics() = 0;
 	virtual bool initRoles() = 0;
+	virtual bool initRoleProperties() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count) = 0;
 
-	bool addProperty(Property *property);
+
 	bool addPort(Port *port);
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, const QStringList &list) const;
 

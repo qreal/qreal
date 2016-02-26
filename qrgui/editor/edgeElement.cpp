@@ -1038,6 +1038,9 @@ EdgeInfo EdgeElement::data()
 
 	result.setSrcId(src() ? src()->id() : Id::rootId());
 	result.setDstId(dst() ? dst()->id() : Id::rootId());
+	QStringList ololo = mGraphicalAssistApi.editorManagerInterface().getListProperiesOfRole(this->id(), "role1");
+
+	result.setLogicalProperty("lalalal", "asasasa");
 
 	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {

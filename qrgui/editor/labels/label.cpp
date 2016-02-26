@@ -52,9 +52,9 @@ void Label::init()
 	reinitFont();
 	setRotation(mProperties.rotation());
 	if (!mProperties.isStatic()) {
-		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
+		const QList<QPair<QString, QString>> values = mGraphicalModelAssistApi
 				.editorManagerInterface().enumValues(mId, mProperties.binding());
-		for (QPair<QString, QString> const &pair : values) {
+		for (const QPair<QString, QString> &pair : values) {
 			mEnumValues[pair.first] = pair.second;
 		}
 	}
@@ -165,6 +165,7 @@ void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
+
 	if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {

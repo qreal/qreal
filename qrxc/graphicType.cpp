@@ -24,6 +24,7 @@
 #include "nameNormalizer.h"
 #include "nodeType.h"
 #include "edgeType.h"
+#include "roleType.h"
 
 using namespace utils;
 
@@ -157,10 +158,13 @@ bool GraphicType::initParents()
 
 bool GraphicType::initProperties()
 {
+	bool check = initRoleProperties();
+
 	const QDomElement propertiesElement = mLogic.firstChildElement("properties");
 	if (propertiesElement.isNull()) {
 		return true;
 	}
+
 	for (QDomElement propertyElement = propertiesElement.firstChildElement("property")
 			; !propertyElement.isNull()
 			; propertyElement = propertyElement.nextSiblingElement("property"))

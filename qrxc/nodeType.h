@@ -45,6 +45,7 @@ private:
 	bool mIsResizeable;
 
 	virtual bool initRoles();
+	virtual bool initRoleProperties();
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();

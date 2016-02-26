@@ -91,6 +91,11 @@ bool NodeType::initRoles()
 	return true;
 }
 
+bool NodeType::initRoleProperties()
+{
+	return true;
+}
+
 bool NodeType::initDividability()
 {
 	return true;

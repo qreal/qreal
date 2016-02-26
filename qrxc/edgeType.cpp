@@ -90,6 +90,19 @@ bool EdgeType::initRoles()
 			mRoles.append(dynamic_cast<RoleType *> (element));
 		}
 	}
+	int ololo = 1;
+	QString www = QString(ololo);
+
+	return true;
+}
+
+bool EdgeType::initRoleProperties()
+{
+	for (auto role : mRoles) {
+		for (auto property : role->getPropertiesOfRole()) {
+			bool check = addProperty(property);
+		}
+	}
 
 	return true;
 }
@@ -376,6 +389,7 @@ void EdgeType::generateCode(OutFile &out)
 		for (int i = 0; i < mLabels.length(); i++) {
 			mLabels[i]->generateCodeForFields(out);
 		}
+		//out() << "		qReal::LabelInterface *title5\n;";
 	}
 
 	out() << "\t};\n\n";
