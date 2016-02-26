@@ -19,9 +19,6 @@ CONFIG += plugin
 
 include(../../../../global.pri)
 
-# ugly, for now, move to thridparty?
-copyToDestdir(../../thirdparty/trikRuntime/bin/x86-$$CONFIGURATION, NOW)
-
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
 include(trikV62KitInterpreter.pri)
