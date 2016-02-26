@@ -28,7 +28,6 @@ public:
 	TrikDisplay(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port);
 
-public slots: // needed for invokeMethod
 	/// Show happy or sad smile.
 	/// @param sad - if sad is true, then show sad smile.
 	virtual void drawSmile(bool sad) = 0;

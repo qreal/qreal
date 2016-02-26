@@ -6,7 +6,8 @@
 
 namespace trik {
 
-class TrikSensorEmu : public trikControl::SensorInterface {
+class TrikSensorEmu : public trikControl::SensorInterface
+{
 	Q_OBJECT
 
 	// DeviceInterface interface

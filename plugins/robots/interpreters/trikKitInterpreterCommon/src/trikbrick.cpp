@@ -12,7 +12,7 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 void TrikBrick::init()
 {
 	mDisplay.init();
-	mMotors.clear(); // needed?
+	mMotors.clear(); // needed? reset?
 	mSensors.clear();
 }
 
@@ -22,6 +22,10 @@ trikControl::MotorInterface *TrikBrick::motor(const QString &port)
 	if (!mMotors.contains(port)) {
 		robotParts::Motor * mot =
 		        RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
+		if (mot == nullptr) {
+			emit error(tr("No configured motor on port: ") + port);
+			return nullptr;
+		}
 		mMotors[port] = new TrikMotorEmu(mot);
 	}
 	return mMotors[port];
@@ -34,9 +38,25 @@ trikControl::SensorInterface *TrikBrick::sensor(const QString &port)
 	if (!mSensors.contains(port)) {
 		robotParts::ScalarSensor * sens =
 		        RobotModelUtils::findDevice<robotParts::ScalarSensor>(*mTwoDRobotModel, port);
+		if (sens == nullptr) {
+			emit error(tr("No configured sensor on port: ") + port);
+			return nullptr;
+		}
 		mSensors[port] = new TrikSensorEmu(sens);
 	}
 	return mSensors[port];
+}
+
+QStringList TrikBrick::motorPorts(trikControl::MotorInterface::Type type) const
+{
+//	QLOG_INFO() << "Motor type is ignored";
+	return mMotors.keys();
+}
+
+QStringList TrikBrick::sensorPorts(trikControl::SensorInterface::Type type) const
+{
+//	QLOG_INFO() << "Sensor type is ignored";
+	return mMotors.keys();
 }
 
 trikControl::DisplayInterface *TrikBrick::display()
@@ -54,3 +74,4 @@ trikControl::DisplayInterface *TrikBrick::display()
 //	return nullptr;
 	return &mDisplay;
 }
+
