@@ -605,10 +605,10 @@ void MainWindow::deleteElementFromDiagram(const Id &id)
 	}
 }
 
-void MainWindow::reportOperation(invocation::LongOperation *operation)
+void MainWindow::reportOperation(const QFuture<void> &operation, const QString &description)
 {
-	ProgressDialog *progressDialog = new ProgressDialog(this);
-	progressDialog->connectOperation(operation);
+	ProgressDialog * const progressDialog = new ProgressDialog(this);
+	progressDialog->reportOperation(operation, description);
 }
 
 QWidget *MainWindow::currentTab()
