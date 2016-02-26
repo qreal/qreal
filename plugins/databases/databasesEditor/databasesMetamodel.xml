@@ -64,7 +64,6 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
-						<property type="bool" name="AutoIncrementPrimaryKey"/>
 					</properties>
 				</logic>
 			</node>
@@ -197,9 +196,6 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="bool" name="Merging" displayedName="Merging into a single table">
-							<default>true</default>
-						</property>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>

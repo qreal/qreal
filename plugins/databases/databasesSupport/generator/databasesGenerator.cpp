@@ -490,7 +490,7 @@ void DatabasesGenerator::generatePhysicalModel()
 	mDbms = QString(mDbms.at(0).toUpper()) + curEditorName.remove(0,1);
 
 
-	clearPhysicalModel();
+	//clearPhysicalModel();
 	mErrorReporter->clear();
 
 	if (!checkCorrectness()) {
@@ -578,12 +578,13 @@ void DatabasesGenerator::generateSQLCode()
 			codeFileNameForEditor.append(QString("\\"));
 		}
 	}
-	if (mPreferencesPage->needToOpenFileAfterGeneration()) {
+	// TODO: file opening for sql-code or window for sql code
+	/*if (mPreferencesPage->needToOpenFileAfterGeneration()) {
 		// Windows
 		QProcess *proc = new QProcess();
 		proc->start("explorer C:\\Coursework\\qreal\\bin\\debug\\code.txt");
 		// proc->start("see /home/alex/Report.doc");
-	}
+	}*/
 
 }
 
