@@ -54,6 +54,7 @@ private:
 
 	virtual bool initRoles();
 	virtual bool initRoleProperties();
+	virtual QString propertyName(Property *property);
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();

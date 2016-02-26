@@ -107,6 +107,19 @@ bool EdgeType::initRoleProperties()
 	return true;
 }
 
+QString EdgeType::propertyName(Property *property)
+{
+	for (auto role : mRoles) {
+		for (auto currentProperty : role->getPropertiesOfRole()) {
+			if (currentProperty->name() == property->name()) {
+				return role->name() + "!!" + property->name();
+			}
+		}
+	}
+
+	return "";
+}
+
 QList<RoleType*> EdgeType::getRoles()
 {
 	return mRoles;

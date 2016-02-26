@@ -377,7 +377,10 @@ bool GraphicType::initLabels()
 
 bool GraphicType::addProperty(Property *property)
 {
-	const QString propertyName = property->name();
+	QString propertyName = this->propertyName(property);
+	if (propertyName.isEmpty()) {
+		propertyName = property->name();
+	}
 	if (mProperties.contains(propertyName)) {
 		// This will automaticly dispose property in this branch.
 		QScopedPointer<Property> propertyDisposer(property);
@@ -392,6 +395,7 @@ bool GraphicType::addProperty(Property *property)
 		mProperties[propertyName] = property;
 	}
 
+	auto ololo = mProperties;
 	return true;
 }
 
@@ -604,7 +608,12 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 		QString propertiesString;
 		bool isFirstProperty = true;
 
-		foreach (Property *property, mProperties) {
+		auto ololo = mProperties;
+		QStringList keys = mProperties.keys();
+
+		for (QString key : keys) {
+			Property *property = mProperties[key];
+
 			// do not generate common properties
 			if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
@@ -621,7 +630,12 @@ bool GraphicType::generateProperties(OutFile &out, bool isNotFirst, bool isRefer
 					isFirstProperty = false;
 				}
 
-				propertiesString += QString(" << \"" + property->name() + "\"");
+				if (key == property->name()) {
+					propertiesString += QString(" << \"" + property->name() + "\"");
+				} else {
+					propertiesString += QString(" << \"" + key + "\"");
+				}
+
 				if (propertiesString.length() >= maxLineLength) {
 					out() << propertiesString;
 					propertiesString = "\n\t\t";

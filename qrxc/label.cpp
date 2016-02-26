@@ -124,7 +124,13 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		return;
 	}
 
-	QStringList list = getListOfStr(mTextBinded);
+	QStringList list;
+
+	if (!mRoleName.isEmpty() && !mNameOfPropertyRole.isEmpty()) {
+		list = getListOfStr(mRoleName  + "!!" + mNameOfPropertyRole);
+	} else {
+		list = getListOfStr(mTextBinded);
+	}
 
 	QString resultStr;
 	if (list.count() == 1) {

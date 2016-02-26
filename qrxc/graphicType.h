@@ -132,6 +132,7 @@ private:
 
 	virtual bool initGraphics() = 0;
 	virtual bool initRoles() = 0;
+	virtual QString propertyName(Property *property) = 0;
 	virtual bool initRoleProperties() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;

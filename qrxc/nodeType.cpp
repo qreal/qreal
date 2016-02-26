@@ -96,6 +96,11 @@ bool NodeType::initRoleProperties()
 	return true;
 }
 
+QString NodeType::propertyName(Property *property)
+{
+	return "";
+}
+
 bool NodeType::initDividability()
 {
 	return true;
