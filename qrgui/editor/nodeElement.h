@@ -266,6 +266,8 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
+	void updateDynamicLabels();
+
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 	models::Exploser &mExploser;
 

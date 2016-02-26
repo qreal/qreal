@@ -24,6 +24,7 @@ using namespace qReal;
 using namespace qReal::gui::editor;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
+		, models::LogicalModelAssistApi &logicalAssistApi
 		, const Id &elementId
 		, const LabelProperties &properties)
 	: mIsStretched(false)
@@ -31,6 +32,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 	, mShouldMove(false)
 	, mId(elementId)
 	, mGraphicalModelAssistApi(graphicalAssistApi)
+	, mLogicalModelAssistApi(logicalAssistApi)
 	, mProperties(properties)
 {
 	if (properties.isStatic()) {
@@ -163,13 +165,13 @@ void Label::setSuffix(const QString &text)
 
 void Label::updateData(bool withUndoRedo)
 {
-	QString value = toPlainText();
+	QVariant value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value, withUndoRedo);
+		parent->setName(value.toString(), withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
-		const QString properties = mGraphicalModelAssistApi.mutableGraphicalRepoApi().property(mId, "dynamicProperties")
-				.toString();
+		const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.logicalId(mId)
+				, "dynamicProperties").toString();
 		if (!properties.isEmpty()) {
 			QDomDocument dynamicProperties;
 			dynamicProperties.setContent(properties);
@@ -181,28 +183,27 @@ void Label::updateData(bool withUndoRedo)
 			{
 				if (element.attribute("textBinded") == mProperties.binding()) {
 					if (element.attribute("type") == "bool") {
-						value = (value == "true") ? "true" : "false";
+						value = value.toBool();
 					} else if (element.attribute("type") == "int") {
-						bool ok;
-						value.toInt(&ok);
-						value = ok ? value : "";
+						value = value.toInt();
 					}
 
-					this->setPlainText(value);
-					element.setAttribute("value", value);
+					this->setPlainText(value.toString());
+					element.setAttribute("value", value.toString());
 					break;
 				}
 			}
 
-			mGraphicalModelAssistApi.mutableGraphicalRepoApi().setProperty(mId, "dynamicProperties"
+			mLogicalModelAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalModelAssistApi.logicalId(mId), "dynamicProperties"
 					, dynamicProperties.toString(4));
+			parent->setLogicalProperty(mProperties.binding(), value.toString(), withUndoRedo);
 		} else {
-			parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
+			parent->setLogicalProperty(mProperties.binding(), value.toString(), withUndoRedo);
 		}
 	} else {
-		const QString repoValue = mEnumValues.values().contains(value)
-				? mEnumValues.key(value)
-				: enumText(value);
+		const QString repoValue = mEnumValues.values().contains(value.toString())
+				? mEnumValues.key(value.toString())
+				: enumText(value.toString());
 		parent->setLogicalProperty(mProperties.binding(), repoValue, withUndoRedo);
 	}
 
@@ -382,6 +383,27 @@ void Label::startTextInteraction()
 	cursor.select(QTextCursor::Document);
 	setTextCursor(cursor);
 	setCursor(Qt::IBeamCursor);
+}
+
+void Label::updateDynamicData()
+{
+	const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.logicalId(mId)
+			, "dynamicProperties").toString();
+	if (!properties.isEmpty()) {
+		QDomDocument dynamicProperties;
+		dynamicProperties.setContent(properties);
+
+		for (QDomElement element
+				= dynamicProperties.firstChildElement("properties").firstChildElement("property");
+				!element.isNull();
+				element = element.nextSiblingElement("property"))
+		{
+			if (element.attribute("textBinded") == mProperties.binding()) {
+				this->setPlainText(element.attribute("value"));
+				break;
+			}
+		}
+	}
 }
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

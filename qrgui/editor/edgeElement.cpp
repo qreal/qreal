@@ -82,7 +82,7 @@ EdgeElement::EdgeElement(
 
 	setAcceptHoverEvents(true);
 
-	LabelFactory factory(models.graphicalModelAssistApi(), mId);
+	LabelFactory factory(models.graphicalModelAssistApi(), models.logicalModelAssistApi(), mId);
 	QList<LabelInterface*> titles;
 
 	mElementImpl->init(factory, titles);

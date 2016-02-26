@@ -102,9 +102,28 @@ void LogicalModelAssistApi::removeExplosion(const Id &source, const Id &destinat
 
 void LogicalModelAssistApi::setPropertyByRoleName(const Id &elem, const QVariant &newValue, const QString &roleName)
 {
-	const int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
+	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole) {
-		return;
+		const QString dynamicProperties = this->logicalRepoApi().stringProperty(elem, "dynamicProperties");
+		if (dynamicProperties.isEmpty()) {
+			return;
+		}
+		int propertiesCount = this->editorManagerInterface().propertyNames(elem.type()).count();
+		int index = 0;
+		QDomDocument dynamProperties;
+		dynamProperties.setContent(dynamicProperties);
+		for (QDomElement element
+				= dynamProperties.firstChildElement("properties").firstChildElement("property");
+				!element.isNull();
+				element = element.nextSiblingElement("property"))
+		{
+			if (element.attribute("textBinded") == roleName) {
+				break;
+			}
+			index++;
+		}
+
+		roleIndex = roles::customPropertiesBeginRole + propertiesCount + index;
 	}
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
 }

@@ -68,7 +68,7 @@ NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	LabelFactory labelFactory(models.graphicalModelAssistApi(), mId);
+	LabelFactory labelFactory(models.graphicalModelAssistApi(), models.logicalModelAssistApi(), mId);
 	QList<LabelInterface*> titles;
 
 	QList<PortInterface *> ports;
@@ -144,7 +144,7 @@ void NodeElement::connectSceneEvents()
 
 void NodeElement::initExplosionConnections()
 {
-	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this, &NodeElement::updateDynamicLabels);
+	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this, static_cast<void (NodeElement::*)(const Id&)>(&NodeElement::updateDynamicLabels));
 	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeShape, this, &NodeElement::updateDynamicShape);
 }
 
@@ -179,7 +179,7 @@ void NodeElement::updateDynamicLabels(const Id &target)
 		delete mLabels.takeLast();
 	}
 
-	LabelFactory labelFactory(mGraphicalAssistApi, mId);
+	LabelFactory labelFactory(mGraphicalAssistApi, mLogicalAssistApi, mId);
 
 	int index = mLabels.count() + 1;
 	for (QDomElement element
@@ -234,7 +234,7 @@ void NodeElement::updateDynamicLabels(const Id &target)
 
 	//Saving dynamic properties in source.
 	dynamicProperties.appendChild(properties);
-	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(mId, "dynamicProperties", dynamicProperties.toString(4));
+	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties", dynamicProperties.toString(4));
 }
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
@@ -914,6 +914,7 @@ void NodeElement::updateData()
 	}
 	mElementImpl->updateData(this);
 	updateLabels();
+	updateDynamicLabels();
 	update();
 }
 
@@ -1090,6 +1091,13 @@ void NodeElement::updateLabels()
 {
 	for (Label *title : mLabels) {
 		title->setParentContents(mContents);
+	}
+}
+
+void NodeElement::updateDynamicLabels()
+{
+	for (Label *title : mLabels) {
+		title->updateDynamicData();
 	}
 }
 

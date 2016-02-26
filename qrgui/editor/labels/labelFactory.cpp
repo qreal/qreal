@@ -20,19 +20,22 @@
 using namespace qReal;
 using namespace qReal::gui::editor;
 
-LabelFactory::LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, const Id &elementId)
+LabelFactory::LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi
+			, models::LogicalModelAssistApi &logicalModelAssistApi
+			, const Id &elementId)
 	: mGraphicalModelAssistApi(graphicalModelAssistApi)
+	, mLogicalModelAssistApi(logicalModelAssistApi)
 	, mId(elementId)
 {
 }
 
 LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation)
 {
-	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, text, rotation));
+	return new Label(mGraphicalModelAssistApi, mLogicalModelAssistApi, mId, LabelProperties(index, x, y, text, rotation));
 }
 
 LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly
 		, qreal rotation)
 {
-	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, binding, readOnly, rotation));
+	return new Label(mGraphicalModelAssistApi, mLogicalModelAssistApi, mId, LabelProperties(index, x, y, binding, readOnly, rotation));
 }

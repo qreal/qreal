@@ -18,6 +18,7 @@
 
 #include <qrgui/plugins/editorPluginInterface/labelInterface.h>
 #include <qrgui/models/graphicalModelAssistApi.h>
+#include <qrgui/models/logicalModelAssistApi.h>
 
 #include "qrgui/editor/labels/labelProperties.h"
 
@@ -31,6 +32,7 @@ class Label : public QGraphicsTextItem, public LabelInterface
 
 public:
 	Label(models::GraphicalModelAssistApi &graphicalAssistApi
+			, models::LogicalModelAssistApi &logicalAssistApi
 			, const Id &elementId
 			, const LabelProperties &properties);
 
@@ -68,6 +70,8 @@ public:
 
 	void startTextInteraction();
 
+	void updateDynamicData();
+
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
@@ -103,6 +107,7 @@ private:
 	bool mShouldMove;
 	const Id mId;
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
+	models::LogicalModelAssistApi &mLogicalModelAssistApi;
 	LabelProperties mProperties;
 };
 
