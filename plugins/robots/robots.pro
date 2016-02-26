@@ -23,31 +23,9 @@ SUBDIRS = \
 	utils \
 	checker \
 	thirdparty \
-	#$$PWD/thirdparty/trikRuntime/trikScriptMinimal.pro \
-	qslog \
-	trikKernel \
-	trikNetwork \
-	trikControl \
-	trikHal \
-	trikScriptRunner \
-	$$PWD/thirdparty/trikRuntime/translations \
-
-qslog.file = $$PWD/thirdparty/trikRuntime/qslog/QsLogSharedLibrary.pro
-#qslog.file = $$PWD/../../thirdparty/qslog/QsLogSharedLibrary.pro
-
-trikScriptRunner.subdir = $$PWD/thirdparty/trikRuntime/trikScriptRunner
-trikKernel.subdir = $$PWD/thirdparty/trikRuntime/trikKernel
-trikNetwork.subdir = $$PWD/thirdparty/trikRuntime/trikNetwork
-trikControl.subdir = $$PWD/thirdparty/trikRuntime/trikControl
-trikHal.subdir = $$PWD/thirdparty/trikRuntime/trikHal
 
 utils.depends = thirdparty
 common.depends = thirdparty utils
-interpreters.depends = common thirdparty utils trikScriptRunner trikControl
+interpreters.depends = common thirdparty utils
 generators.depends = common utils
 checker.depends = interpreters
-trikControl.depends = trikKernel trikHal qslog
-trikKernel.depends = qslog
-trikNetwork.depends = trikKernel qslog
-trikScriptRunner.depends = trikControl trikKernel trikNetwork qslog
-trikHal.depends = qslog trikKernel
