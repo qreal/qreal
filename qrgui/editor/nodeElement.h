@@ -187,7 +187,7 @@ public:
 
 public slots:
 	void switchGrid(bool isChecked);
-	void updateDynamicLabels(const Id &target);
+	void updateDynamicProperties(const Id &target);
 	/// Updates subprogram shape, shape is stored in the target property "shape"
 	void updateDynamicShape(const Id &target);
 

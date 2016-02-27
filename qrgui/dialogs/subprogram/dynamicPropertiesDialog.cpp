@@ -17,18 +17,18 @@
 #include <QtXml/QDomDocument>
 #include <QtCore/QUuid>
 
-#include "labelPropertiesDialog.h"
-#include "ui_labelPropertiesDialog.h"
+#include "dynamicPropertiesDialog.h"
+#include "ui_dynamicPropertiesDialog.h"
 
 using namespace qReal;
 using namespace gui;
 
-LabelPropertiesDialog::LabelPropertiesDialog(const qReal::Id &id
+DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 		, qrRepo::LogicalRepoApi &logicalRepoApi
 		, models::Exploser &exploser
 		, QWidget *parent)
 	: QDialog(parent)
-	, mUi(new Ui::LabelPropertiesDialog)
+	, mUi(new Ui::DynamicPropertiesDialog)
 	, mLogicalRepoApi(logicalRepoApi)
 	, mExploser(exploser)
 	, mId(id)
@@ -40,30 +40,30 @@ LabelPropertiesDialog::LabelPropertiesDialog(const qReal::Id &id
 
 	init();
 
-	connect(mUi->addLabel, &QPushButton::clicked, this, &LabelPropertiesDialog::addLabelButtonClicked);
-	connect(mUi->saveAll, &QPushButton::clicked, this, &LabelPropertiesDialog::saveButtonClicked);
+	connect(mUi->addLabel, &QPushButton::clicked, this, &DynamicPropertiesDialog::addLabelButtonClicked);
+	connect(mUi->saveAll, &QPushButton::clicked, this, &DynamicPropertiesDialog::saveButtonClicked);
 }
 
-LabelPropertiesDialog::~LabelPropertiesDialog()
+DynamicPropertiesDialog::~DynamicPropertiesDialog()
 {
 	delete mUi;
 }
 
-void LabelPropertiesDialog::addLabelButtonClicked()
+void DynamicPropertiesDialog::addLabelButtonClicked()
 {
 	QPushButton *button = new QPushButton("Delete");
 	int rowCount = mUi->labels->rowCount();
 	mUi->labels->setRowCount(rowCount + 1);
 	mUi->labels->setCellWidget(rowCount, 3, button);
-	connect(button, &QPushButton::clicked, this, &LabelPropertiesDialog::deleteButtonClicked);
+	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
 	QComboBox *types = new QComboBox();
 	types->addItems(QStringList() << "int" << "bool" << "string");
 	mUi->labels->setCellWidget(rowCount, 1, types);
-	connect(types, &QComboBox::currentTextChanged, this, &LabelPropertiesDialog::typeChanged);
+	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
 }
 
-void LabelPropertiesDialog::saveButtonClicked()
+void DynamicPropertiesDialog::saveButtonClicked()
 {
 	if (!canSave()) {
 		QMessageBox::critical(this, tr("Error"), tr("Save error, maybe you forgot fill Name"
@@ -106,10 +106,10 @@ void LabelPropertiesDialog::saveButtonClicked()
 
 	dynamicLabels.appendChild(labels);
 	mLogicalRepoApi.setProperty(mId, "labels", dynamicLabels.toString(4));
-	mExploser.explosionTargetCouldChangeLabels(mId);
+	mExploser.explosionTargetCouldChangeProperties(mId);
 }
 
-void LabelPropertiesDialog::deleteButtonClicked()
+void DynamicPropertiesDialog::deleteButtonClicked()
 {
 	for (int i = 0; i < mUi->labels->rowCount(); ++i) {
 		if (mUi->labels->cellWidget(i, 3) == sender()) {
@@ -119,7 +119,7 @@ void LabelPropertiesDialog::deleteButtonClicked()
 	}
 }
 
-void LabelPropertiesDialog::typeChanged(const QString &newType)
+void DynamicPropertiesDialog::typeChanged(const QString &newType)
 {
 	int row;
 	for (int i = 0; i < mUi->labels->rowCount(); ++i) {
@@ -138,7 +138,7 @@ void LabelPropertiesDialog::typeChanged(const QString &newType)
 	}
 }
 
-void LabelPropertiesDialog::init()
+void DynamicPropertiesDialog::init()
 {
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
@@ -161,7 +161,7 @@ void LabelPropertiesDialog::init()
 	}
 }
 
-bool LabelPropertiesDialog::canSave()
+bool DynamicPropertiesDialog::canSave()
 {
 	QSet<QString> names;
 	const int rowCount = mUi->labels->rowCount();
@@ -191,19 +191,19 @@ bool LabelPropertiesDialog::canSave()
 	return names.count() == rowCount;
 }
 
-void LabelPropertiesDialog::addLabel(const QString &name, const QString &type, const QString &value)
+void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type, const QString &value)
 {
 	QPushButton *button = new QPushButton("Delete");
 	int rowCount = mUi->labels->rowCount();
 	mUi->labels->setRowCount(rowCount + 1);
 	mUi->labels->setCellWidget(rowCount, 3, button);
-	connect(button, &QPushButton::clicked, this, &LabelPropertiesDialog::deleteButtonClicked);
+	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
 	QComboBox *types = new QComboBox();
 	types->addItems(QStringList() << "int" << "bool" << "string");
 	types->setCurrentText(type);
 	mUi->labels->setCellWidget(rowCount, 1, types);
-	connect(types, &QComboBox::currentTextChanged, this, &LabelPropertiesDialog::typeChanged);
+	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
 
 	QTableWidgetItem *nameItem = new QTableWidgetItem(name);
 	mUi->labels->setItem(rowCount, 0, nameItem);

@@ -31,7 +31,7 @@
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
-#include "dialogs/subprogram/labelPropertiesDialog.h"
+#include "dialogs/subprogram/dynamicPropertiesDialog.h"
 #include "mouseGestures/gesturePainter.h"
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
@@ -147,7 +147,7 @@ void DraggableElement::changeLabelsPaletteActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	LabelPropertiesDialog * const labelPropertiesDialog = new LabelPropertiesDialog(id
+	DynamicPropertiesDialog * const labelPropertiesDialog = new DynamicPropertiesDialog(id
 			, mMainWindow.models().mutableLogicalRepoApi(), mMainWindow.models().exploser(), &mMainWindow);
 	labelPropertiesDialog->setModal(true);
 	labelPropertiesDialog->show();
@@ -363,7 +363,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			}
 
 			if (mMainWindow.toolManager().customizer()->allowSubprogramLabelsChanging()) {
-				QAction * const changeLabelsAction = menu->addAction(tr("Change Labels"));
+				QAction * const changeLabelsAction = menu->addAction(tr("Change Properties"));
 				connect(changeLabelsAction, &QAction::triggered, this
 						, &DraggableElement::changeLabelsPaletteActionTriggered);
 				changeLabelsAction->setData(explosionTarget().toVariant());

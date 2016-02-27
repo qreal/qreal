@@ -144,8 +144,7 @@ void NodeElement::connectSceneEvents()
 
 void NodeElement::initExplosionConnections()
 {
-	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this,
-			static_cast<void (NodeElement::*)(const Id&)>(&NodeElement::updateDynamicLabels));
+	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeProperties, this, &NodeElement::updateDynamicProperties);
 	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeShape, this, &NodeElement::updateDynamicShape);
 }
 
@@ -162,7 +161,7 @@ void NodeElement::updateDynamicShape(const Id &target)
 	mExploser.explosionsSetCouldChange();
 }
 
-void NodeElement::updateDynamicLabels(const Id &target)
+void NodeElement::updateDynamicProperties(const Id &target)
 {
 	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
 		return;

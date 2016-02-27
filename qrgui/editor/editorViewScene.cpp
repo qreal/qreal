@@ -483,7 +483,7 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 			if (element.explosionTarget() != Id()) {
 				NodeElement * const elem = getNodeById(element.id());
 				elem->updateDynamicShape(element.explosionTarget());
-				elem->updateDynamicLabels(element.explosionTarget());
+				elem->updateDynamicProperties(element.explosionTarget());
 			}
 
 			if (mModels.logicalRepoApi().outgoingExplosion(mModels.graphicalModelAssistApi().logicalId(element.id()))

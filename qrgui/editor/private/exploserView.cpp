@@ -19,7 +19,7 @@
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/createElementsCommand.h>
 #include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>
-#include <qrgui/dialogs/subprogram/labelPropertiesDialog.h>
+#include <qrgui/dialogs/subprogram/dynamicPropertiesDialog.h>
 
 #include "editor/editorViewScene.h"
 #include "editor/sceneCustomizer.h"
@@ -149,7 +149,7 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 			changeAppearancePaletteAction->setData(target.toVariant());
 		}
 		if (mCustomizer.allowSubprogramLabelsChanging()) {
-			QAction * const changeLabelsAction = contextMenu.addAction(tr("Change Labels"));
+			QAction * const changeLabelsAction = contextMenu.addAction(tr("Change Properties"));
 			connect(changeLabelsAction, &QAction::triggered, this, &ExploserView::changeLabelsActionTriggered);
 			changeLabelsAction->setData(target.toVariant());
 		}
@@ -242,7 +242,7 @@ void ExploserView::changeLabelsActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	qReal::gui::LabelPropertiesDialog * const labelPropertiesDialog = new qReal::gui::LabelPropertiesDialog(
+	qReal::gui::DynamicPropertiesDialog * const labelPropertiesDialog = new qReal::gui::DynamicPropertiesDialog(
 			id
 			, mLogicalApi.mutableLogicalRepoApi()
 			, mExploser

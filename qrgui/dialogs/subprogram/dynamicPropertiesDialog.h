@@ -23,20 +23,20 @@
 #include "qrgui/dialogs/dialogsDeclSpec.h"
 
 namespace Ui {
-class LabelPropertiesDialog;
+class DynamicPropertiesDialog;
 }
 
 namespace qReal {
 namespace gui {
 
-class QRGUI_DIALOGS_EXPORT LabelPropertiesDialog : public QDialog
+class QRGUI_DIALOGS_EXPORT DynamicPropertiesDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	LabelPropertiesDialog(const Id &id, qrRepo::LogicalRepoApi &logicalRepoApi
+	DynamicPropertiesDialog(const Id &id, qrRepo::LogicalRepoApi &logicalRepoApi
 			, models::Exploser &exploser, QWidget *parent = 0);
-	~LabelPropertiesDialog();
+	~DynamicPropertiesDialog();
 
 private slots:
 	void addLabelButtonClicked();
@@ -51,7 +51,7 @@ private:
 	bool canSave();
 	void addLabel(const QString &name, const QString &type, const QString &value);
 
-	Ui::LabelPropertiesDialog *mUi;
+	Ui::DynamicPropertiesDialog *mUi;
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	models::Exploser &mExploser;
 	const Id mId;
