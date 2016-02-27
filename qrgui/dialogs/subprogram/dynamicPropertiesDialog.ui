@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>377</width>
-    <height>319</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,13 +22,13 @@
   <property name="minimumSize">
    <size>
     <width>377</width>
-    <height>319</height>
+    <height>800</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>377</width>
-    <height>380</height>
+    <height>1000</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -88,6 +88,13 @@
      </property>
      <property name="text">
       <string>Add Label</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Subprogram picture:</string>
      </property>
     </widget>
    </item>

@@ -47,6 +47,7 @@ HEADERS += \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.h \
 	$$PWD/findReplaceDialog.h \
 	$$PWD/subprogram/dynamicPropertiesDialog.h \
+	$$PWD/subprogram/shapePropertyWidget.h \
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -65,6 +66,7 @@ SOURCES += \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.cpp \
 	$$PWD/findReplaceDialog.cpp \
 	$$PWD/subprogram/dynamicPropertiesDialog.cpp \
+	$$PWD/subprogram/shapePropertyWidget.cpp \
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \

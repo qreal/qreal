@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group
+/* Copyright 2015-2016 Kogutich Denis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@
 #include <qrgui/models/exploser.h>
 #include <qrrepo/repoApi.h>
 #include "qrgui/dialogs/dialogsDeclSpec.h"
+#include "shapePropertyWidget.h"
 
 namespace Ui {
 class DynamicPropertiesDialog;
@@ -47,14 +48,15 @@ private slots:
 private:
 	///Calls from constructor to init labels
 	void init();
-	/// Tells if we can save labels, return false for example if (name, type) not filled
 	bool canSave();
 	void addLabel(const QString &name, const QString &type, const QString &value);
 
 	Ui::DynamicPropertiesDialog *mUi;
+	ShapePropertyWidget *mShapeWidget;
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	models::Exploser &mExploser;
 	const Id mId;
+
 };
 
 }

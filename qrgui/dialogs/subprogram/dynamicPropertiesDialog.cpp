@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group
+/* Copyright 2015-2016 Kogutich Denis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 		, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::DynamicPropertiesDialog)
+	, mShapeWidget(new ShapePropertyWidget(this))
 	, mLogicalRepoApi(logicalRepoApi)
 	, mExploser(exploser)
 	, mId(id)
@@ -37,6 +38,10 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setColumnCount(4);
 	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+	mUi->verticalLayout->insertWidget(6, mShapeWidget);
+	mShapeWidget->setMinimumHeight(200);
+	mShapeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	init();
 
@@ -140,7 +145,6 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 
 void DynamicPropertiesDialog::init()
 {
-	qDebug() << mLogicalRepoApi.stringProperty(mId, "shape");
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {
