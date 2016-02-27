@@ -168,6 +168,7 @@ void NodeElement::updateDynamicLabels(const Id &target)
 		return;
 	}
 
+	setName(mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name"), false);
 	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
 	QDomDocument dynamicProperties;
 	QDomElement properties = dynamicProperties.createElement("properties");

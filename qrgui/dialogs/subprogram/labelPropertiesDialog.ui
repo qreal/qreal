@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>377</width>
-    <height>333</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -22,18 +22,64 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QTableWidget" name="labels"/>
+  <property name="windowOpacity">
+   <double>2.000000000000000</double>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Subprogram name:</string>
+     </property>
+    </widget>
    </item>
-   <item row="1" column="0">
+   <item>
+    <widget class="QLineEdit" name="subprogramName">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Dynamic Properties:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="labels">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>609</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="addLabel">
+     <property name="maximumSize">
+      <size>
+       <width>16777214</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="text">
       <string>Add Label</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QPushButton" name="saveAll">
      <property name="text">
       <string>Save All</string>

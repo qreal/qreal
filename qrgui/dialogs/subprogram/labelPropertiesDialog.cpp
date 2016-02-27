@@ -71,11 +71,12 @@ void LabelPropertiesDialog::saveButtonClicked()
 		return;
 	}
 
+	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
 
-	int x = 40; ///????????
-	int y = 60; ///????????
+	int x = 40;
+	int y = 60;
 	for (int i = 0; i < mUi->labels->rowCount(); ++i) {
 		QString name = mUi->labels->item(i, 0)->text();
 		QString type = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 1))->currentText();
@@ -95,12 +96,12 @@ void LabelPropertiesDialog::saveButtonClicked()
 		labels.appendChild(label1);
 
 		QDomElement label2 = dynamicLabels.createElement("label");
-		label2.setAttribute("x", x - 70); /// (x - 70) ????????
+		label2.setAttribute("x", x - 70);
 		label2.setAttribute("y", y);
 		label2.setAttribute("text", name);
 		labels.appendChild(label2);
 
-		y += 30; ///????????
+		y += 30;
 	}
 
 	dynamicLabels.appendChild(labels);
@@ -139,6 +140,7 @@ void LabelPropertiesDialog::typeChanged(const QString &newType)
 
 void LabelPropertiesDialog::init()
 {
+	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {
 		return;
