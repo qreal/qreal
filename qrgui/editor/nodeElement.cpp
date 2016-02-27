@@ -144,7 +144,8 @@ void NodeElement::connectSceneEvents()
 
 void NodeElement::initExplosionConnections()
 {
-	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this, static_cast<void (NodeElement::*)(const Id&)>(&NodeElement::updateDynamicLabels));
+	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeLabels, this,
+			static_cast<void (NodeElement::*)(const Id&)>(&NodeElement::updateDynamicLabels));
 	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeShape, this, &NodeElement::updateDynamicShape);
 }
 
@@ -234,7 +235,8 @@ void NodeElement::updateDynamicLabels(const Id &target)
 
 	//Saving dynamic properties in source.
 	dynamicProperties.appendChild(properties);
-	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties", dynamicProperties.toString(4));
+	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties",
+			dynamicProperties.toString(4));
 }
 
 QMap<QString, QVariant> NodeElement::graphicalProperties() const

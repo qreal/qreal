@@ -240,8 +240,8 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 	}
 
 	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
-	const QString dynamicProperties = dynamic_cast<models::details::LogicalModel *>(mTargetLogicalModel)->logicalModelAssistApi()
-			.logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
+	const QString dynamicProperties = dynamic_cast<models::details::LogicalModel *>(mTargetLogicalModel)->
+			logicalModelAssistApi().logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
 
 	if (logicalModelIndex != QModelIndex()) {
 		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());

@@ -170,8 +170,8 @@ void Label::updateData(bool withUndoRedo)
 	if (mProperties.binding() == "name") {
 		parent->setName(value.toString(), withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
-		const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.logicalId(mId)
-				, "dynamicProperties").toString();
+		const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.
+				logicalId(mId), "dynamicProperties").toString();
 		if (!properties.isEmpty()) {
 			QDomDocument dynamicProperties;
 			dynamicProperties.setContent(properties);
@@ -194,8 +194,8 @@ void Label::updateData(bool withUndoRedo)
 				}
 			}
 
-			mLogicalModelAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalModelAssistApi.logicalId(mId), "dynamicProperties"
-					, dynamicProperties.toString(4));
+			mLogicalModelAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalModelAssistApi.logicalId(mId),
+					"dynamicProperties", dynamicProperties.toString(4));
 			parent->setLogicalProperty(mProperties.binding(), value.toString(), withUndoRedo);
 		} else {
 			parent->setLogicalProperty(mProperties.binding(), value.toString(), withUndoRedo);
@@ -387,8 +387,8 @@ void Label::startTextInteraction()
 
 void Label::updateDynamicData()
 {
-	const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.logicalId(mId)
-			, "dynamicProperties").toString();
+	const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.
+			logicalId(mId), "dynamicProperties").toString();
 	if (!properties.isEmpty()) {
 		QDomDocument dynamicProperties;
 		dynamicProperties.setContent(properties);

@@ -328,7 +328,8 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 					break;
 				}
 
-				int propertiesCount = mLogicalAssistApi->editorManagerInterface().propertyNames(item->id().type()).count();
+				int propertiesCount = mLogicalAssistApi->editorManagerInterface().
+						propertyNames(item->id().type()).count();
 				const QString dynamicProperties = mApi.property(item->id(), "dynamicProperties").toString();
 
 				if (!dynamicProperties.isEmpty()) {
