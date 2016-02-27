@@ -44,7 +44,7 @@ class LabelProperties : public QObject
 public:
 	LabelProperties();
 	LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation);
-	LabelProperties(int index, qreal x, qreal y, const QString &binding, bool isReadOnly, qreal rotation);
+	LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName, const QString &nameOfRoleProperty, bool isReadOnly, qreal rotation);
 	LabelProperties(const LabelProperties &other);
 
 	/// Returns label`s index among other siblings.
@@ -80,6 +80,8 @@ public:
 
 	/// Sets the property name in repository that will be synced with label text.
 	void setBinding(const QString &binding);
+
+	QString nameForRoleProperty() const;
 
 	/// Returns immutability of the label`s value by user.
 	bool isReadOnly() const;
@@ -175,6 +177,8 @@ private:
 	qreal mY;
 	QString mText;
 	QString mBinding;
+	QString mRoleName;
+	QString mNameOfPropertyRole;
 	bool mReadOnly;
 	qreal mRotation;
 	QColor mBackground;

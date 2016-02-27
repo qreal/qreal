@@ -44,8 +44,8 @@ public:
 	/// @param readOnly - if true, user will not be allowed to modify label's value, if false, user can edit
 	///        contents of a label, and modify underlying value in repository.
 	/// @param rotation - sets rotation of a label.
-	virtual LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly
-			, qreal rotation) = 0;
+	virtual LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, const QString &roleName
+			, const QString &nameOfRoleProperty, bool readOnly, qreal rotation) = 0;
 };
 
 }

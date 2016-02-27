@@ -166,7 +166,9 @@ void Label::updateData(bool withUndoRedo)
 	const QString value = toPlainText();
 	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
 
-	if (mProperties.binding() == "name") {
+	if (!mProperties.nameForRoleProperty().isEmpty()) {
+		parent->setLogicalProperty(mProperties.nameForRoleProperty(), value, withUndoRedo);
+	} else if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
