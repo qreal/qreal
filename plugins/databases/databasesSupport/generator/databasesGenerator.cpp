@@ -546,15 +546,15 @@ void DatabasesGenerator::generateSQLCode()
 		return;
 	}
 
-	if (mDbms == "sqlServer2008")
+	if (mDbms == "SqlServer2008")
 		generateWithSqlServer2008();
-	else if (mDbms == "mySql5")
+	else if (mDbms == "MySql5")
 		generateWithMySql5();
-	else if (mDbms == "sqlite")
+	else if (mDbms == "Sqlite")
 		generateWithSqlite();
-	else if (mDbms == "microsoftAccess")
+	else if (mDbms == "MicrosoftAccess")
 		generateWithMicrosoftAccess();
-	else if (mDbms == "postgreSql")
+	else if (mDbms == "PostgreSql")
 		generateWithPostgreSql();
 
 	codeFile.close();
