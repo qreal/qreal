@@ -30,6 +30,10 @@
 #include "src/engine/items/regions/ellipseRegion.h"
 #include "src/engine/items/regions/rectangularRegion.h"
 
+#include <iostream>
+
+using namespace std;
+
 using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
@@ -40,6 +44,22 @@ ThreeDModelEngineApi::ThreeDModelEngineApi(model::Model &model, view::TwoDModelW
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
 	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
+	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+
+	if (clientID == -1)
+	{
+		cout << 1 << endl;
+		return;
+	}
+
+	cout << clientID << endl;
+
+	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+
+	simxStartSimulation(clientID, simx_opmode_oneshot);
 }
 
 ThreeDModelEngineApi::~ThreeDModelEngineApi()
@@ -48,23 +68,26 @@ ThreeDModelEngineApi::~ThreeDModelEngineApi()
 
 void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &port, bool breakMode)
 {
-	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+//	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
 
-	simxStartSimulation(clientID, simx_opmode_oneshot);
+//	//simxStartSimulation(clientID, simx_opmode_oneshot);
 
-	int frontLeftHandle = 0;
-	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
-	int frontRightHandle = 0;
-	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
-	int backLeftHandle = 0;
-	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
-	int backRightHandle = 0;
-	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+//	int frontLeftHandle = 0;
+//	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+//	int frontRightHandle = 0;
+//	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+//	int backLeftHandle = 0;
+//	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+//	int backRightHandle = 0;
+//	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
 
 	simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed, simx_opmode_oneshot);
+
+
+	//simxFinish(clientID);
 
 	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
 }
@@ -103,30 +126,40 @@ int ThreeDModelEngineApi::readTouchSensor(const PortInfo &port) const
 
 int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 {
-	int sensorHandle = 0;
-	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+//	int sensorHandle = 0;
+//	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
 
-	simxUChar sensorTrigger=0;
-	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,NULL,NULL,NULL,simx_opmode_streaming) == simx_return_ok)
-	{
-		if (sensorTrigger)
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		}
-	}
-	else
-	{
-		return 0;
-	}
+//	simxUChar sensorTrigger=0;
+//	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,NULL,NULL,NULL,simx_opmode_streaming) == simx_return_ok)
+//	{
+//		if (sensorTrigger)
+//		{
+//			return 1;
+//		}
+//		else
+//		{
+//			return 0;
+//		}
+//	}
+//	else
+//	{
+//		return 0;
+//	}
 
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
 	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+}
+
+QVector<int> ThreeDModelEngineApi::readAccelerometerSensor() const
+{
+	return mModel.robotModels()[0]->accelerometerReading();
+}
+
+QVector<int> ThreeDModelEngineApi::readGyroscopeSensor() const
+{
+	return mModel.robotModels()[0]->gyroscopeReading();
 }
 
 int ThreeDModelEngineApi::spoilSonarReading(const int distance) const
