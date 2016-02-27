@@ -337,12 +337,6 @@ void ShapeEdit::save()
 	generateDom();
 	if (mIndex.isValid()) {
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
-	} else if (mId.element() == "SubprogramDiagram") {
-		mDocument.clear();
-		//generateGraphics().at(0) == <picture>, here we don't need "all" <graphics>
-		mDocument.appendChild(generateGraphics().at(0));
-		mMainWindow->models().mutableLogicalRepoApi().setProperty(mId, "shape", mDocument.toString(4));
-		mMainWindow->models().exploser().explosionTargetCouldChangeShape(mId);
 	} else {
 		mEditorManager->updateShape(mId, mDocument.toString(4));
 		foreach (const Id graphicalElement, mGraphicalElements) {
@@ -402,18 +396,6 @@ void ShapeEdit::load(const QString &text)
 	}
 
 	XmlLoader loader(mScene);
-
-	if (mId.element().contains("Subprogram")) {
-		QDomDocument shapeDoc;
-		QDomElement graphics = shapeDoc.createElement("graphics");
-		QDomDocument picture;
-		picture.setContent(text);
-		graphics.appendChild(picture);
-		shapeDoc.appendChild(graphics);
-		loader.readString(shapeDoc.toString(4));
-		return;
-	}
-
 	loader.readString(text);
 }
 

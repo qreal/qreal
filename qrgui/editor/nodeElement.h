@@ -188,8 +188,6 @@ public:
 public slots:
 	void switchGrid(bool isChecked);
 	void updateDynamicProperties(const Id &target);
-	/// Updates subprogram shape, shape is stored in the target property "shape"
-	void updateDynamicShape(const Id &target);
 
 private slots:
 	void updateNodeEdges();
@@ -313,7 +311,7 @@ private:
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
 
-	///It is used in NodeElement::updateDynamicLabels(const Id &target),
+	///It is used in NodeElement::updateDynamicProperties(const Id &target),
 	/// when we deleting old dynamic labels
 	int mStartingLabelsCount;
 };

@@ -143,27 +143,21 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 	propDialog->show();
 }
 
-void DraggableElement::changeLabelsPaletteActionTriggered()
+void DraggableElement::changeDynamicPropertiesPaletteActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	DynamicPropertiesDialog * const labelPropertiesDialog = new DynamicPropertiesDialog(id
+	DynamicPropertiesDialog * const dynamicPropertiesDialog = new DynamicPropertiesDialog(id
 			, mMainWindow.models().mutableLogicalRepoApi(), mMainWindow.models().exploser(), &mMainWindow);
-	labelPropertiesDialog->setModal(true);
-	labelPropertiesDialog->show();
+	dynamicPropertiesDialog->setModal(true);
+	dynamicPropertiesDialog->show();
 }
 
 void DraggableElement::changeAppearancePaletteActionTriggered()
 {
 	const QAction * const action = static_cast<QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	QString propertyValue;
-	if (id.element().contains("Subprogram")) {
-		propertyValue = mMainWindow.models().mutableLogicalRepoApi().stringProperty(id, "shape");
-	} else {
-		propertyValue = mEditorManagerProxy.shape(id);
-	}
-
+	const QString propertyValue = mEditorManagerProxy.shape(id);
 	mMainWindow.openShapeEditor(id, propertyValue, &mEditorManagerProxy, false);
 }
 
@@ -355,18 +349,11 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			menu->exec(QCursor::pos());
 		} else if (elementId.element() == "Subprogram" && mInUserPalette) {
 			QMenu * const menu = new QMenu();
-			if (mMainWindow.toolManager().customizer()->allowSubprogramShapeChanging()) {
-				QAction * const changeAppearancePaletteAction = menu->addAction(tr("Change Appearance"));
-				connect(changeAppearancePaletteAction, &QAction::triggered
-						, this,  &DraggableElement::changeAppearancePaletteActionTriggered);
-				changeAppearancePaletteAction->setData(explosionTarget().toVariant());
-			}
-
-			if (mMainWindow.toolManager().customizer()->allowSubprogramLabelsChanging()) {
-				QAction * const changeLabelsAction = menu->addAction(tr("Change Properties"));
-				connect(changeLabelsAction, &QAction::triggered, this
-						, &DraggableElement::changeLabelsPaletteActionTriggered);
-				changeLabelsAction->setData(explosionTarget().toVariant());
+			if (mMainWindow.toolManager().customizer()->allowSubprogramPropertiesChanging()) {
+				QAction * const changePropertiesAction = menu->addAction(tr("Change Properties"));
+				connect(changePropertiesAction, &QAction::triggered, this
+						, &DraggableElement::changeDynamicPropertiesPaletteActionTriggered);
+				changePropertiesAction->setData(explosionTarget().toVariant());
 			}
 
 			menu->exec(QCursor::pos());

@@ -70,7 +70,7 @@ public:
 
 private slots:
 	void changePropertiesPaletteActionTriggered();
-	void changeLabelsPaletteActionTriggered();
+	void changeDynamicPropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
 	void deleteElementPaletteActionTriggered();
 	void deleteElement();

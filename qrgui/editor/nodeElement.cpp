@@ -145,20 +145,6 @@ void NodeElement::connectSceneEvents()
 void NodeElement::initExplosionConnections()
 {
 	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeProperties, this, &NodeElement::updateDynamicProperties);
-	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeShape, this, &NodeElement::updateDynamicShape);
-}
-
-void NodeElement::updateDynamicShape(const Id &target)
-{
-	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
-		return;
-	}
-
-	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
-	QDomDocument picture;
-	picture.setContent(shape);
-	mRenderer.load(picture);
-	mExploser.explosionsSetCouldChange();
 }
 
 void NodeElement::updateDynamicProperties(const Id &target)

@@ -480,16 +480,14 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 					, QPointF(size.width(), size.height()), element.id() == element.logicalId(), createCommand);
 			mController.execute(insertCommand);
 
-			if (element.explosionTarget() != Id()) {
-				NodeElement * const elem = getNodeById(element.id());
-				elem->updateDynamicShape(element.explosionTarget());
-				elem->updateDynamicProperties(element.explosionTarget());
-			}
-
 			if (mModels.logicalRepoApi().outgoingExplosion(mModels.graphicalModelAssistApi().logicalId(element.id()))
 					!= Id())
 			{
-				getNodeById(element.id())->initExplosionConnections();
+				NodeElement * const elem = getNodeById(element.id());
+				elem->initExplosionConnections();
+				if (element.explosionTarget() != Id()) {
+					elem->updateDynamicProperties(element.explosionTarget());
+				}
 			}
 		}
 	}

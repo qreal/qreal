@@ -36,14 +36,8 @@ class Customizer
 public:
 	virtual ~Customizer() {}
 
-	/// Tells if we can change subprogram labels
-	virtual bool allowSubprogramLabelsChanging() const
-	{
-		return true;
-	}
-
-	/// Tells if we can change subprogram picture
-	virtual bool allowSubprogramShapeChanging() const
+	/// Tells if we can change subprogram properties
+	virtual bool allowSubprogramPropertiesChanging() const
 	{
 		return true;
 	}

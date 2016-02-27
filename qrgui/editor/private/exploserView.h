@@ -89,7 +89,7 @@ private slots:
 	void removeExplosionActionTriggered();
 	void expandExplosionActionTriggered();
 	void changePropertiesActionTriggered();
-	void changeLabelsActionTriggered();
+	void changeDynamicPropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void addElementToPaletteActionTriggered();
 

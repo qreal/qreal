@@ -142,16 +142,10 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 		}
 	} else if (element->id().element() == "Subprogram") {
 		const Id target = mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId());
-		if (mCustomizer.allowSubprogramShapeChanging()) {
-			QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
-			connect(changeAppearancePaletteAction, &QAction::triggered, this
-					, &ExploserView::changeAppearanceActionTriggered);
-			changeAppearancePaletteAction->setData(target.toVariant());
-		}
-		if (mCustomizer.allowSubprogramLabelsChanging()) {
-			QAction * const changeLabelsAction = contextMenu.addAction(tr("Change Properties"));
-			connect(changeLabelsAction, &QAction::triggered, this, &ExploserView::changeLabelsActionTriggered);
-			changeLabelsAction->setData(target.toVariant());
+		if (mCustomizer.allowSubprogramPropertiesChanging()) {
+			QAction * const changeDynamicPropertiesAction = contextMenu.addAction(tr("Change Properties"));
+			connect(changeDynamicPropertiesAction, &QAction::triggered, this, &ExploserView::changeDynamicPropertiesActionTriggered);
+			changeDynamicPropertiesAction->setData(target.toVariant());
 		}
 	}
 
@@ -238,30 +232,23 @@ void ExploserView::changePropertiesActionTriggered()
 	propertiesDialog->show();
 }
 
-void ExploserView::changeLabelsActionTriggered()
+void ExploserView::changeDynamicPropertiesActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
-	qReal::gui::DynamicPropertiesDialog * const labelPropertiesDialog = new qReal::gui::DynamicPropertiesDialog(
+	qReal::gui::DynamicPropertiesDialog * const dynamicPropertiesDialog = new qReal::gui::DynamicPropertiesDialog(
 			id
 			, mLogicalApi.mutableLogicalRepoApi()
 			, mExploser
 			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
-	labelPropertiesDialog->setModal(true);
-	labelPropertiesDialog->show();
+	dynamicPropertiesDialog->setModal(true);
+	dynamicPropertiesDialog->show();
 }
 
 void ExploserView::changeAppearanceActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
-
-	if (id.element() == "SubprogramDiagram") {
-		const QString propertyValue = mLogicalApi.logicalRepoApi().stringProperty(id, "shape");
-		emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
-		return;
-	}
-
 	const QString propertyValue = mLogicalApi.editorManagerInterface().shape(id);
 	emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
 }
