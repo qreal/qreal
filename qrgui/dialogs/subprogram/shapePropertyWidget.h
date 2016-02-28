@@ -15,6 +15,7 @@
 #pragma once
 
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <plugins/pluginManager/sdfRenderer.h>
 #include <QtWidgets/QWidget>
 
 class ShapePropertyWidget : public QWidget
@@ -22,11 +23,16 @@ class ShapePropertyWidget : public QWidget
 	Q_OBJECT
 public:
 	explicit ShapePropertyWidget(QWidget *parent = 0);
+	void setShape(const QString &shape);
 
 protected:
 	void paintEvent( QPaintEvent *event );
 
 private:
+	void drawShape(QPainter *painter, const QRectF &bounds);
+
 	qreal mWidthOfGrid;
 	graphicsUtils::GridDrawer mGridDrawer;
+	qReal::SdfRenderer mRenderer;
+	QString mShape;
 };

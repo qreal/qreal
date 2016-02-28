@@ -145,6 +145,7 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 
 void DynamicPropertiesDialog::init()
 {
+	mShapeWidget->setShape(mLogicalRepoApi.stringProperty(mId, "shape"));
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {

@@ -19,23 +19,42 @@
 
 using namespace qReal;
 
+const QRectF contents = QRectF(0, 0, 50, 50);
+
 ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	: QWidget(parent)
 {
 	QPalette pal(palette());
 	pal.setColor(QPalette::Background, Qt::white);
-	this->setAutoFillBackground(true);
-	this->setPalette(pal);
+	setAutoFillBackground(true);
+	setPalette(pal);
+}
+
+void ShapePropertyWidget::setShape(const QString &shape)
+{
+	mShape = shape;
+	repaint();
+}
+
+void ShapePropertyWidget::drawShape(QPainter *painter, const QRectF &bounds)
+{
+	QDomDocument dynamicShape;
+	dynamicShape.setContent(mShape);
+	mRenderer.load(dynamicShape);
+	mRenderer.render(painter, bounds);
 }
 
 void ShapePropertyWidget::paintEvent(QPaintEvent *event)
 {
-	QPainter painter(this);
 	mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
+	QPainter painter(this);
 	painter.setPen(QPen(Qt::black, mWidthOfGrid));
 
 	const QRectF r = QRectF(rect());
 	const int indexGrid = SettingsManager::value("IndexGrid").toInt();
 	mGridDrawer.drawGrid(&painter, r, indexGrid);
+
+
+	drawShape(&painter, contents);
 }
 
