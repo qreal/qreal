@@ -495,15 +495,12 @@ QIcon InterpreterEditorManager::icon(const Id &id) const
 	return QIcon(engine);
 }
 
-ElementImpl *InterpreterEditorManager::elementImpl(const Id &id) const
+ElementType &InterpreterEditorManager::elementType(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	InterpreterElementImpl * const impl = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
-	if (!impl) {
-		return 0;
-	}
-
-	return impl;
+//	InterpreterElementImpl * const type = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
+//	Q_ASSERT(type);
+//	return *type;
 }
 
 IdList InterpreterEditorManager::containedTypes(const Id &id) const
@@ -705,25 +702,25 @@ QPair<Id, Id> InterpreterEditorManager::editorAndDiagram(const qrRepo::RepoApi *
 	return QPair<Id, Id>();
 }
 
-QList<StringPossibleEdge> InterpreterEditorManager::possibleEdges(const QString &editor
-		, const QString &elementName) const
-{
-	QList<StringPossibleEdge> result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndElementPair = repoAndElement(editor, elementName);
-	const qrRepo::RepoApi * const repo = repoAndElementPair.first;
-	const Id element = repoAndElementPair.second;
-	foreach (const Id &child, repo->children(element)) {
-		if (repo->name(child) == "possibleEdge") {
-			foreach (const Id &grandChild, repo->children(child)) {
-				const bool directed = repo->stringProperty(grandChild, "directed") == "true";
-				result.append(qMakePair(qMakePair(repo->stringProperty(grandChild, "beginName")
-						, repo->stringProperty(grandChild, "endName")), qMakePair(directed, repo->name(element))));
-			}
-		}
-	}
+//QList<StringPossibleEdge> InterpreterEditorManager::possibleEdges(const QString &editor
+//		, const QString &elementName) const
+//{
+//	QList<StringPossibleEdge> result;
+//	QPair<qrRepo::RepoApi*, Id> const repoAndElementPair = repoAndElement(editor, elementName);
+//	const qrRepo::RepoApi * const repo = repoAndElementPair.first;
+//	const Id element = repoAndElementPair.second;
+//	foreach (const Id &child, repo->children(element)) {
+//		if (repo->name(child) == "possibleEdge") {
+//			foreach (const Id &grandChild, repo->children(child)) {
+//				const bool directed = repo->stringProperty(grandChild, "directed") == "true";
+//				result.append(qMakePair(qMakePair(repo->stringProperty(grandChild, "beginName")
+//						, repo->stringProperty(grandChild, "endName")), qMakePair(directed, repo->name(element))));
+//			}
+//		}
+//	}
 
-	return result;
-}
+//	return result;
+//}
 
 QStringList InterpreterEditorManager::elements(const QString &editor, const QString &diagram) const
 {

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@
 
 #pragma once
 
-#include "models/graphicalModelAssistApi.h"
+#include <qrgui/models/graphicalModelAssistApi.h>
+
 #include "editor/ports/statLine.h"
 #include "editor/ports/statPoint.h"
 
@@ -40,8 +41,10 @@ public:
 	/// @param graphicalAssistApi GraphicalModelAssistApi that used by node.
 	/// @param pointPorts Point ports which belong to node.
 	/// @param linePorts Line ports which belong to node.
-	PortHandler(NodeElement *node, models::GraphicalModelAssistApi &graphicalAssistApi
-			, QList<PortInterface *> const &ports);
+	PortHandler(NodeElement *node
+			, models::GraphicalModelAssistApi &graphicalAssistApi
+			, const QList<StatPoint *> &pointPorts
+			, const QList<StatLine *> &linePorts);
 
 	~PortHandler();
 

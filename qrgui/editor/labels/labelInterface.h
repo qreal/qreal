@@ -19,6 +19,8 @@
 #include <QtWidgets/QGraphicsItem>
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// Represents text label on a shape, to be configured and used in editor plugins.
 class LabelInterface
@@ -64,4 +66,6 @@ public:
 	virtual void setSuffix(const QString &text) = 0;
 };
 
+}
+}
 }

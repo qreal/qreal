@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@ include(../../global.pri)
 TEMPLATE = lib
 
 links(qrkernel qslog qrutils \
-		qrgui-mouse-gestures qrgui-thirdparty qrgui-models \
+		qrgui-mouse-gestures qrgui-thirdparty qrgui-models qrgui-meta-meta-model \
 		qrgui-controller qrgui-plugin-manager qrgui-brand-manager \
 		qrgui-dialogs \
 )
 
-includes(qrgui)
+includes(qrgraph qrgui qrgui/plugins/metaMetaModel)
 
 QT += widgets
 
@@ -50,8 +50,7 @@ HEADERS += \
 	$$PWD/element.h \
 	$$PWD/nodeElement.h \
 	$$PWD/labels/label.h \
-	$$PWD/labels/labelFactory.h \
-	$$PWD/labels/labelProperties.h \
+	$$PWD/labels/labelInterface.h \
 	$$PWD/contextMenuAction.h \
 	$$PWD/embedded/linkers/embeddedLinker.h \
 	$$PWD/embedded/linkers/embeddedLinkers.h \
@@ -97,8 +96,6 @@ SOURCES += \
 	$$PWD/element.cpp \
 	$$PWD/nodeElement.cpp \
 	$$PWD/labels/label.cpp \
-	$$PWD/labels/labelFactory.cpp \
-	$$PWD/labels/labelProperties.cpp \
 	$$PWD/contextMenuAction.cpp \
 	$$PWD/embedded/linkers/embeddedLinker.cpp \
 	$$PWD/embedded/linkers/embeddedLinkers.cpp \

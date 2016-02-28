@@ -23,7 +23,6 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
 #include <qrutils/pluginManagers/pluginManager.h>
-#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 
 #include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "qrgui/plugins/pluginManager/editorManagerInterface.h"
@@ -33,6 +32,8 @@
 #include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
+
+class Metamodel;
 
 namespace gui {
 namespace editor {
@@ -72,7 +73,7 @@ public:
 	QString propertyDisplayedName(const Id &id, const QString &propertyName) const override;
 	QIcon icon(const Id &id) const override;
 	QSize iconSize(const Id &id) const override;
-	ElementImpl* elementImpl(const Id &id) const override;
+	ElementType &elementType(const Id &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
 	QList<Explosion> explosions(const Id &source) const override;
@@ -104,7 +105,7 @@ public:
 	Id theOnlyDiagram() const override;
 	QString diagramNodeNameString(const Id &editor, const Id &diagram) const override;
 
-	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const override;
+//	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const override;
 	QStringList elements(const QString &editor, const QString &diagram) const override;
 	int isNodeOrEdge(const QString &editor, const QString &element) const override;
 	bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
@@ -149,17 +150,17 @@ public:
 	void setElementEnabled(const Id &type, bool enabled) override;
 
 private:
-	EditorInterface *editorInterface(const QString &editor) const;
+	Metamodel *metamodel(const QString &editor) const;
 
 	void init();
 
-	bool isParentOf(const EditorInterface *plugin, const QString &childDiagram, const QString &child
+	bool isParentOf(const Metamodel *plugin, const QString &childDiagram, const QString &child
 			, const QString &parentDiagram, const QString &parent) const;
 
 	QStringList mPluginsLoaded;
 	QMap<QString, QString> mPluginFileName;
 	QMap<QString, Pattern> mGroups;
-	QMap<QString, EditorInterface *> mPluginIface;
+	QMap<QString, Metamodel *> mPluginIface;
 
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;

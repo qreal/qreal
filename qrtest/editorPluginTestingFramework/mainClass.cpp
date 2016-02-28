@@ -53,12 +53,12 @@ MainClass::MainClass(
 
 	launchQrxc(normalizedFileName);
 	compilePlugin(mGeneratedCodeDirQrxc + pathToQrxcGeneratedCode, normalizedFileName);
-	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
+	Metamodel* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
 	appendPluginNames();
 
 	launchQrmc(fileName, pathToQrmc);
 	compilePlugin(mGeneratedCodeDirQrmc + pathToQrmcGeneratedCode, normalizedFileName);
-	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
+	Metamodel* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
 
 	InterpreterEditorManager interpreterEditorManager(fileName, nullptr);
 	QString path = "plugins/editors/qrtest/qrxc/plugins";
@@ -191,7 +191,7 @@ void MainClass::launchQrxc(const QString &fileName)
 	mQrxcLauncher.launchQrxc(fileName, mQRealRootPath, tempPath);
 }
 
-EditorInterface* MainClass::loadedPlugin(const QString &fileName, const QString &pathToFile)
+Metamodel* MainClass::loadedPlugin(const QString &fileName, const QString &pathToFile)
 {
 	return mPluginLoader.loadedPlugin(fileName, pathToFile, mPluginExtension, mPrefix);
 }

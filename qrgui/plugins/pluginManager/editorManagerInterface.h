@@ -14,28 +14,20 @@
 
 #pragma once
 
-#include <QtCore/QDir>
-#include <QtCore/QStringList>
 #include <QtCore/QMap>
-#include <QtCore/QPluginLoader>
-#include <QtCore/QStringList>
 #include <QtGui/QIcon>
 
 #include <qrkernel/ids.h>
 #include <qrkernel/version.h>
 #include <qrkernel/settingsManager.h>
 
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
-#include "qrgui/plugins/pluginManager/pattern.h"
-#include "qrgui/plugins/pluginManager/explosion.h"
-#include "qrgui/plugins/pluginManager/details/patternParser.h"
-
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
 #include "qrgui/plugins/pluginManager/pattern.h"
 #include "qrgui/plugins/pluginManager/explosion.h"
 #include "qrgui/plugins/pluginManager/details/patternParser.h"
 
 namespace qReal {
+
+class ElementType;
 
 namespace gui {
 namespace editor {
@@ -64,7 +56,7 @@ public:
 	virtual QString propertyDescription(const Id &id, const QString &propertyName) const = 0;
 	virtual QString propertyDisplayedName(const Id &id, const QString &propertyName) const = 0;
 	virtual QIcon icon(const Id &id) const = 0;
-	virtual ElementImpl *elementImpl(const Id &id) const = 0;
+	virtual ElementType &elementType(const Id &id) const = 0;
 
 	virtual IdList containedTypes(const Id &id) const = 0;
 	virtual QList<Explosion> explosions(const Id &source) const = 0;
@@ -104,7 +96,7 @@ public:
 	virtual Id theOnlyDiagram() const = 0;
 	virtual QString diagramNodeNameString(const Id &editor, const Id &diagram) const = 0;
 
-	virtual QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const = 0;
+//	virtual QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const = 0;
 	virtual QStringList elements(const QString &editor, const QString &diagram) const = 0;
 	virtual int isNodeOrEdge(const QString &editor, const QString &element) const = 0;
 	virtual bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement

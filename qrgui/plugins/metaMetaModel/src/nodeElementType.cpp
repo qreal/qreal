@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,29 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "metaMetaModel/nodeElementType.h"
 
-#include <QtCore/QString>
-#include "qrgui/plugins/metaMetaModel/metamodel.h"
+#include "metaMetaModel/metamodel.h"
 
-namespace editorPluginTestingFramework {
+using namespace qReal;
 
-class PluginLoader
+NodeElementType::NodeElementType(Metamodel &metamodel)
+	: ElementType(metamodel)
 {
-public:
-
-	/// gets name of dynamic library and returns loaded plugin
-	qReal::Metamodel* loadedPlugin(
-			const QString &fileName
-			, const QString &pathToFile
-			, const QString &pluginExtension
-			, const QString &prefix);
-
-	/// returns generated plugins names
-	QStringList pluginNames();
-
-private:
-	QStringList mPluginNames;
-};
-
 }

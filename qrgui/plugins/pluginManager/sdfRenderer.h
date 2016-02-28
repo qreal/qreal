@@ -30,8 +30,8 @@
 
 #include <qrkernel/settingsManager.h>
 
-#include <plugins/editorPluginInterface/sdfRendererInterface.h>
-#include <plugins/editorPluginInterface/elementRepoInterface.h>
+#include <metaMetaModel/sdfRendererInterface.h>
+#include <metaMetaModel/elementRepoInterface.h>
 #include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 #include "pluginsManagerDeclSpec.h"

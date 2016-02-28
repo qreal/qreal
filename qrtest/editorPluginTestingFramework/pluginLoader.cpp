@@ -24,7 +24,7 @@ using namespace editorPluginTestingFramework;
 using namespace utils;
 using namespace qrRepo;
 
-EditorInterface* PluginLoader::loadedPlugin(
+Metamodel* PluginLoader::loadedPlugin(
 		const QString &fileName
 		, const QString &pathToFile
 		, const QString &pluginExtension
@@ -53,7 +53,7 @@ EditorInterface* PluginLoader::loadedPlugin(
 
 			if (plugin) {
 				qDebug() << "plugin is loaded";
-				EditorInterface * const iEditor = qobject_cast<EditorInterface *>(plugin);
+				Metamodel * const iEditor = qobject_cast<Metamodel *>(plugin);
 				return iEditor;
 			}
 

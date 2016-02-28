@@ -15,6 +15,7 @@
 #include "startWidget.h"
 
 #include <QtCore/QSignalMapper>
+#include <QtGui/QPainter>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QScrollArea>
 

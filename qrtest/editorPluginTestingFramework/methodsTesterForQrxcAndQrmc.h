@@ -16,7 +16,7 @@
 
 #include <QtCore/QString>
 
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/metaMetaModel/metamodel.h"
 #include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
 #include "abstractStringGenerator.h"
 #include "methodsTester.h"
@@ -30,8 +30,8 @@ public:
 
 	/// gets editorInterfaces from mainClass and initializes mQrmcGeneratedPlugin and mQrxcGeneratedPlugin with them
 	MethodsTesterForQrxcAndQrmc(
-			qReal::EditorInterface * const qrmcGeneratedPlugin
-			, qReal::EditorInterface * const qrxcGeneratedPlugin
+			qReal::Metamodel * const qrmcGeneratedPlugin
+			, qReal::Metamodel * const qrxcGeneratedPlugin
 			);
 
 	/// returns list of generated output to main class
@@ -90,8 +90,8 @@ private:
 	/// finds out if string contains only of given symbol (for example, "aaa" contains only of symbol 'a')
 	static bool containsOnly(const QString &string, QChar const &symbol);
 
-	qReal::EditorInterface* mQrmcGeneratedPlugin;
-	qReal::EditorInterface* mQrxcGeneratedPlugin;
+	qReal::Metamodel* mQrmcGeneratedPlugin;
+	qReal::Metamodel* mQrxcGeneratedPlugin;
 
 	qReal::InterpreterEditorManager* mInterpreterGeneratedPlugin;
 

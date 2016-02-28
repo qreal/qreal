@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2015-2016 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,10 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "labelProperties.h"
+#include "metaMetaModel/labelProperties.h"
 
 using namespace qReal;
-using namespace qReal::gui::editor;
 
 LabelProperties::LabelProperties()
 	: mIndex(0)
@@ -24,6 +23,7 @@ LabelProperties::LabelProperties()
 	, mText()
 	, mBinding()
 	, mReadOnly(true)
+	, mIsPlainText(false)
 	, mRotation(0)
 	, mBackground(Qt::transparent)
 	, mScalingX(false)
@@ -41,6 +41,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &tex
 	, mText(text)
 	, mBinding()
 	, mReadOnly(true)
+	, mIsPlainText(false)
 	, mRotation(rotation)
 	, mBackground(Qt::transparent)
 	, mScalingX(false)
@@ -169,6 +170,16 @@ void LabelProperties::setReadOnly(bool readOnly)
 	}
 }
 
+bool LabelProperties::isPlainTextMode() const
+{
+	return mIsPlainText;
+}
+
+void LabelProperties::setPlainTextMode(bool isPlainText)
+{
+	mIsPlainText = isPlainText;
+}
+
 qreal LabelProperties::rotation() const
 {
 	return mRotation;
@@ -247,7 +258,7 @@ void LabelProperties::setPrefix(const QString &text)
 	}
 }
 
-QString LabelProperties::siffix() const
+QString LabelProperties::suffix() const
 {
 	return mSuffix;
 }

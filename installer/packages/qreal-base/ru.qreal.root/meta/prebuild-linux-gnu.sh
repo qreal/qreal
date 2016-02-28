@@ -28,6 +28,7 @@ cp -pr $BIN_DIR/libqrgui-hotkey-manager.so*                             $PWD/../
 cp -pr $BIN_DIR/libqrgui-models.so*                                     $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-mouse-gestures.so*                             $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-plugin-manager.so*                             $PWD/../data/lib/
+cp -pr $BIN_DIR/libqrgui-meta-meta-model.so*                            $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-preferences-dialog.so*                         $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-text-editor.so*                                $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-thirdparty.so*                                 $PWD/../data/lib/

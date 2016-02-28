@@ -198,7 +198,7 @@ void NodeType::generateCode(OutFile &out)
 	const QString className = NameNormalizer::normalize(qualifiedName());
 	bool hasSdf = false;
 
-	out() << "\tclass " << className << " : public qReal::ElementImpl\n\t{\n"
+	out() << "\tclass " << className << " : public qReal::ElementType\n\t{\n"
 			<< "\tpublic:\n";
 
 	if (!mBonusContextMenuFields.empty()) {
@@ -246,7 +246,7 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\t}\n\n";
 
-	out() << "\t\t qReal::ElementImpl *clone() { return nullptr; }\n";
+	out() << "\t\t qReal::ElementType *clone() { return nullptr; }\n";
 
 	out() << "\t\t~" << className << "() {}\n\n"
 	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";

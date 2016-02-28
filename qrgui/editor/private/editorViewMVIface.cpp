@@ -15,6 +15,7 @@
 #include "editorViewMVIface.h"
 
 #include <qrkernel/definitions.h>
+#include <metaMetaModel/elementType.h>
 
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
@@ -160,10 +161,10 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			continue;
 		}
 
-		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
-		Element *elem = elementImpl->isNode()
-				? static_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
-				: static_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
+		const ElementType &elementType = mLogicalAssistApi->editorManagerInterface().elementType(currentId);
+		Element *elem = elementType.isNode()
+				? static_cast<Element *>(new NodeElement(elementType.toNode(), currentId, mScene->models()))
+				: static_cast<Element *>(new EdgeElement(elementType.toEdge(), currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 

@@ -17,13 +17,16 @@
 #include <QtCore/QList>
 #include <QtCore/QPair>
 
-#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
 #include <qrgui/models/edgeInfo.h>
+#include <metaMetaModel/linkShape.h>
 
 #include "qrgui/editor/element.h"
 #include "qrgui/editor/private/edgeArrangeCriteria.h"
 
 namespace qReal {
+
+class EdgeElementType;
+
 namespace gui {
 namespace editor {
 
@@ -32,10 +35,8 @@ class NodeElement;
 class LineFactory;
 class LineHandler;
 
-/** @class EdgeElement
-* @brief class for an edge on a diagram
-*/
-
+/// Represents an instance of some edge element on diagram.
+/// Edge elements can connect nodes, be reshaped by mouse, render some text on them.
 class QRGUI_EDITOR_EXPORT EdgeElement : public Element
 {
 	Q_OBJECT
@@ -55,18 +56,16 @@ public:
 		, bottom
 	};
 
-	EdgeElement(ElementImpl *impl, const Id &id, const models::Models &models);
-
-	virtual ~EdgeElement();
+	EdgeElement(const EdgeElementType &type, const Id &id, const models::Models &models);
+	~EdgeElement() override;
 
 	void updateData();
 
-	virtual QRectF boundingRect() const;
-	QPainterPath shape() const;
-	virtual void paint(QPainter* p, const QStyleOptionGraphicsItem *opt, QWidget* w);
+	QRectF boundingRect() const override;
+	QPainterPath shape() const override;
 
-	virtual bool initPossibleEdges();
-	virtual void initTitles();
+	bool initPossibleEdges() override;
+	void initTitles() override;
 
 	bool isDividable();
 
@@ -131,7 +130,7 @@ public:
 	EdgeInfo data();
 
 	/// Change link type and redraw it
-	void changeShapeType(const enums::linkShape::LinkShape shapeType);
+	void changeShapeType(const LinkShape shapeType);
 
 	/// Save link position to the repo
 	void setGraphicApiPos();
@@ -163,13 +162,16 @@ public:
 	void setPos(const QPointF &pos);
 
 protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	void paint(QPainter* p, const QStyleOptionGraphicsItem *opt, QWidget* w) override;
 
-	virtual void drawStartArrow(QPainter *painter) const;
-	virtual void drawEndArrow(QPainter *painter) const;
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+	void drawStartArrow(QPainter *painter) const;
+	void drawEndArrow(QPainter *painter) const;
 
 	Qt::PenStyle mPenStyle;
 	int mPenWidth;
@@ -207,6 +209,8 @@ private:
 	bool canConnect(const NodeElement * const node, bool from) const;
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
+	const EdgeElementType &mType;
+
 	QList<PossibleEdge> mPossibleEdges;
 
 	NodeElement *mSrc;
@@ -218,7 +222,7 @@ private:
 	qreal mPortFrom;
 	qreal mPortTo;
 
-	enums::linkShape::LinkShape mShapeType;
+	LinkShape mShapeType;
 
 	int mDragType; // is a number of mLine's point we're trying to drag
 

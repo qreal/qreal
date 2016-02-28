@@ -26,7 +26,6 @@
 #include <qrrepo/graphicalRepoApi.h>
 #include <qrrepo/logicalRepoApi.h>
 
-#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 #include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 
@@ -61,7 +60,7 @@ public:
 	QString propertyDescription(const Id &id, const QString &propertyName) const override;
 	QString propertyDisplayedName(const Id &id, const QString &propertyName) const override;
 	QIcon icon(const Id &id) const override;
-	ElementImpl* elementImpl(const Id &id) const override;
+	ElementType &elementType(const Id &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
 	bool isEnumEditable(const Id &id, const QString &name) const override;
@@ -93,7 +92,7 @@ public:
 	Id theOnlyDiagram() const override;
 	QString diagramNodeNameString(const Id &editor, const Id &diagram) const override;
 
-	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const override;
+//	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const override;
 	QStringList elements(const QString &editor, const QString &diagram) const override;
 	int isNodeOrEdge(const QString &editor, const QString &element) const override;
 	bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement

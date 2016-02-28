@@ -146,16 +146,16 @@ void XmlCompiler::generateElementClasses()
 	outElements() << "#pragma once\n\n"
 		<< "#include <QBrush>\n"
 		<< "#include <QPainter>\n\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/elementImpl.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/elementRepoInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/labelFactoryInterface.h\"\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/labelInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/metaMetaModel/elementType.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/metaMetaModel/elementRepoInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/metaMetaModel/labelFactoryInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/metaMetaModel/labelInterface.h\"\n"
 		<< "#include \"ports.h\"\n\n"
 		;
 
 	OutFile outPorts("generated/ports.h");
 	outPorts() << "#pragma once\n\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/portHelpers.h\"\n\n";
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/metaMetaModel/portHelpers.h\"\n\n";
 
 	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values()) {
 		foreach (Type *type, diagram->types().values()) {
@@ -181,10 +181,10 @@ void XmlCompiler::generatePluginHeader()
 		<< "#include <QtGui/QIcon>\n"
 		<< "#include <QtCore/QPair>\n"
 		<< "\n"
-		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/editorPluginInterface/editorInterface.h\"\n"
+		<< "#include \"../" << mSourcesRootFolder << "/qrgui/plugins/metaMetaModel/metamodel.h\"\n"
 		<< "\n"
-		<< "class " << mPluginName << "Plugin : public QObject, public qReal::EditorInterface\n"
-		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::EditorInterface)\n"
+		<< "class " << mPluginName << "Plugin : public QObject, public qReal::Metamodel\n"
+		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::Metamodel)\n"
 		<< "\tQ_PLUGIN_METADATA(IID \"" << mPluginName << "\")\n"
 		<< "\n"
 		<< "public:\n"
@@ -201,12 +201,12 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQStringList getTypesContainedBy(const QString &element) const override;\n"
 		<< "\tQList<QPair<QPair<QString, QString>, QPair<bool, QString>>> getPossibleEdges(QString "
 				"const &element) const override;\n"
-		<< "\tQList<qReal::EditorInterface::ExplosionData> explosions(const QString &diagram, QString "
+		<< "\tQList<qReal::Metamodel::ExplosionData> explosions(const QString &diagram, QString "
 				"const &element) const override;\n"
 		<< "\n"
 		<< "\tint isNodeOrEdge(const QString &element) const override;\n"
 		<< "\n"
-		<< "\tqReal::ElementImpl* getGraphicalObject(const QString &diagram, const QString &element) const override;\n"
+		<< "\tqReal::ElementType *getGraphicalObject(const QString &diagram, const QString &element) const override;\n"
 		<< "\tQString getPropertyType(const QString &element, const QString &property) const override;\n"
 		<< "\tQString getPropertyDefaultValue(const QString &element, const QString &property) const override;\n"
 		<< "\tQStringList getPropertyNames(const QString &diagram, const QString &element) const override;\n"
@@ -271,7 +271,7 @@ void XmlCompiler::generatePluginHeader()
 				"palette groups.\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
-		<< "\tQMap<QString, QMap<QString, QList<qReal::EditorInterface::ExplosionData>>> mExplosionsMap;\n"
+		<< "\tQMap<QString, QMap<QString, QList<qReal::Metamodel::ExplosionData>>> mExplosionsMap;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -663,7 +663,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mElementMouseGesturesMap[diagram][element];\n"
 		<< "}\n\n"
 
-		<< "QList<qReal::EditorInterface::ExplosionData>" << mPluginName
+		<< "QList<qReal::Metamodel::ExplosionData>" << mPluginName
 				<< "Plugin::explosions(const QString &diagram, "
 		<< "const QString &element) const \n{\n"
 		<< "\treturn mExplosionsMap[diagram][element];\n"
@@ -672,7 +672,7 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 
 void XmlCompiler::generateGraphicalObjectRequest(OutFile &out)
 {
-	out() << "qReal::ElementImpl* " << mPluginName
+	out() << "qReal::ElementType *" << mPluginName
 		<< "Plugin::getGraphicalObject(const QString &/*diagram*/, const QString &element) const\n{\n";
 
 	bool isNotFirst = false;

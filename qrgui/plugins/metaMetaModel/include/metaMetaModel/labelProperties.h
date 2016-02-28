@@ -18,8 +18,6 @@
 #include <QtGui/QColor>
 
 namespace qReal {
-namespace gui {
-namespace editor {
 
 /// A container for scene label properties (view and behavioural).
 /// Defines properties via Qt reflection so they can be used in property editor for dynamic Label
@@ -33,13 +31,14 @@ class LabelProperties : public QObject
 	Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
 	Q_PROPERTY(QString binding READ binding WRITE setBinding NOTIFY bindingChanged)
 	Q_PROPERTY(bool isReadOnly READ isReadOnly WRITE setReadOnly NOTIFY readOnlyChanged)
+	Q_PROPERTY(bool isPlainTextMode READ isPlainTextMode WRITE setPlainTextMode NOTIFY plainTextModeChanged)
 	Q_PROPERTY(qreal rotation READ rotation WRITE setRotation NOTIFY rotationChanged)
 	Q_PROPERTY(QColor background READ background WRITE setBackground NOTIFY backgroundChanged)
 	Q_PROPERTY(bool scalingX READ scalingX WRITE setScalingX NOTIFY scalingXChanged)
 	Q_PROPERTY(bool scalingY READ scalingY WRITE setScalingY NOTIFY scalingYChanged)
 	Q_PROPERTY(bool isHard READ isHard WRITE setHard NOTIFY isHardChanged)
 	Q_PROPERTY(QString prefix READ prefix WRITE setPrefix NOTIFY prefixChanged)
-	Q_PROPERTY(QString siffix READ siffix WRITE setSuffix NOTIFY suffixChanged)
+	Q_PROPERTY(QString suffix READ suffix WRITE setSuffix NOTIFY suffixChanged)
 
 public:
 	LabelProperties();
@@ -87,6 +86,12 @@ public:
 	/// Sets immutability of the label`s value by user.
 	void setReadOnly(bool isReadOnly);
 
+	/// Returns false if this label in html mode and true if in plain text mode.
+	bool isPlainTextMode() const;
+
+	/// Puts label into html mode if \a isPlainText is false and to plain text mode if \a isPlainText is true.
+	void setPlainTextMode(bool isPlainText);
+
 	/// Returns an angle of the label in degrees realatively to parent`s transform.
 	qreal rotation() const;
 
@@ -124,7 +129,7 @@ public:
 	void setPrefix(const QString &text);
 
 	/// Returns text drawn just after label contents.
-	QString siffix() const;
+	QString suffix() const;
 
 	/// Sets text drawn just after label contents.
 	void setSuffix(const QString &text);
@@ -147,6 +152,9 @@ signals:
 
 	/// Emitted when immutability of the label`s value by user changes.
 	void readOnlyChanged(bool value);
+
+	/// Emitted when label switches its mode from html to plain text mode or vice versa.
+	void plainTextModeChanged(bool isPlainTextMode);
 
 	/// Emitted when an angle of the label in degrees realatively to parent`s transform changes.
 	void rotationChanged(qreal value);
@@ -176,6 +184,7 @@ private:
 	QString mText;
 	QString mBinding;
 	bool mReadOnly;
+	bool mIsPlainText;
 	qreal mRotation;
 	QColor mBackground;
 	bool mScalingX;
@@ -185,6 +194,4 @@ private:
 	QString mSuffix;
 };
 
-}
-}
 }

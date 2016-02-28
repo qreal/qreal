@@ -33,6 +33,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 	, mGraphicalModelAssistApi(graphicalAssistApi)
 	, mProperties(properties)
 {
+	setTextInteractionFlags(Qt::NoTextInteraction);
 	if (properties.isStatic()) {
 		setText(properties.text());
 	}
@@ -377,7 +378,7 @@ void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 	painter->save();
 	painter->setFont(font());
 	drawText(painter, prefixRect(), mProperties.prefix());
-	drawText(painter, suffixRect(), mProperties.siffix());
+	drawText(painter, suffixRect(), mProperties.suffix());
 	painter->restore();
 
 	// Default dashed frame is drawn arround the whole bounding rect (arround prefix and suffix too). Disabling it.
@@ -403,7 +404,7 @@ QRectF Label::prefixRect() const
 QRectF Label::suffixRect() const
 {
 	const QRectF thisRect = QGraphicsTextItem::boundingRect();
-	QRectF textRect = this->textRect(mProperties.siffix());
+	QRectF textRect = this->textRect(mProperties.suffix());
 	const qreal x = thisRect.right();
 	const qreal y = thisRect.top() + (thisRect.height() - textRect.height()) / 2;
 	textRect.moveTo(x, y);

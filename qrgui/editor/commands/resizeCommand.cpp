@@ -111,7 +111,7 @@ void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, const Id &root)
 void ResizeCommand::resize(NodeElement * const element, const QRectF &geometry)
 {
 	if (element && geometryOf(element) != geometry) {
-		ResizeHandler handler(element);
+		ResizeHandler handler(*element);
 		handler.resize(geometry.translated(-geometry.topLeft()), geometry.topLeft(), false);
 	}
 }

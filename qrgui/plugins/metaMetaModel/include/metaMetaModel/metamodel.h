@@ -19,16 +19,21 @@
 #include <QtCore/QString>
 #include <QtGui/QIcon>
 
-#include "qrgui/plugins/editorPluginInterface/sdfRendererInterface.h"
-#include "qrgui/plugins/editorPluginInterface/elementImpl.h"
+#include <qrgraph/multigraph.h>
+
+#include "metaMetaModel/sdfRendererInterface.h"
+#include "metaMetaModel/elementType.h"
 
 namespace qReal {
 
-class EditorInterface
+/// Describes the metamodel of some visual langages.
+/// The metamodel is a set of types of some entities associated each with other with some relations
+/// (for example relation of generalization, relation of explosion, relation of containment, etc).
+/// Metamodel thus is ordered multigraph where nodes are types of entities and edges are those relations.
+/// This fact is noted with inheriting Metamodel from qrgraph::Multigraph.
+class Metamodel : public qrgraph::Multigraph
 {
 public:
-	virtual ~EditorInterface() {}
-
 	struct ExplosionData
 	{
 	public:
@@ -62,7 +67,7 @@ public:
 
 	virtual int isNodeOrEdge(const QString &element) const = 0;
 
-	virtual ElementImpl* getGraphicalObject(const QString &diagram, const QString &element) const = 0;
+	virtual ElementType *getGraphicalObject(const QString &diagram, const QString &element) const = 0;
 	virtual QStringList getPropertyNames(const QString &diagram, const QString &element) const = 0;
 	virtual QStringList getPortTypes(const QString &diagram, const QString &element) const = 0;
 	virtual QStringList getReferenceProperties(const QString &diagram, const QString &element) const = 0;
@@ -95,4 +100,4 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE(qReal::EditorInterface, "ru.tepkom.QReal.EditorInterface/0.9")
+Q_DECLARE_INTERFACE(qReal::Metamodel, "ru.spbsu.QReal.Metamodel/1.0")

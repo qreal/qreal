@@ -28,6 +28,7 @@
 #include <qrgui/models/models.h>
 #include <qrgui/mouseGestures/mouseMovementManager.h>
 #include <qrgui/mouseGestures/dummyMouseMovementManager.h>
+#include <metaMetaModel/nodeElementType.h>
 
 #include "editor/sceneCustomizer.h"
 #include "editor/labels/label.h"
@@ -819,8 +820,8 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	mContextMenu.addActions(mEditorActions);
 
 	QSignalMapper *createChildMapper = nullptr;
-	if (e) {
-		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
+	if (const NodeElement *node = dynamic_cast<NodeElement *>(e)) {
+		if (node->nodeType().createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
@@ -1301,9 +1302,7 @@ void EditorViewScene::updateEdgeElements()
 	for (QGraphicsItem *item : items()) {
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			const enums::linkShape::LinkShape shape
-					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
-
+			const LinkShape shape = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 			element->changeShapeType(shape);
 
 			if (SettingsManager::value("ActivateGrid").toBool()) {

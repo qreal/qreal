@@ -31,7 +31,7 @@ public:
 	 * Constructs a ResizeHandler.
 	 * @param resizingNode Node that is actually dealt with.
 	 */
-	ResizeHandler(NodeElement * const resizingNode);
+	explicit ResizeHandler(NodeElement &resizingNode);
 
 	/**
 	 * Resizes node trying to use newContents as new shape
@@ -121,10 +121,10 @@ private:
 	QList<NodeElement *> sortedChildrenList() const;
 
 	/// Node that is actually dealt with.
-	NodeElement * const mTargetNode;
+	NodeElement &mTargetNode;
 
-	/// ElementImpl of node that is actually dealt with.
-	ElementImpl * const mElementImpl;
+	/// ElementType of node that is actually dealt with.
+	const NodeElementType &mElementType;
 };
 
 }

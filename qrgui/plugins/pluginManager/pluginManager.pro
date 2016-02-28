@@ -20,9 +20,9 @@ TEMPLATE = lib
 
 QT += xml svg
 
-links(qrkernel qslog qrutils qrrepo qrgui-tool-plugin-interface)
+links(qrkernel qslog qrutils qrrepo qrgui-tool-plugin-interface qrgui-meta-meta-model)
 
-includes(qrgui)
+includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 
 DEFINES += QRGUI_PLUGINS_MANAGER_LIBRARY
 
@@ -44,7 +44,6 @@ HEADERS += \
 	$$PWD/interpretedPluginsLoader.h \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/interpreterElementImpl.h \
-	$$PWD/details/interpreterPortImpl.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
@@ -58,7 +57,6 @@ SOURCES += \
 	$$PWD/interpretedPluginsLoader.cpp \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/interpreterElementImpl.cpp \
-	$$PWD/details/interpreterPortImpl.cpp \
 
 RESOURCES += \
 	$$PWD/pluginManager.qrc \

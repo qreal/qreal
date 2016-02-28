@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,17 +12,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "metaMetaModel/edgeElementType.h"
 
-#include "plugins/editorPluginInterface/portHelpers.h"
+#include "metaMetaModel/metamodel.h"
 
-class InterpreterPortImpl : public PortImpl
+using namespace qReal;
+
+EdgeElementType::EdgeElementType(Metamodel &metamodel)
+	: ElementType(metamodel)
 {
-public:
-	InterpreterPortImpl(const QString &type);
-	virtual QString type() const;
-
-private:
-	QString mType;
-};
-
+}

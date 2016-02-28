@@ -22,10 +22,9 @@
 #include "configurationFileParser.h"
 #include "methodsTester.h"
 
-#include "qrrepo/repoApi.h"
-#include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
-
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include <qrrepo/repoApi.h>
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+#include <qrgui/plugins/metaMetaModel/metamodel.h>
 
 #include <QtCore/QString>
 
@@ -85,7 +84,7 @@ private:
 	void parseConfigurationFile(const QString &fileName);
 
 	/// returns loaded editorInterface
-	qReal::EditorInterface* loadedPlugin(const QString &fileName, const QString &pathToFile);
+	qReal::Metamodel* loadedPlugin(const QString &fileName, const QString &pathToFile);
 
 	QrmcLauncher mQrmcLauncher;
 

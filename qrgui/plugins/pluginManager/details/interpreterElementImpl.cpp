@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,270 +17,271 @@
 #include <qrutils/outFile.h>
 #include <qrutils/scalableItem.h>
 
-#include "plugins/pluginManager/details/interpreterPortImpl.h"
-
 using namespace qReal;
 using namespace utils;
 
-InterpreterElementImpl::InterpreterElementImpl(qrRepo::RepoApi *repo, const Id &metaId)
-		: mEditorRepoApi(repo), mId(metaId)
+InterpreterElementImpl::InterpreterElementImpl(Metamodel &metamodel, qrRepo::RepoApi *repo, const Id &metaId)
+	: ElementType(metamodel)
+	, mMetamodel(metamodel)
+	, mEditorRepoApi(repo)
+	, mId(metaId)
 {
 }
 
-void InterpreterElementImpl::initLabels(const int &width, const int &height, LabelFactoryInterface &factory
-		, QList<LabelInterface*> &titles)
-{
-	int index = 0;
-	for (QDomElement element
-			= mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
-			!element.isNull();
-			element = element.nextSiblingElement("label"))
-	{
-		const ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
-		const ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
-		const QString center = element.attribute("center", "false");
-		const QString text = element.attribute("text");
-		const QString textBinded = element.attribute("textBinded");
-		const QString readOnly = element.attribute("readOnly", "false");
-		const QString background = element.attribute("background", "transparent");
-		const qreal rotation = element.attribute("rotation", "0").toDouble();
-		if (text.isEmpty() && textBinded.isEmpty()) {
-			qDebug() << "ERROR: can't parse label";
-		} else {
-			LabelInterface *title = nullptr;
-			if (text.isEmpty()) {
-				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);
-			} else {
-				// This is a statical label, it does not need repository.
-				title = factory.createLabel(index, x.value(), y.value(), text, rotation);
-			}
+//void InterpreterElementImpl::initLabels(const int &width, const int &height, LabelFactoryInterface &factory
+//		, QList<LabelInterface*> &titles)
+//{
+//	int index = 0;
+//	for (QDomElement element
+//			= mGraphics.firstChildElement("graphics").firstChildElement("labels").firstChildElement("label");
+//			!element.isNull();
+//			element = element.nextSiblingElement("label"))
+//	{
+//		const ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), width);
+//		const ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), height);
+//		const QString center = element.attribute("center", "false");
+//		const QString text = element.attribute("text");
+//		const QString textBinded = element.attribute("textBinded");
+//		const QString readOnly = element.attribute("readOnly", "false");
+//		const QString background = element.attribute("background", "transparent");
+//		const qreal rotation = element.attribute("rotation", "0").toDouble();
+//		if (text.isEmpty() && textBinded.isEmpty()) {
+//			qDebug() << "ERROR: can't parse label";
+//		} else {
+//			LabelInterface *title = nullptr;
+//			if (text.isEmpty()) {
+//				// It is a binded label, text for it will be taken from repository.
+//				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);
+//			} else {
+//				// This is a statical label, it does not need repository.
+//				title = factory.createLabel(index, x.value(), y.value(), text, rotation);
+//			}
 
-			title->setBackground(QColor(background));
-			title->setScaling(x.isScalable(), y.isScalable());
-			title->setFlags(0);
-			title->setTextInteractionFlags(Qt::NoTextInteraction);
-			titles.append(title);
-			mNodeLabels.append(NodeLabel(textBinded, center, title));
-			++index;
-		}
-	}
-}
+//			title->setBackground(QColor(background));
+//			title->setScaling(x.isScalable(), y.isScalable());
+//			title->setFlags(0);
+//			title->setTextInteractionFlags(Qt::NoTextInteraction);
+//			titles.append(title);
+//			mNodeLabels.append(NodeLabel(textBinded, center, title));
+//			++index;
+//		}
+//	}
+//}
 
-void InterpreterElementImpl::initPointPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
-		, const int &width, const int &height)
-{
-	const QDomNodeList pointPortsList
-			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
-	for (int i = 0; i < pointPortsList.size(); i++) {
-		QDomElement portElement = pointPortsList.at(i).toElement();
+//void InterpreterElementImpl::initPointPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
+//		, const int &width, const int &height)
+//{
+//	const QDomNodeList pointPortsList
+//			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("pointPort");
+//	for (int i = 0; i < pointPortsList.size(); i++) {
+//		QDomElement portElement = pointPortsList.at(i).toElement();
 
-		QString x = portElement.attribute("x");
-		bool propX = false;
-		if (x.endsWith("a")) {
-			propX = true;
-			x.chop(1);
-		}
+//		QString x = portElement.attribute("x");
+//		bool propX = false;
+//		if (x.endsWith("a")) {
+//			propX = true;
+//			x.chop(1);
+//		}
 
-		QString y = portElement.attribute("y");
-		bool propY = false;
-		if (y.endsWith("a")) {
-			propY = true;
-			y.chop(1);
-		}
+//		QString y = portElement.attribute("y");
+//		bool propY = false;
+//		if (y.endsWith("a")) {
+//			propY = true;
+//			y.chop(1);
+//		}
 
-		QPointF point = QPointF(x.toDouble() / static_cast<qreal>(width), y.toDouble() / static_cast<qreal>(height));
+//		QPointF point = QPointF(x.toDouble() / static_cast<qreal>(width), y.toDouble() / static_cast<qreal>(height));
 
-		QString portType = portElement.attribute("type", "NonTyped");
-		ports << factory.createPort(point, propX, propY, width, height, new InterpreterPortImpl(portType));
-	}
-}
+//		QString portType = portElement.attribute("type", "NonTyped");
+//		ports << factory.createPort(point, propX, propY, width, height, new InterpreterPortImpl(portType));
+//	}
+//}
 
-void InterpreterElementImpl::initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
-		, const int &width, const int &height)
-{
-	const QDomNodeList linePortsList
-			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
+//void InterpreterElementImpl::initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
+//		, const int &width, const int &height)
+//{
+//	const QDomNodeList linePortsList
+//			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("linePort");
 
-	for (int i = 0; i < linePortsList.size(); i++) {
+//	for (int i = 0; i < linePortsList.size(); i++) {
 
-		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
-		bool propX1 = false;
-		if (x1.endsWith("a")) {
-			propX1 = true;
-			x1.chop(1);
-		}
+//		QString x1 = linePortsList.at(i).firstChildElement("start").attribute("startx");
+//		bool propX1 = false;
+//		if (x1.endsWith("a")) {
+//			propX1 = true;
+//			x1.chop(1);
+//		}
 
-		QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
-		bool propY1 = false;
-		if (y1.endsWith("a")) {
-			propY1 = true;
-			y1.chop(1);
-		}
+//		QString y1 = linePortsList.at(i).firstChildElement("start").attribute("starty");
+//		bool propY1 = false;
+//		if (y1.endsWith("a")) {
+//			propY1 = true;
+//			y1.chop(1);
+//		}
 
-		QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
-		bool propX2 = false;
-		if (x2.endsWith("a")) {
-			propX2 = true;
-			x2.chop(1);
-		}
+//		QString x2 = linePortsList.at(i).firstChildElement("end").attribute("endx");
+//		bool propX2 = false;
+//		if (x2.endsWith("a")) {
+//			propX2 = true;
+//			x2.chop(1);
+//		}
 
-		QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
-		bool propY2 = false;
-		if (y2.endsWith("a")) {
-			propY2 = true;
-			y2.chop(1);
-		}
+//		QString y2 = linePortsList.at(i).firstChildElement("end").attribute("endy");
+//		bool propY2 = false;
+//		if (y2.endsWith("a")) {
+//			propY2 = true;
+//			y2.chop(1);
+//		}
 
-		QLineF line = QLineF(x1.toDouble() / static_cast<qreal>(width)
-				, y1.toDouble() / static_cast<qreal>(height)
-				, x2.toDouble() / static_cast<qreal>(width)
-				, y2.toDouble() / static_cast<qreal>(height));
+//		QLineF line = QLineF(x1.toDouble() / static_cast<qreal>(width)
+//				, y1.toDouble() / static_cast<qreal>(height)
+//				, x2.toDouble() / static_cast<qreal>(width)
+//				, y2.toDouble() / static_cast<qreal>(height));
 
-		QString portType = linePortsList.at(i).toElement().attribute("type", "NonTyped");
-		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height
-				, new InterpreterPortImpl(portType));
-	}
-}
+//		QString portType = linePortsList.at(i).toElement().attribute("type", "NonTyped");
+//		ports << factory.createPort(line, propX1, propY1, propX2, propY2, width, height
+//				, new InterpreterPortImpl(portType));
+//	}
+//}
 
-void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, const Id &id
-		, QList<PortInterface *> &ports, const PortFactoryInterface &portFactory, SdfRendererInterface *renderer
-		, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
-{
-	bool overridePictures = false;
-	bool overridePorts = false;
-	bool overrideLabels = false;
-	for (const Id &link : mEditorRepoApi->incomingLinks(id)) {
-		overridePictures = false;
-		overridePorts = false;
-		overrideLabels = false;
-		if (link.element() == "Inheritance") {
-			const Id &parent = mEditorRepoApi->otherEntityFromLink(link, id);
-			if (!parent.isNull()) {
-				inheritProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
-				InterpreterElementImpl impl = InterpreterElementImpl(mEditorRepoApi, parent);
-				impl.mGraphics.setContent(mEditorRepoApi->stringProperty(parent, "shape"));
-				QDomElement sdfElement = impl.mGraphics.firstChildElement("graphics").firstChildElement("picture");
+//void InterpreterElementImpl::inheritProperties(QList<QDomElement> &elements, const Id &id
+//		, QList<PortInterface *> &ports, const PortFactoryInterface &portFactory, SdfRendererInterface *renderer
+//		, LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels) const
+//{
+//	bool overridePictures = false;
+//	bool overridePorts = false;
+//	bool overrideLabels = false;
+//	for (const Id &link : mEditorRepoApi->incomingLinks(id)) {
+//		overridePictures = false;
+//		overridePorts = false;
+//		overrideLabels = false;
+//		if (link.element() == "Inheritance") {
+//			const Id &parent = mEditorRepoApi->otherEntityFromLink(link, id);
+//			if (!parent.isNull()) {
+//				inheritProperties(elements, parent, ports, portFactory, renderer, labelFactory, labels);
+//				InterpreterElementImpl impl(mMetamodel, mEditorRepoApi, parent);
+//				impl.mGraphics.setContent(mEditorRepoApi->stringProperty(parent, "shape"));
+//				QDomElement sdfElement = impl.mGraphics.firstChildElement("graphics").firstChildElement("picture");
 
-				int width = 0;
-				int height = 0;
-				if (!sdfElement.isNull()) {
-					width = sdfElement.attribute("sizex").toInt();
-					height = sdfElement.attribute("sizey").toInt();
-				}
+//				int width = 0;
+//				int height = 0;
+//				if (!sdfElement.isNull()) {
+//					width = sdfElement.attribute("sizex").toInt();
+//					height = sdfElement.attribute("sizey").toInt();
+//				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides").contains("all")) {
-					overridePictures = true;
-					overridePorts = true;
-					overrideLabels = true;
-				}
+//				if (mEditorRepoApi->stringProperty(link, "overrides").contains("all")) {
+//					overridePictures = true;
+//					overridePorts = true;
+//					overrideLabels = true;
+//				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides").contains("pictures")) {
-					overridePictures = true;
-				}
+//				if (mEditorRepoApi->stringProperty(link, "overrides").contains("pictures")) {
+//					overridePictures = true;
+//				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides").contains("ports")) {
-					overridePorts = true;
-				}
+//				if (mEditorRepoApi->stringProperty(link, "overrides").contains("ports")) {
+//					overridePorts = true;
+//				}
 
-				if (mEditorRepoApi->stringProperty(link, "overrides").contains("labels")) {
-					overrideLabels = true;
-				}
+//				if (mEditorRepoApi->stringProperty(link, "overrides").contains("labels")) {
+//					overrideLabels = true;
+//				}
 
-				if (!overridePictures && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
-						|| mEditorRepoApi->stringProperty(link, "overrides") != "pictures"))
-				{
-					elements.append(sdfElement);
-				}
+//				if (!overridePictures && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
+//						|| mEditorRepoApi->stringProperty(link, "overrides") != "pictures"))
+//				{
+//					elements.append(sdfElement);
+//				}
 
-				if (!overridePorts && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
-						|| mEditorRepoApi->stringProperty(link, "overrides") != "ports"))
-				{
-					impl.initPointPorts(portFactory, ports, width, height);
-				}
+//				if (!overridePorts && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
+//						|| mEditorRepoApi->stringProperty(link, "overrides") != "ports"))
+//				{
+//					impl.initPointPorts(portFactory, ports, width, height);
+//				}
 
-				if (!overrideLabels && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
-						|| mEditorRepoApi->stringProperty(link, "overrides") != "labels"))
-				{
-					impl.initLabels(width, height, labelFactory, labels);
-				}
-			}
-		}
-	}
-}
+//				if (!overrideLabels && (mEditorRepoApi->stringProperty(link, "overrides").isEmpty()
+//						|| mEditorRepoApi->stringProperty(link, "overrides") != "labels"))
+//				{
+//					impl.initLabels(width, height, labelFactory, labels);
+//				}
+//			}
+//		}
+//	}
+//}
 
-void InterpreterElementImpl::init(QRectF &contents, const PortFactoryInterface &portFactory
-		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
-		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
-{
-	Q_UNUSED(elementRepo);
-	if (mId.element() == "MetaEntityNode") {
-		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
-		QDomDocument classDoc;
-		QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
+//void InterpreterElementImpl::init(QRectF &contents, const PortFactoryInterface &portFactory
+//		, QList<PortInterface *> &ports, LabelFactoryInterface &labelFactory
+//		, QList<LabelInterface *> &labels, SdfRendererInterface *renderer, ElementRepoInterface *elementRepo)
+//{
+//	Q_UNUSED(elementRepo);
+//	if (mId.element() == "MetaEntityNode") {
+//		mGraphics.setContent(mEditorRepoApi->stringProperty(mId, "shape"));
+//		QDomDocument classDoc;
+//		QDomElement sdfElement = mGraphics.firstChildElement("graphics").firstChildElement("picture");
 
-		QList<QDomElement> elementsWithGraphic;
-		inheritProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
+//		QList<QDomElement> elementsWithGraphic;
+//		inheritProperties(elementsWithGraphic, mId, ports, portFactory, renderer, labelFactory, labels);
 
-		for (QDomElement tempElementWithGraphic : elementsWithGraphic) {
-			sdfElement.appendChild(tempElementWithGraphic.firstChild());
-		}
+//		for (QDomElement tempElementWithGraphic : elementsWithGraphic) {
+//			sdfElement.appendChild(tempElementWithGraphic.firstChild());
+//		}
 
-		classDoc.appendChild(classDoc.importNode(sdfElement, true));
-		if (!classDoc.childNodes().isEmpty()) {
-			mRenderer = renderer;
-			mRenderer->load(classDoc);
-		}
+//		classDoc.appendChild(classDoc.importNode(sdfElement, true));
+//		if (!classDoc.childNodes().isEmpty()) {
+//			mRenderer = renderer;
+//			mRenderer->load(classDoc);
+//		}
 
-		int width = 0;
-		int height = 0;
-		if (!sdfElement.isNull()) {
-			width = sdfElement.attribute("sizex").toInt();
-			height = sdfElement.attribute("sizey").toInt();
-		}
+//		int width = 0;
+//		int height = 0;
+//		if (!sdfElement.isNull()) {
+//			width = sdfElement.attribute("sizex").toInt();
+//			height = sdfElement.attribute("sizey").toInt();
+//		}
 
-		initPointPorts(portFactory, ports, width, height);
-		initLinePorts(portFactory, ports, width, height);
+//		initPointPorts(portFactory, ports, width, height);
+//		initLinePorts(portFactory, ports, width, height);
 
-		contents.setWidth(width);
-		contents.setHeight(height);
-		initLabels(width, height, labelFactory, labels);
-	}
-}
+//		contents.setWidth(width);
+//		contents.setHeight(height);
+//		initLabels(width, height, labelFactory, labels);
+//	}
+//}
 
-void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels)
-{
-	if (mId.element() == "MetaEntityEdge") {
-		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
-		if (!labelText.isEmpty()) {
-			const QString labelType = mEditorRepoApi->stringProperty(mId, "labelType");
-			LabelInterface* title = nullptr;
-			if (labelType == "staticText") {
-				// This is a statical label, it does not need repository.
-				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
-			} else {
-				// It is a binded label, text for it will be taken from repository.
-				title = labelFactory.createLabel(0, 0, 0, labelText, false, 0);
-			}
+//void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<LabelInterface *> &labels)
+//{
+//	if (mId.element() == "MetaEntityEdge") {
+//		QString labelText = mEditorRepoApi->stringProperty(mId, "labelText");
+//		if (!labelText.isEmpty()) {
+//			const QString labelType = mEditorRepoApi->stringProperty(mId, "labelType");
+//			LabelInterface* title = nullptr;
+//			if (labelType == "staticText") {
+//				// This is a statical label, it does not need repository.
+//				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
+//			} else {
+//				// It is a binded label, text for it will be taken from repository.
+//				title = labelFactory.createLabel(0, 0, 0, labelText, false, 0);
+//			}
 
-			title->setBackground(QColor(Qt::white));
-			title->setScaling(false, false);
-			title->setFlags(0);
-			title->setTextInteractionFlags(Qt::NoTextInteraction);
-			labels.append(title);
-			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
-		}
-	}
-}
+//			title->setBackground(QColor(Qt::white));
+//			title->setScaling(false, false);
+//			title->setFlags(0);
+//			title->setTextInteractionFlags(Qt::NoTextInteraction);
+//			labels.append(title);
+//			mEdgeLabels.append(EdgeLabel(labelText, labelType, title));
+//		}
+//	}
+//}
 
-void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
-{
-	if (mId.element() == "MetaEntityNode") {
-		if(!mGraphics.childNodes().isEmpty()) {
-			mRenderer->render(painter, contents);
-		}
-	}
-}
+//void InterpreterElementImpl::paint(QPainter *painter, QRectF &contents)
+//{
+//	if (mId.element() == "MetaEntityNode") {
+//		if(!mGraphics.childNodes().isEmpty()) {
+//			mRenderer->render(painter, contents);
+//		}
+//	}
+//}
 
 QStringList InterpreterElementImpl::getListOfStr(const QString &labelText) const
 {
@@ -325,36 +326,36 @@ QString InterpreterElementImpl::getResultStr(const QStringList &list, ElementRep
 	return resultStr;
 }
 
-void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
-{
-	if (mId.element() == "MetaEntityEdge") {
-		foreach (EdgeLabel edgeLabel, mEdgeLabels) {
-			if (edgeLabel.labelType == "staticText") {
-				// Static label
-				return;
-			}
+//void InterpreterElementImpl::updateData(ElementRepoInterface *repo) const
+//{
+//	if (mId.element() == "MetaEntityEdge") {
+//		foreach (EdgeLabel edgeLabel, mEdgeLabels) {
+//			if (edgeLabel.labelType == "staticText") {
+//				// Static label
+//				return;
+//			}
 
-			const QStringList list = getListOfStr(edgeLabel.labelText);
-			const QString resultStr = getResultStr(list, repo);
-			edgeLabel.title->setHtml(QString("<center>%1</center>").arg(resultStr).replace("\n", "<br>"));
-		}
-	}
+//			const QStringList list = getListOfStr(edgeLabel.labelText);
+//			const QString resultStr = getResultStr(list, repo);
+//			edgeLabel.title->setHtml(QString("<center>%1</center>").arg(resultStr).replace("\n", "<br>"));
+//		}
+//	}
 
-	if (mId.element() == "MetaEntityNode") {
-		foreach (const NodeLabel &nodeLabel, mNodeLabels) {
-			if (nodeLabel.textBinded.isEmpty()) {
-				// Static label
-				Q_UNUSED(repo);
-				return;
-			}
+//	if (mId.element() == "MetaEntityNode") {
+//		foreach (const NodeLabel &nodeLabel, mNodeLabels) {
+//			if (nodeLabel.textBinded.isEmpty()) {
+//				// Static label
+//				Q_UNUSED(repo);
+//				return;
+//			}
 
-			const QStringList list = getListOfStr(nodeLabel.textBinded);
-			const QString resultStr = getResultStr(list, repo);
-			nodeLabel.title->setHtml(QString(nodeLabel.center == "true"
-					? "<center>%1</center>" : "<b>%1</b>").arg(resultStr).replace("\n", "<br>"));
-		}
-	}
-}
+//			const QStringList list = getListOfStr(nodeLabel.textBinded);
+//			const QString resultStr = getResultStr(list, repo);
+//			nodeLabel.title->setHtml(QString(nodeLabel.center == "true"
+//					? "<center>%1</center>" : "<b>%1</b>").arg(resultStr).replace("\n", "<br>"));
+//		}
+//	}
+//}
 
 bool InterpreterElementImpl::isNode() const
 {
@@ -567,7 +568,7 @@ QStringList InterpreterElementImpl::toPortTypes() const
 	return QStringList("NonTyped");
 }
 
-enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
+LinkShape InterpreterElementImpl::shapeType() const
 {
 	QString shape = "";
 	if (mEditorRepoApi->hasProperty(mId, "shape")) {
@@ -577,14 +578,14 @@ enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const
 	return shapeTypeByString(shape);
 }
 
-enums::linkShape::LinkShape InterpreterElementImpl::shapeTypeByString(const QString &type) const
+LinkShape InterpreterElementImpl::shapeTypeByString(const QString &type) const
 {
 	if (type == "broken") {
-		return enums::linkShape::broken;
+		return LinkShape::broken;
 	} else if (type == "curve") {
-		return enums::linkShape::curve;
+		return LinkShape::curve;
 	} else {
-		return enums::linkShape::square;
+		return LinkShape::square;
 	}
 }
 

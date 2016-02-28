@@ -24,6 +24,7 @@ cp -pR $BIN_DIR/libqrgui-hotkey-manager*.dylib                            "$BUND
 cp -pR $BIN_DIR/libqrgui-models*.dylib                                    "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-mouse-gestures*.dylib                            "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-plugin-manager*.dylib                            "$BUNDLE_CONTENTS/Lib"
+cp -pR $BIN_DIR/libqrgui-meta-meta-model*.dylib                           "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-preferences-dialog*.dylib                        "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-text-editor*.dylib                               "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-thirdparty*.dylib                                "$BUNDLE_CONTENTS/Lib"

@@ -19,6 +19,7 @@ cp    $BIN_DIR/qrgui-hotkey-manager.dll                             $PWD/../data
 cp    $BIN_DIR/qrgui-models.dll                                     $PWD/../data
 cp    $BIN_DIR/qrgui-mouse-gestures.dll                             $PWD/../data
 cp    $BIN_DIR/qrgui-plugin-manager.dll                             $PWD/../data
+cp    $BIN_DIR/qrgui-meta-meta-model.dll                            $PWD/../data
 cp    $BIN_DIR/qrgui-preferences-dialog.dll                         $PWD/../data
 cp    $BIN_DIR/qrgui-text-editor.dll                                $PWD/../data
 cp    $BIN_DIR/qrgui-thirdparty.dll                                 $PWD/../data

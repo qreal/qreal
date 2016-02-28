@@ -12,10 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-/** @file edgeElement.cpp
-*	@brief class for an edge on a diagram
-**/
-
 #include <QtCore/QtMath>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 #include <QtWidgets/QStyle>
@@ -25,20 +21,19 @@
 #include <math.h>
 #include <qrkernel/logging.h>
 #include <qrutils/mathUtils/geometry.h>
-#include <models/models.h>
+#include <qrgui/models/models.h>
+#include <metaMetaModel/edgeElementType.h>
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
 #include "editor/editorViewScene.h"
 #include "editor/labels/label.h"
-#include "editor/labels/labelFactory.h"
 
 #include "editor/private/lineFactory.h"
 #include "editor/private/lineHandler.h"
 
 using namespace qReal;
 using namespace qReal::gui::editor;
-using namespace enums;
 
 const qreal epsilon = 0.00000000001;
 
@@ -47,14 +42,12 @@ const int maxReductCoeff = 16;
 
 /** @brief indicator of edges' movement */
 
-EdgeElement::EdgeElement(
-		ElementImpl *impl
-		, const Id &id
-		, const models::Models &models)
-	: Element(impl, id, models)
+EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models::Models &models)
+	: Element(type, id, models)
 	, mPenStyle(Qt::SolidLine)
 	, mPenWidth(1)
 	, mPenColor(Qt::black)
+	, mType(type)
 	, mSrc(nullptr)
 	, mDst(nullptr)
 	, mLineFactory(new LineFactory(this))
@@ -69,9 +62,9 @@ EdgeElement::EdgeElement(
 	, mModelUpdateIsCalled(false)
 	, mIsLoop(false)
 {
-	mPenStyle = mElementImpl->getPenStyle();
-	mPenWidth = mElementImpl->getPenWidth();
-	mPenColor = mElementImpl->getPenColor();
+	mPenStyle = mType.penStyle();
+	mPenWidth = mType.penWidth();
+	mPenColor = mType.penColor();
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// if flag is true then draws strangely...
@@ -82,23 +75,16 @@ EdgeElement::EdgeElement(
 
 	setAcceptHoverEvents(true);
 
-	LabelFactory factory(models.graphicalModelAssistApi(), mId);
-	QList<LabelInterface*> titles;
-
-	mElementImpl->init(factory, titles);
-	for (LabelInterface *titleIface : titles) {
-		Label *title = dynamic_cast<Label*>(titleIface);
-		if (!title) {
-			continue;
-		}
-
-		title->init(boundingRect());
-		title->setParentItem(this);
-		title->setShouldCenter(false);
-		mLabels.append(title);
+	const QList<LabelProperties> labelsInfos = mType.labels();
+	for (const LabelProperties &labelInfo : labelsInfos) {
+		Label * const label = new Label(mGraphicalAssistApi, mId, labelInfo);
+		label->init(boundingRect());
+		label->setParentItem(this);
+		label->setShouldCenter(false);
+		mLabels.append(label);
 	}
 
-	mShapeType = static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
+	mShapeType = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 	initLineHandler();
 	mChangeShapeAction.setMenu(mLineFactory->shapeTypeMenu());
 }
@@ -113,7 +99,6 @@ EdgeElement::~EdgeElement()
 		mDst->delEdge(this);
 	}
 
-	delete mElementImpl;
 	delete mLineFactory;
 	delete mHandler;
 }
@@ -131,7 +116,7 @@ void EdgeElement::initLineHandler()
 	mHandler->connectAction(&mReverseAction, this, SLOT(reverse()));
 }
 
-void EdgeElement::changeShapeType(const linkShape::LinkShape shapeType)
+void EdgeElement::changeShapeType(LinkShape shapeType)
 {
 	mShapeType = shapeType;
 	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
@@ -532,8 +517,9 @@ bool EdgeElement::initPossibleEdges()
 	QString diagram = id().diagram();
 	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(editor, diagram);
 
-	QList<StringPossibleEdge> stringPossibleEdges
-			= mGraphicalAssistApi.editorManagerInterface().possibleEdges(editor, id().element());
+	int FIX_IT_BACK_BITCH = 100500;
+	QList<StringPossibleEdge> stringPossibleEdges = {};
+//			= mGraphicalAssistApi.editorManagerInterface().possibleEdges(editor, id().element());
 	for (StringPossibleEdge pEdge : stringPossibleEdges) {
 		QPair<bool, Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
 
@@ -566,7 +552,7 @@ bool EdgeElement::initPossibleEdges()
 
 bool EdgeElement::isDividable()
 {
-	return mElementImpl->isDividable();
+	return mType.isDividable();
 }
 
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -643,8 +629,6 @@ NodeElement *EdgeElement::getNodeAt(const QPointF &position, bool isStart)
 	const int searchAreaRadius = SettingsManager::value("IndexGrid", 25).toInt() / 2;
 	const QPointF positionInSceneCoordinates = mapToScene(position);
 	circlePath.addEllipse(positionInSceneCoordinates, searchAreaRadius, searchAreaRadius);
-//	qDebug() << scene()->items();
-//	qDebug() << circlePath;
 	QList<QGraphicsItem*> const items = scene()->items(circlePath);
 
 	qreal minimalDistance = 10e10;  // Very large number
@@ -697,7 +681,7 @@ bool EdgeElement::reverseActionIsPossible() const
 bool EdgeElement::canConnect(const NodeElement * const node, bool from) const
 {
 	QSet<QString> nodePortTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(node->id().type()).toSet();
-	QSet<QString> edgePortTypes = from ? mElementImpl->fromPortTypes().toSet() : mElementImpl->toPortTypes().toSet();
+	QSet<QString> edgePortTypes = from ? mType.fromPortTypes().toSet() : mType.toPortTypes().toSet();
 
 	return !nodePortTypes.intersect(edgePortTypes).empty();
 }
@@ -877,7 +861,6 @@ void EdgeElement::updateData()
 
 	if (mModelUpdateIsCalled) {
 		Element::updateData();
-		mElementImpl->updateData(this);
 		update();
 		mModelUpdateIsCalled = false;
 		return;
@@ -917,8 +900,6 @@ void EdgeElement::updateData()
 	mPortFrom = mGraphicalAssistApi.fromPort(id());
 	mPortTo = mGraphicalAssistApi.toPort(id());
 
-	mElementImpl->updateData(this);
-
 	update();
 	updateLongestPart();
 	highlight(isHanging() ? Qt::red : mPenColor);
@@ -941,12 +922,12 @@ void EdgeElement::removeLink(const NodeElement *from)
 
 QStringList EdgeElement::fromPortTypes() const
 {
-	return mElementImpl->fromPortTypes();
+	return mType.fromPortTypes();
 }
 
 QStringList EdgeElement::toPortTypes() const
 {
-	return mElementImpl->toPortTypes();
+	return mType.toPortTypes();
 }
 
 void EdgeElement::placeStartTo(const QPointF &place)
@@ -992,14 +973,12 @@ void EdgeElement::arrangeLinearPorts()
 
 void EdgeElement::drawStartArrow(QPainter *painter) const
 {
-	if (mElementImpl)
-		mElementImpl->drawStartArrow(painter);
+	mType.drawStartArrow(painter);
 }
 
 void EdgeElement::drawEndArrow(QPainter *painter) const
 {
-	if (mElementImpl)
-		mElementImpl->drawEndArrow(painter);
+	mType.drawEndArrow(painter);
 }
 
 void EdgeElement::setColorRect(bool bl) // method is empty
@@ -1022,7 +1001,7 @@ EdgeInfo EdgeElement::data()
 			, mPortFrom
 			, mPortTo
 			, mGraphicalAssistApi.configuration(mId)
-			, mShapeType
+			, static_cast<int>(mShapeType)
 	);
 
 	result.setSrcId(src() ? src()->id() : Id::rootId());

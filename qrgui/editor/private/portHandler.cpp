@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,32 +26,21 @@ const qreal PortHandler::mMaximumFractionPartValue = 0.9999;
 /// Value for determing ID of nonexistent port.
 const qreal nonexistentPortId = -1; // just smth negative
 
-PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, QList<PortInterface *> const &ports)
-		: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
+PortHandler::PortHandler(NodeElement *node
+		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
+		, const QList<StatPoint *> &pointPorts
+		, const QList<StatLine *> &linePorts)
+	: mNode(node)
+	, mGraphicalAssistApi(graphicalAssistApi)
+	, mPointPorts(pointPorts)
+	, mLinePorts(linePorts)
 {
-	for (PortInterface *port : ports) {
-		StatPoint *point = dynamic_cast<StatPoint *>(port);
-		if (point) {
-			mPointPorts << point;
-		} else {
-			StatLine *line = dynamic_cast<StatLine *>(port);
-			if (line) {
-				mLinePorts << line;
-			}
-		}
-	}
 }
 
 PortHandler::~PortHandler()
 {
-	for (StatPoint *point : mPointPorts) {
-		delete point;
-	}
-
-	for (StatLine *line : mLinePorts) {
-		delete line;
-	}
+	qDeleteAll(mPointPorts);
+	qDeleteAll(mLinePorts);
 }
 
 qreal PortHandler::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const

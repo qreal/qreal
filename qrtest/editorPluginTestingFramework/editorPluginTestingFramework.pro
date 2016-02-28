@@ -85,7 +85,6 @@ HEADERS += \
 	../../qrgui/plugins/pluginManager/interpreterEditorManager.h \
 	../../qrgui/plugins/pluginManager/sdfRenderer.h \
 	../../qrgui/plugins/pluginManager/details/interpreterElementImpl.h \
-	../../qrgui/plugins/pluginManager/details/interpreterPortImpl.h \
 	../../qrgui/plugins/pluginManager/explosion.h \
 	../../qrgui/plugins/pluginManager/pattern.h \
 	../../qrgui/plugins/pluginManager/editorManager.h \
@@ -152,7 +151,6 @@ SOURCES += \
 	../../qrgui/mainWindow/errorListWidget.cpp \
 	../../plugins/metaEditor/metaEditorSupport/editorGenerator.cpp \
 	../../qrgui/plugins/pluginManager/details/interpreterElementImpl.cpp \
-	../../qrgui/plugins/pluginManager/details/interpreterPortImpl.cpp \
 	../../qrgui/plugins/pluginManager/details/patternParser.cpp \
 	htmlMaker.cpp \
 	convertingMethods.cpp \

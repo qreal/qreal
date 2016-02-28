@@ -16,7 +16,7 @@
 #include "ui_editorPage.h"
 
 #include <qrkernel/settingsManager.h>
-#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/plugins/metaMetaModel/elementType.h>
 
 using namespace qReal;
 using namespace enums::linkShape;

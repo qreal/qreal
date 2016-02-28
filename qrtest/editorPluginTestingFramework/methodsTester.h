@@ -17,7 +17,7 @@
 #include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 #include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
 #include "qrgui/plugins/pluginManager/editorManager.h"
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/metaMetaModel/metamodel.h"
 
 #include "abstractStringGenerator.h"
 

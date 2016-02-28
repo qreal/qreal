@@ -86,9 +86,9 @@ QIcon ProxyEditorManager::icon(const Id &id) const
 	return mProxiedEditorManager->icon(id);
 }
 
-ElementImpl *ProxyEditorManager::elementImpl(const Id &id) const
+ElementType &ProxyEditorManager::elementType(const Id &id) const
 {
-	return mProxiedEditorManager->elementImpl(id);
+	return mProxiedEditorManager->elementType(id);
 }
 
 IdList ProxyEditorManager::containedTypes(const Id &id) const
@@ -191,10 +191,10 @@ QString ProxyEditorManager::diagramNodeNameString(const Id &editor, const Id &di
 	return mProxiedEditorManager->diagramNodeNameString(editor, diagram);
 }
 
-QList<StringPossibleEdge> ProxyEditorManager::possibleEdges(const QString &editor, const QString &element) const
-{
-	return mProxiedEditorManager->possibleEdges(editor, element);
-}
+//QList<StringPossibleEdge> ProxyEditorManager::possibleEdges(const QString &editor, const QString &element) const
+//{
+//	return mProxiedEditorManager->possibleEdges(editor, element);
+//}
 
 QStringList ProxyEditorManager::elements(const QString &editor, const QString &diagram) const
 {

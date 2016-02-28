@@ -15,7 +15,7 @@
 QT += widgets
 
 links(qrkernel qrrepo qrgui-plugin-manager qrgui-controller)
-includes(qrgui)
+includes(qrgui qrgui/plugins/metaMetaModel)
 
 HEADERS += \
 	$$PWD/modelsDeclSpec.h \

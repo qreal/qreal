@@ -19,7 +19,7 @@
 #include "methodsTesterForQrxcAndQrmc.h"
 #include "abstractStringGenerator.h"
 #include "defs.h"
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include "qrgui/plugins/metaMetaModel/metamodel.h"
 
 #include <iostream>
 #include <QElapsedTimer>
@@ -31,8 +31,8 @@ using namespace qReal;
 using namespace editorPluginTestingFramework;
 
 MethodsTesterForQrxcAndQrmc::MethodsTesterForQrxcAndQrmc(
-		EditorInterface * const qrmcGeneratedPlugin
-		, EditorInterface * const qrxcGeneratedPlugin
+		Metamodel * const qrmcGeneratedPlugin
+		, Metamodel * const qrxcGeneratedPlugin
 		)
 {
 	mQrmcGeneratedPlugin = qrmcGeneratedPlugin;
@@ -42,7 +42,7 @@ MethodsTesterForQrxcAndQrmc::MethodsTesterForQrxcAndQrmc(
 class MethodsTesterForQrxcAndQrmc::StringGenerator : public AbstractStringGenerator
 {
 public:
-	void init(EditorInterface *editorInterface) {
+	void init(Metamodel *editorInterface) {
 		mEditorInterface = editorInterface;
 	}
 
@@ -98,12 +98,12 @@ public:
 	virtual QString methodName() const = 0;
 
 protected:
-	virtual QStringList generateList(EditorInterface *editorInterface) const = 0;
+	virtual QStringList generateList(Metamodel *editorInterface) const = 0;
 
 	virtual QPair<qint64, double> dataOfTime() const = 0;
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element = ""
 			, const QString &property = ""
@@ -112,12 +112,12 @@ protected:
 	QStringList mutable mListOfTime;
 
 private:
-	EditorInterface *mEditorInterface;
+	Metamodel *mEditorInterface;
 };
 
 class MethodsTesterForQrxcAndQrmc::StringGeneratorForDiagrams : public MethodsTesterForQrxcAndQrmc::StringGenerator
 {
-	virtual QStringList generateList(EditorInterface *editorInterface) const {
+	virtual QStringList generateList(Metamodel *editorInterface) const {
 		QStringList resultList;
 		for (const QString &diagram : editorInterface->diagrams()) {
 			const QString additionalString = ConvertingMethods::transformateOutput(
@@ -137,7 +137,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForDiagrams : public MethodsTe
 
 class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTesterForQrxcAndQrmc::StringGenerator
 {
-	virtual QStringList generateList(EditorInterface *editorInterface) const {
+	virtual QStringList generateList(Metamodel *editorInterface) const {
 		QStringList resultList;
 		for (const QString &diagram : editorInterface->diagrams()) {
 			for (const QString &element : editorInterface->elements(diagram)) {
@@ -159,7 +159,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForElements : public MethodsTe
 
 class MethodsTesterForQrxcAndQrmc::StringGeneratorForProperties : public MethodsTesterForQrxcAndQrmc::StringGenerator
 {
-	virtual QStringList generateList(EditorInterface *editorInterface) const {
+	virtual QStringList generateList(Metamodel *editorInterface) const {
 		QStringList resultList;
 		for (const QString &diagram : editorInterface->diagrams()) {
 			for (const QString &element : editorInterface->elements(diagram)) {
@@ -183,7 +183,7 @@ class MethodsTesterForQrxcAndQrmc::StringGeneratorForProperties : public Methods
 
 class MethodsTesterForQrxcAndQrmc::StringGeneratorForGroups : public MethodsTesterForQrxcAndQrmc::StringGenerator
 {
-	virtual QStringList generateList(EditorInterface *editorInterface) const {
+	virtual QStringList generateList(Metamodel *editorInterface) const {
 		QStringList resultList;
 
 		for (const QString &diagram: editorInterface->diagrams()) {
@@ -213,7 +213,7 @@ class MethodsTesterForQrxcAndQrmc::ElementsStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -250,7 +250,7 @@ class MethodsTesterForQrxcAndQrmc::ExplosionsStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -289,7 +289,7 @@ class MethodsTesterForQrxcAndQrmc::PortTypesStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -328,7 +328,7 @@ class MethodsTesterForQrxcAndQrmc::PropertiesWithDefaultValuesStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -366,7 +366,7 @@ class MethodsTesterForQrxcAndQrmc::TypesContainedByStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -406,7 +406,7 @@ class MethodsTesterForQrxcAndQrmc::GetPossibleEdgesStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -454,7 +454,7 @@ class MethodsTesterForQrxcAndQrmc::IsNodeOrEdgeStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -492,7 +492,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyNamesStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -529,7 +529,7 @@ class MethodsTesterForQrxcAndQrmc::GetReferencePropertiesStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -567,7 +567,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyTypesStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -604,7 +604,7 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyDefaultValueStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -640,7 +640,7 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 		return "Enum values";
 	}
 
-	virtual void callEnum(EditorInterface *editorInterface, const QString &diagram
+	virtual void callEnum(Metamodel *editorInterface, const QString &diagram
 			, const QString &element) const
 	{
 		QStringList propertyNames = editorInterface->getPropertyNames(diagram, element);
@@ -653,7 +653,7 @@ class MethodsTesterForQrxcAndQrmc::EnumValueStringGenerator
 
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -700,7 +700,7 @@ class MethodsTesterForQrxcAndQrmc::GetParentsOfStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -747,7 +747,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramsStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -784,7 +784,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNameStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -822,7 +822,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramNodeNameStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -860,7 +860,7 @@ class MethodsTesterForQrxcAndQrmc::ElementNameStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -896,7 +896,7 @@ class MethodsTesterForQrxcAndQrmc::ElementMouseGestureStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -933,7 +933,7 @@ class MethodsTesterForQrxcAndQrmc::ElementDescriptionStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -970,7 +970,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDescriptionStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -1006,7 +1006,7 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -1041,7 +1041,7 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 		return "Is parent of";
 	}
 
-	virtual void callIsParent(EditorInterface *editorInterface, const QString &diagram
+	virtual void callIsParent(Metamodel *editorInterface, const QString &diagram
 			, const QString &element) const
 	{
 		for (const QString &parentDiagram: editorInterface->diagrams()) {
@@ -1052,7 +1052,7 @@ class MethodsTesterForQrxcAndQrmc::IsParentOfStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -1099,7 +1099,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupListStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property
@@ -1136,7 +1136,7 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 	}
 
 	virtual QStringList callMethod(
-			EditorInterface *editorInterface
+			Metamodel *editorInterface
 			, const QString &diagram
 			, const QString &element
 			, const QString &property

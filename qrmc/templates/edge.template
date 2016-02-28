@@ -1,4 +1,4 @@
-	class @@ElementName@@ : public qReal::ElementImpl {
+	class @@ElementName@@ : public qReal::ElementType {
 	public:
 		void init(QRectF &, PortFactoryInterface const &, QList<PortInterface *> &,
 				qReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,
@@ -22,7 +22,7 @@
 		bool maximizesChildren() const { return false; }
 		bool isResizeable() const { return true; }
 		bool isDividable() const { return false; }
-		qReal::ElementImpl *clone() { return nullptr; }
+		qReal::ElementType *clone() { return nullptr; }
 		bool createChildrenFromMenu() const { return false; }
 
 		QList<double> border() const

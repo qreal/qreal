@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,13 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "interpreterPortImpl.h"
+#pragma once
 
-InterpreterPortImpl::InterpreterPortImpl(const QString &type)
-	: mType(type)
-{}
+namespace qReal {
 
-QString InterpreterPortImpl::type() const
+/// Represents variants of shapes of edge elements on scene.
+enum class LinkShape
 {
-	return mType;
+	/// Link has piecewise-linear shape with breaks under arbitrary angle.
+	broken = 0
+
+	/// Link has piecewise-linear shape with breaks under right angle.
+	, square
+
+	/// Link has cubic bezier curve shape with two control points.
+	, curve
+};
+
 }

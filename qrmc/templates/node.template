@@ -1,4 +1,4 @@
-	class @@ElementName@@ : public qReal::ElementImpl
+	class @@ElementName@@ : public qReal::ElementType
 	{
 	public:
 @@NodeConstructor@@

@@ -41,4 +41,4 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE(qReal::InterpretedPluginInterface, "ru.tepkom.QReal.InterpretedPluginInterface/0.2")
+Q_DECLARE_INTERFACE(qReal::InterpretedPluginInterface, "ru.spbsu.QReal.InterpretedPluginInterface/0.2")

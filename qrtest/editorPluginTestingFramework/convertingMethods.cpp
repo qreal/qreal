@@ -17,10 +17,10 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
-QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(const QList<EditorInterface::ExplosionData> &explDataList)
+QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(const QList<Metamodel::ExplosionData> &explDataList)
 {
 	QStringList resultList;
-	for (const EditorInterface::ExplosionData &element : explDataList) {
+	for (const Metamodel::ExplosionData &element : explDataList) {
 		resultList.append(element.targetElement);
 	}
 
