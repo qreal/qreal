@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,37 +17,24 @@
 using namespace qReal;
 
 ProgressDialog::ProgressDialog(QWidget *parent)
-	: QProgressDialog(parent), mProgressBar(new ProgressBar(this))
+	: QProgressDialog(parent)
+	, mProgressBar(new ProgressBar(this))
 {
-	setWindowTitle("");
+	setWindowTitle(QString());
 	setBar(mProgressBar);
-	connect(this, SIGNAL(canceled()), this, SLOT(onCanceled()));
 
 	const QString text = tr("Please wait...");
 	setLabelText(text);
 }
 
-invocation::LongOperation *ProgressDialog::operation() const
+void ProgressDialog::reportOperation(const QFuture<void> &operation, const QString &description)
 {
-	return mProgressBar->operation();
-}
-
-bool ProgressDialog::isOperationConnected() const
-{
-	return mProgressBar->isOperationConnected();
-}
-
-void ProgressDialog::connectOperation(invocation::LongOperation *operation)
-{
-	mProgressBar->connectOperation(operation);
-	connect(operation, SIGNAL(afterStarted()), this, SLOT(exec()));
-	connect(operation, SIGNAL(finished(invocation::InvocationState))
-			, this, SLOT(close()));
-}
-
-void ProgressDialog::onCanceled()
-{
-	if (isOperationConnected()) {
-		operation()->cancel();
+	mProgressBar->reportOperation(operation, description);
+	connect(&mProgressBar->currentOperation(), &QFutureWatcher<void>::started, this, &QDialog::show);
+	connect(&mProgressBar->currentOperation(), &QFutureWatcher<void>::finished, this, &QDialog::hide);
+	connect(&mProgressBar->currentOperation(), &QFutureWatcher<void>::canceled, this, &QDialog::hide);
+	connect(this, &QProgressDialog::canceled, &mProgressBar->currentOperation(), &QFutureWatcher<void>::cancel);
+	if (!description.isEmpty()) {
+		setLabelText(description);
 	}
 }

@@ -14,6 +14,9 @@
 
 TEMPLATE = subdirs
 
+HEADERS += \
+	runExtensions.h \
+
 SUBDIRS = \
 	qscintilla/Qt4Qt5/qscintilla.pro \
 	qslog/QsLogSharedLibrary.pro \
