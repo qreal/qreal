@@ -24,7 +24,8 @@ class ShapePropertyWidget : public QWidget
 	Q_OBJECT
 public:
 	explicit ShapePropertyWidget(QWidget *parent = 0);
-	void initShapes(const QStringList &shapesList);
+	void initShapes(const QStringList &shapesList, const QString &currentShape);
+	QString getSelectedShape();
 
 protected:
 	void paintEvent(QPaintEvent *);

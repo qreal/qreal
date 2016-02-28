@@ -39,6 +39,12 @@ void ShapeWidget::setShape(const QString &shape)
 	repaint();
 }
 
+void ShapeWidget::addSelection()
+{
+	mSelected = true;
+	repaint();
+}
+
 void ShapeWidget::removeSelection()
 {
 	mSelected = false;
@@ -48,6 +54,11 @@ void ShapeWidget::removeSelection()
 int ShapeWidget::getIndex()
 {
 	return mIndex;
+}
+
+QString ShapeWidget::getShape()
+{
+	return mShape;
 }
 
 void ShapeWidget::paintEvent(QPaintEvent *)
@@ -62,7 +73,6 @@ void ShapeWidget::paintEvent(QPaintEvent *)
 
 void ShapeWidget::mousePressEvent(QMouseEvent *)
 {
-	mSelected = true;
-	repaint();
+	addSelection();
 	emit clicked();
 }

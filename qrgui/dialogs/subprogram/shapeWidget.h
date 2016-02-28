@@ -25,8 +25,10 @@ public:
 	explicit ShapeWidget(QWidget *parent = 0);
 	ShapeWidget(int index, QWidget *parent = 0);
 	void setShape(const QString &shape);
+	void addSelection();
 	void removeSelection();
 	int getIndex();
+	QString getShape();
 
 	signals:
 	void clicked();

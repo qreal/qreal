@@ -152,8 +152,17 @@ void NodeElement::updateDynamicProperties(const Id &target)
 	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
 		return;
 	}
-
+	//Update name
 	setName(mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name"), false);
+
+	//Update shape
+	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
+	QDomDocument picture;
+	picture.setContent(shape);
+	mRenderer.load(picture);
+	mExploser.explosionsSetCouldChange();
+
+	//Update labels
 	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
 	QDomDocument dynamicProperties;
 	QDomElement properties = dynamicProperties.createElement("properties");

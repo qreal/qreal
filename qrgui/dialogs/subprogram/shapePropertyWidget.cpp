@@ -30,23 +30,34 @@ ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	setPalette(pal);
 }
 
-void ShapePropertyWidget::initShapes(const QStringList &shapesList)
+void ShapePropertyWidget::initShapes(const QStringList &shapesList, const QString &currentShape)
 {
 	int width = (shapesList.count() * 75 < minWidth) ? minWidth : shapesList.count() * 75;
 	setFixedSize(width, 75);
 	qreal startX = 0.0;
 	int index = 0;
+	bool findedCurrentShape = false;
 	for (const QString &shape: shapesList) {
 		ShapeWidget *shapeWidget = new ShapeWidget(index, this);
 		shapeWidget->setGeometry(startX, 0, 0, 0);
 		mShapes << shapeWidget;
 		shapeWidget->setShape(shape);
+		if (!findedCurrentShape && shape == currentShape) {
+			shapeWidget->addSelection();
+			mSelectedShapeIndex = index;
+			findedCurrentShape = true;
+		}
 		shapeWidget->show();
 		startX += 75.0;
 		index++;
 
 		connect(shapeWidget, &ShapeWidget::clicked, this, &ShapePropertyWidget::shapeClicked);
 	}
+}
+
+QString ShapePropertyWidget::getSelectedShape()
+{
+	return mShapes.at(mSelectedShapeIndex)->getShape();
 }
 
 void ShapePropertyWidget::paintEvent(QPaintEvent *)
@@ -63,10 +74,7 @@ void ShapePropertyWidget::paintEvent(QPaintEvent *)
 void ShapePropertyWidget::shapeClicked()
 {
 	const int newSelectedIndex = dynamic_cast<ShapeWidget *>(sender())->getIndex();
-	if (mSelectedShapeIndex >= mShapes.count()) {
-		mSelectedShapeIndex = newSelectedIndex;
-		return;
-	}
+
 	if (mSelectedShapeIndex != newSelectedIndex) {
 		mShapes.at(mSelectedShapeIndex)->removeSelection();
 		mSelectedShapeIndex = newSelectedIndex;

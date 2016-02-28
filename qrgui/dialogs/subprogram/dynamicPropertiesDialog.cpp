@@ -36,6 +36,7 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	, mId(id)
 {
 	mUi->setupUi(this);
+	setWindowTitle(tr("Properties"));
 	mUi->labels->setColumnCount(4);
 	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -78,6 +79,7 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	}
 
 	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
+	mLogicalRepoApi.setProperty(mId, "shape", mShapeWidget->getSelectedShape());
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
 
@@ -148,7 +150,8 @@ void DynamicPropertiesDialog::init()
 {
 	//JUST FOR TEST
 	mShapeWidget->initShapes(QStringList() << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape")
-	<< mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape"));
+	<< mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape")
+	<< mLogicalRepoApi.stringProperty(mId, "shape"), mLogicalRepoApi.stringProperty(mId, "shape"));
 	//
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
