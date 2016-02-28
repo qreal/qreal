@@ -285,6 +285,11 @@ bool Label::isReadOnly() const
 	return mProperties.isReadOnly();
 }
 
+QString Label::roleName() const
+{
+	return mProperties.roleName();
+}
+
 void Label::focusOutEvent(QFocusEvent *event)
 {
 	QGraphicsTextItem::focusOutEvent(event);

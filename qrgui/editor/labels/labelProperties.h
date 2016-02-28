@@ -83,6 +83,8 @@ public:
 
 	QString nameForRoleProperty() const;
 
+	QString roleName() const;
+
 	/// Returns immutability of the label`s value by user.
 	bool isReadOnly() const;
 

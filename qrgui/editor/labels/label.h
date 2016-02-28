@@ -57,6 +57,7 @@ public:
 
 	bool isReadOnly() const;
 	bool isHard() const;
+	QString roleName() const;
 
 	void setParentSelected(bool isSelected);
 	void setParentContents(const QRectF &contents);

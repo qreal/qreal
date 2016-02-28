@@ -165,6 +165,11 @@ QString LabelProperties::nameForRoleProperty() const
 	return mRoleName + "!!" + mNameOfPropertyRole;
 }
 
+QString LabelProperties::roleName() const
+{
+	return mRoleName;
+}
+
 bool LabelProperties::isReadOnly() const
 {
 	return mReadOnly;
