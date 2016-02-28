@@ -40,7 +40,6 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-	mShapeWidget->setFixedSize(1000, 75);
 	mScrollArea->setWidget(mShapeWidget);
 	mScrollArea->setMaximumHeight(93);
 	mUi->verticalLayout->insertWidget(6, mScrollArea);
@@ -147,7 +146,10 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 
 void DynamicPropertiesDialog::init()
 {
-	mShapeWidget->setShape(mLogicalRepoApi.stringProperty(mId, "shape"));
+	//JUST FOR TEST
+	mShapeWidget->initShapes(QStringList() << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape")
+	<< mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape"));
+	//
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {

@@ -14,27 +14,30 @@
 
 #pragma once
 
-#include "shapeWidget.h"
-
-#include <qrutils/graphicsUtils/gridDrawer.h>
 #include <QtWidgets/QWidget>
+#include <plugins/pluginManager/sdfRenderer.h>
 
-class ShapePropertyWidget : public QWidget
+
+class ShapeWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit ShapePropertyWidget(QWidget *parent = 0);
-	void initShapes(const QStringList &shapesList);
+	explicit ShapeWidget(QWidget *parent = 0);
+	ShapeWidget(int index, QWidget *parent = 0);
+	void setShape(const QString &shape);
+	void removeSelection();
+	int getIndex();
+
+	signals:
+	void clicked();
 
 protected:
 	void paintEvent(QPaintEvent *);
-
-private slots:
-	void shapeClicked();
+	void mousePressEvent(QMouseEvent *);
 
 private:
-	qreal mWidthOfGrid;
-	graphicsUtils::GridDrawer mGridDrawer;
-	QList<ShapeWidget *> mShapes;
-	int mSelectedShapeIndex;
+	qReal::SdfRenderer mRenderer;
+	QString mShape;
+	bool mSelected;
+	int mIndex;
 };

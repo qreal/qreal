@@ -19,7 +19,7 @@
 
 using namespace qReal;
 
-const QRectF contents = QRectF(0, 0, 50, 50);
+const int minWidth = 355;
 
 ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	: QWidget(parent)
@@ -30,21 +30,26 @@ ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	setPalette(pal);
 }
 
-void ShapePropertyWidget::setShape(const QString &shape)
+void ShapePropertyWidget::initShapes(const QStringList &shapesList)
 {
-	mShape = shape;
-	repaint();
+	int width = (shapesList.count() * 75 < minWidth) ? minWidth : shapesList.count() * 75;
+	setFixedSize(width, 75);
+	qreal startX = 0.0;
+	int index = 0;
+	for (const QString &shape: shapesList) {
+		ShapeWidget *shapeWidget = new ShapeWidget(index, this);
+		shapeWidget->setGeometry(startX, 0, 0, 0);
+		mShapes << shapeWidget;
+		shapeWidget->setShape(shape);
+		shapeWidget->show();
+		startX += 75.0;
+		index++;
+
+		connect(shapeWidget, &ShapeWidget::clicked, this, &ShapePropertyWidget::shapeClicked);
+	}
 }
 
-void ShapePropertyWidget::drawShape(QPainter *painter, const QRectF &bounds)
-{
-	QDomDocument dynamicShape;
-	dynamicShape.setContent(mShape);
-	mRenderer.load(dynamicShape);
-	mRenderer.render(painter, bounds);
-}
-
-void ShapePropertyWidget::paintEvent(QPaintEvent *event)
+void ShapePropertyWidget::paintEvent(QPaintEvent *)
 {
 	mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
 	QPainter painter(this);
@@ -53,8 +58,17 @@ void ShapePropertyWidget::paintEvent(QPaintEvent *event)
 	const QRectF r = QRectF(rect());
 	const int indexGrid = SettingsManager::value("IndexGrid").toInt();
 	mGridDrawer.drawGrid(&painter, r, indexGrid);
-
-
-	drawShape(&painter, contents);
 }
 
+void ShapePropertyWidget::shapeClicked()
+{
+	const int newSelectedIndex = dynamic_cast<ShapeWidget *>(sender())->getIndex();
+	if (mSelectedShapeIndex >= mShapes.count()) {
+		mSelectedShapeIndex = newSelectedIndex;
+		return;
+	}
+	if (mSelectedShapeIndex != newSelectedIndex) {
+		mShapes.at(mSelectedShapeIndex)->removeSelection();
+		mSelectedShapeIndex = newSelectedIndex;
+	}
+}

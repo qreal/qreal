@@ -46,7 +46,6 @@ private slots:
 	void typeChanged(const QString &newType);
 
 private:
-	///Calls from constructor to init labels
 	void init();
 	bool canSave();
 	void addLabel(const QString &name, const QString &type, const QString &value);

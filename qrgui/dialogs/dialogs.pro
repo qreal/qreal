@@ -48,6 +48,7 @@ HEADERS += \
 	$$PWD/findReplaceDialog.h \
 	$$PWD/subprogram/dynamicPropertiesDialog.h \
 	$$PWD/subprogram/shapePropertyWidget.h \
+	$$PWD/subprogram/shapeWidget.h \
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -67,6 +68,7 @@ SOURCES += \
 	$$PWD/findReplaceDialog.cpp \
 	$$PWD/subprogram/dynamicPropertiesDialog.cpp \
 	$$PWD/subprogram/shapePropertyWidget.cpp \
+	$$PWD/subprogram/shapeWidget.cpp \
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \
