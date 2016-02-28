@@ -45,7 +45,7 @@ public:
 	///        contents of a label, and modify underlying value in repository.
 	/// @param rotation - sets rotation of a label.
 	virtual LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, const QString &roleName
-			, const QString &nameOfRoleProperty, bool readOnly, qreal rotation) = 0;
+			, const QString &nameOfRoleProperty, const QString &location, bool readOnly, qreal rotation) = 0;
 };
 
 }

@@ -44,7 +44,8 @@ class LabelProperties : public QObject
 public:
 	LabelProperties();
 	LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation);
-	LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName, const QString &nameOfRoleProperty, bool isReadOnly, qreal rotation);
+	LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName, const QString &nameOfRoleProperty, const QString &location
+			, bool isReadOnly, qreal rotation);
 	LabelProperties(const LabelProperties &other);
 
 	/// Returns label`s index among other siblings.
@@ -83,7 +84,7 @@ public:
 
 	QString nameForRoleProperty() const;
 
-	QString roleName() const;
+	QString location() const;
 
 	/// Returns immutability of the label`s value by user.
 	bool isReadOnly() const;
@@ -181,6 +182,7 @@ private:
 	QString mBinding;
 	QString mRoleName;
 	QString mNameOfPropertyRole;
+	QString mLocation;
 	bool mReadOnly;
 	qreal mRotation;
 	QColor mBackground;

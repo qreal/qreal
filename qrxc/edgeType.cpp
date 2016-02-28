@@ -90,8 +90,14 @@ bool EdgeType::initRoles()
 			mRoles.append(dynamic_cast<RoleType *> (element));
 		}
 	}
-	int ololo = 1;
-	QString www = QString(ololo);
+
+	for (auto role : mRoles) {
+		if (role->name() == mBeginRoleName) {
+			mBeginArrowType = role->typeOfArrow();
+		} else if (role->name() == mEndRoleName) {
+			mEndArrowType = role->typeOfArrow();
+		}
+	}
 
 	return true;
 }
@@ -375,11 +381,11 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\tprotected:\n"
 	<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
-	generateEdgeStyle(mBeginRoleName, out);
+	generateEdgeStyle(mBeginArrowType, out);
 
 	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const\n\t\t{\n";
 
-	generateEdgeStyle(mEndRoleName, out);
+	generateEdgeStyle(mEndArrowType, out);
 
 	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
 

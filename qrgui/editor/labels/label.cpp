@@ -285,9 +285,9 @@ bool Label::isReadOnly() const
 	return mProperties.isReadOnly();
 }
 
-QString Label::roleName() const
+QString Label::location() const
 {
-	return mProperties.roleName();
+	return mProperties.location();
 }
 
 void Label::focusOutEvent(QFocusEvent *event)

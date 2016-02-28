@@ -55,6 +55,7 @@ private:
 	int mIndex;
 	QString mRoleName;
 	QString mNameOfPropertyRole;
+	QString mLocation;
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;

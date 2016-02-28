@@ -41,6 +41,8 @@ public:
 private:
 	QList<RoleType*> mRoles;
 
+	QString mBeginArrowType;
+	QString mEndArrowType;
 	QString mBeginRoleName;
 	QString mEndRoleName;
 	QString mLineType;

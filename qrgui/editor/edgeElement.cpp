@@ -287,30 +287,20 @@ void EdgeElement::updateBeginAndEnd()
 	int firstIdx = 0;
 	int lastIdx = mLine.size() - 2;
 
-//	if (mLabels.count() == 1) {
-//			Label *title = mLabels[0];
-//			qreal x = (mLine[firstIdx].x() + mLine[lastIdx + 1].x()) / 2;
-//			qreal y = (mLine[firstIdx].y() + mLine[lastIdx + 1].y()) / 2;
-//			x -= title->boundingRect().width() / 2;
-//			y -= title->boundingRect().height() / 2;
-//			title->setPos(x, y);
-//			return;
-//		}
-
 	int i = 0;
 	int j = 0;
 
 	for (auto label : mLabels) {
-		if (label->roleName()  == "begin") {
+		if (label->location() == "begin") {
 			Label *title = label;
 			qreal x = (mLine[firstIdx].x() + 20 * (i + 1));
 			qreal y = (mLine[firstIdx].y() + 20 * (i + 1));
 			title->setPos(x, y);
 			++i;
-		} else if (label->roleName()  == "end") {
+		} else if (label->location()  == "end") {
 			Label *title = label;
 			qreal x = (mLine[lastIdx + 1].x() - 25 * (j + 1));
-			qreal y = (mLine[lastIdx + 1].y() - 50 * (j + 1));
+			qreal y = (mLine[lastIdx + 1].y() - 20 * (j + 1));
 			title->setPos(x, y);
 			++j;
 		} else {
