@@ -44,22 +44,45 @@ ThreeDModelEngineApi::ThreeDModelEngineApi(model::Model &model, view::TwoDModelW
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
 	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
+	// Block for 3D code
+
 	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
 
 	if (clientID == -1)
 	{
-		cout << 1 << endl;
+		cout << "clientID == -1" << endl;
+		simxFinish(clientID);
 		return;
 	}
 
-	cout << clientID << endl;
+	cout << "ClientID = " << clientID << endl;
+
+	if (simxGetConnectionId(clientID) == -1)
+	{
+		cout << "simxGetConnectionId(clientID) == -1" << endl;\
+		simxFinish(clientID);
+		return;
+	}
+
+	cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
 
 	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
 	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
 	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
 	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
 
-	simxStartSimulation(clientID, simx_opmode_oneshot);
+	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+
+	cout << frontLeftHandle << endl;
+	cout << frontRightHandle << endl;
+	cout << backLeftHandle << endl;
+	cout << backRightHandle << endl;
+
+	cout << sensorHandle << endl;
+
+	//simxStartSimulation(clientID, simx_opmode_oneshot);
+
+	//
 }
 
 ThreeDModelEngineApi::~ThreeDModelEngineApi()
@@ -81,13 +104,16 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 //	int backRightHandle = 0;
 //	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
 
+	// Block for 3D code
+
 	simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed, simx_opmode_oneshot);
 
-
 	//simxFinish(clientID);
+
+	//
 
 	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
 }

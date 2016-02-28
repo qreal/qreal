@@ -35,6 +35,10 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
+	// Block for 3D code
+
+	//
+
 	mModel.data()->addRobotModel(robotModel);
 
 	connect(mView.data(), &view::TwoDModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);

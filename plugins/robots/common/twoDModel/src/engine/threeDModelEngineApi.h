@@ -85,6 +85,8 @@ private:
 	int frontRightHandle = 0;
 	int backLeftHandle = 0;
 	int backRightHandle = 0;
+
+	int sensorHandle = 0;
 };
 
 }
