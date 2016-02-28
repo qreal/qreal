@@ -15,9 +15,9 @@
 #pragma once
 
 #include <QtWidgets/QDialog>
+#include <QtWidgets/QScrollArea>
 
 #include <qrkernel/ids.h>
-
 #include <qrgui/models/exploser.h>
 #include <qrrepo/repoApi.h>
 #include "qrgui/dialogs/dialogsDeclSpec.h"
@@ -53,6 +53,7 @@ private:
 
 	Ui::DynamicPropertiesDialog *mUi;
 	ShapePropertyWidget *mShapeWidget;
+	QScrollArea *mScrollArea;
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	models::Exploser &mExploser;
 	const Id mId;

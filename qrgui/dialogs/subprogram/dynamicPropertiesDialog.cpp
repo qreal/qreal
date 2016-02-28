@@ -30,6 +30,7 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	: QDialog(parent)
 	, mUi(new Ui::DynamicPropertiesDialog)
 	, mShapeWidget(new ShapePropertyWidget(this))
+	, mScrollArea(new QScrollArea(this))
 	, mLogicalRepoApi(logicalRepoApi)
 	, mExploser(exploser)
 	, mId(id)
@@ -39,9 +40,10 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-	mUi->verticalLayout->insertWidget(6, mShapeWidget);
-	mShapeWidget->setMinimumHeight(200);
-	mShapeWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	mShapeWidget->setFixedSize(1000, 75);
+	mScrollArea->setWidget(mShapeWidget);
+	mScrollArea->setMaximumHeight(93);
+	mUi->verticalLayout->insertWidget(6, mScrollArea);
 
 	init();
 
