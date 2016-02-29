@@ -36,6 +36,7 @@ TcpRobotSimulator::~TcpRobotSimulator()
 void TcpRobotSimulator::incomingConnection(qintptr socketDescriptor)
 {
 	qDebug() << "TcpRobotSimulator::incomingConnection";
+	qDebug() << "Thread:" << thread();
 
 	mConnection.reset(new Connection(Protocol::messageLength, Heartbeat::use));
 	mConnectionThread.reset(new QThread());

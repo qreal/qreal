@@ -69,7 +69,7 @@ public:
 
 	void deleteElementFromDiagram(const Id &id) override;
 
-	void reportOperation(invocation::LongOperation *operation) override;
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 
 	QWidget *currentTab() override;
 	void openTab(QWidget *tab, const QString &title) override;

@@ -65,6 +65,8 @@ private slots:
 
 	void onCasingVersionReceived(const QString &casingVersion);
 
+	void onUploadProgramDone();
+
 private:
 	/// Worker object that handles all robot communication in separate thread.
 	QScopedPointer<TcpRobotCommunicatorWorker> mWorker;

@@ -1,4 +1,4 @@
-# Copyright 2016 Yurii Litvinov
+# Copyright 2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,21 +18,13 @@ include(../../../common.pri)
 
 include(../../../../../plugins/robots/utils/utils.pri)
 
-links(qslog test-utils)
+links(qslog)
 
-INCLUDEPATH += \
-	../../../../../plugins/robots/utils \
-	../../../../../plugins/robots/utils/include \
+includes(plugins/robots/utils)
 
 # Tests
 HEADERS += \
-	$$PWD/robotCommunicationTests/runProgramProtocolTest.h \
+	$$PWD/circularQueueTest.h \
 
 SOURCES += \
-	$$PWD/robotCommunicationTests/runProgramProtocolTest.cpp \
-
-# Support classes
-HEADERS += \
-	$$PWD/support/tcpRobotCommunicatorMock.h \
-
-SOURCES += \
+	$$PWD/circularQueueTest.cpp \

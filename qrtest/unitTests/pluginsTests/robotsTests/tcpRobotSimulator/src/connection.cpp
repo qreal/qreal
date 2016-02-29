@@ -248,6 +248,7 @@ void Connection::initKeepalive()
 void Connection::processData(const QByteArray &data)
 {
 	qDebug() << "Data received: " << data;
+	qDebug() << "Thread:" << thread();
 
 	const QString command = QString::fromUtf8(data.data());
 

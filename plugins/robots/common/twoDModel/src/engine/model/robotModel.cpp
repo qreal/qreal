@@ -36,6 +36,9 @@ using namespace physics;
 using namespace kitBase::robotModel;
 using namespace kitBase::robotModel::robotParts;
 
+const int positionStampsCount = 50;
+const int angleStampsCount = 50;
+
 RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, const Settings &settings
 		, QObject *parent)
@@ -50,8 +53,8 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
 	, mAcceleration(QPointF(0, 0))
-	, mPosStamps(QVector<QPointF>(50))
-	, mAngleStamps(QVector<qreal>(50))
+	, mPosStamps(positionStampsCount)
+	, mAngleStamps(angleStampsCount)
 	, mPhysicsEngine(nullptr)
 	, mStartPositionMarker(new items::StartPosition)
 {
@@ -174,6 +177,8 @@ void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
 	mRobotModel.displayWidget()->reset();
+	mAngleStamps.clear();
+	mPosStamps.clear();
 	emit playingSoundChanged(false);
 	for (Motor * const engine : mMotors) {
 		engine->speed = 0;
@@ -193,12 +198,18 @@ void RobotModel::countBeep()
 
 void RobotModel::countSpeedAndAcceleration()
 {
-	mAngleStamps.pop_front();
-	mAngleStamps.append(mAngle);
+	if (mAngleStamps.size() >= angleStampsCount) {
+		mAngleStamps.dequeue();
+	}
+
+	mAngleStamps.enqueue(mAngle);
 	mAngularSpeed = averageAngularSpeed();
 
-	mPosStamps.pop_front();
-	mPosStamps.append(mPos);
+	if (mPosStamps.size() >= positionStampsCount) {
+		mPosStamps.dequeue();
+	}
+
+	mPosStamps.enqueue(mPos);
 	mAcceleration = averageAcceleration();
 }
 
@@ -207,12 +218,16 @@ QPointF RobotModel::averageAcceleration() const
 	/// Some arcane formula that produces natural-looking results for some reason (with correct accelerometerConstant,
 	/// since mPosStamps.size() as a divisor is obviously wrong here).
 	/// Maybe it will be better to actually count average.
-	return (mPosStamps[49] - mPosStamps[48] - mPosStamps[1] + mPosStamps[0]) / mPosStamps.size();
+
+	return mPosStamps.size() < 2 ? QPointF() : (mPosStamps.size() < 4
+			? (mPosStamps.tail() - mPosStamps.head()) / mPosStamps.size()
+			: (mPosStamps.tail() - mPosStamps.nthFromTail(1)
+					- mPosStamps.nthFromHead(1) + mPosStamps.head()) / mPosStamps.size());
 }
 
 qreal RobotModel::averageAngularSpeed() const
 {
-	return (mAngleStamps[49] - mAngleStamps[0]) / mAngleStamps.size();
+	return mAngleStamps.isEmpty() ? 0 : (mAngleStamps.tail() - mAngleStamps.head()) / mAngleStamps.size();
 }
 
 QPointF RobotModel::rotationCenter() const

@@ -33,6 +33,7 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 	ON_CALL(mMainWindowInterpretersInterfaceMock, dehighlight()).WillByDefault(Return());
 
 	ON_CALL(mProjectManagementInterfaceMock, saveFilePath()).WillByDefault(Return(QString("./test")));
+	ON_CALL(mProjectManagementInterfaceMock, save()).WillByDefault(Return());
 
 	ON_CALL(mTextManagerMock, showInTextEditor(_, _, _)).WillByDefault(Invoke(
 			[this](const QFileInfo &file, const QString & genName, const qReal::text::LanguageInfo &language) {
@@ -51,12 +52,20 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, highlight(_, _, _)).Times(AtLeast(0));
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, dehighlight(_)).Times(AtLeast(0));
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, dehighlight()).Times(AtLeast(0));
+	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, activateItemOrDiagram(_, _)).Times(AtLeast(0));
 
 	EXPECT_CALL(mErrorReporterMock, addInformation(_, _)).Times(AtLeast(0));
 	EXPECT_CALL(mErrorReporterMock, addWarning(_, _)).Times(AtLeast(0));
 	EXPECT_CALL(mErrorReporterMock, addError(_, _)).Times(AtLeast(0));
-
 	EXPECT_CALL(mErrorReporterMock, clear()).Times(AtLeast(0));
+	EXPECT_CALL(mErrorReporterMock, clearErrors()).Times(AtLeast(0));
+	EXPECT_CALL(mErrorReporterMock, wereErrors()).Times(AtLeast(0));
+
+	EXPECT_CALL(mProjectManagementInterfaceMock, save()).Times(AtLeast(0));
+	EXPECT_CALL(mProjectManagementInterfaceMock, saveFilePath()).Times(AtLeast(0));
+
+	EXPECT_CALL(mTextManagerMock, showInTextEditor(_, _, _)).Times(AtLeast(0));
+	EXPECT_CALL(mTextManagerMock, isDefaultPath(_)).Times(AtLeast(0));
 }
 
 qReal::gui::MainWindowInterpretersInterface &QrguiFacade::mainWindowInterpretersInterface()

@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2013-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +19,15 @@ links(qrkernel qrutils qextserialport)
 DEFINES += ROBOTS_UTILS_LIBRARY
 
 HEADERS += \
-	$$PWD/include/utils/timelineInterface.h \
 	$$PWD/include/utils/abstractTimer.h \
+	$$PWD/include/utils/circularQueue.h \
 	$$PWD/include/utils/realTimeline.h \
 	$$PWD/include/utils/realTimer.h \
-	$$PWD/include/utils/requiredVersion.h \
 	$$PWD/include/utils/objectsSet.h \
+	$$PWD/include/utils/timelineInterface.h \
 	$$PWD/include/utils/uploaderTool.h \
 	$$PWD/include/utils/utilsDeclSpec.h \
+	$$PWD/include/utils/requiredVersion.h \
 	$$PWD/include/utils/canvas/canvas.h \
 	$$PWD/include/utils/canvas/canvasObject.h \
 	$$PWD/include/utils/canvas/pointObject.h \
@@ -58,14 +59,15 @@ SOURCES += \
 	$$PWD/src/realTimer.cpp \
 	$$PWD/src/objectsSet.cpp \
 	$$PWD/src/uploaderTool.cpp \
+	$$PWD/src/canvas/arcObject.cpp \
 	$$PWD/src/canvas/canvas.cpp \
 	$$PWD/src/canvas/canvasObject.cpp \
-	$$PWD/src/canvas/pointObject.cpp \
-	$$PWD/src/canvas/lineObject.cpp \
-	$$PWD/src/canvas/rectangleObject.cpp \
 	$$PWD/src/canvas/ellipseObject.cpp \
-	$$PWD/src/canvas/arcObject.cpp \
+	$$PWD/src/canvas/lineObject.cpp \
+	$$PWD/src/canvas/pointObject.cpp \
+	$$PWD/src/canvas/rectangleObject.cpp \
 	$$PWD/src/canvas/textObject.cpp \
+	$$PWD/src/widgets/comPortPicker.cpp \
 	$$PWD/src/robotCommunication/networkCommunicationErrorReporter.cpp \
 	$$PWD/src/robotCommunication/protocol.cpp \
 	$$PWD/src/robotCommunication/robotCommunicator.cpp \
@@ -76,7 +78,6 @@ SOURCES += \
 	$$PWD/src/robotCommunication/tcpConnectionHandler.cpp \
 	$$PWD/src/robotCommunication/tcpRobotCommunicatorWorker.cpp \
 	$$PWD/src/robotCommunication/uploadProgramProtocol.cpp \
-	$$PWD/src/widgets/comPortPicker.cpp \
 
 TRANSLATIONS += \
 	$$PWD/../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \

@@ -44,7 +44,7 @@ public:
 	MOCK_METHOD2(activateItemOrDiagram, void(qReal::Id const &id, bool setSelected));
 	MOCK_METHOD0(updateActiveDiagram, void());
 	MOCK_METHOD1(deleteElementFromDiagram, void(qReal::Id const &id));
-	MOCK_METHOD1(reportOperation, void(invocation::LongOperation *operation));
+	MOCK_METHOD2(reportOperation, void(const QFuture<void> &operation, const QString &description));
 	MOCK_METHOD0(currentTab, QWidget *());
 	MOCK_METHOD2(openTab, void(QWidget *tab, QString const &title));
 	MOCK_METHOD1(closeTab, void(QWidget *tab));

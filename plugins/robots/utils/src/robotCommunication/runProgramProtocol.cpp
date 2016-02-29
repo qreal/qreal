@@ -16,6 +16,7 @@
 
 #include <QtCore/QState>
 #include <QtCore/QFileInfo>
+#include <QtCore/QCoreApplication>
 
 #include "utils/robotCommunication/tcpRobotCommunicatorInterface.h"
 #include "src/robotCommunication/protocol.h"
@@ -28,6 +29,8 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicat
 	, mWaitingForUploadingComplete(new QState())
 	, mWaitingForRunComplete(new QState())
 {
+	qDebug() << "RunProgramProtocol, thread:" << thread();
+
 	mProtocol->addGuardedTranstion(
 			mWaitingForCasingModel
 			, &TcpRobotCommunicatorInterface::casingVersionReceived
@@ -52,6 +55,22 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicat
 			, &TcpRobotCommunicatorInterface::uploadProgramDone, mWaitingForRunComplete);
 	mProtocol->addErrorTransition(mWaitingForUploadingComplete, &TcpRobotCommunicatorInterface::uploadProgramError);
 	mProtocol->addSuccessTransition(mWaitingForRunComplete, &TcpRobotCommunicatorInterface::startedRunning);
+
+	connect(&communicator, &TcpRobotCommunicatorInterface::uploadProgramDone,
+			[this]()
+			{
+				qDebug() << "uploadProgramDone received, thread:" << thread();
+				QCoreApplication::processEvents();
+			}
+			);
+
+	connect(&communicator, &TcpRobotCommunicatorInterface::casingVersionReceived,
+			[this]()
+			{
+				qDebug() << "casingVersionReceived received, thread:" << thread();
+				QCoreApplication::processEvents();
+			}
+			);
 
 	connect(mProtocol.data(), &Protocol::success, this, &RunProgramProtocol::success);
 	connect(mProtocol.data(), &Protocol::error, this, &RunProgramProtocol::error);

@@ -18,5 +18,5 @@
 
 void qrTest::delay(std::function<void()> action)
 {
-	QTimer::singleShot(0, action);
+	QTimer::singleShot(10, action);
 }

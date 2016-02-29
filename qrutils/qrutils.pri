@@ -81,9 +81,6 @@ include($$PWD/graphicsUtils/graphicsUtils.pri)
 # Stuff connected with graphs and trees
 include($$PWD/graphUtils/graphUtils.pri)
 
-# Stuff for running long operations in different modes
-include($$PWD/invocationUtils/invocationUtils.pri)
-
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
 

@@ -21,6 +21,7 @@
 #include <qrtext/lua/luaToolbox.h>
 #include <testUtils/qrguiFacade.h>
 #include <testUtils/wait.h>
+#include <testUtils/delay.h>
 #include <kitBase/robotModel/commonRobotModel.h>
 #include <qrkernel/settingsManager.h>
 
@@ -40,7 +41,8 @@ void TrikV62QtsGeneratorTest::SetUp()
 
 TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 {
-	tcpRobotSimulator::TcpRobotSimulator simulator;
+	QEventLoop loop;
+	QTimer::singleShot(5000, &loop, &QEventLoop::quit);
 
 	qReal::SettingsManager::setValue("pathToGeneratorRoot", ".");
 	qReal::SettingsManager::setValue("TrikTcpServer", "127.0.0.1");
@@ -72,6 +74,8 @@ TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 			}
 			));
 
+	EXPECT_CALL(robotModelManagerInterfaceMock, model()).Times(AtLeast(1));
+
 	kitBase::KitPluginConfigurator kitPluginConfigurer(
 			configurer
 			, robotModelManagerInterfaceMock
@@ -85,9 +89,16 @@ TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 
 	const QList<qReal::ActionInfo> actions = plugin.customActions();
 	qReal::ActionInfo runProgramAction = actions.at(2);
-	runProgramAction.action()->trigger();
 
-	Wait::wait(5000);
+	QTimer::singleShot(100, [runProgramAction](){
+		runProgramAction.action()->trigger();
+	});
+
+	tcpRobotSimulator::TcpRobotSimulator simulator;
+
+	loop.exec();
+
+//	Wait::wait(5000);
 
 	EXPECT_TRUE(simulator.configVersionRequestReceived());
 	EXPECT_TRUE(simulator.runProgramRequestReceived());
