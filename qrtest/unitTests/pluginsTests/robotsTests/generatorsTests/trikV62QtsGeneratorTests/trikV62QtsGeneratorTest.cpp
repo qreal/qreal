@@ -21,7 +21,7 @@
 #include <qrtext/lua/luaToolbox.h>
 #include <testUtils/qrguiFacade.h>
 #include <testUtils/wait.h>
-#include <testUtils/delay.h>
+#include <testUtils/testRegistry.h>
 #include <kitBase/robotModel/commonRobotModel.h>
 #include <qrkernel/settingsManager.h>
 
@@ -37,72 +37,74 @@ using namespace ::testing;
 
 void TrikV62QtsGeneratorTest::SetUp()
 {
+	mControlConnectionSimulator.reset(new tcpRobotSimulator::TcpRobotSimulator(8888));
+	mTelemetryConnectionSimulator.reset(new tcpRobotSimulator::TcpRobotSimulator(9000));
+
+	mLuaToolbox.reset(new qrtext::lua::LuaToolbox());
+	const auto robotModelManagerInterfaceMock = new RobotModelManagerInterfaceMock();
+	mRobotModelManagerInterface.reset(robotModelManagerInterfaceMock);
+	mEventsForKitPluginInterface.reset(new kitBase::EventsForKitPluginInterface());
+	mInterpreterControlInterface.reset(new InterpreterControlInterfaceMock());
+
+	mFacade.reset(new QrguiFacade("unittests/smile.qrs"));
+	mPluginConfigurer.reset(new qReal::PluginConfigurator(
+			mFacade->repoControlInterface()
+			, mFacade->graphicalModelAssistInterface()
+			, mFacade->logicalModelAssistInterface()
+			, mFacade->mainWindowInterpretersInterface()
+			, mFacade->mainWindowDockInterface()
+			, mFacade->projectManagementInterface()
+			, mFacade->sceneCustomizer()
+			, mFacade->systemEvents()
+			, mFacade->textManager()
+			));
+
+	mKitPluginConfigurer.reset(new kitBase::KitPluginConfigurator(
+			*mPluginConfigurer
+			, *mRobotModelManagerInterface
+			, *mLuaToolbox
+			, *mEventsForKitPluginInterface
+			, *mInterpreterControlInterface
+			));
+
+	mTestRegistry.reset(new TestRegistry);
+	mTestRegistry->set("pathToGeneratorRoot", ".");
+	mTestRegistry->set("TrikTcpServer", "127.0.0.1");
+
+	mRobotModel.reset(new TestRobotModel());
+
+	ON_CALL(*robotModelManagerInterfaceMock, model()).WillByDefault(Invoke(
+			[this]() -> kitBase::robotModel::RobotModelInterface & {
+				return *mRobotModel;
+			}
+			));
+
+	EXPECT_CALL(*robotModelManagerInterfaceMock, model()).Times(AtLeast(1));
+}
+
+kitBase::KitPluginConfigurator &TrikV62QtsGeneratorTest::kitPluginConfigurer()
+{
+	return *mKitPluginConfigurer;
+}
+
+tcpRobotSimulator::TcpRobotSimulator &TrikV62QtsGeneratorTest::controlSimulator()
+{
+	return *mControlConnectionSimulator;
 }
 
 TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 {
-	QEventLoop loop;
-	QTimer::singleShot(5000, &loop, &QEventLoop::quit);
-
-	qReal::SettingsManager::setValue("pathToGeneratorRoot", ".");
-	qReal::SettingsManager::setValue("TrikTcpServer", "127.0.0.1");
-
-	QrguiFacade facade("unittests/smile.qrs");
-
-	qReal::PluginConfigurator configurer(
-			facade.repoControlInterface()
-			, facade.graphicalModelAssistInterface()
-			, facade.logicalModelAssistInterface()
-			, facade.mainWindowInterpretersInterface()
-			, facade.mainWindowDockInterface()
-			, facade.projectManagementInterface()
-			, facade.sceneCustomizer()
-			, facade.systemEvents()
-			, facade.textManager()
-			);
-
-	qrtext::lua::LuaToolbox luaToolbox;
-	RobotModelManagerInterfaceMock robotModelManagerInterfaceMock;
-	kitBase::EventsForKitPluginInterface eventsForKitPluginInterface;
-	InterpreterControlInterfaceMock interpreterControlInterfaceMock;
-
-	TestRobotModel robotModel;
-
-	ON_CALL(robotModelManagerInterfaceMock, model()).WillByDefault(Invoke(
-			[&robotModel]() -> kitBase::robotModel::RobotModelInterface & {
-				return robotModel;
-			}
-			));
-
-	EXPECT_CALL(robotModelManagerInterfaceMock, model()).Times(AtLeast(1));
-
-	kitBase::KitPluginConfigurator kitPluginConfigurer(
-			configurer
-			, robotModelManagerInterfaceMock
-			, luaToolbox
-			, eventsForKitPluginInterface
-			, interpreterControlInterfaceMock
-			);
-
 	TrikV62QtsGeneratorPlugin plugin;
-	plugin.init(kitPluginConfigurer);
+	plugin.init(kitPluginConfigurer());
 
 	const QList<qReal::ActionInfo> actions = plugin.customActions();
 	qReal::ActionInfo runProgramAction = actions.at(2);
+	runProgramAction.action()->trigger();
 
-	QTimer::singleShot(100, [runProgramAction](){
-		runProgramAction.action()->trigger();
-	});
+	Wait waiter(5000);
+	waiter.stopAt(&controlSimulator(), &tcpRobotSimulator::TcpRobotSimulator::runProgramRequestReceivedSignal);
+	waiter.wait();
 
-	tcpRobotSimulator::TcpRobotSimulator controlSimulator(8888);
-	tcpRobotSimulator::TcpRobotSimulator telemetrySimulator(9000);
-
-	Q_UNUSED(telemetrySimulator)
-
-	loop.exec();
-
-//	Wait::wait(5000);
-
-	EXPECT_TRUE(controlSimulator.configVersionRequestReceived());
-	EXPECT_TRUE(controlSimulator.runProgramRequestReceived());
+	EXPECT_TRUE(controlSimulator().configVersionRequestReceived());
+	EXPECT_TRUE(controlSimulator().runProgramRequestReceived());
 }

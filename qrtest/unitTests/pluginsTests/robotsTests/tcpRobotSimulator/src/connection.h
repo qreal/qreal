@@ -76,6 +76,9 @@ signals:
 	/// Emitted after connection becomes closed.
 	void disconnected();
 
+	/// Emitted when connection receives command to run the program.
+	void runProgramRequestReceivedSignal();
+
 protected:
 	/// Creates socket and initializes outgoing connection, shall be called when Connection is already in its own
 	/// thread.

@@ -16,7 +16,39 @@
 
 #include <gtest/gtest.h>
 
+#include <QtCore/QScopedPointer>
+
+namespace qrtext {
+namespace lua {
+class LuaToolbox;
+}
+}
+
+namespace tcpRobotSimulator {
+class TcpRobotSimulator;
+}
+
+namespace qReal {
+class PluginConfigurator;
+}
+
+namespace kitBase {
+class EventsForKitPluginInterface;
+class InterpreterControlInterface;
+class KitPluginConfigurator;
+
+namespace robotModel {
+class RobotModelManagerInterface;
+}
+
+}
+
 namespace qrTest {
+
+class QrguiFacade;
+class TestRegistry;
+class TestRobotModel;
+
 namespace robotsTests {
 namespace trikV62QtsGeneratorTests {
 
@@ -24,6 +56,24 @@ class TrikV62QtsGeneratorTest : public testing::Test
 {
 protected:
 	void SetUp() override;
+
+	kitBase::KitPluginConfigurator &kitPluginConfigurer();
+	tcpRobotSimulator::TcpRobotSimulator &controlSimulator();
+
+private:
+	QScopedPointer<tcpRobotSimulator::TcpRobotSimulator> mControlConnectionSimulator;
+	QScopedPointer<tcpRobotSimulator::TcpRobotSimulator> mTelemetryConnectionSimulator;
+	QScopedPointer<TestRegistry> mTestRegistry;
+	QScopedPointer<QrguiFacade> mFacade;
+	QScopedPointer<qReal::PluginConfigurator> mPluginConfigurer;
+	QScopedPointer<kitBase::KitPluginConfigurator> mKitPluginConfigurer;
+
+	QScopedPointer<qrtext::lua::LuaToolbox> mLuaToolbox;
+	QScopedPointer<kitBase::robotModel::RobotModelManagerInterface> mRobotModelManagerInterface;
+	QScopedPointer<kitBase::EventsForKitPluginInterface> mEventsForKitPluginInterface;
+	QScopedPointer<kitBase::InterpreterControlInterface> mInterpreterControlInterface;
+
+	QScopedPointer<TestRobotModel> mRobotModel;
 };
 
 }

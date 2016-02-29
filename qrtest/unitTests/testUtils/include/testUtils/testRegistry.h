@@ -12,28 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "testUtils/wait.h"
+#pragma once
 
-#include <QtCore/QTimer>
+#include <QtCore/QHash>
+#include <QtCore/QString>
+#include <QtCore/QVariant>
 
-using namespace qrTest;
+#include <QtCore/qglobal.h>
 
-Wait::Wait(int timeout)
-	: mTimeout(timeout)
+#include "testUtils/declSpec.h"
+
+namespace qrTest {
+
+class TEST_UTILS_EXPORT TestRegistry
 {
-}
+public:
+	~TestRegistry();
+	void set(const QString &key, const QVariant &value);
 
-void Wait::wait()
-{
-	QTimer::singleShot(mTimeout, &mLoop, &QEventLoop::quit);
-	mLoop.exec();
-	// Allow deferred processing to happen.
-	QTimer::singleShot(0, &mLoop, &QEventLoop::quit);
-	mLoop.exec();
-}
+private:
+	QHash<QString, QVariant> mPreviousValues;
+};
 
-void Wait::wait(int msecs)
-{
-	Wait wait(msecs);
-	wait.wait();
 }

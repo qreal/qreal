@@ -37,6 +37,9 @@ public:
 	bool configVersionRequestReceived() const;
 	bool versionRequestReceived() const;
 
+signals:
+	void runProgramRequestReceivedSignal();
+
 private:
 	void incomingConnection(qintptr socketDescriptor) override;
 

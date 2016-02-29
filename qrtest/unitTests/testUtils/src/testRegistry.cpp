@@ -12,28 +12,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "testUtils/wait.h"
+#include "testUtils/testRegistry.h"
 
-#include <QtCore/QTimer>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrTest;
 
-Wait::Wait(int timeout)
-	: mTimeout(timeout)
+TestRegistry::~TestRegistry()
 {
+	for (const QString &key : mPreviousValues.keys()) {
+		qReal::SettingsManager::setValue(key, mPreviousValues.value(key));
+	}
 }
 
-void Wait::wait()
+void TestRegistry::set(const QString &key, const QVariant &value)
 {
-	QTimer::singleShot(mTimeout, &mLoop, &QEventLoop::quit);
-	mLoop.exec();
-	// Allow deferred processing to happen.
-	QTimer::singleShot(0, &mLoop, &QEventLoop::quit);
-	mLoop.exec();
-}
-
-void Wait::wait(int msecs)
-{
-	Wait wait(msecs);
-	wait.wait();
+	mPreviousValues.insert(key, qReal::SettingsManager::value(key));
+	qReal::SettingsManager::setValue(key, value);
 }

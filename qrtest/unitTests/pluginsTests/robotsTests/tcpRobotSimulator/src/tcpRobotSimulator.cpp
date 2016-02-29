@@ -41,6 +41,8 @@ void TcpRobotSimulator::incomingConnection(qintptr socketDescriptor)
 	mConnection.reset(new Connection(Protocol::messageLength, Heartbeat::use));
 	mConnectionThread.reset(new QThread());
 	connect(mConnectionThread.data(), &QThread::finished, mConnectionThread.data(), &QThread::deleteLater);
+	connect(mConnection.data(), &Connection::runProgramRequestReceivedSignal
+			, this, &TcpRobotSimulator::runProgramRequestReceivedSignal, Qt::QueuedConnection);
 	mConnection->moveToThread(mConnectionThread.data());
 	mConnectionThread->start();
 	QMetaObject::invokeMethod(mConnection.data(), "init", Q_ARG(int, socketDescriptor));

@@ -14,17 +14,46 @@
 
 #pragma once
 
+#include <QtCore/QObject>
+#include <QtCore/QEventLoop>
+
 #include "declSpec.h"
 
 namespace qrTest {
 
-/// Utility class that provides event loop based waiting.
+/// Utility class that provides event loop based waiting for given timeout and signals.
+/// Typical usage pattern is as follows:
+/// Wait waiter(1000);
+/// waiter.stopAt(someObject, &SomeObject::someSignal);
+/// waiter.wait();
 class TEST_UTILS_EXPORT Wait
 {
 public:
-	/// Wait for given amount of milliseconds. Launches event loop so thread is not blocked and can still process
-	/// messages.
+	/// Constructor.
+	/// @param timeout - timeout in milliseconds that is a maximum time to wait for a signal to appear.
+	Wait(int timeout);
+
+	/// Stop waiting upon receiving a given signal from a given sender. This method can be called as many times as
+	/// needed, and has "or" semantics, so the waiting will stop once any signal is received.
+	template <typename Func>
+	void stopAt(const typename QtPrivate::FunctionPointer<Func>::Object *object, Func signal)
+	{
+		QObject::connect(object, signal, &mLoop, &QEventLoop::quit);
+	}
+
+	/// Starts waiting event loop.
+	void wait();
+
+	/// Helper method that waits for a given amount of milliseconds. Equivalent to using Wait object without any
+	/// signals connected.
 	static TEST_UTILS_EXPORT void wait(int msecs);
+
+private:
+	/// Event loop that processes events during wait.
+	QEventLoop mLoop;
+
+	/// Timeout value in milliseconds.
+	int mTimeout;
 };
 
 }
