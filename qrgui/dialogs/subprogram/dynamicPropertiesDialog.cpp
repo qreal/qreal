@@ -12,13 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include "dynamicPropertiesDialog.h"
+#include "ui_dynamicPropertiesDialog.h"
+
+#include <qrkernel/settingsManager.h>
+
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
 #include <QtCore/QUuid>
-
-#include "dynamicPropertiesDialog.h"
-#include "ui_dynamicPropertiesDialog.h"
 
 using namespace qReal;
 using namespace gui;
@@ -148,11 +150,16 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 
 void DynamicPropertiesDialog::init()
 {
-	//JUST FOR TEST
-	mShapeWidget->initShapes(QStringList() << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape")
-	<< mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape") << mLogicalRepoApi.stringProperty(mId, "shape")
-	<< mLogicalRepoApi.stringProperty(mId, "shape"), mLogicalRepoApi.stringProperty(mId, "shape"));
-	//
+	const QString filePath = SettingsManager::value("pathToImages").toString() + "/images/subprogramShapes.sdf";
+	QDomDocument shapes;
+	QFile file(filePath);
+
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		shapes.setContent(&file);
+		file.close();
+	}
+
+	mShapeWidget->initShapes(shapes, mLogicalRepoApi.stringProperty(mId, "shape"));
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {

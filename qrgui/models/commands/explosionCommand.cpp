@@ -82,5 +82,5 @@ void ExplosionCommand::saveTargetShape()
 
 	file.close();
 
-	mLogicalApi.mutableLogicalRepoApi().setProperty(mTarget, "shape", shape.toString(4));
+	mLogicalApi.mutableLogicalRepoApi().setProperty(mTarget, "shape", shape.toString(0));
 }

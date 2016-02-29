@@ -30,29 +30,31 @@ ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	setPalette(pal);
 }
 
-void ShapePropertyWidget::initShapes(const QStringList &shapesList, const QString &currentShape)
+void ShapePropertyWidget::initShapes(const QDomDocument &shapes, const QString &currentShape)
 {
-	int width = (shapesList.count() * 75 < minWidth) ? minWidth : shapesList.count() * 75;
-	setFixedSize(width, 75);
-	qreal startX = 0.0;
+	qreal x = 0.0;
 	int index = 0;
 	bool findedCurrentShape = false;
-	for (const QString &shape: shapesList) {
-		ShapeWidget *shapeWidget = new ShapeWidget(index, this);
-		shapeWidget->setGeometry(startX, 0, 0, 0);
-		mShapes << shapeWidget;
-		shapeWidget->setShape(shape);
-		if (!findedCurrentShape && shape == currentShape) {
-			shapeWidget->addSelection();
-			mSelectedShapeIndex = index;
-			findedCurrentShape = true;
-		}
-		shapeWidget->show();
-		startX += 75.0;
+	for (QDomElement element
+			= shapes.firstChildElement("pictures").firstChildElement("picture");
+			!element.isNull();
+			element = element.nextSiblingElement("picture"))
+	{
+		QString shape;
+		QTextStream stream(&shape);
+		element.save(stream, 0);
+		addShape(index, x, shape, currentShape, findedCurrentShape);
+		x += 75.0;
 		index++;
-
-		connect(shapeWidget, &ShapeWidget::clicked, this, &ShapePropertyWidget::shapeClicked);
 	}
+
+	if (!findedCurrentShape) {
+		addShape(index, x, currentShape, currentShape, findedCurrentShape);
+		index++;
+	}
+
+	int width = (index * 75 < minWidth) ? minWidth : index * 75;
+	setFixedSize(width, 75);
 }
 
 QString ShapePropertyWidget::getSelectedShape()
@@ -79,4 +81,19 @@ void ShapePropertyWidget::shapeClicked()
 		mShapes.at(mSelectedShapeIndex)->removeSelection();
 		mSelectedShapeIndex = newSelectedIndex;
 	}
+}
+
+void ShapePropertyWidget::addShape(int index, qreal x, const QString &shape, const QString &currentShape, bool &findedCurrentShape)
+{
+	ShapeWidget *shapeWidget = new ShapeWidget(index, this);
+	shapeWidget->setGeometry(x, 0, 0, 0);
+	mShapes << shapeWidget;
+	shapeWidget->setShape(shape);
+	if (!findedCurrentShape && shape == currentShape) {
+		shapeWidget->addSelection();
+		mSelectedShapeIndex = index;
+		findedCurrentShape = true;
+	}
+	shapeWidget->show();
+	connect(shapeWidget, &ShapeWidget::clicked, this, &ShapePropertyWidget::shapeClicked);
 }

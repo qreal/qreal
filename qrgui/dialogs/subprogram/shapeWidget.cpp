@@ -64,11 +64,11 @@ QString ShapeWidget::getShape()
 void ShapeWidget::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
-	mRenderer.render(&painter, mBounds);
 	if (mSelected) {
 		painter.setPen(QPen(Qt::gray, 5));
 		painter.drawRect(rect());
 	}
+	mRenderer.render(&painter, mBounds);
 }
 
 void ShapeWidget::mousePressEvent(QMouseEvent *)
