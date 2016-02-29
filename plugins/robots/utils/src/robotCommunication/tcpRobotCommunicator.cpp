@@ -60,15 +60,6 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
 			, this, &TcpRobotCommunicator::casingVersionReceived, Qt::QueuedConnection);
-	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
-			, this, &TcpRobotCommunicator::onCasingVersionReceived, Qt::QueuedConnection);
-
-
-	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::uploadProgramDone
-			, [](){qDebug() << "Upload program done"; });
-	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::uploadProgramDone
-			, this, &TcpRobotCommunicator::onUploadProgramDone, Qt::QueuedConnection);
-
 
 	mWorkerThread.start();
 
@@ -173,14 +164,4 @@ void TcpRobotCommunicator::onConnectionError(const QString &error)
 void TcpRobotCommunicator::onConnected()
 {
 	emit connected(true, "");
-}
-
-void TcpRobotCommunicator::onCasingVersionReceived(const QString &casingVersion)
-{
-	qDebug() << "Casing version received:" << casingVersion;
-}
-
-void TcpRobotCommunicator::onUploadProgramDone()
-{
-	qDebug() << "onUploadProgramDone";
 }

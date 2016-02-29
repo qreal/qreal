@@ -66,6 +66,8 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 
 	EXPECT_CALL(mTextManagerMock, showInTextEditor(_, _, _)).Times(AtLeast(0));
 	EXPECT_CALL(mTextManagerMock, isDefaultPath(_)).Times(AtLeast(0));
+	EXPECT_CALL(mTextManagerMock, isModifiedEver(_)).Times(AtLeast(0));
+	EXPECT_CALL(mTextManagerMock, generatorName(_)).Times(AtLeast(0));
 }
 
 qReal::gui::MainWindowInterpretersInterface &QrguiFacade::mainWindowInterpretersInterface()

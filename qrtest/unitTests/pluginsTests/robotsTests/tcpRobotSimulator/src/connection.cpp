@@ -74,6 +74,14 @@ void Connection::send(const QByteArray &data)
 	mSocket->write(message);
 }
 
+void Connection::closeConnection()
+{
+	mKeepAliveTimer->stop();
+	mHeartbeatTimer->stop();
+	mSocket->close();
+	thread()->quit();
+}
+
 void Connection::init(int socketDescriptor)
 {
 	mSocket.reset(new QTcpSocket());
@@ -247,9 +255,6 @@ void Connection::initKeepalive()
 
 void Connection::processData(const QByteArray &data)
 {
-	qDebug() << "Data received: " << data;
-	qDebug() << "Thread:" << thread();
-
 	const QString command = QString::fromUtf8(data.data());
 
 	if (command.startsWith("keepalive")) {
@@ -259,6 +264,7 @@ void Connection::processData(const QByteArray &data)
 
 	if (command.startsWith("file:")) {
 	} else if (command.startsWith("run:")) {
+		mRunProgramRequestReceived = true;
 	} else if (command == "stop") {
 	} else if (command.startsWith("direct:")) {
 	} else if (command.startsWith("directScript:")) {

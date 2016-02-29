@@ -1,4 +1,4 @@
-/* Copyright 2016 Yurii Litvinov
+/* Copyright 2016 Yurii Litvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,6 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicat
 	, mWaitingForUploadingComplete(new QState())
 	, mWaitingForRunComplete(new QState())
 {
-	qDebug() << "RunProgramProtocol, thread:" << thread();
-
 	mProtocol->addGuardedTranstion(
 			mWaitingForCasingModel
 			, &TcpRobotCommunicatorInterface::casingVersionReceived
@@ -57,17 +55,13 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicat
 	mProtocol->addSuccessTransition(mWaitingForRunComplete, &TcpRobotCommunicatorInterface::startedRunning);
 
 	connect(&communicator, &TcpRobotCommunicatorInterface::uploadProgramDone,
-			[this]()
-			{
-				qDebug() << "uploadProgramDone received, thread:" << thread();
+			[this]() {
 				QCoreApplication::processEvents();
 			}
 			);
 
 	connect(&communicator, &TcpRobotCommunicatorInterface::casingVersionReceived,
-			[this]()
-			{
-				qDebug() << "casingVersionReceived received, thread:" << thread();
+			[this]() {
 				QCoreApplication::processEvents();
 			}
 			);
@@ -84,17 +78,14 @@ RunProgramProtocol::~RunProgramProtocol()
 void RunProgramProtocol::run(const QFileInfo &fileToRun)
 {
 	mProtocol->setAction(mWaitingForCasingModel, [](TcpRobotCommunicatorInterface &communicator) {
-		qDebug() << "Entering mWaitingForCasingModel";
 		communicator.requestCasingVersion();
 	});
 
 	mProtocol->setAction(mWaitingForUploadingComplete, [this, fileToRun](TcpRobotCommunicatorInterface &communicator) {
-		qDebug() << "Entering mWaitingForUploadingComplete";
 		communicator.uploadProgram(fileToRun.canonicalFilePath());
 	});
 
 	mProtocol->setAction(mWaitingForRunComplete, [this, fileToRun](TcpRobotCommunicatorInterface &communicator) {
-		qDebug() << "Entering mWaitingForRunComplete";
 		communicator.runProgram(fileToRun.fileName());
 	});
 

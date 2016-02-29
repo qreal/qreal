@@ -32,16 +32,8 @@ Protocol::Protocol(TcpRobotCommunicatorInterface &communicator, int timeout)
 	mTimeoutTimer->setSingleShot(true);
 
 	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &Protocol::onTimeout);
-
-	connect(mSuccess, &QState::entered, [this]() {
-		emit success();
-		mTimeoutTimer->stop();
-	});
-
-	connect(mErrored, &QState::entered, [this]() {
-		emit error();
-		mTimeoutTimer->stop();
-	});
+	connect(mSuccess, &QState::entered, this, &Protocol::onSuccess);
+	connect(mErrored, &QState::entered, this, &Protocol::onError);
 
 	mStateMachine->addState(mSuccess);
 	mStateMachine->addState(mErrored);
@@ -63,17 +55,26 @@ void Protocol::run()
 		return;
 	}
 
-	qDebug() << "Run";
-
 	mStateMachine->start();
 	mTimeoutTimer->start();
 }
 
 void Protocol::onTimeout()
 {
-	qDebug() << "Timeout";
 	mStateMachine->stop();
 	emit timeout();
+}
+
+void Protocol::onSuccess()
+{
+	emit success();
+	mTimeoutTimer->stop();
+}
+
+void Protocol::onError()
+{
+	emit error();
+	mTimeoutTimer->stop();
 }
 
 void Protocol::registerStateIfNeeded(QState * const state)

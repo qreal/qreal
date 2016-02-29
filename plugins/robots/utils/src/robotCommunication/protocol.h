@@ -1,4 +1,4 @@
-/* Copyright 2016 Yurii Litvinov
+/* Copyright 2016 Yurii Litvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,13 +95,8 @@ public:
 
 		source->addTransition(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, destination);
 
-		connect(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, [](){
-			qDebug() << "Guard ok";
-		});
-
 		connect(&mCommunicator, signal, [source, guard, guardSignalGenerator](const ParamType &&param) {
 			if (guard(param)) {
-				qDebug() << "Sending signal to move to destination state";
 				guardSignalGenerator->onTrigger();
 			}
 		});
@@ -120,7 +115,6 @@ public:
 
 		connect(&mCommunicator, signal, [guard, guardSignalGenerator](const ParamType &&param) {
 			if (guard(param)) {
-				qDebug() << "Sending signal to move to mErrored state";
 				guardSignalGenerator->onTrigger();
 			}
 		});
@@ -147,6 +141,12 @@ signals:
 private slots:
 	/// Called when protocol timeout reached.
 	void onTimeout();
+
+	/// Called when protocol completed successfully (reached success state).
+	void onSuccess();
+
+	/// Called when protocol errored (reached error state).
+	void onError();
 
 private:
 	/// If this state is not added to state machine yet, adds it, adds transition to error state on network error

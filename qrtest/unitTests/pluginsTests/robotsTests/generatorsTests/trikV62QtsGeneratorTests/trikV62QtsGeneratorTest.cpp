@@ -94,12 +94,15 @@ TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 		runProgramAction.action()->trigger();
 	});
 
-	tcpRobotSimulator::TcpRobotSimulator simulator;
+	tcpRobotSimulator::TcpRobotSimulator controlSimulator(8888);
+	tcpRobotSimulator::TcpRobotSimulator telemetrySimulator(9000);
+
+	Q_UNUSED(telemetrySimulator)
 
 	loop.exec();
 
 //	Wait::wait(5000);
 
-	EXPECT_TRUE(simulator.configVersionRequestReceived());
-	EXPECT_TRUE(simulator.runProgramRequestReceived());
+	EXPECT_TRUE(controlSimulator.configVersionRequestReceived());
+	EXPECT_TRUE(controlSimulator.runProgramRequestReceived());
 }

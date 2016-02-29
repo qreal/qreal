@@ -47,14 +47,14 @@ void TcpRobotCommunicatorWorker::init()
 	mTelemetryConnection.reset(new TcpConnectionHandler(telemetryPort));
 
 	QObject::connect(mControlConnection.data(), &TcpConnectionHandler::messageReceived
-			, this, &TcpRobotCommunicatorWorker::processControlMessage);
+			, this, &TcpRobotCommunicatorWorker::processControlMessage, Qt::DirectConnection);
 	QObject::connect(mTelemetryConnection.data(), &TcpConnectionHandler::messageReceived
-			, this, &TcpRobotCommunicatorWorker::processTelemetryMessage);
+			, this, &TcpRobotCommunicatorWorker::processTelemetryMessage, Qt::DirectConnection);
 }
 
 void TcpRobotCommunicatorWorker::deinit()
 {
-	disconnect();
+	disconnectConnection();
 }
 
 void TcpRobotCommunicatorWorker::uploadProgram(const QString &programName, const QString &programContents)
@@ -206,7 +206,7 @@ void TcpRobotCommunicatorWorker::connect()
 			return;
 		}
 
-		disconnect();
+		disconnectConnection();
 	}
 
 	mCurrentIp = server;
@@ -219,7 +219,7 @@ void TcpRobotCommunicatorWorker::connect()
 	}
 }
 
-void TcpRobotCommunicatorWorker::disconnect()
+void TcpRobotCommunicatorWorker::disconnectConnection()
 {
 	mControlConnection->disconnect();
 	mTelemetryConnection->disconnect();

@@ -74,7 +74,7 @@ public:
 	Q_INVOKABLE void connect();
 
 	/// Disconnects from robot.
-	Q_INVOKABLE void disconnect();
+	Q_INVOKABLE void disconnectConnection();
 
 signals:
 	/// Emitted when TCP socket with robot was opened or failed to open.

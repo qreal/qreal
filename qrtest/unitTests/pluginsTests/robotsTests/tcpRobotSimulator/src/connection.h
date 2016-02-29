@@ -64,8 +64,12 @@ public:
 	/// Sends given byte array to peer.
 	Q_INVOKABLE void send(const QByteArray &data);
 
+	Q_INVOKABLE void closeConnection();
+
 	bool runProgramRequestReceived() const;
+
 	bool configVersionRequestReceived() const;
+
 	bool versionRequestReceived() const;
 
 signals:

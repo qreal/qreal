@@ -15,29 +15,29 @@
 #include "tcpRobotSimulator/tcpRobotSimulator.h"
 
 #include <QtCore/QThread>
-
-#include <QtCore/QDebug>
+#include <QtCore/QMetaObject>
 
 #include "connection.h"
 
 using namespace tcpRobotSimulator;
 
-static const int port = 8888;
-
-TcpRobotSimulator::TcpRobotSimulator()
+TcpRobotSimulator::TcpRobotSimulator(int port)
 {
 	listen(QHostAddress::LocalHost, port);
 }
 
 TcpRobotSimulator::~TcpRobotSimulator()
 {
+	QMetaObject::invokeMethod(mConnection.data(), "closeConnection");
+
+	if (mConnectionThread->isRunning()) {
+		mConnectionThread->quit();
+		mConnectionThread->wait(1000);
+	}
 }
 
 void TcpRobotSimulator::incomingConnection(qintptr socketDescriptor)
 {
-	qDebug() << "TcpRobotSimulator::incomingConnection";
-	qDebug() << "Thread:" << thread();
-
 	mConnection.reset(new Connection(Protocol::messageLength, Heartbeat::use));
 	mConnectionThread.reset(new QThread());
 	connect(mConnectionThread.data(), &QThread::finished, mConnectionThread.data(), &QThread::deleteLater);

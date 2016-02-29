@@ -30,7 +30,7 @@ class TCP_ROBOT_SIMULATOR_EXPORT TcpRobotSimulator : public QTcpServer
 	Q_OBJECT
 
 public:
-	TcpRobotSimulator();
+	TcpRobotSimulator(int port);
 	~TcpRobotSimulator() override;
 
 	bool runProgramRequestReceived() const;

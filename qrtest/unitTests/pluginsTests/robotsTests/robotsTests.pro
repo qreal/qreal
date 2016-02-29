@@ -15,11 +15,10 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	utilsTests \
 	commonTests \
 	generatorsTests \
 	interpretersTests \
-	utilsTests \
 	tcpRobotSimulator \
+	utilsTests \
 
 generatorsTests.depends = tcpRobotSimulator
