@@ -81,6 +81,9 @@ private:
 
 	int clientID = 0;
 
+	// on time
+	bool connect = false;
+
 	int frontLeftHandle = 0;
 	int frontRightHandle = 0;
 	int backLeftHandle = 0;

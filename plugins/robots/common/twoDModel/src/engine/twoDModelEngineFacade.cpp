@@ -35,9 +35,30 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
-	// Block for 3D code
+//	// Block for 3D code
+//	// Connect
 
-	//
+//	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+
+//	if (clientID == -1)
+//	{
+//		cout << "clientID == -1" << endl;
+//		simxFinish(clientID);
+//		return;
+//	}
+
+//	cout << "ClientID = " << clientID << endl;
+
+//	if (simxGetConnectionId(clientID) == -1)
+//	{
+//		cout << "simxGetConnectionId(clientID) == -1" << endl;\
+//		simxFinish(clientID);
+//		return;
+//	}
+
+//	cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
+
+//	//
 
 	mModel.data()->addRobotModel(robotModel);
 

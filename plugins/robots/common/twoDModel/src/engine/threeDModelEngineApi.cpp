@@ -46,39 +46,39 @@ ThreeDModelEngineApi::ThreeDModelEngineApi(model::Model &model, view::TwoDModelW
 {
 	// Block for 3D code
 
-	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+//	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
 
-	if (clientID == -1)
-	{
-		cout << "clientID == -1" << endl;
-		simxFinish(clientID);
-		return;
-	}
+//	if (clientID == -1)
+//	{
+//		cout << "clientID == -1" << endl;
+//		simxFinish(clientID);
+//		return;
+//	}
 
-	cout << "ClientID = " << clientID << endl;
+//	cout << "ClientID = " << clientID << endl;
 
-	if (simxGetConnectionId(clientID) == -1)
-	{
-		cout << "simxGetConnectionId(clientID) == -1" << endl;\
-		simxFinish(clientID);
-		return;
-	}
+//	if (simxGetConnectionId(clientID) == -1)
+//	{
+//		cout << "simxGetConnectionId(clientID) == -1" << endl;\
+//		simxFinish(clientID);
+//		return;
+//	}
 
-	cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
+//	cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
 
-	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
-	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
-	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
-	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+//	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+//	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+//	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+//	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
 
-	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+//	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
 
-	cout << frontLeftHandle << endl;
-	cout << frontRightHandle << endl;
-	cout << backLeftHandle << endl;
-	cout << backRightHandle << endl;
+//	cout << frontLeftHandle << endl;
+//	cout << frontRightHandle << endl;
+//	cout << backLeftHandle << endl;
+//	cout << backRightHandle << endl;
 
-	cout << sensorHandle << endl;
+//	cout << sensorHandle << endl;
 
 	//simxStartSimulation(clientID, simx_opmode_oneshot);
 
@@ -106,12 +106,62 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 
 	// Block for 3D code
 
-	simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed, simx_opmode_oneshot);
+	// Connect must be only one in all project!
 
-	//simxFinish(clientID);
+if(!connect)
+{
+	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+
+	if (clientID == -1)
+	{
+		cout << "clientID == -1" << endl;
+		simxFinish(clientID);
+		return;
+	}
+
+	cout << "ClientID = " << clientID << endl;
+
+	if (simxGetConnectionId(clientID) == -1)
+	{
+		cout << "simxGetConnectionId(clientID) == -1" << endl;\
+		simxFinish(clientID);
+		return;
+	}
+
+	cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
+
+	// On each sensor must be his "setNewMotor" by port.
+
+	simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+
+	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+
+	cout << "frontLeftHandle = " << frontLeftHandle << endl;
+	cout << "frontRightHandle = " << frontRightHandle << endl;
+	cout << "backLeftHandle = " << backLeftHandle << endl;
+	cout << "backRightHandle = " << backRightHandle << endl;
+
+	cout << "sensorHandle = " << sensorHandle << endl;
+
+	simxStartSimulation(clientID, simx_opmode_oneshot);
+
+	connect = true;
+}
+
+	//
+	//
+
+	simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed * 0.05f, simx_opmode_oneshot);
+	simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed * 0.05f, simx_opmode_oneshot);
+	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 0.05f, simx_opmode_oneshot);
+	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 0.05f, simx_opmode_oneshot);
+
+//	simxStopSimulation(clientID, simx_opmode_oneshot);
+
+//	simxFinish(clientID);
 
 	//
 
@@ -171,6 +221,26 @@ int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 //	{
 //		return 0;
 //	}
+
+	// Block for 3D code
+
+	simxUChar sensorTrigger=0;
+
+	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,NULL,NULL,NULL,simx_opmode_streaming) == simx_return_ok)
+	{
+		cout << "In trigger part sensorTrigger = " << sensorTrigger << endl;
+
+		if (sensorTrigger)
+		{
+			return 1;
+		}
+
+		cout << "In trigger part sensorTrigger = 0" << endl;
+	}
+
+	return 0;
+
+	//
 
 	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
