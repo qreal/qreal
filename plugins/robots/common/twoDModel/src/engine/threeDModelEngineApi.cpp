@@ -224,14 +224,22 @@ int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 
 	// Block for 3D code
 
-	simxUChar sensorTrigger=0;
+	simxUChar sensorTrigger = 0;
+	simxFloat sensorPoint = 0;
+	simxFloat sensorVector = 0;
 
-	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,NULL,NULL,NULL,simx_opmode_streaming) == simx_return_ok)
+	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,&sensorPoint,NULL,&sensorVector,simx_opmode_streaming) == simx_return_ok)
 	{
 		cout << "In trigger part sensorTrigger = " << sensorTrigger << endl;
 
+		cout << "SensorPoint = " << sensorPoint << endl;
+
+		cout << "SensorVector = " << sensorVector << endl;
+
 		if (sensorTrigger)
 		{
+			cout << "Return 1 because sensorTrigger != 0" << endl;\
+			//return sensorVector;
 			return 1;
 		}
 
