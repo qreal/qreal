@@ -29,7 +29,6 @@ HEADERS += \
 	$$PWD/include/metaMetaModel/edgeElementType.h \
 	$$PWD/include/metaMetaModel/linkShape.h \
 	$$PWD/include/metaMetaModel/elementRepoInterface.h \
-	$$PWD/include/metaMetaModel/sdfRendererInterface.h \
 	$$PWD/include/metaMetaModel/labelProperties.h \
 	$$PWD/include/metaMetaModel/portHelpers.h \
 

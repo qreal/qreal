@@ -15,9 +15,10 @@
 #pragma once
 
 #include <QtCore>
+
 #include <qrkernel/ids.h>
 #include <qrgui/plugins/pluginManager/explosion.h>
-#include <qrgui/plugins/metaMetaModel/metamodel.h>
+#include <metaMetaModel/metamodel.h>
 
 namespace editorPluginTestingFramework {
 

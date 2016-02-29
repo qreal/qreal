@@ -15,7 +15,8 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "qrgui/plugins/metaMetaModel/metamodel.h"
+
+#include <metaMetaModel/metamodel.h>
 
 namespace editorPluginTestingFramework {
 

@@ -256,111 +256,50 @@ void EdgeType::generateCode(OutFile &out)
 
 	const QString className = NameNormalizer::normalize(qualifiedName());
 
-	out() << "\tclass " << className << " : public qReal::ElementType {\n"
-	<< "\tpublic:\n";
+	out() << "\tclass " << className << " : public qReal::EdgeElementType \n\t{\n"
+	<< "\tpublic:\n"
 
-	if (!mBonusContextMenuFields.empty()) {
-		out() << "\t\t" << className << "() {\n";
-		out() << "\t\t\tmBonusContextMenuFields";
-		foreach (QString elem, mBonusContextMenuFields) {
-			out() << " << " << "\"" << elem << "\"";
-		}
-		out() << ";\n";
-		out() << "\t\t}\n\n";
-	}
+	<< "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
+			<< "\t\t\t: EdgeElementType(metamodel)\n"
+			<< "\t\t{\n"
+			<< "\t\t}\n\n"
 
-	out() << "\t\tvoid init(QRectF &, const PortFactoryInterface &, QList<PortInterface *> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::LabelFactoryInterface &, QList<qReal::LabelInterface *> &,\n"
-	<< "\t\t\t\t\t\t\t\t\t\t\tqReal::SdfRendererInterface *, qReal::ElementRepoInterface *) {}\n\n"
-	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
-
-	if (!mLabels.isEmpty()) {
-		mLabels[0]->generateCodeForConstructor(out);
-	} else {
-		out() << "\t\t\tQ_UNUSED(titles);\n" << "\t\t\tQ_UNUSED(factory);\n";
-	}
-
-	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
-	<< "\t\tqReal::ElementType *clone() { return nullptr; }\n"
-	<< "\t\tvoid paint(QPainter *, QRectF &){}\n"
-	<< "\t\tbool isNode() const { return false; }\n"
-	<< "\t\tbool isResizeable() const { return true; }\n"
-	<< "\t\tbool isContainer() const { return false; }\n"
-	<< "\t\tbool isDividable() const { return " << mIsDividable << "; }\n"
-	<< "\t\tbool isSortingContainer() const { return false; }\n"
-	<< "\t\tQVector<int> sizeOfForestalling() const { return QVector<int>(4, 0); }\n"
-	<< "\t\tint sizeOfChildrenForestalling() const { return 0; }\n"
-	<< "\t\tbool hasMovableChildren() const { return false; }\n"
-	<< "\t\tbool minimizesToChildren() const { return false; }\n"
-	<< "\t\tbool maximizesChildren() const { return false; }\n"
 
-	<< "\t\tQStringList fromPortTypes() const\n\t\t{\n\t\t\t";
+	<< "\t\tQStringList fromPortTypes() const override\n\t\t{\n\t\t\t";
 	generatePorts(out, mFromPorts);
 
-	out() << "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\t";
+	out() << "\t\tQStringList toPortTypes() const override\n\t\t{\n\t\t\t";
 	generatePorts(out, mToPorts);
 
-	out() << "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n"
-	<< "\t\t\treturn enums::linkShape::" << mShapeType << ";\n\t\t}\n";
+	out() << "\t\tqReal::LinkShape shapeType() const override\n\t\t{\n"
+	<< "\t\t\treturn qReal::LinkShape::" << mShapeType << ";\n\t\t}\n";
 
-	out() << "\t\tbool createChildrenFromMenu() const { return false; }\n"
-	<< "\t\tQList<double> border() const\n\t\t{\n"
-	<< "\t\t\tQList<double> list;\n"
-	<< "\t\t\tlist << 0 << 0 << 0 << 0;\n"
-	<< "\t\t\treturn list;\n"
-	<< "\t\t}\n"
-	<< "\t\tint getPenWidth() const { return " << mLineWidth << "; }\n"
-	<< "\t\tQColor getPenColor() const { return QColor("
-	<< mLineColor.red() << ","
-	<< mLineColor.green() << ","
-	<< mLineColor.blue()
+	out() << "\t\tint penWidth() const override { return " << mLineWidth << "; }\n"
+	<< "\t\tQColor penColor() const override { return QColor("
+			<< mLineColor.red() << ","
+			<< mLineColor.green() << ","
+			<< mLineColor.blue()
 	<< "); }\n"
-	<< "\t\tQt::PenStyle getPenStyle() const { ";
+	<< "\t\tQt::PenStyle penStyle() const override { ";
 
-	if (mLineType != "") {
+	if (!mLineType.isEmpty()) {
 		out() << "return " << mLineType << "; }\n";
 	} else {
 		out() << "return Qt::SolidLine; }\n";
 	}
 
-	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
+	out() << "\t\tbool isDividable() const override { return "<< mIsDividable << "; }\n\n";
 
-	if (!mBonusContextMenuFields.empty()) {
-		out() << "mBonusContextMenuFields;";
-	} else {
-		out() << "QStringList();";
-	}
+	generateLabels(out);
 
-	out() << "\n\t\t}\n\n";
-
-	out() << "\tprotected:\n"
-	<< "\t\tvoid drawStartArrow(QPainter * painter) const override\n\t\t{\n";
+	out() << "\t\tvoid drawStartArrow(QPainter * painter) const override\n\t\t{\n";
 
 	generateEdgeStyle(mBeginType, out);
 
 	out() << "\t\tvoid drawEndArrow(QPainter * painter) const override\n\t\t{\n";
 
 	generateEdgeStyle(mEndType, out);
-
-	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
-
-	if (mLabels.isEmpty()) {
-		out() << "\t\t\tQ_UNUSED(repo);\n";
-	} else {
-		mLabels[0]->generateCodeForUpdateData(out);
-	}
-
-	out() << "\t\t}\n\n";
-	out() << "\tprivate:\n";
-
-	if (!mBonusContextMenuFields.empty()) {
-		out() << "\t\tQStringList mBonusContextMenuFields;\n";
-	}
-
-	if (!mLabels.isEmpty()) {
-		mLabels[0]->generateCodeForFields(out);
-	}
 
 	out() << "\t};\n\n";
 }

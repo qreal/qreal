@@ -24,7 +24,7 @@
 
 #include <qrrepo/repoApi.h>
 #include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-#include <qrgui/plugins/metaMetaModel/metamodel.h>
+#include <metaMetaModel/metamodel.h>
 
 #include <QtCore/QString>
 

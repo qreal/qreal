@@ -322,7 +322,6 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setAction(logic, id);
 	setCreateChildrenFromMenu(logic, id);
 	setGeneralization(logic, id);
-	setContextMenuFields(logic, id);
 	setExplosion(logic, id);
 }
 
@@ -476,25 +475,6 @@ void EditorGenerator::setPorts(QDomElement &parent, Id const &id, QString const 
 		portsTag.appendChild(portElem);
 	}
 	parent.appendChild(portsTag);
-}
-
-void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
-{
-	QDomElement fields = mDocument.createElement("bonusContextMenuFields");
-	IdList const childElems = mApi.children(id);
-
-	foreach (Id const idChild, childElems)
-		if (idChild != Id::rootId()) {
-			QString const objectType = idChild.element();
-			if (objectType == "MetaEntityContextMenuField"){
-				QDomElement field = mDocument.createElement("field");
-				ensureCorrectness(idChild, field, "name", mApi.name(idChild));
-				fields.appendChild(field);
-			}
-		}
-
-	if (!fields.childNodes().isEmpty())
-		parent.appendChild(fields);
 }
 
 void EditorGenerator::setValues(QDomElement &parent, Id const &id)

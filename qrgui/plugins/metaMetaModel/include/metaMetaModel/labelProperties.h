@@ -134,6 +134,9 @@ public:
 	/// Sets text drawn just after label contents.
 	void setSuffix(const QString &text);
 
+	/// Assignment will copy contents of \a other into this instance.
+	LabelProperties &operator =(const LabelProperties &other);
+
 signals:
 	/// Emitted when label`s index among other siblings changes.
 	void indexChanged(int index);
@@ -178,6 +181,8 @@ signals:
 	void suffixChanged(const QString &text);
 
 private:
+	void copyFrom(const LabelProperties &other);
+
 	int mIndex;
 	qreal mX;
 	qreal mY;

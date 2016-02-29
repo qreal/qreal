@@ -167,7 +167,11 @@ FORMS += \
 	../../qrgui/mainWindow/referenceList.ui \
 
 
-links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qrgui-tool-plugin-interface qscintilla2 qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-facade qslog)
+links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qscintilla2 qrgraph \
+		qrgui-tool-plugin-interface qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-facade \
+		qrgui-text-editor qrgui-mouse-gestures qrgui-hotkey-manager qrgui-brand-manager qrgui-meta-meta-model qslog)
+
+includes(qrgraph qrgui/plugins/metaMetaModel)
 
 copyToDestdir(methodsToTest)
 copyToDestdir(configurationParameters.xml)

@@ -36,9 +36,8 @@ NodeType::NodeType(Diagram *diagram)
 
 NodeType::~NodeType()
 {
-	foreach (Port *port, mPorts) {
-		delete port;
-	}
+	qDeleteAll(mPointPorts);
+	qDeleteAll(mLinePorts);
 }
 
 Type* NodeType::clone() const
@@ -46,8 +45,12 @@ Type* NodeType::clone() const
 	NodeType *result = new NodeType(mDiagram);
 	GraphicType::copyFields(result);
 
-	foreach (Port *port, mPorts) {
-		result->mPorts.append(port->clone());
+	for (Port *port : mPointPorts) {
+		result->mPointPorts << port->clone();
+	}
+
+	for (Port *port : mLinePorts) {
+		result->mLinePorts << port->clone();
 	}
 
 	result->mSdfDomElement = mSdfDomElement;
@@ -144,33 +147,37 @@ bool NodeType::initPorts()
 
 bool NodeType::initPointPorts(const QDomElement &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("pointPort");
-			!portElement.isNull();
-			portElement = portElement.nextSiblingElement("pointPort"))
+	for (QDomElement portElement = portsElement.firstChildElement("pointPort")
+			; !portElement.isNull()
+			; portElement = portElement.nextSiblingElement("pointPort"))
 	{
 		Port *pointPort = new PointPort();
 		if (!pointPort->init(portElement, mWidth, mHeight)) {
 			delete pointPort;
 			return false;
 		}
-		mPorts.append(pointPort);
+
+		mPointPorts << pointPort;
 	}
+
 	return true;
 }
 
 bool NodeType::initLinePorts(const QDomElement &portsElement)
 {
-	for (QDomElement portElement = portsElement.firstChildElement("linePort");
-			!portElement.isNull();
-			portElement = portElement.nextSiblingElement("linePort"))
+	for (QDomElement portElement = portsElement.firstChildElement("linePort")
+			; !portElement.isNull()
+			; portElement = portElement.nextSiblingElement("linePort"))
 	{
 		Port *linePort = new LinePort();
 		if (!linePort->init(portElement, mWidth, mHeight)) {
 			delete linePort;
 			return false;
 		}
-		mPorts.append(linePort);
+
+		mLinePorts << linePort;
 	}
+
 	return true;
 }
 
@@ -196,90 +203,43 @@ void NodeType::generateCode(OutFile &out)
 	generateSdf();
 
 	const QString className = NameNormalizer::normalize(qualifiedName());
-	bool hasSdf = false;
 
-	out() << "\tclass " << className << " : public qReal::ElementType\n\t{\n"
+	out() << "\tclass " << className << " : public qReal::NodeElementType\n\t{\n"
 			<< "\tpublic:\n";
 
-	if (!mBonusContextMenuFields.empty()) {
-		out() << "\t\t" << className << "()\n\t\t{\n";
-		out() << "\t\t\tmBonusContextMenuFields";
-		foreach (QString elem, mBonusContextMenuFields) {
-			out() << " << " << "\"" << elem << "\"";
-		}
-		out() << ";\n";
-		out() << "\t\t}\n\n";
+	out() << "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
+			<< "\t\t\t: NodeElementType(metamodel)\n"
+			<< "\t\t{\n"
+			<< "\t\t}\n\n";
+
+	out() << "\t\tQString sdfFile() const override { return \":/generated/shapes/" + className + "Class.sdf\"; }\n\n";
+
+	out() << "\t\tQSizeF size() const override { return QSizeF(" + QString::number(mWidth)
+			+ ", " + QString::number(mHeight) + "); }\n\n";
+
+	generateLabels(out);
+
+	out() << "\t\tQList<qReal::PointPortInfo> pointPorts() const override\n\t\t{\n";
+	out() << "\t\t\treturn {\n";
+	for (Port * const pointPort : mPointPorts) {
+		out() << "\t\t\t";
+		pointPort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		out() << ",\n";
 	}
 
-	out () << "\t\tvoid init(qReal::LabelFactoryInterface &, QList<qReal::LabelInterface*> &) {}\n\n"
-	<< "\t\tvoid init(QRectF &contents, const PortFactoryInterface &portFactory, QList<PortInterface *> &ports\n"
-	<< "\t\t\t\t\t\t\t, qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles\n"
-	<< "\t\t\t\t\t\t\t, qReal::SdfRendererInterface *renderer, qReal::ElementRepoInterface *elementRepo)\n\t\t{\n";
+	out() << "\t\t\t};\n\t\t}\n\n";
 
-	if (mPorts.empty()) {
-		out() << "\t\t\tQ_UNUSED(portFactory);\n";
-		out() << "\t\t\tQ_UNUSED(ports);\n";
+	out() << "\t\tQList<qReal::LinePortInfo> linePorts() const override\n\t\t{\n";
+	out() << "\t\t\treturn {\n";
+	for (Port * const linePort : mLinePorts) {
+		out() << "\t\t\t\t";
+		linePort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		out() << ",\n";
 	}
 
-	if (mLabels.empty())
-		out() << "\t\t\tQ_UNUSED(titles);\n"
-			<<"\t\t\tQ_UNUSED(factory);\n";
+	out() << "\t\t\t};\n\t\t}\n\n";
 
-	QFile sdfFile("generated/shapes/" + className + "Class.sdf");
-	if (sdfFile.exists()) {
-		out() << "\t\t\tmRenderer = renderer;\n"
-				"\t\t\tmRenderer->load(QString(\":/generated/shapes/" << className << "Class.sdf\"));\n"
-				<< "\t\t\tmRenderer->setElementRepo(elementRepo);\n";
-		hasSdf = true;
-	}
-
-	out() << "\t\t\tcontents.setWidth(" << mWidth << ");\n"
-	<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
-
-	foreach (Port *port, mPorts) {
-		port->generateCode(out, mDiagram->editor()->getAllPortNames());
-	}
-
-	foreach (Label *label, mLabels) {
-		label->generateCodeForConstructor(out);
-	}
-
-	out() << "\t\t}\n\n";
-
-	out() << "\t\t qReal::ElementType *clone() { return nullptr; }\n";
-
-	out() << "\t\t~" << className << "() {}\n\n"
-	<< "\t\tvoid paint(QPainter *painter, QRectF &contents)\n\t\t{\n";
-
-	if (hasSdf) {
-		out() << "\t\t\tmRenderer->render(painter, contents);\n";
-	}
-
-	out() << "\t\t}\n\n";
-
-	out() << "\t\tQt::PenStyle getPenStyle() const { return Qt::SolidLine; }\n\n"
-	<< "\t\tint getPenWidth() const { return 0; }\n\n"
-	<< "\t\tQColor getPenColor() const { return QColor(); }\n\n"
-	<< "\t\tvoid drawStartArrow(QPainter *) const {}\n"
-	<< "\t\tvoid drawEndArrow(QPainter *) const {}\n\n"
-
-	<< "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n"
-	<< "\t\t\tmRenderer->setElementRepo(repo);\n";
-
-	if (mLabels.isEmpty()) {
-		out() << "\t\t\tQ_UNUSED(repo);\n";
-	} else {
-		foreach (Label *label, mLabels) {
-			label->generateCodeForUpdateData(out);
-		}
-	}
-
-	out() << "\t\t}\n\n"
-	<< "\t\tbool isNode() const\n\t\t{\n"
-	<< "\t\t\treturn true;\n"
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool isResizeable() const\n\t\t{\n"
+	out() << "\t\tbool isResizeable() const\n\t\t{\n"
 	<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
 	<< "\t\t}\n\n"
 
@@ -319,14 +279,6 @@ void NodeType::generateCode(OutFile &out)
 	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n"
 
-	<< "\t\tbool isDividable() const\n\t\t{\n\t\t\treturn false;\n\t\t}\n\n"
-
-	<< "\t\tQStringList fromPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
-
-	<< "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
-
-	<< "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n\t\t\treturn enums::linkShape::square;\n\t\t}\n\n"
-
 	<< "\t\tbool createChildrenFromMenu() const\n\t\t{\n"
 	<< (mCreateChildrenFromMenu ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
 	<< "\t\t}\n\n";
@@ -337,36 +289,13 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";
 
-	out() << "\t\tQStringList bonusContextMenuFields() const\n\t\t{\n" << "\t\t\treturn ";
-	if (!mBonusContextMenuFields.empty()) {
-		out() << "mBonusContextMenuFields;";
-	} else {
-		out() << "QStringList();";
-	}
-
-	out() << "\n\t\t}\n\n";
-
-	out() << "\tprivate:\n";
-
-	if (!mBonusContextMenuFields.empty()) {
-		out() << "\t\tQStringList mBonusContextMenuFields;\n";
-	}
-
-	if (hasSdf) {
-		out() << "\t\tqReal::SdfRendererInterface *mRenderer;\n";
-	}
-
-	foreach (Label *label, mLabels) {
-		label->generateCodeForFields(out);
-	}
-
 	out() << "\t};";
 	out() << "\n\n";
 }
 
 QList<Port *> NodeType::ports() const
 {
-	return mPorts;
+	return mPointPorts + mLinePorts;
 }
 
 bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
@@ -374,15 +303,20 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 	GraphicType::generateOneCase(out, isNotFirst);
 
 	QSet<QString> portTypes;
-	foreach (Port *port, mPorts) {
+	for (const Port *port : mPointPorts) {
+		portTypes.insert(port->type());
+	}
+
+	for (const Port *port : mLinePorts) {
 		portTypes.insert(port->type());
 	}
 
 	if (!portTypes.empty()) {
 		out() << "\t\tresult ";
-		foreach (const QString &type, portTypes) {
+		for (const QString &type : portTypes) {
 			out() << "<< \"" << type << "\"";
 		}
+
 		out() << ";\n";
 	}
 
@@ -392,9 +326,13 @@ bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
 
 bool NodeType::copyPorts(NodeType* parent)
 {
-	for (Port *port: parent->mPorts) {
-		mPorts.append(port->clone());
+	for (Port * const port : parent->mPointPorts) {
+		mPointPorts << port->clone();
 	}
 
-	return !parent->mPorts.isEmpty();
+	for (Port * const port : parent->mLinePorts) {
+		mLinePorts << port->clone();
+	}
+
+	return !parent->mPointPorts.isEmpty() || !parent->mLinePorts.isEmpty();
 }

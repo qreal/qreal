@@ -123,7 +123,7 @@ private:
 	Metamodel &mMetamodel;
 	qrRepo::RepoApi *mEditorRepoApi;  // Doesn't have ownership.
 	Id mId;
-	SdfRendererInterface *mRenderer;  // Doesn't have ownership.
+	SdfRenderer *mRenderer;  // Doesn't have ownership.
 	QDomDocument mGraphics;
 //	QList<NodeLabel> mNodeLabels;
 //	QList<EdgeLabel> mEdgeLabels;

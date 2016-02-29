@@ -45,7 +45,6 @@ private:
 	void createGroup(QDomElement &parent, const qReal::Id &id);
 	void setProperties(QDomElement &parent, qReal::Id const &id);
 	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
-	void setContextMenuFields(QDomElement &parent, qReal::Id const &id);
 	void setValues(QDomElement &parent, qReal::Id const &id);
 	void setGroupNodes(QDomElement &parent, const qReal::Id &id);
 	void setAssociations(QDomElement &parent, qReal::Id const &id);

@@ -59,6 +59,8 @@ public:
 	void setDescription(const QString &description);
 
 protected:
+	void generateLabels(utils::OutFile &out) const;
+
 	/// @todo Remove this sh~.
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
 
@@ -92,7 +94,6 @@ protected:
 	QStringList mContains;
 	ContainerProperties mContainerProperties;
 	QList<PossibleEdge> mPossibleEdges;
-	QStringList mBonusContextMenuFields;
 	QMap<QString, QPair<bool, bool> > mExplosions;
 	bool mCreateChildrenFromMenu;
 	QString mAbstract;
@@ -116,7 +117,6 @@ private:
 	bool initLabels();
 	bool initUsages();
 	bool initParents();
-	bool initBonusContextMenuFields();
 	bool initProperties();
 	bool initContainers();
 	bool initContainerProperties();

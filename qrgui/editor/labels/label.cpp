@@ -45,6 +45,11 @@ Label::~Label()
 {
 }
 
+const LabelProperties &Label::info() const
+{
+	return mProperties;
+}
+
 void Label::init()
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable);

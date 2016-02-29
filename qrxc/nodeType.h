@@ -39,7 +39,8 @@ public:
 	QList<Port *> ports() const override;
 
 private:
-	QList<Port*> mPorts;
+	QList<Port *> mPointPorts;
+	QList<Port *> mLinePorts;
 	QDomElement mSdfDomElement;
 	QDomElement mPortsDomElement;
 	bool mIsResizeable;

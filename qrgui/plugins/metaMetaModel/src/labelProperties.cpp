@@ -59,6 +59,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 	, mText()
 	, mBinding(binding)
 	, mReadOnly(readOnly)
+	, mIsPlainText(false)
 	, mRotation(rotation)
 	, mBackground(Qt::transparent)
 	, mScalingX(false)
@@ -72,19 +73,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 LabelProperties::LabelProperties(const LabelProperties &other)
 	: QObject(other.parent())
 {
-	this->mIndex = other.mIndex;
-	this->mX = other.mX;
-	this->mY = other.mY;
-	this->mText = other.mText;
-	this->mBinding = other.mBinding;
-	this->mReadOnly = other.mReadOnly;
-	this->mRotation = other.mRotation;
-	this->mBackground = other.mBackground;
-	this->mScalingX = other.mScalingX;
-	this->mScalingY = other.mScalingY;
-	this->mIsHard = other.mIsHard;
-	this->mPrefix = other.mPrefix;
-	this->mSuffix = other.mSuffix;
+	copyFrom(other);
 }
 
 int LabelProperties::index() const
@@ -269,4 +258,28 @@ void LabelProperties::setSuffix(const QString &text)
 		mSuffix = text;
 		emit suffixChanged(text);
 	}
+}
+
+LabelProperties &LabelProperties::operator =(const LabelProperties &other)
+{
+	copyFrom(other);
+	return *this;
+}
+
+void LabelProperties::copyFrom(const LabelProperties &other)
+{
+	this->mIndex = other.mIndex;
+	this->mX = other.mX;
+	this->mY = other.mY;
+	this->mText = other.mText;
+	this->mBinding = other.mBinding;
+	this->mReadOnly = other.mReadOnly;
+	this->mIsPlainText = other.mIsPlainText;
+	this->mRotation = other.mRotation;
+	this->mBackground = other.mBackground;
+	this->mScalingX = other.mScalingX;
+	this->mScalingY = other.mScalingY;
+	this->mIsHard = other.mIsHard;
+	this->mPrefix = other.mPrefix;
+	this->mSuffix = other.mSuffix;
 }

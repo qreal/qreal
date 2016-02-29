@@ -48,9 +48,6 @@ public:
 	/// Returns true if this instance describes node element type.
 	virtual bool isNode() const = 0;
 
-	/// Returns true if this edge can be divided into two ones by throwing element onto it.
-	virtual bool isDividable() const = 0;
-
 	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
 	/// @todo: Get rid of this shit now!
 	virtual void updateRendererContent(const QString &shape);

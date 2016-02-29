@@ -14,14 +14,11 @@
 
 #pragma once
 
-#include <QtCore/QObject>
 #include <QtCore/QtPlugin>
-#include <QtCore/QString>
 #include <QtGui/QIcon>
 
 #include <qrgraph/multigraph.h>
 
-#include "metaMetaModel/sdfRendererInterface.h"
 #include "metaMetaModel/elementType.h"
 
 namespace qReal {
@@ -100,4 +97,4 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE(qReal::Metamodel, "ru.spbsu.QReal.Metamodel/1.0")
+Q_DECLARE_INTERFACE(qReal::Metamodel, "ru.spbsu.QReal.Metamodel/0.1")

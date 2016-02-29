@@ -101,6 +101,21 @@ QList<Port *> GraphicType::ports() const
 	return {};
 }
 
+void GraphicType::generateLabels(OutFile &out) const
+{
+	out() << "\t\tQList<qReal::LabelProperties> labels() const override\n\t\t{\n";
+	for (const Label *label : mLabels) {
+		label->generateCodeForConstructor(out);
+	}
+
+	out() << "\t\t\treturn { ";
+	for (const Label *label : mLabels) {
+		out() << label->labelName() << ", ";
+	}
+
+	out() << "};\n\t\t}\n\n";
+}
+
 bool GraphicType::init(const QDomElement &element, const QString &context)
 {
 	mElement = element;
@@ -116,7 +131,7 @@ bool GraphicType::init(const QDomElement &element, const QString &context)
 		mGraphics = element.firstChildElement("graphics");
 		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
 				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
-				&& initCreateChildrenFromMenu() && initContainerProperties() && initBonusContextMenuFields()
+				&& initCreateChildrenFromMenu() && initContainerProperties()
 				&& initExplosions();
 	}
 
@@ -222,11 +237,6 @@ bool GraphicType::initTypeList(const QString &listName, const QString &listEleme
 bool GraphicType::initContainers()
 {
 	return initTypeList("container", "contains", mContains);
-}
-
-bool GraphicType::initBonusContextMenuFields()
-{
-	return initFieldList("bonusContextMenuFields", "field", mBonusContextMenuFields, "name", false);
 }
 
 bool GraphicType::initContainerProperties()
@@ -583,9 +593,10 @@ void GraphicType::generateMouseGesturesMap(OutFile &out)
 bool GraphicType::generateObjectRequestString(OutFile &out, bool isNotFirst)
 {
 	if (mVisible) {
-		QString name = NameNormalizer::normalize(qualifiedName());
+		const QString name = NameNormalizer::normalize(qualifiedName());
 		generateOneCase(out, isNotFirst);
-		out() << "\t\treturn new " << name << "();\n\t}\n";
+		int TODO_REMOVE_CONST_CAST_SHIT = 100500;
+		out() << "\t\treturn new " << name << "(*const_cast<qReal::Metamodel *>(static_cast<const qReal::Metamodel *>(this)));\n\t}\n";
 		return true;
 	}
 

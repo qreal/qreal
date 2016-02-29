@@ -374,8 +374,6 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setUsages(attribute, nodeId);
 		else if (attribute.tagName() == "action")
 			setAction(nodeId);
-		else if (attribute.tagName() == "bonusContextMenuFields")
-			setFields(attribute, nodeId);
 	}
 }
 

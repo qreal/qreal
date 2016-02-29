@@ -19,11 +19,12 @@
 #include "methodsTesterForQrxcAndQrmc.h"
 #include "abstractStringGenerator.h"
 #include "defs.h"
-#include "qrgui/plugins/metaMetaModel/metamodel.h"
 
 #include <iostream>
 #include <QElapsedTimer>
 #include <QtCore/qmath.h>
+
+#include <metaMetaModel/metamodel.h>
 
 using namespace std;
 

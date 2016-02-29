@@ -16,8 +16,9 @@
 
 #include <QtCore/QString>
 
-#include "qrgui/plugins/metaMetaModel/metamodel.h"
-#include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
+#include <metaMetaModel/metamodel.h>
+#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+
 #include "abstractStringGenerator.h"
 #include "methodsTester.h"
 

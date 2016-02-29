@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-HEADERS		+= \
-#	$$ROOT/qrkernel/ids.h \
-#	$$ROOT/qrgui/plugins/metaMetaModel/sdfRendererInterface.h \
-#	$$ROOT/qrgui/plugins/metaMetaModel/elementType.h \
-#	$$ROOT/qrgui/plugins/metaMetaModel/elementRepoInterface.h \
-#	$$ROOT/qrgui/plugins/metaMetaModel/labelInterface.h \
-#	$$ROOT/qrgui/plugins/metaMetaModel/labelFactoryInterface.h \
-#	$$ROOT/qrgui/plugins/metaMetaModel/metamodel.h \
+HEADERS += \
+	$$ROOT/qrkernel/ids.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/metamodel.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/elementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/nodeElementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/edgeElementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/labelProperties.h \
