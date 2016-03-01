@@ -52,8 +52,8 @@ script:
 
 notifications:
   email:
-	recipients:
-	  - qreal-build-reports@googlegroups.com
+    recipients:
+      - qreal-build-reports@googlegroups.com
 
 after_success:
   - if [ "$TESTS" != "true" ]; then codecov; fi
