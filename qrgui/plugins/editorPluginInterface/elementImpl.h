@@ -86,6 +86,9 @@ public:
 	virtual QStringList fromPortTypes() const = 0;
 	virtual QStringList toPortTypes() const = 0;
 
+	virtual QString nameOfBeginRole() const = 0;
+	virtual QString nameOfEndRole() const = 0;
+
 	virtual enums::linkShape::LinkShape shapeType() const = 0;
 
 	virtual bool createChildrenFromMenu() const = 0;

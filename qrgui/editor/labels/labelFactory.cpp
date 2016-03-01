@@ -32,8 +32,8 @@ LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QSt
 }
 
 LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &binding
-		, const QString &roleName, const QString &nameOfRoleProperty, const QString &location, bool readOnly, qreal rotation)
+		, const QString &roleName, const QString &nameOfRoleProperty, bool readOnly, qreal rotation)
 {
-	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, binding, roleName, nameOfRoleProperty, location
-			, readOnly, rotation));
+	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, binding, roleName, nameOfRoleProperty,
+			readOnly, rotation));
 }

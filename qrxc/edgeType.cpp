@@ -118,7 +118,7 @@ QString EdgeType::propertyName(Property *property)
 	for (auto role : mRoles) {
 		for (auto currentProperty : role->getPropertiesOfRole()) {
 			if (currentProperty->name() == property->name()) {
-				return role->name() + "!!" + property->name();
+				return role->name() + "!" + property->name();
 			}
 		}
 	}
@@ -317,12 +317,18 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tvoid init(qReal::LabelFactoryInterface &factory, QList<qReal::LabelInterface*> &titles)\n\t\t{\n";
 
 	if (!mLabels.isEmpty()) {
-		for (int i = 0; i < mLabels.length(); i++) {
-			mLabels[i]->generateCodeForConstructor(out);
+		for (auto label : mLabels) {
+			if (label->roleName() == "beginRole") {
+				label->generateCodeForConstructor(out, mBeginRoleName);
+			} else if (label->roleName() == "endRole") {
+				label->generateCodeForConstructor(out, mEndRoleName);
+			}
 		}
 	} else {
 		out() << "\t\t\tQ_UNUSED(titles);\n" << "\t\t\tQ_UNUSED(factory);\n";
 	}
+
+
 
 	out() << "\t\t}\n\n"
 	<< "\t\tvirtual ~" << className << "() {}\n\n"
@@ -344,6 +350,12 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\t";
 	generatePorts(out, mToPorts);
+
+	out() << "\t\tQString nameOfBeginRole() const\n\t\t{\n"
+	<< "\t\t\treturn \"" << mBeginRoleName<< "\";\n\t\t}\n";
+
+	out() << "\t\tQString nameOfEndRole() const\n\t\t{\n"
+	<< "\t\t\treturn \"" << mEndRoleName<< "\";\n\t\t}\n";
 
 	out() << "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n"
 	<< "\t\t\treturn enums::linkShape::" << mShapeType << ";\n\t\t}\n";
@@ -392,8 +404,12 @@ void EdgeType::generateCode(OutFile &out)
 	if (mLabels.isEmpty()) {
 		out() << "\t\t\tQ_UNUSED(repo);\n";
 	} else {
-		for (int i = 0; i < mLabels.length(); i++) {
-			mLabels[i]->generateCodeForUpdateData(out);
+		for (auto label : mLabels) {
+			if (label->roleName() == "beginRole") {
+				label->generateCodeForUpdateData(out, mBeginRoleName);
+			} else if (label->roleName() == "endRole") {
+				label->generateCodeForUpdateData(out, mEndRoleName);
+			}
 		}
 	}
 

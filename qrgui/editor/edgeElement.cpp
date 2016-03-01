@@ -72,6 +72,9 @@ EdgeElement::EdgeElement(
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
 	mPenColor = mElementImpl->getPenColor();
+	mBeginRoleName = mElementImpl->nameOfBeginRole();
+	mEndRoleName = mElementImpl->nameOfEndRole();
+
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// if flag is true then draws strangely...
@@ -290,14 +293,15 @@ void EdgeElement::updateBeginAndEnd()
 	int i = 0;
 	int j = 0;
 
+
 	for (auto label : mLabels) {
-		if (label->location() == "begin") {
+		if (label->location() == "beginRole") {
 			Label *title = label;
 			qreal x = (mLine[firstIdx].x() + 20 * (i + 1));
 			qreal y = (mLine[firstIdx].y() + 20 * (i + 1));
 			title->setPos(x, y);
 			++i;
-		} else if (label->location()  == "end") {
+		} else if (label->location() == "endRole") {
 			Label *title = label;
 			qreal x = (mLine[lastIdx + 1].x() - 25 * (j + 1));
 			qreal y = (mLine[lastIdx + 1].y() - 20 * (j + 1));

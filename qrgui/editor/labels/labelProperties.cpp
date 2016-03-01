@@ -52,7 +52,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &tex
 }
 
 LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName
-		, const QString &nameOfRoleProperty, const QString &location, bool readOnly, qreal rotation)
+		, const QString &nameOfRoleProperty, bool readOnly, qreal rotation)
 	: mIndex(index)
 	, mX(x)
 	, mY(y)
@@ -60,7 +60,6 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 	, mBinding(binding)
 	, mRoleName(roleName)
 	, mNameOfPropertyRole(nameOfRoleProperty)
-	, mLocation(location)
 	, mReadOnly(readOnly)
 	, mRotation(rotation)
 	, mBackground(Qt::transparent)
@@ -82,7 +81,6 @@ LabelProperties::LabelProperties(const LabelProperties &other)
 	this->mBinding = other.mBinding;
 	this->mRoleName = other.mRoleName;
 	this->mNameOfPropertyRole = other.mNameOfPropertyRole;
-	this->mLocation = other.mLocation;
 	this->mReadOnly = other.mReadOnly;
 	this->mRotation = other.mRotation;
 	this->mBackground = other.mBackground;
@@ -165,13 +163,9 @@ void LabelProperties::setBinding(const QString &binding)
 
 QString LabelProperties::nameForRoleProperty() const
 {
-	return mRoleName + "!!" + mNameOfPropertyRole;
+	return mRoleName + "!" + mNameOfPropertyRole;
 }
 
-QString LabelProperties::location() const
-{
-	return mLocation;
-}
 
 bool LabelProperties::isReadOnly() const
 {

@@ -50,7 +50,7 @@ void InterpreterElementImpl::initLabels(const int &width, const int &height, Lab
 			LabelInterface *title = nullptr;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(index, x.value(), y.value(), textBinded, "", "", "", readOnly == "true", rotation);
+				title = factory.createLabel(index, x.value(), y.value(), textBinded, "", "", readOnly == "true", rotation);
 			} else {
 				// This is a statical label, it does not need repository.
 				title = factory.createLabel(index, x.value(), y.value(), text, rotation);
@@ -260,7 +260,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = labelFactory.createLabel(0, 0, 0, labelText, "", "", "", false, 0);
+				title = labelFactory.createLabel(0, 0, 0, labelText, "", "", false, 0);
 			}
 
 			title->setBackground(QColor(Qt::white));
@@ -565,6 +565,16 @@ QStringList InterpreterElementImpl::fromPortTypes() const
 QStringList InterpreterElementImpl::toPortTypes() const
 {
 	return QStringList("NonTyped");
+}
+
+QString InterpreterElementImpl::nameOfBeginRole() const
+{
+	return "";
+}
+
+QString InterpreterElementImpl::nameOfEndRole() const
+{
+	return "";
 }
 
 enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const

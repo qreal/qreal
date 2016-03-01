@@ -287,7 +287,7 @@ bool Label::isReadOnly() const
 
 QString Label::location() const
 {
-	return mProperties.location();
+	return mProperties.binding();
 }
 
 void Label::focusOutEvent(QFocusEvent *event)

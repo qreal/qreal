@@ -228,6 +228,9 @@ private:
 	QPolygonF mLine; // holds coordinates of polygon points in coordinate system with center in first point
 	QColor mColor;
 
+	QString mBeginRoleName;
+	QString mEndRoleName;
+
 	ContextMenuAction mReverseAction;
 	ContextMenuAction mChangeShapeAction;
 

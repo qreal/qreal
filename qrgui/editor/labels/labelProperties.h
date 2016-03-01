@@ -44,7 +44,7 @@ class LabelProperties : public QObject
 public:
 	LabelProperties();
 	LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation);
-	LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName, const QString &nameOfRoleProperty, const QString &location
+	LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName, const QString &nameOfRoleProperty
 			, bool isReadOnly, qreal rotation);
 	LabelProperties(const LabelProperties &other);
 
@@ -83,8 +83,6 @@ public:
 	void setBinding(const QString &binding);
 
 	QString nameForRoleProperty() const;
-
-	QString location() const;
 
 	/// Returns immutability of the label`s value by user.
 	bool isReadOnly() const;
@@ -182,7 +180,6 @@ private:
 	QString mBinding;
 	QString mRoleName;
 	QString mNameOfPropertyRole;
-	QString mLocation;
 	bool mReadOnly;
 	qreal mRotation;
 	QColor mBackground;
