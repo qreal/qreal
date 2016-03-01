@@ -34,4 +34,4 @@ SOURCES += \
 
 INCLUDEPATH += \
 	$$PWD/../../../../ \
-	$$PWD/../../../thirdparty/gmock-1.6.0/gtest/include \
+	$$PWD/../../../thirdparty/googletest/googletest/include \

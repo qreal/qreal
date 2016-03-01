@@ -19,7 +19,7 @@ include(../../global.pri)
 
 QT += widgets
 
-SOURCES = $$PWD/mainTest.cpp
+SOURCES += $$PWD/mainTest.cpp
 
 if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
