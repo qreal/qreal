@@ -44,6 +44,9 @@ enum class Heartbeat
 	, dontUse
 };
 
+/// Somewhat modified Connection class from TRIK Runtime, simulates its behavior (actually can use different protocols
+/// and simulate heartbeat). processData() is implemented to simulate control connection (TrikCommunicator class
+/// in trikRuntime).
 class Connection: public QObject
 {
 	Q_OBJECT
@@ -66,12 +69,16 @@ public:
 	/// Sends given byte array to peer.
 	Q_INVOKABLE void send(const QByteArray &data);
 
+	/// Closes socket and stops all timers, must be called from Connection thread before it stops.
 	Q_INVOKABLE void closeConnection();
 
+	/// Check that server received "run" command.
 	bool runProgramRequestReceived() const;
 
+	/// Check that server received "configVersion" command.
 	bool configVersionRequestReceived() const;
 
+	/// Check that server received "version" command.
 	bool versionRequestReceived() const;
 
 signals:

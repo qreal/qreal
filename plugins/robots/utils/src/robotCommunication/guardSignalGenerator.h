@@ -19,14 +19,19 @@
 namespace utils {
 namespace robotCommunication {
 
+/// Helper class that basically emits signal when asked to do so. Used in state machines to implement conditional
+/// transition (recommended way is to subclass QSignalTransition, but signal generator and lambda is actually smaller
+/// and simplier in our case).
 class GuardSignalGenerator : public QObject
 {
 	Q_OBJECT
 
 signals:
+	/// Emitted when somebody calls onTrigger() slot.
 	void guardSatisfied();
 
 public slots:
+	/// Emit guardSatisfied() signal.
 	void onTrigger()
 	{
 		emit guardSatisfied();

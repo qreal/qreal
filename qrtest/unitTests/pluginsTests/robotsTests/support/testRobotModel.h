@@ -18,6 +18,7 @@
 
 namespace qrTest {
 
+/// Simple robot model to be used as a stub in tests.
 class TestRobotModel : public kitBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT

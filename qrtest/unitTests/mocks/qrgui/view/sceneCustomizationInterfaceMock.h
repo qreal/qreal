@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@
 
 namespace qrTest {
 
+/// Mock class for QrGui scene customization interface.
 class SceneCustomizationInterfaceMock : public qReal::gui::editor::SceneCustomizationInterface
 {
 public:

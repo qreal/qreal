@@ -52,9 +52,11 @@ public:
 protected:
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 
+	/// Provides access to robot model to descendant classes.
 	kitBase::robotModel::RobotModelInterface &robotModel() const;
 
 private:
+	/// Robot model that is used to query information about various robot devices.
 	QScopedPointer<kitBase::robotModel::RobotModelInterface> mRobotModel;
 
 	/// Does not have ownership.

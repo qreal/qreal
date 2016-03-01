@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,8 @@
 
 namespace qrTest {
 
+/// Mock class for ErrorReporter. If configured properly (in QrguiFacade, for example), can emit signal when
+/// new error is reported.
 class ErrorReporterMock : public QObject, public qReal::ErrorReporterInterface {
 	Q_OBJECT
 
@@ -38,6 +40,8 @@ public:
 	MOCK_CONST_METHOD0(wereErrors, bool());
 
 signals:
+	/// Intended to be emitted as a reaction to addError() call, but it is up to mock object configuration to do so.
+	/// Use QrguiFacade for a properly configured error reporter.
 	void error();
 };
 

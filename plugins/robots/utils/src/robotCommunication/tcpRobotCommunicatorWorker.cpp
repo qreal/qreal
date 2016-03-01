@@ -28,7 +28,6 @@ static const uint telemetryPort = 9000;
 
 TcpRobotCommunicatorWorker::TcpRobotCommunicatorWorker(const QString &robotIpRegistryKey)
 	: mRobotIpRegistryKey(robotIpRegistryKey)
-	, mIsConnected(false)
 {
 	qRegisterMetaType<MessageKind>("MessageKind");
 }
@@ -41,7 +40,7 @@ void TcpRobotCommunicatorWorker::init()
 {
 	mVersionTimer.reset(new QTimer());
 	mVersionTimer->setSingleShot(true);
-	QObject::connect(mVersionTimer.data(), &QTimer::timeout, this, &TcpRobotCommunicatorWorker::versionTimeOut);
+	QObject::connect(mVersionTimer.data(), &QTimer::timeout, this, &TcpRobotCommunicatorWorker::onVersionTimeOut);
 
 	mControlConnection.reset(new TcpConnectionHandler(controlPort));
 	mTelemetryConnection.reset(new TcpConnectionHandler(telemetryPort));
@@ -179,7 +178,7 @@ void TcpRobotCommunicatorWorker::processTelemetryMessage(const QString &message)
 	}
 }
 
-void TcpRobotCommunicatorWorker::versionTimeOut()
+void TcpRobotCommunicatorWorker::onVersionTimeOut()
 {
 	mVersionTimer->stop();
 	emit trikRuntimeVersionGettingError();

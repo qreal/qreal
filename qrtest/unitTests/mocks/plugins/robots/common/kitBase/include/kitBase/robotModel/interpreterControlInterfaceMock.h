@@ -20,6 +20,7 @@
 
 namespace qrTest {
 
+/// Mock class for robot kit interpreter control interface.
 class InterpreterControlInterfaceMock : public kitBase::InterpreterControlInterface
 {
 	Q_OBJECT

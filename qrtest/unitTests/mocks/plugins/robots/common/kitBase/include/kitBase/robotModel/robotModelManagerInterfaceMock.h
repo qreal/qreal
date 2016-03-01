@@ -21,6 +21,7 @@
 
 namespace qrTest {
 
+/// Mock class for robot model manager.
 class RobotModelManagerInterfaceMock : public kitBase::robotModel::RobotModelManagerInterface
 {
 	Q_OBJECT

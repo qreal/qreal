@@ -36,7 +36,9 @@ class TcpRobotCommunicatorWorker : public QObject
 	Q_OBJECT
 
 public:
-
+	/// Constructor.
+	/// @param robotIpRegistryKey - key in a registry where current robot IP address is stored. IP address refreshes
+	///        from registry every time new connection needs to be established.
 	explicit TcpRobotCommunicatorWorker(const QString &robotIpRegistryKey);
 
 	~TcpRobotCommunicatorWorker() override;
@@ -121,9 +123,14 @@ signals:
 	void casingVersionReceived(const QString &casingVersion);
 
 private slots:
+	/// Process message from control connection, emits signals when something interesting is received from robot.
 	void processControlMessage(const QString &message);
+
+	/// Process telemetry message from robot. Emits signals with sensor data.
 	void processTelemetryMessage(const QString &message);
-	void versionTimeOut();
+
+	/// TRIK Runtime version request timed out. Most likely caused by network problems.
+	void onVersionTimeOut();
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
@@ -136,11 +143,14 @@ private:
 	/// during the work and it is easier to get it from registry every time.
 	const QString mRobotIpRegistryKey;
 
+	/// Current IP address of a robot.
 	QString mCurrentIp;
-	QScopedPointer<TcpConnectionHandler> mControlConnection;
-	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
-	bool mIsConnected;
+	/// Connection on which all commands are sent to a robot.
+	QScopedPointer<TcpConnectionHandler> mControlConnection;
+
+	/// Connection on which robot sends telemetry data.
+	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
 	/// Timer for version request.
 	QScopedPointer<QTimer> mVersionTimer;

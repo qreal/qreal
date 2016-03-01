@@ -22,6 +22,7 @@
 
 namespace qrTest {
 
+/// Mock class for QrGui text manager.
 class TextManagerInterfaceMock : public qReal::TextManagerInterface
 {
 public:

@@ -24,13 +24,18 @@
 
 namespace qrTest {
 
+/// Helper class that provides RAII-style storage for registry (or SettingsManager) settings. Settings may be altered
+/// during test, but will be reverted to previous values when TestRegistry is destroyed.
 class TEST_UTILS_EXPORT TestRegistry
 {
 public:
 	~TestRegistry();
+
+	/// Temporarily set registry setting with given key to a given value.
 	void set(const QString &key, const QVariant &value);
 
 private:
+	/// Hash containing initial registry settings to be restored when test is done.
 	QHash<QString, QVariant> mPreviousValues;
 };
 
