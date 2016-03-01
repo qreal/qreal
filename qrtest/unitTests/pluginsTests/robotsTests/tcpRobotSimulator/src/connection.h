@@ -52,7 +52,9 @@ public:
 	/// Constructor.
 	/// @param connectionProtocol - protocol used by this connection.
 	/// @param useHeartbeat - use or don't use heartbeat protocol option.
-	Connection(Protocol connectionProtocol, Heartbeat useHeartbeat);
+	/// @param configVersion - version of a config file that this connection needs to simulate. Will be used to answer
+	///        "configVersion" request.
+	Connection(Protocol connectionProtocol, Heartbeat useHeartbeat, const QString &configVersion);
 
 	~Connection() override;
 
@@ -148,9 +150,17 @@ private:
 	/// Use or don;t use heartbeat method of connection loss detection.
 	bool mUseHeartbeat = false;
 
+	/// Boolean flag that becomes true when we receive "run" command.
 	bool mRunProgramRequestReceived = false;
+
+	/// Boolean flag that becomes true when we receive "configVersion" command.
 	bool mConfigVersionRequestReceived = false;
+
+	/// Boolean flag that becomes true when we receive "version" command.
 	bool mVersionRequestReceived = false;
+
+	/// Simulated config version.
+	const QString mConfigVersion;
 };
 
 }

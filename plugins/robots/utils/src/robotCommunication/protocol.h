@@ -83,41 +83,37 @@ public:
 		source->addTransition(&mCommunicator, signal, mSuccess);
 	}
 
+	/// Adds transition that can proceed to destination state or move to "errored" state depending on result of guard
+	/// function.
+	/// @param source - source state.
+	/// @param signal - signal (in functional notation) that triggers a transition, must have exactly one parameter.
+	/// @param destination - destination state, reached if guard returns true.
+	/// @param guard - guard function, must take one parameter with the same type as in signal and return true
+	///        if condition holds and state machine may proceed to destination state, and false if condition
+	///        is not satisfied and machine shall halt with error.
 	template<typename Trigger, typename GuardFunc>
-	void addGuardedTranstion(QState *source, Trigger signal, GuardFunc guard, QState *destination)
+	void addCheckedTranstion(QState *source, Trigger signal, QState *destination, GuardFunc guard)
 	{
 		registerStateIfNeeded(source);
 		registerStateIfNeeded(destination);
 
 		typedef typename function_traits<GuardFunc>::template arg<0>::type ParamType;
 
-		QSharedPointer<GuardSignalGenerator> guardSignalGenerator(new GuardSignalGenerator{});
+		QSharedPointer<GuardSignalGenerator> successGuardSignalGenerator(new GuardSignalGenerator{});
+		QSharedPointer<GuardSignalGenerator> errorGuardSignalGenerator(new GuardSignalGenerator{});
 
-		source->addTransition(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, destination);
+		source->addTransition(successGuardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, destination);
+		source->addTransition(errorGuardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, mErrored);
 
-		connect(&mCommunicator, signal, [source, guard, guardSignalGenerator](const ParamType &&param) {
-			if (guard(param)) {
-				guardSignalGenerator->onTrigger();
-			}
-		});
-	}
-
-	template<typename Trigger, typename GuardFunc>
-	void addGuardedErrorTranstion(QState *source, Trigger signal, GuardFunc guard)
-	{
-		registerStateIfNeeded(source);
-
-		typedef typename function_traits<GuardFunc>::template arg<0>::type ParamType;
-
-		QSharedPointer<GuardSignalGenerator> guardSignalGenerator(new GuardSignalGenerator{});
-
-		source->addTransition(guardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, mErrored);
-
-		connect(&mCommunicator, signal, [guard, guardSignalGenerator](const ParamType &&param) {
-			if (guard(param)) {
-				guardSignalGenerator->onTrigger();
-			}
-		});
+		connect(&mCommunicator, signal, [source, guard, successGuardSignalGenerator, errorGuardSignalGenerator]
+				(const ParamType &&param) {
+					if (guard(param)) {
+						successGuardSignalGenerator->onTrigger();
+					} else {
+						errorGuardSignalGenerator->onTrigger();
+					}
+				}
+		);
 	}
 
 	/// Sets action that shall be done when entering a state. Action receives communicator to be able to send

@@ -29,42 +29,23 @@ RunProgramProtocol::RunProgramProtocol(TcpRobotCommunicatorInterface &communicat
 	, mWaitingForUploadingComplete(new QState())
 	, mWaitingForRunComplete(new QState())
 {
-	mProtocol->addGuardedTranstion(
-			mWaitingForCasingModel
-			, &TcpRobotCommunicatorInterface::casingVersionReceived
-			, [configVersion](const QString &casingModel){
-				return casingModel == configVersion;
-			}
+	mProtocol->addCheckedTranstion(mWaitingForCasingModel, &TcpRobotCommunicatorInterface::casingVersionReceived
 			, mWaitingForUploadingComplete
-	);
-
-	mProtocol->addGuardedErrorTranstion(mWaitingForCasingModel, &TcpRobotCommunicatorInterface::casingVersionReceived
 			, [this, configVersion](const QString &casingModel)
-	{
-		if (casingModel != configVersion) {
-			emit error();
-			return true;
-		}
+				{
+					if (casingModel != configVersion) {
+						emit configVersionMismatch(configVersion, casingModel);
+						return false;
+					}
 
-		return false;
-	});
+					return true;
+				}
+	);
 
 	mProtocol->addTransition(mWaitingForUploadingComplete
 			, &TcpRobotCommunicatorInterface::uploadProgramDone, mWaitingForRunComplete);
 	mProtocol->addErrorTransition(mWaitingForUploadingComplete, &TcpRobotCommunicatorInterface::uploadProgramError);
 	mProtocol->addSuccessTransition(mWaitingForRunComplete, &TcpRobotCommunicatorInterface::startedRunning);
-
-	connect(&communicator, &TcpRobotCommunicatorInterface::uploadProgramDone,
-			[this]() {
-				QCoreApplication::processEvents();
-			}
-			);
-
-	connect(&communicator, &TcpRobotCommunicatorInterface::casingVersionReceived,
-			[this]() {
-				QCoreApplication::processEvents();
-			}
-			);
 
 	connect(mProtocol.data(), &Protocol::success, this, &RunProgramProtocol::success);
 	connect(mProtocol.data(), &Protocol::error, this, &RunProgramProtocol::error);

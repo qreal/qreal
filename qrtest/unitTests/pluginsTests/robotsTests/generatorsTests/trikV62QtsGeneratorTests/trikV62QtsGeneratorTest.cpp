@@ -27,6 +27,7 @@
 
 #include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h>
 #include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/interpreterControlInterfaceMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 #include <pluginsTests/robotsTests/support/testRobotModel.h>
 #include <tcpRobotSimulator/tcpRobotSimulator.h>
 
@@ -39,6 +40,8 @@ void TrikV62QtsGeneratorTest::SetUp()
 {
 	mControlConnectionSimulator.reset(new tcpRobotSimulator::TcpRobotSimulator(8888));
 	mTelemetryConnectionSimulator.reset(new tcpRobotSimulator::TcpRobotSimulator(9000));
+
+	mControlConnectionSimulator->setConfigVersion("model-2015");
 
 	mLuaToolbox.reset(new qrtext::lua::LuaToolbox());
 	const auto robotModelManagerInterfaceMock = new RobotModelManagerInterfaceMock();
@@ -107,4 +110,29 @@ TEST_F(TrikV62QtsGeneratorTest, runProgramTest)
 
 	EXPECT_TRUE(controlSimulator().configVersionRequestReceived());
 	EXPECT_TRUE(controlSimulator().runProgramRequestReceived());
+}
+
+TEST_F(TrikV62QtsGeneratorTest, incorrectCasingVersionTest)
+{
+	controlSimulator().setConfigVersion("model-2014");
+
+	const qReal::ErrorReporterInterface *errorReporter
+			= kitPluginConfigurer().qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
+
+	const ErrorReporterMock *errorReporterMock = static_cast<const ErrorReporterMock *>(errorReporter);
+
+	TrikV62QtsGeneratorPlugin plugin;
+	plugin.init(kitPluginConfigurer());
+
+	const QList<qReal::ActionInfo> actions = plugin.customActions();
+	qReal::ActionInfo runProgramAction = actions.at(2);
+	runProgramAction.action()->trigger();
+
+	Wait waiter(1000);
+	waiter.stopAt(errorReporterMock, &ErrorReporterMock::error);
+	waiter.wait();
+
+	EXPECT_TRUE(controlSimulator().configVersionRequestReceived());
+	EXPECT_FALSE(controlSimulator().runProgramRequestReceived());
+	EXPECT_TRUE(errorReporter->wereErrors());
 }

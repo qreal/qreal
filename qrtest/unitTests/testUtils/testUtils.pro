@@ -43,5 +43,6 @@ HEADERS += \
 	$$PWD/../mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h \
 	$$PWD/../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
 	$$PWD/../mocks/qrgui/textEditor/textManagerInterfaceMock.h \
+	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h \
 
 links(qrgui-tool-plugin-interface qrgui-models qrgui-text-editor)

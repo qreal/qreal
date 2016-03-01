@@ -38,7 +38,7 @@ TcpRobotSimulator::~TcpRobotSimulator()
 
 void TcpRobotSimulator::incomingConnection(qintptr socketDescriptor)
 {
-	mConnection.reset(new Connection(Protocol::messageLength, Heartbeat::use));
+	mConnection.reset(new Connection(Protocol::messageLength, Heartbeat::use, mConfigVersion));
 	mConnectionThread.reset(new QThread());
 	connect(mConnectionThread.data(), &QThread::finished, mConnectionThread.data(), &QThread::deleteLater);
 	connect(mConnection.data(), &Connection::runProgramRequestReceivedSignal
@@ -61,4 +61,9 @@ bool TcpRobotSimulator::configVersionRequestReceived() const
 bool TcpRobotSimulator::versionRequestReceived() const
 {
 	return mConnection->versionRequestReceived();
+}
+
+void TcpRobotSimulator::setConfigVersion(const QString &configVersion)
+{
+	mConfigVersion = configVersion;
 }

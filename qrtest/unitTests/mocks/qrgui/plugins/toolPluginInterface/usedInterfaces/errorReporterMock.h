@@ -22,7 +22,9 @@
 
 namespace qrTest {
 
-class ErrorReporterMock : public qReal::ErrorReporterInterface {
+class ErrorReporterMock : public QObject, public qReal::ErrorReporterInterface {
+	Q_OBJECT
+
 public:
 	MOCK_METHOD2(addInformation, void(const QString &message, const qReal::Id &position));
 	MOCK_METHOD2(addWarning, void(const QString &message, const qReal::Id &position));
@@ -33,7 +35,10 @@ public:
 
 	MOCK_METHOD0(clear, void());
 	MOCK_METHOD0(clearErrors, void());
-	MOCK_METHOD0(wereErrors, bool());
+	MOCK_CONST_METHOD0(wereErrors, bool());
+
+signals:
+	void error();
 };
 
 }

@@ -61,6 +61,7 @@ private:
 	TextManagerInterfaceMock mTextManagerMock;
 
 	qReal::Id mActiveTab;
+	bool mWereErrors = false;
 };
 
 }

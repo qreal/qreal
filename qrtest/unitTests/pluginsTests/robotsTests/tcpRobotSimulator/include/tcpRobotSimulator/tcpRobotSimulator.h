@@ -37,6 +37,8 @@ public:
 	bool configVersionRequestReceived() const;
 	bool versionRequestReceived() const;
 
+	void setConfigVersion(const QString &configVersion);
+
 signals:
 	void runProgramRequestReceivedSignal();
 
@@ -45,6 +47,7 @@ private:
 
 	QScopedPointer<QThread> mConnectionThread;
 	QScopedPointer<Connection> mConnection;
+	QString mConfigVersion;
 };
 
 }

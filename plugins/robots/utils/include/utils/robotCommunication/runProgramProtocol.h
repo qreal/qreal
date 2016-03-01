@@ -55,6 +55,11 @@ signals:
 	/// or in communicator, since network timeouts will be reported as error() signal.
 	void timeout();
 
+	/// Emitted when version of configuration file on a robot does not match version required by selected robot model.
+	/// @param expected --- version required by robot model selected in TRIK Studio.
+	/// @param actual --- version reported by robot.
+	void configVersionMismatch(const QString &expected, const QString &actual);
+
 private:
 	/// Underlying abstract protocol.
 	QScopedPointer<Protocol> mProtocol;

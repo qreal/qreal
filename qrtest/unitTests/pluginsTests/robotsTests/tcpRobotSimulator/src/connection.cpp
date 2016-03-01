@@ -20,15 +20,17 @@
 
 #include <QtCore/QDebug>
 
-static const QString trikRuntimeVersion = "testingVersion";
+static const QString trikRuntimeVersion = "3.1.3";
+
 static const int keepaliveTime = 3000;
 static const int heartbeatTime = 5000;
 
 using namespace tcpRobotSimulator;
 
-Connection::Connection(Protocol connectionProtocol, Heartbeat useHeartbeat)
+Connection::Connection(Protocol connectionProtocol, Heartbeat useHeartbeat, const QString &configVersion)
 	: mProtocol(connectionProtocol)
 	, mUseHeartbeat(useHeartbeat == Heartbeat::use)
+	, mConfigVersion(configVersion)
 {
 }
 
@@ -271,7 +273,7 @@ void Connection::processData(const QByteArray &data)
 	} else if (command.startsWith("directScript:")) {
 	} else if (command == "configVersion") {
 		mConfigVersionRequestReceived = true;
-		send("configVersion: model-2015");
+		send(("configVersion: " + mConfigVersion).toUtf8());
 	}
 }
 

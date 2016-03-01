@@ -89,6 +89,16 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
 	connect(mStopRobotProtocol.data(), &StopRobotProtocol::success
 			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
+
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::configVersionMismatch
+			, [errorReporter](const QString &expected, const QString &actual) {
+				Q_UNUSED(expected)
+				Q_UNUSED(actual)
+				errorReporter->addError(
+						QString(tr("Casing model mismatch, check TRIK Studio settings, \"Robots\" page. It seems that "
+								"TRIK casing version selected in TRIK Studio differs from version on robot.")));
+			}
+	);
 }
 
 QList<ActionInfo> TrikQtsGeneratorPluginBase::customActions()
