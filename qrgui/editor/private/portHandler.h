@@ -17,6 +17,7 @@
 #include "models/graphicalModelAssistApi.h"
 #include "editor/ports/statLine.h"
 #include "editor/ports/statPoint.h"
+#include "editor/ports/statCircular.h"
 
 // Useful information:
 // In this class port ID represents by qreal type.
@@ -121,6 +122,8 @@ private:
 	/// returns mNonexistentPortId.
 	qreal linePortId(const QPointF &location, const QStringList &types) const;
 
+	qreal circularPortId(const QPointF &location, const QStringList &types) const;//here
+
 	/// Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
 	/// @param location Result will be calculated for this point. location is assumed to be in
 	/// LOCAL NodeElement coordinates!
@@ -133,6 +136,10 @@ private:
 	/// @return The closest line port number in list of line ports and distance from location to it.
 	QPair<int, qreal> nearestLinePortNumberAndDistance(const QPointF &location, const QStringList &types) const;
 
+
+	QPair<int, qreal> nearestCircularPortNumberAndDistance(const QPointF &location, const QStringList &types) const;//new
+
+
 	/// Returns nearest point parameter at line port to point.
 	/// @param linePortNumber Number of line port at line port list.
 	/// @param location To this point nearest point parameter will be calculated. location is assumed to be in
@@ -140,12 +147,17 @@ private:
 	/// @return Nearest point parameter at line port to point.
 	qreal nearestPointOfLinePort(const int linePortNumber, const QPointF &location) const;
 
+	qreal pointByCircularPortAngle(const int circularPortNumber, const QPointF &location) const;
+	QPointF coordinateOfCircular(const int circularPortNumber, const QPointF &location) const;
+
 	/// Returns minimum distance from line port to point.
 	/// @param linePortNumber Number of line port at line port list.
 	/// @param location To this point distance will be calculated. location is assumed to be in
 	/// LOCAL NodeElement coordinates!
 	/// @return Minimum distance from line port to point.
 	qreal minDistanceFromLinePort(const int linePortNumber, const QPointF &location) const;
+
+	qreal minDistanceFromCircularPort(const int circularPortNumber, const QPointF &location) const;//new
 
 	/// Returns distance between point port and point.
 	/// @param pointPortNumber Number of point port at point port list.
@@ -161,6 +173,7 @@ private:
 	/// Transforms line port for current node size.
 	/// @param port Port that will be actually dealt with.
 	QPointF transformPortForNodeSize(const StatPoint * const port) const;
+	QLineF transformPortForNodeSize(const StatCircular * const port) const;//new
 
 	/// Node that ports are actually dealt with.
 	NodeElement *mNode;
@@ -174,6 +187,7 @@ private:
 
 	/// List of line ports that belongs to mNode.
 	QList<StatLine *> mLinePorts;
+	QList<StatCircular *> mCircularPorts;//here
 };
 
 }

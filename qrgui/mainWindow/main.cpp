@@ -76,7 +76,7 @@ void initLogging()
 
 int main(int argc, char *argv[])
 {
-	QRealApplication app(argc, argv);
+	QRealApplication app(argc, argv);//point
 
 	if (app.arguments().contains("--clear-conf")) {
 		clearConfig();

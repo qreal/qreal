@@ -77,7 +77,7 @@ QPair<QString, gui::PreferencesPage *> MetaEditorSupportPlugin::preferencesPage(
 }
 
 void MetaEditorSupportPlugin::generateEditorForQrxc()
-{
+{//point
 	EditorGenerator editorGenerator(*mLogicalRepoApi, *mMainWindowInterface->errorReporter());
 
 	QDir dir(".");
@@ -337,8 +337,8 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 				delete progress;
 				return;
 			} else if (buildConfiguration == "debug") {
-				if (mMainWindowInterface->loadPlugin(prefix + metamodelName 
-						+ "-d"+ "." + extension, normalizeDirName)) 
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName
+						+ "-d"+ "." + extension, normalizeDirName))
 				{
 					progress->setValue(100);
 				}
