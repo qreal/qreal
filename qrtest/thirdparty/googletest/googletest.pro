@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,26 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = app
-CONFIG += console
+include(../../../global.pri)
 
-include(../../global.pri)
+TEMPLATE = lib
 
-QT += widgets
-
-SOURCES = $$PWD/mainTest.cpp
-
-if (equals(QMAKE_CXX, "g++") : !macx) {
-	QMAKE_LFLAGS += -Wl,-E
-	# For googletest
-#	QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
-}
+# CONFIG += warn_off
 
 INCLUDEPATH += \
-	$$PWD/ \
-	$$PWD/../../ \
-	$$PWD/../thirdparty/googletest/googletest/include \
-	$$PWD/../thirdparty/googletest/googlemock/include \
-	$$PWD/testUtils/include \
+	$$PWD/googletest/ \
+	$$PWD/googletest/include/ \
+	$$PWD/googlemock/ \
+	$$PWD/googlemock/include/ \
 
-links(googletest)
+HEADERS += \
+	$$files(googletest/include/gtest/*.h) \
+	$$files(googletest/include/gtest/internal/*.h) \
+	$$files(googlemock/include/gmock/*.h) \
+	$$files(googlemock/include/gmock/internal/*.h) \
+
+SOURCES += \
+	$$files(googletest/src/*.cc) \
+	$$files(googlemock/src/*.cc) \

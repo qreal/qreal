@@ -17,12 +17,12 @@ include(qreal.pri)
 plugins.file = $$PWD/plugins/robots.pro
 
 SUBDIRS += \
-	gmock \
+	googletest \
 	testUtils \
 	robotsTests \
 	trikStudioSimulatorTests \
 
-gmock.file = $$PWD/qrtest/thirdparty/gmock-1.6.0/gmock.pro
+googletest.file = $$PWD/qrtest/thirdparty/googletest/googletest.pro
 testUtils.subdir = $$PWD/qrtest/unitTests/testUtils
 robotsTests.subdir = $$PWD/qrtest/unitTests/pluginsTests/robotsTests
 trikStudioSimulatorTests.subdir = $$PWD/qrtest/trikStudioSimulatorTests
@@ -38,5 +38,5 @@ robotsTests.depends = \
 	testUtils \
 
 testUtils.depends = \
-	gmock \
+	googletest \
 	qrgui \
