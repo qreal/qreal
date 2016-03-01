@@ -25,6 +25,12 @@
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
+//
+#include <iostream>
+
+using namespace std;
+//
+
 using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
@@ -179,11 +185,63 @@ TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
+	// Block for 3D code
+
+	if(!connect) {
+		clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+
+		if (clientID == -1) {
+			cout << "clientID == -1" << endl;
+			simxFinish(clientID);
+			return;
+		}
+
+		cout << "ClientID = " << clientID << endl;
+
+		if (simxGetConnectionId(clientID) == -1) {
+			cout << "simxGetConnectionId(clientID) == -1" << endl;\
+			simxFinish(clientID);
+			return;
+		}
+
+		cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
+
+		// On each sensor must be his "setNewMotor" by port.
+
+//		simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+//		simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+//		simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+//		simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+
+//		simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+
+//		cout << "frontLeftHandle = " << frontLeftHandle << endl;
+//		cout << "frontRightHandle = " << frontRightHandle << endl;
+//		cout << "backLeftHandle = " << backLeftHandle << endl;
+//		cout << "backRightHandle = " << backRightHandle << endl;
+
+//		cout << "sensorHandle = " << sensorHandle << endl;
+
+		mApi->setClientID(clientID);
+
+		connect = true;
+	}
+
+	simxStartSimulation(clientID, simx_opmode_oneshot);
+
+	//
+
 	mModel->timeline().start();
 }
 
 void TwoDModelEngineFacade::onStopInterpretation(qReal::interpretation::StopReason reason)
 {
+	// Block for 3D code
+
+	simxStopSimulation(clientID,  simx_opmode_oneshot);
+
+	//
+
 	mModel->timeline().stop(reason);
 }
 

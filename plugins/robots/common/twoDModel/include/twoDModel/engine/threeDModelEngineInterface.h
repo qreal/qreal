@@ -18,6 +18,12 @@ class ThreeDModelEngineInterface
 public:
 	virtual ~ThreeDModelEngineInterface() {}
 
+	// Block for 3D model
+	/// Set new client ID of V-Rep for connection.
+	virtual void setClientID(int newClientID) = 0;
+
+	//
+
 	/// Enables the motor on the given port assigning the given power to it with the given break mode.
 	virtual void setNewMotor(int speed, uint degrees
 			, const kitBase::robotModel::PortInfo &port, bool breakMode) = 0;

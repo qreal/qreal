@@ -31,6 +31,12 @@ public:
 	ThreeDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
 	~ThreeDModelEngineApi();
 
+	// Block for 3D model
+
+	void setClientID(int newClientID) override;
+
+	//
+
 	void setNewMotor(int speed, uint degrees
 			, const kitBase::robotModel::PortInfo &port, bool breakMode) override;
 
@@ -77,12 +83,14 @@ private:
 	QScopedPointer<view::FakeScene> mFakeScene;
 	QScopedPointer<engine::TwoDModelGuiFacade> mGuiFacade;
 
-	int portNb = 19997;
+	// Block for 3d code
 
-	int clientID = 0;
+//	int portNb = 19997;
+
+	int clientID = -1;
 
 	// on time
-	bool connect = false;
+//	bool connect = false;
 
 	int frontLeftHandle = 0;
 	int frontRightHandle = 0;
@@ -90,6 +98,8 @@ private:
 	int backRightHandle = 0;
 
 	int sensorHandle = 0;
+
+	//
 };
 
 }

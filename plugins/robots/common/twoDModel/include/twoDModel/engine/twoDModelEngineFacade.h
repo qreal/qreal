@@ -73,6 +73,16 @@ private:
 	QScopedPointer<view::TwoDModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
 	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
+
+	// Block for 3D code
+
+	int portNb = 19997;
+
+	int clientID = -1;
+
+	bool connect = false;
+
+	//
 };
 
 }

@@ -34,6 +34,13 @@ public:
 	TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
 	~TwoDModelEngineApi();
 
+	// Block for 3D model
+	// Will be deleted
+
+	void setClientID(int newClientID) override;
+
+	//
+
 	void setNewMotor(int speed, uint degrees
 			, const kitBase::robotModel::PortInfo &port, bool breakMode) override;
 
