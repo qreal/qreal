@@ -232,7 +232,8 @@ int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 
 	// Block for 3D code
 
-	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+	//
+	//simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
 
 	cout << "sensorHandle = " << sensorHandle << endl;
 

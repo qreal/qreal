@@ -60,6 +60,15 @@ TwoDModelEngineApi::~TwoDModelEngineApi()
 {
 }
 
+// Block for 3D model
+// Will be deleted
+
+void TwoDModelEngineApi::setClientID(int newClientID)
+{
+}
+
+//
+
 void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &port, bool breakMode)
 {
 	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);

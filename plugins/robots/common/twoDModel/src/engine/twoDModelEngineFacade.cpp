@@ -57,7 +57,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 
 //	if (simxGetConnectionId(clientID) == -1)
 //	{
-//		cout << "simxGetConnectionId(clientID) == -1" << endl;\
+//		cout << "simxGetConnectionId(clientID) == -1" << endl;
 //		simxFinish(clientID);
 //		return;
 //	}
@@ -187,7 +187,7 @@ void TwoDModelEngineFacade::onStartInterpretation()
 {
 	// Block for 3D code
 
-	if(!connect) {
+	if(!isConnect) {
 		clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
 
 		if (clientID == -1) {
@@ -205,6 +205,8 @@ void TwoDModelEngineFacade::onStartInterpretation()
 		}
 
 		cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
+
+
 
 		// On each sensor must be his "setNewMotor" by port.
 
@@ -224,7 +226,7 @@ void TwoDModelEngineFacade::onStartInterpretation()
 
 		mApi->setClientID(clientID);
 
-		connect = true;
+		isConnect = true;
 	}
 
 	simxStartSimulation(clientID, simx_opmode_oneshot);

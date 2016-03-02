@@ -78,9 +78,9 @@ private:
 
 	int portNb = 19997;
 
-	int clientID = -1;
+	int clientID = 0;
 
-	bool connect = false;
+	bool isConnect = false;
 
 	//
 };
