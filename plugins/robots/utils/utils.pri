@@ -14,7 +14,7 @@
 
 QT += widgets network
 
-links(qrkernel qrutils qextserialport)
+links(qrkernel qrutils qextserialport qslog)
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 

@@ -30,9 +30,11 @@
 #include <qrtest/unitTests/mocks/qrgui/view/sceneCustomizationInterfaceMock.h>
 #include <qrtest/unitTests/mocks/qrgui/textEditor/textManagerInterfaceMock.h>
 
+#include "testUtils/declSpec.h"
+
 namespace qrTest {
 
-class QrguiFacade
+class TEST_UTILS_EXPORT QrguiFacade
 {
 public:
 	explicit QrguiFacade(QString const &modelName);
