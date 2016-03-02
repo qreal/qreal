@@ -151,11 +151,6 @@ QString ProxyEditorManager::defaultPropertyValue(const Id &id, QString name) con
 	return mProxiedEditorManager->defaultPropertyValue(id, name);
 }
 
-QStringList ProxyEditorManager::propertiesWithDefaultValues(const Id &id) const
-{
-	return mProxiedEditorManager->propertiesWithDefaultValues(id);
-}
-
 bool ProxyEditorManager::hasElement(const Id &element) const
 {
 	return mProxiedEditorManager->hasElement(element);
@@ -195,11 +190,6 @@ QString ProxyEditorManager::diagramNodeNameString(const Id &editor, const Id &di
 //{
 //	return mProxiedEditorManager->possibleEdges(editor, element);
 //}
-
-QStringList ProxyEditorManager::elements(const QString &editor, const QString &diagram) const
-{
-	return mProxiedEditorManager->elements(editor, diagram);
-}
 
 int ProxyEditorManager::isNodeOrEdge(const QString &editor, const QString &element) const
 {

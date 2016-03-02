@@ -86,6 +86,11 @@ QString Type::displayedName() const
 	return mDisplayedName;
 }
 
+Diagram *Type::diagram() const
+{
+	return mDiagram;
+}
+
 void Type::setDisplayedName(const QString &displayedName)
 {
 	mDisplayedName = displayedName;

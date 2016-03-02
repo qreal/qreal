@@ -638,9 +638,8 @@ bool NodeElement::initPossibleEdges()
 	}
 
 	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
-	for (const QString &elementName : mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
-			, id().diagram())) {
-		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
+	for (const Id &element: mGraphicalAssistApi.editorManagerInterface().elements(id())) {
+		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(element.editor(), element.element());
 		if (ne == -1) {
 			int FIX_IT_BITCH = 0;
 			const QList<StringPossibleEdge> list = {};/*mGraphicalAssistApi.editorManagerInterface()
@@ -1156,19 +1155,18 @@ QList<qreal> NodeElement::borderValues() const
 
 QSet<ElementPair> NodeElement::elementsForPossibleEdge(const StringPossibleEdge &edge)
 {
-	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(id().editor(), id().diagram());
-	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
+	const IdList elements = mGraphicalAssistApi.editorManagerInterface().elements(id());
+	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 
 	QSet<ElementPair> result;
-	for (const QString &element : elements) {
-		QStringList otherPortTypes
-				= mGraphicalAssistApi.editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
+	for (const Id &element : elements) {
+		const QStringList otherPortTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(element);
 		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
-			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
+			result.insert(qMakePair(id().type(), element));
 		}
 
 		if (otherPortTypes.contains(edge.first.first) && portTypes.contains(edge.first.second)) {
-			result.insert(qMakePair(Id(id().editor(), id().diagram(), element), id().type()));
+			result.insert(qMakePair(element, id().type()));
 		}
 	}
 

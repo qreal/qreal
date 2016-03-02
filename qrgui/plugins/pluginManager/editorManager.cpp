@@ -23,6 +23,7 @@
 #include <qrkernel/exception/exception.h>
 #include <qrrepo/repoApi.h>
 #include <metaMetaModel/metamodel.h>
+#include <metaMetaModel/nodeElementType.h>
 
 #include "editor/nodeElement.h"
 #include "editor/edgeElement.h"
@@ -44,7 +45,7 @@ EditorManager::EditorManager(QObject *parent)
 
 EditorManager::~EditorManager()
 {
-	for (const QString &pluginName : mPluginIface.keys()) {
+	for (const QString &pluginName : mMetamodels.keys()) {
 		unloadPlugin(pluginName);
 	}
 }
@@ -59,7 +60,7 @@ void EditorManager::init()
 		if (iEditor) {
 			mPluginsLoaded += iEditor->id();
 			mPluginFileName.insert(iEditor->id(), pluginName);
-			mPluginIface[iEditor->id()] = iEditor;
+			mMetamodels[iEditor->id()] = iEditor;
 		}
 	}
 }
@@ -72,7 +73,7 @@ QString EditorManager::loadPlugin(const QString &pluginName)
 	if (iEditor) {
 		mPluginsLoaded += iEditor->id();
 		mPluginFileName.insert(iEditor->id(), pluginName);
-		mPluginIface[iEditor->id()] = iEditor;
+		mMetamodels[iEditor->id()] = iEditor;
 		QLOG_INFO() << "Plugin" << pluginName << "loaded. Version: " << iEditor->version();
 		return QString();
 	}
@@ -101,8 +102,8 @@ QString EditorManager::unloadPlugin(const QString &pluginName)
 		resultOfUnloading = mPluginManager.unloadPlugin(newPluginName);
 	}
 
-	if (mPluginIface.keys().contains(pluginName)) {
-		mPluginIface.remove(pluginName);
+	if (mMetamodels.keys().contains(pluginName)) {
+		mMetamodels.remove(pluginName);
 		mPluginFileName.remove(pluginName);
 		mPluginsLoaded.removeAll(pluginName);
 
@@ -119,9 +120,10 @@ QString EditorManager::unloadPlugin(const QString &pluginName)
 IdList EditorManager::editors() const
 {
 	IdList editors;
-	foreach (const QString &editor, mPluginsLoaded) {
+	for (const QString &editor : mPluginsLoaded) {
 		editors.append(Id(editor));
 	}
+
 	return editors;
 }
 
@@ -130,7 +132,7 @@ IdList EditorManager::diagrams(const Id &editor) const
 	IdList diagrams;
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
 
-	foreach (const QString &diagram, mPluginIface[editor.editor()]->diagrams()) {
+	for (const QString &diagram : mMetamodels[editor.editor()]->diagrams()) {
 		diagrams.append(Id(editor, diagram));
 	}
 
@@ -140,22 +142,22 @@ IdList EditorManager::diagrams(const Id &editor) const
 QStringList EditorManager::paletteGroups(const Id &editor, const Id &diagram) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
-	return mPluginIface[editor.editor()]->diagramPaletteGroups(diagram.diagram());
+	return mMetamodels[editor.editor()]->diagramPaletteGroups(diagram.diagram());
 }
 
 QStringList EditorManager::paletteGroupList(const Id &editor, const Id &diagram, const QString &group) const
 {
-	return mPluginIface[editor.editor()]->diagramPaletteGroupList(diagram.diagram(), group);
+	return mMetamodels[editor.editor()]->diagramPaletteGroupList(diagram.diagram(), group);
 }
 
 QString EditorManager::paletteGroupDescription(const Id &editor, const Id &diagram, const QString &group) const
 {
-	return mPluginIface[editor.editor()]->diagramPaletteGroupDescription(diagram.diagram(), group);
+	return mMetamodels[editor.editor()]->diagramPaletteGroupDescription(diagram.diagram(), group);
 }
 
 bool EditorManager::shallPaletteBeSorted(const Id &editor, const Id &diagram) const
 {
-	return mPluginIface[editor.editor()]->shallPaletteBeSorted(diagram.diagram());
+	return mMetamodels[editor.editor()]->shallPaletteBeSorted(diagram.diagram());
 }
 
 IdList EditorManager::elements(const Id &diagram) const
@@ -163,8 +165,8 @@ IdList EditorManager::elements(const Id &diagram) const
 	IdList elements;
 	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
 
-	for (const QString &e : mPluginIface[diagram.editor()]->elements(diagram.diagram())) {
-		const Id candidate = Id(diagram.editor(), diagram.diagram(), e);
+	for (const ElementType *type : mMetamodels[diagram.editor()]->elements(diagram.diagram())) {
+		const Id candidate(diagram.editor(), diagram.diagram(), type->name());
 		if (!mDisabledElements.contains(candidate)) {
 			elements.append(candidate);
 		}
@@ -176,7 +178,7 @@ IdList EditorManager::elements(const Id &diagram) const
 Version EditorManager::version(const Id &editor) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
-	return Version::fromString(mPluginIface[editor.editor()]->version());
+	return Version::fromString(mMetamodels[editor.editor()]->version());
 }
 
 bool EditorManager::isEditor(const Id &id) const
@@ -203,14 +205,14 @@ QString EditorManager::friendlyName(const Id &id) const
 
 	switch (id.idSize()) {
 	case 1:
-		return mPluginIface[id.editor()]->editorName();
+		return mMetamodels[id.editor()]->editorName();
 	case 2:
-		return mPluginIface[id.editor()]->diagramName(id.diagram());
+		return mMetamodels[id.editor()]->diagramName(id.diagram());
 	case 3:
 		if (mGroups.keys().contains(id.element())) {
 			return id.element();
 		} else {
-			return mPluginIface[id.editor()]->elementName(id.diagram(), id.element());
+			return mMetamodels[id.editor()]->elementType(id.diagram(), id.element()).friendlyName();
 		}
 	default:
 		Q_ASSERT(!"Malformed Id");
@@ -224,10 +226,12 @@ QString EditorManager::description(const Id &id) const
 	if (id.idSize() != 3) {
 		return "";
 	}
+
 	if (mGroups.keys().contains(id.element())) {
 		return id.element();
 	}
-	return mPluginIface[id.editor()]->elementDescription(id.diagram(), id.element());
+
+	return mMetamodels[id.editor()]->elementType(id.diagram(), id.element()).description();
 }
 
 QString EditorManager::propertyDescription(const Id &id, const QString &propertyName) const
@@ -235,9 +239,10 @@ QString EditorManager::propertyDescription(const Id &id, const QString &property
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	if (id.idSize() < 3) {
-		return "";
+		return QString();
 	}
-	return mPluginIface[id.editor()]->propertyDescription(id.diagram(), id.element(), propertyName);
+
+	return mMetamodels[id.editor()]->elementType(id.diagram(), id.element()).propertyDescription(propertyName);
 }
 
 QString EditorManager::propertyDisplayedName(const Id &id, const QString &propertyName) const
@@ -245,18 +250,21 @@ QString EditorManager::propertyDisplayedName(const Id &id, const QString &proper
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	if (id.idSize() != 4) {
-		return "";
+		return QString();
 	}
-	return mPluginIface[id.editor()]->propertyDisplayedName(id.diagram(), id.element(), propertyName);
+
+	return mMetamodels[id.editor()]->elementType(id.diagram(), id.element()).propertyDisplayedName(propertyName);
 }
 
 QString EditorManager::mouseGesture(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 	if (id.idSize() != 3) {
-		return "";
+		return QString();
 	}
-	return mPluginIface[id.editor()]->elementMouseGesture(id.diagram(), id.element());
+
+	const NodeElementType *node = dynamic_cast<const NodeElementType *>(&elementType(id));
+	return node ? node->elementMouseGesture() : QString();
 }
 
 QIcon EditorManager::icon(const Id &id) const
@@ -277,30 +285,26 @@ QSize EditorManager::iconSize(const Id &id) const
 ElementType &EditorManager::elementType(const Id &id) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	ElementType * const type = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	Q_ASSERT(type);
-	return *type;
+	return mMetamodels[id.editor()]->elementType(id.diagram(), id.element());
 }
 
 QStringList EditorManager::propertyNames(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return mPluginIface[id.editor()]->getPropertyNames(id.diagram(), id.element());
+	return elementType(id).propertyNames();
 }
 
 QStringList EditorManager::portTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return mPluginIface[id.editor()]->getPortTypes(id.diagram(), id.element());
+	const NodeElementType *nodeType = dynamic_cast<const NodeElementType *>(&elementType(id));
+	return nodeType ? nodeType->portTypes() : QStringList();
 }
 
 QStringList EditorManager::referenceProperties(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return mPluginIface[id.editor()]->getReferenceProperties(id.diagram(), id.element());
+	return elementType(id).referenceProperties();
 }
 
 IdList EditorManager::containedTypes(const Id &id) const
@@ -309,49 +313,44 @@ IdList EditorManager::containedTypes(const Id &id) const
 	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
 
 	IdList result;
-	foreach (const QString &type, mPluginIface[id.editor()]->getTypesContainedBy(id.element())) {
-		result.append(Id(id.editor(), id.diagram(), type));
+	for (const QString &type : mMetamodels[id.editor()]->getTypesContainedBy(id.element())) {
+		result << Id(id.editor(), id.diagram(), type);
 	}
 
-	typedef QPair<QString, QString> StringPair;
-	QList<StringPair> const parents = mPluginIface[id.editor()]->getParentsOf(id.diagram(), id.element());
+	int FIX_IT_BACK = 100500;
+//	const QList<ElementType *> parents = elementType(id).parents();
 
-	foreach (const StringPair &pair, parents) {
-		result.append(containedTypes(Id(id.editor(), pair.first, pair.second)));
-	}
+//	for (const ElementType *parent : parents) {
+//		result << containedTypes(Id(id.editor(), parent->diagram(), parent->name()));
+//	}
 
 	return result;
 }
 
 bool EditorManager::isEnumEditable(const Id &id, const QString &name) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	const QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
-	return mPluginIface[id.editor()]->isEnumEditable(typeName);
+	Q_ASSERT(id.idSize() >= 3); // Applicable only to element types
+	const QString typeName = elementType(id).propertyType(name);
+	return mMetamodels[id.editor()]->isEnumEditable(typeName);
 }
 
 QList<QPair<QString, QString>> EditorManager::enumValues(const Id &id, const QString &name) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	const QString typeName = mPluginIface[id.editor()]->getPropertyType(id.element(), name);
-	return mPluginIface[id.editor()]->getEnumValues(typeName);
+	Q_ASSERT(id.idSize() >= 3); // Applicable only to element types
+	const QString typeName = elementType(id).propertyType(name);
+	return mMetamodels[id.editor()]->enumValues(typeName);
 }
 
 QString EditorManager::typeName(const Id &id, const QString &name) const
 {
-	return mPluginIface[id.editor()]->getPropertyType(id.element(), name);
+	Q_ASSERT(id.idSize() >= 3); // Applicable only to element types
+	return elementType(id).propertyType(name);
 }
 
 QString EditorManager::defaultPropertyValue(const Id &id, QString name) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return mPluginIface[id.editor()]->getPropertyDefaultValue(id.element(), name);
-}
-
-QStringList EditorManager::propertiesWithDefaultValues(const Id &id) const
-{
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return mPluginIface[id.editor()]->getPropertiesWithDefaultValues(id.element());
+	Q_ASSERT(id.idSize() >= 3); // Applicable only to element types
+	return elementType(id).propertyDefaultValue(name);
 }
 
 bool EditorManager::hasElement(const Id &elementId) const
@@ -359,10 +358,10 @@ bool EditorManager::hasElement(const Id &elementId) const
 	Q_ASSERT(elementId.idSize() == 3);
 	if (!mPluginsLoaded.contains(elementId.editor()))
 		return false;
-	Metamodel *editor = mPluginIface[elementId.editor()];
-	foreach (const QString &diagram, editor->diagrams()) {
-		foreach (const QString &element, editor->elements(diagram)) {
-			if (elementId.diagram() == diagram && elementId.element() == element) {
+	Metamodel *editor = mMetamodels[elementId.editor()];
+	for (const QString &diagram : editor->diagrams()) {
+		for (const ElementType *element : editor->elements(diagram)) {
+			if (elementId.diagram() == diagram && elementId.element() == element->name()) {
 				return true;
 			}
 		}
@@ -372,11 +371,11 @@ bool EditorManager::hasElement(const Id &elementId) const
 
 Id EditorManager::findElementByType(const QString &type) const
 {
-	foreach (Metamodel *editor, mPluginIface.values()) {
-		foreach (const QString &diagram, editor->diagrams()) {
-			foreach (const QString &element, editor->elements(diagram)) {
-				if (type == element) {
-					return Id(editor->id(), diagram, element);
+	for (Metamodel *editor : mMetamodels.values()) {
+		for (const QString &diagram : editor->diagrams()) {
+			for (const ElementType *element : editor->elements(diagram)) {
+				if (type == element->name()) {
+					return Id(editor->id(), diagram, element->name());
 				}
 			}
 		}
@@ -386,17 +385,18 @@ Id EditorManager::findElementByType(const QString &type) const
 
 Metamodel* EditorManager::metamodel(const QString &editor) const
 {
-	return mPluginIface[editor];
+	return mMetamodels[editor];
 }
 
 bool EditorManager::isDiagramNode(const Id &id) const
 {
-	return id.element() == metamodel(id.editor())->diagramNodeName(id.diagram());
+	const NodeElementType *type = metamodel(id.editor())->diagramNode(id.diagram());
+	return type && id.diagram() == type->diagram() && id.element() == type->name();
 }
 
 bool EditorManager::isParentOf(const Id &child, const Id &parent) const // child — EnginesForware, parent — AbstractNode
 {
-	const Metamodel *plugin = mPluginIface[child.editor()];
+	const Metamodel *plugin = mMetamodels[child.editor()];
 	if (!plugin) {
 		return false;
 	}
@@ -414,27 +414,12 @@ bool EditorManager::isParentOf(const Id &child, const Id &parent) const // child
 bool EditorManager::isParentOf(const Metamodel *plugin, const QString &childDiagram
 		, const QString &child, const QString &parentDiagram, const QString &parent) const
 {
-	if (child == parent && childDiagram == parentDiagram) {
-		return true;
-	}
-
-	typedef QPair<QString, QString> StringPair;
-	QList<QPair<QString, QString> > list = plugin->getParentsOf(childDiagram, child);
-
-	bool res = false;
-	foreach (const StringPair &pair, list) {
-		if (pair.second == parent && pair.first == parentDiagram) {
-			return true;
-		}
-		res = res || isParentOf(plugin, pair.first, pair.second, parentDiagram, parent);
-	}
-
-	return res;
+	return plugin->elementType(childDiagram, child).isParent(plugin->elementType(parentDiagram, parent));
 }
 
 QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 {
-	const Metamodel *plugin = mPluginIface[parent.editor()];
+	const Metamodel *plugin = mMetamodels[parent.editor()];
 	if (!plugin) {
 		return QStringList();
 	}
@@ -452,7 +437,7 @@ QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 QList<Explosion> EditorManager::explosions(const Id &source) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
-	const Metamodel *plugin = mPluginIface[source.editor()];
+	const Metamodel *plugin = mMetamodels[source.editor()];
 	QList<Explosion> result;
 	QList<Metamodel::ExplosionData> const rawExplosions =
 			plugin->explosions(source.diagram(), source.element());
@@ -465,12 +450,7 @@ QList<Explosion> EditorManager::explosions(const Id &source) const
 
 bool EditorManager::isGraphicalElementNode(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	ElementType *impl = mPluginIface[id.editor()]->getGraphicalObject(id.diagram(), id.element());
-	if (!impl) {
-		return false;
-	}
-	return impl->isNode();
+	return elementType(id).isNode();
 }
 
 Id EditorManager::theOnlyDiagram() const
@@ -482,8 +462,8 @@ Id EditorManager::theOnlyDiagram() const
 
 QString EditorManager::diagramNodeNameString(const Id &editor, const Id &diagram) const
 {
-	const QString diagramNodeName = metamodel(editor.editor())->diagramNodeName(diagram.diagram());
-	return QString("qrm:/%1/%2/%3").arg(editor.editor(), diagram.diagram(), diagramNodeName);
+	return QString("qrm:/%1/%2/%3").arg(editor.editor(), diagram.diagram()
+			, diagramNodeName(editor.editor(), diagram.diagram()));
 }
 
 QList<QString> EditorManager::getPatternNames() const
@@ -500,7 +480,7 @@ IdList EditorManager::groups(const Id &diagram)
 {
 	IdList elements;
 	PatternParser parser;
-	parser.loadXml((mPluginIface.value(diagram.editor()))->getGroupsXML());
+	parser.loadXml((mMetamodels.value(diagram.editor()))->getGroupsXML());
 	parser.parseGroups(this, diagram.editor(), diagram.diagram());
 	for (const Pattern &pattern : parser.patterns()) {
 		mGroups.insert(pattern.name(), pattern);
@@ -520,11 +500,6 @@ IdList EditorManager::groups(const Id &diagram)
 //	return metamodel(editor)->getPossibleEdges(element);
 //}
 
-QStringList EditorManager::elements(const QString &editor, const QString &diagram) const
-{
-	return metamodel(editor)->elements(diagram);
-}
-
 int EditorManager::isNodeOrEdge(const QString &editor, const QString &element) const
 {
 	return metamodel(editor)->isNodeOrEdge(element);
@@ -533,7 +508,9 @@ int EditorManager::isNodeOrEdge(const QString &editor, const QString &element) c
 bool EditorManager::isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
 		, const QString &childDiagram, const QString &childElement) const
 {
-	return metamodel(editor)->isParentOf(parentDiagram, parentElement, childDiagram, childElement);
+	Id child(editor, childDiagram, childElement);
+	Id parent(editor, parentDiagram, parentElement);
+	return elementType(child).isParent(elementType(parent));
 }
 
 QString EditorManager::diagramName(const QString &editor, const QString &diagram) const
@@ -543,7 +520,8 @@ QString EditorManager::diagramName(const QString &editor, const QString &diagram
 
 QString EditorManager::diagramNodeName(const QString &editor, const QString &diagram) const
 {
-	return metamodel(editor)->diagramNodeName(diagram);
+	NodeElementType *node = metamodel(editor)->diagramNode(diagram);
+	return node ? node->name() : QString();
 }
 
 bool EditorManager::isInterpretationMode() const

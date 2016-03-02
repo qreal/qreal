@@ -40,10 +40,11 @@ EdgeType::~EdgeType()
 
 bool EdgeType::copyPorts(NodeType *parent)
 {
-	Q_UNUSED(parent)	return false;
+	Q_UNUSED(parent)
+	return false;
 }
 
-Type* EdgeType::clone() const
+Type *EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
@@ -264,9 +265,11 @@ void EdgeType::generateCode(OutFile &out)
 			<< "\t\t{\n"
 			<< "\t\t}\n\n"
 
-	<< "\t\tvirtual ~" << className << "() {}\n\n"
+	<< "\t\tvirtual ~" << className << "() {}\n\n";
 
-	<< "\t\tQStringList fromPortTypes() const override\n\t\t{\n\t\t\t";
+	generateCommonMethods(out);
+
+	out() << "\t\tQStringList fromPortTypes() const override\n\t\t{\n\t\t\t";
 	generatePorts(out, mFromPorts);
 
 	out() << "\t\tQStringList toPortTypes() const override\n\t\t{\n\t\t\t";
@@ -291,15 +294,14 @@ void EdgeType::generateCode(OutFile &out)
 
 	out() << "\t\tbool isDividable() const override { return "<< mIsDividable << "; }\n\n";
 
-	generateLabels(out);
-
 	out() << "\t\tvoid drawStartArrow(QPainter * painter) const override\n\t\t{\n";
-
 	generateEdgeStyle(mBeginType, out);
 
 	out() << "\t\tvoid drawEndArrow(QPainter * painter) const override\n\t\t{\n";
-
 	generateEdgeStyle(mEndType, out);
+
+	out() << "\tprivate:\n";
+	generatePropertyData(out);
 
 	out() << "\t};\n\n";
 }

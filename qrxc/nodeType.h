@@ -31,12 +31,10 @@ public:
 	NodeType(Diagram *diagram);
 	virtual Type* clone() const;
 	virtual ~NodeType();
-	virtual void generateCode(utils::OutFile &out);
-	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
+	void generateCode(utils::OutFile &out) override;
 	bool copyPorts(NodeType *port) override;
 	bool copyPictures(GraphicType *parent) override;
-	QList<Port *> ports() const override;
+	QList<Port *> ports() const;
 
 private:
 	QList<Port *> mPointPorts;
@@ -58,4 +56,7 @@ private:
 	bool initLinePorts(const QDomElement &portsElement);
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count);
 	bool initBooleanProperties();
+
+	void generateMouseGesture(utils::OutFile &out);
+	void generatePortTypes(utils::OutFile &out);
 };

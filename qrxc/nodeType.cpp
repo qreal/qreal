@@ -210,14 +210,15 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
 			<< "\t\t\t: NodeElementType(metamodel)\n"
 			<< "\t\t{\n"
+			<< "\t\t\tinitProperties();\n"
 			<< "\t\t}\n\n";
+
+	generateCommonMethods(out);
 
 	out() << "\t\tQString sdfFile() const override { return \":/generated/shapes/" + className + "Class.sdf\"; }\n\n";
 
 	out() << "\t\tQSizeF size() const override { return QSizeF(" + QString::number(mWidth)
 			+ ", " + QString::number(mHeight) + "); }\n\n";
-
-	generateLabels(out);
 
 	out() << "\t\tQList<qReal::PointPortInfo> pointPorts() const override\n\t\t{\n";
 	out() << "\t\t\treturn {\n";
@@ -238,6 +239,9 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	out() << "\t\t\t};\n\t\t}\n\n";
+
+	generateMouseGesture(out);
+	generatePortTypes(out);
 
 	out() << "\t\tbool isResizeable() const\n\t\t{\n"
 	<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
@@ -289,6 +293,10 @@ void NodeType::generateCode(OutFile &out)
 	out() << "\t\t\treturn list;\n"
 	<< "\t\t}\n\n";
 
+	out() << "\tprivate:\n";
+
+	generatePropertyData(out);
+
 	out() << "\t};";
 	out() << "\n\n";
 }
@@ -296,32 +304,6 @@ void NodeType::generateCode(OutFile &out)
 QList<Port *> NodeType::ports() const
 {
 	return mPointPorts + mLinePorts;
-}
-
-bool NodeType::generatePorts(OutFile &out, bool isNotFirst)
-{
-	GraphicType::generateOneCase(out, isNotFirst);
-
-	QSet<QString> portTypes;
-	for (const Port *port : mPointPorts) {
-		portTypes.insert(port->type());
-	}
-
-	for (const Port *port : mLinePorts) {
-		portTypes.insert(port->type());
-	}
-
-	if (!portTypes.empty()) {
-		out() << "\t\tresult ";
-		for (const QString &type : portTypes) {
-			out() << "<< \"" << type << "\"";
-		}
-
-		out() << ";\n";
-	}
-
-	out() << "\t}\n";
-	return true;
 }
 
 bool NodeType::copyPorts(NodeType* parent)
@@ -335,4 +317,52 @@ bool NodeType::copyPorts(NodeType* parent)
 	}
 
 	return !parent->mPointPorts.isEmpty() || !parent->mLinePorts.isEmpty();
+}
+
+void NodeType::generateMouseGesture(OutFile &out)
+{
+	QString gesturePath = path();
+
+	out() << "\t\tQString elementMouseGesture() const override\n\t\t{\n";
+
+	const QString output = "\t\t\treturn ";
+	out() << output;
+	if (gesturePath.length() > maxLineLength - output.length()) {
+		out() << "\"" << gesturePath.left(maxLineLength - output.length());
+		gesturePath.remove(0, maxLineLength - output.length());
+		const QString prefix = "\t\t\t\"";
+		do {
+			out() << "\"\n" << prefix << gesturePath.left(maxLineLength);
+			gesturePath.remove(0, maxLineLength);
+		} while (gesturePath.length() > maxLineLength);
+
+		if (gesturePath.length() > 0) {
+			out() << "\"\n" << prefix << gesturePath;
+		}
+
+	} else {
+		out() << "\"" << gesturePath;
+	}
+
+	out() << "\";\n\t\t}\n\n";
+}
+
+void NodeType::generatePortTypes(OutFile &out)
+{
+	out() << "\t\tQStringList portTypes() const override\n\t\t{\n"
+			<< "\t\t\treturn { ";
+	QSet<QString> portTypes;
+	for (const Port *port : mPointPorts) {
+		portTypes.insert(port->type());
+	}
+
+	for (const Port *port : mLinePorts) {
+		portTypes.insert(port->type());
+	}
+
+	for (const QString &type : portTypes) {
+		out() << "\"" << type << "\", ";
+	}
+
+	out() << "};\n\t\t}\n\n";
 }

@@ -27,6 +27,12 @@ namespace utils {
 class Type
 {
 public:
+	// Types of links in metamodel go below:
+	static const uint generalizationLinkType = 0;
+	static const uint containmentType = 1;
+	static const uint explosionType = 2;
+	static const uint possibleEdgeType = 3;
+
 	Type(bool isResolved, Diagram *diagram);
 	virtual ~Type();
 	virtual Type* clone() const = 0;
@@ -39,6 +45,7 @@ public:
 	QString path() const;
 	QString qualifiedName() const;
 	QString displayedName() const;
+	Diagram *diagram() const;
 
 	QMap<QString, Property*> properties() const;
 
@@ -46,19 +53,8 @@ public:
 	void setDiagram(Diagram *diagram);
 	void setContext(const QString &newContext);
 	void setDisplayedName(const QString &displayedName);
+
 	virtual void generateCode(utils::OutFile &out) = 0;
-	virtual void generateNameMapping(utils::OutFile &out) = 0;
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference) = 0;
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
-	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
-	virtual void generatePropertyDescriptionMapping(utils::OutFile &out) = 0;
-	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
-	virtual void generateExplosionsMap(utils::OutFile &out) = 0;
 
 protected:
 	void copyFields(Type *type) const;

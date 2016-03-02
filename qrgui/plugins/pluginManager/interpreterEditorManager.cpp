@@ -593,32 +593,6 @@ QStringList InterpreterEditorManager::portTypes(const Id &id) const
 	return QStringList("NonTyped");
 }
 
-QStringList InterpreterEditorManager::propertiesWithDefaultValues(const Id &id) const
-{
-	QStringList result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	const qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
-	const Id metaId = repoAndMetaIdPair.second;
-	const QStringList parentsPropertiesWithDefaultValues = propertiesFromParents(id, "defaultName", HasProperty());
-	if (!parentsPropertiesWithDefaultValues.isEmpty()) {
-		result << parentsPropertiesWithDefaultValues;
-	}
-
-	for (const Id &property : repo->children(metaId)) {
-		if (repo->hasProperty(property, "defaultName")) {
-			result << repo->name(property);
-		}
-	}
-
-	for (const Id &property : repo->children(metaId)) {
-		if (repo->hasProperty(property, "name")) {
-			result << repo->name(property);
-		}
-	}
-
-	return result;
-}
-
 bool InterpreterEditorManager::isDiagramNode(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
@@ -721,21 +695,6 @@ QPair<Id, Id> InterpreterEditorManager::editorAndDiagram(const qrRepo::RepoApi *
 
 //	return result;
 //}
-
-QStringList InterpreterEditorManager::elements(const QString &editor, const QString &diagram) const
-{
-	QStringList result;
-	QPair<qrRepo::RepoApi*, Id> const repoAndDiagramPair = repoAndDiagram(editor, diagram);
-	const qrRepo::RepoApi * const repo = repoAndDiagramPair.first;
-	const Id diag = repoAndDiagramPair.second;
-	for (const auto &element: repo->children(diag)) {
-		if (element.element() != "MetaEntityEnum") {
-			result.append(repo->name(element));
-		}
-	}
-
-	return result;
-}
 
 int InterpreterEditorManager::isNodeOrEdge(const QString &editor, const QString &element) const
 {

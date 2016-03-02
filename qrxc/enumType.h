@@ -23,13 +23,11 @@ namespace utils {
 class EnumType : public NonGraphicType
 {
 public:
-	virtual bool init(const QDomElement &element, const QString &context);
-	virtual Type* clone() const;
-	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst);
-	virtual void generatePropertyTypes(utils::OutFile &out);
-	virtual void generatePropertyDefaults(utils::OutFile &out);
-	virtual void generateMouseGesturesMap(utils::OutFile &out);
-	virtual void generateExplosionsMap(utils::OutFile &out);
+	bool init(const QDomElement &element, const QString &context) override;
+	Type *clone() const override;
+
+	/// Prints values of this enum into \a out stream.
+	bool generateValues(utils::OutFile &out, bool isNotFirst) const;
 
 	/// Returns true if enum was marked as editable in metamodel.
 	bool isEditable() const;

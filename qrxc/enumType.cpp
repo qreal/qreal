@@ -52,7 +52,7 @@ Type* EnumType::clone() const
 	return result;
 }
 
-bool EnumType::generateEnumValues(utils::OutFile &out, bool isNotFirst)
+bool EnumType::generateValues(utils::OutFile &out, bool isNotFirst) const
 {
 	if (mValues.isEmpty()) {
 		return false;
@@ -80,26 +80,6 @@ void EnumType::generateOneCase(utils::OutFile &out, bool isNotFirst) const
 	} else {
 		out() << "\telse if (name == \"" << NameNormalizer::normalize(name()) << "\")\n";
 	}
-}
-
-void EnumType::generatePropertyTypes(utils::OutFile &out)
-{
-	Q_UNUSED(out);
-}
-
-void EnumType::generatePropertyDefaults(utils::OutFile &out)
-{
-	Q_UNUSED(out);
-}
-
-void EnumType::generateMouseGesturesMap(utils::OutFile &out)
-{
-	Q_UNUSED(out);
-}
-
-void EnumType::generateExplosionsMap(utils::OutFile &out)
-{
-	Q_UNUSED(out)
 }
 
 bool EnumType::isEditable() const

@@ -15,3 +15,30 @@
 #include "metaMetaModel/metamodel.h"
 
 using namespace qReal;
+
+QList<ElementType *> Metamodel::elements(const QString &diagram) const
+{
+	return mElements[diagram].values();
+}
+
+ElementType &Metamodel::elementType(const QString &diagram, const QString &element) const
+{
+	Q_ASSERT_X(mElements.contains(diagram) && mElements[diagram].contains(element)
+			, Q_FUNC_INFO, "No such entity in metamodel!");
+	ElementType * const result = mElements[diagram][element];
+	Q_ASSERT_X(result, Q_FUNC_INFO, "No such entity in metamodel!");
+	return *result;
+}
+
+void Metamodel::addNode(qrgraph::Node &entity)
+{
+	ElementType * const type = dynamic_cast<ElementType *>(&entity);
+	Q_ASSERT_X(type, Q_FUNC_INFO, "Attempt to add non-metamodel enitity!");
+	Q_ASSERT_X(&type->graph() == this, Q_FUNC_INFO, "Attempt to add entity from other metamodel!");
+
+	const QString diagram = type->diagram();
+	const QString element = type->name();
+	Q_ASSERT_X(!mElements[diagram][element], Q_FUNC_INFO, "Duplicate enitity in metamodel");
+
+	mElements[diagram][element] = type;
+}

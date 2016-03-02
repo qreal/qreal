@@ -47,6 +47,12 @@ public:
 	/// Returns a list of segments to which edges can be with this instances of this type.
 	virtual QList<LinePortInfo> linePorts() const = 0;
 
+	/// Returns a list of types of all ports on the graphical representation of this element.
+	virtual QStringList portTypes() const = 0;
+
+	/// Returns a serialized mouse gesture for this element.
+	virtual QString elementMouseGesture() const = 0;
+
 	// --- Container properties. Maybe moving it into new type ContaineElementType has sense? ---
 
 	/// Returns true if this node is a container.

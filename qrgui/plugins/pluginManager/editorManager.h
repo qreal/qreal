@@ -90,7 +90,6 @@ public:
 	QStringList portTypes(const Id &id) const override;
 	QStringList referenceProperties(const Id &id) const override;
 	QString defaultPropertyValue(const Id &id, QString name) const override;
-	QStringList propertiesWithDefaultValues(const Id &id) const override;
 
 	bool hasElement(const Id &element) const override;
 
@@ -106,7 +105,6 @@ public:
 	QString diagramNodeNameString(const Id &editor, const Id &diagram) const override;
 
 //	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const override;
-	QStringList elements(const QString &editor, const QString &diagram) const override;
 	int isNodeOrEdge(const QString &editor, const QString &element) const override;
 	bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
 			, const QString &childDiagram, const QString &childElement) const override;
@@ -160,7 +158,7 @@ private:
 	QStringList mPluginsLoaded;
 	QMap<QString, QString> mPluginFileName;
 	QMap<QString, Pattern> mGroups;
-	QMap<QString, Metamodel *> mPluginIface;
+	QMap<QString, Metamodel *> mMetamodels;
 
 	QDir mPluginsDir;
 	QStringList mPluginFileNames;

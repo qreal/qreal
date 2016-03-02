@@ -515,7 +515,7 @@ bool EdgeElement::initPossibleEdges()
 	QString editor = id().editor();
 	//TODO: do a code generation for diagrams
 	QString diagram = id().diagram();
-	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(editor, diagram);
+	const IdList elements = mGraphicalAssistApi.editorManagerInterface().elements(id());
 
 	int FIX_IT_BACK_BITCH = 100500;
 	QList<StringPossibleEdge> stringPossibleEdges = {};
@@ -525,15 +525,15 @@ bool EdgeElement::initPossibleEdges()
 
 		QStringList fromElements;
 		QStringList toElements;
-		for (const QString &element : elements) {
-			if (mGraphicalAssistApi.editorManagerInterface().portTypes(Id(editor, diagram, element))
+		for (const Id &element : elements) {
+			if (mGraphicalAssistApi.editorManagerInterface().portTypes(element)
 					.contains(pEdge.first.first)) {
-				fromElements << element;
+				fromElements << element.element();
 			}
 
-			if (mGraphicalAssistApi.editorManagerInterface().portTypes(Id(editor, diagram, element))
+			if (mGraphicalAssistApi.editorManagerInterface().portTypes(element)
 					.contains(pEdge.first.second)) {
-				toElements << element;
+				toElements << element.element();
 			}
 		}
 

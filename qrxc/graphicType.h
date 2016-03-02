@@ -32,34 +32,40 @@ const int maxLineLength = 80;
 class GraphicType : public Type
 {
 public:
-	GraphicType(Diagram *diagram);
-	virtual ~GraphicType();
-	virtual bool init(const QDomElement &element, const QString &context);
-	virtual bool resolve();
-	virtual void generateNameMapping(utils::OutFile &out);
-	virtual void generateDescriptionMapping(utils::OutFile &out);
-	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
-	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference);
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
-	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
-	virtual void generatePropertyTypes(utils::OutFile &out);
-	virtual void generatePropertyDefaults(utils::OutFile &out);
-	virtual void generateMouseGesturesMap(utils::OutFile &out);
-	virtual void generateParentsMapping(utils::OutFile &out);
-	virtual void generateExplosionsMap(utils::OutFile &out);
+	explicit GraphicType(Diagram *diagram);
+	~GraphicType() override;
+	bool init(const QDomElement &element, const QString &context) override;
+	bool resolve() override;
+
+	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) const;
+	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) const;
+	virtual void generateExplosionsMap(utils::OutFile &out) const;
 	virtual bool copyPorts(NodeType *parent) = 0;
 	void copyLabels(GraphicType *parent);
 	virtual bool copyPictures(GraphicType *parent) = 0;
-	virtual QList<Port *> ports() const;
 
 	QString description() const;
 	void setDescription(const QString &description);
 
+	/// Returns a list of types generalized by this one.
+	QStringList immediateParents() const;
+
 protected:
+	void generateCommonMethods(utils::OutFile &out) const;
+	void generateName(utils::OutFile &out) const;
+	void generateFriendlyName(utils::OutFile &out) const;
+	void generateDiagram(utils::OutFile &out) const;
+	void generateDescription(utils::OutFile &out) const;
+	void generatePropertyNames(utils::OutFile &out, bool isReference) const;
+	void generatePropertyGetters(utils::OutFile &out) const;
+	void generateParentGetters(utils::OutFile &out) const;
 	void generateLabels(utils::OutFile &out) const;
+
+	void generatePropertyData(utils::OutFile &out) const;
+	void generatePropertyDisplayedNames(utils::OutFile &out) const;
+	void generatePropertyDescriptions(utils::OutFile &out) const;
+	void generatePropertyDefaults(utils::OutFile &out) const;
+	void generatePropertyTypes(utils::OutFile &out) const;
 
 	/// @todo Remove this sh~.
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
