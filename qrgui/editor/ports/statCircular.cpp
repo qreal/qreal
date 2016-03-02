@@ -20,24 +20,6 @@ StatCircular::StatCircular(const QPointF &point, const qreal &r,bool propX, bool
 	: PortInterface(impl), mCircular(point), mR(r), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
-
-//StatCircular::operator QLineF () const
-//{
-//	return mCircular;
-//}
-
-//void StatCircular::operator= (const QPointF &p)
-//{
-//	mCircular = p;
-//	mPropX = false;
-//	//mPropX2 = false;
-//	mPropY = false;
-//	//mPropY2 = false;
-//	mR = 1;
-//	mInitHeight = 1;
-//	mInitWidth = 1;
-//}
-
 void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 {
 	const qreal x = mCircular.x() * (mPropX ? mInitWidth : contents.width());
@@ -56,12 +38,10 @@ void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 	pen.setColor(highlightColor);
 	pen.setWidth(7);
 	painter->setPen(pen);
-	//painter->drawLine(lineToDraw);
 	painter->drawEllipse(center, r1, r2);
 	pen.setColor(portColor);
 	pen.setWidth(1);
 	painter->setPen(pen);
-	//painter->drawLine(lineToDraw);
 	painter->drawEllipse(center, r1, r2);
 	painter->restore();
 }

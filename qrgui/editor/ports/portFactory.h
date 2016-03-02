@@ -27,10 +27,8 @@ public:
 			, PortImpl *impl) const;
 	virtual PortInterface *createPort(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2
 			, int initWidth, int initHeight, PortImpl *impl) const;
-//	virtual PortInterface *createPort(const QLineF &circular, bool propX1, bool propY1, bool propX2, bool propY2
-//			, int initWidth, int initHeight, PortImpl *impl) const;//here
 	virtual PortInterface *createPort(const QPointF &point, const qreal &r, bool propX, bool propY, int initWidth, int initHeight
-			, PortImpl *impl) const;//here plus r
+			, PortImpl *impl) const;
 };
 
 }

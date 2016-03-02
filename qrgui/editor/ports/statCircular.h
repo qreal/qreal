@@ -20,18 +20,12 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-/** @brief line port description */
+/** @brief circular port description */
 class StatCircular : public PortInterface
 {
-//public:
-//	StatCircular(const QLineF &circular, bool propX1, bool propY1, bool propX2, bool propY2, int initWidth, int initHeight
-//			, PortImpl *impl);
 public:
 	StatCircular(const QPointF &point, const qreal &r,bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl);
 
-
-	//operator QLineF () const;
-	//void operator= (const QLineF &l);
 
 	virtual void paint(QPainter *painter, const QRectF &contents) const;
 	QLineF transformForContents(const QRectF &contents) const;//new
@@ -41,8 +35,6 @@ private:
 
 	bool mPropX;
 	bool mPropY;
-//	bool mPropX2;
-//	bool mPropY2;
 	const qreal mR;
 	int mInitWidth;
 	int mInitHeight;

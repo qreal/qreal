@@ -20,23 +20,9 @@ using namespace utils;
 
 bool CircularPort::init(const QDomElement &element, int width, int height)
 {
-//	QDomElement portStartElement = element.firstChildElement("start");
-//	QDomElement portEndElement = element.firstChildElement("end");
-
-//	mStartX = initCoordinate(portStartElement.attribute("startx"), width);
-//	mStartY = initCoordinate(portStartElement.attribute("starty"), height);
-//	mEndX = initCoordinate(portEndElement.attribute("endx"), width);
-//	mEndY = initCoordinate(portEndElement.attribute("endy"), height);
-//	mType = element.attribute("type", "NonTyped");
-//	mInitWidth = width;
-//	mInitHeight = height;
-
-//	return true;
-
-
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);
-	mR = initCoordinate(element.attribute("r"), qMax(width, height)); //maybe better to rewrite it in another way
+	mR = initCoordinate(element.attribute("r"), qMax(width, height));
 	mInitWidth = width;
 	mInitHeight = height;
 	mType = element.attribute("type", "NonTyped");
@@ -46,15 +32,6 @@ bool CircularPort::init(const QDomElement &element, int width, int height)
 
 void CircularPort::generateCode(OutFile &out, const QStringList &portTypes)
 {
-//	QString circle = QString("QLineF(%1, %2, %3, %4)").arg(mStartX.value()).arg(mStartY.value())
-//			.arg(mEndX.value()).arg(mEndY.value());
-
-//	if (!portTypes.contains(mType)) {
-//		mType = "NonTyped";
-//	}
-
-	out() << "					/*ololo!!!*/				\n";//ya xz che proishodit
-
 	if (!portTypes.contains(mType)) {
 		mType = "NonTyped";
 	}
@@ -64,8 +41,6 @@ void CircularPort::generateCode(OutFile &out, const QStringList &portTypes)
 			 .arg(mR.value())
 			.arg(mX.isScalable() ? "true" : "false").arg(mY.isScalable() ? "true" : "false")
 			.arg(mInitWidth).arg(mInitHeight).arg(mType);
-
-
 }
 
 Port *CircularPort::clone() const

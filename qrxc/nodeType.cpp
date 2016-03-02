@@ -22,7 +22,7 @@
 #include "xmlCompiler.h"
 #include "pointPort.h"
 #include "linePort.h"
-#include "circularPort.h"//here
+#include "circularPort.h"
 #include "editor.h"
 #include "nameNormalizer.h"
 #include "label.h"
@@ -138,8 +138,9 @@ bool NodeType::initPorts()
 
 	mPortsDomElement = portsElement;
 	initPointPorts(portsElement);
-	initLinePorts(portsElement); //here
-	initCircularPorts(portsElement);
+	initLinePorts(portsElement);
+
+	(portsElement);
 
 	return true;
 }
@@ -191,7 +192,6 @@ bool NodeType::initCircularPorts(const QDomElement &portsElement)
 	}
 	return true;
 }
-
 
 bool NodeType::initLabel(Label *label, const QDomElement &element, const int &count)
 {

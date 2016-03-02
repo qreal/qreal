@@ -16,7 +16,7 @@
 
 #include "editor/ports/statLine.h"
 #include "editor/ports/statPoint.h"
-#include "editor/ports/statCircular.h"//here
+#include "editor/ports/statCircular.h"
 
 using namespace qReal::gui::editor;
 

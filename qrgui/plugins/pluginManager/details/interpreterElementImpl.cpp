@@ -97,7 +97,7 @@ void InterpreterElementImpl::initPointPorts(const PortFactoryInterface &factory,
 }
 
 void InterpreterElementImpl::initCircularPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
-		, const int &width, const int &height)//here
+		, const int &width, const int &height)
 {
 	const QDomNodeList circularPortsList
 			= mGraphics.firstChildElement("graphics").firstChildElement("ports").elementsByTagName("circularPort");
@@ -118,16 +118,8 @@ void InterpreterElementImpl::initCircularPorts(const PortFactoryInterface &facto
 			y.chop(1);
 		}
 
-//		QString r = portElement.attribute("r");//???
-//		bool propR = false;
-//		if (r.endsWith("a")) {
-//			propR = true;
-//			r.chop(1);
-//		}
 		const qreal r = portElement.attribute("r").toDouble();
-
 		QPointF point = QPointF(x.toDouble() / static_cast<qreal>(width), y.toDouble() / static_cast<qreal>(height));
-
 		QString portType = portElement.attribute("type", "NonTyped");
 
 		ports << factory.createPort(point, r,propX, propY, width, height, new InterpreterPortImpl(portType));
@@ -279,7 +271,7 @@ void InterpreterElementImpl::init(QRectF &contents, const PortFactoryInterface &
 
 		initPointPorts(portFactory, ports, width, height);
 		initLinePorts(portFactory, ports, width, height);
-		initCircularPorts(portFactory, ports, width, height);//here //without anything
+		initCircularPorts(portFactory, ports, width, height);
 
 		contents.setWidth(width);
 		contents.setHeight(height);

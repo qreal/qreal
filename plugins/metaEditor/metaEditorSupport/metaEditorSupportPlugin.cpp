@@ -77,7 +77,7 @@ QPair<QString, gui::PreferencesPage *> MetaEditorSupportPlugin::preferencesPage(
 }
 
 void MetaEditorSupportPlugin::generateEditorForQrxc()
-{//point
+{
 	EditorGenerator editorGenerator(*mLogicalRepoApi, *mMainWindowInterface->errorReporter());
 
 	QDir dir(".");

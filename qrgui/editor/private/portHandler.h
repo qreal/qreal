@@ -123,7 +123,7 @@ private:
 	/// returns mNonexistentPortId.
 	qreal linePortId(const QPointF &location, const QStringList &types) const;
 
-	qreal circularPortId(const QPointF &location, const QStringList &types) const;//here
+	qreal circularPortId(const QPointF &location, const QStringList &types) const;
 
 	/// Returns distance from location to closest point port of NodeElement and this port number in list of point ports.
 	/// @param location Result will be calculated for this point. location is assumed to be in
@@ -137,9 +137,7 @@ private:
 	/// @return The closest line port number in list of line ports and distance from location to it.
 	QPair<int, qreal> nearestLinePortNumberAndDistance(const QPointF &location, const QStringList &types) const;
 
-
-	QPair<int, qreal> nearestCircularPortNumberAndDistance(const QPointF &location, const QStringList &types) const;//new
-
+	QPair<int, qreal> nearestCircularPortNumberAndDistance(const QPointF &location, const QStringList &types) const;
 
 	/// Returns nearest point parameter at line port to point.
 	/// @param linePortNumber Number of line port at line port list.
@@ -188,7 +186,8 @@ private:
 
 	/// List of line ports that belongs to mNode.
 	QList<StatLine *> mLinePorts;
-	QList<StatCircular *> mCircularPorts;//here
+
+	QList<StatCircular *> mCircularPorts;
 };
 
 }
