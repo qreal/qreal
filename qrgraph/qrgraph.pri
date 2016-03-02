@@ -20,8 +20,10 @@ HEADERS += \
 	$$PWD/include/qrgraph/multigraph.h \
 	$$PWD/include/qrgraph/node.h \
 	$$PWD/include/qrgraph/edge.h \
+	$$PWD/include/qrgraph/queries.h \
 
 SOURCES += \
 	$$PWD/src/multigraph.cpp \
 	$$PWD/src/node.cpp \
 	$$PWD/src/edge.cpp \
+	$$PWD/src/queries.cpp \

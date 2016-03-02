@@ -82,6 +82,15 @@ Node &Multigraph::produceNode()
 	return *node;
 }
 
+void Multigraph::addNode(Node &node)
+{
+	if (&node.graph() != this || mNodes.contains(&node)) {
+		return;
+	}
+
+	mNodes << &node;
+}
+
 Edge &Multigraph::produceEdge(uint type)
 {
 	Edge * const edge = new Edge(*this, type);

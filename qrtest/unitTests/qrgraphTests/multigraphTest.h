@@ -21,10 +21,11 @@ namespace qrTest {
 
 class MultigraphTest : public testing::Test
 {
-protected:
-	void setUpCase1(qrgraph::Multigraph &graph);
-	void setUpCase2(qrgraph::Multigraph &graph);
+public:
+	static void setUpCase1(qrgraph::Multigraph &graph);
+	static void setUpCase2(qrgraph::Multigraph &graph);
 
+protected:
 	void checkCase1(qrgraph::Multigraph &graph);
 	void checkCase2(qrgraph::Multigraph &graph);
 

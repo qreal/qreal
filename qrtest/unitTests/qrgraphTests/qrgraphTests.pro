@@ -22,6 +22,7 @@ INCLUDEPATH += $$PWD/../../../
 
 SOURCES += \
 	$$PWD/multigraphTest.cpp \
+	$$PWD/queriesTest.cpp \
 
 HEADERS += \
 	$$PWD/multigraphTest.h \
