@@ -15,6 +15,7 @@
 #include "portHandler.h"
 
 #include <QtCore/qmath.h>
+#include <QTransform>
 
 #include "editor/editorViewScene.h"
 #include "editor/nodeElement.h"
@@ -114,18 +115,37 @@ qreal PortHandler::pointByCircularPortAngle(int circularPortNumber, const QPoint
 	QLineF circularPort = transformPortForNodeSize(mCircularPorts[circularPortNumber]);
 	const qreal x = circularPort.x1();
 	const qreal y = circularPort.y1();
-	const qreal r = circularPort.x2();
 
-	qreal tg = fabs((location.y() - y) / (location.x() - x));
-
-	if ((location.x() < x && location.y() < y) || (location.x() > x && location.y() > y)) {
-		tg = (-1.0) * tg;
+	if (location.x() == x) {
+		if (location.y() < y) {
+			return 90.0;
+		} else {
+			return 270.0;
+		}
 	}
 
-	const qreal angleInRadians =  qAtan(tg);
-	const qreal angleInDegrees = qRadiansToDegrees(angleInRadians);
-	//const qreal result = angleInDegrees / 360.0;
+	if (location.y() == y) {
+		if (location.x() < x) {
+			return 180.0;
+		} else {
+			return 0.0;
+		}
+	}
 
+	qreal tg = fabs((location.y() - y) / (location.x() - x));
+	qDebug() << "tg" << tg;
+	qreal angleInDegrees = qRadiansToDegrees(qAtan(tg));
+
+	if ((location.x() < x) && (location.y() < y))
+		angleInDegrees = 180.0 - angleInDegrees;
+
+	if ((location.x() < x) && (location.y() > y))
+		angleInDegrees = 180.0 + angleInDegrees;
+
+	if ((location.x() > x) && (location.y() > y))
+		angleInDegrees = 360.0 - angleInDegrees;
+
+	qDebug() << angleInDegrees;
 	return angleInDegrees;
 }
 
@@ -138,7 +158,7 @@ QPointF PortHandler::coordinateOfCircular(int circularPortNumber, const QPointF 
 
 	const qreal newX = a + r * ((location.x() - a) / sqrt(qPow((location.x() - a), 2) + qPow((location.y() - b), 2)));
 	const qreal newY = b + r * ((location.y() - b) / sqrt(qPow((location.x() - a), 2) + qPow((location.y() - b), 2)));
-	qDebug()<< "(x,y)" << newX << newY;
+	//qDebug()<< "(x,y)" << newX << newY;
 	return {newX, newY};
 }
 
@@ -200,11 +220,26 @@ const QPointF PortHandler::portPos(qreal id) const
 	}
 
 	if (portNum < mPointPorts.size() + mLinePorts.size() + mCircularPorts.size()) {
-		return transformPortForNodeSize(mCircularPorts.at(portNum - mPointPorts.size() - mLinePorts.size())).pointAt(id - qFloor(id));
+		return findPointById(id);
 	} else {
 		return QPointF(0, 0);
 	}
 }
+
+const QPointF PortHandler::findPointById(qreal id) const
+{
+	int portNum = portNumber(id);
+	QLineF circularPort = transformPortForNodeSize(mCircularPorts.at(portNum - mPointPorts.size() - mLinePorts.size()));
+	const qreal angle = (id - qFloor(id)) * 360.0;
+	// (0, 0) -> center of port
+	QTransform transform;
+	transform.translate(+circularPort.x1(), circularPort.y1());
+	transform.rotate(360.0 - angle);
+	transform.translate(+circularPort.x2(), 0.0);
+	QPointF newPoint(transform.map(QPointF(0.0,0.0)));
+	return newPoint;
+}
+
 
 int PortHandler::portNumber(qreal id)
 {
@@ -243,11 +278,6 @@ const QPointF PortHandler::nearestPort(const QPointF &location, const QStringLis
 		(circularPortRes.second < minDistance || minDistance < 0)
 	) {
 		minDistance = circularPortRes.second;
-		//what is it? probably, here we should get coordinates: x = r * sin, y = r * cos. or smt like that
-		//or here we should choose just angle ?
-//		const qreal positionAtLineCoef = qMin(qMax(0., pointByCircularPortAngle(circularPortRes.first, locationInLocalCoords))
-//				, mMaximumFractionPartValue);
-//		const QLineF sceneLine = transformPortForNodeSize(mCircularPorts[circularPortRes.first]);
 		nearestPortPoint = coordinateOfCircular(circularPortRes.first, locationInLocalCoords);
 
 	}

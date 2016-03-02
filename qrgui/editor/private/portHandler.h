@@ -65,6 +65,7 @@ public:
 	/// @param id Id that position is returned by this method.
 	/// @return Port position relative to the top left corner of NodeElement.
 	const QPointF portPos(qreal id) const;
+	const QPointF findPointById(qreal id) const;
 
 	/// Calculates nearest point of NodeElement ports to parameter point.
 	/// @param location To this point nearest port will be calculated. Location is assumed to be in SCENE coordinates!
