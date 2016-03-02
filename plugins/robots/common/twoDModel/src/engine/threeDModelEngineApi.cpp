@@ -156,6 +156,10 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 	simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
 	simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
 
+	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+
+	cout << "sensorHandle = " << sensorHandle << endl;
+
 	cout << "frontLeftHandle = " << frontLeftHandle << endl;
 	cout << "frontRightHandle = " << frontRightHandle << endl;
 	cout << "backLeftHandle = " << backLeftHandle << endl;
@@ -232,25 +236,26 @@ int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 
 	// Block for 3D code
 
-	//
-	//simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
+//	simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
 
-	cout << "sensorHandle = " << sensorHandle << endl;
+//	cout << "sensorHandle = " << sensorHandle << endl;
 
 	simxUChar sensorTrigger = 0;
-	simxFloat sensorPoint = 0;
-	simxFloat sensorVector = 0;
+//	simxFloat * sensorPoint;
 
-	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,&sensorPoint,NULL,&sensorVector,simx_opmode_streaming) == simx_return_ok) {
+	if (simxReadProximitySensor(clientID,sensorHandle,&sensorTrigger,NULL,NULL,NULL,simx_opmode_streaming) == simx_return_ok) {
 		cout << "In trigger part sensorTrigger = " << sensorTrigger << endl;
 
-		cout << "SensorPoint = " << sensorPoint << endl;
-
-		cout << "SensorVector = " << sensorVector << endl;
+//		cout << "SensorPoint = " << sensorPoint << endl;
 
 		if (sensorTrigger) {
-			cout << "Return 1 because sensorTrigger != 0" << endl;\
+			cout << "Return 1 because sensorTrigger != 0" << endl;
 			//return sensorVector;
+//			simxFloat point1 = sensorPoint[0];
+//			simxFloat point2 = sensorPoint[1];
+//			simxFloat point3 = sensorPoint[2];
+//			float dist = sqrt(point1 * point1 + point2 * point2 + point3 * point3);
+			//return (int)dist;
 			return 1;
 		}
 
