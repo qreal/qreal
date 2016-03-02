@@ -493,6 +493,10 @@ void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 		"\t\t\tpainter->drawLine(5, 5, -5, 15);\n"
 		"\t\t\tpainter->setPen(oldPen);\n";
 	}
+	out() << "\t\t\tstatic const QPointF added[] = {\n"
+	"\t\t\t\tQPointF(-3, -4),\n\t\t\t\tQPointF(0, -5),\n\t\t\t\tQPointF(3, -4),\n\t\t\t\tQPointF(0, 0)\n\t\t\t};\n"
+	"\t\t\tpainter->drawPolyline(added, 3);\n";
+
 
 	if (style == "empty_circle") {
 		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
