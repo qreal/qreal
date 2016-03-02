@@ -185,7 +185,7 @@ TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
-	// Block for 3D code
+	// Block for 3D model
 
 	if(!isConnect) {
 		clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
@@ -240,7 +240,9 @@ void TwoDModelEngineFacade::onStopInterpretation(qReal::interpretation::StopReas
 {
 	// Block for 3D code
 
-	simxStopSimulation(clientID,  simx_opmode_oneshot);
+	simxStopSimulation(clientID, simx_opmode_oneshot);
+
+	//simxFinish(clientID);
 
 	//
 
