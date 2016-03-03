@@ -35,8 +35,7 @@ public:
 	QList<QPair<QString, qReal::ActionVisibility>> actionsVisibility() const override;
 
 	bool showInterpeterButton() const override;
-	bool allowSubprogramLabelsChanging() const override;
-	bool allowSubprogramShapeChanging() const override;
+	bool allowSubprogramPropertiesChanging() const override;
 
 	QString userPaletteTitle() const override;
 	QString userPaletteDescription() const override;

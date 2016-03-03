@@ -65,14 +65,9 @@ bool Customizer::showInterpeterButton() const
 	return false;
 }
 
-bool Customizer::allowSubprogramLabelsChanging() const
+bool Customizer::allowSubprogramPropertiesChanging() const
 {
-	return false;
-}
-
-bool Customizer::allowSubprogramShapeChanging() const
-{
-	return false;
+	return true;
 }
 
 QString Customizer::userPaletteTitle() const
