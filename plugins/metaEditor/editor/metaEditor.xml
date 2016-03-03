@@ -342,6 +342,12 @@
 						<property type="arrowTypes" name="arrowType">
 							<default>no_arrow</default>
 						</property>
+						<property type="string" name="end">
+							<default>false</default>
+						</property>
+						<property type="string" name="navigable">
+							<default>false</default>
+						</property>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>

@@ -284,6 +284,8 @@ void EditorGenerator::createRole(QDomElement &parent, const Id &id)
 	QDomElement roleElement = mDocument.createElement("role");
 	ensureCorrectness(id, roleElement, "name", mApi.name(id));
 	ensureCorrectness(id, roleElement, "arrowType", mApi.stringProperty(id, "arrowType"));
+	ensureCorrectness(id, roleElement, "end", mApi.stringProperty(id, "end"));
+	ensureCorrectness(id, roleElement, "navigable", mApi.stringProperty(id, "navigable"));
 	parent.appendChild(roleElement);
 
 	setProperties(roleElement, id);
@@ -363,8 +365,15 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 		graphics.appendChild(lineType);
 
 		QDomElement shapeType = mDocument.createElement("shape");
-		ensureCorrectness(id, shapeType, "type", mApi.stringProperty(id, "shape"));
-		graphics.appendChild(shapeType);
+		QString shapeCheck = mApi.stringProperty(id, "shape");
+		if (shapeCheck.isEmpty()) {
+			ensureCorrectness(id, shapeType, "type", "broken");
+			graphics.appendChild(shapeType);
+
+		} else {
+			ensureCorrectness(id, shapeType, "type", mApi.stringProperty(id, "shape"));
+			graphics.appendChild(shapeType);
+		}
 
 		QString const labelText = mApi.stringProperty(id, "labelText");
 		if (!labelText.isEmpty()) {
@@ -397,7 +406,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setPorts(logic, id, "to");
 	setGeneralization(logic, id);
 	setExplosion(logic, id);
-	setDividability(logic, id);
+	//setDividability(logic, id);
 }
 
 void EditorGenerator::createEnum(QDomElement &parent, Id const &id)

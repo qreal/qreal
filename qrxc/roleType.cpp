@@ -7,6 +7,9 @@ bool RoleType::init(const QDomElement &element, const QString &context)
 	}
 
 	mArrowType = element.attribute("arrowType");
+	mEnd = element.attribute("end");
+	mNavigable = element.attribute("navigable");
+
 	QDomElement first = element.firstChildElement("properties");
 
 	for (QDomElement propertyElement = first.firstChildElement("property")
@@ -54,6 +57,17 @@ void RoleType::generateExplosionsMap(utils::OutFile &out)
 {
 
 }
+
+bool RoleType::isEnding()
+{
+	return mEnd == "true";
+}
+
+bool RoleType::isNavigable()
+{
+	return mNavigable == "true";
+}
+
 
 QString RoleType::typeOfArrow()
 {

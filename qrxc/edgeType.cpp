@@ -92,7 +92,10 @@ bool EdgeType::initRoles()
 	}
 
 	for (auto role : mRoles) {
-		if (role->name() == mBeginRoleName) {
+		if (role->name() == mBeginRoleName && role->name() == mEndRoleName) {
+			mBeginArrowType = role->typeOfArrow();
+			mEndArrowType = role->typeOfArrow();
+		} else if (role->name() == mBeginRoleName) {
 			mBeginArrowType = role->typeOfArrow();
 		} else if (role->name() == mEndRoleName) {
 			mEndArrowType = role->typeOfArrow();
@@ -393,11 +396,10 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\tprotected:\n"
 	<< "\t\tvirtual void drawStartArrow(QPainter * painter) const\n\t\t{\n";
 
-	generateEdgeStyle(mBeginArrowType, out);
-
+	generateEdgeStyle(mBeginArrowType, mBeginRoleName, out);
 	out() << "\t\tvirtual void drawEndArrow(QPainter * painter) const\n\t\t{\n";
 
-	generateEdgeStyle(mEndArrowType, out);
+	generateEdgeStyle(mEndArrowType, mEndRoleName, out);
 
 	out() << "\t\tvoid updateData(qReal::ElementRepoInterface *repo) const\n\t\t{\n";
 
@@ -430,7 +432,7 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\t};\n\n";
 }
 
-void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
+void EdgeType::generateEdgeStyle(const QString &styleString, const QString &roleName, OutFile &out)
 {
 	QString style = styleString;
 
@@ -493,10 +495,6 @@ void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 		"\t\t\tpainter->drawLine(5, 5, -5, 15);\n"
 		"\t\t\tpainter->setPen(oldPen);\n";
 	}
-	out() << "\t\t\tstatic const QPointF added[] = {\n"
-	"\t\t\t\tQPointF(-3, -4),\n\t\t\t\tQPointF(0, -5),\n\t\t\t\tQPointF(3, -4),\n\t\t\t\tQPointF(0, 0)\n\t\t\t};\n"
-	"\t\t\tpainter->drawPolyline(added, 3);\n";
-
 
 	if (style == "empty_circle") {
 		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
@@ -606,10 +604,39 @@ void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 					 "\t\t\tpainter->drawPolyline(points, 13);\n";
 		}
 
+
+
 		out() << "\t\t\tpainter->restore();\n";
 	}
 
+	generateEndsAndNavigables(roleName, out);
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
+}
+
+void EdgeType::generateEndsAndNavigables(const QString &roleName, utils::OutFile &out)
+{
+	bool isEnd = false;
+	bool isNavigable = false;
+
+	for (auto role : mRoles) {
+		if (role->name() == roleName) {
+			isEnd = role->isEnding();
+			isNavigable = role->isNavigable();
+		}
+	}
+
+	if (isEnd) {
+		out() << "\t\t\tstatic const QPointF added[] = {\n"
+		"\t\t\t\tQPointF(-3, -4),\n\t\t\t\tQPointF(0, -5),\n\t\t\t\tQPointF(3, -4),\n\t\t\t\tQPointF(0, 0)\n\t\t\t};\n"
+		"\t\t\tpainter->drawPolygon(added, 4);\n";
+	}
+
+	if (isNavigable) {
+		out() << "\t\t\tstatic const QPointF added2[] = {\n"
+		"\t\t\t\tQPointF(-5,25),\n\t\t\t\tQPointF(0, 20),\n\t\t\t\tQPointF(5,25)\n\t\t\t};\n"
+		"\t\t\tpainter->drawPolyline(added2, 3);\n";
+	}
+
 }
 
 void EdgeType::generatePorts(OutFile &out, const QStringList &portTypes)

@@ -62,7 +62,8 @@ private:
 	virtual bool initPortTypes();
 	void initPortTypes(const QDomElement &portsElement, QStringList &ports);
 	void generateGraphics() const;
-	void generateEdgeStyle(const QString &styleString, utils::OutFile &out);
+	void generateEdgeStyle(const QString &styleString, const QString &roleName, utils::OutFile &out);
+	void generateEndsAndNavigables(const QString &roleName, utils::OutFile &out);
 	void generatePorts(utils::OutFile &out, const QStringList &portTypes);
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count);
 };

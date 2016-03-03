@@ -33,9 +33,12 @@ public:
 	virtual void generateExplosionsMap(utils::OutFile &out);
 	QString typeOfArrow();
 	QList<Property*> getPropertiesOfRole();
+	bool isEnding();
+	bool isNavigable();
 
 private:
 	QString mArrowType;
 	QList<Property*> mProperties;
-
+	QString mEnd;
+	QString mNavigable;
 };
