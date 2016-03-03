@@ -33,7 +33,10 @@ public:
 
 	// Block for 3D model
 
-	void setClientID(int newClientID) override;
+	void initParameters3DModel(int clientID,
+							   int frontLeftHandle, int frontRightHandle,
+							   int backLeftHandle, int backRightHandle,
+							   int sonarSensorHandle) override;
 
 	//
 
@@ -83,21 +86,16 @@ private:
 	QScopedPointer<view::FakeScene> mFakeScene;
 	QScopedPointer<engine::TwoDModelGuiFacade> mGuiFacade;
 
-	// Block for 3d code
-
-//	int portNb = 19997;
+	// Block for 3D model
 
 	int clientID = -1;
-
-	// on time
-//	bool connect = false;
 
 	int frontLeftHandle = 0;
 	int frontRightHandle = 0;
 	int backLeftHandle = 0;
 	int backRightHandle = 0;
 
-	int sensorHandle = 0;
+	int sonarSensorHandle = 0;
 
 	//
 };

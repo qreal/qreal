@@ -25,12 +25,6 @@
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
-//
-#include <iostream>
-
-using namespace std;
-//
-
 using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
@@ -41,31 +35,6 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
-//	// Block for 3D code
-//	// Connect
-
-//	clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
-
-//	if (clientID == -1)
-//	{
-//		cout << "clientID == -1" << endl;
-//		simxFinish(clientID);
-//		return;
-//	}
-
-//	cout << "ClientID = " << clientID << endl;
-
-//	if (simxGetConnectionId(clientID) == -1)
-//	{
-//		cout << "simxGetConnectionId(clientID) == -1" << endl;
-//		simxFinish(clientID);
-//		return;
-//	}
-
-//	cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
-
-//	//
-
 	mModel.data()->addRobotModel(robotModel);
 
 	connect(mView.data(), &view::TwoDModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
@@ -187,44 +156,30 @@ void TwoDModelEngineFacade::onStartInterpretation()
 {
 	// Block for 3D model
 
+	// Initialization 3D model V-Rep in the moment first click on the button.
+
 	if(!isConnect) {
-		clientID = simxStart((simxChar*)"127.0.0.1",portNb,true,true,2000,5);
+		clientID = simxStart((simxChar*)"127.0.0.1", portNb, true, true, 2000, 5);
 
 		if (clientID == -1) {
-			cout << "clientID == -1" << endl;
 			simxFinish(clientID);
 			return;
 		}
-
-		cout << "ClientID = " << clientID << endl;
 
 		if (simxGetConnectionId(clientID) == -1) {
-			cout << "simxGetConnectionId(clientID) == -1" << endl;\
 			simxFinish(clientID);
 			return;
 		}
 
-		cout << "simxGetConnectionId = " << simxGetConnectionId(clientID) << endl;
+		simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+		simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+		simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+		simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
 
+		simxGetObjectHandle(clientID, "sensor", &sonarSensorHandle, simx_opmode_oneshot_wait);
 
-
-		// On each sensor must be his "setNewMotor" by port.
-
-//		simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
-//		simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
-//		simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
-//		simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
-
-//		simxGetObjectHandle(clientID, "sensor", &sensorHandle, simx_opmode_oneshot_wait);
-
-//		cout << "frontLeftHandle = " << frontLeftHandle << endl;
-//		cout << "frontRightHandle = " << frontRightHandle << endl;
-//		cout << "backLeftHandle = " << backLeftHandle << endl;
-//		cout << "backRightHandle = " << backRightHandle << endl;
-
-//		cout << "sensorHandle = " << sensorHandle << endl;
-
-		mApi->setClientID(clientID);
+		mApi->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
+									backLeftHandle, backRightHandle, sonarSensorHandle);
 
 		isConnect = true;
 	}
