@@ -139,6 +139,7 @@ bool NodeType::initPorts()
 	mPortsDomElement = portsElement;
 	initPointPorts(portsElement);
 	initLinePorts(portsElement);
+	initCircularPorts(portsElement);
 
 	(portsElement);
 
