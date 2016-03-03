@@ -40,9 +40,9 @@ public:
 	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) const;
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) const;
 	virtual void generateExplosionsMap(utils::OutFile &out) const;
+	virtual bool copyPictures(GraphicType *parent) = 0;
 	virtual bool copyPorts(NodeType *parent) = 0;
 	void copyLabels(GraphicType *parent);
-	virtual bool copyPictures(GraphicType *parent) = 0;
 
 	QString description() const;
 	void setDescription(const QString &description);
@@ -57,7 +57,7 @@ protected:
 	void generateDiagram(utils::OutFile &out) const;
 	void generateDescription(utils::OutFile &out) const;
 	void generatePropertyNames(utils::OutFile &out, bool isReference) const;
-	void generatePropertyGetters(utils::OutFile &out) const;
+	virtual void generatePropertyGetters(utils::OutFile &out) const;
 	void generateParentGetters(utils::OutFile &out) const;
 	void generateLabels(utils::OutFile &out) const;
 
@@ -120,16 +120,15 @@ private:
 
 	bool mResolving;
 
-	bool initLabels();
-	bool initUsages();
-	bool initParents();
-	bool initProperties();
-	bool initContainers();
-	bool initContainerProperties();
-	bool initCreateChildrenFromMenu();
-	bool initPossibleEdges();
-	bool initExplosions();
-	bool initTypeList(const QString &listName, const QString &listElementName
+	virtual bool initLabels();
+	virtual bool initParents();
+	virtual bool initProperties();
+	virtual bool initContainers();
+	virtual bool initContainerProperties();
+	virtual bool initCreateChildrenFromMenu();
+	virtual bool initPossibleEdges();
+	virtual bool initExplosions();
+	virtual bool initTypeList(const QString &listName, const QString &listElementName
 		, QStringList &resultingList) const;
 
 	bool initFieldList(const QString &listName, const QString &listElementName

@@ -55,9 +55,7 @@ public:
 	IdList elements(const Id &diagram) const override;
 	Version version(const Id &editor) const override;
 
-	IdList groups(const Id &diagram) override;
-	Pattern getPatternByName (const QString &str) const override;
-	QList<QString> getPatternNames() const override;
+	Pattern parsePattern(const Id &id) const override;
 	QStringList paletteGroups(const Id &editor, const Id &diagram) const override;
 	QStringList paletteGroupList(const Id &editor,const Id &diagram, const QString &group) const override;
 	QString paletteGroupDescription(const Id &editor, const Id &diagram, const QString &group) const override;

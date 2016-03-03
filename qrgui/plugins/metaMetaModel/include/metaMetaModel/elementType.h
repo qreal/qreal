@@ -24,6 +24,7 @@ namespace qReal {
 class Metamodel;
 class NodeElementType;
 class EdgeElementType;
+class PatternType;
 
 typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
 typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
@@ -39,14 +40,35 @@ typedef QPair<qReal::Id, qReal::Id> ElementPair;
 class ElementType : public qrgraph::Node
 {
 public:
+	/// Enumerates types of entities that can be dragged out of a palette. All those enities have type descriptors
+	/// subclassing this class.
+	enum class Type
+	{
+		/// This type describes node element, toNode() can be safely called.
+		node = 0
+		/// This type describes edge element, toEdge() can be safely called.
+		, edge
+		/// This type describes group of nodes and edges, toPattern() can be safely called.
+		, pattern
+	};
+
+	/// Returns a reference to instance of metamodel this type belogns to.
+	Metamodel &metamodel() const;
+
 	/// Casts this instance to node element type. If this is not node then assertion fault will be generated.
+	/// @see type().
 	const NodeElementType &toNode() const;
 
 	/// Casts this instance to edge element type. If this is not edge then assertion fault will be generated.
+	/// @see type().
 	const EdgeElementType &toEdge() const;
 
+	/// Casts this instance to pattern element type. If this is not pattern then assertion fault will be generated.
+	/// @see type().
+	const PatternType &toPattern() const;
+
 	/// Returns true if this instance describes node element type.
-	virtual bool isNode() const = 0;
+	virtual Type type() const = 0;
 
 	/// Returns the internal name if this element. This name can be used for element() part of qReal::Id and should
 	/// not be shown to user.

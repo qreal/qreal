@@ -68,7 +68,7 @@ void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree)
 
 void PaletteTreeWidgets::initEditorTree()
 {
-	IdList elements = mEditorManager->elements(mDiagram) + mEditorManager->groups(mDiagram);
+	IdList elements = mEditorManager->elements(mDiagram);
 	const bool sort = mEditorManager->shallPaletteBeSorted(mEditor, mDiagram);
 	if (sort) {
 		PaletteTreeWidget::sortByFriendlyName(elements);

@@ -136,7 +136,7 @@ QString Pattern::outNode() const
 	return mOutNode;
 }
 
-void Pattern::countSize(EditorManager *editorManager)
+void Pattern::countSize(const EditorManager *editorManager)
 {
 	qreal minY = 0;
 	qreal maxY = 0;

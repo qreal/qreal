@@ -138,9 +138,7 @@ public:
 	QString paletteGroupDescription(const Id &editor, const Id &diagram, const QString &group) const override;
 	bool shallPaletteBeSorted(const Id &editor, const Id &diagram) const override;
 	QStringList referenceProperties(const Id &id) const override;
-	IdList groups(const Id &diagram) override;
-	Pattern getPatternByName (const QString &str) const override;
-	QList<QString> getPatternNames() const override;
+	Pattern parsePattern(const Id &id) const override;
 	QSize iconSize(const Id &id) const override;
 
 	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const override;

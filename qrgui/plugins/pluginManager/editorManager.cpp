@@ -24,9 +24,9 @@
 #include <qrrepo/repoApi.h>
 #include <metaMetaModel/metamodel.h>
 #include <metaMetaModel/nodeElementType.h>
+#include <metaMetaModel/patternType.h>
 
-#include "editor/nodeElement.h"
-#include "editor/edgeElement.h"
+#include "qrgui/plugins/pluginManager/sdfRenderer.h"
 
 using namespace qReal;
 
@@ -450,7 +450,7 @@ QList<Explosion> EditorManager::explosions(const Id &source) const
 
 bool EditorManager::isGraphicalElementNode(const Id &id) const
 {
-	return elementType(id).isNode();
+	return elementType(id).type() == ElementType::Type::node;
 }
 
 Id EditorManager::theOnlyDiagram() const
@@ -466,33 +466,16 @@ QString EditorManager::diagramNodeNameString(const Id &editor, const Id &diagram
 			, diagramNodeName(editor.editor(), diagram.diagram()));
 }
 
-QList<QString> EditorManager::getPatternNames() const
+/// @todo: We should get rid of this function. Information should already be parsed by qrxc and qrmc and returned
+/// by PatternType.
+Pattern EditorManager::parsePattern(const Id &id) const
 {
-	return mGroups.keys();
-}
-
-Pattern EditorManager::getPatternByName(const QString &str) const
-{
-	return mGroups.value(str);
-}
-
-IdList EditorManager::groups(const Id &diagram)
-{
-	IdList elements;
 	PatternParser parser;
-	parser.loadXml((mMetamodels.value(diagram.editor()))->getGroupsXML());
-	parser.parseGroups(this, diagram.editor(), diagram.diagram());
-	for (const Pattern &pattern : parser.patterns()) {
-		mGroups.insert(pattern.name(), pattern);
+	if (!parser.parseGroup(this, elementType(id).toPattern())) {
+		return Pattern();
 	}
 
-	for (const QString &group : mGroups.keys()) {
-		if (diagram.diagram() == mGroups[group].diagram()) {
-			elements.append(Id(diagram.editor(), diagram.diagram(), group));
-		}
-	}
-
-	return elements;
+	return parser.pattern();
 }
 
 //QList<StringPossibleEdge> EditorManager::possibleEdges(const QString &editor, const QString &element) const

@@ -12,18 +12,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "metaMetaModel/nodeElementType.h"
+#include "metaMetaModel/patternType.h"
 
 #include "metaMetaModel/metamodel.h"
 
 using namespace qReal;
 
-NodeElementType::NodeElementType(Metamodel &metamodel)
+PatternType::PatternType(Metamodel &metamodel)
 	: ElementType(metamodel)
 {
 }
 
-ElementType::Type NodeElementType::type() const
+ElementType::Type qReal::PatternType::type() const
 {
-	return Type::node;
+	return Type::pattern;
 }

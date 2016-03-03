@@ -50,7 +50,7 @@ QMultiMap<Id, Id> Exploser::explosions(const Id &diagram) const
 			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
 				target = targetNodeOrGroup;
 			} else {
-				const Pattern pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
+				const Pattern pattern = mApi.editorManagerInterface().parsePattern(targetNodeOrGroup);
 				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
 			}
 

@@ -27,6 +27,7 @@ HEADERS += \
 	$$PWD/include/metaMetaModel/elementType.h \
 	$$PWD/include/metaMetaModel/nodeElementType.h \
 	$$PWD/include/metaMetaModel/edgeElementType.h \
+	$$PWD/include/metaMetaModel/patternType.h \
 	$$PWD/include/metaMetaModel/linkShape.h \
 	$$PWD/include/metaMetaModel/elementRepoInterface.h \
 	$$PWD/include/metaMetaModel/labelProperties.h \
@@ -37,4 +38,5 @@ SOURCES += \
 	$$PWD/src/elementType.cpp \
 	$$PWD/src/nodeElementType.cpp \
 	$$PWD/src/edgeElementType.cpp \
+	$$PWD/src/patternType.cpp \
 	$$PWD/src/labelProperties.cpp \

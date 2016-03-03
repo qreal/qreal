@@ -100,12 +100,6 @@ public:
 	/// Nullptr can be returned if metamodel does not provide any element as root of \a diagram.
 	virtual NodeElementType *diagramNode(const QString &diagram) const = 0;
 
-	/// Returns serialized representation of all patterns.
-	/// @todo: This is the worst aproach ever. All patterns must be deserialized each time when we want to enumearte
-	/// one of them. Patterns must be separate type (like NodeElementType or EdgeElementType) and be a part
-	/// of metamodel multigraph. If you see this note in 3 years (2019) then I died, tell my mom I loved her.
-	virtual QString getGroupsXML() const = 0;
-
 	/// Returns a list of groups in palette for \a diagram. This list usually contains localized values,
 	/// so they can be shown to user.
 	virtual QStringList diagramPaletteGroups(const QString &diagram) const = 0;

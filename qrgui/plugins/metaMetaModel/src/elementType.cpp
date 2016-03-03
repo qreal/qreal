@@ -17,6 +17,7 @@
 #include "metaMetaModel/metamodel.h"
 #include "metaMetaModel/nodeElementType.h"
 #include "metaMetaModel/edgeElementType.h"
+#include "metaMetaModel/patternType.h"
 
 using namespace qReal;
 
@@ -25,16 +26,27 @@ ElementType::ElementType(Metamodel &metamodel)
 {
 }
 
+Metamodel &ElementType::metamodel() const
+{
+	return *static_cast<Metamodel *>(&graph());
+}
+
 const NodeElementType &ElementType::toNode() const
 {
-	Q_ASSERT(isNode());
+	Q_ASSERT(type() == Type::node);
 	return *dynamic_cast<const NodeElementType *>(this);
 }
 
 const EdgeElementType &ElementType::toEdge() const
 {
-	Q_ASSERT(!isNode());
+	Q_ASSERT(type() == Type::edge);
 	return *dynamic_cast<const EdgeElementType *>(this);
+}
+
+const PatternType &ElementType::toPattern() const
+{
+	Q_ASSERT(type() == Type::pattern);
+	return *dynamic_cast<const PatternType *>(this);
 }
 
 void ElementType::updateRendererContent(const QString &shape)

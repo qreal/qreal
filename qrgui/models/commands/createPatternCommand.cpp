@@ -32,7 +32,7 @@ qReal::Id CreatePatternCommand::rootId() const
 QList<qReal::ElementInfo> CreatePatternCommand::parse(models::LogicalModelAssistApi &logicalApi
 		, qReal::models::GraphicalModelAssistApi &graphicalApi, const qReal::ElementInfo &info)
 {
-	mPattern = graphicalApi.editorManagerInterface().getPatternByName(info.id().element());
+	mPattern = graphicalApi.editorManagerInterface().parsePattern(info.id());
 	QList<qReal::ElementInfo> result;
 	const QPointF size = mPattern.size();
 

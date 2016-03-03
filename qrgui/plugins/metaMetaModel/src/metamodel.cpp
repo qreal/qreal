@@ -34,7 +34,7 @@ void Metamodel::addNode(qrgraph::Node &entity)
 {
 	ElementType * const type = dynamic_cast<ElementType *>(&entity);
 	Q_ASSERT_X(type, Q_FUNC_INFO, "Attempt to add non-metamodel enitity!");
-	Q_ASSERT_X(&type->graph() == this, Q_FUNC_INFO, "Attempt to add entity from other metamodel!");
+	Q_ASSERT_X(&type->metamodel() == this, Q_FUNC_INFO, "Attempt to add entity from other metamodel!");
 
 	const QString diagram = type->diagram();
 	const QString element = type->name();

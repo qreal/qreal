@@ -348,19 +348,9 @@ QStringList ProxyEditorManager::referenceProperties(const Id &id) const
 	return mProxiedEditorManager->referenceProperties(id);
 }
 
-IdList ProxyEditorManager::groups(const Id &diagram)
+Pattern ProxyEditorManager::parsePattern(const Id &id) const
 {
-	return mProxiedEditorManager->groups(diagram);
-}
-
-Pattern ProxyEditorManager::getPatternByName (const QString &str) const
-{
-	return mProxiedEditorManager->getPatternByName(str);
-}
-
-QList<QString> ProxyEditorManager::getPatternNames() const
-{
-	return mProxiedEditorManager->getPatternNames();
+	return mProxiedEditorManager->parsePattern(id);
 }
 
 QSize ProxyEditorManager::iconSize(const Id &id) const

@@ -162,7 +162,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		}
 
 		const ElementType &elementType = mLogicalAssistApi->editorManagerInterface().elementType(currentId);
-		Element *elem = elementType.isNode()
+		Element *elem = elementType.type() == ElementType::Type::node
 				? static_cast<Element *>(new NodeElement(elementType.toNode(), currentId, mScene->models()))
 				: static_cast<Element *>(new EdgeElement(elementType.toEdge(), currentId, mScene->models()));
 

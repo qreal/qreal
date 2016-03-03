@@ -128,9 +128,7 @@ public:
 	virtual QString paletteGroupDescription(const Id &editor, const Id &diagram, const QString &group) const = 0;
 	virtual bool shallPaletteBeSorted(const Id &editor, const Id &diagram) const = 0;
 	virtual QStringList referenceProperties(const Id &id) const = 0;
-	virtual IdList groups(const Id &diagram) = 0;
-	virtual Pattern getPatternByName (const QString &str) const = 0;
-	virtual QList<QString> getPatternNames() const = 0;
+	virtual Pattern parsePattern(const Id &id) const = 0;
 	virtual QSize iconSize(const Id &id) const = 0;
 
 	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const = 0;

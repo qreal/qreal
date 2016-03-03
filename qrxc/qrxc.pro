@@ -25,6 +25,7 @@ HEADERS += association.h \
 	linePort.h \
 	nameNormalizer.h \
 	nodeType.h \
+	patternType.h \
 	nonGraphicType.h \
 	numericType.h \
 	pointPort.h \
@@ -47,6 +48,7 @@ SOURCES += association.cpp \
 	main.cpp \
 	nameNormalizer.cpp \
 	nodeType.cpp \
+	patternType.cpp \
 	nonGraphicType.cpp \
 	numericType.cpp \
 	pointPort.cpp \

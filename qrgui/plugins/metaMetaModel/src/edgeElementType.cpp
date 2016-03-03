@@ -22,3 +22,8 @@ EdgeElementType::EdgeElementType(Metamodel &metamodel)
 	: ElementType(metamodel)
 {
 }
+
+ElementType::Type EdgeElementType::type() const
+{
+	return Type::edge;
+}

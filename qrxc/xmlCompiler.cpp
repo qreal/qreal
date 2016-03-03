@@ -152,6 +152,7 @@ void XmlCompiler::generateElementClasses()
 		<< "#include <qrgraph/queries.h>\n"
 		<< "#include <metaMetaModel/nodeElementType.h>\n"
 		<< "#include <metaMetaModel/edgeElementType.h>\n"
+		<< "#include <metaMetaModel/patternType.h>\n"
 		<< "#include <metaMetaModel/labelProperties.h>\n\n"
 		;
 
@@ -197,7 +198,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQList<QPair<QString, QString>> enumValues(const QString &name) const override;\n"
 		<< "\tbool isEnumEditable(const QString &name) const override;\n"
-		<< "\tQString getGroupsXML() const override;\n"
 		<< "\n"
 		<< "\tQString editorName() const override;\n"
 		<< "\tQString diagramName(const QString &diagram) const override;\n"
@@ -244,7 +244,6 @@ void XmlCompiler::generatePluginSource()
 	generateContainedTypes(out);
 	generatePossibleEdges(out);
 	generateNodesAndEdges(out);
-	generateGroupsXML(out);
 	generateEnumValues(out);
 	generateEditableEnums(out);
 }
@@ -337,10 +336,11 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initNameMap()\n{\n";
 
 	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
-		QString diagramName = NameNormalizer::normalize(diagram->name());
+		const QString diagramName = NameNormalizer::normalize(diagram->name());
+		const QString nodeName = NameNormalizer::normalize(diagram->nodeName());
 		out() << "\tmDiagramNameMap[\"" << diagramName << "\"] = QObject::tr(\""
 				<< diagram->displayedName() << "\");\n";
-		out() << "\tmDiagramNodeNameMap[\"" << diagramName << "\"] = \"" << diagram->nodeName() << "\"" << ";\n";
+		out() << "\tmDiagramNodeNameMap[\"" << diagramName << "\"] = \"" << nodeName << "\"" << ";\n";
 		out() << "\n";
 	}
 
@@ -641,18 +641,6 @@ void XmlCompiler::generateResourceFile()
 	out() << mResources
 		<< "</qresource>\n"
 		<< "</RCC>\n";
-}
-
-void XmlCompiler::generateGroupsXML(OutFile &out)
-{
-	out() << "QString " << mPluginName << "Plugin::getGroupsXML() const \n{\n";
-	QString result = "";
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams()){
-		if (!diagram->getGroupsXML().isEmpty())
-			result = result + diagram->getGroupsXML();
-	}
-	out() << "\treturn QString::fromUtf8(\"" << result << "\");\n"
-		<< "}\n\n";
 }
 
 void XmlCompiler::generateEnumValues(OutFile &out)

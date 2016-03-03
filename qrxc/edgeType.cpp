@@ -263,6 +263,7 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
 			<< "\t\t\t: EdgeElementType(metamodel)\n"
 			<< "\t\t{\n"
+			<< "\t\t\tinitProperties();\n"
 			<< "\t\t}\n\n"
 
 	<< "\t\tvirtual ~" << className << "() {}\n\n";

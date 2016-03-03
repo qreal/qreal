@@ -25,10 +25,7 @@ namespace qReal {
 class EdgeElementType : public ElementType
 {
 public:
-	bool isNode() const override
-	{
-		return false;
-	}
+	Type type() const override;
 
 	/// Returns the style of the pen that will draw this edge.
 	virtual Qt::PenStyle penStyle() const = 0;

@@ -1246,21 +1246,10 @@ bool InterpreterEditorManager::shallPaletteBeSorted(const Id &editor, const Id &
 	return true;
 }
 
-IdList InterpreterEditorManager::groups(const Id &diagram)
+Pattern InterpreterEditorManager::parsePattern(const Id &id) const
 {
-	Q_UNUSED(diagram);
-	return IdList();
-}
-
-Pattern InterpreterEditorManager::getPatternByName (const QString &str) const
-{
-	Q_UNUSED(str);
+	Q_UNUSED(id);
 	return Pattern();
-}
-
-QList<QString> InterpreterEditorManager::getPatternNames() const
-{
-	return QList<QString>();
 }
 
 QSize InterpreterEditorManager::iconSize(const Id &id) const

@@ -23,10 +23,7 @@ namespace qReal {
 class NodeElementType : public ElementType
 {
 public:
-	bool isNode() const override
-	{
-		return true;
-	}
+	Type type() const override;
 
 	/// Returns path to file that contains SDF description of element's appearance.
 	virtual QString sdfFile() const = 0;

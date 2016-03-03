@@ -415,7 +415,7 @@ void EditorViewScene::createElement(const ElementInfo &elementInfo
 
 	QLOG_TRACE() << "Created element, id = " << innerElementInfo.id() << ", position = " << scenePos;
 
-	if (mEditorManager.getPatternNames().contains(innerElementInfo.id().element())) {
+	if (mEditorManager.elementType(innerElementInfo.id()).type() == ElementType::Type::pattern) {
 		innerElementInfo.setPos(scenePos);
 		innerElementInfo.setGraphicalParent(mRootId);
 		innerElementInfo.setLogicalParent(mRootId);
