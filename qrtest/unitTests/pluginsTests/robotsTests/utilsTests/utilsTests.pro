@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+TARGET = robots_utils_unittests
+
+include(../../../common.pri)
+
+include(../../../../../plugins/robots/utils/utils.pri)
+
+links(qslog)
+
+includes(plugins/robots/utils)
+
+# Tests
 HEADERS += \
-	$$PWD/progress.h \
-	$$PWD/longOperation.h \
-	$$PWD/functorOperation.h \
-	$$PWD/private/functors.h \
+	$$PWD/circularQueueTest.h \
 
 SOURCES += \
-	$$PWD/progress.cpp \
-	$$PWD/longOperation.cpp \
-	$$PWD/private/functorOperation.cpp \
+	$$PWD/circularQueueTest.cpp \

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,46 +14,31 @@
 
 #pragma once
 
+#include <QtCore/QFuture>
+#include <QtCore/QFutureWatcher>
 #include <QtWidgets/QProgressBar>
 
-#include <qrutils/invocationUtils/longOperation.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/progressReporterInterface.h>
 
-namespace qReal
-{
+#include "qrgui/dialogs/dialogsDeclSpec.h"
 
-/// @brief Progress dialog capable with invocation utils
-class ProgressBar : public QProgressBar
+namespace qReal {
+
+/// @brief Progress dialog capable with QtConcurrent system.
+class QRGUI_DIALOGS_EXPORT ProgressBar : public QProgressBar, public ProgressReporterInterface
 {
 	Q_OBJECT
 
 public:
 	explicit ProgressBar(QWidget *parent = 0);
 
-	/// Returns last connected operation
-	invocation::LongOperation *operation() const;
-	/// Returns if some running operation connected at the moment
-	bool isOperationConnected() const;
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 
-	/// Binds current progress bar with some operation from
-	/// invocation utils. If operation provides progress info
-	/// progress bar shows that progress. Else progress bar
-	/// just shows that something is invocing at the moment
-	void connectOperation(invocation::LongOperation *operation);
-	/// Reinits progress bar
-	void reset();
-
-private slots:
-	void onBeforeStart();
-	void onOperationComplete(invocation::InvocationState result);
+	/// Returns component watching the state of currently tracked long operation.
+	const QFutureWatcher<void> &currentOperation() const;
 
 private:
-	void connectOperation();
-	void disconnectOperation();
-
-	void onOperationFinishedNormally();
-	void onOperationCanceled();
-
-	invocation::LongOperation* mOperation;
+	const QFutureWatcher<void> *mCurrentWatcher;  // Takes ownership via QObject parentship.
 };
 
 }
