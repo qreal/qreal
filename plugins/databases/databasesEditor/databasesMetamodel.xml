@@ -118,7 +118,7 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="string" displayedName="Table Name" name="TableName"/>
+						<property type="string" displayedName="Table name" name="TableName"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>
@@ -160,7 +160,7 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="string" displayedName="Column Name" name="ColumnName"/>
+						<property type="string" displayedName="Column name" name="ColumnName"/>
 					</properties>
 					<fromPorts>
 						<port type="EntityRight"/>

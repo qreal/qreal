@@ -63,14 +63,14 @@
 					</container>
 					<properties>
 						<property type="string" name="Name" displayedName="Name"/>
-						<property type="bool" name="local" displayedName="local"/>
-						<property type="bool" name="global" displayedName="global"/>
+						<property type="bool" name="local" displayedName="Local"/>
+						<property type="bool" name="global" displayedName="Global"/>
 						<property type="bool" name="temp" displayedName="Temp"/>
 						<property type="bool" name="temporary" displayedName="Temporary"/>
-						<property type="bool" name="unlogged" displayedName="unlogged"/>
+						<property type="bool" name="unlogged" displayedName="Unlogged"/>
 						<property type="bool" name="if_not_exists" displayedName="If not exists"/>
-						<property type="string" name="inherits" displayedName="inherits"/>
-						<property type="string" name="with" displayedName="with"/>
+						<property type="string" name="inherits" displayedName="Inherits"/>
+						<property type="string" name="with" displayedName="With"/>
 						<property type="bool" name="with_oids" displayedName="With oids"/>
 						<property type="bool" name="without_oids" displayedName="Without oids"/>
 						<property type="string" name="on_commit" displayedName="On commit"/>

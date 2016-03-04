@@ -8,7 +8,7 @@
 			<port name="TableRight"/>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="DatabasesPhysicalNode" displayedName="Databases Diagram">
+			<node name="DatabasesPhysicalNode" displayedName="Databases Physical Node">
 				<graphics>
 					<picture/>
 					<labels/>
