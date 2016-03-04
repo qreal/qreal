@@ -29,6 +29,7 @@ DatabasesGenerator::DatabasesGenerator(PluginConfigurator const configurator
 	, mDbms(QString("SqlServer2008"))
 	, mPreferencesPage(preferencesPage)
 	, mMainWindowInterface(configurator.mainWindowInterpretersInterface())
+	, mCodeGenerationMode(CreateTable)
 {
 	connect(mPreferencesPage, SIGNAL(dbmsChanged(QString)), this, SLOT(changeEditor(QString)));
 }
@@ -252,6 +253,7 @@ bool DatabasesGenerator::checkRelationships()
 
 bool DatabasesGenerator::checkCorrectness()
 {
+	mErrorReporter->clearErrors();
 	bool checkOne = checkRelationships();
 	bool checkTwo = checkAttributes();
 	bool checkThree = checkEntities();
@@ -536,6 +538,7 @@ void DatabasesGenerator::generateSQLCode()
 	mErrorReporter->clear();
 
 	QString codeFileName = mPreferencesPage->getCodeGenerationFilename();
+	codeFileName = QString("C:/Coursework/text.txt");
 	if (codeFileName.isEmpty()) {
 		mErrorReporter->addError(QString("Code file name is empty. Check preferences"));
 		return;
@@ -545,6 +548,8 @@ void DatabasesGenerator::generateSQLCode()
 		mErrorReporter->addError(QString("File didn't open"));
 		return;
 	}
+
+	mCodeGenerationMode = mPreferencesPage->getCodeGenerationMode(); // update mode
 
 	if (mDbms == "SqlServer2008")
 		generateWithSqlServer2008();
@@ -583,6 +588,46 @@ void DatabasesGenerator::generateSQLCode()
 
 void DatabasesGenerator::generateWithSqlServer2008()
 {
+	if (mCodeGenerationMode == CreateTable)
+		createTableModeWithSqlServer2008();
+	else if (mCodeGenerationMode == AlterTable)
+		alterTableModeWithSqlServer2008();
+}
+
+void DatabasesGenerator::generateWithMySql5()
+{
+	if (mCodeGenerationMode == CreateTable)
+		createTableModeWithMySql5();
+	else if (mCodeGenerationMode == AlterTable)
+		alterTableModeWithMySql5();
+}
+
+void DatabasesGenerator::generateWithSqlite()
+{
+	if (mCodeGenerationMode == CreateTable)
+		createTableModeWithSqlite();
+	else if (mCodeGenerationMode == AlterTable)
+		alterTableModeWithSqlite();
+}
+
+void DatabasesGenerator::generateWithMicrosoftAccess()
+{
+	if (mCodeGenerationMode == CreateTable)
+		createTableModeWithMicrosoftAccess();
+	else if (mCodeGenerationMode == AlterTable)
+		alterTableModeWithMicrosoftAccess();
+}
+
+void DatabasesGenerator::generateWithPostgreSql()
+{
+	if (mCodeGenerationMode == CreateTable)
+		createTableModeWithPostgreSql();
+	else if (mCodeGenerationMode == AlterTable)
+		alterTableModeWithPostgreSql();
+}
+
+void DatabasesGenerator::createTableModeWithSqlServer2008()
+{
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
@@ -593,6 +638,7 @@ void DatabasesGenerator::generateWithSqlServer2008()
 		}
 
 		codeFile.write("CREATE TABLE ");
+
 		codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
@@ -629,7 +675,7 @@ void DatabasesGenerator::generateWithSqlServer2008()
 	}
 }
 
-void DatabasesGenerator::generateWithMySql5()
+void DatabasesGenerator::createTableModeWithMySql5()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
@@ -726,7 +772,7 @@ void DatabasesGenerator::generateWithMySql5()
 	}
 }
 
-void DatabasesGenerator::generateWithSqlite()
+void DatabasesGenerator::createTableModeWithSqlite()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
@@ -795,7 +841,7 @@ void DatabasesGenerator::generateWithSqlite()
 	}
 }
 
-void DatabasesGenerator::generateWithMicrosoftAccess()
+void DatabasesGenerator::createTableModeWithMicrosoftAccess()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
@@ -853,7 +899,7 @@ void DatabasesGenerator::generateWithMicrosoftAccess()
 	}
 }
 
-void DatabasesGenerator::generateWithPostgreSql()
+void DatabasesGenerator::createTableModeWithPostgreSql()
 {
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
@@ -959,6 +1005,292 @@ void DatabasesGenerator::generateWithPostgreSql()
 		}
 
 		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
+	}
+}
+
+void DatabasesGenerator::alterTableModeWithSqlServer2008()
+{
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
+
+		codeFile.write("ALTER TABLE ");
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		IdList rowsSet = getChildren(tableId);
+
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
+			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write("ADD COLUMN (");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "null").toBool())
+				codeFile.write(" NULL");
+			else if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "isPrimaryKey").toBool())
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+
+			codeFile.write(")");
+		}
+		codeFile.write("\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
+	}
+}
+
+void DatabasesGenerator::alterTableModeWithMySql5()
+{
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
+
+		codeFile.write("ALTER TABLE ");
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
+
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
+			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write("ADD COLUMN (");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "null").toBool())
+					codeFile.write(" NULL");
+				else if (getProperty(rowId, "notNull").toBool())
+					codeFile.write(" NOT NULL");
+
+				if (getProperty(rowId, "isPrimaryKey").toBool())
+					codeFile.write(" PRIMARY KEY");
+
+				if (getProperty(rowId, "unique").toBool())
+					codeFile.write(" UNIQUE");
+
+				QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
+				if (!defaultValue.isEmpty())
+					codeFile.write(" DEFAULT '" + defaultValue + "'");
+
+				if (getProperty(rowId, "auto_increment").toBool())
+					codeFile.write(" AUTO_INCREMENT");
+
+				codeFile.write(")");
+		}
+		codeFile.write("\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
+	}
+}
+
+void DatabasesGenerator::alterTableModeWithSqlite()
+{
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
+
+		codeFile.write("ALTER TABLE");
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
+
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
+			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write("ADD COLUMN (");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "null").toBool())
+				codeFile.write(" NULL");
+			else if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "isPrimaryKey").toBool())
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+
+			QByteArray defaultValue = getProperty(rowId, "unique").toByteArray();
+			if (!defaultValue.isEmpty())
+				codeFile.write(" DEFAULT '" + defaultValue + "'");
+
+			if (getProperty(rowId, "auto_increment").toBool())
+				codeFile.write(" AUTO_INCREMENT");
+
+			codeFile.write(")");
+		}
+		codeFile.write("\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
+	}
+}
+
+void DatabasesGenerator::alterTableModeWithMicrosoftAccess()
+{
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
+
+		codeFile.write("ALTER TABLE ");
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
+
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
+			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write("ADD COLUMN (");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "isPrimaryKey").toBool())
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+
+			if (getProperty(rowId, "with_compression").toBool())
+				codeFile.write(" WITH COMPRESSION");
+			else if (getProperty(rowId, "with_comp").toBool())
+				codeFile.write(" WITH COMP");
+
+			codeFile.write(")");
+		}
+		codeFile.write(";\r\n\r\n");
+
+		QByteArray query = getProperty(tableId, "query").toByteArray();
+		if (!query.isEmpty()) {
+			codeFile.write(query);
+			codeFile.write("\r\n\r\n");
+		}
+	}
+}
+
+void DatabasesGenerator::alterTableModeWithPostgreSql()
+{
+	IdList tableNodes = findNodes("Table");
+	for (Id const tableId : tableNodes) {
+		QByteArray comment = getProperty(tableId, "comment").toByteArray();
+		if (!comment.isEmpty()) {
+			codeFile.write("-- ");
+			codeFile.write(comment);
+			codeFile.write("\r\n");
+		}
+
+		codeFile.write("ALTER TABLE ");
+		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write("\r\n(");
+		IdList rowsSet = getChildren(tableId);
+
+		bool first = true;
+		for (Id const &rowId : rowsSet) {
+			if (!first) {
+				codeFile.write(",");
+			}
+			first = false;
+			codeFile.write("\r\n");
+			codeFile.write("ADD COLUMN (");
+			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(" ");
+			codeFile.write(getProperty(rowId, "DataType").toByteArray());
+
+			if (getProperty(rowId, "notNull").toBool())
+				codeFile.write(" NOT NULL");
+
+			if (getProperty(rowId, "null").toBool())
+				codeFile.write(" NULL");
+
+			QByteArray checkExpression = getProperty(rowId, "check").toByteArray();
+			if (!checkExpression.isEmpty()) {
+				codeFile.write(" CHECK");
+				codeFile.write(checkExpression);
+				codeFile.write(" ");
+			}
+
+			QByteArray defaultValue = getProperty(rowId, "default").toByteArray();
+			if (!defaultValue.isEmpty()) {
+				codeFile.write(" DEFAULT");
+				codeFile.write(defaultValue);
+				codeFile.write(" ");
+			}
+
+			if (getProperty(rowId, "isPrimaryKey").toBool());
+				codeFile.write(" PRIMARY KEY");
+
+			if (getProperty(rowId, "unique").toBool())
+				codeFile.write(" UNIQUE");
+			codeFile.write(")");
+		}
+
+		codeFile.write("\r\n\r\n");
 
 		QByteArray query = getProperty(tableId, "query").toByteArray();
 		if (!query.isEmpty()) {

@@ -32,6 +32,11 @@ namespace Ui {
 namespace qReal {
 namespace databasesSupport {
 
+enum CodeGenerationMode {
+	CreateTable
+	, AlterTable
+};
+
 /// Class for plugin preferences
 class DatabasesPreferencesPage : public gui::PreferencesPage
 {
@@ -43,10 +48,9 @@ public:
 	void save();
 	virtual void restoreSettings();
 	QString getCodeGenerationFilename() const;
-	bool needToOpenFileAfterGeneration() const;
+	CodeGenerationMode getCodeGenerationMode() const;
 public slots:
 	void dbmsChanging(QString const &dbmsName);
-	void changeReverseEngineerFilePath(QString const &path);
 	void browseCodeGenerationFilename();
 signals:
 	void dbmsChanged(QString const &dbmsName);

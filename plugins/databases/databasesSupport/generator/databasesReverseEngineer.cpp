@@ -57,14 +57,7 @@ void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const
 
 	QString dbmsType = "";
 	QString driverInitializerStr = "";
-	if (mDbms == "SqlServer2008") {
-		dbmsType = "QODBC";
-		driverInitializerStr = "";
-	} else if (mDbms == "MySql5") {
-		dbmsType = "QMYSQL";
-		driverInitializerStr = "DRIVER={MYSQL ODBC 3.51 Driver};FIL={MYSQL};DBQ=";
-	}
-	else if (mDbms == "Sqlite") {
+	if (mDbms == "Sqlite") {
 		dbmsType = "QSQLITE";
 		driverInitializerStr = "";
 	}

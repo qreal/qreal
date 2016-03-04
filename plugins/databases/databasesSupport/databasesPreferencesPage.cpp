@@ -46,11 +46,6 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 		emit dbmsChanged("PostgreSql");
 }
 
-void DatabasesPreferencesPage::changeReverseEngineerFilePath(QString const &path)
-{
-	//mUi->reverseEngineerFilePath->setText(path);
-}
-
 void DatabasesPreferencesPage::save()
 {
 }
@@ -72,9 +67,13 @@ QString DatabasesPreferencesPage::getCodeGenerationFilename() const
 	return mUi->codeGenerationFilePath->toPlainText().toUtf8();
 }
 
-bool DatabasesPreferencesPage::needToOpenFileAfterGeneration() const
+CodeGenerationMode DatabasesPreferencesPage::getCodeGenerationMode() const
 {
-	return mUi->codeGenerationCheckBox->isChecked();
+	if (mUi->codeGenerationModeBox->currentText() == "CREATE TABLE")
+		return CreateTable;
+	else
+		return AlterTable;
 }
+
 }
 }

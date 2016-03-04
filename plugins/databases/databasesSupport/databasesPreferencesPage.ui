@@ -64,57 +64,16 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>361</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLabel" name="oneToOneRepresentationLabel">
-      <property name="text">
-       <string>Type of representation one-to-one relationship:</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::AutoText</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="oneToOneRepresentationBox">
-      <item>
-       <property name="text">
-        <string>One table</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>180</y>
+     <y>80</y>
      <width>471</width>
-     <height>92</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QLabel" name="oneToOneRepresentationLabel_2">
-      <property name="text">
-       <string>File for code generation:</string>
-      </property>
-      <property name="textFormat">
-       <enum>Qt::AutoText</enum>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="0">
      <widget class="QTextEdit" name="codeGenerationFilePath">
       <property name="enabled">
@@ -132,22 +91,32 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QLabel" name="oneToOneRepresentationLabel_2">
+      <property name="text">
+       <string>File for code generation:</string>
+      </property>
+      <property name="textFormat">
+       <enum>Qt::AutoText</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
+  <widget class="QWidget" name="verticalLayoutWidget_2">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>140</y>
-     <width>371</width>
-     <height>21</height>
+     <y>150</y>
+     <width>361</width>
+     <height>41</height>
     </rect>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <widget class="QLabel" name="dialectLabel_2">
       <property name="text">
-       <string>Open file after code generation:</string>
+       <string>Sql code generation mode:</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -155,20 +124,25 @@
      </widget>
     </item>
     <item>
-     <widget class="QCheckBox" name="codeGenerationCheckBox">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>open</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
+     <widget class="QComboBox" name="codeGenerationModeBox">
+      <item>
+       <property name="text">
+        <string>CREATE TABLE</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>ALTER TABLE</string>
+       </property>
+      </item>
      </widget>
     </item>
    </layout>
   </widget>
+  <zorder>verticalLayoutWidget</zorder>
+  <zorder>gridLayoutWidget</zorder>
+  <zorder>verticalLayoutWidget_2</zorder>
+  <zorder>dialectLabel_2</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -58,6 +58,18 @@ private:
 	void generateWithMicrosoftAccess();
 	void generateWithPostgreSql();
 
+	void createTableModeWithSqlServer2008();
+	void createTableModeWithMySql5();
+	void createTableModeWithSqlite();
+	void createTableModeWithMicrosoftAccess();
+	void createTableModeWithPostgreSql();
+
+	void alterTableModeWithSqlServer2008();
+	void alterTableModeWithMySql5();
+	void alterTableModeWithSqlite();
+	void alterTableModeWithMicrosoftAccess();
+	void alterTableModeWithPostgreSql();
+
 	/// Creates element of diagram from string
 	qReal::Id createElementFromString(QString const &elemName
 			, QPointF coord = QPointF()
@@ -130,6 +142,8 @@ private:
 	DatabasesPreferencesPage const *mPreferencesPage;
 	gui::MainWindowInterpretersInterface &mMainWindowInterface;
 	qReal::ErrorReporterInterface *mErrorReporter;
+
+	CodeGenerationMode mCodeGenerationMode;
 };
 
 }
