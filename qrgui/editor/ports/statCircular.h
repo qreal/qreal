@@ -24,11 +24,11 @@ namespace editor {
 class StatCircular : public PortInterface
 {
 public:
-	StatCircular(const QPointF &point, const qreal &r,bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl);
-
+	StatCircular(const QPointF &point, const qreal &r,bool propX, bool propY, int initWidth
+			, int initHeight, PortImpl *impl);
 
 	virtual void paint(QPainter *painter, const QRectF &contents) const;
-	QLineF transformForContents(const QRectF &contents) const;//new
+	QLineF transformForContents(const QRectF &contents) const;
 
 private:
 	QPointF mCircular;

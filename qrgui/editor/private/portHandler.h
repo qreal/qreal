@@ -156,7 +156,7 @@ private:
 	/// @return Minimum distance from line port to point.
 	qreal minDistanceFromLinePort(const int linePortNumber, const QPointF &location) const;
 
-	qreal minDistanceFromCircularPort(const int circularPortNumber, const QPointF &location) const;//new
+	qreal minDistanceFromCircularPort(const int circularPortNumber, const QPointF &location) const;
 
 	/// Returns distance between point port and point.
 	/// @param pointPortNumber Number of point port at point port list.
@@ -172,7 +172,7 @@ private:
 	/// Transforms line port for current node size.
 	/// @param port Port that will be actually dealt with.
 	QPointF transformPortForNodeSize(const StatPoint * const port) const;
-	QLineF transformPortForNodeSize(const StatCircular * const port) const;//new
+	QLineF transformPortForNodeSize(const StatCircular * const port) const;
 
 	/// Node that ports are actually dealt with.
 	NodeElement *mNode;

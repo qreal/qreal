@@ -122,7 +122,7 @@ void InterpreterElementImpl::initCircularPorts(const PortFactoryInterface &facto
 		QPointF point = QPointF(x.toDouble() / static_cast<qreal>(width), y.toDouble() / static_cast<qreal>(height));
 		QString portType = portElement.attribute("type", "NonTyped");
 
-		ports << factory.createPort(point, r,propX, propY, width, height, new InterpreterPortImpl(portType));
+		ports << factory.createPort(point, r, propX, propY, width, height, new InterpreterPortImpl(portType));
 	}
 }
 

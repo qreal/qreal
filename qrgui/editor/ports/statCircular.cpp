@@ -16,8 +16,10 @@
 
 using namespace qReal::gui::editor;
 
-StatCircular::StatCircular(const QPointF &point, const qreal &r,bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
-	: PortInterface(impl), mCircular(point), mR(r), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight)
+StatCircular::StatCircular(const QPointF &point, const qreal &r,bool propX, bool propY, int initWidth
+		, int initHeight, PortImpl *impl)
+	: PortInterface(impl), mCircular(point), mR(r), mPropX(propX), mPropY(propY)
+		, mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
 void StatCircular::paint(QPainter *painter, const QRectF &contents) const
@@ -46,7 +48,7 @@ void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 	painter->restore();
 }
 
-QLineF StatCircular::transformForContents(const QRectF &contents) const//new
+QLineF StatCircular::transformForContents(const QRectF &contents) const
 {
 	const qreal x = mCircular.x() * (mPropX ? mInitWidth : contents.width());
 	const qreal y = mCircular.y() * (mPropY ? mInitHeight : contents.height());

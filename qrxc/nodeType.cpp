@@ -141,8 +141,6 @@ bool NodeType::initPorts()
 	initLinePorts(portsElement);
 	initCircularPorts(portsElement);
 
-	(portsElement);
-
 	return true;
 }
 
@@ -184,7 +182,7 @@ bool NodeType::initCircularPorts(const QDomElement &portsElement)
 			!portElement.isNull();
 			portElement = portElement.nextSiblingElement("circularPort"))
 	{
-		Port *circularPort = new CircularPort();//here
+		Port *circularPort = new CircularPort();
 		if (!circularPort->init(portElement, mWidth, mHeight)) {
 			delete circularPort;
 			return false;
