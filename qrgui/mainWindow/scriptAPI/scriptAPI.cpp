@@ -83,7 +83,7 @@ QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcep
 
 	lambdaSingleShot(msec, [=]() {
 		thisObject.property(propertyName).call(QScriptValue(), args);
-	} , thisObject.toQObject());
+	} );
 
 	return {};
 }

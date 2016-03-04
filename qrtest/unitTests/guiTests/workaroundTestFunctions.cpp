@@ -45,7 +45,7 @@ QScriptValue guiTesting::workarounds::closeExpectedDialog(QScriptContext *contex
 				return;
 			}
 		}
-	} , mainWindow);
+	} );
 
 	return {};
 }
@@ -124,7 +124,7 @@ QScriptValue guiTesting::workarounds::chooseExpectedDialogDiagram(QScriptContext
 				FAIL() << "Doesn't exist " << qPrintable(dialogTitle) << " dialog";
 			}
 		}
-	} , mainWindow);
+	} );
 
 	return {};
 }
