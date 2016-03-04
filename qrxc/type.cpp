@@ -24,7 +24,7 @@ Type::Type(bool isResolved, Diagram *diagram)
 
 Type::~Type()
 {
-	qDeleteAll(mProperties);
+	//qDeleteAll(mProperties);
 }
 
 bool Type::init(const QDomElement &element, const QString &context)

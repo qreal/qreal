@@ -33,7 +33,9 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 
 EdgeType::~EdgeType()
 {
-	//qDeleteAll(mAssociations);
+	qDebug() << "edge destruct";
+	//qDeleteAll(mRoles);
+	//qDeleteAll(mAllExistingTypes);
 }
 
 
@@ -84,7 +86,7 @@ bool EdgeType::initRoles()
 	mEndRoleName = endRoleElement.attribute("role");
 	mAllExistingTypes = mDiagram->getAllTypes();
 
-	for (auto &element : mAllExistingTypes) {
+	for (auto element : mAllExistingTypes) {
 		QString name = element->displayedName();
 		if (name == mBeginRoleName || name == mEndRoleName) {
 			mRoles.append(dynamic_cast<RoleType *> (element));
@@ -109,19 +111,21 @@ bool EdgeType::initRoleProperties()
 {
 	for (auto role : mRoles) {
 		for (auto property : role->getPropertiesOfRole()) {
-			bool check = addProperty(property);
+			bool check = addProperty(property, role->name());
 		}
 	}
 
 	return true;
 }
 
-QString EdgeType::propertyName(Property *property)
+QString EdgeType::propertyName(Property *property, QString roleName)
 {
 	for (auto role : mRoles) {
-		for (auto currentProperty : role->getPropertiesOfRole()) {
-			if (currentProperty->name() == property->name()) {
-				return role->name() + "!" + property->name();
+		if (role->name() == roleName) {
+			for (auto currentProperty : role->getPropertiesOfRole()) {
+				if (currentProperty->name() == property->name()) {
+					return role->name() + "!" + property->name();
+				}
 			}
 		}
 	}

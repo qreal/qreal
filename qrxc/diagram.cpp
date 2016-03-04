@@ -37,6 +37,7 @@ Diagram::Diagram(const QString &name, const QString &nodeName, const QString &di
 
 Diagram::~Diagram()
 {
+	qDebug() << "here destruct";
 	qDeleteAll(mTypes);
 }
 
@@ -91,6 +92,7 @@ bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 				qDebug() << "Can't parse edge";
 				return false;
 			}
+			qDebug() << "edge!";
 
 			mTypes[edgeType->qualifiedName()] = edgeType;
 		} else if (element.nodeName() == "import") {
@@ -162,6 +164,9 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 			mTypes[portType->qualifiedName()] = portType;
 		} else if  (element.nodeName() == "role") {
 			Type *roleType = new RoleType();
+
+			qDebug() << roleType->name();
+
 			if (!roleType->init(element, mDiagramName)) {
 				delete roleType;
 				qDebug() << "Can't parse roleType type";

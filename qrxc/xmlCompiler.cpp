@@ -256,7 +256,7 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initShallPaletteBeSortedMap();\n"
 		<< "\tvirtual void initExplosionsMap();\n"
 		<< "\tvirtual void initRoleTypes();\n"
-		<< "\tvirtual void initRolesWithProperies();\n"
+//		<< "\tvirtual void initRolesWithProperies();\n"
 		<< "\n"
 		<< "\tQMap<QString, QIcon> mIconMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
@@ -293,7 +293,7 @@ void XmlCompiler::generatePluginSource()
 	generateInitPlugin(out);
 	generateListProperiesOfRole(out);
 	initAllRoleTypes(out);
-	initAllRolesWithProperties(out);
+	//initAllRolesWithProperties(out);
 	generateNameMappingsRequests(out);
 	generateGraphicalObjectRequest(out);
 	generateIsParentOfRequest(out);
@@ -342,7 +342,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitDescriptionMap();\n"
 		<< "\tinitPortTypes();\n"
 		<< "\tinitRoleTypes();\n"
-		<< "\tinitRolesWithProperies();\n"
+//		<< "\tinitRolesWithProperies();\n"
 		<< "\tinitParentsMap();\n"
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"

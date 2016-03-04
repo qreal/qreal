@@ -101,7 +101,7 @@ protected:
 	virtual bool isResolving() const;
 
 	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
-	bool addProperty(Property *property);
+	bool addProperty(Property *property, QString roleName);
 
 private:
 	class ResolvingHelper {
@@ -132,7 +132,7 @@ private:
 
 	virtual bool initGraphics() = 0;
 	virtual bool initRoles() = 0;
-	virtual QString propertyName(Property *property) = 0;
+	virtual QString propertyName(Property *property, QString roleName) = 0;
 	virtual bool initRoleProperties() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;

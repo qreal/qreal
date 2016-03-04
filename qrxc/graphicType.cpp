@@ -66,9 +66,10 @@ GraphicType::GraphicType(Diagram *diagram)
 
 GraphicType::~GraphicType()
 {
-	foreach (Label *label, mLabels) {
-		delete label;
-	}
+//	foreach (Label *label, mLabels) {
+//		delete label;
+//	}
+	qDeleteAll(mLabels);
 }
 
 void GraphicType::copyFields(GraphicType *type) const
@@ -174,7 +175,7 @@ bool GraphicType::initProperties()
 			delete property;
 			continue;
 		}
-		if (!addProperty(property)) {
+		if (!addProperty(property, "")) {
 			return false;
 		}
 	}
@@ -375,9 +376,9 @@ bool GraphicType::initLabels()
 	return true;
 }
 
-bool GraphicType::addProperty(Property *property)
+bool GraphicType::addProperty(Property *property, QString roleName)
 {
-	QString propertyName = this->propertyName(property);
+	QString propertyName = this->propertyName(property, roleName);
 	if (propertyName.isEmpty()) {
 		propertyName = property->name();
 	}
@@ -443,7 +444,7 @@ bool GraphicType::resolve()
 		}
 
 		for (Property *property : parent->properties().values()) {
-			if (!addProperty(property->clone())) {
+			if (!addProperty(property->clone(), "")) {
 				return false;
 			}
 		}
