@@ -293,18 +293,17 @@ void EdgeElement::updateBeginAndEnd()
 	int i = 0;
 	int j = 0;
 
-
 	for (auto label : mLabels) {
 		if (label->location() == "beginRole") {
 			Label *title = label;
-			qreal x = (mLine[firstIdx].x() + 20 * (i + 1));
-			qreal y = (mLine[firstIdx].y() + 20 * (i + 1));
+			qreal x = (mLine[firstIdx].x() + 40);
+			qreal y = (mLine[firstIdx].y() + 25 * (i) + 10);
 			title->setPos(x, y);
 			++i;
 		} else if (label->location() == "endRole") {
 			Label *title = label;
-			qreal x = (mLine[lastIdx + 1].x() - 25 * (j + 1));
-			qreal y = (mLine[lastIdx + 1].y() - 20 * (j + 1));
+			qreal x = (mLine[lastIdx + 1].x() - 40);
+			qreal y = (mLine[lastIdx + 1].y() + 25 * (j) + 10);
 			title->setPos(x, y);
 			++j;
 		} else {
