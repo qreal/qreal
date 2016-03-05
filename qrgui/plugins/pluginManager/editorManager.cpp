@@ -390,7 +390,7 @@ Metamodel* EditorManager::metamodel(const QString &editor) const
 
 bool EditorManager::isDiagramNode(const Id &id) const
 {
-	const NodeElementType *type = metamodel(id.editor())->diagramNode(id.diagram());
+	const ElementType *type = metamodel(id.editor())->diagramNode(id.diagram());
 	return type && id.diagram() == type->diagram() && id.element() == type->name();
 }
 
@@ -483,9 +483,10 @@ Pattern EditorManager::parsePattern(const Id &id) const
 //	return metamodel(editor)->getPossibleEdges(element);
 //}
 
-int EditorManager::isNodeOrEdge(const QString &editor, const QString &element) const
+int EditorManager::isNodeOrEdge(const Id &id) const
 {
-	return metamodel(editor)->isNodeOrEdge(element);
+	const ElementType::Type type = elementType(id).type();
+	return type == ElementType::Type::node ? 1 : type == ElementType::Type::edge ? -1 : 0;
 }
 
 bool EditorManager::isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
@@ -503,7 +504,7 @@ QString EditorManager::diagramName(const QString &editor, const QString &diagram
 
 QString EditorManager::diagramNodeName(const QString &editor, const QString &diagram) const
 {
-	NodeElementType *node = metamodel(editor)->diagramNode(diagram);
+	ElementType *node = metamodel(editor)->diagramNode(diagram);
 	return node ? node->name() : QString();
 }
 

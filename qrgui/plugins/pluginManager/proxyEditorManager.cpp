@@ -191,9 +191,9 @@ QString ProxyEditorManager::diagramNodeNameString(const Id &editor, const Id &di
 //	return mProxiedEditorManager->possibleEdges(editor, element);
 //}
 
-int ProxyEditorManager::isNodeOrEdge(const QString &editor, const QString &element) const
+int ProxyEditorManager::isNodeOrEdge(const Id &id) const
 {
-	return mProxiedEditorManager->isNodeOrEdge(editor, element);
+	return mProxiedEditorManager->isNodeOrEdge(id);
 }
 
 bool ProxyEditorManager::isParentOf(const QString &editor, const QString &parentDiagram

@@ -38,7 +38,7 @@ MainClass::MainClass(
 		: mTempOldValue(SettingsManager::value("temp").toString())
 		, mApplicationPath(applicationPath)
 {
-	setTempValueInSettingsManager();
+/*	setTempValueInSettingsManager();
 
 	qDebug() << "configuration file: " << configurationFileName;
 	parseConfigurationFile(configurationFileName);
@@ -91,7 +91,7 @@ MainClass::MainClass(
 		qDebug() << "Generation of plugins failed";
 	}
 
-	returnOldValueOfTemp();
+	returnOldValueOfTemp();*/
 }
 
 int MainClass::travisTestResult() const

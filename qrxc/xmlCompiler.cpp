@@ -194,14 +194,12 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tQList<qReal::Metamodel::ExplosionData> explosions(const QString &diagram, QString "
 				"const &element) const override;\n"
 		<< "\n"
-		<< "\tint isNodeOrEdge(const QString &element) const override;\n"
-		<< "\n"
 		<< "\tQList<QPair<QString, QString>> enumValues(const QString &name) const override;\n"
 		<< "\tbool isEnumEditable(const QString &name) const override;\n"
 		<< "\n"
 		<< "\tQString editorName() const override;\n"
 		<< "\tQString diagramName(const QString &diagram) const override;\n"
-		<< "\tqReal::NodeElementType *diagramNode(const QString &diagram) const override;\n"
+		<< "\tqReal::ElementType *diagramNode(const QString &diagram) const override;\n"
 		<< "\n"
 		<< "\tQStringList diagramPaletteGroups(const QString &diagram) const override;\n"
 		<< "\tQStringList diagramPaletteGroupList(const QString &diagram, const QString &group) const override;\n"
@@ -212,7 +210,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initPlugin();\n"
 		<< "\tvirtual void initMultigraph();\n"
 		<< "\tvirtual void initNameMap();\n"
-		<< "\tvirtual void initNodesAndEdgesSets();\n"
 		<< "\tvirtual void initPaletteGroupsMap();\n"
 		<< "\tvirtual void initPaletteGroupsDescriptionMap();\n"
 		<< "\tvirtual void initShallPaletteBeSortedMap();\n"
@@ -220,8 +217,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNodeNameMap;\n"
-		<< "\tQSet<QString> mNodes;  // A set of nodes in this editor. Useful for deciding is element node or edge.\n"
-		<< "\tQSet<QString> mEdges;  // A set of edges in this editor. Useful for deciding is element node or edge.\n"
 		<< "\tQMap<QString, QList<QPair<QString, QStringList>>> mPaletteGroupsMap;  // Maps element`s lists of all "
 				"palette groups.\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
@@ -243,7 +238,6 @@ void XmlCompiler::generatePluginSource()
 	generateNameMappingsRequests(out);
 	generateContainedTypes(out);
 	generatePossibleEdges(out);
-	generateNodesAndEdges(out);
 	generateEnumValues(out);
 	generateEditableEnums(out);
 }
@@ -279,7 +273,6 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
 		<< "\tinitMultigraph();\n"
 		<< "\tinitNameMap();\n"
-		<< "\tinitNodesAndEdgesSets();\n"
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"
 		<< "\tinitShallPaletteBeSortedMap();\n"
@@ -288,7 +281,6 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 
 	generateInitMultigraph(out);
 	generateNameMappings(out);
-	generateNodesAndEdgesSets(out);
 	generatePaletteGroupsLists(out);
 	generatePaletteGroupsDescriptions(out);
 	generateShallPaletteBeSorted(out);
@@ -344,28 +336,6 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 		out() << "\n";
 	}
 
-	out() << "}\n\n";
-}
-
-void XmlCompiler::generateNodesAndEdgesSets(OutFile &out)
-{
-	QSet<QString> nodes;
-	QSet<QString> edges;
-	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
-		for (Type *type : diagram->types().values()) {
-			if (dynamic_cast<NodeType*>(type)) {
-				nodes.insert(NameNormalizer::normalize(type->qualifiedName()));
-			} else if (dynamic_cast<EdgeType*>(type)) {
-				edges.insert(NameNormalizer::normalize(type->qualifiedName()));
-			}
-		}
-	}
-
-	out() << "void " << mPluginName << "Plugin::initNodesAndEdgesSets()\n{\n";
-	out() << "\tmNodes = ";
-	generateStringSet(out, nodes);
-	out() << "\tmEdges = ";
-	generateStringSet(out, edges);
 	out() << "}\n\n";
 }
 
@@ -486,8 +456,9 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "\treturn mDiagramNameMap[diagram];\n"
 		<< "}\n\n"
 
-		<< "qReal::NodeElementType *" << mPluginName << "Plugin::diagramNode(const QString &diagram) const\n{\n"
-		<< "\treturn dynamic_cast<qReal::NodeElementType *>(&elementType(diagram, mDiagramNodeNameMap[diagram]));\n"
+		<< "qReal::ElementType *" << mPluginName << "Plugin::diagramNode(const QString &diagram) const\n{\n"
+		<< "\treturn mDiagramNodeNameMap[diagram].isEmpty() ? nullptr "
+				": &elementType(diagram, mDiagramNodeNameMap[diagram]);\n"
 		<< "}\n\n"
 
 		<< "QList<qReal::Metamodel::ExplosionData>" << mPluginName
@@ -621,13 +592,6 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 		out() << "\tQ_UNUSED(element);\n";
 		out() << "\treturn result;\n"
 		<< "}\n\n";
-}
-
-void XmlCompiler::generateNodesAndEdges(utils::OutFile &out)
-{
-	out() << "//(-1) means \"edge\", (+1) means \"node\", 0 means \"pattern\". We must get rid of it soon.\n";
-	out() << "int " << mPluginName << "Plugin::isNodeOrEdge(const QString &element) const\n{\n";
-	out() << "\treturn mNodes.contains(element) ? 1 : (mEdges.contains(element) ? -1 : 0);\n}\n";
 }
 
 void XmlCompiler::generateContainedTypes(OutFile &out)

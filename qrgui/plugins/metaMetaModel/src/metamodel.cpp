@@ -41,4 +41,5 @@ void Metamodel::addNode(qrgraph::Node &entity)
 	Q_ASSERT_X(!mElements[diagram][element], Q_FUNC_INFO, "Duplicate enitity in metamodel");
 
 	mElements[diagram][element] = type;
+	Multigraph::addNode(entity);
 }

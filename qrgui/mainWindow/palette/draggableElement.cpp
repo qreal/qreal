@@ -125,7 +125,7 @@ void DraggableElement::setIconSize(int size)
 
 QMimeData *DraggableElement::mimeData(const Id &elementId) const
 {
-	const bool isEdge = mEditorManagerProxy.isNodeOrEdge(elementId.editor(), elementId.element()) < 0;
+	const bool isEdge = mEditorManagerProxy.isNodeOrEdge(elementId.type()) < 0;
 	return ElementInfo(elementId, Id(), text(), mData.explosionTarget(), isEdge).mimeData();
 }
 

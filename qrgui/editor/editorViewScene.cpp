@@ -375,7 +375,7 @@ Id EditorViewScene::createElement(const QString &idString
 	const Id objectId = typeId.sameTypeId();
 	const QString name = mEditorManager.friendlyName(typeId);
 
-	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.editor(), typeId.element()) == -1;
+	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.type()) == -1;
 
 	const ElementInfo elementInfo(objectId, Id(), name, Id(), isEdge);
 	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);

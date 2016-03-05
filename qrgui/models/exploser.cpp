@@ -47,7 +47,7 @@ QMultiMap<Id, Id> Exploser::explosions(const Id &diagram) const
 
 			const Id targetNodeOrGroup = explosion.target();
 			Id target;
-			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
+			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup)) {
 				target = targetNodeOrGroup;
 			} else {
 				const Pattern pattern = mApi.editorManagerInterface().parsePattern(targetNodeOrGroup);
@@ -128,7 +128,7 @@ AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(const Id &s
 {
 	AbstractCommand *result = nullptr;
 	Id newElementId;
-	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element()) == 1) {
+	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.type()) == 1) {
 		const QString friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
 		newElementId = targetType.sameTypeId();
 		const ElementInfo toCreate(newElementId, Id(), Id::rootId(), Id::rootId()

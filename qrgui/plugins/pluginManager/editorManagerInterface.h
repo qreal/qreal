@@ -96,7 +96,7 @@ public:
 	virtual QString diagramNodeNameString(const Id &editor, const Id &diagram) const = 0;
 
 //	virtual QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const = 0;
-	virtual int isNodeOrEdge(const QString &editor, const QString &element) const = 0;
+	virtual int isNodeOrEdge(const Id &id) const = 0;
 	virtual bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
 			, const QString &childDiagram, const QString &childElement) const = 0;
 	virtual QString diagramName(const QString &editor, const QString &diagram) const = 0;

@@ -130,8 +130,7 @@ QMimeData* LogicalModel::mimeData(const QModelIndexList &indexes) const
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 			const Id id = item->id();
-			const bool isEdge = mLogicalAssistApi->editorManagerInterface().isNodeOrEdge(
-					id.editor(), id.element()) == -1;
+			const bool isEdge = mLogicalAssistApi->editorManagerInterface().isNodeOrEdge(id.type()) == -1;
 
 			stream << ElementInfo(id, id, mApi.property(id, "name").toString(), mApi.outgoingExplosion(item->id())
 					, isEdge);

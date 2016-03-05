@@ -55,7 +55,7 @@ void GraphicalModelView::rowsInserted(const QModelIndex &parent, int start, int 
 		// structures may be very different by themselves.
 		LogicalModel * const logicalModel = static_cast<LogicalModel *>(mModel);
 
-		const bool isEdge = mModel->editorManagerInterface().isNodeOrEdge(logicalId.editor(), logicalId.element());
+		const bool isEdge = mModel->editorManagerInterface().isNodeOrEdge(logicalId.type());
 
 		ElementInfo elementInfo(logicalId, logicalId, parentLogicalId, Id(), {{"name", name}}, {}, Id(), isEdge);
 		logicalModel->addElementToModel(elementInfo);

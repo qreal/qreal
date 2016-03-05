@@ -639,7 +639,7 @@ bool NodeElement::initPossibleEdges()
 
 	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
 	for (const Id &element: mGraphicalAssistApi.editorManagerInterface().elements(id())) {
-		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(element.editor(), element.element());
+		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(element.type());
 		if (ne == -1) {
 			int FIX_IT_BITCH = 0;
 			const QList<StringPossibleEdge> list = {};/*mGraphicalAssistApi.editorManagerInterface()

@@ -1387,7 +1387,7 @@ void MainWindow::createDiagram(const QString &idString)
 	closeStartTab();
 	const Id id = Id::loadFromString(idString);
 	Id created;
-	if (editorManager().isNodeOrEdge(id.editor(), id.element())) {
+	if (editorManager().isNodeOrEdge(id.type())) {
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group

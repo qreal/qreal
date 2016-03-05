@@ -71,10 +71,6 @@ public:
 			getPossibleEdges(const QString &element) const = 0;
 	//-----------------
 
-	/// Returns 1 if \a element is node, -1 if edge and 0 otherwise (for example if element is pattern).
-	/// @todo: Get rid of this shit, patterns must have separate type PatternElementType.
-	virtual int isNodeOrEdge(const QString &element) const = 0;
-
 	/// Returns type descriptor of the given element (the vertex of this multigraph with the given name).
 	/// @warning If this metamodel does not contain \a diagram or \a diagram does not contain \a element
 	/// then assertion fault will be generated.
@@ -96,9 +92,9 @@ public:
 	/// Returns a string that can be shown to user as the name of a \a diagram (it is often localized).
 	virtual QString diagramName(const QString &diagram) const = 0;
 
-	/// Returns a type descriptor of the node element that should be created as root for the \a diagram.
+	/// Returns a type descriptor of the node or pattern element that should be created as root for the \a diagram.
 	/// Nullptr can be returned if metamodel does not provide any element as root of \a diagram.
-	virtual NodeElementType *diagramNode(const QString &diagram) const = 0;
+	virtual ElementType *diagramNode(const QString &diagram) const = 0;
 
 	/// Returns a list of groups in palette for \a diagram. This list usually contains localized values,
 	/// so they can be shown to user.

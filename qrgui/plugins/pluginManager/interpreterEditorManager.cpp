@@ -696,9 +696,9 @@ QPair<Id, Id> InterpreterEditorManager::editorAndDiagram(const qrRepo::RepoApi *
 //	return result;
 //}
 
-int InterpreterEditorManager::isNodeOrEdge(const QString &editor, const QString &element) const
+int InterpreterEditorManager::isNodeOrEdge(const Id &id) const
 {
-	QPair<qrRepo::RepoApi*, Id> const repoAndElementPair = repoAndElement(editor, element);
+	QPair<qrRepo::RepoApi*, Id> const repoAndElementPair = repoAndElement(id.editor(), id.element());
 	const Id elem = repoAndElementPair.second;
 	if (elem.element() == "MetaEntityEdge") {
 		return -1;
