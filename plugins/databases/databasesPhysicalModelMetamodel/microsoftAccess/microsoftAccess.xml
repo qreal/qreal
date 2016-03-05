@@ -6,14 +6,21 @@
 			<port name="TableLeft"/>
 			<port name="TableVertical"/>
 			<port name="TableRight"/>
-			
-			<enum name="tableType" displayedName="Table Type">
-				<value>BDB</value>
-				<value>HEAP</value>
-				<value>ISAM</value>
-				<value>MERGE</value>
-				<value>MRG_MYISAM</value>
-				<value>MyISAM</value>
+			<enum name="DataTypes" editable="true">
+				<value name="bigint" displayedName="BINARY"/>
+				<value name="blob" displayedName="BIT"/>
+				<value name="smallint" displayedName="CHARACTER"/>
+				<value name="datetime" displayedName="DATETIME"/>
+				<value name="int" displayedName="DECIMAL"/>
+				<value name="smallint" displayedName="FLOAT"/>
+				<value name="smallint" displayedName="IMAGE"/>
+				<value name="smallint" displayedName="INTEGER"/>
+				<value name="smallint" displayedName="MONEY"/>
+				<value name="mediumtext" displayedName="REAL"/>
+				<value name="float" displayedName="SMALLINT"/>
+				<value name="smallint" displayedName="TEXT"/>
+				<value name="mediumtext" displayedName="TINYINT"/>
+				<value name="mediumtext" displayedName="UNIQUEIDENTIFIER"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -117,7 +124,7 @@
 						<property type="bool" name="notNull" displayedName="Not null"/>
 						<property type="bool" name="with_compression" displayedName="With compression"/>
 						<property type="bool" name="with_comp" displayedName="With comp"/>
-						<property type="string" name="DataType" displayedName="Data Type">
+						<property type="string" name="DataType" type="DataTypes" displayedName="Data Type">
 							<default>INT</default>
 						</property>
 					</properties>

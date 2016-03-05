@@ -6,14 +6,38 @@
 			<port name="TableLeft"/>
 			<port name="TableVertical"/>
 			<port name="TableRight"/>
-			
-			<enum name="tableType" displayedName="Table Type">
-				<value>BDB</value>
-				<value>HEAP</value>
-				<value>ISAM</value>
-				<value>MERGE</value>
-				<value>MRG_MYISAM</value>
-				<value>MyISAM</value>
+			<enum name="DataTypes" editable="true">
+				<value name="bigint" displayedName="BIGINT"/>
+				<value name="blob" displayedName="BLOB"/>
+				<value name="char" displayedName="CHAR()"/>
+				<value name="date" displayedName="DATE"/>
+				<value name="datetime" displayedName="DATETIME"/>
+				<value name="decimal" displayedName="DECIMAL(,)"/>
+				<value name="double" displayedName="DOUBLE"/>
+				<value name="enum" displayedName="ENUM"/>
+				<value name="float" displayedName="FLOAT()"/>
+				<value name="int" displayedName="INT"/>
+				<value name="longblob" displayedName="LONGBLOB"/>
+				<value name="longtext" displayedName="LONGTEXT"/>
+				<value name="mediumblob" displayedName="MEDIUMBLOB"/>
+				<value name="mediumint" displayedName="MEDIUMINT"/>
+				<value name="mediumtext" displayedName="MEDIUMTEXT"/>
+				<value name="smallint" displayedName="SMALLINT"/>
+				<value name="text" displayedName="TEXT"/>
+				<value name="time" displayedName="TIME"/>
+				<value name="timestamp" displayedName="TIMESTAMP"/>
+				<value name="tinyblob" displayedName="TINYBLOB"/>
+				<value name="tinyint" displayedName="TINYINT"/>
+				<value name="tinytext" displayedName="TINYTEXT"/>
+				<value name="varchar" displayedName="VARCHAR()"/>
+				<value name="year" displayedName="YEAR"/>
+			</enum>
+			<enum name="TableTypes" displayedName="Table Type">
+			<value name="bdb" displayedName="BDB"/>
+			<value name="isam" displayedName="ISAM"/>
+			<value name="merge" displayedName="MERGE"/>
+			<value name="mrg_myisam" displayedName="MRG_MYISAM"/>
+			<value name="myisam" displayedName="MyISAM"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
@@ -82,7 +106,7 @@
 						<property type="bool" name="pack_keys" displayedName="Pack keys"/>
 						<property type="bool" name="delay_key_write" displayedName="Delay key write"/>
 						<property type="bool" name="auto_increment" displayedName="Auto increment"/>
-						<property type="tableType" name="type" displayedName="Type"/>
+						<property type="tableType" type="TableTypes" name="type" displayedName="Type"/>
 						<property type="string" name="comment" displayedName="Comment"/>
 						<property type="text" name="query" displayedName="Sql-query"/>
 					</properties>
@@ -128,7 +152,7 @@
 						<property type="bool" name="null" displayedName="Null"/>
 						<property type="bool" name="auto_increment" displayedName="Auto increment"/>
 						<property type="string" name="default" displayedName="Default"/>
-						<property type="string" name="DataType" displayedName="Data Type">
+						<property type="string" name="DataType" type="DataTypes" displayedName="Data Type">
 							<default>INT</default>
 						</property>
 					</properties>
