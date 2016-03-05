@@ -77,6 +77,9 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 
 	// Connect must be only one on every port! (in the future)
 
+//	cout << "Port = " << (string)port.name() << endl;
+
+
 	simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed * 0.1f, simx_opmode_oneshot);
 	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
@@ -124,25 +127,22 @@ int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 	// Block for 3D model
 
 	simxUChar sensorTrigger = 0;
-//	simxFloat * sensorPoint;
+	simxFloat * sensorPoint = new simxFloat[3];
 
-	if (simxReadProximitySensor(clientID, sonarSensorHandle, &sensorTrigger, NULL, NULL, NULL, simx_opmode_streaming) == simx_return_ok) {
-		cout << "In trigger part sensorTrigger = " << sensorTrigger << endl;
-
-//		cout << "SensorPoint = " << sensorPoint << endl;
-
+	if (simxReadProximitySensor(clientID, sonarSensorHandle, &sensorTrigger, sensorPoint, NULL, NULL, simx_opmode_streaming) == simx_return_ok) {
 		if (sensorTrigger) {
-			cout << "Return 1 because sensorTrigger != 0" << endl;
+			simxFloat point1 = sensorPoint[0] * 100.0;
+			simxFloat point2 = sensorPoint[1] * 100.0;
+			simxFloat point3 = sensorPoint[2] * 100.0;
 
-//			simxFloat point1 = sensorPoint[0];
-//			simxFloat point2 = sensorPoint[1];
-//			simxFloat point3 = sensorPoint[2];
-//			float dist = sqrt(point1 * point1 + point2 * point2 + point3 * point3);
-			//return (int)dist;
+			float dist = sqrt(point1 * point1 + point2 * point2 + point3 * point3);
+			delete[] sensorPoint;
 
-			return 1;
+			return (int)dist;
 		}
 	}
+
+	delete[] sensorPoint;
 
 	return 0;
 
