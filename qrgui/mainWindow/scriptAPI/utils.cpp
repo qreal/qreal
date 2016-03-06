@@ -104,7 +104,10 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept
 			mVirtualCursor.moveToXY(centerPoint.x(), centerPoint.y(), 50);
 			QTest::qWait(50);
 			QTest::mouseClick(menu, Qt::LeftButton, Qt::NoModifier, centerPoint);
-			QTest::keyClick(menu, key);
+			if (isSubmenu) {
+				QTest::keyClick(menu, key);
+			}
+
 			return;
 		}
 
