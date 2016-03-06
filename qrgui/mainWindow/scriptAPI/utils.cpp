@@ -97,7 +97,8 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept
 
 	for (const QAction *action : menu->actions()) {
 		if (action == actionForExec) {
-			QTest::keyClick(menu, Qt::Key_Enter);
+			Qt::Key key	= menu->children().contains(actionForExec->menu()) ? Qt::Key_Right : Qt::Key_Enter;
+			QTest::keyClick(menu, key);
 			return;
 		}
 
