@@ -132,7 +132,7 @@
 				</graphics>
 				<logic>
 					<properties>
-						<property type="string" name="Name" displayedName="Name"/>
+						<property type="string" name="Name" displayedName="Name" focused="true"/>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>
 						<property type="bool" name="notNull" displayedName="Not null"/>

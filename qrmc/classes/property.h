@@ -28,6 +28,7 @@ namespace qrmc {
 		QString name() const;
 		QString type() const;
 		QString defaultValue() const;
+		bool isFocused() const;
 		Property *clone();
 		bool operator == (const Property &other) const;
 		bool operator != (const Property &other) const;
@@ -48,5 +49,6 @@ namespace qrmc {
 		QString mDescription;
 		QString mDefaultValue;
 		QString mDisplayedName;
+		bool mIsFocused;
 	};
 }
