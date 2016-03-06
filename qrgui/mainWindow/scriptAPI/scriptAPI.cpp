@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "scriptAPI.h"
+#include "qrgui/mainWindow/scriptAPI/scriptAPI.h"
 
 #include <QtCore/QPropertyAnimation>
 #include <QtGui/QWidgetList>
@@ -20,21 +20,73 @@
 #include <QtWidgets/QComboBox>
 
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/definitions.h>
 #include <qrutils/inFile.h>
 #include <editor/editorView.h>
 
 #include "qrgui/mainWindow/mainWindow.h"
 
-#include "guiFacade.h"
-#include "virtualCursor.h"
-#include "virtualKeyboard.h"
-#include "hintAPI.h"
-#include "sceneAPI.h"
-#include "paletteAPI.h"
+#include "qrgui/mainWindow/scriptAPI/utils.h"
+#include "qrgui/mainWindow/scriptAPI/guiFacade.h"
+#include "qrgui/mainWindow/scriptAPI/virtualCursor.h"
+#include "qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
+#include "qrgui/mainWindow/scriptAPI/hintAPI.h"
+#include "qrgui/mainWindow/scriptAPI/sceneAPI.h"
+#include "qrgui/mainWindow/scriptAPI/paletteAPI.h"
+#include "qrgui/mainWindow/scriptAPI/scriptRegisterMetaTypes.h"
 
 using namespace qReal;
 using namespace gui;
+using namespace scriptUtils;
 using namespace utils;
+
+/// Invokes over time a function passed in parameters with the relative obj.
+QScriptValue invokeLater(QScriptContext *context, QScriptEngine *engine) noexcept
+{
+	Q_UNUSED(engine);
+	const QString backtrace = QStringList(context->backtrace().mid(1)).join("\n");
+	if (context->argumentCount() < 3) {
+		context->throwError(QObject::tr("Function invokeLater(...) must have 3 or more arguments at %1")
+				.arg(backtrace));
+		return {};
+	}
+
+	const int lastButOne = context->argumentCount() - 1;
+	if (!(context->argument(0).isValid() && !context->argument(0).toString().isEmpty()
+			&& context->argument(0).isQObject() && context->argument(0).toQObject()))
+	{
+		context->throwError(QObject::tr("Incorrect 'thisObject' name in invokeLater(...) at %1").arg(backtrace));
+		return {};
+	}
+
+	if (!(context->argument(1).isValid() && context->argument(1).isString()
+			&& !context->argument(1).toString().isEmpty()))
+	{
+		context->throwError(QObject::tr("Incorrect property name in invokeLater(...) at %1").arg(backtrace));
+		return {};
+	}
+
+	if (!(context->argument(lastButOne).isValid() && context->argument(lastButOne).isNumber()
+			&& context->argument(lastButOne).toInt32() > 0))
+	{
+		context->throwError(QObject::tr("Incorrect waiting time in invokeLater(...) at %1").arg(backtrace));
+		return {};
+	}
+
+	const QScriptValue thisObject = context->argument(0);
+	const QString propertyName = context->argument(1).toString();
+	const int msec = context->argument(lastButOne).toInt32();
+	QScriptValueList args;
+	for (int i = 2; i < lastButOne; ++i) {
+		args << context->argument(i);
+	}
+
+	lambdaSingleShot(msec, [=]() {
+		thisObject.property(propertyName).call(QScriptValue(), args);
+	} , thisObject.toQObject());
+
+	return {};
+}
 
 ScriptAPI::ScriptAPI()
 	: mGuiFacade(nullptr)
@@ -43,6 +95,7 @@ ScriptAPI::ScriptAPI()
 	, mSceneAPI(nullptr)
 	, mPaletteAPI(nullptr)
 	, mHintAPI(nullptr)
+	, mUtilsApi(nullptr)
 	, mScriptEngine(new QScriptEngine)
 {
 }
@@ -59,10 +112,13 @@ void ScriptAPI::init(MainWindow &mainWindow)
 	mSceneAPI.reset(new SceneAPI(*this, mainWindow));
 	mPaletteAPI.reset(new PaletteAPI(*this, mainWindow));
 	mHintAPI.reset(new HintAPI);
-
+	mUtilsApi.reset(new Utils(*this, mainWindow, *mVirtualCursor.data(), *mVirtualKeyboard.data(), *mHintAPI.data()));
 	const QScriptValue scriptAPI = mScriptEngine.newQObject(this);
 	// This instance will be available in scripts by writing something like "api.wait(100)"
 	mScriptEngine.globalObject().setProperty("api", scriptAPI);
+
+	registerDeclaredTypes(&mScriptEngine);
+	registerNewFunction(invokeLater, "invokeLater");
 }
 
 void ScriptAPI::evaluate()
@@ -73,13 +129,62 @@ void ScriptAPI::evaluate()
 	mVirtualCursor->show();
 	mVirtualCursor->raise();
 
-	mScriptEngine.setProcessEventsInterval(20);
+	mScriptEngine.setProcessEventsInterval(processEventsInterval);
 	mScriptEngine.evaluate(fileContent, fileName);
-
-	abortEvaluation();
 }
 
-void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration)
+void ScriptAPI::evaluateScript(const QString &script, const QString &fileName)
+{
+	mScriptEngine.setProcessEventsInterval(processEventsInterval);
+	mScriptEngine.evaluate(script, fileName);
+}
+
+void ScriptAPI::evaluateFileScript(const QString &fileName)
+{
+	const QString fileContent = InFile::readAll(fileName);
+	mScriptEngine.setProcessEventsInterval(processEventsInterval);
+	mScriptEngine.evaluate(fileContent, fileName);
+}
+
+void ScriptAPI::registerNewFunction(QScriptEngine::FunctionSignature fun, const QString &qScriptName, int length)
+{
+	Q_UNUSED(length);
+
+	const QScriptValue functionValue = mScriptEngine.newFunction(fun);
+	mScriptEngine.globalObject().setProperty(qScriptName, functionValue);
+}
+
+QScriptSyntaxCheckResult ScriptAPI::checkSyntax(const QString &script) const
+{
+	return mScriptEngine.checkSyntax(script);
+}
+
+bool ScriptAPI::hasUncaughtException() const
+{
+	return mScriptEngine.hasUncaughtException();
+}
+
+void ScriptAPI::clearExceptions()
+{
+	return mScriptEngine.clearExceptions();
+}
+
+QStringList ScriptAPI::uncaughtExceptionBacktrace() const
+{
+	return mScriptEngine.uncaughtExceptionBacktrace();
+}
+
+QScriptValue ScriptAPI::uncaughtException() const
+{
+	return mScriptEngine.uncaughtException();
+}
+
+QScriptEngine *ScriptAPI::engine()
+{
+	return &mScriptEngine;
+}
+
+void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int duration) noexcept
 {
 	const int comboBoxHeight = comboBox->height() / 2;
 	const int rowHeight = (comboBox->view()->height() - comboBoxHeight) / comboBox->count();
@@ -106,7 +211,7 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int d
 	connect(timer, &QTimer::timeout
 			, [this, comboBox]() {
 				mVirtualCursor->moved(comboBox->view()->viewport());
-			});
+			} );
 
 	timer->start();
 	mVirtualCursor->moveToRect(target, duration);
@@ -135,7 +240,7 @@ void ScriptAPI::pickComboBoxItem(QComboBox *comboBox, const QString &name, int d
 }
 
 
-void ScriptAPI::wait(int duration)
+void ScriptAPI::wait(int duration) noexcept
 {
 	if (duration != -1) {
 		QTimer::singleShot(duration, &mEventLoop, SLOT(quit()));
@@ -149,12 +254,16 @@ void ScriptAPI::breakWaiting()
 	mEventLoop.quit();
 }
 
-void ScriptAPI::changeWindow(QWidget *parent)
+void ScriptAPI::switchMouseCursorToWindow(QWidget *parent) noexcept
 {
 	mVirtualCursor->setParent(parent);
 	mVirtualCursor->show();
-	mVirtualCursor->leftButtonPress(parent);
-	mVirtualCursor->leftButtonRelease(parent);
+	mVirtualCursor->leftButtonClick(parent); // places parent in the forefront
+}
+
+void ScriptAPI::switchMouseCursorToMainWindow() noexcept
+{
+	switchMouseCursorToWindow(mGuiFacade->mainWindow());
 }
 
 QScriptValue ScriptAPI::pluginUi(const QString &pluginName)
@@ -182,12 +291,12 @@ SceneAPI &ScriptAPI::sceneAPI()
 	return *mSceneAPI;
 }
 
-void ScriptAPI::scroll(QAbstractScrollArea *area, QWidget *widget, int duration)
+void ScriptAPI::scroll(QAbstractScrollArea *area, QWidget *widget, int duration) noexcept
 {
 	const int xcoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).x();
 	int ycoord = area->verticalScrollBar()->parentWidget()->mapToGlobal(area->verticalScrollBar()->pos()).y();
 
-	mVirtualCursor->moveToPoint(xcoord, ycoord, duration / 2);
+	mVirtualCursor->moveToXY(xcoord, ycoord, duration / 2);
 
 	const int diff = area->verticalScrollBar()->height() - area->verticalScrollBar()->pageStep()
 			+ widget->pos().y() * area->verticalScrollBar()->maximum() / widget->parentWidget()->height();
@@ -202,7 +311,7 @@ void ScriptAPI::scroll(QAbstractScrollArea *area, QWidget *widget, int duration)
 	connect(anim, &QPropertyAnimation::finished, this, &ScriptAPI::breakWaiting);
 	anim->start(QAbstractAnimation::DeleteWhenStopped);
 
-	mVirtualCursor->moveToPoint(target.x(), target.y(), duration / 2);
+	mVirtualCursor->moveToXY(target.x(), target.y(), duration / 2);
 }
 
 QScriptValue ScriptAPI::ui()
@@ -233,4 +342,9 @@ QScriptValue ScriptAPI::cursor()
 QScriptValue ScriptAPI::keyboard()
 {
 	return mScriptEngine.newQObject(mVirtualKeyboard.data(), QScriptEngine::QtOwnership);
+}
+
+QScriptValue ScriptAPI::utils()
+{
+	return mScriptEngine.newQObject(mUtilsApi.data(), QScriptEngine::QtOwnership);
 }

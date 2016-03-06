@@ -46,6 +46,11 @@ void ListWidget::highlightFirstItem()
 	}
 }
 
+QListWidget *ListWidget::mainListWidget() const
+{
+	return mListWidget;
+}
+
 void ListWidget::doubleClickHandler(QListWidgetItem *item)
 {
 	emit userDataSelected(userData(item));

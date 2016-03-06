@@ -37,6 +37,7 @@ PaletteTree::PaletteTree(QWidget *parent)
 	, mCurrentEditor(0)
 {
 	initUi();
+	setObjectName("paletteTree");
 }
 
 void PaletteTree::initUi()

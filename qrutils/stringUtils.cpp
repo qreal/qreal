@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2007-2016 QReal Research Group, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,4 +54,15 @@ QString StringUtils::dequote(const QString &string)
 	return (string.startsWith("'") && string.endsWith("'")) || (string.startsWith("\"") && string.endsWith("\""))
 		? string.mid(1, string.length() - 2)
 		: string;
+}
+
+QString utils::StringUtils::deleteAmpersands(const QString &string)
+{
+	QString result(string);
+	for (int i = 0; i < result.count(); ++i) {
+		if (result[i] == '&') {
+			result.remove(i, 1);
+		}
+	}
+	return result;
 }

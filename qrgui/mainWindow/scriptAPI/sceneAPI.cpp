@@ -12,15 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "sceneAPI.h"
+#include "qrgui/mainWindow/scriptAPI/sceneAPI.h"
 
 #include <editor/editorView.h>
 #include <editor/editorViewScene.h>
 
-#include "mainWindow.h"
-#include "palette/draggableElement.h"
-#include "scriptAPI.h"
-#include "virtualCursor.h"
+#include "qrgui/mainWindow/mainWindow.h"
+#include "qrgui/mainWindow/palette/draggableElement.h"
+#include "qrgui/mainWindow/scriptAPI/scriptAPI.h"
+#include "qrgui/mainWindow/scriptAPI/virtualCursor.h"
 
 using namespace qReal;
 using namespace gui;
@@ -93,6 +93,25 @@ QStringList SceneAPI::nodeList(const QString &diagram, const QString &element)
 	for (const QGraphicsItem * const item : items) {
 		const NodeElement * const node = dynamic_cast<NodeElement const *>(item);
 		if (node && node->id().diagram() == diagram && node->id().element() == element) {
+			result << node->id().toString();
+		}
+	}
+
+	return result;
+}
+
+QStringList SceneAPI::currentSceneNodeList() const
+{
+	if (!mMainWindow.getCurrentTab()) {
+		return {};
+	}
+
+	/// @todo: Rewrite it using models
+	const QList<QGraphicsItem *> items = mMainWindow.getCurrentTab()->editorViewScene().items();
+	QStringList result;
+	for (const QGraphicsItem * const item : items) {
+		const NodeElement * const node = dynamic_cast<NodeElement const *>(item);
+		if (node) {
 			result << node->id().toString();
 		}
 	}

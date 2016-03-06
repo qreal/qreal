@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "arrow.h"
+#include "qrgui/mainWindow/scriptAPI/arrow.h"
 
 #include <QtCore/QTimer>
 #include <QtCore/QtMath>
@@ -28,6 +28,7 @@ using namespace gui;
 using namespace mathUtils;
 using namespace graphicsUtils;
 
+/// @todo Map to parent coordinates.
 Arrow::Arrow(const QPoint &sourcePoint, const QPoint &destPoint, int lifeTime, QWidget *parent)
 	: QWidget(parent)
 	, mSourcePoint(sourcePoint)
@@ -36,7 +37,7 @@ Arrow::Arrow(const QPoint &sourcePoint, const QPoint &destPoint, int lifeTime, Q
 {
 	setAttribute(Qt::WA_TransparentForMouseEvents, true);
 	setWindowFlags(Qt::WindowStaysOnTopHint);
-	activateWindow();
+	show();
 
 	QTimer::singleShot(mDuration, this, SLOT(disappear()));
 	QTimer::singleShot(lifeTime, this, SLOT(deleteLater()));

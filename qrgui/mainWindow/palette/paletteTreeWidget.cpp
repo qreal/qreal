@@ -33,6 +33,7 @@ PaletteTreeWidget::PaletteTreeWidget(PaletteTree &palette, MainWindow &mainWindo
 	, mEditable(editable)
 {
 	mEditorManager = &editorManagerProxy;
+	setObjectName("paletteTreeWidget");
 }
 
 void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &groups

@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov
+/* Copyright 2014-2016 QReal Research Group, Dmitry Chernov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,12 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "virtualKeyboard.h"
+#include "qrgui/mainWindow/scriptAPI/virtualKeyboard.h"
 
 #include <QtTest/QTest>
 #include <QtCore/QTimer>
 
-#include "scriptAPI.h"
+#include "qrgui/mainWindow/scriptAPI/scriptAPI.h"
 
 using namespace qReal;
 using namespace gui;
@@ -48,4 +48,14 @@ void VirtualKeyboard::printValue(const QString &value, int duration)
 		mScriptAPI.wait(-1);
 		QTest::keyClicks(nullptr, ch.toLower(), Qt::NoModifier, 0);
 	}
+}
+
+void VirtualKeyboard::clickKey(QLatin1Char c, Qt::KeyboardModifiers modifier)
+{
+	QTest::keyClick(QApplication::focusWidget(), QTest::asciiToKey(c.toLatin1()), modifier);
+}
+
+void VirtualKeyboard::clickEscape()
+{
+	QTest::keyClick(QApplication::focusWidget(), Qt::Key_Escape);
 }

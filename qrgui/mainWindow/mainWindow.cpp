@@ -88,8 +88,6 @@
 #include "findManager.h"
 #include "projectManager/projectManagerWrapper.h"
 
-#include "scriptAPI/scriptAPI.h"
-
 using namespace qReal;
 using namespace qReal::gui;
 using namespace qReal::commands;
@@ -313,6 +311,8 @@ QModelIndex MainWindow::rootIndex() const
 
 MainWindow::~MainWindow()
 {
+	emit goingToBeDestroyed();
+
 	delete mErrorReporter;
 	mUi->paletteTree->saveConfiguration();
 	SettingsManager::instance()->saveData();
@@ -334,12 +334,12 @@ EditorManagerInterface &MainWindow::editorManager()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-	mScriptAPI.abortEvaluation();
-
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
 		return;
 	}
+
+	mScriptAPI.abortEvaluation();
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
@@ -1726,6 +1726,11 @@ void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 {
 	return mListOfAdditionalActions;
+}
+
+ScriptingControlAPI *MainWindow::createScriptingControlAPI()
+{
+	return new ScriptingControlAPI(mScriptAPI);
 }
 
 void MainWindow::initToolPlugins()

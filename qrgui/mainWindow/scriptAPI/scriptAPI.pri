@@ -11,6 +11,8 @@ HEADERS += \
 	$$PWD/hintAPI.h \
 	$$PWD/virtualKeyboard.h \
 	$$PWD/sceneAPI.h \
+	$$PWD/scriptRegisterMetaTypes.h \
+	$$PWD/utils.h \
 
 SOURCES += \
 	$$PWD/scriptAPI.cpp \
@@ -22,3 +24,5 @@ SOURCES += \
 	$$PWD/hintAPI.cpp \
 	$$PWD/virtualKeyboard.cpp \
 	$$PWD/sceneAPI.cpp \
+	$$PWD/scriptRegisterMetaTypes.cpp \
+	$$PWD/utils.cpp \

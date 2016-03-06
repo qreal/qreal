@@ -77,7 +77,7 @@
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="49"/>
         <source>&amp;File</source>
-        <translation>Ф&amp;айл</translation>
+        <translation>&amp;Файл</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="64"/>
