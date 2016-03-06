@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+static const int buttonFrameThickness = 1;
+
 #include <QtTest/QTest>
 #include <QtWidgets/QRadioButton>
 #include <QtCore/QPropertyAnimation>
@@ -21,6 +23,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QMenuBar>
 
 #include <qrkernel/exception/exception.h>
 #include <qrutils/stringUtils.h>
@@ -42,10 +45,12 @@
 using namespace qReal;
 using namespace gui;
 
-Utils::Utils(ScriptAPI &scriptAPI, MainWindow &mainWindow, VirtualCursor &virtualCursor, HintAPI &hintAPI)
+Utils::Utils(ScriptAPI &scriptAPI, MainWindow &mainWindow, VirtualCursor &virtualCursor
+	   , VirtualKeyboard &virtualKeyboard, HintAPI &hintAPI)
 	: mScriptAPI(scriptAPI)
 	, mMainWindow(mainWindow)
 	, mVirtualCursor(virtualCursor)
+	, mVirtualKeyboard(virtualKeyboard)
 	, mHintAPI(hintAPI)
 {
 }
@@ -57,13 +62,36 @@ void Utils::activateMenu(QMenu *menu) noexcept
 		return;
 	}
 
-	QTest::keyClick(&mMainWindow, menu->title().at(1).toLatin1(), Qt::AltModifier);
+	QMenuBar *menubar = dynamic_cast<QMenuBar *>(menu->parentWidget());
+	if (menubar == nullptr) {
+		throwScriptException(tr("Utils::activateMenu: (menubar == nullptr). Menubar does not exist."));
+		return;
+	}
+
+	const QPoint topLeft = menubar->actionGeometry(menu->menuAction()).topLeft();
+	QTest::mouseClick(menubar, Qt::LeftButton, Qt::NoModifier
+			, topLeft + QPoint(buttonFrameThickness, buttonFrameThickness));
+	mVirtualCursor.moveToXY(topLeft.x(), topLeft.y());
+	if (!menu->activeAction()) {
+		QTest::keyClick(menu, Qt::Key_Down);
+	}
 }
 
 void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept
 {
 	if (menu == nullptr) {
 		throwScriptException(tr("Utils::activateMenuAction: (menu == nullptr). Given menu does not exist."));
+		return;
+	}
+
+	if (menu->isHidden()) {
+		throwScriptException(tr("Utils::activateMenuAction: (menu is hidden). Given menu is not open."));
+		return;
+	}
+
+	if (!menu->activeAction()) {
+		throwScriptException(tr("Utils::activateMenuAction: (actions are not selected). "
+				"Given menu without selected actions."));
 		return;
 	}
 
@@ -262,7 +290,8 @@ void Utils::clickAbstractButton(QWidget *widget, const QString &buttonType, cons
 		{
 			const bool isChecked = button->isChecked();
 
-			QTest::mouseClick(button, Qt::LeftButton, Qt::NoModifier, QPoint(1, 1));
+			QTest::mouseClick(button, Qt::LeftButton, Qt::NoModifier, QPoint(buttonFrameThickness
+					, buttonFrameThickness));
 			if (!button->isChecked() && dynamic_cast<QRadioButton *>(button)) {
 				throwScriptException(tr("Utils::clickAbstractButton: !button->isChecked(). "
 						"Clicking on the radiobutton in widget is failed."));

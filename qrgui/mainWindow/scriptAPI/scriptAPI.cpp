@@ -112,7 +112,7 @@ void ScriptAPI::init(MainWindow &mainWindow)
 	mSceneAPI.reset(new SceneAPI(*this, mainWindow));
 	mPaletteAPI.reset(new PaletteAPI(*this, mainWindow));
 	mHintAPI.reset(new HintAPI);
-	mUtilsApi.reset(new Utils(*this, mainWindow, *mVirtualCursor.data(), *mHintAPI.data()));
+	mUtilsApi.reset(new Utils(*this, mainWindow, *mVirtualCursor.data(), *mVirtualKeyboard.data(), *mHintAPI.data()));
 	const QScriptValue scriptAPI = mScriptEngine.newQObject(this);
 	// This instance will be available in scripts by writing something like "api.wait(100)"
 	mScriptEngine.globalObject().setProperty("api", scriptAPI);

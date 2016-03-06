@@ -27,32 +27,32 @@ public:
 	/// @see QScriptEngineAgent.
 	explicit TestAgent(QScriptEngine *engine);
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void exceptionCatch(qint64 scriptId, const QScriptValue & exception) override;
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void exceptionThrow(qint64 scriptId, const QScriptValue & exception, bool hasHandler) override;
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void positionChange(qint64 scriptId, int lineNumber, int columnNumber) override;
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void scriptLoad(qint64 id, const QString & program, const QString & fileName, int baseLineNumber) override;
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void functionEntry(qint64 scriptId) override;
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void contextPop() override;
 
-	/// @see QScriptEngineAgent.
 	/// Outputs relative info with qInfo().
+	/// @see QScriptEngineAgent.
 	void contextPush() override;
 };
 

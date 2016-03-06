@@ -16,6 +16,7 @@ include(../commonGui.pri) #because "SOURCES -=" doesn't work. (bug?)
 
 QT += script
 
+#todo: replace qRealGuiTests class mathods in baseGuiTests library and export last one. (?)
 HEADERS += \
 	$$PWD/qRealRobotsGuiTests.h \
 	$$PWD/qRealGuiTests.h \

@@ -53,12 +53,12 @@ function expectPanelsAction(actionName, isChecked) {
     expect(!ui.isSubMenuInMenu(subMenuPanels, action));
 }
 
-expectPanelsAction("Mini Map", false);
+expectPanelsAction("Mini Map", true);
 expectPanelsAction("Palette", true);
-expectPanelsAction("Logical Model Explorer", false);
+expectPanelsAction("Logical Model Explorer", true);
 expectPanelsAction("Errors", false);
-expectPanelsAction("Graphical Model Explorer", false);
-expectPanelsAction("Property Editor", false);
+expectPanelsAction("Graphical Model Explorer", true);
+expectPanelsAction("Property Editor", true);
 expectPanelsAction("File Toolbar", true);
 expectPanelsAction("Edit Toolbar", true);
 expectPanelsAction("View Toolbar", true);

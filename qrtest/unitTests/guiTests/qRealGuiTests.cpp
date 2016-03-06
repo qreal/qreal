@@ -365,10 +365,10 @@ void QRealGuiTests::exterminate(const int returnCode)
 	QApplication::instance()->exit(returnCode);
 }
 
-//TEST_F(QRealGuiTests, dockWidgetsExistence)
-//{
-//	run("dockWidgetsExistence.js");
-//}
+TEST_F(QRealGuiTests, dockWidgetsExistence)
+{
+	run("dockWidgetsExistence.js");
+}
 
 TEST_F(QRealGuiTests, editActionsExistence)
 {
@@ -415,10 +415,10 @@ TEST_F(QRealGuiTests, toolsActionsExistence)
 	run("toolsActionsExistence.js");
 }
 
-//TEST_F(QRealGuiTests, viewActionsExistence)
-//{
-//	run("viewActionsExistence.js");
-//}
+TEST_F(QRealGuiTests, viewActionsExistence)
+{
+	run("viewActionsExistence.js");
+}
 
 TEST_F(QRealGuiTests, dockWidgetsFunctioning)
 {
@@ -480,10 +480,10 @@ TEST_F(QRealGuiTests, createRootElementOnSceneAndQuit)
 	run("createRootElementOnSceneAndQuit.js");
 }
 
-//TEST_F(QRealGuiTests, fullscreenModeScript)
-//{
-//	run("fullscreenModeScript.js");
-//}
+TEST_F(QRealGuiTests, fullscreenModeScript)
+{
+	run("fullscreenModeScript.js");
+}
 
 TEST_F(QRealGuiTests, linkNodeCooperationScript)
 {

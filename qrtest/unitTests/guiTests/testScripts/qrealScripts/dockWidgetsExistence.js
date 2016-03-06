@@ -123,7 +123,7 @@ utils.activateMenuAction(menu_View, actionMenuPanels);
 utils.activateMenuAction(subMenuPanels, actionErrors);
 api.wait(50);
 
-var names = ["paletteTree", "paletteTreeWidget", "paletteTreeWidgets",
+var names = ["paletteTree", // "paletteTreeWidget", "paletteTreeWidgets" - bug!
              "errorListWidget", "minimapView", "propertyEditor",
              "graphicalModelExplorer", "logicalModelExplorer"];
 

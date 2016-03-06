@@ -54,27 +54,27 @@ function rightClick(widget) {
     cursor.rightButtonRelease(widget);
 }
 
-function fillInputWidgetLater(dialogName, lineEditObjectName, text, mces) {
-    invokeLater(utils, "fillInputWidget", dialogName, lineEditObjectName, text, mces);
+function fillInputWidgetLater(dialogName, lineEditObjectName, text, msec) {
+    invokeLater(utils, "fillInputWidget", dialogName, lineEditObjectName, text, msec);
 }
 
-function clickButtonLater(dialogName, text, mces) {
-    invokeLater(utils, "clickButton", dialogName, text, mces);
+function clickButtonLater(dialogName, text, msec) {
+    invokeLater(utils, "clickButton", dialogName, text, msec);
 }
 
-function chooseComboBoxItemLater(dialogName, comboBoxObjectName, itemName, mces) {
-    invokeLater(utils, "chooseComboBoxItem", dialogName, comboBoxObjectName, itemName, mces);
+function chooseComboBoxItemLater(dialogName, comboBoxObjectName, itemName, msec) {
+    invokeLater(utils, "chooseComboBoxItem", dialogName, comboBoxObjectName, itemName, msec);
 }
 
-function activateContextMenuActionLater(actionName, mces) {
-    invokeLater(utils, "activateContextMenuAction", actionName, mces);
+function activateContextMenuActionLater(actionName, msec) {
+    invokeLater(utils, "activateContextMenuAction", actionName, msec);
 }
 
 function quitWithoutSave() {
     var menuFile = ui.findMenu("menu_File");
     assert(menuFile != null);
     utils.activateMenu(menuFile);
-    api.wait(100);
+    api.wait(200);
     var actionQuit = ui.findActionInMenu(menuFile, "actionQuit");
     checkAction(actionQuit, true, false, false);
     assert(!ui.isSubMenuInMenu(menuFile, actionQuit));
@@ -86,4 +86,5 @@ function quitWithoutSave() {
 // function quitWithSave(fileName)
 // function togglePanelsAction(actionName);
 
+//----Start main evaluating!----//
 init();

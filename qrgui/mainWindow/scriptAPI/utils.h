@@ -39,19 +39,22 @@ class Utils : public QObject
 	Q_OBJECT
 
 public:
-	Utils(ScriptAPI &scriptAPI, MainWindow &mainWindow, VirtualCursor &virtualCursor, HintAPI &hintAPI);
+	Utils(ScriptAPI &scriptAPI, MainWindow &mainWindow, VirtualCursor &virtualCursor
+			, VirtualKeyboard &virtualKeyboard, HintAPI &hintAPI);
 
 	// ---------- Actions: ----------//
 	// Don't forget about virtual cursor's moves.
+
 	/// Activates menu getting with pointer.
-	/// @note This method works with a keyboard (not a mouse).
-	/// @todo: realise visible mouse moves with hints or virtual cursor.
+	/// @note This method works with a mouse.
 	Q_INVOKABLE void activateMenu(QMenu *menu) noexcept;
 
 	/// Activates \a actionForExec in corresponding \a menu.
 	/// @warning Use this method only after opening of the assigned menu.
 	/// @note This method interacts with QMenu through the virtual keyboard, not virtual mouse.
+	/// And the delay between key clicks equals ~50 msec.
 	/// @todo: realise visible mouse moves with hints or virtual cursor.
+	// todo: specify waiting time (delay) for all methods.
 	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept;
 
 	/// Types \a text in a text field \a lineEditObjectName inside a widget \a widgetName.
@@ -77,6 +80,7 @@ public:
 	Q_INVOKABLE void closeContextMenu() noexcept;
 
 	// -------- Getters: ---------//
+
 	/// @returns the geometry of \a action in \a menu.
 	Q_INVOKABLE QRect actionRect(const QMenu *menu, QAction *action) const;
 
@@ -87,6 +91,7 @@ public:
 	Q_INVOKABLE int length(const QStringList &list) const;
 
 	// ----------- Validators: ------------ //
+
 	/// @returns true if \a action is enabled and visible, otherway returns false.
 	Q_INVOKABLE bool isEnabledAndVisible(const QAction *action) const;
 
@@ -100,6 +105,7 @@ public:
 	Q_INVOKABLE bool actionIsCheckable(const QAction *action) const;
 
 	// ----------- Debugging: ------------ //
+
 	/// Prints usefull information about palette elements.
 	/// @note Usefull method for debugging and test scripts writing.
 	Q_INVOKABLE void printPaletteElementsInfo() const;
@@ -117,6 +123,7 @@ private:
 	ScriptAPI &mScriptAPI;
 	MainWindow &mMainWindow;
 	VirtualCursor &mVirtualCursor;
+	VirtualKeyboard &mVirtualKeyboard;
 	HintAPI &mHintAPI;
 };
 

@@ -54,3 +54,8 @@ void VirtualKeyboard::clickKey(QLatin1Char c, Qt::KeyboardModifiers modifier)
 {
 	QTest::keyClick(QApplication::focusWidget(), QTest::asciiToKey(c.toLatin1()), modifier);
 }
+
+void VirtualKeyboard::clickEscape()
+{
+	QTest::keyClick(QApplication::focusWidget(), Qt::Key_Escape);
+}

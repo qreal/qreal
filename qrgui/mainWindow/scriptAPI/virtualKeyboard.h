@@ -40,6 +40,9 @@ public:
 	/// @param c is ASCII code.
 	Q_INVOKABLE void clickKey(QLatin1Char c, Qt::KeyboardModifiers modifier = Qt::NoModifier);
 
+	/// Emulates keyboard "Escape" click.
+	Q_INVOKABLE void clickEscape();
+
 private:
 	void printValue(const QString &value, int duration);
 

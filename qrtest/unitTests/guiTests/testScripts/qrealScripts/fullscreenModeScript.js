@@ -84,6 +84,8 @@ expectPanelsAction("Generators Toolbar", false);
 utils.activateMenuAction(menu_View, actionMenuPanels);
 var actionErrors = ui.findActionInMenu(subMenuPanels, "Errors");
 utils.activateMenuAction(subMenuPanels, actionErrors);
+utils.activateMenu(menu_View);
+api.wait(200);
 utils.activateMenuAction(menu_View, actionMenuPanels);
 var actionPalette = ui.findActionInMenu(subMenuPanels, "Palette");
 utils.activateMenuAction(subMenuPanels, actionPalette);
@@ -97,7 +99,6 @@ utils.activateMenu(menu_View);
 api.wait(200);
 
 // changes the second time
-utils.activateMenu(menu_View);
 utils.activateMenuAction(menu_View, actionFullscreen);
 api.wait(300);
 
