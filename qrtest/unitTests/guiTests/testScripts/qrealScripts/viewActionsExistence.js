@@ -34,7 +34,7 @@ checkAction(actionZoom_Out, false, false, false);
 expect(!ui.isSubMenuInMenu(menu_View, actionZoom_Out));
 
 var actionShowSplash = ui.findActionInMenu(menu_View, "actionShowSplash");
-checkAction(actionShowSplash, true, true, false);
+checkAction(actionShowSplash, true, true, true);
 expect(!ui.isSubMenuInMenu(menu_View, actionShowSplash));
 
 var actionMenuPanels = ui.findActionInMenu(menu_View, "Panels");

@@ -97,8 +97,14 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept
 
 	for (const QAction *action : menu->actions()) {
 		if (action == actionForExec) {
-			Qt::Key key	= menu->children().contains(actionForExec->menu()) ? Qt::Key_Right : Qt::Key_Enter;
+			const bool isSubmenu = menu->children().contains(actionForExec->menu());
+			const Qt::Key key = isSubmenu ? Qt::Key_Right : Qt::Key_Enter;
+			if (isSubmenu) {
+				// this is a workaround of the bug in qt (see utils.h)
+				emit actionForExec->menu()->aboutToShow();
+			}
 			QTest::keyClick(menu, key);
+
 			return;
 		}
 

@@ -82,7 +82,9 @@ expectPanelsAction("Generators Toolbar", false);
 
 // try to turn on errors dockwidget and turn off palette dockwidget
 utils.activateMenuAction(menu_View, actionMenuPanels);
+assert(subMenuPanels != null);
 var actionErrors = ui.findActionInMenu(subMenuPanels, "Errors");
+assert(actionErrors != null);
 utils.activateMenuAction(subMenuPanels, actionErrors);
 utils.activateMenu(menu_View);
 api.wait(200);

@@ -51,6 +51,9 @@ public:
 
 	/// Activates \a actionForExec in corresponding \a menu.
 	/// @warning Use this method only after opening of the assigned menu.
+	/// This method implementation emits necessary signal aboutToShow() (see the bug description).
+	/// In the normal case aboutToShow() should be emitted independently singly.
+	/// @see The appropriative bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373.
 	/// @note This method interacts with QMenu through the virtual keyboard, not virtual mouse.
 	/// And the delay between key clicks equals ~50 msec.
 	/// @todo: realise visible mouse moves with hints or virtual cursor.

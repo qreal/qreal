@@ -64,6 +64,7 @@ var subMenuPanels = ui.findMenuContainedByAction(actionMenuPanels);
 assert(subMenuPanels != null);
 
 var actionErrors = ui.findActionInMenu(subMenuPanels, "Errors");
+assert(actionErrors != null);
 utils.activateMenuAction(menu_View, actionMenuPanels);
 utils.activateMenuAction(subMenuPanels, actionErrors);
 api.wait(1000);
