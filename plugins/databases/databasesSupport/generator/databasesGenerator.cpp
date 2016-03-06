@@ -147,7 +147,7 @@ Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
 	if (primaryKeyCount != 1) {
 		error(
 			"Invalid number of primary key in entity with name '"
-			+ getProperty(entityId, "Name").toString()
+			+ getProperty(entityId, "entityName").toString()
 			+  "': "
 			+ QString::number(primaryKeyCount)
 			, true
@@ -163,7 +163,7 @@ Id DatabasesGenerator::getPrimaryKeyOfSet(IdList const &entitySet)
 }
 QString DatabasesGenerator::getPrimaryKeyNameOfSet(IdList const &entitySet)
 {
-	return("PrimaryKeyOfTable" + getProperty(entitySet.at(0), "Name").toByteArray());
+	return("PrimaryKeyOfTable" + getProperty(entitySet.at(0), "entityName").toByteArray());
 }
 
 int DatabasesGenerator::getParentNumber(Id const &childEntity, QList<IdList> const &set)
@@ -187,7 +187,7 @@ QString DatabasesGenerator::getListTableName(IdList const &list)
 		} else {
 			isFirst = false;
 		}
-		name += getProperty(id, "Name").toByteArray();
+		name += getProperty(id, "tableName").toByteArray();
 	}
 	return name;
 }
@@ -197,7 +197,7 @@ bool DatabasesGenerator::checkEntities()
 	bool result = true;
 	IdList entities = findNodes("Entity");
 	for (Id const &entity : entities) {
-		QString name = getProperty(entity, "Name").toString();
+		QString name = getProperty(entity, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
 			error(tr("Entity has no name"), true);
@@ -215,10 +215,10 @@ bool DatabasesGenerator::checkAttributes()
 	bool result = true;
 	IdList attributes = findNodes("Attribute");
 	for (Id const &attribute : attributes) {
-		QString name = getProperty(attribute, "Name").toString();
+		QString name = getProperty(attribute, "attributeName").toString();
 		QString datatype = getProperty(attribute, "DataType").toString();
 		Id parent = getParent(attribute);
-		QString parentName = getProperty(parent, "Name").toString();
+		QString parentName = getProperty(parent, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
 			error(tr("Attribute has no name in entity '") + parentName + "'", true);
@@ -285,8 +285,8 @@ qReal::Id DatabasesGenerator::makeColumnFromAttribute(Id const &attributeId, Id 
 {
 	mGraphicalModelApi.position(attributeId);
 	Id logicalColumnId = createElementFromString("Column", QPointF(), parentId);
-	QString rowName = getProperty(attributeId, "Name").toString();
-	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "Name");
+	QString rowName = getProperty(attributeId, "attributeName").toString();
+	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "columnName");
 	return logicalColumnId;
 }
 
@@ -294,8 +294,8 @@ qReal::Id DatabasesGenerator::makeTableFromEntity(Id const &entityId, Id const &
 {
 	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(entityId).first());
 	Id logicalTableId = createElementFromString("Table", coord, parentId);
-	QString tableName = getProperty(entityId, "Name").toString();
-	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
+	QString tableName = getProperty(entityId, "entityName").toString();
+	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "tableName");
 
 	IdList attributesSet = getChildren(entityId);
 	for (Id const &attributeId : attributesSet) {
@@ -311,7 +311,7 @@ qReal::Id DatabasesGenerator::makeTableFromEntitySet(IdList const &set, Id const
 	QPointF coord = mGraphicalModelApi.position(mGraphicalModelApi.graphicalIdsByLogicalId(set.first()).first());
 	Id logicalTableId = createElementFromString("Table", coord, parentId);
 	QString tableName = getListTableName(set);
-	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
+	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "tableName");
 
 	for (Id const &entityId : set){
 		IdList attributes = getChildren(entityId);
@@ -403,8 +403,8 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error("Too many relationships from "
-				 + getProperty(from, "Name").toString()
-				 + "to " + getProperty(to, "Name").toString(), true);
+				 + getProperty(from, "entityName").toString()
+				 + "to " + getProperty(to, "entityName").toString(), true);
 			return false;
 		}
 
@@ -420,8 +420,8 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 
 		// add bounding attribute
 		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet), true);
-		QString rowName = getProperty(relationship, "ColumnName").toString();
-		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "Name");
+		QString rowName = getProperty(relationship, "Name").toString();
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "columnName");
 		// copy relationship
 		copyOneToManyRelationship(relationship, logicalDiagramId, setTables.at(fromSet), setTables.at(toSet));
 	}
@@ -441,8 +441,8 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error(tr("Too many relationships from ")
-				+ getProperty(from, "Name").toString()
-				+ tr(" to ") + getProperty(to, "Name").toString(), true);
+				+ getProperty(from, "entityName").toString()
+				+ tr(" to ") + getProperty(to, "entityName").toString(), true);
 			return false;
 		}
 
@@ -459,7 +459,7 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 
 		// Creating
 		Id logicalTableId = createElementFromString("Table", QPointF(), logicalDiagramId);
-		mLogicalModelApi.setPropertyByRoleName(logicalTableId, relationshipTableName, "Name");
+		mLogicalModelApi.setPropertyByRoleName(logicalTableId, relationshipTableName, "tableName");
 
 		//copy relationship
 		copyManyToManyRelationship(relationship
@@ -473,13 +473,13 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 
 		//add bounding attribute
 		Id logicalColumnIdOne = createElementFromString("Column", QPointF(), logicalTableId, true);
-		QString rowName = "keyOf" + getProperty(setTables.at(fromSet), "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdOne, rowName, "Name");
+		QString rowName = "keyOf" + getProperty(setTables.at(fromSet), "tableName").toString();
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdOne, rowName, "columnName");
 
 		//add bounding attribute 2
 		Id logicalColumnIdTwo = createElementFromString("Column", QPointF(), logicalTableId, true);
-		QString rowName2 = "keyOf" + getProperty(setTables.at(toSet), "Name").toString();
-		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdTwo, rowName2, "Name");
+		QString rowName2 = "keyOf" + getProperty(setTables.at(toSet), "tableName").toString();
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdTwo, rowName2, "columnName");
 	}
 	return true;
 }
@@ -639,7 +639,7 @@ void DatabasesGenerator::createTableModeWithSqlServer2008()
 
 		codeFile.write("CREATE TABLE ");
 
-		codeFile.write("dbo." + getProperty(tableId, "Name").toByteArray());
+		codeFile.write("dbo." + getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -650,7 +650,7 @@ void DatabasesGenerator::createTableModeWithSqlServer2008()
 			}
 			first = false;
 			codeFile.write("\r\n");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -696,7 +696,7 @@ void DatabasesGenerator::createTableModeWithMySql5()
 		if (getProperty(tableId, "if_not_exists").toBool())
 			codeFile.write("IF NOT EXISTS ");
 
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -707,7 +707,7 @@ void DatabasesGenerator::createTableModeWithMySql5()
 			}
 			first = false;
 			codeFile.write("\r\n");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -795,7 +795,7 @@ void DatabasesGenerator::createTableModeWithSqlite()
 		if (getProperty(tableId, "if_not_exists").toBool())
 			codeFile.write("IF NOT EXISTS ");
 
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -806,7 +806,7 @@ void DatabasesGenerator::createTableModeWithSqlite()
 			}
 			first = false;
 			codeFile.write("\r\n");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -859,7 +859,7 @@ void DatabasesGenerator::createTableModeWithMicrosoftAccess()
 
 		codeFile.write("TABLE ");
 
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -870,7 +870,7 @@ void DatabasesGenerator::createTableModeWithMicrosoftAccess()
 			}
 			first = false;
 			codeFile.write("\r\n");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -927,7 +927,7 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 
 		codeFile.write("TABLE ");
 
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -938,7 +938,7 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 			}
 			first = false;
 			codeFile.write("\r\n");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -1026,7 +1026,7 @@ void DatabasesGenerator::alterTableModeWithSqlServer2008()
 		}
 
 		codeFile.write("ALTER TABLE ");
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		IdList rowsSet = getChildren(tableId);
 
 		bool first = true;
@@ -1037,7 +1037,7 @@ void DatabasesGenerator::alterTableModeWithSqlServer2008()
 			first = false;
 			codeFile.write("\r\n");
 			codeFile.write("ADD COLUMN (");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -1076,7 +1076,7 @@ void DatabasesGenerator::alterTableModeWithMySql5()
 		}
 
 		codeFile.write("ALTER TABLE ");
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -1088,7 +1088,7 @@ void DatabasesGenerator::alterTableModeWithMySql5()
 			first = false;
 			codeFile.write("\r\n");
 			codeFile.write("ADD COLUMN (");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -1134,7 +1134,7 @@ void DatabasesGenerator::alterTableModeWithSqlite()
 		}
 
 		codeFile.write("ALTER TABLE");
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -1146,7 +1146,7 @@ void DatabasesGenerator::alterTableModeWithSqlite()
 			first = false;
 			codeFile.write("\r\n");
 			codeFile.write("ADD COLUMN (");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -1192,7 +1192,7 @@ void DatabasesGenerator::alterTableModeWithMicrosoftAccess()
 		}
 
 		codeFile.write("ALTER TABLE ");
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -1204,7 +1204,7 @@ void DatabasesGenerator::alterTableModeWithMicrosoftAccess()
 			first = false;
 			codeFile.write("\r\n");
 			codeFile.write("ADD COLUMN (");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 
@@ -1246,7 +1246,7 @@ void DatabasesGenerator::alterTableModeWithPostgreSql()
 		}
 
 		codeFile.write("ALTER TABLE ");
-		codeFile.write(getProperty(tableId, "Name").toByteArray());
+		codeFile.write(getProperty(tableId, "tableName").toByteArray());
 		codeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -1258,7 +1258,7 @@ void DatabasesGenerator::alterTableModeWithPostgreSql()
 			first = false;
 			codeFile.write("\r\n");
 			codeFile.write("ADD COLUMN (");
-			codeFile.write(getProperty(rowId, "Name").toByteArray());
+			codeFile.write(getProperty(rowId, "columnName").toByteArray());
 			codeFile.write(" ");
 			codeFile.write(getProperty(rowId, "DataType").toByteArray());
 

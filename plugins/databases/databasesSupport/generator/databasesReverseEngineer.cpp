@@ -36,7 +36,7 @@ qReal::Id DatabasesReverseEngineer::createTable(QString const &tableName
 		, QPointF const &coord, Id const &parentLogicalId)
 {
 	Id logicalTableId = createElementFromString("Table", coord, parentLogicalId);
-	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "Name");
+	mLogicalModelApi.setPropertyByRoleName(logicalTableId, tableName, "tableName");
 	return logicalTableId;
 }
 
@@ -44,7 +44,7 @@ qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName
 		, QString const &columnType, Id const &parentId)
 {
 	Id logicalColumnId = createElementFromString("Column", QPointF(), parentId, true);
-	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, columnName, "Name");
+	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, columnName, "columnName");
 	return logicalColumnId;
 }
 

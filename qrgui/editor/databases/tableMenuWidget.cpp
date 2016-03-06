@@ -53,7 +53,7 @@ void TableMenuWidget::updateTable(QTableWidgetItem *item)
 	QString cellContents = item->text();
 	switch(rowNum) {
 	case TableName: {
-		table->setProperty("Name", cellContents);
+		table->setProperty("tableName", cellContents);
 		break;
 	}
 	case Temp: {
@@ -118,7 +118,7 @@ void TableMenuWidget::updateColumn(QTableWidgetItem *item)
 	QString cellContents = item->text();
 	switch (columnNum) {
 	case Name: {
-		column->setProperty("Name", cellContents);
+		column->setProperty("columnName", cellContents);
 		break;
 	}
 	case DataType: {
@@ -283,7 +283,7 @@ void TableMenuWidget::fillTableProperties()
 {
 	int columnNum = 0;
 
-	QVariant tableName = mTableNodeElement->getProperty("Name");
+	QVariant tableName = mTableNodeElement->getProperty("tableName");
 	mUi->tableDataTable->setItem(TableName, columnNum, new QTableWidgetItem(tableName.toString()));
 	QString windowTitle = "Menu of table with name '" + tableName.toString() + "'";
 	this->setWindowTitle(windowTitle);
@@ -373,7 +373,7 @@ void TableMenuWidget::fillColumnProperties()
 		mUi->columnDataTable->insertRow(rowCount);
 		mUi->columnDataTable->setItem(rowCount, ElementId, new QTableWidgetItem(column->id().toString()));
 
-		QVariant columnName = column->getProperty("Name");
+		QVariant columnName = column->getProperty("columnName");
 		mUi->columnDataTable->setItem(rowCount, Name, new QTableWidgetItem(columnName.toString()));
 
 		QVariant columnType = column->getProperty("DataType");
