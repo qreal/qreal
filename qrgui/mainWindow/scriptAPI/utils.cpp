@@ -68,10 +68,11 @@ void Utils::activateMenu(QMenu *menu) noexcept
 		return;
 	}
 
-	const QPoint topLeft = menubar->actionGeometry(menu->menuAction()).topLeft();
+	const QPoint centerPoint = menubar->actionGeometry(menu->menuAction()).center();
 	QTest::mouseClick(menubar, Qt::LeftButton, Qt::NoModifier
-			, topLeft + QPoint(buttonFrameThickness, buttonFrameThickness));
-	mVirtualCursor.moveToXY(topLeft.x(), topLeft.y());
+			, centerPoint);
+	mVirtualCursor.moveToXY(centerPoint.x(), centerPoint.y(), 50);
+	QTest::qWait(50);
 	if (!menu->activeAction()) {
 		QTest::keyClick(menu, Qt::Key_Down);
 	}
@@ -95,23 +96,21 @@ void Utils::activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept
 		return;
 	}
 
-	for (const QAction *action : menu->actions()) {
+	for (QAction * const action : menu->actions()) {
 		if (action == actionForExec) {
 			const bool isSubmenu = menu->children().contains(actionForExec->menu());
 			const Qt::Key key = isSubmenu ? Qt::Key_Right : Qt::Key_Enter;
-			if (isSubmenu) {
-				// this is a workaround of the bug in qt (see utils.h)
-				emit actionForExec->menu()->aboutToShow();
-			}
+			const QPoint centerPoint = menu->actionGeometry(actionForExec).center();
+			mVirtualCursor.moveToXY(centerPoint.x(), centerPoint.y(), 50);
+			QTest::qWait(50);
+			QTest::mouseClick(menu, Qt::LeftButton, Qt::NoModifier, centerPoint);
 			QTest::keyClick(menu, key);
-
 			return;
 		}
 
 		if (!action->isSeparator()) {
-			QTest::qWait(25);
 			QTest::keyClick(menu, Qt::Key_Down);
-			QTest::qWait(25);
+			QTest::qWait(50);
 		}
 	}
 

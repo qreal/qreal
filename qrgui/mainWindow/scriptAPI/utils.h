@@ -44,23 +44,21 @@ public:
 
 	// ---------- Actions: ----------//
 	// Don't forget about virtual cursor's moves.
+	// todo: specify waiting time (delay) for all methods.
 
 	/// Activates menu getting with pointer.
+	/// The delay value is 50 msec (for a mouse animation).
 	/// @note This method works with a mouse.
 	Q_INVOKABLE void activateMenu(QMenu *menu) noexcept;
 
 	/// Activates \a actionForExec in corresponding \a menu.
 	/// @warning Use this method only after opening of the assigned menu.
-	/// This method implementation emits necessary signal aboutToShow() (see the bug description).
-	/// In the normal case aboutToShow() should be emitted independently singly.
-	/// @see The appropriative bug exists: https://bugs.launchpad.net/appmenu-qt5/+bug/1449373.
-	/// @note This method interacts with QMenu through the virtual keyboard, not virtual mouse.
-	/// And the delay between key clicks equals ~50 msec.
-	/// @todo: realise visible mouse moves with hints or virtual cursor.
-	// todo: specify waiting time (delay) for all methods.
+	/// @note This method interacts with QMenu through the virtual keyboard and virtual mouse.
+	/// And the delay value between key clicks is 50 msec. In total +50 msec for a mouse animation.
 	Q_INVOKABLE void activateMenuAction(QMenu *menu, QAction *actionForExec) noexcept;
 
 	/// Types \a text in a text field \a lineEditObjectName inside a widget \a widgetName.
+	/// And the delay value between key clicks is 20 msec.
 	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void fillInputWidget(const QString &widgetName, const QString &lineEditObjectName
 			, const QString &text) noexcept;
@@ -74,7 +72,8 @@ public:
 	Q_INVOKABLE void chooseComboBoxItem(const QString &widgetName
 			, const QString &comboBoxObjectName, const QString &itemName) noexcept;
 
-	/// By name \a actionName activates some action in a context menu.
+	/// By name \a actionName activates some action in a context menu with the virtual keyboard.
+	/// And the delay value between key clicks is 50 msec.
 	/// @todo: realise visible mouse moves with hints or virtual cursor.
 	Q_INVOKABLE void activateContextMenuAction(const QString &actionName) noexcept;
 
