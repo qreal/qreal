@@ -15,6 +15,7 @@
 #include "interpreterCore/robotsPluginFacade.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/widgets/consoleDock.h>
 #include <kitBase/robotModel/portInfo.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
@@ -32,7 +33,7 @@ using namespace interpreterCore;
 
 RobotsPluginFacade::RobotsPluginFacade()
 	: mInterpreter(nullptr)
-	, mKitPluginManager("plugins/tools/kitPlugins")
+	, mKitPluginManager(qReal::PlatformInfo::invariantSettingsPath("pathToToolPlugins") + "/kitPlugins")
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
@@ -60,7 +61,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()
-			, configurer.systemEvents()
+			, configurer.projectManager()
 			));
 
 	if (!selectKit(configurer)) {
@@ -102,9 +103,9 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	mInterpreter = interpreter;
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
-			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
+			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mInterpreter, &interpreter::InterpreterInterface::stopRobot);
+			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
 
 	initKitPlugins(configurer);
 
@@ -233,7 +234,7 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			&mActionsManager.stopRobotAction()
 			, &QAction::triggered
 			, mInterpreter
-			, &interpreter::InterpreterInterface::stopRobot
+			, &interpreter::InterpreterInterface::userStopRobot
 			);
 
 	QObject::connect(
@@ -274,7 +275,7 @@ void RobotsPluginFacade::initSensorWidgets()
 	hideVariables();
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
 
-	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, this);
+	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, mRobotModelManager, this);
 	connect(mInterpreter, &interpreter::InterpreterInterface::started
 			, mGraphicsWatcherManager, &GraphicsWatcherManager::forceStart);
 	connect(mInterpreter, &interpreter::InterpreterInterface::stopped

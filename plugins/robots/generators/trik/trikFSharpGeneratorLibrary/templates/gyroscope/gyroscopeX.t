@@ -1,1 +1,0 @@
-model.Gyro.Read().X

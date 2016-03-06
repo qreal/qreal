@@ -14,6 +14,8 @@
 
 #include "stringPropertyConverter.h"
 
+#include <qrtext/lua/types/string.h>
+
 #include "generatorBase/lua/luaProcessor.h"
 
 using namespace generatorBase::converters;
@@ -27,7 +29,8 @@ StringPropertyConverter::StringPropertyConverter(lua::LuaProcessor &luaTranslato
 {
 }
 
-QString StringPropertyConverter::convert(const QString &expression) const
+QString StringPropertyConverter::convert(const QString &luaCode) const
 {
-	return mLuaTranslator.castToString(expression, mId, mPropertyName, mReservedVariablesConverter);
+	return mLuaTranslator.castTo(qrtext::core::wrap(new qrtext::lua::types::String)
+			, luaCode, mId, mPropertyName, mReservedVariablesConverter);
 }

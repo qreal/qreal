@@ -61,8 +61,7 @@ QString NxtOsekCGeneratorPlugin::generatorName() const
 
 bool NxtOsekCGeneratorPlugin::canGenerateTo(const QString &project)
 {
-	const QString cFilePath = PlatformInfo::applicationDirPath() + "/" + defaultFilePath(project);
-	const QFileInfo cFile(cFilePath);
+	const QFileInfo cFile = generationTarget(project);
 	const QFileInfo makeFile(cFile.absolutePath() + "/makefile");
 	if (!cFile.exists() || !makeFile.exists()) {
 		return true;
@@ -114,6 +113,11 @@ QIcon NxtOsekCGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::Ro
 {
 	Q_UNUSED(robotModel)
 	return QIcon(":/nxt/osek/images/switch-to-nxt-osek-c.svg");
+}
+
+QString NxtOsekCGeneratorPlugin::defaultSettingsFile() const
+{
+	return ":/nxt/osek/defaultSettings.ini";
 }
 
 void NxtOsekCGeneratorPlugin::initActions()
@@ -213,12 +217,10 @@ void NxtOsekCGeneratorPlugin::uploadProgram()
 
 void NxtOsekCGeneratorPlugin::checkNxtTools()
 {
-	QDir dir(PlatformInfo::applicationDirPath());
-	if (!QDir().exists(dir.absolutePath() + "/nxt-tools")) {
+	QDir dir(PlatformInfo::invariantSettingsPath("pathToNxtTools"));
+	if (!dir.exists()) {
 		mNxtToolsPresent = false;
 	} else {
-		dir.cd(dir.absolutePath() + "/nxt-tools");
-
 		QDir gnuarm(dir.absolutePath() + "/gnuarm");
 		QDir nexttool(dir.absolutePath() + "/nexttool");
 		QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");

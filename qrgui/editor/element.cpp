@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,25 +18,24 @@
 #include <QtWidgets/QGraphicsColorizeEffect>
 
 #include <qrkernel/settingsListener.h>
+#include <qrgui/models/models.h>
 #include <qrgui/models/commands/changePropertyCommand.h>
 
 #include "qrgui/editor/labels/label.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
-Element::Element(ElementImpl *elementImpl
-		, const Id &id
-		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, qReal::models::LogicalModelAssistApi &logicalAssistApi
-		)
+Element::Element(ElementImpl *elementImpl, const Id &id, const models::Models &models)
 	: mMoving(false)
 	, mEnabled(true)
 	, mId(id)
 	, mElementImpl(elementImpl)
-	, mLogicalAssistApi(logicalAssistApi)
-	, mGraphicalAssistApi(graphicalAssistApi)
+	, mModels(models)
+	, mLogicalAssistApi(models.logicalModelAssistApi())
+	, mGraphicalAssistApi(models.graphicalModelAssistApi())
 	, mController(nullptr)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemClipsChildrenToShape |
@@ -55,7 +54,7 @@ Id Element::id() const
 	return mId;
 }
 
-qReal::Id Element::logicalId() const
+Id Element::logicalId() const
 {
 	return mGraphicalAssistApi.logicalId(mId);
 }
@@ -68,12 +67,6 @@ QString Element::name() const
 void Element::updateData()
 {
 	setToolTip(mGraphicalAssistApi.toolTip(id()));
-}
-
-QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
-{
-	Q_UNUSED(pos)
-	return QList<ContextMenuAction*>();
 }
 
 QString Element::logicalProperty(const QString &roleName) const
@@ -98,36 +91,13 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
-qReal::Controller * Element::controller() const
+Controller * Element::controller() const
 {
 	return mController;
 }
 
 void Element::initTitles()
 {
-}
-
-void Element::select(const bool singleSelected)
-{
-	if (singleSelected) {
-		setSelectionState(true);
-	}
-
-	emit switchFolding(!singleSelected);
-}
-
-void Element::setSelectionState(const bool selected)
-{
-	if (isSelected() != selected) {
-		setSelected(selected);
-	}
-	if (!selected) {
-		select(false);
-	}
-
-	foreach (Label * const label, mLabels) {
-		label->setParentSelected(selected);
-	}
 }
 
 ElementImpl* Element::elementImpl() const
@@ -160,14 +130,8 @@ void Element::updateEnabledState()
 
 void Element::setHideNonHardLabels(bool hide)
 {
-	for (const Label * const label : mLabels) {
-		if (label->isSelected()) {
-			return;
-		}
-	}
-
 	for (Label * const label : mLabels) {
-		label->setVisible(label->isHard() || !hide);
+		label->setVisible(label->isHard() || !hide || label->isSelected());
 	}
 }
 

@@ -14,7 +14,7 @@
 
 #include "editor/commands/resizeCommand.h"
 
-using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 ResizeCommand::ResizeCommand(const EditorViewScene *scene, const Id &id)
 	: NodeElementCommand(scene, id)
@@ -54,9 +54,11 @@ bool ResizeCommand::execute()
 	if (!mTrackStopped) {
 		return true;
 	}
+
 	if (!NodeElementCommand::execute()) {
 		return false;
 	}
+
 	resizeHierarchy(mNewGeometrySnapshot);
 	return true;
 }
@@ -66,21 +68,24 @@ bool ResizeCommand::restoreState()
 	if (!mTrackStopped) {
 		return true;
 	}
+
 	if (!NodeElementCommand::restoreState()) {
 		return false;
 	}
+
 	resizeHierarchy(mOldGeometrySnapshot);
 	return true;
 }
 
 void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 {
-	foreach (const Id &id, snapshot.keys()) {
+	for (const Id &id : snapshot.keys()) {
 		NodeElement *element = nodeById(id);
 		if (!element->parentItem()) {
 			resizeTree(snapshot, id);
 		}
 	}
+
 	// Updating linker position
 	if (mScene->selectedItems().size() == 1) {
 		QGraphicsItem *selectedItem = mScene->selectedItems()[0];
@@ -94,11 +99,12 @@ void ResizeCommand::resizeHierarchy(QMap<Id, QRectF> const &snapshot)
 void ResizeCommand::resizeTree(QMap<Id, QRectF> const &snapshot, const Id &root)
 {
 	NodeElement *element = nodeById(root);
-	foreach (NodeElement *child, element->childNodes()) {
+	for (NodeElement *child : element->childNodes()) {
 		if (snapshot.contains(child->id())) {
 			resizeTree(snapshot, child->id());
 		}
 	}
+
 	resize(element, snapshot[root]);
 }
 
@@ -116,6 +122,7 @@ void ResizeCommand::startTracking()
 	if (!mNode) {
 		return;
 	}
+
 	TrackingEntity::startTracking();
 	makeCommonSnapshot(mOldGeometrySnapshot);
 	startEdgeTracking();
@@ -138,7 +145,7 @@ void ResizeCommand::makeCommonSnapshot(QMap<Id, QRectF> &target)
 	/// This must be invoked even if we start element dragging when it isn`t selected
 	makeHierarchySnapshot(mNode, target);
 	const QList<QGraphicsItem *> selectedItems = mNode->scene()->selectedItems();
-	foreach (QGraphicsItem *const item, selectedItems) {
+	for (QGraphicsItem *const item : selectedItems) {
 		NodeElement * const node = dynamic_cast<NodeElement *>(item);
 		if (node && node != mNode) {
 			makeHierarchySnapshot(node, target);
@@ -169,7 +176,7 @@ void ResizeCommand::makeChildrenSnapshot(const NodeElement *element, QMap<Id, QR
 {
 	target.insert(element->id(), geometryOf(element));
 	addEdges(element);
-	foreach (const QGraphicsItem * const childItem, element->childItems()) {
+	for (const QGraphicsItem * const childItem : element->childItems()) {
 		const NodeElement * const child = dynamic_cast<const NodeElement * const>(childItem);
 		if (child) {
 			makeChildrenSnapshot(child, target);
@@ -179,14 +186,14 @@ void ResizeCommand::makeChildrenSnapshot(const NodeElement *element, QMap<Id, QR
 
 void ResizeCommand::addEdges(const NodeElement *node)
 {
-	foreach (EdgeElement * const edge, node->getEdges()) {
+	for (EdgeElement * const edge : node->getEdges()) {
 		mEdges.insert(edge);
 	}
 }
 
 void ResizeCommand::startEdgeTracking()
 {
-	foreach (EdgeElement * const edge, mEdges) {
+	for (EdgeElement * const edge : mEdges) {
 		ReshapeEdgeCommand *reshapeCommand = new ReshapeEdgeCommand(edge);
 		mEdgeCommands << reshapeCommand;
 		reshapeCommand->startTracking();
@@ -196,7 +203,7 @@ void ResizeCommand::startEdgeTracking()
 
 void ResizeCommand::stopEdgeTracking()
 {
-	foreach (ReshapeEdgeCommand * const command, mEdgeCommands) {
+	for (ReshapeEdgeCommand * const command : mEdgeCommands) {
 		command->stopTracking();
 	}
 }

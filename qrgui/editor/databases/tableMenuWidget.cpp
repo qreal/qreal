@@ -3,6 +3,8 @@
 #include "editorViewScene.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class EditorViewScene;
 
@@ -433,4 +435,6 @@ void TableMenuWidget::fillColumnProperties()
 	}
 }
 
+}
+}
 }

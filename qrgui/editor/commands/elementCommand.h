@@ -18,10 +18,12 @@
 #include "editor/editorView.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 namespace commands {
 
 /// A base for all commands using concrete element instance on some scene
-class ElementCommand : public AbstractCommand
+class ElementCommand : public qReal::commands::AbstractCommand
 {
 	Q_OBJECT
 
@@ -52,5 +54,7 @@ private slots:
 	void onSceneWasRemoved();
 };
 
+}
+}
 }
 }

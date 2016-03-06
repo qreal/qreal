@@ -51,12 +51,12 @@ QString RobotsGeneratorPluginBase::generatorName() const
 QString RobotsGeneratorPluginBase::defaultProjectName() const
 {
 	const QString filePath = mProjectManager->saveFilePath();
-	return filePath.isEmpty() ? "example" : QFileInfo(filePath).baseName();
+	return filePath.isEmpty() ? "example" : QFileInfo(filePath).completeBaseName();
 }
 
 bool RobotsGeneratorPluginBase::canGenerateTo(const QString &project)
 {
-	const QFileInfo fileInfo(PlatformInfo::applicationDirPath() + "/" + defaultFilePath(project));
+	const QFileInfo fileInfo = generationTarget(project);
 	const int difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
 	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
@@ -87,6 +87,11 @@ void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const TabInfo &info)
 	}
 }
 
+QFileInfo RobotsGeneratorPluginBase::generationTarget(const QString &pathFromRoot) const
+{
+	return QFileInfo(PlatformInfo::invariantSettingsPath("pathToGeneratorRoot") + "/" + defaultFilePath(pathFromRoot));
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	const Id &activeDiagram = mMainWindowInterface->activeDiagram();
@@ -100,7 +105,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 		++exampleNumber;
 	} while (!canGenerateTo(projectName));
 
-	QFileInfo fileInfo = QFileInfo(PlatformInfo::applicationDirPath() + "/" + defaultFilePath(projectName));
+	QFileInfo fileInfo = generationTarget(projectName);
 	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {

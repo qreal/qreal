@@ -15,6 +15,8 @@
 #include "thread.h"
 
 #include <QtWidgets/QApplication>
+#include <QtCore/QTimer>
+
 #include <qrkernel/settingsManager.h>
 
 #include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
@@ -92,9 +94,9 @@ void Thread::interpret()
 	}
 }
 
-void Thread::stop()
+void Thread::stop(qReal::interpretation::StopReason reason)
 {
-	emit stopped();
+	emit stopped(reason);
 }
 
 void Thread::nextBlock(const Id &blockId)
@@ -125,7 +127,7 @@ void Thread::stepInto(const Id &diagram)
 void Thread::finishedSteppingInto()
 {
 	if (mStack.isEmpty()) {
-		emit stopped();
+		emit stopped(qReal::interpretation::StopReason::finised);
 		return;
 	}
 
@@ -136,7 +138,7 @@ void Thread::finishedSteppingInto()
 
 void Thread::failure()
 {
-	emit stopped();
+	emit stopped(qReal::interpretation::StopReason::error);
 }
 
 void Thread::error(const QString &message, const Id &source)
@@ -163,6 +165,13 @@ void Thread::turnOn(BlockInterface * const block)
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
 		finishedSteppingInto();
+		return;
+	}
+
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(block->id())) {
+		// If we get non-null block instance, but non-existing id then the block
+		// was removed from diagram during the interpretation.
+		error(tr("Block has disappeared!"));
 		return;
 	}
 

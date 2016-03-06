@@ -14,8 +14,7 @@
 
 #include "expandCommand.h"
 
-namespace qReal {
-namespace commands {
+using namespace qReal::gui::editor::commands;
 
 ExpandCommand::ExpandCommand(const NodeElement *node)
 	: NodeElementCommand(dynamic_cast<EditorViewScene *>(node->scene()), node->id())
@@ -42,6 +41,7 @@ bool ExpandCommand::execute()
 		newContents.setWidth(newContents.width() / 2);
 		newContents.setHeight(newContents.height() / 2);
 	}
+
 	newContents.moveTo(mNode->pos());
 	mNode->setGeometry(newContents);
 	changeExpanded();
@@ -72,7 +72,4 @@ void ExpandCommand::changeExpanded()
 	} else {
 		mScene->returnElementsToOldPositions(mShifting);
 	}
-}
-
-}
 }

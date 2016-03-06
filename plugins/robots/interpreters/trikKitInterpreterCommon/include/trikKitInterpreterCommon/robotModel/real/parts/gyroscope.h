@@ -15,7 +15,7 @@
 #pragma once
 
 #include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
 
@@ -31,15 +31,15 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Gyroscope : public kitBase::robo
 public:
 	Gyroscope(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::TcpRobotCommunicator &tcpRobotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void read() override;
 
 public slots:
-	void onIncomingData(const QString &portName, int value);
+	void onIncomingData(const QString &portName, const QVector<int> &value);
 
 private:
-	utils::TcpRobotCommunicator &mRobotCommunicator;
+	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
 };
 
 }

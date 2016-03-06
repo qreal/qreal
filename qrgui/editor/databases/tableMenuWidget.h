@@ -10,9 +10,10 @@ class TableMenuWidget;
 }
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class EditorViewScene;
-
 class NodeElement;
 
 class TableMenuWidget : public QDialog
@@ -83,5 +84,7 @@ private:
 	NodeElement *mTableNodeElement;
 	EditorViewScene *mEditorViewScene;
 };
+}
+}
 }
 

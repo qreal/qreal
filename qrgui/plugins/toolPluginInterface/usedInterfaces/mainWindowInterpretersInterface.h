@@ -15,20 +15,24 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <QtCore/QFileInfo>
 
 #include <qrkernel/ids.h>
-#include <qrutils/invocationUtils/longOperation.h>
 
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/progressReporterInterface.h"
 #include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
+
+namespace invocation {
+class LongOperation;
+}
+
 namespace gui {
 
 class PreferencesPage;
 class ErrorReporter;
 
-class MainWindowInterpretersInterface
+class MainWindowInterpretersInterface : public ProgressReporterInterface
 {
 public:
 	virtual ~MainWindowInterpretersInterface() {}
@@ -88,11 +92,6 @@ public:
 	virtual void updateActiveDiagram() = 0;
 
 	virtual void deleteElementFromDiagram(const Id &id) = 0;
-
-	/// Must be called before some long operation start.
-	/// Shows progress bar on operation start
-	/// @param operation Operation that going to be invoced
-	virtual void reportOperation(invocation::LongOperation *operation) = 0;
 
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, const QString &title) = 0;

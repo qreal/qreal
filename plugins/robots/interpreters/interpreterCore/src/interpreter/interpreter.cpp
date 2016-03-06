@@ -20,7 +20,6 @@
 #include <qrtext/languageToolboxInterface.h>
 
 #include <utils/timelineInterface.h>
-#include <utils/tracer.h>
 #include <kitBase/robotModel/robotModelInterface.h>
 
 using namespace qReal;
@@ -68,7 +67,7 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 			, &Interpreter::connectedSlot
 			);
 
-	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::stopRobot);
+	connect(&projectManager, &qReal::ProjectManagementInterface::beforeOpen, this, &Interpreter::userStopRobot);
 
 	connectDevicesConfigurationProvider(&mAutoconfigurer);
 }
@@ -98,6 +97,7 @@ void Interpreter::interpret()
 	mState = waitingForDevicesConfiguredToLaunch;
 
 	if (!mAutoconfigurer.configure(mGraphicalModelApi.children(Id::rootId()), mRobotModelManager.model().robotId())) {
+		mState = idle;
 		return;
 	}
 
@@ -114,7 +114,7 @@ void Interpreter::interpret()
 	mRobotModelManager.model().applyConfiguration();
 }
 
-void Interpreter::stopRobot()
+void Interpreter::stopRobot(qReal::interpretation::StopReason reason)
 {
 	mSensorVariablesUpdater.suspend();
 	mRobotModelManager.model().stopRobot();
@@ -122,7 +122,7 @@ void Interpreter::stopRobot()
 	qDeleteAll(mThreads);
 	mThreads.clear();
 	mBlocksTable->setFailure();
-	emit stopped();
+	emit stopped(reason);
 }
 
 int Interpreter::timeElapsed() const
@@ -139,8 +139,6 @@ void Interpreter::connectedSlot(bool success, const QString &errorString)
 			mInterpretersInterface.errorReporter()->addInformation(tr("Connected successfully"));
 		}
 	} else {
-		utils::Tracer::debug(utils::Tracer::initialization, "Interpreter::connectedSlot"
-				, "Robot connection status: " + QString::number(success));
 		if (errorString.isEmpty()) {
 			mInterpretersInterface.errorReporter()->addError(tr("Can't connect to a robot."));
 		} else {
@@ -153,9 +151,6 @@ void Interpreter::connectedSlot(bool success, const QString &errorString)
 
 void Interpreter::devicesConfiguredSlot()
 {
-	utils::Tracer::debug(utils::Tracer::initialization
-			, "Interpreter::devicesConfiguredSlot", "Sensors are configured");
-
 	if (mRobotModelManager.model().connectionState() != RobotModelInterface::connectedState) {
 		mInterpretersInterface.errorReporter()->addInformation(tr("No connection to robot"));
 		mState = idle;
@@ -168,9 +163,6 @@ void Interpreter::devicesConfiguredSlot()
 
 		mSensorVariablesUpdater.run();
 
-		utils::Tracer::debug(utils::Tracer::initialization
-				, "Interpreter::devicesConfiguredSlot", "Starting interpretation");
-
 		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 
 		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
@@ -182,7 +174,7 @@ void Interpreter::devicesConfiguredSlot()
 	}
 }
 
-void Interpreter::threadStopped()
+void Interpreter::threadStopped(qReal::interpretation::StopReason reason)
 {
 	qReal::interpretation::Thread * const thread = static_cast<qReal::interpretation::Thread *>(sender());
 
@@ -190,7 +182,7 @@ void Interpreter::threadStopped()
 	delete thread;
 
 	if (mThreads.isEmpty()) {
-		stopRobot();
+		stopRobot(reason);
 	}
 }
 
@@ -198,7 +190,7 @@ void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 {
 	if (mThreads.contains(threadId)) {
 		reportError(tr("Cannot create new thread with already occupied id %1").arg(threadId));
-		stopRobot();
+		stopRobot(qReal::interpretation::StopReason::error);
 		return;
 	}
 
@@ -212,11 +204,11 @@ void Interpreter::addThread(qReal::interpretation::Thread * const thread, const 
 {
 	if (mThreads.count() >= maxThreadsCount) {
 		reportError(tr("Threads limit exceeded. Maximum threads count is %1").arg(maxThreadsCount));
-		stopRobot();
+		stopRobot(qReal::interpretation::StopReason::error);
 	}
 
 	mThreads[threadId] = thread;
-	connect(thread, SIGNAL(stopped()), this, SLOT(threadStopped()));
+	connect(thread, &interpretation::Thread::stopped, this, &Interpreter::threadStopped);
 
 	connect(thread, &qReal::interpretation::Thread::newThread, this, &Interpreter::newThread);
 	connect(thread, &qReal::interpretation::Thread::killThread, this, &Interpreter::killThread);
@@ -259,12 +251,6 @@ void Interpreter::connectToRobot()
 
 	mActionConnectToRobot.setChecked(
 			mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
-}
-
-void Interpreter::disconnectSlot()
-{
-	mActionConnectToRobot.setChecked(false);
-	stopRobot();
 }
 
 void Interpreter::reportError(const QString &message)

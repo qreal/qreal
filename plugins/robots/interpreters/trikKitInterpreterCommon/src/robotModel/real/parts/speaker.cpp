@@ -20,7 +20,7 @@ using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
 Speaker::Speaker(const DeviceInfo &info, const PortInfo &port
-		, utils::TcpRobotCommunicator &tcpRobotCommunicator)
+		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: robotModel::parts::TrikSpeaker(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {

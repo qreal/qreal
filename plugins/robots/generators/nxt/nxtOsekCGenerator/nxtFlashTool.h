@@ -63,6 +63,8 @@ private:
 		done
 	};
 
+	const QString path(const QString &file = QString()) const;
+
 	qReal::ErrorReporterInterface *mErrorReporter;
 	QProcess mFlashProcess;
 	QProcess mUploadProcess;

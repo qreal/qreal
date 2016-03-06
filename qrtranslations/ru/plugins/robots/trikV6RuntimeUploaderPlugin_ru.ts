@@ -4,7 +4,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikV6RuntimeUploaderPlugin/trikV6RuntimeUploaderPlugin.cpp" line="48"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikV6RuntimeUploaderPlugin/trikV6RuntimeUploaderPlugin.cpp" line="82"/>
         <source>Attention! Started to download the runtime. This can take a minute or two. Please do not turn off the robot.</source>
         <translation>Внимание! Начата загрузка ПО. Это займет несколько минут. Пожалуйста, не отключайте робота.</translation>
     </message>
@@ -12,9 +12,13 @@
 <context>
     <name>trik::TrikV6RuntimeUploaderPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikV6RuntimeUploaderPlugin/trikV6RuntimeUploaderPlugin.cpp" line="35"/>
         <source>Upload Runtime (old case)</source>
-        <translation>Загрузить системное ПО на робот (старый корпус)</translation>
+        <translation type="vanished">Загрузить системное ПО на робот (старый корпус)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikV6RuntimeUploaderPlugin/trikV6RuntimeUploaderPlugin.cpp" line="78"/>
+        <source>Upload Runtime for TRIK 2014</source>
+        <translation>Загрузить системное ПО на робота модели 2014 года</translation>
     </message>
 </context>
 </TS>

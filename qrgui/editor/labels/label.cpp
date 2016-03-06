@@ -21,12 +21,12 @@
 #include "brandManager/brandManager.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 		, const Id &elementId
 		, const LabelProperties &properties)
 	: mIsStretched(false)
-	, mParentIsSelected(false)
 	, mWasMoved(false)
 	, mShouldMove(false)
 	, mId(elementId)
@@ -106,11 +106,6 @@ void Label::setTextFromRepo(const QString &text)
 		setText(toPlainText());
 		updateData();
 	}
-}
-
-void Label::setParentSelected(bool isSelected)
-{
-	mParentIsSelected = isSelected;
 }
 
 void Label::setParentContents(const QRectF &contents)
@@ -202,7 +197,9 @@ void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
 			&& event->pos().y() >= boundingRect().bottom() - 10);
 
 	QGraphicsTextItem::mousePressEvent(event);
+	parentItem()->setSelected(true);
 	event->accept();
+	setSelected(true);
 }
 
 void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -237,6 +234,7 @@ void Label::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	updateData();
 
 	QGraphicsTextItem::mouseReleaseEvent(event);
+	parentItem()->setSelected(true);
 	setSelected(true);
 }
 
@@ -358,7 +356,9 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if (toPlainText().isEmpty() && !mParentIsSelected && !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
+	if (toPlainText().isEmpty() && !parentItem()->isSelected()
+			&& !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
+		/// @todo: Why label decides it? Why not edge element itself?
 		return;
 	}
 

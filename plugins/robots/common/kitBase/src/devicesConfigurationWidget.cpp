@@ -41,6 +41,13 @@ DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool aut
 	setPalette(palette);
 }
 
+DevicesConfigurationWidget::~DevicesConfigurationWidget()
+{
+	qDeleteAll(mRobotModelConfigurers);
+	mRobotModelConfigurers.clear();
+	mConfigurers.clear();
+}
+
 void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
 {
 	for (RobotModelInterface * const model : models) {
@@ -53,6 +60,10 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
+	if (mCurrentModelType == robotModel.name() && mCurrentModelId == robotModel.robotId()) {
+		return;
+	}
+
 	mCurrentModelType = robotModel.name();
 	mCurrentModelId = robotModel.robotId();
 	takeWidget();
@@ -92,7 +103,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 }
 
 QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
-		, const PortInfo &port, QList<DeviceInfo> const &sensors)
+		, const PortInfo &port, const QList<DeviceInfo> &sensors)
 {
 	const QString labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
 	QLabel * const portLabel = new QLabel(labelText.arg(port.userFriendlyName()), this);
@@ -123,7 +134,6 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 	return layout;
 }
 
-
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
@@ -137,7 +147,6 @@ void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &rob
 		refresh();
 	}
 }
-
 
 void DevicesConfigurationWidget::refresh()
 {

@@ -99,6 +99,8 @@ void ThreadsValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo> &
 			if (previousBlock.element() == "Fork") {
 				incomingThreads.insert(mRepo.stringProperty(link, "Guard"));
 			} else {
+				/// @todo: In general case one block may belong to many threads.
+				/// We must append all incomming thread lists here.
 				incomingThreads.insert(mBlockThreads[previousBlock]);
 			}
 		}
@@ -110,10 +112,12 @@ void ThreadsValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo> &
 	}
 
 	for (const LinkInfo &link : links) {
-		checkForConnected(link);
+		if (!checkForConnected(link)) {
+			return;
+		}
 
 		const qReal::Id nextBlock = link.target;
-		if (!mBlockThreads.contains(nextBlock)) {
+		if (!mBlockThreads.contains(nextBlock) || mBlockThreads[nextBlock].isEmpty()) {
 			mSomethingChanged = true;
 			mBlockThreads[nextBlock] = mBlockThreads[id];
 		} else if (mBlockThreads[nextBlock] != mBlockThreads[id] && mBlockThreads[nextBlock] != "@@unknown@@"
@@ -143,7 +147,7 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 	mBlockThreads[id] = mRepo.stringProperty(links[0].linkId, "Guard");
 	if (mBlockThreads[id].isEmpty()) {
 		error(QObject::tr("Guard property of a link outgoing from a join must contain an id "
-						  "of one of joined threads"), links[0].linkId);
+				"of one of joined threads"), links[0].linkId);
 		return;
 	}
 
@@ -153,7 +157,10 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 		return;
 	}
 
-	checkForConnected(links[0]);
+	if (!checkForConnected(links[0])) {
+		return;
+	}
+
 	const qReal::Id nextBlock = links[0].target;
 
 	if (mBlockThreads.contains(nextBlock) && mBlockThreads[nextBlock] != mBlockThreads[id]) {
@@ -164,7 +171,7 @@ void ThreadsValidator::visitJoin(const qReal::Id &id, QList<LinkInfo> &links)
 	bool allThreadsDetermined = true;
 	for (const qReal::Id &incomingLink : mRepo.incomingLinks(id)) {
 		const qReal::Id &comingFrom = mRepo.otherEntityFromLink(incomingLink, id);
-		if (!mBlockThreads.contains(comingFrom)) {
+		if (!mBlockThreads.contains(comingFrom) || mBlockThreads[comingFrom].isEmpty()) {
 			allThreadsDetermined = false;
 			break;
 		}
@@ -228,7 +235,9 @@ void ThreadsValidator::visitForkFirstStage(const qReal::Id &id, QList<LinkInfo> 
 
 	QStringList outgoingThreads;
 	for (const LinkInfo &link : links) {
-		checkForConnected(link);
+		if (!checkForConnected(link)) {
+			return;
+		}
 
 		QString threadId = mRepo.stringProperty(link.linkId, "Guard");
 		if (threadId.isEmpty()) {
@@ -310,9 +319,12 @@ void ThreadsValidator::error(const QString &message, const qReal::Id &id)
 	mNoErrors = false;
 }
 
-void ThreadsValidator::checkForConnected(const LinkInfo &link)
+bool ThreadsValidator::checkForConnected(const LinkInfo &link)
 {
 	if (!link.connected) {
 		error(QObject::tr("Outgoing link is not connected"), link.linkId);
+		return false;
 	}
+
+	return true;
 }

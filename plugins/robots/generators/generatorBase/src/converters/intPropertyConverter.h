@@ -31,15 +31,9 @@ public:
 			, lua::LuaProcessor &luaTranslator
 			, const qReal::Id &id
 			, const QString &propertyName
-			, simple::Binding::ConverterInterface *reservedVariablesConverter
-			, simple::Binding::ConverterInterface *typeConverter);
+			, simple::Binding::ConverterInterface *reservedVariablesConverter);
 
-	~IntPropertyConverter() override;
-
-	QString convert(const QString &data) const override;
-
-private:
-	const simple::Binding::ConverterInterface *mTypeConverter;  // Takes ownership
+	QString convert(const QString &luaCode) const override;
 };
 
 }

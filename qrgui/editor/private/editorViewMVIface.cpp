@@ -22,6 +22,7 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
@@ -136,21 +137,24 @@ Id EditorViewMViface::rootId() const
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
+	mScene->setEnabled(true);
 	for (int row = start; row <= end; ++row) {
-		mScene->setEnabled(true);
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex())) {
 			continue;
 		}
+
 		Id currentId = current.data(roles::idRole).value<Id>();
 		if (currentId == Id::rootId()) {
 			continue;
 		}
+
 		Id parentUuid;
 		if (parent != rootIndex()) {
 			parentUuid = parent.data(roles::idRole).value<Id>();
 		}
+
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
@@ -158,26 +162,21 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 
 		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
 		Element *elem = elementImpl->isNode()
-				? dynamic_cast<Element *>(
-						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
-						)
-				: dynamic_cast<Element *>(
-						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
-						);
+				? static_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
+				: static_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 
 		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 		bool needToProcessChildren = true;
 
-		// TODO: It is impossible for elem to be nullptr here.
 		if (elem) {
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
 
-			NodeElement *node = dynamic_cast<NodeElement *>(elem);
-			if (node) {
-				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect());
+			if (NodeElement * const node = dynamic_cast<NodeElement *>(elem)) {
+				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect()
+						.translated(ePos.toPoint()));
 			}
 
 			if (item(parent)) {
@@ -199,30 +198,8 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			mView->setFocus();
 			// TODO: brush up init~()
 
-			bool isEdgeFromEmbeddedLinker = false;
-			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
-			if (selectedItems.size() == 1) {
-				NodeElement* master = dynamic_cast<NodeElement*>(selectedItems.at(0));
-				if (master && master->connectionInProgress()) {
-					isEdgeFromEmbeddedLinker = true;
-				}
-			}
-
-			if (!isEdgeFromEmbeddedLinker) {
-				for (QGraphicsItem *item : scene()->items()) {
-					Element* element = dynamic_cast<Element*>(item);
-					if (element) {
-						element->setSelectionState(false);
-						element->select(false);
-					}
-				}
-
-				elem->select(true);
-			}
-
-			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
-			if (nodeElem && currentId.element() == "Class" &&
-				mGraphicalAssistApi->children(currentId).empty())
+			if (dynamic_cast<NodeElement *>(elem) && currentId.element() == "Class" &&
+					mGraphicalAssistApi->children(currentId).empty())
 			{
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
@@ -233,8 +210,7 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 				}
 			}
 
-			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
-			if (edgeElem) {
+			if (EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem)) {
 				edgeElem->layOut();
 			}
 		}
@@ -246,13 +222,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
 		if (nodeElement) {
 			nodeElement->alignToGrid();
-		}
-	}
-
-	foreach (QGraphicsItem *item, mScene->items()) {
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			node->adjustLinks();
 		}
 	}
 
@@ -368,27 +337,17 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 
 void EditorViewMViface::clearItems()
 {
-	QList<QGraphicsItem *> toRemove;
-	foreach (const IndexElementPair &pair, mItems) {
-		if (!pair.second->parentItem()) {
-			toRemove.append(pair.second);
-		}
-	}
-
-	foreach (QGraphicsItem * const item, toRemove) {
-		delete item;
-	}
-
 	mItems.clear();
 }
 
 Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
-	foreach (const IndexElementPair &pair, mItems) {
+	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
 			return pair.second;
 		}
 	}
+
 	return nullptr;
 }
 
@@ -402,10 +361,15 @@ void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *ite
 
 void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
-	foreach (const IndexElementPair &pair, mItems) {
+	QList<IndexElementPair> itemsForRemoving;
+	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
-			mItems.remove(pair);
+			itemsForRemoving.append(pair);
 		}
+	}
+
+	for (const auto &element : itemsForRemoving) {
+		mItems.remove(element);
 	}
 }
 
@@ -431,22 +395,12 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 		const QModelIndex curr = topLeft.sibling(row, 0);
 		const Id logicalId = curr.data(roles::idRole).value<Id>();
 		const IdList graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
-		foreach (const Id &graphicalId, graphicalIds) {
+		for (const Id &graphicalId : graphicalIds) {
 			const QModelIndex graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem) {
 				graphicalItem->updateData();
 			}
-		}
-	}
-}
-
-void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
-{
-	for (const IndexElementPair & item : mItems) {
-		auto node = dynamic_cast<NodeElement *>(item.second);
-		if (node) {
-			node->invalidateImagesZoomCache(zoomFactor);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,22 +20,26 @@
 
 namespace qReal {
 
-class Element;
-class Explosion;
-class Controller;
-class SceneCustomizer;
-class EditorManagerInterface;
-
-namespace commands {
-class AbstractCommand;
-}
-
 namespace models {
 class Models;
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
 class Exploser;
 }
+
+class Explosion;
+class Controller;
+class EditorManagerInterface;
+
+namespace commands {
+class AbstractCommand;
+}
+
+namespace gui {
+namespace editor {
+
+class SceneCustomizer;
+class Element;
 
 namespace view {
 namespace details {
@@ -57,10 +61,6 @@ public:
 
 	/// Activates binded with explosion element or creates default explosed element
 	void handleDoubleClick(const Id &id);
-
-	/// Adds commands of explosion creation to given element creation command
-	void handleCreationWithExplosion(commands::AbstractCommand *createCommand
-			, const Id &source, const Id &target);
 
 signals:
 	/// Activates first binded with explosion link graphical instance of the element
@@ -92,14 +92,15 @@ private slots:
 private:
 	void createAddExplosionMenu(const Element * const element
 			, QMenu &contextMenu, QList<Explosion> const &explosions
-			, const qReal::Id &alreadyConnectedElement) const;
+			, const Id &alreadyConnectedElement) const;
 
 	void createRemoveExplosionMenu(const Element * const element
-			, QMenu &contextMenu, const qReal::Id &outgoingConnection) const;
+			, QMenu &contextMenu, const Id &outgoingConnection) const;
 
 	void createExpandAction(const Element * const element
-			, QMenu &contextMenu, const qReal::Id &alreadyConnectedElement) const;
+			, QMenu &contextMenu, const Id &alreadyConnectedElement) const;
 
+	const models::Models &mModels;
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
@@ -107,6 +108,8 @@ private:
 	const SceneCustomizer &mCustomizer;
 };
 
+}
+}
 }
 }
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@
 #include <QtCore/QPair>
 
 #include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/models/edgeInfo.h>
 
 #include "qrgui/editor/element.h"
-#include "qrgui/editor/serializationData.h"
 #include "qrgui/editor/private/edgeArrangeCriteria.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 class NodeElement;
 
@@ -53,10 +55,7 @@ public:
 		, bottom
 	};
 
-	EdgeElement(ElementImpl *impl
-			, const Id &id
-			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi);
+	EdgeElement(ElementImpl *impl, const Id &id, const models::Models &models);
 
 	virtual ~EdgeElement();
 
@@ -82,8 +81,6 @@ public:
 
 	NodeElement *src() const;
 	NodeElement *dst() const;
-	bool isSrc(const NodeElement *node) const;
-	bool isDst(const NodeElement *node) const;
 	void setSrc(NodeElement *node);
 	void setDst(NodeElement *node);
 
@@ -121,8 +118,6 @@ public:
 
 	virtual void connectToPort();
 
-	virtual QList<ContextMenuAction*> contextMenuActions(const QPointF &pos);
-
 	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
@@ -133,7 +128,7 @@ public:
 
 	void highlight(const QColor &color = Qt::red);
 
-	EdgeData& data();
+	EdgeInfo data();
 
 	/// Change link type and redraw it
 	void changeShapeType(const enums::linkShape::LinkShape shapeType);
@@ -237,11 +232,11 @@ private:
 
 	bool mBreakPointPressed;
 
-	EdgeData mData;
-
 	bool mModelUpdateIsCalled;  // flag for the infinite updateData()-s liquidating
 
 	bool mIsLoop; // if line is self-closing (mSrc == mDst && mDst)
 };
 
+}
+}
 }

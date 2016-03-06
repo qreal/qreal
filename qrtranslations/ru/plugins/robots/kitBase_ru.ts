@@ -12,17 +12,17 @@
 <context>
     <name>kitBase::DevicesConfigurationWidget</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="101"/>
         <source>%1:</source>
         <translation>%1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="101"/>
         <source>Port %1:</source>
         <translation>Порт %1:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="104"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/devicesConfigurationWidget.cpp" line="112"/>
         <source>Unused</source>
         <translation>Не используется</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>kitBase::blocksBase::common::WaitForButtonBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForButtonBlock.cpp" line="36"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForButtonBlock.cpp" line="37"/>
         <source>Incorrect button port %1</source>
         <translation>Неправильная кнопка %1</translation>
     </message>
@@ -71,7 +71,7 @@
 <context>
     <name>kitBase::blocksBase::common::WaitForSensorBlock</name>
     <message>
-        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForSensorBlock.cpp" line="43"/>
+        <location filename="../../../../plugins/robots/common/kitBase/src/blocksBase/common/waitForSensorBlock.cpp" line="47"/>
         <source>%1 is not configured on port %2</source>
         <translation>%1 не сконфигурирован на порту %2</translation>
     </message>
@@ -178,6 +178,14 @@
         <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/motor.h" line="29"/>
         <source>Motor</source>
         <translation>Мотор</translation>
+    </message>
+</context>
+<context>
+    <name>kitBase::robotModel::robotParts::Random</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/random.h" line="30"/>
+        <source>Random</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

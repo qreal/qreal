@@ -4,9 +4,13 @@
 <context>
     <name>trik::TrikV62KitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
         <source>TRIK (new case)</source>
-        <translation>ТРИК (новый корпус)</translation>
+        <translation type="vanished">ТРИК (новый корпус)</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
+        <source>TRIK (model-2015)</source>
+        <translation>TRIK (модель 2015)</translation>
     </message>
 </context>
 <context>

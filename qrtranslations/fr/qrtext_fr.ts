@@ -88,44 +88,44 @@
         <translation>Incompatibilité de type.</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="105"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="107"/>
         <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="373"/>
         <source>Variable %1 is read-only</source>
         <translation>Variable %1 est en lecture seule</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="117"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="149"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="119"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="151"/>
         <source>This construction is not supported by interpreter</source>
         <translation>Cette construction n&apos;est pas supportée par l&apos;interpréteur</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="249"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="259"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="272"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="251"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="261"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="274"/>
         <source>Division by zero</source>
         <translation>Division par zéro</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="346"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="348"/>
         <source>Currently interpreter allows only tables denoted by identifier and by integer expression index, as in &apos;a[1 + 2][3]&apos;</source>
         <translation>En ce moment l&apos;interpréteur ne supporte que les tables désignées par un identifiant et une indice entière, comme dans &apos;a[1 + 2][3]&apos;</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="377"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="379"/>
         <source>Tables denoted by something other than identifier (like f(x)[0]) are not allowed</source>
         <translation>Tables designées autrement que par un idéntificateur (comme f(x)[0]) ne sont pas autorisées</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="403"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="405"/>
         <source>Explicit table indexes of non-integer type are not supported</source>
         <translation>Indices de table explicites de type non entier ne sont pas supportés</translation>
     </message>
     <message>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="438"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="455"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="509"/>
-        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="523"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="440"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="457"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="511"/>
+        <location filename="../../qrtext/src/lua/luaInterpreter.cpp" line="525"/>
         <source>Negative index for a table</source>
         <translation>Indice négatif pour une table</translation>
     </message>
@@ -145,7 +145,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/string.h" line="28"/>
         <location filename="../../qrtext/src/lua/luaLexer.cpp" line="101"/>
         <source>string</source>
         <translation type="unfinished"></translation>
@@ -234,31 +233,6 @@
         <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="363"/>
         <source>Undeclared identifier: %1</source>
         <translation>Identificateur non déclaré : %1</translation>
-    </message>
-    <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/boolean.h" line="28"/>
-        <source>boolean</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/float.h" line="28"/>
-        <source>float</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/integer.h" line="28"/>
-        <source>integer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/number.h" line="28"/>
-        <source>number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="44"/>
-        <source>table[%1]</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

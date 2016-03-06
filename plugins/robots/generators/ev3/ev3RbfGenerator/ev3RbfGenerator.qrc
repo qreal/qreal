@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/ev3/rbf/">
+        <file>images/generateRbfCode.svg</file>
+        <file>images/uploadProgram.svg</file>
+        <file>images/switch-to-ev3-rbf.svg</file>
+	<file>images/run.png</file>
+	<file>images/stop.png</file>
+    </qresource>
+</RCC>

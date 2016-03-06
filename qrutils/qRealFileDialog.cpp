@@ -37,10 +37,11 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 		, const QString &caption
 		, const QString &dir
 		, const QString &filter
+		, const QString &defaultFile
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
-	const QString lastDir = lastSelectedDirectory(id, dir);
+	const QString lastDir = lastSelectedDirectory(id, dir) + "/" + defaultFile;
 	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
 	return result;

@@ -22,7 +22,7 @@ using namespace qReal;
 
 InterpretedPluginManager::InterpretedPluginManager()
 	: mCustomizer()
-	, mPluginManager(PlatformInfo::applicationDirPath(), "plugins/interpreted")
+	, mPluginManager(PlatformInfo::invariantSettingsPath("pathToInterpretedPlugins"))
 {
 	mPlugins = mPluginManager.loadAllPlugins<InterpretedPluginInterface>();
 }

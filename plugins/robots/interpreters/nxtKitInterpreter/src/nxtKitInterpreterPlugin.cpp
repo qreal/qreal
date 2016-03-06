@@ -17,6 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <twoDModel/engine/twoDModelEngineFacade.h>
+#include <utils/widgets/comPortPicker.h>
 
 using namespace nxt;
 using namespace qReal;
@@ -124,6 +125,13 @@ QList<kitBase::AdditionalPreferences *> NxtKitInterpreterPlugin::settingsWidgets
 	return {mAdditionalPreferences};
 }
 
+QWidget *NxtKitInterpreterPlugin::quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model)
+{
+	return model.name().toLower().contains("bluetooth")
+			? produceBluetoothPortConfigurer()
+			: nullptr;
+}
+
 QList<qReal::ActionInfo> NxtKitInterpreterPlugin::customActions()
 {
 	return {};
@@ -149,7 +157,12 @@ QIcon NxtKitInterpreterPlugin::iconForFastSelector(
 					: QIcon(":/icons/switch-2d.svg");
 }
 
-kitBase::DevicesConfigurationProvider * NxtKitInterpreterPlugin::devicesConfigurationProvider()
+kitBase::DevicesConfigurationProvider *NxtKitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
+}
+
+QWidget *NxtKitInterpreterPlugin::produceBluetoothPortConfigurer()
+{
+	return new ui::ComPortPicker("NxtBluetoothPortName", this);
 }

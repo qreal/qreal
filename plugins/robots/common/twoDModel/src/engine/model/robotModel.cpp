@@ -36,6 +36,9 @@ using namespace physics;
 using namespace kitBase::robotModel;
 using namespace kitBase::robotModel::robotParts;
 
+const int positionStampsCount = 50;
+const int angleStampsCount = 50;
+
 RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, const Settings &settings
 		, QObject *parent)
@@ -43,11 +46,15 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mSettings(settings)
 	, mRobotModel(robotModel)
 	, mSensorsConfiguration(robotModel.robotId())
-	, mPos(QPointF(0,0))
+	, mPos(QPointF(0, 0))
 	, mAngle(0)
+	, mAngularSpeed(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
+	, mAcceleration(QPointF(0, 0))
+	, mPosStamps(positionStampsCount)
+	, mAngleStamps(angleStampsCount)
 	, mPhysicsEngine(nullptr)
 	, mStartPositionMarker(new items::StartPosition)
 {
@@ -170,6 +177,8 @@ void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
 	mRobotModel.displayWidget()->reset();
+	mAngleStamps.clear();
+	mPosStamps.clear();
 	emit playingSoundChanged(false);
 	for (Motor * const engine : mMotors) {
 		engine->speed = 0;
@@ -185,6 +194,40 @@ void RobotModel::countBeep()
 	} else {
 		emit playingSoundChanged(false);
 	}
+}
+
+void RobotModel::countSpeedAndAcceleration()
+{
+	if (mAngleStamps.size() >= angleStampsCount) {
+		mAngleStamps.dequeue();
+	}
+
+	mAngleStamps.enqueue(mAngle);
+	mAngularSpeed = averageAngularSpeed();
+
+	if (mPosStamps.size() >= positionStampsCount) {
+		mPosStamps.dequeue();
+	}
+
+	mPosStamps.enqueue(mPos);
+	mAcceleration = averageAcceleration();
+}
+
+QPointF RobotModel::averageAcceleration() const
+{
+	/// Some arcane formula that produces natural-looking results for some reason (with correct accelerometerConstant,
+	/// since mPosStamps.size() as a divisor is obviously wrong here).
+	/// Maybe it will be better to actually count average.
+
+	return mPosStamps.size() < 2 ? QPointF() : (mPosStamps.size() < 4
+			? (mPosStamps.tail() - mPosStamps.head()) / mPosStamps.size()
+			: (mPosStamps.tail() - mPosStamps.nthFromTail(1)
+					- mPosStamps.nthFromHead(1) + mPosStamps.head()) / mPosStamps.size());
+}
+
+qreal RobotModel::averageAngularSpeed() const
+{
+	return mAngleStamps.isEmpty() ? 0 : (mAngleStamps.tail() - mAngleStamps.head()) / mAngleStamps.size();
 }
 
 QPointF RobotModel::rotationCenter() const
@@ -245,6 +288,18 @@ void RobotModel::markerUp()
 	mMarker = Qt::transparent;
 }
 
+QVector<int> RobotModel::accelerometerReading() const
+{
+	return {static_cast<int>(mAcceleration.x() * accelerometerConstant)
+				, static_cast<int>(mAcceleration.y() * accelerometerConstant)
+				, g};
+}
+
+QVector<int> RobotModel::gyroscopeReading() const
+{
+	return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
+}
+
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.
@@ -291,6 +346,7 @@ void RobotModel::recalculateParams()
 			, rotationCenter(), mAngle, robotBoundingPath());
 
 	nextStep();
+	countSpeedAndAcceleration();
 	countMotorTurnover();
 	countBeep();
 }
@@ -340,7 +396,7 @@ QDomElement RobotModel::serialize(QDomDocument &target) const
 	QDomElement robot = target.createElement("robot");
 	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
-	robot.setAttribute("direction", mAngle);
+	robot.setAttribute("direction", QString::number(mAngle));
 	mSensorsConfiguration.serialize(robot, target);
 	mStartPositionMarker->serialize(robot, target);
 	serializeWheels(robot);

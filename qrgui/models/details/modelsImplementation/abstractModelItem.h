@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,8 @@ namespace modelsImplementation {
 class AbstractModelItem
 {
 public:
+	virtual ~AbstractModelItem();
+
 	typedef QList<AbstractModelItem*> PointerList;
 
 	AbstractModelItem(const Id &id, AbstractModelItem *parent);
@@ -31,7 +33,7 @@ public:
 	AbstractModelItem *parent() const;
 	PointerList children() const;
 
-	int row();
+	int row() const;
 	void addChild(AbstractModelItem *child);
 	void removeChild(AbstractModelItem *child);
 	void clearChildren();

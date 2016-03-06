@@ -21,6 +21,7 @@
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 using namespace trik;
 
@@ -44,7 +45,6 @@ UploaderTool::UploaderTool(
 		mAction->setVisible(selectedKit == kit);
 	}, this);
 
-	mProcess.setWorkingDirectory(qReal::PlatformInfo::applicationDirPath());
 	connect(&mProcess, &QProcess::started, this, &UploaderTool::onUploadStarted);
 	connect(&mProcess, static_cast<void(QProcess::*)(QProcess::ProcessError)>(&QProcess::error)
 			, this, &UploaderTool::onUploadError);
@@ -62,8 +62,10 @@ UploaderTool::~UploaderTool()
 	mProcess.terminate();
 }
 
-void UploaderTool::init(qReal::gui::MainWindowInterpretersInterface &mainWindowInterface)
+void UploaderTool::init(qReal::gui::MainWindowInterpretersInterface &mainWindowInterface, const QString &path)
 {
+	mPath = path;
+	mProcess.setWorkingDirectory(mPath);
 	mMainWindowInterface = &mainWindowInterface;
 }
 
@@ -85,18 +87,10 @@ void UploaderTool::uploadRuntime()
 
 #ifdef Q_OS_WIN
 	const QString openConnection = QString("open scp://root@%1 -hostkey=*").arg(mRobotIpGetter());
-
-	const QString winscpPath = qReal::SettingsManager::value("WinScpPath").toString();
-	const QString uploaderPath = rawWinscpPath.startsWith("./")
-			? qReal::PlatformInfo::applicationDirPath() + rawWinscpPath.mid(1)
-			: rawWinscpPath;
-
+	const QString uploaderPath = qReal::PlatformInfo::invariantSettingsPath("WinScpPath");
 	QStringList args = {"/command", openConnection};
-
 	args << mCommands;
-
 	args << "exit";
-
 #else
 	if (!checkUnixToolsExist()) {
 		return;
@@ -107,12 +101,13 @@ void UploaderTool::uploadRuntime()
 	for (QString command /* Not by const reference cause it will be modified next line */ : mCommands) {
 		actions << command
 				.replace("%IP%", mRobotIpGetter())
-				.replace("%PATH%", qReal::PlatformInfo::applicationDirPath())
+				.replace("%PATH%", mPath)
 				.replace("%SSH_TIMEOUT%", qReal::SettingsManager::value("sshTimeout").toString());
 	}
-#endif
 
 	const QStringList args = { "-x", "-c", actions.join("; ") };
+#endif
+
 	QLOG_INFO() << "TRIK Runtime uploading is about to start. Path:" << uploaderPath << "Args: " << args;
 	mProcess.start(uploaderPath, args);
 }

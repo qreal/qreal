@@ -15,7 +15,7 @@
 #pragma once
 
 #include <trikKit/robotModel/trikRobotModelV6.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 namespace trik {
 namespace robotModel {
@@ -45,7 +45,7 @@ protected:
 			, const kitBase::robotModel::DeviceInfo &deviceInfo) override;
 
 private:
-	QScopedPointer<utils::TcpRobotCommunicator> mRobotCommunicator;
+	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mRobotCommunicator;
 };
 
 }

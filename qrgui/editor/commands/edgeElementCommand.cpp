@@ -15,6 +15,7 @@
 #include "edgeElementCommand.h"
 
 using namespace qReal::commands;
+using namespace qReal::gui::editor::commands;
 
 EdgeElementCommand::EdgeElementCommand(const EditorViewScene *scene, const Id &id)
 	: ElementCommand(scene, id)
@@ -35,6 +36,7 @@ bool EdgeElementCommand::reinitElement()
 	if (!ElementCommand::reinitElement()) {
 		return false;
 	}
+
 	mEdge = dynamic_cast<EdgeElement *>(mElement);
 	return mEdge != nullptr;
 }

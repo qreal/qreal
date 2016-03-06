@@ -94,7 +94,7 @@ QWidget *ColorItemPopup::initColorPicker()
 {
 	qReal::ui::ColorListEditor * const editor = new qReal::ui::ColorListEditor(this, true);
 	editor->setToolTip(tr("Color"));
-	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "Red" };
+	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "White", "Red" };
 	editor->setColorList(colorList);
 	editor->setFocusPolicy(Qt::NoFocus);
 	connect(editor, &qReal::ui::ColorListEditor::colorChanged, [=](const QColor &color) {

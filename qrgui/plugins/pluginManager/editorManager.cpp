@@ -29,21 +29,23 @@
 using namespace qReal;
 
 EditorManager::EditorManager(const QString &path)
-	: mPluginManager(PlatformInfo::applicationDirPath(), path)
+	: mPluginManager(path)
 {
 	init();
 }
 
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
-	, mPluginManager(PlatformInfo::applicationDirPath(), "plugins/editors")
+	, mPluginManager(PlatformInfo::invariantSettingsPath("pathToEditorPlugins"))
 {
-	 init();
+	init();
 }
 
 EditorManager::~EditorManager()
 {
-	qDeleteAll(mPluginIface);
+	for (const QString &pluginName : mPluginIface.keys()) {
+		unloadPlugin(pluginName);
+	}
 }
 
 void EditorManager::init()

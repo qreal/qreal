@@ -21,12 +21,12 @@
 #include "editor/commands/nodeElementCommand.h"
 #include "controller/commands/trackingEntity.h"
 
-namespace qReal
-{
-namespace commands
-{
+namespace qReal {
+namespace gui {
+namespace editor {
+namespace commands {
 
-class ResizeCommand : public NodeElementCommand, public TrackingEntity
+class ResizeCommand : public NodeElementCommand, public qReal::commands::TrackingEntity
 {
 public:
 	/// Creating new instance of command in tracking-based style
@@ -82,5 +82,7 @@ private:
 	QSet<ReshapeEdgeCommand *> mEdgeCommands;
 };
 
+}
+}
 }
 }

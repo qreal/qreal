@@ -17,6 +17,7 @@
 #include <QtCore/QObject>
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 SceneCustomizer::SceneCustomizer()
 	: mAddExplosionMenuName(QObject::tr("Add connection"))

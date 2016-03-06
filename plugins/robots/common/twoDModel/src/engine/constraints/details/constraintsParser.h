@@ -105,9 +105,9 @@ private:
 	Value parseBinaryValueTag(const QDomElement &element);
 
 	QString id(const QDomElement &element) const;
-	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
-	qreal doubleAttribute(const QDomElement &element, QString const &attributeName, qreal defaultValue = 0.0);
-	bool boolAttribute(const QDomElement &element, QString const &attributeName, bool defaultValue = false);
+	int intAttribute(const QDomElement &element, const QString &attributeName, int defaultValue = -1);
+	qreal doubleAttribute(const QDomElement &element, const QString &attributeName, qreal defaultValue = 0.0);
+	bool boolAttribute(const QDomElement &element, const QString &attributeName, bool defaultValue = false);
 
 	bool addToEvents(Event * const event);
 	bool assertChildrenExactly(const QDomElement &element, int count);

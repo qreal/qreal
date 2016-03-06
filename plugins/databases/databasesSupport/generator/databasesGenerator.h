@@ -74,7 +74,7 @@ private:
 	qReal::Id createElementFromString(QString const &elemName
 			, QPointF coord = QPointF()
 			, Id const &parentLogicalId = Id::rootId()
-			, bool coordByParent = false); // true means, that coordinates will be taken from parent
+			, bool coordByParent = true); // true means, that coordinates will be taken from parent
 	/// Creates elem of pm "Column" from elem of lm "Attribute"
 	qReal::Id makeColumnFromAttribute(Id const &attributeId, Id const &parentId);
 	/// Creates elem of pm "Table" from elem of lm "Entity"

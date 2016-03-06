@@ -268,7 +268,7 @@ qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
 		, Id const &parentLogicalId
 		, bool coordByParent)
 {
-	Id id = Id::loadFromString(QString("qrm:/" + mDbms
+	const Id id = Id::loadFromString(QString("qrm:/" + mDbms
 			+ "/DatabasesPhysicalModelMetamodel/" + elemName));
 	Id logicalId = mLogicalModelApi.createElement(Id::rootId(), id);
 	Id graphicalParentId = Id::rootId();
@@ -277,8 +277,8 @@ qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
 		if (coordByParent)
 			coord = mGraphicalModelApi.position(graphicalParentId);
 	}
-	mGraphicalModelApi.createElement(graphicalParentId, logicalId, true, elemName, coord);
-	return logicalId;
+	Id graphicalId = mGraphicalModelApi.createElement(graphicalParentId, id, coordByParent, elemName, coord, logicalId);
+	return mGraphicalModelApi.logicalId(graphicalId);
 }
 
 qReal::Id DatabasesGenerator::makeColumnFromAttribute(Id const &attributeId, Id const &parentId)
@@ -419,7 +419,7 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 		mRelMatrix[toSet][fromSet] = -1;
 
 		// add bounding attribute
-		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet), true);
+		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet), false);
 		QString rowName = getProperty(relationship, "ColumnName").toString();
 		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "Name");
 		// copy relationship
@@ -472,12 +472,12 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 				, setTables.at(toSet));
 
 		//add bounding attribute
-		Id logicalColumnIdOne = createElementFromString("Column", QPointF(), logicalTableId, true);
+		Id logicalColumnIdOne = createElementFromString("Column", QPointF(), logicalTableId);
 		QString rowName = "keyOf" + getProperty(setTables.at(fromSet), "Name").toString();
 		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdOne, rowName, "Name");
 
 		//add bounding attribute 2
-		Id logicalColumnIdTwo = createElementFromString("Column", QPointF(), logicalTableId, true);
+		Id logicalColumnIdTwo = createElementFromString("Column", QPointF(), logicalTableId);
 		QString rowName2 = "keyOf" + getProperty(setTables.at(toSet), "Name").toString();
 		mLogicalModelApi.setPropertyByRoleName(logicalColumnIdTwo, rowName2, "Name");
 	}
@@ -493,7 +493,7 @@ void DatabasesGenerator::generatePhysicalModel()
 		return;
 	}
 
-	Id logicalDiagramId = createElementFromString("DatabasesPhysicalNode");
+	Id logicalDiagramId = createElementFromString("DatabasesPhysicalNode", QPointF(), Id::rootId(), false);
 
 	QList<IdList> oneToOneBoundedEntitiesSets = processEntities(logicalDiagramId);
 	IdList setTables;

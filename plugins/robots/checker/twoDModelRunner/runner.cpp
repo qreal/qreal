@@ -52,10 +52,10 @@ Runner::~Runner()
 	mReporter.reportMessages();
 }
 
-void Runner::interpret(const QString &saveFile, bool background)
+bool Runner::interpret(const QString &saveFile, bool background)
 {
 	if (!mProjectManager.open(saveFile)) {
-		return;
+		return false;
 	}
 
 	/// @todo: A bit hacky way to get 2D model window. Actually we must not have need in this.
@@ -68,14 +68,14 @@ void Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [=]() {
-			QTimer::singleShot(0, [=]() {
+		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [&]() {
+			QTimer::singleShot(0, [&]() {
 				mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0);
 			});
 		});
 	}
 
-	for (view::TwoDModelWidget * const  twoDModelWindow : twoDModelWindows) {
+	for (view::TwoDModelWidget * const twoDModelWindow : twoDModelWindows) {
 		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (const model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
@@ -85,6 +85,8 @@ void Runner::interpret(const QString &saveFile, bool background)
 
 	mReporter.onInterpretationStart();
 	mPluginFacade.actionsManager().runAction().trigger();
+
+	return true;
 }
 
 void Runner::connectRobotModel(const model::RobotModel *robotModel)

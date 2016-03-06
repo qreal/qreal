@@ -15,7 +15,6 @@
 #include "realRobotModel.h"
 
 #include <qrkernel/settingsManager.h>
-#include <qrkernel/exception/exception.h>
 
 #include "parts/display.h"
 #include "parts/speaker.h"

@@ -16,6 +16,10 @@
 
 #include <QtWidgets/QMessageBox>
 
+#include <qrgui/models/models.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 #include "mainWindow/mainWindow.h"
 
 using namespace qReal;

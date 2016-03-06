@@ -16,6 +16,8 @@
 
 #include <QtGui/QPainterPath>
 
+#include <utils/circularQueue.h>
+
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "sensorsConfiguration.h"
 
@@ -115,6 +117,12 @@ public:
 	/// Transfers ownership.
 	QGraphicsItem *startPositionMarker() const;
 
+	/// Returns accelerometer sensor data.
+	QVector<int> accelerometerReading() const;
+
+	/// Returns gyroscope sensor data.
+	QVector<int> gyroscopeReading() const;
+
 public slots:
 	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
 
@@ -157,6 +165,7 @@ private:
 
 	void countNewForces();
 	void countBeep();
+	void countSpeedAndAcceleration();
 
 	void countMotorTurnover();
 
@@ -168,6 +177,9 @@ private:
 
 	void serializeWheels(QDomElement &robotElement) const;
 	void deserializeWheels(const QDomElement &robotElement);
+
+	QPointF averageAcceleration() const;
+	qreal averageAngularSpeed() const;
 
 	/// Simulated robot motors.
 	/// Has ownership.
@@ -184,9 +196,13 @@ private:
 
 	QPointF mPos;
 	qreal mAngle;
+	qreal mAngularSpeed;
 	int mBeepTime;
 	bool mIsOnTheGround;
 	QColor mMarker;
+	QPointF mAcceleration;
+	utils::CircularQueue<QPointF> mPosStamps;
+	utils::CircularQueue<qreal> mAngleStamps;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 

@@ -21,7 +21,6 @@
 
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
-#include <utils/tracer.h>
 
 #include "commandConstants.h"
 
@@ -77,9 +76,6 @@ void BluetoothRobotCommunicationThread::connect()
 
 	mPort->open(QIODevice::ReadWrite | QIODevice::Unbuffered);
 
-	utils::Tracer::debug(utils::Tracer::initialization, "BluetoothRobotCommunicationThread::connect"
-			, "Port " + mPort->portName() + " is open: " + QString("%1").arg(mPort->isOpen()));
-
 	// Sending "Get firmware version" system command to check connection.
 	QByteArray command(4, 0);
 	command[0] = 0x02;  //command length
@@ -126,26 +122,12 @@ void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
 
 void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::send", "Sending:");
-	for (int i = 0; i < buffer.size(); ++i) {
-		utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::send"
-				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(buffer[i])));
-	}
-
 	mPort->write(buffer);
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
 {
-	const QByteArray result = mPort->read(size);
-
-	utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive", "Received:");
-	for (int i = 0; i < result.size(); ++i) {
-		utils::Tracer::debug(utils::Tracer::robotCommunication, "BluetoothRobotCommunicationThread::receive"
-				, QString("Byte %1 %2").arg(i).arg(static_cast<unsigned char>(result[i])));
-	}
-
-	return result;
+	return mPort->read(size);
 }
 
 void BluetoothRobotCommunicationThread::checkForConnection()

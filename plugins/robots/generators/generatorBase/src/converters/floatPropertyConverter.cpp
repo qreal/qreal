@@ -14,6 +14,10 @@
 
 #include "floatPropertyConverter.h"
 
+#include <qrtext/lua/types/float.h>
+
+#include "generatorBase/lua/luaProcessor.h"
+
 using namespace generatorBase::converters;
 using namespace qReal;
 
@@ -23,4 +27,10 @@ FloatPropertyConverter::FloatPropertyConverter(lua::LuaProcessor &luaTranslator
 		, simple::Binding::ConverterInterface *reservedVariablesConverter)
 	: CodeConverterBase(luaTranslator, id, propertyName, reservedVariablesConverter)
 {
+}
+
+QString FloatPropertyConverter::convert(const QString &luaCode) const
+{
+	return mLuaTranslator.castTo(qrtext::core::wrap(new qrtext::lua::types::Float)
+			, luaCode, mId, mPropertyName, mReservedVariablesConverter);
 }

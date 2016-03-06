@@ -287,7 +287,7 @@
         <bool>true</bool>
        </property>
        <property name="dragEnabled" stdset="0">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="dragDropOverwriteMode" stdset="0">
         <bool>false</bool>
@@ -395,7 +395,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="PropertyEditorView" name="propertyEditor" native="true">
+      <widget class="qReal::gui::editor::PropertyEditorView" name="propertyEditor" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>

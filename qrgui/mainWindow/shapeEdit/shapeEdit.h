@@ -50,7 +50,7 @@ public:
 		, bool useTypedPorts);
 	ShapeEdit(const Id &id, const EditorManagerInterface &editorManagerProxy
 		, const qrRepo::GraphicalRepoApi &graphicalRepoApi, MainWindow *mainWindow
-		, EditorView *editorView, bool useTypedPorts);
+		, qReal::gui::editor::EditorView *editorView, bool useTypedPorts);
 	~ShapeEdit();
 
 	graphicsUtils::AbstractView* getView();
@@ -110,7 +110,7 @@ private:
 	const EditorManagerInterface *mEditorManager;  // Doesn't have ownership.
 	IdList mGraphicalElements;
 	MainWindow *mMainWindow;  // Doesn't have ownership.
-	EditorView *mEditorView;  // Doesn't have ownership.
+	qReal::gui::editor::EditorView *mEditorView;  // Doesn't have ownership.
 
 	bool mUseTypedPorts;
 

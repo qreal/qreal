@@ -29,6 +29,19 @@ public:
 	/// and path to directory containing application bundle on Mac
 	/// (3 levels up from QCoreApplication::applicationDirPath()) if current executable is bundled.
 	static QString applicationDirPath();
+
+	/// Returns a path to file that contains additional settings for concrete platform.
+	/// Such config will be loaded when application starts if nessesary. This config can be overrided
+	/// with --config option of main executable. Usually such config will contain paths to application
+	/// resources (such as plugins, translations and docs), that may differ in different installers
+	/// (.deb package will put translations to /usr/share, while QtIFW will put it to home dir).
+	static QString defaultPlatformConfigPath();
+
+	/// Replaces ./ prefix of the string to application dir path, returns resulting string.
+	static QString invariantPath(const QString &path);
+
+	/// Useful alias for invariantPath(qReal::SettingsManager::value(\a settingsKey).toString());
+	static QString invariantSettingsPath(const QString &settingsKey);
 };
 
 }

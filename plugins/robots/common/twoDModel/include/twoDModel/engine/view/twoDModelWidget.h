@@ -138,6 +138,8 @@ private slots:
 
 	void returnToStartMarker();
 
+	void trainingModeChanged(bool enabled);
+
 private:
 	enum CursorType
 	{
@@ -214,6 +216,7 @@ private:
 	model::Model &mModel;
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
+	engine::TwoDModelDisplayWidget *mNullDisplay = nullptr;
 
 	int mCurrentSpeed;
 
@@ -225,6 +228,7 @@ private:
 	bool mFirstShow = true;
 
 	bool mSensorsReadOnly = false;
+	bool mRobotPositionReadOnly = false;
 
 	bool mCompactMode = false;
 };

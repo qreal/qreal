@@ -19,6 +19,8 @@
 #include "editor/editorViewScene.h"
 #include "editor/nodeElement.h"
 
+using namespace qReal::gui::editor;
+
 const qreal PortHandler::mMaximumFractionPartValue = 0.9999;
 
 /// Value for determing ID of nonexistent port.
@@ -28,7 +30,7 @@ PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistA
 		, QList<PortInterface *> const &ports)
 		: mNode(node), mGraphicalAssistApi(graphicalAssistApi)
 {
-	foreach (PortInterface *port, ports) {
+	for (PortInterface *port : ports) {
 		StatPoint *point = dynamic_cast<StatPoint *>(port);
 		if (point) {
 			mPointPorts << point;
@@ -43,11 +45,11 @@ PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistA
 
 PortHandler::~PortHandler()
 {
-	foreach (StatPoint *point, mPointPorts) {
+	for (StatPoint *point : mPointPorts) {
 		delete point;
 	}
 
-	foreach (StatLine *line, mLinePorts) {
+	for (StatLine *line : mLinePorts) {
 		delete line;
 	}
 }
@@ -112,7 +114,7 @@ QPointF PortHandler::transformPortForNodeSize(const StatPoint * const port) cons
 
 void PortHandler::connectTemporaryRemovedLinksToPort(const IdList &temporaryRemovedLinks, const QString &direction)
 {
-	foreach (const Id &edgeId, temporaryRemovedLinks) {
+	for (const Id &edgeId : temporaryRemovedLinks) {
 		EdgeElement *edge = dynamic_cast<EdgeElement *>(
 				static_cast<EditorViewScene *>(mNode->scene())->getElem(edgeId)
 				);
@@ -130,6 +132,7 @@ void PortHandler::connectTemporaryRemovedLinksToPort(const IdList &temporaryRemo
 					, nearestPort(edge->mapToScene(edge->line().last()), edge->toPortTypes()));
 			edge->placeEndTo(endPos);
 		}
+
 		edge->connectToPort();
 	}
 }
@@ -359,7 +362,7 @@ void PortHandler::arrangeLinearPorts()
 	for (int linePortId = mPointPorts.size(); linePortId < mPointPorts.size() + mLinePorts.size(); linePortId++) {
 		QMap<EdgeArrangeCriteria, EdgeElement*> sortedEdges;
 		const QLineF portLine = mLinePorts.at(linePortId)->transformForContents(mNode->contentsRect());
-		foreach (EdgeElement* edge, mNode->edgeList()) {
+		for (EdgeElement* edge : mNode->edgeList()) {
 			QPair<qreal, qreal> edgePortId = edge->portIdOn(mNode);
 			qreal currentPortId = -1.0;
 			if (portNumber(edgePortId.first) == linePortId) {
@@ -377,7 +380,7 @@ void PortHandler::arrangeLinearPorts()
 
 		const int n = sortedEdges.size();
 		int i = 0;
-		foreach (EdgeElement * const edge, sortedEdges) {
+		for (EdgeElement * const edge : sortedEdges) {
 			const qreal newId = linePortId + (i + 1.0) / (n + 1);
 			edge->moveConnection(mNode, newId);
 			i++;
@@ -387,13 +390,13 @@ void PortHandler::arrangeLinearPorts()
 
 void PortHandler::drawPorts(QPainter *painter, const QRectF &contents, const QStringList &types)
 {
-	foreach (const StatPoint * const pointPort, mPointPorts) {
+	for (const StatPoint * const pointPort : mPointPorts) {
 		if (types.contains(pointPort->type())) {
 			pointPort->paint(painter, contents);
 		}
 	}
 
-	foreach (const StatLine * const linePort, mLinePorts) {
+	for (const StatLine * const linePort : mLinePorts) {
 		if (types.contains(linePort->type())) {
 			linePort->paint(painter, contents);
 		}

@@ -17,8 +17,8 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrkernel/settingsManager.h>
+
 #include "lineItem.h"
-#include "wallItem.h"
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -76,9 +76,6 @@ void LineItem::drawExtractionForItem(QPainter* painter)
 	setPenBrushDriftRect(painter);
 	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), drift);
 	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, x1(), y1(), x2(), y2());
-
-	painter->setPen(QPen(Qt::red));
-	painter->setBrush(QBrush(Qt::SolidPattern));
 }
 
 QPainterPath LineItem::shape() const
@@ -88,11 +85,11 @@ QPainterPath LineItem::shape() const
 
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (event->modifiers() & Qt::ShiftModifier) {
-		setX2(event->scenePos().x());
-		setY2(event->scenePos().y());
+	const bool isResizing = dragState() == TopLeft || dragState() == BottomRight;
+	if (event->modifiers() & Qt::ShiftModifier && isResizing) {
+		AbstractItem::resizeItem(event);
 		reshapeRectWithShift();
-	} else if (dragState() == TopLeft || dragState() == BottomRight) {
+	} else if (isResizing) {
 		AbstractItem::resizeItem(event);
 	} else {
 		setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -101,18 +98,35 @@ void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void LineItem::reshapeRectWithShift()
 {
-	qreal differenceX = abs(x2() - x1());
-	qreal differenceY = abs(y2() - y1());
-	qreal differenceXY = abs(differenceX - differenceY);
-	qreal size = qMax(differenceX, differenceY);
+	const qreal differenceX = qAbs(x2() - x1());
+	const qreal differenceY = qAbs(y2() - y1());
+	const qreal differenceXY = qAbs(differenceX - differenceY);
+	const qreal size = qMax(differenceX, differenceY);
 	const int delta = size / 2;
 	if (differenceXY > delta) {
-		QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(x1(), y1(), x2(), y2()
+		const qreal corner1X = dragState() == TopLeft ? x2() : x1();
+		const qreal corner1Y = dragState() == TopLeft ? y2() : y1();
+		const qreal corner2X = dragState() == TopLeft ? x1() : x2();
+		const qreal corner2Y = dragState() == TopLeft ? y1() : y2();
+		const QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(corner1X, corner1Y, corner2X, corner2Y
 				, differenceX, differenceY, size);
-		setX2(res.first);
-		setY2(res.second);
-	} else
-		AbstractItem::reshapeRectWithShift();
+		if (dragState() == TopLeft) {
+			setX1(res.first);
+			setY1(res.second);
+		} else {
+			setX2(res.first);
+			setY2(res.second);
+		}
+	} else {
+		const qreal size = qMax(qAbs(x2() - x1()), qAbs(y2() - y1()));
+		if (dragState() == TopLeft) {
+			setX1(x1() > x2() ? x2() + size : x2() - size);
+			setY1(y1() > y2() ? y2() + size : y2() - size);
+		} else {
+			setX2(x2() > x1() ? x1() + size : x1() - size);
+			setY2(y2() > y1() ? y1() + size : y1() - size);
+		}
+	}
 }
 
 QDomElement LineItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const

@@ -22,15 +22,15 @@ using namespace trik::fSharp;
 using namespace kitBase::robotModel;
 
 TrikV6FSharpGeneratorPlugin::TrikV6FSharpGeneratorPlugin()
-	: TrikFSharpGeneratorPluginBase(initModel(
-				new robotModel::TrikV6GeneratorRobotModel(
-						"trikKit"
-						, "trikKitRobot"
-						, "TrikV6FSharpGeneratorRobotModel"
-						, tr("Generation (F#)")
-						, 8 /* After Javascript generator */))
-				, new blocks::TrikV6BlocksFactory()
-				, {":/trikFSharp/templates"})
+	: TrikFSharpGeneratorPluginBase(new robotModel::TrikV6GeneratorRobotModel(
+					"trikKit"
+					, "trikKitRobot"
+					, "TrikV6FSharpGeneratorRobotModel"
+					, tr("Generation (F#)")
+					, 8 /* After Javascript generator */)
+			, new blocks::TrikV6BlocksFactory()
+			, {":/trikFSharp/templates"})
+	, mModel(static_cast<robotModel::TrikV6GeneratorRobotModel *>(robotModels().first()))
 {
 }
 
@@ -42,11 +42,4 @@ QString TrikV6FSharpGeneratorPlugin::kitId() const
 void TrikV6FSharpGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	TrikFSharpGeneratorPluginBase::init(configurator);
-}
-
-robotModel::TrikV6GeneratorRobotModel *TrikV6FSharpGeneratorPlugin::initModel(
-		robotModel::TrikV6GeneratorRobotModel * const model)
-{
-	mModel = model;
-	return model;
 }
