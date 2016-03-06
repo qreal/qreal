@@ -280,7 +280,7 @@ QWidget *StartWidget::createPluginButton(const Id &editor, const Id &diagram, QW
 	QSignalMapper *pluginMapper = new QSignalMapper(result);
 	pluginMapper->setMapping(result, "qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 	connect(result, SIGNAL(clicked()), pluginMapper, SLOT(map()));
-	connect(pluginMapper, SIGNAL(mapped(QString)), mMainWindow, SLOT(createDiagram(QString)));
+	connect(pluginMapper, SIGNAL(mapped(QString)), mMainWindow, SLOT(createProject(QString)));
 
 	return result;
 }
