@@ -65,11 +65,6 @@ bool Diagram::init(const QDomElement &diagramElement)
 	return true;
 }
 
-QMap<QString, Type*> Diagram::getAllTypes()
-{
-	return mTypes;
-}
-
 bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 {
 	for (QDomElement element = graphicTypesElement.firstChildElement();

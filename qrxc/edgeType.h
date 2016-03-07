@@ -52,7 +52,7 @@ private:
 	QString mIsDividable;
 	QStringList mFromPorts;
 	QStringList mToPorts;
-	QMap<QString, Type*> mAllExistingTypes;
+	//QMap<QString, Type*> mAllExistingTypes;
 
 	virtual bool initRoles();
 	virtual bool initRoleProperties();

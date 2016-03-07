@@ -23,8 +23,13 @@ Type::Type(bool isResolved, Diagram *diagram)
 {}
 
 Type::~Type()
-{
-	//qDeleteAll(mProperties);
+{/*
+	for (Property *temp : mProperties.values()) {
+		if (temp) {
+			delete temp;
+		}
+	}*/
+	qDebug() << "type destruct";
 }
 
 bool Type::init(const QDomElement &element, const QString &context)

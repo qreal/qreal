@@ -39,7 +39,6 @@ public:
 	QList<QPair<QString, QStringList>> paletteGroups() const;
 	QMap<QString, QString> paletteGroupsDescriptions() const;
 	bool shallPaletteBeSorted() const;
-	QMap<QString, Type*> getAllTypes();
 
 private:
 	struct ImportSpecification {

@@ -28,8 +28,11 @@ bool RoleType::init(const QDomElement &element, const QString &context)
 Type* RoleType::clone() const
 {
 	RoleType *result = new RoleType();
-	Type::copyFields(result);
+	result->mArrowType = mArrowType;
+	result->mEnd = mEnd;
+	result->mNavigable = mNavigable;
 	result->mProperties = mProperties;
+	Type::copyFields(result);
 	return result;
 }
 
