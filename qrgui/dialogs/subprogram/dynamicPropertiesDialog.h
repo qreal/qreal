@@ -39,7 +39,7 @@ public:
 			, models::Exploser &exploser, QWidget *parent = 0);
 	~DynamicPropertiesDialog();
 
-	static QString generateShapeXml(const QString &shape1, const QString &shape2 = QString());
+	static QString generateShapeXml(const QString &shape, const QString &background = QString());
 
 private slots:
 	void addLabelButtonClicked();
@@ -54,7 +54,9 @@ private:
 
 	Ui::DynamicPropertiesDialog *mUi;
 	ShapePropertyWidget *mShapeWidget;
-	QScrollArea *mScrollArea;
+	ShapePropertyWidget *mShapeBackgroundWidget;
+	QScrollArea *mShapeScrollArea;
+	QScrollArea *mShapeBackgroundScrollArea;
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	models::Exploser &mExploser;
 	const Id mId;

@@ -27,7 +27,7 @@ class ShapePropertyWidget : public QWidget
 	Q_OBJECT
 public:
 	explicit ShapePropertyWidget(QWidget *parent = 0);
-	void initShapes(const QStringList &shapes, const QString &currentShape);
+	void initShapes(const QStringList &shapes, const QString &currentShape, bool backround);
 	QString getSelectedShape();
 
 protected:

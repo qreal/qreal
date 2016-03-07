@@ -24,6 +24,7 @@ const int minWidth = 355;
 
 ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	: QWidget(parent)
+	, mSelectedShapeIndex(-1)
 {
 	QPalette pal(palette());
 	pal.setColor(QPalette::Background, Qt::white);
@@ -31,19 +32,17 @@ ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	setPalette(pal);
 }
 
-void ShapePropertyWidget::initShapes(const QStringList &shapes, const QString &currentShape)
+void ShapePropertyWidget::initShapes(const QStringList &shapes, const QString &currentShape, bool backround)
 {
 	qreal x = 0.0;
 	int index = 0;
 	bool findedCurrentShape = false;
-	const QString defaultShape = "images/subprogramRobotsBlock.png";
-	addShape(index, x, defaultShape, currentShape, findedCurrentShape);
+	if (!backround) {
+		const QString defaultShape = "images/subprogramRobotsBlock.png";
+		addShape(index, x, defaultShape, currentShape, findedCurrentShape);
+	}
 	for (const QString shape : shapes) {
 		addShape(index, x, shape, currentShape, findedCurrentShape);
-	}
-	if (!findedCurrentShape && !mShapes.isEmpty()) {
-		mShapes.at(0)->addSelection();
-		mSelectedShapeIndex = 0;
 	}
 
 	int width = (index * 75 < minWidth) ? minWidth : index * 75;
@@ -52,7 +51,11 @@ void ShapePropertyWidget::initShapes(const QStringList &shapes, const QString &c
 
 QString ShapePropertyWidget::getSelectedShape()
 {
-	return mShapes.at(mSelectedShapeIndex)->getShape();
+	if (!mShapes.isEmpty() && mSelectedShapeIndex != -1) {
+		return mShapes.at(mSelectedShapeIndex)->getShape();
+	} else {
+		return QString();
+	}
 }
 
 void ShapePropertyWidget::paintEvent(QPaintEvent *)
@@ -71,7 +74,9 @@ void ShapePropertyWidget::shapeClicked()
 	const int newSelectedIndex = dynamic_cast<ShapeWidget *>(sender())->getIndex();
 
 	if (mSelectedShapeIndex != newSelectedIndex) {
-		mShapes.at(mSelectedShapeIndex)->removeSelection();
+		if (mSelectedShapeIndex != -1) {
+			mShapes.at(mSelectedShapeIndex)->removeSelection();
+		}
 		mSelectedShapeIndex = newSelectedIndex;
 	}
 }

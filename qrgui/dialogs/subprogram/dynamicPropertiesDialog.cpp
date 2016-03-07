@@ -33,7 +33,9 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	: QDialog(parent)
 	, mUi(new Ui::DynamicPropertiesDialog)
 	, mShapeWidget(new ShapePropertyWidget(this))
-	, mScrollArea(new QScrollArea(this))
+	, mShapeBackgroundWidget(new ShapePropertyWidget(this))
+	, mShapeScrollArea(new QScrollArea(this))
+	, mShapeBackgroundScrollArea(new QScrollArea(this))
 	, mLogicalRepoApi(logicalRepoApi)
 	, mExploser(exploser)
 	, mId(id)
@@ -44,9 +46,12 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-	mScrollArea->setWidget(mShapeWidget);
-	mScrollArea->setMaximumHeight(93);
-	mUi->verticalLayout->insertWidget(6, mScrollArea);
+	mShapeScrollArea->setWidget(mShapeWidget);
+	mShapeScrollArea->setMaximumHeight(93);
+	mUi->verticalLayout->insertWidget(6, mShapeScrollArea);
+	mShapeBackgroundScrollArea->setWidget(mShapeBackgroundWidget);
+	mShapeBackgroundScrollArea->setMaximumHeight(93);
+	mUi->verticalLayout->insertWidget(8, mShapeBackgroundScrollArea);
 
 	init();
 
@@ -59,31 +64,31 @@ DynamicPropertiesDialog::~DynamicPropertiesDialog()
 	delete mUi;
 }
 
-QString DynamicPropertiesDialog::generateShapeXml(const QString &shape1, const QString &shape2)
+QString DynamicPropertiesDialog::generateShapeXml(const QString &shape, const QString &background)
 {
-	QDomDocument shape;
-	QDomElement picture = shape.createElement("picture");
+	QDomDocument shapeDoc;
+	QDomElement picture = shapeDoc.createElement("picture");
 	picture.setAttribute("sizey", 50);
 	picture.setAttribute("sizex", 50);
-	QDomElement image1 = shape.createElement("image");
-	image1.setAttribute("name", shape1);
-	image1.setAttribute("x1", 0);
-	image1.setAttribute("y1", 0);
-	image1.setAttribute("x2", 50);
-	image1.setAttribute("y2", 50);
-	picture.appendChild(image1);
-	if (!shape2.isEmpty()) {
-		QDomElement image2 = shape.createElement("image");
-		image2.setAttribute("name", shape2);
-		image2.setAttribute("x1", 0);
-		image2.setAttribute("y1", 0);
-		image2.setAttribute("x2", 50);
-		image2.setAttribute("y2", 50);
-		picture.appendChild(image2);
+	if (!background.isEmpty()) {
+		QDomElement image1 = shapeDoc.createElement("image");
+		image1.setAttribute("name", background);
+		image1.setAttribute("x1", 0);
+		image1.setAttribute("y1", 0);
+		image1.setAttribute("x2", 50);
+		image1.setAttribute("y2", 50);
+		picture.appendChild(image1);
 	}
-	shape.appendChild(picture);
+	QDomElement image2 = shapeDoc.createElement("image");
+	image2.setAttribute("name", shape);
+	image2.setAttribute("x1", 0);
+	image2.setAttribute("y1", 0);
+	image2.setAttribute("x2", 50);
+	image2.setAttribute("y2", 50);
+	picture.appendChild(image2);
+	shapeDoc.appendChild(picture);
 
-	return shape.toString(0);
+	return shapeDoc.toString(0);
 }
 
 void DynamicPropertiesDialog::addLabelButtonClicked()
@@ -109,8 +114,9 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	}
 
 	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
-	const QString selectedShape = generateShapeXml(mShapeWidget->getSelectedShape());
-	mLogicalRepoApi.setProperty(mId, "shape", selectedShape);
+	const QString selectedShape = mShapeWidget->getSelectedShape();
+	const QString selectedBackground = mShapeBackgroundWidget->getSelectedShape();
+	mLogicalRepoApi.setProperty(mId, "shape", generateShapeXml(selectedShape, selectedBackground));
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
 
@@ -181,20 +187,41 @@ void DynamicPropertiesDialog::init()
 {
 	const QString filePath = SettingsManager::value("pathToImages").toString() + "/subprogramImages";
 	QDir dir(filePath);
-	const QStringList strList = dir.entryList();
+	QStringList strList = dir.entryList();
 	QStringList shapes;
-	QRegExp png(".png$");
-	QRegExp svg(".svg$");
+	const QRegExp png(".png$");
+	const QRegExp svg(".svg$");
 	for (const QString &str : strList) {
 		if (str.contains(png) || str.contains(svg)) {
 			shapes << "subprogramImages/" + str;
 		}
 	}
 
+	dir.setPath(filePath + "/subprogramBackgrounds");
+	strList = dir.entryList();
+	QStringList shapesBackgrounds;
+	for (const QString &str : strList) {
+		if (str.contains(png) || str.contains(svg)) {
+			shapesBackgrounds << "subprogramImages/subprogramBackgrounds/" + str;
+		}
+	}
+
 	QDomDocument shape;
 	shape.setContent(mLogicalRepoApi.stringProperty(mId, "shape"));
-	const QString currentShape = shape.firstChildElement("picture").firstChildElement("image").attribute("name");
-	mShapeWidget->initShapes(shapes, currentShape);
+	QString currentShape;
+	QString currentBackground;
+
+	const QDomElement shapeElem = shape.firstChildElement("picture").firstChildElement("image");
+	if (shapeElem.nextSiblingElement("image").isNull()) {
+		currentShape = shapeElem.attribute("name");
+		currentBackground = QString();
+	} else {
+		currentBackground = shapeElem.attribute("name");
+		currentShape = shapeElem.nextSiblingElement("image").attribute("name");
+	}
+
+	mShapeWidget->initShapes(shapes, currentShape, false);
+	mShapeBackgroundWidget->initShapes(shapesBackgrounds, currentBackground, true);
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {
