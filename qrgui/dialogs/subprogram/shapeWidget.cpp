@@ -13,14 +13,12 @@
  * limitations under the License. */
 
 #include "shapeWidget.h"
+#include "dynamicPropertiesDialog.h"
+
+using namespace qReal;
+using namespace gui;
 
 const QRectF mBounds = QRectF(12.5, 12.5, 50.0, 50.0);
-
-ShapeWidget::ShapeWidget(QWidget *parent)
-	: QWidget(parent)
-	, mSelected(false)
-{
-}
 
 ShapeWidget::ShapeWidget(int index, QWidget *parent)
 	: QWidget(parent)
@@ -33,8 +31,9 @@ ShapeWidget::ShapeWidget(int index, QWidget *parent)
 void ShapeWidget::setShape(const QString &shape)
 {
 	mShape = shape;
+	const QString shapeXml= DynamicPropertiesDialog::generateShapeXml(mShape);
 	QDomDocument dynamicShape;
-	dynamicShape.setContent(mShape);
+	dynamicShape.setContent(shapeXml);
 	mRenderer.load(dynamicShape);
 	repaint();
 }

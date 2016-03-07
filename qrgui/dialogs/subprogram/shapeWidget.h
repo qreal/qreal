@@ -17,12 +17,13 @@
 #include <QtWidgets/QWidget>
 #include <plugins/pluginManager/sdfRenderer.h>
 
+namespace qReal {
+namespace gui {
 
 class ShapeWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit ShapeWidget(QWidget *parent = 0);
 	ShapeWidget(int index, QWidget *parent = 0);
 	void setShape(const QString &shape);
 	void addSelection();
@@ -43,3 +44,6 @@ private:
 	bool mSelected;
 	int mIndex;
 };
+
+}
+}

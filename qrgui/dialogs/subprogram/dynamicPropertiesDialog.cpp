@@ -21,6 +21,7 @@
 #include <QtWidgets/QMessageBox>
 #include <QtXml/QDomDocument>
 #include <QtCore/QUuid>
+#include <QtCore/QDir>
 
 using namespace qReal;
 using namespace gui;
@@ -58,6 +59,33 @@ DynamicPropertiesDialog::~DynamicPropertiesDialog()
 	delete mUi;
 }
 
+QString DynamicPropertiesDialog::generateShapeXml(const QString &shape1, const QString &shape2)
+{
+	QDomDocument shape;
+	QDomElement picture = shape.createElement("picture");
+	picture.setAttribute("sizey", 50);
+	picture.setAttribute("sizex", 50);
+	QDomElement image1 = shape.createElement("image");
+	image1.setAttribute("name", shape1);
+	image1.setAttribute("x1", 0);
+	image1.setAttribute("y1", 0);
+	image1.setAttribute("x2", 50);
+	image1.setAttribute("y2", 50);
+	picture.appendChild(image1);
+	if (!shape2.isEmpty()) {
+		QDomElement image2 = shape.createElement("image");
+		image2.setAttribute("name", shape2);
+		image2.setAttribute("x1", 0);
+		image2.setAttribute("y1", 0);
+		image2.setAttribute("x2", 50);
+		image2.setAttribute("y2", 50);
+		picture.appendChild(image2);
+	}
+	shape.appendChild(picture);
+
+	return shape.toString(0);
+}
+
 void DynamicPropertiesDialog::addLabelButtonClicked()
 {
 	QPushButton *button = new QPushButton("Delete");
@@ -81,7 +109,8 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	}
 
 	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
-	mLogicalRepoApi.setProperty(mId, "shape", mShapeWidget->getSelectedShape());
+	const QString selectedShape = generateShapeXml(mShapeWidget->getSelectedShape());
+	mLogicalRepoApi.setProperty(mId, "shape", selectedShape);
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
 
@@ -150,16 +179,22 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 
 void DynamicPropertiesDialog::init()
 {
-	const QString filePath = SettingsManager::value("pathToImages").toString() + "/images/subprogramShapes.sdf";
-	QDomDocument shapes;
-	QFile file(filePath);
-
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		shapes.setContent(&file);
-		file.close();
+	const QString filePath = SettingsManager::value("pathToImages").toString() + "/subprogramImages";
+	QDir dir(filePath);
+	const QStringList strList = dir.entryList();
+	QStringList shapes;
+	QRegExp png(".png$");
+	QRegExp svg(".svg$");
+	for (const QString &str : strList) {
+		if (str.contains(png) || str.contains(svg)) {
+			shapes << "subprogramImages/" + str;
+		}
 	}
 
-	mShapeWidget->initShapes(shapes, mLogicalRepoApi.stringProperty(mId, "shape"));
+	QDomDocument shape;
+	shape.setContent(mLogicalRepoApi.stringProperty(mId, "shape"));
+	const QString currentShape = shape.firstChildElement("picture").firstChildElement("image").attribute("name");
+	mShapeWidget->initShapes(shapes, currentShape);
 	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
 	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
 	if (labels.isEmpty()) {

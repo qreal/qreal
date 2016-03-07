@@ -19,12 +19,15 @@
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <QtWidgets/QWidget>
 
+namespace qReal {
+namespace gui {
+
 class ShapePropertyWidget : public QWidget
 {
 	Q_OBJECT
 public:
 	explicit ShapePropertyWidget(QWidget *parent = 0);
-	void initShapes(const QDomDocument &shapes, const QString &currentShape);
+	void initShapes(const QStringList &shapes, const QString &currentShape);
 	QString getSelectedShape();
 
 protected:
@@ -34,10 +37,13 @@ private slots:
 	void shapeClicked();
 
 private:
-	void addShape(int index, qreal x, const QString &shape, const QString &currentShape, bool &findedCurrentShape);
+	void addShape(int &index, qreal &x, const QString &shape, const QString &currentShape, bool &findedCurrentShape);
 
 	qreal mWidthOfGrid;
 	graphicsUtils::GridDrawer mGridDrawer;
 	QList<ShapeWidget *> mShapes;
 	int mSelectedShapeIndex;
 };
+
+}
+}

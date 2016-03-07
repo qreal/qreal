@@ -18,6 +18,7 @@
 #include <QtGui/QPainter>
 
 using namespace qReal;
+using namespace gui;
 
 const int minWidth = 355;
 
@@ -30,27 +31,19 @@ ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	setPalette(pal);
 }
 
-void ShapePropertyWidget::initShapes(const QDomDocument &shapes, const QString &currentShape)
+void ShapePropertyWidget::initShapes(const QStringList &shapes, const QString &currentShape)
 {
 	qreal x = 0.0;
 	int index = 0;
 	bool findedCurrentShape = false;
-	for (QDomElement element
-			= shapes.firstChildElement("pictures").firstChildElement("picture");
-			!element.isNull();
-			element = element.nextSiblingElement("picture"))
-	{
-		QString shape;
-		QTextStream stream(&shape);
-		element.save(stream, 0);
+	const QString defaultShape = "images/subprogramRobotsBlock.png";
+	addShape(index, x, defaultShape, currentShape, findedCurrentShape);
+	for (const QString shape : shapes) {
 		addShape(index, x, shape, currentShape, findedCurrentShape);
-		x += 75.0;
-		index++;
 	}
-
-	if (!findedCurrentShape) {
-		addShape(index, x, currentShape, currentShape, findedCurrentShape);
-		index++;
+	if (!findedCurrentShape && !mShapes.isEmpty()) {
+		mShapes.at(0)->addSelection();
+		mSelectedShapeIndex = 0;
 	}
 
 	int width = (index * 75 < minWidth) ? minWidth : index * 75;
@@ -83,17 +76,21 @@ void ShapePropertyWidget::shapeClicked()
 	}
 }
 
-void ShapePropertyWidget::addShape(int index, qreal x, const QString &shape, const QString &currentShape, bool &findedCurrentShape)
+void ShapePropertyWidget::addShape(int &index, qreal &x, const QString &shape, const QString &currentShape, bool &findedCurrentShape)
 {
 	ShapeWidget *shapeWidget = new ShapeWidget(index, this);
 	shapeWidget->setGeometry(x, 0, 0, 0);
 	mShapes << shapeWidget;
 	shapeWidget->setShape(shape);
+
 	if (!findedCurrentShape && shape == currentShape) {
 		shapeWidget->addSelection();
 		mSelectedShapeIndex = index;
 		findedCurrentShape = true;
 	}
+
 	shapeWidget->show();
 	connect(shapeWidget, &ShapeWidget::clicked, this, &ShapePropertyWidget::shapeClicked);
+	index++;
+	x += 75.0;
 }
