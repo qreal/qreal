@@ -46,6 +46,7 @@ public:
 	bool load(const QDir &currentDir);
 
 	Type *findType(const QString &name);
+	Type *findTypeByNormalizedName(const QString &name);
 
 	QSet<EnumType *> getAllEnumTypes();
 	QStringList getAllPortNames() const;

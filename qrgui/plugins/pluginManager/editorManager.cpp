@@ -310,21 +310,7 @@ QStringList EditorManager::referenceProperties(const Id &id) const
 IdList EditorManager::containedTypes(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3);  // Applicable only to element types
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-
-	IdList result;
-	for (const QString &type : mMetamodels[id.editor()]->getTypesContainedBy(id.element())) {
-		result << Id(id.editor(), id.diagram(), type);
-	}
-
-	int FIX_IT_BACK = 100500;
-//	const QList<ElementType *> parents = elementType(id).parents();
-
-//	for (const ElementType *parent : parents) {
-//		result << containedTypes(Id(id.editor(), parent->diagram(), parent->name()));
-//	}
-
-	return result;
+	return elementType(id).containedTypes();
 }
 
 bool EditorManager::isEnumEditable(const Id &id, const QString &name) const

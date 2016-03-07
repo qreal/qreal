@@ -65,7 +65,6 @@ public:
 	virtual QList<ElementType *> elements(const QString &diagram) const;
 
 	//TODO ------------
-	virtual QStringList getTypesContainedBy(const QString &element) const = 0;
 	virtual QList<ExplosionData> explosions(const QString &diagram, const QString &element) const = 0;
 	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >
 			getPossibleEdges(const QString &element) const = 0;

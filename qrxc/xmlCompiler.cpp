@@ -188,7 +188,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQStringList diagrams() const override;\n"
 		<< "\n"
-		<< "\tQStringList getTypesContainedBy(const QString &element) const override;\n"
 		<< "\tQList<QPair<QPair<QString, QString>, QPair<bool, QString>>> getPossibleEdges(QString "
 				"const &element) const override;\n"
 		<< "\tQList<qReal::Metamodel::ExplosionData> explosions(const QString &diagram, QString "
@@ -236,7 +235,6 @@ void XmlCompiler::generatePluginSource()
 	generateIncludes(out);
 	generateInitPlugin(out);
 	generateNameMappingsRequests(out);
-	generateContainedTypes(out);
 	generatePossibleEdges(out);
 	generateEnumValues(out);
 	generateEditableEnums(out);
@@ -300,27 +298,39 @@ void XmlCompiler::generateInitMultigraph(OutFile &out)
 		}
 	}
 
-	out() << "\n\t// Adding generalizations...\n";
-
 	for (const Diagram *diagram : mEditors[mCurrentEditor]->diagrams()) {
 		for (const Type *type : diagram->types()) {
 			if (const GraphicType *graphicType = dynamic_cast<const GraphicType *>(type)) {
-				for (const QString &parent: graphicType->immediateParents()) {
-					const Type *parentType = mEditors[mCurrentEditor]->findType(parent);
-					if (!parentType || !mEditors[mCurrentEditor]->diagrams().contains(parentType->diagram()->name())) {
-						// Ignoring imported types.
-						continue;
-					}
-
-					out() << QString("\tproduceEdge(elementType(\"%1\", \"%2\"), elementType(\"%3\", \"%4\"), %5);\n")
-							.arg(diagram->name(), type->name(), diagram->name(), parent
-									, QString::number(Type::generalizationLinkType));
-				}
+				generateLinks(out, graphicType, graphicType->immediateParents(), "generalizationLinkType", false);
+				generateLinks(out, graphicType, graphicType->containedTypes(), "containmentLinkType", true);
 			}
 		}
 	}
 
 	out() << "}\n\n";
+}
+
+void XmlCompiler::generateLinks(OutFile &out, const Type *from, const QStringList &to
+		, const QString &linkType, bool areNamesNormalized)
+{
+	for (const QString &toTypeName : to) {
+		const Type *toType = areNamesNormalized
+				? mEditors[mCurrentEditor]->findTypeByNormalizedName(toTypeName)
+				: mEditors[mCurrentEditor]->findType(from->diagram()->name() + "::" + toTypeName);
+		if (!toType || !mEditors[mCurrentEditor]->diagrams().contains(toType->diagram()->name())) {
+			qWarning() << "Omitting generation of" << toTypeName << "because it is in imported module.";
+			// Ignoring imported types.
+			continue;
+		}
+
+		const QString fromDiagramName = NameNormalizer::normalize(from->diagram()->name());
+		const QString toDiagramName = NameNormalizer::normalize(toType->diagram()->name());
+		const QString fromName = NameNormalizer::normalize(from->qualifiedName());
+		const QString toName = NameNormalizer::normalize(toType->qualifiedName());
+		out() << QString("\tproduceEdge(elementType(\"%1\", \"%2\")"
+				", elementType(\"%3\", \"%4\"), qReal::ElementType::%5);\n")
+				.arg(fromDiagramName, fromName, toDiagramName, toName, linkType);
+	}
 }
 
 void XmlCompiler::generateNameMappings(OutFile &out)
@@ -489,18 +499,6 @@ public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
 };
 
-class XmlCompiler::ContainedTypesGenerator: public XmlCompiler::ListMethodGenerator
-{
-public:
-	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		if (const GraphicType *graphicType = dynamic_cast<const GraphicType *>(type)) {
-			return graphicType->generateContainedTypes(out, isNotFirst);
-		}
-
-		return false;
-	}
-};
-
 class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
@@ -592,11 +590,6 @@ void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
 		out() << "\tQ_UNUSED(element);\n";
 		out() << "\treturn result;\n"
 		<< "}\n\n";
-}
-
-void XmlCompiler::generateContainedTypes(OutFile &out)
-{
-	generateListMethod(out, "getTypesContainedBy(const QString &element)", ContainedTypesGenerator());
 }
 
 void XmlCompiler::generateResourceFile()

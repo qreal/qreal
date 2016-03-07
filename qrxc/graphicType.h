@@ -37,7 +37,6 @@ public:
 	bool init(const QDomElement &element, const QString &context) override;
 	bool resolve() override;
 
-	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) const;
 	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) const;
 	virtual void generateExplosionsMap(utils::OutFile &out) const;
 	virtual bool copyPictures(GraphicType *parent) = 0;
@@ -50,6 +49,10 @@ public:
 	/// Returns a list of types generalized by this one.
 	QStringList immediateParents() const;
 
+	/// Returns a list of types that instances of this one can contain.
+	/// Types are returned without considering of generalizations.
+	QStringList containedTypes() const;
+
 protected:
 	void generateCommonMethods(utils::OutFile &out) const;
 	void generateName(utils::OutFile &out) const;
@@ -58,7 +61,6 @@ protected:
 	void generateDescription(utils::OutFile &out) const;
 	void generatePropertyNames(utils::OutFile &out, bool isReference) const;
 	virtual void generatePropertyGetters(utils::OutFile &out) const;
-	void generateParentGetters(utils::OutFile &out) const;
 	void generateLabels(utils::OutFile &out) const;
 
 	void generatePropertyData(utils::OutFile &out) const;

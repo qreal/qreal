@@ -27,12 +27,6 @@ namespace utils {
 class Type
 {
 public:
-	// Types of links in metamodel go below:
-	static const uint generalizationLinkType = 0;
-	static const uint containmentType = 1;
-	static const uint explosionType = 2;
-	static const uint possibleEdgeType = 3;
-
 	Type(bool isResolved, Diagram *diagram);
 	virtual ~Type();
 	virtual Type* clone() const = 0;

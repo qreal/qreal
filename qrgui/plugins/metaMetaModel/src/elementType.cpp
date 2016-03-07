@@ -14,6 +14,8 @@
 
 #include "metaMetaModel/elementType.h"
 
+#include <qrgraph/queries.h>
+
 #include "metaMetaModel/metamodel.h"
 #include "metaMetaModel/nodeElementType.h"
 #include "metaMetaModel/edgeElementType.h"
@@ -47,6 +49,27 @@ const PatternType &ElementType::toPattern() const
 {
 	Q_ASSERT(type() == Type::pattern);
 	return *dynamic_cast<const PatternType *>(this);
+}
+
+bool ElementType::isParent(const ElementType &parent) const
+{
+	return qrgraph::Queries::isReachableInTree(*this, parent, generalizationLinkType);
+}
+
+IdList ElementType::containedTypes() const
+{
+	QSet<Id> result;
+	qrgraph::Queries::treeLift(*this, [&result](const Node &parent) {
+		const QList<const Node *> nodes = qrgraph::Queries::immediateFollowers(parent, containmentLinkType);
+		for (const qrgraph::Node *node : nodes) {
+			if (const ElementType *type = dynamic_cast<const ElementType *>(node)) {
+				result.insert(Id(type->metamodel().id(), type->diagram(), type->name()));
+			}
+		}
+
+		return false;
+	}, generalizationLinkType);
+	return result.toList();
 }
 
 void ElementType::updateRendererContent(const QString &shape)

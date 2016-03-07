@@ -19,6 +19,7 @@
 #include "type.h"
 #include "enumType.h"
 #include "portType.h"
+#include "nameNormalizer.h"
 #include <qrutils/outFile.h>
 
 #include <QtCore/QDebug>
@@ -114,18 +115,41 @@ QString Editor::version() const
 
 Type* Editor::findType(const QString &name)
 {
-	foreach (Diagram *diagram, mDiagrams.values()) {
-		foreach (Type *type, diagram->types()) {
-			if (type->qualifiedName() == name)
+	for (Diagram *diagram : mDiagrams.values()) {
+		for (Type *type : diagram->types()) {
+			if (type->qualifiedName() == name) {
 				return type;
+			}
 		}
 	}
 
-	foreach (Editor *editor, mIncludes) {
+	for (Editor *editor : mIncludes) {
 		Type *type = editor->findType(name);
-		if (type != nullptr && type->qualifiedName() == name)
+		if (type != nullptr && type->qualifiedName() == name) {
 			return type;
+		}
 	}
+
+	return nullptr;
+}
+
+Type *Editor::findTypeByNormalizedName(const QString &name)
+{
+	for (Diagram *diagram : mDiagrams.values()) {
+		for (Type *type : diagram->types()) {
+			if (NameNormalizer::normalize(type->name()) == name) {
+				return type;
+			}
+		}
+	}
+
+	for (Editor *editor : mIncludes) {
+		Type *type = editor->findType(name);
+		if (type != nullptr && NameNormalizer::normalize(type->name()) == name) {
+			return type;
+		}
+	}
+
 	return nullptr;
 }
 

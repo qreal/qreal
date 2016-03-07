@@ -120,7 +120,6 @@ void GraphicType::generateCommonMethods(OutFile &out) const
 	generatePropertyNames(out, false);
 	generatePropertyNames(out, true);
 	generatePropertyGetters(out);
-	generateParentGetters(out);
 	generateLabels(out);
 }
 
@@ -543,7 +542,7 @@ void GraphicType::generateDiagram(OutFile &out) const
 void GraphicType::generateDescription(OutFile &out) const
 {
 	out() << "\t\tQString description() const override \n\t\t{\n"
-		<< "\t\t\treturn \"" << mDescription << "\"; \n"
+		<< "\t\t\treturn QObject::tr(\"" << mDescription << "\");\n"
 		<< "\t\t}\n\n";
 }
 
@@ -581,12 +580,6 @@ void GraphicType::generatePropertyGetters(OutFile &out) const
 			"{ return mPropertyDescriptions[propertyName]; }\n";
 	out() << "\t\tQString propertyDisplayedName(const QString &propertyName) const override "\
 			"{ return mPropertyDisplayedNames[propertyName]; }\n\n";
-}
-
-void GraphicType::generateParentGetters(OutFile &out) const
-{
-	out() << QString("\t\tbool isParent(const ElementType &element) const override { "\
-			"return qrgraph::Queries::isReachableInTree(*this, element, %1); }\n\n").arg(generalizationLinkType);
 }
 
 void GraphicType::generatePropertyData(OutFile &out) const
@@ -681,9 +674,9 @@ QString GraphicType::resourceName(const QString &resourceType) const
 	return name + resourceType + ".sdf";
 }
 
-bool GraphicType::generateContainedTypes(OutFile &out, bool isNotFirst) const
+QStringList GraphicType::containedTypes() const
 {
-	return generateListForElement(out, isNotFirst, mContains);
+	return mContains;
 }
 
 bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst) const

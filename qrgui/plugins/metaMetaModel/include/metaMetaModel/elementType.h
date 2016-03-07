@@ -40,6 +40,12 @@ typedef QPair<qReal::Id, qReal::Id> ElementPair;
 class ElementType : public qrgraph::Node
 {
 public:
+	// Types of links in metamodel go below:
+	static const uint generalizationLinkType = 0;
+	static const uint containmentLinkType = 1;
+	static const uint explosionLinkType = 2;
+	static const uint possibleEdgeLinkType = 3;
+
 	/// Enumerates types of entities that can be dragged out of a palette. All those enities have type descriptors
 	/// subclassing this class.
 	enum class Type
@@ -66,6 +72,12 @@ public:
 	/// Casts this instance to pattern element type. If this is not pattern then assertion fault will be generated.
 	/// @see type().
 	const PatternType &toPattern() const;
+
+	/// Returns true if this element type generalizes \a parent. Distant
+	virtual bool isParent(const ElementType &parent) const;
+
+	/// Returns true if this element type generalizes \a parent. Distant
+	virtual IdList containedTypes() const;
 
 	/// Returns true if this instance describes node element type.
 	virtual Type type() const = 0;
@@ -103,9 +115,6 @@ public:
 
 	/// Returns a string representation of a value assigned to \a property by default.
 	virtual QString propertyDefaultValue(const QString &property) const = 0;
-
-	/// Returns true if this element type generalizes \a parent. Distant
-	virtual bool isParent(const ElementType &parent) const = 0;
 
 	/// Returns localized string describing some \a property. This string can be shown to user.
 	virtual QString propertyDescription(const QString &property) const = 0;

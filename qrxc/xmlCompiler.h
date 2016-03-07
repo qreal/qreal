@@ -18,6 +18,7 @@
 #include <QtCore/QString>
 #include <QtCore/QDir>
 
+class Type;
 class Editor;
 class Diagram;
 
@@ -44,12 +45,13 @@ private:
 	void generateIncludes(utils::OutFile &out);
 	void generateInitPlugin(utils::OutFile &out);
 	void generateInitMultigraph(utils::OutFile &out);
+	void generateLinks(utils::OutFile &out, const Type *from, const QStringList &to
+			, const QString &linkType, bool areNamesNormalized);
 	void generateNameMappings(utils::OutFile &out);
 	void generateNodesAndEdgesSets(utils::OutFile &out);
 	void generateExplosionsMappings(utils::OutFile &out);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateReferenceProperties(utils::OutFile &out);
-	void generateContainedTypes(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);
 	void generateNodesAndEdges(utils::OutFile &out);
 	void generateEnumValues(utils::OutFile &out);
