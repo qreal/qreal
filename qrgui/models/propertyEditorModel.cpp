@@ -307,6 +307,27 @@ QString PropertyEditorModel::typeName(const QModelIndex &index) const
 	return mEditorManagerInterface.typeName(id, mFields[index.row()].fieldName);
 }
 
+QString PropertyEditorModel::propertyName(const QModelIndex &index) const
+{
+	return mFields[index.row()].fieldName;
+}
+
+bool PropertyEditorModel::setData(const Id &id, const QString &propertyName, const QVariant &value)
+{
+	if (mFields.isEmpty() || idByIndex(index(0, 0)) != id) {
+		return false;
+	}
+
+	for (const Field &field : mFields) {
+		if (field.fieldName == propertyName) {
+			setData(index(field.role, 1), value);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool PropertyEditorModel::isReference(const QModelIndex &index, const QString &propertyName)
 {
 	Id id = idByIndex(index);
