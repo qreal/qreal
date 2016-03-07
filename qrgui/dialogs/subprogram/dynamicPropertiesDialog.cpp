@@ -26,6 +26,8 @@
 using namespace qReal;
 using namespace gui;
 
+const bool hideLabels = true;
+
 DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 		, qrRepo::LogicalRepoApi &logicalRepoApi
 		, models::Exploser &exploser
@@ -45,6 +47,13 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setColumnCount(4);
 	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+	if (hideLabels) {
+		mUi->labels->hide();
+		mUi->addLabel->hide();
+		mUi->label->hide();
+		this->setFixedHeight(350);
+	}
 
 	mShapeScrollArea->setWidget(mShapeWidget);
 	mShapeScrollArea->setMaximumHeight(93);
