@@ -62,6 +62,8 @@ public:
 
 	/// Sets text drawn just after label contents.
 	virtual void setSuffix(const QString &text) = 0;
+
+	virtual void setFocused() = 0;
 };
 
 }

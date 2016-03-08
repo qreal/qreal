@@ -33,7 +33,7 @@ LabelProperties::LabelProperties()
 {
 }
 
-LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation)
+LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation, bool focused)
 	: mIndex(index)
 	, mX(x)
 	, mY(y)
@@ -47,10 +47,11 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &tex
 	, mIsHard(false)
 	, mPrefix()
 	, mSuffix()
+	, mIsFocused(focused)
 {
 }
 
-LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation)
+LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation, bool focused)
 	: mIndex(index)
 	, mX(x)
 	, mY(y)
@@ -64,6 +65,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 	, mIsHard(false)
 	, mPrefix()
 	, mSuffix()
+	, mIsFocused(focused)
 {
 }
 
@@ -257,4 +259,9 @@ void LabelProperties::setSuffix(const QString &text)
 		mSuffix = text;
 		emit suffixChanged(text);
 	}
+}
+
+bool LabelProperties::isFocused() const
+{
+	return mIsFocused;
 }

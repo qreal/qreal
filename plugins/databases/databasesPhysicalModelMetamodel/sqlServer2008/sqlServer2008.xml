@@ -60,7 +60,7 @@
 						<rectangle stroke-style="solid" stroke="#000000" y1="0" stroke-width="0" x1="0" y2="90" x2="160"/>
 					</picture>
 					<labels>
-						<label x="5a" y="3a" textBinded="tableName"/>
+						<label x="5a" y="3a" textBinded="tableName" isFocused="true"/>
 					</labels>
 					<ports>
 						<linePort type="TableLeft">
@@ -128,13 +128,13 @@
 						</line>
 					</picture>
 					<labels>
-						<label x="10a" y="1a" textBinded="columnName"/>
+						<label x="10a" y="1a" textBinded="columnName" isFocused="true"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<properties>
-						<property type="string" name="columnName" displayedName="Name" focused="true">
+						<property type="string" name="columnName" displayedName="Name">
 							<default>Enter name</default>
 						</property>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>

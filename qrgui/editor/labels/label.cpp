@@ -420,6 +420,25 @@ QRectF Label::boundingRect() const
 	return QGraphicsTextItem::boundingRect().united(prefixRect()).united(suffixRect());
 }
 
+void Label::setFocused()
+{
+	if (hasFocus()) {
+		return;
+	}
+
+	mOldText = toPlainText();
+
+	setTextInteractionFlags(isReadOnly() ? Qt::TextBrowserInteraction : Qt::TextEditorInteraction);
+	setFocus(Qt::OtherFocusReason);
+
+	// Set full text selection
+	QTextCursor cursor = QTextCursor(document());
+	cursor.select(QTextCursor::Document);
+	setTextCursor(cursor);
+	setCursor(Qt::IBeamCursor);
+	cursor.select(QTextCursor::SelectionType::Document);
+}
+
 void Label::updateRect(QPointF newBottomRightPoint)
 {
 	mContents.setBottomRight(newBottomRightPoint);
