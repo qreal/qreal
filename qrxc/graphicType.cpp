@@ -492,12 +492,6 @@ bool GraphicType::resolve()
 			for (PossibleEdge pEdge : graphicParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
 			}
-
-			for (const QString &element : graphicParent->mExplosions.keys()) {
-				if (!mExplosions.contains(element)) {
-					mExplosions[element] = graphicParent->mExplosions[element];
-				}
-			}
 		}
 	}
 
@@ -679,6 +673,11 @@ QStringList GraphicType::containedTypes() const
 	return mContains;
 }
 
+const QMap<QString, QPair<bool, bool> > &GraphicType::explosions() const
+{
+	return mExplosions;
+}
+
 bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst) const
 {
 	if (mPossibleEdges.isEmpty()) {
@@ -736,24 +735,4 @@ QVector<int> GraphicType::toIntVector(const QString &s, bool *isOk) const
 	}
 
 	return result;
-}
-
-void GraphicType::generateExplosionsMap(OutFile &out) const
-{
-	if (mExplosions.isEmpty()) {
-		return;
-	}
-
-	const QString diagramName = NameNormalizer::normalize(mDiagram->name());
-	const QString normalizedName = NameNormalizer::normalize(qualifiedName());
-	foreach (const QString &target, mExplosions.keys()) {
-		const bool reusable = mExplosions[target].first;
-		const bool immediateLinkage = mExplosions[target].second;
-
-		out() << "\tmExplosionsMap[\"" << diagramName << "\"][\"" << normalizedName << "\"]";
-		out() << QString(" << ExplosionData(\"%1\", \"%2\", %3, %4);\n").arg(diagramName
-				, NameNormalizer::normalize(target)
-				, reusable ? "true" : "false"
-				, immediateLinkage ? "true" : "false");
-	}
 }

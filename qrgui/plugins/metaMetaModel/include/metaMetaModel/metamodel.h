@@ -31,24 +31,6 @@ namespace qReal {
 class Metamodel : public qrgraph::Multigraph
 {
 public:
-	struct ExplosionData
-	{
-	public:
-		ExplosionData(const QString &targetDiagram, const QString &targetElement
-				, bool isReusable, bool requiresImmediateLinkage)
-			: targetDiagram(targetDiagram)
-			, targetElement(targetElement)
-			, isReusable(isReusable)
-			, requiresImmediateLinkage(requiresImmediateLinkage)
-		{
-		}
-
-		QString targetDiagram;
-		QString targetElement;
-		bool isReusable;
-		bool requiresImmediateLinkage;
-	};
-
 	/// Returns the name of this metamodel. This is internal and non-localized name and hence cannot be shown to user.
 	virtual QString id() const = 0;
 
@@ -65,7 +47,6 @@ public:
 	virtual QList<ElementType *> elements(const QString &diagram) const;
 
 	//TODO ------------
-	virtual QList<ExplosionData> explosions(const QString &diagram, const QString &element) const = 0;
 	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >
 			getPossibleEdges(const QString &element) const = 0;
 	//-----------------
@@ -115,6 +96,10 @@ protected:
 	/// Can be called by subtypes to append new entity into this metamodel.
 	/// @note Metamodel will take ownership on \a entity.
 	void addNode(qrgraph::Node &entity) override;
+
+	/// Can be called by subtypes to append new explosion types into this metamodel.
+	/// @note Metamodel will take ownership in created explosion.
+	void addExplosion(ElementType &source, ElementType &target, bool isReusable, bool requiresImmediateLinkage);
 
 	QMap<QString, QMap<QString, ElementType *>> mElements;
 };

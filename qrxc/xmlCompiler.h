@@ -21,6 +21,7 @@
 class Type;
 class Editor;
 class Diagram;
+class GraphicType;
 
 namespace utils {
 	class OutFile;
@@ -49,7 +50,7 @@ private:
 			, const QString &linkType, bool areNamesNormalized);
 	void generateNameMappings(utils::OutFile &out);
 	void generateNodesAndEdgesSets(utils::OutFile &out);
-	void generateExplosionsMappings(utils::OutFile &out);
+	void generateExplosionsMappings(utils::OutFile &out, const GraphicType *graphicType);
 	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateReferenceProperties(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);

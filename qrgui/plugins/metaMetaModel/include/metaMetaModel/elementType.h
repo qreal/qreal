@@ -18,6 +18,7 @@
 #include <qrgraph/node.h>
 
 #include "metaMetaModel/labelProperties.h"
+#include "metaMetaModel/explosion.h"
 
 namespace qReal {
 
@@ -73,11 +74,20 @@ public:
 	/// @see type().
 	const PatternType &toPattern() const;
 
+	/// Returns the name of metamodel that can be used as first part of qReal::Id.
+	const QString editor() const;
+
+	/// Returns hierarchical name of this type expressed as qReal::Id.
+	const Id typeId() const;
+
 	/// Returns true if this element type generalizes \a parent. Distant
 	virtual bool isParent(const ElementType &parent) const;
 
 	/// Returns true if this element type generalizes \a parent. Distant
 	virtual IdList containedTypes() const;
+
+	/// Returns a list of explosions that may be outgoing from instances of this type.
+	virtual QList<const Explosion *> explosions() const;
 
 	/// Returns true if this instance describes node element type.
 	virtual Type type() const = 0;

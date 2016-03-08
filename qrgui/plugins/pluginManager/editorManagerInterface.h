@@ -22,12 +22,12 @@
 #include <qrkernel/settingsManager.h>
 
 #include "qrgui/plugins/pluginManager/pattern.h"
-#include "qrgui/plugins/pluginManager/explosion.h"
 #include "qrgui/plugins/pluginManager/details/patternParser.h"
 
 namespace qReal {
 
 class ElementType;
+class Explosion;
 
 namespace gui {
 namespace editor {
@@ -59,7 +59,7 @@ public:
 	virtual ElementType &elementType(const Id &id) const = 0;
 
 	virtual IdList containedTypes(const Id &id) const = 0;
-	virtual QList<Explosion> explosions(const Id &source) const = 0;
+	virtual QList<const Explosion *> explosions(const Id &source) const = 0;
 	virtual bool isEnumEditable(const Id &id, const QString &name) const = 0;
 	virtual QList<QPair<QString, QString>> enumValues(const Id &id, const QString &name) const = 0;
 	virtual QString typeName(const Id &id, const QString &name) const = 0;

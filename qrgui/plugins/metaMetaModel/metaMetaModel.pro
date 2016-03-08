@@ -22,7 +22,10 @@ includes(qrgui qrgraph)
 
 links(qrkernel qrgraph)
 
+DEFINES += QRGUI_META_META_MODEL_LIBRARY
+
 HEADERS += \
+	$$PWD/include/metaMetaModel/metaMetaModelDeclSpec.h \
 	$$PWD/include/metaMetaModel/metamodel.h \
 	$$PWD/include/metaMetaModel/elementType.h \
 	$$PWD/include/metaMetaModel/nodeElementType.h \
@@ -32,6 +35,7 @@ HEADERS += \
 	$$PWD/include/metaMetaModel/elementRepoInterface.h \
 	$$PWD/include/metaMetaModel/labelProperties.h \
 	$$PWD/include/metaMetaModel/portHelpers.h \
+	$$PWD/include/metaMetaModel/explosion.h \
 
 SOURCES += \
 	$$PWD/src/metamodel.cpp \
@@ -40,3 +44,4 @@ SOURCES += \
 	$$PWD/src/edgeElementType.cpp \
 	$$PWD/src/patternType.cpp \
 	$$PWD/src/labelProperties.cpp \
+	$$PWD/src/explosion.cpp \

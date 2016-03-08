@@ -420,18 +420,10 @@ QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 	return result;
 }
 
-QList<Explosion> EditorManager::explosions(const Id &source) const
+QList<const Explosion *> EditorManager::explosions(const Id &source) const
 {
 	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
-	const Metamodel *plugin = mMetamodels[source.editor()];
-	QList<Explosion> result;
-	QList<Metamodel::ExplosionData> const rawExplosions =
-			plugin->explosions(source.diagram(), source.element());
-	foreach (const Metamodel::ExplosionData &rawExplosion, rawExplosions) {
-		const Id target(source.editor(), rawExplosion.targetDiagram, rawExplosion.targetElement, "");
-		result << Explosion(source, target, rawExplosion.isReusable, rawExplosion.requiresImmediateLinkage);
-	}
-	return result;
+	return elementType(source).explosions();
 }
 
 bool EditorManager::isGraphicalElementNode(const Id &id) const

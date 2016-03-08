@@ -43,3 +43,11 @@ void Metamodel::addNode(qrgraph::Node &entity)
 	mElements[diagram][element] = type;
 	Multigraph::addNode(entity);
 }
+
+void Metamodel::addExplosion(ElementType &source, ElementType &target, bool isReusable, bool requiresImmediateLinkage)
+{
+	Explosion *explosion = new Explosion(*this, isReusable, requiresImmediateLinkage);
+	addEdge(*explosion);
+	explosion->connectBegin(source);
+	explosion->connectEnd(target);
+}

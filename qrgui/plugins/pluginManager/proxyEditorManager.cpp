@@ -116,7 +116,7 @@ QStringList ProxyEditorManager::allChildrenTypesOf(const Id &parent) const
 	return mProxiedEditorManager->allChildrenTypesOf(parent);
 }
 
-QList<Explosion> ProxyEditorManager::explosions(const Id &source) const
+QList<const Explosion *> ProxyEditorManager::explosions(const Id &source) const
 {
 	return mProxiedEditorManager->explosions(source);
 }

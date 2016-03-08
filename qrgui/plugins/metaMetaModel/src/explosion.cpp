@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,25 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "explosion.h"
+#include "metaMetaModel/explosion.h"
+
+#include "metaMetaModel/metamodel.h"
 
 using namespace qReal;
 
-Explosion::Explosion(const Id &source, const Id &target
-		, bool isReusable, bool requiresImmediateLinkage)
-	: mSource(source), mTarget(target), mReusable(isReusable)
+Explosion::Explosion(Metamodel &metamodel, bool isReusable, bool requiresImmediateLinkage)
+	: qrgraph::Edge(metamodel, ElementType::explosionLinkType)
+	, mReusable(isReusable)
 	, mRequiresImmediateLinkage(requiresImmediateLinkage)
 {
 }
 
-Id Explosion::source() const
+ElementType &Explosion::source() const
 {
-	return mSource;
+	ElementType *result = dynamic_cast<ElementType *>(begin());
+	Q_ASSERT(result);
+	return *result;
 }
 
-Id Explosion::target() const
+ElementType &Explosion::target() const
 {
-	return mTarget;
+	ElementType *result = dynamic_cast<ElementType *>(end());
+	Q_ASSERT(result);
+	return *result;
 }
 
 bool Explosion::isReusable() const

@@ -44,7 +44,7 @@ ExploserView::ExploserView(const models::Models &models
 }
 
 void ExploserView::createAddExplosionMenu(const Element * const element
-		, QMenu &contextMenu, QList<Explosion> const &explosions
+		, QMenu &contextMenu, QList<const Explosion *> const &explosions
 		, const Id &alreadyConnectedElement) const
 {
 	bool hasAnyActions = false;
@@ -53,8 +53,8 @@ void ExploserView::createAddExplosionMenu(const Element * const element
 			: mCustomizer.changeExplosionMenuName();
 	QMenu *addExplosionMenu = new QMenu(menuName);
 
-	for (const Explosion &explosion : explosions) {
-		for (const Id &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion.target())) {
+	for (const Explosion *explosion : explosions) {
+		for (const Id &elementId : mLogicalApi.logicalRepoApi().logicalElements(explosion->target().typeId())) {
 			if (alreadyConnectedElement == elementId) {
 				continue;
 			}
@@ -71,8 +71,8 @@ void ExploserView::createAddExplosionMenu(const Element * const element
 		addExplosionMenu->addSeparator();
 	}
 
-	for (const Explosion &explosion : explosions) {
-		const Id diagramType = mLogicalApi.editorManagerInterface().findElementByType(explosion.target().element());
+	for (const Explosion *explosion : explosions) {
+		const Id diagramType = mLogicalApi.editorManagerInterface().findElementByType(explosion->target().name());
 		const QString name = mLogicalApi.editorManagerInterface().friendlyName(diagramType);
 		const QString editorName = mLogicalApi.editorManagerInterface().friendlyName(Id(diagramType.editor()));
 		QAction *action = addExplosionMenu->addAction(tr("New ") + editorName + "/" + name);
@@ -139,8 +139,8 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 		}
 	}
 
-	const QList<Explosion> explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
-	if (explosions.isEmpty() || (explosions.count() == 1 && explosions[0].requiresImmediateLinkage())) {
+	const QList<const Explosion *> explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
+	if (explosions.isEmpty() || (explosions.count() == 1 && explosions[0]->requiresImmediateLinkage())) {
 		return;
 	}
 
@@ -160,13 +160,12 @@ void ExploserView::handleDoubleClick(const Id &id)
 {
 	Id outgoingLink = mLogicalApi.logicalRepoApi().outgoingExplosion(id);
 	if (outgoingLink.isNull()) {
-		QList<Explosion> const explosions = mLogicalApi.editorManagerInterface().explosions(id);
+		const QList<const Explosion *> explosions = mLogicalApi.editorManagerInterface().explosions(id);
 		if (!explosions.isEmpty()) {
 			const Id diagramType = mLogicalApi.editorManagerInterface()
-					.findElementByType(explosions[0].target().element());
+					.findElementByType(explosions[0]->target().name());
 			AbstractCommand *createCommand =
-					mExploser.createElementWithIncomingExplosionCommand(
-							id, diagramType, mModels);
+					mExploser.createElementWithIncomingExplosionCommand(id, diagramType, mModels);
 			mController.executeGlobal(createCommand);
 			outgoingLink = static_cast<CreateElementsCommand *>(createCommand)->results().first().id();
 		}

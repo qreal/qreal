@@ -112,6 +112,15 @@ Edge &Multigraph::produceEdge(Node &begin, Node &end, uint type)
 	return result;
 }
 
+void Multigraph::addEdge(Edge &edge)
+{
+	if (&edge.graph() != this || mEdges.contains(edge.type(), &edge)) {
+		return;
+	}
+
+	mEdges.insert(edge.type(), &edge);
+}
+
 void Multigraph::removeNode(Node &node, bool deleteHangingEdges)
 {
 	Q_ASSERT_X(mNodes.contains(&node), Q_FUNC_INFO, "Attepmt to remove nonexisting node");

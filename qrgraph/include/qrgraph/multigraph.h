@@ -79,6 +79,11 @@ public:
 	/// @note This is the only way to produce edges and to add them to graph. Multigraph takes ownership on result.
 	Edge &produceEdge(Node &begin, Node &end, uint type = 0);
 
+	/// Appends edge into this instance multigraph. If edge does not belong to this multigraph or already contained
+	/// by this instance nothing will happen.
+	/// @note Multigraph will take ownership on \a edge.
+	virtual void addEdge(Edge &edge);
+
 	/// Detaches \a node from this multigraph instance and frees its memory.
 	/// @param deleteHangingEdges If true then all edges that are connected only to this node will be removed too.
 	void removeNode(Node &node, bool deleteHangingEdges = false);

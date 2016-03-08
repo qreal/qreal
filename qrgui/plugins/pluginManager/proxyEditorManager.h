@@ -68,7 +68,7 @@ public:
 	QString typeName(const Id &id, const QString &name) const override;
 	QStringList allChildrenTypesOf(const Id &parent) const override;
 
-	QList<Explosion> explosions(const Id &source) const override;
+	QList<const Explosion *> explosions(const Id &source) const override;
 
 	bool isEditor(const Id &id) const override;
 	bool isDiagram(const Id &id) const override;

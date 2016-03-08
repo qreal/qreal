@@ -222,11 +222,11 @@ QStringList InterpreterEditorManager::allChildrenTypesOf(const Id &parent) const
 	return result;
 }
 
-QList<Explosion> InterpreterEditorManager::explosions(const Id &source) const
+QList<const Explosion *> InterpreterEditorManager::explosions(const Id &source) const
 {
 	// TODO: implement me
 	Q_UNUSED(source)
-	return QList<Explosion>();
+	return QList<const Explosion *>();
 }
 
 bool InterpreterEditorManager::isParentOf(const Id &child, const Id &parent) const

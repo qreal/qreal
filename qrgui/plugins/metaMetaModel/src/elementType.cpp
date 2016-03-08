@@ -51,6 +51,16 @@ const PatternType &ElementType::toPattern() const
 	return *dynamic_cast<const PatternType *>(this);
 }
 
+const QString ElementType::editor() const
+{
+	return metamodel().id();
+}
+
+const Id ElementType::typeId() const
+{
+	return Id(editor(), diagram(), name());
+}
+
 bool ElementType::isParent(const ElementType &parent) const
 {
 	return qrgraph::Queries::isReachableInTree(*this, parent, generalizationLinkType);
@@ -63,13 +73,33 @@ IdList ElementType::containedTypes() const
 		const QList<const Node *> nodes = qrgraph::Queries::immediateFollowers(parent, containmentLinkType);
 		for (const qrgraph::Node *node : nodes) {
 			if (const ElementType *type = dynamic_cast<const ElementType *>(node)) {
-				result.insert(Id(type->metamodel().id(), type->diagram(), type->name()));
+				result.insert(type->typeId());
 			}
 		}
 
 		return false;
 	}, generalizationLinkType);
+
 	return result.toList();
+}
+
+QList<const Explosion *> ElementType::explosions() const
+{
+	// Explosions set may be inherited from parent type. Children explosions override parent ones, so
+	// if two explosions with the same target will be met then the one of the subclass will be prefered.
+	QMap<const ElementType *, const Explosion *> result;
+	qrgraph::Queries::treeLift(*this, [&result](const Node &parent) {
+		for (const qrgraph::Edge *edge : parent.outgoingEdges(explosionLinkType)) {
+			const Explosion *explosion = dynamic_cast<const Explosion *>(edge);
+			if (explosion && !result.contains(&explosion->target())) {
+				result[&explosion->target()] = explosion;
+			}
+		}
+
+		return false;
+	}, generalizationLinkType);
+
+	return result.values();
 }
 
 void ElementType::updateRendererContent(const QString &shape)

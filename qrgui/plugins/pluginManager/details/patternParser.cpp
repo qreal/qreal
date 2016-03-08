@@ -42,7 +42,7 @@ bool PatternParser::parseGroup(const EditorManager *editorManager, const Pattern
 	}
 
 	mEditorManager = editorManager;
-	mEditor = pattern.metamodel().id();
+	mEditor = pattern.editor();
 	mDiagram = pattern.diagram();
 
 	QString errorMessage;

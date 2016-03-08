@@ -38,7 +38,6 @@ HEADERS += \
 	$$PWD/editorManagerInterface.h \
 	$$PWD/proxyEditorManager.h \
 	$$PWD/pattern.h \
-	$$PWD/explosion.h \
 	$$PWD/sdfRenderer.h \
 	$$PWD/interpretedPluginManager.h \
 	$$PWD/interpretedPluginsLoader.h \
@@ -51,7 +50,6 @@ SOURCES += \
 	$$PWD/interpreterEditorManager.cpp \
 	$$PWD/proxyEditorManager.cpp \
 	$$PWD/pattern.cpp \
-	$$PWD/explosion.cpp \
 	$$PWD/sdfRenderer.cpp \
 	$$PWD/interpretedPluginManager.cpp \
 	$$PWD/interpretedPluginsLoader.cpp \

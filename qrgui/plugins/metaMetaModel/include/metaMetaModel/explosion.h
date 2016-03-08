@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,37 +15,37 @@
 #pragma once
 
 #include <qrkernel/ids.h>
+#include <qrgraph/edge.h>
 
-#include "qrgui/plugins/pluginManager/pluginsManagerDeclSpec.h"
+#include "metaMetaModel/metaMetaModelDeclSpec.h"
 
 namespace qReal {
+
+class Metamodel;
+class ElementType;
 
 /// This class describes such entity as explosion: explosion relation between source() and target() means
 /// that source() can or must be binded with some instance of target() type. Double click on such
 /// element unfolds a diagram with target element as root
-class QRGUI_PLUGINS_MANAGER_EXPORT Explosion
+class QRGUI_META_META_MODEL_EXPORT Explosion : public qrgraph::Edge
 {
 public:
-	Explosion(const Id &source, const Id &target, bool isReusable, bool requiresImmediateLinkage);
+	Explosion(Metamodel &metamodel, bool isReusable, bool requiresImmediateLinkage);
 
-	/// The type of the source element
-	Id source() const;
+	/// The type of the source element (which explodes to target).
+	ElementType &source() const;
 
-	/// The type of the target element
-	Id target() const;
+	/// The type of the target element (element to which source will explode to).
+	ElementType &target() const;
 
-	/// True means that each instance of explosion binding will appear in
-	/// special palette for future reusability
+	/// True means that each instance of explosion binding will appear in special palette for future reusability.
 	bool isReusable() const;
 
-	/// True means that elements of type @see source() have no sense without
-	/// explosion binding so such binding must be created immediately after
-	/// element creation
+	/// True means that elements of type @see source() have no sense without explosion binding so such binding must
+	/// be created immediately after element creation.
 	bool requiresImmediateLinkage() const;
 
 private:
-	Id mSource;
-	Id mTarget;
 	bool mReusable;
 	bool mRequiresImmediateLinkage;
 };

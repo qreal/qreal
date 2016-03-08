@@ -190,8 +190,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQList<QPair<QPair<QString, QString>, QPair<bool, QString>>> getPossibleEdges(QString "
 				"const &element) const override;\n"
-		<< "\tQList<qReal::Metamodel::ExplosionData> explosions(const QString &diagram, QString "
-				"const &element) const override;\n"
 		<< "\n"
 		<< "\tQList<QPair<QString, QString>> enumValues(const QString &name) const override;\n"
 		<< "\tbool isEnumEditable(const QString &name) const override;\n"
@@ -212,7 +210,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvirtual void initPaletteGroupsMap();\n"
 		<< "\tvirtual void initPaletteGroupsDescriptionMap();\n"
 		<< "\tvirtual void initShallPaletteBeSortedMap();\n"
-		<< "\tvirtual void initExplosionsMap();\n"
 		<< "\n"
 		<< "\tQMap<QString, QString> mDiagramNameMap;\n"
 		<< "\tQMap<QString, QString> mDiagramNodeNameMap;\n"
@@ -220,7 +217,6 @@ void XmlCompiler::generatePluginHeader()
 				"palette groups.\n"
 		<< "\tQMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;\n"
 		<< "\tQMap<QString, bool> mShallPaletteBeSortedMap;\n"
-		<< "\tQMap<QString, QMap<QString, QList<qReal::Metamodel::ExplosionData>>> mExplosionsMap;\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -274,7 +270,6 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"
 		<< "\tinitShallPaletteBeSortedMap();\n"
-		<< "\tinitExplosionsMap();\n"
 		<< "}\n\n";
 
 	generateInitMultigraph(out);
@@ -282,7 +277,6 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 	generatePaletteGroupsLists(out);
 	generatePaletteGroupsDescriptions(out);
 	generateShallPaletteBeSorted(out);
-	generateExplosionsMappings(out);
 }
 
 void XmlCompiler::generateInitMultigraph(OutFile &out)
@@ -303,6 +297,7 @@ void XmlCompiler::generateInitMultigraph(OutFile &out)
 			if (const GraphicType *graphicType = dynamic_cast<const GraphicType *>(type)) {
 				generateLinks(out, graphicType, graphicType->immediateParents(), "generalizationLinkType", false);
 				generateLinks(out, graphicType, graphicType->containedTypes(), "containmentLinkType", true);
+				generateExplosionsMappings(out, graphicType);
 			}
 		}
 	}
@@ -408,18 +403,16 @@ void XmlCompiler::generateShallPaletteBeSorted(utils::OutFile &out)
 	out() << "}\n\n";
 }
 
-void XmlCompiler::generateExplosionsMappings(OutFile &out)
+void XmlCompiler::generateExplosionsMappings(OutFile &out, const GraphicType *graphicType)
 {
-	out() << "void " << mPluginName << "Plugin::initExplosionsMap()\n{\n";
-	for (Diagram *diagram : mEditors[mCurrentEditor]->diagrams().values()) {
-		for (const Type *type : diagram->types().values()) {
-			if (const GraphicType *graphicType = dynamic_cast<const GraphicType *>(type)) {
-				graphicType->generateExplosionsMap(out);
-			}
-		}
+	const QMap<QString, QPair<bool, bool>> &explosions = graphicType->explosions();
+	for (const QString &target : explosions.keys()) {
+		out() << QString("\taddExplosion(elementType(\"%1\", \"%2\"), elementType(\"%3\", \"%4\"), %5, %6);\n").arg(
+				graphicType->diagram()->name(), graphicType->name()
+				, graphicType->diagram()->name(), target
+				, explosions[target].first ? "true" : "false"
+				, explosions[target].second ? "true" : "false");
 	}
-
-	out() << "}\n\n";
 }
 
 void XmlCompiler::generateNameMappingsRequests(OutFile &out)
@@ -469,12 +462,6 @@ void XmlCompiler::generateNameMappingsRequests(OutFile &out)
 		<< "qReal::ElementType *" << mPluginName << "Plugin::diagramNode(const QString &diagram) const\n{\n"
 		<< "\treturn mDiagramNodeNameMap[diagram].isEmpty() ? nullptr "
 				": &elementType(diagram, mDiagramNodeNameMap[diagram]);\n"
-		<< "}\n\n"
-
-		<< "QList<qReal::Metamodel::ExplosionData>" << mPluginName
-				<< "Plugin::explosions(const QString &diagram, "
-		<< "const QString &element) const \n{\n"
-		<< "\treturn mExplosionsMap[diagram][element];\n"
 		<< "}\n\n";
 }
 

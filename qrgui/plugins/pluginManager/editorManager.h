@@ -74,7 +74,7 @@ public:
 	ElementType &elementType(const Id &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
-	QList<Explosion> explosions(const Id &source) const override;
+	QList<const Explosion *> explosions(const Id &source) const override;
 	bool isEnumEditable(const Id &id, const QString &name) const override;
 	QList<QPair<QString, QString>> enumValues(const Id &id, const QString &name) const override;
 	QString typeName(const Id &id, const QString &name) const override;
