@@ -22,7 +22,7 @@ class QPainter;
 namespace qReal {
 
 /// Describes type of edge elements that can be instantiated on scene.
-class EdgeElementType : public ElementType
+class QRGUI_META_META_MODEL_EXPORT EdgeElementType : public ElementType
 {
 public:
 	Type type() const override;

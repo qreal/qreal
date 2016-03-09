@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ class PatternType;
 /// (for example relation of generalization, relation of explosion, relation of containment, etc).
 /// Metamodel thus is ordered multigraph where nodes are types of elements.
 /// This fact is noted with inheriting ElementType from qrgraph::Node.
-class ElementType : public qrgraph::Node
+class QRGUI_META_META_MODEL_EXPORT ElementType : public qrgraph::Node
 {
 public:
 	// Types of links in metamodel go below, may be extended:

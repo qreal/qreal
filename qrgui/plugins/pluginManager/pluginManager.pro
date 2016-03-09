@@ -20,7 +20,7 @@ TEMPLATE = lib
 
 QT += xml svg
 
-links(qrkernel qslog qrutils qrrepo qrgui-tool-plugin-interface qrgui-meta-meta-model)
+links(qrkernel qslog qrgraph qrutils qrrepo qrgui-tool-plugin-interface qrgui-meta-meta-model)
 
 includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 

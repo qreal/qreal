@@ -18,4 +18,3 @@ HEADERS += \
 	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/elementType.h \
 	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/nodeElementType.h \
 	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/edgeElementType.h \
-	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/labelProperties.h \

@@ -28,7 +28,7 @@ namespace qReal {
 /// (for example relation of generalization, relation of explosion, relation of containment, etc).
 /// Metamodel thus is ordered multigraph where nodes are types of entities and edges are those relations.
 /// This fact is noted with inheriting Metamodel from qrgraph::Multigraph.
-class Metamodel : public qrgraph::Multigraph
+class QRGUI_META_META_MODEL_EXPORT Metamodel : public qrgraph::Multigraph
 {
 public:
 	/// Returns the name of this metamodel. This is internal and non-localized name and hence cannot be shown to user.

@@ -22,7 +22,7 @@ namespace qReal {
 /// one entry from palette.
 /// @todo: This entity is not exactly ElementType. ElementType contains many methods that have no sense for patterns
 /// (labels(), propertyNames() and so on). There must be actially common base for ElementType and PatternType.
-class PatternType : public ElementType
+class QRGUI_META_META_MODEL_EXPORT PatternType : public ElementType
 {
 public:
 	Type type() const override;

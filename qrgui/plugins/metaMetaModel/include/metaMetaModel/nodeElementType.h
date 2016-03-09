@@ -20,7 +20,7 @@
 namespace qReal {
 
 /// Describes type of node elements that can be instantiated on scene.
-class NodeElementType : public ElementType
+class QRGUI_META_META_MODEL_EXPORT NodeElementType : public ElementType
 {
 public:
 	Type type() const override;

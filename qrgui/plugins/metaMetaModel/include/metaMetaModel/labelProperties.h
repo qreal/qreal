@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2015-2016 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,14 @@
 #include <QtCore/QObject>
 #include <QtGui/QColor>
 
+#include "metaMetaModel/metaMetaModelDeclSpec.h"
+
 namespace qReal {
 
 /// A container for scene label properties (view and behavioural).
 /// Defines properties via Qt reflection so they can be used in property editor for dynamic Label
 /// properties modification. Also this is a useful trait for easy definition of concrete GraphicalPartModels.
-class LabelProperties : public QObject
+class QRGUI_META_META_MODEL_EXPORT LabelProperties : public QObject
 {
 	Q_OBJECT
 	Q_PROPERTY(int index READ index WRITE setIndex NOTIFY indexChanged)

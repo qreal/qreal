@@ -14,7 +14,7 @@
 
 QT += widgets
 
-links(qrkernel qrrepo qrgraph qrgui-meta-meta-model qrgui-controller)
+links(qrkernel qrrepo qrgraph qrgui-meta-meta-model qrgui-controller qrgui-plugin-manager)
 includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 
 HEADERS += \
