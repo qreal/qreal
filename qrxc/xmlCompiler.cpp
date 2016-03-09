@@ -188,9 +188,6 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "\tQStringList diagrams() const override;\n"
 		<< "\n"
-		<< "\tQList<QPair<QPair<QString, QString>, QPair<bool, QString>>> getPossibleEdges(QString "
-				"const &element) const override;\n"
-		<< "\n"
 		<< "\tQList<QPair<QString, QString>> enumValues(const QString &name) const override;\n"
 		<< "\tbool isEnumEditable(const QString &name) const override;\n"
 		<< "\n"
@@ -231,7 +228,6 @@ void XmlCompiler::generatePluginSource()
 	generateIncludes(out);
 	generateInitPlugin(out);
 	generateNameMappingsRequests(out);
-	generatePossibleEdges(out);
 	generateEnumValues(out);
 	generateEditableEnums(out);
 }
@@ -486,18 +482,6 @@ public:
 	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const = 0;
 };
 
-class XmlCompiler::PossibleEdgesGenerator: public XmlCompiler::ListMethodGenerator
-{
-public:
-	virtual bool generate(Type *type, OutFile &out, bool isNotFirst) const {
-		if (const GraphicType *graphicType = dynamic_cast<const GraphicType *>(type)) {
-			return graphicType->generatePossibleEdges(out, isNotFirst);
-		}
-
-		return false;
-	}
-};
-
 class XmlCompiler::EnumValuesGenerator: public XmlCompiler::ListMethodGenerator
 {
 public:
@@ -558,25 +542,6 @@ void XmlCompiler::generateStringListMap(OutFile &out, const QMap<QString, QStrin
 	}
 
 	out() << "\t})";
-}
-
-void XmlCompiler::generatePossibleEdges(utils::OutFile &out)
-{
-	PossibleEdgesGenerator generator;
-		out() << "QList<QPair<QPair<QString,QString>,QPair<bool,QString> > > " << mPluginName
-			<< "Plugin::getPossibleEdges(const QString &element) const\n"
-			<< "{\n"
-			<< "\tQList<QPair<QPair<QString,QString>,QPair<bool,QString> > > result;\n";
-	bool isNotFirst = false;
-
-	foreach (Diagram *diagram, mEditors[mCurrentEditor]->diagrams().values())
-		foreach (Type *type, diagram->types().values())
-			isNotFirst |= generator.generate(type, out, isNotFirst);
-
-	if (!isNotFirst)
-		out() << "\tQ_UNUSED(element);\n";
-		out() << "\treturn result;\n"
-		<< "}\n\n";
 }
 
 void XmlCompiler::generateResourceFile()

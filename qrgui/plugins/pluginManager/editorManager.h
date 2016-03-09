@@ -102,7 +102,6 @@ public:
 	Id theOnlyDiagram() const override;
 	QString diagramNodeNameString(const Id &editor, const Id &diagram) const override;
 
-//	QList<StringPossibleEdge> possibleEdges(const QString &editor, const QString &element) const override;
 	int isNodeOrEdge(const Id &id) const override;
 	bool isParentOf(const QString &editor, const QString &parentDiagram, const QString &parentElement
 			, const QString &childDiagram, const QString &childElement) const override;

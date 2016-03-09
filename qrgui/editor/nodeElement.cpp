@@ -29,6 +29,7 @@
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/changeParentCommand.h>
 #include <qrgui/models/commands/renameCommand.h>
+#include <metaMetaModel/edgeElementType.h>
 #include <metaMetaModel/nodeElementType.h>
 
 #include "editor/labels/label.h"
@@ -631,61 +632,30 @@ void NodeElement::setConnectingState(bool arg)
 	mConnectionInProgress = arg;
 }
 
-bool NodeElement::initPossibleEdges()
-{
-	if (!mPossibleEdges.isEmpty()) {
-		return true;
-	}
-
-	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
-	for (const Id &element: mGraphicalAssistApi.editorManagerInterface().elements(id())) {
-		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(element.type());
-		if (ne == -1) {
-			int FIX_IT_BITCH = 0;
-			const QList<StringPossibleEdge> list = {};/*mGraphicalAssistApi.editorManagerInterface()
-					.possibleEdges(id().editor(), elementName);*/
-			for (const StringPossibleEdge &pEdge : list) {
-				if (portTypes.contains(pEdge.first.first)
-						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
-				{
-					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
-					const QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
-					if (elementPairs.empty()) {
-						continue;
-					}
-
-					for (const ElementPair &elementPair : elementPairs) {
-						mPossibleEdges.insert(qMakePair(elementPair, edge));
-					}
-
-					mPossibleEdgeTypes.insert(edge);
-				}
-			}
-		}
-	}
-
-	return !mPossibleEdges.isEmpty();
-}
-
 void NodeElement::initEmbeddedLinkers()
 {
 	if (!mEmbeddedLinkers.isEmpty()) {
 		return;
 	}
-	QSet<Id> usedEdges;
-	for (const PossibleEdgeType &type : mPossibleEdgeTypes) {
-		if (usedEdges.contains(type.second)) {
+
+	const IdList elements = mGraphicalAssistApi.editorManagerInterface().elements(id());
+	for (const Id &element : elements) {
+		const ElementType &elementType = mGraphicalAssistApi.editorManagerInterface().elementType(element);
+		if (elementType.type() != ElementType::Type::edge) {
 			continue;
 		}
 
-		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
-		scene()->addItem(embeddedLinker);
-		embeddedLinker->setEdgeType(type.second);
-		embeddedLinker->setDirected(type.first);
-		mEmbeddedLinkers.append(embeddedLinker);
-		embeddedLinker->setMaster(this);
-		usedEdges.insert(type.second);
+		const EdgeElementType &edge = elementType.toEdge();
+		if (!edge.fromPortTypes().toSet().intersect(mType.portTypes().toSet()).isEmpty()) {
+			EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
+			scene()->addItem(embeddedLinker);
+			embeddedLinker->setEdgeType(edge.typeId());
+			embeddedLinker->setDirected(true);
+			mEmbeddedLinkers.append(embeddedLinker);
+			embeddedLinker->setMaster(this);
+		}
 	}
+
 	setVisibleEmbeddedLinkers(true);
 
 	// TODO: make it customizable
@@ -1151,31 +1121,6 @@ void NodeElement::updateChildrenOrder()
 QList<qreal> NodeElement::borderValues() const
 {
 	return mType.border();
-}
-
-QSet<ElementPair> NodeElement::elementsForPossibleEdge(const StringPossibleEdge &edge)
-{
-	const IdList elements = mGraphicalAssistApi.editorManagerInterface().elements(id());
-	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
-
-	QSet<ElementPair> result;
-	for (const Id &element : elements) {
-		const QStringList otherPortTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(element);
-		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
-			result.insert(qMakePair(id().type(), element));
-		}
-
-		if (otherPortTypes.contains(edge.first.first) && portTypes.contains(edge.first.second)) {
-			result.insert(qMakePair(element, id().type()));
-		}
-	}
-
-	return result;
-}
-
-QList<PossibleEdge> NodeElement::getPossibleEdges()
-{
-	return QList<PossibleEdge>::fromSet(mPossibleEdges);
 }
 
 void NodeElement::setColorRect(bool value)

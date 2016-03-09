@@ -46,11 +46,6 @@ public:
 	/// \a diagram empty list will be returned.
 	virtual QList<ElementType *> elements(const QString &diagram) const;
 
-	//TODO ------------
-	virtual QList<QPair<QPair<QString, QString>, QPair<bool, QString> > >
-			getPossibleEdges(const QString &element) const = 0;
-	//-----------------
-
 	/// Returns type descriptor of the given element (the vertex of this multigraph with the given name).
 	/// @warning If this metamodel does not contain \a diagram or \a diagram does not contain \a element
 	/// then assertion fault will be generated.

@@ -332,24 +332,16 @@ bool GraphicType::initPossibleEdges()
 		QString beginName = NameNormalizer::normalize(childElement.attribute("beginName"));
 		QString endName = NameNormalizer::normalize(childElement.attribute("endName"));
 		QString temp = childElement.attribute("directed");
-		bool directed = false;
 
-		if (beginName.isEmpty() || endName.isEmpty()
-				|| ((temp != "true") && (temp != "false")))
-		{
-			qDebug() << beginName;
-			qDebug() << endName;
-			qDebug() << temp;
-			qDebug() << "Error: one of attributes is incorrect " <<
-				"(perhaps, \"beginName\" or \"emptyName\" is empty or " <<
+		if (beginName.isEmpty() || endName.isEmpty() || ((temp != "true") && (temp != "false"))) {
+			qWarning() << "Error: one of attributes is incorrect " <<
+				"(perhaps, \"beginName\" or \"endName\" is empty or " <<
 				"\"directed\" isn't \"true\" or \"false\".')" << qualifiedName();
 			return false;
 		}
-		if (temp == "true") {
-			directed = true;
-		}
 
-		QString edgeName = NameNormalizer::normalize(qualifiedName());
+		const bool directed = temp == "true";
+		const QString edgeName = NameNormalizer::normalize(qualifiedName());
 		QPair<QPair<QString, QString>, QPair<bool, QString> > possibleEdge(qMakePair(beginName, endName)
 				, qMakePair(directed, edgeName));
 
@@ -676,29 +668,6 @@ QStringList GraphicType::containedTypes() const
 const QMap<QString, QPair<bool, bool> > &GraphicType::explosions() const
 {
 	return mExplosions;
-}
-
-bool GraphicType::generatePossibleEdges(OutFile &out, bool isNotFirst) const
-{
-	if (mPossibleEdges.isEmpty()) {
-		return false;
-	}
-
-	generateOneCase(out, isNotFirst);
-
-	out() << "\t\tresult";
-	foreach (PossibleEdge element, mPossibleEdges) {
-		QString directed = "false";
-		if (element.second.first) {
-			directed = "true";
-		}
-
-		out() << " << qMakePair(qMakePair(QString(\"" << element.first.first << "\"),QString(\""
-				<< element.first.second << "\")),"
-				<< "qMakePair(" << directed << ",QString(\"" << element.second.second << "\")))";
-	}
-	out() << ";\n\t}\n";
-	return true;
 }
 
 bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, const QStringList &list) const

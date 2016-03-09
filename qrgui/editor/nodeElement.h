@@ -122,9 +122,6 @@ public:
 	/// Collects data about this instance and returns structure describing it.
 	NodeInfo data() const;
 
-	virtual bool initPossibleEdges();
-	QList<PossibleEdge> getPossibleEdges();
-
 	/// Make ports of specified types visible, hide other ports
 	void setPortsVisible(const QStringList &types);
 
@@ -233,7 +230,6 @@ private:
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void deleteGuides();
-	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
 	void connectSceneEvents();
@@ -286,9 +282,6 @@ private:
 	commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
-
-	QSet<PossibleEdge> mPossibleEdges;
-	QSet<PossibleEdgeType> mPossibleEdgeTypes;
 
 	QTransform mTransform;
 

@@ -27,12 +27,6 @@ class NodeElementType;
 class EdgeElementType;
 class PatternType;
 
-typedef QPair<QPair<qReal::Id, qReal::Id>, QPair<bool, qReal::Id> > PossibleEdge;
-typedef QPair<QPair<QString, QString>, QPair<bool, QString> > StringPossibleEdge;
-
-typedef QPair<bool, qReal::Id> PossibleEdgeType;
-typedef QPair<qReal::Id, qReal::Id> ElementPair;
-
 /// Describes type of elements that can be instantiated on scene.
 /// The metamodel of some visual language is a number of such types associated each with other with some relations
 /// (for example relation of generalization, relation of explosion, relation of containment, etc).
@@ -41,11 +35,10 @@ typedef QPair<qReal::Id, qReal::Id> ElementPair;
 class ElementType : public qrgraph::Node
 {
 public:
-	// Types of links in metamodel go below:
+	// Types of links in metamodel go below, may be extended:
 	static const uint generalizationLinkType = 0;
 	static const uint containmentLinkType = 1;
 	static const uint explosionLinkType = 2;
-	static const uint possibleEdgeLinkType = 3;
 
 	/// Enumerates types of entities that can be dragged out of a palette. All those enities have type descriptors
 	/// subclassing this class.

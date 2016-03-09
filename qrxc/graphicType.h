@@ -37,7 +37,6 @@ public:
 	bool init(const QDomElement &element, const QString &context) override;
 	bool resolve() override;
 
-	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) const;
 	virtual bool copyPictures(GraphicType *parent) = 0;
 	virtual bool copyPorts(NodeType *parent) = 0;
 	void copyLabels(GraphicType *parent);

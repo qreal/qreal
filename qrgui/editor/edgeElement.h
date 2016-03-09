@@ -64,10 +64,12 @@ public:
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
 
-	bool initPossibleEdges() override;
 	void initTitles() override;
 
 	bool isDividable();
+
+	/// Returns descriptor of this edge element's type.
+	const EdgeElementType &edgeType() const;
 
 	/// Adjust link to make its' ends be placed exactly on corresponding ports
 	void adjustLink();
@@ -116,8 +118,6 @@ public:
 	void arrangeLinearPorts();
 
 	virtual void connectToPort();
-
-	QList<PossibleEdge> getPossibleEdges();
 
 	virtual void setColorRect(bool bl);
 
@@ -210,8 +210,6 @@ private:
 	void reversingReconnectToPorts(NodeElement *newSrc, NodeElement *newDst);
 
 	const EdgeElementType &mType;
-
-	QList<PossibleEdge> mPossibleEdges;
 
 	NodeElement *mSrc;
 	NodeElement *mDst;

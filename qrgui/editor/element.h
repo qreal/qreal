@@ -65,7 +65,6 @@ public:
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
 
-	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves

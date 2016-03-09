@@ -506,53 +506,14 @@ EdgeElement::NodeSide EdgeElement::rotateRight(EdgeElement::NodeSide side) const
 	return (NodeSide)(((int)side + rightRotation) % 4);
 }
 
-bool EdgeElement::initPossibleEdges()
-{
-	if (!mPossibleEdges.isEmpty()) {
-		return true;
-	}
-
-	QString editor = id().editor();
-	//TODO: do a code generation for diagrams
-	QString diagram = id().diagram();
-	const IdList elements = mGraphicalAssistApi.editorManagerInterface().elements(id());
-
-	int FIX_IT_BACK_BITCH = 100500;
-	QList<StringPossibleEdge> stringPossibleEdges = {};
-//			= mGraphicalAssistApi.editorManagerInterface().possibleEdges(editor, id().element());
-	for (StringPossibleEdge pEdge : stringPossibleEdges) {
-		QPair<bool, Id> edge(pEdge.second.first, Id(editor, diagram, pEdge.second.second));
-
-		QStringList fromElements;
-		QStringList toElements;
-		for (const Id &element : elements) {
-			if (mGraphicalAssistApi.editorManagerInterface().portTypes(element)
-					.contains(pEdge.first.first)) {
-				fromElements << element.element();
-			}
-
-			if (mGraphicalAssistApi.editorManagerInterface().portTypes(element)
-					.contains(pEdge.first.second)) {
-				toElements << element.element();
-			}
-		}
-
-		for (const QString &fromElement : fromElements) {
-			for (const QString &toElement : toElements) {
-				QPair<Id, Id> nodes(Id(editor, diagram, fromElement),	Id(editor, diagram, toElement));
-				PossibleEdge possibleEdge(nodes, edge);
-				mPossibleEdges.push_back(possibleEdge);
-
-			}
-		}
-	}
-
-	return (!mPossibleEdges.isEmpty());
-}
-
 bool EdgeElement::isDividable()
 {
 	return mType.isDividable();
+}
+
+const EdgeElementType &EdgeElement::edgeType() const
+{
+	return mType;
 }
 
 void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -762,11 +723,6 @@ void EdgeElement::breakPointHandler(const QPointF &pos)
 		mLine.insert(mLine.size() - 1, pos);
 		mDragType = mLine.size() - 1;
 	}
-}
-
-QList<PossibleEdge> EdgeElement::getPossibleEdges()
-{
-	return mPossibleEdges;
 }
 
 EdgeElement::NodeSide EdgeElement::defineNodePortSide(bool isStart) const

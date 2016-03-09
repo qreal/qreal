@@ -194,7 +194,6 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			elem->updateData();
 			elem->connectToPort();
 			elem->checkConnectionsToPort();
-			elem->initPossibleEdges();
 			elem->initTitles();
 			mView->setFocus();
 			// TODO: brush up init~()

@@ -590,7 +590,7 @@
 					</properties>
 				</logic>
 			</edge>
-			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
+			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge (Deprecated)" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
 				<graphics>
 					<picture sizex="25" sizey="25">
 						<ellipse fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
@@ -670,7 +670,7 @@
 			<group name="Node Properties" description="Элементы метаязыка для указания свойств узлов создаваемого языка">
 				<element name="MetaEntity Attribute"/>
 				<element name="MetaEntityPropertiesAsContainer"/>
-				<element name="MetaEntityPossibleEdge"/>
+				<!-- <element name="MetaEntityPossibleEdge"/> -->
 			</group>
 			<group name="Enum Properties" description="Элементы метаязыка для указания свойств перечисляемого типа создаваемого языка">
 				<element name="MetaEntityValue"/>
