@@ -48,7 +48,7 @@ void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 	painter->restore();
 }
 
-QLineF StatCircular::transformForContents(const QRectF &contents) const
+StatCircular::CircularPort StatCircular::transformForContents(const QRectF &contents) const
 {
 	const qreal x = mCenter.x() * (mPropX ? mInitWidth : contents.width());
 	const qreal y = mCenter.y() * (mPropY ? mInitHeight : contents.height());
@@ -56,6 +56,11 @@ QLineF StatCircular::transformForContents(const QRectF &contents) const
 	const qreal r1 = mR * (mPropX ? mInitWidth : contents.width());
 	const qreal r2 = mR * (mPropX ? mInitWidth : contents.height());
 
-	return QLineF(x, y, r1, r2);
+	CircularPort port;
+	port.x = x;
+	port.y = y;
+	port.r1 = r1;
+	port.r2 = r2;
+	return port;
 
 }

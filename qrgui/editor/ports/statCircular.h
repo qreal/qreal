@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Polina Tarasova
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,13 +24,21 @@ namespace editor {
 class StatCircular : public PortInterface
 {
 public:
+	struct CircularPort {
+		qreal x;
+		qreal y;
+		qreal r1;
+		qreal r2;
+	};
+
 	StatCircular(const QPointF &center, const qreal &r, bool propX, bool propY, int initWidth
 			, int initHeight, PortImpl *impl);
 
 	void paint(QPainter *painter, const QRectF &contents) const override;
-	QLineF transformForContents(const QRectF &contents) const;
+	CircularPort transformForContents(const QRectF &contents) const;
 
 private:
+
 	QPointF mCenter;
 
 	const bool mPropX;
