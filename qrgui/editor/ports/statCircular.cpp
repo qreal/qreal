@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Polina Tarasova
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,16 +16,16 @@
 
 using namespace qReal::gui::editor;
 
-StatCircular::StatCircular(const QPointF &point, const qreal &r,bool propX, bool propY, int initWidth
+StatCircular::StatCircular(const QPointF &center, const qreal &r,bool propX, bool propY, int initWidth
 		, int initHeight, PortImpl *impl)
-	: PortInterface(impl), mCircular(point), mR(r), mPropX(propX), mPropY(propY)
+	: PortInterface(impl), mCenter(center), mR(r), mPropX(propX), mPropY(propY)
 		, mInitWidth(initWidth), mInitHeight(initHeight)
 {}
 
 void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 {
-	const qreal x = mCircular.x() * (mPropX ? mInitWidth : contents.width());
-	const qreal y = mCircular.y() * (mPropY ? mInitHeight : contents.height());
+	const qreal x = mCenter.x() * (mPropX ? mInitWidth : contents.width());
+	const qreal y = mCenter.y() * (mPropY ? mInitHeight : contents.height());
 
 	QPointF center(x, y);
 
@@ -50,8 +50,8 @@ void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 
 QLineF StatCircular::transformForContents(const QRectF &contents) const
 {
-	const qreal x = mCircular.x() * (mPropX ? mInitWidth : contents.width());
-	const qreal y = mCircular.y() * (mPropY ? mInitHeight : contents.height());
+	const qreal x = mCenter.x() * (mPropX ? mInitWidth : contents.width());
+	const qreal y = mCenter.y() * (mPropY ? mInitHeight : contents.height());
 
 	const qreal r1 = mR * (mPropX ? mInitWidth : contents.width());
 	const qreal r2 = mR * (mPropX ? mInitWidth : contents.height());

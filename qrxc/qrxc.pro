@@ -35,7 +35,7 @@ HEADERS += association.h \
 	type.h \
 	xmlCompiler.h \
 	portType.h \
-	circularPort.h
+	circularPort.h \
 
 SOURCES += association.cpp \
 	diagram.cpp \

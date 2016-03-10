@@ -65,6 +65,8 @@ public:
 	/// @param id Id that position is returned by this method.
 	/// @return Port position relative to the top left corner of NodeElement.
 	const QPointF portPos(qreal id) const;
+
+	/// Returns point on the circle by port's id.
 	const QPointF findPointById(qreal id) const;
 
 	/// Calculates nearest point of NodeElement ports to parameter point.
@@ -172,6 +174,7 @@ private:
 	/// Transforms line port for current node size.
 	/// @param port Port that will be actually dealt with.
 	QPointF transformPortForNodeSize(const StatPoint * const port) const;
+
 	QLineF transformPortForNodeSize(const StatCircular * const port) const;
 
 	/// Node that ports are actually dealt with.

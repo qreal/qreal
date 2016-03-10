@@ -32,9 +32,9 @@ PortInterface * PortFactory::createPort(const QPointF &point, bool propX, bool p
 	return new StatPoint(point, propX, propY, initWidth, initHeight, impl);
 }
 
-PortInterface * PortFactory::createPort(const QPointF &point, const qreal &r, bool propX, bool propY
+PortInterface * PortFactory::createPort(const QPointF &center, const qreal &r, bool propX, bool propY
 		, int initWidth, int initHeight, PortImpl *impl) const
 {
-	return new StatCircular(point, r, propX, propY, initWidth, initHeight, impl);
+	return new StatCircular(center, r, propX, propY, initWidth, initHeight, impl);
 }
 

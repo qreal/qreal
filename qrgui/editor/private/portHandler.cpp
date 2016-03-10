@@ -49,17 +49,9 @@ PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistA
 
 PortHandler::~PortHandler()
 {
-	for (StatPoint *point : mPointPorts) {
-		delete point;
-	}
-
-	for (StatLine *line : mLinePorts) {
-		delete line;
-	}
-
-	for (StatCircular *circular : mCircularPorts) {
-		delete circular;
-	}
+	qDeleteAll(mPointPorts.begin(), mPointPorts.end());
+	qDeleteAll(mLinePorts.begin(), mLinePorts.end());
+	qDeleteAll(mCircularPorts.begin(), mCircularPorts.end());
 }
 
 qreal PortHandler::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const
@@ -132,7 +124,7 @@ qreal PortHandler::pointByCircularPortAngle(int circularPortNumber, const QPoint
 		}
 	}
 
-	qreal tg = fabs((location.y() - y) / (location.x() - x));
+	const qreal tg = fabs((location.y() - y) / (location.x() - x));
 	qreal angleInDegrees = qRadiansToDegrees(qAtan(tg));
 
 	if ((location.x() < x) && (location.y() < y))
@@ -226,14 +218,14 @@ const QPointF PortHandler::portPos(qreal id) const
 const QPointF PortHandler::findPointById(qreal id) const
 {
 	int portNum = portNumber(id);
-	QLineF circularPort = transformPortForNodeSize(mCircularPorts.at(portNum - mPointPorts.size() - mLinePorts.size()));
+	const QLineF circularPort = transformPortForNodeSize(mCircularPorts.at(portNum - mPointPorts.size() - mLinePorts.size()));
 	const qreal angle = (id - qFloor(id)) * 360.0;
 	// (0, 0) -> center of port
 	QTransform transform;
-	transform.translate(+circularPort.x1(), circularPort.y1());
+	transform.translate(circularPort.x1(), circularPort.y1());
 	transform.rotate(360.0 - angle);
-	transform.translate(+circularPort.x2(), 0.0);
-	QPointF newPoint(transform.map(QPointF(0.0,0.0)));
+	transform.translate(circularPort.x2(), 0.0);
+	QPointF newPoint(transform.map(QPointF(0.0, 0.0)));
 	return newPoint;
 }
 
@@ -272,8 +264,8 @@ const QPointF PortHandler::nearestPort(const QPointF &location, const QStringLis
 
 	QPair<int, qreal> const circularPortRes = nearestCircularPortNumberAndDistance(locationInLocalCoords, types);
 	if (circularPortRes.second >= 0 &&
-		(circularPortRes.second < minDistance || minDistance < 0)
-	) {
+		(circularPortRes.second < minDistance || minDistance < 0))
+	{
 		minDistance = circularPortRes.second;
 		nearestPortPoint = coordinateOfCircular(circularPortRes.first, locationInLocalCoords);
 	}
@@ -450,16 +442,17 @@ qreal PortHandler::portId(const QPointF &location, const QStringList &types) con
 	}
 
 	// Nearest ports
-	QPair<int, qreal> const pointPortRes = nearestPointPortNumberAndDistance(location, types);
-	QPair<int, qreal> const linePortRes = nearestLinePortNumberAndDistance(location, types);
-	QPair<int, qreal> const circularPortRes = nearestCircularPortNumberAndDistance(location, types);
+	const QPair<int, qreal> pointPortRes = nearestPointPortNumberAndDistance(location, types);
+	const QPair<int, qreal> linePortRes = nearestLinePortNumberAndDistance(location, types);
+	const QPair<int, qreal> circularPortRes = nearestCircularPortNumberAndDistance(location, types);
 
 	// Second field is distance.
 	// In case it is less than 0 there is no ports of appropriate kind.
 	// First field is number of port in port list of appropriate kind.
 	if (!(pointPortRes.second < 0)) {
 		if ((pointPortRes.second < linePortRes.second || linePortRes.second < 0)
-				&& (pointPortRes.second < circularPortRes.second || circularPortRes.second < 0)) {
+				&& (pointPortRes.second < circularPortRes.second || circularPortRes.second < 0))
+		{
 			return pointPortRes.first;
 		}
 

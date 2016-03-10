@@ -187,6 +187,7 @@ bool NodeType::initCircularPorts(const QDomElement &portsElement)
 			delete circularPort;
 			return false;
 		}
+
 		mPorts.append(circularPort);
 	}
 	return true;
