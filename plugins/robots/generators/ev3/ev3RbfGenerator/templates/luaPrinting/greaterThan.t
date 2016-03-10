@@ -1,1 +1,1 @@
-CP_GTF@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)
+CP_GT@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)
