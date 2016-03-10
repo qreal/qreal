@@ -218,7 +218,8 @@ const QPointF PortHandler::portPos(qreal id) const
 const QPointF PortHandler::findPointById(qreal id) const
 {
 	int portNum = portNumber(id);
-	StatCircular::CircularPort circularPort = transformPortForNodeSize(mCircularPorts.at(portNum - mPointPorts.size() - mLinePorts.size()));
+	StatCircular::CircularPort circularPort =
+			transformPortForNodeSize(mCircularPorts.at(portNum - mPointPorts.size() - mLinePorts.size()));
 	const qreal angle = (id - qFloor(id)) * 360.0;
 	// (0, 0) -> center of port
 	QTransform transform;
