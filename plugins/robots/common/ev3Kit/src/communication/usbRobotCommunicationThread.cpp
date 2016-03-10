@@ -38,7 +38,6 @@ UsbRobotCommunicationThread::UsbRobotCommunicationThread()
 	: mHandle(nullptr)
 	, mKeepAliveTimer(new QTimer(this))
 {
-	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 }
 
 UsbRobotCommunicationThread::~UsbRobotCommunicationThread()
@@ -98,7 +97,7 @@ bool UsbRobotCommunicationThread::connect()
 	emit connected(true, QString());
 	mKeepAliveTimer->moveToThread(this->thread());
 	mKeepAliveTimer->disconnect();
-	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
+	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()), Qt::UniqueConnection);
 	mKeepAliveTimer->start(500);
 	return true;
 }

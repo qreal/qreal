@@ -133,7 +133,7 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		return false;
 	}
 
-	const QList<int> interfaces = {1, 2};
+	const QList interfaces = firmwareMode ? QList({1, 2}) : QList({0, 1, 2});
 	bool interfaceFound = false;
 	for (int interface : interfaces) {
 		const int err = libusb_claim_interface(mHandle, interface);

@@ -77,8 +77,13 @@ void NxtOsekCGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::Ro
 {
 	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
 	checkNxtTools();
-	mUploadProgramAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
-	mFlashRobotAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
+	mUploadProgramAction->setVisible(&model == robotModels()[0]);
+	mFlashRobotAction->setVisible(&model == robotModels()[0]);
+	mUploadProgramAction->setEnabled(mNxtToolsPresent);
+	mFlashRobotAction->setEnabled(mNxtToolsPresent);
+	const QString tooltip = mNxtToolsPresent ? QString() : tr("NXT tools package is not installed");
+	mUploadProgramAction->setToolTip(tooltip);
+	mFlashRobotAction->setToolTip(tooltip);
 }
 
 void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const TabInfo &info)
@@ -232,7 +237,7 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 				&& compile1.exists() && compile2.exists();
 #else
 		QFile compile(dir.absolutePath() + "/compile.sh");
-		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && upload.exists();
+		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && compile.exists();
 #endif
 	}
 }

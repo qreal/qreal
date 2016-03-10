@@ -64,14 +64,16 @@ bool NxtUsbDriverInstaller::installUsbDriver()
 	disconnect(&mInstallationProcess);
 
 	const QString bossaDriverName = findBossaProgramPortDriver();
+	const QString pnpUtilPath = qReal::PlatformInfo::isX64() ? "%windir%\\sysnative\\PnPutil.exe" : "PnPutil.exe";
 	const QString deleteBossaDriverCmd = bossaDriverName.isEmpty()
 			? QString()
-			: QString("PnPutil.exe -f -d %1 & ").arg(bossaDriverName);
+			: QString("%1 -f -d %2 & ").arg(pnpUtilPath, bossaDriverName);
 
 	// Installation process is just running .inf files with administrator permissions.
 	// elevate.exe calls UAC screen and executes pnputil to install drivers from 'driver' folder of nxt-tools.
-	const QString installDriversCmd = QString("%1 -w -c \"\"cmd /q /c \"\"%2PnPutil.exe -i -a %3\\*.inf\"\" \"\"")
-			.arg(path("driver\\elevate.exe"), deleteBossaDriverCmd, path(QString("driver")));
+	const QString installDriversCmd = QString("%1 -w -c \"\"cmd /q /c \""\
+			"\"%2%3 -i -a %4\\*.inf\"\" \"\"")
+			.arg(path("driver\\elevate.exe"), deleteBossaDriverCmd, pnpUtilPath, path(QString("driver")));
 	QLOG_INFO() << "Elevating pnputil... Using command" << installDriversCmd;
 	connect(&mInstallationProcess, QProcess::readyRead, this, [=]() {
 		QLOG_INFO() << "NXT drivers installer:" << mInstallationProcess.readAll();
@@ -148,7 +150,8 @@ QString NxtUsbDriverInstaller::findBossaProgramPortDriver() const
 	QProcess pnpUtil;
 	connect(&pnpUtil, &QProcess::readyRead, this, [&pnpUtil, &data]() { data << pnpUtil.readAll(); });
 	// Simply starting pnputil -e will return answer in default locale, so changin locale to english with 'chcp 437'.
-	pnpUtil.start("cmd", { "/c", "chcp 437 & pnputil.exe -e" }, QProcess::ReadOnly);
+	const QString pnpUtilPath = qReal::PlatformInfo::isX64() ? "%windir%\\sysnative\\PnPutil.exe" : "PnPutil.exe";
+	pnpUtil.start("cmd", { "/c", QString("chcp 437 & %1 -e").arg(pnpUtilPath) }, QProcess::ReadOnly);
 	if (!pnpUtil.waitForStarted()) {
 		QLOG_ERROR() << "Could not spawn pnputil process. Args:" << pnpUtil.arguments();
 		return QString();

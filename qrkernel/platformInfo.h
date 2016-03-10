@@ -42,6 +42,12 @@ public:
 
 	/// Useful alias for invariantPath(qReal::SettingsManager::value(\a settingsKey).toString());
 	static QString invariantSettingsPath(const QString &settingsKey);
+
+	/// Returns process architecture reported by currentCpuArchitecture.
+	static QString cpuArchitecture();
+
+	/// Returns true if current OS and process architecture reported by currentCpuArchitecture contains '64'.
+	static bool isX64();
 };
 
 }

@@ -27,7 +27,6 @@ includes(plugins/robots/common/kitBase \
 )
 
 HEADERS += \
-	$$PWD/commandConstants.h \
 	$$PWD/nxtAdditionalPreferences.h \
 	$$PWD/nxtDisplayWidget.h \
 	$$PWD/nxtKitInterpreterPlugin.h \
