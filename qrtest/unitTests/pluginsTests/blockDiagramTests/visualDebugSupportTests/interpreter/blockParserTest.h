@@ -15,7 +15,7 @@
 #pragma once
 
 #include <plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h>
-#include <mocks/qrgui/plugins/toolPluginInterface/usedInterface/errorReporterMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 
 #include <gtest/gtest.h>
 

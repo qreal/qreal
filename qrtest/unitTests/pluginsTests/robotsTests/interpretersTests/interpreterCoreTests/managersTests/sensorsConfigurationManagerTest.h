@@ -20,7 +20,7 @@
 
 #include <interpreterCore/managers/devicesConfigurationManager.h>
 
-#include "support/qrguiFacade.h"
+#include <testUtils/qrguiFacade.h>
 #include "support/dummySensorsConfigurer.h"
 
 namespace qrTest {

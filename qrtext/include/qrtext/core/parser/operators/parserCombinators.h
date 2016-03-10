@@ -18,6 +18,8 @@
 
 #include <QtCore/QSharedPointer>
 
+#include <qrutils/functionTraits.h>
+
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/operators/simpleParser.h"
@@ -30,7 +32,6 @@
 #include "qrtext/core/parser/operators/namedParser.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
-#include "qrtext/core/parser/utils/functionTraits.h"
 
 namespace qrtext {
 namespace core {
@@ -67,7 +68,7 @@ inline ParserRef<TokenType> operator * (const ParserRef<TokenType> &a)
 template<typename TokenType, typename SemanticAction>
 inline ParserRef<TokenType> operator >>(TokenType token, const SemanticAction &semanticAction)
 {
-	typedef typename std::conditional<function_traits<SemanticAction>::arity == 0
+	typedef typename std::conditional<utils::function_traits<SemanticAction>::arity == 0
 			, SimpleParser<TokenType, SemanticAction>
 			, TokenParser<TokenType, SemanticAction>>
 			::type Parser;

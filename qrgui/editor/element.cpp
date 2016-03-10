@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsListener.h>
 #include <qrgui/models/models.h>
+#include <qrgui/models/commands/renameCommand.h>
 #include <qrgui/models/commands/changePropertyCommand.h>
 
 #include "qrgui/editor/labels/label.h"
@@ -67,6 +68,19 @@ QString Element::name() const
 void Element::updateData()
 {
 	setToolTip(mGraphicalAssistApi.toolTip(id()));
+}
+
+void Element::setName(const QString &value, bool withUndoRedo)
+{
+	commands::AbstractCommand *command = new commands::RenameCommand(mGraphicalAssistApi
+			, id(), value, &mModels.exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+		// Controller will take ownership
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 QString Element::logicalProperty(const QString &roleName) const

@@ -48,7 +48,6 @@ HEADERS += \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryList.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryPair.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryToken.h \
-	$$PWD/include/qrtext/core/parser/utils/functionTraits.h \
 	$$PWD/include/qrtext/core/semantics/semanticAnalyzer.h \
 	$$PWD/include/qrtext/core/semantics/generalizationsTableInterface.h \
 	$$PWD/include/qrtext/core/types/any.h \

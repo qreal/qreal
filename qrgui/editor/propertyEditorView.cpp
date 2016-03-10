@@ -163,9 +163,9 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	}
 
 	connect(mButtonManager, SIGNAL(buttonClicked(QtProperty*))
-			, this, SLOT(buttonClicked(QtProperty*)));
+			, this, SLOT(buttonClicked(QtProperty*)), Qt::UniqueConnection);
 	connect(mVariantManager, SIGNAL(valueChanged(QtProperty*, QVariant))
-			, this, SLOT(editorValueChanged(QtProperty *, QVariant)));
+			, this, SLOT(editorValueChanged(QtProperty *, QVariant)), Qt::UniqueConnection);
 	mPropertyEditor->setPropertiesWithoutValueMarked(true);
 	mPropertyEditor->setRootIsDecorated(false);
 }
@@ -177,7 +177,9 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
 		if (property) {
-			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
+			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()
+					&& !mModel->enumEditable(valueIndex))
+			{
 				value = enumPropertyIndexOf(valueIndex, value.toString());
 			}
 
@@ -256,12 +258,13 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 
 	value = QVariant(value.toString());
-	const QVariant oldValue = mModel->data(index);
+	const Id id = mModel->idByIndex(index);
+	const QString propertyName = mModel->propertyName(index);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal
 	qReal::commands::ChangePropertyCommand *changeCommand =
-			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+			new qReal::commands::ChangePropertyCommand(mLogicalModelAssistApi, propertyName, id, value);
 	mController->execute(changeCommand);
 }
 
