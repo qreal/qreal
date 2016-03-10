@@ -24,12 +24,19 @@ namespace editor {
 class StatCircular : public PortInterface
 {
 public:
+	/// Circular port.
 	struct CircularPort {
+		/// X coordinate of circle center.
 		qreal x;
+
+		/// Y coordinate of circle center.
 		qreal y;
-		qreal r1;
-		qreal r2;
+
+		qreal rx;
+
+		qreal ry;
 	};
+
 
 	StatCircular(const QPointF &center, const qreal &r, bool propX, bool propY, int initWidth
 			, int initHeight, PortImpl *impl);

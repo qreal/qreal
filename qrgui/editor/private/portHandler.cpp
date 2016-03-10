@@ -144,7 +144,7 @@ QPointF PortHandler::coordinateOfCircular(int circularPortNumber, const QPointF 
 	StatCircular::CircularPort circularPort = transformPortForNodeSize(mCircularPorts[circularPortNumber]);
 	const qreal a = circularPort.x;
 	const qreal b = circularPort.y;
-	const qreal r = circularPort.r1;
+	const qreal r = circularPort.rx;
 
 	const qreal newX = a + r * ((location.x() - a) / sqrt(qPow((location.x() - a), 2) + qPow((location.y() - b), 2)));
 	const qreal newY = b + r * ((location.y() - b) / sqrt(qPow((location.x() - a), 2) + qPow((location.y() - b), 2)));
@@ -224,7 +224,7 @@ const QPointF PortHandler::findPointById(qreal id) const
 	QTransform transform;
 	transform.translate(circularPort.x, circularPort.y);
 	transform.rotate(360.0 - angle);
-	transform.translate(circularPort.r1, 0.0);
+	transform.translate(circularPort.rx, 0.0);
 	QPointF newPoint(transform.map(QPointF(0.0, 0.0)));
 	return newPoint;
 }
@@ -333,7 +333,7 @@ qreal PortHandler::circularPortId(const QPointF &location, const QStringList &ty
 		QPainterPath path;
 		StatCircular::CircularPort circular = transformPortForNodeSize(circularPort);
 
-		path.addEllipse({circular.x, circular.y}, circular.r1, circular.r2);
+		path.addEllipse({circular.x, circular.y}, circular.rx, circular.ry);
 
 		path = ps.createStroke(path);
 		if (path.contains(location)) {
@@ -413,7 +413,7 @@ qreal PortHandler::minDistanceFromCircularPort(int circularPortNumber, const QPo
 	StatCircular::CircularPort circularPort = transformPortForNodeSize(mCircularPorts[circularPortNumber]);
 	const qreal x = circularPort.x;
 	const qreal y = circularPort.y;
-	const qreal r = circularPort.r1;
+	const qreal r = circularPort.rx;
 	const qreal minDistance = sqrt(qPow((location.x() - x), 2) + qPow((location.y() - y), 2)) - r;
 	return minDistance;
 }

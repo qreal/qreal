@@ -29,8 +29,8 @@ void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 
 	QPointF center(x, y);
 
-	const qreal r1 = mR * (mPropX ? mInitWidth : contents.width());
-	const qreal r2 = mR * (mPropX ? mInitWidth : contents.height());
+	const qreal rx = mR * (mPropX ? mInitWidth : contents.width());
+	const qreal ry = mR * (mPropX ? mInitWidth : contents.height());
 
 	const QColor portColor("#465945");
 	const QColor highlightColor("#c3dcc4");
@@ -40,11 +40,11 @@ void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 	pen.setColor(highlightColor);
 	pen.setWidth(7);
 	painter->setPen(pen);
-	painter->drawEllipse(center, r1, r2);
+	painter->drawEllipse(center, rx, ry);
 	pen.setColor(portColor);
 	pen.setWidth(1);
 	painter->setPen(pen);
-	painter->drawEllipse(center, r1, r2);
+	painter->drawEllipse(center, rx, ry);
 	painter->restore();
 }
 
@@ -53,14 +53,14 @@ StatCircular::CircularPort StatCircular::transformForContents(const QRectF &cont
 	const qreal x = mCenter.x() * (mPropX ? mInitWidth : contents.width());
 	const qreal y = mCenter.y() * (mPropY ? mInitHeight : contents.height());
 
-	const qreal r1 = mR * (mPropX ? mInitWidth : contents.width());
-	const qreal r2 = mR * (mPropX ? mInitWidth : contents.height());
+	const qreal rx = mR * (mPropX ? mInitWidth : contents.width());
+	const qreal ry = mR * (mPropX ? mInitWidth : contents.height());
 
 	CircularPort port;
 	port.x = x;
 	port.y = y;
-	port.r1 = r1;
-	port.r2 = r2;
+	port.rx = rx;
+	port.ry = ry;
 	return port;
 
 }
