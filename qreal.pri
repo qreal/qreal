@@ -59,3 +59,7 @@ plugins.depends = \
 	qrtext \
 
 qrtext.depends = qrkernel
+
+OTHER_FILES += \
+	$$PWD/.travis.yml \
+	$$PWD/appveyor.yml \

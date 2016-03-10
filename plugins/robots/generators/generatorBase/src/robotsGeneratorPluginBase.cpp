@@ -106,7 +106,7 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 	} while (!canGenerateTo(projectName));
 
 	QFileInfo fileInfo = generationTarget(projectName);
-	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
+	const QList<QFileInfo> pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {
 		for (const QFileInfo &path : pathsList) {
@@ -130,10 +130,11 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 
 	if (!activeDiagram.isNull()) {
 		if (generateCode(false)) {
-			foreach (const QFileInfo &path, mCodePath.values(activeDiagram)) {
+			for (const QFileInfo &path : mCodePath.values(activeDiagram)) {
 				if (mTextManager->isDefaultPath(path.absoluteFilePath())
 					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-					&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
+					&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName()))
+				{
 					fileInfo = path;
 					break;
 				}

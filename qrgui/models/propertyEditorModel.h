@@ -53,6 +53,14 @@ public:
 	// Methods needed by "Reference button" delegate
 	QString typeName(const QModelIndex &index) const;
 
+	/// Returns internal (not displayed) property name of the given index.
+	QString propertyName(const QModelIndex &index) const;
+
+	/// Overload for convenience.
+	/// May not set actual property value if element different from \a id is selected. False will be returned then,
+	/// if property was successully setted true will be returned.
+	bool setData(const qReal::Id &id, const QString &propertyName, const QVariant &value);
+
 	// Methods for use in delegate, allow to determine where in actual models to put data
 	QModelIndex modelIndex(int row) const;
 	int roleByIndex(int row) const;

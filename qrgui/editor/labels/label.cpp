@@ -170,7 +170,7 @@ void Label::setSuffix(const QString &text)
 void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
-	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
+	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {

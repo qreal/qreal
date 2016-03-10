@@ -313,7 +313,7 @@ void StartWidget::openInterpretedDiagram()
 			// TODO: ???
 			mMainWindow->models().repoControlApi().exterminate();
 			mMainWindow->models().reinit();
-			mMainWindow->loadPlugins();
+			mMainWindow->loadEditorPlugins();
 			mMainWindow->createDiagram(interpreterIdString);
 		}
 	} else {
@@ -340,7 +340,7 @@ void StartWidget::createInterpretedDiagram()
 		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
 		mMainWindow->models().repoControlApi().exterminate();
 		mMainWindow->models().reinit();
-		mMainWindow->loadPlugins();
+		mMainWindow->loadEditorPlugins();
 		mMainWindow->initInterpretedPlugins();
 	} else {
 		show();

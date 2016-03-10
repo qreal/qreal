@@ -87,7 +87,6 @@ public:
 	bool isContainer() const;
 
 	void storeGeometry();
-	virtual void setName(const QString &name, bool withUndoRedo = false);
 
 	/// Returns port position relative to the top left corner of NodeElement
 	/// (position of NodeElement).
@@ -268,7 +267,6 @@ private:
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
 	const NodeElementType &mType;
-	models::Exploser &mExploser;
 
 	ContextMenuAction mSwitchGridAction;
 

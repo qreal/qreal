@@ -50,7 +50,6 @@ using namespace qReal::gui::editor::commands;
 NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models::Models &models)
 	: Element(type, id, models)
 	, mType(type)
-	, mExploser(models.exploser())
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mContents(QPointF(), type.size())
 	, mDragState(None)
@@ -145,18 +144,6 @@ QMap<QString, QVariant> NodeElement::graphicalProperties() const
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
 	return mGraphicalAssistApi.properties(logicalId());
-}
-
-void NodeElement::setName(const QString &value, bool withUndoRedo)
-{
-	AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
-	if (withUndoRedo) {
-		mController->execute(command);
-		// Controller will take ownership
-	} else {
-		command->redo();
-		delete command;
-	}
 }
 
 void NodeElement::setGeometry(const QRectF &geom)
@@ -1303,7 +1290,7 @@ void NodeElement::initRenderedDiagram()
 	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
-	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
+	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mModels.exploser());
 	view.mutableMvIface().setModel(evScene->models().graphicalModel());
 	view.mutableMvIface().setLogicalModel(evScene->models().logicalModel());
 	view.mutableMvIface().setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));

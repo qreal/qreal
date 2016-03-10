@@ -68,7 +68,6 @@ public:
 
 	/// Customizes an explosion collapse action text that will be displayed in element`s context menu.
 	virtual void setCollapseExplosionActionText(const QString &text) = 0;
-
 };
 
 }

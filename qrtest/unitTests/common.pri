@@ -19,20 +19,19 @@ include(../../global.pri)
 
 QT += widgets
 
-SOURCES = $$PWD/mainTest.cpp
+SOURCES += $$PWD/mainTest.cpp
 
 if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
-	# For gmock
-	QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
+	# For googletest
+#	QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
 }
 
 INCLUDEPATH += \
 	$$PWD/ \
 	$$PWD/../../ \
-	$$PWD/../thirdparty/gmock-1.6.0/include \
-	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
+	$$PWD/../thirdparty/googletest/googletest/include \
+	$$PWD/../thirdparty/googletest/googlemock/include \
+	$$PWD/testUtils/include \
 
-links(gmock)
-
-include($$PWD/utils/utils.pri)
+links(googletest)
