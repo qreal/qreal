@@ -35,6 +35,11 @@ class UploadProgramProtocol;
 }
 
 namespace trik {
+
+namespace robotModel {
+class TrikRobotModelBase;
+}
+
 namespace qts {
 
 /// Generation of QtScript program for TRIK, uploading and execution of a program.
@@ -44,7 +49,7 @@ class TrikQtsGeneratorPluginBase : public TrikGeneratorPluginBase
 	Q_OBJECT
 
 public:
-	TrikQtsGeneratorPluginBase(kitBase::robotModel::RobotModelInterface * const robotModel
+	TrikQtsGeneratorPluginBase(trik::robotModel::TrikRobotModelBase * const robotModel
 			, kitBase::blocksBase::BlocksFactoryInterface * const blocksFactory
 			, const QStringList &pathsToTemplates);
 
@@ -97,6 +102,9 @@ private:
 
 	/// Communicator object used to send commands to robot.
 	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mCommunicator;
+
+	/// Robot model that is used by generator to check config file version on a robot.
+	trik::robotModel::TrikRobotModelBase &mRobotModel;
 
 	QStringList mPathsToTemplates;
 

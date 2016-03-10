@@ -21,12 +21,13 @@
 
 namespace qrTest {
 
-class RobotModelManagerInterfaceMock : public  kitBase::robotModel::RobotModelManagerInterface
+/// Mock class for robot model manager.
+class RobotModelManagerInterfaceMock : public kitBase::robotModel::RobotModelManagerInterface
 {
 	Q_OBJECT
 
 public:
-	MOCK_CONST_METHOD0(model,  kitBase::robotModel::RobotModelInterface &());
+	MOCK_CONST_METHOD0(model, kitBase::robotModel::RobotModelInterface &());
 
 	void emitConnected() {
 		emit connected(true, "");

@@ -23,3 +23,7 @@ SOURCES += \
 
 HEADERS += \
 	interpreter/blockParserTest.h \
+
+# Mocks
+HEADERS += \
+	$$PWD/../../../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h \
