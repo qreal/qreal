@@ -18,7 +18,7 @@ include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/interpreters/interpreterCore/interpreterCore.pri)
 
-links(qrkernel qslog)
+links(qrkernel qslog test-utils qrgui-text-editor)
 
 INCLUDEPATH += \
 	$$PWD/../../../../../../plugins/robots/interpreters \
@@ -49,11 +49,9 @@ include(mocks.pri)
 HEADERS += \
 	support/dummyBlock.h \
 	support/dummyBlocksFactory.h \
-	support/qrguiFacade.h \
 
 SOURCES += \
 	support/dummyBlock.cpp \
 	support/dummyBlocksFactory.cpp \
-	support/qrguiFacade.cpp \
 
 copyToDestdir(../support/testData/unittests, NOW)

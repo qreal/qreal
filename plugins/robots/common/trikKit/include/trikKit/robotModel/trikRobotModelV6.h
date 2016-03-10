@@ -25,6 +25,8 @@ class TrikRobotModelV6 : public TrikRobotModelBase
 
 public:
 	TrikRobotModelV6(const QString &kitId, const QString &robotId);
+
+	QString robotConfigFileVersion() const override;
 };
 
 }

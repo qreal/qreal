@@ -18,7 +18,7 @@ include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/common/kitBase/kitBase.pri)
 
-links(qslog)
+links(qslog test-utils qrgui-text-editor)
 
 INCLUDEPATH += \
 	../../../../../../plugins/robots/common/kitBase \

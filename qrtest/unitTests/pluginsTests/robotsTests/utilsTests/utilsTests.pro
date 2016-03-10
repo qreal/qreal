@@ -18,13 +18,15 @@ include(../../../common.pri)
 
 include(../../../../../plugins/robots/utils/utils.pri)
 
-links(qslog)
+links(qslog test-utils)
 
 includes(plugins/robots/utils)
 
 # Tests
 HEADERS += \
 	$$PWD/circularQueueTest.h \
+	$$PWD/robotCommunicationTests/runProgramProtocolTest.h \
 
 SOURCES += \
 	$$PWD/circularQueueTest.cpp \
+	$$PWD/robotCommunicationTests/runProgramProtocolTest.cpp \

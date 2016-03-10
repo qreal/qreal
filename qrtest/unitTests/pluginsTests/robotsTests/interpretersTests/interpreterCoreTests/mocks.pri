@@ -13,12 +13,14 @@
 # limitations under the License.
 
 HEADERS += \
-	../../../../mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h \
-	../../../../mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h \
-	../../../../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
+	$$PWD/../../../../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterfaceMock.h \
+	$$PWD/../../../../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterfaceMock.h \
+	$$PWD/../../../../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h \
+	$$PWD/../../../../mocks/qrgui/mainWindow/projectManager/projectManagementInterfaceMock.h \
+	$$PWD/../../../../mocks/qrgui/view/sceneCustomizationInterfaceMock.h \
 
 HEADERS += \
-	../../../../mocks/plugins/robots/interpreters/interpreterCore/managers/blocksFactoryManagerInterfaceMock.h \
-	../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/configurationInterfaceMock.h \
-	../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h \
-	../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
+	$$PWD/../../../../mocks/plugins/robots/interpreters/interpreterCore/managers/blocksFactoryManagerInterfaceMock.h \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/configurationInterfaceMock.h \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
