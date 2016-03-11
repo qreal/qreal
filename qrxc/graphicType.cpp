@@ -117,8 +117,6 @@ void GraphicType::generateCommonMethods(OutFile &out) const
 	generateFriendlyName(out);
 	generateDiagram(out);
 	generateDescription(out);
-	generatePropertyNames(out, false);
-	generatePropertyNames(out, true);
 	generatePropertyGetters(out);
 	generateLabels(out);
 }
@@ -532,32 +530,12 @@ void GraphicType::generateDescription(OutFile &out) const
 		<< "\t\t}\n\n";
 }
 
-void GraphicType::generatePropertyNames(OutFile &out, bool isReference) const
-{
-	const QString methodName = isReference ? "referenceProperties" : "propertyNames";
-	out() << QString("\t\tQStringList %1() const override\n\t\t{\n").arg(methodName)
-			<< "\t\t\treturn { ";
-
-	for (const Property *property : mProperties) {
-		// Validating property names.
-		if (property->name() == "fromPort" || property->name() == "toPort"
-				|| property->name() == "from" || property->name() == "to"
-				|| property->name() == "name")
-		{
-			qWarning() << "ERROR: predefined property" << property->name() << "should not appear in metamodel, ignored";
-			continue;
-		}
-
-		if (!isReference || property->isReferenceProperty()) {
-			out() << "\"" << property->name() << "\", ";
-		}
-	}
-
-	out() << "};\n\t\t}\n\n";
-}
-
 void GraphicType::generatePropertyGetters(OutFile &out) const
 {
+	out() << "\t\tQStringList propertyNames() const override "\
+			"{ return mPropertyNames; }\n";
+	out() << "\t\tQStringList referenceProperties() const override "\
+			"{ return mReferencePropertyNames; }\n";
 	out() << "\t\tQString propertyType(const QString &propertyName) const override "\
 			"{ return mPropertyTypes[propertyName]; }\n";
 	out() << "\t\tQString propertyDefaultValue(const QString &propertyName) const override "\
@@ -571,6 +549,8 @@ void GraphicType::generatePropertyGetters(OutFile &out) const
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
+	generatePropertyNames(out, true);
+	generatePropertyNames(out, false);
 	generatePropertyTypes(out);
 	generatePropertyDisplayedNames(out);
 	generatePropertyDefaults(out);
@@ -578,10 +558,42 @@ void GraphicType::generatePropertyData(OutFile &out) const
 	out() << "\t\t}\n";
 
 	out() << "\n"
+			<< "\t\tQStringList mPropertyNames;\n"
+			<< "\t\tQStringList mReferencePropertyNames;\n"
 			<< "\t\tQMap<QString, QString> mPropertyTypes;\n"
 			<< "\t\tQMap<QString, QString> mPropertyDefaults;\n"
 			<< "\t\tQMap<QString, QString> mPropertyDescriptions;\n"
 			<< "\t\tQMap<QString, QString> mPropertyDisplayedNames;\n";
+}
+
+void GraphicType::generatePropertyNames(OutFile &out, bool isReference) const
+{
+	const QString fieldName = isReference ? "mReferencePropertyNames" : "mPropertyNames";
+
+	bool metProperty = false;
+	for (const Property *property : mProperties) {
+		// Validating property names.
+		if (property->name() == "fromPort" || property->name() == "toPort"
+				|| property->name() == "from" || property->name() == "to"
+				|| property->name() == "name")
+		{
+			qWarning() << "ERROR: predefined property" << property->name() << "should not appear in metamodel, ignored";
+			continue;
+		}
+
+		if (!isReference || property->isReferenceProperty()) {
+			if (!metProperty) {
+				out() << fieldName << " = QStringList({ ";
+			}
+
+			metProperty = true;
+			out() << "\"" << property->name() << "\", ";
+		}
+	}
+
+	if (metProperty) {
+		out() << "});\n";
+	}
 }
 
 void GraphicType::generatePropertyDescriptions(utils::OutFile &out) const

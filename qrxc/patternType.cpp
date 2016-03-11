@@ -110,6 +110,8 @@ bool PatternType::copyPictures(GraphicType *parent)
 
 void PatternType::generatePropertyGetters(OutFile &out) const
 {
+	out() << "\t\tQStringList propertyNames() const override { return QStringList(); }\n";
+	out() << "\t\tQStringList referenceProperties() const override { return QStringList(); }\n";
 	out() << "\t\tQString propertyType(const QString &) const override { return QString(); }\n";
 	out() << "\t\tQString propertyDefaultValue(const QString &) const override { return QString(); }\n";
 	out() << "\t\tQString propertyDescription(const QString &) const override { return QString(); }\n";
