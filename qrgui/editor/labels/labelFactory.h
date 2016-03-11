@@ -26,8 +26,8 @@ class LabelFactory : public LabelFactoryInterface
 {
 public:
 	LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssistApi, const Id &elementId);
-	LabelInterface *createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation);
-	LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation);
+	LabelInterface *createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation, bool focused = false);
+	LabelInterface *createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation, bool focused = false);
 
 private:
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;

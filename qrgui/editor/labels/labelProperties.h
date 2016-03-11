@@ -43,8 +43,8 @@ class LabelProperties : public QObject
 
 public:
 	LabelProperties();
-	LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation);
-	LabelProperties(int index, qreal x, qreal y, const QString &binding, bool isReadOnly, qreal rotation);
+	LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation, bool focused);
+	LabelProperties(int index, qreal x, qreal y, const QString &binding, bool isReadOnly, qreal rotation, bool focused);
 	LabelProperties(const LabelProperties &other);
 
 	/// Returns label`s index among other siblings.
@@ -129,6 +129,9 @@ public:
 	/// Sets text drawn just after label contents.
 	void setSuffix(const QString &text);
 
+	/// Returns whether the property should be in focus when we are clicking on the parent element
+	bool isFocused() const;
+
 signals:
 	/// Emitted when label`s index among other siblings changes.
 	void indexChanged(int index);
@@ -183,6 +186,7 @@ private:
 	bool mIsHard;
 	QString mPrefix;
 	QString mSuffix;
+	bool mIsFocused;
 };
 
 }

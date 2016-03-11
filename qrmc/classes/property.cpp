@@ -54,8 +54,6 @@ bool Property::init()
 		}
 	}
 
-	QString isFocused = mApi->stringProperty(mId, "focused");
-	mIsFocused = (isFocused == "true");
 	mDisplayedName = mApi->stringProperty(mId, "displayedName");
 	mDefaultValue = mApi->stringProperty(mId, "defaultValue");
 	return true;
@@ -77,11 +75,6 @@ QString Property::defaultValue() const
 	return mDefaultValue;
 }
 
-bool Property::isFocused() const
-{
-	return mIsFocused;
-}
-
 Property * Property::clone()
 {
 	Property *result = new Property(mApi, mId);
@@ -92,7 +85,6 @@ Property * Property::clone()
 	result->mDescription = mDescription;
 	result->mDefaultValue = mDefaultValue;
 	result->mDisplayedName = mDisplayedName;
-	result->mIsFocused = mIsFocused;
 	return result;
 }
 
@@ -103,9 +95,7 @@ bool Property::operator == (const Property &other) const
 		&& other.mIsEnum == mIsEnum
 		&& other.mIsReference == mIsReference
 		&& other.mDescription == mDescription
-		&& other.mDefaultValue == mDefaultValue
-		&& other.mIsFocused == mIsFocused
-		;
+		&& other.mDefaultValue == mDefaultValue;
 }
 
 bool Property::operator != (const Property &other) const
@@ -127,8 +117,7 @@ void Property::print() const
 			<< "\t" << mIsReference
 			<< "\t" << mDescription
 			<< "\t" << mDefaultValue
-			<< "\t" << mDisplayedName
-			<< "\t" << mIsFocused;
+			<< "\t" << mDisplayedName;
 }
 
 QString Property::generatePropertyLine(const QString &lineTemplate) const
