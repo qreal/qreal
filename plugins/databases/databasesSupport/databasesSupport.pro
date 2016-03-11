@@ -32,8 +32,7 @@ INCLUDEPATH += \
 	$$PWD/../../../qrgui/ \
 	$$PWD/../../../qrtext/include/ \
 
-links(qrkernel qrutils qrgui-preferences-dialog qrgui-tool-plugin-interface)
-links(qrkernel qrutils)
+links(qrkernel qrutils qrgui-preferences-dialog qrgui-tool-plugin-interface qrgui-models)
 
 HEADERS = \
 	$$PWD/generator/databasesGenerator.h \

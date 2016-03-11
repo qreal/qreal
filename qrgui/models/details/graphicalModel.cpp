@@ -152,10 +152,12 @@ void GraphicalModel::addElementsToModel(QList<ElementInfo> &elementsInfo)
 			}
 		}
 
-		if (elementInfo.id() == elementInfo.logicalId()) {
+		if (elementInfo.id() == elementInfo.logicalId() && elementInfo.id() != Id::rootId()) {
 			/// It is logical model element and we need to create a new graphical element that will depict this
 			/// logical element.
 			elementInfo.newId();
+		} else {
+			Q_ASSERT(elementInfo.id().idSize() == 4);
 		}
 	}
 

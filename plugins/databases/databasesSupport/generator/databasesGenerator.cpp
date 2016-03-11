@@ -14,6 +14,9 @@
 
 #include "databasesGenerator.h"
 
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/models/elementInfo.h>
+
 namespace qReal {
 namespace databasesSupport {
 
@@ -270,6 +273,7 @@ qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
 {
 	const Id id = Id::loadFromString(QString("qrm:/" + mDbms
 			+ "/DatabasesPhysicalModelMetamodel/" + elemName));
+
 	Id logicalId = mLogicalModelApi.createElement(Id::rootId(), id);
 	Id graphicalParentId = Id::rootId();
 	if (parentLogicalId != Id::rootId()) {
@@ -277,8 +281,12 @@ qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
 		if (coordByParent)
 			coord = mGraphicalModelApi.position(graphicalParentId);
 	}
-	Id graphicalId = mGraphicalModelApi.createElement(graphicalParentId, id, coordByParent, elemName, coord, logicalId);
-	return mGraphicalModelApi.logicalId(graphicalId);
+
+	ElementInfo info(logicalId, logicalId, parentLogicalId, graphicalParentId
+				, {{"name", elemName}}, {{"position", coord}}, Id()
+				, mLogicalModelApi.editorManagerInterface().isNodeOrEdge(id.editor(), id.element()) < 0);
+	mGraphicalModelApi.createElements(QList<ElementInfo>() << info);
+	return logicalId;
 }
 
 qReal::Id DatabasesGenerator::makeColumnFromAttribute(Id const &attributeId, Id const &parentId)
