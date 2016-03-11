@@ -412,7 +412,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseMoveEvent(event);
 
 		mGrid->mouseMoveEvent(event);
-		alignToGrid();
 		newPos = pos();
 	} else if (mType.isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
