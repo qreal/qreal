@@ -133,6 +133,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 			vItem->setValue(value);
 			vItem->setToolTip(value.toString());
+
 			if (!values.isEmpty()) {
 				QStringList friendlyNames;
 				for (QPair<QString, QString> const &pair : values) {
@@ -152,13 +153,19 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			item = vItem;
 		}
 
+		const QString description = propertyDescription(i);
+
+		if (!description.isEmpty()) {
+			item->setToolTip(description);
+		}
+
 		mPropertyEditor->addProperty(item);
 	}
 
 	connect(mButtonManager, SIGNAL(buttonClicked(QtProperty*))
-			, this, SLOT(buttonClicked(QtProperty*)));
+			, this, SLOT(buttonClicked(QtProperty*)), Qt::UniqueConnection);
 	connect(mVariantManager, SIGNAL(valueChanged(QtProperty*, QVariant))
-			, this, SLOT(editorValueChanged(QtProperty *, QVariant)));
+			, this, SLOT(editorValueChanged(QtProperty *, QVariant)), Qt::UniqueConnection);
 	mPropertyEditor->setPropertiesWithoutValueMarked(true);
 	mPropertyEditor->setRootIsDecorated(false);
 }
@@ -170,12 +177,18 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
 		if (property) {
-			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
+			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()
+					&& !mModel->enumEditable(valueIndex))
+			{
 				value = enumPropertyIndexOf(valueIndex, value.toString());
 			}
 
 			setPropertyValue(property, value);
-			property->setToolTip(value.toString());
+
+			const QString description = propertyDescription(i);
+			const QString tooltip = description.isEmpty() ? value.toString() : description;
+
+			property->setToolTip(tooltip);
 		}
 	}
 }
@@ -245,12 +258,13 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 
 	value = QVariant(value.toString());
-	const QVariant oldValue = mModel->data(index);
+	const Id id = mModel->idByIndex(index);
+	const QString propertyName = mModel->propertyName(index);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal
 	qReal::commands::ChangePropertyCommand *changeCommand =
-			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+			new qReal::commands::ChangePropertyCommand(mLogicalModelAssistApi, propertyName, id, value);
 	mController->execute(changeCommand);
 }
 
@@ -260,6 +274,12 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 	mChangingPropertyValue = true;
 	property->setValue(value);
 	mChangingPropertyValue = old;
+}
+
+QString PropertyEditorView::propertyDescription(const int cellIndex) const
+{
+	const QModelIndex keyIndex = mModel->index(cellIndex, 0);
+	return mModel->data(keyIndex, Qt::ToolTipRole).toString();
 }
 
 int PropertyEditorView::enumPropertyIndexOf(const QModelIndex &index, const QString &value)

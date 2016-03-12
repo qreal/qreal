@@ -151,6 +151,16 @@ void GraphicalModel::addElementsToModel(QList<ElementInfo> &elementsInfo)
 				parentsToChildrenMap.insertMulti(elementInfo.graphicalParent(), &elementInfo);
 			}
 		}
+
+		if (elementInfo.id() == elementInfo.logicalId()) {
+			/// It is logical model element and we need to create a new graphical element that will depict this
+			/// logical element.
+			if (elementInfo.id() == elementInfo.logicalId() && elementInfo.id() != Id::rootId()) {
+				elementInfo.newId();
+			} else {
+				Q_ASSERT(elementInfo.id().idSize() == 4);
+			}
+		}
 	}
 
 	for (const Id &parent : parentsOrder) {

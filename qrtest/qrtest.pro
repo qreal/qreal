@@ -17,11 +17,11 @@ include(../global.pri)
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	gmock \
+	googletest \
 	unitTests \
 	editorPluginTestingFramework/editorPluginTestingFramework.pro \
 
-unitTests.depends = gmock
+unitTests.depends = googletest
 
-gmock.file = thirdparty/gmock-1.6.0/gmock.pro
+googletest.file = thirdparty/googletest/googletest.pro
 

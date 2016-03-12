@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@
 
 #include <qrkernel/ids.h>
 
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/progressReporterInterface.h"
+
 namespace qReal {
 
-class ErrorReporterInterface
+class ErrorReporterInterface : public ProgressReporterInterface
 {
 public:
 	virtual ~ErrorReporterInterface() {}
@@ -38,7 +40,7 @@ public:
 
 	/// Are there errors reported by now or not. Counted after latest clearErrors() call
 	/// @returns True, when there are messages with severity "Critical" and "Error" registered
-	virtual bool wereErrors() = 0;
+	virtual bool wereErrors() const = 0;
 };
 
 }

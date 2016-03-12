@@ -34,6 +34,7 @@ HEADERS += \
 	$$PWD/pluginConfigurator.h \
 	$$PWD/actionInfo.h \
 	$$PWD/tabInfo.h \
+	$$PWD/usedInterfaces/progressReporterInterface.h \
 	$$PWD/usedInterfaces/errorReporterInterface.h \
 	$$PWD/usedInterfaces/details/modelsAssistInterface.h \
 	$$PWD/usedInterfaces/graphicalModelAssistInterface.h \

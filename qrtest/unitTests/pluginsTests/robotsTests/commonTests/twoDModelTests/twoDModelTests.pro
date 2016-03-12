@@ -18,7 +18,7 @@ include(../../../../common.pri)
 
 include(../../../../../../plugins/robots/common/twoDModel/twoDModel.pri)
 
-links(qslog qrgui-preferences-dialog)
+links(qslog qrgui-preferences-dialog qrgui-text-editor)
 
 INCLUDEPATH += \
 	../../../../../../plugins/robots/common/twoDModel \

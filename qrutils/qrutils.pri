@@ -23,6 +23,7 @@ HEADERS += \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
 	$$PWD/fileSystemUtils.h \
+	$$PWD/functionTraits.h \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
@@ -79,9 +80,6 @@ include($$PWD/graphicsUtils/graphicsUtils.pri)
 
 # Stuff connected with graphs and trees
 include($$PWD/graphUtils/graphUtils.pri)
-
-# Stuff for running long operations in different modes
-include($$PWD/invocationUtils/invocationUtils.pri)
 
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)

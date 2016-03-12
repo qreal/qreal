@@ -16,6 +16,8 @@
 
 #include <QtGui/QPainterPath>
 
+#include <utils/circularQueue.h>
+
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "sensorsConfiguration.h"
 
@@ -199,8 +201,8 @@ private:
 	bool mIsOnTheGround;
 	QColor mMarker;
 	QPointF mAcceleration;
-	QVector<QPointF> mPosStamps;
-	QVector<qreal> mAngleStamps;
+	utils::CircularQueue<QPointF> mPosStamps;
+	utils::CircularQueue<qreal> mAngleStamps;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
 
