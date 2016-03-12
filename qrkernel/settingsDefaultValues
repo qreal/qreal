@@ -35,6 +35,7 @@ PaletteRepresentation=0
 PaletteTabSwitching=true
 pathToQmake=
 pathToMake=
+platformConfigSearchPaths=./, /etc/
 pluginExtension=
 prefix=
 ShowAlignment=false
