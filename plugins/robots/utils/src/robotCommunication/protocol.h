@@ -105,7 +105,7 @@ public:
 		QSharedPointer<GuardSignalGenerator> errorGuardSignalGenerator(new GuardSignalGenerator{});
 
 		const QMetaMethod signalMetaMethod = QMetaMethod::fromSignal(&GuardSignalGenerator::guardSatisfied);
-		const char *signature = signalMetaMethod.methodSignature().constData();
+		const QByteArray signature = signalMetaMethod.methodSignature().constData();
 		source->addTransition(successGuardSignalGenerator.data(), signature, destination);
 		source->addTransition(errorGuardSignalGenerator.data(), signature, mErrored);
 
