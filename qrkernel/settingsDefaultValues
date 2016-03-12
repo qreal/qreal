@@ -59,6 +59,7 @@ pathToToolPlugins=./plugins/tools
 pathToInterpretedPlugins=./plugins/interpreted
 pathToDefaultSaves=@DocumentsPath@/
 pathToTempFolder=@TempLocation@/qreal/
+pathToSplashscreen=./splashscreen.png
 toolbarSize=30
 AutosaveTempFile=~tempFile
 pythonPath=python
