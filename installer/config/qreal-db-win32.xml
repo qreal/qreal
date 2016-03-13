@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>QReal DB</Name>
-    <Version>1.0.0</Version>
-    <Title>QReal DB</Title>
+    <Name>QReal:Databases</Name>
+    <Version>1.0</Version>
+    <Title>QReal:Databases</Title>
     <Publisher>SPbSU</Publisher>
     <ProductUrl>http://qreal.ru</ProductUrl>
 
@@ -11,7 +11,7 @@
     <Logo>../images/qreal-logo.png</Logo>
     <Watermark>../images/qreal-watermark.png</Watermark>
 
-    <StartMenuDir>QReal DB</StartMenuDir>
+    <StartMenuDir>QReal:Databases</StartMenuDir>
     <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>

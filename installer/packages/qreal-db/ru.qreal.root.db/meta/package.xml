@@ -4,8 +4,8 @@
     <DisplayName xml:lang="ru_ru">Плагин БД</DisplayName>
     <Description>Databases Plugin.</Description>
     <Description xml:lang="ru_ru">Плагин БД.</Description>
-    <Version>1.0.0</Version>
-    <ReleaseDate>2016-02-13</ReleaseDate>
+    <Version>1.0</Version>
+    <ReleaseDate>2016-03-13</ReleaseDate>
     <Licenses/>
     <SortingPriority>20</SortingPriority>
     <ForcedInstallation>true</ForcedInstallation>
