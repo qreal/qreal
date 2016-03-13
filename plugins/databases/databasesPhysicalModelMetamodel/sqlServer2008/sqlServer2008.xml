@@ -162,7 +162,6 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="string" displayedName="Column Name" name="ColumnName"/>
 					</properties>
 					<fromPorts>
 						<port type="TableRight"/>
@@ -198,9 +197,6 @@
 					</associations>
 					<properties>
 						<property type="string" displayedName="Name" name="Name"/>
-						<property type="bool" name="Merging" displayedName="Merging into a single table">
-							<default>true</default>
-						</property>
 					</properties>
 					<fromPorts>
 						<port type="TableRight"/>

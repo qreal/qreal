@@ -190,7 +190,7 @@ QString DatabasesGenerator::getListTableName(IdList const &list)
 		} else {
 			isFirst = false;
 		}
-		name += getProperty(id, "tableName").toByteArray();
+		name += getProperty(id, "entityName").toByteArray();
 	}
 	return name;
 }
@@ -203,11 +203,11 @@ bool DatabasesGenerator::checkEntities()
 		QString name = getProperty(entity, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
-			error(tr("Entity has no name"), true);
+			error(tr("Entity has no name."), true);
 		}
 		IdList attributes = getChildren(entity);
 		if (attributes.isEmpty()) {
-			error(tr("Entity with name '") + name + tr("' has no attributes"), false);
+			error(tr("Entity with name '") + name + tr("' has no attributes."), false);
 		}
 	}
 	return result;
@@ -224,11 +224,11 @@ bool DatabasesGenerator::checkAttributes()
 		QString parentName = getProperty(parent, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
-			error(tr("Attribute has no name in entity '") + parentName + "'", true);
+			error(tr("Attribute has no name in entity '") + parentName + "'.", true);
 		}
 		if (datatype.isEmpty()) {
 			result = false;
-			error(tr("Attribute has no datatype in entity '") + parentName + "'", true);
+			error(tr("Attribute has no datatype in entity '") + parentName + "'.", true);
 		}
 	}
 	return result;
@@ -245,10 +245,10 @@ bool DatabasesGenerator::checkRelationships()
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
 		if (out == Id::rootId() || from == Id::rootId()) {
 			result = false;
-			error(getProperty(relationship, "name").toString()
+			error(getProperty(relationship, "Name").toString()
 				+ tr(" relationship with name '")
 				+ getProperty(relationship, "Name").toString()
-				+ tr("' has invalid ends"), true);
+				+ tr("' has invalid ends."), true);
 		}
 	}
 	return result;
@@ -416,7 +416,7 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 			return false;
 		}
 
-		QString columnNameForRelationship = getProperty(relationship, "ColumnName").toString();
+		QString columnNameForRelationship = getProperty(relationship, "columnName").toString();
 		if (columnNameForRelationship.isEmpty()) {
 			mErrorReporter->addInformation(tr("Column name for one-to-many relationship with name '")
 				+ getProperty(relationship, "Name").toString()
@@ -428,7 +428,7 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 
 		// add bounding attribute
 		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet));
-		QString rowName = getProperty(relationship, "Name").toString();
+		QString rowName = getProperty(relationship, "columnName").toString();
 		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "columnName");
 
 		// copy relationship
@@ -451,15 +451,15 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error(tr("Too many relationships from ")
 				+ getProperty(from, "entityName").toString()
-				+ tr(" to ") + getProperty(to, "entityName").toString(), true);
+				+ tr(" to ") + getProperty(to, "entityName").toString() + tr("."), true);
 			return false;
 		}
 
-		QString relationshipTableName = getProperty(relationship, "TableName").toString();
+		QString relationshipTableName = getProperty(relationship, "tableName").toString();
 		if (relationshipTableName.isEmpty()) {
 			mErrorReporter->addInformation(tr("Table name for many-to-many relationship with name '")
-				+ getProperty(relationship, "Name").toString()
-				+ tr("' is`t specified. Table name was generated automatically"), Id::rootId());
+				+ getProperty(relationship, "tableName").toString()
+				+ tr("' is not specified. Table name was generated automatically."), Id::rootId());
 			relationshipTableName = (getListTableName(oneToOneBoundedEntitiesSets.at(fromSet))
 				+ "_" + getListTableName(oneToOneBoundedEntitiesSets.at(toSet))).toUtf8();
 		}
@@ -539,7 +539,7 @@ void DatabasesGenerator::generatePhysicalModel()
 		delete[] mRelMatrix[i];
 	}
 	delete[] mRelMatrix;
-	mErrorReporter->addInformation(tr("Physical model was generated successfully"));
+	mErrorReporter->addInformation(tr("Physical model was generated successfully."));
 }
 
 void DatabasesGenerator::generateSQLCode()
@@ -547,14 +547,13 @@ void DatabasesGenerator::generateSQLCode()
 	mErrorReporter->clear();
 
 	QString codeFileName = mPreferencesPage->getCodeGenerationFilename();
-	codeFileName = QString("C:/Coursework/text.txt");
 	if (codeFileName.isEmpty()) {
-		mErrorReporter->addError(QString("Code file name is empty. Check preferences"));
+		mErrorReporter->addError(QString("Code file name is empty. Check preferences."));
 		return;
 	}
 	codeFile.setFileName(codeFileName);
 	if (!codeFile.open(QIODevice::WriteOnly)) {
-		mErrorReporter->addError(QString("File didn't open"));
+		mErrorReporter->addError(QString("File didn't open."));
 		return;
 	}
 
@@ -572,7 +571,7 @@ void DatabasesGenerator::generateSQLCode()
 		generateWithPostgreSql();
 
 	codeFile.close();
-	mErrorReporter->addInformation(tr("Code was generated successfully"));
+	mErrorReporter->addInformation(tr("Code was generated successfully."));
 
 	QString codeFileNameForEditor;
 	int strSize = codeFileName.size();
