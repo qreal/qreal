@@ -41,7 +41,7 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 
 GraphicType::GraphicType(
 		Diagram *diagram
-		, qrRepo::LogicalRepoApi *api
+		, const qrRepo::LogicalRepoApi *api
 		, const qReal::Id &id
 		, const QString &targetDirectory)
 	: Type(false, diagram, api, id)

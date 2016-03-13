@@ -24,7 +24,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(const qReal::Id &id,  qrRepo::LogicalRepoApi *api, Editor *editor, const QString &targetDirectory)
+Diagram::Diagram(const qReal::Id &id, const qrRepo::LogicalRepoApi *api, Editor *editor, const QString &targetDirectory)
 	: mId(id)
 	, mApi(api)
 	, mEditor(editor)

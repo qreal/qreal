@@ -15,12 +15,8 @@
 TARGET = qrmc
 
 include(../global.pri)
-include (classes/classes.pri)
-include (utils/utils.pri)
 
 QT += xml
-
-CONFIG += c++11
 
 CONFIG += console
 
@@ -29,26 +25,62 @@ DEPENDPATH += \
 	templates \
 
 HEADERS += \
-	metaCompiler.h \
-	diagram.h \
-	editor.h \
-	../qrkernel/definitions.h \
-	../qrkernel/ids.h \
-	../qrrepo/repoApi.h \
+	$$PWD/metaCompiler.h \
+	$$PWD/diagram.h \
+	$$PWD/editor.h \
+	$$PWD/classes/nonGraphicType.h \
+	$$PWD/classes/nodeType.h \
+	$$PWD/classes/graphicType.h \
+	$$PWD/classes/enumType.h \
+	$$PWD/classes/edgeType.h \
+	$$PWD/classes/type.h \
+	$$PWD/classes/property.h \
+	$$PWD/classes/shape.h \
+	$$PWD/classes/label.h \
+	$$PWD/classes/linePort.h \
+	$$PWD/classes/pointPort.h \
+	$$PWD/classes/port.h \
+	$$PWD/classes/scalableCoordinate.h \
+	$$PWD/utils/nameNormalizer.h \
+	$$PWD/utils/defs.h \
 
 SOURCES += \
-	metaCompiler.cpp \
-	diagram.cpp \
-	editor.cpp \
-	main.cpp \
+	$$PWD/metaCompiler.cpp \
+	$$PWD/diagram.cpp \
+	$$PWD/editor.cpp \
+	$$PWD/main.cpp \
+	$$PWD/classes/nonGraphicType.cpp \
+	$$PWD/classes/nodeType.cpp \
+	$$PWD/classes/graphicType.cpp \
+	$$PWD/classes/enumType.cpp \
+	$$PWD/classes/edgeType.cpp \
+	$$PWD/classes/type.cpp \
+	$$PWD/classes/property.cpp \
+	$$PWD/classes/shape.cpp \
+	$$PWD/classes/label.cpp \
+	$$PWD/classes/linePort.cpp \
+	$$PWD/classes/port.cpp \
+	$$PWD/classes/pointPort.cpp \
+	$$PWD/classes/scalableCoordinate.cpp \
+	$$PWD/utils/nameNormalizer.cpp \
+
+TRANSLATIONS += \
+	$$PWD/../qrtranslations/ru/qrmc_ru.ts \
+
+OTHER_FILES += \
+	$$PWD/qrmcTemplates/edge.template \
+	$$PWD/qrmcTemplates/elements.h.template \
+	$$PWD/qrmcTemplates/node.template \
+	$$PWD/qrmcTemplates/plugin.qrc.template \
+	$$PWD/qrmcTemplates/pluginInterface.h.template \
+	$$PWD/qrmcTemplates/pluginInterface.cpp.template \
+	$$PWD/qrmcTemplates/plugins.pro.template \
+	$$PWD/qrmcTemplates/pro.template \
+	$$PWD/qrmcTemplates/utils.template \
+	$$PWD/plugins/pluginsCommon.pri \
+	$$PWD/plugins/pluginsSdk.pri \
 
 links(qrkernel qrutils qrrepo)
 includes(qrkernel)
 
-OTHER_FILES += \
-	templates/edge.template \
-	templates/node.template \
-	templates/plugin.qrc.template \
-	templates/plugins.pro.template \
-	templates/pro.template \
-	templates/utils.template \
+copyToDestdir(qrmcTemplates, now)

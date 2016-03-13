@@ -30,7 +30,7 @@
 @@PortsSdf@@=<picture sizex="@@NodeWidth@@" sizey="@@NodeHeight@@" >\n@@Ports@@\n</picture>
 @@LinePort@@=	<line x1="@@StartX@@" y1="@@StartY@@" x2="@@EndX@@" y2="@@EndY@@" stroke-width="7" stroke-style="solid" stroke="#c3dcc4" />\n	<line x1="@@StartX@@" y1="@@StartY@@" x2="@@EndX@@" y2="@@EndY@@" stroke-width="1" stroke-style="solid" stroke="#465945" />
 @@PointPort@@=	<point stroke-width="11" stroke-style="solid" stroke="#c3dcc4" x1="@@PointX@@" y1="@@PointY@@" />\n	<point stroke-width="3" stroke-style="solid" stroke="#465945" x1="@@PointX@@" y1="@@PointY@@" />
-@@NodeConstructor@@=		@@ElementName@@()\n		{\n			mBonusContextMenuFields @@ContextMenuItems@@;\n		}
+@@NodeConstructor@@=	explicit @@ElementName@@(qReal::Metamodel &metamodel)\n		: NodeElementType(metamodel)\n	{\n		initProperties();\n	}
 @@ItemsValidList@@=mBonusContextMenuFields
 @@ItemsInvalidList@@=QStringList()
 @@SdfFile@@=	<file>generated/shapes/@@Filename@@</file>

@@ -1,0 +1,116 @@
+// ----------------------------------------------------------------------- //
+// This file is auto-generated with qrmc v1.0. Do not modify its contents
+// or prepare to lose your edits. If you want to change something in it
+// consider editing language metamodel instead.
+// ----------------------------------------------------------------------- //
+
+#include "pluginInterface.h"
+
+#include "elements.h"
+
+@@MetamodelName@@Plugin::@@MetamodelName@@Plugin()
+{
+	initPlugin();
+}
+
+void @@MetamodelName@@Plugin::initPlugin()
+{
+	initMultigraph();
+	initNameMap();
+	initPaletteGroupsMap();
+	initPaletteGroupsDescriptionMap();
+	initShallPaletteBeSortedMap();
+}
+
+void @@MetamodelName@@Plugin::initMultigraph()
+{
+	/// @todo: Implement this.
+}
+
+void @@MetamodelName@@Plugin::initNameMap()
+{
+@@InitDiagramNameMapLine@@
+@@InitDiagramNodeNameMapLine@@
+@@InitElementNameMapLine@@
+@@InitPropertyNamesMapLine@@
+}
+
+void @@MetamodelName@@Plugin::initPaletteGroupsMap()
+{
+	/// @todo: Implement this.
+}
+
+void @@MetamodelName@@Plugin::initPaletteGroupsDescriptionMap()
+{
+	/// @todo: Implement this.
+}
+
+void @@MetamodelName@@Plugin::initShallPaletteBeSortedMap()
+{
+	/// @todo: Implement this.
+}
+
+QStringList @@MetamodelName@@Plugin::diagrams() const
+{
+	return diagramNameMap.keys();
+}
+
+QStringList @@MetamodelName@@Plugin::diagramPaletteGroups(const QString &diagram) const
+{
+	QStringList result;
+	for (const QPair<QString, QStringList> &group : mPaletteGroupsMap[diagram]) {
+		result << group.first;
+	}
+
+	return result;
+}
+
+QStringList @@MetamodelName@@Plugin::diagramPaletteGroupList(const QString &diagram, const QString &group) const
+{
+	for (const QPair<QString, QStringList> &ourGroup : mPaletteGroupsMap[diagram]) {
+		if (ourGroup.first == group) {
+			return ourGroup.second;
+		}
+	}
+
+	return {};
+}
+
+QString @@MetamodelName@@Plugin::diagramPaletteGroupDescription(const QString &diagram, const QString &group) const
+{
+	return mPaletteGroupsDescriptionMap[diagram][group];
+}
+
+bool @@MetamodelName@@Plugin::shallPaletteBeSorted(const QString &diagram) const
+{
+	return mShallPaletteBeSortedMap[diagram];
+}
+
+QString @@MetamodelName@@Plugin::editorName() const
+{
+	/// @todo: implement this.
+	return "@@MetamodelName@@ Editor";
+}
+
+QString @@MetamodelName@@Plugin::diagramName(const QString &diagram) const
+{
+	return mDiagramNameMap[diagram];
+}
+
+qReal::ElementType *@@MetamodelName@@Plugin::diagramNode(const QString &diagram) const
+{
+	return mDiagramNodeNameMap[diagram].isEmpty() ? nullptr : &elementType(diagram, mDiagramNodeNameMap[diagram]);
+}
+
+QList<QPair<QString, QString>> @@MetamodelName@@Plugin::enumValues(const QString &name) const
+{
+	/// @todo: Implement this.
+	return {};
+}
+
+bool @@MetamodelName@@Plugin::isEnumEditable(const QString &name) const
+{
+	/// @todo: Implement this.
+	const QStringList editableEnums = {  };
+	return editableEnums.contains(name);
+}

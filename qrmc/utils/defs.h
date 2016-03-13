@@ -13,12 +13,14 @@
  * limitations under the License. */
 
 #pragma once
+
 #include <QtCore/QString>
+
+namespace qrmc {
 
 const QString endline = "\n";
 const QString nodeIndent = "\t\t\t";
 
-//const QString generatedDir = "../qrmc/plugins";
 const QString shapesDir = "shapes";
 const QString generatedShapesDir = "generated";
 const QString pluginHeaderName = "pluginInterface.h";
@@ -27,7 +29,7 @@ const QString elementsFileName = "elements.h";
 const QString resourceFileName = "plugin.qrc";
 const QString pluginsProjectFileName = "plugin.pro";
 
-const QString templatesDir = "templates";
+const QString templatesDir = "qrmcTemplates";
 const QString pluginHeaderTemplate = "pluginInterface.h.template";
 const QString pluginSourceTemplate = "pluginInterface.cpp.template";
 const QString elementsHeaderTemplate = "elements.h.template";
@@ -184,4 +186,4 @@ const QString nameOfTheDirectory = "name of the directory";
 
 const QString qMakeLineTag = "@@qMakeLine@@";
 
-
+}

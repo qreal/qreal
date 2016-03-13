@@ -24,7 +24,7 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id, const QString &targetDirectory)
+NodeType::NodeType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, qReal::Id id, const QString &targetDirectory)
 	: GraphicType(diagram, api, id, targetDirectory)
 {
 }

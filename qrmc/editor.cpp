@@ -24,7 +24,7 @@
 using namespace qReal;
 using namespace qrmc;
 
-Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id
+Editor::Editor(MetaCompiler *metaCompiler, const qrRepo::LogicalRepoApi *api, const qReal::Id &id
 		, const QString &targetDirectory)
 	: mMetaCompiler(metaCompiler)
 	, mApi(api)
