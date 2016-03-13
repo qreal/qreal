@@ -22,22 +22,21 @@
 #include <QtCore/QState>
 #include <QtCore/QFinalState>
 #include <QtCore/QSet>
+#include <QtCore/QMetaMethod>
+
 #include <QtCore/QSignalTransition>
 #include <QtCore/QAbstractTransition>
-
-#include <QtCore/QDebug>
 
 #include <qrutils/functionTraits.h>
 
 #include "guardSignalGenerator.h"
+#include "utils/robotCommunication/tcpRobotCommunicatorInterface.h"
 
 class QStateMachine;
 class QTimer;
 
 namespace utils {
 namespace robotCommunication {
-
-class TcpRobotCommunicatorInterface;
 
 /// Abstract state machine-based protocol of interaction with robot. Uses states to track phase of interaction,
 /// transitions initiated by TcpRobotCommunicator signals to move between states and actions on entering in state
@@ -66,21 +65,24 @@ public:
 	{
 		registerStateIfNeeded(source);
 		registerStateIfNeeded(destination);
-		source->addTransition(&mCommunicator, signal, destination);
+		const QMetaMethod signalMetaMethod = QMetaMethod::fromSignal(signal);
+		source->addTransition(&mCommunicator, signalMetaMethod.methodSignature().constData(), destination);
 	}
 
 	/// Adds transition from "source" state to error state by given signal.
 	template <typename Func> void addErrorTransition(QState *source, Func signal)
 	{
 		registerStateIfNeeded(source);
-		source->addTransition(&mCommunicator, signal, mErrored);
+		const QMetaMethod signalMetaMethod = QMetaMethod::fromSignal(signal);
+		source->addTransition(&mCommunicator, signalMetaMethod.methodSignature().constData(), mErrored);
 	}
 
 	/// Adds transition from "source" state to success state by given signal.
 	template <typename Func> void addSuccessTransition(QState *source, Func signal)
 	{
 		registerStateIfNeeded(source);
-		source->addTransition(&mCommunicator, signal, mSuccess);
+		const QMetaMethod signalMetaMethod = QMetaMethod::fromSignal(signal);
+		source->addTransition(&mCommunicator, signalMetaMethod.methodSignature().constData(), mSuccess);
 	}
 
 	/// Adds transition that can proceed to destination state or move to "errored" state depending on result of guard
@@ -102,8 +104,10 @@ public:
 		QSharedPointer<GuardSignalGenerator> successGuardSignalGenerator(new GuardSignalGenerator{});
 		QSharedPointer<GuardSignalGenerator> errorGuardSignalGenerator(new GuardSignalGenerator{});
 
-		source->addTransition(successGuardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, destination);
-		source->addTransition(errorGuardSignalGenerator.data(), &GuardSignalGenerator::guardSatisfied, mErrored);
+		const QMetaMethod signalMetaMethod = QMetaMethod::fromSignal(&GuardSignalGenerator::guardSatisfied);
+		const QByteArray signature = signalMetaMethod.methodSignature().constData();
+		source->addTransition(successGuardSignalGenerator.data(), signature, destination);
+		source->addTransition(errorGuardSignalGenerator.data(), signature, mErrored);
 
 		connect(&mCommunicator, signal, [source, guard, successGuardSignalGenerator, errorGuardSignalGenerator]
 				(const ParamType &&param) {

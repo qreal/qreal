@@ -29,7 +29,7 @@ SplashScreen::SplashScreen(bool isVisible)
 	: QSplashScreen()
 	, mProgressBar(new QProgressBar(this))
 {
-	const QString customScreen = PlatformInfo::applicationDirPath() + "/splashscreen.png";
+	const QString customScreen = PlatformInfo::invariantSettingsPath("pathToSplashscreen");
 	const QString pixmapFilePath = QFile::exists(customScreen) ? customScreen : defaultImage;
 
 	setPixmap(QPixmap(pixmapFilePath).scaled(640, 480, Qt::KeepAspectRatio, Qt::SmoothTransformation));
