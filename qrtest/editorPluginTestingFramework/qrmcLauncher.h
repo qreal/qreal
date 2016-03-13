@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,17 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "qrgui/plugins/toolPluginInterface/pluginConfigurator.h"
 
 namespace editorPluginTestingFramework {
 
+/// Helper class that launches QRMC and generates code by metamodel.
 class QrmcLauncher
 {
 public:
-	/// launches qrmc (gets fileName and path to qrmc-bin.pro and generates code)
-	void launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &pathToGeneratedCode);
+	QrmcLauncher() = delete;
+
+	/// Launches QRMC on a given .qrs file with metamodel and generates plugin code into given target directory.
+	static void launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &targetDirectory);
 };
 
 }

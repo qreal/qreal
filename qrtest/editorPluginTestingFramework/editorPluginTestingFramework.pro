@@ -14,6 +14,7 @@
 
 include(../../global.pri)
 include(../../qrgui/mainWindow/scriptAPI/scriptAPI.pri)
+
 QT += xml widgets svg printsupport
 
 CONFIG += console
@@ -38,7 +39,7 @@ HEADERS += \
 	qrmcLauncher.h \
 	pluginCompiler.h \
 	pluginLoader.h \
-	qrxcLauncher.h \
+	metamodelXmlGeneratorLauncher.h \
 	../../qrgui/mainWindow/projectManager/projectManagerWrapper.h\
 	../../qrgui/mainWindow/palette/paletteTree.h\
 	../../qrgui/mainWindow/palette/paletteTreeWidgets.h\
@@ -85,7 +86,6 @@ HEADERS += \
 	../../qrgui/plugins/pluginManager/interpreterEditorManager.h \
 	../../qrgui/plugins/pluginManager/sdfRenderer.h \
 	../../qrgui/plugins/pluginManager/details/interpreterElementImpl.h \
-	../../qrgui/plugins/pluginManager/explosion.h \
 	../../qrgui/plugins/pluginManager/pattern.h \
 	../../qrgui/plugins/pluginManager/editorManager.h \
 	../../qrgui/plugins/pluginManager/editorManagerInterface.h \
@@ -106,7 +106,7 @@ SOURCES += \
 	main.cpp \
 	pluginCompiler.cpp \
 	pluginLoader.cpp \
-	qrxcLauncher.cpp \
+	metamodelXmlGeneratorLauncher.cpp \
 	../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp\
 	../../qrgui/mainWindow/palette/paletteTree.cpp\
 	../../qrgui/mainWindow/palette/paletteTreeWidgets.cpp\
@@ -166,6 +166,9 @@ FORMS += \
 	../../qrgui/mainWindow/shapeEdit/visibilityConditionsDialog.ui \
 	../../qrgui/mainWindow/referenceList.ui \
 
+OTHER_FILES += \
+	$$PWD/travisConfigurationParameters.xml \
+	$$PWD/configurationParameters.xml \
 
 links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrgui-thirdparty qscintilla2 qrgraph \
 		qrgui-tool-plugin-interface qrgui-models qrgui-controller qrgui-dialogs qrgui-preferences-dialog qrgui-facade \
@@ -173,6 +176,6 @@ links (qrrepo qrtext qrkernel qrutils qrmc qrgui-plugin-manager qrgui-editor qrg
 
 includes(qrgraph qrgui/plugins/metaMetaModel)
 
-copyToDestdir(methodsToTest)
-copyToDestdir(configurationParameters.xml)
-copyToDestdir(travisConfigurationParameters.xml)
+copyToDestdir(methodsToTest, now)
+copyToDestdir($$OTHER_FILES, now)
+copyToDestdir(examplesOfMetamodel/enum.qrs, now)

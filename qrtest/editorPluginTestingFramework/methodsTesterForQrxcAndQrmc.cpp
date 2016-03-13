@@ -31,6 +31,7 @@ using namespace std;
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 
+/*
 MethodsTesterForQrxcAndQrmc::MethodsTesterForQrxcAndQrmc(
 		Metamodel * const qrmcGeneratedPlugin
 		, Metamodel * const qrxcGeneratedPlugin
@@ -1221,3 +1222,4 @@ AbstractStringGenerator * MethodsTesterForQrxcAndQrmc::initGeneratorWithSecondIn
 	clonedGenerator->init(mQrmcGeneratedPlugin);
 	return clonedGenerator;
 }
+*/

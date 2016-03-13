@@ -23,7 +23,8 @@
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : GraphicType(diagram, api, id)
+EdgeType::EdgeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id, const QString &targetDirectory)
+	: GraphicType(diagram, api, id, targetDirectory)
 {
 	mLineType = mApi->stringProperty(id, "lineType");
 	initLabels();
@@ -35,7 +36,7 @@ EdgeType::~EdgeType()
 
 Type* EdgeType::clone() const
 {
-	EdgeType *result = new EdgeType(mDiagram, mApi, mId);
+	EdgeType *result = new EdgeType(mDiagram, mApi, mId, targetDirectory());
 	GraphicType::copyFields(result);
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
@@ -168,22 +169,26 @@ void EdgeType::generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
 void EdgeType::generateSdf() const
 {
 	QDir dir;
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(targetDirectory())) {
+		dir.mkdir(targetDirectory());
 	}
-	dir.cd(generatedDir);
+
+	dir.cd(targetDirectory());
 	QString editorName = diagram()->editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
 	}
+
 	dir.cd(editorName);
 	if (!dir.exists(generatedShapesDir)) {
 		dir.mkdir(generatedShapesDir);
 	}
+
 	dir.cd(generatedShapesDir);
 	if (!dir.exists(shapesDir)) {
 		dir.mkdir(shapesDir);
 	}
+
 	dir.cd(shapesDir);
 
 	const QString fileName = dir.absoluteFilePath(name() + "Class.sdf");
@@ -192,6 +197,7 @@ void EdgeType::generateSdf() const
 		qDebug() << "cannot open \"" << fileName << "\"";
 		return;
 	}
+
 	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
 
 	QString result = compiler->getTemplateUtils(lineSdfTag);

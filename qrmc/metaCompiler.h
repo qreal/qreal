@@ -30,7 +30,9 @@ namespace qrmc {
 	class MetaCompiler
 	{
 	public:
-		MetaCompiler(const QString &qrmcDir, qrRepo::LogicalRepoApi *mLogicalRepoApi);
+		MetaCompiler(const QString &qrmcDir, qrRepo::LogicalRepoApi *logicalRepoApi
+				, const QString &directoryToGenerate);
+
 		~MetaCompiler();
 		bool compile(const QString &metamodel = "");
 		Editor *loadMetaModel(const qReal::Id &id);
@@ -61,6 +63,8 @@ namespace qrmc {
 		QDir mDirectory;
 
 		QString mTargetMetamodel;
+
+		const QString mTargetDirectory;
 
 		bool changeDir(const QString &path);
 		bool loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate);

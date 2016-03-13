@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 //	QString workingCopyDir = "../qrgui/save";
 
 	qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingCopyDir);
-	MetaCompiler metaCompiler(qReal::PlatformInfo::applicationDirPath() + "/../../qrmc/", repoApi);
+	MetaCompiler metaCompiler(qReal::PlatformInfo::applicationDirPath() + "/../../qrmc/", repoApi, ".");
 	if (!metaCompiler.compile()) {
 		qDebug() << "compilation failed";
 		return 1;

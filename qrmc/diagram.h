@@ -28,7 +28,7 @@ namespace qrmc {
 	class Diagram
 	{
 	public:
-		Diagram(const qReal::Id &id, qrRepo::LogicalRepoApi *api, Editor *editor);
+		Diagram(const qReal::Id &id, qrRepo::LogicalRepoApi *api, Editor *editor, const QString &targetDirectory);
 		~Diagram();
 		bool init();
 		bool resolve();
@@ -78,6 +78,7 @@ namespace qrmc {
 		QString mDiagramDisplayedName;
 		Editor *mEditor;
 		QList<ImportSpecification> mImports;
+		const QString mTargetDirectory;
 
 		class ListMethodGenerator;
 		class UsagesGenerator;

@@ -24,8 +24,13 @@
 using namespace qReal;
 using namespace qrmc;
 
-Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
-	: mMetaCompiler(metaCompiler), mApi(api), mId(id), mLoadingComplete(false)
+Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id
+		, const QString &targetDirectory)
+	: mMetaCompiler(metaCompiler)
+	, mApi(api)
+	, mId(id)
+	, mLoadingComplete(false)
+	, mTargetDirectory(targetDirectory)
 {
 	mName = mApi->property(mId, nameOfTheDirectory).toString().section("/", -1);
 	mNameOfMetamodel = mApi->stringProperty(mId, "name");
@@ -34,9 +39,7 @@ Editor::Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qR
 
 Editor::~Editor()
 {
-	foreach(Diagram *diagram, mDiagrams.values())
-		if (diagram)
-			delete diagram;
+	qDeleteAll(mDiagrams);
 }
 
 bool Editor::isLoaded()
@@ -53,15 +56,16 @@ bool Editor::load()
 {
 	// load includes
 	QStringList includes = mApi->stringProperty(mId, "include").split(",");
-	foreach(QString includedMetamodel, includes)
+	for (const QString &includedMetamodel : includes)
 	{
 		QString metamodelName = includedMetamodel.section("/", -1).section(".", 0, 0).trimmed();
-		if (metamodelName.isEmpty())
+		if (metamodelName.isEmpty()) {
 			continue;
+		}
 
 		Editor *includedEditor = nullptr;
 		IdList metamodels = mApi->elementsByType(metamodelDiagram);
-		foreach(Id metamodel, metamodels) {
+		for (const Id &metamodel : metamodels) {
 			if (!mApi->isLogicalElement(metamodel))
 				continue;
 			if (mApi->name(metamodel) == metamodelName) {
@@ -69,22 +73,24 @@ bool Editor::load()
 				break;
 			}
 		}
+
 		if (!includedEditor)
 		{
 			qDebug() << "ERROR: can't load included metamodel" << metamodelName;
 			return false;
 		}
+
 		mIncludes.append(includedEditor);
 	}
 
 	// load diagrams (no resolving yet)
 	IdList children = mApi->children(mId);
 	IdList diagrams;
-	foreach(Id child, children)
+	for (const Id &child : children)
 		if (mApi->isLogicalElement(child) && child.element() == metaEditorDiagramNode)
 			diagrams << child;
 
-	foreach(Id diagramId, diagrams)
+	for (const Id &diagramId : diagrams)
 	{
 		if (!mApi->isLogicalElement(diagramId))
 			continue;
@@ -97,13 +103,14 @@ bool Editor::load()
 			return false;
 		}
 		qDebug() << "\tloading diagram" << diagramName;
-		Diagram *diagram = new Diagram(diagramId, mApi, this);
+		Diagram *diagram = new Diagram(diagramId, mApi, this, mTargetDirectory);
 		if (!diagram->init())
 		{
 			qDebug() << "ERROR: error loading diagram" << diagramName;
 			delete diagram;
 			return false;
 		}
+
 		qDebug() << "\tdiagram" << diagramName << "loaded";
 		mDiagrams[diagramName] = diagram;
 	}
@@ -221,11 +228,15 @@ bool Editor::generatePluginHeader(const QString &hdrTemplate)
 	QString headerTemplate = hdrTemplate;
 	qDebug() << "generating plugin header for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
+	}
+
+	dir.cd(mTargetDirectory);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
+
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(pluginHeaderName);
@@ -248,11 +259,15 @@ bool Editor::generatePluginSource()
 {
 	qDebug() << "generating plugin source for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
+	}
+
+	dir.cd(mTargetDirectory);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
+
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(pluginSourceName);
@@ -298,11 +313,15 @@ bool Editor::generateElementsClasses()
 {
 	qDebug() << "generating elements classes for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
+	}
+
+	dir.cd(mTargetDirectory);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
+
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(elementsFileName);
@@ -315,13 +334,14 @@ bool Editor::generateElementsClasses()
 	QString generatedNodes;
 	QString generatedEdges;
 
-	foreach(Diagram *diagram, mDiagrams) {
+	for (Diagram * const diagram : mDiagrams) {
 		generatedNodes += diagram->generateNodeClasses(mNodeTemplate);
 		generatedEdges += diagram->generateEdgeClasses(mEdgeTemplate);
 	}
 
 	mElementsHeaderTemplate.replace(nodesListTag, generatedNodes)
-						.replace(edgesListTag, generatedEdges);
+			.replace(edgesListTag, generatedEdges);
+
 	// template is ready, writing it into a file
 	QTextStream out(&file);
 	out.setCodec("UTF-8");
@@ -335,11 +355,15 @@ bool Editor::generateResourceFile(const QString &resourceTemplate)
 {
 	qDebug() << "generating resource file for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
+	}
+
+	dir.cd(mTargetDirectory);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
+
 	dir.cd(mName);
 
 	QString fileName = dir.absoluteFilePath(resourceFileName);
@@ -351,7 +375,7 @@ bool Editor::generateResourceFile(const QString &resourceTemplate)
 
 	QString resourceBody = "";
 	const QString line = mUtilsTemplate[sdfFileTag];
-	foreach(Diagram *diagram, mDiagrams) {
+	for (Diagram * const diagram : mDiagrams) {
 		resourceBody += diagram->generateResourceFile(line);
 	}
 
@@ -372,11 +396,15 @@ bool Editor::generateProjectFile(const QString &proTemplate)
 	QString projectTemplate = proTemplate;
 	qDebug() << "generating project file for " << mName;
 	QDir dir;
-	if (!dir.exists(generatedDir))
-		dir.mkdir(generatedDir);
-	dir.cd(generatedDir);
-	if (!dir.exists(mName))
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
+	}
+
+	dir.cd(mTargetDirectory);
+	if (!dir.exists(mName)) {
 		dir.mkdir(mName);
+	}
+
 	dir.cd(mName);
 	QString nameOfMetamodel = mApi->stringProperty(mId, "name");
 	QString fileName = dir.absoluteFilePath(nameOfMetamodel + ".pro");
@@ -405,6 +433,7 @@ void Editor::generateDiagramsMap()
 		initNameMapBody += newline.replace(diagramDisplayedNameTag, diagram->displayedName())
 				.replace(diagramNameTag, diagram->name()) + endline;
 	}
+
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initDiagramNameMapLineTag, initNameMapBody);
 }
@@ -419,6 +448,7 @@ void Editor::generateDiagramNodeNamesMap()
 		initNodeNameMapBody += newline.replace(diagramNodeNameTag, diagram->nodeName())
 								.replace(diagramNameTag, diagram->name()) + endline;
 	}
+
 	// inserting generated lines into main template
 	mSourceTemplate.replace(initDiagramNodeNameMapLineTag, initNodeNameMapBody);
 }

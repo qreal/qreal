@@ -24,8 +24,11 @@
 using namespace qReal;
 using namespace qrmc;
 
-Diagram::Diagram(const qReal::Id &id,  qrRepo::LogicalRepoApi *api, Editor *editor)
-	: mId(id), mApi(api), mEditor(editor)
+Diagram::Diagram(const qReal::Id &id,  qrRepo::LogicalRepoApi *api, Editor *editor, const QString &targetDirectory)
+	: mId(id)
+	, mApi(api)
+	, mEditor(editor)
+	, mTargetDirectory(targetDirectory)
 {
 	mDiagramName = mApi->name(id);
 	mDiagramDisplayedName = mApi->stringProperty(id, "displayedName");
@@ -46,7 +49,7 @@ bool Diagram::init()
 			continue;
 
 		if (id.element() == metaEntityNode) {
-			Type *nodeType = new NodeType(this, mApi, id);
+			Type *nodeType = new NodeType(this, mApi, id, mTargetDirectory);
 			if (!nodeType->init(mDiagramName)) {
 				delete nodeType;
 				qDebug() << "can't load node";
@@ -54,7 +57,7 @@ bool Diagram::init()
 			}
 			mTypes[nodeType->name()] = nodeType;
 		} else if (id.element() == metaEntityEdge) {
-			Type *edgeType = new EdgeType(this, mApi, id);
+			Type *edgeType = new EdgeType(this, mApi, id, mTargetDirectory);
 			if (!edgeType->init(mDiagramName)) {
 				delete edgeType;
 				qDebug() << "can't load edge";

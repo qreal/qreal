@@ -380,10 +380,10 @@ class MethodsTesterForQrxcAndInterpreter::ElementsListGeneratorWithQStringParame
 		const QString &editorName = editorId.editor();
 		const QString &diagramName = diagramId.diagram();
 
-		mResult = callFunction([editorManagerInterface, editorName, diagramName]()
-				{ return editorManagerInterface->elements(editorName, diagramName); });
+//		mResult = callFunction([editorManagerInterface, editorName, diagramName]()
+//				{ return editorManagerInterface->elements(editorName, diagramName); });
 
-		return editorManagerInterface->elements(editorName, diagramName);
+//		return editorManagerInterface->elements(editorName, diagramName);
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -734,7 +734,8 @@ class MethodsTesterForQrxcAndInterpreter::ExplosionsListGenerator
 		mResult = callFunction([editorManagerInterface, elementId]()
 				{ return editorManagerInterface->explosions(elementId); });
 
-		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
+//		return ConvertingMethods::convertExplosionListIntoStringList(editorManagerInterface->explosions(elementId));
+		return {};
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -1193,10 +1194,11 @@ class MethodsTesterForQrxcAndInterpreter::PropertiesWithDefaultValuesListGenerat
 		Q_UNUSED(editorId);
 		Q_UNUSED(diagramId);
 		Q_UNUSED(propertyName);
-		mResult = callFunction([editorManagerInterface, elementId]()
-				{ return editorManagerInterface->propertiesWithDefaultValues(elementId); });
+//		mResult = callFunction([editorManagerInterface, elementId]()
+//				{ return editorManagerInterface->propertiesWithDefaultValues(elementId); });
 
-		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
+//		return (editorManagerInterface->propertiesWithDefaultValues(elementId));
+		return {};
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -1357,11 +1359,12 @@ class MethodsTesterForQrxcAndInterpreter::IsNodeOrEdgeListGenerator
 		Q_UNUSED(propertyName);
 		const QString &editorName = editorId.editor();
 		const QString &elementName = elementId.element();
-		mResult = callFunction([editorManagerInterface, editorName, elementName]()
-				{ return editorManagerInterface->isNodeOrEdge(editorName, elementName); });
+//		mResult = callFunction([editorManagerInterface, editorName, elementName]()
+//				{ return editorManagerInterface->isNodeOrEdge(editorName, elementName); });
 
-		return ConvertingMethods::convertIntIntoStringList(
-				editorManagerInterface->isNodeOrEdge(editorName, elementName));
+//		return ConvertingMethods::convertIntIntoStringList(
+//				editorManagerInterface->isNodeOrEdge(editorName, elementName));
+		return {};
 	}
 
 	virtual AbstractStringGenerator* clone() const

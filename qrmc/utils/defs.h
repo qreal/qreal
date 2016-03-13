@@ -18,7 +18,7 @@
 const QString endline = "\n";
 const QString nodeIndent = "\t\t\t";
 
-const QString generatedDir = "../qrmc/plugins";
+//const QString generatedDir = "../qrmc/plugins";
 const QString shapesDir = "shapes";
 const QString generatedShapesDir = "generated";
 const QString pluginHeaderName = "pluginInterface.h";

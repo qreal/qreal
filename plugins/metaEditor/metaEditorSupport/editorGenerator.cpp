@@ -32,27 +32,25 @@ using namespace qReal;
 using namespace metaEditor;
 using namespace utils;
 
-EditorGenerator::EditorGenerator(qrRepo::LogicalRepoApi const &api, ErrorReporterInterface &errorReporter)
+EditorGenerator::EditorGenerator(const qrRepo::LogicalRepoApi &api, ErrorReporterInterface &errorReporter)
 		: mApi(api)
 		, mErrorReporter(errorReporter)
 {
 }
 
-QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
+QHash<Id, QPair<QString,QString>> EditorGenerator::getMetamodelList()
 {
-	IdList const metamodels = mApi.children(Id::rootId());
-	QHash<Id, QPair<QString, QString> > metamodelList;
+	const IdList metamodels = mApi.children(Id::rootId());
+	QHash<Id, QPair<QString, QString>> metamodelList;
 
-	foreach (Id const key, metamodels) {
-		QString const objectType = key.element();
+	for (const Id key : metamodels) {
+		const QString objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
 			// Now the user must specify the full path to the directory and the relative path to source files of QReal
-			QString const directoryName = mApi.stringProperty(key, "name of the directory");
-			QString const pathToQRealRoot = mApi.stringProperty(key, "path to QReal Source Files");
+			const QString directoryName = mApi.stringProperty(key, "name of the directory");
+			const QString pathToQRealRoot = mApi.stringProperty(key, "path to QReal Source Files");
 			if (!directoryName.isEmpty() && !pathToQRealRoot.isEmpty()) {
-				QPair<QString, QString> savingData;
-				savingData.first = directoryName;
-				savingData.second = pathToQRealRoot;
+				const QPair<QString, QString> savingData = qMakePair(directoryName, pathToQRealRoot);
 				metamodelList.insert(key, savingData);
 			} else {
 				mErrorReporter.addError(
@@ -60,15 +58,16 @@ QHash<Id, QPair<QString,QString> > EditorGenerator::getMetamodelList()
 			}
 		}
 	}
+
 	return metamodelList;
 }
 
-QPair<QString, QString> EditorGenerator::generateEditor(Id const &metamodelId
-		, QString const &pathToFile, QString const &pathToQRealSource)
+QPair<QString, QString> EditorGenerator::generateEditor(const Id &metamodelId
+		, const QString &pathToFile, const QString &pathToQRealSource)
 {
 	mErrorReporter.clear();
 	mErrorReporter.clearErrors();
-	QString const editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
+	const QString editorPath = calculateEditorPath(pathToFile, pathToQRealSource);
 
 	QDomElement metamodel = mDocument.createElement("metamodel");
 	metamodel.setAttribute("xmlns", "http://schema.real.com/schema/");

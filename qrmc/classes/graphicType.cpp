@@ -23,8 +23,14 @@
 using namespace qrmc;
 using namespace qReal;
 
-GraphicType::ContainerProperties::ContainerProperties() : isSortContainer(false), sizeOfForestalling(0),
-	sizeOfChildrenForestalling(0), isChildrenMovable(true), isMinimizingToChildren(false), isClass(false), isMaximizingChildren(false)
+GraphicType::ContainerProperties::ContainerProperties()
+	: isSortContainer(false)
+	, sizeOfForestalling(0)
+	, sizeOfChildrenForestalling(0)
+	, isChildrenMovable(true)
+	, isMinimizingToChildren(false)
+	, isClass(false)
+	, isMaximizingChildren(false)
 {}
 
 GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
@@ -33,8 +39,15 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 	mResolvingFlag = true;
 }
 
-GraphicType::GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
-	: Type(false, diagram, api, id), mResolving(false)
+GraphicType::GraphicType(
+		Diagram *diagram
+		, qrRepo::LogicalRepoApi *api
+		, const qReal::Id &id
+		, const QString &targetDirectory)
+	: Type(false, diagram, api, id)
+	, mResolving(false)
+	, mShape("", targetDirectory)
+	, mTargetDirectory(targetDirectory)
 {
 }
 
@@ -55,7 +68,7 @@ bool GraphicType::init(const QString &context)
 		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
 
 	const IdList outLinks = mApi->outgoingLinks(mId);
-	foreach (const Id outLink, outLinks) {
+	for (const Id outLink : outLinks) {
 		if (outLink.element() == "Container") {
 			const Id elementId = mApi->to(outLink);
 			const QString typeName = mApi->name(elementId);
@@ -70,7 +83,7 @@ bool GraphicType::init(const QString &context)
 	}
 
 	const IdList inLinks = mApi->incomingLinks(mId);
-	foreach (const Id inLink, inLinks) {
+	for (const Id inLink : inLinks) {
 		if (inLink.element() == "Inheritance") {
 			const Id elementId = mApi->from(inLink);
 			const QString parentName = mApi->name(elementId);
@@ -80,7 +93,7 @@ bool GraphicType::init(const QString &context)
 		}
 	}
 
-	foreach(Id id, mApi->children(mId)) {
+	for (const Id &id : mApi->children(mId)) {
 		if (!mApi->isLogicalElement(id))
 			continue;
 
@@ -96,11 +109,11 @@ bool GraphicType::init(const QString &context)
 			mConnections << mApi->stringProperty(id, "type").section("::", -1);
 		} else if (id.element() == metaEntityUsage) {
 			mUsages << mApi->stringProperty(id, "type").section("::", -1);
-		} else if (id.element() == metaEntityContextMenuField)
-		{
+		} else if (id.element() == metaEntityContextMenuField) {
 			mContextMenuItems << mApi->name(id);
 		}
 	}
+
 	initPossibleEdges();
 	initShape();
 	return true;
@@ -109,7 +122,7 @@ bool GraphicType::init(const QString &context)
 bool GraphicType::initPossibleEdges()
 {
 	IdList children = mApi->children(mId);
-	foreach(Id id, children) {
+	for (const Id &id : children) {
 		if (!mApi->isLogicalElement(id) || id.element() != metaEntityPossibleEdge)
 			continue;
 
@@ -137,6 +150,7 @@ bool GraphicType::initPossibleEdges()
 //				return false;
 		}
 	}
+
 	return true;
 }
 
@@ -159,11 +173,13 @@ GraphicType::ResolvingHelper::~ResolvingHelper()
 void GraphicType::copyFields(GraphicType *type) const
 {
 	Type::copyFields(type);
+	/// @todo: Not good, requires non-const fields.
 	type->mParents = mParents;
 	type->mIsVisible = mIsVisible;
 	type->mContainerProperties = mContainerProperties;
 	type->mContains = mContains;
-	type->mShape = mShape; // this is bad, mkay?
+	type->mShape = mShape;
+	type->mTargetDirectory = mTargetDirectory;
 }
 
 bool GraphicType::resolve()
@@ -459,3 +475,7 @@ QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
 	return line;
 }
 
+QString GraphicType::targetDirectory() const
+{
+	return mTargetDirectory;
+}

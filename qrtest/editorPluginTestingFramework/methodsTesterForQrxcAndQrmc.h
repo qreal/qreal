@@ -27,6 +27,7 @@ namespace editorPluginTestingFramework {
 class MethodsTesterForQrxcAndQrmc : public MethodsTester
 {
 public:
+	/*
 	virtual ~MethodsTesterForQrxcAndQrmc() {}
 
 	/// gets editorInterfaces from mainClass and initializes mQrmcGeneratedPlugin and mQrxcGeneratedPlugin with them
@@ -97,6 +98,7 @@ private:
 	qReal::InterpreterEditorManager* mInterpreterGeneratedPlugin;
 
 	QList<MethodsTester::ResultOfGenerating> mGeneratedList;
+	*/
 };
 
 }

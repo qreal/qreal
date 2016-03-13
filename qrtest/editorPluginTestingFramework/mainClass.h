@@ -17,7 +17,7 @@
 #include "qrmcLauncher.h"
 #include "pluginCompiler.h"
 #include "pluginLoader.h"
-#include "qrxcLauncher.h"
+#include "metamodelXmlGeneratorLauncher.h"
 #include "htmlMaker.h"
 #include "configurationFileParser.h"
 #include "methodsTester.h"
@@ -30,47 +30,39 @@
 
 namespace editorPluginTestingFramework {
 
+/// Class that directs testing process.
 class MainClass
 {
 public:
-	/// gets name of qrs-file and path to qrmc, launches all processes for testing
+	/// Gets name of .qrs file with metamodel and path to qrmc, launches all processes for testing.
 	MainClass(
-			const QString &fileName
+			const QString &metamodelFileName
 			, const QString &pathToQrmc
 			, const QString &applicationPath
 			, const QString &configurationFileName
 		);
 
-	/// returns result of comparison - 0, if all results are correct, and 1 otherwise
-	int travisTestResult() const;
+	/// Returns result of comparison - 0, if all results are correct, and 1 otherwise.
+	int testResult() const;
 
 private:
-	/// returns normalized name (without extension)
+	/// Returns normalized name (without extension).
 	static QString normalizedName(const QString &fileName);
 
-	/// deletes old qrtest/binaries and all inner folders and files
-	static void deleteOldBinaries(const QString &directory);
+	/// Deletes old qrtest/binaries and all inner folders and files.
+	static void deleteOldFiles(const QString &directory);
 
-	/// creates one folder
-	void createFolder(const QString &path);
-
-	/// creates qrtest/binaries and all inner folders
-	void createNewFolders();
-
-	/// copies testMetamodel.qrs from qrtest/editorPluginTestingFramework/fileToTestWithTravis to bin
-	static void copyTestMetamodel(const QString &fileName);
-
-	/// sets value of tamp variable
-	void setTempValueInSettingsManager();
+	/// Sets value of "temp" variable, which contains path to temporary folder with unsaved file.
+	void setTempFolderValue();
 
 	/// returns old value
-	void returnOldValueOfTemp() const;
+	void restoreOldValueOfTempFolder() const;
 
 	void launchQrmc(const QString &fileName, const QString &pathToQrmc);
 
-	void compilePlugin(const QString &directoryToCodeToCompile, const QString &fileName);
+	QFileInfo compilePlugin(const QString &fileName, PluginCompiler::MetamodelCompiler metamodelCompiler);
 
-	void launchQrxc(const QString &fileName);
+	void launchEditorGenerator(const QString &fileName, const QString &qrxcGeneratedBinariesDir);
 
 	void createHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcResult
 			, QList<MethodsTester::ResultOfGenerating> qrxcAndInterpreterResult
@@ -78,53 +70,19 @@ private:
 			, QList<MethodsTester::ResultOfGenerating> timeResultInterpter);
 
 	/// puts names of generated plugins into mQrxcGeneratedPluginList (for further creation of EditorManager)
-	void appendPluginNames();
+//	void appendPluginNames();
 
-	/// parses file with configuration settings
-	void parseConfigurationFile(const QString &fileName);
-
-	/// returns loaded editorInterface
-	qReal::Metamodel* loadedPlugin(const QString &fileName, const QString &pathToFile);
-
-	QrmcLauncher mQrmcLauncher;
-
-	PluginCompiler mPluginCompiler;
+	/// Loads plugin and returns pointer to its interface.
+	/// Transfers ownership to a caller.
+	qReal::Metamodel* loadPlugin(const QFileInfo &file);
 
 	PluginLoader mPluginLoader;
-
-	QrxcLauncher mQrxcLauncher;
 
 	QStringList mQrxcGeneratedPluginsList;
 
 	HtmlMaker mHtmlMaker;
 
-	ConfigurationFileParser mConfigurationFileParser;
-
-	/// path to qmake
-	QString mQmakeParameter;
-
-	/// path to make
-	QString mMakeParameter;
-
-	/// configuration: debug or release
-	QString mConfigurationParameter;
-
-	/// plugin extension (.dll for windows, .so for linux, etc.)
-	QString mPluginExtension;
-
-	/// prefix (none for Windows, lib for linux)
-	QString mPrefix;
-
-	/// path to qreal root (from bin)
-	QString mQRealRootPath;
-
-	/// "yes" if we want to generate html and "no" otherwise
-	QString mGenerateHtml;
-
-	/// path to generated code (from root)
-	QString mGeneratedCodeDirQrxc;
-	QString mGeneratedCodeDirQrmc;
-	QString mGeneratedDirHtml;
+	ConfigurationFileParser mConfiguration;
 
 	/// result of testing for travis
 	int mResultOfTesting;
@@ -137,4 +95,3 @@ private:
 };
 
 }
-
