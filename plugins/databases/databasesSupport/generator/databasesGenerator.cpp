@@ -1,4 +1,4 @@
-/* Copyright 2014-2015 Anastasia Semenova
+/* Copyright 2014-2016 Anastasia Semenova
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -295,6 +295,23 @@ qReal::Id DatabasesGenerator::makeColumnFromAttribute(Id const &attributeId, Id 
 	Id logicalColumnId = createElementFromString("Column", QPointF(), parentId);
 	QString rowName = getProperty(attributeId, "attributeName").toString();
 	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "columnName");
+
+
+	bool primaryKey = getProperty(attributeId, "isPrimaryKey").toBool();
+	if (primaryKey)
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, true, "isPrimaryKey");
+
+	bool unique = getProperty(attributeId, "isUnique").toBool();
+	if (unique)
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, true, "isUnique");
+
+	bool notNull = getProperty(attributeId, "notNull").toBool();
+	if (notNull)
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, true, "notNull");
+
+	QString dataType = getProperty(attributeId, "DataType").toString();
+	if (!dataType.isEmpty())
+		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, dataType, "DataType");
 	return logicalColumnId;
 }
 
@@ -309,8 +326,6 @@ qReal::Id DatabasesGenerator::makeTableFromEntity(Id const &entityId, Id const &
 	for (Id const &attributeId : attributesSet) {
 		makeColumnFromAttribute(attributeId, logicalTableId);
 	}
-
-	IdList tableNodes = findNodes("Table");
 	return logicalTableId;
 }
 
