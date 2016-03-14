@@ -122,12 +122,12 @@ IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
 	return boundedEntities;
 }
 
-void DatabasesGenerator::error(QString const &error, bool isCritical)
+void DatabasesGenerator::error(QString const &error, bool isCritical, Id const &position)
 {
 	if (isCritical) {
-		mInterpretersInterface.errorReporter()->addCritical(error);
+		mInterpretersInterface.errorReporter()->addCritical(error, position);
 	} else {
-		mInterpretersInterface.errorReporter()->addWarning(error, Id::rootId());
+		mInterpretersInterface.errorReporter()->addWarning(error, position);
 	}
 	mCurrentDiagram = Id::rootId();
 }
@@ -154,6 +154,7 @@ Id DatabasesGenerator::getPrimaryKey(Id const &entityId)
 			+  "': "
 			+ QString::number(primaryKeyCount)
 			, true
+			, entityId
 		);
 		return Id::rootId();
 	}
@@ -203,11 +204,11 @@ bool DatabasesGenerator::checkEntities()
 		QString name = getProperty(entity, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
-			error(tr("Entity has no name."), true);
+			error(tr("Entity has no name."), true, entity);
 		}
 		IdList attributes = getChildren(entity);
 		if (attributes.isEmpty()) {
-			error(tr("Entity with name '") + name + tr("' has no attributes."), false);
+			error(tr("Entity with name '") + name + tr("' has no attributes."), false, entity);
 		}
 	}
 	return result;
@@ -224,11 +225,11 @@ bool DatabasesGenerator::checkAttributes()
 		QString parentName = getProperty(parent, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
-			error(tr("Attribute has no name in entity '") + parentName + "'.", true);
+			error(tr("Attribute has no name in entity '") + parentName + "'.", true, attribute);
 		}
 		if (datatype.isEmpty()) {
 			result = false;
-			error(tr("Attribute has no datatype in entity '") + parentName + "'.", true);
+			error(tr("Attribute has no datatype in entity '") + parentName + "'.", true, attribute);
 		}
 	}
 	return result;
@@ -245,10 +246,9 @@ bool DatabasesGenerator::checkRelationships()
 		Id from = mLogicalModelApi.logicalRepoApi().from(relationship);
 		if (out == Id::rootId() || from == Id::rootId()) {
 			result = false;
-			error(getProperty(relationship, "Name").toString()
-				+ tr(" relationship with name '")
+			error(tr("Relationship with name '")
 				+ getProperty(relationship, "Name").toString()
-				+ tr("' has invalid ends."), true);
+				+ tr("' has invalid ends."), true, relationship);
 		}
 	}
 	return result;
@@ -427,7 +427,7 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error("Too many relationships from "
 				 + getProperty(from, "entityName").toString()
-				 + "to " + getProperty(to, "entityName").toString(), true);
+				 + "to " + getProperty(to, "entityName").toString(), true, from);
 			return false;
 		}
 
@@ -435,7 +435,8 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 		if (columnNameForRelationship.isEmpty()) {
 			mErrorReporter->addInformation(tr("Column name for one-to-many relationship with name '")
 				+ getProperty(relationship, "Name").toString()
-				+ tr("' is`n specified. Column name was generated automatically."));
+				+ tr("' is not specified. Column name was generated automatically.")
+				, relationship);
 			columnNameForRelationship = getPrimaryKeyNameOfSet(oneToOneBoundedEntitiesSets.at(toSet));
 		}
 		mRelMatrix[fromSet][toSet] = 1;
@@ -466,7 +467,7 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error(tr("Too many relationships from ")
 				+ getProperty(from, "entityName").toString()
-				+ tr(" to ") + getProperty(to, "entityName").toString() + tr("."), true);
+				+ tr(" to ") + getProperty(to, "entityName").toString() + tr("."), true, from);
 			return false;
 		}
 
@@ -474,7 +475,8 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 		if (relationshipTableName.isEmpty()) {
 			mErrorReporter->addInformation(tr("Table name for many-to-many relationship with name '")
 				+ getProperty(relationship, "tableName").toString()
-				+ tr("' is not specified. Table name was generated automatically."), Id::rootId());
+				+ tr("' is not specified. Table name was generated automatically.")
+				, relationship);
 			relationshipTableName = (getListTableName(oneToOneBoundedEntitiesSets.at(fromSet))
 				+ "_" + getListTableName(oneToOneBoundedEntitiesSets.at(toSet))).toUtf8();
 		}

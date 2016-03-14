@@ -118,7 +118,7 @@ private:
 	Id getParent(Id const &id);
 	IdList getChildren(Id const &id);
 	IdList getBoundedWithOneToOneRealationship(Id const &id);
-	void error(QString const &error, bool isCritical);
+	void error(QString const &error, bool isCritical, Id const &position = Id::rootId());
 	Id getPrimaryKey(Id const &entityId);
 	void clearPhysicalModel();
 
