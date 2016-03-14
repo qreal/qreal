@@ -11,7 +11,7 @@
     <Logo>../images/qreal-logo.png</Logo>
     <Watermark>../images/qreal-watermark.png</Watermark>
 
-    <StartMenuDir>QReal:Databases</StartMenuDir>
+    <StartMenuDir>QRealDB</StartMenuDir>
     <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
