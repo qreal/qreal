@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<namespace>UML 2.0</namespace>
-	<diagram nodeName="DatabasesNode" name="Databases" displayedName="Databases Diagram">
+	<diagram nodeName="DatabasesNode" name="Databases" displayedName="Logical model">
 		<nonGraphicTypes>
 			<port name="EntityLeft"/>
 			<port name="EntityVertical"/>
 			<port name="EntityRight"/>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="DatabasesNode" displayedName="Databases Diagram">
+			<node name="DatabasesNode" displayedName="Logical model">
 				<graphics>
 					<picture/>
 					<labels/>

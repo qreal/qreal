@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<namespace>UML 2.0</namespace>
-	<diagram nodeName="DatabasesPhysicalNode" name="DatabasesPhysicalModelMetamodel" displayedName="Databases Physical Model (My Sql 5)">
+	<diagram nodeName="DatabasesPhysicalNode" name="DatabasesPhysicalModelMetamodel" displayedName="Physical model (My Sql 5)">
 		<nonGraphicTypes>
 			<port name="TableLeft"/>
 			<port name="TableVertical"/>
 			<port name="TableRight"/>
 			<enum name="DataTypes" editable="true">
-				<value name="bigint" displayedName="BIGINT"/>
-				<value name="blob" displayedName="BLOB"/>
-				<value name="char" displayedName="CHAR()"/>
-				<value name="date" displayedName="DATE"/>
-				<value name="datetime" displayedName="DATETIME"/>
-				<value name="decimal" displayedName="DECIMAL(,)"/>
-				<value name="double" displayedName="DOUBLE"/>
-				<value name="enum" displayedName="ENUM"/>
-				<value name="float" displayedName="FLOAT()"/>
-				<value name="int" displayedName="INT"/>
-				<value name="longblob" displayedName="LONGBLOB"/>
-				<value name="longtext" displayedName="LONGTEXT"/>
-				<value name="mediumblob" displayedName="MEDIUMBLOB"/>
-				<value name="mediumint" displayedName="MEDIUMINT"/>
-				<value name="mediumtext" displayedName="MEDIUMTEXT"/>
-				<value name="smallint" displayedName="SMALLINT"/>
-				<value name="text" displayedName="TEXT"/>
-				<value name="time" displayedName="TIME"/>
-				<value name="timestamp" displayedName="TIMESTAMP"/>
-				<value name="tinyblob" displayedName="TINYBLOB"/>
-				<value name="tinyint" displayedName="TINYINT"/>
-				<value name="tinytext" displayedName="TINYTEXT"/>
-				<value name="varchar" displayedName="VARCHAR()"/>
-				<value name="year" displayedName="YEAR"/>
+				<value name="BIGINT" displayedName="BIGINT"/>
+				<value name="BLOB" displayedName="BLOB"/>
+				<value name="CHAR" displayedName="CHAR()"/>
+				<value name="DATE" displayedName="DATE"/>
+				<value name="DATETIME" displayedName="DATETIME"/>
+				<value name="DECIMAL" displayedName="DECIMAL(,)"/>
+				<value name="DOUBLE" displayedName="DOUBLE"/>
+				<value name="ENUM" displayedName="ENUM"/>
+				<value name="FLOAT" displayedName="FLOAT()"/>
+				<value name="INT" displayedName="INT"/>
+				<value name="LONGBLOB" displayedName="LONGBLOB"/>
+				<value name="LONGTEXT" displayedName="LONGTEXT"/>
+				<value name="MEDIUMBLOB" displayedName="MEDIUMBLOB"/>
+				<value name="MEDIUMINT" displayedName="MEDIUMINT"/>
+				<value name="MEDIUMTEXT" displayedName="MEDIUMTEXT"/>
+				<value name="SMALLINT" displayedName="SMALLINT"/>
+				<value name="TEXT" displayedName="TEXT"/>
+				<value name="TIME" displayedName="TIME"/>
+				<value name="TIMESTAMP" displayedName="TIMESTAMP"/>
+				<value name="TINYBLOB" displayedName="TINYBLOB"/>
+				<value name="TINYINT" displayedName="TINYINT"/>
+				<value name="TINYTEXT" displayedName="TINYTEXT"/>
+				<value name="VARCHAR" displayedName="VARCHAR()"/>
+				<value name="YEAR" displayedName="YEAR"/>
 			</enum>
 			<enum name="TableTypes" displayedName="Table Type">
-			<value name="bdb" displayedName="BDB"/>
-			<value name="isam" displayedName="ISAM"/>
-			<value name="merge" displayedName="MERGE"/>
-			<value name="mrg_myisam" displayedName="MRG_MYISAM"/>
-			<value name="myisam" displayedName="MyISAM"/>
+			<value name="BDB" displayedName="BDB"/>
+			<value name="ISAM" displayedName="ISAM"/>
+			<value name="MERGE" displayedName="MERGE"/>
+			<value name="MRG_MYISAM" displayedName="MRG_MYISAM"/>
+			<value name="MyISAM" displayedName="MyISAM"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="DatabasesPhysicalNode" displayedName="Databases Diagram">
+			<node name="DatabasesPhysicalNode" displayedName="Physical model (My Sql 5)">
 				<graphics>
 					<picture/>
 					<labels/>

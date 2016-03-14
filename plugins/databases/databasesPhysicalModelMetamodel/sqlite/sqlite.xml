@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
 	<namespace>UML 2.0</namespace>
-	<diagram nodeName="DatabasesPhysicalNode" name="DatabasesPhysicalModelMetamodel" displayedName="Databases Physical Model (Sqlite)">
+	<diagram nodeName="DatabasesPhysicalNode" name="DatabasesPhysicalModelMetamodel" displayedName="Physical model (Sqlite)">
 		<nonGraphicTypes>
 			<port name="TableLeft"/>
 			<port name="TableVertical"/>
 			<port name="TableRight"/>
 			<enum name="DataTypes" editable="true">
-				<value name="bigint" displayedName="BIGINT"/>
-				<value name="blob" displayedName="BLOB"/>
-				<value name="boolean" displayedName="BOOLEAN"/>
-				<value name="char" displayedName="CHAR()"/>
-				<value name="clob" displayedName="CLOB()"/>
-				<value name="date" displayedName="DATE"/>
-				<value name="datetime" displayedName="DATETIME"/>
-				<value name="decimal" displayedName="DECIMAL(,)"/>
-				<value name="double" displayedName="DOUBLE"/>
-				<value name="double_precision" displayedName="DOUBLE PRECISION"/>
-				<value name="float" displayedName="FLOAT()"/>
-				<value name="int" displayedName="INT"/>
-				<value name="int2" displayedName="INT2"/>
-				<value name="int4" displayedName="INT4"/>
-				<value name="int8" displayedName="INT8"/>
-				<value name="longtext" displayedName="LONGTEXT()"/>
-				<value name="mediumint" displayedName="MEDIUMINT"/>
-				<value name="mediumtext" displayedName="MEDIUMTEXT()"/>
-				<value name="nchar" displayedName="NCHAR()"/>
-				<value name="nvarchar" displayedName="NVARCHAR()"/>
-				<value name="numeric" displayedName="NUMERIC(,)"/>
-				<value name="real" displayedName="REAL"/>
-				<value name="smallint" displayedName="SMALLINT"/>
-				<value name="text" displayedName="TEXT()"/>
-				<value name="time" displayedName="TIME"/>
-				<value name="timestamp" displayedName="TIMESTAMP"/>
-				<value name="tinyint" displayedName="TINYINT"/>
-				<value name="tinytext" displayedName="TINYTEXT()"/>
-				<value name="varchar" displayedName="VARCHAR()"/>
+				<value name="BIGINT" displayedName="BIGINT"/>
+				<value name="BLOB" displayedName="BLOB"/>
+				<value name="BOOLEAN" displayedName="BOOLEAN"/>
+				<value name="CHAR" displayedName="CHAR()"/>
+				<value name="CLOB" displayedName="CLOB()"/>
+				<value name="DATE" displayedName="DATE"/>
+				<value name="DATETIME" displayedName="DATETIME"/>
+				<value name="DECIMAL" displayedName="DECIMAL(,)"/>
+				<value name="DOUBLE" displayedName="DOUBLE"/>
+				<value name="DOUBLE PRECISION" displayedName="DOUBLE PRECISION"/>
+				<value name="FLOAT" displayedName="FLOAT()"/>
+				<value name="INT" displayedName="INT"/>
+				<value name="INT2" displayedName="INT2"/>
+				<value name="INT4" displayedName="INT4"/>
+				<value name="INT8" displayedName="INT8"/>
+				<value name="LONGTEXT" displayedName="LONGTEXT()"/>
+				<value name="MEDIUMINT" displayedName="MEDIUMINT"/>
+				<value name="MEDIUMTEXT" displayedName="MEDIUMTEXT()"/>
+				<value name="NCHAR" displayedName="NCHAR()"/>
+				<value name="NVARCHAR" displayedName="NVARCHAR()"/>
+				<value name="NUMERIC" displayedName="NUMERIC(,)"/>
+				<value name="REAL" displayedName="REAL"/>
+				<value name="SMALLINT" displayedName="SMALLINT"/>
+				<value name="TEXT" displayedName="TEXT()"/>
+				<value name="TIME" displayedName="TIME"/>
+				<value name="TIMESTAMP" displayedName="TIMESTAMP"/>
+				<value name="TINYINT" displayedName="TINYINT"/>
+				<value name="TINYTEXT" displayedName="TINYTEXT()"/>
+				<value name="VARCHAR" displayedName="VARCHAR()"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
-			<node name="DatabasesPhysicalNode" displayedName="Databases Diagram">
+			<node name="DatabasesPhysicalNode" displayedName="Physical model (Sqlite)">
 				<graphics>
 					<picture/>
 					<labels/>
