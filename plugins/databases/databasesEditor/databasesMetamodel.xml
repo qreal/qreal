@@ -6,6 +6,16 @@
 			<port name="EntityLeft"/>
 			<port name="EntityVertical"/>
 			<port name="EntityRight"/>
+			<enum name="DataTypes" editable="true">
+				<value name="BOOL" displayedName="BOOL"/>
+				<value name="CHAR" displayedName="CHAR()"/>
+				<value name="DATETIME" displayedName="DATETIME"/>
+				<value name="DECIMAL" displayedName="DECIMAL(,)"/>
+				<value name="FLOAT" displayedName="FLOAT(,)"/>
+				<value name="NTEXT" displayedName="NTEXT"/>
+				<value name="NVARCHAR" displayedName="NVARCHAR()"/>
+				<value name="TEXT" displayedName="TEXT"/>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="DatabasesNode" displayedName="Logical model">
@@ -108,7 +118,7 @@
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>
 						<property type="bool" name="notNull" displayedName="Not null"/>
-						<property type="string" name="DataType" displayedName="Data Type">
+						<property type="string" name="DataType" type="DataTypes" displayedName="Data Type">
 							<default>INT</default>
 						</property>
 					</properties>
