@@ -76,7 +76,7 @@ void DatabasesSupportPlugin::initActions()
 
 void DatabasesSupportPlugin::checkCorrectness()
 {
-	mDatabasesGenerator->checkCorrectness();
+	mDatabasesGenerator->checkLogicalModelCorrectness();
 }
 
 void DatabasesSupportPlugin::generateCode()

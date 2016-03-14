@@ -225,11 +225,11 @@ bool DatabasesGenerator::checkAttributes()
 		QString parentName = getProperty(parent, "entityName").toString();
 		if (name.isEmpty()) {
 			result = false;
-			error(tr("Attribute has no name in entity '") + parentName + "'.", true, attribute);
+			error(tr("Attribute has no name in entity '") + parentName + "'.", true, parent);
 		}
 		if (datatype.isEmpty()) {
 			result = false;
-			error(tr("Attribute has no datatype in entity '") + parentName + "'.", true, attribute);
+			error(tr("Attribute has no datatype in entity '") + parentName + "'.", true, parent);
 		}
 	}
 	return result;
@@ -254,16 +254,66 @@ bool DatabasesGenerator::checkRelationships()
 	return result;
 }
 
-bool DatabasesGenerator::checkCorrectness()
+bool DatabasesGenerator::checkTables()
+{
+	bool result = true;
+	IdList tables = findNodes("Table");
+	for (Id const &table : tables) {
+		QString name = getProperty(table, "tableName").toString();
+		if (name.isEmpty()) {
+			result = false;
+			error(tr("Table has no name."), true, table);
+		}
+		IdList columns = getChildren(table);
+		if (columns.isEmpty()) {
+			error(tr("Table with name '") + name + tr("' has no columns."), false, table);
+		}
+	}
+	return result;
+}
+
+bool DatabasesGenerator::checkColumns()
+{
+	bool result = true;
+	IdList columns = findNodes("Column");
+	for (Id const &column : columns) {
+		QString name = getProperty(column, "columnName").toString();
+		QString datatype = getProperty(column, "DataType").toString();
+		Id parent = getParent(column);
+		QString parentName = getProperty(parent, "tableName").toString();
+		if (name.isEmpty()) {
+			result = false;
+			error(tr("Column has no name in table '") + parentName + "'.", true, parent);
+		}
+		if (datatype.isEmpty()) {
+			result = false;
+			error(tr("Column has no datatype in table '") + parentName + "'.", true, parent);
+		}
+	}
+	return result;
+}
+
+bool DatabasesGenerator::checkLogicalModelCorrectness()
 {
 	mErrorReporter->clearErrors();
 	bool checkOne = checkRelationships();
 	bool checkTwo = checkAttributes();
 	bool checkThree = checkEntities();
 	if (checkOne && checkTwo && checkThree) {
-		mErrorReporter->addInformation("Diagram is correct.");
+		mErrorReporter->addInformation("Logical diagram is correct.");
 	}
 	return checkOne && checkTwo && checkThree;
+}
+
+bool DatabasesGenerator::checkPhysicalModelCorrectness()
+{
+	mErrorReporter->clearErrors();
+	bool checkOne = checkTables();
+	bool checkTwo = checkColumns();
+	if (checkOne && checkTwo) {
+		mErrorReporter->addInformation("Physical diagram is correct.");
+	}
+	return checkOne && checkTwo;
 }
 
 qReal::Id DatabasesGenerator::createElementFromString(QString const &elemName
@@ -515,7 +565,7 @@ void DatabasesGenerator::generatePhysicalModel()
 	clearPhysicalModel();
 	mErrorReporter->clear();
 
-	if (!checkCorrectness()) {
+	if (!checkLogicalModelCorrectness()) {
 		return;
 	}
 
@@ -562,6 +612,9 @@ void DatabasesGenerator::generatePhysicalModel()
 void DatabasesGenerator::generateSQLCode()
 {
 	mErrorReporter->clear();
+
+	if (!checkPhysicalModelCorrectness())
+		return;
 
 	QString codeFileName = mPreferencesPage->getCodeGenerationFilename();
 	if (codeFileName.isEmpty()) {

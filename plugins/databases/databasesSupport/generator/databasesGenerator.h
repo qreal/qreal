@@ -41,8 +41,10 @@ public:
 	~DatabasesGenerator();
 
 public slots:
-	/// Checks simple correctness rules
-	bool checkCorrectness();
+	/// Checks simple correctness rules of logical model
+	bool checkLogicalModelCorrectness();
+	/// Checks simple correctness rules of physical model
+	bool checkPhysicalModelCorrectness();
 	/// Generates physical model from lm
 	void generatePhysicalModel();
 	/// Generates SQL-code from pm
@@ -129,6 +131,8 @@ private:
 	bool checkEntities();
 	bool checkAttributes();
 	bool checkRelationships();
+	bool checkTables();
+	bool checkColumns();
 
 	// do not make const & (some methods don`t work)
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
