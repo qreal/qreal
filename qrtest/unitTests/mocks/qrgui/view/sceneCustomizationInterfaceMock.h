@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,24 @@
 
 namespace qrTest {
 
+/// Mock class for QrGui scene customization interface.
 class SceneCustomizationInterfaceMock : public qReal::gui::editor::SceneCustomizationInterface
 {
 public:
+	MOCK_CONST_METHOD0(addExplosionMenuName, QString());
+	MOCK_CONST_METHOD0(changeExplosionMenuName, QString());
+	MOCK_CONST_METHOD0(deleteExplosionMenuName, QString());
+	MOCK_CONST_METHOD0(goToConnectedMenuName, QString());
+	MOCK_CONST_METHOD0(showExpandConnectionAction, bool());
+	MOCK_CONST_METHOD0(expandExplosionActionText, QString());
+	MOCK_CONST_METHOD0(collapseExplosionActionText, QString());
+	MOCK_METHOD1(setAddExplosionMenuName, void(const QString &));
+	MOCK_METHOD1(setChangeExplosionMenuName, void(const QString &));
+	MOCK_METHOD1(setDeleteExplosionMenuName, void(const QString &));
+	MOCK_METHOD1(setGoToConnectedMenuName, void(const QString &));
+	MOCK_METHOD1(setShowExpandConnectionAction, void(bool));
+	MOCK_METHOD1(setExpandExplosionActionText, void(const QString &));
+	MOCK_METHOD1(setCollapseExplosionActionText, void(const QString &));
 };
 
 }

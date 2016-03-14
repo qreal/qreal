@@ -16,11 +16,12 @@
 
 #include <type_traits>
 
+#include <qrutils/functionTraits.h>
+
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
-#include "qrtext/core/parser/utils/functionTraits.h"
 
 namespace qrtext {
 namespace core {
@@ -41,9 +42,9 @@ public:
 	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
 			, ParserContext<TokenType> &parserContext) const override
 	{
-		typedef typename function_traits<Transformation>::template arg<0>::type PointerToNodeType;
+		typedef typename utils::function_traits<Transformation>::template arg<0>::type PointerToNodeType;
 		typedef decltype(&PointerToNodeType::operator *) DereferenceOperatorType;
-		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
+		typedef typename utils::function_traits<DereferenceOperatorType>::result_type NodeReference;
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
 		QSharedPointer<ast::Node> parserResult = mParser->parse(tokenStream, parserContext);

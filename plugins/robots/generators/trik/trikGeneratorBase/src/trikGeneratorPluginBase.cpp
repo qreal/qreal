@@ -50,3 +50,8 @@ void TrikGeneratorPluginBase::regenerateExtraFiles(const QFileInfo &newFileInfo)
 {
 	Q_UNUSED(newFileInfo);
 }
+
+kitBase::robotModel::RobotModelInterface &TrikGeneratorPluginBase::robotModel() const
+{
+	return *mRobotModel.data();
+}

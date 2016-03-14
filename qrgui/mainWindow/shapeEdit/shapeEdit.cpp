@@ -347,7 +347,7 @@ void ShapeEdit::save()
 			}
 		}
 
-		mMainWindow->loadPlugins();
+		mMainWindow->loadEditorPlugins();
 	}
 
 	QMessageBox::information(this, tr("Saving"), "Saved successfully");

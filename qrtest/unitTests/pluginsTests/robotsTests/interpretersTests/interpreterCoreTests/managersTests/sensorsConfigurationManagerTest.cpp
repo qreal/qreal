@@ -17,7 +17,7 @@
 #include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/colorSensor.h>
 
-#include "mocks/qrgui/mainWindow/mainWindowInterpretersInterfaceMock.h"
+#include "mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterfaceMock.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
