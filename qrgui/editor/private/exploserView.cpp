@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QApplication>
 
+#include <metaMetaModel/elementType.h>
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/createElementsCommand.h>
 #include <qrgui/dialogs/metamodelingOnFly/propertiesDialog.h>

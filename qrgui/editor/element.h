@@ -21,7 +21,6 @@
 #include <qrkernel/settingsManager.h>
 
 #include <metaMetaModel/elementRepoInterface.h>
-#include <metaMetaModel/elementType.h>
 
 #include <qrgui/models/graphicalModelAssistApi.h>
 #include <qrgui/models/logicalModelAssistApi.h>
