@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,23 +15,20 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h"
 
 namespace editorPluginTestingFramework {
 
-class QrxcLauncher
+/// Helper class that calls editor generator from MetaEditorSupport and produces .xml file containing metamodel
+/// description ready for QRXC from .qrs with metamodel.
+class MetamodelXmlGeneratorLauncher
 {
 public:
+	MetamodelXmlGeneratorLauncher() = delete;
 
-	/// launches qrxc (gets fileName, generates .xml-file and code)
-	void launchQrxc(const QString &fileName, const QString &pathToQRealSources, const QString &pathToGeneratedCode);
-
-private:
-
-	/// generates path to plugin from .pro
-	static QString generatePathToPlugin(const QString &pathToGeneratedCode);
-
-	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterface;
+	/// Launches editor generator using given metamodel file name (in .qrs format) and produces .xml file ready for
+	/// QRXC and .pro file which directs build (and actually calls QRXC from build scripts).
+	static void launchEditorGenerator(const QString &fileName, const QString &pathToQRealSources
+			, const QString &pathToGeneratedCode);
 };
 
 }

@@ -35,7 +35,7 @@ void HtmlMaker::makeHtml(
 		, QList<MethodsTester::ResultOfGenerating> timeResultIntertpter
 		, const QString &pathToHtml)
 {
-	typedef QPair<QString, QPair<QString, QString>> StringTriplet;
+//	typedef QPair<QString, QPair<QString, QString>> StringTriplet;
 
 	qDebug() << "STARTING HTML GENERATING";
 	QDomElement root = mHtml.createElement("html");

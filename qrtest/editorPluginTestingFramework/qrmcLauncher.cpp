@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,36 +13,36 @@
  * limitations under the License. */
 
 #include "qrmcLauncher.h"
+
 #include "qrmc/metaCompiler.h"
 #include "defs.h"
 
-using namespace qReal;
-using namespace qrmc;
-using namespace qrRepo;
 using namespace editorPluginTestingFramework;
 
-void QrmcLauncher::launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &pathToGeneratedCode)
+void QrmcLauncher::launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &targetDirectory)
 {
-	qDebug() << "STARTING QRMC LAUNCHING";
+	/// @todo: shall use qmake here
+	qDebug() << "Launching QRMC...";
 	QString normalizedFileName = fileName;
 	if (!fileName.contains(".qrs")) {
 		normalizedFileName += ".qrs";
 	}
 
-	RepoApi * const mRepoApi = new RepoApi(normalizedFileName);
-	MetaCompiler metaCompiler(pathToQrmc, mRepoApi);
-	const IdList metamodels = mRepoApi->children(Id::rootId());
+	qrRepo::RepoApi repoApi(normalizedFileName);
+	qrmc::MetaCompiler metaCompiler(pathToQrmc, &repoApi, targetDirectory);
+	const qReal::IdList metamodels = repoApi.children(qReal::Id::rootId());
 
-	for (Id const &key : metamodels) {
+	for (const qReal::Id &key : metamodels) {
 		const QString &objectType = key.element();
-		if (objectType == "MetamodelDiagram" && mRepoApi->isLogicalElement(key)) {
-			const QString &nameOfMetamodel = mRepoApi->stringProperty(key, "name");
+		if (objectType == "MetamodelDiagram" && repoApi.isLogicalElement(key)) {
+			const QString &nameOfMetamodel = repoApi.stringProperty(key, "name");
 
 			if (!metaCompiler.compile(nameOfMetamodel)) {
-				qDebug() << "compilation failed";
+				qDebug() << "QRMC failed for whatever reason it is failed. Have a nice day.";
 			}
 		}
 	}
 
+	qDebug() << "QRMC successfully did whatever it did.";
 	qDebug() << stringSeparator;
 }

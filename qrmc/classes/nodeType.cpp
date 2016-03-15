@@ -24,7 +24,8 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, qrRepo::LogicalRepoApi *api, qReal::Id id) : GraphicType(diagram, api, id)
+NodeType::NodeType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, qReal::Id id, const QString &targetDirectory)
+	: GraphicType(diagram, api, id, targetDirectory)
 {
 }
 
@@ -34,7 +35,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-	NodeType *result = new NodeType(mDiagram, mApi, mId);
+	NodeType *result = new NodeType(mDiagram, mApi, mId, targetDirectory());
 	GraphicType::copyFields(result);
 	return result;
 }

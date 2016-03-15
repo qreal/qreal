@@ -23,41 +23,41 @@ namespace editorPluginTestingFramework {
 class ConfigurationFileParser
 {
 public:
-	/// parses configuration file
+	/// Parses configuration file.
 	void parseConfigurationFile(const QString &configurationFile);
 
-	/// returns qmake parameter from configuration file
+	/// Returns qmake parameter from configuration file.
 	QString qmakeParameter() const;
 
-	/// returns make parameter from configuration file
+	/// Returns make parameter from configuration file.
 	QString makeParameter() const;
 
-	/// returns configuration parameter (release or debug)
+	/// Returns configuration parameter (release or debug).
 	QString configurationParameter() const;
 
-	/// returns generated plugin extension (dll, so...)
+	/// Returns generated plugin extension (.dll or .so).
 	QString pluginExtension() const;
 
-	/// returns prefix for generated plugin name (lib)
+	/// Returns prefix for generated plugin name (lib).
 	QString prefix() const;
 
-	/// returns path to QReal root
+	/// Returns path to QReal root.
 	QString qRealRootPath() const;
 
-	/// returns "yes" if we want to generate html with testing results and "no" otherwise
+	/// Returns "yes" if we want to generate html with testing results and "no" otherwise.
 	QString htmlGenerationParameter() const;
 
-	/// returns path to generated binaries and plugins for qrxc
+	/// Returns path to generated source files for QRXC.
 	QString generatedCodeDirQrxc() const;
 
-	/// returns path to generated binaries and plugins for qrmc
+	/// Returns path to generated source files for QRXMC.
 	QString generatedCodeDirQrmc() const;
 
-	/// returns path to generated result
+	/// Returns path to generated result.
 	QString generatedDirHtml() const;
 
 private:
-	/// given tag, returns tag value from configuration file
+	/// Given tag, returns tag value from configuration file.
 	QString valueByTag(const QString &tag) const;
 
 	QString mQmakeParameter;

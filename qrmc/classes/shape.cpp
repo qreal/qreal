@@ -26,9 +26,11 @@
 
 using namespace qrmc;
 
-Shape::Shape(const QString &shape) : mNode(nullptr)
+Shape::Shape(const QString &shape, const QString targetDirectory)
+	: mNode(nullptr)
+	, mTargetDirectory(targetDirectory)
 {
-	init(shape)	;
+	init(shape);
 }
 
 Shape::~Shape()
@@ -132,22 +134,26 @@ void Shape::initLinePorts(const QDomElement &portsElement)
 
 void Shape::changeDir(QDir &dir) const
 {
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
 	}
-	dir.cd(generatedDir);
-	QString editorName = mNode->diagram()->editor()->name()	;
+
+	dir.cd(mTargetDirectory);
+	QString editorName = mNode->diagram()->editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
 	}
+
 	dir.cd(editorName);
 	if (!dir.exists(generatedShapesDir)) {
 		dir.mkdir(generatedShapesDir);
 	}
+
 	dir.cd(generatedShapesDir);
 	if (!dir.exists(shapesDir)) {
 		dir.mkdir(shapesDir);
 	}
+
 	dir.cd(shapesDir);
 }
 

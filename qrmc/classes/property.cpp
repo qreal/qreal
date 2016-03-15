@@ -19,7 +19,7 @@
 
 using namespace qrmc;
 
-Property::Property(qrRepo::LogicalRepoApi *api, const qReal::Id &id) : mApi(api), mId(id)
+Property::Property(const qrRepo::LogicalRepoApi *api, const qReal::Id &id) : mApi(api), mId(id)
 {
 
 }

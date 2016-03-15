@@ -23,11 +23,10 @@
 
 namespace qReal {
 
-/// Describes the metamodel of some visual langages.
+/// Describes the metamodel of some visual languages.
 /// The metamodel is a set of types of some entities associated each with other with some relations
 /// (for example relation of generalization, relation of explosion, relation of containment, etc).
 /// Metamodel thus is ordered multigraph where nodes are types of entities and edges are those relations.
-/// This fact is noted with inheriting Metamodel from qrgraph::Multigraph.
 class QRGUI_META_META_MODEL_EXPORT Metamodel : public qrgraph::Multigraph
 {
 public:

@@ -24,7 +24,7 @@ namespace qrgraph {
 class Queries
 {
 public:
-	/// Traverses multigraph owning \a start by deep-first-search method. Transtions will happen only towards edges
+	/// Traverses multigraph owning \a start by deep-first-search method. Transitions will happen only towards edges
 	/// of type \a edgeType. At each visited vertex \a processor will be called. Value returned by \a processor is
 	/// regarded like success: if true returned algorithm will consider that target node was found and it will be
 	/// terminated returning true. If false returned by \a processor traversal will be continued.
@@ -33,7 +33,7 @@ public:
 	/// @see bfs(), treeLift().
 	static bool dfs(const Node &start, const std::function<bool(const Node &node)> &processor, uint edgeType);
 
-	/// Traverses multigraph owning \a start by breadth-first-search method. Transtions will happen only towards edges
+	/// Traverses multigraph owning \a start by breadth-first-search method. Transitions will happen only towards edges
 	/// of type \a edgeType. At each visited vertex \a processor will be called. Value returned by \a processor is
 	/// regarded like success: if true returned algorithm will consider that target node was found and it will be
 	/// terminated returning true. If false returned by \a processor traversal will be continued.

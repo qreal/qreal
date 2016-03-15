@@ -36,7 +36,7 @@ namespace qrmc {
 	class Editor
 	{
 	public:
-		Editor(MetaCompiler *metaCompiler, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
+		Editor(MetaCompiler *metaCompiler, const qrRepo::LogicalRepoApi *api, const qReal::Id &id, const QString &targetDirectory);
 		~Editor();
 		MetaCompiler *metaCompiler();
 		qReal::Id id();
@@ -84,7 +84,7 @@ namespace qrmc {
 		void generatePossibleEdges();
 
 		MetaCompiler *mMetaCompiler;
-		qrRepo::LogicalRepoApi *mApi;
+		const qrRepo::LogicalRepoApi *mApi;
 		qReal::Id mId;
 		QString mName;
 		QString mNameOfMetamodel;
@@ -97,6 +97,7 @@ namespace qrmc {
 		QString mNodeTemplate;
 		QString mEdgeTemplate;
 		QString mElementsHeaderTemplate;
+		const QString mTargetDirectory;
 
 		class MethodGenerator;
 		class ContainersGenerator;

@@ -30,7 +30,7 @@ namespace qrmc {
 	class GraphicType : public Type
 	{
 	public:
-		GraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id);
+		GraphicType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, const qReal::Id &id, const QString &targetDirectory);
 		virtual ~GraphicType();
 		virtual bool init(const QString &context);
 		virtual bool resolve();
@@ -84,6 +84,7 @@ namespace qrmc {
 
 		void copyFields(GraphicType *type) const;
 		QString resourceName(const QString &resourceType) const;
+		QString targetDirectory() const;
 
 	private:
 		class ResolvingHelper {
@@ -100,5 +101,6 @@ namespace qrmc {
 
 		bool mResolving;
 		QString mDescription;
+		QString mTargetDirectory;
 	};
 }

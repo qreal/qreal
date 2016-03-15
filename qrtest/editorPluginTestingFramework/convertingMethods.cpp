@@ -17,15 +17,15 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
-QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(const QList<Metamodel::ExplosionData> &explDataList)
-{
-	QStringList resultList;
-	for (const Metamodel::ExplosionData &element : explDataList) {
-		resultList.append(element.targetElement);
-	}
+//QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(const QList<Metamodel::ExplosionData> &explDataList)
+//{
+//	QStringList resultList;
+//	for (const Metamodel::ExplosionData &element : explDataList) {
+//		resultList.append(element.targetElement);
+//	}
 
-	return resultList;
-}
+//	return resultList;
+//}
 
 QStringList ConvertingMethods::convertingQPairListIntoStringList(const QList<QPair<QString, QString>> &qPairList)
 {
@@ -74,15 +74,15 @@ QStringList ConvertingMethods::convertIntIntoStringList(const int &integer)
 	return convertStringIntoStringList(stringRepresentation);
 }
 
-QStringList ConvertingMethods::convertExplosionListIntoStringList(const QList<Explosion> &explosionList)
-{
-	QStringList result;
-	for (const Explosion &explosion : explosionList) {
-		const QString &target = explosion.target().toString();
-		result.append(target);
-	}
-	return result;
-}
+//QStringList ConvertingMethods::convertExplosionListIntoStringList(const QList<Explosion> &explosionList)
+//{
+//	QStringList result;
+//	for (const Explosion &explosion : explosionList) {
+//		const QString &target = explosion.target().toString();
+//		result.append(target);
+//	}
+//	return result;
+//}
 
 QString ConvertingMethods::transformateOutput(
 		const QStringList &output
