@@ -77,12 +77,13 @@ void TextObject::paint(QPainter *painter)
 
 QJsonObject TextObject::toJson() const
 {
-	return QJsonObject({
-		{ "type", "text" }
-		, { "x", x() }
-		, { "y", y() }
-		, { "text", text() }
-		, { "color", color().name() }
-		, { "thickness", thickness() }
-	});
+	QJsonObject result;
+	result["type"] = "text";
+	result["x"] = x();
+	result["y"] = y();
+	result["text"] = text();
+	result["color"] = color().name();
+	result["thickness"] = thickness();
+	return result;
 }
+
