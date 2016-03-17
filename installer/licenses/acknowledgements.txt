@@ -14,6 +14,8 @@ Some icons are provided by Tatiana Yanchuk and are available under Creative Comm
 
 Special thanks to Dmitrii Sokolov for french localization!
 
+Thanks to ALT Linux maintainer Anton Midyukov for his work on integration TRIK Studio and some Linux distributions!
+
 We are very grateful to the authors of components and resources above for allowing us to use their work in our product.
 
 Considering license information, our product is licensed under Apache License v2.0 (licenses/ApacheLicense-v2.0.txt).
