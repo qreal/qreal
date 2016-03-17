@@ -8,6 +8,6 @@ cd "$(dirname "$0")"
 
 export QREAL_BUILD_TAG=${3:-}
 
-grep -q "darwin" <<< $OSTYPE && export PRODUCT_DISPLAYED_NAME="QReal:Databases" || :
+grep -q "darwin" <<< $OSTYPE && export PRODUCT_DISPLAYED_NAME="QRealDB" || :
 EXCLUDE=
 chmod +x $PWD/build-installer.sh && $PWD/build-installer.sh $1 $2 qreal-db $EXCLUDE
