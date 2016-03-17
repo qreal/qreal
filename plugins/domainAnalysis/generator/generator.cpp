@@ -28,6 +28,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/nameNormalizer.h>
 #include <qrkernel/settingsManager.h>
+#include <qrrepo/repoApi.h>
 #include <qrgui/plugins/pluginManager/editorManager.h>
 
 using namespace qReal;
