@@ -15,7 +15,7 @@
 #include "portHandler.h"
 
 #include <QtCore/qmath.h>
-#include <QTransform>
+#include <QtGui/QTransform>
 
 #include "editor/editorViewScene.h"
 #include "editor/nodeElement.h"
@@ -49,9 +49,9 @@ PortHandler::PortHandler(NodeElement *node, qReal::models::GraphicalModelAssistA
 
 PortHandler::~PortHandler()
 {
-	qDeleteAll(mPointPorts.begin(), mPointPorts.end());
-	qDeleteAll(mLinePorts.begin(), mLinePorts.end());
-	qDeleteAll(mCircularPorts.begin(), mCircularPorts.end());
+	qDeleteAll(mPointPorts);
+	qDeleteAll(mLinePorts);
+	qDeleteAll(mCircularPorts);
 }
 
 qreal PortHandler::minDistanceFromLinePort(int linePortNumber, const QPointF &location) const
@@ -161,7 +161,6 @@ StatCircular::CircularPort PortHandler::transformPortForNodeSize(const StatCircu
 	return port->transformForContents(mNode->contentsRect());
 }
 
-
 QPointF PortHandler::transformPortForNodeSize(const StatPoint * const port) const
 {
 	return port->transformForContents(mNode->contentsRect());
@@ -229,7 +228,6 @@ const QPointF PortHandler::findPointById(qreal id) const
 	QPointF newPoint(transform.map(QPointF(0.0, 0.0)));
 	return newPoint;
 }
-
 
 int PortHandler::portNumber(qreal id)
 {
@@ -387,8 +385,8 @@ QPair<int, qreal> PortHandler::nearestLinePortNumberAndDistance(const QPointF &l
 	return qMakePair(minDistanceLinePortNumber, minDistance);
 }
 
-QPair<int, qreal> PortHandler::nearestCircularPortNumberAndDistance(const QPointF &location,
-		const QStringList &types) const
+QPair<int, qreal> PortHandler::nearestCircularPortNumberAndDistance(const QPointF &location
+		, const QStringList &types) const
 {
 	qreal minDistance = -1; // just smth negative
 
@@ -407,7 +405,6 @@ QPair<int, qreal> PortHandler::nearestCircularPortNumberAndDistance(const QPoint
 
 	return qMakePair(minDistanceCircularPortNumber, minDistance);
 }
-
 
 qreal PortHandler::minDistanceFromCircularPort(int circularPortNumber, const QPointF &location) const
 {

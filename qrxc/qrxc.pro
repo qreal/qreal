@@ -58,7 +58,7 @@ SOURCES += association.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
 	portType.cpp \
-	circularPort.cpp
+	circularPort.cpp \
 
 TEMPLATE = app
 QT += xml gui

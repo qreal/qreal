@@ -62,5 +62,4 @@ StatCircular::CircularPort StatCircular::transformForContents(const QRectF &cont
 	port.rx = rx;
 	port.ry = ry;
 	return port;
-
 }

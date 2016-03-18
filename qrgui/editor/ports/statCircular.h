@@ -32,8 +32,10 @@ public:
 		/// Y coordinate of circle center.
 		qreal y;
 
+		/// Radius on the X axis.
 		qreal rx;
 
+		/// Radius on the Y axis.
 		qreal ry;
 	};
 
