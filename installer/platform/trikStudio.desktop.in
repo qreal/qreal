@@ -1,0 +1,12 @@
+[Desktop Entry]
+Name=trikStudio
+Name[ru]=trikStudio
+Comment=Intuitive robots programming environment
+Comment[ru]=Интуитивно понятная среда программирования роботов
+Exec=trikStudio
+Icon=trikStudio
+Terminal=false
+Type=Application
+Categories=QT;Education;
+Keywords=robot;trik;lego;nxt;ev3;
+Keywords[ru]=робот;трик;лего;

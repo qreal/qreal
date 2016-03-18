@@ -127,7 +127,8 @@ void ConstraintsChecker::prepareEvents()
 		}
 	}
 
-	std::sort(mActiveEvents.begin(), mActiveEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
+	std::sort(mActiveEvents.begin(), mActiveEvents.end()
+			, [](const details::Event *e1, const details::Event *e2) { return e1->id() > e2->id(); });
 }
 
 void ConstraintsChecker::setUpEvent()
@@ -138,7 +139,8 @@ void ConstraintsChecker::setUpEvent()
 		}
 	}
 
-	std::sort(mActiveEvents.begin(), mActiveEvents.end(), [](auto e1, auto e2) { return e1->id() > e2->id(); });
+	std::sort(mActiveEvents.begin(), mActiveEvents.end()
+			, [](const details::Event *e1, const details::Event *e2) { return e1->id() > e2->id(); });
 }
 
 void ConstraintsChecker::dropEvent()

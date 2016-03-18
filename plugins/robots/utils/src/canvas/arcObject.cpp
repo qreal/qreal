@@ -87,15 +87,15 @@ void ArcObject::paint(QPainter *painter)
 
 QJsonObject ArcObject::toJson() const
 {
-	return QJsonObject({
-		{ "type", "arc" }
-		, { "x", mRect.center().x() }
-		, { "y", mRect.center().y() }
-		, { "a", mRect.width() / 2 }
-		, { "b", mRect.height() / 2 }
-		, { "startAngle", mStartAngle }
-		, { "spanAngle", mSpanAngle }
-		, { "color", color().name() }
-		, { "thickness", thickness() }
-	});
+	QJsonObject result;
+	result["type"] = "arc";
+	result["x"] = mRect.center().x();
+	result["y"] = mRect.center().y();
+	result["a"] = mRect.width() / 2;
+	result["b"] = mRect.height() / 2;
+	result["startAngle"] = mStartAngle;
+	result["spanAngle"] = mSpanAngle;
+	result["color"] = color().name();
+	result["thickness"] = thickness();
+	return result;
 }
