@@ -127,14 +127,17 @@ qreal PortHandler::pointByCircularPortAngle(int circularPortNumber, const QPoint
 	const qreal tg = fabs((location.y() - y) / (location.x() - x));
 	qreal angleInDegrees = qRadiansToDegrees(qAtan(tg));
 
-	if ((location.x() < x) && (location.y() < y))
+	if ((location.x() < x) && (location.y() < y)) {
 		angleInDegrees = 180.0 - angleInDegrees;
+	}
 
-	if ((location.x() < x) && (location.y() > y))
+	if ((location.x() < x) && (location.y() > y)) {
 		angleInDegrees = 180.0 + angleInDegrees;
+	}
 
-	if ((location.x() > x) && (location.y() > y))
+	if ((location.x() > x) && (location.y() > y)) {
 		angleInDegrees = 360.0 - angleInDegrees;
+	}
 
 	return angleInDegrees;
 }
@@ -423,18 +426,18 @@ qreal PortHandler::portId(const QPointF &location, const QStringList &types) con
 	}
 
 	// Finding in point port locality
-	qreal locationPointPortId = pointPortId(location, types);
+	const qreal locationPointPortId = pointPortId(location, types);
 	if (locationPointPortId != nonexistentPortId) {
 		return locationPointPortId;
 	}
 
 	// Finding in line port locality
-	qreal locationLinePortId = linePortId(location, types);
+	const qreal locationLinePortId = linePortId(location, types);
 	if (locationLinePortId != nonexistentPortId) {
 		return locationLinePortId;
 	}
 
-	qreal locationCircularPortId = circularPortId(location, types);
+	const qreal locationCircularPortId = circularPortId(location, types);
 	if (locationCircularPortId != nonexistentPortId) {
 		return locationCircularPortId;
 	}
@@ -457,8 +460,7 @@ qreal PortHandler::portId(const QPointF &location, const QStringList &types) con
 		return nonexistentPortId;
 	} else if (!(circularPortRes.second < 0)) {
 		if (circularPortRes.second < linePortRes.second || linePortRes.second < 0) {
-
-			qreal nearestAngle = pointByCircularPortAngle(circularPortRes.first, location) / 360.0;
+			const qreal nearestAngle = pointByCircularPortAngle(circularPortRes.first, location) / 360.0;
 
 			return (circularPortRes.first + mLinePorts.size() + mPointPorts.size()) // Integral part of ID.
 				+ nearestAngle; // Fractional part of ID.

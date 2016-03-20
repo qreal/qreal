@@ -20,7 +20,7 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-/** @brief circular port description */
+/// Circular port description.
 class StatCircular : public PortInterface
 {
 public:
@@ -39,21 +39,45 @@ public:
 		qreal ry;
 	};
 
-
+	/// Constructor.
+	/// @param center - center of the circular port.
+	/// @param r - radius.
+	/// @param propX - true, if port is not resizable over X axis.
+	/// @param propY - true, if port is not resizable over Y axis.
+	/// @param initWidth - width of the bounding rect of a port. Despite port being circular, bounding rectangle is not
+	///        nessesarily a square, and initial width and height are used to transform port for required bounding rect
+	///        when resizing.
+	/// @param initWidth - height of the bounding rect of a port. Despite port being circular, bounding rectangle is not
+	///        nessesarily a square, and initial width and height are used to transform port for required bounding rect
+	///        when resizing.
+	/// @param impl - port implementation object used to draw a port.
 	StatCircular(const QPointF &center, const qreal &r, bool propX, bool propY, int initWidth
 			, int initHeight, PortImpl *impl);
 
 	void paint(QPainter *painter, const QRectF &contents) const override;
+
+	/// Recalculates port parameters so that it fits into given rectangle.
 	CircularPort transformForContents(const QRectF &contents) const;
 
 private:
-
+	/// Center of the port.
 	QPointF mCenter;
 
+	/// True if port shall not be scalable on X axis.
 	const bool mPropX;
+
+	/// True if port shall not be scalable on Y axis.
 	const bool mPropY;
+
+	/// Initial radius of a port.
 	const qreal mR;
+
+	/// Initial width of a port bounding rect. Despite it being circular bounding rectangle may not be a square, and
+	/// initial width and height are used to transform port for required bounding rect when resizing.
 	int mInitWidth;
+
+	/// Initial height of a port bounding rect. Despite it being circular bounding rectangle is not nessesarily a
+	/// square, and initial width and height are used to transform port for required bounding rect when resizing.
 	int mInitHeight;
 };
 

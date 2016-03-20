@@ -16,11 +16,17 @@
 
 using namespace qReal::gui::editor;
 
-StatCircular::StatCircular(const QPointF &center, const qreal &r,bool propX, bool propY, int initWidth
+StatCircular::StatCircular(const QPointF &center, const qreal &r, bool propX, bool propY, int initWidth
 		, int initHeight, PortImpl *impl)
-	: PortInterface(impl), mCenter(center), mR(r), mPropX(propX), mPropY(propY)
-		, mInitWidth(initWidth), mInitHeight(initHeight)
-{}
+	: PortInterface(impl)
+	, mCenter(center)
+	, mPropX(propX)
+	, mPropY(propY)
+	, mR(r)
+	, mInitWidth(initWidth)
+	, mInitHeight(initHeight)
+{
+}
 
 void StatCircular::paint(QPainter *painter, const QRectF &contents) const
 {

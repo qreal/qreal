@@ -24,17 +24,27 @@ namespace utils {
 	class OutFile;
 }
 
+/// Represents circular port.
 class CircularPort : public Port
 {
 public:
-	virtual bool init(const QDomElement &element, int width, int height);
-	virtual void generateCode(utils::OutFile &out, const QStringList &portTypes);
-	virtual Port* clone() const;
+	bool init(const QDomElement &element, int width, int height) override;
+	void generateCode(utils::OutFile &out, const QStringList &portTypes) override;
+	Port* clone() const override;
 
 private:
+	/// X coordinate of a center of port.
 	utils::ScalableCoordinate mX;
+
+	/// Y coordinate of a center of port.
 	utils::ScalableCoordinate mY;
+
+	/// Radius of a port.
 	utils::ScalableCoordinate mR;
+
+	/// Width of an initial bounding rect of a port.
 	int mInitWidth;
+
+	/// Height of an initial bounding rect of a port.
 	int mInitHeight;
 };
