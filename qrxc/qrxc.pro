@@ -34,7 +34,7 @@ HEADERS += \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	portType.h \
+	circularPort.h \
 	roleType.h
 
 SOURCES += \
@@ -57,9 +57,7 @@ SOURCES += \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	portType.cpp \
-	roleType.cpp
-
+	roleType.cpp	circularPort.cpp \
 TEMPLATE = app
 QT += xml gui
 CONFIG += console
