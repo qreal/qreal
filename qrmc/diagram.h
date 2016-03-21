@@ -14,96 +14,88 @@
 
 #pragma once
 
-#include <QtCore/QString>
-#include <QtXml/QDomElement>
-#include <QtCore/QMap>
-#include <QtCore/QPair>
+#include <functional>
 
-#include "../qrrepo/repoApi.h"
+#include <QtCore/QString>
+#include <QtCore/QMap>
+
+#include <qrkernel/ids.h>
+
+namespace qrRepo {
+class LogicalRepoApi;
+}
 
 namespace qrmc {
-	class Type;
-	class Editor;
 
-	class Diagram
-	{
-	public:
-		Diagram(const qReal::Id &id, const qrRepo::LogicalRepoApi *api, Editor *editor, const QString &targetDirectory);
-		~Diagram();
-		bool init();
-		bool resolve();
-		Editor *editor() const;
-		Type *findType(QString name);
-		QMap<QString, Type*> types() const;
-		QString name() const;
-		QString nodeName() const;
-		QString displayedName() const;
+class Type;
+class Editor;
 
-		QString generateNamesMap(const QString &lineTemplate) const;
-		QString generateMouseGesturesMap(const QString &lineTemplate) const;
-		QString generatePropertiesMap(const QString &lineTemplate) const;
-		QString generatePropertyDefaultsMap(const QString &lineTemplate) const;
-		QString generatePropertyDisplayedNamesMap(const QString &lineTemplate) const;
-		QString generateElementDescriptionMap(const QString &lineTemplate) const;
-		QString generateParentsMap(const QString &lineTemplate) const;
-		QString generateContainers(const QString &lineTemplate) const;
-		QString generateReferenceProperties(const QString &lineTemplate) const;
-		QString generatePortTypes(const QString &lineTemplate) const;
-		QString generatePropertyName(const QString &lineTemplate) const;
-		QString generateConnections(const QString &lineTemplate) const;
-		QString generateUsages(const QString &lineTemplate) const;
-		QString generateFactory(const QString &lineTemplate) const;
-		QString generateIsNodeOrEdge(const QString &lineTemplate) const;
-		QString generateEnums(const QString &lineTemplate) const;
-		QString generatePossibleEdges(const QString &lineTemplate) const;
+class Diagram
+{
+public:
+	Diagram(const qReal::Id &id, const qrRepo::LogicalRepoApi &api, Editor &editor
+			, const QString &targetDirectory);
 
-		QString generateNodeClasses(const QString &nodeTemplate) const;
-		QString generateEdgeClasses(const QString &edgeTemplate) const;
+	~Diagram();
+	bool init();
+	bool resolve();
+	Editor *editor() const;
+	Type *findType(const QString &name) const;
+	QMap<QString, Type*> types() const;
+	QString name() const;
+	QString nodeName() const;
+	QString displayedName() const;
 
-		QString generateResourceFile(const QString &resourceTemplate) const;
+	QString generateNamesMap(const QString &lineTemplate) const;
+	QString generateMouseGesturesMap(const QString &lineTemplate) const;
+	QString generatePropertiesMap(const QString &lineTemplate) const;
+	QString generatePropertyDefaultsMap(const QString &lineTemplate) const;
+	QString generatePropertyDisplayedNamesMap(const QString &lineTemplate) const;
+	QString generateElementDescriptionMap(const QString &lineTemplate) const;
+	QString generateParentsMap(const QString &lineTemplate) const;
+	QString generateContainers(const QString &lineTemplate) const;
+	QString generateReferenceProperties(const QString &lineTemplate) const;
+	QString generatePortTypes(const QString &lineTemplate) const;
+	QString generatePropertyName(const QString &lineTemplate) const;
+	QString generateConnections(const QString &lineTemplate) const;
+	QString generateUsages(const QString &lineTemplate) const;
+	QString generateFactory(const QString &lineTemplate) const;
+	QString generateIsNodeOrEdge(const QString &lineTemplate) const;
+	QString generateEnums(const QString &lineTemplate) const;
+	QString generatePossibleEdges(const QString &lineTemplate) const;
 
-		void print();
+	QString generateNodeClasses(const QString &nodeTemplate) const;
+	QString generateEdgeClasses(const QString &edgeTemplate) const;
 
-	private:
-		struct ImportSpecification {
-			QString name;
-			QString as;
-			QString displayedName;
-		};
-		qReal::Id mId;
-		const qrRepo::LogicalRepoApi *mApi;
-		QMap<QString, Type*> mTypes;
-		QString mDiagramName;
-		QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames
-		QString mDiagramDisplayedName;
-		Editor *mEditor;
-		QList<ImportSpecification> mImports;
-		const QString mTargetDirectory;
+	QString generateResourceFile(const QString &resourceTemplate) const;
 
-		class ListMethodGenerator;
-		class UsagesGenerator;
-		class ConnectionsGenerator;
-		class ContainersGenerator;
-		class ReferencePropertiesGenerator;
-		class PortTypesGenerator;
-		class PropertyNameGenerator;
-		class FactoryGenerator;
-		class IsNodeOrEdgeGenerator;
-		class EnumsGenerator;
-		class PossibleEdgesGenerator;
-		QString generateListMethod(const QString &lineTemplate, const ListMethodGenerator &generator) const;
+	void print();
 
-		class MapMethodGenerator;
-		class NamesGenerator;
-		class MouseGesturesGenerator;
-		class PropertyNamesGenerator;
-		class PropertyDefaultsGenerator;
-		class PropertyDisplayedNamesGenerator;
-		class ElementDescriptonGenerator;
-		class ParentsMapGenerator;
-		class NodesGenerator;
-		class EdgesGenerator;
-		class ResourceGenerator;
-		QString generateMapMethod(const QString& lineTemplate, const MapMethodGenerator &generator) const;
+private:
+	struct ImportSpecification {
+		QString name;
+		QString as;
+		QString displayedName;
 	};
+
+	const qReal::Id mId;
+	const qrRepo::LogicalRepoApi &mApi;
+
+	/// Has ownership.
+	QMap<QString, Type*> mTypes;
+
+	QString mDiagramName;
+	QString mDiagramNodeName; // TODO: replace with QStringList for multiple nodeNames
+	QString mDiagramDisplayedName;
+	Editor &mEditor;
+	QList<ImportSpecification> mImports;
+	const QString mTargetDirectory;
+
+	QString generateListMethod(const QString &lineTemplate
+			, std::function<QString(const Type * const, const QString &)> generator) const;
+
+	QString generateMapMethod(const QString& lineTemplate
+			, std::function<QString(Type * const, const QString &)> generator) const;
+};
+
 }

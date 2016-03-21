@@ -16,15 +16,15 @@
 
 #include <functional>
 
+#include <qrkernel/ids.h>
+
 #include <QtCore/QList>
 #include <QtCore/QMap>
-#include <QtCore/QDir>
-#include <QtCore/QPair>
 #include <QtCore/QSet>
 
-#include <qrrepo/repoApi.h>
-
-#include "classes/port.h"
+namespace qrRepo {
+class LogicalRepoApi;
+}
 
 namespace qrmc {
 class MetaCompiler;

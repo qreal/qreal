@@ -13,9 +13,13 @@
  * limitations under the License. */
 
 #include "editor.h"
+
+#include <qrrepo/logicalRepoApi.h>
+
 #include "metaCompiler.h"
 #include "diagram.h"
 #include "classes/type.h"
+#include "classes/port.h"
 #include "classes/enumType.h"
 #include "utils/nameNormalizer.h"
 
@@ -447,7 +451,7 @@ bool Editor::loadDiagrams()
 		}
 
 		qDebug() << "\tloading diagram" << diagramName;
-		Diagram * const diagram = new Diagram(diagramId, &mApi, this, mTargetDirectory);
+		Diagram * const diagram = new Diagram(diagramId, mApi, *this, mTargetDirectory);
 		if (!diagram->init()) {
 			qDebug() << "ERROR: error loading diagram" << diagramName;
 			delete diagram;

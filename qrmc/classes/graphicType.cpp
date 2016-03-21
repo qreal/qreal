@@ -45,8 +45,8 @@ GraphicType::GraphicType(
 		, const qReal::Id &id
 		, const QString &targetDirectory)
 	: Type(false, diagram, api, id)
-	, mResolving(false)
 	, mShape("", targetDirectory)
+	, mResolving(false)
 	, mTargetDirectory(targetDirectory)
 {
 }
