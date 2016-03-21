@@ -1,0 +1,1 @@
+Cos(@@ARGUMENT@@)

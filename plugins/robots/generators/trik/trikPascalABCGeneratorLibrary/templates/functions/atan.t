@@ -1,0 +1,1 @@
+ArcTan(@@ARGUMENT@@)
