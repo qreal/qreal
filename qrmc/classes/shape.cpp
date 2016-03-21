@@ -164,7 +164,7 @@ void Shape::generate(QString &classTemplate) const
 
 	generateSdf();
 
-	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = mNode->diagram()->editor()->metaCompiler();
 	QString unused;
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
@@ -174,18 +174,18 @@ void Shape::generate(QString &classTemplate) const
 	}
 
 	QString shapeRendererLine = hasPicture()
-								? compiler->getTemplateUtils(nodeLoadShapeRendererTag)
+								? compiler.getTemplateUtils(nodeLoadShapeRendererTag)
 								: "";
 	QString portRendererLine = (hasLinePorts() || hasPointPorts())
-								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
+								? compiler.getTemplateUtils(nodeLoadPortsRendererTag)
 								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
-	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
+	QString nodeContentsLine = compiler.getTemplateUtils(nodeContentsTag)
 							.replace(nodeWidthTag, QString::number(mWidth))
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
 	for (Port *port : mPorts) {
 		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
-		portsInitLine += port->generateInit(compiler) + endline;
+		portsInitLine += port->generateInit(&compiler) + endline;
 	}
 
 	QString labelsInitLine;
@@ -193,9 +193,9 @@ void Shape::generate(QString &classTemplate) const
 	QString labelsDefinitionLine;
 
 	foreach(Label *label, mLabels) {
-		labelsInitLine += label->generateInit(compiler, true) + endline;
-		labelsUpdateLine += label->generateUpdate(compiler) + endline;
-		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
+		labelsInitLine += label->generateInit(&compiler, true) + endline;
+		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
 	}
 	if (mLabels.isEmpty()) { // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;

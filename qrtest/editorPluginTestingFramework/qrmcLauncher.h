@@ -25,7 +25,7 @@ public:
 	QrmcLauncher() = delete;
 
 	/// Launches QRMC on a given .qrs file with metamodel and generates plugin code into given target directory.
-	static void launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &targetDirectory);
+	static void launchQrmc(const QString &fileName, const QString &targetDirectory);
 };
 
 }

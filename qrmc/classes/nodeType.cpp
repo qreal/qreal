@@ -72,18 +72,18 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 		return "";
 
 	QString nodeClass = classTemplate;
-	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
 
 	mShape.setNode(this);
 	mShape.generate(nodeClass);
 	generateContainerStuff(nodeClass);
-	generateContextMenuItems(nodeClass, compiler);
+	generateContextMenuItems(nodeClass, &compiler);
 
 	QString isContainer  = mContains.isEmpty() ? "false" : "true";
 	QString isAction = loadBoolProperty(mId, "isAction");
 	QString border = isAction == "true"
-					? compiler->getTemplateUtils(nodeValidBorderTag)
-					: compiler->getTemplateUtils(nodeInvalidBorderTag);
+					? compiler.getTemplateUtils(nodeValidBorderTag)
+					: compiler.getTemplateUtils(nodeInvalidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
 			.replace(nodeBorderTag, border)

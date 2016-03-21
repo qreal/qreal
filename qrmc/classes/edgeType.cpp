@@ -71,7 +71,7 @@ QString EdgeType::generateNodeClass(const QString &classTemplate)
 QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 {
 	QString edgeClass = classTemplate;
-	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
 
 	QString labelsInitLine;
 	QString labelsUpdateLine;
@@ -81,9 +81,9 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	generateArrows(edgeClass);
 
 	foreach(Label *label, mLabels) {
-		labelsInitLine += label->generateInit(compiler, false) + endline;
-		labelsUpdateLine += label->generateUpdate(compiler) + endline;
-		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
+		labelsInitLine += label->generateInit(&compiler, false) + endline;
+		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
 	}
 	if (mLabels.isEmpty()) { // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
@@ -128,41 +128,41 @@ void EdgeType::generateArrows(QString &edgeClass) const
 void EdgeType::generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
 								const QString &customTag, const QString &brushTag) const
 {
-	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
 	if (arrowEnd.isEmpty() || arrowEnd == "no_arrow") {
 		edgeClass.replace(customTag, "").replace(brushTag, "");
 		return;
 	}
 	if (arrowEnd == "empty_arrow") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(arrowTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(arrowTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	} else if (arrowEnd == "filled_arrow") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(arrowTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(arrowTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(filledArrowColorTag));
 	} else if (arrowEnd == "open_arrow") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(openArrowTemplateTag))
+		edgeClass.replace(customTag, compiler.getTemplateUtils(openArrowTemplateTag))
 				.replace(brushTag, "");
 	} else if (arrowEnd == "complex_arrow") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(complexArrowTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(complexArrowTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	} else if (arrowEnd == "empty_rhomb") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(rhombTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	} else if (arrowEnd == "filled_rhomb") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(rhombTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(filledArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(rhombTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(filledArrowColorTag));
 	} else if (arrowEnd == "crossed_line") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(crossedLineTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(crossedLineTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	} else if (arrowEnd == "empty_circle") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(emptyCircleTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(emptyCircleTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	} else if (arrowEnd == "signal") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(signalTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(signalTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	} else if (arrowEnd == "timer") {
-		edgeClass.replace(customTag, compiler->getTemplateUtils(timerTemplateTag))
-				.replace(brushTag, compiler->getTemplateUtils(emptyArrowColorTag));
+		edgeClass.replace(customTag, compiler.getTemplateUtils(timerTemplateTag))
+				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
 	}
 }
 
@@ -198,9 +198,9 @@ void EdgeType::generateSdf() const
 		return;
 	}
 
-	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+	const MetaCompiler &compiler = diagram()->editor()->metaCompiler();
 
-	QString result = compiler->getTemplateUtils(lineSdfTag);
+	QString result = compiler.getTemplateUtils(lineSdfTag);
 	result.replace(lineTypeTag, mApi->stringProperty(mId, "lineType"))
 			.replace("\\n", "\n");
 

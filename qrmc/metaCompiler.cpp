@@ -14,6 +14,11 @@
 
 #include "metaCompiler.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDebug>
+
 #include "editor.h"
 #include "utils/nameNormalizer.h"
 #include "diagram.h"
@@ -23,11 +28,6 @@
 #include "classes/nodeType.h"
 #include "classes/enumType.h"
 
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
-#include <QtCore/QDebug>
-
 using namespace qReal;
 using namespace qrmc;
 
@@ -35,9 +35,6 @@ MetaCompiler::MetaCompiler(const qrRepo::LogicalRepoApi &logicalRepoApi, const Q
 	: mApi(logicalRepoApi)
 	, mTargetDirectory(targetDirectory)
 {
-	mLocalDir = ".";
-	/// @todo: wat?
-//	mApi->setName(Id::rootId(), Id::rootId().toString());
 	loadTemplateFromFile(pluginHeaderTemplate, mPluginHeaderTemplate);
 	loadTemplateFromFile(pluginSourceTemplate, mPluginSourceTemplate);
 	loadTemplateFromFile(nodeClassTemplate, mNodeTemplate);
@@ -56,11 +53,11 @@ MetaCompiler::~MetaCompiler()
 
 bool MetaCompiler::compile(const QString &targetMetamodel)
 {
-	mTargetMetamodel = targetMetamodel;
 	const IdList rootItems = mApi.children(Id::rootId());
 	qDebug() << "root diagrams:" << rootItems.size();
 	if (rootItems.isEmpty()) {
 		qDebug() << "couldn't load any root diagrams";
+		return false;
 	}
 
 	for (const qReal::Id &editorId : rootItems) {
@@ -69,12 +66,9 @@ bool MetaCompiler::compile(const QString &targetMetamodel)
 		}
 
 		if (editorId.element() == metamodelDiagram) {
-			if (!mTargetMetamodel.isEmpty() && mApi.name(editorId) != mTargetMetamodel) {
+			if (!targetMetamodel.isEmpty() && mApi.name(editorId) != targetMetamodel) {
 				continue;
 			}
-
-			mPluginName = NameNormalizer::normalize(mApi.property(editorId, nameOfTheDirectory)
-					.toString().section("/", -1));
 
 			if (!loadMetaModel(editorId)) {
 				return false;
@@ -82,31 +76,16 @@ bool MetaCompiler::compile(const QString &targetMetamodel)
 		}
 	}
 
-	generateCode();
-	return true;
-}
-
-bool MetaCompiler::changeDir(const QString &path)
-{
-	if (!mDirectory.exists(path)) {
-		qDebug() << "Cannot find directory " << path;
-		return false;
-	}
-
-	mDirectory.cd(path);
+	generateCode(targetMetamodel);
 	return true;
 }
 
 bool MetaCompiler::loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate)
 {
-	if (!changeDir(mLocalDir + "/" + templatesDir)) {
-		return false;
-	}
-
-	QString fileName = mDirectory.absoluteFilePath(templateFileName);
-	QFile file(fileName);
+	const QFileInfo fileInfo(templatesDir + "/" + templateFileName);
+	QFile file(fileInfo.canonicalFilePath());
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		qDebug() << "Cannot load file \"" << fileName << "\".";
+		qDebug() << "Cannot load file \"" << fileInfo.canonicalFilePath() << "\".";
 		return false;
 	}
 
@@ -114,39 +93,30 @@ bool MetaCompiler::loadTemplateFromFile(const QString &templateFileName, QString
 	loadedTemplate = in.readAll();
 
 	file.close();
-	mDirectory.cdUp();
-
 	return true;
 }
 
 bool MetaCompiler::loadTemplateUtils()
 {
-	if (!changeDir(mLocalDir + "/" + templatesDir)) {
-		return false;
-	}
-
-	QString fileName = mDirectory.absoluteFilePath(utilsTemplate);
-	QFile utilsFile(fileName);
+	const QFileInfo fileInfo(templatesDir + "/" + utilsTemplate);
+	QFile utilsFile(fileInfo.canonicalFilePath());
 	if (!utilsFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		qDebug() << "cannot load file \"" << fileName << "\"";
+		qDebug() << "cannot load file \"" << fileInfo.canonicalFilePath() << "\"";
 		return false;
 	}
 
 	QTextStream in(&utilsFile);
 	QString line = in.readLine();
 	while (!line.isNull()) {
-		QString name = line.section("=", 0, 0);
-		QString definition = line.section("=", 1);
+		const QString name = line.section("=", 0, 0);
+		const QString definition = line.section("=", 1);
 		mTemplateUtils[name] = definition;
 		line = in.readLine();
 	}
 
 	utilsFile.close();
-	mDirectory.cdUp();
-
 	return true;
 }
-
 
 Editor* MetaCompiler::loadMetaModel(const Id &metamodelId)
 {
@@ -163,7 +133,7 @@ Editor* MetaCompiler::loadMetaModel(const Id &metamodelId)
 			return nullptr;
 		}
 	} else {
-		Editor * const editor = new Editor(this, &mApi, metamodelId, mTargetDirectory);
+		Editor * const editor = new Editor(*this, mApi, metamodelId, mTargetDirectory);
 		if (!editor->load()) {
 			qDebug() << "ERROR: Failed to load file";
 			delete editor;
@@ -175,10 +145,10 @@ Editor* MetaCompiler::loadMetaModel(const Id &metamodelId)
 	}
 }
 
-Diagram *MetaCompiler::getDiagram(const QString &diagramName)
+Diagram *MetaCompiler::getDiagram(const QString &diagramName) const
 {
-	for (Editor *editor : mEditors) {
-		Diagram *diagram = editor->findDiagram(diagramName);
+	for (const Editor * const editor : mEditors) {
+		Diagram * const diagram = editor->findDiagram(diagramName);
 		if (diagram) {
 			return diagram;
 		}
@@ -187,14 +157,14 @@ Diagram *MetaCompiler::getDiagram(const QString &diagramName)
 	return nullptr;
 }
 
-void MetaCompiler::generateCode()
+void MetaCompiler::generateCode(const QString &targetMetamodel)
 {
 	qDebug() << "loaded metamodels: " << mEditors.keys();
 	qDebug() << "===";
 
 	QString pluginNames;
 	for (Editor * const editor : mEditors) {
-		if (!mTargetMetamodel.isEmpty() && mApi.name(editor->id()) != mTargetMetamodel) {
+		if (!targetMetamodel.isEmpty() && mApi.name(editor->id()) != targetMetamodel) {
 			continue;
 		}
 

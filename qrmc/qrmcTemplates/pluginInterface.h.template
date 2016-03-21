@@ -8,7 +8,8 @@
 
 #include <metaMetaModel/metamodel.h>
 
-/// Generated implementation of @@MetamodelName@@ editor plugin. See QRMC template "pluginInterface.h.template".
+/// Generated implementation of @@MetamodelName@@ editor plugin.
+///  See QRMC template "pluginInterface.h.template".
 class @@MetamodelName@@Plugin : public QObject, public qReal::Metamodel
 {
 	Q_OBJECT

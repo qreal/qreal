@@ -56,7 +56,7 @@ MainClass::MainClass(const QString &metamodelFileName
 
 //	appendPluginNames();
 
-	launchQrmc(metamodelFileName, pathToQrmc);
+	launchQrmc(metamodelFileName);
 	const QFileInfo qrmcPluginBinaryInfo = compilePlugin(normalizedFileName, PluginCompiler::MetamodelCompiler::qrmc);
 	Metamodel * const qrmcGeneratedPlugin = loadPlugin(qrmcPluginBinaryInfo);
 
@@ -141,9 +141,9 @@ void MainClass::restoreOldValueOfTempFolder() const
 	SettingsManager::setValue("temp", mTempOldValue);
 }
 
-void MainClass::launchQrmc(const QString &fileName, const QString &pathToQrmc)
+void MainClass::launchQrmc(const QString &fileName)
 {
-	QrmcLauncher::launchQrmc(fileName, pathToQrmc, mConfiguration.generatedCodeDirQrmc());
+	QrmcLauncher::launchQrmc(fileName, mConfiguration.generatedCodeDirQrmc());
 }
 
 QFileInfo MainClass::compilePlugin(const QString &fileWithMetamodel
