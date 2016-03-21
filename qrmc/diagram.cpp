@@ -57,7 +57,7 @@ bool Diagram::init()
 
 			mTypes[nodeType->name()] = nodeType;
 		} else if (id.element() == metaEntityEdge) {
-			Type * const edgeType = new EdgeType(this, &mApi, id, mTargetDirectory);
+			Type * const edgeType = new EdgeType(*this, mApi, id, mTargetDirectory);
 			if (!edgeType->init(mDiagramName)) {
 				delete edgeType;
 				qDebug() << "can't load edge";
@@ -152,7 +152,7 @@ QString Diagram::displayedName() const
 	return mDiagramDisplayedName;
 }
 
-void Diagram::print()
+void Diagram::print() const
 {
 	qDebug() << "elements:" << mTypes.size();
 }

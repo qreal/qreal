@@ -18,20 +18,23 @@
 using namespace qReal;
 using namespace qrmc;
 
-EnumType::EnumType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
+EnumType::EnumType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, const qReal::Id &id)
+	: NonGraphicType(diagram, api, id)
 {
 }
 
 bool EnumType::init(const QString &context)
 {
 	Type::init(context);
-	IdList children = mApi->children(mId);
-	foreach(Id child, children) {
-		if (!mApi->isLogicalElement(child))
+	const IdList children = mApi.children(mId);
+	for (const Id &child : children) {
+		if (!mApi.isLogicalElement(child)) {
 			continue;
+		}
+
 		if (child.element() == metaEntityValue) {
-			const QString name = mApi->stringProperty(child, "valueName");
-			const QString displayedName = mApi->stringProperty(child, "displayedName");
+			const QString name = mApi.stringProperty(child, "valueName");
+			const QString displayedName = mApi.stringProperty(child, "displayedName");
 			mValues[name] = displayedName;
 		}
 	}
@@ -41,7 +44,7 @@ bool EnumType::init(const QString &context)
 
 Type* EnumType::clone() const
 {
-	EnumType *result = new EnumType(nullptr, mApi, mId);
+	EnumType *result = new EnumType(nullptr, &mApi, mId);
 	Type::copyFields(result);
 	result->mValues = mValues;
 	return result;

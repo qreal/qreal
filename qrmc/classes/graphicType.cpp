@@ -40,8 +40,8 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 }
 
 GraphicType::GraphicType(
-		Diagram *diagram
-		, const qrRepo::LogicalRepoApi *api
+		Diagram &diagram
+		, const qrRepo::LogicalRepoApi &api
 		, const qReal::Id &id
 		, const QString &targetDirectory)
 	: Type(false, diagram, api, id)
@@ -58,59 +58,62 @@ GraphicType::~GraphicType()
 bool GraphicType::init(const QString &context)
 {
 	Type::init(context);
-	mDescription = mApi->stringProperty(mId, "description");
+	mDescription = mApi.stringProperty(mId, "description");
 
 	mIsVisible = false;
-	if (mApi->hasProperty(mId, "shape"))
-		mIsVisible = !mApi->stringProperty(mId, "shape").isEmpty();
+	if (mApi.hasProperty(mId, "shape"))
+		mIsVisible = !mApi.stringProperty(mId, "shape").isEmpty();
 
-	if (mApi->hasProperty(mId, "RequestBody"))
-		mIsVisible = !mApi->stringProperty(mId, "RequestBody").isEmpty();
+	if (mApi.hasProperty(mId, "RequestBody"))
+		mIsVisible = !mApi.stringProperty(mId, "RequestBody").isEmpty();
 
-	const IdList outLinks = mApi->outgoingLinks(mId);
+	const IdList outLinks = mApi.outgoingLinks(mId);
 	for (const Id outLink : outLinks) {
 		if (outLink.element() == "Container") {
-			const Id elementId = mApi->to(outLink);
-			const QString typeName = mApi->name(elementId);
+			const Id elementId = mApi.to(outLink);
+			const QString typeName = mApi.name(elementId);
 			mContains << typeName.split(",", QString::SkipEmptyParts);
 		} else if (outLink.element() == "Inheritance") {
-			const Id elementId = mApi->to(outLink);
-			const QString childName = mApi->name(elementId);
+			const Id elementId = mApi.to(outLink);
+			const QString childName = mApi.name(elementId);
 			if (!mChildren.contains(childName)) {
 				mChildren << childName.split(",", QString::SkipEmptyParts);
 			}
 		}
 	}
 
-	const IdList inLinks = mApi->incomingLinks(mId);
+	const IdList inLinks = mApi.incomingLinks(mId);
 	for (const Id inLink : inLinks) {
 		if (inLink.element() == "Inheritance") {
-			const Id elementId = mApi->from(inLink);
-			const QString parentName = mApi->name(elementId);
+			const Id elementId = mApi.from(inLink);
+			const QString parentName = mApi.name(elementId);
 			if (!mParents.contains(parentName)) {
 				mParents << parentName.split(",", QString::SkipEmptyParts);
 			}
 		}
 	}
 
-	for (const Id &id : mApi->children(mId)) {
-		if (!mApi->isLogicalElement(id))
+	for (const Id &id : mApi.children(mId)) {
+		if (!mApi.isLogicalElement(id)) {
 			continue;
+		}
 
 		if (id.element() == metaEntityAttribute) {
-			Property *property = new Property(mApi, id);
+			Property *property = new Property(&mApi, id);
 			if (!property->init()) {
 				delete property;
 				continue;
 			}
-			if (!addProperty(property))
+
+			if (!addProperty(property)) {
 				return false;
+			}
 		} else if (id.element() == metaEntityConnection) {
-			mConnections << mApi->stringProperty(id, "type").section("::", -1);
+			mConnections << mApi.stringProperty(id, "type").section("::", -1);
 		} else if (id.element() == metaEntityUsage) {
-			mUsages << mApi->stringProperty(id, "type").section("::", -1);
+			mUsages << mApi.stringProperty(id, "type").section("::", -1);
 		} else if (id.element() == metaEntityContextMenuField) {
-			mContextMenuItems << mApi->name(id);
+			mContextMenuItems << mApi.name(id);
 		}
 	}
 
@@ -121,30 +124,32 @@ bool GraphicType::init(const QString &context)
 
 bool GraphicType::initPossibleEdges()
 {
-	IdList children = mApi->children(mId);
+	const IdList children = mApi.children(mId);
 	for (const Id &id : children) {
-		if (!mApi->isLogicalElement(id) || id.element() != metaEntityPossibleEdge)
+		if (!mApi.isLogicalElement(id) || id.element() != metaEntityPossibleEdge) {
 			continue;
+		}
 
-		QString beginName = mApi->stringProperty(id, "beginName");
-		QString endName = mApi->stringProperty(id, "endName");
-		QString directedField = mApi->stringProperty(id, "directed");
+		const QString beginName = mApi.stringProperty(id, "beginName");
+		const QString endName = mApi.stringProperty(id, "endName");
+		const QString directedField = mApi.stringProperty(id, "directed");
 		bool directed = false;
 
 		if (beginName.isEmpty() || endName.isEmpty() || ((directedField != "true") && (directedField != "false"))) {
-
 				qDebug() << "Error: one of attributes is incorrect " <<
 					"(perhaps, \"beginName\" or \"emptyName\" is empty or " <<
 					"\"directed\" isn't \"true\" or \"false\".')" << qualifiedName();
 				return false;
 		}
-		directed = (directedField == "true");
-		QString edgeName = NameNormalizer::normalize(qualifiedName());
-		QPair<QPair<QString,QString>,QPair<bool,QString> > possibleEdge(qMakePair(beginName,endName),qMakePair(directed,edgeName));
 
-		if (!mPossibleEdges.contains(possibleEdge))
+		directed = (directedField == "true");
+		const QString edgeName = NameNormalizer::normalize(qualifiedName());
+		QPair<QPair<QString, QString>, QPair<bool, QString>> possibleEdge(
+				qMakePair(beginName,endName),qMakePair(directed,edgeName));
+
+		if (!mPossibleEdges.contains(possibleEdge)) {
 				mPossibleEdges.append(possibleEdge);
-		else {
+		} else {
 			// FIXME: ignoring for now
 				//qDebug() << "ERROR: this edge is already in list " << qualifiedName();
 //				return false;
@@ -156,13 +161,14 @@ bool GraphicType::initPossibleEdges()
 
 void GraphicType::initShape()
 {
-	if (mApi->hasProperty(mId, "shape")) {
-		QString shape = mApi->stringProperty(mId, "shape");
-		if (shape.isEmpty())
+	if (mApi.hasProperty(mId, "shape")) {
+		QString shape = mApi.stringProperty(mId, "shape");
+		if (shape.isEmpty()) {
 			return;
+		}
+
 		mShape.init(shape);
 	}
-	return;
 }
 
 GraphicType::ResolvingHelper::~ResolvingHelper()

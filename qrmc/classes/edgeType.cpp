@@ -13,20 +13,19 @@
  * limitations under the License. */
 
 #include "edgeType.h"
-#include "../metaCompiler.h"
-#include "../diagram.h"
-#include "../editor.h"
-#include "../utils/nameNormalizer.h"
-
-#include <QDebug>
+#include "qrmc/metaCompiler.h"
+#include "qrmc/diagram.h"
+#include "qrmc/editor.h"
+#include "qrmc/utils/nameNormalizer.h"
 
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, const qReal::Id &id, const QString &targetDirectory)
+EdgeType::EdgeType(Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id
+		, const QString &targetDirectory)
 	: GraphicType(diagram, api, id, targetDirectory)
 {
-	mLineType = mApi->stringProperty(id, "lineType");
+	mLineType = mApi.stringProperty(id, "lineType");
 	initLabels();
 }
 
@@ -36,7 +35,7 @@ EdgeType::~EdgeType()
 
 Type* EdgeType::clone() const
 {
-	EdgeType *result = new EdgeType(mDiagram, mApi, mId, targetDirectory());
+	EdgeType *result = new EdgeType(*mDiagram, mApi, mId, targetDirectory());
 	GraphicType::copyFields(result);
 	result->mBeginType = mBeginType;
 	result->mEndType = mEndType;
@@ -80,20 +79,23 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	generateSdf();
 	generateArrows(edgeClass);
 
-	foreach(Label *label, mLabels) {
+	for (const Label * const label : mLabels) {
 		labelsInitLine += label->generateInit(&compiler, false) + endline;
 		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
 		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
 	}
+
 	if (mLabels.isEmpty()) { // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
 		labelsInitLine = nodeIndent + "Q_UNUSED(factory)" + endline +
 						 nodeIndent + "Q_UNUSED(titles)" + endline;
 	}
 
-	QString lineType = mApi->stringProperty(mId, "lineType");
-	if (lineType.isEmpty())
+	QString lineType = mApi.stringProperty(mId, "lineType");
+	if (lineType.isEmpty()) {
 		lineType = "solidLine";
+	}
+
 	lineType = "Qt::" + NameNormalizer::normalize(lineType);
 
 	const QString portsForFromPortTypes = generatePorts(mFromPorts);
@@ -105,6 +107,7 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 			.replace(portsForFromPortTypesTag, portsForFromPortTypes)
 			.replace(elementNameTag, name())
 			.replace("\\n", "\n");
+
 	return edgeClass + endline;
 }
 
@@ -112,17 +115,17 @@ void EdgeType::generateArrows(QString &edgeClass) const
 {
 	QString beginType;
 	QString endType;
-	IdList children = mApi->children(mId);
+	const IdList children = mApi.children(mId);
 
-	foreach (Id child, children){
+	for (const Id &child : children) {
 		if (child.element() == metaEntityAssociation) {
-			beginType = mApi->stringProperty(child, "beginType");
-			endType = mApi->stringProperty(child, "endType");
+			beginType = mApi.stringProperty(child, "beginType");
+			endType = mApi.stringProperty(child, "endType");
 		}
 	}
+
 	generateArrowEnd(edgeClass, beginType, beginArrowCustomizationTag, beginArrowBrushColorTag);
 	generateArrowEnd(edgeClass, endType, endArrowCustomizationTag, endArrowBrushColorTag);
-
 }
 
 void EdgeType::generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
@@ -133,6 +136,7 @@ void EdgeType::generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
 		edgeClass.replace(customTag, "").replace(brushTag, "");
 		return;
 	}
+
 	if (arrowEnd == "empty_arrow") {
 		edgeClass.replace(customTag, compiler.getTemplateUtils(arrowTemplateTag))
 				.replace(brushTag, compiler.getTemplateUtils(emptyArrowColorTag));
@@ -201,7 +205,7 @@ void EdgeType::generateSdf() const
 	const MetaCompiler &compiler = diagram()->editor()->metaCompiler();
 
 	QString result = compiler.getTemplateUtils(lineSdfTag);
-	result.replace(lineTypeTag, mApi->stringProperty(mId, "lineType"))
+	result.replace(lineTypeTag, mApi.stringProperty(mId, "lineType"))
 			.replace("\\n", "\n");
 
 	QTextStream out(&file);
@@ -212,7 +216,7 @@ void EdgeType::generateSdf() const
 // copy-pasted from Shape, quick workaround for #349
 void EdgeType::initLabels()
 {
-	QString xml = mApi->hasProperty(mId, "labels") ? mApi->stringProperty(mId, "labels") : "";
+	QString xml = mApi.hasProperty(mId, "labels") ? mApi.stringProperty(mId, "labels") : "";
 	QString error = "";
 	int errorLine = 0;
 	int errorCol = 0;
@@ -227,15 +231,13 @@ void EdgeType::initLabels()
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true, mWidth, mHeight))
+		if (!label->init(element, count, true, mWidth, mHeight)) {
 			delete label;
-		else {
+		} else {
 			mLabels.append(label);
 			++count;
 		}
 	}
-	return;
-
 }
 
 QString EdgeType::generateResourceLine(const QString &resourceTemplate) const

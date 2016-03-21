@@ -30,9 +30,15 @@ namespace qrmc {
 class Type;
 class Editor;
 
+/// Represents a diagram --- tab in the palette, or one visual language.
 class Diagram
 {
 public:
+	/// Constructor.
+	/// @param id - id of a diagram.
+	/// @param api - repository with metamodel.
+	/// @editor - editor to which this diagram belongs to.
+	/// @targetDirectory - directory to which the code shall be generated.
 	Diagram(const qReal::Id &id, const qrRepo::LogicalRepoApi &api, Editor &editor
 			, const QString &targetDirectory);
 
@@ -69,7 +75,7 @@ public:
 
 	QString generateResourceFile(const QString &resourceTemplate) const;
 
-	void print();
+	void print() const;
 
 private:
 	struct ImportSpecification {
