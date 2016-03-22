@@ -25,6 +25,7 @@ using namespace qReal;
 
 ElementType::ElementType(Metamodel &metamodel)
 	: qrgraph::Node(metamodel)
+	, mIsHidden(false)
 {
 }
 
@@ -33,16 +34,34 @@ Metamodel &ElementType::metamodel() const
 	return *static_cast<Metamodel *>(&graph());
 }
 
+NodeElementType &ElementType::toNode()
+{
+	Q_ASSERT(type() == Type::node);
+	return *dynamic_cast<NodeElementType *>(this);
+}
+
 const NodeElementType &ElementType::toNode() const
 {
 	Q_ASSERT(type() == Type::node);
 	return *dynamic_cast<const NodeElementType *>(this);
 }
 
+EdgeElementType &ElementType::toEdge()
+{
+	Q_ASSERT(type() == Type::edge);
+	return *dynamic_cast<EdgeElementType *>(this);
+}
+
 const EdgeElementType &ElementType::toEdge() const
 {
 	Q_ASSERT(type() == Type::edge);
 	return *dynamic_cast<const EdgeElementType *>(this);
+}
+
+PatternType &ElementType::toPattern()
+{
+	Q_ASSERT(type() == Type::pattern);
+	return *dynamic_cast<PatternType *>(this);
 }
 
 const PatternType &ElementType::toPattern() const
@@ -102,7 +121,109 @@ QList<const Explosion *> ElementType::explosions() const
 	return result.values();
 }
 
-void ElementType::updateRendererContent(const QString &shape)
+QString ElementType::name() const
 {
-	Q_UNUSED(shape)
+	return mName;
+}
+
+void ElementType::setName(const QString &name)
+{
+	mName = name;
+}
+
+QString ElementType::friendlyName() const
+{
+	return mFriendlyName;
+}
+
+void ElementType::setFriendlyName(const QString &friendlyName)
+{
+	mFriendlyName = friendlyName;
+}
+
+QString ElementType::description() const
+{
+	return mDescription;
+}
+
+void ElementType::setDescription(const QString &description)
+{
+	mDescription = description;
+}
+
+QString ElementType::diagram() const
+{
+	return mDiagram;
+}
+
+void ElementType::setDiagram(const QString &diagramName)
+{
+	mDiagram = diagramName;
+}
+
+const QList<LabelProperties> &ElementType::labels() const
+{
+	return mLabels;
+}
+
+void ElementType::addLabel(const LabelProperties &label)
+{
+	mLabels << label;
+}
+
+const QStringList &ElementType::propertyNames() const
+{
+	return mPropertyNames;
+}
+
+const QStringList &ElementType::referenceProperties() const
+{
+	return mReferenceProperties;
+}
+
+QString ElementType::propertyType(const QString &name) const
+{
+	return mPropertyTypes[name];
+}
+
+QString ElementType::propertyDefaultValue(const QString &property) const
+{
+	return mPropertyDefaultValues[property];
+}
+
+QString ElementType::propertyDescription(const QString &property) const
+{
+	return mPropertyDescriptions[property];
+}
+
+QString ElementType::propertyDisplayedName(const QString &property) const
+{
+	return mPropertyDisplayedNames[property];
+}
+
+void ElementType::addProperty(const QString &name, const QString &type, const QString &defaultValue
+		, const QString &displayedName, const QString &description, bool isReference)
+{
+	if (!mPropertyNames.contains(name)) {
+		mPropertyNames << name;
+	}
+
+	if (isReference && !mReferenceProperties.contains(name)) {
+		mReferenceProperties << name;
+	}
+
+	mPropertyTypes[name] = type;
+	mPropertyDefaultValues[name] = defaultValue;
+	mPropertyDisplayedNames[name] = displayedName;
+	mPropertyDescriptions[name] = description;
+}
+
+bool ElementType::isHidden() const
+{
+	return mIsHidden;
+}
+
+void ElementType::setHidden(bool isHidden)
+{
+	mIsHidden = isHidden;
 }

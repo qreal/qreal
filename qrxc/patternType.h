@@ -39,8 +39,6 @@ public:
 	bool copyPorts(NodeType *parent) override;
 	bool copyPictures(GraphicType *parent) override;
 
-	void generatePropertyGetters(utils::OutFile &out) const override;
-
 private:
 	QString mXml;
 };

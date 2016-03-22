@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,14 @@
 
 #pragma once
 
-#include <QtCore/QDir>
-#include <QtCore/QStringList>
-#include <QtCore/QMap>
-#include <QtCore/QPluginLoader>
-#include <QtCore/QStringList>
-#include <QtCore/QPair>
-#include <QtGui/QIcon>
-
-#include <qrkernel/ids.h>
-#include <qrkernel/settingsManager.h>
 #include <qrrepo/repoApi.h>
 
 #include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 #include "plugins/pluginManager/editorManagerInterface.h"
-#include "plugins/pluginManager/interpretedPluginManager.h"
-
-#include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
+
+class Metamodel;
 
 namespace gui {
 namespace editor {
@@ -157,12 +146,14 @@ public:
 	/// Returns list of metamodels for interpreted plugins.
 	QMap<QString, qrRepo::RepoApi*> listOfMetamodels() const;
 
+
 private:
 	class CheckPropertyForParent;
 	class CompareProperty;
 	class GetProperty;
 	class HasProperty;
 
+	QMap<QString, Metamodel *> mMetamodels;  // Has ownership.
 	QMap<QString, qrRepo::RepoApi*> mEditorRepoApi;  // Has ownership.
 	QString mMetamodelFile;
 

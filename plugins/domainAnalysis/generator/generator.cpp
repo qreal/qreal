@@ -23,11 +23,12 @@
 #include <QtCore/QFile>
 
 #include <qrkernel/settingsManager.h>
-#include <qrmc/metaCompiler.h>
 #include <qrkernel/roles.h>
+#include <qrkernel/settingsManager.h>
 #include <qrutils/outFile.h>
 #include <qrutils/nameNormalizer.h>
-#include <qrkernel/settingsManager.h>
+#include <qrrepo/repoApi.h>
+#include <qrmc/metaCompiler.h>
 #include <qrgui/plugins/pluginManager/editorManager.h>
 
 using namespace qReal;

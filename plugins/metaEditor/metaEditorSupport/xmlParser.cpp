@@ -372,8 +372,6 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setConnections(attribute, nodeId);
 		else if (attribute.tagName() == "usages")
 			setUsages(attribute, nodeId);
-		else if (attribute.tagName() == "action")
-			setAction(nodeId);
 	}
 }
 
@@ -558,11 +556,6 @@ void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId
 		if (possibleEdge.tagName() == "possibleEdge")
 			initPossibleEdge(possibleEdge, elementId);
 	}
-}
-
-void XmlParser::setAction(const Id &elementId)
-{
-	mApi.setProperty(elementId, "isAction", "true");
 }
 
 void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elementId)

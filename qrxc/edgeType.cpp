@@ -262,38 +262,24 @@ void EdgeType::generateCode(OutFile &out)
 
 	<< "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
 			<< "\t\t\t: EdgeElementType(metamodel)\n"
-			<< "\t\t{\n"
+			<< "\t\t{\n";
+
+	generateCommonData(out);
+	generatePorts(out, mFromPorts, "From");
+	generatePorts(out, mToPorts, "To");
+	out() << "\t\t\tsetShapeType(qReal::LinkShape::" << mShapeType << ");\n"
+			<< "\t\t\tsetPenWidth(" << mLineWidth << ");\n"
+			<< "\t\t\tsetPenColor(QColor("
+					<< mLineColor.red() << ","
+					<< mLineColor.green() << ","
+					<< mLineColor.blue()
+			<< "));\n"
+			<< "\t\t\tsetPenStyle(" << (mLineType.isEmpty() ? "Qt::SolidLine" : mLineType) << ");\n"
+			<< "\t\t\tsetDividable(" << mIsDividable << ")\n;"
 			<< "\t\t\tinitProperties();\n"
 			<< "\t\t}\n\n"
 
 	<< "\t\tvirtual ~" << className << "() {}\n\n";
-
-	generateCommonMethods(out);
-
-	out() << "\t\tQStringList fromPortTypes() const override\n\t\t{\n\t\t\t";
-	generatePorts(out, mFromPorts);
-
-	out() << "\t\tQStringList toPortTypes() const override\n\t\t{\n\t\t\t";
-	generatePorts(out, mToPorts);
-
-	out() << "\t\tqReal::LinkShape shapeType() const override\n\t\t{\n"
-	<< "\t\t\treturn qReal::LinkShape::" << mShapeType << ";\n\t\t}\n";
-
-	out() << "\t\tint penWidth() const override { return " << mLineWidth << "; }\n"
-	<< "\t\tQColor penColor() const override { return QColor("
-			<< mLineColor.red() << ","
-			<< mLineColor.green() << ","
-			<< mLineColor.blue()
-	<< "); }\n"
-	<< "\t\tQt::PenStyle penStyle() const override { ";
-
-	if (!mLineType.isEmpty()) {
-		out() << "return " << mLineType << "; }\n";
-	} else {
-		out() << "return Qt::SolidLine; }\n";
-	}
-
-	out() << "\t\tbool isDividable() const override { return "<< mIsDividable << "; }\n\n";
 
 	out() << "\t\tvoid drawStartArrow(QPainter * painter) const override\n\t\t{\n";
 	generateEdgeStyle(mBeginType, out);
@@ -485,14 +471,12 @@ void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 	out() << "\t\t\tpainter->setBrush(old);\n\t\t}\n\n";
 }
 
-void EdgeType::generatePorts(OutFile &out, const QStringList &portTypes)
+void EdgeType::generatePorts(OutFile &out, const QStringList &portTypes, const QString &direction)
 {
-	out() << "QStringList result;\n"
-		  << "\t\t\tresult";
-
-	foreach (const QString &type, portTypes) {
-		out() << " << \"" << type << "\"";
+	out() << "\t\t\tset" << direction << "PortTypes({";
+	for (const QString &type : portTypes) {
+		out() << "\"" << type << "\", ";
 	}
 
-	out() << ";\n\t\t\treturn result;\n\t\t}\n";
+	out() << "});\n";
 }

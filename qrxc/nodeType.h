@@ -58,5 +58,4 @@ private:
 	bool initBooleanProperties();
 
 	void generateMouseGesture(utils::OutFile &out);
-	void generatePortTypes(utils::OutFile &out);
 };

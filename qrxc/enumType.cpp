@@ -52,34 +52,9 @@ Type* EnumType::clone() const
 	return result;
 }
 
-bool EnumType::generateValues(utils::OutFile &out, bool isNotFirst) const
+const QMap<QString, QString> &EnumType::values() const
 {
-	if (mValues.isEmpty()) {
-		return false;
-	}
-
-	generateOneCase(out, isNotFirst);
-
-	out() << "\t\treturn { ";
-	QStringList pairs;
-	for (const QString &name : mValues.keys()) {
-		pairs << QString("qMakePair(QString(\"%1\"), tr(\"%2\"))").arg(name, mValues[name]);
-	}
-
-	out() << pairs.join(", ");
-	out() << " };\n";
-	return true;
-}
-
-void EnumType::generateOneCase(utils::OutFile &out, bool isNotFirst) const
-{
-	//QString name = NameNormalizer::normalize(qualifiedName());
-
-	if (!isNotFirst) {
-		out() << "\tif (name == \"" << NameNormalizer::normalize(name()) << "\")\n";
-	} else {
-		out() << "\telse if (name == \"" << NameNormalizer::normalize(name()) << "\")\n";
-	}
+	return mValues;
 }
 
 bool EnumType::isEditable() const

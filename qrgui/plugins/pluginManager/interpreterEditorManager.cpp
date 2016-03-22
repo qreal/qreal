@@ -25,7 +25,6 @@
 #include <qrrepo/repoApi.h>
 #include <qrutils/outFile.h>
 
-#include "details/interpreterElementImpl.h"
 #include "editor/nodeElement.h"
 #include "editor/edgeElement.h"
 

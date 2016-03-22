@@ -36,12 +36,13 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	if (mTextBinded.contains("##")) {
 		mReadOnly = "true";
 	}
+
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel && mTextBinded.isEmpty() ? "transparent" : "white");
 	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
 	mIsPlainText = element.attribute("isPlainText", "false").toLower().trimmed() == "true";
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
-		qDebug() << "ERROR: can't parse label";
+		qWarning() << "ERROR: can't parse label";
 		return false;
 	}
 	return true;
@@ -112,4 +113,6 @@ void Label::generateCodeForConstructor(OutFile &out) const
 	if (!mSuffix.isEmpty()) {
 		out() << QString("\t\t\t%1.setSuffix(QObject::tr(\"%2\"));\n").arg(labelName(), mSuffix);
 	}
+
+	out() << QString("\t\t\taddLabel(%1);\n").arg(labelName());
 }

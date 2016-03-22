@@ -25,38 +25,69 @@ namespace qReal {
 class QRGUI_META_META_MODEL_EXPORT EdgeElementType : public ElementType
 {
 public:
+	/// @param metamodel Metamodel that owns this edge element.
+	explicit EdgeElementType(Metamodel &metamodel);
+
 	Type type() const override;
 
 	/// Returns the style of the pen that will draw this edge.
-	virtual Qt::PenStyle penStyle() const = 0;
+	Qt::PenStyle penStyle() const;
+
+	/// Sets the style of the pen that will draw this edge.
+	void setPenStyle(Qt::PenStyle style);
 
 	/// Returns the thickness of the pen that will draw this edge.
-	virtual int penWidth() const = 0;
+	int penWidth() const;
+
+	/// Sets the thickness of the pen that will draw this edge.
+	void setPenWidth(int width);
 
 	/// Returns the color of the pen that will draw this edge.
-	virtual QColor penColor() const = 0;
+	QColor penColor() const;
+
+	/// Sets the color of the pen that will draw this edge.
+	void setPenColor(const QColor &color);
 
 	/// Returns true if this edge can be divided into two ones by throwing element onto it.
-	virtual bool isDividable() const = 0;
+	bool isDividable() const;
+
+	/// Switches ability to divide this edge into two ones by throwing element onto it.
+	void setDividable(bool isDividable);
 
 	/// Returns a list of port types that can be edges`s begin can be connected to.
-	virtual QStringList fromPortTypes() const = 0;
+	const QStringList &fromPortTypes() const;
+
+	/// Sets a list of port types that can be edges`s begin can be connected to.
+	void setFromPortTypes(const QStringList &portTypes);
 
 	/// Returns a list of port types that can be edges`s end can be connected to.
-	virtual QStringList toPortTypes() const = 0;
+	const QStringList &toPortTypes() const;
 
-	/// Returns default type of this edges`s shape. This shape usially can then be changed by user.
-	virtual LinkShape shapeType() const = 0;
+	/// Sets a list of port types that can be edges`s end can be connected to.
+	void setToPortTypes(const QStringList &portTypes);
+
+	/// Returns default type of this edges`s shape. This shape usually can then be changed by user.
+	LinkShape shapeType() const;
+
+	/// Sets the default type of this edges`s shape. This shape usually can then be changed by user.
+	void setShapeType(LinkShape shape);
 
 	/// Draws with a \painter the arrow from a begin. The arrow type is specified in a metamodel.
-	virtual void drawStartArrow(QPainter *painter) const = 0;
+	/// @todo: This should be a part of an engine!
+	virtual void drawStartArrow(QPainter *painter) const;
 
 	/// Draws with a \painter the arrow from a begin. The arrow type is specified in a metamodel.
-	virtual void drawEndArrow(QPainter *painter) const = 0;
+	/// @todo: This should be a part of an engine!
+	virtual void drawEndArrow(QPainter *painter) const;
 
-protected:
-	/// @param metamodel Metamodel that owns this edge element.
-	explicit EdgeElementType(Metamodel &metamodel);
+private:
+	Qt::PenStyle mPenStyle;
+	int mPenWidth;
+	QColor mPenColor;
+	bool mIsDividable;
+	QStringList mFromPortTypes;
+	QStringList mToPortTypes;
+	LinkShape mShapeType;
 };
 
 }

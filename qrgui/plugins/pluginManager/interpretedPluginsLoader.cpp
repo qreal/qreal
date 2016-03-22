@@ -14,6 +14,8 @@
 
 #include "interpretedPluginsLoader.h"
 
+#include "interpreterEditorManager.h"
+
 using namespace qReal;
 
 InterpretedPluginsLoader::InterpretedPluginsLoader(

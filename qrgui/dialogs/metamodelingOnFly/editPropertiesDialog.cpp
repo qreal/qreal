@@ -14,6 +14,8 @@
 
 #include <QtWidgets/QMessageBox>
 
+#include <qrrepo/logicalRepoApi.h>
+
 #include "editPropertiesDialog.h"
 #include "ui_editPropertiesDialog.h"
 

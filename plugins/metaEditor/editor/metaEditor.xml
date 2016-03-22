@@ -191,9 +191,6 @@
 						<property type="string" name="shape"/>
 						<property type="string" name="description"/>
 						<property type="string" name="abstract"/>
-						<property type="bool" name="isAction">
-							<default>false</default>
-						</property>
 						<property type="string" name="path"/>
 						<property type="bool" name="isResizeable">
 							<default>true</default>

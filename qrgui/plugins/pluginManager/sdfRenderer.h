@@ -48,6 +48,7 @@ public:
 
 	bool load (const QString &filename);
 	bool load(const QDomDocument &document);
+	bool load(const QDomElement &picture);
 	void render(QPainter *painter, const QRectF &bounds, bool isIcon = false);
 	void noScale();
 

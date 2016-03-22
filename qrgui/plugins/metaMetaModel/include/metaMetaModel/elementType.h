@@ -57,11 +57,23 @@ public:
 
 	/// Casts this instance to node element type. If this is not node then assertion fault will be generated.
 	/// @see type().
+	NodeElementType &toNode();
+
+	/// Casts this instance to node element type. If this is not node then assertion fault will be generated.
+	/// @see type().
 	const NodeElementType &toNode() const;
 
 	/// Casts this instance to edge element type. If this is not edge then assertion fault will be generated.
 	/// @see type().
+	EdgeElementType &toEdge();
+
+	/// Casts this instance to edge element type. If this is not edge then assertion fault will be generated.
+	/// @see type().
 	const EdgeElementType &toEdge() const;
+
+	/// Casts this instance to pattern element type. If this is not pattern then assertion fault will be generated.
+	/// @see type().
+	PatternType &toPattern();
 
 	/// Casts this instance to pattern element type. If this is not pattern then assertion fault will be generated.
 	/// @see type().
@@ -87,47 +99,94 @@ public:
 
 	/// Returns the internal name if this element. This name can be used for element() part of qReal::Id and should
 	/// not be shown to user.
-	virtual QString name() const = 0;
+	QString name() const;
+
+	/// Sets the internal name if this element. This name can be used for element() part of qReal::Id and should
+	/// not be shown to user.
+	void setName(const QString &name);
 
 	/// Returns the localized name assigned to instances of this type by default.
-	virtual QString friendlyName() const = 0;
+	QString friendlyName() const;
+
+	/// Sets the localized name assigned to instances of this type by default.
+	void setFriendlyName(const QString &friendlyName);
 
 	/// Returns localized string describing this type. This string can be shown to user.
-	virtual QString description() const = 0;
+	QString description() const;
+
+	/// Sets localized string describing this type. This string will be shown to user.
+	void setDescription(const QString &description);
 
 	/// Returns the internal name of the diagram this element belongs to.
 	/// This name can be used for diagram() part of qReal::Id and should not be shown to user.
-	virtual QString diagram() const = 0;
+	QString diagram() const;
 
-	/// Update shape of an element. Does nothing in case of generated editors, used by metamodel interpreter.
-	/// @todo: Get rid of this shit now!
-	virtual void updateRendererContent(const QString &shape);
+	/// Sets the internal name of the diagram this element belongs to.
+	/// This name will be used for diagram() part of qReal::Id and should not be shown to user.
+	void setDiagram(const QString &diagramName);
 
 	/// Returns a list of all labels on instances of this type.
-	virtual QList<LabelProperties> labels() const = 0;
+	const QList<LabelProperties> &labels() const;
+
+	/// Appends \a label to a list of all labels belonging to instances of this type.
+	void addLabel(const LabelProperties &label);
 
 	/// Returns a list of custom logical properties of this element.
-	virtual QStringList propertyNames() const = 0;
+	const QStringList &propertyNames() const;
 
-	/// Returns a lost of reference properties of this element.
+	/// Returns a list of reference properties of this element.
 	/// Reference properties are those whoose value is another element.
-	virtual QStringList referenceProperties() const = 0;
+	const QStringList &referenceProperties() const;
+
+	/// Returns a list of property names that were removed by user in 'metamodeling-on-fly' mode.
+	const QStringList &hiddenProperties() const;
 
 	/// Returns a type name of a property with the given \a name.
-	virtual QString propertyType(const QString &name) const = 0;
+	QString propertyType(const QString &name) const;
 
 	/// Returns a string representation of a value assigned to \a property by default.
-	virtual QString propertyDefaultValue(const QString &property) const = 0;
+	QString propertyDefaultValue(const QString &property) const;
 
 	/// Returns localized string describing some \a property. This string can be shown to user.
-	virtual QString propertyDescription(const QString &property) const = 0;
+	QString propertyDescription(const QString &property) const;
 
 	/// Returns localized name of some \a property. The resulting string can be shown to user.
-	virtual QString propertyDisplayedName(const QString &property) const = 0;
+	QString propertyDisplayedName(const QString &property) const;
+
+	/// Appends property with the \a name to a list of properties of this type.
+	/// @param name The name of new property, if same name already contained by this type it will be overloaded.
+	/// @param type Type name of the property, for example 'int' or 'string' or some enum`s name.
+	/// @param defaultValue String representation of value assigned to this property by default.
+	/// @param displayedName A string that will be shown to user as a name of this property, should be localized.
+	/// @param description A string that will be shown to user as a description of this property, should be localized.
+	/// @param isReference Must be true for properties whoose values point to some other element.
+	void addProperty(const QString &name, const QString &type, const QString &defaultValue
+			, const QString &displayedName, const QString &description, bool isReference);
+
+	/// Returns true if this element type was removed by user in 'metamodeling-on-fly' mode.
+	bool isHidden() const;
+
+	/// Removes or restores this element from metamodel.
+	void setHidden(bool isHidden);
 
 protected:
 	/// @param metamodel Metamodel that owns this element.
 	explicit ElementType(Metamodel &metamodel);
+
+private:
+	QString mName;
+	QString mFriendlyName;
+	QString mDescription;
+	QString mDiagram;
+	QList<LabelProperties> mLabels;
+	QStringList mPropertyNames;
+	QStringList mReferenceProperties;
+	QStringList mHiddenProperties;
+	QMap<QString, QString> mPropertyTypes;
+	QMap<QString, QString> mPropertyDefaultValues;
+	QMap<QString, QString> mPropertyDescriptions;
+	QMap<QString, QString> mPropertyDisplayedNames;
+	bool mIsHidden;
 };
 
 }

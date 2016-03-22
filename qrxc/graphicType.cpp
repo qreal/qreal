@@ -111,29 +111,20 @@ QStringList GraphicType::immediateParents() const
 	return result;
 }
 
-void GraphicType::generateCommonMethods(OutFile &out) const
+void GraphicType::generateCommonData(OutFile &out) const
 {
 	generateName(out);
 	generateFriendlyName(out);
 	generateDiagram(out);
 	generateDescription(out);
-	generatePropertyGetters(out);
 	generateLabels(out);
 }
 
 void GraphicType::generateLabels(OutFile &out) const
 {
-	out() << "\t\tQList<qReal::LabelProperties> labels() const override\n\t\t{\n";
 	for (const Label *label : mLabels) {
 		label->generateCodeForConstructor(out);
 	}
-
-	out() << "\t\t\treturn { ";
-	for (const Label *label : mLabels) {
-		out() << label->labelName() << ", ";
-	}
-
-	out() << "};\n\t\t}\n\n";
 }
 
 bool GraphicType::init(const QDomElement &element, const QString &context)
@@ -496,7 +487,7 @@ bool GraphicType::resolve()
 void GraphicType::generateName(OutFile &out) const
 {
 	const QString normalizedName = NameNormalizer::normalize(qualifiedName());
-	out() << QString("\t\tQString name() const override { return \"%1\"; }\n\n").arg(normalizedName);
+	out() << QString("\t\t\tsetName(\"%1\");\n").arg(normalizedName);
 
 	/// @todo: I don`t know why we check it here but think it can live for now. This should be moved
 	/// into appropriate place later.
@@ -513,64 +504,23 @@ void GraphicType::generateName(OutFile &out) const
 void GraphicType::generateFriendlyName(OutFile &out) const
 {
 	const QString actualDisplayedName = displayedName().isEmpty() ? name() : displayedName();
-	out() << QString("\t\tQString friendlyName() const override { return QObject::tr(\"%1\"); }\n\n")
-			.arg(actualDisplayedName);
+	out() << QString("\t\t\tsetFriendlyName(QObject::tr(\"%1\"));\n").arg(actualDisplayedName);
 }
 
 void GraphicType::generateDiagram(OutFile &out) const
 {
 	const QString diagramName = NameNormalizer::normalize(mDiagram->name());
-	out() << QString("\t\tQString diagram() const override { return \"%1\"; }\n\n").arg(diagramName);
+	out() << QString("\t\t\tsetDiagram(\"%1\");\n").arg(diagramName);
 }
 
 void GraphicType::generateDescription(OutFile &out) const
 {
-	out() << "\t\tQString description() const override \n\t\t{\n"
-		<< "\t\t\treturn QObject::tr(\"" << mDescription << "\");\n"
-		<< "\t\t}\n\n";
-}
-
-void GraphicType::generatePropertyGetters(OutFile &out) const
-{
-	out() << "\t\tQStringList propertyNames() const override "\
-			"{ return mPropertyNames; }\n";
-	out() << "\t\tQStringList referenceProperties() const override "\
-			"{ return mReferencePropertyNames; }\n";
-	out() << "\t\tQString propertyType(const QString &propertyName) const override "\
-			"{ return mPropertyTypes[propertyName]; }\n";
-	out() << "\t\tQString propertyDefaultValue(const QString &propertyName) const override "\
-			"{ return mPropertyDefaults[propertyName]; }\n";
-	out() << "\t\tQString propertyDescription(const QString &propertyName) const override "\
-			"{ return mPropertyDescriptions[propertyName]; }\n";
-	out() << "\t\tQString propertyDisplayedName(const QString &propertyName) const override "\
-			"{ return mPropertyDisplayedNames[propertyName]; }\n\n";
+	out() << "\t\t\tsetDescription(QObject::tr(\"" << mDescription << "\"));\n";
 }
 
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
-	generatePropertyNames(out, true);
-	generatePropertyNames(out, false);
-	generatePropertyTypes(out);
-	generatePropertyDisplayedNames(out);
-	generatePropertyDefaults(out);
-	generatePropertyDescriptions(out);
-	out() << "\t\t}\n";
-
-	out() << "\n"
-			<< "\t\tQStringList mPropertyNames;\n"
-			<< "\t\tQStringList mReferencePropertyNames;\n"
-			<< "\t\tQMap<QString, QString> mPropertyTypes;\n"
-			<< "\t\tQMap<QString, QString> mPropertyDefaults;\n"
-			<< "\t\tQMap<QString, QString> mPropertyDescriptions;\n"
-			<< "\t\tQMap<QString, QString> mPropertyDisplayedNames;\n";
-}
-
-void GraphicType::generatePropertyNames(OutFile &out, bool isReference) const
-{
-	const QString fieldName = isReference ? "mReferencePropertyNames" : "mPropertyNames";
-
-	bool metProperty = false;
 	for (const Property *property : mProperties) {
 		// Validating property names.
 		if (property->name() == "fromPort" || property->name() == "toPort"
@@ -581,89 +531,13 @@ void GraphicType::generatePropertyNames(OutFile &out, bool isReference) const
 			continue;
 		}
 
-		if (!isReference || property->isReferenceProperty()) {
-			if (!metProperty) {
-				out() << fieldName << " = QStringList({ ";
-			}
-
-			metProperty = true;
-			out() << "\"" << property->name() << "\", ";
-		}
+		const QString stringConstructor = property->type() == "string" ? "QObject::tr" : "QString::fromUtf8";
+		out() << QString("\t\t\taddProperty(\"%1\", \"%2\", %3(\"%4\"), QObject::tr(\"%5\"), "\
+				"QObject::tr(\"%6\"), %7);\n").arg(property->name(), property->type(), stringConstructor
+						, property->defaultValue(), property->displayedName(), property->description()
+						, property->isReferenceProperty() ? "true" : "false");
 	}
-
-	if (metProperty) {
-		out() << "});\n";
-	}
-}
-
-void GraphicType::generatePropertyDescriptions(utils::OutFile &out) const
-{
-	if (!mVisible) {
-		return;
-	}
-
-	for (const Property *property : mProperties) {
-		if (!property->description().isEmpty()) {
-			const QString propertyName = property->name();
-			const QString propertyDescription = property->description();
-			out() << "\t\t\tmPropertyDescriptions[\"" << propertyName << "\"] = QObject::tr(\""
-					<< propertyDescription << "\");\n";
-		}
-	}
-
-	out() << "\n";
-}
-
-void GraphicType::generatePropertyDisplayedNames(utils::OutFile &out) const
-{
-	if (!mVisible) {
-		return;
-	}
-
-	for (const Property *property : mProperties) {
-		if (!property->displayedName().isEmpty()) {
-			out() << "\t\t\tmPropertyDisplayedNames[\"" << property->name() << "\"] = QObject::tr(\""
-					<< property->displayedName() << "\");\n";
-		}
-	}
-}
-
-void GraphicType::generatePropertyTypes(OutFile &out) const
-{
-	if (!mVisible) {
-		return;
-	}
-
-	for (const Property *property : mProperties) {
-		out() << "\t\t\tmPropertyTypes[\"" << property->name() << "\"] = \""
-				<< NameNormalizer::normalize(property->type()) << "\";\n";
-	}
-}
-
-void GraphicType::generatePropertyDefaults(OutFile &out) const
-{
-	if (!mVisible) {
-		return;
-	}
-
-	for (const Property *property : mProperties) {
-		if (!property->defaultValue().isEmpty()) {
-			const QString stringConstructor = property->type() == "string" ? "QObject::tr" : "QString::fromUtf8";
-			out() << QString("\t\t\tmPropertyDefaults[\"%1\"] = %2(\"%3\");\n").arg(property->name()
-					, stringConstructor, property->defaultValue());
-		}
-	}
-}
-
-void GraphicType::generateOneCase(OutFile &out, bool isNotFirst) const
-{
-	const QString name = NameNormalizer::normalize(qualifiedName());
-
-	if (!isNotFirst) {
-		out() << "\tif (element == \"" << name << "\") {\n";
-	} else {
-		out() << "\telse if (element == \"" << name << "\") {\n";
-	}
+	out() << "\t\t}\n";
 }
 
 QString GraphicType::resourceName(const QString &resourceType) const
@@ -682,21 +556,9 @@ const QMap<QString, QPair<bool, bool> > &GraphicType::explosions() const
 	return mExplosions;
 }
 
-bool GraphicType::generateListForElement(utils::OutFile &out, bool isNotFirst, const QStringList &list) const
+QString GraphicType::boolToString(bool value) const
 {
-	if (list.isEmpty()) {
-		return false;
-	}
-
-	generateOneCase(out, isNotFirst);
-
-	out() << "\t\tresult ";
-	foreach (const QString &element, list) {
-		out() << "<< \"" << element << "\" ";
-	}
-
-	out() << ";\n\t}\n";
-	return true;
+	return value ? "true" : "false";
 }
 
 QVector<int> GraphicType::toIntVector(const QString &s, bool *isOk) const

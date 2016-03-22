@@ -25,16 +25,22 @@ namespace qReal {
 class QRGUI_META_META_MODEL_EXPORT PatternType : public ElementType
 {
 public:
+	/// @param metamodel Metamodel that owns this node element.
+	explicit PatternType(Metamodel &metamodel);
+
 	Type type() const override;
 
 	/// Returns the XML description of pattern.
 	/// @todo: XML is not needed for this. This is just a piece of model, can be formalized as multigraph
 	/// and generated as-is.
-	virtual QString xml() const = 0;
+	QString xml() const;
 
-protected:
-	/// @param metamodel Metamodel that owns this node element.
-	explicit PatternType(Metamodel &metamodel);
+	/// Sets the XML description of pattern.
+	/// @todo: XML is not needed for this. This is just a piece of model, can be generated as-is.
+	void setXml(const QString &xml);
+
+private:
+	QString mXml;
 };
 
 }

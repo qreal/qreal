@@ -55,20 +55,16 @@ public:
 	const QMap<QString, QPair<bool, bool>> &explosions() const;
 
 protected:
-	void generateCommonMethods(utils::OutFile &out) const;
+	void generateCommonData(utils::OutFile &out) const;
 	void generateName(utils::OutFile &out) const;
 	void generateFriendlyName(utils::OutFile &out) const;
 	void generateDiagram(utils::OutFile &out) const;
 	void generateDescription(utils::OutFile &out) const;
-	void generatePropertyNames(utils::OutFile &out, bool isReference) const;
-	virtual void generatePropertyGetters(utils::OutFile &out) const;
 	void generateLabels(utils::OutFile &out) const;
 
 	void generatePropertyData(utils::OutFile &out) const;
-	void generatePropertyDisplayedNames(utils::OutFile &out) const;
-	void generatePropertyDescriptions(utils::OutFile &out) const;
-	void generatePropertyDefaults(utils::OutFile &out) const;
-	void generatePropertyTypes(utils::OutFile &out) const;
+
+	QString boolToString(bool value) const;
 
 	/// @todo Remove this sh~.
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
@@ -109,8 +105,6 @@ protected:
 	void copyFields(GraphicType *type) const;
 	QString resourceName(const QString &resourceType) const;
 	virtual bool isResolving() const;
-
-	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 
 private:
 	class ResolvingHelper {

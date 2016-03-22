@@ -14,12 +14,8 @@
 
 #include "editorGenerator.h"
 
-#include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QFileInfo>
-#include <QtCore/QDir>
-
-#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/roles.h>
 
@@ -43,7 +39,7 @@ QHash<Id, QPair<QString,QString>> EditorGenerator::getMetamodelList()
 	const IdList metamodels = mApi.children(Id::rootId());
 	QHash<Id, QPair<QString, QString>> metamodelList;
 
-	for (const Id key : metamodels) {
+	for (const Id &key : metamodels) {
 		const QString objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mApi.isLogicalElement(key)) {
 			// Now the user must specify the full path to the directory and the relative path to source files of QReal
@@ -318,7 +314,6 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setUsages(logic, id);
 	setConnections(logic, id);
 	setProperties(logic, id);
-	setAction(logic, id);
 	setCreateChildrenFromMenu(logic, id);
 	setGeneralization(logic, id);
 	setExplosion(logic, id);
@@ -571,11 +566,6 @@ void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 	if (!possibleEdges.childNodes().isEmpty()) {
 		parent.appendChild(possibleEdges);
 	}
-}
-
-void EditorGenerator::setAction(QDomElement &parent, const Id &id)
-{
-	setStatusElement(parent, id, "action", "isAction");
 }
 
 void EditorGenerator::setCreateChildrenFromMenu(QDomElement &parent, const Id &id)

@@ -49,14 +49,10 @@ void PatternType::generateCode(OutFile &out)
 
 	out() << "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
 			<< "\t\t\t: PatternType(metamodel)\n"
-			<< "\t\t{\n"
+			<< "\t\t{\n";
+	generateCommonData(out);
+	out() << "\t\t\tsetXml(QString::fromUtf8(\"" << mXml << "\"));\n"
 			<< "\t\t}\n\n";
-
-	out() << "\t\tQString xml() const override\n\t\t{\n"
-			<< "\t\t\treturn QString::fromUtf8(\"" << mXml << "\");\n"
-			<< "\t\t}\n\n";
-
-	generateCommonMethods(out);
 
 	out() << "\t};";
 	out() << "\n\n";
@@ -106,14 +102,4 @@ bool PatternType::copyPictures(GraphicType *parent)
 {
 	Q_UNUSED(parent)
 	return true;
-}
-
-void PatternType::generatePropertyGetters(OutFile &out) const
-{
-	out() << "\t\tQStringList propertyNames() const override { return QStringList(); }\n";
-	out() << "\t\tQStringList referenceProperties() const override { return QStringList(); }\n";
-	out() << "\t\tQString propertyType(const QString &) const override { return QString(); }\n";
-	out() << "\t\tQString propertyDefaultValue(const QString &) const override { return QString(); }\n";
-	out() << "\t\tQString propertyDescription(const QString &) const override { return QString(); }\n";
-	out() << "\t\tQString propertyDisplayedName(const QString &) const override { return QString(); }\n\n";
 }

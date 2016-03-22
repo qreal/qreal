@@ -14,14 +14,18 @@
 
 #pragma once
 
-#include <QtWidgets/QAction>
-
 #include <plugins/toolPluginInterface/pluginConfigurator.h>
-#include "plugins/pluginManager/interpreterEditorManager.h"
+#include "plugins/pluginManager/interpretedPluginManager.h"
 
 #include "pluginsManagerDeclSpec.h"
 
+namespace qrRepo {
+class RepoApi;
+}
+
 namespace qReal {
+
+class InterpreterEditorManager;
 
 /// This class loads interpreted plugins given model and metamodel.
 class QRGUI_PLUGINS_MANAGER_EXPORT InterpretedPluginsLoader

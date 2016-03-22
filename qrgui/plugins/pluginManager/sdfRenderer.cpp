@@ -83,6 +83,16 @@ bool SdfRenderer::load(const QDomDocument &document)
 	return true;
 }
 
+bool SdfRenderer::load(const QDomElement &picture)
+{
+	doc.importNode(picture, true);
+	const QDomElement docElem = doc.firstChildElement("picture");
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
+
+	return true;
+}
+
 void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
 {
 	mElementRepo = elementRepo;

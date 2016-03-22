@@ -14,8 +14,13 @@
 
 #pragma once
 
+#include <QtCore/QSizeF>
+
 #include "metaMetaModel/elementType.h"
 #include "metaMetaModel/portHelpers.h"
+
+class QDomDocument;
+class QDomElement;
 
 namespace qReal {
 
@@ -23,66 +28,149 @@ namespace qReal {
 class QRGUI_META_META_MODEL_EXPORT NodeElementType : public ElementType
 {
 public:
+	/// @param metamodel Metamodel that owns this node element.
+	explicit NodeElementType(Metamodel &metamodel);
+	~NodeElementType();
+
 	Type type() const override;
 
-	/// Returns path to file that contains SDF description of element's appearance.
-	virtual QString sdfFile() const = 0;
+	/// Returns XML element containing SDF description of element's appearance.
+	QDomElement sdf() const;
+
+	/// Loads SDF description of element's appearance.
+	void loadSdf(const QDomElement &picture);
 
 	/// Returns size of the node element`s appearance.
-	virtual QSizeF size() const = 0;
+	QSizeF size() const;
+
+	/// Sets size of the node element`s appearance.
+	void setSize(const QSizeF &size);
 
 	/// Returns true if instances of this type can be resized with mouse by user.
 	/// If true size grip will appear in element`s corner(s).
-	virtual bool isResizeable() const = 0;
+	bool isResizable() const;
+
+	/// Enables or disables ablilty to resized by mouse instances of this type.
+	/// If true size grip will appear in element`s corner(s).
+	void setResizable(bool resizable);
 
 	/// Returns the border points of this element.
-	virtual QList<qreal> border() const = 0;
+	const QList<qreal> &border() const;
+
+	/// Sets the border points of this element.
+	void setBorder(const QList<qreal> &border);
 
 	/// Returns a list of points to which edges can be with this instances of this type.
-	virtual QList<PointPortInfo> pointPorts() const = 0;
+	const QList<PointPortInfo> &pointPorts() const;
+
+	/// Appends \a port to a list of points to which edges can be with this instances of this type.
+	void addPointPort(const PointPortInfo &port);
 
 	/// Returns a list of segments to which edges can be with this instances of this type.
-	virtual QList<LinePortInfo> linePorts() const = 0;
+	const QList<LinePortInfo> &linePorts() const;
+
+	/// Appends \a port to a list of segments to which edges can be with this instances of this type.
+	void addLinePort(const LinePortInfo &port);
 
 	/// Returns a list of types of all ports on the graphical representation of this element.
-	virtual QStringList portTypes() const = 0;
+	const QStringList &portTypes() const;
 
 	/// Returns a serialized mouse gesture for this element.
-	virtual QString elementMouseGesture() const = 0;
+	QString mouseGesture() const;
+
+	/// Sets a serialized mouse gesture for this element.
+	void setMouseGesture(const QString &gesture);
 
 	// --- Container properties. Maybe moving it into new type ContaineElementType has sense? ---
 
 	/// Returns true if this node is a container.
-	virtual bool isContainer() const = 0;
+	bool isContainer() const;
+
+	/// Switches ability of this node to contain other elements.
+	void setContainer(bool isContainer);
 
 	/// Returns true if this node has vertical layout.
+	/// Has sense only when isContainer() returns true.
 	/// @todo: Rewrite this shit with QGraphicsLayouts.
-	virtual bool isSortingContainer() const = 0;
+	bool isSortingContainer() const ;
 
-	/// Returns a margin of child elements vertical layout.
+	/// Turns on or off vertical layout of chidren of this element.
+	/// Has sense only when isContainer() returns true.
 	/// @todo: Rewrite this shit with QGraphicsLayouts.
-	virtual QVector<int> sizeOfForestalling() const = 0;
+	void setSortingContainer(bool isSortingContainer);
+
+	/// Returns a margins of child elements vertical layout.
+	/// Has sense only when isContainer() returns true.
+	/// @todo: Rewrite this shit with QGraphicsLayouts.
+	const QVector<int> &sizeOfForestalling() const;
+
+	/// Sets a margins of child elements vertical layout.
+	/// Has sense only when isContainer() returns true.
+	/// @todo: Rewrite this shit with QGraphicsLayouts.
+	void setSizeOfForestalling(const QVector<int> &margins);
 
 	/// Returns a padding of child elements vertical layout.
+	/// Has sense only when isContainer() returns true.
 	/// @todo: Rewrite this shit with QGraphicsLayouts.
-	virtual int sizeOfChildrenForestalling() const = 0;
+	int sizeOfChildrenForestalling() const;
+
+	/// Sets a padding of child elements vertical layout.
+	/// Has sense only when isContainer() returns true.
+	/// @todo: Rewrite this shit with QGraphicsLayouts.
+	void setSizeOfChildrenForestalling(int padding);
 
 	/// Returns true if children can be dragged inside and out of this container.
-	virtual bool hasMovableChildren() const = 0;
+	/// Has sense only when isContainer() returns true.
+	bool hasMovableChildren() const;
+
+	/// Switches the ability to drag children inside and out of this container.
+	/// Has sense only when isContainer() returns true.
+	void setChildrenMovable(bool movable);
 
 	/// Returns true if this container automaticly shrinks its size to children space.
-	virtual bool minimizesToChildren() const = 0;
+	/// Has sense only when isContainer() returns true.
+	bool minimizesToChildren() const;
+
+	/// Switches automatical shrinking container`s size to children space.
+	/// Has sense only when isContainer() returns true.
+	void setMinimizesToChildren(bool minimizes);
 
 	/// Returns true if this container automaticly increments size of its children to fit container size growth.
-	virtual bool maximizesChildren() const = 0;
+	/// Has sense only when isContainer() returns true.
+	bool maximizesChildren() const;
 
-	/// If true is returned container types will let create children inside of then from context menu.
+	/// Switches automatical incrementing container`s children size to fit container size growth.
+	/// Has sense only when isContainer() returns true.
+	void setMaximizesChildren(bool maximizes);
+
+	/// If true is returned container types will let create children inside of them from context menu.
+	/// Has sense only when isContainer() returns true.
 	/// @todo: Why do we need this shit? Think we must get rid of it.
-	virtual bool createChildrenFromMenu() const = 0;
+	bool createChildrenFromMenu() const;
 
-protected:
-	/// @param metamodel Metamodel that owns this node element.
-	explicit NodeElementType(Metamodel &metamodel);
+	/// Switches the ability to create children inside of container from context menu.
+	/// Has sense only when isContainer() returns true.
+	/// @todo: Why do we need this shit? Think we must get rid of it.
+	void setCreateChildrenFromMenu(bool canCreate);
+
+private:
+	QScopedPointer<QDomDocument> mSdf;
+	QSizeF mSize;
+	bool mIsResizable;
+	QList<qreal> mBorder;
+	QList<PointPortInfo> mPointPorts;
+	QList<LinePortInfo> mLinePorts;
+	QStringList mPortTypes;
+	QString mMouseGesture;
+
+	bool mIsContainer;
+	bool mIsSortingContainer;
+	QVector<int> mSizeOfForestalling;
+	int mSizeOfChildrenForestalling;
+	bool mHasMovableChildren;
+	bool mMinimizesToChildren;
+	bool mMaximizesChildren;
+	bool mCreateChildrenFromMenu;
 };
 
 }

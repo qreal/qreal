@@ -16,6 +16,8 @@
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QMessageBox>
 
+#include <qrrepo/logicalRepoApi.h>
+
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
 

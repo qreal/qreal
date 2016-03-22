@@ -27,3 +27,13 @@ ElementType::Type qReal::PatternType::type() const
 {
 	return Type::pattern;
 }
+
+QString PatternType::xml() const
+{
+	return mXml;
+}
+
+void PatternType::setXml(const QString &xml)
+{
+	mXml = xml;
+}

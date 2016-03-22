@@ -42,7 +42,10 @@ HEADERS += \
 	$$PWD/interpretedPluginManager.h \
 	$$PWD/interpretedPluginsLoader.h \
 	$$PWD/details/patternParser.h \
-	$$PWD/details/interpreterElementImpl.h \
+	$$PWD/details/qrsMetamodelSerializer.h \
+	$$PWD/details/dynamicElementTypeImpl.h \
+	$$PWD/details/dynamicNodeElementTypeImpl.h \
+	$$PWD/details/dynamicEdgeElementTypeImpl.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
@@ -54,7 +57,10 @@ SOURCES += \
 	$$PWD/interpretedPluginManager.cpp \
 	$$PWD/interpretedPluginsLoader.cpp \
 	$$PWD/details/patternParser.cpp \
-	$$PWD/details/interpreterElementImpl.cpp \
+	$$PWD/details/qrsMetamodelSerializer.cpp \
+	$$PWD/details/dynamicElementTypeImpl.cpp \
+	$$PWD/details/dynamicNodeElementTypeImpl.cpp \
+	$$PWD/details/dynamicEdgeElementTypeImpl.cpp \
 
 RESOURCES += \
 	$$PWD/pluginManager.qrc \

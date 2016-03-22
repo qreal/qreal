@@ -51,29 +51,14 @@ private:
 	void generateNameMappings(utils::OutFile &out);
 	void generateNodesAndEdgesSets(utils::OutFile &out);
 	void generateExplosionsMappings(utils::OutFile &out, const GraphicType *graphicType);
-	void generateNameMappingsRequests(utils::OutFile &out);
 	void generateReferenceProperties(utils::OutFile &out);
 	void generatePossibleEdges(utils::OutFile &out);
 	void generateNodesAndEdges(utils::OutFile &out);
 	void generateEnumValues(utils::OutFile &out);
-	void generateEditableEnums(utils::OutFile &out);
 	void generateResourceFile();
 	void generatePaletteGroupsLists(utils::OutFile &out);
 	void generatePaletteGroupsDescriptions(utils::OutFile &out);
 	void generateShallPaletteBeSorted(utils::OutFile &out);
-
-	class ListMethodGenerator;
-	class PropertiesGenerator;
-	class PortsGenerator;
-	class ReferencePropertiesGenerator;
-	class ContainedTypesGenerator;
-	class PossibleEdgesGenerator;
-	class EnumValuesGenerator;
-
-	void generateListMethod(utils::OutFile &out, const QString &signature, const ListMethodGenerator &generator);
-	void generateStringSet(utils::OutFile &out, const QSet<QString> &set) const;
-	void generateStringList(utils::OutFile &out, const QStringList &list) const;
-	void generateStringListMap(utils::OutFile &out, const QMap<QString, QStringList> &map) const;
 
 	QMap<QString, Editor *> mEditors;
 	QString mPluginName;

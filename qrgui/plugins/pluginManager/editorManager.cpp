@@ -205,9 +205,9 @@ QString EditorManager::friendlyName(const Id &id) const
 
 	switch (id.idSize()) {
 	case 1:
-		return mMetamodels[id.editor()]->editorName();
+		return mMetamodels[id.editor()]->friendlyName();
 	case 2:
-		return mMetamodels[id.editor()]->diagramName(id.diagram());
+		return mMetamodels[id.editor()]->diagramFriendlyName(id.diagram());
 	case 3:
 		if (mGroups.keys().contains(id.element())) {
 			return id.element();
@@ -264,7 +264,7 @@ QString EditorManager::mouseGesture(const Id &id) const
 	}
 
 	const NodeElementType *node = dynamic_cast<const NodeElementType *>(&elementType(id));
-	return node ? node->elementMouseGesture() : QString();
+	return node ? node->mouseGesture() : QString();
 }
 
 QIcon EditorManager::icon(const Id &id) const
@@ -477,7 +477,7 @@ bool EditorManager::isParentOf(const QString &editor, const QString &parentDiagr
 
 QString EditorManager::diagramName(const QString &editor, const QString &diagram) const
 {
-	return metamodel(editor)->diagramName(diagram);
+	return metamodel(editor)->diagramFriendlyName(diagram);
 }
 
 QString EditorManager::diagramNodeName(const QString &editor, const QString &diagram) const

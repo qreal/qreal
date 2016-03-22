@@ -80,10 +80,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	generateContextMenuItems(nodeClass, compiler);
 
 	QString isContainer  = mContains.isEmpty() ? "false" : "true";
-	QString isAction = loadBoolProperty(mId, "isAction");
-	QString border = isAction == "true"
-					? compiler->getTemplateUtils(nodeValidBorderTag)
-					: compiler->getTemplateUtils(nodeInvalidBorderTag);
+	QString border = compiler->getTemplateUtils(nodeValidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
 			.replace(nodeBorderTag, border)

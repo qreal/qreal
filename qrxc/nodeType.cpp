@@ -117,8 +117,10 @@ bool NodeType::initSdf()
 		mHeight = sdfElement.attribute("sizey").toInt();
 		mSdfDomElement = sdfElement;
 		mVisible = true;
-	} else
+	} else {
 		mVisible = false;
+	}
+
 	return true;
 }
 
@@ -209,91 +211,48 @@ void NodeType::generateCode(OutFile &out)
 
 	out() << "\t\texplicit " << className << "(qReal::Metamodel &metamodel)\n"
 			<< "\t\t\t: NodeElementType(metamodel)\n"
-			<< "\t\t{\n"
-			<< "\t\t\tinitProperties();\n"
-			<< "\t\t}\n\n";
+			<< "\t\t{\n";
 
-	generateCommonMethods(out);
+	generateCommonData(out);
 
-	out() << "\t\tQString sdfFile() const override { return \":/generated/shapes/" + className + "Class.sdf\"; }\n\n";
-
-	out() << "\t\tQSizeF size() const override { return QSizeF(" + QString::number(mWidth)
-			+ ", " + QString::number(mHeight) + "); }\n\n";
-
-	out() << "\t\tQList<qReal::PointPortInfo> pointPorts() const override\n\t\t{\n";
-	out() << "\t\t\treturn {\n";
-	for (Port * const pointPort : mPointPorts) {
-		out() << "\t\t\t";
-		pointPort->generateCode(out, mDiagram->editor()->getAllPortNames());
-		out() << ",\n";
-	}
-
-	out() << "\t\t\t};\n\t\t}\n\n";
-
-	out() << "\t\tQList<qReal::LinePortInfo> linePorts() const override\n\t\t{\n";
-	out() << "\t\t\treturn {\n";
-	for (Port * const linePort : mLinePorts) {
-		out() << "\t\t\t\t";
-		linePort->generateCode(out, mDiagram->editor()->getAllPortNames());
-		out() << ",\n";
-	}
-
-	out() << "\t\t\t};\n\t\t}\n\n";
+	out() << "\t\t\tloadSdf(utils::xmlUtils::loadDocument(\":/generated/shapes/"
+			+ className + "Class.sdf\").documentElement());\n"
+			<< "\t\t\tsetSize(QSizeF(" + QString::number(mWidth) + ", " + QString::number(mHeight) + "));\n"
+			<< "\t\t\tinitProperties();\n";
 
 	generateMouseGesture(out);
-	generatePortTypes(out);
 
-	out() << "\t\tbool isResizeable() const\n\t\t{\n"
-	<< "\t\t\treturn " << (mIsResizeable ? "true" : "false") << ";\n"
-	<< "\t\t}\n\n"
+	for (Port * const pointPort : mPointPorts) {
+		out() << "\t\t\taddPointPort(";
+		pointPort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		out() << ");\n";
+	}
 
-	<< "\t\tbool isContainer() const\n\t\t{\n"
-	<< (!mContains.empty() ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
+	for (Port * const linePort : mLinePorts) {
+		out() << "\t\t\taddLinePort(";
+		linePort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		out() << ");\n";
+	}
 
-	<< "\t\tbool isSortingContainer() const\n\t\t{\n"
-	<< (mContainerProperties.isSortingContainer ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n";
+	out() << "\t\t\tsetResizable(" << boolToString(mIsResizeable) << ");\n"
+			<< "\t\t\tsetContainer(" << boolToString(!mContains.empty()) << ");\n"
+			<< "\t\t\tsetSortingContainer(" << boolToString(mContainerProperties.isSortingContainer) << ");\n";
 
 	QStringList forestalling;
-	foreach (int size, mContainerProperties.sizeOfForestalling) {
+	for (int size : mContainerProperties.sizeOfForestalling) {
 		forestalling << QString::number(size);
 	}
 
-	out() << "\t\tQVector<int> sizeOfForestalling() const\n\t\t{\n"
-	<< "\t\t\tQVector<int> result;\n"
-	<< "\t\t\tresult << " + forestalling[0] + " << " + forestalling[1] + " << " + forestalling[2]
-			+ " << " + forestalling[3] + ";\n"
-	<< ";\n\t\t\treturn result;\n"
-	<< "\t\t}\n\n"
-
-	<< "\t\tint sizeOfChildrenForestalling() const\n\t\t{\n"
-	<< "\t\t\treturn " << QString::number(mContainerProperties.sizeOfChildrenForestalling) << ";\n"
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool hasMovableChildren() const\n\t\t{\n"
-	<< (mContainerProperties.hasMovableChildren ?  "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool minimizesToChildren() const\n\t\t{\n"
-	<< (mContainerProperties.minimizesToChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool maximizesChildren() const\n\t\t{\n"
-	<< (mContainerProperties.maximizesChildren ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n"
-
-	<< "\t\tbool createChildrenFromMenu() const\n\t\t{\n"
-	<< (mCreateChildrenFromMenu ? "\t\t\treturn true;\n" : "\t\t\treturn false;\n")
-	<< "\t\t}\n\n";
-
-	out() << "\t\tQList<double> border() const\n\t\t{\n"
-	<< "\t\t\tQList<double> list;\n";
-
-	out() << "\t\t\treturn list;\n"
-	<< "\t\t}\n\n";
-
-	out() << "\tprivate:\n";
+	out() << "\t\t\tsetSizeOfForestalling({" << forestalling.join(", ") << "});\n"
+			<< "\t\t\tsetSizeOfChildrenForestalling("
+			<< QString::number(mContainerProperties.sizeOfChildrenForestalling) << ");\n"
+			<< "\t\t\tsetChildrenMovable(" << boolToString(mContainerProperties.hasMovableChildren) << ");\n"
+			<< "\t\t\tsetMinimizesToChildren(" << boolToString(mContainerProperties.minimizesToChildren) << ");\n"
+			<< "\t\t\tsetMaximizesChildren(" << boolToString(mContainerProperties.maximizesChildren) << ");\n"
+			<< "\t\t\tsetCreateChildrenFromMenu(" << boolToString(mCreateChildrenFromMenu) << ");\n"
+			/// @todo: borders are strange things available only in qrmc. Do we need it?
+			<< "\t\t\tsetBorder({});\n"
+			<< "\t\t}\n\n";
 
 	generatePropertyData(out);
 
@@ -323,9 +282,7 @@ void NodeType::generateMouseGesture(OutFile &out)
 {
 	QString gesturePath = path();
 
-	out() << "\t\tQString elementMouseGesture() const override\n\t\t{\n";
-
-	const QString output = "\t\t\treturn ";
+	const QString output = "\t\t\tsetMouseGesture(";
 	out() << output;
 	if (gesturePath.length() > maxLineLength - output.length()) {
 		out() << "\"" << gesturePath.left(maxLineLength - output.length());
@@ -344,25 +301,5 @@ void NodeType::generateMouseGesture(OutFile &out)
 		out() << "\"" << gesturePath;
 	}
 
-	out() << "\";\n\t\t}\n\n";
-}
-
-void NodeType::generatePortTypes(OutFile &out)
-{
-	out() << "\t\tQStringList portTypes() const override\n\t\t{\n"
-			<< "\t\t\treturn { ";
-	QSet<QString> portTypes;
-	for (const Port *port : mPointPorts) {
-		portTypes.insert(port->type());
-	}
-
-	for (const Port *port : mLinePorts) {
-		portTypes.insert(port->type());
-	}
-
-	for (const QString &type : portTypes) {
-		out() << "\"" << type << "\", ";
-	}
-
-	out() << "};\n\t\t}\n\n";
+	out() << "\");\n";
 }

@@ -16,9 +16,49 @@
 
 using namespace qReal;
 
+Metamodel::Metamodel(const QString &id)
+	: mId(id)
+{
+}
+
+QString Metamodel::id() const
+{
+	return mId;
+}
+
+QString Metamodel::version() const
+{
+	return mVersion;
+}
+
+void Metamodel::setVersion(const QString &version)
+{
+	mVersion = version;
+}
+
+const QStringList &Metamodel::diagrams() const
+{
+	return mDiagrams;
+}
+
+void Metamodel::setDiagrams(const QStringList &diagrams)
+{
+	mDiagrams = diagrams;
+}
+
+void Metamodel::addDiagram(const QString &diagramName)
+{
+	mDiagrams << diagramName;
+}
+
 QList<ElementType *> Metamodel::elements(const QString &diagram) const
 {
 	return mElements[diagram].values();
+}
+
+ElementType &Metamodel::elementType(const Id &id) const
+{
+	return elementType(id.diagram(), id.element());
 }
 
 ElementType &Metamodel::elementType(const QString &diagram, const QString &element) const
@@ -28,6 +68,103 @@ ElementType &Metamodel::elementType(const QString &diagram, const QString &eleme
 	ElementType * const result = mElements[diagram][element];
 	Q_ASSERT_X(result, Q_FUNC_INFO, "No such entity in metamodel!");
 	return *result;
+}
+
+void Metamodel::addElement(ElementType &element)
+{
+	addNode(element);
+}
+
+QList<QPair<QString, QString>> Metamodel::enumValues(const QString &name) const
+{
+	return mEnumValues.values(name);
+}
+
+void Metamodel::addEnum(const QString &name, const QList<QPair<QString, QString> > &values)
+{
+	for (auto &&value : values) {
+		mEnumValues.insert(name, value);
+	}
+}
+
+bool Metamodel::isEnumEditable(const QString &name) const
+{
+	return mEnumsEditability[name];
+}
+
+void Metamodel::setEnumEditable(const QString &name, bool editable)
+{
+	mEnumsEditability[name] = editable;
+}
+
+QString Metamodel::friendlyName() const
+{
+	return mFriendlyName;
+}
+
+void Metamodel::setFriendlyName(const QString &friendlyName)
+{
+	mFriendlyName = friendlyName;
+}
+
+QString Metamodel::diagramFriendlyName(const QString &diagram) const
+{
+	return mDiagramFriendlyNames[diagram];
+}
+
+void Metamodel::setDiagramFriendlyName(const QString &diagram, const QString &friendlyName)
+{
+	mDiagramFriendlyNames[diagram] = friendlyName;
+}
+
+ElementType *Metamodel::diagramNode(const QString &diagram) const
+{
+	return mDiagramNodes[diagram].isEmpty() ? nullptr : &elementType(diagram, mDiagramNodes[diagram]);
+}
+
+void Metamodel::setDiagramNode(const QString &diagram, const QString &elementName)
+{
+	mDiagramNodes[diagram] = elementName;
+}
+
+QStringList Metamodel::diagramPaletteGroups(const QString &diagram) const
+{
+	return mPaletteGroups.values(diagram);
+}
+
+void Metamodel::appendDiagramPaletteGroup(const QString &diagram, const QString &group)
+{
+	mPaletteGroups.insert(diagram, group);
+}
+
+QStringList Metamodel::diagramPaletteGroupList(const QString &diagram, const QString &group) const
+{
+	return mPaletteGroupContents[diagram].values(group);
+}
+
+void Metamodel::addElementToDiagramPaletteGroup(const QString &diagram, const QString &group, const QString &element)
+{
+	mPaletteGroupContents[diagram].insert(group, element);
+}
+
+QString Metamodel::diagramPaletteGroupDescription(const QString &diagram, const QString &group) const
+{
+	return mPaletteGroupDescriptions[diagram][group];
+}
+
+void Metamodel::setDiagramPaletteGroupDescription(const QString &diagram, const QString &group, const QString &description)
+{
+	mPaletteGroupDescriptions[diagram][group] = description;
+}
+
+bool Metamodel::shallPaletteBeSorted(const QString &diagram) const
+{
+	return mPaletteSorting[diagram];
+}
+
+void Metamodel::setPaletteSorted(const QString &diagram, bool sorted)
+{
+	mPaletteSorting[diagram] = sorted;
 }
 
 void Metamodel::addNode(qrgraph::Node &entity)
