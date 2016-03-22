@@ -25,7 +25,7 @@ using namespace qrmc;
 using namespace qReal;
 
 NodeType::NodeType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, qReal::Id id, const QString &targetDirectory)
-	: GraphicType(diagram, api, id, targetDirectory)
+	: GraphicType(*diagram, *api, id, targetDirectory)
 {
 }
 
@@ -35,7 +35,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-	NodeType *result = new NodeType(mDiagram, mApi, mId, targetDirectory());
+	NodeType *result = new NodeType(mDiagram, &mApi, mId, targetDirectory());
 	GraphicType::copyFields(result);
 	return result;
 }
@@ -50,8 +50,6 @@ void NodeType::print()
 {
 	qDebug() << "node " << mName;
 }
-
-
 
 QString NodeType::generateIsNodeOrEdge(const QString &lineTemplate) const
 {
@@ -68,19 +66,23 @@ QString NodeType::generateEdgeClass(const QString &classTemplate) const
 
 QString NodeType::generateNodeClass(const QString &classTemplate)
 {
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		return "";
+	}
 
 	QString nodeClass = classTemplate;
-	MetaCompiler *compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
 
 	mShape.setNode(this);
 	mShape.generate(nodeClass);
 	generateContainerStuff(nodeClass);
-	generateContextMenuItems(nodeClass, compiler);
+	generateContextMenuItems(nodeClass, &compiler);
 
 	QString isContainer  = mContains.isEmpty() ? "false" : "true";
-	QString border = compiler->getTemplateUtils(nodeValidBorderTag);
+	QString isAction = loadBoolProperty(mId, "isAction");
+	QString border = isAction == "true"
+					? compiler.getTemplateUtils(nodeValidBorderTag)
+					: compiler.getTemplateUtils(nodeInvalidBorderTag);
 
 	nodeClass.replace(isContainerTag, isContainer)
 			.replace(nodeBorderTag, border)
@@ -94,42 +96,46 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 
 QString NodeType::loadBoolProperty(const qReal::Id &id, const QString &property) const
 {
-	QString result = mApi->stringProperty(id, property);
+	QString result = mApi.stringProperty(id, property);
 	if (result.isEmpty()) {
 		result = "false";
 	}
+
 	return result;
 }
 
 QString NodeType::loadIntProperty(const qReal::Id &id, const QString &property) const
 {
-	QString result = mApi->stringProperty(id, property);
+	QString result = mApi.stringProperty(id, property);
 	if (result.isEmpty()) {
 		result = "0";
 	}
+
 	return result;
 }
 
 QString NodeType::loadIntVectorProperty(const qReal::Id &id, const QString &property) const
 {
-	QString result = mApi->stringProperty(id, property);
+	QString result = mApi.stringProperty(id, property);
 	if (result.isEmpty()) {
-		result = "0,0,0,0";
+		result = "0, 0, 0, 0";
 	}
+
 	return result;
 }
 
 void NodeType::generateContainerStuff(QString &classTemplate) const
 {
-	IdList children = mApi->children(mId);
+	const IdList children = mApi.children(mId);
 	bool foundChild = false;
-	foreach(Id child, children) {
-		if (!mApi->isLogicalElement(child))
+	for (const Id &child : children) {
+		if (!mApi.isLogicalElement(child)) {
 			continue;
+		}
 
 		if (child.element() == metaEntityPropertiesAsContainer) {
 			foundChild = true;
-			QString movableChildren = mApi->stringProperty(child, "banChildrenMove") == "true" ? "false" : "true";
+			const QString movableChildren = mApi.stringProperty(child, "banChildrenMove") == "true" ? "false" : "true";
 			classTemplate.replace(sortingContainerTag, loadBoolProperty(child, "sortContainer"))
 					.replace(minimizeToChildrenTag, loadBoolProperty(child, "minimizeToChildren"))
 					.replace(maximizeChildrenTag, loadBoolProperty(child, "maximizeChildren"))
@@ -139,18 +145,19 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 			break;
 		}
 	}
-	if (!foundChild)
+	if (!foundChild) {
 		classTemplate.replace(sortingContainerTag, "false")
 				.replace(minimizeToChildrenTag, "false")
 				.replace(maximizeChildrenTag, "false")
 				.replace(hasMovableChildrenTag, "true")
 				.replace(forestallingSizeTag, "QVector<int>()")
 				.replace(childrenForestallingSizeTag, "0");
+	}
 }
 
 void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *compiler) const
 {
-	if (mContextMenuItems.isEmpty()){
+	if (mContextMenuItems.isEmpty()) {
 		classTemplate.replace(nodeConstructorTag, "")
 				.replace(itemsList, compiler->getTemplateUtils(itemsInvalidList));
 		return;
@@ -158,9 +165,10 @@ void NodeType::generateContextMenuItems(QString &classTemplate, MetaCompiler *co
 
 	QString constructor = compiler->getTemplateUtils(nodeConstructorTag);
 	QString items;
-	foreach(QString item, mContextMenuItems){
+	for (const QString &item : mContextMenuItems) {
 		items += " << \"" + item + "\"";
 	}
+
 	constructor.replace(contextMenuItems, items);
 	classTemplate.replace(nodeConstructorTag, constructor)
 			.replace(itemsList, compiler->getTemplateUtils(itemsValidList));

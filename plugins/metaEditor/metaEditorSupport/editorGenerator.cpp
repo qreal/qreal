@@ -15,7 +15,7 @@
 #include "editorGenerator.h"
 
 #include <QtCore/QTextStream>
-#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
 
 #include <qrkernel/roles.h>
 

@@ -58,7 +58,7 @@ private:
 	/// returns old value
 	void restoreOldValueOfTempFolder() const;
 
-	void launchQrmc(const QString &fileName, const QString &pathToQrmc);
+	void launchQrmc(const QString &fileName);
 
 	QFileInfo compilePlugin(const QString &fileName, PluginCompiler::MetamodelCompiler metamodelCompiler);
 

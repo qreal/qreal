@@ -14,12 +14,14 @@
 
 #include "qrmcLauncher.h"
 
+#include <qrrepo/repoApi.h>
+
 #include "qrmc/metaCompiler.h"
 #include "defs.h"
 
 using namespace editorPluginTestingFramework;
 
-void QrmcLauncher::launchQrmc(const QString &fileName, const QString &pathToQrmc, const QString &targetDirectory)
+void QrmcLauncher::launchQrmc(const QString &fileName, const QString &targetDirectory)
 {
 	/// @todo: shall use qmake here
 	qDebug() << "Launching QRMC...";
@@ -29,7 +31,7 @@ void QrmcLauncher::launchQrmc(const QString &fileName, const QString &pathToQrmc
 	}
 
 	qrRepo::RepoApi repoApi(normalizedFileName);
-	qrmc::MetaCompiler metaCompiler(pathToQrmc, &repoApi, targetDirectory);
+	qrmc::MetaCompiler metaCompiler(repoApi, targetDirectory);
 	const qReal::IdList metamodels = repoApi.children(qReal::Id::rootId());
 
 	for (const qReal::Id &key : metamodels) {

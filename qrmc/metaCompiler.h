@@ -35,40 +35,34 @@ class MetaCompiler
 public:
 	/// Constructor. Takes repository with metamodel and target directory to generate editor plugin sources.
 	MetaCompiler(const qrRepo::LogicalRepoApi &logicalRepoApi, const QString &targetDirectory);
+
 	~MetaCompiler();
 
 	/// Generates sources for editor plugin. If metamodel name is not set, it will generate many plugins, one for
 	/// every metamodel in .qrs file. If set, it will generate plugin only for that metamodel.
 	bool compile(const QString &metamodel = "");
 
-
+	/// Attemts to load a metamodel with given id. Used on start of compilation and by editors when resolving imports.
 	Editor *loadMetaModel(const qReal::Id &id);
-	Diagram *getDiagram(const QString &diagramName);
+
+	/// Returns diagram with given name by searching it in a list of loaded editors. Returns nullptr if no such diagram
+	/// was loaded.
+	Diagram *getDiagram(const QString &diagramName) const;
+
 	void addResource(const QString &resourceName);
 
 	QString getTemplateUtils(const QString &tmpl) const;
 
 private:
-	bool changeDir(const QString &path);
 	bool loadTemplateFromFile(const QString &templateFileName, QString &loadedTemplate);
-	bool loadPluginHeaderTemplate();
-	bool loadPluginSourceTemplate();
 	bool loadTemplateUtils();
-	bool loadNodeTemplate();
 
-	void generateCode();
-	void generateElementClasses();
-	void generatePluginHeader();
-	void generatePluginSource();
-	void generateResourceFile();
+	void generateCode(const QString &targetMetamodel);
 
+	/// Reference to a repository with metamodel being generated.
 	const qrRepo::LogicalRepoApi &mApi;
-	QMap<QString, Editor*> mEditors;
 
-	QString mLocalDir;
-	QString mPluginName;
-	QString mResources;
-	QString mCurrentEditor;
+	QMap<QString, Editor*> mEditors;
 
 	QString mPluginHeaderTemplate;
 	QString mPluginSourceTemplate;
@@ -80,19 +74,7 @@ private:
 	QString mPluginsProjectTemplate;
 	QMap<QString, QString> mTemplateUtils;
 
-	QDir mDirectory;
-
-	QString mTargetMetamodel;
-
 	const QString mTargetDirectory;
-
-	class ListMethodGenerator;
-	class PropertiesGenerator;
-	class ContainedTypesGenerator;
-	class ConnectionsGenerator;
-	class UsagesGenerator;
-	class PossibleEdgesGenerator;
-	class EnumValuesGenerator;
 };
 
 }
