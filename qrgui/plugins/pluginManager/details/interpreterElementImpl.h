@@ -110,6 +110,9 @@ private:
 	void initLinePorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
 			, const int &width, const int &height);
 
+	void initCircularPorts(const PortFactoryInterface &factory, QList<PortInterface *> &ports
+			, const int &width, const int &height);
+
 	void initLabels(const int &width, const int &height, LabelFactoryInterface &factory
 			, QList<LabelInterface*> &titles);
 

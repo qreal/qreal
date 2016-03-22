@@ -198,7 +198,7 @@ void DraggableElement::deleteElement()
 		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
 
-	mMainWindow.loadPlugins();
+	mMainWindow.loadEditorPlugins();
 }
 
 void DraggableElement::checkElementForRootDiagramNode()

@@ -29,7 +29,6 @@
 
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/changeParentCommand.h>
-#include <qrgui/models/commands/renameCommand.h>
 #include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 
 #include "editor/labels/label.h"
@@ -50,7 +49,6 @@ using namespace qReal::gui::editor::commands;
 
 NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &models)
 	: Element(impl, id, models)
-	, mExploser(models.exploser())
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mDragState(None)
 	, mResizeCommand(nullptr)
@@ -144,7 +142,7 @@ void NodeElement::connectSceneEvents()
 
 void NodeElement::initExplosionConnections()
 {
-	connect(&mExploser, &models::Exploser::explosionTargetCouldChangeProperties, this, &NodeElement::updateDynamicProperties);
+	connect(&mModels.exploser(), &models::Exploser::explosionTargetCouldChangeProperties, this, &NodeElement::updateDynamicProperties);
 }
 
 void NodeElement::updateDynamicProperties(const Id &target)
@@ -160,7 +158,7 @@ void NodeElement::updateDynamicProperties(const Id &target)
 	QDomDocument picture;
 	picture.setContent(shape);
 	mRenderer.load(picture);
-	mExploser.explosionsSetCouldChange();
+	mModels.exploser().explosionsSetCouldChange();
 
 	//Update labels
 	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
@@ -242,18 +240,6 @@ QMap<QString, QVariant> NodeElement::graphicalProperties() const
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
 	return mGraphicalAssistApi.properties(logicalId());
-}
-
-void NodeElement::setName(const QString &value, bool withUndoRedo)
-{
-	AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
-	if (withUndoRedo) {
-		mController->execute(command);
-		// Controller will take ownership
-	} else {
-		command->redo();
-		delete command;
-	}
 }
 
 void NodeElement::setGeometry(const QRectF &geom)
@@ -1461,7 +1447,7 @@ void NodeElement::initRenderedDiagram()
 					, graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
-	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
+	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mModels.exploser());
 	view.mutableMvIface().setModel(evScene->models().graphicalModel());
 	view.mutableMvIface().setLogicalModel(evScene->models().logicalModel());
 	view.mutableMvIface().setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));

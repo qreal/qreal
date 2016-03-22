@@ -95,7 +95,19 @@ QString PlatformInfo::applicationDirPath()
 
 QString PlatformInfo::defaultPlatformConfigPath()
 {
-	return QCoreApplication::applicationDirPath() + "/platform.config";
+	const QString applicationName = QCoreApplication::applicationName();
+	const QStringList paths = SettingsManager::value("platformConfigSearchPaths").toStringList();
+	const QStringList names = {"platform.config", applicationName + ".config"};
+	for (const QString &rawPath : paths) {
+		for (const QString &name : names) {
+			const QString path = invariantPath(rawPath + "/" + name);
+			if (QFile(path).exists()) {
+				return path;
+			}
+		}
+	}
+
+	return QString();
 }
 
 QString PlatformInfo::invariantPath(const QString &path)

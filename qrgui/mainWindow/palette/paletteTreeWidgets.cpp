@@ -206,7 +206,7 @@ void PaletteTreeWidgets::setElementVisible(const Id &metatype, bool visible)
 
 void PaletteTreeWidgets::setVisibleForAllElements(bool visible)
 {
-	foreach (QWidget * const element, mPaletteElements.values()) {
+	for (QWidget * const element : mPaletteElements.values()) {
 		element->setVisible(visible);
 	}
 
@@ -224,7 +224,7 @@ void PaletteTreeWidgets::setElementEnabled(const Id &metatype, bool enabled)
 
 void PaletteTreeWidgets::setEnabledForAllElements(bool enabled)
 {
-	foreach (QWidget * const element, mPaletteElements.values()) {
+	for (QWidget * const element : mPaletteElements.values()) {
 		element->setEnabled(enabled);
 	}
 

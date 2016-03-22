@@ -69,9 +69,7 @@ bool Runner::interpret(const QString &saveFile, bool background)
 
 	if (background) {
 		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [&]() {
-			QTimer::singleShot(0, [&]() {
-				mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0);
-			});
+			QTimer::singleShot(0, this, SLOT(close()));
 		});
 	}
 
@@ -125,4 +123,9 @@ void Runner::onDeviceStateChanged(const QString &robotId
 			, property
 			, value
 			);
+}
+
+void Runner::close()
+{
+	mMainWindow.emulateClose(mReporter.lastMessageIsError() ? 1 : 0);
 }

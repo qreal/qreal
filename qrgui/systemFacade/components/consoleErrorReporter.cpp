@@ -14,6 +14,8 @@
 
 #include "consoleErrorReporter.h"
 
+#include <qrkernel/definitions.h>
+
 using namespace qReal;
 
 void ConsoleErrorReporter::addInformation(const QString &message, const Id &position)
@@ -53,7 +55,7 @@ void ConsoleErrorReporter::sendBubblingMessage(const QString &message, int durat
 	qDebug() << qUtf8Printable(message);
 }
 
-bool ConsoleErrorReporter::wereErrors()
+bool ConsoleErrorReporter::wereErrors() const
 {
 	return mWereErrors;
 }

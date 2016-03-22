@@ -31,10 +31,6 @@ TRANSLATIONS = \
 	$$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts \
 	$$PWD/../../qrtranslations/fr/qrgui_mainWindow_fr.ts \
 
-!macx {
-	QMAKE_LFLAGS+="-Wl,-O1,-rpath,."
-}
-
 HEADERS += \
 	$$PWD/qrealApplication.h \
 	$$PWD/mainWindow.h \

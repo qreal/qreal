@@ -67,10 +67,16 @@ bool PasteCommand::isEmpty() const
 QHash<qReal::Id, qReal::Id> PasteCommand::prepareNodes(models::GraphicalModelAssistApi &graphicalApi
 		, QList<NodeInfo> &nodesData, const QPointF &offset)
 {
+	QList<NodeInfo> filteredNodes;
 	QHash<Id, Id> copiedIds;
 	// Stage I: First generating new ids. All ids must be generated before next stage because some elements need new
 	// ids of their parents.
 	for (NodeInfo &node : nodesData) {
+		if (!node.explosionTarget().isNull() && !mGraphicalApi.graphicalRepoApi().exist(node.explosionTarget())) {
+			// Ignoring elements referencing to non-existent explosion targets (for example copied from other instance).
+			continue;
+		}
+
 		if (!mIsGraphicalCopy) {
 			copiedIds[graphicalApi.logicalId(node.id())] = node.newLogicalId();
 		}
@@ -78,15 +84,17 @@ QHash<qReal::Id, qReal::Id> PasteCommand::prepareNodes(models::GraphicalModelAss
 		// Do not move node.id into brackets (evaluation order).
 		const Id oldId = node.id();
 		copiedIds[oldId] = node.newId();
+		filteredNodes << node;
 	}
 
 	// Stage II: Setting new elements positions and graphical parents. Parents may be copied together with child,
 	// then it will be child of new parent element, or not copied, then parent will be root diagram.
-	for (NodeInfo &node : nodesData) {
+	for (NodeInfo &node : filteredNodes) {
 		node.setPos(mIsGraphicalCopy ? newGraphicalPos(node, copiedIds, offset) : newPos(node, copiedIds, offset));
 		node.setGraphicalParent(newGraphicalParent(node, copiedIds));
 	}
 
+	nodesData = filteredNodes;
 	return copiedIds;
 }
 

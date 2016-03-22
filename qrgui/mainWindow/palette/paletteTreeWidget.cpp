@@ -132,7 +132,7 @@ void PaletteTreeWidget::addElementPaletteActionTriggered()
 {
 	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
 			, *mEditorManager, &mMainWindow);
-	connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadPlugins);
+	connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadEditorPlugins);
 	chooseTypeDialog->setModal(true);
 	chooseTypeDialog->show();
 }

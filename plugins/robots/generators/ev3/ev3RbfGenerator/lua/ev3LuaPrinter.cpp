@@ -15,6 +15,7 @@
 #include "ev3LuaPrinter.h"
 
 #include <qrkernel/logging.h>
+#include <qrkernel/definitions.h>
 
 #include <qrtext/lua/ast/number.h>
 #include <qrtext/lua/ast/unaryMinus.h>
