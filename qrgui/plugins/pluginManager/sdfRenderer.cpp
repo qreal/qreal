@@ -85,7 +85,7 @@ bool SdfRenderer::load(const QDomDocument &document)
 
 bool SdfRenderer::load(const QDomElement &picture)
 {
-	doc.importNode(picture, true);
+	doc.appendChild(doc.importNode(picture, true));
 	const QDomElement docElem = doc.firstChildElement("picture");
 	first_size_x = docElem.attribute("sizex").toInt();
 	first_size_y = docElem.attribute("sizey").toInt();
