@@ -24,6 +24,8 @@ class TcpRobotCommunicator;
 namespace trik {
 namespace pascalABC {
 
+class TrikPascalABCAdditionalPreferences;
+
 ///Generation of PascalABC program for TRIK, uploading and execution a program
 ///Uses setting "tcpServer" from RobotsInterpreter.
 class TrikPascalABCGeneratorPluginBase : public TrikGeneratorPluginBase
@@ -40,6 +42,7 @@ public:
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
+	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
@@ -74,6 +77,9 @@ private:
 	/// Action that stops program execution and turns off motors.
 	/// Doesn't have ownership; may be disposed by GUI.
 	QAction *mStopRobotAction = nullptr;
+
+	TrikPascalABCAdditionalPreferences *mAdditionalPreferences = nullptr;  //Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
 
 	QStringList mPathsToTemplates;
 };

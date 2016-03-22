@@ -1,4 +1,4 @@
-/* Copyright 2016 Ivan Limar
+/* Copyright 2016 Ivan Limar and CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,16 @@
 
 #include "trikPascalABCGeneratorLibrary/trikPascalABCGeneratorPluginBase.h"
 
+#include <QtCore/QProcess>
+#include <QtCore/QDir>
+
+#include <qrkernel/settingsManager.h>
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
 #include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikPascalABCMasterGenerator.h"
+#include "trikPascalABCAdditionalPreferences.h"
 
 using namespace trik::pascalABC;
 using namespace kitBase::robotModel;
@@ -33,12 +38,16 @@ TrikPascalABCGeneratorPluginBase::TrikPascalABCGeneratorPluginBase(
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mStopRobotAction(new QAction(nullptr))
+	, mAdditionalPreferences(new TrikPascalABCAdditionalPreferences(robotModel->name()))
 	, mPathsToTemplates(pathsToTemplates)
 {
 }
 
 TrikPascalABCGeneratorPluginBase::~TrikPascalABCGeneratorPluginBase()
 {
+	if (mOwnsAdditionalPreferences) {
+		delete mAdditionalPreferences;
+	}
 }
 
 QList<ActionInfo> TrikPascalABCGeneratorPluginBase::customActions()
@@ -82,6 +91,12 @@ QIcon TrikPascalABCGeneratorPluginBase::iconForFastSelector(const RobotModelInte
 	return QIcon(":/trik/pascalABC/images/switch-to-trik-pascal.svg");
 }
 
+QList<kitBase::AdditionalPreferences *> TrikPascalABCGeneratorPluginBase::settingsWidgets()
+{
+	mOwnsAdditionalPreferences = false;
+	return {mAdditionalPreferences};
+}
+
 generatorBase::MasterGeneratorBase *TrikPascalABCGeneratorPluginBase::masterGenerator()
 {
 	return new TrikPascalABCMasterGenerator(*mRepo
@@ -108,16 +123,70 @@ QString TrikPascalABCGeneratorPluginBase::generatorName() const
 	return "trikPascalABC";
 }
 
-///ToDo Upload, Run, Stop
 bool TrikPascalABCGeneratorPluginBase::uploadProgram()
 {
+	QProcess compileProcess;
+	const QFileInfo fileInfo = generateCodeForProcessing();
+
+	if (qReal::SettingsManager::value("PascalABCPath").toString().isEmpty()) {
+		mMainWindowInterface->errorReporter()->addError(
+			tr("Please provide path to the PascalABC.NET Compiler in Settings dialog.")
+		);
+
+		return false;
+	}
+
+	const QString compileCommand = QString("\"%1\"")
+			.arg(qReal::SettingsManager::value("PascalABCPath").toString());
+
+	compileProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
+	compileProcess.setArguments({fileInfo.absoluteFilePath()});
+	compileProcess.start(compileCommand);
+	compileProcess.waitForStarted();
+	if (compileProcess.state() != QProcess::Running) {
+		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch PascalABC.NET compiler"));
+		return false;
+	}
+
+	compileProcess.waitForFinished();
+
+	qDebug() << compileProcess.exitCode();
+	qDebug() << compileProcess.readAllStandardError();
+	qDebug() << compileProcess.readAllStandardOutput();
+
+	if (qReal::SettingsManager::value("WinScpPath").toString().isEmpty()) {
+		mMainWindowInterface->errorReporter()->addError(
+			tr("Please provide path to the WinSCP in Settings dialog.")
+		);
+
+		return false;
+	}
+
+	const QString moveCommand = QString(
+			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/\"")
+			.arg(qReal::SettingsManager::value("WinScpPath").toString())
+			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
+			.arg(fileInfo.absoluteFilePath().replace("pas", "exe").replace("/", "\\"));
+
+	QProcess deployProcess;
+	if (!deployProcess.startDetached(moveCommand)) {
+		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch WinSCP"));
+		return false;
+	}
+
+	mMainWindowInterface->errorReporter()->addInformation(
+		tr("After downloading the program, enter 'exit' or close the window")
+	);
+
 	return true;
 }
 
 void TrikPascalABCGeneratorPluginBase::runProgram()
 {
+	/// @todo: Implement this.
 }
 
 void TrikPascalABCGeneratorPluginBase::stopRobot()
 {
+	/// @todo: Implement this.
 }

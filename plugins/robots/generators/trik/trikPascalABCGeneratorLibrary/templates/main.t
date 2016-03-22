@@ -1,4 +1,6 @@
-@@VARIABLES@@
+{$reference '../../trikSharp/Trik.Core.dll'}
+
+{ @@VARIABLES@@ }
 
 @@SUBPROGRAMS@@
 
