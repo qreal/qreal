@@ -1,8 +1,22 @@
+/* Copyright 2016 Ivan Limar
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikPascalABCGeneratorLibrary/trikPascalABCGeneratorPluginBase.h"
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
-#include <utils/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikPascalABCMasterGenerator.h"
 
@@ -29,7 +43,7 @@ TrikPascalABCGeneratorPluginBase::~TrikPascalABCGeneratorPluginBase()
 
 QList<ActionInfo> TrikPascalABCGeneratorPluginBase::customActions()
 {
-	mGenerateCodeAction->setObjectName("generatePascalABSCode");
+	mGenerateCodeAction->setObjectName("generatePascalABCCode");
 	mGenerateCodeAction->setText(tr("Generate pascalABC code"));
 	mGenerateCodeAction->setIcon(QIcon(":/trik/pascalABC/images/generateCode.svg"));
 	ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
@@ -56,15 +70,10 @@ QList<ActionInfo> TrikPascalABCGeneratorPluginBase::customActions()
 	return {generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopRobotActionInfo};
 }
 
-///ToDo hotKeyActions
+///@todo: hotKeyActions
 QList<qReal::HotKeyActionInfo> TrikPascalABCGeneratorPluginBase::hotKeyActions()
 {
-	HotKeyActionInfo generateCodeInfo("Generator.GenerateTrik", tr("Generate TRIK Code"), mGenerateCodeAction);
-	HotKeyActionInfo uploadProgramInfo("Generator.UploadTrik", tr("Upload TRIK Program"), mUploadProgramAction);
-	HotKeyActionInfo runProgramInfo("Generator.RunTrik", tr("Run TRIK Program"), mRunProgramAction);
-	HotKeyActionInfo stopRobotInfo("Generator.StopTrik", tr("Stop TRIK Robot"), mStopRobotAction);
-
-	return {generateCodeInfo, uploadProgramInfo, runProgramInfo, stopRobotInfo};
+	return {};
 }
 
 QIcon TrikPascalABCGeneratorPluginBase::iconForFastSelector(const RobotModelInterface &robotModel) const

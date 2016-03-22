@@ -1,3 +1,17 @@
+/* Copyright 2016 Ivan Limar
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
@@ -23,8 +37,6 @@ public:
 
 	~TrikPascalABCGeneratorPluginBase() override;
 
-	//?init
-
 	QList<qReal::ActionInfo> customActions() override;
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
@@ -35,35 +47,33 @@ protected:
 	qReal::text::LanguageInfo language() const override;
 	QString generatorName() const override;
 
-	//?addShellDevice
-
 private slots:
-	/// Generates and uploads script to a robot. Program then can be launched manually or remotely
-	/// by runCommand. Program is stored on robot as a file next to scriptRunner and named
-	/// as <qReal save name>.qts.
+	/// Generates, compiles and uploads compiled program to a robot. It can then be run by Mono.
 	/// @returns True, if successful.
 	bool uploadProgram();
 
-	/// Runs currently opened program on a robot. Uploads it first.
+	/// Runs currently opened program on a robot. Compiles and uploads it first.
 	void runProgram();
 
-	/// Tries to remotely abort script execution and stop robot.
+	/// Tries to remotely abort program execution and stop robot.
 	void stopRobot();
 
 private:
-	/// Action that launches code generator
-	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
+	/// Action that launches code generator.
+	/// Doesn't have ownership; may be disposed by GUI.
+	QAction *mGenerateCodeAction = nullptr;
 
-	/// Action that generates and uploads program on a robot
-	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+	/// Action that generates and uploads program on a robot.
+	/// Doesn't have ownership; may be disposed by GUI.
+	QAction *mUploadProgramAction = nullptr;
 
-	/// Action that generates and uploads program on a robot
-	QAction *mRunProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+	/// Action that generates, compiles, uploads and runs program on a robot.
+	/// Doesn't have ownership; may be disposed by GUI.
+	QAction *mRunProgramAction = nullptr;
 
-	/// Action that stops script execution and turns off motors.
-	QAction *mStopRobotAction;  // Doesn't have ownership; may be disposed by GUI.
-
-	//?TCP communicator
+	/// Action that stops program execution and turns off motors.
+	/// Doesn't have ownership; may be disposed by GUI.
+	QAction *mStopRobotAction = nullptr;
 
 	QStringList mPathsToTemplates;
 };

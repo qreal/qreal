@@ -23,8 +23,8 @@ SUBDIRS = \
 	trikFSharpGeneratorLibrary \
 	trikV6FSharpGenerator \
 	trikV62FSharpGenerator \
-        trikPascalABCGeneratorLibrary \
-        trikV62PascalABCGenerator \
+	trikPascalABCGeneratorLibrary \
+	trikV62PascalABCGenerator \
 	trikV6RuntimeUploaderPlugin \
 	trikV62RuntimeUploaderPlugin \
 	nxtGeneratorBase \
