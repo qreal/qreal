@@ -1,0 +1,1 @@
+robot.Motor@@PORT@@ <- -@@POWER@@
