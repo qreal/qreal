@@ -128,7 +128,9 @@ bool TrikPascalABCGeneratorPluginBase::uploadProgram()
 	QProcess compileProcess;
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
-	if (qReal::SettingsManager::value("PascalABCPath").toString().isEmpty()) {
+	const QString pascalCompiler = qReal::SettingsManager::value("PascalABCPath").toString();
+
+	if (pascalCompiler.isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
 			tr("Please provide path to the PascalABC.NET Compiler in Settings dialog.")
 		);
@@ -136,12 +138,8 @@ bool TrikPascalABCGeneratorPluginBase::uploadProgram()
 		return false;
 	}
 
-	const QString compileCommand = QString("\"%1\"")
-			.arg(qReal::SettingsManager::value("PascalABCPath").toString());
-
 	compileProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
-	compileProcess.setArguments({fileInfo.absoluteFilePath()});
-	compileProcess.start(compileCommand);
+	compileProcess.start("cmd", {"/C", "start", "PascalABC Compiler", pascalCompiler, fileInfo.absoluteFilePath()});
 	compileProcess.waitForStarted();
 	if (compileProcess.state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch PascalABC.NET compiler"));
@@ -150,9 +148,15 @@ bool TrikPascalABCGeneratorPluginBase::uploadProgram()
 
 	compileProcess.waitForFinished();
 
-	qDebug() << compileProcess.exitCode();
-	qDebug() << compileProcess.readAllStandardError();
-	qDebug() << compileProcess.readAllStandardOutput();
+	if (compileProcess.exitCode() != 0) {
+		mMainWindowInterface->errorReporter()->addError(tr("PascalABC compiler finished eith error."));
+		const QStringList errors = QString(compileProcess.readAllStandardError()).split("\n", QString::SkipEmptyParts);
+		for (const auto &error : errors) {
+			mMainWindowInterface->errorReporter()->addInformation(error);
+		}
+
+		return false;
+	}
 
 	if (qReal::SettingsManager::value("WinScpPath").toString().isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
