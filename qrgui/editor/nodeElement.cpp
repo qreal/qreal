@@ -142,7 +142,8 @@ void NodeElement::connectSceneEvents()
 
 void NodeElement::initExplosionConnections()
 {
-	connect(&mModels.exploser(), &models::Exploser::explosionTargetCouldChangeProperties, this, &NodeElement::updateDynamicProperties);
+	connect(&mModels.exploser(), &models::Exploser::explosionTargetCouldChangeProperties, this
+			, &NodeElement::updateDynamicProperties);
 }
 
 void NodeElement::updateDynamicProperties(const Id &target)

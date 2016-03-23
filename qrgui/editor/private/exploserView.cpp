@@ -144,7 +144,8 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 		const Id target = mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId());
 		if (mCustomizer.allowSubprogramPropertiesChanging()) {
 			QAction * const changeDynamicPropertiesAction = contextMenu.addAction(tr("Change Properties"));
-			connect(changeDynamicPropertiesAction, &QAction::triggered, this, &ExploserView::changeDynamicPropertiesActionTriggered);
+			connect(changeDynamicPropertiesAction, &QAction::triggered, this
+					, &ExploserView::changeDynamicPropertiesActionTriggered);
 			changeDynamicPropertiesAction->setData(target.toVariant());
 		}
 	}
