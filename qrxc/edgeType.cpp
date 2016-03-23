@@ -237,24 +237,8 @@ bool EdgeType::initLabel(Label *label, const QDomElement &element, const int &co
 	return label->init(element, count, false, mWidth, mHeight);
 }
 
-void EdgeType::generateGraphics() const
-{
-	QString sdfType = mLineType;
-	sdfType.remove("Qt::");
-	sdfType.remove("Line").toLower();
-
-	OutFile out("generated/shapes/" + resourceName("Class"));
-	out() << "<picture sizex=\"100\" sizey=\"60\" >\n"
-			<< "\t<line fill=\""<< mLineColor.name() << "\" stroke-style=\"" << sdfType << "\" stroke=\""
-			<< mLineColor.name() <<"\" y1=\"0\" "
-			<< "x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n" << "</picture>";
-	mDiagram->editor()->xmlCompiler()->addResource("\t<file>generated/shapes/" + resourceName("Class") + "</file>\n");
-}
-
 void EdgeType::generateCode(OutFile &out)
 {
-	generateGraphics();
-
 	const QString className = NameNormalizer::normalize(qualifiedName());
 
 	out() << "\tclass " << className << " : public qReal::EdgeElementType \n\t{\n"

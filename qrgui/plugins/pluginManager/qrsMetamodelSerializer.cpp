@@ -127,7 +127,6 @@ void QrsMetamodelSerializer::parseNode(const qrRepo::RepoApi &repo
 		, Metamodel &metamodel, const Id &diagram, const Id &id)
 {
 	NodeElementType *node = new NodeElementType(metamodel);
-	metamodel.addElement(*node);
 
 	node->setName(validateName(repo, id));
 	node->setFriendlyName(repo.stringProperty(id, "displayedName"));
@@ -141,13 +140,14 @@ void QrsMetamodelSerializer::parseNode(const qrRepo::RepoApi &repo
 	parseSdfGraphics(repo, *node, id);
 	parseContainerProperties(repo, *node, id);
 	parseProperties(repo, *node, id);
+
+	metamodel.addElement(*node);
 }
 
 void QrsMetamodelSerializer::parseEdge(const qrRepo::RepoApi &repo
 		, Metamodel &metamodel, const Id &diagram, const Id &id)
 {
 	EdgeElementType *edge = new EdgeElementType(metamodel);
-	metamodel.addElement(*edge);
 
 	edge->setName(validateName(repo, id));
 	edge->setFriendlyName(repo.stringProperty(id, "displayedName"));
@@ -165,21 +165,24 @@ void QrsMetamodelSerializer::parseEdge(const qrRepo::RepoApi &repo
 	if (!labelText.isEmpty()) {
 		LabelProperties label;
 		const QString labelType = stringProperty(repo, id, "labelType");
-		if (labelType == "staticText") {
+		if (labelType.contains("static", Qt::CaseInsensitive)) {
 			label = LabelProperties(0, 0, 0, labelText, 0);
-		} else if (labelType == "dynamicText") {
+		} else if (labelType.contains("dynamic", Qt::CaseInsensitive)) {
 			label = LabelProperties(0, 0, 0, labelText, false, 0);
 		} else {
 			emit errorOccured(tr("Incorrect label type"), id);
 		}
 
 		label.setHard(boolProperty(repo, id, "hardLabel"));
+		edge->addLabel(label);
 	}
 
 	parseAssociations(repo, *edge, id);
 	parseProperties(repo, *edge, id);
 	parsePorts(repo, *edge, id, "from");
 	parsePorts(repo, *edge, id, "to");
+
+	metamodel.addElement(*edge);
 }
 
 void QrsMetamodelSerializer::parseEnum(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
@@ -299,6 +302,7 @@ void QrsMetamodelSerializer::parseSdfGraphics(const qrRepo::RepoApi &repo, NodeE
 	const QDomElement ports = graphicsElement.firstChildElement("ports");
 	const int width = picture.attribute("sizex").toInt();
 	const int height = picture.attribute("sizey").toInt();
+	node.setSize(QSizeF(width, height));
 	parseLabels(node, labels, width, height);
 	parseNodePorts(node, ports, width, height);
 }
@@ -406,6 +410,7 @@ void QrsMetamodelSerializer::parseLinksOnDiagram(const qrRepo::RepoApi &repo, Me
 {
 	QHash<QPair<ElementType *, ElementType *>, QString> overridingProperties;
 	QSet<ElementType *> elements;
+	const QString diagramName = validateName(repo, diagram);
 
 	for (const Id &id : repo.children(diagram)) {
 		const Id elementType = id.type();
@@ -422,14 +427,14 @@ void QrsMetamodelSerializer::parseLinksOnDiagram(const qrRepo::RepoApi &repo, Me
 					ElementType *from = nullptr;
 					ElementType *to = nullptr;
 					QString overridingProperty;
-					parseGeneralization(repo, metamodel, inLink, from, to, overridingProperty);
+					parseGeneralization(repo, metamodel, inLink, diagramName, from, to, overridingProperty);
 					overridingProperties[qMakePair(from, to)] = overridingProperty;
 					elements.insert(from);
 					elements.insert(to);
 				} else if (inLink.type() == metamodelContainmentLinkType) {
-					parseContainer(repo, metamodel, inLink);
+					parseContainer(repo, metamodel, inLink, diagramName);
 				} else if (inLink.type() == metamodelExplosionLinkType) {
-					parseExplosion(repo, metamodel, inLink);
+					parseExplosion(repo, metamodel, inLink, diagramName);
 				}
 			}
 		}
@@ -439,23 +444,26 @@ void QrsMetamodelSerializer::parseLinksOnDiagram(const qrRepo::RepoApi &repo, Me
 }
 
 void QrsMetamodelSerializer::parseGeneralization(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id
-		, ElementType *fromElement, ElementType *toElement, QString &overridingProperties)
+		, const QString &diagram, ElementType *&fromElement, ElementType *&toElement, QString &overridingProperties)
 {
 	const Id from = repo.from(id);
 	const Id to = repo.to(id);
 	if (from.isNull() || to.isNull()) {
-		qWarning() << "Explosion" << id << "is not connected!";
+		qWarning() << "Generalization" << id << "is not connected!";
 		return;
 	}
 
-	fromElement = &metamodel.elementType(from);
-	toElement = &metamodel.elementType(to);
-	metamodel.produceEdge(*fromElement, *toElement, ElementType::generalizationLinkType);
+	const QString fromName = validateName(repo, from);
+	const QString toName = validateName(repo, to);
+	fromElement = &metamodel.elementType(diagram, fromName);
+	toElement = &metamodel.elementType(diagram, toName);
+	metamodel.produceEdge(*toElement, *fromElement, ElementType::generalizationLinkType);
 
 	overridingProperties = stringProperty(repo, id, "overrides");
 }
 
-void QrsMetamodelSerializer::parseContainer(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
+void QrsMetamodelSerializer::parseContainer(const qrRepo::RepoApi &repo, Metamodel &metamodel
+		, const Id &id, const QString &diagram)
 {
 	const Id from = repo.from(id);
 	const Id to = repo.to(id);
@@ -464,12 +472,15 @@ void QrsMetamodelSerializer::parseContainer(const qrRepo::RepoApi &repo, Metamod
 		return;
 	}
 
-	ElementType &fromElement = metamodel.elementType(from);
-	ElementType &toElement = metamodel.elementType(to);
+	const QString fromName = validateName(repo, from);
+	const QString toName = validateName(repo, to);
+	ElementType &fromElement = metamodel.elementType(diagram, fromName);
+	ElementType &toElement = metamodel.elementType(diagram, toName);
 	metamodel.produceEdge(fromElement, toElement, ElementType::containmentLinkType);
 }
 
-void QrsMetamodelSerializer::parseExplosion(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
+void QrsMetamodelSerializer::parseExplosion(const qrRepo::RepoApi &repo, Metamodel &metamodel
+		, const Id &id, const QString &diagram)
 {
 	const Id from = repo.from(id);
 	const Id to = repo.to(id);
@@ -478,8 +489,10 @@ void QrsMetamodelSerializer::parseExplosion(const qrRepo::RepoApi &repo, Metamod
 		return;
 	}
 
-	ElementType &fromElement = metamodel.elementType(from);
-	ElementType &toElement = metamodel.elementType(to);
+	const QString fromName = validateName(repo, from);
+	const QString toName = validateName(repo, to);
+	ElementType &fromElement = metamodel.elementType(diagram, fromName);
+	ElementType &toElement = metamodel.elementType(diagram, toName);
 	metamodel.addExplosion(fromElement, toElement, boolProperty(repo, id, "makeReusable")
 			, boolProperty(repo, id, "requireImmediateLinkage"));
 }
@@ -495,7 +508,7 @@ void QrsMetamodelSerializer::resolveInheritance(QSet<ElementType *> &elements
 		for (ElementType *child : elements) {
 			// Checking that all parents are already visited.
 			bool allParentsAreVisited = true;
-			for (const qrgraph::Edge *edge : child->outgoingEdges()) {
+			for (const qrgraph::Edge *edge : child->outgoingEdges(ElementType::generalizationLinkType)) {
 				ElementType *parent = static_cast<ElementType *>(edge->end());
 				if (elements.contains(parent)) {
 					allParentsAreVisited = false;
@@ -505,10 +518,12 @@ void QrsMetamodelSerializer::resolveInheritance(QSet<ElementType *> &elements
 
 			if (allParentsAreVisited) {
 				elements.remove(child);
-				for (const qrgraph::Edge *edge : child->outgoingEdges()) {
+				for (const qrgraph::Edge *edge : child->outgoingEdges(ElementType::generalizationLinkType)) {
 					ElementType *parent = static_cast<ElementType *>(edge->end());
 					inherit(*child, *parent, overridingProperties[qMakePair(child, parent)]);
 				}
+
+				break;
 			}
 		}
 	}

@@ -14,6 +14,8 @@
 
 #include "metaMetaModel/edgeElementType.h"
 
+#include <QtXml/QDomDocument>
+
 #include "metaMetaModel/metamodel.h"
 
 using namespace qReal;
@@ -40,6 +42,7 @@ Qt::PenStyle EdgeElementType::penStyle() const
 void EdgeElementType::setPenStyle(Qt::PenStyle style)
 {
 	mPenStyle = style;
+	updateSdf();
 }
 
 int EdgeElementType::penWidth() const
@@ -60,6 +63,7 @@ QColor EdgeElementType::penColor() const
 void EdgeElementType::setPenColor(const QColor &color)
 {
 	mPenColor = color;
+	updateSdf();
 }
 
 bool EdgeElementType::isDividable() const
@@ -110,4 +114,37 @@ void EdgeElementType::drawStartArrow(QPainter *painter) const
 void EdgeElementType::drawEndArrow(QPainter *painter) const
 {
 	Q_UNUSED(painter)
+}
+
+void EdgeElementType::updateSdf()
+{
+	QString sdfType;
+	switch (mPenStyle) {
+	case Qt::SolidLine:
+		sdfType = "solid";
+		break;
+	case Qt::DashLine:
+		sdfType = "dash";
+		break;
+	case Qt::DotLine:
+		sdfType = "dot";
+		break;
+	case Qt::DashDotLine:
+		sdfType = "dashdot";
+		break;
+	case Qt::DashDotDotLine:
+		sdfType = "dashdotdot";
+		break;
+	default:
+		break;
+	}
+
+	const QString sdf = "<picture sizex=\"100\" sizey=\"60\" >\n"\
+			"\t<line fill=\"" + mPenColor.name() + "\" stroke-style=\"" + sdfType + "\" stroke=\"" + mPenColor.name() +
+			"\" y1=\"0\" x1=\"0\" y2=\"60\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />\n"
+			 "</picture>";
+
+	QDomDocument sdfDocument;
+	sdfDocument.setContent(sdf);
+	loadSdf(sdfDocument.documentElement());
 }

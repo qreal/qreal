@@ -56,6 +56,16 @@ QString ProxyEditorManager::unloadPlugin(const QString &pluginName)
 	return mProxiedEditorManager->unloadPlugin(pluginName);
 }
 
+bool ProxyEditorManager::unloadAllPlugins()
+{
+	return mProxiedEditorManager->unloadAllPlugins();
+}
+
+void ProxyEditorManager::loadMetamodel(Metamodel &metamodel)
+{
+	mProxiedEditorManager->loadMetamodel(metamodel);
+}
+
 QString ProxyEditorManager::mouseGesture(const Id &id) const
 {
 	return mProxiedEditorManager->mouseGesture(id);

@@ -53,6 +53,8 @@ public:
 
 	QString loadPlugin(const QString &pluginName) override;
 	QString unloadPlugin(const QString &pluginName) override;
+	bool unloadAllPlugins() override;
+	void loadMetamodel(Metamodel &metamodel) override;
 
 	QString mouseGesture(const Id &id) const override;
 	QString friendlyName(const Id &id) const override;

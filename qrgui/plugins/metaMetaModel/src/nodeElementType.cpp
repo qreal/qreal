@@ -14,18 +14,16 @@
 
 #include "metaMetaModel/nodeElementType.h"
 
-#include <QtXml/QDomDocument>
-
 #include "metaMetaModel/metamodel.h"
 
 using namespace qReal;
 
 NodeElementType::NodeElementType(Metamodel &metamodel)
 	: ElementType(metamodel)
-	, mSdf(new QDomDocument)
 	, mIsResizable(false)
 	, mIsContainer(false)
 	, mIsSortingContainer(false)
+	, mSizeOfForestalling({0,0,0,0})
 	, mSizeOfChildrenForestalling(0)
 	, mHasMovableChildren(false)
 	, mMinimizesToChildren(false)
@@ -34,31 +32,9 @@ NodeElementType::NodeElementType(Metamodel &metamodel)
 {
 }
 
-NodeElementType::~NodeElementType()
-{
-}
-
 ElementType::Type NodeElementType::type() const
 {
 	return Type::node;
-}
-
-QDomElement NodeElementType::sdf() const
-{
-	return mSdf.isNull() ? QDomElement() : mSdf->documentElement();
-}
-
-void NodeElementType::loadSdf(const QDomElement &picture)
-{
-	if (mSdf->isNull()) {
-		mSdf->appendChild(mSdf->importNode(picture, true));
-		return;
-	}
-
-	QDomElement currentPicture = mSdf->documentElement();
-	for (QDomElement child = picture.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
-		currentPicture.insertBefore(mSdf->importNode(child, true), currentPicture.firstChildElement());
-	}
 }
 
 QSizeF NodeElementType::size() const

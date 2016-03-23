@@ -19,9 +19,6 @@
 #include "metaMetaModel/elementType.h"
 #include "metaMetaModel/portHelpers.h"
 
-class QDomDocument;
-class QDomElement;
-
 namespace qReal {
 
 /// Describes type of node elements that can be instantiated on scene.
@@ -30,15 +27,8 @@ class QRGUI_META_META_MODEL_EXPORT NodeElementType : public ElementType
 public:
 	/// @param metamodel Metamodel that owns this node element.
 	explicit NodeElementType(Metamodel &metamodel);
-	~NodeElementType();
 
 	Type type() const override;
-
-	/// Returns XML element containing SDF description of element's appearance.
-	QDomElement sdf() const;
-
-	/// Loads SDF description of element's appearance.
-	void loadSdf(const QDomElement &picture);
 
 	/// Returns size of the node element`s appearance.
 	QSizeF size() const;
@@ -154,7 +144,6 @@ public:
 	void setCreateChildrenFromMenu(bool canCreate);
 
 private:
-	QScopedPointer<QDomDocument> mSdf;
 	QSizeF mSize;
 	bool mIsResizable;
 	QList<qreal> mBorder;

@@ -1,4 +1,4 @@
-/* Copyright 2016 Dmitry Mordvinov
+/* Copyright 2016 CyberTech Labs Ltd, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
 
 #include "metaMetaModel/elementType.h"
 
+#include <QtXml/QDomDocument>
+
 #include <qrgraph/queries.h>
 
 #include "metaMetaModel/metamodel.h"
@@ -25,7 +27,12 @@ using namespace qReal;
 
 ElementType::ElementType(Metamodel &metamodel)
 	: qrgraph::Node(metamodel)
+	, mSdf(new QDomDocument)
 	, mIsHidden(false)
+{
+}
+
+ElementType::~ElementType()
 {
 }
 
@@ -159,6 +166,24 @@ QString ElementType::diagram() const
 void ElementType::setDiagram(const QString &diagramName)
 {
 	mDiagram = diagramName;
+}
+
+QDomElement ElementType::sdf() const
+{
+	return mSdf.isNull() ? QDomElement() : mSdf->documentElement();
+}
+
+void ElementType::loadSdf(const QDomElement &picture)
+{
+	if (mSdf->isNull()) {
+		mSdf->appendChild(mSdf->importNode(picture, true));
+		return;
+	}
+
+	QDomElement currentPicture = mSdf->documentElement();
+	for (QDomElement child = picture.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
+		currentPicture.insertBefore(mSdf->importNode(child, true), currentPicture.firstChildElement());
+	}
 }
 
 const QList<LabelProperties> &ElementType::labels() const

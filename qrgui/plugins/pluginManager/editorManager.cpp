@@ -45,9 +45,7 @@ EditorManager::EditorManager(QObject *parent)
 
 EditorManager::~EditorManager()
 {
-	for (const QString &pluginName : mMetamodels.keys()) {
-		unloadPlugin(pluginName);
-	}
+	unloadAllPlugins();
 }
 
 void EditorManager::init()
@@ -117,10 +115,29 @@ QString EditorManager::unloadPlugin(const QString &pluginName)
 	return resultOfUnloading;
 }
 
+bool EditorManager::unloadAllPlugins()
+{
+	bool result = true;
+	for (const QString &pluginName : mMetamodels.keys()) {
+		result &= unloadPlugin(pluginName).isEmpty();
+	}
+
+	return result;
+}
+
+void EditorManager::loadMetamodel(Metamodel &metamodel)
+{
+	if (mMetamodels.contains(metamodel.id())) {
+		return;
+	}
+
+	mMetamodels[metamodel.id()] = &metamodel;
+}
+
 IdList EditorManager::editors() const
 {
 	IdList editors;
-	for (const QString &editor : mPluginsLoaded) {
+	for (const QString &editor : mMetamodels.keys()) {
 		editors.append(Id(editor));
 	}
 
@@ -130,7 +147,7 @@ IdList EditorManager::editors() const
 IdList EditorManager::diagrams(const Id &editor) const
 {
 	IdList diagrams;
-	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
+	Q_ASSERT(mMetamodels.contains(editor.editor()));
 
 	for (const QString &diagram : mMetamodels[editor.editor()]->diagrams()) {
 		diagrams.append(Id(editor, diagram));
@@ -141,7 +158,7 @@ IdList EditorManager::diagrams(const Id &editor) const
 
 QStringList EditorManager::paletteGroups(const Id &editor, const Id &diagram) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
+	Q_ASSERT(mMetamodels.contains(diagram.editor()));
 	return mMetamodels[editor.editor()]->diagramPaletteGroups(diagram.diagram());
 }
 
@@ -163,7 +180,7 @@ bool EditorManager::shallPaletteBeSorted(const Id &editor, const Id &diagram) co
 IdList EditorManager::elements(const Id &diagram) const
 {
 	IdList elements;
-	Q_ASSERT(mPluginsLoaded.contains(diagram.editor()));
+	Q_ASSERT(mMetamodels.contains(diagram.editor()));
 
 	for (const ElementType *type : mMetamodels[diagram.editor()]->elements(diagram.diagram())) {
 		const Id candidate(diagram.editor(), diagram.diagram(), type->name());
@@ -177,31 +194,31 @@ IdList EditorManager::elements(const Id &diagram) const
 
 Version EditorManager::version(const Id &editor) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(editor.editor()));
+	Q_ASSERT(mMetamodels.contains(editor.editor()));
 	return Version::fromString(mMetamodels[editor.editor()]->version());
 }
 
 bool EditorManager::isEditor(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 	return id.idSize() == 1;
 }
 
 bool EditorManager::isDiagram(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 	return id.idSize() == 2;
 }
 
 bool EditorManager::isElement(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 	return id.idSize() == 3;
 }
 
 QString EditorManager::friendlyName(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 
 	switch (id.idSize()) {
 	case 1:
@@ -222,7 +239,7 @@ QString EditorManager::friendlyName(const Id &id) const
 
 QString EditorManager::description(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 	if (id.idSize() != 3) {
 		return "";
 	}
@@ -236,7 +253,7 @@ QString EditorManager::description(const Id &id) const
 
 QString EditorManager::propertyDescription(const Id &id, const QString &propertyName) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 
 	if (id.idSize() < 3) {
 		return QString();
@@ -247,7 +264,7 @@ QString EditorManager::propertyDescription(const Id &id, const QString &property
 
 QString EditorManager::propertyDisplayedName(const Id &id, const QString &propertyName) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 
 	if (id.idSize() != 4) {
 		return QString();
@@ -258,7 +275,7 @@ QString EditorManager::propertyDisplayedName(const Id &id, const QString &proper
 
 QString EditorManager::mouseGesture(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 	if (id.idSize() != 3) {
 		return QString();
 	}
@@ -269,22 +286,23 @@ QString EditorManager::mouseGesture(const Id &id) const
 
 QIcon EditorManager::icon(const Id &id) const
 {
-	if (!mPluginsLoaded.contains(id.editor())) {
+	if (!mMetamodels.contains(id.editor())) {
 		return QIcon();
 	}
 
-	return SdfIconLoader::iconOf(":/generated/shapes/" + id.element() + "Class.sdf");
+	return SdfIconLoader::iconOf(id, elementType(id).sdf());
 }
 
 QSize EditorManager::iconSize(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
-	return SdfIconLoader::preferedSizeOf(":/generated/shapes/" + id.element() + "Class.sdf");
+	Q_ASSERT(mMetamodels.contains(id.editor()));
+
+	return SdfIconLoader::preferedSizeOf(id, elementType(id).sdf());
 }
 
 ElementType &EditorManager::elementType(const Id &id) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(id.editor()));
+	Q_ASSERT(mMetamodels.contains(id.editor()));
 	return mMetamodels[id.editor()]->elementType(id.diagram(), id.element());
 }
 
@@ -342,7 +360,7 @@ QString EditorManager::defaultPropertyValue(const Id &id, QString name) const
 bool EditorManager::hasElement(const Id &elementId) const
 {
 	Q_ASSERT(elementId.idSize() == 3);
-	if (!mPluginsLoaded.contains(elementId.editor()))
+	if (!mMetamodels.contains(elementId.editor()))
 		return false;
 	Metamodel *editor = mMetamodels[elementId.editor()];
 	for (const QString &diagram : editor->diagrams()) {
@@ -422,7 +440,7 @@ QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 
 QList<const Explosion *> EditorManager::explosions(const Id &source) const
 {
-	Q_ASSERT(mPluginsLoaded.contains(source.editor()));
+	Q_ASSERT(mMetamodels.contains(source.editor()));
 	return elementType(source).explosions();
 }
 

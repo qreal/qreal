@@ -1,4 +1,4 @@
-/* Copyright 2016 Dmitry Mordvinov
+/* Copyright 2016 CyberTech Labs Ltd, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 
 #include "metaMetaModel/labelProperties.h"
 #include "metaMetaModel/explosion.h"
+
+class QDomDocument;
+class QDomElement;
 
 namespace qReal {
 
@@ -51,6 +54,8 @@ public:
 		/// This type describes group of nodes and edges, toPattern() can be safely called.
 		, pattern
 	};
+
+	~ElementType() override;
 
 	/// Returns a reference to instance of metamodel this type belogns to.
 	Metamodel &metamodel() const;
@@ -125,6 +130,12 @@ public:
 	/// This name will be used for diagram() part of qReal::Id and should not be shown to user.
 	void setDiagram(const QString &diagramName);
 
+	/// Returns XML element containing SDF description of element's appearance.
+	QDomElement sdf() const;
+
+	/// Loads SDF description of element's appearance.
+	void loadSdf(const QDomElement &picture);
+
 	/// Returns a list of all labels on instances of this type.
 	const QList<LabelProperties> &labels() const;
 
@@ -178,6 +189,7 @@ private:
 	QString mFriendlyName;
 	QString mDescription;
 	QString mDiagram;
+	QScopedPointer<QDomDocument> mSdf;
 	QList<LabelProperties> mLabels;
 	QStringList mPropertyNames;
 	QStringList mReferenceProperties;

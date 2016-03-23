@@ -81,6 +81,8 @@ public:
 	virtual void drawEndArrow(QPainter *painter) const;
 
 private:
+	void updateSdf();
+
 	Qt::PenStyle mPenStyle;
 	int mPenWidth;
 	QColor mPenColor;

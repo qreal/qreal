@@ -28,6 +28,7 @@ namespace qReal {
 
 class ElementType;
 class Explosion;
+class Metamodel;
 
 namespace gui {
 namespace editor {
@@ -47,8 +48,15 @@ public:
 
 	/// @returns Error message if something went wrong or empty string if everything was ok.
 	virtual QString loadPlugin(const QString &pluginName) = 0;
+
 	/// @returns Error message if something went wrong or empty string if everything was ok.
 	virtual QString unloadPlugin(const QString &pluginName) = 0;
+
+	/// @returns True if plugins unloading was successfull or false otherwise.
+	virtual bool unloadAllPlugins() = 0;
+
+	/// Appends \a metamodel to a list of loaded ones.
+	virtual void loadMetamodel(Metamodel &metamodel) = 0;
 
 	virtual QString mouseGesture(const Id &id) const = 0;
 	virtual QString friendlyName(const Id &id) const = 0;

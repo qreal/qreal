@@ -901,6 +901,12 @@ SdfIconEngineV2::SdfIconEngineV2(const QDomDocument &document)
 	mRenderer.noScale();
 }
 
+SdfIconEngineV2::SdfIconEngineV2(const QDomElement &picture)
+{
+	mRenderer.load(picture);
+	mRenderer.noScale();
+}
+
 void SdfIconEngineV2::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
 {
 	Q_UNUSED(mode)
@@ -939,15 +945,15 @@ QSize SdfIconEngineV2::preferedSize() const
 }
 
 
-QIcon SdfIconLoader::iconOf(const QString &fileName)
+QIcon SdfIconLoader::iconOf(const Id &id, const QDomElement &sdf)
 {
-	return loadPixmap(fileName);
+	return loadPixmap(id, sdf);
 }
 
-QSize SdfIconLoader::preferedSizeOf(const QString &fileName)
+QSize SdfIconLoader::preferedSizeOf(const Id &id, const QDomElement &sdf)
 {
-	loadPixmap(fileName);
-	return instance()->mPreferedSizes[fileName];
+	loadPixmap(id, sdf);
+	return instance()->mPreferedSizes[id];
 }
 
 SdfIconLoader *SdfIconLoader::instance()
@@ -964,15 +970,15 @@ SdfIconLoader::~SdfIconLoader()
 {
 }
 
-QIcon SdfIconLoader::loadPixmap(const QString &fileName)
+QIcon SdfIconLoader::loadPixmap(const Id &id, const QDomElement &sdf)
 {
-	if (!instance()->mLoadedIcons.contains(fileName)) {
-		SdfIconEngineV2 * const engine = new SdfIconEngineV2(fileName);
+	if (!instance()->mLoadedIcons.contains(id)) {
+		SdfIconEngineV2 * const engine = new SdfIconEngineV2(sdf);
 		// QIcon takes ownership over SdfIconEngineV2
 		QIcon icon(engine);
-		instance()->mLoadedIcons[fileName] = icon;
-		instance()->mPreferedSizes[fileName] = engine->preferedSize();
+		instance()->mLoadedIcons[id] = icon;
+		instance()->mPreferedSizes[id] = engine->preferedSize();
 	}
 
-	return instance()->mLoadedIcons[fileName];
+	return instance()->mLoadedIcons[id];
 }

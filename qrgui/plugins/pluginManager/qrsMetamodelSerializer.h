@@ -91,10 +91,10 @@ private:
 	QList<QPair<QString, QString>> parseEnumValues(const qrRepo::RepoApi &repo, const Id &id);
 	void parseGroupNodes(const qrRepo::RepoApi &repo, QDomElement &parent, const Id &id);
 	void parseLinksOnDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram);
-	void parseGeneralization(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id
-			, ElementType *fromElement, ElementType *toElement, QString &overridingProperties);
-	void parseContainer(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id);
-	void parseExplosion(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id);
+	void parseGeneralization(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id, const QString &diagram
+			, ElementType *&fromElement, ElementType *&toElement, QString &overridingProperties);
+	void parseContainer(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id, const QString &diagram);
+	void parseExplosion(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id, const QString &diagram);
 
 	void resolveInheritance(QSet<ElementType *> &elements
 			, const QHash<QPair<ElementType *, ElementType *>, QString> &overridingProperties);
