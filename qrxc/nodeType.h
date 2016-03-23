@@ -55,6 +55,7 @@ private:
 	bool initPorts();
 	bool initPointPorts(const QDomElement &portsElement);
 	bool initLinePorts(const QDomElement &portsElement);
+	bool initCircularPorts(const QDomElement &portsElement);
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count);
 	bool initBooleanProperties();
 };
