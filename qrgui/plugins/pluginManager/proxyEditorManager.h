@@ -104,6 +104,8 @@ public:
 	void setProxyManager(EditorManagerInterface *editorManagerInterface);
 
 	bool isInterpretationMode() const override;
+	void setInterpretationMode(bool enabled) override;
+
 	bool isParentProperty(const Id &id, const QString &propertyName) const override;
 	void deleteProperty(const QString &propDisplayedName) const override;
 	void addProperty(const Id &id, const QString &propDisplayedName) const override;

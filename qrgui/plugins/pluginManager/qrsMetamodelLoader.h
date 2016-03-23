@@ -34,8 +34,9 @@ class NodeElementType;
 class EdgeElementType;
 enum class LinkShape;
 
-/// An entity that constructs metamodel from description in meta-editor diagram or saves metamodel into it.
-class QRGUI_PLUGINS_MANAGER_EXPORT QrsMetamodelSerializer : public QObject
+/// An entity that constructs metamodel from description in meta-editor diagram.
+/// Loaded metamodel can then be saver with QrsMetamodelSaver.
+class QRGUI_PLUGINS_MANAGER_EXPORT QrsMetamodelLoader : public QObject
 {
 	Q_OBJECT
 
@@ -44,10 +45,6 @@ public:
 	/// from it. If something went wrong errorOccured() will be emitted. Resulting list may be empty.
 	/// @note Transfers owership to caller.
 	QList<Metamodel *> load(const QString &pathToQrs);
-
-	/// Serializes \a metamodel and creates Metamodel object instance.
-	/// @note Transfers owership to caller.
-	void saveTo(const Metamodel &metamodel, const QString &pathToQrs);
 
 signals:
 	/// Emitted when metamodel parser found some error in metamodel.

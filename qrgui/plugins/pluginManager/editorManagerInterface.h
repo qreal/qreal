@@ -109,7 +109,10 @@ public:
 			, const QString &childDiagram, const QString &childElement) const = 0;
 	virtual QString diagramName(const QString &editor, const QString &diagram) const = 0;
 	virtual QString diagramNodeName(const QString &editor, const QString &diagram) const = 0;
+
 	virtual bool isInterpretationMode() const = 0;
+	virtual void setInterpretationMode(bool enabled) = 0;
+
 	virtual bool isParentProperty(const Id &id, const QString &propertyName) const = 0;
 	virtual void deleteProperty(const QString &propDisplayedName) const = 0;
 	virtual void addProperty(const Id &id, const QString &propDisplayedName) const = 0;

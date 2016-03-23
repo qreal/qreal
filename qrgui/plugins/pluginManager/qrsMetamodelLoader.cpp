@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "qrsMetamodelSerializer.h"
+#include "qrsMetamodelLoader.h"
 
 #include <QtXml/QDomDocument>
 
@@ -44,7 +44,7 @@ const Id metamodelContainmentLinkType = Id("MetaEditor", "MetaEditor", "Containe
 const Id metamodelExplosionLinkType = Id("MetaEditor", "MetaEditor", "Explosion");
 const Id metamodelPropertiesAsContainerType = Id("MetaEditor", "MetaEditor", "MetaEntityPropertiesAsContainer");
 
-QList<Metamodel *> QrsMetamodelSerializer::load(const QString &pathToQrs)
+QList<Metamodel *> QrsMetamodelLoader::load(const QString &pathToQrs)
 {
 	QList<Metamodel *> result;
 	const qrRepo::RepoApi repo(pathToQrs);
@@ -61,7 +61,7 @@ QList<Metamodel *> QrsMetamodelSerializer::load(const QString &pathToQrs)
 	return result;
 }
 
-Metamodel *QrsMetamodelSerializer::parseMetamodel(const qrRepo::RepoApi &repo, const Id &metamodelDiagram)
+Metamodel *QrsMetamodelLoader::parseMetamodel(const qrRepo::RepoApi &repo, const Id &metamodelDiagram)
 {
 	Metamodel *result = new Metamodel(validateName(repo, metamodelDiagram));
 	result->setFriendlyName(stringProperty(repo, metamodelDiagram, "displayedName"));
@@ -76,7 +76,7 @@ Metamodel *QrsMetamodelSerializer::parseMetamodel(const qrRepo::RepoApi &repo, c
 	return result;
 }
 
-void QrsMetamodelSerializer::parseDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram)
+void QrsMetamodelLoader::parseDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram)
 {
 	const QString diagramName = validateName(repo, diagram);
 	metamodel.addDiagram(diagramName);
@@ -88,7 +88,7 @@ void QrsMetamodelSerializer::parseDiagram(const qrRepo::RepoApi &repo, Metamodel
 	parseLinksOnDiagram(repo, metamodel, diagram);
 }
 
-void QrsMetamodelSerializer::parseObjectsOnDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram)
+void QrsMetamodelLoader::parseObjectsOnDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram)
 {
 	if (diagram.isNull() || diagram == Id::rootId()) {
 		return;
@@ -116,14 +116,14 @@ void QrsMetamodelSerializer::parseObjectsOnDiagram(const qrRepo::RepoApi &repo, 
 	}
 }
 
-void QrsMetamodelSerializer::parseImport(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
+void QrsMetamodelLoader::parseImport(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
 {
 	Q_UNUSED(repo)
 	Q_UNUSED(metamodel)
 	Q_UNUSED(id)
 }
 
-void QrsMetamodelSerializer::parseNode(const qrRepo::RepoApi &repo
+void QrsMetamodelLoader::parseNode(const qrRepo::RepoApi &repo
 		, Metamodel &metamodel, const Id &diagram, const Id &id)
 {
 	NodeElementType *node = new NodeElementType(metamodel);
@@ -144,7 +144,7 @@ void QrsMetamodelSerializer::parseNode(const qrRepo::RepoApi &repo
 	metamodel.addElement(*node);
 }
 
-void QrsMetamodelSerializer::parseEdge(const qrRepo::RepoApi &repo
+void QrsMetamodelLoader::parseEdge(const qrRepo::RepoApi &repo
 		, Metamodel &metamodel, const Id &diagram, const Id &id)
 {
 	EdgeElementType *edge = new EdgeElementType(metamodel);
@@ -185,21 +185,21 @@ void QrsMetamodelSerializer::parseEdge(const qrRepo::RepoApi &repo
 	metamodel.addElement(*edge);
 }
 
-void QrsMetamodelSerializer::parseEnum(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
+void QrsMetamodelLoader::parseEnum(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
 {
 	const QString enumName = validateName(repo, id);
 	metamodel.addEnum(enumName, parseEnumValues(repo, id));
 	metamodel.setEnumEditable(enumName, boolProperty(repo, id, "editable"));
 }
 
-void QrsMetamodelSerializer::parsePort(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
+void QrsMetamodelLoader::parsePort(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id)
 {
 	Q_UNUSED(repo)
 	Q_UNUSED(metamodel)
 	Q_UNUSED(id)
 }
 
-void QrsMetamodelSerializer::parseGroup(const qrRepo::RepoApi &repo
+void QrsMetamodelLoader::parseGroup(const qrRepo::RepoApi &repo
 		, Metamodel &metamodel, const Id &diagram, const Id &id)
 {
 	/// @todo: We should not use XML here, PatternType must not parse XML at all.
@@ -215,7 +215,7 @@ void QrsMetamodelSerializer::parseGroup(const qrRepo::RepoApi &repo
 	metamodel.addElement(*pattern);
 }
 
-void QrsMetamodelSerializer::parseProperties(const qrRepo::RepoApi &repo, ElementType &element, const Id &id)
+void QrsMetamodelLoader::parseProperties(const qrRepo::RepoApi &repo, ElementType &element, const Id &id)
 {
 	const IdList children = repo.children(id);
 
@@ -231,7 +231,7 @@ void QrsMetamodelSerializer::parseProperties(const qrRepo::RepoApi &repo, Elemen
 	}
 }
 
-void QrsMetamodelSerializer::parsePorts(const qrRepo::RepoApi &repo
+void QrsMetamodelLoader::parsePorts(const qrRepo::RepoApi &repo
 		, EdgeElementType &edge, const Id &id, const QString &direction)
 {
 	const QString propertyName = direction + "Ports";
@@ -249,7 +249,7 @@ void QrsMetamodelSerializer::parsePorts(const qrRepo::RepoApi &repo
 	}
 }
 
-QList<QPair<QString, QString>> QrsMetamodelSerializer::parseEnumValues(const qrRepo::RepoApi &repo, Id const &id)
+QList<QPair<QString, QString>> QrsMetamodelLoader::parseEnumValues(const qrRepo::RepoApi &repo, const Id &id)
 {
 	QList<QPair<QString, QString>> result;
 	for (const Id &child : repo.children(id)) {
@@ -261,7 +261,7 @@ QList<QPair<QString, QString>> QrsMetamodelSerializer::parseEnumValues(const qrR
 	return result;
 }
 
-void QrsMetamodelSerializer::parseGroupNodes(const qrRepo::RepoApi &repo, QDomElement &parent, const Id &id)
+void QrsMetamodelLoader::parseGroupNodes(const qrRepo::RepoApi &repo, QDomElement &parent, const Id &id)
 {
 	/// @todo: We should not use XML here, PatternType must not parse XML at all.
 	for (const Id &child : repo.children(id)) {
@@ -280,7 +280,7 @@ void QrsMetamodelSerializer::parseGroupNodes(const qrRepo::RepoApi &repo, QDomEl
 	}
 }
 
-void QrsMetamodelSerializer::parseAssociations(const qrRepo::RepoApi &repo, EdgeElementType &edge, const Id &id)
+void QrsMetamodelLoader::parseAssociations(const qrRepo::RepoApi &repo, EdgeElementType &edge, const Id &id)
 {
 	Q_UNUSED(repo)
 	Q_UNUSED(edge)
@@ -289,7 +289,7 @@ void QrsMetamodelSerializer::parseAssociations(const qrRepo::RepoApi &repo, Edge
 	/// Drawind code should be migrated from qrxc to engine and then here we simply set generate types as-is.
 }
 
-void QrsMetamodelSerializer::parseSdfGraphics(const qrRepo::RepoApi &repo, NodeElementType &node, const Id &id)
+void QrsMetamodelLoader::parseSdfGraphics(const qrRepo::RepoApi &repo, NodeElementType &node, const Id &id)
 {
 	const QString sdfString = stringProperty(repo, id, "shape");
 	QDomDocument sdfDocument;
@@ -307,7 +307,7 @@ void QrsMetamodelSerializer::parseSdfGraphics(const qrRepo::RepoApi &repo, NodeE
 	parseNodePorts(node, ports, width, height);
 }
 
-void QrsMetamodelSerializer::parseLabels(NodeElementType &node, const QDomElement &labels, int width, int height)
+void QrsMetamodelLoader::parseLabels(NodeElementType &node, const QDomElement &labels, int width, int height)
 {
 	int index = 0;
 	for (QDomElement labelTag = labels.firstChildElement("label")
@@ -351,7 +351,7 @@ void QrsMetamodelSerializer::parseLabels(NodeElementType &node, const QDomElemen
 	}
 }
 
-void QrsMetamodelSerializer::parseNodePorts(NodeElementType &node, const QDomElement &portsTag, int width, int height)
+void QrsMetamodelLoader::parseNodePorts(NodeElementType &node, const QDomElement &portsTag, int width, int height)
 {
 	for (QDomElement pointPort = portsTag.firstChildElement("pointPort")
 			; !pointPort.isNull()
@@ -388,7 +388,7 @@ void QrsMetamodelSerializer::parseNodePorts(NodeElementType &node, const QDomEle
 	}
 }
 
-void QrsMetamodelSerializer::parseContainerProperties(const qrRepo::RepoApi &repo, NodeElementType &node, const Id &id)
+void QrsMetamodelLoader::parseContainerProperties(const qrRepo::RepoApi &repo, NodeElementType &node, const Id &id)
 {
 	const IdList elements = repo.children(id);
 
@@ -406,7 +406,7 @@ void QrsMetamodelSerializer::parseContainerProperties(const qrRepo::RepoApi &rep
 	}
 }
 
-void QrsMetamodelSerializer::parseLinksOnDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram)
+void QrsMetamodelLoader::parseLinksOnDiagram(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &diagram)
 {
 	QHash<QPair<ElementType *, ElementType *>, QString> overridingProperties;
 	QSet<ElementType *> elements;
@@ -443,7 +443,7 @@ void QrsMetamodelSerializer::parseLinksOnDiagram(const qrRepo::RepoApi &repo, Me
 	resolveInheritance(elements, overridingProperties);
 }
 
-void QrsMetamodelSerializer::parseGeneralization(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id
+void QrsMetamodelLoader::parseGeneralization(const qrRepo::RepoApi &repo, Metamodel &metamodel, const Id &id
 		, const QString &diagram, ElementType *&fromElement, ElementType *&toElement, QString &overridingProperties)
 {
 	const Id from = repo.from(id);
@@ -462,7 +462,7 @@ void QrsMetamodelSerializer::parseGeneralization(const qrRepo::RepoApi &repo, Me
 	overridingProperties = stringProperty(repo, id, "overrides");
 }
 
-void QrsMetamodelSerializer::parseContainer(const qrRepo::RepoApi &repo, Metamodel &metamodel
+void QrsMetamodelLoader::parseContainer(const qrRepo::RepoApi &repo, Metamodel &metamodel
 		, const Id &id, const QString &diagram)
 {
 	const Id from = repo.from(id);
@@ -479,7 +479,7 @@ void QrsMetamodelSerializer::parseContainer(const qrRepo::RepoApi &repo, Metamod
 	metamodel.produceEdge(fromElement, toElement, ElementType::containmentLinkType);
 }
 
-void QrsMetamodelSerializer::parseExplosion(const qrRepo::RepoApi &repo, Metamodel &metamodel
+void QrsMetamodelLoader::parseExplosion(const qrRepo::RepoApi &repo, Metamodel &metamodel
 		, const Id &id, const QString &diagram)
 {
 	const Id from = repo.from(id);
@@ -497,7 +497,7 @@ void QrsMetamodelSerializer::parseExplosion(const qrRepo::RepoApi &repo, Metamod
 			, boolProperty(repo, id, "requireImmediateLinkage"));
 }
 
-void QrsMetamodelSerializer::resolveInheritance(QSet<ElementType *> &elements
+void QrsMetamodelLoader::resolveInheritance(QSet<ElementType *> &elements
 		, const QHash<QPair<ElementType *, ElementType *>, QString> &overridingProperties)
 {
 	// Here we should copy properties, labels and so on from parent subtypes to child subtypes.
@@ -529,7 +529,7 @@ void QrsMetamodelSerializer::resolveInheritance(QSet<ElementType *> &elements
 	}
 }
 
-void QrsMetamodelSerializer::inherit(ElementType &child, const ElementType &parent
+void QrsMetamodelLoader::inherit(ElementType &child, const ElementType &parent
 		, const QString &generalizationProperties)
 {
 	const bool overrideAll = generalizationProperties.contains("all");
@@ -566,7 +566,7 @@ void QrsMetamodelSerializer::inherit(ElementType &child, const ElementType &pare
 	}
 }
 
-QString QrsMetamodelSerializer::validateRootNode(const qrRepo::RepoApi &repo, const Id &diagram)
+QString QrsMetamodelLoader::validateRootNode(const qrRepo::RepoApi &repo, const Id &diagram)
 {
 	if (!repo.hasProperty(diagram, "nodeName")) {
 		return QString();
@@ -584,7 +584,7 @@ QString QrsMetamodelSerializer::validateRootNode(const qrRepo::RepoApi &repo, co
 	return rootNode;
 }
 
-QString QrsMetamodelSerializer::validateName(const qrRepo::RepoApi &repo, const Id &id)
+QString QrsMetamodelLoader::validateName(const qrRepo::RepoApi &repo, const Id &id)
 {
 	const QString result = repo.name(id);
 	if (result.isEmpty()) {
@@ -600,7 +600,7 @@ QString QrsMetamodelSerializer::validateName(const qrRepo::RepoApi &repo, const 
 	return result;
 }
 
-QString QrsMetamodelSerializer::validatePortName(const qrRepo::RepoApi &repo, const Id &id, const QString &name)
+QString QrsMetamodelLoader::validatePortName(const qrRepo::RepoApi &repo, const Id &id, const QString &name)
 {
 	if (name == "NonTyped") {
 		return name;
@@ -616,7 +616,7 @@ QString QrsMetamodelSerializer::validatePortName(const qrRepo::RepoApi &repo, co
 	return "NonTyped";
 }
 
-QString QrsMetamodelSerializer::stringProperty(const qrRepo::RepoApi &repo, const Id &id
+QString QrsMetamodelLoader::stringProperty(const qrRepo::RepoApi &repo, const Id &id
 		, const QString &propertyName, const QString &defaultValue)
 {
 	if (!repo.hasProperty(id, propertyName)) {
@@ -626,7 +626,7 @@ QString QrsMetamodelSerializer::stringProperty(const qrRepo::RepoApi &repo, cons
 	return repo.stringProperty(id, propertyName);
 }
 
-bool QrsMetamodelSerializer::boolProperty(const qrRepo::RepoApi &repo, const Id &id
+bool QrsMetamodelLoader::boolProperty(const qrRepo::RepoApi &repo, const Id &id
 		, const QString &propertyName, bool defaultValue)
 {
 	if (!repo.hasProperty(id, propertyName)) {
@@ -636,7 +636,7 @@ bool QrsMetamodelSerializer::boolProperty(const qrRepo::RepoApi &repo, const Id 
 	return repo.stringProperty(id, propertyName) == "true";
 }
 
-Qt::PenStyle QrsMetamodelSerializer::parsePenStyle(const QString &penStyle, const Id &id)
+Qt::PenStyle QrsMetamodelLoader::parsePenStyle(const QString &penStyle, const Id &id)
 {
 	if (penStyle == "solidLine") {
 		return Qt::SolidLine;
@@ -650,7 +650,7 @@ Qt::PenStyle QrsMetamodelSerializer::parsePenStyle(const QString &penStyle, cons
 	return Qt::NoPen;
 }
 
-LinkShape QrsMetamodelSerializer::parseLinkShape(const QString &linkShape, const Id &id)
+LinkShape QrsMetamodelLoader::parseLinkShape(const QString &linkShape, const Id &id)
 {
 	if (linkShape == "curve") {
 		return LinkShape::curve;
@@ -664,7 +664,7 @@ LinkShape QrsMetamodelSerializer::parseLinkShape(const QString &linkShape, const
 	return LinkShape::broken;
 }
 
-int QrsMetamodelSerializer::parseInt(const QString &string, const Id &id)
+int QrsMetamodelLoader::parseInt(const QString &string, const Id &id)
 {
 	bool ok;
 	const int result = string.toInt(&ok);
@@ -675,7 +675,7 @@ int QrsMetamodelSerializer::parseInt(const QString &string, const Id &id)
 	return result;
 }
 
-int QrsMetamodelSerializer::intProperty(const qrRepo::RepoApi &repo, const Id &id
+int QrsMetamodelLoader::intProperty(const qrRepo::RepoApi &repo, const Id &id
 		, const QString &propertyName, int defaultValue)
 {
 	if (!repo.hasProperty(id, propertyName)) {
@@ -685,7 +685,7 @@ int QrsMetamodelSerializer::intProperty(const qrRepo::RepoApi &repo, const Id &i
 	return parseInt(repo.stringProperty(id, propertyName), id);
 }
 
-QVector<int> QrsMetamodelSerializer::intVectorProperty(const qrRepo::RepoApi &repo, const Id &id
+QVector<int> QrsMetamodelLoader::intVectorProperty(const qrRepo::RepoApi &repo, const Id &id
 		, const QString &propertyName, const QVector<int> &defaultValue)
 {
 	if (!repo.hasProperty(id, propertyName)) {
@@ -699,11 +699,6 @@ QVector<int> QrsMetamodelSerializer::intVectorProperty(const qrRepo::RepoApi &re
 	}
 
 	return result;
-}
-
-void QrsMetamodelSerializer::saveTo(const Metamodel &metamodel, const QString &pathToQrs)
-{
-	qrRepo::RepoApi repo(pathToQrs);
 }
 
 //IdList QrsMetamodelLoader::elements(const Id &diagram) const

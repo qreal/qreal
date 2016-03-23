@@ -41,7 +41,8 @@ HEADERS += \
 	$$PWD/sdfRenderer.h \
 	$$PWD/interpretedPluginManager.h \
 	$$PWD/interpretedPluginsLoader.h \
-	$$PWD/qrsMetamodelSerializer.h \
+	$$PWD/qrsMetamodelLoader.h \
+	$$PWD/qrsMetamodelSaver.h \
 	$$PWD/details/patternParser.h \
 	$$PWD/details/dynamicElementTypeImpl.h \
 	$$PWD/details/dynamicNodeElementTypeImpl.h \
@@ -56,7 +57,8 @@ SOURCES += \
 	$$PWD/sdfRenderer.cpp \
 	$$PWD/interpretedPluginManager.cpp \
 	$$PWD/interpretedPluginsLoader.cpp \
-	$$PWD/qrsMetamodelSerializer.cpp \
+	$$PWD/qrsMetamodelLoader.cpp \
+	$$PWD/qrsMetamodelSaver.cpp \
 	$$PWD/details/patternParser.cpp \
 	$$PWD/details/dynamicElementTypeImpl.cpp \
 	$$PWD/details/dynamicNodeElementTypeImpl.cpp \

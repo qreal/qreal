@@ -71,6 +71,9 @@ public:
 	/// Appends new entity into this metamodel.
 	void addElement(ElementType &element);
 
+	/// Returns names of enum types provided by this metamodel.
+	QStringList enumNames() const;
+
 	/// Returns a list of values of enum named \a name. First element of each pair in list is internal name of
 	/// enum value used for its serialization and deserialization, it is language-independent. Second value is
 	/// usually localized and can be used for displaying enum value to user.

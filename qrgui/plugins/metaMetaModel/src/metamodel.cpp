@@ -75,6 +75,11 @@ void Metamodel::addElement(ElementType &element)
 	addNode(element);
 }
 
+QStringList Metamodel::enumNames() const
+{
+	return mEnumValues.keys();
+}
+
 QList<QPair<QString, QString>> Metamodel::enumValues(const QString &name) const
 {
 	return mEnumValues.values(name);

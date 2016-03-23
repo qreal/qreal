@@ -21,7 +21,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/qrsMetamodelSerializer.h>
+#include <qrgui/plugins/pluginManager/qrsMetamodelLoader.h>
 #include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 #include "mainWindow/mainWindow.h"
@@ -298,10 +298,11 @@ void StartWidget::openInterpretedDiagram()
 	}
 
 	EditorManagerInterface &editorManager = mMainWindow->editorManager();
+	editorManager.setInterpretationMode(true);
 	editorManager.unloadAllPlugins();
 
-	QrsMetamodelSerializer loader;
-	connect(&loader, &QrsMetamodelSerializer::errorOccured
+	QrsMetamodelLoader loader;
+	connect(&loader, &QrsMetamodelLoader::errorOccured
 			, static_cast<gui::ErrorReporter *>(mMainWindow->errorReporter()), &gui::ErrorReporter::addError);
 	const QList<Metamodel *> metamodels = loader.load(fileName);
 	for (Metamodel *metamodel : metamodels) {
@@ -345,8 +346,12 @@ void StartWidget::createInterpretedDiagram()
 				, QLineEdit::Normal, "", &ok);
 	} while (ok && name.isEmpty());
 
+	EditorManagerInterface &editorManager = mMainWindow->editorManager();
+	editorManager.setInterpretationMode(true);
+	editorManager.unloadAllPlugins();
+
 	if (ok) {
-		QPair<Id, Id> editorAndDiagram = mMainWindow->editorManager().createEditorAndDiagram(name);
+		QPair<Id, Id> editorAndDiagram = editorManager.createEditorAndDiagram(name);
 		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
 		mMainWindow->models().repoControlApi().exterminate();
 		mMainWindow->models().reinit();

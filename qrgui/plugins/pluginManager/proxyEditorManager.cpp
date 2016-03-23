@@ -233,6 +233,11 @@ bool ProxyEditorManager::isInterpretationMode() const
 	return mProxiedEditorManager->isInterpretationMode();
 }
 
+void ProxyEditorManager::setInterpretationMode(bool enabled)
+{
+	mProxiedEditorManager->setInterpretationMode(enabled);
+}
+
 bool ProxyEditorManager::isParentProperty(const Id &id, const QString &propertyName) const
 {
 	return mProxiedEditorManager->isParentProperty(id, propertyName);

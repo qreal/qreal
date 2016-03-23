@@ -27,11 +27,13 @@
 #include <metaMetaModel/patternType.h>
 
 #include "qrgui/plugins/pluginManager/sdfRenderer.h"
+#include "qrgui/plugins/pluginManager/qrsMetamodelSaver.h"
 
 using namespace qReal;
 
 EditorManager::EditorManager(const QString &path)
 	: mPluginManager(path)
+	, mInterterpretationMode(false)
 {
 	init();
 }
@@ -39,6 +41,7 @@ EditorManager::EditorManager(const QString &path)
 EditorManager::EditorManager(QObject *parent)
 	: QObject(parent)
 	, mPluginManager(PlatformInfo::invariantSettingsPath("pathToEditorPlugins"))
+	, mInterterpretationMode(false)
 {
 	init();
 }
@@ -506,7 +509,12 @@ QString EditorManager::diagramNodeName(const QString &editor, const QString &dia
 
 bool EditorManager::isInterpretationMode() const
 {
-	return false;
+	return mInterterpretationMode;
+}
+
+void EditorManager::setInterpretationMode(bool enabled)
+{
+	mInterterpretationMode = enabled;
 }
 
 bool EditorManager::isParentProperty(const Id &id, const QString &propertyName) const
@@ -615,12 +623,19 @@ QPair<Id, Id> EditorManager::createEditorAndDiagram(const QString &name) const
 
 void EditorManager::saveMetamodel(const QString &newMetamodelFileName)
 {
-	Q_UNUSED(newMetamodelFileName);
+	if (mInterterpretationMode) {
+		if (!newMetamodelFileName.isEmpty()) {
+			mMetamodelFile = newMetamodelFileName;
+		}
+
+		QrsMetamodelSaver saver;
+		saver.save(mMetamodels.values(), mMetamodelFile);
+	}
 }
 
 QString EditorManager::saveMetamodelFilePath() const
 {
-	return "";
+	return mMetamodelFile;
 }
 
 IdList EditorManager::elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const
@@ -670,6 +685,7 @@ void EditorManager::restoreRemovedProperty(const Id &propertyId, const QString &
 	Q_UNUSED(propertyId);
 	Q_UNUSED(previousName);
 }
+
 void EditorManager::restoreRenamedProperty(const Id &propertyId, const QString &previousName) const
 {
 	Q_UNUSED(propertyId);

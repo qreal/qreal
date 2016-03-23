@@ -107,7 +107,10 @@ public:
 			, const QString &childDiagram, const QString &childElement) const override;
 	QString diagramName(const QString &editor, const QString &diagram) const override;
 	QString diagramNodeName(const QString &editor, const QString &diagram) const override;
+
 	bool isInterpretationMode() const override;
+	void setInterpretationMode(bool enabled) override;
+
 	bool isParentProperty(const Id &id, const QString &propertyName) const override;
 	void deleteProperty(const QString &propDisplayedName) const override;
 	void addProperty(const Id &id, const QString &propDisplayedName) const override;
@@ -164,6 +167,9 @@ private:
 	PluginManager mPluginManager;
 
 	QSet<Id> mDisabledElements;
+
+	bool mInterterpretationMode;
+	QString mMetamodelFile;
 };
 
 }
