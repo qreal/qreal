@@ -1,1 +1,1 @@
-robot.Motor@@PORT@@ <- -@@POWER@@
+model.Motors[@@PORT@@].SetPower(@@POWER@@);

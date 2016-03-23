@@ -38,8 +38,3 @@ QString TrikV62PascalABCGeneratorPlugin::kitId() const
 {
 	return "trikV62Kit";
 }
-
-void TrikV62PascalABCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
-{
-	TrikPascalABCGeneratorPluginBase::init(configurator);
-}

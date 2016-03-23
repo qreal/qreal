@@ -33,10 +33,7 @@ public:
 	TrikV62PascalABCGeneratorPlugin();
 
 	QString kitId() const override;
-
-	void init(const kitBase::KitPluginConfigurator &configurator) override;
 };
 
 }
 }
-

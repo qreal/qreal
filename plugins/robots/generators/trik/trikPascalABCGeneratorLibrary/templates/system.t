@@ -1,1 +1,1 @@
-//brick.system("@@COMMAND@@");
+Trik.Helpers.Shell.Send('@@COMMAND@@');

@@ -1,7 +1,1 @@
-
-button.ToObservable()
-    |> Observable.subscribe(function
-        | ButtonEventCode.@@BUTTON@@, true ->
-            exit.Set() |> ignore
-)
-
+{ Buttons are currently not supported }

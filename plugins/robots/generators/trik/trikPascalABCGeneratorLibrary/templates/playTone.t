@@ -1,1 +1,1 @@
-//brick.playSound("@@FILENAME@@");
+Trik.Helpers.Media.PlayFile('/home/root/trik/@@FILENAME@@');

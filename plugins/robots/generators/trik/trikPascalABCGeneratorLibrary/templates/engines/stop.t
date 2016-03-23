@@ -1,1 +1,1 @@
-robot.Stop()
+{ Stop is currently not supported }

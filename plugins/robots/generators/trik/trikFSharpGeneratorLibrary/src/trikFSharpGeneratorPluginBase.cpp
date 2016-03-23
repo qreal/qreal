@@ -182,11 +182,13 @@ bool TrikFSharpGeneratorPluginBase::uploadProgram()
 		return false;
 	}
 
+	const QFileInfo binaryFile(fileInfo.canonicalPath() + "/" + fileInfo.completeBaseName() + ".exe");
+
 	const QString moveCommand = QString(
 			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/FSharp/Environment/\"")
 			.arg(qReal::SettingsManager::value("WinScpPath").toString())
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
-			.arg(fileInfo.absoluteFilePath().replace("fs","exe").replace("/","\\"));
+			.arg(binaryFile.canonicalFilePath().replace("/", "\\"));
 
 	QProcess deployProcess;
 	if (!deployProcess.startDetached(moveCommand)) {

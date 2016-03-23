@@ -1,1 +1,1 @@
-robot.Sleep @@DELAY@@
+model.Sleep(@@DELAY@@);

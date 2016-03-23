@@ -1,1 +1,1 @@
-robot.Say @@TEXT@@
+Trik.Helpers.Media.Say('@@TEXT@@');

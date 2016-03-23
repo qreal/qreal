@@ -1,1 +1,1 @@
-//brick.playSound("media/beep.mp3")
+Trik.Helpers.Media.PlayFile('/home/root/trik/media/beep.wav');

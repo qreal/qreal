@@ -1,1 +1,1 @@
-robot.Led <- @@COLOR@@
+robot.Led.SetColor(@@COLOR@@)

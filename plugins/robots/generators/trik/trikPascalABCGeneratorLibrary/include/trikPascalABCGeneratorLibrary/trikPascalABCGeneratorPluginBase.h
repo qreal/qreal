@@ -1,4 +1,4 @@
-/* Copyright 2016 Ivan Limar
+/* Copyright 2016 Ivan Limar and CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,9 @@
 
 #include <trikGeneratorBase/trikGeneratorPluginBase.h>
 #include <trikGeneratorBase/robotModel/generatorModelExtensionInterface.h>
+#include <utils/uploaderTool.h>
+#include <utils/robotCommunication/tcpRobotCommunicator.h>
+#include <utils/robotCommunication/stopRobotProtocol.h>
 
 namespace utils {
 class TcpRobotCommunicator;
@@ -26,8 +29,8 @@ namespace pascalABC {
 
 class TrikPascalABCAdditionalPreferences;
 
-///Generation of PascalABC program for TRIK, uploading and execution a program
-///Uses setting "tcpServer" from RobotsInterpreter.
+/// Generation of PascalABC program for TRIK, uploading and execution a program
+/// Uses settings "TrikTcpServer" and "PascalABCPath".
 class TrikPascalABCGeneratorPluginBase : public TrikGeneratorPluginBase
 {
 	Q_OBJECT
@@ -43,6 +46,7 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 protected:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
@@ -52,8 +56,8 @@ protected:
 
 private slots:
 	/// Generates, compiles and uploads compiled program to a robot. It can then be run by Mono.
-	/// @returns True, if successful.
-	bool uploadProgram();
+	/// @returns binary file name if successful or empty string if not.
+	QString uploadProgram();
 
 	/// Runs currently opened program on a robot. Compiles and uploads it first.
 	void runProgram();
@@ -81,7 +85,19 @@ private:
 	TrikPascalABCAdditionalPreferences *mAdditionalPreferences = nullptr;  //Transfers ownership
 	bool mOwnsAdditionalPreferences = true;
 
+	/// Paths on which generator searches for templates. Templates can override each other, those who are later in
+	/// the list take preference.
 	QStringList mPathsToTemplates;
+
+	/// TrikSharp runtime uploader.
+	UploaderTool mUploaderTool;
+
+	/// Communicator object used to send commands to robot.
+	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mCommunicator;
+
+	/// Protocol that is used to stop robot.
+	QScopedPointer<utils::robotCommunication::StopRobotProtocol> mStopRobotProtocol;
 };
+
 }
 }
