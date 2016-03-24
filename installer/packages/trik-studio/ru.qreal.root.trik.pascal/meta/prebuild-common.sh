@@ -4,7 +4,7 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-mkdir -p $PWD/../data/
+mkdir -p $PWD/../data/plugins/tools/kitPlugins/trikSharp
 
 cp     $BIN_DIR/trikSharp/Trik.Core.dll                       $PWD/../data/trikSharp/
 cp     $BIN_DIR/trikSharp/FSharp.Core.dll                     $PWD/../data/trikSharp/
