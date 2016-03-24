@@ -9,5 +9,3 @@ mkdir -p $PWD/../data/
 cp     $BIN_DIR/trikSharp/Trik.Core.dll                       $PWD/../data/trikSharp/
 cp     $BIN_DIR/trikSharp/FSharp.Core.dll                     $PWD/../data/trikSharp/
 cp     $BIN_DIR/trikSharp/libconWrap.so.1.0.0                 $PWD/../data/trikSharp/
-
-
