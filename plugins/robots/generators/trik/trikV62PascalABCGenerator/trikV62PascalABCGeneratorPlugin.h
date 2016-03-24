@@ -24,6 +24,7 @@ class TrikV62GeneratorRobotModel;
 
 namespace pascalABC {
 
+/// PascalABC generator specialization for TRIK 6.2 ("new case", with encoders marked as E1 - E4).
 class TrikV62PascalABCGeneratorPlugin : public TrikPascalABCGeneratorPluginBase
 {
 	Q_OBJECT
