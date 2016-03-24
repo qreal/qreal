@@ -19,7 +19,9 @@
 
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "twoDModel/engine/twoDModelControlInterface.h"
+
 #include "twoDModel/engine/twoDModelEngineInterface.h"
+#include "twoDModel/engine/threeDModelEngineInterface.h"
 
 #include "twoDModel/twoDModelDeclSpec.h"
 
@@ -58,7 +60,15 @@ public:
 
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
 
+	// On Time
+
 	TwoDModelEngineInterface &engine();
+
+	//
+
+//	TwoDModelEngineInterface &engine2D();
+
+//	ThreeDModelEngineInterface &engine3D();
 
 public slots:
 	void onStartInterpretation() override;
@@ -71,7 +81,8 @@ private:
 
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::TwoDModelWidget> mView;
-	QScopedPointer<TwoDModelEngineInterface> mApi;
+	QScopedPointer<TwoDModelEngineInterface> mApi2D;
+	QScopedPointer<ThreeDModelEngineInterface> mApi3D;
 	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
 
 	// Block for 3D model

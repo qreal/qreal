@@ -35,6 +35,7 @@ NxtKitInterpreterPlugin::NxtKitInterpreterPlugin()
 
 	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
 
+	//mTwoDRobotModel.setEngine(modelEngine->engine2D());
 	mTwoDRobotModel.setEngine(modelEngine->engine());
 	mTwoDModel.reset(modelEngine);
 

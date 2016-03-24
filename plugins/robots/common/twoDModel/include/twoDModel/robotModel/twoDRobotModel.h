@@ -50,7 +50,9 @@ public:
 
 	/// Configures 2D model window`s engine for using it in 2D model devices emulators.
 	void setEngine(engine::TwoDModelEngineInterface &engine);
-	//void setEngine(engine::TwoDModelEngineInterface &engine);
+
+	/// Configures 3D model window`s engine for using it in 3D model devices emulators.
+	//void setEngine(engine::ThreeDModelEngineInterface &engine);
 
 	/// @todo move physical constants here
 

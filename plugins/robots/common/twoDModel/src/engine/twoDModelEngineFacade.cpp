@@ -20,6 +20,7 @@
 
 #include "twoDModel/engine/view/twoDModelWidget.h"
 #include "twoDModel/engine/model/model.h"
+
 #include "twoDModelEngineApi.h"
 #include "threeDModelEngineApi.h"
 
@@ -31,8 +32,8 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
 	, mView(new view::TwoDModelWidget(*mModel))
-	//, mApi(new TwoDModelEngineApi(*mModel, *mView))
-	, mApi(new ThreeDModelEngineApi(*mModel, *mView))
+	, mApi2D(new TwoDModelEngineApi(*mModel, *mView))
+	, mApi3D(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
 	mModel.data()->addRobotModel(robotModel);
@@ -147,10 +148,24 @@ kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurati
 	return *mView;
 }
 
+// On time
+
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	return *mApi;
+	return *mApi2D;
 }
+
+//
+
+//TwoDModelEngineInterface &TwoDModelEngineFacade::engine2D()
+//{
+//	return *mApi2D;
+//}
+
+//ThreeDModelEngineInterface &TwoDModelEngineFacade::engine3D()
+//{
+//	return *mApi3D;
+//}
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
@@ -178,7 +193,7 @@ void TwoDModelEngineFacade::onStartInterpretation()
 
 		simxGetObjectHandle(clientID, "sensor", &sonarSensorHandle, simx_opmode_oneshot_wait);
 
-		mApi->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
+		mApi3D->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
 									backLeftHandle, backRightHandle, sonarSensorHandle);
 
 		isConnect = true;

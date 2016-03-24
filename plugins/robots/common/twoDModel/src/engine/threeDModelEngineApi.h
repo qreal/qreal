@@ -1,7 +1,7 @@
 #pragma once
 
-//#include "twoDModel/engine/threeDModelEngineInterface.h"
-#include "twoDModel/engine/twoDModelEngineInterface.h"
+#include "twoDModel/engine/threeDModelEngineInterface.h"
+//#include "twoDModel/engine/twoDModelEngineInterface.h"
 
 #include <QtCore/QScopedPointer>
 
@@ -24,8 +24,8 @@ class TwoDModelWidget;
 class FakeScene;
 }
 
-//class ThreeDModelEngineApi : public engine::ThreeDModelEngineInterface
-class ThreeDModelEngineApi : public engine::TwoDModelEngineInterface
+class ThreeDModelEngineApi : public engine::ThreeDModelEngineInterface
+//class ThreeDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
 	ThreeDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);

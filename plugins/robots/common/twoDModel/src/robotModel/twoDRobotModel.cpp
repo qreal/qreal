@@ -33,7 +33,7 @@
 #include "twoDModel/robotModel/parts/marker.h"
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
-//#include "twoDModel/engine/threeDModelEngineInterface.h"
+#include "twoDModel/engine/threeDModelEngineInterface.h"
 
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;

@@ -37,10 +37,10 @@ public:
 	// Block for 3D model
 	// Will be deleted
 
-	void initParameters3DModel(int clientID,
-							   int frontLeftHandle, int frontRightHandle,
-							   int backLeftHandle, int backRightHandle,
-							   int sonarSensorHandle) override;
+//	void initParameters3DModel(int clientID,
+//							   int frontLeftHandle, int frontRightHandle,
+//							   int backLeftHandle, int backRightHandle,
+//							   int sonarSensorHandle) override;
 
 	//
 
