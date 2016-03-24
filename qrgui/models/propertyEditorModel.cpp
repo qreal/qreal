@@ -219,9 +219,12 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 		connect(mTargetLogicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
 				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
 
-	if (mTargetGraphicalModel)
-		connect(mTargetGraphicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
-				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
+	// At the moment property editor does not show graphical properties at all.
+	// If this should happen then dataChanged() signal of graphical model should be connected here too.
+	// WARNING: This should not be done before rewriting property editor model completely.
+	// Connecting graphical model here will drop QReal performance dramatically. This was checked on sad experience.
+	// For each modification in graphical model setting arbitrary property (position of node, configuration of edge)
+	// will cause full properties list rereading.
 }
 
 void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
