@@ -82,7 +82,14 @@ private:
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::TwoDModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi2D;
-	QScopedPointer<ThreeDModelEngineInterface> mApi3D;
+
+	// On Time
+
+	QScopedPointer<TwoDModelEngineInterface> mApi3D;
+	//QScopedPointer<ThreeDModelEngineInterface> mApi3D;
+
+	//
+
 	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
 
 	// Block for 3D model

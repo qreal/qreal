@@ -32,7 +32,7 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
 	, mView(new view::TwoDModelWidget(*mModel))
-	, mApi2D(new TwoDModelEngineApi(*mModel, *mView))
+	//, mApi2D(new TwoDModelEngineApi(*mModel, *mView))
 	, mApi3D(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
@@ -152,7 +152,9 @@ kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurati
 
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	return *mApi2D;
+	// On Time
+	return *mApi3D;
+	//
 }
 
 //

@@ -35,11 +35,11 @@ public:
 	// Block for 3D model
 	// Will be deleted
 
-//	/// Set parameters of 3D model V-Rep for connection.
-//	virtual void initParameters3DModel(int clientID,
-//									   int frontLeftHandle, int frontRightHandle,
-//									   int backLeftHandle, int backRightHandle,
-//									   int sonarSensorHandle) = 0;
+	/// Set parameters of 3D model V-Rep for connection.
+	virtual void initParameters3DModel(int clientID,
+									   int frontLeftHandle, int frontRightHandle,
+									   int backLeftHandle, int backRightHandle,
+									   int sonarSensorHandle) = 0;
 
 	//
 
