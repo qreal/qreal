@@ -3,12 +3,13 @@
 const
 @@CONSTANTS@@
 
-var model : Trik.Model;
+var
+    model : Trik.Model;
 @@VARIABLES@@
 
 @@SUBPROGRAMS@@
 
 begin
-	model := Trik.Model.Create();
-	@@MAIN_CODE@@
+    model := Trik.Model.Create();
+    @@MAIN_CODE@@
 end.

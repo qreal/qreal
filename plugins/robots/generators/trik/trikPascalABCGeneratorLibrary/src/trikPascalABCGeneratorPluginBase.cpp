@@ -59,7 +59,7 @@ TrikPascalABCGeneratorPluginBase::TrikPascalABCGeneratorPluginBase(
 	, mPathsToTemplates(pathsToTemplates)
 	, mRuntimeUploaderTool(
 			tr("Upload Pascal Runtime")
-			, ":/trik/images/flashRobot.svg"
+			, ":/trik/pascalABC/images/flashRobot.svg"
 			/// @todo: hmmm
 			, "trikV62Kit"
 			, commands

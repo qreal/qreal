@@ -7,5 +7,6 @@
         <file>images/switch-to-trik-pascal.svg</file>
         <file>images/uploadAndExecuteProgram.svg</file>
         <file>images/uploadProgram.svg</file>
+        <file>images/flashRobot.svg</file>
     </qresource>
 </RCC>
