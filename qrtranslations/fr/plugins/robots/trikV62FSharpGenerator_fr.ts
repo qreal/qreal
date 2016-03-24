@@ -93,9 +93,16 @@
 <context>
     <name>trik::fSharp::TrikV62FSharpGeneratorPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikV62FSharpGenerator/trikV62FSharpGeneratorPlugin.cpp" line="30"/>
         <source>Generation (F#)</source>
-        <translation type="unfinished">Génération (F#)</translation>
+        <translation type="obsolete">Génération (F#)</translation>
+    </message>
+</context>
+<context>
+    <name>trik::pascalABC::TrikV62PascalABCGeneratorPlugin</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/trik/trikV62PascalABCGenerator/trikV62PascalABCGeneratorPlugin.cpp" line="30"/>
+        <source>Generation (PascalABC)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

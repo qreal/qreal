@@ -42,6 +42,7 @@ unix:!macx {
 	echo "pathToHelp=$$PROGRAMDIR/help/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
 	echo "pathToTranslations=$$PROGRAMDIR/translations/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
 	echo "pathToTrikRuntime=$$PROGRAMDIR/trikRuntime/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
+	echo "pathToPascalRuntime=$$PROGRAMDIR/trikSharp/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
 	echo "pathToGeneratorRoot=$$PROGRAMDIR/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
 	echo "pathToExamples=$$PROGRAMDIR/examples/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
 	echo "pathToEditorPlugins=$$PLUGINDIR/editors/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
