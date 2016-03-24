@@ -1,8 +1,10 @@
 {$reference '../../trikSharp/Trik.Core.dll'}
 
-var model : Trik.Model;
+const
+@@CONSTANTS@@
 
-{ @@VARIABLES@@ }
+var model : Trik.Model;
+@@VARIABLES@@
 
 @@SUBPROGRAMS@@
 

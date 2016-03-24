@@ -90,7 +90,7 @@ private:
 	QStringList mPathsToTemplates;
 
 	/// TrikSharp runtime uploader.
-	UploaderTool mUploaderTool;
+	UploaderTool mRuntimeUploaderTool;
 
 	/// Communicator object used to send commands to robot.
 	QScopedPointer<utils::robotCommunication::TcpRobotCommunicator> mCommunicator;

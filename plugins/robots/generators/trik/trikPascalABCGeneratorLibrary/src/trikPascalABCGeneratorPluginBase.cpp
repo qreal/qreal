@@ -57,16 +57,16 @@ TrikPascalABCGeneratorPluginBase::TrikPascalABCGeneratorPluginBase(
 	, mStopRobotAction(new QAction(nullptr))
 	, mAdditionalPreferences(new TrikPascalABCAdditionalPreferences(robotModel->name()))
 	, mPathsToTemplates(pathsToTemplates)
-	, mUploaderTool(
-		tr("Upload Pascal Runtime")
-		, ":/trik/images/flashRobot.svg"
-		/// @todo: hmmm
-		, "trikV62Kit"
-		, commands
-		, QObject::tr("Attention! Started to download Pascal runtime."
-				" Please do not turn off the robot.")
-		, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }
-		)
+	, mRuntimeUploaderTool(
+			tr("Upload Pascal Runtime")
+			, ":/trik/images/flashRobot.svg"
+			/// @todo: hmmm
+			, "trikV62Kit"
+			, commands
+			, QObject::tr("Attention! Started to download Pascal runtime."
+					" Please do not turn off the robot.")
+			, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }
+			)
 {
 }
 
@@ -107,7 +107,7 @@ QList<ActionInfo> TrikPascalABCGeneratorPluginBase::customActions()
 			, uploadProgramActionInfo
 			, runProgramActionInfo
 			, stopRobotActionInfo
-			, mUploaderTool.action()
+			, mRuntimeUploaderTool.action()
 	};
 }
 
@@ -145,7 +145,7 @@ void TrikPascalABCGeneratorPluginBase::init(const kitBase::KitPluginConfigurator
 	ErrorReporterInterface &errorReporter =
 			*configurator.qRealConfigurator().mainWindowInterpretersInterface().errorReporter();
 
-	mUploaderTool.init(configurator.qRealConfigurator().mainWindowInterpretersInterface()
+	mRuntimeUploaderTool.init(configurator.qRealConfigurator().mainWindowInterpretersInterface()
 		, qReal::PlatformInfo::invariantSettingsPath("pathToPascalRuntime"));
 
 	mCommunicator.reset(new TcpRobotCommunicator("TrikTcpServer"));
@@ -204,7 +204,13 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 	);
 
 	compileProcess.setWorkingDirectory(fileInfo.absoluteDir().path());
+
+#ifdef Q_OS_WIN
 	compileProcess.start("cmd", {"/C", "start", "PascalABC Compiler", pascalCompiler, fileInfo.absoluteFilePath()});
+#else
+	compileProcess.start("mono", {pascalCompiler, fileInfo.absoluteFilePath()});
+#endif
+
 	compileProcess.waitForStarted();
 	if (compileProcess.state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch PascalABC.NET compiler"));
@@ -219,8 +225,9 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 	///        Need to patch PascalABC.NET compiler to fix that. Or maybe it already can do it, but more investigation
 	///        is needed.
 	if (compileProcess.exitCode() != 0) {
-		mMainWindowInterface->errorReporter()->addError(tr("PascalABC compiler finished eith error."));
-		const QStringList errors = QString(compileProcess.readAllStandardError()).split("\n", QString::SkipEmptyParts);
+		mMainWindowInterface->errorReporter()->addError(tr("PascalABC compiler finished with error."));
+		QStringList errors = QString(compileProcess.readAllStandardError()).split("\n", QString::SkipEmptyParts);
+		errors << QString(compileProcess.readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
 		for (const auto &error : errors) {
 			mMainWindowInterface->errorReporter()->addInformation(error);
 		}
@@ -233,6 +240,7 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 	QTimer::singleShot(2000, &eventLoop, &QEventLoop::quit);
 	eventLoop.exec();
 
+#ifdef Q_OS_WIN
 	if (qReal::SettingsManager::value("WinScpPath").toString().isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
 			tr("Please provide path to the WinSCP in Settings dialog.")
@@ -240,6 +248,7 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 
 		return "";
 	}
+#endif
 
 	mMainWindowInterface->errorReporter()->addInformation(
 		tr("Uploading... Please wait for about 20 seconds.")
@@ -247,11 +256,18 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 
 	const QFileInfo binaryFile(fileInfo.canonicalPath() + "/" + fileInfo.completeBaseName() + ".exe");
 
+#ifdef Q_OS_WIN
 	const QString moveCommand = QString(
 			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/\"")
 			.arg(qReal::SettingsManager::value("WinScpPath").toString())
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
 			.arg(binaryFile.canonicalFilePath().replace("/", "\\"));
+#else
+	const QString moveCommand = QString(
+			"scp %2 root@%1:/home/root/trik/")
+			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
+			.arg(binaryFile.canonicalFilePath());
+#endif
 
 	QProcess deployProcess;
 	if (!deployProcess.startDetached(moveCommand)) {

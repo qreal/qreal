@@ -1,1 +1,1 @@
-@@NAME@@ : @@TYPE@@ := @@VALUE@@;
+	@@NAME@@ = @@VALUE@@;

@@ -1,1 +1,1 @@
-@@NAME@@ : @@TYPE@@;
+	@@NAME@@ : @@TYPE@@;
