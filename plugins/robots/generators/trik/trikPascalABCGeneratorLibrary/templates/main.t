@@ -10,6 +10,7 @@ var
 @@SUBPROGRAMS@@
 
 begin
+    Randomize;
     model := Trik.Model.Create();
     @@MAIN_CODE@@
 end.

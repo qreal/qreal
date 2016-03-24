@@ -1,1 +1,1 @@
-(* Subprograms implementations *)
+{ Keys are currently not supported }

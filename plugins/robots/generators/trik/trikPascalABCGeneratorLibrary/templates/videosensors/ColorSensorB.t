@@ -1,1 +1,1 @@
-(* Color sensor is currently not supported *)
+{ Color sensor is currently not supported }

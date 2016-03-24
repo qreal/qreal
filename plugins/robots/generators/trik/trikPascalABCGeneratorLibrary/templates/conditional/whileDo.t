@@ -1,4 +1,4 @@
 while @@CONDITION@@ do
-	begin
-	@@BODY@@
-	end;
+begin
+    @@BODY@@
+end;

@@ -1,1 +1,1 @@
-/* Threads */
+{ Threads are currently not supported }

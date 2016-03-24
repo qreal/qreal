@@ -1,1 +1,1 @@
-@@VARIABLE@@ := @@VALUE@@
+@@VARIABLE@@ := @@VALUE@@;

@@ -1,1 +1,1 @@
-Async.Start(TASK_@@NAME@@);
+{ Threads are currently not supported }

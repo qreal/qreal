@@ -1,1 +1,1 @@
-(* Enable video streaming in JavaScript for now *)
+{ Enable video streaming in JavaScript for now }

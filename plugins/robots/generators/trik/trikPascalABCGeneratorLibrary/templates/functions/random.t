@@ -1,1 +1,1 @@
-randomNumber.Next @@UPPER_BOUND@@
+Random(@@UPPER_BOUND@@)

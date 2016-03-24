@@ -1,1 +1,1 @@
-(* brick.keys().wasPressed(KeysEnum.Up) *)
+{ Keys are currently not supported }

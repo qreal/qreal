@@ -1,2 +1,1 @@
-let TASK_@@NAME@@() =
-@@BODY@@
+{ Threads are currently not supported }

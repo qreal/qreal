@@ -1,1 +1,1 @@
-model.Motors[@@PORT@@].SetPower(@@POWER@@);
+model.Motors[Trik.MotorPort.@@PORT@@].SetPower(@@POWER@@);

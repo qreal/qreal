@@ -1,1 +1,1 @@
-(DateTime.Now.Subtract(__interpretation_started_timestamp__).Milliseconds)
+{ Time is not supported in this version }

@@ -1,1 +1,1 @@
-model.encoder.["@@PORT@@"].read()
+model.encoder.["@@PORT@@"].Read()

@@ -1,1 +1,1 @@
-model.LineSensor.Detect()
+model.LineSensor.Detect();

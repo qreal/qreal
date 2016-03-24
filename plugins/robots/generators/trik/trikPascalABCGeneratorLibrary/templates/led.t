@@ -1,1 +1,1 @@
-robot.Led.SetColor(@@COLOR@@)
+model.Led.SetColor(@@COLOR@@)

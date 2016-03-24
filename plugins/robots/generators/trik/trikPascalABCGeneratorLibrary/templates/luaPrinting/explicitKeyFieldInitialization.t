@@ -1,1 +1,1 @@
-/* Mappings are not supported */
+{ Mappings are not supported }

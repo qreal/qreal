@@ -1,3 +1,2 @@
-while not (robot.SensorF1 = 0) do
-	Thread.Sleep 10
-
+while not (robot.Sensor["F1"].Read() = 0) do
+    model.Sleep(10)

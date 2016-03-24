@@ -1,2 +1,2 @@
-while not(model.encoder("@@PORT@@").read() @@SIGN@@ @@TACHO_LIMIT@@)) 
-	Thread.Sleep 10
+while not (model.encoder("@@PORT@@").Read() @@SIGN@@ @@TACHO_LIMIT@@))
+    model.Sleep(10);

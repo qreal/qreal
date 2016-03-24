@@ -1,1 +1,1 @@
-atan2 @@ARGUMENT1@@ @@ARGUMENT2@@
+arctan2(@@ARGUMENT1@@, @@ARGUMENT2@@)

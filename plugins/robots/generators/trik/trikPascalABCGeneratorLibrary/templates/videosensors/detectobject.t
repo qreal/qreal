@@ -1,1 +1,1 @@
-model.ObjectSensor.Detect()
+model.ObjectSensor.Detect();

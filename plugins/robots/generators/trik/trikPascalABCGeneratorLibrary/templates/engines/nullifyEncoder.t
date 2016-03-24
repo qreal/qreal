@@ -1,1 +1,1 @@
-model.Encoder.["@PORT@"].Reset
+model.Encoder[Trik.MotorPort.@@PORT@@].Reset();
