@@ -44,7 +44,7 @@ public:
 	void addDevice(const kitBase::robotModel::PortInfo &port
 			, kitBase::robotModel::robotParts::Device * const device) override;
 
-	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
+	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter) override;
 
 private:
 	kitBase::robotModel::robotParts::Device *createDevice(const kitBase::robotModel::PortInfo &port

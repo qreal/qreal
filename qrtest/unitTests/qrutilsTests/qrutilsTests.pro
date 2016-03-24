@@ -33,3 +33,8 @@ SOURCES += \
 	inFileTest.cpp \
 	outFileTest.cpp \
 	xmlUtilsTest.cpp \
+
+# Mocks
+HEADERS += \
+	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h \
+

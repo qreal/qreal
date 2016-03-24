@@ -30,7 +30,7 @@
 /// @todo /src/managers
 #include <interpreterCore/managers/blocksFactoryManagerInterfaceMock.h>
 
-#include "support/qrguiFacade.h"
+#include <testUtils/qrguiFacade.h>
 #include "support/dummyBlocksFactory.h"
 
 namespace qrTest {

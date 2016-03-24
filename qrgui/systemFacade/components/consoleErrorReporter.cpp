@@ -53,7 +53,7 @@ void ConsoleErrorReporter::sendBubblingMessage(const QString &message, int durat
 	qDebug() << qUtf8Printable(message);
 }
 
-bool ConsoleErrorReporter::wereErrors()
+bool ConsoleErrorReporter::wereErrors() const
 {
 	return mWereErrors;
 }

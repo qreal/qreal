@@ -58,6 +58,9 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::runDirectCommandDone
 			, this, &TcpRobotCommunicator::runDirectCommandDone, Qt::QueuedConnection);
 
+	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
+			, this, &TcpRobotCommunicator::casingVersionReceived, Qt::QueuedConnection);
+
 	mWorkerThread.start();
 
 	QMetaObject::invokeMethod(mWorker.data(), "init");
@@ -104,6 +107,11 @@ void TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool a
 {
 	QMetaObject::invokeMethod(mWorker.data(), "runDirectCommand"
 			, Q_ARG(QString, directCommand), Q_ARG(bool, asScript));
+}
+
+void TcpRobotCommunicator::requestCasingVersion()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "requestCasingVersion");
 }
 
 void TcpRobotCommunicator::stopRobot()
