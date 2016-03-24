@@ -91,7 +91,7 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
 
 	connect(mRunProgramProtocol.data(), &RunProgramProtocol::configVersionMismatch
-			, [errorReporter](const QString &expected, const QString &actual) {
+			, [this, errorReporter](const QString &expected, const QString &actual) {
 				Q_UNUSED(expected)
 				Q_UNUSED(actual)
 				errorReporter->addError(

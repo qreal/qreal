@@ -69,6 +69,9 @@ protected:
 private slots:
 	/// Shall be redefined in subclasses to request for a sensor or button to read its value.
 	virtual void timerTimeout() = 0;
+
+	void doneNextBlock();
+
 };
 
 }

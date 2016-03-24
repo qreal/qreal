@@ -48,9 +48,9 @@ isEmpty(TARGET) {
 }
 
 equals(TEMPLATE, app) {
-	!macx {
-		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+	unix:!macx {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
+		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 	}
 }
 

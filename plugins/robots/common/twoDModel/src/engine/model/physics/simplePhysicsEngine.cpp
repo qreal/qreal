@@ -43,11 +43,13 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 	if (mWorldModel.checkCollision(robotBoundingPath)) {
 		mPositionShift = -mPositionShift;
 		mRotation = -mRotation;
+		mStuck = true;
 		return;
 	}
 
 	mPositionShift = QVector2D();
 	mRotation = 0.0;
+	mStuck = false;
 
 	const qreal averageSpeed = (speed1 + speed2) / 2;
 
