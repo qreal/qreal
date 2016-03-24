@@ -80,10 +80,10 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 //	cout << "Port = " << (string)port.name() << endl;
 
 
-	simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed * 0.1f, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 0.1f, simx_opmode_oneshot);
+	//simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
+	//simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed * 0.1f, simx_opmode_oneshot);
+	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 1000.0f, simx_opmode_oneshot);
+	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 1000.0f, simx_opmode_oneshot);
 
 	//
 
