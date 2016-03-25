@@ -367,11 +367,6 @@ void MainWindow::clearSelectionOnTabs()
 	}
 }
 
-void MainWindow::addEditorElementsToPalette(const Id &editor, const Id &diagram)
-{
-	mUi->paletteTree->addEditorElements(editorManager(), editor, diagram);
-}
-
 void MainWindow::adjustMinimapZoom(int zoom)
 {
 	mUi->minimapView->resetMatrix();

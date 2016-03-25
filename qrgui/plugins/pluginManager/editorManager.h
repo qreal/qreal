@@ -129,7 +129,7 @@ public:
 	void addEdgeElement(const Id &diagram, const QString &name, const QString &displayedName, const QString &labelText
 			, const QString &labelType, const QString &lineType, const QString &beginType
 			, const QString &endType) const override;
-	QPair<Id, Id> createEditorAndDiagram(const QString &name) const override;
+	void createEditorAndDiagram(const QString &name) override;
 	void saveMetamodel(const QString &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
 

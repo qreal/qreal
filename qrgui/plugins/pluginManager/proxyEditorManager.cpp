@@ -323,7 +323,7 @@ QString ProxyEditorManager::generationRule(const Id &id) const
 	return mProxiedEditorManager->generationRule(id);
 }
 
-QPair<Id, Id> ProxyEditorManager::createEditorAndDiagram(const QString &name) const
+void ProxyEditorManager::createEditorAndDiagram(const QString &name)
 {
 	return mProxiedEditorManager->createEditorAndDiagram(name);
 }

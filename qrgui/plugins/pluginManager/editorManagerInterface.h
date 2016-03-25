@@ -56,6 +56,7 @@ public:
 	virtual bool unloadAllPlugins() = 0;
 
 	/// Appends \a metamodel to a list of loaded ones.
+	/// Takes ownership on \a metamodel.
 	virtual void loadMetamodel(Metamodel &metamodel) = 0;
 
 	virtual QString mouseGesture(const Id &id) const = 0;
@@ -131,7 +132,7 @@ public:
 	virtual void addEdgeElement(const Id &diagram, const QString &name, const QString &displayedName
 			, const QString &labelText, const QString &labelType, const QString &lineType
 			, const QString &beginType, const QString &endType) const = 0;
-	virtual QPair<Id, Id> createEditorAndDiagram(const QString &name) const = 0;
+	virtual void createEditorAndDiagram(const QString &name) = 0;
 	virtual void saveMetamodel(const QString &newMetamodelFileName) = 0;
 	virtual QString saveMetamodelFilePath() const = 0;
 	virtual QStringList paletteGroups(const Id &editor, const Id &diagram) const = 0;

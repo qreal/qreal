@@ -351,8 +351,7 @@ void StartWidget::createInterpretedDiagram()
 	editorManager.unloadAllPlugins();
 
 	if (ok) {
-		QPair<Id, Id> editorAndDiagram = editorManager.createEditorAndDiagram(name);
-		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
+		editorManager.createEditorAndDiagram(name);
 		mMainWindow->models().repoControlApi().exterminate();
 		mMainWindow->models().reinit();
 		mMainWindow->loadEditorPlugins();

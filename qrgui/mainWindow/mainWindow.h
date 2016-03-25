@@ -148,11 +148,6 @@ public:
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
 
-	/// Adds all elements from given diagram in a given editor to a palette.
-	/// @param editor Id of an editor we need to add elements from.
-	/// @param diagram Id of a diagram we need to add elements from.
-	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
-
 	QDockWidget *logicalModelDock() const override;
 	QDockWidget *graphicalModelDock() const override;
 	QDockWidget *propertyEditorDock() const override;

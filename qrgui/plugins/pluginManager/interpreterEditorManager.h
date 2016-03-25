@@ -119,7 +119,7 @@ public:
 	void updateGenerationRule(const Id &id, const QString &newRule) const override;
 	QString generationRule(const Id &id) const override;
 
-	QPair<Id, Id> createEditorAndDiagram(const QString &name) const override;
+	void createEditorAndDiagram(const QString &name) override;
 	void saveMetamodel(const QString &newMetamodelFileName) override;
 	QString saveMetamodelFilePath() const override;
 	QStringList paletteGroups(const Id &editor, const Id &diagram) const override;

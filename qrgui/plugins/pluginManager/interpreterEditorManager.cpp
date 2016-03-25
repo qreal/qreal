@@ -1166,7 +1166,7 @@ QString InterpreterEditorManager::generationRule(const Id &id) const
 	return "";
 }
 
-QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(const QString &name) const
+void InterpreterEditorManager::createEditorAndDiagram(const QString &name)
 {
 	const Id editor("MetaEditor", "MetaEditor", "MetamodelDiagram", QUuid::createUuid().toString());
 	const Id diagram("MetaEditor", "MetaEditor", "MetaEditorDiagramNode", QUuid::createUuid().toString());
@@ -1190,7 +1190,6 @@ QPair<Id, Id> InterpreterEditorManager::createEditorAndDiagram(const QString &na
 	setStandartConfigurations(repo, containerLink, Id::rootId(), "Container");
 	repo->setFrom(containerLink, nodeId);
 	repo->setTo(containerLink, nodeId);
-	return qMakePair(Id(repo->name(editor)), Id(repo->name(editor), repo->name(diagram)));
 }
 
 void InterpreterEditorManager::saveMetamodel(const QString &newMetamodelFileName)
