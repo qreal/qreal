@@ -17,11 +17,9 @@
 #include <QtCore/QStateMachine>
 #include <QtCore/QTimer>
 
-#include "utils/robotCommunication/tcpRobotCommunicator.h"
-
 using namespace utils::robotCommunication;
 
-Protocol::Protocol(TcpRobotCommunicator &communicator, int timeout)
+Protocol::Protocol(TcpRobotCommunicatorInterface &communicator, int timeout)
 	: mSuccess(new QFinalState())
 	, mErrored(new QFinalState())
 	, mCommunicator(communicator)
@@ -32,16 +30,8 @@ Protocol::Protocol(TcpRobotCommunicator &communicator, int timeout)
 	mTimeoutTimer->setSingleShot(true);
 
 	connect(mTimeoutTimer.data(), &QTimer::timeout, this, &Protocol::onTimeout);
-
-	connect(mSuccess, &QState::entered, [this]() {
-		emit success();
-		mTimeoutTimer->stop();
-	});
-
-	connect(mErrored, &QState::entered, [this]() {
-		emit error();
-		mTimeoutTimer->stop();
-	});
+	connect(mSuccess, &QState::entered, this, &Protocol::onSuccess);
+	connect(mErrored, &QState::entered, this, &Protocol::onError);
 
 	mStateMachine->addState(mSuccess);
 	mStateMachine->addState(mErrored);
@@ -51,7 +41,7 @@ Protocol::~Protocol()
 {
 }
 
-void Protocol::setAction(QState *state, const std::function<void(TcpRobotCommunicator &communicator)> &action)
+void Protocol::setAction(QState *state, const std::function<void(TcpRobotCommunicatorInterface &)> &action)
 {
 	state->disconnect();
 	connect(state, &QState::entered, [this, action](){ action(mCommunicator); });
@@ -73,6 +63,18 @@ void Protocol::onTimeout()
 	emit timeout();
 }
 
+void Protocol::onSuccess()
+{
+	emit success();
+	mTimeoutTimer->stop();
+}
+
+void Protocol::onError()
+{
+	emit error();
+	mTimeoutTimer->stop();
+}
+
 void Protocol::registerStateIfNeeded(QState * const state)
 {
 	if (!mKnownStates.contains(state)) {
@@ -82,6 +84,6 @@ void Protocol::registerStateIfNeeded(QState * const state)
 		}
 
 		mKnownStates.insert(state);
-		addErrorTransition(state, &TcpRobotCommunicator::connectionError);
+		addErrorTransition(state, &TcpRobotCommunicatorInterface::connectionError);
 	}
 }

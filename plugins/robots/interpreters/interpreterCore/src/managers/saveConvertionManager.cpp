@@ -37,7 +37,7 @@ QList<ProjectConverter> SaveConvertionManager::converters()
 ProjectConverter SaveConvertionManager::before300Alpha1Converter()
 {
 	return ProjectConverter(editor(), Version(), Version::fromString("3.0.0-a1")
-			, [=](auto &, auto &)
+			, [=](GraphicalModelAssistInterface &, LogicalModelAssistInterface &)
 	{
 		return ProjectConverter::VersionTooOld;
 	});
@@ -118,7 +118,7 @@ qReal::ProjectConverter SaveConvertionManager::from300to301Converter()
 						, {"upButton", "buttonUp"}
 						, {"powerButton", "buttonEsc"}
 				  })
-				, [=] (const auto &block, auto &logicalApi) {
+				, [=] (const Id &block, LogicalModelAssistInterface &logicalApi) {
 						if (block.element().startsWith("Trik")) {
 							return replace({{"buttonEscape", "buttonEsc"}})(block, logicalApi);
 						}
@@ -172,7 +172,7 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 	return constructConverter("3.0.2", "3.1.0"
 			, {
 				replace(replacementRules)
-				, [=](const auto &block, auto &logicalApi) {
+				, [=](const Id &block, LogicalModelAssistInterface &logicalApi) {
 					if (block.element() == "RobotsDiagramNode") {
 						QString worldModel = logicalApi.logicalRepoApi().stringProperty(block, "worldModel");
 						for (const QString &toReplace : replacementRules.keys()) {
@@ -192,8 +192,8 @@ ProjectConverter SaveConvertionManager::from302to310Converter()
 				// This one repairs labels positions. At some moment a number of labels on scene
 				// reduced a lot, so old saves used wrong partial models. The easiest fix "by hand"
 				// is to cut and paste element. This converter does the same thing.
-				graphicalRecreate([](const auto &block, auto &) { return block.type(); }
-						, [](const auto &newBlock, const auto &oldBlock, auto &model) {
+				graphicalRecreate([](const Id &block, GraphicalModelAssistInterface &) { return block.type(); }
+						, [](const Id &newBlock, const Id &oldBlock, GraphicalModelAssistInterface &model) {
 							model.copyProperties(newBlock, oldBlock);
 				})
 			}
@@ -257,7 +257,7 @@ qReal::ProjectConverter SaveConvertionManager::constructConverter(const QString 
 		)
 {
 	return ProjectConverter(editor(), Version::fromString(oldVersion), Version::fromString(newVersion)
-			, [=](auto &graphicalApi, auto &logicalApi)
+			, [=](GraphicalModelAssistInterface &graphicalApi, LogicalModelAssistInterface &logicalApi)
 	{
 		bool modificationsMade = false;
 
