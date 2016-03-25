@@ -63,22 +63,18 @@ void GraphicalModelView::rowsInserted(const QModelIndex &parent, int start, int 
 }
 
 void GraphicalModelView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
-		, QVector<int> const &roles)
+		, const QVector<int> &roles)
 {
-	Q_UNUSED(roles)
+	// Here we should update logical element`s names if they were changed in graphical model.
+	if (!roles.contains(Qt::DisplayRole)) {
+		return;
+	}
+
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		QModelIndex current = topLeft.sibling(row, 0);
 
 		const Id logicalId = current.data(roles::logicalIdRole).value<Id>();
 		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
-	}
-
-	const Id parentLogicalId = topLeft.sibling(topLeft.row(), 0).data(roles::logicalIdRole).value<Id>();
-	const Id childLogicalId = bottomRight.sibling(bottomRight.row(), 0).data(roles::logicalIdRole).value<Id>();
-	if (parentLogicalId.editor() == "MetaEditor" && childLogicalId.editor() == "MetaEditor"
-			&& parentLogicalId != childLogicalId)
-	{
-		static_cast<LogicalModel *>(mModel)->changeParent(parentLogicalId, childLogicalId);
 	}
 }
 
