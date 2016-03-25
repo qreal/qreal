@@ -1,5 +1,5 @@
 #!/bin/bash
-# Usage: build-qreal-bp.sh <path-to-qt> <path-to-qt-installer-framework> [tag]. See build-installer.sh for more info.
+# Usage: build-qreal-uml.sh <path-to-qt> <path-to-qt-installer-framework> [tag]. See build-installer.sh for more info.
 
 set -o nounset
 set -o errexit
