@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,13 +43,29 @@ public:
 			, const QString &targetDirectory);
 
 	~Diagram();
+
+	/// Loads diagram from metamodel.
 	bool init();
+
+	/// Resolves imported types, processes generalization.
 	bool resolve();
+
+	/// Returns editor to which this diagram belongs to.
 	Editor *editor() const;
+
+	/// Returns type with given name or nullptr if there is no type in this diagram.
 	Type *findType(const QString &name) const;
-	QMap<QString, Type*> types() const;
+
+	/// Returns all types in this diagram.
+	const QMap<QString, Type*> &types() const;
+
+	/// Returns internal name of the diagram.
 	QString name() const;
+
+	/// Returns name of the root element of this diagram.
 	QString nodeName() const;
+
+	/// Returns name of a diagram as it is displayed to user.
 	QString displayedName() const;
 
 	QString generateNamesMap(const QString &lineTemplate) const;
@@ -74,8 +90,6 @@ public:
 	QString generateEdgeClasses(const QString &edgeTemplate) const;
 
 	QString generateResourceFile(const QString &resourceTemplate) const;
-
-	void print() const;
 
 private:
 	struct ImportSpecification {

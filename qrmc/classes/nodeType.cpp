@@ -71,7 +71,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 	}
 
 	QString nodeClass = classTemplate;
-	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram().editor()->metaCompiler();
 
 	mShape.setNode(this);
 	mShape.generate(nodeClass);

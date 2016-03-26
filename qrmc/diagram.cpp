@@ -103,7 +103,7 @@ bool Diagram::resolve()
 		Type * const copiedType = importedType->clone();
 		copiedType->setName(import.as);
 		copiedType->setDisplayedName(import.displayedName);
-		copiedType->setDiagram(this);
+		copiedType->setDiagram(*this);
 		copiedType->setContext(mDiagramName);
 		mTypes.insert(copiedType->qualifiedName(), copiedType);
 	}
@@ -132,7 +132,7 @@ Type* Diagram::findType(const QString &name) const
 	return mEditor.findType(name);
 }
 
-QMap<QString, Type*> Diagram::types() const
+const QMap<QString, Type *> &Diagram::types() const
 {
 	return mTypes;
 }
@@ -150,11 +150,6 @@ QString Diagram::nodeName() const
 QString Diagram::displayedName() const
 {
 	return mDiagramDisplayedName;
-}
-
-void Diagram::print() const
-{
-	qDebug() << "elements:" << mTypes.size();
 }
 
 QString Diagram::generateMapMethod(const QString& lineTemplate

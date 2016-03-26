@@ -13,10 +13,11 @@
  * limitations under the License. */
 
 #include "type.h"
-#include "property.h"
-#include "../utils/nameNormalizer.h"
 
-#include <QDebug>
+#include "property.h"
+#include "qrmc/utils/nameNormalizer.h"
+
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 
@@ -83,19 +84,19 @@ void Type::setDisplayedName(const QString &displayedName)
 	mDisplayedName = displayedName;
 }
 
-Diagram *Type::diagram() const
+const Diagram &Type::diagram() const
 {
-	return mDiagram;
+	return *mDiagram;
 }
 
-QMap<QString, Property*> Type::properties() const
+const QMap<QString, Property *> &Type::properties() const
 {
 	return mProperties;
 }
 
-void Type::setDiagram(Diagram *diagram)
+void Type::setDiagram(Diagram &diagram)
 {
-	mDiagram = diagram;
+	mDiagram = &diagram;
 }
 
 void Type::copyFields(Type *type) const

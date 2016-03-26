@@ -139,7 +139,7 @@ void Shape::changeDir(QDir &dir) const
 	}
 
 	dir.cd(mTargetDirectory);
-	QString editorName = mNode->diagram()->editor()->name();
+	QString editorName = mNode->diagram().editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
 	}
@@ -164,7 +164,7 @@ void Shape::generate(QString &classTemplate) const
 
 	generateSdf();
 
-	MetaCompiler &compiler = mNode->diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = mNode->diagram().editor()->metaCompiler();
 	QString unused;
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
@@ -184,7 +184,7 @@ void Shape::generate(QString &classTemplate) const
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
 	for (Port *port : mPorts) {
-		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
+		port->generatePortList(this->mNode->diagram().editor()->getAllPortNames());
 		portsInitLine += port->generateInit(&compiler) + endline;
 	}
 

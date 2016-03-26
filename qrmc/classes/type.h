@@ -25,33 +25,73 @@ namespace qrmc {
 class Property;
 class Diagram;
 
+/// Virtual base class of all metatypes supported by metaeditor.
 class Type
 {
 public:
+	/// Constructor.
+	/// @param isResolved - true, if type is already resolved.
+	/// @param diagram - diagram to which this type belongs to.
+	/// @param api - repository with metamodel.
+	/// @param id - id of a type in repository.
 	Type(bool isResolved, Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id);
+
 	virtual ~Type();
+
+	/// Provides copy of this type.
+	/// Ownership passed to the caller.
 	virtual Type* clone() const = 0;
+
+	/// Resolves inheritance by copying properties of a parent to this type.
 	virtual bool resolve() = 0;
+
+	/// Initializes this type in a given context (context is like namespace).
 	virtual bool init(const QString &context);
+
+	/// Returns true if this type is currently in "resolving" status.
 	virtual bool isResolving() const;
+
+	/// Returns true if this type is graphical (i.e. can be drawn by editor).
 	virtual bool isGraphicalType() const = 0;
+
+	/// Returns true if this type is already resolved.
 	virtual bool isResolved() const;
 
+	/// Debug print method.
 	virtual void print() = 0;
 
+	/// Returns name of the type.
 	virtual QString name() const;
+
+	/// Returns mouse gesture path of this type.
 	virtual QString path() const;
+
+	/// Returns fully qualified name (context + name).
 	virtual QString qualifiedName() const;
+
+	/// Returns displayed name of a type.
 	virtual QString displayedName() const;
+
+	/// Returns context to which this type belongs to originally (may differ from context when type was copied
+	/// by "include").
 	virtual QString nativeContext() const;
 
-	virtual Diagram *diagram() const;
+	/// Returns diagram this type belongs to.
+	virtual const Diagram &diagram() const;
 
-	virtual QMap<QString, Property*> properties() const;
+	/// Returns all properties of this type. Does not transfer ownership.
+	virtual const QMap<QString, Property*> &properties() const;
 
+	/// Sets a name of this type.
 	virtual void setName(const QString &name);
-	virtual void setDiagram(Diagram *diagram);
+
+	/// Sets a diagram this type belongs to.
+	virtual void setDiagram(Diagram &diagram);
+
+	/// Sets new context for this type.
 	virtual void setContext(const QString &newContext);
+
+	/// Sets displayed name of this type.
 	virtual void setDisplayedName(const QString &displayedName);
 
 	virtual QString generateNames(const QString &lineTemplate) const;
@@ -77,22 +117,39 @@ public:
 	virtual QString generateResourceLine(const QString &classTemplate) const = 0;
 
 protected:
+	/// Copies all fields of this type to a given type.
 	virtual void copyFields(Type *type) const;
 
+	/// Map of all properties of a type.
 	/// Has ownership.
 	QMap<QString, Property*> mProperties;
 
+	/// Flag that becomes true if this type is resolved.
 	bool mResolvingFinished = false;
 
+	/// Diagram this type belongs to.
 	/// Does not have ownership.
 	Diagram *mDiagram;
 
+	/// Id of this type in repository.
 	const qReal::Id mId;
+
+	/// Repository with metamodel.
 	const qrRepo::LogicalRepoApi &mApi;
-	QString mName;  // metatype name
-	QString mContext;  // context if metatype. e.g. Kernel::Node: Node - name, Kernel - context.
-	QString mNativeContext;  // native context, doesn't change on import and is used for element resolving
+
+	/// Metatype name.
+	QString mName;
+
+	/// Context if metatype. e.g. Kernel::Node: Node - name, Kernel - context.
+	QString mContext;
+
+	/// Native context, doesn't change on import and is used for element resolving.
+	QString mNativeContext;
+
+	/// Name of this type as it is displayed to user.
 	QString mDisplayedName;
+
+	/// Mouse gesture path.
 	QString mPath;
 };
 
