@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -26,12 +26,11 @@ namespace qrmc {
 class Label;
 class Diagram;
 
-const int maxLineLength = 80;
-
+/// Represents metatype that can have its graphical representation and corresponding entry in a palette.
 class GraphicType : public Type
 {
 public:
-	GraphicType(Diagram &diagram, const qrRepo::LogicalRepoApi &api
+	GraphicType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api
 			, const qReal::Id &id, const QString &targetDirectory);
 
 	~GraphicType() override;

@@ -21,7 +21,7 @@
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id
+EdgeType::EdgeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id
 		, const QString &targetDirectory)
 	: GraphicType(diagram, api, id, targetDirectory)
 {
@@ -81,9 +81,9 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	generateArrows(edgeClass);
 
 	for (const Label * const label : mLabels) {
-		labelsInitLine += label->generateInit(&compiler, false) + endline;
-		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
-		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
+		labelsInitLine += label->generateInit(compiler, false) + endline;
+		labelsUpdateLine += label->generateUpdate(compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}
 
 	if (mLabels.isEmpty()) { // no labels

@@ -48,7 +48,7 @@ bool Diagram::init()
 		}
 
 		if (id.element() == metaEntityNode) {
-			Type * const nodeType = new NodeType(this, &mApi, id, mTargetDirectory);
+			Type * const nodeType = new NodeType(*this, mApi, id, mTargetDirectory);
 			if (!nodeType->init(mDiagramName)) {
 				delete nodeType;
 				qDebug() << "can't load node";
@@ -74,7 +74,7 @@ bool Diagram::init()
 
 			mImports.append(import);
 		} else if (id.element() == metaEntityEnum) {
-			Type * const enumType = new EnumType(this, &mApi, id);
+			Type * const enumType = new EnumType(*this, mApi, id);
 			if (!enumType->init(mDiagramName)) {
 				delete enumType;
 				qDebug() << "can't load enum";

@@ -76,15 +76,13 @@ void Shape::initLabels(const QDomElement &graphics)
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true, mWidth, mHeight))
+		if (!label->init(element, count, true, mWidth, mHeight)) {
 			delete label;
-		else {
+		} else {
 			mLabels.append(label);
 			++count;
 		}
 	}
-	return;
-
 }
 
 void Shape::initPorts(const QDomElement &graphics)
@@ -192,10 +190,10 @@ void Shape::generate(QString &classTemplate) const
 	QString labelsUpdateLine;
 	QString labelsDefinitionLine;
 
-	foreach(Label *label, mLabels) {
-		labelsInitLine += label->generateInit(&compiler, true) + endline;
-		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
-		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
+	for (const Label * const label : mLabels) {
+		labelsInitLine += label->generateInit(compiler, true) + endline;
+		labelsUpdateLine += label->generateUpdate(compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}
 	if (mLabels.isEmpty()) { // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;

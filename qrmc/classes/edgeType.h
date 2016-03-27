@@ -14,10 +14,10 @@
 
 #pragma once
 
+#include <QtCore/QList>
+
 #include "graphicType.h"
 #include "label.h"
-
-#include <QtCore/QList>
 
 namespace qrmc {
 
@@ -30,7 +30,7 @@ public:
 	/// @param api - repository with metamodel.
 	/// @param id - id of an edge in repository.
 	/// @param targetDirectory - directory to generate editor to.
-	EdgeType(Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id, const QString &targetDirectory);
+	EdgeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id, const QString &targetDirectory);
 
 	~EdgeType() override;
 
@@ -51,7 +51,7 @@ private:
 	void generateSdf() const;
 	void generateArrows(QString &edgeClass) const;
 	void generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
-						  const QString &customTag, const QString &brushTag) const;
+			const QString &customTag, const QString &brushTag) const;
 
 	QString mBeginType;
 	QString mEndType;

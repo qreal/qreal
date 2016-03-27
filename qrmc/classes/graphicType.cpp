@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * limitations under the License. */
 
 #include "graphicType.h"
+
 #include "property.h"
-#include "../diagram.h"
-#include "../utils/nameNormalizer.h"
+#include "qrmc/diagram.h"
+#include "qrmc/utils/nameNormalizer.h"
 #include "shape.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 using namespace qReal;
@@ -40,7 +41,7 @@ GraphicType::ResolvingHelper::ResolvingHelper(bool &resolvingFlag)
 }
 
 GraphicType::GraphicType(
-		Diagram &diagram
+		const Diagram &diagram
 		, const qrRepo::LogicalRepoApi &api
 		, const qReal::Id &id
 		, const QString &targetDirectory)
@@ -61,11 +62,13 @@ bool GraphicType::init(const QString &context)
 	mDescription = mApi.stringProperty(mId, "description");
 
 	mIsVisible = false;
-	if (mApi.hasProperty(mId, "shape"))
+	if (mApi.hasProperty(mId, "shape")) {
 		mIsVisible = !mApi.stringProperty(mId, "shape").isEmpty();
+	}
 
-	if (mApi.hasProperty(mId, "RequestBody"))
+	if (mApi.hasProperty(mId, "RequestBody")) {
 		mIsVisible = !mApi.stringProperty(mId, "RequestBody").isEmpty();
+	}
 
 	const IdList outLinks = mApi.outgoingLinks(mId);
 	for (const Id outLink : outLinks) {
@@ -162,7 +165,7 @@ bool GraphicType::initPossibleEdges()
 void GraphicType::initShape()
 {
 	if (mApi.hasProperty(mId, "shape")) {
-		QString shape = mApi.stringProperty(mId, "shape");
+		const QString shape = mApi.stringProperty(mId, "shape");
 		if (shape.isEmpty()) {
 			return;
 		}
@@ -190,20 +193,22 @@ void GraphicType::copyFields(GraphicType *type) const
 
 bool GraphicType::resolve()
 {
-	if (mResolvingFinished)
+	if (mResolvingFinished) {
 		return true;
+	}
 
 	ResolvingHelper helper(mResolving);
 	mParents.removeDuplicates();
-	foreach (QString parentName, mParents) {
+	for (const QString &parentName : mParents) {
 		// searching for parents in native context. if it was imported, references will remain valid
-		QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::" + parentName;
+		const QString qualifiedParentName = parentName.contains("::") ? parentName : nativeContext() + "::"
+				+ parentName;
 
 		Type *parent = mDiagram->findType(qualifiedParentName);
-		if (parent == nullptr) {
+		if (!parent) {
 			// didn't find in local context, try global
 			parent = mDiagram->findType(parentName);
-			if (parent == nullptr) {
+			if (!parent) {
 				qDebug() << "ERROR: can't find parent" << parentName << "for" << qualifiedName();
 				return false;
 			}
@@ -213,25 +218,28 @@ bool GraphicType::resolve()
 			qDebug() << "ERROR: circular inheritance between" << parentName << "and" << qualifiedName();
 			return false;
 		}
+
 		if (!parent->isResolved()) {
-			if (!parent->resolve())
+			if (!parent->resolve()) {
 				return false;
+			}
 		}
-		foreach (Property *property, parent->properties().values())
-			if (!addProperty(property->clone()))
+
+		for (const Property * const property : parent->properties().values()) {
+			if (!addProperty(property->clone())) {
 				return false;
+			}
+		}
 
 		GraphicType* gParent = dynamic_cast<GraphicType*>(parent);
-		if (gParent)
-			foreach (PossibleEdge pEdge,gParent->mPossibleEdges) {
+		if (gParent) {
+			for (const PossibleEdge pEdge : gParent->mPossibleEdges) {
 				mPossibleEdges.append(qMakePair(pEdge.first,qMakePair(pEdge.second.first,name())));
 			}
+		}
 	}
 
 	mResolvingFinished = true;
-	return true;
-
-
 	return true;
 }
 
@@ -242,17 +250,17 @@ bool GraphicType::isResolving() const
 
 bool GraphicType::addProperty(Property *property)
 {
-	QString propertyName = property->name();
+	const QString propertyName = property->name();
 	if (mProperties.contains(propertyName)) {
-		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property)
-		{
+		if (mProperties[propertyName] != property && *mProperties[propertyName] != *property) {
 			qDebug() << "ERROR: property" << propertyName << "duplicated with different attributes";
 			delete property;
 			return false;
 		}
-	}
-	else
+	} else {
 		mProperties[propertyName] = property;
+	}
+
 	return true;
 }
 
@@ -263,10 +271,12 @@ bool GraphicType::isGraphicalType() const
 
 QString GraphicType::generateProperties(const QString &lineTemplate) const
 {
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		return "";
+	}
+
 	QString propertiesString;
-	foreach (Property *property, mProperties) {
+	for (const Property * const property : mProperties) {
 		// hack: don't generate pre-defined properties
 		if (property->name() == "fromPort" || property->name() == "toPort"
 			|| property->name() == "from" || property->name() == "to"
@@ -276,36 +286,45 @@ QString GraphicType::generateProperties(const QString &lineTemplate) const
 				<< "shall not appear in metamodels, ignored";
 			continue;
 		}
+
 		QString tmp = property->generatePropertyLine(lineTemplate) + endline;
 		propertiesString += tmp.replace(elementNameTag, name());
 	}
+
 	return propertiesString;
 }
 
 QString GraphicType::generatePropertyDefaults(const QString &lineTemplate) const
 {
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		return "";
-	QString defaultsString;
-	foreach (Property *property, mProperties) {
-		QString tmp = property->generateDefaultsLine(lineTemplate);
-		if (!tmp.isEmpty())
-			defaultsString += tmp.replace(elementNameTag, name()) + endline;
 	}
+
+	QString defaultsString;
+	for (const Property * const property : mProperties) {
+		QString tmp = property->generateDefaultsLine(lineTemplate);
+		if (!tmp.isEmpty()) {
+			defaultsString += tmp.replace(elementNameTag, name()) + endline;
+		}
+	}
+
 	return defaultsString;
 }
 
 QString GraphicType::generatePropertyDisplayedNames(const QString &lineTemplate) const
 {
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		return "";
+	}
+
 	QString displayedNamesString;
-	foreach (Property *property, mProperties) {
+	for (const Property * const property : mProperties) {
 		QString tmp = property->generateDisplayedNameLine(lineTemplate);
 		if (!tmp.isEmpty()) {
 			displayedNamesString += tmp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
 		}
 	}
+
 	return displayedNamesString;
 }
 
@@ -316,7 +335,7 @@ QString GraphicType::generateElementDescription(const QString &lineTemplate) con
 	}
 
 	QString displayedNamesString;
-	QString temp = this->generateElementDescriptionLine(lineTemplate);
+	QString temp = generateElementDescriptionLine(lineTemplate);
 	if (!temp.isEmpty()) {
 		displayedNamesString += temp.replace(elementNameTag, name()).replace(diagramNameTag, mContext) + endline;
 	}
@@ -333,41 +352,49 @@ QString GraphicType::generateElementDescriptionLine(const QString &lineTemplate)
 
 QString GraphicType::generateReferenceProperties(const QString &lineTemplate) const
 {
-	if (!mIsVisible)
+	if (!mIsVisible) {
 		return "";
+	}
+
 	QString referencePropertiesString = lineTemplate;
-	QString referencePropertiesList = "";
-	foreach (const Property *const property, mProperties) {
+	QString referencePropertiesList;
+	for (const Property * const property : mProperties) {
 		if (property->isReferenceProperty()) {
 			referencePropertiesList = referencePropertiesList + " << "  + "\"" + property->name() + "\"";
 		}
 	}
+
 	if (referencePropertiesList.isEmpty()) {
-		referencePropertiesString.replace(referencePropertiesListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
+		referencePropertiesString
+				.replace(referencePropertiesListTag, "*/}//")
+				.replace(elementNameTag, name() + "\"){/*");
 	} else {
-		referencePropertiesString.replace(referencePropertiesListTag, referencePropertiesList).replace(elementNameTag, name());
+		referencePropertiesString
+				.replace(referencePropertiesListTag, referencePropertiesList)
+				.replace(elementNameTag, name());
 	}
+
 	return referencePropertiesString;
 }
 
 QString GraphicType::generatePortTypes(const QString &lineTemplate) const
 {
 	QString portTypesString = lineTemplate;
-	QString portTypesList = "";
+	QString portTypesList;
 
-	const QList<Port*> getPortTypes = this->mShape.getPorts();
-	QSet<QString> portTypes;
-	for (Port *port : getPortTypes) {
-		portTypes.insert(port->type());
+	const QList<Port*> portTypes = this->mShape.getPorts();
+	QSet<QString> portTypesSet;
+	for (Port * const port : portTypes) {
+		portTypesSet.insert(port->type());
 	}
 
-	if (!portTypes.empty()) {
-		for (const QString &type : portTypes) {
+	if (!portTypesSet.empty()) {
+		for (const QString &type : portTypesSet) {
 			portTypesList = portTypesList + "\"" + type + "\"";
 		}
 
 		if (portTypesList.isEmpty()) {
-			portTypesString.replace(portTypesListTag, "*/}//").replace(elementNameTag, name());;
+			portTypesString.replace(portTypesListTag, "*/}//").replace(elementNameTag, name());
 		} else {
 			portTypesString.replace(portTypesListTag, portTypesList).replace(elementNameTag, name());
 		}
@@ -384,9 +411,9 @@ QString GraphicType::generatePropertyName(const QString &lineTemplate) const
 	}
 
 	QString propertyNameString = lineTemplate;
-	QString propertyNameList = "";
+	QString propertyNameList ;
 
-	for (Property *property: mProperties) {
+	for (const Property * const property: mProperties) {
 		if (!property->isReferenceProperty()) {
 			if (!propertyNameList.isEmpty()) {
 				propertyNameList = propertyNameList + " << " + + "\"" + property->name() + "\"";
@@ -397,9 +424,11 @@ QString GraphicType::generatePropertyName(const QString &lineTemplate) const
 	}
 
 	if (propertyNameList.isEmpty()) {
-		propertyNameString.replace(propertyNameListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");;
+		propertyNameString.replace(propertyNameListTag, "*/}//").replace(elementNameTag, name() + "\"){/*");
 	} else {
-		propertyNameString.replace(propertyNameListTag, propertyNameList + ";\n	}//").replace(elementNameTag, name() + "\"){//");
+		propertyNameString
+				.replace(propertyNameListTag, propertyNameList + ";\n	}//")
+				.replace(elementNameTag, name() + "\"){//");
 	}
 
 	return propertyNameString;
@@ -410,49 +439,61 @@ QString GraphicType::generateParents(const QString &lineTemplate) const
 	QString parentsMapString;
 	const QString diagramName = mContext + "::";
 	QString parentName = qualifiedName().remove(diagramName);
-	foreach (const QString child, mChildren) {
+	for (const QString &child : mChildren) {
 		QString tmp = lineTemplate;
-		parentsMapString += tmp.replace(parentNameTag, parentName).replace(childNameTag, child).replace(diagramNameTag, mContext) + endline;
+		parentsMapString += tmp
+				.replace(parentNameTag, parentName)
+				.replace(childNameTag, child)
+				.replace(diagramNameTag, mContext)
+				+ endline;
 	}
 	return parentsMapString;
 }
 
 QString GraphicType::generateContainers(const QString &lineTemplate) const
 {
-	if (!isGraphicalType() || mContains.isEmpty())
+	if (!isGraphicalType() || mContains.isEmpty()) {
 		return "";
+	}
 
 	QString containersList;
 	QString line = lineTemplate;
-	foreach(QString contains, mContains) {
+	for (const QString &contains : mContains) {
 		containersList += "<< \"" + contains + "\" ";
 	}
+
 	line.replace(containersListTag, containersList).replace(elementNameTag, name());
 	return line;
 }
 
 QString GraphicType::generateConnections(const QString &lineTemplate) const
 {
-	if (!isGraphicalType() || mConnections.isEmpty())
+	if (!isGraphicalType() || mConnections.isEmpty()) {
 		return "";
+	}
+
 	QString connectionsList;
 	QString line = lineTemplate;
-	foreach(QString connection, mConnections) {
+	for (const QString &connection : mConnections) {
 		connectionsList += "<< \"" + connection + "\" ";
 	}
+
 	line.replace(connectionsListTag, connectionsList).replace(elementNameTag, name());
 	return line;
 }
 
 QString GraphicType::generateUsages(const QString &lineTemplate) const
 {
-	if (!isGraphicalType() || mUsages.isEmpty())
+	if (!isGraphicalType() || mUsages.isEmpty()) {
 		return "";
+	}
+
 	QString usagesList;
 	QString line = lineTemplate;
-	foreach(QString usage, mUsages) {
+	for (const QString &usage : mUsages) {
 		usagesList += "<< \"" + usage + "\" ";
 	}
+
 	line.replace(usagesListTag, usagesList).replace(elementNameTag, name());
 	return line;
 }
@@ -465,18 +506,28 @@ QString GraphicType::generateEnums(const QString &lineTemplate) const
 
 QString GraphicType::generatePossibleEdges(const QString &lineTemplate) const
 {
-	if (mPossibleEdges.isEmpty())
+	if (mPossibleEdges.isEmpty()) {
 		return "";
+	}
+
 	QString edgesList;
 	QString line = lineTemplate;
 	const QString templ = "qMakePair(qMakePair(QString(\"%1\"),QString(\"%2\")),qMakePair(%3,QString(\"%4\")))";
 	QString directed = "false";
-	foreach(PossibleEdge edge, mPossibleEdges) {
-		if (edge.second.first)
+	for (const PossibleEdge &edge : mPossibleEdges) {
+		if (edge.second.first) {
 			directed = "true";
-		QString current = templ.arg(edge.first.first).arg(edge.first.second).arg(directed).arg(edge.second.second);
+		}
+
+		const QString current = templ
+				.arg(edge.first.first)
+				.arg(edge.first.second)
+				.arg(directed)
+				.arg(edge.second.second);
+
 		edgesList += "<< " + current  + " ";
 	}
+
 	line.replace(possibleEdgesListTag, edgesList).replace(elementNameTag, name());
 	return line;
 }

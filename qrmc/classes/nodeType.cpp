@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,8 +24,9 @@
 using namespace qrmc;
 using namespace qReal;
 
-NodeType::NodeType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, qReal::Id id, const QString &targetDirectory)
-	: GraphicType(*diagram, *api, id, targetDirectory)
+NodeType::NodeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api
+		, const qReal::Id &id, const QString &targetDirectory)
+	: GraphicType(diagram, api, id, targetDirectory)
 {
 }
 
@@ -35,7 +36,7 @@ NodeType::~NodeType()
 
 Type* NodeType::clone() const
 {
-	NodeType *result = new NodeType(mDiagram, &mApi, mId, targetDirectory());
+	NodeType *result = new NodeType(diagram(), mApi, mId, targetDirectory());
 	GraphicType::copyFields(result);
 	return result;
 }

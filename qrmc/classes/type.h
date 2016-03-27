@@ -34,7 +34,7 @@ public:
 	/// @param diagram - diagram to which this type belongs to.
 	/// @param api - repository with metamodel.
 	/// @param id - id of a type in repository.
-	Type(bool isResolved, Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id);
+	Type(bool isResolved, const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id);
 
 	virtual ~Type();
 
@@ -129,7 +129,7 @@ protected:
 
 	/// Diagram this type belongs to.
 	/// Does not have ownership.
-	Diagram *mDiagram;
+	const Diagram *mDiagram;
 
 	/// Id of this type in repository.
 	const qReal::Id mId;
