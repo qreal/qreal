@@ -15,6 +15,19 @@
 #include "databasesSupportPlugin.h"
 
 namespace qReal {
+
+void loadTranslators(const QString &locale)
+{
+	QDir translationsDirectory(qReal::PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
+	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
+	while (directories.hasNext()) {
+		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
+			QTranslator *translator = new QTranslator(qApp);
+			translator->load(translatorFile.absoluteFilePath());
+			QCoreApplication::installTranslator(translator);
+		}
+	}
+}
 namespace databasesSupport {
 
 DatabasesSupportPlugin::DatabasesSupportPlugin()
@@ -35,6 +48,20 @@ DatabasesSupportPlugin::~DatabasesSupportPlugin()
 
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
 {
+	loadTranslators(QLocale::system().name());
+	/*QDir translationsDirectory(qReal::PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
+	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
+	while (directories.hasNext()) {
+		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
+			QTranslator *translator = new QTranslator(qApp);
+			translator->load(translatorFile.absoluteFilePath());
+			QCoreApplication::installTranslator(translator);
+		}
+	}
+
+	mAppTranslator.load("databasesSupport_" + QLocale::system().name());
+	QCoreApplication::installTranslator(&mAppTranslator);*/
+
 	mDatabasesGenerator = new DatabasesGenerator(configurator, mPreferencesPage);
 	mDatabasesReverseEngineer = new DatabasesReverseEngineer(configurator, mPreferencesPage);
 	initActions();
@@ -58,18 +85,22 @@ QList<qReal::ActionInfo> DatabasesSupportPlugin::actions()
 void DatabasesSupportPlugin::initActions()
 {
 	mCheckCorectnessAction = new QAction(tr("Check correctness of the logical schema"), NULL);
+	mCheckCorectnessAction->setShortcut(QKeySequence(Qt::Key_F5));
 	connect(mCheckCorectnessAction, SIGNAL(triggered()), this, SLOT(checkCorrectness()));
 	mActionInfos << ActionInfo(mCheckCorectnessAction, "generators", "tools");
 
 	mGeneratePhysicalModelAction = new QAction(tr("Generate physical model"), NULL);
+	mGeneratePhysicalModelAction->setShortcut(QKeySequence(Qt::Key_F6));
 	connect(mGeneratePhysicalModelAction, SIGNAL(triggered()), this, SLOT(generatePhysicalModel()));
 	mActionInfos << ActionInfo(mGeneratePhysicalModelAction, "generators", "tools");
 
 	mGenerateCodeAction = new QAction(tr("Generate SQL code"), NULL);
+	mGenerateCodeAction->setShortcut(QKeySequence(Qt::Key_F7));
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 	mActionInfos << ActionInfo(mGenerateCodeAction, "generators", "tools");
 
 	mGenerateSchemaAction = new QAction(tr("Generate Schema from file"), NULL);
+	mGenerateSchemaAction->setShortcut(QKeySequence(Qt::Key_F8));
 	connect(mGenerateSchemaAction, SIGNAL(triggered()), mGenerateSchemaWidget, SLOT(open()));
 	mActionInfos << ActionInfo(mGenerateSchemaAction, "generators", "tools");
 }

@@ -18,6 +18,9 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools
 
+TRANSLATIONS = \
+	$$PWD/../../../qrtranslations/ru/plugins/databases/databasesSupport_ru.ts \
+
 addFiles.sources = db.sqlite
 addFiles.path = .
 DEPLOYMENT += addFiles

@@ -27,6 +27,7 @@
 #include <../../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <../../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 #include <../qrgui/preferencesDialog/preferencesPages/behaviourPage.h>
+#include <qrkernel/platformInfo.h>
 
 #include "databasesPreferencesPage.h"
 #include "databasesCustomizer.h"
@@ -45,6 +46,7 @@ class DatabasesSupportPlugin : public QObject, public qReal::ToolPluginInterface
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
 	Q_PLUGIN_METADATA(IID "qReal.databasesSupport.DatabasesSupportPlugin")
+
 public:
 	DatabasesSupportPlugin();
 	~DatabasesSupportPlugin();
@@ -80,6 +82,8 @@ private:
 	GenerateSchemaWidget *mGenerateSchemaWidget;
 
 	QList<qReal::ActionInfo> mActionInfos;
+
+	QTranslator mAppTranslator;
 };
 
 }
