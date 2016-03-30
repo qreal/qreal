@@ -186,8 +186,12 @@ void ActionsManager::onActiveTabChanged(const qReal::TabInfo &info)
 {
 	updateEnabledActions();
 	const bool isDiagramTab = info.type() == qReal::TabInfo::TabType::editor;
-	mRunAction->setEnabled(isDiagramTab);
-	mStopRobotAction->setEnabled(isDiagramTab);
+	/// @todo: hack!
+	mRunAction->setVisible(isDiagramTab);
+	mStopRobotAction->setVisible(isDiagramTab);
+	///
+//	mRunAction->setEnabled(isDiagramTab);
+//	mStopRobotAction->setEnabled(isDiagramTab);
 }
 
 void ActionsManager::onRobotModelActionChecked(QObject *robotModelObject)

@@ -24,7 +24,7 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
 		)
 
-links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
+links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
 		trikControl-x86 trikScriptRunner-x86 \
 		)
