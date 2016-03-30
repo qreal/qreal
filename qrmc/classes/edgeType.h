@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,18 +14,26 @@
 
 #pragma once
 
+#include <QtCore/QList>
+
 #include "graphicType.h"
 #include "label.h"
 
-#include <QtCore/QList>
-
 namespace qrmc {
 
+/// Represents edge of a model graph (a link on a diagram).
 class EdgeType : public GraphicType
 {
 public:
-	EdgeType(Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id, const QString &targetDirectory);
+	/// Constructor.
+	/// @param diagram - diagram this edge belongs to.
+	/// @param api - repository with metamodel.
+	/// @param id - id of an edge in repository.
+	/// @param targetDirectory - directory to generate editor to.
+	EdgeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id, const QString &targetDirectory);
+
 	~EdgeType() override;
+
 	Type* clone() const override;
 
 	bool isGraphicalType() const override;
@@ -38,19 +46,22 @@ public:
 
 	void print() override;
 
-	void initLabels();
 private:
-
+	void initLabels();
 	void generateSdf() const;
 	void generateArrows(QString &edgeClass) const;
 	void generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
-						  const QString &customTag, const QString &brushTag) const;
+			const QString &customTag, const QString &brushTag) const;
 
 	QString mBeginType;
 	QString mEndType;
 	QString mLineType;
 	QStringList mFromPorts;
-	QList<Label*> mLabels; // refactor after #349 is closed
+
+	/// All labels of this edge.
+	/// @todo: refactor after #349 is closed
+	/// Has ownership.
+	QList<Label*> mLabels;
 };
 
 }

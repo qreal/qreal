@@ -21,7 +21,7 @@
 using namespace qrmc;
 using namespace qReal;
 
-EdgeType::EdgeType(Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id
+EdgeType::EdgeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id
 		, const QString &targetDirectory)
 	: GraphicType(diagram, api, id, targetDirectory)
 {
@@ -31,6 +31,7 @@ EdgeType::EdgeType(Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qR
 
 EdgeType::~EdgeType()
 {
+	qDeleteAll(mLabels);
 }
 
 Type* EdgeType::clone() const
@@ -70,7 +71,7 @@ QString EdgeType::generateNodeClass(const QString &classTemplate)
 QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 {
 	QString edgeClass = classTemplate;
-	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram().editor()->metaCompiler();
 
 	QString labelsInitLine;
 	QString labelsUpdateLine;
@@ -80,9 +81,9 @@ QString EdgeType::generateEdgeClass(const QString &classTemplate) const
 	generateArrows(edgeClass);
 
 	for (const Label * const label : mLabels) {
-		labelsInitLine += label->generateInit(&compiler, false) + endline;
-		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
-		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
+		labelsInitLine += label->generateInit(compiler, false) + endline;
+		labelsUpdateLine += label->generateUpdate(compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}
 
 	if (mLabels.isEmpty()) { // no labels
@@ -131,7 +132,7 @@ void EdgeType::generateArrows(QString &edgeClass) const
 void EdgeType::generateArrowEnd(QString &edgeClass, const QString &arrowEnd,
 								const QString &customTag, const QString &brushTag) const
 {
-	MetaCompiler &compiler = diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = diagram().editor()->metaCompiler();
 	if (arrowEnd.isEmpty() || arrowEnd == "no_arrow") {
 		edgeClass.replace(customTag, "").replace(brushTag, "");
 		return;
@@ -178,7 +179,7 @@ void EdgeType::generateSdf() const
 	}
 
 	dir.cd(targetDirectory());
-	QString editorName = diagram()->editor()->name();
+	QString editorName = diagram().editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
 	}
@@ -202,7 +203,7 @@ void EdgeType::generateSdf() const
 		return;
 	}
 
-	const MetaCompiler &compiler = diagram()->editor()->metaCompiler();
+	const MetaCompiler &compiler = diagram().editor()->metaCompiler();
 
 	QString result = compiler.getTemplateUtils(lineSdfTag);
 	result.replace(lineTypeTag, mApi.stringProperty(mId, "lineType"))

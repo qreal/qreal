@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,24 +16,28 @@
 
 #include "nonGraphicType.h"
 
-#include <QStringList>
-#include <QDebug>
-
 namespace qrmc {
-	class EnumType : public NonGraphicType
-	{
-	public:
-		EnumType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, const qReal::Id &id);
 
-		virtual bool init(const QString &context);
-		virtual Type* clone() const;
+/// Represents enumeration --- non-graphical type that denotes a set of predefined values. And can be a type of
+/// a property.
+class EnumType : public NonGraphicType
+{
+public:
+	/// Constructor.
+	/// @param diagram - diagram this enum belongs to.
+	/// @param api - repository with metamodel.
+	/// @param id - id of this element in metamodel.
+	EnumType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id);
 
-		void print();
+	bool init(const QString &context) override;
+	Type* clone() const override;
 
-		virtual QString generateEnums(const QString &lineTemplate) const;
+	void print() override;
 
-	private:
+	QString generateEnums(const QString &lineTemplate) const override;
 
-		QMap<QString, QString> mValues;
-	};
+private:
+	QMap<QString, QString> mValues;
+};
+
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,13 @@
  * limitations under the License. */
 
 #include "enumType.h"
-#include "../utils/nameNormalizer.h"
+
+#include "qrmc/utils/nameNormalizer.h"
 
 using namespace qReal;
 using namespace qrmc;
 
-EnumType::EnumType(Diagram *diagram, const qrRepo::LogicalRepoApi *api, const qReal::Id &id)
+EnumType::EnumType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id)
 	: NonGraphicType(diagram, api, id)
 {
 }
@@ -44,7 +45,7 @@ bool EnumType::init(const QString &context)
 
 Type* EnumType::clone() const
 {
-	EnumType *result = new EnumType(nullptr, &mApi, mId);
+	EnumType *result = new EnumType(diagram(), mApi, mId);
 	Type::copyFields(result);
 	result->mValues = mValues;
 	return result;
@@ -66,7 +67,7 @@ QString EnumType::generateEnums(const QString &lineTemplate) const
 			lineForWrite = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 	}
-	line.replace(qMakeLineTag, lineForWrite).replace(elementNameTag, name());
 
+	line.replace(qMakeLineTag, lineForWrite).replace(elementNameTag, name());
 	return line;
 }

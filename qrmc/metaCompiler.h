@@ -49,8 +49,7 @@ public:
 	/// was loaded.
 	Diagram *getDiagram(const QString &diagramName) const;
 
-	void addResource(const QString &resourceName);
-
+	/// Returns utils template for given template name.
 	QString getTemplateUtils(const QString &tmpl) const;
 
 private:

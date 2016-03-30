@@ -13,14 +13,15 @@
  * limitations under the License. */
 
 #include "type.h"
-#include "property.h"
-#include "../utils/nameNormalizer.h"
 
-#include <QDebug>
+#include "property.h"
+#include "qrmc/utils/nameNormalizer.h"
+
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 
-Type::Type(bool isResolved, Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id)
+Type::Type(bool isResolved, const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id)
 	: mResolvingFinished(isResolved)
 	, mDiagram(&diagram)
 	, mId(id)
@@ -83,19 +84,19 @@ void Type::setDisplayedName(const QString &displayedName)
 	mDisplayedName = displayedName;
 }
 
-Diagram *Type::diagram() const
+const Diagram &Type::diagram() const
 {
-	return mDiagram;
+	return *mDiagram;
 }
 
-QMap<QString, Property*> Type::properties() const
+const QMap<QString, Property *> &Type::properties() const
 {
 	return mProperties;
 }
 
-void Type::setDiagram(Diagram *diagram)
+void Type::setDiagram(Diagram &diagram)
 {
-	mDiagram = diagram;
+	mDiagram = &diagram;
 }
 
 void Type::copyFields(Type *type) const

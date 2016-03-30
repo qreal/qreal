@@ -28,7 +28,7 @@ namespace qrmc {
 		QString name() const;
 		QString type() const;
 		QString defaultValue() const;
-		Property *clone();
+		Property *clone() const;
 		bool operator == (const Property &other) const;
 		bool operator != (const Property &other) const;
 		bool isReferenceProperty() const;

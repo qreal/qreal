@@ -48,7 +48,7 @@ bool Diagram::init()
 		}
 
 		if (id.element() == metaEntityNode) {
-			Type * const nodeType = new NodeType(this, &mApi, id, mTargetDirectory);
+			Type * const nodeType = new NodeType(*this, mApi, id, mTargetDirectory);
 			if (!nodeType->init(mDiagramName)) {
 				delete nodeType;
 				qDebug() << "can't load node";
@@ -74,7 +74,7 @@ bool Diagram::init()
 
 			mImports.append(import);
 		} else if (id.element() == metaEntityEnum) {
-			Type * const enumType = new EnumType(this, &mApi, id);
+			Type * const enumType = new EnumType(*this, mApi, id);
 			if (!enumType->init(mDiagramName)) {
 				delete enumType;
 				qDebug() << "can't load enum";
@@ -103,7 +103,7 @@ bool Diagram::resolve()
 		Type * const copiedType = importedType->clone();
 		copiedType->setName(import.as);
 		copiedType->setDisplayedName(import.displayedName);
-		copiedType->setDiagram(this);
+		copiedType->setDiagram(*this);
 		copiedType->setContext(mDiagramName);
 		mTypes.insert(copiedType->qualifiedName(), copiedType);
 	}
@@ -132,7 +132,7 @@ Type* Diagram::findType(const QString &name) const
 	return mEditor.findType(name);
 }
 
-QMap<QString, Type*> Diagram::types() const
+const QMap<QString, Type *> &Diagram::types() const
 {
 	return mTypes;
 }
@@ -150,11 +150,6 @@ QString Diagram::nodeName() const
 QString Diagram::displayedName() const
 {
 	return mDiagramDisplayedName;
-}
-
-void Diagram::print() const
-{
-	qDebug() << "elements:" << mTypes.size();
 }
 
 QString Diagram::generateMapMethod(const QString& lineTemplate

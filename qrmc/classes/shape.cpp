@@ -76,15 +76,13 @@ void Shape::initLabels(const QDomElement &graphics)
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true, mWidth, mHeight))
+		if (!label->init(element, count, true, mWidth, mHeight)) {
 			delete label;
-		else {
+		} else {
 			mLabels.append(label);
 			++count;
 		}
 	}
-	return;
-
 }
 
 void Shape::initPorts(const QDomElement &graphics)
@@ -139,7 +137,7 @@ void Shape::changeDir(QDir &dir) const
 	}
 
 	dir.cd(mTargetDirectory);
-	QString editorName = mNode->diagram()->editor()->name();
+	QString editorName = mNode->diagram().editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
 	}
@@ -164,7 +162,7 @@ void Shape::generate(QString &classTemplate) const
 
 	generateSdf();
 
-	MetaCompiler &compiler = mNode->diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = mNode->diagram().editor()->metaCompiler();
 	QString unused;
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
@@ -184,7 +182,7 @@ void Shape::generate(QString &classTemplate) const
 							.replace(nodeHeightTag, QString::number(mHeight));
 	QString portsInitLine;
 	for (Port *port : mPorts) {
-		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
+		port->generatePortList(this->mNode->diagram().editor()->getAllPortNames());
 		portsInitLine += port->generateInit(&compiler) + endline;
 	}
 
@@ -192,10 +190,10 @@ void Shape::generate(QString &classTemplate) const
 	QString labelsUpdateLine;
 	QString labelsDefinitionLine;
 
-	foreach(Label *label, mLabels) {
-		labelsInitLine += label->generateInit(&compiler, true) + endline;
-		labelsUpdateLine += label->generateUpdate(&compiler) + endline;
-		labelsDefinitionLine += label->generateDefinition(&compiler) + endline;
+	for (const Label * const label : mLabels) {
+		labelsInitLine += label->generateInit(compiler, true) + endline;
+		labelsUpdateLine += label->generateUpdate(compiler) + endline;
+		labelsDefinitionLine += label->generateDefinition(compiler) + endline;
 	}
 	if (mLabels.isEmpty()) { // no labels
 		labelsUpdateLine = nodeIndent + "Q_UNUSED(repo)" + endline;
