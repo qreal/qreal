@@ -17,20 +17,25 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikQtsInterpreter
 
 public:
 	TrikQtsInterpreter(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
-//	~TrikQtsInterpreter() override;
+	~TrikQtsInterpreter() override;
 
-	void interpretStringScript(const QString &script);
+	void interpretCommand(const QString &script);
+	void interpretScript(const QString &script);
 	void abort();
 
 	void init();
 
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 
+	bool isRunning() const;
+
 private slots:
 	void reportError(const QString &msg);
 
 private:
 	//QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+	bool mRunning;
+
 	TrikBrick mBrick;
 	trikScriptRunner::TrikScriptRunner mScriptRunner;
 	qReal::ErrorReporterInterface *mErrorReporter;

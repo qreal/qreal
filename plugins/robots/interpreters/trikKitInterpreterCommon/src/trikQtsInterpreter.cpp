@@ -4,14 +4,24 @@
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
         const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model
-        ) : mBrick(model), mScriptRunner(mBrick, nullptr, nullptr), mErrorReporter(nullptr)
+		) : mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr, nullptr), mErrorReporter(nullptr)
 {
-	connect(&mBrick, TrikBrick::error, this, trik::TrikQtsInterpreter::reportError);
+	connect(&mBrick, &TrikBrick::error, this, &trik::TrikQtsInterpreter::reportError);
 }
 
-void trik::TrikQtsInterpreter::interpretStringScript(const QString &script)
+trik::TrikQtsInterpreter::~TrikQtsInterpreter()
+{
+	abort();
+}
+
+void trik::TrikQtsInterpreter::interpretCommand(const QString &script)
 {
 	mScriptRunner.runDirectCommand(script);
+}
+
+void trik::TrikQtsInterpreter::interpretScript(const QString &script)
+{
+	mScriptRunner.run(script);
 }
 
 void trik::TrikQtsInterpreter::abort()
@@ -27,6 +37,11 @@ void trik::TrikQtsInterpreter::init()
 void trik::TrikQtsInterpreter::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
 	mErrorReporter = &errorReporter;
+}
+
+bool trik::TrikQtsInterpreter::isRunning() const
+{
+	return mRunning;
 }
 
 void trik::TrikQtsInterpreter::reportError(const QString &msg)

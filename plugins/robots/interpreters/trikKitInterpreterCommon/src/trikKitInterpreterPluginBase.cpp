@@ -21,13 +21,16 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/settingsListener.h>
 
+#include <qrgui/textEditor/qscintillaTextEdit.h>
+
 using namespace trik;
 using namespace qReal;
 
 const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode");
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
-TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
+TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase() :
+	mStart(tr("Start QTS"), nullptr), mStop(tr("Stop QTS"), nullptr)
 {
 }
 
@@ -56,6 +59,8 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 
 	mTwoDRobotModel->setEngine(modelEngine->engine());
 	mTwoDModel.reset(modelEngine);
+
+	connectDevicesConfigurationProvider(devicesConfigurationProvider()); // ... =(
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel->name() });
 
@@ -90,19 +95,56 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	mQtsInterpreter->setErrorReporter(*interpretersInterface.errorReporter());
 
-	QObject::connect(
-			this
+	mMainWindow = &configurer.qRealConfigurator().mainWindowInterpretersInterface();
+
+	mSystemEvents = &configurer.qRealConfigurator().systemEvents();
+
+	/// @todo: refactor?
+	mStart.setObjectName("runQts");
+	mStart.setText(tr("Run program"));
+	mStart.setIcon(QIcon(":/trik/qts/images/run.png"));
+
+	mStop.setObjectName("stopQts");
+	mStop.setText(tr("Stop robot"));
+	mStop.setIcon(QIcon(":/trik/qts/images/stop.png"));
+
+	mStop.setVisible(false);
+	mStart.setVisible(false);
+
+	connect(&configurer.robotModelManager()
+			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this
+			, [this](kitBase::robotModel::RobotModelInterface &model){
+		mIsModelSelected = robotModels().contains(&model);
+//		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];
+//		for (const ActionInfo &action : customActions()) {
+//			if (action.isAction()) {
+//				action.action()->setVisible(robotModels().contains(&model));
+//			} else {
+//				action.menu()->setVisible(robotModels().contains(&model));
+//			}
+//		}
+	});
+
+	connect(&mStart, &QAction::triggered, this, &testStart);
+	connect(&mStop, &QAction::triggered, this, &testStop);
+	// refactor?
+	connect(this
 			, &TrikKitInterpreterPluginBase::started
 			, &configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			);
 
-	QObject::connect( // test
-			this
+	connect(this
 			, &TrikKitInterpreterPluginBase::stopped
 			, &configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretationStopped
 			);
+
+	connect(mSystemEvents
+			, &qReal::SystemEvents::activeTabChanged
+			, this
+			, &TrikKitInterpreterPluginBase::onTabChanged);
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mRealRobotModel.data(), &robotModel::TrikRobotModelBase::rereadSettings);
@@ -145,7 +187,7 @@ QWidget *TrikKitInterpreterPluginBase::quickPreferencesFor(const kitBase::robotM
 
 QList<qReal::ActionInfo> TrikKitInterpreterPluginBase::customActions()
 {
-	return {};
+	return { qReal::ActionInfo(&mStart, "interpreters", "tools"), qReal::ActionInfo(&mStop, "interpreters", "tools") };
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPluginBase::hotKeyActions()
@@ -194,4 +236,51 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 
 	connect(this, &QObject::destroyed, [quickPreferences]() { delete quickPreferences; });
 	return quickPreferences;
+}
+
+void TrikKitInterpreterPluginBase::testStart()
+{
+	mStop.setVisible(true);
+	mStart.setVisible(false);
+	/// todo: bad
+
+
+	auto texttab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
+
+	if (texttab) {
+
+		auto model = mTwoDRobotModel;
+		model->stopRobot(); // testStop?
+		const QString modelName = model->robotId();
+
+		for (const kitBase::robotModel::PortInfo &port : model->configurablePorts()) {
+			const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
+			model->configureDevice(port, deviceInfo);
+		}
+
+		model->applyConfiguration();
+
+		qtsInterpreter()->init();
+
+		emit started();
+		qtsInterpreter()->interpretScript(texttab->text());
+	}
+}
+
+void TrikKitInterpreterPluginBase::testStop()
+{
+	mStop.setVisible(false);
+	mStart.setVisible(true);
+
+	qtsInterpreter()->abort();
+	mTwoDRobotModel->stopRobot();
+	emit stopped(qReal::interpretation::StopReason::userStop);
+}
+
+void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
+{
+	const bool isCodeTab = info.type() == qReal::TabInfo::TabType::code;
+	/// @todo: hack!
+	mStart.setVisible(mIsModelSelected && isCodeTab);
+	mStop.setVisible(mIsModelSelected && isCodeTab);
 }

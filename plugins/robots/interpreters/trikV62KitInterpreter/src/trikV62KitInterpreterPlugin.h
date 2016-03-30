@@ -18,7 +18,7 @@
 
 namespace trik {
 
-class TrikV62KitInterpreterPlugin : public TrikKitInterpreterPluginBase, /*for now*/ public kitBase::DevicesConfigurationProvider
+class TrikV62KitInterpreterPlugin : public TrikKitInterpreterPluginBase
 {
 	Q_OBJECT
 	Q_INTERFACES(kitBase::KitPluginInterface)
@@ -29,15 +29,6 @@ public:
 
 	QString kitId() const override;
 	QString friendlyKitName() const override;
-	QList<qReal::ActionInfo> customActions() override;
-
-private slots:
-	void testStart();
-	void testStop();
-
-private:
-	QAction mStart;
-	QAction mStop;
 
 };
 
