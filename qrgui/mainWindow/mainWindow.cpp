@@ -1365,8 +1365,10 @@ void MainWindow::showGestures()
 	}
 
 	QWidget * const gesturesPainter = getCurrentTab()->mutableScene().gesturesPainterWidget();
-	mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
-	mUi->tabs->setCurrentWidget(gesturesPainter);
+	if (gesturesPainter) {
+		mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
+		mUi->tabs->setCurrentWidget(gesturesPainter);
+	}
 }
 
 void MainWindow::createDiagram(const QString &idString)

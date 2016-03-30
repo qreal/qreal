@@ -62,6 +62,12 @@ public:
 	/// Appends \a port to a list of segments to which edges can be with this instances of this type.
 	void addLinePort(const LinePortInfo &port);
 
+	/// Returns a list of ellipses to which edges can be with this instances of this type.
+	const QList<CircularPortInfo> &circularPorts() const;
+
+	/// Appends \a port to a list of ellipses to which edges can be with this instances of this type.
+	void addCircularPort(const CircularPortInfo &port);
+
 	/// Returns a list of types of all ports on the graphical representation of this element.
 	const QStringList &portTypes() const;
 
@@ -149,6 +155,7 @@ private:
 	QList<qreal> mBorder;
 	QList<PointPortInfo> mPointPorts;
 	QList<LinePortInfo> mLinePorts;
+	QList<CircularPortInfo> mCircularPorts;
 	QStringList mPortTypes;
 	QString mMouseGesture;
 

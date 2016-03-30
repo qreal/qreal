@@ -93,6 +93,19 @@ void NodeElementType::addLinePort(const LinePortInfo &port)
 	}
 }
 
+const QList<CircularPortInfo> &NodeElementType::circularPorts() const
+{
+	return mCircularPorts;
+}
+
+void NodeElementType::addCircularPort(const CircularPortInfo &port)
+{
+	mCircularPorts << port;
+	if (!mPortTypes.contains(port.type)) {
+		mPortTypes << port.type;
+	}
+}
+
 const QStringList &NodeElementType::portTypes() const
 {
 	return mPortTypes;

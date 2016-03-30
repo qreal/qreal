@@ -25,4 +25,8 @@ const char ID_PATH_DIVIDER = '#';
 /// MIME type for drag-and-drop operations inside QReal
 const QString DEFAULT_MIME_TYPE = "application/x-real-uml-data";
 
+#ifndef qUtf8Printable
+# define qUtf8Printable(string) QString(string).toUtf8().constData()
+#endif
+
 }

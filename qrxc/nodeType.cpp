@@ -22,6 +22,7 @@
 #include "xmlCompiler.h"
 #include "pointPort.h"
 #include "linePort.h"
+#include "circularPort.h"
 #include "editor.h"
 #include "nameNormalizer.h"
 #include "label.h"
@@ -38,6 +39,7 @@ NodeType::~NodeType()
 {
 	qDeleteAll(mPointPorts);
 	qDeleteAll(mLinePorts);
+	qDeleteAll(mCircularPorts);
 }
 
 Type* NodeType::clone() const
@@ -51,6 +53,10 @@ Type* NodeType::clone() const
 
 	for (Port *port : mLinePorts) {
 		result->mLinePorts << port->clone();
+	}
+
+	for (Port *port : mCircularPorts) {
+		result->mCircularPorts << port->clone();
 	}
 
 	result->mSdfDomElement = mSdfDomElement;
@@ -143,6 +149,7 @@ bool NodeType::initPorts()
 	mPortsDomElement = portsElement;
 	initPointPorts(portsElement);
 	initLinePorts(portsElement);
+	initCircularPorts(portsElement);
 
 	return true;
 }
@@ -178,6 +185,24 @@ bool NodeType::initLinePorts(const QDomElement &portsElement)
 		}
 
 		mLinePorts << linePort;
+	}
+
+	return true;
+}
+
+bool NodeType::initCircularPorts(const QDomElement &portsElement)
+{
+	for (QDomElement portElement = portsElement.firstChildElement("circularPort");
+			!portElement.isNull();
+			portElement = portElement.nextSiblingElement("circularPort"))
+	{
+		Port *circularPort = new CircularPort();
+		if (!circularPort->init(portElement, mWidth, mHeight)) {
+			delete circularPort;
+			return false;
+		}
+
+		mCircularPorts.append(circularPort);
 	}
 
 	return true;
@@ -234,6 +259,12 @@ void NodeType::generateCode(OutFile &out)
 		out() << ");\n";
 	}
 
+	for (Port * const circlePort : mCircularPorts) {
+		out() << "\t\t\taddCircularPort(";
+		circlePort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		out() << ");\n";
+	}
+
 	out() << "\t\t\tsetResizable(" << boolToString(mIsResizeable) << ");\n"
 			<< "\t\t\tsetContainer(" << boolToString(!mContains.empty()) << ");\n"
 			<< "\t\t\tsetSortingContainer(" << boolToString(mContainerProperties.isSortingContainer) << ");\n";
@@ -262,7 +293,7 @@ void NodeType::generateCode(OutFile &out)
 
 QList<Port *> NodeType::ports() const
 {
-	return mPointPorts + mLinePorts;
+	return mPointPorts + mLinePorts + mCircularPorts;
 }
 
 bool NodeType::copyPorts(NodeType* parent)
@@ -275,7 +306,11 @@ bool NodeType::copyPorts(NodeType* parent)
 		mLinePorts << port->clone();
 	}
 
-	return !parent->mPointPorts.isEmpty() || !parent->mLinePorts.isEmpty();
+	for (Port * const port : parent->mCircularPorts) {
+		mCircularPorts << port->clone();
+	}
+
+	return !parent->mPointPorts.isEmpty() || !parent->mLinePorts.isEmpty() || !parent->mCircularPorts.isEmpty();
 }
 
 void NodeType::generateMouseGesture(OutFile &out)

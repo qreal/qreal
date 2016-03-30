@@ -16,6 +16,7 @@
 
 #include "statPoint.h"
 #include "statLine.h"
+#include "statCircular.h"
 
 namespace qReal {
 namespace gui {
@@ -34,6 +35,10 @@ public:
 	/// Produces objects used for internal operations with the line ports described by \a info.
 	/// Transfers ownership on created objects.
 	QList<StatLine *> createPorts(const QList<LinePortInfo> &infos) const;
+
+	/// Produces objects used for internal operations with the circular ports described by \a info.
+	/// Transfers ownership on created objects.
+	QList<StatCircular *> createPorts(const QList<CircularPortInfo> &infos) const;
 };
 
 }

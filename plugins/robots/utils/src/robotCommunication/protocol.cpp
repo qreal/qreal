@@ -17,8 +17,6 @@
 #include <QtCore/QStateMachine>
 #include <QtCore/QTimer>
 
-#include "utils/robotCommunication/tcpRobotCommunicator.h"
-
 using namespace utils::robotCommunication;
 
 Protocol::Protocol(TcpRobotCommunicatorInterface &communicator, int timeout)
@@ -86,6 +84,6 @@ void Protocol::registerStateIfNeeded(QState * const state)
 		}
 
 		mKnownStates.insert(state);
-		addErrorTransition(state, &TcpRobotCommunicator::connectionError);
+		addErrorTransition(state, &TcpRobotCommunicatorInterface::connectionError);
 	}
 }

@@ -302,6 +302,17 @@ void QrsMetamodelSaver::saveNodePorts(const NodeElementType &node, QDomElement &
 		endElement.setAttribute("endy", QString::number(y2) + (linePort.scalesY2 ? "a" : ""));
 		portElement.setAttribute("type", linePort.type);
 	}
+
+	for (const CircularPortInfo &circlePort : node.circularPorts()) {
+		QDomElement portElement = portsTag.ownerDocument().createElement("circularPort");
+		portsTag.appendChild(portElement);
+		const int x = static_cast<int>(circlePort.center.x() * circlePort.initWidth);
+		const int y = static_cast<int>(circlePort.center.y() * circlePort.initHeight);
+		portElement.setAttribute("x", QString::number(x) + (circlePort.scalesX ? "a" : ""));
+		portElement.setAttribute("y", QString::number(y) + (circlePort.scalesY ? "a" : ""));
+		portElement.setAttribute("r", circlePort.radius);
+		portElement.setAttribute("type", circlePort.type);
+	}
 }
 
 void QrsMetamodelSaver::saveContainerProperties(qrRepo::RepoApi &repo, const NodeElementType &node, const Id &id)

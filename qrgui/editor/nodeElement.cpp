@@ -74,7 +74,8 @@ NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models
 	PortFactory portFactory;
 	mPortHandler = new PortHandler(this, mGraphicalAssistApi
 			, portFactory.createPorts(mType.pointPorts())
-			, portFactory.createPorts(mType.linePorts()));
+			, portFactory.createPorts(mType.linePorts())
+			, portFactory.createPorts(mType.circularPorts()));
 
 	const QList<LabelProperties> labelInfos = mType.labels();
 	for (const LabelProperties &labelInfo : labelInfos) {

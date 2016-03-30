@@ -386,6 +386,21 @@ void QrsMetamodelLoader::parseNodePorts(NodeElementType &node, const QDomElement
 				, startX.isScalable(), startY.isScalable(), endX.isScalable(), endY.isScalable()
 				, initialWidth, initialHeight, type));
 	}
+
+	for (QDomElement circlePort = portsTag.firstChildElement("circularPort")
+			; !circlePort.isNull()
+			; circlePort = circlePort.nextSiblingElement("circularPort"))
+	{
+		const utils::ScalableCoordinate x = utils::ScalableItem::initCoordinate(circlePort.attribute("x"), width);
+		const utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(circlePort.attribute("y"), height);
+		const qreal r = circlePort.attribute("r").toDouble();
+		const int initialWidth = width;
+		const int initialHeight = height;
+		const QString type = circlePort.attribute("type", "NonTyped");
+
+		node.addCircularPort(CircularPortInfo(QPointF(x.value(), y.value()), r, x.isScalable(), y.isScalable()
+				, initialWidth, initialHeight, type));
+	}
 }
 
 void QrsMetamodelLoader::parseContainerProperties(const qrRepo::RepoApi &repo, NodeElementType &node, const Id &id)

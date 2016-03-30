@@ -52,7 +52,7 @@ Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
 	mStopRobotAction->setIcon(QIcon(":/ev3/rbf/images/stop.png"));
 	connect(mStopRobotAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::stopRobot, Qt::UniqueConnection);
 
-	text::Languages::registerLanguage(text::LanguageInfo{ "rbf"
+	text::Languages::registerLanguage(text::LanguageInfo{ "lms"
 			, tr("EV3 Source Code language")
 			, true
 			, 4
@@ -104,7 +104,7 @@ QString Ev3RbfGeneratorPlugin::defaultFilePath(QString const &projectName) const
 
 text::LanguageInfo Ev3RbfGeneratorPlugin::language() const
 {
-	return text::Languages::pickByExtension("rbf");
+	return text::Languages::pickByExtension("lms");
 }
 
 QString Ev3RbfGeneratorPlugin::generatorName() const
