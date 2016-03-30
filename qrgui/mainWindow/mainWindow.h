@@ -39,9 +39,7 @@ class MainWindowUi;
 namespace qReal {
 class Controller;
 class EditorManagerInterface;
-class InterpretedPluginsLoader;
 class ProjectManagerWrapper;
-class ProxyEditorManager;
 class SplashScreen;
 class StartWidget;
 class SystemFacade;
@@ -101,7 +99,7 @@ public:
 	void openShapeEditor(const Id &id
 			, const QString &propertyValue
 			/// @todo: whan passing it by reference the build on travis fails
-			, const EditorManagerInterface *editorManagerProxy
+			, const EditorManagerInterface *editorManager
 			, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
 			, const int &role);
@@ -138,9 +136,6 @@ public:
 	/// Closes tab having given id as root id. If there is no such tab, does nothing.
 	/// @param id Id of a diagram (root element) that we want to close.
 	void closeDiagramTab(const Id &id);
-
-	/// Returns editor manager proxy, which allows to change editor manager implementation.
-	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadEditorPlugins();
@@ -201,9 +196,6 @@ public slots:
 
 	void openFirstDiagram();
 	void changeWindowTitle();
-
-	/// Inits interpreted plugins and adds their actions to the toolbar.
-	void initInterpretedPlugins();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -373,7 +365,6 @@ private:
 
 	Controller *mController;
 	QScopedPointer<ToolPluginManager> mToolManager;
-	QScopedPointer<InterpretedPluginsLoader> mInterpretedPluginLoader;
 	QScopedPointer<PropertyEditorModel> mPropertyModel;
 	text::TextManager *mTextManager;
 

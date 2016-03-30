@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,35 +34,21 @@ HEADERS += \
 	$$PWD/pluginsManagerDeclSpec.h \
 	$$PWD/editorManager.h \
 	$$PWD/toolPluginManager.h \
-	$$PWD/interpreterEditorManager.h \
 	$$PWD/editorManagerInterface.h \
-	$$PWD/proxyEditorManager.h \
 	$$PWD/pattern.h \
 	$$PWD/sdfRenderer.h \
-	$$PWD/interpretedPluginManager.h \
-	$$PWD/interpretedPluginsLoader.h \
 	$$PWD/qrsMetamodelLoader.h \
 	$$PWD/qrsMetamodelSaver.h \
 	$$PWD/details/patternParser.h \
-	$$PWD/details/dynamicElementTypeImpl.h \
-	$$PWD/details/dynamicNodeElementTypeImpl.h \
-	$$PWD/details/dynamicEdgeElementTypeImpl.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
 	$$PWD/toolPluginManager.cpp \
-	$$PWD/interpreterEditorManager.cpp \
-	$$PWD/proxyEditorManager.cpp \
 	$$PWD/pattern.cpp \
 	$$PWD/sdfRenderer.cpp \
-	$$PWD/interpretedPluginManager.cpp \
-	$$PWD/interpretedPluginsLoader.cpp \
 	$$PWD/qrsMetamodelLoader.cpp \
 	$$PWD/qrsMetamodelSaver.cpp \
 	$$PWD/details/patternParser.cpp \
-	$$PWD/details/dynamicElementTypeImpl.cpp \
-	$$PWD/details/dynamicNodeElementTypeImpl.cpp \
-	$$PWD/details/dynamicEdgeElementTypeImpl.cpp \
 
 RESOURCES += \
 	$$PWD/pluginManager.qrc \

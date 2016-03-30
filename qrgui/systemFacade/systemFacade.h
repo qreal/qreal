@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/models/models.h>
 
@@ -40,7 +40,7 @@ public:
 	SystemEvents &events();
 
 private:
-	ProxyEditorManager mEditorManager;
+	EditorManager mEditorManager;
 	models::Models mModels;
 	SystemEvents mEvents;
 };

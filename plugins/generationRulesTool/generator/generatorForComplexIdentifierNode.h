@@ -18,8 +18,6 @@
 #include <QtCore/QVariant>
 #include <QtCore/QSharedPointer>
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
-
 #include "ast/complexIdentifier.h"
 #include "ast/identifier.h"
 #include "ast/node.h"

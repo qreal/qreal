@@ -29,13 +29,11 @@ SUBDIRS += \
 	pluginManager \
 	metaMetaModel \
 	toolPluginInterface \
-	interpretedPluginInterface \
 	thirdparty \
 
 pluginManager.subdir = $$PWD/plugins/pluginManager
 metaMetaModel.subdir = $$PWD/plugins/metaMetaModel
 toolPluginInterface.subdir = $$PWD/plugins/toolPluginInterface
-interpretedPluginInterface.subdir = $$PWD/plugins/interpretedPluginInterface
 
 mainWindow.depends = \
 	systemFacade \
