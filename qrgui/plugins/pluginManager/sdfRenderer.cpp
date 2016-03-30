@@ -899,12 +899,14 @@ SdfIconEngineV2::SdfIconEngineV2(const QDomDocument &document)
 {
 	mRenderer.load(document);
 	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
 SdfIconEngineV2::SdfIconEngineV2(const QDomElement &picture)
 {
 	mRenderer.load(picture);
 	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
 void SdfIconEngineV2::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
