@@ -38,7 +38,7 @@ PropertiesDialog::PropertiesDialog(const EditorManagerInterface &interpreterEdit
 {
 	mUi->setupUi(this);
 
-	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId));
+	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId.type()));
 	mUi->propertiesNamesList->setWrapping(true);
 	updatePropertiesNamesList();
 
@@ -66,7 +66,7 @@ QStringList PropertiesDialog::getPropertiesDisplayedNamesList(const QStringList 
 
 void PropertiesDialog::updatePropertiesNamesList()
 {
-	mPropertiesNames = mInterpreterEditorManager.propertyNames(mId);
+	mPropertiesNames = mInterpreterEditorManager.propertyNames(mId.type());
 	const QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesNamesList->clear();
 	mUi->propertiesNamesList->addItems(propertiesDisplayedNames);

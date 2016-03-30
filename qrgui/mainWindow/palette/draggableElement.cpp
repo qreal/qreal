@@ -189,7 +189,7 @@ void DraggableElement::deleteElement()
 
 void DraggableElement::checkElementForRootDiagramNode()
 {
-	if (mEditorManagerProxy.isRootDiagramNode(mDeletedElementId)) {
+	if (mEditorManagerProxy.isDiagramNode(mDeletedElementId)) {
 		mIsRootDiagramNode = true;
 		QMessageBox messageBox(
 				tr("Warning")

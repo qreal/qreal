@@ -51,7 +51,6 @@ public:
 	QString propertyDescription(const Id &id, const QString &propertyName) const override;
 	QString propertyDisplayedName(const Id &id, const QString &propertyName) const override;
 	QIcon icon(const Id &id) const override;
-	ElementType &elementType(const Id &id) const override;
 
 	IdList containedTypes(const Id &id) const override;
 	bool isEnumEditable(const Id &id, const QString &name) const override;
@@ -98,11 +97,9 @@ public:
 	QString propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const override;
 	IdList children(const Id &parent) const override;
 	QString shape(const Id &id) const override;
-	void updateShape(const Id &id, const QString &graphics) const override;
-	virtual void resetIsHidden(const Id &id) const;
-	virtual QString getIsHidden(const Id &id) const;
+	void resetIsHidden(const Id &id) const override;
+	bool isHidden(const Id &id) const override;
 	void deleteElement(const Id &id) const override;
-	bool isRootDiagramNode(const Id &id) const override;
 	void addNodeElement(const Id &diagram, const QString &name, const QString &displayedName
 			, bool isRootDiagramNode) const override;
 	void addEdgeElement(
@@ -130,11 +127,7 @@ public:
 	Pattern parsePattern(const Id &id) const override;
 	QSize iconSize(const Id &id) const override;
 
-	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const override;
-	IdList propertiesWithTheSameName(
-			const Id &id
-			, const QString &propCurrentName
-			, const QString &propNewName) const override;
+	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString &type) const override;
 
 	QStringList getPropertiesInformation(const Id &id) const override;
 	QStringList getSameNamePropertyParams(const Id &propertyId, const QString &propertyName) const override;

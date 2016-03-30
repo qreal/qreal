@@ -274,9 +274,9 @@ QString ProxyEditorManager::shape(const Id &id) const
 	return mProxiedEditorManager->shape(id);
 }
 
-void ProxyEditorManager::updateShape(const Id &id, const QString &graphics) const
+void ProxyEditorManager::updateShape(const Id &id, const QDomElement &graphicsSdf) const
 {
-	mProxiedEditorManager->updateShape(id, graphics);
+	mProxiedEditorManager->updateShape(id, graphicsSdf);
 }
 
 void ProxyEditorManager::resetIsHidden(const Id &id) const
@@ -284,19 +284,14 @@ void ProxyEditorManager::resetIsHidden(const Id &id) const
 	mProxiedEditorManager->resetIsHidden(id);
 }
 
-QString ProxyEditorManager::getIsHidden(const Id &id) const
+bool ProxyEditorManager::isHidden(const Id &id) const
 {
-	return mProxiedEditorManager->getIsHidden(id);
+	return mProxiedEditorManager->isHidden(id);
 }
 
 void ProxyEditorManager::deleteElement(const Id &id) const
 {
 	mProxiedEditorManager->deleteElement(id);
-}
-
-bool ProxyEditorManager::isRootDiagramNode(const Id &id) const
-{
-	return mProxiedEditorManager->isRootDiagramNode(id);
 }
 
 void ProxyEditorManager::addNodeElement(const Id &diagram, const QString &name
@@ -373,7 +368,7 @@ QSize ProxyEditorManager::iconSize(const Id &id) const
 	return mProxiedEditorManager->iconSize(id);
 }
 
-IdList ProxyEditorManager::elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const
+IdList ProxyEditorManager::elementsWithTheSameName(const Id &diagram, const QString &name, const QString &type) const
 {
 	return mProxiedEditorManager->elementsWithTheSameName(diagram, name, type);
 }

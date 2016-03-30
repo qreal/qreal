@@ -132,8 +132,7 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
 		connect(changeAppearancePaletteAction, SIGNAL(triggered()), SLOT(changeAppearanceActionTriggered()));
 		changeAppearancePaletteAction->setData(element->id().toVariant());
-		if (mLogicalApi.editorManagerInterface().getIsHidden(element->id()) == "true")
-		{
+		if (mLogicalApi.editorManagerInterface().isHidden(element->id())) {
 			QAction * const addElementToPaletteAction = contextMenu.addAction(tr("Add element to palette"));
 			connect(addElementToPaletteAction, SIGNAL(triggered()), SLOT(addElementToPaletteActionTriggered()));
 			addElementToPaletteAction->setData(element->id().toVariant());

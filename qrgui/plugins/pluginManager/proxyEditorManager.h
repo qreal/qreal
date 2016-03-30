@@ -114,11 +114,10 @@ public:
 	QString propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const override;
 	IdList children(const Id &parent) const override;
 	QString shape(const Id &id) const override;
-	void updateShape(const Id &id, const QString &graphics) const override;
-	void resetIsHidden(const Id &id) const;
-	QString getIsHidden(const Id &id) const;
+	void updateShape(const Id &id, const QDomElement &graphicsSdf) const override;
+	void resetIsHidden(const Id &id) const override;
+	bool isHidden(const Id &id) const override;
 	void deleteElement(const Id &id) const override;
-	bool isRootDiagramNode(const Id &id) const override;
 	void addNodeElement(const Id &diagram, const QString &name, const QString &displayedName
 			, bool isRootDiagramNode) const override;
 
@@ -141,7 +140,7 @@ public:
 	Pattern parsePattern(const Id &id) const override;
 	QSize iconSize(const Id &id) const override;
 
-	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const override;
+	IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString &type) const override;
 	IdList propertiesWithTheSameName(const Id &id
 			, const QString &propCurrentName, const QString &propNewName) const override;
 

@@ -1253,10 +1253,9 @@ AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPo
 	return result;
 }
 
-void NodeElement::updateShape(const QString &shape) const
+void NodeElement::updateShape(const QDomElement &graphicsSdf)
 {
-	int FIX_IT_BACK_BITCH = 100500;
-//	mType.updateRendererContent(shape);
+	mRenderer.load(graphicsSdf);
 }
 
 IdList NodeElement::sortedChildren() const

@@ -122,11 +122,10 @@ public:
 	virtual QString propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const = 0;
 	virtual IdList children(const Id &parent) const = 0;
 	virtual QString shape(const Id &id) const = 0;
-	virtual void updateShape(const Id &id, const QString &graphics) const = 0;
+	virtual void updateShape(const Id &id, const QDomElement &graphicsSdf) const = 0;
 	virtual void resetIsHidden(const Id &id) const = 0;
-	virtual QString getIsHidden(const Id &id) const = 0;
+	virtual bool isHidden(const Id &id) const = 0;
 	virtual void deleteElement(const Id &id) const = 0;
-	virtual bool isRootDiagramNode(const Id &id) const = 0;
 	virtual void addNodeElement(const Id &diagram, const QString &name, const QString &displayedName
 			, bool isRootDiagramNode) const = 0;
 	virtual void addEdgeElement(const Id &diagram, const QString &name, const QString &displayedName
@@ -143,7 +142,7 @@ public:
 	virtual Pattern parsePattern(const Id &id) const = 0;
 	virtual QSize iconSize(const Id &id) const = 0;
 
-	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const = 0;
+	virtual IdList elementsWithTheSameName(const Id &diagram, const QString &name, const QString &type) const = 0;
 	virtual IdList propertiesWithTheSameName(const Id &id, const QString &propCurrentName
 			, const QString &propNewName) const = 0;
 

@@ -494,14 +494,6 @@ QIcon InterpreterEditorManager::icon(const Id &id) const
 	return QIcon(engine);
 }
 
-ElementType &InterpreterEditorManager::elementType(const Id &id) const
-{
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-//	InterpreterElementImpl * const type = new InterpreterElementImpl(repoAndMetaIdPair.first, repoAndMetaIdPair.second);
-//	Q_ASSERT(type);
-//	return *type;
-}
-
 IdList InterpreterEditorManager::containedTypes(const Id &id) const
 {
 	IdList containedTypes;
@@ -785,7 +777,7 @@ void InterpreterEditorManager::addProperty(const Id &id, const QString &propDisp
 IdList InterpreterEditorManager::elementsWithTheSameName(
 		const Id &diagram
 		, const QString &name
-		, const QString type
+		, const QString &type
 		) const
 {
 	IdList result;
@@ -799,41 +791,6 @@ IdList InterpreterEditorManager::elementsWithTheSameName(
 			const QPair<Id, Id> editorAndDiagramPair = editorAndDiagram(repo, element);
 			result << Id(repo->name(editorAndDiagramPair.first), repo->name(editorAndDiagramPair.second)
 					, repo->name(element));
-		}
-	}
-
-	return result;
-}
-
-IdList InterpreterEditorManager::propertiesWithTheSameName(
-		const Id &id
-		, const QString &propertyCurrentName
-		, const QString &propertyNewName
-		) const
-{
-	if (propertyDisplayedName(id, propertyCurrentName) == propertyNewName) {
-		return IdList();
-	}
-
-	IdList result;
-	const QPair<qrRepo::RepoApi*, Id> repoAndMetaIdPair = repoAndMetaId(id);
-	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
-	const Id metaId = repoAndMetaIdPair.second;
-
-	for (const Id &idProperty : repo->children(metaId)) {
-		if (idProperty.element() == "MetaEntity_Attribute") {
-			if (repo->hasProperty(idProperty, "maskedNames")) {
-				if (repo->property(idProperty, "maskedNames").toStringList().contains(propertyNewName)) {
-					result << idProperty;
-				}
-			} else {
-				QStringList propertyNames;
-				propertyNames << repo->stringProperty(idProperty, "displayedName");
-				repo->setProperty(idProperty, "maskedNames", propertyNames);
-				if (repo->stringProperty(idProperty, "displayedName") == propertyNewName) {
-					result << idProperty;
-				}
-			}
 		}
 	}
 
@@ -1006,26 +963,18 @@ QString InterpreterEditorManager::shape(const Id &id) const
 	return "";
 }
 
-void InterpreterEditorManager::updateShape(const Id &id, const QString &graphics) const
-{
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	if (repoAndMetaIdPair.second.element() == "MetaEntityNode") {
-		repoAndMetaIdPair.first->setProperty(repoAndMetaIdPair.second, "shape", graphics);
-	}
-}
-
 void InterpreterEditorManager::resetIsHidden(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	repoAndMetaIdPair.first->setProperty(repoAndMetaIdPair.second, "isHidden", "false");
 }
 
-QString InterpreterEditorManager::getIsHidden(const Id &id) const
+bool InterpreterEditorManager::isHidden(const Id &id) const
 {
 	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
 	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
-	return repo->stringProperty(metaId, "isHidden");
+	return repo->stringProperty(metaId, "isHidden").toLower() == "true";
 }
 
 void InterpreterEditorManager::deleteElement(const Id &id) const
@@ -1034,15 +983,6 @@ void InterpreterEditorManager::deleteElement(const Id &id) const
 	qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
 	const Id metaId = repoAndMetaIdPair.second;
 	repo->setProperty(metaId, "isHidden", "true");
-}
-
-bool InterpreterEditorManager::isRootDiagramNode(const Id &id) const
-{
-	QPair<qrRepo::RepoApi*, Id> const repoAndMetaIdPair = repoAndMetaId(id);
-	const qrRepo::RepoApi * const repo = repoAndMetaIdPair.first;
-	const Id metaId = repoAndMetaIdPair.second;
-	QPair<Id, Id> const editorAndDiagramPair = editorAndDiagram(repo, metaId);
-	return repo->stringProperty(editorAndDiagramPair.second, "nodeName") == repo->name(metaId);
 }
 
 void InterpreterEditorManager::setStandartConfigurations(qrRepo::RepoApi *repo, const Id &id, const Id &parent
