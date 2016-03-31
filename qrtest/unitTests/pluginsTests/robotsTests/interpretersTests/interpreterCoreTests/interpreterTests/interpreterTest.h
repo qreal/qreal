@@ -47,7 +47,6 @@ protected:
 	utils::RealTimeline mTimeline;
 	RobotModelInterfaceMock mModel;
 	RobotModelManagerInterfaceMock mModelManager;
-	QScopedPointer<QAction> mFakeConnectToRobotAction;
 	BlocksFactoryManagerInterfaceMock mBlocksFactoryManager;
 	ConfigurationInterfaceMock mConfigurationInterfaceMock;
 	QScopedPointer<interpreterCore::textLanguage::RobotsBlockParser> mParser;

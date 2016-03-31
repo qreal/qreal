@@ -21,7 +21,7 @@
 namespace kitBase {
 
 /// Interface that allows interpreter to communicate with other parts of a system.
-class InterpreterInterface : public kitBase::InterpreterControlInterface
+class ROBOTS_KIT_BASE_EXPORT InterpreterInterface : public kitBase::InterpreterControlInterface
 {
 	Q_OBJECT
 
