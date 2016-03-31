@@ -41,7 +41,6 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &languageToolbox
-		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
@@ -49,7 +48,6 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 	, mState(idle)
 	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(new details::BlocksTable(blocksFactoryManager, robotModelManager))
-	, mActionConnectToRobot(connectToRobotAction)
 	, mSensorVariablesUpdater(robotModelManager, languageToolbox)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 	, mLanguageToolbox(languageToolbox)
@@ -156,7 +154,7 @@ void Interpreter::connectedSlot(bool success, const QString &errorString)
 		}
 	}
 
-	mActionConnectToRobot.setChecked(success);
+	emit connected(success);
 }
 
 void Interpreter::devicesConfiguredSlot()
@@ -259,8 +257,7 @@ void Interpreter::connectToRobot()
 		mRobotModelManager.model().connectToRobot();
 	}
 
-	mActionConnectToRobot.setChecked(
-			mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
+	emit connected(mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
 }
 
 void Interpreter::reportError(const QString &message)

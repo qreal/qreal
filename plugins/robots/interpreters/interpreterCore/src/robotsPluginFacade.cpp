@@ -98,13 +98,14 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mBlocksFactoryManager
 			, mRobotModelManager
 			, *mParser
-			, mActionsManager.connectToRobotAction()
 			);
 
 	registerInterpreter(interpreter);
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::closedMainWindow
 			, &mProxyInterpreter, &kitBase::InterpreterInterface::userStopRobot);
+	connect(&mProxyInterpreter, &kitBase::InterpreterInterface::connected
+			, &mActionsManager.connectToRobotAction(), &QAction::setChecked);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, &mProxyInterpreter, &kitBase::InterpreterInterface::userStopRobot);
 

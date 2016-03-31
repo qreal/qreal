@@ -61,7 +61,6 @@ public:
 			, BlocksFactoryManagerInterface &blocksFactoryManager
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &languageToolbox
-			, QAction &connectToRobotAction
 			);
 
 	~Interpreter() override;
@@ -102,9 +101,6 @@ private:
 	QHash<QString, qReal::interpretation::Thread *> mThreads;  // Has ownership
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	details::BlocksTable *mBlocksTable;  // Has ownership
-
-	/// Action responsible for the connection to the robot
-	QAction &mActionConnectToRobot;
 
 	details::SensorVariablesUpdater mSensorVariablesUpdater;
 	details::Autoconfigurer mAutoconfigurer;

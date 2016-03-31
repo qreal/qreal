@@ -35,6 +35,10 @@ public:
 	/// Returns a list of diagram types that can be interpreted by this instance.
 	virtual qReal::IdList supportedDiagrams() const = 0;
 
+signals:
+	/// Emitted when connection to robot established or was broken.
+	void connected(bool isConnected);
+
 public slots:
 	/// Called when establishing connection to a robot is requested. If connection is already established must
 	/// disconnect from robot. May do nothing if interpretation is running, to avoid leaving robot in with motors

@@ -35,6 +35,7 @@ void ProxyInterpreter::resetInterpreter(InterpreterInterface * const interpreter
 	mProxiedInterpreter = interpreter;
 	connect(mProxiedInterpreter, &InterpreterInterface::started, this, &ProxyInterpreter::started);
 	connect(mProxiedInterpreter, &InterpreterInterface::stopped, this, &ProxyInterpreter::stopped);
+	connect(mProxiedInterpreter, &InterpreterInterface::connected, this, &ProxyInterpreter::connected);
 }
 
 void ProxyInterpreter::connectToRobot()
