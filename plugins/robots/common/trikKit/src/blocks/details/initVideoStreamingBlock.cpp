@@ -23,6 +23,7 @@ InitVideoStreamingBlock::InitVideoStreamingBlock(kitBase::robotModel::RobotModel
 
 void InitVideoStreamingBlock::doJob(trik::robotModel::parts::TrikShell &shell)
 {
-	shell.initVideoStreaming();
+    const qint8 qual = intProperty("Quality");//boolProperty("Evaluate") ? 100 : 10;//eval<QString>("Text") : stringProperty("Text");
+    shell.initVideoStreaming(qual);
 	emit done(mNextBlockId);
 }

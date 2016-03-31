@@ -47,7 +47,7 @@ public:
 	virtual void removeFile(const QString &filePath) = 0;
 
 	/// Enables video streaming on the robot.
-	virtual void initVideoStreaming() = 0;
+    virtual void initVideoStreaming(qint8 qual) = 0;
 };
 
 }

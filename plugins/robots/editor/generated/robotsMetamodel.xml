@@ -1209,6 +1209,14 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+                                        <properties>
+                                                <property displayedName="Quality" type="int" name="Quality">
+                                                        <default>40</default>
+                                                </property>
+                                                <property displayedName="If black and white" type="bool" name="blackwhite">
+                                                        <default>false</default>
+                                                </property>
+                                        </properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>

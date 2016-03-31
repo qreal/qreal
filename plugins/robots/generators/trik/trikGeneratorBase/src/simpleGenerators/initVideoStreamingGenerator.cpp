@@ -17,14 +17,17 @@
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
+using namespace generatorBase::simple;
 
 InitVideoStreamingGenerator::InitVideoStreamingGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "videosensors/initVideoStreaming.t"
-			, {}
+			, "videosensors/initVideoStreaming.t",
+            { Binding::createDirect("@@QUALITY@@", "Quality"),
+                  Binding::createConverting("@@BLACKWHITE@@", "blackwhite"
+                        , customizer.factory()->boolPropertyConverter(id, "blackwhite", false))}
 			, parent)
 {
 }
