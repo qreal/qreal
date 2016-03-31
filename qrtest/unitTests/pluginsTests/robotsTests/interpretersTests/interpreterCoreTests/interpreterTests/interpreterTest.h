@@ -20,11 +20,11 @@
 
 #include <gtest/gtest.h>
 
-#include <interpreterCore/interpreter/interpreterInterface.h>
-#include <interpreterCore/textLanguage/robotsBlockParser.h>
+#include <kitBase/interpreterInterface.h>
 #include <kitBase/robotModel/robotModelInterfaceMock.h>
 #include <kitBase/robotModel/robotModelManagerInterfaceMock.h>
 #include <kitBase/robotModel/configurationInterfaceMock.h>
+#include <interpreterCore/textLanguage/robotsBlockParser.h>
 #include <utils/realTimeline.h>
 
 /// @todo /src/managers
@@ -42,7 +42,7 @@ class InterpreterTest : public testing::Test
 protected:
 	void SetUp() override;
 
-	QScopedPointer<interpreterCore::interpreter::InterpreterInterface> mInterpreter;
+	QScopedPointer<kitBase::InterpreterInterface> mInterpreter;
 	QScopedPointer<QrguiFacade> mQrguiFacade;
 	utils::RealTimeline mTimeline;
 	RobotModelInterfaceMock mModel;

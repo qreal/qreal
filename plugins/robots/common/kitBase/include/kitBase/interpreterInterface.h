@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
 
 #pragma once
 
-#include <QtCore/QObject>
-
 #include <qrkernel/ids.h>
-#include <kitBase/interpreterControlInterface.h>
 
-namespace interpreterCore {
-namespace interpreter {
+#include "kitBase/interpreterControlInterface.h"
+
+namespace kitBase {
 
 /// Interface that allows interpreter to communicate with other parts of a system.
 class InterpreterInterface : public kitBase::InterpreterControlInterface
@@ -34,6 +32,9 @@ public:
 	/// @warning: may return unreal time (for example when 2D model is being interpreted).
 	virtual int timeElapsed() const = 0;
 
+	/// Returns a list of diagram types that can be interpreted by this instance.
+	virtual qReal::IdList supportedDiagrams() const = 0;
+
 public slots:
 	/// Called when establishing connection to a robot is requested. If connection is already established must
 	/// disconnect from robot. May do nothing if interpretation is running, to avoid leaving robot in with motors
@@ -41,5 +42,4 @@ public slots:
 	virtual void connectToRobot() = 0;
 };
 
-}
 }

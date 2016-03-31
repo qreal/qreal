@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
+#include <qrutils/watchListWindow.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <kitBase/eventsForKitPluginInterface.h>
 #include <kitBase/devicesConfigurationWidget.h>
@@ -28,7 +29,7 @@
 #include "interpreterCore/managers/devicesConfigurationManager.h"
 #include "interpreterCore/managers/graphicsWatcherManager.h"
 #include "interpreterCore/managers/blocksFactoryManager.h"
-#include "interpreter/interpreter.h"
+#include "interpreter/proxyInterpreter.h"
 #include "textLanguage/robotsBlockParser.h"
 
 namespace interpreterCore {
@@ -68,8 +69,11 @@ public:
 	/// Returns a helper object for convenient 2D model interface scripting.
 	QObject *guiScriptFacade() const;
 
-	/// Returns diagram interpter`s management interface.
-	interpreter::InterpreterInterface &interpreter() const;
+	/// Returns multable instance of diagram interpter`s management interface.
+	kitBase::InterpreterInterface &interpreter();
+
+	/// Returns immutable instance of diagram interpter`s management interface.
+	const kitBase::InterpreterInterface &interpreter() const;
 
 private:
 	void connectInterpreterToActions();
@@ -87,6 +91,9 @@ private:
 
 	void connectEventsForKitPlugin();
 
+	// Takes ownership
+	void registerInterpreter(kitBase::InterpreterInterface * const interpreter);
+
 	/// After all parts of a plugin are connected to each other, sends notifications about changes which were missed
 	/// during initialization process. For example, model change notification is sent in constructor of settings page,
 	/// before kit plugins were even created, so we need to resend it.
@@ -97,8 +104,10 @@ private:
 
 	QScopedPointer<textLanguage::RobotsBlockParser> mParser;
 
-	/// Main class for robot interpreter. Contains implementation of generic diagram interpreter.
-	interpreter::InterpreterInterface *mInterpreter;  // Has ownership
+	/// Storage robots interpreters. Contains mapping of diagram types to generic diagram interpreters.
+	QMap<qReal::Id, kitBase::InterpreterInterface *> mInterpreters;  // Has ownership
+
+	interpreterCore::interpreter::ProxyInterpreter mProxyInterpreter;
 
 	/// Page with plugin settings. Created here, but then ownership is passed to a caller of preferencesPage().
 	ui::RobotsSettingsPage *mRobotSettingsPage;  // Does not have ownership

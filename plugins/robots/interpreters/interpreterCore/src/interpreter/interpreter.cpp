@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,11 @@
 using namespace qReal;
 using namespace interpreterCore::interpreter;
 using namespace kitBase::robotModel;
+
+const IdList supportedDiagramTypes = {
+		Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")
+		, Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram")
+};
 
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const int maxThreadsCount = 100;
@@ -130,6 +135,11 @@ int Interpreter::timeElapsed() const
 	return mState == interpreting
 			? mRobotModelManager.model().timeline().timestamp() - mInterpretationStartedTimestamp
 			: 0;
+}
+
+IdList Interpreter::supportedDiagrams() const
+{
+	return supportedDiagramTypes;
 }
 
 void Interpreter::connectedSlot(bool success, const QString &errorString)

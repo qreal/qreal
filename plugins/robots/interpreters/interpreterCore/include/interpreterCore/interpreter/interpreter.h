@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
-#include <qrutils/watchListWindow.h>
 #include <qrutils/interpreter/thread.h>
 #include <qrtext/languageToolboxInterface.h>
 
+#include <kitBase/interpreterInterface.h>
 #include <kitBase/robotModel/robotModelManagerInterface.h>
 #include <kitBase/devicesConfigurationProvider.h>
 
@@ -31,7 +31,6 @@
 #include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
 #include "interpreterCore/interpreter/details/autoconfigurer.h"
 
-#include "interpreterCore/interpreter/interpreterInterface.h"
 
 namespace interpreterCore {
 namespace interpreter {
@@ -39,7 +38,7 @@ namespace interpreter {
 /// Interprets robot diagram by executing blocks and sending commands to robot model. Manages models, connection,
 /// threads, parser, can automatically configure robot by used blocks on diagram. It is the main class for
 /// all interpretation subsystem.
-class Interpreter : public InterpreterInterface, public kitBase::DevicesConfigurationProvider
+class Interpreter : public kitBase::InterpreterInterface, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -72,6 +71,7 @@ public slots:
 	void interpret() override;
 	void stopRobot(qReal::interpretation::StopReason reason = qReal::interpretation::StopReason::userStop) override;
 	int timeElapsed() const override;
+	qReal::IdList supportedDiagrams() const override;
 
 private slots:
 	void threadStopped(qReal::interpretation::StopReason reason);

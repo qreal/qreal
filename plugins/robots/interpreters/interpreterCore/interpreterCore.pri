@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2013-2016 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ HEADERS += \
 	$$PWD/include/interpreterCore/customizer.h \
 	$$PWD/include/interpreterCore/defaultRobotModel.h \
 	$$PWD/include/interpreterCore/interpreter/interpreter.h \
-	$$PWD/include/interpreterCore/interpreter/interpreterInterface.h \
+	$$PWD/include/interpreterCore/interpreter/proxyInterpreter.h \
 	$$PWD/include/interpreterCore/interpreter/details/autoconfigurer.h \
 	$$PWD/include/interpreterCore/interpreter/details/blocksTable.h \
 	$$PWD/include/interpreterCore/interpreter/details/sensorVariablesUpdater.h \
@@ -64,6 +64,7 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
+	$$PWD/src/interpreter/proxyInterpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \

@@ -130,7 +130,7 @@ void InterpreterTest::SetUp()
 			));
 
 	mInterpreterStopped = false;
-	QObject::connect(mInterpreter.data(), &InterpreterInterface::stopped, [this]() {
+	QObject::connect(mInterpreter.data(), &kitBase::InterpreterInterface::stopped, [this]() {
 		mEventLoop.exit();
 		mInterpreterStopped = true;
 	});
