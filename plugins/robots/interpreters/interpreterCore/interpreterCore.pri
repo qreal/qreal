@@ -25,7 +25,7 @@ includes(plugins/robots/interpreters/interpreterCore \
 		qrtext \
 )
 
-LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/bin/x86-$$CONFIGURATION
+LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
 # TODO:
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \

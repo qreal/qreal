@@ -29,6 +29,8 @@ public:
 
 	bool isRunning() const;
 
+	void setRunning(bool running);
+
 private slots:
 	void reportError(const QString &msg);
 

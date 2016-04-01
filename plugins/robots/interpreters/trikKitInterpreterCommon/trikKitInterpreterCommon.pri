@@ -29,6 +29,8 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		trikControl-x86 trikScriptRunner-x86 \
 		)
 
+LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
+
 HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/declSpec.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/display.h \
