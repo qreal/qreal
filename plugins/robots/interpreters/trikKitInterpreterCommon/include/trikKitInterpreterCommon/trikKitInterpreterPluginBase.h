@@ -72,8 +72,8 @@ public:
 	TrikQtsInterpreter * qtsInterpreter() const;
 
 signals:
-	started();
-	stopped(qReal::interpretation::StopReason reason);
+	void started();
+	void stopped(qReal::interpretation::StopReason reason);
 
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership

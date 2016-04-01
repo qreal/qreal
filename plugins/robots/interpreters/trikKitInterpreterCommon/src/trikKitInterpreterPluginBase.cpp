@@ -113,7 +113,6 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(&configurer.robotModelManager()
 			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
-			, this
 			, [this](kitBase::robotModel::RobotModelInterface &model){
 		mIsModelSelected = robotModels().contains(&model);
 //		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];
@@ -126,8 +125,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 //		}
 	});
 
-	connect(&mStart, &QAction::triggered, this, &testStart);
-	connect(&mStop, &QAction::triggered, this, &testStop);
+	connect(&mStart, &QAction::triggered, this, &trik::TrikKitInterpreterPluginBase::testStart);
+	connect(&mStop, &QAction::triggered, this, &trik::TrikKitInterpreterPluginBase::testStop);
 	// refactor?
 	connect(this
 			, &TrikKitInterpreterPluginBase::started

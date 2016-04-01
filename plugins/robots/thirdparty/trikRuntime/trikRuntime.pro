@@ -39,4 +39,4 @@ trikNetwork.depends = trikKernel qslog
 trikScriptRunner.depends = trikControl trikKernel trikNetwork qslog
 trikHal.depends = qslog trikKernel
 
-copyToDestdir(trikRuntime/bin/x86-$$CONFIGURATION, NOW)
+copyToDestdir($$PWD/trikRuntime/bin/x86-$$CONFIGURATION)

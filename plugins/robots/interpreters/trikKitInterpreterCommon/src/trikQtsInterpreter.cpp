@@ -22,11 +22,13 @@ void trik::TrikQtsInterpreter::interpretCommand(const QString &script)
 void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 {
 	mScriptRunner.run(script);
+	mRunning = true;
 }
 
 void trik::TrikQtsInterpreter::abort()
 {
 	mScriptRunner.abort();
+	mRunning = false;
 }
 
 void trik::TrikQtsInterpreter::init()
@@ -48,4 +50,9 @@ void trik::TrikQtsInterpreter::reportError(const QString &msg)
 {
 	mErrorReporter->addError(msg);
 //	mBrick.abort(); what if there are more errors?
+}
+
+void trik::TrikQtsInterpreter::setRunning(bool running)
+{
+	mRunning = running;
 }
