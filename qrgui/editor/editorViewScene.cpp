@@ -820,7 +820,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
-		if (e->name() == "Table") {
+		if (e->id().element() == "Table") {
 			mSelectedTableId = e->id();
 			QAction *tableMenuAction = new QAction(this);
 			tableMenuAction->setText("Table menu");
