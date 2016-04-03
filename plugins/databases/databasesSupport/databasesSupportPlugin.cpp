@@ -16,18 +16,6 @@
 
 namespace qReal {
 
-void loadTranslators(const QString &locale)
-{
-	QDir translationsDirectory(qReal::PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
-	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
-	while (directories.hasNext()) {
-		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
-			QTranslator *translator = new QTranslator(qApp);
-			translator->load(translatorFile.absoluteFilePath());
-			QCoreApplication::installTranslator(translator);
-		}
-	}
-}
 namespace databasesSupport {
 
 DatabasesSupportPlugin::DatabasesSupportPlugin()
@@ -48,20 +36,6 @@ DatabasesSupportPlugin::~DatabasesSupportPlugin()
 
 void DatabasesSupportPlugin::init(PluginConfigurator const &configurator)
 {
-	loadTranslators(QLocale::system().name());
-	/*QDir translationsDirectory(qReal::PlatformInfo::invariantSettingsPath("pathToTranslations") + "/" + locale);
-	QDirIterator directories(translationsDirectory, QDirIterator::Subdirectories);
-	while (directories.hasNext()) {
-		for (const QFileInfo &translatorFile : QDir(directories.next()).entryInfoList(QDir::Files)) {
-			QTranslator *translator = new QTranslator(qApp);
-			translator->load(translatorFile.absoluteFilePath());
-			QCoreApplication::installTranslator(translator);
-		}
-	}
-
-	mAppTranslator.load("databasesSupport_" + QLocale::system().name());
-	QCoreApplication::installTranslator(&mAppTranslator);*/
-
 	mDatabasesGenerator = new DatabasesGenerator(configurator, mPreferencesPage);
 	mDatabasesReverseEngineer = new DatabasesReverseEngineer(configurator, mPreferencesPage);
 	initActions();
