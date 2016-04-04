@@ -1,1 +1,1 @@
-model.AnalogSensor.["@@PORT@@"].Read()
+{ Sonar sensor is not supported yet }

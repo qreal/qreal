@@ -1,2 +1,2 @@
-while not (robot.Sensor@@PORT@@ @@SIGN@@ @@DISTANCE@@) do
+while not (model.AnalogSensors[Trik.SensorPort.@@PORT@@].Read() @@SIGN@@ @@DISTANCE@@) do
     model.Sleep(10);

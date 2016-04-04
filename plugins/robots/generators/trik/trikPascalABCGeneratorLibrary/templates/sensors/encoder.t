@@ -1,1 +1,1 @@
-model.encoder.["@@PORT@@"].Read()
+model.Encoders[Trik.EncoderPort.@@PORT@@].Read()

@@ -1,1 +1,1 @@
-model.AnalogSensor.["F1"].Read()
+{ Motion sensor is not supported yet }

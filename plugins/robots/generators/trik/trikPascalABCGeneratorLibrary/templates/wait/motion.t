@@ -1,2 +1,1 @@
-while not (robot.Sensor["F1"].Read() = 0) do
-    model.Sleep(10)
+{ Waiting for motion sensor is not supported yet }
