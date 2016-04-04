@@ -27,12 +27,12 @@ void ProgressBar::reportOperation(const QFuture<void> &operation, const QString 
 {
 	Q_UNUSED(description)
 	QFutureWatcher<void> * const watcher = new QFutureWatcher<void>(this);
-	watcher->setFuture(operation);
 	connect(watcher, &QFutureWatcher<void>::started, this, &QProgressBar::reset);
 	connect(watcher, &QFutureWatcher<void>::progressRangeChanged, this, &QProgressBar::setRange);
 	connect(watcher, &QFutureWatcher<void>::progressValueChanged, this, &QProgressBar::setValue);
 	connect(watcher, &QFutureWatcher<void>::progressTextChanged, this, &QProgressBar::setFormat);
 	mCurrentWatcher = watcher;
+	watcher->setFuture(operation);
 }
 
 const QFutureWatcher<void> &ProgressBar::currentOperation() const

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,12 @@
 
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
-#include "fantom.h"
-
-class QextSerialPort;
+class libusb_device_handle;
 
 namespace nxt {
 namespace communication {
+
+class NxtUsbDriverInstaller;
 
 class UsbRobotCommunicationThread : public utils::robotCommunication::RobotCommunicationThreadInterface
 {
@@ -36,12 +36,18 @@ public:
 	~UsbRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
-	void connect();
-	void reconnect();
-	void disconnect();
-	void allowLongJobs(bool allow = true);
-	void checkConsistency();
+	bool send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
+	bool connect() override;
+	void reconnect() override;
+	void disconnect() override;
+	void allowLongJobs(bool allow = true) override;
+
+	/// Searches for NXT brick in formware mode, connects to it, returns success of this operation.
+	bool connectFirmware();
+
+signals:
+	/// Emitted when attempt to connect failed because no NXT drivers installer on the machine.
+	void noDriversFound();
 
 private slots:
 	/// Checks if robot is connected
@@ -54,17 +60,15 @@ private slots:
 private:
 	static const int kStatusNoError = 0;
 
-	bool isOpen();
+	bool connectImpl(bool firmwareMode, int pid, int vid, const QString &notConnectedErrorText);
+	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
 
-	void send(const QByteArray &buffer, const unsigned responseSize
-			, QByteArray &outputBuffer);
-
-	bool mActive;
-	unsigned long mNXTHandle;
-	Fantom *mFantom;
+	libusb_device_handle *mHandle;
+	bool mFirmwareMode;
 
 	/// Timer that sends messages to robot to check that connection is still alive
 	QTimer *mKeepAliveTimer;
+	QScopedPointer<NxtUsbDriverInstaller> mDriverInstaller;
 
 	bool mStopped;
 };

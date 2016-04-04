@@ -43,6 +43,7 @@ RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 	connect(mRobotCommunicator, &RobotCommunicator::errorOccured, this, &RealRobotModel::errorOccured);
+	connect(mRobotCommunicator, &RobotCommunicator::messageArrived, this, &RealRobotModel::messageArrived);
 	mRobotCommunicator->setRobotCommunicationThreadObject(communicationThread);
 }
 
@@ -59,11 +60,6 @@ void RealRobotModel::connectToRobot()
 void RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();
-}
-
-void RealRobotModel::checkConnection()
-{
-	mRobotCommunicator->checkConsistency();
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
