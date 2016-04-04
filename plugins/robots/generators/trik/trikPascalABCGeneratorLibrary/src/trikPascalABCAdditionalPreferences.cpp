@@ -43,7 +43,8 @@ void TrikPascalABCAdditionalPreferences::restoreSettings()
 	mUi->pascalAbcLineEdit->setText(SettingsManager::value("PascalABCPath").toString());
 }
 
-void TrikPascalABCAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
+void TrikPascalABCAdditionalPreferences::onRobotModelChanged(
+		kitBase::robotModel::RobotModelInterface * const robotModel)
 {
 	mUi->pascalAbcSettingsGroupBox->setVisible(robotModel->name() == mRobotName);
 }
