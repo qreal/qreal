@@ -14,7 +14,7 @@
 
 #include "usbRealRobotModel.h"
 
-#include "communication/usbRobotCommunicationThread.h"
+#include <nxtKit/communication/usbRobotCommunicationThread.h>
 
 using namespace nxt::robotModel::real;
 

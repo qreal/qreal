@@ -64,13 +64,6 @@ RobotCommunicationThreadInterface *RobotCommunicator::currentCommunicator() cons
 	return mRobotCommunicationThreadObject;
 }
 
-void RobotCommunicator::checkConsistency()
-{
-	if (mRobotCommunicationThreadObject) {
-		mRobotCommunicationThreadObject->checkConsistency();
-	}
-}
-
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
 {
 	if (mRobotCommunicationThreadObject) {
@@ -93,6 +86,6 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 			, this, &RobotCommunicator::response);
 	QObject::connect(mRobotCommunicationThreadObject, &RobotCommunicationThreadInterface::errorOccured
 			, this, &RobotCommunicator::errorOccured);
-
-	mRobotCommunicationThreadObject->checkConsistency();
+	QObject::connect(mRobotCommunicationThreadObject, &RobotCommunicationThreadInterface::messageArrived
+			, this, &RobotCommunicator::messageArrived);
 }

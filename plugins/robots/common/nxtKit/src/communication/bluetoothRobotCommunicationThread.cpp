@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "bluetoothRobotCommunicationThread.h"
+#include "nxtKit/communication/bluetoothRobotCommunicationThread.h"
 
 #include <QtCore/QMetaType>
 #include <QtCore/QTimer>
@@ -22,10 +22,10 @@
 #include <qrkernel/settingsManager.h>
 #include <plugins/robots/thirdparty/qextserialport/src/qextserialport.h>
 
-#include "commandConstants.h"
+#include "nxtKit/communication/nxtCommandConstants.h"
 
-const unsigned keepAliveResponseSize = 9;
-const unsigned getFirmwareVersionResponseSize = 9;
+const int keepAliveResponseSize = 9;
+const int getFirmwareVersionResponseSize = 9;
 
 using namespace nxt::communication;
 
@@ -41,24 +41,25 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 	disconnect();
 }
 
-void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, const unsigned responseSize)
+bool BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
-		return;
+		return false;
 	}
 
-	send(buffer);
+	const bool result = send(buffer);
 	if (buffer.size() >= 3 && buffer[2] == enums::errorCode::success) {
 		const QByteArray result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
 	}
+
+	return result;
 }
 
-void BluetoothRobotCommunicationThread::connect()
+bool BluetoothRobotCommunicationThread::connect()
 {
 	if (mPort) {
 		disconnect();
@@ -85,10 +86,11 @@ void BluetoothRobotCommunicationThread::connect()
 
 	send(command);
 	const QByteArray response = receive(getFirmwareVersionResponseSize);
-
-	emit connected(response != QByteArray(), QString());
+	emit connected(!response.isEmpty(), QString());
 
 	mKeepAliveTimer->start(500);
+
+	return !response.isEmpty();
 }
 
 void BluetoothRobotCommunicationThread::reconnect()
@@ -113,16 +115,16 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow)
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
-		, const unsigned responseSize, QByteArray &outputBuffer)
+bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
-	send(buffer);
+	const bool result = send(buffer);
 	outputBuffer = receive(responseSize);
+	return result;
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
+bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	mPort->write(buffer);
+	return mPort->write(buffer) > 0;
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
@@ -150,8 +152,4 @@ void BluetoothRobotCommunicationThread::checkForConnection()
 	if (response == QByteArray()) {
 		emit disconnected();
 	}
-}
-
-void BluetoothRobotCommunicationThread::checkConsistency()
-{
 }

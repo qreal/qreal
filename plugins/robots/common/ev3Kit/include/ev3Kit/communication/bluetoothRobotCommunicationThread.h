@@ -31,21 +31,20 @@ public:
 	~BluetoothRobotCommunicationThread();
 
 public slots:
-	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);
-	void connect();
+	bool send(QObject *addressee, const QByteArray &buffer, int responseSize);
+	bool connect();
 	void reconnect();
 	void disconnect();
 
 	void allowLongJobs(bool allow = true);
-	void checkConsistency();
 
 private slots:
 	/// Checks if robot is connected
 	void checkForConnection();
 
 private:
-	void send(const QByteArray &buffer, const unsigned responseSize, QByteArray &outputBuffer) override;
-	void send(const QByteArray &buffer) const override;
+	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
+	bool send(const QByteArray &buffer) const override;
 	void keepAlive();
 
 	QByteArray receive(int size) const override;

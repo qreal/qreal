@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 namespace nxt {
 
-const unsigned maxMessageSize = 59;
-const unsigned i2cBufferSize = 24;
+const int maxMessageSize = 59;
+const int i2cBufferSize = 24;
 
 namespace enums {
 
@@ -52,6 +52,24 @@ enum CommandCodeEnum {
 	, LSREAD  // = 0x10
 	, GETCURRENTPROGRAMNAME
 	, MESSAGEREAD
+};
+}
+
+namespace systemCommandCode {
+enum SystemCommandCodeEnum {
+	openRead                = 0x80
+	, openWrite             = 0x81
+	, read                  = 0x82
+	, write                 = 0x83
+	, close                 = 0x84
+	, deleteCommand         = 0x85
+	, findFirst             = 0x86
+	, findNext              = 0x87
+	, getVersions           = 0x88
+	, openWriteLinear       = 0x89
+	, openReadLinear        = 0x8A
+	, openWriteData         = 0x8B
+	, openAppendData        = 0x8C
 };
 }
 
