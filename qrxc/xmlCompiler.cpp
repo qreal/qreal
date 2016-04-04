@@ -243,6 +243,7 @@ void XmlCompiler::generateInitPlugin(OutFile &out)
 		<< "\n"
 		<< "\tinitMultigraph();\n"
 		<< "\tinitNameMap();\n"
+		<< "\tinitEnums();\n"
 		<< "\tinitPaletteGroupsMap();\n"
 		<< "\tinitPaletteGroupsDescriptionMap();\n"
 		<< "\tinitShallPaletteBeSortedMap();\n"
