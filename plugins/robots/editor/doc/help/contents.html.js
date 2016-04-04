@@ -30,6 +30,7 @@ document.write('\
                     <ul>\
                         <li><a href="trik.html#textual-programming-qts">Qt Script</a></li>\
                         <li><a href="trik.html#textual-programming-fsharp">F#</a></li>\
+                        <li><a href="trik.html#textual-programming-pascal">Pascal</a></li>\
                     </ul>\
                     <li><a href="trik.html#run-programs">Запуск программ</a></li>\
                     <ul>\
