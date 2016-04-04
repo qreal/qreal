@@ -1,0 +1,1 @@
+Random(@@UPPER_BOUND@@)
