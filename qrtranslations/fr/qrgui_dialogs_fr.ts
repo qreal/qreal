@@ -382,14 +382,12 @@
 <context>
     <name>qReal::ProgressBar</name>
     <message>
-        <location filename="../../qrgui/dialogs/progressDialog/progressBar.cpp" line="118"/>
         <source>%p% - canceled</source>
-        <translation>%p% - annulé</translation>
+        <translation type="vanished">%p% - annulé</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/progressDialog/progressBar.cpp" line="119"/>
         <source>canceled</source>
-        <translation>annulé</translation>
+        <translation type="vanished">annulé</translation>
     </message>
 </context>
 <context>

@@ -62,7 +62,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 
 void Display::printText(int x, int y, const QString &text)
 {
-	Canvas::printText(x, y, text);
+	Canvas::printText(x, y + textSize, text);
 }
 
 void Display::clearScreen()

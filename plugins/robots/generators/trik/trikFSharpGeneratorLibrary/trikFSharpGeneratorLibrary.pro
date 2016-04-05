@@ -20,8 +20,6 @@ QT += widgets network
 
 TEMPLATE = lib
 
-copyToDestdir($$PWD/lib/Trik.Core.dll)
-
 DEFINES += ROBOTS_TRIK_FSHARP_GENERATOR_LIBRARY
 
 includes( \

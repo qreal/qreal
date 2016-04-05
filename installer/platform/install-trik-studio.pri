@@ -22,11 +22,13 @@ unix:!macx {
 	DATADIR = $$PREFIX/share
 	PROGRAMDIR = $$DATADIR/trikStudio
 	PLUGINDIR = $$LIBDIR/trikStudio
+	CONFFILE = /etc/trikStudio.config
 
 	#MAKE INSTALL
 
 	res.path = $$PROGRAMDIR
-	res.extra = install -Dp -m0755 bin/release/qreal $(INSTALL_ROOT)$$BINDIR/trikStudio;\
+	res.extra = install -Dp -m0755 bin/release/qreal $(INSTALL_ROOT)$$BINDIR/qreal;\
+	install -Dp -m0755 installer/platform/trikStudio.sh $(INSTALL_ROOT)$$BINDIR/trikStudio;\
 	test -d $(INSTALL_ROOT)$$LIBDIR/ || mkdir -p $(INSTALL_ROOT)$$LIBDIR/;\
 	cp -a bin/release/*.so* $(INSTALL_ROOT)$$LIBDIR;\
 	test -d $(INSTALL_ROOT)$$PLUGINDIR || mkdir -p $(INSTALL_ROOT)$$PLUGINDIR;\
@@ -37,17 +39,18 @@ unix:!macx {
 	cp -a bin/release/examples $(INSTALL_ROOT)$$PROGRAMDIR/;\
 	cp -a bin/release/splashscreen.png $(INSTALL_ROOT)$$PROGRAMDIR/images;\
 	test -d $(INSTALL_ROOT)/etc || mkdir -p $(INSTALL_ROOT)/etc;\
-	echo 'pathToLogs=\~/.config/logs/' > $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToImages=$$PROGRAMDIR/images/iconset1/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToHelp=$$PROGRAMDIR/help/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToTranslations=$$PROGRAMDIR/translations/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToTrikRuntime=$$PROGRAMDIR/trikRuntime/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToGeneratorRoot=$$PROGRAMDIR/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToExamples=$$PROGRAMDIR/examples/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToEditorPlugins=$$PLUGINDIR/editors/" >> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToToolPlugins=$$PLUGINDIR/tools/">> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToKitPlugins=$$PLUGINDIR/tools/kitPlugins/">> $(INSTALL_ROOT)/etc/trikStudio.conf;\
-	echo "pathToSplashscreen=$$PROGRAMDIR/images/splashscreen.png">> $(INSTALL_ROOT)/etc/trikStudio.conf;\
+	echo 'pathToLogs=.config/trikStudio/logs/' > $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToImages=$$PROGRAMDIR/images/iconset1/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToHelp=$$PROGRAMDIR/help/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToTranslations=$$PROGRAMDIR/translations/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToTrikRuntime=$$PROGRAMDIR/trikRuntime/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToPascalRuntime=$$PROGRAMDIR/trikSharp/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToGeneratorRoot=$$PROGRAMDIR/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToExamples=$$PROGRAMDIR/examples/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToEditorPlugins=$$PLUGINDIR/editors/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToToolPlugins=$$PLUGINDIR/tools/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToKitPlugins=$$PLUGINDIR/tools/kitPlugins/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToSplashscreen=$$PROGRAMDIR/images/splashscreen.png" >> $(INSTALL_ROOT)$$CONFFILE;\
 	test -d $(INSTALL_ROOT)$$DATADIR/icons/hicolor/16x16/apps || mkdir -p $(INSTALL_ROOT)$$DATADIR/icons/hicolor/16x16/apps;\
 	cp -a installer/images/trik-studio-16x16.png $(INSTALL_ROOT)$$DATADIR/icons/hicolor/16x16/apps/trikStudio.png;\
 	test -d $(INSTALL_ROOT)$$DATADIR/icons/hicolor/32x32/apps || mkdir -p $(INSTALL_ROOT)$$DATADIR/icons/hicolor/32x32/apps;\

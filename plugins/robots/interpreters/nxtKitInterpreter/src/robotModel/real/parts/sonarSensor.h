@@ -15,8 +15,9 @@
 #pragma once
 
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
+#include <nxtKit/communication/i2cCommunicator.h>
+
 #include "nxtInputDevice.h"
-#include "communication/i2cCommunicator.h"
 
 namespace nxt {
 namespace robotModel {

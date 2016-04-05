@@ -261,7 +261,12 @@ void PaletteTreeWidgets::refreshUserPalette()
 		groups << qMakePair(mUserGroupTitle, groupElements);
 	}
 
-	mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
+	// This condition will filter out most of the cases.
+	if (groupElements.toSet() != mUserTree->elementsSet()) {
+		mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
+	} else if (groupElements.isEmpty()) {
+		mUserTree->hide();
+	}
 }
 
 void PaletteTreeWidgets::filter(const QRegExp &regexp)
