@@ -162,8 +162,8 @@ protected:
 	QMap<QString, bool> mEnumsEditability;
 	QMap<QString, QString> mDiagramFriendlyNames;
 	QMap<QString, QString> mDiagramNodes;
-	QMultiMap<QString, QString> mPaletteGroups;
-	QMap<QString, QMultiMap<QString, QString>> mPaletteGroupContents;
+	QMap<QString, QStringList> mPaletteGroups;
+	QMap<QString, QMap<QString, QStringList>> mPaletteGroupContents;
 	QMap<QString, QMap<QString, QString>> mPaletteGroupDescriptions;
 	QMap<QString, bool> mPaletteSorting;
 };

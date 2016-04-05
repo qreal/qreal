@@ -134,22 +134,22 @@ void Metamodel::setDiagramNode(const QString &diagram, const QString &elementNam
 
 QStringList Metamodel::diagramPaletteGroups(const QString &diagram) const
 {
-	return mPaletteGroups.values(diagram);
+	return mPaletteGroups[diagram];
 }
 
 void Metamodel::appendDiagramPaletteGroup(const QString &diagram, const QString &group)
 {
-	mPaletteGroups.insert(diagram, group);
+	mPaletteGroups[diagram] << group;
 }
 
 QStringList Metamodel::diagramPaletteGroupList(const QString &diagram, const QString &group) const
 {
-	return mPaletteGroupContents[diagram].values(group);
+	return mPaletteGroupContents[diagram][group];
 }
 
 void Metamodel::addElementToDiagramPaletteGroup(const QString &diagram, const QString &group, const QString &element)
 {
-	mPaletteGroupContents[diagram].insert(group, element);
+	mPaletteGroupContents[diagram][group] << element;
 }
 
 QString Metamodel::diagramPaletteGroupDescription(const QString &diagram, const QString &group) const
@@ -157,7 +157,8 @@ QString Metamodel::diagramPaletteGroupDescription(const QString &diagram, const 
 	return mPaletteGroupDescriptions[diagram][group];
 }
 
-void Metamodel::setDiagramPaletteGroupDescription(const QString &diagram, const QString &group, const QString &description)
+void Metamodel::setDiagramPaletteGroupDescription(const QString &diagram
+		, const QString &group, const QString &description)
 {
 	mPaletteGroupDescriptions[diagram][group] = description;
 }
