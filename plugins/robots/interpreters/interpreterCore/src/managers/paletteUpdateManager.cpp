@@ -17,6 +17,8 @@
 using namespace interpreterCore;
 using namespace kitBase;
 
+const qReal::Id robotsDiagram("RobotsMetamodel", "RobotsDiagram");
+
 PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
 		, const BlocksFactoryManagerInterface &factoryManager, QObject *parent)
 	: QObject(parent)
@@ -28,8 +30,8 @@ PaletteUpdateManager::PaletteUpdateManager(qReal::gui::MainWindowInterpretersInt
 void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &currentModel)
 {
 	mPaletteProvider.beginPaletteModification();
-	mPaletteProvider.setEnabledForAllElementsInPalette(false);
-	mPaletteProvider.setVisibleForAllElementsInPalette(false);
+	mPaletteProvider.setEnabledForAllElementsInPalette(robotsDiagram, false);
+	mPaletteProvider.setVisibleForAllElementsInPalette(robotsDiagram, false);
 
 	for (const qReal::Id &id : mFactoryManager.visibleBlocks(currentModel)) {
 		mPaletteProvider.setElementInPaletteVisible(id, true);
@@ -39,5 +41,13 @@ void PaletteUpdateManager::updatePalette(robotModel::RobotModelInterface &curren
 		mPaletteProvider.setElementInPaletteEnabled(id, true);
 	}
 
+	mPaletteProvider.endPaletteModification();
+}
+
+void PaletteUpdateManager::disableAll()
+{
+	mPaletteProvider.beginPaletteModification();
+	mPaletteProvider.setEnabledForAllElementsInPalette(robotsDiagram, false);
+	mPaletteProvider.setVisibleForAllElementsInPalette(robotsDiagram, false);
 	mPaletteProvider.endPaletteModification();
 }

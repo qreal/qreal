@@ -31,6 +31,7 @@
 #include "interpreterCore/managers/blocksFactoryManager.h"
 #include "interpreter/proxyInterpreter.h"
 #include "textLanguage/robotsBlockParser.h"
+#include "interpreterCore/managers/paletteUpdateManager.h"
 
 namespace interpreterCore {
 
@@ -79,7 +80,7 @@ private:
 	void connectInterpreterToActions();
 
 	/// @returns true, if kit selection successful, false when no kit plugins are loaded.
-	bool selectKit(const qReal::PluginConfigurator &configurer);
+	bool selectKit();
 
 	void initSensorWidgets();
 
@@ -124,6 +125,7 @@ private:
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 	BlocksFactoryManager mBlocksFactoryManager;
 	kitBase::EventsForKitPluginInterface mEventsForKitPlugin;
+	PaletteUpdateManager *mPaletteUpdateManager;  // Has ownership via Qt paren-child system
 };
 
 }

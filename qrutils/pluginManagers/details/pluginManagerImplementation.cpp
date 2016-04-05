@@ -44,8 +44,8 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 	QList<QObject *> listOfPlugins;
 
 	for (const QString &fileName : mPluginsDir.entryList(QDir::Files)) {
-		QPair<QObject *, QString> const pluginAndError =  loadPluginByName(fileName);
-		QObject * const pluginByName = pluginAndError.first;
+		const QPair<QObject *, QString> pluginAndError = loadPluginByName(fileName);
+		const QObject * pluginByName = pluginAndError.first;
 		if (pluginByName) {
 			listOfPlugins.append(pluginByName);
 			mFileNameAndPlugin.insert(fileName, pluginByName);
@@ -59,9 +59,9 @@ QList<QObject *> PluginManagerImplementation::loadAllPlugins()
 
 QPair<QObject *, QString> PluginManagerImplementation::loadPluginByName(const QString &pluginName)
 {
-	QPluginLoader * const loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
+	const QPluginLoader * loader = new QPluginLoader(mPluginsDir.absoluteFilePath(pluginName), qApp);
 	loader->load();
-	QObject * const plugin = loader->instance();
+	const QObject * plugin = loader->instance();
 
 	if (plugin) {
 		mLoaders.append(qMakePair(pluginName, loader));

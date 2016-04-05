@@ -22,7 +22,6 @@
 #include <twoDModel/engine/twoDModelGuiFacade.h>
 #include <twoDModel/robotModel/twoDRobotModel.h>
 
-#include "interpreterCore/managers/paletteUpdateManager.h"
 #include "interpreterCore/managers/kitAutoSwitcher.h"
 #include "interpreterCore/interpreter/interpreter.h"
 #include "src/coreBlocks/coreBlocksFactory.h"
@@ -65,7 +64,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, configurer.projectManager()
 			));
 
-	if (!selectKit(configurer)) {
+	if (!selectKit()) {
 		/// @todo Correctly handle unselected kit.
 		return;
 	}
@@ -113,11 +112,10 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	initSensorWidgets();
 
-	auto paletteUpdateManager = new PaletteUpdateManager(configurer.mainWindowInterpretersInterface()
+	mPaletteUpdateManager = new PaletteUpdateManager(configurer.mainWindowInterpretersInterface()
 			, mBlocksFactoryManager, this);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, paletteUpdateManager, &PaletteUpdateManager::updatePalette);
-	mDevicesConfigurationManager->connectDevicesConfigurationProvider(interpreter);
+			, mPaletteUpdateManager, &PaletteUpdateManager::updatePalette);
 
 	// It will subscribe to all signals itself and free memory too.
 	new KitAutoSwitcher(configurer.projectManager(), configurer.logicalModelApi()
@@ -256,7 +254,7 @@ void RobotsPluginFacade::connectInterpreterToActions()
 			);
 }
 
-bool RobotsPluginFacade::selectKit(const qReal::PluginConfigurator &configurer)
+bool RobotsPluginFacade::selectKit()
 {
 	/// @todo reinit it each time when robot model changes
 	/// @todo: do we need this method?
@@ -264,7 +262,7 @@ bool RobotsPluginFacade::selectKit(const qReal::PluginConfigurator &configurer)
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		qReal::SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		configurer.mainWindowInterpretersInterface().setEnabledForAllElementsInPalette(false);
+		mPaletteUpdateManager->disableAll();
 
 		/// @todo Correctly handle unselected kit.
 		return false;
@@ -398,6 +396,8 @@ void RobotsPluginFacade::registerInterpreter(kitBase::InterpreterInterface * con
 
 	if (allDiagramsAlreadyRegistered) {
 		delete interpreter;
+	} else if (auto provider = dynamic_cast<kitBase::DevicesConfigurationProvider *>(interpreter)) {
+		mDevicesConfigurationManager->connectDevicesConfigurationProvider(provider);
 	}
 }
 
