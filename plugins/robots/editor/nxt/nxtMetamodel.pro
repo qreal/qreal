@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Dmitry Mordvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QREAL_XML = robotsMetamodel.xml
+QREAL_XML = nxtMetamodel.xml
 QREAL_XML_DEPENDS =  \
 		$$PWD/../../../commonMetamodels/kernelMetamodel.xml \
 		$$PWD/../../../commonMetamodels/basicBehaviorsMetamodel.xml \
 		$$PWD/../../../commonMetamodels/basicActionsMetamodel.xml \
 
-QREAL_EDITOR_PATH = robots/editor/generated
+QREAL_EDITOR_PATH = robots/editor/nxt
 ROOT = ../../../..
 
 include($$PWD/../../../editorsSdk/editorsCommon.pri)

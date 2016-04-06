@@ -1,4 +1,4 @@
-# Copyright 2012-2016 Yurii Litvinov, Dmitry Mordvinov
+# Copyright 2016 Dmitry Mordvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Here must be the call to QRMC console generator
+HEADERS = $$PWD/generated/pluginInterface.h $$PWD/generated/elements.h
 
-TEMPLATE = subdirs
+SOURCES = $$PWD/generated/pluginInterface.cpp
 
-SUBDIRS = \
-	doc \
-	images \
-	common \
-	nxt \
-	ev3 \
-	trik \
-
-common.file = $$PWD/common/robotsMetamodel.pro
-nxt.file = $$PWD/nxt/nxtMetamodel.pro
-ev3.file = $$PWD/ev3/ev3Metamodel.pro
-trik.file = $$PWD/trik/trikMetamodel.pro
-
-nxt.depends = common
-ev3.depends = common
-trik.depends = common
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/nxtMetamodel_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/nxtMetamodel_fr.ts \
