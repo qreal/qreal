@@ -42,6 +42,13 @@
 				<value name="B3"/>
 				<value name="B4"/>
 			</enum>
+			<enum name="JpgEncoderQuality">
+				<value name="15" displayedName="15"/>
+				<value name="30" displayedName="30"/>
+				<value name="60" displayedName="60"/>
+				<value name="80" displayedName="80"/>
+				<value name="90" displayedName="90"/>
+			</enum>
 			<enum name="TrikV62EncoderPort">
 				<value name="E1"/>
 				<value name="E2"/>
@@ -1210,12 +1217,17 @@
 				</graphics>
 				<logic>
                                         <properties>
+					  <!--
                                                 <property displayedName="Quality" type="int" name="Quality">
                                                         <default>40</default>
                                                 </property>
+					  -->
                                                 <property displayedName="If black and white" type="bool" name="blackwhite">
                                                         <default>false</default>
                                                 </property>
+						<property displayedName="Quality" type="JpgEncoderQuality" name="Quality">
+							<default>60</default>
+						</property>
                                         </properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -2855,7 +2867,7 @@
 						<property displayedName="Text" type="string" name="Text">
 							<default>Hi!</default>
 						</property>
-						<property displayedName="Evaluate" type="bool" name="Evaluate">
+                                                <property displayedName="Evaluate" type="bool" name="Evaluate">
 							<default>false</default>
 						</property>
 					</properties>

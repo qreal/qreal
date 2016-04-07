@@ -26,8 +26,9 @@ InitVideoStreamingGenerator::InitVideoStreamingGenerator(const qrRepo::RepoApi &
 	: BindingGenerator(repo, customizer, id
 			, "videosensors/initVideoStreaming.t",
             { Binding::createDirect("@@QUALITY@@", "Quality"),
-                  Binding::createConverting("@@BLACKWHITE@@", "blackwhite"
-                        , customizer.factory()->boolPropertyConverter(id, "blackwhite", false))}
+                       Binding::createDirect("@@WHITEBLACK@@", "blackwhite")}
+           //       Binding::createConverting("@@BLACKWHITE@@", "blackwhite"
+            //            , customizer.factory()->boolPropertyConverter(id, "blackwhite", false))}
 			, parent)
 {
 }
