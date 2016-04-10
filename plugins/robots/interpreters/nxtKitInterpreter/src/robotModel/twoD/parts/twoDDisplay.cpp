@@ -79,6 +79,7 @@ void Display::paint(QPainter *painter)
 	painter->setPen(pen);
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
+	painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
 	Canvas::paint(painter);
 

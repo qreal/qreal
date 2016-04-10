@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/nxt/osek">
         <file>defaultSettings.ini</file>
+        <!-- Acknowledgements to David Anderson for flashing routine implementation in his libnxt masterpiece. -->
+        <file>flash.bin</file>
         <file>images/generateOsekCode.svg</file>
         <file>images/flashRobot.svg</file>
         <file>images/uploadProgram.svg</file>

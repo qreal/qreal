@@ -48,6 +48,7 @@ void Label::init()
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable);
 	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+	connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
 
 	reinitFont();
 	setRotation(mProperties.rotation());
@@ -171,12 +172,12 @@ void Label::updateData(bool withUndoRedo)
 	} else if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
-		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
 				: enumText(value);
-		parent->setLogicalProperty(mProperties.binding(), repoValue, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());
@@ -186,6 +187,11 @@ void Label::updateData(bool withUndoRedo)
 void Label::reinitFont()
 {
 	setFont(BrandManager::fonts()->sceneLabelsFont());
+}
+
+void Label::saveToRepo()
+{
+	updateData(false);
 }
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)

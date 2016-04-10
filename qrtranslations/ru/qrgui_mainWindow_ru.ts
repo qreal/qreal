@@ -4,12 +4,12 @@
 <context>
     <name>ErrorListWidget</name>
     <message>
-        <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="46"/>
+        <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="48"/>
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="47"/>
+        <location filename="../../qrgui/mainWindow/errorListWidget.cpp" line="49"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
@@ -474,37 +474,37 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="106"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="110"/>
         <source>Project was automaticly converted to version %1. Please check its contents.</source>
         <translation>Проект был автоматически преобразован до версии %1. Пожалуйста, проверьте его содержимое.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="117"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="121"/>
         <source>The attempt to automaticly convert this project to the current enviroment version failed and thus save file can`t be opened. </source>
         <translation>Попытка автоматического преобразования проекта до версии среды закончилась неудачно, файл сохранения не может быть открыт.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="127"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="131"/>
         <source>This project was created by version %1 of the editor.</source>
         <translation>Данный проект был создан редактором версии %1.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="128"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="132"/>
         <source>This project was created by too old version of the editor.</source>
         <translation>Данный проект был создан редактором слишком старой версии.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="130"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="134"/>
         <source> It is now considered outdated and cannot be opened.</source>
         <translation> Он устарел и не может быть открыт.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="137"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="141"/>
         <source>The save you are trying to open is made by version %1 of editor, whitch is newer than currently installed enviroment. Update your version before opening this save.</source>
         <translation>Проект был создан версией %1 редактора, которая новее, чем версия данной среды, обновитесь.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="146"/>
+        <location filename="../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp" line="150"/>
         <source>Can`t open project file</source>
         <translation>Не могу открыть проект</translation>
     </message>
@@ -717,140 +717,140 @@
         <translation type="vanished">Завершить тест</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="700"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="718"/>
         <source>About QReal</source>
         <translation>О QReal</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="724"/>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="735"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="743"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="754"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="724"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="743"/>
         <source>Plugin unloading failed: </source>
         <translation>Выгрузка плагина завершилась ошибкой: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="735"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="754"/>
         <source>Plugin loading failed: </source>
         <translation>Загрузка плагина завершилась ошибкой: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="826"/>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="843"/>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="869"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="845"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="862"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="888"/>
         <source>Shape Editor</source>
         <translation>Редактор формы фигур</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="861"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="880"/>
         <source>Text Editor</source>
         <translation>Текстовый редактор</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1132"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1151"/>
         <source>Open project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1133"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1152"/>
         <source>Save project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1134"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1153"/>
         <source>Save project as</source>
         <translation>Сохранить проект как</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1135"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1154"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1127"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1146"/>
         <source>New diagram</source>
         <translation>Создать диаграмму</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1136"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1155"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1137"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1156"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1138"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1157"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1139"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1158"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1140"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1159"/>
         <source>Close current tab</source>
         <translation>Закрыть текущую вкладку</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1141"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1160"/>
         <source>Close all tabs</source>
         <translation>Закрыть все вкладки</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1142"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1161"/>
         <source>Print</source>
         <translation>Печать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1143"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1162"/>
         <source>Find</source>
         <translation>Найти</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1144"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1163"/>
         <source>Show all text</source>
         <translation>Показать весь текст</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1145"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1164"/>
         <source>Toggle errors panel</source>
         <translation>Показать/спрятать панель ошибок</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1355"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1375"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1639"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1658"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1898"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1924"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1929"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1955"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1929"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1955"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2083"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2109"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -947,57 +947,57 @@
 <context>
     <name>qReal::ProjectManagerWrapper</name>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="61"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="65"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="62"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="66"/>
         <source>&amp;Save</source>
         <translation>&amp;Сохранить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="63"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="67"/>
         <source>&amp;Cancel</source>
         <translation>&amp;Отмена</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="64"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="68"/>
         <source>&amp;Discard</source>
         <translation>&amp;Не сохранять</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="65"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="69"/>
         <source>Do you want to save current project?</source>
         <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="153"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="157"/>
         <source>Unsaved project</source>
         <translation>Несохраненный проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="160"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="164"/>
         <source> [modified]</source>
         <translation> [изменён]</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="240"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="246"/>
         <source>Select file to save current metamodel to</source>
         <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="256"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="262"/>
         <source>QReal Save File (*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="259"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="265"/>
         <source>All files (*.*)</source>
         <translation>Все файлы (*.*)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="275"/>
+        <location filename="../../qrgui/mainWindow/projectManager/projectManagerWrapper.cpp" line="285"/>
         <source>QReal Save File(*.qrs)</source>
         <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
@@ -1013,59 +1013,59 @@
 <context>
     <name>qReal::StartWidget</name>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="116"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="121"/>
         <source>Open existing project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="126"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="131"/>
         <source>New project</source>
         <translation>Создать проект</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="142"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="147"/>
         <source>Open interpreted diagram</source>
         <translation>Открыть интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="144"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="149"/>
         <source>Create interpreted diagram</source>
         <translation>Создать интерпретируемую диаграмму</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="180"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="185"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="269"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="274"/>
         <source>Create </source>
         <translation>Создать </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="273"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="278"/>
         <source>Editor: </source>
         <translation>Редактор: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="273"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="278"/>
         <source>; Diagram: </source>
         <translation>; Диаграмма: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="286"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="291"/>
         <source>Select file with metamodel to open</source>
         <translation>Выберите файл метамодели для интерпретации</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="325"/>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="328"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="330"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="333"/>
         <source>Enter the diagram name:</source>
         <translation>Введите имя диаграммы:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="325"/>
-        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="328"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="330"/>
+        <location filename="../../qrgui/mainWindow/startWidget/startWidget.cpp" line="333"/>
         <source>diagram name:</source>
         <translation>имя диаграммы:</translation>
     </message>
@@ -1073,73 +1073,73 @@
 <context>
     <name>qReal::gui::DraggableElement</name>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="80"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="82"/>
         <source>Mouse gesture</source>
         <translation>Жест мышью</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="165"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="155"/>
         <source>Deleting an element: </source>
         <translation>Удаление элемента: </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="166"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="156"/>
         <source>Do you really want to delete this item and all its graphicalrepresentation from the scene and from the palette?</source>
         <translation>Вы действительно хотите удалить данный элемент  и все его графические представления со сцены и из палитры?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="174"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="214"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="252"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="164"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="204"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="242"/>
         <source>Yes</source>
         <translation>Да</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="175"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="215"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="253"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="165"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="205"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="243"/>
         <source>No</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="205"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="238"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="195"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="228"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="206"/>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="239"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="196"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="229"/>
         <source>The deleted element </source>
         <translation>Удаляемый элемент </translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="207"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="197"/>
         <source> is the element of root digram. Continue to delete?</source>
         <translation> является элементом корневой диаграммы. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="241"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="231"/>
         <source> has inheritors:</source>
         <translation> имеет наследников:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="244"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="234"/>
         <source>If you delete it, its properties will be removed fromthe elements-inheritors. Continue to delete?</source>
         <translation>Если вы удалите его, то все унаследованные свойства будут удалены у его потомков. Продолжить удаление?</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="320"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="310"/>
         <source>Change Properties</source>
         <translation>Изменить свойства</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="325"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="315"/>
         <source>Change Appearance</source>
         <translation>Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="330"/>
+        <location filename="../../qrgui/mainWindow/palette/draggableElement.cpp" line="320"/>
         <source>Delete Element</source>
         <translation>Удалить элемент</translation>
     </message>
@@ -1147,22 +1147,22 @@
 <context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="187"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="212"/>
         <source>INFORMATION:</source>
         <translation>ИНФОРМАЦИЯ:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="189"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="214"/>
         <source>WARNING:</source>
         <translation>ПРЕДУПРЕЖДЕНИЕ:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="191"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="216"/>
         <source>ERROR:</source>
         <translation>ОШИБКА:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="193"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="218"/>
         <source>CRITICAL:</source>
         <translation>КРИТИЧЕСКАЯ ОШИБКА:</translation>
     </message>

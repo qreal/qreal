@@ -86,6 +86,7 @@ private:
 	void init();
 	void reinitFont();
 
+	void saveToRepo();
 	void updateData(bool withUndoRedo = false);
 	void updateRect(QPointF newBottomRightPoint);
 	void setText(const QString &text);

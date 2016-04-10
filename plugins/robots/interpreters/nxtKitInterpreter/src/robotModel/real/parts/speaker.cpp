@@ -13,7 +13,8 @@
  * limitations under the License. */
 
 #include "speaker.h"
-#include "commandConstants.h"
+
+#include <nxtKit/communication/nxtCommandConstants.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;

@@ -77,8 +77,13 @@ void NxtOsekCGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::Ro
 {
 	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
 	checkNxtTools();
-	mUploadProgramAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
-	mFlashRobotAction->setVisible(mNxtToolsPresent && &model == robotModels()[0]);
+	mUploadProgramAction->setVisible(&model == robotModels()[0]);
+	mFlashRobotAction->setVisible(&model == robotModels()[0]);
+	mUploadProgramAction->setEnabled(mNxtToolsPresent);
+	mFlashRobotAction->setEnabled(mNxtToolsPresent);
+	const QString tooltip = mNxtToolsPresent ? QString() : tr("NXT tools package is not installed");
+	mUploadProgramAction->setToolTip(tooltip);
+	mFlashRobotAction->setToolTip(tooltip);
 }
 
 void NxtOsekCGeneratorPlugin::onCurrentDiagramChanged(const TabInfo &info)
@@ -92,7 +97,7 @@ void NxtOsekCGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configu
 {
 	RobotsGeneratorPluginBase::init(configurator);
 
-	mFlashTool = new NxtFlashTool(mMainWindowInterface->errorReporter());
+	mFlashTool = new NxtFlashTool(*mMainWindowInterface->errorReporter(), mCommunicator);
 	connect(mFlashTool, &NxtFlashTool::uploadingComplete, this, &NxtOsekCGeneratorPlugin::onUploadingComplete);
 }
 
@@ -217,7 +222,7 @@ void NxtOsekCGeneratorPlugin::uploadProgram()
 
 void NxtOsekCGeneratorPlugin::checkNxtTools()
 {
-	QDir dir(PlatformInfo::invariantSettingsPath("pathToNxtTools"));
+	const QDir dir(PlatformInfo::invariantSettingsPath("pathToNxtTools"));
 	if (!dir.exists()) {
 		mNxtToolsPresent = false;
 	} else {
@@ -226,19 +231,13 @@ void NxtOsekCGeneratorPlugin::checkNxtTools()
 		QDir nxtOSEK(dir.absolutePath() + "/nxtOSEK");
 
 #ifdef Q_OS_WIN
-		QFile flash(dir.absolutePath() + "/flash.bat");
-		QFile upload1(dir.absolutePath() + "/upload.bat");
-		QFile upload2(dir.absolutePath() + "/upload.sh");
-
-		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && flash.exists()
-				&& upload1.exists() && upload2.exists();
+		QFile compile1(dir.absolutePath() + "/compile.bat");
+		QFile compile2(dir.absolutePath() + "/compile.sh");
+		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists()
+				&& compile1.exists() && compile2.exists();
 #else
-		QDir libnxt(dir.absolutePath() + "/libnxt");
-		QFile flash(dir.absolutePath() + "/flash.sh");
-		QFile upload(dir.absolutePath() + "/upload.sh");
-
-		mNxtToolsPresent = gnuarm.exists() && libnxt.exists() && nexttool.exists() && nxtOSEK.exists()
-				&& flash.exists() && upload.exists();
+		QFile compile(dir.absolutePath() + "/compile.sh");
+		mNxtToolsPresent = gnuarm.exists() && nexttool.exists() && nxtOSEK.exists() && compile.exists();
 #endif
 	}
 }

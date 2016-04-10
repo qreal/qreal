@@ -44,6 +44,7 @@ unix:!macx {
 	echo "pathToHelp=$$PROGRAMDIR/help/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToTranslations=$$PROGRAMDIR/translations/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToTrikRuntime=$$PROGRAMDIR/trikRuntime/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToPascalRuntime=$$PROGRAMDIR/trikSharp/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToGeneratorRoot=$$PROGRAMDIR/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToExamples=$$PROGRAMDIR/examples/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToEditorPlugins=$$PLUGINDIR/editors/" >> $(INSTALL_ROOT)$$CONFFILE;\
