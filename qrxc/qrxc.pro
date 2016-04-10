@@ -29,6 +29,7 @@ HEADERS += \
 	numericType.h \
 	pointPort.h \
 	port.h \
+	portType.h \
 	property.h \
 	sdftocpp.h \
 	stringType.h \
@@ -52,6 +53,7 @@ SOURCES += \
 	numericType.cpp \
 	pointPort.cpp \
 	port.cpp \
+	portType.cpp \
 	property.cpp \
 	sdftocpp.cpp \
 	stringType.cpp \
