@@ -168,7 +168,7 @@ void Label::updateData(bool withUndoRedo)
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 
 	if (!mProperties.nameForRoleProperty().isEmpty()) {
-		parent->setLogicalProperty(mProperties.nameForRoleProperty(), value, withUndoRedo);
+		parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);
 	} else if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {

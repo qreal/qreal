@@ -370,7 +370,7 @@ void XmlCompiler::generateListProperiesOfRole(OutFile &out)
 	out() << "QStringList " << mPluginName << "Plugin::getListProperiesOfRole(const QString &element) const\n{\n";
 	//	<< "\tQList<QPair<QString, QPair<QString, QStringList>>> mAllRolesWithProperties;\n"
 
-	out() << "\QStringList result;\n";
+	out() << "\tQStringList result;\n";
 	out() << "\tfor (auto role : mAllRolesWithProperties) {\n";
 	out() << "\t\tif (role.first == element) {\n";
 //	out() << "\t\t\t for (auto temp : role.second) {\n";
@@ -453,7 +453,7 @@ void XmlCompiler::initAllRolesWithProperties(OutFile &out)
 			out() << "\ttemp = qMakePair(QString(\"" << name << "\")," << name << ");\n";
 
 			out() << "\tpair = qMakePair(QString(\"" << nameOfRole << "\"), temp);\n";
-			out() << "\mAllRolesWithProperties.append(pair);\n\n";
+			out() << "\tmAllRolesWithProperties.append(pair);\n\n";
 
 		}
 	}

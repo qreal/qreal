@@ -57,7 +57,9 @@ SOURCES += \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	roleType.cpp	circularPort.cpp \
+	roleType.cpp \
+	circularPort.cpp \
+
 TEMPLATE = app
 QT += xml gui
 CONFIG += console
