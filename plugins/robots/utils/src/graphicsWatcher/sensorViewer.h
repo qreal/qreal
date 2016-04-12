@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Ivan Senin, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,10 @@
 #include "pointsQueueProcessor.h"
 
 namespace utils {
+
+class AbstractTimer;
+class TimelineInterface;
+
 namespace sensorsGraph {
 
 /// An area with real time plotting
@@ -41,6 +45,7 @@ public:
 	void resizeEvent(QResizeEvent *event = 0);
 
 public slots:
+	void setTimeline(TimelineInterface &timeline);
 	void setNextValue(const qreal newValue);
 	void startJob();
 	void stopJob();
@@ -66,11 +71,11 @@ private slots:
 	void visualTimerEvent();
 
 private:
-	QGraphicsScene *mScene;
-	QTimer mVisualTimer;
-	KeyPoint *mMainPoint;
-	KeyPoint *mMarker;
-	PointsQueueProcessor *mPointsDataProcessor;
+	QGraphicsScene *mScene;  // Has ownership
+	AbstractTimer *mVisualTimer;  // Has ownership
+	KeyPoint *mMainPoint;  // Has ownership
+	KeyPoint *mMarker;  // Has ownership
+	PointsQueueProcessor *mPointsDataProcessor;  // Has ownership
 	QBrush mPenBrush;
 
 	/// Output update delay in ms

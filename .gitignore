@@ -22,6 +22,7 @@ bin/*
 *.prf
 usabilityFiles/*
 **/.build/*
+**/uic_wrapper.sh
 
 # Generated editors
 **/generated/elements.h
