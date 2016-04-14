@@ -44,7 +44,7 @@ class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	EditorViewScene(const models::Models &models
+	EditorViewScene(models::Models &models
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
 			, const SceneCustomizer &customizer
@@ -74,7 +74,7 @@ public:
 
 	virtual Id rootItemId() const;
 	/// @todo: remove theese getters
-	const models::Models &models() const;
+	models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
 	const qReal::gui::editor::SceneCustomizer &customizer() const;
@@ -95,6 +95,8 @@ public:
 
 	/// Removes items selected by user with undo possibility.
 	void deleteSelectedItems();
+
+	void deleteElements(const IdList &idsToDelete);
 
 	void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
 	void dehighlight(const Id &graphicalId);
@@ -140,7 +142,6 @@ public:
 
 	/// Enable or Disable mousegestures
 	void enableMouseGestures(bool enabled);
-
 public slots:
 	Id createElement(const QString &type);
 
@@ -209,8 +210,6 @@ private slots:
 	void createTableMenuWidget();
 
 private:
-	void deleteElements(const IdList &idsToDelete);
-
 	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
 	void drawGesture();
 	void createEdgeMenu(const QList<Id> &ids);
@@ -238,7 +237,7 @@ private:
 			, qReal::commands::CreateElementsCommand **createCommandPointer
 			, bool executeImmediately);
 
-	const models::Models &mModels;
+	models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
 	const SceneCustomizer &mCustomizer;

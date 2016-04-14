@@ -22,11 +22,12 @@ namespace editor {
 
 class EditorViewScene;
 
-TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene, QWidget *parent)
+TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene, models::Models &models, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::TableMenuWidget)
 	, mId(id)
 	, mEditorViewScene(editorViewScene)
+	, mModels(models)
 	, mDbmsName(id.editor())
 {
 	mUi->setupUi(this);
@@ -36,13 +37,19 @@ TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene,
 
 	fillTableProperties();
 	fillColumnProperties();
+	fillIndexProperties();
 
 	setPropertiesForDbms();
 
 	connect(mUi->tableDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateTable(QTableWidgetItem*)));
 	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
+	connect(mUi->indexDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateIndex(QTableWidget*)));
+
 	connect(mUi->commentText, SIGNAL(textChanged()), this, SLOT(updateComment()));
 	connect(mUi->sqlQueryText, SIGNAL(textChanged()), this, SLOT(updateQuery()));
+
+	connect(mUi->addIndexButton, SIGNAL(clicked()), this, SLOT(addIndex()));
+	connect(mUi->deleteIndexButton, SIGNAL(clicked()), this, SLOT(deleteIndex()));
 }
 
 TableMenuWidget::~TableMenuWidget()
@@ -173,6 +180,11 @@ void TableMenuWidget::updateColumn(QTableWidgetItem *item)
 		column->setProperty("auto_increment", item->checkState() == Qt::Checked);
 		break;
 	}
+}
+
+void TableMenuWidget::updateIndex(QTableWidget *item)
+{
+
 }
 
 void TableMenuWidget::updateComment()
@@ -385,6 +397,7 @@ void TableMenuWidget::fillColumnProperties()
 	QList<NodeElement *> columns = mTableNodeElement->childNodes();
 	for (NodeElement *column : columns) {
 		// invisible id
+		QString pr = column->getProperty("parent").toString();
 		int rowCount = mUi->columnDataTable->rowCount();
 		mUi->columnDataTable->insertRow(rowCount);
 		mUi->columnDataTable->setItem(rowCount, ElementId, new QTableWidgetItem(column->id().toString()));
@@ -393,7 +406,7 @@ void TableMenuWidget::fillColumnProperties()
 		mUi->columnDataTable->setItem(rowCount, Name, new QTableWidgetItem(columnName.toString()));
 
 		QVariant columnType = column->getProperty("DataType");
-		mUi->columnDataTable->setItem(rowCount, DataType, new QTableWidgetItem(columnType.toString()));
+			mUi->columnDataTable->setItem(rowCount, DataType, new QTableWidgetItem(columnType.toString()));
 
 		QVariant isPrimaryKey = column->getProperty("isPrimaryKey");
 		mUi->columnDataTable->setItem(rowCount, IsPrimaryKey, new QTableWidgetItem(isPrimaryKey.toString()));
@@ -446,6 +459,80 @@ void TableMenuWidget::fillColumnProperties()
 			mUi->columnDataTable->item(rowCount, ColumnAutoIncrement)->setCheckState(Qt::Checked);
 		else
 			mUi->columnDataTable->item(rowCount, ColumnAutoIncrement)->setCheckState(Qt::Unchecked);
+	}
+}
+
+void TableMenuWidget::fillIndexProperties()
+{
+	IdList ids = mModels.logicalModelAssistApi().children(Id::rootId());
+	for (Id const &id : ids) {
+		// invisible id
+		QString tableName = mModels.logicalModelAssistApi().propertyByRoleName(id, "tableName").toString();
+		QString tableRealName = mId.toString();
+		if (id.element() == "Index" && id.editor() == mDbmsName && tableName == mId.toString()) {
+			int rowCount = mUi->indexDataTable->rowCount();
+			mUi->indexDataTable->insertRow(rowCount);
+			mUi->indexDataTable->setItem(rowCount, ElementId, new QTableWidgetItem(id.toString()));
+
+			QString indexName = mModels.logicalModelAssistApi().propertyByRoleName(id, "indexName").toString();
+			mUi->indexDataTable->setItem(rowCount, IndexName, new QTableWidgetItem(indexName));
+
+
+			QString columnNames = mModels.logicalModelAssistApi().propertyByRoleName(id, "columnNames").toString();
+			mUi->indexDataTable->setItem(rowCount, ColumnNames, new QTableWidgetItem(columnNames));
+
+			QVariant isUnique = mModels.logicalModelAssistApi().propertyByRoleName(id, "isUnique").toString();
+			mUi->indexDataTable->setItem(rowCount, IsUniqieIndex, new QTableWidgetItem());
+			if (isUnique.toBool())
+				mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Checked);
+			else
+				mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Unchecked);
+
+			QVariant clustered = mModels.logicalModelAssistApi().propertyByRoleName(id, "clustered");
+			mUi->indexDataTable->setItem(rowCount, Clustered, new QTableWidgetItem());
+			if (clustered.toBool())
+				mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Checked);
+			else
+				mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Unchecked);
+
+			QVariant nonclustered = mModels.logicalModelAssistApi().propertyByRoleName(id, "nonclustered");
+			mUi->indexDataTable->setItem(rowCount, Nonclustered, new QTableWidgetItem());
+			if (nonclustered.toBool())
+				mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Checked);
+			else
+				mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Unchecked);
+		}
+	}
+}
+
+void TableMenuWidget::addIndex()
+{
+	const Id id = Id::loadFromString(QString("qrm:/" + mDbmsName
+			+ "/DatabasesPhysicalModelMetamodel/Index"));
+
+	Id logicalId = mModels.logicalModelAssistApi().createElement(Id::rootId(), id);
+	int rowCount = mUi->columnDataTable->rowCount();
+	mUi->indexDataTable->insertRow(rowCount);
+	mUi->indexDataTable->setItem(rowCount, IndexId, new QTableWidgetItem(logicalId.toString()));
+	mUi->indexDataTable->setItem(rowCount, IndexName, new QTableWidgetItem(logicalId.toString()));
+
+
+	QVariant tn = mId.toVariant();
+	mModels.logicalModelAssistApi().setPropertyByRoleName(logicalId, mId.toVariant(), "tableName");
+	QString tableName = mModels.logicalModelAssistApi().propertyByRoleName(logicalId, "tableName").toString();
+
+	NodeElement *index = mEditorViewScene->getNodeById(logicalId);
+	index->setProperty("tableName", tn);
+	tableName = mModels.logicalModelAssistApi().propertyByRoleName(logicalId, "tableName").toString();
+}
+
+void TableMenuWidget::deleteIndex()
+{
+	QList<QTableWidgetItem *> selectedItems = mUi->indexDataTable->selectedItems();
+	for (QTableWidgetItem *item : selectedItems) {
+		int row = item->row();
+		mModels.mutableLogicalRepoApi().removeElement(Id::loadFromString(mUi->indexDataTable->item(row, IndexId)->text()));
+		mUi->indexDataTable->removeRow(row);
 	}
 }
 

@@ -18,6 +18,7 @@
 #include <QDialog>
 
 #include "qrgui/editor/private/exploserView.h"
+#include "qrgui/models/models.h"
 
 namespace Ui {
 class TableMenuWidget;
@@ -35,7 +36,7 @@ class TableMenuWidget : public QDialog
 	Q_OBJECT
 
 public:
-	TableMenuWidget(const Id &id, EditorViewScene *editorViewScene, QWidget *parent = 0);
+	TableMenuWidget(const Id &id, EditorViewScene *editorViewScene, models::Models &models, QWidget *parent = 0);
 
 	~TableMenuWidget();
 public slots:
@@ -43,10 +44,15 @@ public slots:
 	void close();
 	void updateTable(QTableWidgetItem *item);
 	void updateColumn(QTableWidgetItem *item);
+	void updateIndex(QTableWidget *item);
+
 	void updateComment();
 	void updateQuery();
 	// Fill columnNames depending on the dbms (different set of properties)
 	void setPropertiesForDbms();
+
+	void addIndex();
+	void deleteIndex();
 
 private:
 	enum TablePropertyRowNumber {
@@ -87,15 +93,25 @@ private:
 		 , ColumnAutoIncrement
 		 , Check
 	};
+	enum IndexPropertyColumnNumber {
+		IndexId = 0
+		, IndexName
+		, ColumnNames
+		, IsUniqieIndex
+		, Clustered
+		, Nonclustered
+	};
 
 	QString mDbmsName;
 
 	void fillTableProperties();
 	void fillColumnProperties();
+	void fillIndexProperties();
 
 	Ui::TableMenuWidget *mUi;
 	const Id mId;
 	NodeElement *mTableNodeElement;
+	models::Models &mModels;
 	EditorViewScene *mEditorViewScene;
 };
 }

@@ -37,6 +37,10 @@
 				<value name="VARBINARY" displayedName="VARBINARY()"/>
 				<value name="VARCHARf" displayedName="VARCHARf()"/>
 			</enum>
+			<enum name="IndexTypes">
+				<value name="CLUSTERED" displayedName="CLUSTERED"/>
+				<value name="NONCLUSTERED" displayedName="NONCLUSTERED"/>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="DatabasesPhysicalNode" displayedName="Physical model (Sql Server 2008)">
@@ -145,6 +149,19 @@
 							<default>INT</default>
 						</property>
 						<property type="string" name="default" displayedName="Default"/>
+					</properties>
+				</logic>
+			</node>
+			<node name="Index" displayedName="Index">
+				<logic>
+					<properties>
+						<property type="string" name="indexName" displayedName="Name">
+							<default>Enter name</default>
+						</property>
+						<property type="string" name="tableName" displayedName="Table id"/>
+						<property type="string" name="columnNames" displayedName="Column names"/>
+						<property type="bool" name="isUnique" displayedName="Unique"/>
+						<property type="IndexTypes" name="type" displayedName="Type"/>
 					</properties>
 				</logic>
 			</node>

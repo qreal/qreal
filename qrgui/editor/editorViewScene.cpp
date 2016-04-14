@@ -43,7 +43,7 @@ using namespace qReal::commands;
 using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
-EditorViewScene::EditorViewScene(const models::Models &models
+EditorViewScene::EditorViewScene(models::Models &models
 		, Controller &controller
 		, const SceneCustomizer &customizer
 		, const Id &rootId
@@ -1117,7 +1117,7 @@ Id EditorViewScene::rootItemId() const
 	return mRootId;
 }
 
-const models::Models &EditorViewScene::models() const
+models::Models &EditorViewScene::models() const
 {
 	return mModels;
 }
@@ -1388,6 +1388,6 @@ void EditorViewScene::deselectLabels()
 
 void EditorViewScene::createTableMenuWidget()
 {
-	TableMenuWidget *tableMenuWidget = new TableMenuWidget(mSelectedTableId, this);
+	TableMenuWidget *tableMenuWidget = new TableMenuWidget(mSelectedTableId, this, mModels);
 	tableMenuWidget->open();
 }

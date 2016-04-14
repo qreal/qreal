@@ -35,7 +35,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -261,6 +261,83 @@
     <attribute name="title">
      <string>Indexes</string>
     </attribute>
+    <widget class="QTableWidget" name="indexDataTable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>751</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <column>
+      <property name="text">
+       <string>id</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>column names</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is unique</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>clustered</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>nonclustered</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>if not exists</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QToolButton" name="addIndexButton">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>290</y>
+       <width>121</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add index</string>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="deleteIndexButton">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>290</y>
+       <width>121</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete index</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="widget">
     <attribute name="title">
@@ -281,11 +358,6 @@
       </rect>
      </property>
     </widget>
-   </widget>
-   <widget class="QWidget" name="tab_4">
-    <attribute name="title">
-     <string>Constraint</string>
-    </attribute>
    </widget>
    <widget class="QWidget" name="tab_5">
     <attribute name="title">
