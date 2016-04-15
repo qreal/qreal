@@ -43,7 +43,9 @@ EditorManager::EditorManager(QObject *parent)
 
 EditorManager::~EditorManager()
 {
-	qDeleteAll(mPluginIface);
+	for (const QString &pluginName : mPluginIface.keys()) {
+		unloadPlugin(pluginName);
+	}
 }
 
 void EditorManager::init()

@@ -28,7 +28,6 @@ static const uint telemetryPort = 9000;
 
 TcpRobotCommunicatorWorker::TcpRobotCommunicatorWorker(const QString &robotIpRegistryKey)
 	: mRobotIpRegistryKey(robotIpRegistryKey)
-	, mIsConnected(false)
 {
 	qRegisterMetaType<MessageKind>("MessageKind");
 }
@@ -41,20 +40,20 @@ void TcpRobotCommunicatorWorker::init()
 {
 	mVersionTimer.reset(new QTimer());
 	mVersionTimer->setSingleShot(true);
-	QObject::connect(mVersionTimer.data(), &QTimer::timeout, this, &TcpRobotCommunicatorWorker::versionTimeOut);
+	QObject::connect(mVersionTimer.data(), &QTimer::timeout, this, &TcpRobotCommunicatorWorker::onVersionTimeOut);
 
 	mControlConnection.reset(new TcpConnectionHandler(controlPort));
 	mTelemetryConnection.reset(new TcpConnectionHandler(telemetryPort));
 
 	QObject::connect(mControlConnection.data(), &TcpConnectionHandler::messageReceived
-			, this, &TcpRobotCommunicatorWorker::processControlMessage);
+			, this, &TcpRobotCommunicatorWorker::processControlMessage, Qt::DirectConnection);
 	QObject::connect(mTelemetryConnection.data(), &TcpConnectionHandler::messageReceived
-			, this, &TcpRobotCommunicatorWorker::processTelemetryMessage);
+			, this, &TcpRobotCommunicatorWorker::processTelemetryMessage, Qt::DirectConnection);
 }
 
 void TcpRobotCommunicatorWorker::deinit()
 {
-	disconnect();
+	disconnectConnection();
 }
 
 void TcpRobotCommunicatorWorker::uploadProgram(const QString &programName, const QString &programContents)
@@ -104,6 +103,16 @@ void TcpRobotCommunicatorWorker::stopRobot()
 	emit stopRobotDone();
 }
 
+void TcpRobotCommunicatorWorker::requestCasingVersion()
+{
+	connect();
+	if (!mControlConnection->isConnected()) {
+		return;
+	}
+
+	mControlConnection->send("configVersion");
+}
+
 void TcpRobotCommunicatorWorker::requestData(const QString &sensor)
 {
 	if (!mTelemetryConnection->isConnected()) {
@@ -119,6 +128,7 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 	const QString infoMarker("info: ");
 	const QString versionMarker("version: ");
 	const QString printMarker("print: ");
+	const QString configVersionMarker("configVersion: ");
 
 	if (message.startsWith(versionMarker)) {
 		mVersionTimer->stop();
@@ -134,6 +144,9 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 		emit messageFromRobot(MessageKind::text, message.mid(printMarker.length()));
 	} else if (message == "keepalive") {
 		// Just ignoring it
+	} else if (message.startsWith(configVersionMarker)) {
+		const QString configVersion = message.mid(configVersionMarker.length());
+		emit casingVersionReceived(configVersion);
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
 	}
@@ -165,7 +178,7 @@ void TcpRobotCommunicatorWorker::processTelemetryMessage(const QString &message)
 	}
 }
 
-void TcpRobotCommunicatorWorker::versionTimeOut()
+void TcpRobotCommunicatorWorker::onVersionTimeOut()
 {
 	mVersionTimer->stop();
 	emit trikRuntimeVersionGettingError();
@@ -192,7 +205,7 @@ void TcpRobotCommunicatorWorker::connect()
 			return;
 		}
 
-		disconnect();
+		disconnectConnection();
 	}
 
 	mCurrentIp = server;
@@ -205,7 +218,7 @@ void TcpRobotCommunicatorWorker::connect()
 	}
 }
 
-void TcpRobotCommunicatorWorker::disconnect()
+void TcpRobotCommunicatorWorker::disconnectConnection()
 {
 	mControlConnection->disconnect();
 	mTelemetryConnection->disconnect();

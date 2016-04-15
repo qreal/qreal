@@ -27,6 +27,10 @@ macx {
 CONFIG(debug, debug | release) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
+	unix {
+		QMAKE_CXXFLAGS += -coverage
+		QMAKE_LFLAGS += -coverage
+	}
 } else {
 	CONFIGURATION = release
 	CONFIGURATION_SUFFIX =
@@ -44,9 +48,9 @@ isEmpty(TARGET) {
 }
 
 equals(TEMPLATE, app) {
-	!macx {
-		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+	unix:!macx {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
+		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 	}
 }
 
@@ -55,7 +59,7 @@ macx {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
-unix {
+unix:!macx {
 	CONFIG(debug):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
 		# Ubsan is turned on by default into debug build
 		CONFIG += sanitizer sanitize_undefined

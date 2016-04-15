@@ -287,7 +287,7 @@
         <bool>true</bool>
        </property>
        <property name="dragEnabled" stdset="0">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="dragDropOverwriteMode" stdset="0">
         <bool>false</bool>

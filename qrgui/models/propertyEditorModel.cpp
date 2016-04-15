@@ -221,9 +221,12 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 		connect(mTargetLogicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
 				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
 
-	if (mTargetGraphicalModel)
-		connect(mTargetGraphicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
-				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
+	// At the moment property editor does not show graphical properties at all.
+	// If this should happen then dataChanged() signal of graphical model should be connected here too.
+	// WARNING: This should not be done before rewriting property editor model completely.
+	// Connecting graphical model here will drop QReal performance dramatically. This was checked on sad experience.
+	// For each modification in graphical model setting arbitrary property (position of node, configuration of edge)
+	// will cause full properties list rereading.
 }
 
 void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
@@ -307,6 +310,27 @@ QString PropertyEditorModel::typeName(const QModelIndex &index) const
 		return "";
 	}
 	return mEditorManagerInterface.typeName(id, mFields[index.row()].fieldName);
+}
+
+QString PropertyEditorModel::propertyName(const QModelIndex &index) const
+{
+	return mFields[index.row()].fieldName;
+}
+
+bool PropertyEditorModel::setData(const Id &id, const QString &propertyName, const QVariant &value)
+{
+	if (mFields.isEmpty() || idByIndex(index(0, 0)) != id) {
+		return false;
+	}
+
+	for (const Field &field : mFields) {
+		if (field.fieldName == propertyName) {
+			setData(index(field.role, 1), value);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool PropertyEditorModel::isReference(const QModelIndex &index, const QString &propertyName)

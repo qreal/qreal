@@ -115,11 +115,13 @@ AbstractModelItem *LogicalModel::createModelItem(const Id &id, AbstractModelItem
 
 void LogicalModel::updateElements(const Id &logicalId, const QString &name)
 {
-	if ((logicalId.isNull()) || (mApi.name(logicalId) == name)) {
+	if (logicalId.isNull() || mApi.name(logicalId) == name) {
 		return;
 	}
+
 	mApi.setName(logicalId, name);
-	emit dataChanged(indexById(logicalId), indexById(logicalId));
+	const QModelIndex index = indexById(logicalId);
+	emit dataChanged(index, index);
 }
 
 QMimeData* LogicalModel::mimeData(const QModelIndexList &indexes) const

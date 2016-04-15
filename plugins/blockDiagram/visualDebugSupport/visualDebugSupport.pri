@@ -23,11 +23,11 @@ links(qrkernel qrutils qrgui-preferences-dialog qrgui-tool-plugin-interface)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualDebugSupport_ru.ts
 
-HEADERS = \
+HEADERS += \
 	$$PWD/visualDebuggerPlugin.h \
 	$$PWD/visualDebuggerPreferencesPage.h \
 
-SOURCES = \
+SOURCES += \
 	$$PWD/visualDebuggerPlugin.cpp \
 	$$PWD/visualDebuggerPreferencesPage.cpp \
 

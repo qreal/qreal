@@ -184,7 +184,7 @@ void DraggableElement::deleteElement()
 		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
 
-	mMainWindow.loadPlugins();
+	mMainWindow.loadEditorPlugins();
 }
 
 void DraggableElement::checkElementForRootDiagramNode()
@@ -302,7 +302,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
 
-	Id elementId = id().sameTypeId();
+	const Id elementId = id().sameTypeId();
 
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManagerProxy.isInterpretationMode()) {

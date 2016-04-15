@@ -76,7 +76,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow(const QString &fileToOpen = QString());
+	explicit MainWindow(const QString &fileToOpen = QString());
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
@@ -133,10 +133,10 @@ public:
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(const Id &id);
 
-	virtual void reportOperation(invocation::LongOperation *operation);
-	virtual QWidget *currentTab();
-	virtual void openTab(QWidget *tab, const QString &title);
-	virtual void closeTab(QWidget *tab);
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
+	QWidget *currentTab() override;
+	void openTab(QWidget *tab, const QString &title) override;
+	void closeTab(QWidget *tab) override;
 
 	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
 
@@ -148,7 +148,7 @@ public:
 	ProxyEditorManager &editorManagerProxy();
 
 	/// Loads (or reloads) available editor plugins and reinits palette.
-	void loadPlugins();
+	void loadEditorPlugins();
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();

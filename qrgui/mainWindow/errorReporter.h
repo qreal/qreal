@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/definitions.h>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+#include <qrgui/dialogs/progressDialog/progressBar.h>
 #include "qrgui/mainWindow/error.h"
 #include "qrgui/mainWindow/errorListWidget.h"
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -34,17 +35,19 @@ public:
 	ErrorReporter();
 	ErrorReporter(ErrorListWidget * const errorListWidget, QDockWidget * const errorList);
 
+public slots:
 	void addInformation(const QString &message, const Id &position = Id::rootId()) override;
 	void addWarning(const QString &message, const Id &position = Id::rootId()) override;
 	void addError(const QString &message, const Id &position = Id::rootId()) override;
 	void addCritical(const QString &message, const Id &position = Id::rootId()) override;
-	bool wereErrors();
+	bool wereErrors() const override;
 
 	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
 
 	bool showErrors(ErrorListWidget * const errorListWidget, QDockWidget * const errorList) const;
 	void updateVisibility(bool isVisible);
 
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 	void addUniqueError(
 			const QString &message
 			, const Error::Severity &severity = Error::error

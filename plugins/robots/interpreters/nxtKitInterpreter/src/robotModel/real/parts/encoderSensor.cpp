@@ -14,7 +14,7 @@
 
 #include "encoderSensor.h"
 
-#include "commandConstants.h"
+#include <nxtKit/communication/nxtCommandConstants.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;

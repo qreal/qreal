@@ -146,7 +146,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mSplashScreen->setProgress(60);
 
-	loadPlugins();
+	loadEditorPlugins();
 
 	mSplashScreen->setProgress(70);
 
@@ -367,7 +367,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	emit mFacade->events().closedMainWindow();
 }
 
-void MainWindow::loadPlugins()
+void MainWindow::loadEditorPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
@@ -623,10 +623,10 @@ void MainWindow::deleteElementFromDiagram(const Id &id)
 	}
 }
 
-void MainWindow::reportOperation(invocation::LongOperation *operation)
+void MainWindow::reportOperation(const QFuture<void> &operation, const QString &description)
 {
-	ProgressDialog *progressDialog = new ProgressDialog(this);
-	progressDialog->connectOperation(operation);
+	ProgressDialog * const progressDialog = new ProgressDialog(this);
+	progressDialog->reportOperation(operation, description);
 }
 
 QWidget *MainWindow::currentTab()
@@ -1112,7 +1112,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(const QModelIndex &)>(&MainWindow::closeTab));
 	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](const Id &id) { activateItemOrDiagram(id); });
-	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadPlugins);
+	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadEditorPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
 			(const Id &, const QString &, const EditorManagerInterface *, bool)>(&MainWindow::openShapeEditor));
 	connect(&tab->editorViewScene(), &EditorViewScene::checkConstraintsSignal, this
@@ -1258,12 +1258,13 @@ void MainWindow::updateTabName(const Id &id)
 bool MainWindow::closeTab(const QModelIndex &graphicsIndex)
 {
 	for (int i = 0; i < mUi->tabs->count(); i++) {
-		EditorView * const tab = (static_cast<EditorView *>(mUi->tabs->widget(i)));
-		if (tab->mvIface().rootIndex() == graphicsIndex) {
+		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
+		if (tab && tab->mvIface().rootIndex() == graphicsIndex) {
 			closeTab(i);
 			return true;
 		}
 	}
+
 	return false;
 }
 
@@ -1391,8 +1392,10 @@ void MainWindow::showGestures()
 	}
 
 	QWidget * const gesturesPainter = getCurrentTab()->mutableScene().gesturesPainterWidget();
-	mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
-	mUi->tabs->setCurrentWidget(gesturesPainter);
+	if (gesturesPainter) {
+		mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
+		mUi->tabs->setCurrentWidget(gesturesPainter);
+	}
 }
 
 
@@ -1532,7 +1535,7 @@ void MainWindow::updatePaletteIcons()
 	mUi->logicalModelExplorer->viewport()->update();
 
 	const Id currentId = mUi->paletteTree->currentEditor();
-	loadPlugins();
+	loadEditorPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
 	mUi->paletteTree->setComboBox(currentId);
@@ -1981,7 +1984,7 @@ void MainWindow::changePaletteRepresentation()
 	if (SettingsManager::value("PaletteRepresentation").toBool() != mUi->paletteTree->iconsView()
 			|| SettingsManager::value("PaletteIconsInARowCount").toInt() != mUi->paletteTree->itemsCountInARow())
 	{
-		loadPlugins();
+		loadEditorPlugins();
 	}
 }
 

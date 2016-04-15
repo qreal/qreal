@@ -36,7 +36,9 @@ class TcpRobotCommunicatorWorker : public QObject
 	Q_OBJECT
 
 public:
-
+	/// Constructor.
+	/// @param robotIpRegistryKey - key in a registry where current robot IP address is stored. IP address refreshes
+	///        from registry every time new connection needs to be established.
 	explicit TcpRobotCommunicatorWorker(const QString &robotIpRegistryKey);
 
 	~TcpRobotCommunicatorWorker() override;
@@ -64,6 +66,9 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	Q_INVOKABLE void stopRobot();
 
+	/// Requests casing version from robot, emits casingVersionReceived() when robot responds.
+	Q_INVOKABLE void requestCasingVersion();
+
 	/// Requests telemetry data for given sensor.
 	Q_INVOKABLE void requestData(const QString &sensor);
 
@@ -71,7 +76,7 @@ public:
 	Q_INVOKABLE void connect();
 
 	/// Disconnects from robot.
-	Q_INVOKABLE void disconnect();
+	Q_INVOKABLE void disconnectConnection();
 
 signals:
 	/// Emitted when TCP socket with robot was opened or failed to open.
@@ -114,10 +119,18 @@ signals:
 	/// Emitted when direct command is sent.
 	void runDirectCommandDone();
 
+	/// Emitted when received TRIK casing version (model 2014 or model 2015) from robot.
+	void casingVersionReceived(const QString &casingVersion);
+
 private slots:
+	/// Process message from control connection, emits signals when something interesting is received from robot.
 	void processControlMessage(const QString &message);
+
+	/// Process telemetry message from robot. Emits signals with sensor data.
 	void processTelemetryMessage(const QString &message);
-	void versionTimeOut();
+
+	/// TRIK Runtime version request timed out. Most likely caused by network problems.
+	void onVersionTimeOut();
 
 private:
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
@@ -130,11 +143,14 @@ private:
 	/// during the work and it is easier to get it from registry every time.
 	const QString mRobotIpRegistryKey;
 
+	/// Current IP address of a robot.
 	QString mCurrentIp;
-	QScopedPointer<TcpConnectionHandler> mControlConnection;
-	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
-	bool mIsConnected;
+	/// Connection on which all commands are sent to a robot.
+	QScopedPointer<TcpConnectionHandler> mControlConnection;
+
+	/// Connection on which robot sends telemetry data.
+	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
 	/// Timer for version request.
 	QScopedPointer<QTimer> mVersionTimer;

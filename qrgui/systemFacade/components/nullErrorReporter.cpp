@@ -49,7 +49,7 @@ void NullErrorReporter::sendBubblingMessage(const QString &message, int duration
 	Q_UNUSED(parent)
 }
 
-bool NullErrorReporter::wereErrors()
+bool NullErrorReporter::wereErrors() const
 {
 	return mWereErrors;
 }

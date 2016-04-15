@@ -55,5 +55,8 @@ qrgui.depends = \
 	qrmc \
 	thirdparty \
 
+qrtext.depends = qrkernel
 
-
+OTHER_FILES += \
+	$$PWD/.travis.yml \
+	$$PWD/appveyor.yml \

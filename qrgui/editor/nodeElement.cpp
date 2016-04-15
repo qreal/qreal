@@ -28,7 +28,6 @@
 
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/changeParentCommand.h>
-#include <qrgui/models/commands/renameCommand.h>
 #include <qrgui/plugins/editorPluginInterface/editorInterface.h>
 
 #include "editor/labels/label.h"
@@ -49,7 +48,6 @@ using namespace qReal::gui::editor::commands;
 
 NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &models)
 	: Element(impl, id, models)
-	, mExploser(models.exploser())
 	, mSwitchGridAction(tr("Switch on grid"), this)
 	, mDragState(None)
 	, mResizeCommand(nullptr)
@@ -147,18 +145,6 @@ QMap<QString, QVariant> NodeElement::graphicalProperties() const
 QMap<QString, QVariant> NodeElement::logicalProperties() const
 {
 	return mGraphicalAssistApi.properties(logicalId());
-}
-
-void NodeElement::setName(const QString &value, bool withUndoRedo)
-{
-	AbstractCommand *command = new RenameCommand(mGraphicalAssistApi, id(), value, &mExploser);
-	if (withUndoRedo) {
-		mController->execute(command);
-		// Controller will take ownership
-	} else {
-		command->redo();
-		delete command;
-	}
 }
 
 void NodeElement::setGeometry(const QRectF &geom)
@@ -427,7 +413,6 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		Element::mouseMoveEvent(event);
 
 		mGrid->mouseMoveEvent(event);
-		alignToGrid();
 		newPos = pos();
 	} else if (mElementImpl->isResizeable()) {
 		setVisibleEmbeddedLinkers(false);
@@ -1357,7 +1342,7 @@ void NodeElement::initRenderedDiagram()
 	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
-	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mExploser);
+	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mModels.exploser());
 	view.mutableMvIface().setModel(evScene->models().graphicalModel());
 	view.mutableMvIface().setLogicalModel(evScene->models().logicalModel());
 	view.mutableMvIface().setRootIndex(mGraphicalAssistApi.indexById(graphicalDiagram));

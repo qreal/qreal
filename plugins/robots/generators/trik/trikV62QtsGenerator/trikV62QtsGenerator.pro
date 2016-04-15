@@ -16,33 +16,10 @@ TARGET = robots-trik-v62-qts-generator
 
 include(../../../../../global.pri)
 
-QT += widgets network
-
 TEMPLATE = lib
 CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
-includes( \
-		plugins/robots/generators/trik/trikQtsGeneratorLibrary \
-		plugins/robots/generators/trik/trikGeneratorBase \
-		plugins/robots/generators/generatorBase \
-		plugins/robots/common/kitBase \
-		plugins/robots/common/trikKit \
-		plugins/robots/utils \
-		qrtext \
-)
+include(trikV62QtsGenerator.pri)
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \
-		robots-kit-base robots-trik-kit robots-utils robots-trik-qts-generator-library \
-)
-
-TRANSLATIONS = \
-	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV62QtsGenerator_ru.ts \
-	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV62QtsGenerator_fr.ts \
-
-HEADERS += \
-	$$PWD/trikV62QtsGeneratorPlugin.h \
-
-SOURCES += \
-	$$PWD/trikV62QtsGeneratorPlugin.cpp \

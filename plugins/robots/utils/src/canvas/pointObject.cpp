@@ -66,11 +66,11 @@ void PointObject::paint(QPainter *painter)
 
 QJsonObject PointObject::toJson() const
 {
-	return QJsonObject({
-		{ "type", "point" }
-		, { "x", mX }
-		, { "y", mY }
-		, { "color", color().name() }
-		, { "thickness", thickness() }
-	});
+	QJsonObject result;
+	result["type"] = "point";
+	result["x"] = mX;
+	result["y"] = mY;
+	result["color"] = color().name();
+	result["thickness"] = thickness();
+	return result;
 }

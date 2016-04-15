@@ -67,9 +67,11 @@ public:
 
 	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
+
+	virtual void setName(const QString &name, bool withUndoRedo = false);
 	// for inline editing we should be able to change properties value. right now via graphical
 	// representation. also labels could store indices and get data themselves
-	virtual void setLogicalProperty(const QString &roleName, const QString &value
+	virtual void setLogicalProperty(const QString &roleName, const QString &oldValue, const QString &newValue
 			, bool withUndoRedo = false);
 	QString logicalProperty(const QString &roleName) const;
 

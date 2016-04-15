@@ -148,6 +148,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasFormat(DEFAULT_MIME_TYPE)) {
+		event->accept();
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
 		event->ignore();
@@ -156,6 +157,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
+	event->accept();
 	// forming id to check if we can put draggable element to element under cursor
 	const ElementInfo element = ElementInfo::fromMimeData(event->mimeData());
 	const QList<QGraphicsItem*> elements = items(event->scenePos());
@@ -237,7 +239,7 @@ QGraphicsRectItem *EditorViewScene::getPlaceholder()
 
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
+	event->accept();
 	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = nullptr;
@@ -251,7 +253,9 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
+	event->accept();
 	clearSelection();
+
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
@@ -392,6 +396,13 @@ void EditorViewScene::createElement(const QMimeData *mimeData
 		, bool executeImmediately)
 {
 	ElementInfo elementInfo = ElementInfo::fromMimeData(mimeData);
+
+	/// Here an element may come from palette
+	if (mModels.logicalModelAssistApi().isLogicalId(elementInfo.id())) {
+		/// Generating new (graphical) id of inserted element.
+		elementInfo.newId();
+	}
+
 	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);
 	if (Element * const element = getElem(elementInfo.id())) {
 		element->setSelected(true);

@@ -34,3 +34,8 @@ TrikRobotModelV6::TrikRobotModelV6(const QString &kitId, const QString &robotId)
 	addAllowedConnection(PortInfo("B3", input, { "M3", "В3" }, "encoder3"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B4", input, { "M4", "В4" }, "encoder4"), { encoderInfo() });
 }
+
+QString TrikRobotModelV6::robotConfigFileVersion() const
+{
+	return "model-2014";
+}

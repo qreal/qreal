@@ -35,8 +35,6 @@ void RobotModelManager::setModel(RobotModelInterface * const robotModel)
 		disconnect(mRobotModel);
 		const auto actualModel = robotModel ? robotModel : &mDefaultRobotModel;
 		/// @todo implement hierarchical structure in settings manager
-		/// @todo if some settings key is modified here do not forget to modify
-		/// it in UsbRobotCommunicationThread::checkConsistency
 		const QString selectedKit = actualModel->kitId();
 		qReal::SettingsManager::setValue("SelectedRobotKit", selectedKit);
 		/// @todo select kit here if needed

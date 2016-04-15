@@ -33,10 +33,11 @@ public:
 
 	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
 
-	bool wereErrors() override;
+	bool wereErrors() const override;
 	void clear() override;
 	void clearErrors() override;
 
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 	void addUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error
 			, Id const &position = Id::rootId()) override;
 	void delUniqueError(QString const &message, gui::Error::Severity const &severity = gui::Error::error
