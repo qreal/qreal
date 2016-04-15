@@ -23,7 +23,8 @@ namespace simple {
 class ForLoopGenerator : public BindingGenerator
 {
 public:
-	ForLoopGenerator(const qrRepo::RepoApi &repo
+	ForLoopGenerator(int index
+			, const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
 			, const qReal::Id &id
 			, QObject *parent = 0);

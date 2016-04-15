@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Ivan Senin, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,8 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "sensorsGraph.h"
+#include "utils/sensorsGraph.h"
 #include "ui_sensorsGraph.h"
+
+#include "utils/timelineInterface.h"
+#include "utils/abstractTimer.h"
+#include "plugins/robots/utils/src/graphicsWatcher/sensorViewer.h"
 
 using namespace utils::sensorsGraph;
 
@@ -45,16 +49,14 @@ struct SensorsGraph::TrackObject {
 SensorsGraph::SensorsGraph(const qrtext::DebuggerInterface &parser, QWidget *parent)
 	: QWidget(parent)
 	, mUi(new Ui::SensorsGraph)
+	, mUpdateTimer(nullptr)
 	, mParser(parser)
-	, mUpdateInterval(100)
 	, mCurrentSlot(0)
 {
 	mUi->setupUi(this);
 	initGui();
 	makeConnections();
 
-	mUpdateTimer.start(mUpdateInterval);
-	connect(&mUpdateTimer, SIGNAL(timeout()), this, SLOT(updateValues()));
 	mPlotFrame->centerOn(mPlotFrame->sceneRect().center());
 }
 
@@ -62,6 +64,17 @@ SensorsGraph::~SensorsGraph()
 {
 	delete mPlotFrame;
 	delete mUi;
+	delete mUpdateTimer;
+}
+
+void SensorsGraph::setTimeline(utils::TimelineInterface &timeline)
+{
+	delete mUpdateTimer;
+	mUpdateTimer = timeline.produceTimer();
+	mUpdateTimer->setInterval(mUpdateInterval);
+	mUpdateTimer->setRepeatable(true);
+	mPlotFrame->setTimeline(timeline);
+	connect(mUpdateTimer, &AbstractTimer::timeout, this, &SensorsGraph::updateValues);
 }
 
 void SensorsGraph::setStartStopButtonsVisible(bool visible)
@@ -131,23 +144,23 @@ void SensorsGraph::setupToolElements()
 {
 	const QSize iconSize(20, 20);
 
-	mStopButton.setIcon(QPixmap(":/graphicsWatcher/icons/stop_btn.png"));
+	mStopButton.setIcon(QPixmap(":/icons/graphicsWatcher/stop_btn.png"));
 	mStopButton.setIconSize(iconSize);
 	mStopButton.setToolTip(tr("Stop tracking"));
 
-	mStartButton.setIcon(QPixmap(":/graphicsWatcher/icons/start_btn.png"));
+	mStartButton.setIcon(QPixmap(":/icons/graphicsWatcher/start_btn.png"));
 	mStartButton.setIconSize(iconSize);
 	mStartButton.setToolTip(tr("Start tracking"));
 
-	mResetButton.setIcon(QPixmap(":/graphicsWatcher/icons/reset_btn.png"));
+	mResetButton.setIcon(QPixmap(":/icons/graphicsWatcher/reset_btn.png"));
 	mResetButton.setIconSize(iconSize);
 	mResetButton.setToolTip(tr("Reset plot"));
 
-	mZoomInButton.setIcon(QPixmap(":/graphicsWatcher/icons/zoomIn_btn.png"));
+	mZoomInButton.setIcon(QPixmap(":/icons/graphicsWatcher/zoomIn_btn.png"));
 	mZoomInButton.setIconSize(iconSize);
 	mZoomInButton.setToolTip(tr("Zoom In"));
 
-	mZoomOutButton.setIcon(QPixmap(":/graphicsWatcher/icons/zoomOut_btn.png"));
+	mZoomOutButton.setIcon(QPixmap(":/icons/graphicsWatcher/zoomOut_btn.png"));
 	mZoomOutButton.setIconSize(iconSize);
 	mZoomOutButton.setToolTip(tr("Zoom Out"));
 
@@ -158,8 +171,8 @@ void SensorsGraph::setupToolElements()
 
 void SensorsGraph::makeConnections()
 {
-	connect(&mStartButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::startJob);
-	connect(&mStopButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::stopJob);
+	connect(&mStartButton, &QAbstractButton::clicked, this, &SensorsGraph::startJob);
+	connect(&mStopButton, &QAbstractButton::clicked, this, &SensorsGraph::stopJob);
 	connect(&mSaveButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::exportHistory);
 	connect(&mResetButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::clear);
 	connect(&mZoomInButton, &QAbstractButton::clicked, mPlotFrame, &SensorViewer::zoomIn);
@@ -176,7 +189,7 @@ void SensorsGraph::watchListChanged()
 		return;
 	}
 
-	foreach (const TrackObject &item, mWatchList) {
+	for (const TrackObject &item : mWatchList) {
 		mSlotComboBox.addItem(tr(item.displayName.toUtf8()), item.index);
 	}
 }
@@ -199,7 +212,7 @@ void SensorsGraph::startJob()
 		return;
 	}
 
-	mUpdateTimer.start(mUpdateInterval);
+	mUpdateTimer->start(mUpdateInterval);
 	mPlotFrame->startJob();
 }
 
@@ -219,7 +232,7 @@ void SensorsGraph::updateValues()
 
 void SensorsGraph::stopJob()
 {
-	mUpdateTimer.stop();
+	mUpdateTimer->stop();
 	mPlotFrame->stopJob();
 }
 

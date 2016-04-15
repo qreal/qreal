@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Ivan Senin, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,23 +18,26 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QComboBox>
-#include <QtCore/QTimer>
 
 #include <qrtext/debuggerInterface.h>
 
-#include "sensorViewer.h"
-
-#include "qrutils/utilsDeclSpec.h"
+#include "utilsDeclSpec.h"
 
 namespace Ui {
 class SensorsGraph;
 }
 
 namespace utils {
+
+class AbstractTimer;
+class TimelineInterface;
+
 namespace sensorsGraph {
 
+class SensorViewer;
+
 /// @class SensorsGraph is widget to show sensors state
-class QRUTILS_EXPORT SensorsGraph : public QWidget
+class ROBOTS_UTILS_EXPORT SensorsGraph : public QWidget
 {
 	Q_OBJECT
 
@@ -63,6 +66,7 @@ public:
 	static const int textUpdateDefault = 500;
 
 public slots:
+	void setTimeline(TimelineInterface &timeline);
 	void sensorsInput(const int slotIndex, const qreal value);
 	void setCurrentSensor(const int newSlotIndex);
 	void startJob();
@@ -89,8 +93,8 @@ private slots:
 	void updateValues();
 
 private:
-	Ui::SensorsGraph *mUi;
-	SensorViewer *mPlotFrame;
+	Ui::SensorsGraph *mUi;  // Has ownsrship
+	SensorViewer *mPlotFrame;  // Has ownership
 	QVBoxLayout mToolLayout;
 	QToolButton mStopButton;
 	QToolButton mStartButton;
@@ -99,13 +103,13 @@ private:
 	QToolButton mResetButton;
 	QToolButton mSaveButton;
 	QComboBox mSlotComboBox;
-	QTimer mUpdateTimer;
+	AbstractTimer *mUpdateTimer;  // Has ownership
 	const qrtext::DebuggerInterface &mParser;
 	struct TrackObject;
 	QList<TrackObject> mWatchList;
 
 	/// update sensors value interval in ms
-	const int mUpdateInterval;
+	const int mUpdateInterval = 100;
 	int mCurrentSlot;
 };
 
