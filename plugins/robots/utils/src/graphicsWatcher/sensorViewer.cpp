@@ -26,6 +26,7 @@ using namespace utils::sensorsGraph;
 
 SensorViewer::SensorViewer(QWidget *parent)
 	: QGraphicsView(parent)
+	, mVisualTimer(nullptr)
 	, mPenBrush(QBrush(Qt::yellow))
 	, mFpsInterval(50)
 	, mAutoScaleInterval(3000)
