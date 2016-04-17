@@ -70,7 +70,7 @@ void Shell::print(const QString &text)
 	emit textPrinted(text);
 }
 
-void Shell::initVideoStreaming(qint8 qual)
+void Shell::initVideoStreaming(QString qual, QString blackwhite)
 {
 	// Video streaming has no sense here (for now at least).
 }

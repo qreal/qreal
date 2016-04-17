@@ -78,9 +78,19 @@ void Shell::print(const QString &text)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Shell::initVideoStreaming(qint8 qual)
+void Shell::initVideoStreaming(QString qual, QString blackwhite)
 {
    // const QString qualStr = (QString) qual;
-    const QString shellToExecute = "/etc/init.d/mjpg-encoder-ov7670 start && /etc/init.d/mjpg-streamer-ov7670.sh start";
+    const QString shellToExecute = QString("\"/etc/init.d/mjpg-encoder-ov7670 start --jpeg-qual ") + qual +
+                                   QString(" --white-black ") + blackwhite + QString(" && /etc/init.d/mjpg-streamer-ov7670.sh start\"");
+
+
+
+    //const QString shellToExecute = "\"/etc/init.d/mjpg-encoder-ov7670 start --jpeg-qual 10 --white-black true && /etc/init.d/mjpg-streamer-ov7670.sh start\"";
+
+
+
+    //QString shellToExecute = "\"/etc/init.d/mjpg-encoder-ov7670 start --jpeg-qual ";
+    //shellToExecute += qual + QString(" --white-black ") + blackwhite + QString(" && /etc/init.d/mjpg-streamer-ov7670.sh start\"");
 	runCommand(shellToExecute);
 }
