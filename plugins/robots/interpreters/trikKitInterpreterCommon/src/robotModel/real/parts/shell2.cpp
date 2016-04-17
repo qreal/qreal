@@ -81,7 +81,7 @@ void Shell::print(const QString &text)
 void Shell::initVideoStreaming(QString qual, QString blackwhite)
 {
 	const QString shellToExecute = QString("\"/etc/init.d/mjpg-encoder-ov7670 start --jpeg-qual ") + qual +
-		QString(" --white-black ") + blackwhite + 
-		QString(" && /etc/init.d/mjpg-streamer-ov7670.sh start\"");
-	runCommand(shellToExecute);
+																	QString(" --white-black ") + blackwhite + 
+																	QString(" && /etc/init.d/mjpg-streamer-ov7670.sh start\"");
+	  runCommand(shellToExecute);
 }
