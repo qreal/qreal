@@ -24,7 +24,7 @@ SayBlock::SayBlock(RobotModelInterface &robotModel)
 
 void SayBlock::doJob(robotModel::parts::TrikShell &shell)
 {
-    const QString text = boolProperty("Evaluate") ? eval<QString>("Text") : stringProperty("Text");
+	const QString text = boolProperty("Evaluate") ? eval<QString>("Text") : stringProperty("Text");
 	if (!errorsOccured()) {
 		shell.say(text);
 		emit done(mNextBlockId);

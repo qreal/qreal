@@ -2861,7 +2861,7 @@
 						<property displayedName="Text" type="string" name="Text">
 							<default>Hi!</default>
 						</property>
-                                                <property displayedName="Evaluate" type="bool" name="Evaluate">
+                                               <property displayedName="Evaluate" type="bool" name="Evaluate">
 							<default>false</default>
 						</property>
 					</properties>
