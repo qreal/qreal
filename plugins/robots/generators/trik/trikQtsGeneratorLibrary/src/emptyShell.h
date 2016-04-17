@@ -34,7 +34,7 @@ public slots:
 	void say(const QString &text) override;
 	void writeToFile(const QString &filePath, const QString &text) override;
 	void removeFile(const QString &filePath) override;
-  void initVideoStreaming(QString qual, QString blackwhite) override;
+	void initVideoStreaming(QString qual, QString blackwhite) override;
 };
 
 }
