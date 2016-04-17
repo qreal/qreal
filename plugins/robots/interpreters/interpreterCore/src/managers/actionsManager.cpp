@@ -250,7 +250,7 @@ void ActionsManager::initKitPluginActions()
 		QList<QAction *> realRobotActions;
 		kitBase::robotModel::RobotModelUtils::sortRobotModels(robotModels);
 		for (kitBase::robotModel::RobotModelInterface * const robotModel : robotModels) {
-			const QString &text = robotModel->friendlyName();	
+			const QString &text = robotModel->friendlyName();
 			QAction * const fastSelectionAction = new QAction(fastSelectorIcons[robotModel], text, nullptr);
 			robotModelMapper->setMapping(fastSelectionAction, robotModel);
 			connect(fastSelectionAction, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
@@ -261,15 +261,18 @@ void ActionsManager::initKitPluginActions()
 				twoDModelActions << fastSelectionAction;
 
 				// Action for 3D model
-				const QString &text = tr("3D Model");
-				QAction * const fastSelectionAction3D = new QAction(fastSelectorIcons[robotModel], text, nullptr);
-				robotModelMapper->setMapping(fastSelectionAction3D, robotModel);
-				connect(fastSelectionAction3D, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
-				fastSelectionAction3D->setObjectName("switchTo" + kitId + robotModel->name());
-				fastSelectionAction3D->setCheckable(true);
-				group->addAction(fastSelectionAction3D);
+				// robotModel->friendlyName() for 3DRobotModel will be "tr("3D Model")"
 
-				twoDModelActions << fastSelectionAction3D;
+//				const QString &text3D = tr("3D Model");
+//				const QIcon &icon3D = ;
+//				QAction * const fastSelectionAction3D = new QAction(icon3D, text3D, nullptr);
+//				robotModelMapper->setMapping(fastSelectionAction3D, robotModel);
+//				connect(fastSelectionAction3D, SIGNAL(triggered()), robotModelMapper, SLOT(map()));
+//				fastSelectionAction3D->setObjectName("switchTo" + kitId + robotModel->name());
+//				fastSelectionAction3D->setCheckable(true);
+//				group->addAction(fastSelectionAction3D);
+
+//				twoDModelActions << fastSelectionAction3D;
 				//
 			} else {
 				realRobotActions << fastSelectionAction;

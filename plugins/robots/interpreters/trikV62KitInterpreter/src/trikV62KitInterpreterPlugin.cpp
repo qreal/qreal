@@ -28,8 +28,9 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 {
 	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
+	const auto threeDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
 	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
-	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, blocksFactory);
+	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, threeDRobotModel, blocksFactory);
 }
 
 QString TrikV62KitInterpreterPlugin::kitId() const

@@ -28,14 +28,24 @@
 
 using namespace twoDModel::engine;
 
-TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
+TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel, int typeOfRobotModel)
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
 	, mView(new view::TwoDModelWidget(*mModel))
 	//, mApi2D(new TwoDModelEngineApi(*mModel, *mView))
-	, mApi3D(new ThreeDModelEngineApi(*mModel, *mView))
+	//, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
+	if (typeOfRobotModel == 3) {
+		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
+		mApi.reset(engineApi);
+	}
+	// Default branch.
+	else {
+		const auto engineApi = new TwoDModelEngineApi(*mModel, *mView);
+		mApi.reset(engineApi);
+	}
+
 	mModel.data()->addRobotModel(robotModel);
 
 	connect(mView.data(), &view::TwoDModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
@@ -153,7 +163,7 @@ kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurati
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
 	// On Time
-	return *mApi3D;
+	return *mApi;
 	//
 }
 
@@ -195,7 +205,7 @@ void TwoDModelEngineFacade::onStartInterpretation()
 
 		simxGetObjectHandle(clientID, "sensor", &sonarSensorHandle, simx_opmode_oneshot_wait);
 
-		mApi3D->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
+		mApi->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
 									backLeftHandle, backRightHandle, sonarSensorHandle);
 
 		isConnect = true;

@@ -47,7 +47,7 @@ class TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlInterfac
 
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
+	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel, int typeOfRobotModel);
 
 	~TwoDModelEngineFacade() override;
 
@@ -81,11 +81,11 @@ private:
 
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::TwoDModelWidget> mView;
-	QScopedPointer<TwoDModelEngineInterface> mApi2D;
+	//QScopedPointer<TwoDModelEngineInterface> mApi2D;
 
 	// On Time
 
-	QScopedPointer<TwoDModelEngineInterface> mApi3D;
+	QScopedPointer<TwoDModelEngineInterface> mApi;
 	//QScopedPointer<ThreeDModelEngineInterface> mApi3D;
 
 	//
