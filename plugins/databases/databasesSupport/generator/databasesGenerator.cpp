@@ -81,11 +81,14 @@ Id DatabasesGenerator::getParent(Id const &id)
 
 IdList DatabasesGenerator::getChildren(Id const &id)
 {
+	IdList children;
 	if (mLogicalModelApi.isLogicalId(id)) {
-		return mGraphicalModelApi.graphicalRepoApi().children(mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0));
+		children = mGraphicalModelApi.graphicalRepoApi().children(mGraphicalModelApi.graphicalIdsByLogicalId(id).at(0));
+	} else {
+		children = mGraphicalModelApi.graphicalRepoApi().children(id);
 	}
 
-	return mGraphicalModelApi.graphicalRepoApi().children(id);
+	return children;
 }
 
 IdList DatabasesGenerator::getBoundedWithOneToOneRealationship(Id const &id)
@@ -495,6 +498,8 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 		// add bounding attribute
 		Id logicalColumnId = createElementFromString("Column", QPointF(), setTables.at(fromSet));
 		QString rowName = getProperty(relationship, "columnName").toString();
+		if (rowName.isEmpty())
+			rowName = "keyOf" + getProperty(to, "entityName").toString();
 		mLogicalModelApi.setPropertyByRoleName(logicalColumnId, rowName, "columnName");
 
 		// copy relationship
