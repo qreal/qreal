@@ -54,6 +54,7 @@ void PaletteTree::initUi()
 	ui::SearchLineEdit * const searchField = new ui::SearchLineEdit(this);
 	connect(searchField, &ui::SearchLineEdit::textChanged, this, &PaletteTree::onSearchTextChanged);
 	mLayout->addWidget(searchField);
+	mSearchLineEdit = searchField;
 
 	setMinimumSize(200, 100);
 }
@@ -286,6 +287,7 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 
 	initDone();
 	setComboBoxIndex();
+	mSearchLineEdit->setVisible(!isIconsView);
 }
 
 void PaletteTree::initMainWindow(MainWindow *mainWindow)

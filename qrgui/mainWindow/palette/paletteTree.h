@@ -162,6 +162,9 @@ private:
 	/// Combobox with editors.
 	QComboBox *mComboBox;
 
+	/// Search field for palette.
+	QWidget *mSearchLineEdit;
+
 	/// Main layout of the widget.
 	QVBoxLayout *mLayout;
 
