@@ -12,6 +12,7 @@
 				<value name="DATETIME" displayedName="DATETIME"/>
 				<value name="DECIMAL" displayedName="DECIMAL(,)"/>
 				<value name="FLOAT" displayedName="FLOAT(,)"/>
+				<value name="INT" displayedName="INT"/>
 				<value name="NTEXT" displayedName="NTEXT"/>
 				<value name="NVARCHAR" displayedName="NVARCHAR()"/>
 				<value name="TEXT" displayedName="TEXT"/>
