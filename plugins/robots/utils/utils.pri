@@ -95,4 +95,4 @@ TRANSLATIONS += \
 	$$PWD/../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \
 	$$PWD/../../../qrtranslations/fr/plugins/robots/robots_utils_fr.ts \
 
-RESOURCES += utils.qrc
+RESOURCES += $$PWD/utils.qrc
