@@ -106,6 +106,16 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
+	auto connectDisconnection = [=](kitBase::robotModel::RobotModelInterface &model) {
+		connect(&model, &kitBase::robotModel::RobotModelInterface::disconnected
+				, mInterpreter, &interpreter::Interpreter::userStopRobot);
+		connect(&model, &kitBase::robotModel::RobotModelInterface::disconnected
+				, &mActionsManager, [=](){ mActionsManager.connectToRobotAction().setChecked(false); });
+	};
+	connectDisconnection(mRobotModelManager.model());
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, mInterpreter, connectDisconnection);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
+			, mInterpreter, &interpreter::InterpreterInterface::userStopRobot);
 
 	initKitPlugins(configurer);
 

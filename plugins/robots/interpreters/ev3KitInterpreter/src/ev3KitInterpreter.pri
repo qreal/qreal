@@ -31,11 +31,7 @@ win32 {
 	LIBS += -llibusb-1.0
 }
 
-unix:!macx {
-	LIBS += -L /usr/bin -lusb-1.0
-}
-
-macx {
+unix {
 	LIBS += -lusb-1.0
 }
 

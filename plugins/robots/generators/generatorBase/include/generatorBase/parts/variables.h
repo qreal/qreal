@@ -40,6 +40,9 @@ public:
 			, const kitBase::robotModel::RobotModelInterface &robotModel
 			, qrtext::LanguageToolboxInterface &luaToolbox);
 
+	/// Returns global constants declarations string
+	QString generateConstantsString() const;
+
 	/// Returns global variables declarations string
 	QString generateVariableString() const;
 

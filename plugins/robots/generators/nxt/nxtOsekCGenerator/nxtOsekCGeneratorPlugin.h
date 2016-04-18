@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <nxtKit/communication/usbRobotCommunicationThread.h>
 #include <nxtGeneratorBase/nxtGeneratorPluginBase.h>
 
 #include "nxtFlashTool.h"
@@ -90,6 +91,7 @@ private:
 	NxtFlashTool *mFlashTool = nullptr;  // Has ownership
 
 	NxtOsekCMasterGenerator *mMasterGenerator;
+	communication::UsbRobotCommunicationThread mCommunicator;
 };
 
 }

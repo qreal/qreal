@@ -104,23 +104,23 @@
 <context>
     <name>qReal::BaseGraphTransformationUnit</name>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="45"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="48"/>
         <source>no current diagram</source>
         <translation>Откройте диаграмму</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="72"/>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="120"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="75"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="123"/>
         <source>Rule &apos;</source>
         <translation>Правило &apos;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="73"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="76"/>
         <source>&apos; has not any appropriate nodes</source>
         <translation>&apos; не имеет подходящих узлов</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="120"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="123"/>
         <source>&apos; has unconnected link</source>
         <translation>&apos; содержит неподключенную связь</translation>
     </message>
@@ -157,22 +157,22 @@
 <context>
     <name>qReal::interpretation::Interpreter</name>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="55"/>
         <source>Interpreter is already running</source>
         <translation>Программа уже запущена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="96"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="97"/>
         <source>Cannot create new thread with already occupied id %1</source>
         <translation>Попытка создать задачу с уже занятым идентификатором %1</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="108"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="109"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Превышено максимальное число возможных потоков (максимум %1 потоков)</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="130"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="131"/>
         <source>Killing non-existent thread %1</source>
         <translation>Попытка завершить несуществующую задачу %1</translation>
     </message>
@@ -184,17 +184,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="113"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="118"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="172"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
         <source>Block has disappeared!</source>
         <translation>Блок исчез!</translation>
     </message>

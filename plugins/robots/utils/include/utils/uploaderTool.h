@@ -47,7 +47,8 @@ public:
 			, const QString &startedMessage
 			, const std::function<QString()> robotIpGetter
 			);
-	~UploaderTool();
+
+	~UploaderTool() override;
 
 	/// Initializes uploader. Must be called before action is triggered.
 	/// @param path - path to directory to upload to robot
@@ -58,7 +59,7 @@ public:
 	qReal::ActionInfo action() const;
 
 private slots:
-	void uploadRuntime();
+	void upload();
 	void onUploadStarted();
 	void onUploadError(QProcess::ProcessError reason);
 	void onUploadFinished(int exitCode);

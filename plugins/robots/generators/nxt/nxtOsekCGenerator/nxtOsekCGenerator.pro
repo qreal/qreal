@@ -26,10 +26,13 @@ DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 includes(plugins/robots/generators/nxt/nxtGeneratorBase \
 		plugins/robots/generators/generatorBase \
 		plugins/robots/common/kitBase \
+		plugins/robots/common/nxtKit \
+		plugins/robots/utils \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-nxt-generator-base)
+links(qrkernel qslog qrutils qrrepo qscintilla2 robots-utils robots-nxt-kit \
+		robots-generator-base robots-nxt-generator-base)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtOsekCGenerator_ru.ts \

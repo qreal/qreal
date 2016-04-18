@@ -26,6 +26,16 @@ ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * con
 {
 }
 
+ChangePropertyCommand::ChangePropertyCommand(qReal::models::LogicalModelAssistApi * const model
+		, const QString &property, const qReal::Id &id, const QVariant &oldValue, const QVariant &newValue)
+	: mLogicalModel(model)
+	, mId(id)
+	, mPropertyName(property)
+	, mOldValue(oldValue)
+	, mNewValue(newValue)
+{
+}
+
 bool ChangePropertyCommand::execute()
 {
 	return setProperty(mNewValue);
