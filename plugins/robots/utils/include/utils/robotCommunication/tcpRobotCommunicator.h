@@ -47,6 +47,8 @@ public:
 
 	void stopRobot() override;
 
+	void takeSnapshot() override;
+
 	void requestData(const QString &sensor) override;
 
 	void connect() override;

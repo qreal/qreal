@@ -88,6 +88,11 @@ void RealRobotModel::stopRobot()
 	mRobotCommunicator->stopRobot();
 }
 
+void RealRobotModel::takeSnapshot()
+{
+	mRobotCommunicator->takeSnapshot();
+}
+
 void RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();

@@ -63,6 +63,9 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
+	/// Requests real robot to send a snapshot
+	void takeSnapshot();
+
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
@@ -73,6 +76,8 @@ protected:
 			, robotModel::twoD::TrikTwoDRobotModel * const twoDRobotModel
 			, blocks::TrikBlocksFactoryBase * const blocksFactory
 			);
+
+	virtual void onCurrentRobotModelChanged(const QString &modelName);
 
 private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
@@ -90,6 +95,9 @@ private:
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	QString mCurrentlySelectedModelName;
+
+	/// Action that requests robot to send snapshot
+	QAction *mTakeSnapshotAction;  // Doesn't have ownership; may be disposed by GUI.
 };
 
 }
