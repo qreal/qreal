@@ -159,6 +159,14 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			item->setToolTip(description);
 		}
 
+		QtProperty *item1 = item;
+
+		QtGroupPropertyManager *groupManager = new QtGroupPropertyManager;
+		item = groupManager->addProperty(name);
+		item->addSubProperty(item1);
+
+		item->addSubProperty(item1);
+
 		mPropertyEditor->addProperty(item);
 	}
 
