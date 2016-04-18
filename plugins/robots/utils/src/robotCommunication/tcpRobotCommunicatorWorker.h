@@ -66,6 +66,9 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	Q_INVOKABLE void stopRobot();
 
+	/// Sends a command to take a snapshot and upload it to Trik Studio.
+	Q_INVOKABLE void takeSnapshot();
+
 	/// Requests casing version from robot, emits casingVersionReceived() when robot responds.
 	Q_INVOKABLE void requestCasingVersion();
 

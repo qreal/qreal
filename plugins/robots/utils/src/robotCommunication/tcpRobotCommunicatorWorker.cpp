@@ -103,6 +103,16 @@ void TcpRobotCommunicatorWorker::stopRobot()
 	emit stopRobotDone();
 }
 
+void TcpRobotCommunicatorWorker::takeSnapshot()
+{
+	connect();
+	if (!mControlConnection->isConnected()) {
+		return;
+	}
+
+	mControlConnection->send("takeSnapshot");
+}
+
 void TcpRobotCommunicatorWorker::requestCasingVersion()
 {
 	connect();

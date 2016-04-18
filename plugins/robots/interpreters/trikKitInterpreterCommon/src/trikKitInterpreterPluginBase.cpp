@@ -28,7 +28,11 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
+	: mTakeSnapshotAction(new QAction(nullptr))
 {
+	mTakeSnapshotAction->setText(tr("Take snapshot"));
+	//mTakeSnapshotAction->setIcon(QIcon(""));
+	connect(mTakeSnapshotAction, &QAction::triggered, this, &TrikKitInterpreterPluginBase::takeSnapshot);
 }
 
 TrikKitInterpreterPluginBase::~TrikKitInterpreterPluginBase()
@@ -64,7 +68,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 {
 	connect(&configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
+			, this
+			, &TrikKitInterpreterPluginBase::onCurrentRobotModelChanged);
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurer.qRealConfigurator().mainWindowInterpretersInterface();
@@ -84,6 +89,16 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
+}
+
+void TrikKitInterpreterPluginBase::onCurrentRobotModelChanged(const QString &modelName)
+{
+	bool modelChanged = modelName == mRealRobotModel->name();
+	mTakeSnapshotAction->setVisible(modelChanged);
+
+	if (modelChanged) {
+		mCurrentlySelectedModelName = modelName;
+	}
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()
@@ -120,7 +135,8 @@ QWidget *TrikKitInterpreterPluginBase::quickPreferencesFor(const kitBase::robotM
 
 QList<qReal::ActionInfo> TrikKitInterpreterPluginBase::customActions()
 {
-	return {};
+	const ActionInfo takeSnapshotActionInfo(mTakeSnapshotAction, "interpreters", "tools");
+	return {takeSnapshotActionInfo};
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPluginBase::hotKeyActions()
@@ -168,4 +184,9 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 	});
 
 	return quickPreferences;
+}
+
+void TrikKitInterpreterPluginBase::takeSnapshot()
+{
+	mRealRobotModel.data()->takeSnapshot();
 }
