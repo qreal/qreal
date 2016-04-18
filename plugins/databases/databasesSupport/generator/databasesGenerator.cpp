@@ -536,10 +536,16 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 				+ "_" + getListTableName(oneToOneBoundedEntitiesSets.at(toSet))).toUtf8();
 		}
 		mRelMatrix[toSet][fromSet] = 2;
-		mRelMatrix[toSet][fromSet] = 2;
+		mRelMatrix[fromSet][toSet] = 2;
 
+		QPointF tableGraphicalIdFrom = mGraphicalModelApi.position(
+					mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(fromSet)).first());
+		QPointF tableGraphicalIdTo = mGraphicalModelApi.position(
+					mGraphicalModelApi.graphicalIdsByLogicalId(setTables.at(toSet)).first());
 		// Creating
-		Id logicalTableId = createElementFromString("Table", QPointF(), logicalDiagramId, false);
+		QPointF boundingTableCoord = QPointF((tableGraphicalIdFrom.x() + tableGraphicalIdTo.x()) / 2.0
+				, (tableGraphicalIdFrom.y() + tableGraphicalIdTo.y()) / 2.0);
+		Id logicalTableId = createElementFromString("Table", boundingTableCoord, logicalDiagramId, false);
 		mLogicalModelApi.setPropertyByRoleName(logicalTableId, relationshipTableName, "tableName");
 
 		//copy relationship
