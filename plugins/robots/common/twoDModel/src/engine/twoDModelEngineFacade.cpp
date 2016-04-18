@@ -29,6 +29,7 @@
 using namespace twoDModel::engine;
 
 TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel, int typeOfRobotModel)
+//TwoDModelEngineFacade::TwoDModelEngineFacade(kitBase::robotModel::CommonRobotModel &robotModel, int typeOfRobotModel)
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
 	, mView(new view::TwoDModelWidget(*mModel))

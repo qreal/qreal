@@ -30,11 +30,13 @@ HEADERS += \
 	$$PWD/src/trikV6KitInterpreterPlugin.h \
 	$$PWD/src/robotModel/real/trikV6RealRobotModel.h \
 	$$PWD/src/robotModel/twoD/trikV6TwoDRobotModel.h \
+    $$PWD/src/robotModel/twoD/trikv6ThreeDRobotModel.h
 
 SOURCES += \
 	$$PWD/src/trikV6KitInterpreterPlugin.cpp \
 	$$PWD/src/robotModel/real/trikV6RealRobotModel.cpp \
 	$$PWD/src/robotModel/twoD/trikV6TwoDRobotModel.cpp \
+    $$PWD/src/robotModel/twoD/trikv6ThreeDRobotModel.cpp
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikV6KitInterpreter_ru.ts \

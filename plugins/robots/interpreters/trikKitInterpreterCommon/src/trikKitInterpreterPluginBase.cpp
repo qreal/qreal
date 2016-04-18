@@ -45,6 +45,7 @@ TrikKitInterpreterPluginBase::~TrikKitInterpreterPluginBase()
 void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 		(robotModel::TrikRobotModelBase * const realRobotModel
 		, robotModel::twoD::TrikTwoDRobotModel * const twoDRobotModel
+		//, robotModel::twoD::TrikThreeDRobotModel * const threeDRobotModel
 		, robotModel::twoD::TrikTwoDRobotModel * const threeDRobotModel
 		, blocks::TrikBlocksFactoryBase * const blocksFactory
 		)

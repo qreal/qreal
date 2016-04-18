@@ -18,10 +18,12 @@
 #include <QtCore/QScopedPointer>
 
 #include "twoDModel/robotModel/twoDRobotModel.h"
+//#include "twoDModel/robotModel/threeDRobotModel.h"
+
 #include "twoDModel/engine/twoDModelControlInterface.h"
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
-#include "twoDModel/engine/threeDModelEngineInterface.h"
+//#include "twoDModel/engine/threeDModelEngineInterface.h"
 
 #include "twoDModel/twoDModelDeclSpec.h"
 
@@ -48,6 +50,8 @@ class TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlInterfac
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
 	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel, int typeOfRobotModel);
+//	explicit TwoDModelEngineFacade(kitBase::robotModel::CommonRobotModel &robotModel, int typeOfRobotModel);
+
 
 	~TwoDModelEngineFacade() override;
 
