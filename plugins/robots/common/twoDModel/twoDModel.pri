@@ -71,7 +71,8 @@ HEADERS += \
     $$PWD/src/engine/remoteApi/extApiInternal.h \
     $$PWD/src/engine/remoteApi/extApiPlatform.h \
     $$PWD/src/engine/remoteApi/include/luaFunctionData.h \
-    $$PWD/src/engine/remoteApi/include/luaFunctionDataItem.h
+    $$PWD/src/engine/remoteApi/include/luaFunctionDataItem.h \
+    $$PWD/include/twoDModel/robotModel/threeDRobotModel.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -188,7 +189,8 @@ SOURCES += \
     $$PWD/src/engine/threeDModelEngineApi.cpp \
     $$PWD/src/engine/remoteApi/extApi.c \
     $$PWD/src/engine/remoteApi/extApiCustom.c \
-    $$PWD/src/engine/remoteApi/extApiPlatform.c
+    $$PWD/src/engine/remoteApi/extApiPlatform.c \
+    $$PWD/src/robotModel/threeDRobotModel.cpp
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \

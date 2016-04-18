@@ -90,7 +90,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 	mTwoDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
-	mThreeDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
+//	mThreeDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mRealRobotModel.data(), &robotModel::TrikRobotModelBase::rereadSettings);
@@ -98,8 +98,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
 
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-			, mThreeDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
+//	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+//			, mThreeDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()

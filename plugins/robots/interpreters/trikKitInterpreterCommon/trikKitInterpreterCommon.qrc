@@ -26,5 +26,6 @@
         <file>icons/twoDVideoModule.svg</file>
         <file>icons/twoDIrRangeSensor.svg</file>
         <file>icons/twoDUsRangeSensor.svg</file>
+        <file>icons/switch-3d.svg</file>
     </qresource>
 </RCC>
