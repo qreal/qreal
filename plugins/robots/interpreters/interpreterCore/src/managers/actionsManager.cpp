@@ -257,7 +257,7 @@ void ActionsManager::initKitPluginActions()
 			fastSelectionAction->setObjectName("switchTo" + kitId + robotModel->name());
 			fastSelectionAction->setCheckable(true);
 			group->addAction(fastSelectionAction);
-			if (text.contains("2D")) {
+			if (text.contains("2D") || text.contains("3D")) {
 				twoDModelActions << fastSelectionAction;
 
 				// Action for 3D model

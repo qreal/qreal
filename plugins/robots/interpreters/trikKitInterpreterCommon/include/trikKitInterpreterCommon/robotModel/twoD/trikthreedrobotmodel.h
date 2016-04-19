@@ -14,7 +14,8 @@
 
 #pragma once
 
-#include <twoDModel/robotModel/threeDRobotModel.h>
+//#include <twoDModel/robotModel/threeDRobotModel.h>
+#include <twoDModel/robotModel/twoDRobotModel.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
 
@@ -31,12 +32,15 @@ namespace twoD {
 ///       So, for different TRIK cases devices are the same, but mappings between ports and devices are
 ///       different. And across models devices are different (2d and real) but port mappings are the same.
 ///       Clearly we need to separate this into two hierarchies.
-class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikThreeDRobotModel : public twoDModel::robotModel::ThreeDRobotModel
+//class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikThreeDRobotModel : public twoDModel::robotModel::ThreeDRobotModel
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikThreeDRobotModel : public twoDModel::robotModel::TwoDRobotModel
 {
 	Q_OBJECT
 
 public:
 	explicit TrikThreeDRobotModel(kitBase::robotModel::RobotModelInterface &realModel);
+
+	QString friendlyName() const override;
 
 	QString robotImage() const override;
 
@@ -68,6 +72,8 @@ private:
 			) override;
 
 	void onInterpretationStarted() override;
+
+	const kitBase::robotModel::RobotModelInterface *mRealModel;
 
 	QString mLeftWheelPort;
 	QString mRightWheelPort;

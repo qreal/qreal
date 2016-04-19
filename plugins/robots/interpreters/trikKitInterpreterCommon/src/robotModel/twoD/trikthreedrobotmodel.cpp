@@ -44,7 +44,9 @@ using namespace trik::robotModel::twoD;
 using namespace kitBase::robotModel;
 
 TrikThreeDRobotModel::TrikThreeDRobotModel(RobotModelInterface &realModel)
-	: twoDModel::robotModel::ThreeDRobotModel(realModel)
+	//: twoDModel::robotModel::ThreeDRobotModel(realModel)
+	: twoDModel::robotModel::TwoDRobotModel(realModel)
+	, mRealModel(&realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
@@ -57,6 +59,17 @@ TrikThreeDRobotModel::TrikThreeDRobotModel(RobotModelInterface &realModel)
 			removeAllowedConnections(port);
 		}
 	}
+}
+
+QString TrikThreeDRobotModel::friendlyName() const
+{
+	QRegExp versionRegExp("\\(v.*\\)");
+	const int pos = versionRegExp.indexIn(mRealModel->friendlyName());
+	if (pos == -1) {
+		return tr("3D Model");
+	}
+
+	return tr("3D Model") + " " + versionRegExp.capturedTexts().at(0);
 }
 
 robotParts::Device *TrikThreeDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
@@ -97,7 +110,8 @@ robotParts::Device *TrikThreeDRobotModel::createDevice(const PortInfo &port, con
 		return new parts::ColorSensor(deviceInfo, port);
 	}
 
-	return twoDModel::robotModel::ThreeDRobotModel::createDevice(port, deviceInfo);
+//	return twoDModel::robotModel::ThreeDRobotModel::createDevice(port, deviceInfo);
+	return twoDModel::robotModel::TwoDRobotModel::createDevice(port, deviceInfo);
 }
 
 void TrikThreeDRobotModel::onInterpretationStarted()
@@ -180,7 +194,8 @@ QRect TrikThreeDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInf
 
 QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TrikThreeDRobotModel::specialDevices() const
 {
-	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::ThreeDRobotModel::specialDevices());
+//	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::ThreeDRobotModel::specialDevices());
+	QHash<PortInfo, DeviceInfo> result(twoDModel::robotModel::TwoDRobotModel::specialDevices());
 	return result;
 }
 
@@ -190,7 +205,8 @@ QPair<QPoint, qreal> TrikThreeDRobotModel::specialDeviceConfiguration(const Port
 		return qMakePair(QPoint(1, 0), 0);
 	}
 
-	return twoDModel::robotModel::ThreeDRobotModel::specialDeviceConfiguration(port);
+//	return twoDModel::robotModel::ThreeDRobotModel::specialDeviceConfiguration(port);
+	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }
 
 QHash<QString, int> TrikThreeDRobotModel::buttonCodes() const

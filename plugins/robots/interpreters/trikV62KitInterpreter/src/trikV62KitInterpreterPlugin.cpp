@@ -20,6 +20,7 @@ using namespace trik;
 
 #include "robotModel/real/trikV62RealRobotModel.h"
 #include "robotModel/twoD/trikV62TwoDRobotModel.h"
+#include "robotModel/twoD/trikV62ThreeDRobotModel.h"
 
 const QString kitIdString = "trikV62Kit";
 
@@ -28,7 +29,8 @@ TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 {
 	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
-	const auto threeDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
+//	const auto threeDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
+	const auto threeDRobotModel = new robotModel::twoD::ThreeDRobotModel(*realRobotModel);
 	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
 	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, threeDRobotModel, blocksFactory);
 }
