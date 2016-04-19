@@ -26,7 +26,7 @@
 using namespace qReal;
 using namespace gui;
 
-const bool hideLabels = true;
+const bool hideLabels = false;
 
 DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 		, qrRepo::LogicalRepoApi &logicalRepoApi

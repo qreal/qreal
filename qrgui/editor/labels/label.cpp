@@ -188,7 +188,7 @@ void Label::updateData(bool withUndoRedo)
 						value = value.toInt();
 					}
 
-					this->setPlainText(value.toString());
+					setText(value.toString());
 					element.setAttribute("value", value.toString());
 					break;
 				}
@@ -399,7 +399,7 @@ void Label::updateDynamicData()
 				element = element.nextSiblingElement("property"))
 		{
 			if (element.attribute("textBinded") == mProperties.binding()) {
-				this->setPlainText(element.attribute("value"));
+				setText(element.attribute("value"));
 				break;
 			}
 		}

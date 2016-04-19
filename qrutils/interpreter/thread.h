@@ -22,8 +22,10 @@
 #include <qrkernel/ids.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
 #include <qrutils/interpreter/blockInterface.h>
+#include <qrutils/interpreter/stackFrame.h>
 #include <qrutils/interpreter/blocksTableInterface.h>
 #include <qrutils/interpreter/stopReason.h>
 #include <qrutils/utilsDeclSpec.h>
@@ -46,6 +48,7 @@ public:
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	/// @param initialNode - node that shall be executed first in this thread.
 	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
+			, const qReal::LogicalModelAssistInterface *logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, BlocksTableInterface &blocksTable
@@ -59,6 +62,7 @@ public:
 	/// @param diagramToInterpret - diagram, whose initial node shall be executed in a new thread.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
+			, const qReal::LogicalModelAssistInterface *logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, const Id &diagramToInterpret
@@ -116,11 +120,12 @@ private:
 	void turnOff(BlockInterface * const block);
 
 	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership
+	const qReal::LogicalModelAssistInterface *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	const Id mInitialNodeType;
 	BlocksTableInterface &mBlocksTable;
 	BlockInterface *mCurrentBlock;  // Doesn't have ownership
-	QStack<BlockInterface *> mStack;  // Doesn't have ownership
+	QStack<StackFrame> mStack;
 	const qReal::Id mInitialDiagram;
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership

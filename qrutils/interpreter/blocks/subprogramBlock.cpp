@@ -34,6 +34,25 @@ void SubprogramBlock::run()
 		return;
 	}
 
+	const QString properties = mLogicalModelApi->logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
+	if (!properties.isEmpty()) {
+		QDomDocument dynamicProperties;
+		dynamicProperties.setContent(properties);
+		for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property");
+			!element.isNull();
+			element = element.nextSiblingElement("property"))
+		{
+			QVariant v = element.attribute("value");
+			if (element.attribute("type") == "bool") {
+				setVariableValue<bool>(element.attribute("text"), v.toBool());
+			} else if (element.attribute("type") == "int") {
+				setVariableValue<int>(element.attribute("text"), v.toInt());
+			} else if (element.attribute("type") == "string") {
+				setVariableValue<QString>(element.attribute("text"), v.toString());
+			}
+		}
+	}
+
 	const Id logicalDiagram = mLogicalModelApi->logicalRepoApi().outgoingExplosion(logicalId);
 	const IdList diagrams = mGraphicalModelApi->graphicalIdsByLogicalId(logicalDiagram);
 	if (!diagrams.isEmpty()) {

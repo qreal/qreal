@@ -37,6 +37,8 @@ HEADERS += \
 	$$PWD/blocks/sendThreadMessageBlock.h \
 	$$PWD/blocks/receiveThreadMessageBlock.h \
 	$$PWD/blocks/randomInitBlock.h \
+	$$PWD/stackFrame.h \
+
 
 SOURCES += \
 	$$PWD/interpreter.cpp \
@@ -60,3 +62,4 @@ SOURCES += \
 	$$PWD/blocks/killThreadBlock.cpp \
 	$$PWD/blocks/sendThreadMessageBlock.cpp \
 	$$PWD/blocks/receiveThreadMessageBlock.cpp \
+	$$PWD/stackFrame.cpp \

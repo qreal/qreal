@@ -64,7 +64,7 @@ void Interpreter::startInterpretation()
 	const Id currentDiagramId = mInterpretersInterface.activeDiagram();
 
 	qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
-			, mInterpretersInterface, mInitialNodeType, currentDiagramId, mBlocksTable, "main");
+		, &mLogicalModelApi, mInterpretersInterface, mInitialNodeType, currentDiagramId, mBlocksTable, "main");
 
 	emit started();
 	addThread(initialThread, "main");
@@ -98,8 +98,8 @@ void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 		stopInterpretation();
 	}
 
-	Thread * const thread = new Thread(&mGraphicalModelApi, mInterpretersInterface
-			, mInitialNodeType, mBlocksTable, startBlockId, threadId);
+	Thread * const thread = new Thread(&mGraphicalModelApi, &mLogicalModelApi,
+			mInterpretersInterface, mInitialNodeType, mBlocksTable, startBlockId, threadId);
 	addThread(thread, threadId);
 }
 

@@ -20,6 +20,8 @@
 #include <qrkernel/settingsManager.h>
 
 #include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
+#include <qrutils/interpreter/blocks/subprogramBlock.h>
+
 
 using namespace qReal;
 using namespace interpretation;
@@ -27,12 +29,14 @@ using namespace interpretation;
 const int blocksCountTillProcessingEvents = 100;
 
 Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
+		, const LogicalModelAssistInterface *logicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
 		, const Id &initialNode
 		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
+	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
 	, mBlocksTable(blocksTable)
@@ -46,12 +50,14 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 }
 
 Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
+		, const LogicalModelAssistInterface *logicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, const Id &diagramToInterpret
 		, BlocksTableInterface &blocksTable
 		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
+	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
 	, mBlocksTable(blocksTable)
@@ -67,9 +73,9 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 
 Thread::~Thread()
 {
-	for (const BlockInterface * const block : mStack) {
-		if (block) {
-			mInterpretersInterface.dehighlight(block->id());
+	for (StackFrame &f : mStack) {
+		if (f.getBlock()) {
+			mInterpretersInterface.dehighlight(f.getBlock()->id());
 		}
 	}
 }
@@ -131,7 +137,7 @@ void Thread::finishedSteppingInto()
 		return;
 	}
 
-	mCurrentBlock = mStack.top();
+	mCurrentBlock = mStack.top().getBlock();
 	// Execution must proceed here
 	mCurrentBlock->finishedSteppingInto();
 }
@@ -183,7 +189,27 @@ void Thread::turnOn(BlockInterface * const block)
 	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
 	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
 
-	mStack.push(mCurrentBlock);
+	//Check subprogram block
+	if (dynamic_cast<blocks::SubprogramBlock*>(mCurrentBlock)) {
+		const Id logicalId = mGraphicalModelApi->logicalId(block->id());
+		const QString properties = mLogicalModelApi->logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
+		//QHash<property name, property value>
+		QHash<QString, QString> prop;
+
+		if (!properties.isEmpty()) {
+			QDomDocument dynamicProperties;
+			dynamicProperties.setContent(properties);
+			for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property");
+				!element.isNull();
+				element = element.nextSiblingElement("property"))
+			{
+				prop.insert(element.attribute("text"), element.attribute("value"));
+			}
+		}
+		mStack.push(StackFrame(mCurrentBlock, prop));
+	} else {
+		mStack.push(StackFrame(mCurrentBlock));
+	}
 
 	++mBlocksSincePreviousEventsProcessing;
 	if (mBlocksSincePreviousEventsProcessing > blocksCountTillProcessingEvents) {

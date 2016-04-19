@@ -133,6 +133,13 @@ protected:
 		return result;
 	}
 
+	/// Sets a value of given identifier in interpreter to given value.
+	template<typename T>
+	void setVariableValue(const QString &name, T value)
+	{
+		mParser->setVariableValue<T>(name, value);
+	}
+
 	/// Evaluates given code using text language interpreter.
 	void evalCode(const QString &code);
 
