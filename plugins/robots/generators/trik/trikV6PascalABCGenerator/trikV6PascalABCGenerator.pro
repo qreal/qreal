@@ -24,25 +24,25 @@ CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
 includes( \
-        plugins/robots/generators/trik/trikPascalABCGeneratorLibrary \
-        plugins/robots/generators/trik/trikGeneratorBase \
-        plugins/robots/generators/generatorBase \
-        plugins/robots/common/kitBase \
-        plugins/robots/common/trikKit \
-        plugins/robots/utils \
-        qrtext \
+		plugins/robots/generators/trik/trikPascalABCGeneratorLibrary \
+		plugins/robots/generators/trik/trikGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/trikKit \
+		plugins/robots/utils \
+		qrtext \
 )
 
 links(robots-trik-pascal-abc-generator-library robots-trik-generator-base robots-generator-base robots-trik-kit \
-                                robots-kit-base \
+		robots-kit-base \
 )
 
 TRANSLATIONS = \
-        $$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6PascalABCGenerator_ru.ts \
-        $$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV6PascalABCGenerator_fr.ts \
+	$$PWD/../../../../../qrtranslations/ru/plugins/robots/trikV6PascalABCGenerator_ru.ts \
+	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikV6PascalABCGenerator_fr.ts \
 
 HEADERS += \
-        $$PWD/trikV6PascalABCGeneratorPlugin.h
+	$$PWD/trikV6PascalABCGeneratorPlugin.h
 
 SOURCES += \
-        $$PWD/trikV6PascalABCGeneratorPlugin.cpp
+	$$PWD/trikV6PascalABCGeneratorPlugin.cpp

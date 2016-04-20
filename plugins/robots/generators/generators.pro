@@ -24,7 +24,7 @@ SUBDIRS = \
 	trikV6FSharpGenerator \
 	trikV62FSharpGenerator \
 	trikPascalABCGeneratorLibrary \
-        trikV6PascalABCGenerator \
+	trikV6PascalABCGenerator \
 	trikV62PascalABCGenerator \
 	trikV6RuntimeUploaderPlugin \
 	trikV62RuntimeUploaderPlugin \
