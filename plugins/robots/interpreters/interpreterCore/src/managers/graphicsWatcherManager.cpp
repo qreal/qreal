@@ -28,6 +28,7 @@ GraphicsWatcherManager::GraphicsWatcherManager(const qrtext::DebuggerInterface &
 {
 	mWatcher->setStartStopButtonsVisible(false);
 	connect(&mRobotManager, &RobotModelManagerInterface::robotModelChanged, this, [=](RobotModelInterface &model) {
+		mWatcher->setTimeline(model.timeline());
 		updateSensorsList(model.robotId());
 	});
 }

@@ -53,6 +53,11 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 	initUserTree();
 }
 
+Id PaletteTreeWidgets::diagram() const
+{
+	return mDiagram;
+}
+
 void PaletteTreeWidgets::initWidgets()
 {
 	initWidget(mEditorTree);

@@ -84,9 +84,6 @@ include($$PWD/graphUtils/graphUtils.pri)
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
 
-# Real-time plot
-include($$PWD/graphicsWatcher/sensorsGraph.pri)
-
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)
 
