@@ -28,34 +28,34 @@ bool Property::init()
 {
 	mIsEnum = false;
 	mIsReference = false;
-	mName = mApi->name(mId);
+	mName = mApi.name(mId);
 	if (mName.isEmpty()) {
 		qDebug() << "ERROR: anonymous property found";
 		return false;
 	}
-	mType = mApi->stringProperty(mId, "attributeType");
+	mType = mApi.stringProperty(mId, "attributeType");
 	if (mType.isEmpty()) {
 		qDebug() << "ERROR: empty type of property found";
 		return false;
 	} else {
-		const qReal::IdList listOfEnums = mApi->elementsByType("MetaEntityEnum");
+		const qReal::IdList listOfEnums = mApi.elementsByType("MetaEntityEnum");
 		foreach (const qReal::Id enumElement, listOfEnums) {
-			const QString nameOfEnumElement = mApi->name(enumElement);
+			const QString nameOfEnumElement = mApi.name(enumElement);
 			if (nameOfEnumElement == mType) {
 				mIsEnum = true;
 			}
 		}
-		const qReal::IdList listOfNodes = mApi->elementsByType("MetaEntityNode");
+		const qReal::IdList listOfNodes = mApi.elementsByType("MetaEntityNode");
 		foreach (const qReal::Id nodeElement, listOfNodes) {
-			const QString nameOfNodeElement = mApi->name(nodeElement);
+			const QString nameOfNodeElement = mApi.name(nodeElement);
 			if (nameOfNodeElement == mType) {
 				mIsReference = true;
 			}
 		}
 	}
 
-	mDisplayedName = mApi->stringProperty(mId, "displayedName");
-	mDefaultValue = mApi->stringProperty(mId, "defaultValue");
+	mDisplayedName = mApi.stringProperty(mId, "displayedName");
+	mDefaultValue = mApi.stringProperty(mId, "defaultValue");
 	return true;
 }
 
@@ -129,8 +129,10 @@ QString Property::generatePropertyLine(const QString &lineTemplate) const
 
 QString Property::generateDefaultsLine(const QString &lineTemplate) const
 {
-	if (mDefaultValue.isEmpty())
+	if (mDefaultValue.isEmpty()) {
 		return "";
+	}
+
 	QString result = lineTemplate;
 	result.replace(propertyNameTag, mName).replace(propertyDefaultTag, mDefaultValue);
 	return result;

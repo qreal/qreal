@@ -102,7 +102,7 @@ bool GraphicType::init(const QString &context)
 		}
 
 		if (id.element() == metaEntityAttribute) {
-			Property *property = new Property(&mApi, id);
+			Property *property = new Property(mApi, id);
 			if (!property->init()) {
 				delete property;
 				continue;
