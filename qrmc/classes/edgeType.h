@@ -30,7 +30,8 @@ public:
 	/// @param api - repository with metamodel.
 	/// @param id - id of an edge in repository.
 	/// @param targetDirectory - directory to generate editor to.
-	EdgeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id, const QString &targetDirectory);
+	EdgeType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id
+			, const QString &targetDirectory);
 
 	~EdgeType() override;
 

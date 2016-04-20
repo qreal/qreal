@@ -13,13 +13,15 @@
  * limitations under the License. */
 
 #include "nodeType.h"
-#include "../diagram.h"
-#include "../metaCompiler.h"
-#include "../editor.h"
-#include "../utils/nameNormalizer.h"
-#include "../../qrrepo/repoApi.h"
 
-#include <QDebug>
+#include <qrrepo/repoApi.h>
+
+#include "qrmc/diagram.h"
+#include "qrmc/metaCompiler.h"
+#include "qrmc/editor.h"
+#include "qrmc/utils/nameNormalizer.h"
+
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 using namespace qReal;

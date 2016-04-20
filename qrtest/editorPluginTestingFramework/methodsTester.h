@@ -40,8 +40,11 @@ public:
 
 protected:
 
-	virtual AbstractStringGenerator * initGeneratorWithFirstInterface(const AbstractStringGenerator &generator) const = 0;
-	virtual AbstractStringGenerator * initGeneratorWithSecondInterface(const AbstractStringGenerator &generator) const = 0;
+	virtual AbstractStringGenerator * initGeneratorWithFirstInterface(
+			const AbstractStringGenerator &generator) const = 0;
+
+	virtual AbstractStringGenerator * initGeneratorWithSecondInterface(
+			const AbstractStringGenerator &generator) const = 0;
 
 	/// tests given method if it exists in list of methods to be tested
 	ResultOfGenerating testMethodIfExistsInList(

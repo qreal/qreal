@@ -12,14 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "../../../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
 
 #include "gtest/gtest.h"
 
 using namespace qReal;
 
-TEST(ExceptionTest, messageTest) {
-	QString const msg = "Test error message";
+TEST(ExceptionTest, messageTest)
+{
+	const QString msg = "Test error message";
 	Exception ex(msg);
 	EXPECT_EQ(ex.message(), msg);
 }

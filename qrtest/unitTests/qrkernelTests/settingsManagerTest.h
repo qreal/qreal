@@ -14,14 +14,14 @@
 
 #pragma once
 
-#include "../../../qrkernel/settingsManager.h"
+#include <qrkernel/settingsManager.h>
 
 #include "gtest/gtest.h"
 
 namespace qrTest {
 
-class SettingsManagerTest : public testing::Test {
-
+class SettingsManagerTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 

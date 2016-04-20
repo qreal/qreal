@@ -13,16 +13,17 @@
  * limitations under the License. */
 
 #include "shape.h"
-#include "../utils/defs.h"
-#include "../diagram.h"
-#include "../metaCompiler.h"
-#include "../editor.h"
-#include "graphicType.h"
-#include "../utils/nameNormalizer.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+
+#include "qrmc/utils/defs.h"
+#include "qrmc/diagram.h"
+#include "qrmc/metaCompiler.h"
+#include "qrmc/editor.h"
+#include "graphicType.h"
+#include "qrmc/utils/nameNormalizer.h"
 
 using namespace qrmc;
 

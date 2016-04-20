@@ -14,13 +14,14 @@
 
 #include <QtCore/QFile>
 
-#include "../../../qrutils/outFile.h"
+#include <qrutils/outFile.h>
 
 #include "gtest/gtest.h"
 
-TEST(OutFileTest, writeTest) {
+TEST(OutFileTest, writeTest)
+{
 	utils::OutFile outFile("testFile");
-	
+
 	outFile() << "test text";
 	outFile().flush();
 
@@ -32,4 +33,3 @@ TEST(OutFileTest, writeTest) {
 
 	QFile::remove("testFile");
 }
-

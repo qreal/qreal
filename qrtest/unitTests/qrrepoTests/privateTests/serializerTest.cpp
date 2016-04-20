@@ -12,14 +12,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include "serializerTest.h"
+
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QPointF>
 
-#include "serializerTest.h"
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrrepo/private/classes/graphicalObject.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrrepo/private/classes/graphicalObject.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrRepo;
 using namespace details;
@@ -30,7 +31,7 @@ void SerializerTest::removeDirectory(QString const &dirName)
 {
 	QDir const dir(dirName);
 
-	foreach (QFileInfo const &info, dir.entryInfoList(QDir::Hidden
+	foreach (const QFileInfo &info, dir.entryInfoList(QDir::Hidden
 			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {
@@ -144,7 +145,7 @@ TEST_F(SerializerTest, saveAndLoadGraphicalPartsTest)
 
 	ASSERT_TRUE(map.contains(graphicalElement));
 
-	GraphicalObject const * const deserializedGraphicalObject
+	const GraphicalObject * const deserializedGraphicalObject
 			= dynamic_cast<GraphicalObject const *>(map.value(graphicalElement));
 
 	ASSERT_EQ(QPointF(10, 20), deserializedGraphicalObject->graphicalPartProperty(0, "Coord"));

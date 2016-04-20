@@ -20,7 +20,8 @@ namespace qrTest {
 namespace robotsTests {
 namespace interpreterCoreTests {
 
-class KitPluginManagerTest : public testing::Test {
+class KitPluginManagerTest : public testing::Test
+{
 };
 
 }

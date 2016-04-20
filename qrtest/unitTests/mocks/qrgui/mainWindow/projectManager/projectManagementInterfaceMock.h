@@ -22,7 +22,8 @@
 
 namespace qrTest {
 
-class ProjectManagementInterfaceMock : public qReal::ProjectManagementInterface {
+class ProjectManagementInterfaceMock : public qReal::ProjectManagementInterface
+{
 public:
 	MOCK_CONST_METHOD0(somethingOpened, bool());
 	MOCK_CONST_METHOD0(saveFilePath, QString());

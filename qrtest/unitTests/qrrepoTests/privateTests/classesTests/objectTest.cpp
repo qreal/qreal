@@ -12,22 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "../../../qrrepo/private/classes/object.h"
+#include <qrrepo/private/classes/object.h>
 
 #include <gtest/gtest.h>
 
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrrepo/private/classes/graphicalObject.h"
-#include "../../../qrkernel/exception/exception.h"
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrrepo/private/classes/graphicalObject.h>
 
 using namespace qReal;
 using namespace qrRepo::details;
 
 TEST(ObjectTest, contructorsTest)
 {
-	Id const id("editor", "diagram", "element", "id");
-	Id const logicalId("editor", "diagram", "element", "logicalId");
-	Id const parentId("editor", "diagram", "element", "parentId");
+	const Id id("editor", "diagram", "element", "id");
+	const Id logicalId("editor", "diagram", "element", "logicalId");
+	const Id parentId("editor", "diagram", "element", "parentId");
 
 	qrRepo::details::LogicalObject obj1(id);
 
@@ -46,9 +46,9 @@ TEST(ObjectTest, contructorsTest)
 
 TEST(ObjectTest, setParentTest)
 {
-	Id const id("editor", "diagram", "element", "id");
-	Id const parent1("editor", "diagram", "element", "parent1");
-	Id const parent2("editor", "diagram", "element", "parent2");
+	const Id id("editor", "diagram", "element", "id");
+	const Id parent1("editor", "diagram", "element", "parent1");
+	const Id parent2("editor", "diagram", "element", "parent2");
 
 	qrRepo::details::LogicalObject obj(id);
 	obj.setParent(parent2);
@@ -58,10 +58,10 @@ TEST(ObjectTest, setParentTest)
 
 TEST(ObjectTest, addAndRemoveChildAndChildrenTest)
 {
-	Id const id("editor", "diagram", "element", "id");
-	Id const child1("editor", "diagram", "element", "child1");
-	Id const child2("editor", "diagram", "element", "child2");
-	Id const child3("editor", "diagram", "element", "child3");
+	const Id id("editor", "diagram", "element", "id");
+	const Id child1("editor", "diagram", "element", "child1");
+	const Id child2("editor", "diagram", "element", "child2");
+	const Id child3("editor", "diagram", "element", "child3");
 	qrRepo::details::LogicalObject obj(id);
 
 	obj.addChild(child1);
@@ -86,7 +86,7 @@ TEST(ObjectTest, addAndRemoveChildAndChildrenTest)
 
 TEST(ObjectTest, propertiesHasAndSetOperationsTest)
 {
-	Id const id("editor", "diagram", "element", "id");
+	const Id id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
 	obj.setProperty("property1", "value1");
@@ -121,7 +121,7 @@ TEST(ObjectTest, propertiesHasAndSetOperationsTest)
 
 TEST(ObjectTest, propertiesGetAndRemoveTest)
 {
-	Id const id("editor", "diagram", "element", "id");
+	const Id id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
 	obj.setProperty("property1", "value1");
@@ -156,10 +156,10 @@ TEST(ObjectTest, propertiesGetAndRemoveTest)
 
 TEST(ObjectTest, backReferencesTest)
 {
-	Id const id("editor", "diagram", "element", "id");
-	Id const backReference1("editor", "diagram", "element", "backReference1");
-	Id const backReference2("editor", "diagram", "element", "backReference2");
-	Id const backReference3("editor", "diagram", "element", "backReference3");
+	const Id id("editor", "diagram", "element", "id");
+	const Id backReference1("editor", "diagram", "element", "backReference1");
+	const Id backReference2("editor", "diagram", "element", "backReference2");
+	const Id backReference3("editor", "diagram", "element", "backReference3");
 	qrRepo::details::LogicalObject obj(id);
 
 	EXPECT_EQ(obj.property("backReferences"), QVariant());
@@ -181,14 +181,14 @@ TEST(ObjectTest, backReferencesTest)
 
 TEST(ObjectTest, temporaryRemovedLinksTest)
 {
-	Id const id("editor", "diagram", "element", "id");
+	const Id id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
-	Id const linkTo1("editor", "diagram", "element", "linkTo1");
-	Id const linkTo2("editor", "diagram", "element", "linkTo2");
-	Id const linkFrom1("editor", "diagram", "element", "linkFrom1");
-	Id const linkFrom2("editor", "diagram", "element", "linkFrom2");
-	Id const link("editor", "diagram", "element", "link");
+	const Id linkTo1("editor", "diagram", "element", "linkTo1");
+	const Id linkTo2("editor", "diagram", "element", "linkTo2");
+	const Id linkFrom1("editor", "diagram", "element", "linkFrom1");
+	const Id linkFrom2("editor", "diagram", "element", "linkFrom2");
+	const Id link("editor", "diagram", "element", "link");
 
 	IdList to;
 	IdList from;
@@ -238,13 +238,13 @@ TEST(ObjectTest, temporaryRemovedLinksTest)
 
 TEST(ObjectTest, stackBeforeTest)
 {
-	Id const id("editor", "diagram", "element", "id");
-	Id const child1("editor", "diagram", "element", "child1");
-	Id const child2("editor", "diagram", "element", "child2");
-	Id const child3("editor", "diagram", "element", "child3");
-	Id const child4("editor", "diagram", "element", "child4");
-	Id const child5("editor", "diagram", "element", "child5");
-	Id const child6("editor", "diagram", "element", "child6");
+	const Id id("editor", "diagram", "element", "id");
+	const Id child1("editor", "diagram", "element", "child1");
+	const Id child2("editor", "diagram", "element", "child2");
+	const Id child3("editor", "diagram", "element", "child3");
+	const Id child4("editor", "diagram", "element", "child4");
+	const Id child5("editor", "diagram", "element", "child5");
+	const Id child6("editor", "diagram", "element", "child6");
 	qrRepo::details::LogicalObject obj(id);
 
 	obj.addChild(child1);
@@ -265,14 +265,14 @@ TEST(ObjectTest, stackBeforeTest)
 
 TEST(ObjectTest, cloneTest)
 {
-	Id const parent("editor", "diagram", "element", "parent");
-	Id const root("editor", "diagram", "element", "root");
-	Id const child1("editor", "diagram", "element", "child1");
-	Id const child2("editor", "diagram", "element", "child2");
-	Id const child3("editor", "diagram", "element", "child3");
-	Id const child1_child("editor", "diagram", "element", "child1_child");
-	Id const child2_child("editor", "diagram", "element", "child2_child");
-	Id const child3_child("editor", "diagram", "element", "child3_child");
+	const Id parent("editor", "diagram", "element", "parent");
+	const Id root("editor", "diagram", "element", "root");
+	const Id child1("editor", "diagram", "element", "child1");
+	const Id child2("editor", "diagram", "element", "child2");
+	const Id child3("editor", "diagram", "element", "child3");
+	const Id child1_child("editor", "diagram", "element", "child1_child");
+	const Id child2_child("editor", "diagram", "element", "child2_child");
+	const Id child3_child("editor", "diagram", "element", "child3_child");
 
 	qrRepo::details::LogicalObject parentObj(parent);
 	qrRepo::details::LogicalObject rootObj(root);
@@ -363,7 +363,7 @@ TEST(ObjectTest, cloneTest)
 
 TEST(ObjectTest, replacePropertiesTest)
 {
-	Id const id("editor", "diagram", "element", "id");
+	const Id id("editor", "diagram", "element", "id");
 	qrRepo::details::LogicalObject obj(id);
 
 	obj.setProperty("testProperty1", "value1");

@@ -12,22 +12,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "../../../qrutils/expressionsParser/number.h"
-#include "../../../plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h"
+#include <qrutils/expressionsParser/number.h>
+#include <plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h>
 
 #include "gtest/gtest.h"
 
 using namespace utils;
 
-TEST(NumberExampleTest, sum) {
+TEST(NumberExampleTest, sum)
+{
 	Number n1(2, Number::intType);
 	Number n2(3, Number::intType);
 	n1 += n2;
 	EXPECT_EQ(n1.value().toInt(), 5);
 }
 
-TEST(ParserExampleTest, expressionCalculation) {
-	qReal::BlockParser *parser = new qReal::BlockParser(NULL);
+TEST(ParserExampleTest, expressionCalculation)
+{
+	qReal::BlockParser *parser = new qReal::BlockParser(nullptr);
 	QString const stream = "1+1";
 	int pos = 0;
 	EXPECT_EQ(parser->parseExpression(stream, pos)->value().toInt(), 2);
