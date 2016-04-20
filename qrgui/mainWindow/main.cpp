@@ -86,9 +86,10 @@ int main(int argc, char *argv[])
 	qsrand(time(0));
 	setDefaultLocale(app.arguments().contains("--no-locale"));
 
-	if (QFile(PlatformInfo::defaultPlatformConfigPath()).exists()) {
+	const QString defaultPlatformConfigPath = PlatformInfo::defaultPlatformConfigPath();
+	if (!defaultPlatformConfigPath.isEmpty()) {
 		// Loading default settings for concrete platform if such exist.
-		SettingsManager::instance()->loadSettings(PlatformInfo::defaultPlatformConfigPath());
+		SettingsManager::instance()->loadSettings(defaultPlatformConfigPath);
 	}
 
 	QString fileToOpen;

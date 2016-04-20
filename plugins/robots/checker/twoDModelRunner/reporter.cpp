@@ -62,13 +62,12 @@ void Reporter::onInterpretationEnd()
 void Reporter::newTrajectoryPoint(const QString &robotId, int timestamp, const QPointF &position, qreal rotation)
 {
 	if (!mTrajectoryFile.isNull()) {
-		QJsonObject transition({
-			{ "robotId", robotId }
-			, { "timestamp", timestamp }
-			, { "x", position.x() }
-			, { "y", position.y() }
-			, { "rotation", rotation }
-		});
+		QJsonObject transition;
+		transition["robotId"] = robotId;
+		transition["timestamp"] = timestamp;
+		transition["x"] = position.x();
+		transition["y"] = position.y();
+		transition["rotation"] = rotation;
 
 		QJsonDocument document;
 		document.setObject(transition);
@@ -81,14 +80,13 @@ void Reporter::newDeviceState(const QString &robotId, int timestamp, const QStri
 		, const QString &devicePort, const QString &property, const QVariant &value)
 {
 	if (!mTrajectoryFile.isNull()) {
-		QJsonObject modification({
-			{ "robotId", robotId }
-			, { "timestamp", timestamp }
-			, { "device", deviceType }
-			, { "port", devicePort }
-			, { "property", property }
-			, { "value", variantToJson(value) }
-		});
+		QJsonObject modification;
+		modification["robotId"] = robotId;
+		modification["timestamp"] = timestamp;
+		modification["device"] = deviceType;
+		modification["port"] = devicePort;
+		modification["property"] = property;
+		modification["value"] = variantToJson(value);
 
 		QJsonDocument document;
 		document.setObject(modification);

@@ -18,7 +18,7 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-links(qrkernel qrutils)
+links(qrkernel qslog qrutils)
 includes(qrgui qrgraph)
 
 QT += widgets

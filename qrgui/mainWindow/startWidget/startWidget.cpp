@@ -22,7 +22,6 @@
 #include <qrkernel/settingsManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 #include <qrgui/plugins/pluginManager/qrsMetamodelLoader.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/errorReporter.h"
@@ -325,8 +324,6 @@ void StartWidget::openInterpretedDiagram()
 		}
 	}
 
-	mMainWindow->initInterpretedPlugins();
-
 	for (const QString &interpreterIdString : interpreterDiagramsList) {
 		// TODO: ???
 		mMainWindow->models().repoControlApi().exterminate();
@@ -355,7 +352,6 @@ void StartWidget::createInterpretedDiagram()
 		mMainWindow->models().repoControlApi().exterminate();
 		mMainWindow->models().reinit();
 		mMainWindow->loadEditorPlugins();
-		mMainWindow->initInterpretedPlugins();
 	} else {
 		show();
 	}

@@ -68,6 +68,7 @@ private:
 	QSet<Id> mInitializedGestures;
 	QScopedPointer<KeyManager> mKeyStringManager;
 	QScopedPointer<GesturesManager> mGesturesManager;
+	bool mInitializing;
 };
 
 }

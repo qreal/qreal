@@ -22,6 +22,7 @@
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/exception/exception.h>
 #include <qrrepo/repoApi.h>
+#include <qrgraph/queries.h>
 #include <metaMetaModel/metamodel.h>
 #include <metaMetaModel/nodeElementType.h>
 #include <metaMetaModel/edgeElementType.h>
@@ -527,8 +528,7 @@ void EditorManager::deleteProperty(const QString &propDisplayedName) const
 
 void EditorManager::addProperty(const Id &id, const QString &propDisplayedName) const
 {
-	Q_UNUSED(id);
-	Q_UNUSED(propDisplayedName);
+	elementType(id).addProperty(propDisplayedName, "string", QString(), propDisplayedName, QString(), false);
 }
 
 void EditorManager::updateProperties(const Id &id, const QString &property, const QString &propertyType
@@ -543,49 +543,60 @@ void EditorManager::updateProperties(const Id &id, const QString &property, cons
 
 QString EditorManager::propertyNameByDisplayedName(const Id &id, const QString &displayedPropertyName) const
 {
-	Q_UNUSED(id);
-	Q_UNUSED(displayedPropertyName);
-	return "";
+	const ElementType &element = elementType(id);
+	for (const QString &name : element.propertyNames()) {
+		if (element.propertyDisplayedName(name) == displayedPropertyName) {
+			return name;
+		}
+	}
+
+	return QString();
 }
 
 IdList EditorManager::children(const Id &parent) const
 {
-	Q_UNUSED(parent);
-	return IdList();
+	const QList<const qrgraph::Node *> childNodes = qrgraph::Queries::immediatePredecessors(elementType(parent)
+			, ElementType::generalizationLinkType);
+	IdList result;
+	for (const qrgraph::Node * const node : childNodes) {
+		if (auto child = dynamic_cast<const ElementType *>(node)) {
+			result << child->typeId();
+		}
+	}
+
+	return result;
 }
 
 QString EditorManager::shape(const Id &id) const
 {
-	Q_UNUSED(id);
-	return "";
+	const ElementType &element = elementType(id);
+	QString result;
+	QTextStream stream(&result);
+	element.sdf().save(stream, 4);
+	return result;
 }
 
-void EditorManager::updateShape(const Id &id, const QString &graphics) const
+void EditorManager::updateShape(const Id &id, const QDomElement &graphicsSdf) const
 {
-	Q_UNUSED(id);
-	Q_UNUSED(graphics);
+	/// @todo: support ports and labels.
+	ElementType &element = elementType(id);
+	/// @todo: picture will be appended to existing. Make it overwriting it.
+	element.loadSdf(graphicsSdf.firstChildElement("picture"));
 }
 
 void EditorManager::resetIsHidden(const Id &id) const
 {
-	Q_UNUSED(id);
+	elementType(id).setHidden(false);
 }
 
-QString EditorManager::getIsHidden(const Id &id) const
+bool EditorManager::isHidden(const Id &id) const
 {
-	Q_UNUSED(id);
-	return "false";
+	return elementType(id).isHidden();
 }
 
 void EditorManager::deleteElement(const Id &id) const
 {
-	Q_UNUSED(id);
-}
-
-bool EditorManager::isRootDiagramNode(const Id &id) const
-{
-	Q_UNUSED(id);
-	return false;
+	elementType(id).setHidden(true);
 }
 
 void EditorManager::addNodeElement(const Id &diagram, const QString &name, const QString &displayedName
@@ -706,12 +717,17 @@ QString EditorManager::saveMetamodelFilePath() const
 	return mMetamodelFile;
 }
 
-IdList EditorManager::elementsWithTheSameName(const Id &diagram, const QString &name, const QString type) const
+IdList EditorManager::elementsWithTheSameName(const Id &diagram, const QString &name, const QString &type) const
 {
-	Q_UNUSED(diagram);
-	Q_UNUSED(name);
-	Q_UNUSED(type);
-	return IdList();
+	IdList result;
+	for (const Id &element : elements(diagram)) {
+		const ElementType &typeInfo = elementType(element);
+		if (typeInfo.friendlyName() == name && typeInfo.name() == type) {
+			result << typeInfo.typeId();
+		}
+	}
+
+	return result;
 }
 
 IdList EditorManager::propertiesWithTheSameName(const Id &id, const QString &propertyCurrentName
@@ -737,8 +753,16 @@ QString EditorManager::generationRule(const Id &id) const
 
 QStringList EditorManager::getPropertiesInformation(const Id &id) const
 {
-	Q_UNUSED(id);
-	return QStringList();
+	QStringList result;
+	const ElementType &element = elementType(id);
+	const QStringList propertyNamesList = element.propertyNames();
+	for (const QString &property : propertyNamesList) {
+		result << element.propertyDisplayedName(property);
+		result << element.propertyType(property);
+		result << element.propertyDefaultValue(property);
+	}
+
+	return result;
 }
 
 QStringList EditorManager::getSameNamePropertyParams(const Id &propertyId, const QString &propertyName) const

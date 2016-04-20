@@ -73,7 +73,7 @@ QString GeneratorForCallGenerator::commonGeneratedString(const QSharedPointer<El
 	return resultOfGeneration;
 }
 
-qReal::Id GeneratorForCallGenerator::idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface
+qReal::Id GeneratorForCallGenerator::idInMetamodel(const qReal::EditorManagerInterface *editorManagerInterface
 		, const QString &elementName
 		, const qReal::Id &diagramId)
 {

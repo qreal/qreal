@@ -68,24 +68,61 @@ public:
 	/// that specify position on element relatively to its sizes (or initWidth and initHeight).
 	QLineF line;
 
-	/// If true port will float on parent`s x-axis when parent is resized.
+	/// If true port`s begin will float on parent`s x-axis when parent is resized.
 	bool scalesX1;
 
-	/// If true port will float on parent`s y-axis when parent is resized.
+	/// If true port`s begin will float on parent`s y-axis when parent is resized.
 	bool scalesY1;
 
-	/// If true port will float on parent`s x-axis when parent is resized.
+	/// If true port`s end will float on parent`s x-axis when parent is resized.
 	bool scalesX2;
 
-	/// If true port will float on parent`s y-axis when parent is resized.
+	/// If true port`s end will float on parent`s y-axis when parent is resized.
 	bool scalesY2;
 
 	/// If scalesX is true then this value will be used for port position scaling on parent`s x-axis:
-	///  x1 = initWidth * line.x1(), x2 = initWidth * line.x2().
+	/// x1 = initWidth * line.x1(), x2 = initWidth * line.x2().
 	int initWidth;
 
 	/// If scalesY is true then this value will be used for port position scaling on parent`s y-axis:
-	/// y = initHeight * point.y().
+	/// y1 = initHeight * point.y1(), y2 = initHeight * point.y2().
+	int initHeight;
+
+	/// Type of the port. Filters out edges that can be connected to this port.
+	QString type;
+};
+
+/// Provides an information about the circular port.
+/// Circular port is an ellipse on the node element where edges (one or many) can be connected.
+struct CircularPortInfo
+{
+public:
+	CircularPortInfo(const QPointF &center, qreal radius, bool scalesX, bool scalesY, int initWidth
+			, int initHeight, const QString &type)
+		: center(center), radius(radius), scalesX(scalesX), scalesY(scalesY)
+		, initWidth(initWidth), initHeight(initHeight), type(type)
+	{
+	}
+
+	/// Coordinates of port`s center. Both x and y are float numbers from 0 to 1
+	/// that specify position on element relatively to its sizes (or initWidth and initHeight).
+	QPointF center;
+
+	/// Radius of circular port, from 0 to 1.
+	qreal radius;
+
+	/// If true port will float on parent`s x-axis when parent is resized.
+	bool scalesX;
+
+	/// If true port will float on parent`s y-axis when parent is resized.
+	bool scalesY;
+
+	/// If scalesX is true then this value will be used for port position scaling on parent`s x-axis:
+	/// x = initWidth * center.x().
+	int initWidth;
+
+	/// If scalesY is true then this value will be used for port position scaling on parent`s y-axis:
+	/// y = initHeight * center.y().
 	int initHeight;
 
 	/// Type of the port. Filters out edges that can be connected to this port.

@@ -1,1 +1,1 @@
-CP_LTF@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)
+CP_LT@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)

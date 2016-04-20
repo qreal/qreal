@@ -28,7 +28,6 @@
 
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTreeWidgets.h"
-#include "plugins/pluginManager/proxyEditorManager.h"
 
 class QLineEdit;
 

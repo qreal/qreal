@@ -18,7 +18,7 @@
 
 using namespace qReal::gui::editor;
 
-// Using two list.map can replace this whole class :(
+// Using list.map can replace this whole class :(
 
 QList<StatPoint *> PortFactory::createPorts(const QList<PointPortInfo> &infos) const
 {
@@ -35,6 +35,16 @@ QList<StatLine *> PortFactory::createPorts(const QList<LinePortInfo> &infos) con
 	QList<StatLine *> result;
 	for (const LinePortInfo &info : infos) {
 		result << new StatLine(info);
+	}
+
+	return result;
+}
+
+QList<StatCircular *> PortFactory::createPorts(const QList<qReal::CircularPortInfo> &infos) const
+{
+	QList<StatCircular *> result;
+	for (const CircularPortInfo &info : infos) {
+		result << new StatCircular(info);
 	}
 
 	return result;

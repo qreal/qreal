@@ -162,7 +162,7 @@ public:
 	QList<NodeElement *> const childNodes() const;
 
 	void setVisibleEmbeddedLinkers(const bool show);
-	void updateShape(const QString &shape) const;
+	void updateShape(const QDomElement &graphicsSdf);
 
 	void changeFoldState();
 

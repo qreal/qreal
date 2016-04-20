@@ -50,10 +50,8 @@
 #include <qrgui/dialogs/findReplaceDialog.h>
 #include <qrgui/editor/propertyEditorView.h>
 #include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/systemFacade/systemFacade.h>
 
@@ -1367,14 +1365,10 @@ void MainWindow::showGestures()
 	}
 
 	QWidget * const gesturesPainter = getCurrentTab()->mutableScene().gesturesPainterWidget();
-	mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
-	mUi->tabs->setCurrentWidget(gesturesPainter);
-}
-
-
-ProxyEditorManager &MainWindow::editorManagerProxy()
-{
-	return *static_cast<ProxyEditorManager *>(&editorManager());
+	if (gesturesPainter) {
+		mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
+		mUi->tabs->setCurrentWidget(gesturesPainter);
+	}
 }
 
 void MainWindow::createDiagram(const QString &idString)
@@ -1801,29 +1795,6 @@ void MainWindow::customizeActionsVisibility()
 			break;
 		}
 	}
-}
-
-void MainWindow::initInterpretedPlugins()
-{
-	mInterpretedPluginLoader.reset(new InterpretedPluginsLoader(
-			editorManagerProxy().proxiedEditorManager()
-			, PluginConfigurator(
-					models().repoControlApi()
-					, models().graphicalModelAssistApi()
-					, models().logicalModelAssistApi()
-					, *this
-					, *this
-					, *mProjectManager
-					, *mSceneCustomizer
-					, mFacade->events()
-					, *mTextManager)
-			)
-	);
-
-	const QList<ActionInfo> actions = mInterpretedPluginLoader->listOfActions();
-	mListOfAdditionalActions = mInterpretedPluginLoader->menuActionsList();
-
-	traverseListOfActions(actions);
 }
 
 void MainWindow::showErrors(const gui::ErrorReporter * const errorReporter)

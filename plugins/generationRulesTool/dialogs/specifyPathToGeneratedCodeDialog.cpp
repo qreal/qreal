@@ -20,11 +20,8 @@
 
 using namespace qReal::gui;
 
-SpecifyPathToGeneratedCodeDialog::SpecifyPathToGeneratedCodeDialog(
-		qrRepo::LogicalRepoApi *metamodelRepoApi
-		, QWidget *parent)
+SpecifyPathToGeneratedCodeDialog::SpecifyPathToGeneratedCodeDialog(QWidget *parent)
 	: QDialog(parent)
-	, mMetamodelRepoApi(metamodelRepoApi)
 	, mUi(new Ui::SpecifyPathToGeneratedCodeDialog)
 {
 	mUi->setupUi(this);
@@ -57,14 +54,16 @@ QString SpecifyPathToGeneratedCodeDialog::currentFileName() const
 
 void SpecifyPathToGeneratedCodeDialog::restoreSettings()
 {
-	mUi->folderLineEdit->setText(mMetamodelRepoApi->metaInformation("PathToFolder").toString());
-	mUi->fileNameLineEdit->setText(mMetamodelRepoApi->metaInformation("MainFileName").toString());
+	/// @todo: restore it!
+//	mUi->folderLineEdit->setText(mMetamodelRepoApi->metaInformation("PathToFolder").toString());
+//	mUi->fileNameLineEdit->setText(mMetamodelRepoApi->metaInformation("MainFileName").toString());
 }
 
 void SpecifyPathToGeneratedCodeDialog::saveSettings()
 {
-	mMetamodelRepoApi->setMetaInformation("PathToFolder", mUi->folderLineEdit->text());
-	mMetamodelRepoApi->setMetaInformation("MainFileName", mUi->fileNameLineEdit->text());
+	/// @todo: restore it!
+//	mMetamodelRepoApi->setMetaInformation("PathToFolder", mUi->folderLineEdit->text());
+//	mMetamodelRepoApi->setMetaInformation("MainFileName", mUi->fileNameLineEdit->text());
 
 	if (directoryCreated(mUi->folderLineEdit->text())) {
 		emit pathsSpecified();

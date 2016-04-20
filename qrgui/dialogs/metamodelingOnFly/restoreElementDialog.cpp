@@ -45,7 +45,7 @@ void RestoreElementDialog::fillSameNameElementsTreeView()
 	QStandardItem *item = standardModel->invisibleRootItem();
 	for (const auto &element: mElementsWithTheSameNameList) {
 		QString state = tr("Existed");
-		if (mInterpreterEditorManager.getIsHidden(element) == "true") {
+		if (mInterpreterEditorManager.isHidden(element)) {
 			state = tr("Deleted");
 		}
 
@@ -93,7 +93,7 @@ void RestoreElementDialog::restoreButtonClicked()
 
 	const int selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
 	const Id node = mElementsWithTheSameNameList[selectedRow];
-	if (mInterpreterEditorManager.getIsHidden(node) == "true") {
+	if (mInterpreterEditorManager.isHidden(node)) {
 		mInterpreterEditorManager.resetIsHidden(node);
 		emit jobDone();
 	}

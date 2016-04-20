@@ -62,6 +62,7 @@ HEADERS += \
 	$$PWD/ports/portFactory.h \
 	$$PWD/ports/statLine.h \
 	$$PWD/ports/statPoint.h \
+	$$PWD/ports/statCircular.h \
 	$$PWD/private/lineHandler.h \
 	$$PWD/private/squareLine.h \
 	$$PWD/private/brokenLine.h \
@@ -107,6 +108,7 @@ SOURCES += \
 	$$PWD/ports/portFactory.cpp \
 	$$PWD/ports/statLine.cpp \
 	$$PWD/ports/statPoint.cpp \
+	$$PWD/ports/statCircular.cpp \
 	$$PWD/private/lineHandler.cpp \
 	$$PWD/private/squareLine.cpp \
 	$$PWD/private/brokenLine.cpp \
