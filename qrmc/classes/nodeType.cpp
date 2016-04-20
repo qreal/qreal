@@ -91,6 +91,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 			.replace(elementNameTag, name())
 			.replace(isResizeable, loadBoolProperty(mId, "isResizeable"))
 			.replace("\\n", "\n");
+
 	nodeClass += endline;
 	return nodeClass;
 }
@@ -146,6 +147,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 			break;
 		}
 	}
+
 	if (!foundChild) {
 		classTemplate.replace(sortingContainerTag, "false")
 				.replace(minimizeToChildrenTag, "false")

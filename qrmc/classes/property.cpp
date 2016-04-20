@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,13 @@
  * limitations under the License. */
 
 #include "property.h"
-#include "../utils/defs.h"
+#include "qrmc/utils/defs.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 
-Property::Property(const qrRepo::LogicalRepoApi *api, const qReal::Id &id) : mApi(api), mId(id)
+Property::Property(const qrRepo::LogicalRepoApi &api, const qReal::Id &id) : mApi(api), mId(id)
 {
 
 }
@@ -58,7 +58,6 @@ bool Property::init()
 	mDefaultValue = mApi->stringProperty(mId, "defaultValue");
 	return true;
 }
-
 
 QString Property::name() const
 {

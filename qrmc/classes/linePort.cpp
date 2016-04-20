@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,10 +13,9 @@
  * limitations under the License. */
 
 #include "linePort.h"
-#include "../utils/defs.h"
-#include "../metaCompiler.h"
 
-#include <QtCore/QDebug>
+#include "qrmc/utils/defs.h"
+#include "qrmc/metaCompiler.h"
 
 using namespace qrmc;
 
@@ -37,19 +36,14 @@ bool LinePort::init(const QDomElement &element, int width, int height)
 
 void LinePort::initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue)
 {
-	if (coordinate.endsWith("a"))
-	{
+	if (coordinate.endsWith("a")) {
 		coordinate.remove(coordinate.length() - 1, 1);
-		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, maxValue, true);
-	}
-	else if (coordinate.endsWith("%"))
-	{
+		field = ScalableCoordinate(static_cast<qreal>(coordinate.toInt()) / maxValue, maxValue, true);
+	} else if (coordinate.endsWith("%")) {
 		coordinate.remove(coordinate.length() - 1, 1);
-		field = ScalableCoordinate(((qreal) coordinate.toInt()) / 100, 100, false);
-	}
-	else
-	{
-		field = ScalableCoordinate(((qreal) coordinate.toInt()) / maxValue, maxValue, false);
+		field = ScalableCoordinate(static_cast<qreal>(coordinate.toInt()) / 100, 100, false);
+	} else {
+		field = ScalableCoordinate(static_cast<qreal>(coordinate.toInt()) / maxValue, maxValue, false);
 	}
 }
 
@@ -68,18 +62,19 @@ QString LinePort::generate(const QString &lineTemplate, bool isScaled) const
 	QString result = lineTemplate;
 	result.replace(startXTag, mStartX.toString(isScaled)).replace(startYTag, mStartY.toString(isScaled))
 		.replace(endXTag, mEndX.toString(isScaled)).replace(endYTag, mEndY.toString(isScaled));
+
 	return result;
 }
 
-QString LinePort::generateSdf(MetaCompiler *compiler) const
+QString LinePort::generateSdf(const MetaCompiler &compiler) const
 {
-	QString linePortLine = compiler->getTemplateUtils(linePortTag);
+	QString linePortLine = compiler.getTemplateUtils(linePortTag);
 	return generate(linePortLine, true);
 }
 
-QString LinePort::generateInit(MetaCompiler *compiler) const
+QString LinePort::generateInit(const MetaCompiler &compiler) const
 {
-	QString linePortLine = compiler->getTemplateUtils(nodeLinePortInitTag);
+	QString linePortLine = compiler.getTemplateUtils(nodeLinePortInitTag);
 	QString result = generate(linePortLine, false);
 
 	result.replace(startXScalabilityTag, mStartX.getScalability())
