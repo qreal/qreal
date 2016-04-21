@@ -15,7 +15,7 @@
 #pragma once
 
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+//#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
 #include <qrgui/plugins/pluginManager/editorManager.h>
 #include <metaMetaModel/metamodel.h>
 

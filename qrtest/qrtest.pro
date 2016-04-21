@@ -19,7 +19,7 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	googletest \
 	unitTests \
-	editorPluginTestingFramework/editorPluginTestingFramework.pro \
+#	editorPluginTestingFramework/editorPluginTestingFramework.pro \
 
 unitTests.depends = googletest
 
