@@ -44,11 +44,11 @@ void SubprogramBlock::run()
 		{
 			QVariant v = element.attribute("value");
 			if (element.attribute("type") == "bool") {
-				setVariableValue<bool>(element.attribute("text"), v.toBool());
+				parser()->setVariableValue<bool>(element.attribute("text"), v.toBool());
 			} else if (element.attribute("type") == "int") {
-				setVariableValue<int>(element.attribute("text"), v.toInt());
-			} else if (element.attribute("type") == "string") {
-				setVariableValue<QString>(element.attribute("text"), v.toString());
+				parser()->setVariableValue<int>(element.attribute("text"), v.toInt());
+			} else {
+				parser()->setVariableValue<QString>(element.attribute("text"), v.toString());
 			}
 		}
 	}

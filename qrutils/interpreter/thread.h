@@ -48,7 +48,6 @@ public:
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	/// @param initialNode - node that shall be executed first in this thread.
 	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
-			, const qReal::LogicalModelAssistInterface *logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, BlocksTableInterface &blocksTable
@@ -62,7 +61,6 @@ public:
 	/// @param diagramToInterpret - diagram, whose initial node shall be executed in a new thread.
 	/// @param blocksTable - interpreter-wide table of blocks (map from ids to "code-behind" objects).
 	Thread(const qReal::GraphicalModelAssistInterface *graphicalModelApi
-			, const qReal::LogicalModelAssistInterface *logicalModelApi
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			, const Id &initialNodeType
 			, const Id &diagramToInterpret

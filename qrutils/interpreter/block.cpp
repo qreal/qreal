@@ -198,3 +198,8 @@ bool Block::errorsOccured() const
 void Block::finishedSteppingInto()
 {
 }
+
+qrtext::LanguageToolboxInterface *Block::parser() const
+{
+	return mParser;
+}

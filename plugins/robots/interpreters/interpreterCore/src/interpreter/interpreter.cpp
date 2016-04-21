@@ -166,7 +166,7 @@ void Interpreter::devicesConfiguredSlot()
 		const Id &currentDiagramId = mInterpretersInterface.activeDiagram();
 
 		qReal::interpretation::Thread * const initialThread = new qReal::interpretation::Thread(&mGraphicalModelApi
-			, &mLogicalModelApi, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable, "main");
+				, mInterpretersInterface, startingElementType, currentDiagramId, *mBlocksTable, "main");
 
 		emit started();
 
@@ -195,7 +195,7 @@ void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 	}
 
 	qReal::interpretation::Thread * const thread = new qReal::interpretation::Thread(&mGraphicalModelApi
-		, &mLogicalModelApi, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId, threadId);
+			, mInterpretersInterface, startingElementType, *mBlocksTable, startBlockId, threadId);
 
 	addThread(thread, threadId);
 }

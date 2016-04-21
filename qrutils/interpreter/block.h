@@ -45,6 +45,8 @@ public:
 
 	void finishedSteppingInto() override;
 
+	qrtext::LanguageToolboxInterface *parser() const;
+
 	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
 	void init(const qReal::Id &graphicalId
@@ -131,13 +133,6 @@ protected:
 		}
 
 		return result;
-	}
-
-	/// Sets a value of given identifier in interpreter to given value.
-	template<typename T>
-	void setVariableValue(const QString &name, T value)
-	{
-		mParser->setVariableValue<T>(name, value);
 	}
 
 	/// Evaluates given code using text language interpreter.

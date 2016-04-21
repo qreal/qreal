@@ -29,14 +29,12 @@ using namespace interpretation;
 const int blocksCountTillProcessingEvents = 100;
 
 Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
-		, const LogicalModelAssistInterface *logicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
 		, const Id &initialNode
 		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
-	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
 	, mBlocksTable(blocksTable)
@@ -50,14 +48,12 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 }
 
 Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
-		, const LogicalModelAssistInterface *logicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, const Id &diagramToInterpret
 		, BlocksTableInterface &blocksTable
 		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
-	, mLogicalModelApi(logicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
 	, mBlocksTable(blocksTable)
@@ -73,9 +69,9 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 
 Thread::~Thread()
 {
-	for (StackFrame &f : mStack) {
-		if (f.getBlock()) {
-			mInterpretersInterface.dehighlight(f.getBlock()->id());
+	for (const StackFrame &frame : mStack) {
+		if (frame.block()) {
+			mInterpretersInterface.dehighlight(frame.block()->id());
 		}
 	}
 }
@@ -137,7 +133,7 @@ void Thread::finishedSteppingInto()
 		return;
 	}
 
-	mCurrentBlock = mStack.top().getBlock();
+	mCurrentBlock = mStack.top().block();
 	// Execution must proceed here
 	mCurrentBlock->finishedSteppingInto();
 }
@@ -190,23 +186,16 @@ void Thread::turnOn(BlockInterface * const block)
 	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
 
 	//Check subprogram block
-	if (dynamic_cast<blocks::SubprogramBlock*>(mCurrentBlock)) {
-		const Id logicalId = mGraphicalModelApi->logicalId(block->id());
-		const QString properties = mLogicalModelApi->logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
-		//QHash<property name, property value>
-		QHash<QString, QString> prop;
-
-		if (!properties.isEmpty()) {
-			QDomDocument dynamicProperties;
-			dynamicProperties.setContent(properties);
-			for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property");
-				!element.isNull();
-				element = element.nextSiblingElement("property"))
-			{
-				prop.insert(element.attribute("text"), element.attribute("value"));
-			}
+	const blocks::SubprogramBlock * const subprogram = dynamic_cast<blocks::SubprogramBlock*>(mCurrentBlock);
+	if (subprogram) {
+		QList<QPair<QString, QVariant>> properties;
+		const qrtext::LanguageToolboxInterface *parser = subprogram->parser();
+		const QStringList identifiers = parser->identifiers();
+		for (const QString &identifier : identifiers) {
+			properties << QPair<QString, QVariant>(identifier, parser->value<QVariant>(identifier));
 		}
-		mStack.push(StackFrame(mCurrentBlock, prop));
+
+		mStack.push(StackFrame(mCurrentBlock, properties));
 	} else {
 		mStack.push(StackFrame(mCurrentBlock));
 	}
@@ -250,6 +239,26 @@ void Thread::turnOff(BlockInterface * const block)
 
 	if (sender()) {
 		sender()->disconnect(this);
+	}
+
+	//restore old properties
+	const QList<QPair<QString, QVariant>> &oldProperties = mStack.top().properties();
+	qrtext::LanguageToolboxInterface *parser = dynamic_cast<Block*>(mStack.top().block())->parser();
+	for (const QPair<QString, QVariant> &x : oldProperties) {
+		QString propertyName = x.first;
+		QVariant propertyValue = x.second;
+
+		if (propertyValue.type() == QVariant::Int) {
+			parser->setVariableValue<int>(propertyName, propertyValue.toInt());
+		} else if (propertyValue.type() == QVariant::Bool) {
+			parser->setVariableValue<bool>(propertyName, propertyValue.toBool());
+		} else if (propertyValue.type() == QVariant::Double) {
+			parser->setVariableValue<double>(propertyName, propertyValue.toDouble());
+		} else if (propertyValue.type() == QVariant::StringList) {
+			parser->setVectorVariableValue(propertyName, propertyValue.toStringList().toVector());
+		} else {
+			parser->setVariableValue<QString>(propertyName, propertyValue.toString());
+		}
 	}
 
 	mStack.pop();

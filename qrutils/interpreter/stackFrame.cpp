@@ -13,13 +13,18 @@ StackFrame::StackFrame(BlockInterface *block)
 {
 }
 
-StackFrame::StackFrame(BlockInterface *block, const QHash<QString, QString> &properties)
+StackFrame::StackFrame(BlockInterface *block, const QList<QPair<QString, QVariant>> &properties)
 	: mBlock(block)
 	, mProperties(properties)
 {
 }
 
-BlockInterface *StackFrame::getBlock()
+BlockInterface *StackFrame::block() const
 {
 	return mBlock;
+}
+
+const QList<QPair<QString, QVariant>> &StackFrame::properties() const
+{
+	return mProperties;
 }

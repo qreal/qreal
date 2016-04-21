@@ -10,11 +10,14 @@ class StackFrame
 public:
 	StackFrame();
 	StackFrame(BlockInterface *block);
-	StackFrame(BlockInterface *block, const QHash<QString, QString> &properties);
-	BlockInterface *getBlock();
+	StackFrame(BlockInterface *block, const QList<QPair<QString, QVariant>> &properties);
+	BlockInterface *block() const;
+	QList<QPair<QString, QVariant>> const &properties() const;
+
 private:
 	BlockInterface *mBlock;
-	QHash<QString, QString> mProperties;
+	//<property name, property value>
+	QList<QPair<QString, QVariant>> mProperties;
 };
 }
 }
