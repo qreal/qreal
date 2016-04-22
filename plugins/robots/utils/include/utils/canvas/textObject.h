@@ -55,7 +55,7 @@ public:
 	/// Sets the rendered string.
 	void setText(const QString &text);
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 	QJsonObject toJson() const override;
 
 private:

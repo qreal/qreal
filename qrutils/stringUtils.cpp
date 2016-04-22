@@ -55,3 +55,55 @@ QString StringUtils::dequote(const QString &string)
 		? string.mid(1, string.length() - 2)
 		: string;
 }
+
+QString StringUtils::unescape(const QString &string)
+{
+	auto transformedString = string;
+	for (int i = 0; i < transformedString.length() - 1; ++i) {
+		if (transformedString[i] == '\\') {
+			const auto replace = [&](QChar c) {
+				transformedString.replace(i, 2, c);
+			};
+
+			switch (transformedString[i + 1].toLatin1()) {
+			case '\\':
+				replace('\\');
+				break;
+			case '\'':
+				replace('\'');
+				break;
+			case '"':
+				replace('"');
+				break;
+			case '?':
+				replace('\?');
+				break;
+			case 'a':
+				replace('\a');
+				break;
+			case 'b':
+				replace('\b');
+				break;
+			case 'f':
+				replace('\f');
+				break;
+			case 'n':
+				replace('\n');
+				break;
+			case 'r':
+				replace('\r');
+				break;
+			case 't':
+				replace('\t');
+				break;
+			case 'v':
+				replace('\v');
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	return transformedString;
+}

@@ -37,6 +37,10 @@ public:
 
 	/// Removes a pair of quotes if string starts or end with them.
 	static QString dequote(const QString &string);
+
+	/// Replaces string that looks like escape character with escape character (for example, "\\t" will be replaced
+	/// to "\t".
+	static QString unescape(const QString &string);
 };
 
 }

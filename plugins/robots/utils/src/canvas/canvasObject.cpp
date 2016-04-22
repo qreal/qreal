@@ -50,7 +50,9 @@ void CanvasObject::setThickness(int size)
 	mPen.setWidth(size);
 }
 
-void CanvasObject::paint(QPainter *painter)
+void CanvasObject::paint(QPainter *painter, const QRect &outputRect)
 {
+	Q_UNUSED(outputRect);
+
 	painter->setPen(mPen);
 }

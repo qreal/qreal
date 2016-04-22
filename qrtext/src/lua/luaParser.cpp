@@ -14,6 +14,8 @@
 
 #include "qrtext/src/lua/luaParser.h"
 
+#include <qrutils/stringUtils.h>
+
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserCombinators.h"
 #include "qrtext/core/parser/operators/expressionParser.h"
@@ -214,8 +216,11 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					// Cut off quotes.
 					string.remove(0, 1);
 					string.chop(1);
-					return new ast::String(string);
 
+					// Replace escape characters.
+					auto transformedString = utils::StringUtils::unescape(string);
+
+					return new ast::String(transformedString);
 				}
 			| LuaTokenTypes::tripleDot >> reportUnsupported
 			| prefixexp
