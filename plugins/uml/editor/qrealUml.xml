@@ -21,7 +21,7 @@
                     <property name="End" type="string"/>
                 </properties>
             </role>
-            <role navigable="true" end="true" name="filledRhombRole" arrowType="filled_rhomb">
+            <role navigable="" end="" name="filledRhombRole" arrowType="filled_rhomb">
                 <properties>
                     <property type="string" name="Info" displayedName="Info"/>
                     <property type="string" name="Multiplicity" displayedName="Multiplicity"/>
@@ -57,7 +57,7 @@
                         <line fill="#ffffff" fill-style="none" y1="30a" y2="30a" x1="0" x2="200" stroke-style="solid" stroke="#000000" stroke-width="0"/>
                     </picture>
                     <labels>
-                        <label textBinded="name" x="85" y="2"/>
+                        <label textBinded="name" x="65" y="2"/>
                     </labels>
                     <ports>
                         <linePort>
