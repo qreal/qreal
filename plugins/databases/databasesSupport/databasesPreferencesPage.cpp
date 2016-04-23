@@ -23,8 +23,9 @@ DatabasesPreferencesPage::DatabasesPreferencesPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	connect(mUi->dbmsBox, SIGNAL(currentTextChanged(QString)), this, SLOT(dbmsChanging(QString)));
+	connect(mUi->codeGenerationModeBox, SIGNAL(currentTextChanged(QString)), this, SLOT(codeGenerationModeChanging(QString)));
 	connect(mUi->codeGenerationFileButton, SIGNAL(clicked()), this, SLOT(browseCodeGenerationFilename()));
-
+	connect(mUi->createDatabaseCheckBox, SIGNAL(clicked(bool)), mUi->databaseName, SLOT(setEnabled(bool)));
 }
 
 DatabasesPreferencesPage::~DatabasesPreferencesPage()
@@ -34,16 +35,40 @@ DatabasesPreferencesPage::~DatabasesPreferencesPage()
 
 void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 {
-	if (dbmsName == "SQLite")
+	if (dbmsName == "SQLite") {
+		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("Sqlite");
-	else if (dbmsName == "Microsoft SQL Server 2008")
+	}
+	else if (dbmsName == "Microsoft SQL Server 2008") {
+		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("SqlServer2008");
-	else if (dbmsName == "MySQL 5")
+	}
+	else if (dbmsName == "MySQL 5") {
+		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("MySql5");
-	else if (dbmsName == "Microsoft Access")
+	}
+	else if (dbmsName == "Microsoft Access") {
+		mUi->createDatabaseCheckBox->setEnabled(false);
 		emit dbmsChanged("MicrosoftAccess");
-	else if (dbmsName == "PostgreSQL")
+	}
+	else if (dbmsName == "PostgreSQL") {
+		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("PostgreSql");
+	}
+
+	mUi->databaseName->setEnabled(mUi->createDatabaseCheckBox->isEnabled()
+			&& mUi->createDatabaseCheckBox->isChecked());
+}
+
+void DatabasesPreferencesPage::codeGenerationModeChanging(QString const &mode)
+{
+	if (mode == "CREATE TABLE")
+		mUi->createDatabaseCheckBox->setEnabled(true);
+	else
+		mUi->createDatabaseCheckBox->setEnabled(false);
+
+	mUi->databaseName->setEnabled(mUi->createDatabaseCheckBox->isEnabled()
+			&& mUi->createDatabaseCheckBox->isChecked());
 }
 
 void DatabasesPreferencesPage::save()

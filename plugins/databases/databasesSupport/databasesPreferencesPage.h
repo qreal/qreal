@@ -51,6 +51,7 @@ public:
 	CodeGenerationMode getCodeGenerationMode() const;
 public slots:
 	void dbmsChanging(QString const &dbmsName);
+	void codeGenerationModeChanging(QString const &mode);
 	void browseCodeGenerationFilename();
 signals:
 	void dbmsChanged(QString const &dbmsName);
