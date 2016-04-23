@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Ivan Senin, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,10 +19,14 @@
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/outFile.h>
 
+#include "utils/timelineInterface.h"
+#include "utils/abstractTimer.h"
+
 using namespace utils::sensorsGraph;
 
 SensorViewer::SensorViewer(QWidget *parent)
 	: QGraphicsView(parent)
+	, mVisualTimer(nullptr)
 	, mPenBrush(QBrush(Qt::yellow))
 	, mFpsInterval(50)
 	, mAutoScaleInterval(3000)
@@ -33,8 +37,6 @@ SensorViewer::SensorViewer(QWidget *parent)
 	, mOutputValue(0)
 {
 	initGraphicsOutput();
-
-	connect(&mVisualTimer, SIGNAL(timeout()), this, SLOT(visualTimerEvent()));
 }
 
 SensorViewer::~SensorViewer()
@@ -44,6 +46,7 @@ SensorViewer::~SensorViewer()
 
 	delete mPointsDataProcessor;
 	delete mScene;
+	delete mVisualTimer;
 }
 
 void SensorViewer::resizeEvent(QResizeEvent *event)
@@ -51,6 +54,14 @@ void SensorViewer::resizeEvent(QResizeEvent *event)
 	Q_UNUSED(event);
 	mScene->setSceneRect(sceneRect());
 	mPointsDataProcessor->setViewParams(mScene->sceneRect().height() - 20, mScene->sceneRect().left());
+}
+
+void SensorViewer::setTimeline(TimelineInterface &timeline)
+{
+	delete mVisualTimer;
+	mVisualTimer = timeline.produceTimer();
+	mVisualTimer->setRepeatable(true);
+	connect(mVisualTimer, &AbstractTimer::timeout, this, &SensorViewer::visualTimerEvent);
 }
 
 void SensorViewer::initGraphicsOutput()
@@ -85,14 +96,16 @@ void SensorViewer::initGraphicsOutput()
 
 void SensorViewer::startJob()
 {
-	if (!mVisualTimer.isActive()) {
-		mVisualTimer.start(mFpsInterval);
+	if (mVisualTimer && !mVisualTimer->isTicking()) {
+		mVisualTimer->start(mFpsInterval);
 	}
 }
 
 void SensorViewer::stopJob()
 {
-	mVisualTimer.stop();
+	if (mVisualTimer) {
+		mVisualTimer->stop();
+	}
 }
 
 void SensorViewer::clear()
@@ -282,8 +295,8 @@ void SensorViewer::configureUserOptions(const int &fpsDelay, const int &autoScal
 	mFpsInterval = (fpsDelay < maxFpsInterval) ? fpsDelay : maxFpsInterval;
 	mAutoScaleInterval = autoScaleDelay;
 	mUpdateTextInfoInterval = textInfoUpdateDelay;
-	if (mVisualTimer.isActive()) {
-		mVisualTimer.stop();
-		mVisualTimer.start(mFpsInterval);
+	if (mVisualTimer && mVisualTimer->isTicking()) {
+		mVisualTimer->stop();
+		mVisualTimer->start(mFpsInterval);
 	}
 }

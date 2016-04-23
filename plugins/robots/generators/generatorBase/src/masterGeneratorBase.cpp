@@ -147,7 +147,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 		resultCode.replace("@@CONSTANTS@@", constantsString);
 		resultCode.replace("@@VARIABLES@@", variablesString);
 	} else {
-		resultCode.replace("@@VARIABLES@@", constantsString + variablesString);
+		resultCode.replace("@@VARIABLES@@", constantsString + "\n" + variablesString);
 	}
 
 	// This will remove too many empty lines

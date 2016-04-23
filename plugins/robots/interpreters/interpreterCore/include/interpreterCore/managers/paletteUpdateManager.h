@@ -38,6 +38,9 @@ public slots:
 	/// Called when selected robot model is changed, updates palette.
 	void updatePalette(kitBase::robotModel::RobotModelInterface &currentModel);
 
+	/// Disables all elements in robots palette.
+	void disableAll();
+
 private:
 	qReal::gui::MainWindowInterpretersInterface &mPaletteProvider;
 	const BlocksFactoryManagerInterface &mFactoryManager;

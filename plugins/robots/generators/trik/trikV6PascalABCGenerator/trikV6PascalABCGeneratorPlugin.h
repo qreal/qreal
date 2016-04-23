@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Ivan Limar
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,25 @@
 
 #pragma once
 
-#include "generatorBase/simpleGenerators/bindingGenerator.h"
+#include <trikPascalABCGeneratorLibrary/trikPascalABCGeneratorPluginBase.h>
 
-namespace generatorBase {
-namespace simple {
+namespace trik {
 
-/// Generator for 'for' loops
-class ForLoopGenerator : public BindingGenerator
+namespace robotModel {
+class TrikV6GeneratorRobotModel;
+}
+
+namespace pascalABC {
+
+class TrikV6PascalABCGeneratorPlugin : public TrikPascalABCGeneratorPluginBase
 {
+	Q_OBJECT
+	Q_PLUGIN_METADATA(IID "trik.TrikV6PascalABCGeneratorPlugin")
+
 public:
-	ForLoopGenerator(int index
-			, const qrRepo::RepoApi &repo
-			, GeneratorCustomizer &customizer
-			, const qReal::Id &id
-			, QObject *parent = 0);
+	TrikV6PascalABCGeneratorPlugin();
+
+	QString kitId() const override;
 };
 
 }
