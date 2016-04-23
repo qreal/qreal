@@ -338,20 +338,20 @@
             </labels>
             <ports>
               <linePort>
-                <start startx="0" starty="0"/>
-                <end endx="100" endy="0"/>
+                <start startx="0a" starty="0a"/>
+                <end endx="100a" endy="0a"/>
               </linePort>
               <linePort>
-                <start startx="100" starty="0"/>
-                <end endx="100" endy="20"/>
+                <start startx="100a" starty="0a"/>
+                <end endx="100a" endy="20a"/>
               </linePort>
               <linePort>
-                <start startx="100" starty="20"/>
-                <end endx="0" endy="20"/>
+                <start startx="100a" starty="20a"/>
+                <end endx="0a" endy="20a"/>
               </linePort>
               <linePort>
-                <start startx="0" starty="20"/>
-                <end endx="0" endy="0"/>
+                <start startx="0a" starty="20a"/>
+                <end endx="0a" endy="0a"/>
               </linePort>
             </ports>
           </graphics>
@@ -365,20 +365,20 @@
             </labels>
             <ports>
               <linePort>
-                <start startx="0" starty="0"/>
-                <end endx="100" endy="0"/>
+                <start startx="0a" starty="0a"/>
+                <end endx="100a" endy="0a"/>
               </linePort>
               <linePort>
-                <start startx="100" starty="0"/>
-                <end endx="100" endy="20"/>
+                <start startx="100a" starty="0a"/>
+                <end endx="100a" endy="20a"/>
               </linePort>
               <linePort>
-                <start startx="100" starty="20"/>
-                <end endx="0" endy="20"/>
+                <start startx="100a" starty="20a"/>
+                <end endx="0a" endy="20a"/>
               </linePort>
               <linePort>
-                <start startx="0" starty="20"/>
-                <end endx="0" endy="0"/>
+                <start startx="0a" starty="20a"/>
+                <end endx="0a" endy="0a"/>
               </linePort>
             </ports>
           </graphics>
