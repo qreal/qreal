@@ -330,6 +330,60 @@
                     <explodesTo/>
                 </logic>
             </node>
+ <node displayedName="Class method" name="ClassMethod">
+          <graphics>
+            <picture sizex="100" sizey="20"/>
+            <labels>
+              <label x="3" y="0" textBinded="name"/>
+            </labels>
+            <ports>
+              <linePort>
+                <start startx="0" starty="0"/>
+                <end endx="100" endy="0"/>
+              </linePort>
+              <linePort>
+                <start startx="100" starty="0"/>
+                <end endx="100" endy="20"/>
+              </linePort>
+              <linePort>
+                <start startx="100" starty="20"/>
+                <end endx="0" endy="20"/>
+              </linePort>
+              <linePort>
+                <start startx="0" starty="20"/>
+                <end endx="0" endy="0"/>
+              </linePort>
+            </ports>
+          </graphics>
+          <logic/>
+        </node>
+	<node displayedName="Class field" name="ClassField">
+          <graphics>
+            <picture sizex="100" sizey="20"/>
+            <labels>
+              <label x="0" y="0" textBinded="name"/>
+            </labels>
+            <ports>
+              <linePort>
+                <start startx="0" starty="0"/>
+                <end endx="100" endy="0"/>
+              </linePort>
+              <linePort>
+                <start startx="100" starty="0"/>
+                <end endx="100" endy="20"/>
+              </linePort>
+              <linePort>
+                <start startx="100" starty="20"/>
+                <end endx="0" endy="20"/>
+              </linePort>
+              <linePort>
+                <start startx="0" starty="20"/>
+                <end endx="0" endy="0"/>
+              </linePort>
+            </ports>
+          </graphics>
+          <logic/>
+        </node>
         </graphicTypes>
     </diagram>
 </metamodel>
