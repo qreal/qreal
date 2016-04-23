@@ -75,7 +75,7 @@
 					</container>
 					<properties>
 						<property type="string" name="entityName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 					</properties>
 				</logic>
@@ -114,7 +114,7 @@
 				<logic>
 					<properties>
 						<property type="string" name="attributeName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>

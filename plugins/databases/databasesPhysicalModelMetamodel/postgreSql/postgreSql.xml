@@ -43,6 +43,12 @@
 				<value name="TIMETZ" displayedName="TIMETZ"/>
 				<value name="VARCHAR" displayedName="VARCHAR()"/>
 			</enum>
+			<enum name="DataTypes" editable="true">
+				<value name="BTREE" displayedName="BTREE"/>
+				<value name="HASH" displayedName="HASH"/>
+				<value name="GIST" displayedName="GIST"/>
+				<value name="GIN" displayedName="GIN"/>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="DatabasesPhysicalNode" displayedName="Physical model (PostgreSql)">
@@ -100,7 +106,7 @@
 					</container>
 					<properties>
 						<property type="string" name="tableName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="local" displayedName="Local"/>
 						<property type="bool" name="global" displayedName="Global"/>
@@ -153,7 +159,7 @@
 				<logic>
 					<properties>
 						<property type="string" name="columnName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>
@@ -164,6 +170,20 @@
 						<property type="string" name="DataType" type="DataTypes" displayedName="Data Type">
 							<default>INT</default>
 						</property>
+					</properties>
+				</logic>
+			</node>
+			<node name="Index" displayedName="Index">
+				<logic>
+					<properties>
+						<property type="string" name="indexName" displayedName="Name">
+							<default></default>
+						</property>
+						<property type="string" name="tableName" displayedName="Table name"/>
+						<property type="string" name="columnNames" displayedName="Column names"/>
+						<property type="bool" name="isUnique" displayedName="Unique"/>
+						<property type="bool" name="concurrently" displayedName="concurrently"/>
+						<property type="MethodTypes" name="method_type" displayedName="Method type"/>
 					</properties>
 				</logic>
 			</node>

@@ -96,7 +96,7 @@
 					</container>
 					<properties>
 						<property type="string" name="tableName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="temporary" displayedName="Temporary"/>
 						<property type="bool" name="if_not_exists" displayedName="If not exists"/>
@@ -148,7 +148,7 @@
 				<logic>
 					<properties>
 						<property type="string" name="columnName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>

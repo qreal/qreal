@@ -94,7 +94,7 @@
 					</container>
 					<properties>
 						<property type="string" name="tableName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="temp" displayedName="Temp"/>
 						<property type="bool" name="temporary" displayedName="Temporary"/>
@@ -139,7 +139,7 @@
 				<logic>
 					<properties>
 						<property type="string" name="columnName" displayedName="Name">
-							<default>Enter name</default>
+							<default></default>
 						</property>
 						<property type="bool" name="isPrimaryKey" displayedName="Primary Key"/>
 						<property type="bool" name="isUnique" displayedName="Unique"/>
@@ -149,6 +149,19 @@
 						<property type="string" name="DataType" type="DataTypes" displayedName="Data Type">
 							<default>INT</default>
 						</property>
+					</properties>
+				</logic>
+			</node>
+			<node name="Index" displayedName="Index">
+				<logic>
+					<properties>
+						<property type="string" name="indexName" displayedName="Name">
+							<default></default>
+						</property>
+						<property type="string" name="tableName" displayedName="Table name"/>
+						<property type="string" name="columnNames" displayedName="Column names"/>
+						<property type="bool" name="isUnique" displayedName="Unique"/>
+						<property type="bool" name="if_not_exists" displayedName="If not exists"/>
 					</properties>
 				</logic>
 			</node>
