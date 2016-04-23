@@ -57,24 +57,24 @@
                         <line fill="#ffffff" fill-style="none" y1="30a" y2="30a" x1="0" x2="200" stroke-style="solid" stroke="#000000" stroke-width="0"/>
                     </picture>
                     <labels>
-                        <label textBinded="name" x="75a" y="2"/>
+                        <label textBinded="name" x="85" y="2"/>
                     </labels>
                     <ports>
                         <linePort>
-                            <start startx="10" starty="0"/>
-                            <end endx="190" endy="0"/>
+                            <start startx="10a" starty="0a"/>
+                            <end endx="190a" endy="0a"/>
                         </linePort>
                         <linePort>
-                            <start startx="200" starty="40"/>
-                            <end endx="200" endy="120"/>
+                            <start startx="200a" starty="40a"/>
+                            <end endx="200a" endy="120a"/>
                         </linePort>
                         <linePort>
-                            <start startx="10" starty="130"/>
-                            <end endx="190" endy="130"/>
+                            <start startx="10a" starty="130a"/>
+                            <end endx="190a" endy="130a"/>
                         </linePort>
                         <linePort>
-                            <start startx="0" starty="40"/>
-                            <end endx="0" endy="120"/>
+                            <start startx="0a" starty="40a"/>
+                            <end endx="0a" endy="120a"/>
                         </linePort>
                     </ports>
                 </graphics>
@@ -96,24 +96,24 @@
                     </picture>
                     <ports>
                         <linePort>
-                            <start startx="0" starty="0"/>
-                            <end endx="180" endy="0"/>
+                            <start startx="0a" starty="0a"/>
+                            <end endx="180a" endy="0a"/>
                         </linePort>
                         <linePort>
-                            <start startx="0" starty="0"/>
-                            <end endx="0" endy="100"/>
+                            <start startx="0a" starty="0a"/>
+                            <end endx="0a" endy="100a"/>
                         </linePort>
                         <linePort>
-                            <start startx="0" starty="100"/>
-                            <end endx="200" endy="100"/>
+                            <start startx="0a" starty="100a"/>
+                            <end endx="200a" endy="100a"/>
                         </linePort>
                         <linePort>
-                            <start startx="200" starty="100"/>
-                            <end endx="200" endy="20"/>
+                            <start startx="200a" starty="100a"/>
+                            <end endx="200a" endy="20a"/>
                         </linePort>
                     </ports>
                     <labels>
-                        <label textBinded="body" x="0" y="0"/>
+                        <label textBinded="body" x="0a" y="0"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -127,27 +127,27 @@
                         <rectangle fill="#ffffff" fill-style="solid" y1="0" y2="210" x1="0" x2="150" stroke-style="solid" stroke="#000000" stroke-width="1"/>
                         <line fill="#000000" fill-style="solid" y1="50a" y2="50a" x1="0" x2="150" stroke-style="solid" stroke="#000000" stroke-width="1"/>
                         <line fill="#000000" fill-style="solid" y1="100" y2="100" x1="0" x2="150" stroke-style="solid" stroke="#000000" stroke-width="1"/>
-                        <text font-name="MS Shell Dlg 2" font-size="10a" b="0" y1="16a" u="0" font-fill="#000000" x1="6a" i="0">&lt;&lt;interface>></text>
+                        <text font-name="MS Shell Dlg 2" font-size="10a" b="0" y1="10a" u="0" font-fill="#000000" x1="40" i="0">&lt;&lt;interface>></text>
                     </picture>
                     <labels>
-                        <label textBinded="name" x="40" y="10"/>
+                        <label textBinded="name" x="40" y="15a"/>
                     </labels>
                     <ports>
                         <linePort>
-                            <start startx="0" starty="0"/>
-                            <end endx="150" endy="0"/>
+                            <start startx="0a" starty="0a"/>
+                            <end endx="150a" endy="0a"/>
                         </linePort>
                         <linePort>
-                            <start startx="150" starty="0"/>
-                            <end endx="150" endy="210"/>
+                            <start startx="150a" starty="0a"/>
+                            <end endx="150a" endy="210a"/>
                         </linePort>
                         <linePort>
-                            <start startx="150" starty="210"/>
-                            <end endx="0" endy="210"/>
+                            <start startx="150a" starty="210a"/>
+                            <end endx="0a" endy="210a"/>
                         </linePort>
                         <linePort>
-                            <start startx="0" starty="210"/>
-                            <end endx="0" endy="0"/>
+                            <start startx="0a" starty="210a"/>
+                            <end endx="0a" endy="0a"/>
                         </linePort>
                     </ports>
                 </graphics>
