@@ -49,6 +49,8 @@ public:
 	virtual void restoreSettings();
 	QString getCodeGenerationFilename() const;
 	CodeGenerationMode getCodeGenerationMode() const;
+	bool databaseCreationScriptIsRequired() const;
+	QString databaseName() const;
 public slots:
 	void dbmsChanging(QString const &dbmsName);
 	void codeGenerationModeChanging(QString const &mode);

@@ -100,5 +100,14 @@ CodeGenerationMode DatabasesPreferencesPage::getCodeGenerationMode() const
 		return AlterTable;
 }
 
+bool DatabasesPreferencesPage::databaseCreationScriptIsRequired() const
+{
+	return mUi->createDatabaseCheckBox->isChecked();
+}
+
+QString DatabasesPreferencesPage::databaseName() const
+{
+	return mUi->databaseName->toPlainText();
+}
 }
 }

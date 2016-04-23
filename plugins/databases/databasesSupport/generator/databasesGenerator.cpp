@@ -762,6 +762,14 @@ void DatabasesGenerator::createTableModeWithSqlServer2008()
 			codeFile.write("\r\n\r\n");
 		}
 	}
+
+	codeFile.write("\r\n");
+	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
+		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
+		codeFile.write("CREATE DATABASE ");
+		codeFile.write(databaseName.toByteArray());
+		codeFile.write(";");
+	}
 }
 
 void DatabasesGenerator::createTableModeWithMySql5()
@@ -835,7 +843,6 @@ void DatabasesGenerator::createTableModeWithMySql5()
 		if (getProperty(tableId, "check_sum").toBool())
 			codeFile.write(" CHECKSUM");
 
-//		QByteArray comment = getProperty(tableId, "comment").toByteArray();
 		if (!comment.isEmpty())
 			codeFile.write(" COMMENT " + comment);
 
@@ -858,6 +865,14 @@ void DatabasesGenerator::createTableModeWithMySql5()
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
+	}
+
+	codeFile.write("\r\n");
+	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
+		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
+		codeFile.write("CREATE DATABASE ");
+		codeFile.write(databaseName.toByteArray());
+		codeFile.write(";");
 	}
 }
 
@@ -927,6 +942,14 @@ void DatabasesGenerator::createTableModeWithSqlite()
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
+	}
+
+	codeFile.write("\r\n");
+	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
+		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
+		codeFile.write("CREATE DATABASE ");
+		codeFile.write(databaseName.toByteArray());
+		codeFile.write(";");
 	}
 }
 
@@ -1100,6 +1123,14 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
+	}
+
+	codeFile.write("\r\n");
+	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
+		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
+		codeFile.write("CREATE DATABASE ");
+		codeFile.write(databaseName.toByteArray());
+		codeFile.write(";");
 	}
 }
 

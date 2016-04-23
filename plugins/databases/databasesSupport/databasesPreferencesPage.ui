@@ -70,7 +70,7 @@
      <x>10</x>
      <y>80</y>
      <width>471</width>
-     <height>92</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
