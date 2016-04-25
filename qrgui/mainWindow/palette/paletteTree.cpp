@@ -330,7 +330,8 @@ void PaletteTree::setEnabledForAllElements(const Id &diagram, bool enabled)
 		if (tree->diagram() == diagram) {
 			tree->setEnabledForAllElements(enabled);
 		}
-	}}
+	}
+}
 
 void PaletteTree::refreshUserPalettes()
 {
