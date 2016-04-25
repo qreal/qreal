@@ -22,6 +22,7 @@ using namespace utils;
 
 TEST(StringUtilsTest, unescapeTest)
 {
+	ASSERT_EQ(QString(""), StringUtils::unescape(""));
 	ASSERT_EQ(QString("\t"), StringUtils::unescape("\\t"));
 	ASSERT_EQ(QString("\\t"), StringUtils::unescape("\\\\t"));
 	ASSERT_EQ(QString("a\t"), StringUtils::unescape("a\\t"));
@@ -30,4 +31,43 @@ TEST(StringUtilsTest, unescapeTest)
 	ASSERT_EQ(QString("\\ta"), StringUtils::unescape("\\\\ta"));
 	ASSERT_EQ(QString("\t\t"), StringUtils::unescape("\\t\\t"));
 	ASSERT_EQ(QString("\\t\t"), StringUtils::unescape("\\\\t\\t"));
+
+	ASSERT_EQ(QString("\\"), StringUtils::unescape("\\\\"));
+	ASSERT_EQ(QString("\'"), StringUtils::unescape("\\'"));
+	ASSERT_EQ(QString("\""), StringUtils::unescape("\\\""));
+	ASSERT_EQ(QString("\?"), StringUtils::unescape("\\?"));
+	ASSERT_EQ(QString("\a"), StringUtils::unescape("\\a"));
+	ASSERT_EQ(QString("\b"), StringUtils::unescape("\\b"));
+	ASSERT_EQ(QString("\f"), StringUtils::unescape("\\f"));
+	ASSERT_EQ(QString("\n"), StringUtils::unescape("\\n"));
+	ASSERT_EQ(QString("\r"), StringUtils::unescape("\\r"));
+	ASSERT_EQ(QString("\t"), StringUtils::unescape("\\t"));
+	ASSERT_EQ(QString("\v"), StringUtils::unescape("\\v"));
+}
+
+TEST(StringUtilsTest, escapeTest)
+{
+	ASSERT_EQ(QString(""), StringUtils::escape(""));
+	ASSERT_EQ(QString("\\t"), StringUtils::escape("\t"));
+	ASSERT_EQ(QString("\\\\t"), StringUtils::escape("\\t"));
+	ASSERT_EQ(QString("\\\\\\t"), StringUtils::escape("\\\t"));
+
+	ASSERT_EQ(QString("a\\t"), StringUtils::escape("a\t"));
+	ASSERT_EQ(QString("a\\\\t"), StringUtils::escape("a\\t"));
+	ASSERT_EQ(QString("\\ta"), StringUtils::escape("\ta"));
+	ASSERT_EQ(QString("\\\\ta"), StringUtils::escape("\\ta"));
+	ASSERT_EQ(QString("\\t\\t"), StringUtils::escape("\t\t"));
+	ASSERT_EQ(QString("\\\\t\\t"), StringUtils::escape("\\t\t"));
+
+	ASSERT_EQ(QString("\\\\"), StringUtils::escape("\\"));
+	ASSERT_EQ(QString("\\\'"), StringUtils::escape("\'"));
+	ASSERT_EQ(QString("\\\""), StringUtils::escape("\""));
+	ASSERT_EQ(QString("\\?"), StringUtils::escape("\?"));
+	ASSERT_EQ(QString("\\a"), StringUtils::escape("\a"));
+	ASSERT_EQ(QString("\\b"), StringUtils::escape("\b"));
+	ASSERT_EQ(QString("\\f"), StringUtils::escape("\f"));
+	ASSERT_EQ(QString("\\n"), StringUtils::escape("\n"));
+	ASSERT_EQ(QString("\\r"), StringUtils::escape("\r"));
+	ASSERT_EQ(QString("\\t"), StringUtils::escape("\t"));
+	ASSERT_EQ(QString("\\v"), StringUtils::escape("\v"));
 }

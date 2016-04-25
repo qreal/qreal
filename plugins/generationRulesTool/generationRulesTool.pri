@@ -14,7 +14,7 @@
 
 QT += widgets
 
-links(qrkernel qslog qrtext)
+links(qrkernel qslog qrtext qrutils)
 
 INCLUDEPATH += \
 	$$PWD \

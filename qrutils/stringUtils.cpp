@@ -56,6 +56,57 @@ QString StringUtils::dequote(const QString &string)
 		: string;
 }
 
+QString StringUtils::escape(const QString &string)
+{
+	auto transformedString = string;
+	for (int i = 0; i < transformedString.length(); ++i) {
+		const auto replace = [&](const QString &str) {
+			transformedString.replace(i, 1, str);
+			++i;
+		};
+
+		switch (transformedString[i].toLatin1()) {
+		case '\\':
+			replace("\\\\");
+			break;
+		case '\'':
+			replace("\\'");
+			break;
+		case '"':
+			replace("\\\"");
+			break;
+		case '\?':
+			replace("\\?");
+			break;
+		case '\a':
+			replace("\\a");
+			break;
+		case '\b':
+			replace("\\b");
+			break;
+		case '\f':
+			replace("\\f");
+			break;
+		case '\n':
+			replace("\\n");
+			break;
+		case '\r':
+			replace("\\r");
+			break;
+		case '\t':
+			replace("\\t");
+			break;
+		case '\v':
+			replace("\\v");
+			break;
+		default:
+			break;
+		}
+	}
+
+	return transformedString;
+}
+
 QString StringUtils::unescape(const QString &string)
 {
 	auto transformedString = string;

@@ -134,7 +134,7 @@ TRANSLATIONS = \
 	$$PWD/../qrtranslations/ru/qrtext_ru.ts \
 	$$PWD/../qrtranslations/fr/qrtext_fr.ts \
 
-includes(qrkernel thirdparty/qslog)
-links(qrkernel qslog)
+includes(qrkernel thirdparty/qslog qrutils)
+links(qrkernel qslog qrutils)
 
 DEFINES += QRTEXT_LIBRARY
