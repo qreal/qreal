@@ -32,7 +32,6 @@ SOURCES += \
 	metamodelGeneratorSupportTest.cpp \
 	inFileTest.cpp \
 	outFileTest.cpp \
-	stringUtilsTest.cpp \
 	xmlUtilsTest.cpp \
 
 # Mocks

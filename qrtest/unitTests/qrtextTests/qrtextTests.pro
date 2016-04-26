@@ -39,3 +39,5 @@ SOURCES += \
 	luaSemanticAnalyzerTest.cpp \
 	luaToolboxTest.cpp \
 	luaLexerTest.cpp \
+	luaStringEscapeUtilsTest.cpp \
+

@@ -15,7 +15,8 @@
 #include "luaPrinter.h"
 
 #include <qrkernel/logging.h>
-#include <qrutils/stringUtils.h>
+
+#include <qrtext/lua/luaStringEscapeUtils.h>
 
 #include <qrtext/lua/ast/number.h>
 #include <qrtext/lua/ast/unaryMinus.h>
@@ -375,7 +376,7 @@ void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> 
 void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::String> &node
 		, const QSharedPointer<qrtext::core::ast::Node> &)
 {
-	auto escapedString = utils::StringUtils::escape(node->string());
+	auto escapedString = qrtext::lua::LuaStringEscapeUtils::escape(node->string());
 	pushResult(node, readTemplate("string.t").replace("@@VALUE@@", escapedString));
 }
 

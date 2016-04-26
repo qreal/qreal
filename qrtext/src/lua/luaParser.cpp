@@ -14,14 +14,13 @@
 
 #include "qrtext/src/lua/luaParser.h"
 
-#include <qrutils/stringUtils.h>
-
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserCombinators.h"
 #include "qrtext/core/parser/operators/expressionParser.h"
 
-#include "qrtext/lua/ast/expression.h"
+#include "qrtext/lua/luaStringEscapeUtils.h"
 
+#include "qrtext/lua/ast/expression.h"
 #include "qrtext/lua/ast/addition.h"
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/bitwiseAnd.h"
@@ -218,7 +217,7 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					string.chop(1);
 
 					// Replace escape characters.
-					auto transformedString = utils::StringUtils::unescape(string);
+					auto transformedString = LuaStringEscapeUtils::unescape(string);
 
 					return new ast::String(transformedString);
 				}
