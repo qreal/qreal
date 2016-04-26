@@ -16,7 +16,6 @@
 
 #include <QtCore/QJsonObject>
 #include <QtGui/QPainter>
-#include <QtCore/QDebug>
 
 using namespace utils;
 
