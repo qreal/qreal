@@ -108,7 +108,6 @@ void Thread::nextBlock(const Id &blockId)
 
 void Thread::stepInto(const Id &diagram)
 {
-	qDebug() << "stepping into" << diagram;
 	const Id initialNode = findStartingElement(diagram);
 	BlockInterface * const block = mBlocksTable.block(initialNode);
 
@@ -128,7 +127,6 @@ void Thread::stepInto(const Id &diagram)
 void Thread::finishedSteppingInto()
 {
 	if (mStack.isEmpty()) {
-		qDebug() << "emitting stop";
 		emit stopped(qReal::interpretation::StopReason::finised);
 		return;
 	}
@@ -139,7 +137,6 @@ void Thread::finishedSteppingInto()
 	// But if it is disconnected (for example, we did it in turnOff() on recursive lifting) we should connect it back.
 	connectBlock(mCurrentBlock);
 
-	qDebug() << "stepping out of" << mCurrentBlock;
 	// Execution must proceed here
 	mCurrentBlock->finishedSteppingInto();
 }

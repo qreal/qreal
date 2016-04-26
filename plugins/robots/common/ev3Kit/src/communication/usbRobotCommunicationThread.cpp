@@ -156,7 +156,12 @@ void UsbRobotCommunicationThread::checkForConnection()
 bool UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
 	const bool result = send(buffer);
-	outputBuffer = receive(responseSize);
+	const QByteArray recieved = receive(responseSize);
+	outputBuffer.resize(recieved.size());
+	for (int i = 0; i < recieved.size(); ++i) {
+		outputBuffer[i] = recieved[i];
+	}
+
 	return result;
 }
 

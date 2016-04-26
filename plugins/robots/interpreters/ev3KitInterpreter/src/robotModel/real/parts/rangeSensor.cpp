@@ -14,6 +14,8 @@
 
 #include "rangeSensor.h"
 
+#include <qrkernel/logging.h>
+
 const unsigned rangeSensorResponseSize = 9;
 
 using namespace ev3::robotModel::real::parts;
@@ -33,5 +35,6 @@ void RangeSensor::read()
 	QByteArray command = mImplementation.readyRawCommand(mImplementation.lowLevelPort(), 0);
 	QByteArray outputBuf;
 	mRobotCommunicator.send(command, rangeSensorResponseSize, outputBuf);
+	QLOG_INFO() << Q_FUNC_INFO << static_cast<int>(outputBuf.data()[5]) << outputBuf;
 	emit newData(static_cast<int>(outputBuf.data()[5]));
 }
