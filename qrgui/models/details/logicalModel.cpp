@@ -273,7 +273,7 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 				return mApi.to(item->id()).toVariant();
 		}
 		if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
+			const QString selectedProperty = findPropertyName(item->id(), role);
 			if (!selectedProperty.isEmpty()) {
 				return mApi.property(item->id(), selectedProperty);
 			}
@@ -284,14 +284,14 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 			if (!dynamicProperties.isEmpty()) {
 				QDomDocument dynamProperties;
 				dynamProperties.setContent(dynamicProperties);
-				int i = 0;
+				int index = 0;
 				for (QDomElement element
 						= dynamProperties.firstChildElement("properties").firstChildElement("property");
 						!element.isNull();
 						element = element.nextSiblingElement("property"))
 				{
-					if (i != role - propertiesCount - roles::customPropertiesBeginRole) {
-						i++;
+					if (index != role - propertiesCount - roles::customPropertiesBeginRole) {
+						index++;
 						continue;
 					}
 					return element.attribute("value");
@@ -335,23 +335,18 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 				if (!dynamicProperties.isEmpty()) {
 					QDomDocument dynamProperties;
 					dynamProperties.setContent(dynamicProperties);
-					int i = 0;
+					int index = 0;
 					for (QDomElement element
 							= dynamProperties.firstChildElement("properties").firstChildElement("property");
 							!element.isNull();
 							element = element.nextSiblingElement("property"))
 					{
-						if (i != role - propertiesCount - roles::customPropertiesBeginRole) {
-							i++;
+						if (index != role - propertiesCount - roles::customPropertiesBeginRole) {
+							index++;
 							continue;
 						}
-						if (element.attribute("type") == "bool") {
-							element.setAttribute("value", QVariant(value.toBool()).toString());
-						} else if (element.attribute("type") == "int") {
-							element.setAttribute("value", QVariant(value.toInt()).toString());
-						} else {
-							element.setAttribute("value", value.toString());
-						}
+
+						element.setAttribute("value", value.toString());
 						mApi.setProperty(item->id(), "dynamicProperties", dynamProperties.toString(4));
 						break;
 					}

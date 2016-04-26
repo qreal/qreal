@@ -165,10 +165,10 @@ void Label::setSuffix(const QString &text)
 
 void Label::updateData(bool withUndoRedo)
 {
-	QVariant value = toPlainText();
+	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value.toString(), withUndoRedo);
+		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
 		const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.
 				logicalId(mId), "dynamicProperties").toString();
@@ -182,28 +182,20 @@ void Label::updateData(bool withUndoRedo)
 					element = element.nextSiblingElement("property"))
 			{
 				if (element.attribute("textBinded") == mProperties.binding()) {
-					if (element.attribute("type") == "bool") {
-						value = value.toBool();
-					} else if (element.attribute("type") == "int") {
-						value = value.toInt();
-					}
-
-					setText(value.toString());
-					element.setAttribute("value", value.toString());
+					element.setAttribute("value", value);
 					break;
 				}
 			}
 
 			mLogicalModelAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalModelAssistApi.logicalId(mId),
 					"dynamicProperties", dynamicProperties.toString(4));
-			parent->setLogicalProperty(mProperties.binding(), value.toString(), withUndoRedo);
-		} else {
-			parent->setLogicalProperty(mProperties.binding(), value.toString(), withUndoRedo);
 		}
+
+		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
 	} else {
-		const QString repoValue = mEnumValues.values().contains(value.toString())
-				? mEnumValues.key(value.toString())
-				: enumText(value.toString());
+		const QString repoValue = mEnumValues.values().contains(value)
+				? mEnumValues.key(value)
+				: enumText(value);
 		parent->setLogicalProperty(mProperties.binding(), repoValue, withUndoRedo);
 	}
 

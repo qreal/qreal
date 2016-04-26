@@ -42,13 +42,16 @@ void SubprogramBlock::run()
 			!element.isNull();
 			element = element.nextSiblingElement("property"))
 		{
-			QVariant v = element.attribute("value");
-			if (element.attribute("type") == "bool") {
-				parser()->setVariableValue<bool>(element.attribute("text"), v.toBool());
-			} else if (element.attribute("type") == "int") {
-				parser()->setVariableValue<int>(element.attribute("text"), v.toInt());
+			const QString type = element.attribute("type");
+			const QString value = element.attribute("value");
+			const QString name = element.attribute("text");
+
+			if (type == "bool") {
+				evalCode<bool>(name + " = " + value);
+			} else if (type == "int") {
+				evalCode<int>(name + " = " + value);
 			} else {
-				parser()->setVariableValue<QString>(element.attribute("text"), v.toString());
+				evalCode<QString>(name + " = " + value);
 			}
 		}
 	}

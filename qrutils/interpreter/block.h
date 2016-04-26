@@ -45,8 +45,6 @@ public:
 
 	void finishedSteppingInto() override;
 
-	qrtext::LanguageToolboxInterface *parser() const;
-
 	/// Initializes this block with external components that may be used during the intepretetation process.
 	/// @todo Not good.
 	void init(const qReal::Id &graphicalId
@@ -55,6 +53,29 @@ public:
 			, qReal::ErrorReporterInterface * const errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
+
+	//mParser methods
+	QStringList identifiers() const;
+
+	template<typename T>
+	T value(const QString &identifier) const
+	{
+		return mParser->value<T>(identifier);
+	}
+
+	/// Sets a value of given identifier in interpreter to given value.
+	template<typename T>
+	void setVariableValue(const QString &name, T value)
+	{
+		mParser->setVariableValue<T>(name, value);
+	}
+
+	/// Sets a value of given identifier in interpreter to given vector value.
+	template<typename T>
+	void setVectorVariableValue(const QString &name, const QVector<T> &value)
+	{
+		mParser->setVectorVariableValue<T>(name, value);
+	}
 
 protected:
 	/// Enum with flags whether to report parser errors or let the language toolbox fail silently.

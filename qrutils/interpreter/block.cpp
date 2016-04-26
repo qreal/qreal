@@ -48,6 +48,11 @@ void Block::init(const Id &graphicalId
 	}
 }
 
+QStringList Block::identifiers() const
+{
+	return mParser->identifiers();
+}
+
 bool Block::initNextBlocks()
 {
 	if (id().isNull() || id() == Id::rootId()) {
@@ -197,9 +202,4 @@ bool Block::errorsOccured() const
 
 void Block::finishedSteppingInto()
 {
-}
-
-qrtext::LanguageToolboxInterface *Block::parser() const
-{
-	return mParser;
 }

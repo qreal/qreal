@@ -189,10 +189,9 @@ void Thread::turnOn(BlockInterface * const block)
 	const blocks::SubprogramBlock * const subprogram = dynamic_cast<blocks::SubprogramBlock*>(mCurrentBlock);
 	if (subprogram) {
 		QList<QPair<QString, QVariant>> properties;
-		const qrtext::LanguageToolboxInterface *parser = subprogram->parser();
-		const QStringList identifiers = parser->identifiers();
+		const QStringList identifiers = subprogram->identifiers();
 		for (const QString &identifier : identifiers) {
-			properties << QPair<QString, QVariant>(identifier, parser->value<QVariant>(identifier));
+			properties << QPair<QString, QVariant>(identifier, subprogram->value<QVariant>(identifier));
 		}
 
 		mStack.push(StackFrame(mCurrentBlock, properties));
@@ -243,21 +242,21 @@ void Thread::turnOff(BlockInterface * const block)
 
 	//restore old properties
 	const QList<QPair<QString, QVariant>> &oldProperties = mStack.top().properties();
-	qrtext::LanguageToolboxInterface *parser = dynamic_cast<Block*>(mStack.top().block())->parser();
+	Block * const b = dynamic_cast<Block*>(mStack.top().block());
 	for (const QPair<QString, QVariant> &x : oldProperties) {
-		QString propertyName = x.first;
-		QVariant propertyValue = x.second;
+		const QString propertyName = x.first;
+		const QVariant propertyValue = x.second;
 
 		if (propertyValue.type() == QVariant::Int) {
-			parser->setVariableValue<int>(propertyName, propertyValue.toInt());
+			b->setVariableValue<int>(propertyName, propertyValue.toInt());
 		} else if (propertyValue.type() == QVariant::Bool) {
-			parser->setVariableValue<bool>(propertyName, propertyValue.toBool());
+			b->setVariableValue<bool>(propertyName, propertyValue.toBool());
 		} else if (propertyValue.type() == QVariant::Double) {
-			parser->setVariableValue<double>(propertyName, propertyValue.toDouble());
+			b->setVariableValue<double>(propertyName, propertyValue.toDouble());
 		} else if (propertyValue.type() == QVariant::StringList) {
-			parser->setVectorVariableValue(propertyName, propertyValue.toStringList().toVector());
+			b->setVectorVariableValue(propertyName, propertyValue.toStringList().toVector());
 		} else {
-			parser->setVariableValue<QString>(propertyName, propertyValue.toString());
+			b->setVariableValue<QString>(propertyName, propertyValue.toString());
 		}
 	}
 
