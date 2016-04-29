@@ -44,7 +44,7 @@ public slots:
 	void close();
 	void updateTable(QTableWidgetItem *item);
 	void updateColumn(QTableWidgetItem *item);
-	void updateIndex(QTableWidget *item);
+	void updateIndex(QTableWidgetItem *item);
 
 	void updateComment();
 	void updateQuery();

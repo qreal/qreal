@@ -43,7 +43,7 @@ TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene,
 
 	connect(mUi->tableDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateTable(QTableWidgetItem*)));
 	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
-	connect(mUi->indexDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateIndex(QTableWidget*)));
+	connect(mUi->indexDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateIndex(QTableWidgetItem*)));
 
 	connect(mUi->commentText, SIGNAL(textChanged()), this, SLOT(updateComment()));
 	connect(mUi->sqlQueryText, SIGNAL(textChanged()), this, SLOT(updateQuery()));
@@ -182,9 +182,35 @@ void TableMenuWidget::updateColumn(QTableWidgetItem *item)
 	}
 }
 
-void TableMenuWidget::updateIndex(QTableWidget *item)
+void TableMenuWidget::updateIndex(QTableWidgetItem *item)
 {
+	int rowNum = item->row();
+	int columnNum = item->column();
 
+	Id indexId = Id::loadFromString(mUi->indexDataTable->item(rowNum, ElementId)->text());
+	QString cellContents = item->text();
+	switch (columnNum) {
+	case IndexName: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "indexName", cellContents);
+		break;
+	}
+	case ColumnNames: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "columnNames", cellContents);
+		break;
+	}
+	case IsUniqieIndex: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "isUnique", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Clustered: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "clustered", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Nonclustered: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "nonclustered", item->checkState() == Qt::Checked);
+		break;
+	}
+	}
 }
 
 void TableMenuWidget::updateComment()
@@ -466,36 +492,34 @@ void TableMenuWidget::fillIndexProperties()
 {
 	IdList ids = mModels.logicalModelAssistApi().children(Id::rootId());
 	for (Id const &id : ids) {
-		// invisible id
-		QString tableName = mModels.logicalModelAssistApi().propertyByRoleName(id, "tableName").toString();
-		QString tableRealName = mId.toString();
+		QString tableName = mModels.mutableLogicalRepoApi().property(id, "tableName").toString();
 		if (id.element() == "Index" && id.editor() == mDbmsName && tableName == mId.toString()) {
 			int rowCount = mUi->indexDataTable->rowCount();
 			mUi->indexDataTable->insertRow(rowCount);
-			mUi->indexDataTable->setItem(rowCount, ElementId, new QTableWidgetItem(id.toString()));
+			mUi->indexDataTable->setItem(rowCount, IndexId, new QTableWidgetItem(id.toString()));
 
-			QString indexName = mModels.logicalModelAssistApi().propertyByRoleName(id, "indexName").toString();
+			QString indexName = mModels.mutableLogicalRepoApi().property(id, "indexName").toString();
 			mUi->indexDataTable->setItem(rowCount, IndexName, new QTableWidgetItem(indexName));
 
 
-			QString columnNames = mModels.logicalModelAssistApi().propertyByRoleName(id, "columnNames").toString();
+			QString columnNames = mModels.mutableLogicalRepoApi().property(id, "columnNames").toString();
 			mUi->indexDataTable->setItem(rowCount, ColumnNames, new QTableWidgetItem(columnNames));
 
-			QVariant isUnique = mModels.logicalModelAssistApi().propertyByRoleName(id, "isUnique").toString();
+			QVariant isUnique = mModels.mutableLogicalRepoApi().property(id, "isUnique").toString();
 			mUi->indexDataTable->setItem(rowCount, IsUniqieIndex, new QTableWidgetItem());
 			if (isUnique.toBool())
 				mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Checked);
 			else
 				mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Unchecked);
 
-			QVariant clustered = mModels.logicalModelAssistApi().propertyByRoleName(id, "clustered");
+			QVariant clustered = mModels.mutableLogicalRepoApi().property(id, "clustered");
 			mUi->indexDataTable->setItem(rowCount, Clustered, new QTableWidgetItem());
 			if (clustered.toBool())
 				mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Checked);
 			else
 				mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Unchecked);
 
-			QVariant nonclustered = mModels.logicalModelAssistApi().propertyByRoleName(id, "nonclustered");
+			QVariant nonclustered = mModels.mutableLogicalRepoApi().property(id, "nonclustered");
 			mUi->indexDataTable->setItem(rowCount, Nonclustered, new QTableWidgetItem());
 			if (nonclustered.toBool())
 				mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Checked);
@@ -511,19 +535,28 @@ void TableMenuWidget::addIndex()
 			+ "/DatabasesPhysicalModelMetamodel/Index"));
 
 	Id logicalId = mModels.logicalModelAssistApi().createElement(Id::rootId(), id);
+
+	ElementInfo info(logicalId, logicalId, Id::rootId(), Id::rootId()
+					 , {{"name", "Name"}}, {{"position", QPointF()}}, Id(), false);
+	mModels.graphicalModelAssistApi().createElements(QList<ElementInfo>() << info);
+
 	int rowCount = mUi->columnDataTable->rowCount();
 	mUi->indexDataTable->insertRow(rowCount);
 	mUi->indexDataTable->setItem(rowCount, IndexId, new QTableWidgetItem(logicalId.toString()));
-	mUi->indexDataTable->setItem(rowCount, IndexName, new QTableWidgetItem(logicalId.toString()));
+
+	mUi->indexDataTable->setItem(rowCount, IsUniqieIndex, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Unchecked);
+
+	mUi->indexDataTable->setItem(rowCount, Clustered, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Unchecked);
+
+	mUi->indexDataTable->setItem(rowCount, Nonclustered, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Unchecked);
 
 
-	QVariant tn = mId.toVariant();
-	mModels.logicalModelAssistApi().setPropertyByRoleName(logicalId, mId.toVariant(), "tableName");
-	QString tableName = mModels.logicalModelAssistApi().propertyByRoleName(logicalId, "tableName").toString();
-
-	NodeElement *index = mEditorViewScene->getNodeById(logicalId);
-	index->setProperty("tableName", tn);
-	tableName = mModels.logicalModelAssistApi().propertyByRoleName(logicalId, "tableName").toString();
+	QString tableId = mId.toString();
+	QVariant tableIdVar(tableId);
+	mModels.mutableLogicalRepoApi().setProperty(logicalId, "tableName", tableIdVar);
 }
 
 void TableMenuWidget::deleteIndex()
