@@ -116,6 +116,7 @@ private:
 
 	// Finds element of diagram with specified name
 	IdList findNodes(QString const &name);
+	IdList findIndexes();
 	QVariant getProperty(Id const &id, QString const &propertyName);
 	Id getParent(Id const &id);
 	IdList getChildren(Id const &id);

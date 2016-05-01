@@ -61,6 +61,18 @@ IdList DatabasesGenerator::findNodes(QString const &name)
 	return filteredChildren;
 }
 
+IdList DatabasesGenerator::findIndexes()
+{
+	IdList const children = mLogicalModelApi.logicalRepoApi().children(Id::rootId());
+	IdList filteredChildren;
+	for (Id const &child : children) {
+		if (child.element() == "Index" && child.editor() == mDbms && mLogicalModelApi.logicalRepoApi().isLogicalElement(child)) {
+			filteredChildren.append(child);
+		}
+	}
+	return filteredChildren;
+}
+
 QVariant DatabasesGenerator::getProperty(Id const &id, QString const &propertyName)
 {
 	if (mLogicalModelApi.isLogicalId(id)) {
@@ -665,14 +677,8 @@ void DatabasesGenerator::generateSQLCode()
 			codeFileNameForEditor.append(QString("\\"));
 		}
 	}
-	// TODO: file opening for sql-code or window for sql code
-	/*if (mPreferencesPage->needToOpenFileAfterGeneration()) {
-		// Windows
-		QProcess *proc = new QProcess();
-		proc->start("explorer C:\\Coursework\\qreal\\bin\\debug\\code.txt");
-		// proc->start("see /home/alex/Report.doc");
-	}*/
 
+	// TODO: file opening for sql-code or window for sql code
 }
 
 void DatabasesGenerator::generateWithSqlServer2008()
@@ -681,6 +687,42 @@ void DatabasesGenerator::generateWithSqlServer2008()
 		createTableModeWithSqlServer2008();
 	else if (mCodeGenerationMode == AlterTable)
 		alterTableModeWithSqlServer2008();
+
+	IdList indexes = findIndexes();
+
+	for (Id const &index : indexes) {
+		codeFile.write("\r\n");
+		if (index.editor() == mDbms) {
+			codeFile.write("CREATE ");
+
+			bool isUnique = mLogicalModelApi.logicalRepoApi().property(index, "isUnique").toBool();
+			if (isUnique)
+				codeFile.write("UNIQUE ");
+
+			bool clustered = mLogicalModelApi.logicalRepoApi().property(index, "clustered").toBool();
+			if (clustered) {
+				codeFile.write("CLUSTERED ");
+			} else {
+				codeFile.write("NONCLUSTERED ");
+			}
+
+			codeFile.write("INDEX ");
+
+			QByteArray name = mLogicalModelApi.logicalRepoApi().property(index, "indexName").toByteArray();
+			codeFile.write(name);
+
+			codeFile.write(" ON ");
+
+			Id tableId = Id::loadFromString(mLogicalModelApi.logicalRepoApi().property(index, "tableName").toString());
+			QByteArray tableName = getProperty(tableId, "tableName").toByteArray();
+			codeFile.write(tableName);
+
+			QByteArray columns = mLogicalModelApi.logicalRepoApi().property(index, "columnNames").toByteArray();
+			codeFile.write(" (");
+			codeFile.write(columns);
+			codeFile.write(") ");
+		}
+	}
 }
 
 void DatabasesGenerator::generateWithMySql5()
@@ -689,6 +731,40 @@ void DatabasesGenerator::generateWithMySql5()
 		createTableModeWithMySql5();
 	else if (mCodeGenerationMode == AlterTable)
 		alterTableModeWithMySql5();
+
+	IdList indexes = findIndexes();
+
+	for (Id const &index : indexes) {
+		codeFile.write("\r\n");
+		if (index.editor() == mDbms) {
+			codeFile.write("CREATE ");
+
+			bool isUnique = mLogicalModelApi.logicalRepoApi().property(index, "isUnique").toBool();
+			if (isUnique) {
+				codeFile.write("UNIQUE ");
+			} else {
+				bool fulltext = mLogicalModelApi.logicalRepoApi().property(index, "fulltext").toBool();
+				if (fulltext)
+					codeFile.write("FULLTEXT ");
+			}
+
+			codeFile.write("INDEX ");
+
+			QByteArray name = mLogicalModelApi.logicalRepoApi().property(index, "indexName").toByteArray();
+			codeFile.write(name);
+
+			codeFile.write(" ON ");
+
+			Id tableId = Id::loadFromString(mLogicalModelApi.logicalRepoApi().property(index, "tableName").toString());
+			QByteArray tableName = getProperty(tableId, "tableName").toByteArray();
+			codeFile.write(tableName);
+
+			QByteArray columns = mLogicalModelApi.logicalRepoApi().property(index, "columnNames").toByteArray();
+			codeFile.write(" (");
+			codeFile.write(columns);
+			codeFile.write(") ");
+		}
+	}
 }
 
 void DatabasesGenerator::generateWithSqlite()
@@ -697,6 +773,39 @@ void DatabasesGenerator::generateWithSqlite()
 		createTableModeWithSqlite();
 	else if (mCodeGenerationMode == AlterTable)
 		alterTableModeWithSqlite();
+
+	IdList indexes = findIndexes();
+
+	for (Id const &index : indexes) {
+		codeFile.write("\r\n");
+		if (index.editor() == mDbms) {
+			codeFile.write("CREATE ");
+
+			bool isUnique = mLogicalModelApi.logicalRepoApi().property(index, "isUnique").toBool();
+			if (isUnique)
+				codeFile.write("UNIQUE ");
+
+			codeFile.write("INDEX ");
+
+			bool ifNotExists = mLogicalModelApi.logicalRepoApi().property(index, "if_not_exists").toBool();
+			if (ifNotExists)
+				codeFile.write("IF NOT EXISTS ");
+
+			QByteArray name = mLogicalModelApi.logicalRepoApi().property(index, "indexName").toByteArray();
+			codeFile.write(name);
+
+			codeFile.write(" ON ");
+
+			Id tableId = Id::loadFromString(mLogicalModelApi.logicalRepoApi().property(index, "tableName").toString());
+			QByteArray tableName = getProperty(tableId, "tableName").toByteArray();
+			codeFile.write(tableName);
+
+			QByteArray columns = mLogicalModelApi.logicalRepoApi().property(index, "columnNames").toByteArray();
+			codeFile.write(" (");
+			codeFile.write(columns);
+			codeFile.write(") ");
+		}
+	}
 }
 
 void DatabasesGenerator::generateWithMicrosoftAccess()
@@ -713,6 +822,43 @@ void DatabasesGenerator::generateWithPostgreSql()
 		createTableModeWithPostgreSql();
 	else if (mCodeGenerationMode == AlterTable)
 		alterTableModeWithPostgreSql();
+
+	IdList indexes = findIndexes();
+
+	for (Id const &index : indexes) {
+		codeFile.write("\r\n");
+		if (index.editor() == mDbms) {
+			codeFile.write("CREATE ");
+
+			bool isUnique = mLogicalModelApi.logicalRepoApi().property(index, "isUnique").toBool();
+			if (isUnique)
+				codeFile.write("UNIQUE ");
+
+			codeFile.write("INDEX ");
+
+			bool concurrently = mLogicalModelApi.logicalRepoApi().property(index, "concurrently").toBool();
+			if (concurrently)
+				codeFile.write("CONCURRENTLY ");
+
+			QByteArray name = mLogicalModelApi.logicalRepoApi().property(index, "indexName").toByteArray();
+			codeFile.write(name);
+
+			codeFile.write(" ON ");
+
+			Id tableId = Id::loadFromString(mLogicalModelApi.logicalRepoApi().property(index, "tableName").toString());
+			QByteArray tableName = getProperty(tableId, "tableName").toByteArray();
+			codeFile.write(tableName);
+
+			codeFile.write("USING ");
+			QByteArray method = getProperty(index, "columnNames").toByteArray();
+			codeFile.write(method);
+
+			QByteArray columns = mLogicalModelApi.logicalRepoApi().property(index, "columnNames").toByteArray();
+			codeFile.write(" (");
+			codeFile.write(columns);
+			codeFile.write(") ");
+		}
+	}
 }
 
 void DatabasesGenerator::createTableModeWithSqlServer2008()

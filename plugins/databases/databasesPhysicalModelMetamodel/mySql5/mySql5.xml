@@ -162,6 +162,21 @@
 					</properties>
 				</logic>
 			</node>
+			<node name="Index" displayedName="Index">
+				<graphics>
+				</graphics>
+				<logic>
+					<properties>
+						<property type="string" name="indexName" displayedName="Name">
+							<default></default>
+						</property>
+						<property type="string" name="tableName" displayedName="Table id"/>
+						<property type="string" name="columnNames" displayedName="Column names"/>
+						<property type="bool" name="isUnique" displayedName="Unique"/>
+						<property type="bool" name="fulltext" displayedName="Fulltext"/>
+					</properties>
+				</logic>
+			</node>
 			<edge name="PhysicalOneToManyRelationship" displayedName="One-to-many">
 				<graphics>
 					<lineType type="solidLine"/>

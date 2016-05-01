@@ -536,10 +536,6 @@ void TableMenuWidget::addIndex()
 
 	Id logicalId = mModels.logicalModelAssistApi().createElement(Id::rootId(), id);
 
-	ElementInfo info(logicalId, logicalId, Id::rootId(), Id::rootId()
-					 , {{"name", "Name"}}, {{"position", QPointF()}}, Id(), false);
-	mModels.graphicalModelAssistApi().createElements(QList<ElementInfo>() << info);
-
 	int rowCount = mUi->indexDataTable->rowCount();
 	mUi->indexDataTable->insertRow(rowCount);
 	mUi->indexDataTable->setItem(rowCount, IndexId, new QTableWidgetItem(logicalId.toString()));
