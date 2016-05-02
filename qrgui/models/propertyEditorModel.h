@@ -76,10 +76,6 @@ public:
 
 	qReal::Id idByIndex(const QModelIndex &index) const;
 
-private slots:
-	void rereadData(const QModelIndex &, const QModelIndex &);
-
-private:
 	enum AttributeClassEnum {
 		namePseudoattribute
 		, logicalAttribute
@@ -89,28 +85,86 @@ private:
 		, metatypePseudoattribute
 	};
 
-	struct Field {
-		QString fieldName;
-		AttributeClassEnum attributeClass;
-		int role;
+	class Field {
 
+	public:
 		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_)
-			: fieldName(fieldName_), attributeClass(attributeClass_), role(role_)
+			: mFieldName(fieldName_), mAttributeClass(attributeClass_), mRole(role_)
 		{
 		}
 
 		Field(QString fieldName_, AttributeClassEnum attributeClass_)
-			: fieldName(fieldName_), attributeClass(attributeClass_), role(-1)
+			: mFieldName(fieldName_), mAttributeClass(attributeClass_), mRole(-1)
 		{
 		}
+
+		void appendChild(Field *item)
+		{
+			mChildItems.append(item);
+		}
+
+		Field* child(int row)
+		{
+			return mChildItems.value(row);
+		}
+
+		int childCount() const
+		{
+			return mChildItems.count();
+		}
+
+		Field* parentItem()
+		{
+			return mParentItem;
+		}
+
+		int row() const
+		{
+			if (mParentItem)
+				return mParentItem->mChildItems.indexOf(const_cast<Field*>(this));
+			return 0;
+		}
+
+		AttributeClassEnum attributeClass()
+		{
+			return mAttributeClass;
+		}
+
+		QString fieldName()
+		{
+			return mFieldName;
+		}
+
+		int role()
+		{
+			return mRole;
+		}
+
+	private:
+		QList<Field*> mChildItems;
+		Field *mParentItem;
+
+		QString mFieldName;
+		AttributeClassEnum mAttributeClass;
+		int mRole;
+
 	};
+
+
+private slots:
+	void rereadData(const QModelIndex &, const QModelIndex &);
+
+
+
+
+private:
 
 	QAbstractItemModel *mTargetLogicalModel;
 	QAbstractItemModel *mTargetGraphicalModel;
 	QPersistentModelIndex mTargetLogicalObject;
 	QPersistentModelIndex mTargetGraphicalObject;
 
-	QList<Field> mFields;
+	QList<Field*> mFields;
 
 	const qReal::EditorManagerInterface &mEditorManagerInterface;
 
