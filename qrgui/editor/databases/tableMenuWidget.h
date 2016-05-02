@@ -97,9 +97,12 @@ private:
 		IndexId = 0
 		, IndexName
 		, ColumnNames
-		, IsUniqieIndex
+		, IsUniqueIndex
 		, Clustered
-		, Nonclustered
+		, IndexIfNotExists
+		, Fulltext
+		, Concurrently
+		, Method
 	};
 
 	QString mDbmsName;

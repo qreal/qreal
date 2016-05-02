@@ -35,7 +35,7 @@
     </sizepolicy>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -303,12 +303,22 @@
      </column>
      <column>
       <property name="text">
-       <string>nonclustered</string>
+       <string>if not exists</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>if not exists</string>
+       <string>fulltext</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>concurrently</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>method</string>
       </property>
      </column>
     </widget>

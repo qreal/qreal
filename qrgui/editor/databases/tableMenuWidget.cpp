@@ -198,7 +198,7 @@ void TableMenuWidget::updateIndex(QTableWidgetItem *item)
 		mModels.mutableLogicalRepoApi().setProperty(indexId, "columnNames", cellContents);
 		break;
 	}
-	case IsUniqieIndex: {
+	case IsUniqueIndex: {
 		mModels.mutableLogicalRepoApi().setProperty(indexId, "isUnique", item->checkState() == Qt::Checked);
 		break;
 	}
@@ -206,8 +206,20 @@ void TableMenuWidget::updateIndex(QTableWidgetItem *item)
 		mModels.mutableLogicalRepoApi().setProperty(indexId, "clustered", item->checkState() == Qt::Checked);
 		break;
 	}
-	case Nonclustered: {
-		mModels.mutableLogicalRepoApi().setProperty(indexId, "nonclustered", item->checkState() == Qt::Checked);
+	case IndexIfNotExists: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "if_not_exists", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Fulltext: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "fulltext", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Concurrently: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "concurrently", item->checkState() == Qt::Checked);
+		break;
+	}
+	case Method: {
+		mModels.mutableLogicalRepoApi().setProperty(indexId, "method", item->checkState() == Qt::Checked);
 		break;
 	}
 	}
@@ -261,8 +273,16 @@ void TableMenuWidget::setPropertiesForDbms()
 	mUi->columnDataTable->hideColumn(WithComp);
 	mUi->columnDataTable->hideColumn(ColumnAutoIncrement);
 	mUi->columnDataTable->hideColumn(Check);
-
 	mUi->columnDataTable->hideColumn(ElementId);
+
+	mUi->indexDataTable->hideColumn(IndexId);
+	mUi->indexDataTable->hideColumn(IsUniqueIndex);
+	mUi->indexDataTable->hideColumn(Clustered);
+	mUi->indexDataTable->hideColumn(IndexIfNotExists);
+	mUi->indexDataTable->hideColumn(Fulltext);
+	mUi->indexDataTable->hideColumn(Concurrently);
+	mUi->indexDataTable->hideColumn(Method);
+
 	if (mDbmsName == "Sqlite") {
 		mUi->tableDataTable->showRow(Temp);
 		mUi->tableDataTable->showRow(Temporary);
@@ -274,6 +294,9 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->columnDataTable->showColumn(NotNull);
 		mUi->columnDataTable->showColumn(ColumnAutoIncrement);
 		mUi->columnDataTable->showColumn(Default);
+
+		mUi->indexDataTable->showColumn(IsUniqueIndex);
+		mUi->indexDataTable->showColumn(IndexIfNotExists);
 	}
 	else if (mDbmsName == "SqlServer2008") {
 		mUi->columnDataTable->showColumn(IsPrimaryKey);
@@ -281,6 +304,9 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->columnDataTable->showColumn(NotNull);
 		mUi->columnDataTable->showColumn(Null);
 		mUi->columnDataTable->showColumn(Default);
+
+		mUi->indexDataTable->showColumn(IsUniqueIndex);
+		mUi->indexDataTable->showColumn(Clustered);
 	}
 	else if (mDbmsName == "MySql5") {
 		mUi->tableDataTable->showRow(Temporary);
@@ -300,6 +326,9 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->columnDataTable->showColumn(Null);
 		mUi->columnDataTable->showColumn(ColumnAutoIncrement);
 		mUi->columnDataTable->showColumn(Default);
+
+		mUi->indexDataTable->showColumn(IsUniqueIndex);
+		mUi->indexDataTable->showColumn(Fulltext);
 	}
 	else if (mDbmsName == "MicrosoftAccess") {
 		mUi->tableDataTable->showRow(Temporary);
@@ -330,6 +359,10 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->columnDataTable->showColumn(Null);
 		mUi->columnDataTable->showColumn(Check);
 		mUi->columnDataTable->showColumn(Default);
+
+		mUi->indexDataTable->showColumn(IsUniqueIndex);
+		mUi->indexDataTable->showColumn(Concurrently);
+		mUi->indexDataTable->showColumn(Method);
 	}
 }
 
@@ -506,11 +539,11 @@ void TableMenuWidget::fillIndexProperties()
 			mUi->indexDataTable->setItem(rowCount, ColumnNames, new QTableWidgetItem(columnNames));
 
 			QVariant isUnique = mModels.mutableLogicalRepoApi().property(id, "isUnique").toString();
-			mUi->indexDataTable->setItem(rowCount, IsUniqieIndex, new QTableWidgetItem());
+			mUi->indexDataTable->setItem(rowCount, IsUniqueIndex, new QTableWidgetItem());
 			if (isUnique.toBool())
-				mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Checked);
+				mUi->indexDataTable->item(rowCount, IsUniqueIndex)->setCheckState(Qt::Checked);
 			else
-				mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Unchecked);
+				mUi->indexDataTable->item(rowCount, IsUniqueIndex)->setCheckState(Qt::Unchecked);
 
 			QVariant clustered = mModels.mutableLogicalRepoApi().property(id, "clustered");
 			mUi->indexDataTable->setItem(rowCount, Clustered, new QTableWidgetItem());
@@ -519,12 +552,33 @@ void TableMenuWidget::fillIndexProperties()
 			else
 				mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Unchecked);
 
-			QVariant nonclustered = mModels.mutableLogicalRepoApi().property(id, "nonclustered");
-			mUi->indexDataTable->setItem(rowCount, Nonclustered, new QTableWidgetItem());
-			if (nonclustered.toBool())
-				mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Checked);
+			QVariant ifNotExists = mModels.mutableLogicalRepoApi().property(id, "if_not_exists");
+			mUi->indexDataTable->setItem(rowCount, IfNotExists, new QTableWidgetItem());
+			if (ifNotExists.toBool())
+				mUi->indexDataTable->item(rowCount, IfNotExists)->setCheckState(Qt::Checked);
 			else
-				mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Unchecked);
+				mUi->indexDataTable->item(rowCount, IfNotExists)->setCheckState(Qt::Unchecked);
+
+			QVariant fulltext = mModels.mutableLogicalRepoApi().property(id, "fulltext");
+			mUi->indexDataTable->setItem(rowCount, Fulltext, new QTableWidgetItem());
+			if (fulltext.toBool())
+				mUi->indexDataTable->item(rowCount, Fulltext)->setCheckState(Qt::Checked);
+			else
+				mUi->indexDataTable->item(rowCount, Fulltext)->setCheckState(Qt::Unchecked);
+
+			QVariant concurrently = mModels.mutableLogicalRepoApi().property(id, "concurrently");
+			mUi->indexDataTable->setItem(rowCount, Concurrently, new QTableWidgetItem());
+			if (concurrently.toBool())
+				mUi->indexDataTable->item(rowCount, Concurrently)->setCheckState(Qt::Checked);
+			else
+				mUi->indexDataTable->item(rowCount, Concurrently)->setCheckState(Qt::Unchecked);
+
+			QVariant method = mModels.mutableLogicalRepoApi().property(id, "method");
+			mUi->indexDataTable->setItem(rowCount, Method, new QTableWidgetItem());
+			if (method.toBool())
+				mUi->indexDataTable->item(rowCount, Method)->setCheckState(Qt::Checked);
+			else
+				mUi->indexDataTable->item(rowCount, Method)->setCheckState(Qt::Unchecked);
 		}
 	}
 }
@@ -540,14 +594,23 @@ void TableMenuWidget::addIndex()
 	mUi->indexDataTable->insertRow(rowCount);
 	mUi->indexDataTable->setItem(rowCount, IndexId, new QTableWidgetItem(logicalId.toString()));
 
-	mUi->indexDataTable->setItem(rowCount, IsUniqieIndex, new QTableWidgetItem());
-	mUi->indexDataTable->item(rowCount, IsUniqieIndex)->setCheckState(Qt::Unchecked);
+	mUi->indexDataTable->setItem(rowCount, IsUniqueIndex, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, IsUniqueIndex)->setCheckState(Qt::Unchecked);
 
 	mUi->indexDataTable->setItem(rowCount, Clustered, new QTableWidgetItem());
 	mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Unchecked);
 
-	mUi->indexDataTable->setItem(rowCount, Nonclustered, new QTableWidgetItem());
-	mUi->indexDataTable->item(rowCount, Nonclustered)->setCheckState(Qt::Unchecked);
+	mUi->indexDataTable->setItem(rowCount, IfNotExists, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, IfNotExists)->setCheckState(Qt::Unchecked);
+
+	mUi->indexDataTable->setItem(rowCount, Fulltext, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, Fulltext)->setCheckState(Qt::Unchecked);
+
+	mUi->indexDataTable->setItem(rowCount, Concurrently, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, Concurrently)->setCheckState(Qt::Unchecked);
+
+	mUi->indexDataTable->setItem(rowCount, Method, new QTableWidgetItem());
+	mUi->indexDataTable->item(rowCount, Method)->setCheckState(Qt::Unchecked);
 
 
 	QString tableId = mId.toString();
