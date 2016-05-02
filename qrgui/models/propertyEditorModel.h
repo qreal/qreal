@@ -88,14 +88,16 @@ public:
 	class Field {
 
 	public:
-		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_)
+		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_, Field *parent)
 			: mFieldName(fieldName_), mAttributeClass(attributeClass_), mRole(role_)
 		{
+			mParentItem = parent;
 		}
 
-		Field(QString fieldName_, AttributeClassEnum attributeClass_)
+		Field(QString fieldName_, AttributeClassEnum attributeClass_, Field *parent)
 			: mFieldName(fieldName_), mAttributeClass(attributeClass_), mRole(-1)
 		{
+			mParentItem = parent;
 		}
 
 		void appendChild(Field *item)
@@ -165,6 +167,7 @@ private:
 	QPersistentModelIndex mTargetGraphicalObject;
 
 	QList<Field*> mFields;
+	Field* mField;
 
 	const qReal::EditorManagerInterface &mEditorManagerInterface;
 

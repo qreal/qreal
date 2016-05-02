@@ -28,6 +28,7 @@ PropertyEditorModel::PropertyEditorModel(
 	, mTargetGraphicalModel(nullptr)
 	, mEditorManagerInterface(editorManagerInterface)
 {
+	mField = new Field("start", logicalAttribute, 265, nullptr);
 }
 
 int PropertyEditorModel::rowCount(const QModelIndex&) const
@@ -246,14 +247,61 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 	if (logicalModelIndex != QModelIndex()) {
 		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
 		int role = roles::customPropertiesBeginRole;
+
 		foreach (QString property, logicalProperties) {
-			mFields.append(new Field(property, logicalAttribute, role));
+			mFields.append(new Field(property, logicalAttribute, role, nullptr));
 			++role;
 		}
+
+		QStringList logPropertiesClone = logicalProperties;
+		int i = 0;
+		while (logPropertiesClone.size() > 0) {
+			QString temp = logPropertiesClone.takeAt(0);
+			if (temp.contains("!")) {
+				int first = temp.indexOf("!");
+				QString begin = temp.mid(0, first);
+				mField->appendChild(new Field(begin, logicalAttribute, role, nullptr));
+
+				auto two = mField->child(i);
+
+				QString end = temp.mid(first + 1);
+				mField->appendChild(new Field(end, logicalAttribute, role, two));
+
+				int j = 0;
+				while (j < logPropertiesClone.size()) {
+					if (logPropertiesClone.at(j).mid(0, first) == begin) {
+						QString newValue = logPropertiesClone.takeAt(j);
+						newValue = newValue.mid(first + 1);
+						mField->appendChild(new Field(newValue, logicalAttribute, role, two));
+						j = 0;
+					} else {
+						++j;
+					}
+				}
+			}
+
+			++i;
+		}
+
+		int ddd = 5;
+//		if (i > 0) {
+
+////				auto one = mField[i-1];
+//			auto two = mField->child(i-1);
+//			mField->appendChild(new Field(property, logicalAttribute, role, two));
+
+//		} else {
+//			mField->appendChild(new Field(property, logicalAttribute, role, nullptr));
+//		}
+//		++i;
+
+
 		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
 //		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
 	}
 
+	int ololo = mField->childCount();
+	auto check = mField->parentItem();
 	// There are no custom attributes for graphical objects, but they shall be
 	// added soon.
 //	if (graphicalModelIndex != QModelIndex()) {
