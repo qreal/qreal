@@ -28,12 +28,13 @@ GamepadPadPressSensor::GamepadPadPressSensor(const DeviceInfo &info, const PortI
 
 void GamepadPadPressSensor::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
 void GamepadPadPressSensor::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

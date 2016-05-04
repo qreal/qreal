@@ -28,12 +28,13 @@ SonarSensor::SonarSensor(const DeviceInfo &info, const PortInfo &port
 
 void SonarSensor::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
 void SonarSensor::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

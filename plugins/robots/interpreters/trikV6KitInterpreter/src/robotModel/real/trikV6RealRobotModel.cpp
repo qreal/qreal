@@ -73,6 +73,11 @@ int TrikV6RealRobotModel::priority() const
 	return 8;  // Right after qts generator
 }
 
+void TrikV6RealRobotModel::readDataFromAllSensors() const
+{
+	mRobotCommunicator.data()->requestData();
+}
+
 bool TrikV6RealRobotModel::needsConnection() const
 {
 	return true;

@@ -73,6 +73,11 @@ int RealRobotModel::priority() const
 	return 8;  // Right after qts generator
 }
 
+void RealRobotModel::readDataFromAllSensors() const
+{
+	mRobotCommunicator.data()->requestData();
+}
+
 bool RealRobotModel::needsConnection() const
 {
 	return true;
