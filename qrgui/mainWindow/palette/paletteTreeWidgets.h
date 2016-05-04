@@ -34,6 +34,9 @@ public:
 			, EditorManagerInterface &editorManagerProxy
 			, const Id &editor, const Id &diagram);
 
+	/// Returs an internal diagram id of editor whoose elements are provided by this instance.
+	Id diagram() const;
+
 	/// Adds top item type to some editor's tree.
 	/// @param data Parameters of new element
 	/// @param tree Editor's tree.
