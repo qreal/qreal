@@ -65,8 +65,9 @@ QString TrikThreeDRobotModel::friendlyName() const
 {
 	QRegExp versionRegExp("\\(v.*\\)");
 	const int pos = versionRegExp.indexIn(mRealModel->friendlyName());
-	if (pos == -1) {
-		return tr("3D Model");
+	if (pos == -1) {\
+		return tr("3D модель");
+		//return tr("3D Model");
 	}
 
 	return tr("3D Model") + " " + versionRegExp.capturedTexts().at(0);
