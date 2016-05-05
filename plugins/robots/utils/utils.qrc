@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/graphicsWatcher/stop_btn.png</file>
+        <file>icons/graphicsWatcher/start_btn.png</file>
+        <file>icons/graphicsWatcher/zoomOut_btn.png</file>
+        <file>icons/graphicsWatcher/zoomIn_btn.png</file>
+        <file>icons/graphicsWatcher/reset_btn.png</file>
+    </qresource>
+</RCC>

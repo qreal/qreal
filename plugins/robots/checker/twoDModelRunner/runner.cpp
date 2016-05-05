@@ -68,7 +68,7 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [&]() {
+		connect(&mPluginFacade.interpreter(), &kitBase::InterpreterInterface::stopped, [&]() {
 			QTimer::singleShot(0, this, SLOT(close()));
 		});
 	}

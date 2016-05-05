@@ -14,7 +14,8 @@
 
 QT += widgets network
 
-links(qrkernel qrutils qextserialport qslog)
+links(qrkernel qrutils qextserialport qslog qrtext)
+includes(qrtext)
 
 DEFINES += ROBOTS_UTILS_LIBRARY
 
@@ -26,6 +27,7 @@ HEADERS += \
 	$$PWD/include/utils/objectsSet.h \
 	$$PWD/include/utils/timelineInterface.h \
 	$$PWD/include/utils/uploaderTool.h \
+	$$PWD/include/utils/sensorsGraph.h \
 	$$PWD/include/utils/utilsDeclSpec.h \
 	$$PWD/include/utils/requiredVersion.h \
 	$$PWD/include/utils/canvas/canvas.h \
@@ -52,6 +54,9 @@ HEADERS += \
 	$$PWD/src/robotCommunication/guardSignalGenerator.h \
 	$$PWD/src/robotCommunication/tcpConnectionHandler.h \
 	$$PWD/src/robotCommunication/tcpRobotCommunicatorWorker.h \
+	$$PWD/src/graphicsWatcher/keyPoint.h \
+	$$PWD/src/graphicsWatcher/pointsQueueProcessor.h \
+	$$PWD/src/graphicsWatcher/sensorViewer.h \
 
 SOURCES += \
 	$$PWD/src/abstractTimer.cpp \
@@ -78,7 +83,16 @@ SOURCES += \
 	$$PWD/src/robotCommunication/tcpConnectionHandler.cpp \
 	$$PWD/src/robotCommunication/tcpRobotCommunicatorWorker.cpp \
 	$$PWD/src/robotCommunication/uploadProgramProtocol.cpp \
+	$$PWD/src/graphicsWatcher/keyPoint.cpp \
+	$$PWD/src/graphicsWatcher/pointsQueueProcessor.cpp \
+	$$PWD/src/graphicsWatcher/sensorsGraph.cpp \
+	$$PWD/src/graphicsWatcher/sensorViewer.cpp \
+
+FORMS += \
+	$$PWD/src/graphicsWatcher/sensorsGraph.ui \
 
 TRANSLATIONS += \
 	$$PWD/../../../qrtranslations/ru/plugins/robots/robots_utils_ru.ts \
 	$$PWD/../../../qrtranslations/fr/plugins/robots/robots_utils_fr.ts \
+
+RESOURCES += $$PWD/utils.qrc

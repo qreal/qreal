@@ -223,7 +223,7 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::whileLoopGenerator(const 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(const Id &id
 		, GeneratorCustomizer &customizer)
 {
-	return new ForLoopGenerator(mRepo, customizer, id, this);
+	return new ForLoopGenerator(++mLoopGeneratorIndex, mRepo, customizer, id, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchHeadGenerator(const Id &id
