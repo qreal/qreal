@@ -35,7 +35,7 @@ GenerateSchemaWidget::~GenerateSchemaWidget()
 	delete mUi;
 }
 
-QString const &GenerateSchemaWidget::getDbms()
+QString GenerateSchemaWidget::getDbms() const
 {
 	if (mDbms == "SQLite")
 		return QString("Sqlite");
@@ -43,7 +43,7 @@ QString const &GenerateSchemaWidget::getDbms()
 		return QString("MicrosoftAccess");
 }
 
-QString const &GenerateSchemaWidget::getFilePath()
+QString GenerateSchemaWidget::getFilePath() const
 {
 	return mFilePath;
 }

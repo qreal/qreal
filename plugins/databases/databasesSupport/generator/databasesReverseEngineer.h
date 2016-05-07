@@ -18,6 +18,9 @@
 #include <QMessageBox>
 #include <QtSql>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <plugins/toolPluginInterface/pluginConfigurator.h>
 
 #include "databasesPreferencesPage.h"
@@ -35,7 +38,7 @@ public:
 signals:
 
 public slots:
-	void generateSchema(QString const &dbms, QString const &filePath);
+	void generateSchema(const QString &dbms, QString const &filePath);
 private:
 	/// Creates element of diagram from string
 	qReal::Id createElementFromString(QString const &elemName

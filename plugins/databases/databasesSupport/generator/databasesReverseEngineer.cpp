@@ -14,6 +14,9 @@
 
 #include "databasesReverseEngineer.h"
 
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/models/elementInfo.h>
+
 namespace qReal {
 namespace databasesSupport {
 
@@ -24,7 +27,7 @@ DatabasesReverseEngineer::DatabasesReverseEngineer(PluginConfigurator const conf
 		, mGraphicalModelApi(configurator.graphicalModelApi())
 		, mInterpretersInterface(configurator.mainWindowInterpretersInterface())
 		, mPreferencesPage(preferencesPage)
-		, mDbms(QString("QMYSQL"))
+		, mDbms(QString("Sqlite"))
 {
 }
 
@@ -33,8 +36,9 @@ qReal::Id DatabasesReverseEngineer::createElementFromString(QString const &elemN
 		, Id const &parentLogicalId
 		, bool coordByParent)
 {
-	Id id = Id::loadFromString(QString("qrm:/" + mDbms
+	const Id id = Id::loadFromString(QString("qrm:/" + mDbms
 			+ "/DatabasesPhysicalModelMetamodel/" + elemName));
+
 	Id logicalId = mLogicalModelApi.createElement(Id::rootId(), id);
 	Id graphicalParentId = Id::rootId();
 	if (parentLogicalId != Id::rootId()) {
@@ -42,7 +46,11 @@ qReal::Id DatabasesReverseEngineer::createElementFromString(QString const &elemN
 		if (coordByParent)
 			coord = mGraphicalModelApi.position(graphicalParentId);
 	}
-	mGraphicalModelApi.createElement(graphicalParentId, logicalId, true, elemName, coord);
+
+	ElementInfo info(logicalId, logicalId, parentLogicalId, graphicalParentId
+				, {{"name", elemName}}, {{"position", coord}}, Id()
+				, mLogicalModelApi.editorManagerInterface().isNodeOrEdge(id.editor(), id.element()) < 0);
+	mGraphicalModelApi.createElements(QList<ElementInfo>() << info);
 	return logicalId;
 }
 

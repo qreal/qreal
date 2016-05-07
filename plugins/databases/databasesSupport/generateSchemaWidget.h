@@ -39,8 +39,8 @@ public:
 	explicit GenerateSchemaWidget(QWidget *parent = 0);
 	~GenerateSchemaWidget();
 
-	QString const &getDbms();
-	QString const &getFilePath();
+	QString getDbms() const;
+	QString getFilePath() const;
 
 public slots:
 	void updateDbms(QString const &dbms);
