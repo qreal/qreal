@@ -1220,7 +1220,7 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 				codeFile.write(" ");
 			}
 
-			if (getProperty(rowId, "isPrimaryKey").toBool());
+			if (getProperty(rowId, "isPrimaryKey").toBool())
 				codeFile.write(" PRIMARY KEY");
 
 			if (getProperty(rowId, "unique").toBool())
@@ -1540,7 +1540,7 @@ void DatabasesGenerator::alterTableModeWithPostgreSql()
 				codeFile.write(" ");
 			}
 
-			if (getProperty(rowId, "isPrimaryKey").toBool());
+			if (getProperty(rowId, "isPrimaryKey").toBool())
 				codeFile.write(" PRIMARY KEY");
 
 			if (getProperty(rowId, "unique").toBool())
