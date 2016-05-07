@@ -863,6 +863,14 @@ void DatabasesGenerator::generateWithPostgreSql()
 
 void DatabasesGenerator::createTableModeWithSqlServer2008()
 {
+	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
+		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
+		codeFile.write("CREATE DATABASE ");
+		codeFile.write(databaseName.toByteArray());
+		codeFile.write(";");
+		codeFile.write("\r\n");
+	}
+
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
@@ -908,18 +916,18 @@ void DatabasesGenerator::createTableModeWithSqlServer2008()
 			codeFile.write("\r\n\r\n");
 		}
 	}
+}
 
-	codeFile.write("\r\n");
+void DatabasesGenerator::createTableModeWithMySql5()
+{
 	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
 		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
 		codeFile.write("CREATE DATABASE ");
 		codeFile.write(databaseName.toByteArray());
 		codeFile.write(";");
+		codeFile.write("\r\n");
 	}
-}
 
-void DatabasesGenerator::createTableModeWithMySql5()
-{
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
@@ -1012,14 +1020,6 @@ void DatabasesGenerator::createTableModeWithMySql5()
 			codeFile.write("\r\n\r\n");
 		}
 	}
-
-	codeFile.write("\r\n");
-	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
-		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
-		codeFile.write("CREATE DATABASE ");
-		codeFile.write(databaseName.toByteArray());
-		codeFile.write(";");
-	}
 }
 
 void DatabasesGenerator::createTableModeWithSqlite()
@@ -1089,14 +1089,6 @@ void DatabasesGenerator::createTableModeWithSqlite()
 			codeFile.write("\r\n\r\n");
 		}
 	}
-
-	codeFile.write("\r\n");
-	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
-		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
-		codeFile.write("CREATE DATABASE ");
-		codeFile.write(databaseName.toByteArray());
-		codeFile.write(";");
-	}
 }
 
 void DatabasesGenerator::createTableModeWithMicrosoftAccess()
@@ -1159,6 +1151,14 @@ void DatabasesGenerator::createTableModeWithMicrosoftAccess()
 
 void DatabasesGenerator::createTableModeWithPostgreSql()
 {
+	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
+		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
+		codeFile.write("CREATE DATABASE ");
+		codeFile.write(databaseName.toByteArray());
+		codeFile.write(";");
+		codeFile.write("\r\n");
+	}
+
 	IdList tableNodes = findNodes("Table");
 	for (Id const tableId : tableNodes) {
 		QByteArray comment = getProperty(tableId, "comment").toByteArray();
@@ -1269,14 +1269,6 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
-	}
-
-	codeFile.write("\r\n");
-	if (mPreferencesPage->databaseCreationScriptIsRequired()) {
-		QVariant databaseName = QVariant(mPreferencesPage->databaseName());
-		codeFile.write("CREATE DATABASE ");
-		codeFile.write(databaseName.toByteArray());
-		codeFile.write(";");
 	}
 }
 

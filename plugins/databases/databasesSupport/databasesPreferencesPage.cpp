@@ -36,7 +36,7 @@ DatabasesPreferencesPage::~DatabasesPreferencesPage()
 void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 {
 	if (dbmsName == "SQLite") {
-		mUi->createDatabaseCheckBox->setEnabled(true);
+		mUi->createDatabaseCheckBox->setEnabled(false);
 		emit dbmsChanged("Sqlite");
 	}
 	else if (dbmsName == "Microsoft SQL Server 2008") {
