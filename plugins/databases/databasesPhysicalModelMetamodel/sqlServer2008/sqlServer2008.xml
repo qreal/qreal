@@ -96,6 +96,7 @@
 						<property type="string" name="tableName" displayedName="Name">
 							<default></default>
 						</property>
+						<property type="string" name="key_groups" displayedName="Key groups"/>
 						<property type="string" name="comment" displayedName="Comment"/>
 						<property type="text" name="query" displayedName="Sql-query"/>
 					</properties>

@@ -45,6 +45,7 @@ TableMenuWidget::TableMenuWidget(const Id &id, EditorViewScene *editorViewScene,
 	connect(mUi->columnDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateColumn(QTableWidgetItem*)));
 	connect(mUi->indexDataTable, SIGNAL(itemChanged(QTableWidgetItem*)), this, SLOT(updateIndex(QTableWidgetItem*)));
 
+	connect(mUi->keyGroupsText, SIGNAL(textChanged()), this, SLOT(updateKeyGroups()));
 	connect(mUi->commentText, SIGNAL(textChanged()), this, SLOT(updateComment()));
 	connect(mUi->sqlQueryText, SIGNAL(textChanged()), this, SLOT(updateQuery()));
 
@@ -225,18 +226,22 @@ void TableMenuWidget::updateIndex(QTableWidgetItem *item)
 	}
 }
 
+void TableMenuWidget::updateKeyGroups()
+{
+	QString keyGroupsText = mUi->keyGroupsText->toPlainText();
+	mTableNodeElement->setProperty("key_groups", keyGroupsText);
+}
+
 void TableMenuWidget::updateComment()
 {
 	QString comment = mUi->commentText->toPlainText();
-	NodeElement *table = mEditorViewScene->getNodeById(mId);
-	table->setProperty("comment", comment);
+	mTableNodeElement->setProperty("comment", comment);
 }
 
 void TableMenuWidget::updateQuery()
 {
 	QString query = mUi->sqlQueryText->toPlainText();
-	NodeElement *table = mEditorViewScene->getNodeById(mId);
-	table->setProperty("query", query);
+	mTableNodeElement->setProperty("query", query);
 }
 
 void TableMenuWidget::setPropertiesForDbms()
@@ -407,9 +412,6 @@ void TableMenuWidget::fillTableProperties()
 	else
 		mUi->tableDataTable->item(CheckSum, columnNum)->setCheckState(Qt::Unchecked);
 
-	QVariant comment = mTableNodeElement->getProperty("comment");
-	mUi->commentText->setText(comment.toString());
-
 	QVariant maxRows = mTableNodeElement->getProperty("max_rows");
 	mUi->tableDataTable->setItem(MaxRows, columnNum, new QTableWidgetItem(maxRows.toString()));
 
@@ -446,6 +448,12 @@ void TableMenuWidget::fillTableProperties()
 		mUi->tableDataTable->item(WithoutRowid, columnNum)->setCheckState(Qt::Checked);
 	else
 		mUi->tableDataTable->item(WithoutRowid, columnNum)->setCheckState(Qt::Unchecked);
+
+	QVariant keyGroupsText = mTableNodeElement->getProperty("key_groups");
+	mUi->keyGroupsText->setText(keyGroupsText.toString());
+
+	QVariant comment = mTableNodeElement->getProperty("comment");
+	mUi->commentText->setText(comment.toString());
 
 	QVariant query = mTableNodeElement->getProperty("query");
 	mUi->sqlQueryText->setText(query.toString());

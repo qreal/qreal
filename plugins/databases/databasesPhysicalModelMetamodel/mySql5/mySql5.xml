@@ -104,11 +104,11 @@
 						<property type="bool" name="check_sum" displayedName="Check sum"/>
 						<property type="int" name="max_rows" displayedName="Max rows"/>
 						<property type="int" name="min_rows" displayedName="Min rows"/>
-
 						<property type="bool" name="pack_keys" displayedName="Pack keys"/>
 						<property type="bool" name="delay_key_write" displayedName="Delay key write"/>
 						<property type="bool" name="auto_increment" displayedName="Auto increment"/>
 						<property type="tableType" type="TableTypes" name="type" displayedName="Type"/>
+						<property type="string" name="key_groups" displayedName="Key groups"/>
 						<property type="string" name="comment" displayedName="Comment"/>
 						<property type="text" name="query" displayedName="Sql-query"/>
 					</properties>

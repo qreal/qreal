@@ -100,6 +100,7 @@
 						<property type="bool" name="temporary" displayedName="Temporary"/>
 						<property type="bool" name="if_not_exists" displayedName="If not exists"/>
 						<property type="bool" name="without_rowid" displayedName="Without rowid"/>
+						<property type="string" name="key_groups" displayedName="Key groups"/>
 						<property type="string" name="comment" displayedName="Comment"/>
 						<property type="text" name="query" displayedName="Sql-query"/>
 					</properties>
