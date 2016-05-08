@@ -908,6 +908,12 @@ void DatabasesGenerator::createTableModeWithSqlServer2008()
 			if (getProperty(rowId, "unique").toBool())
 				codeFile.write(" UNIQUE");
 		}
+
+		QByteArray keyGroups = getProperty(tableId, "key_groups").toByteArray();
+		if (!keyGroups.isEmpty()) {
+			codeFile.write(",\r\n");
+			codeFile.write(keyGroups);
+		}
 		codeFile.write("\r\n);\r\n\r\n");
 
 		QByteArray query = getProperty(tableId, "query").toByteArray();
@@ -980,7 +986,13 @@ void DatabasesGenerator::createTableModeWithMySql5()
 				if (getProperty(rowId, "auto_increment").toBool())
 					codeFile.write(" AUTO_INCREMENT");
 		}
-		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray keyGroups = getProperty(tableId, "key_groups").toByteArray();
+		if (!keyGroups.isEmpty()) {
+			codeFile.write(",\r\n");
+			codeFile.write(keyGroups);
+		}
+		codeFile.write("\r\n) ");
 
 		QByteArray tableType = getProperty(tableId, "type").toByteArray();
 		if (!tableType.isEmpty())
@@ -1016,6 +1028,7 @@ void DatabasesGenerator::createTableModeWithMySql5()
 
 		QByteArray query = getProperty(tableId, "query").toByteArray();
 		if (!query.isEmpty()) {
+			codeFile.write("\r\n\r\n");
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
@@ -1078,13 +1091,20 @@ void DatabasesGenerator::createTableModeWithSqlite()
 			if (getProperty(rowId, "auto_increment").toBool())
 				codeFile.write(" AUTO_INCREMENT");
 		}
-		codeFile.write("\r\n);\r\n\r\n");
+
+		QByteArray keyGroups = getProperty(tableId, "key_groups").toByteArray();
+		if (!keyGroups.isEmpty()) {
+			codeFile.write(",\r\n");
+			codeFile.write(keyGroups);
+		}
+		codeFile.write("\r\n) ");
 
 		if (getProperty(tableId, "without_rowid").toBool())
 			codeFile.write(" WITHOUT ROWID");
 
 		QByteArray query = getProperty(tableId, "query").toByteArray();
 		if (!query.isEmpty()) {
+			codeFile.write("\r\n\r\n");
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
@@ -1137,7 +1157,12 @@ void DatabasesGenerator::createTableModeWithMicrosoftAccess()
 				codeFile.write(" WITH COMPRESSION");
 			else if (getProperty(rowId, "with_comp").toBool())
 				codeFile.write(" WITH COMP");
+		}
 
+		QByteArray keyGroups = getProperty(tableId, "key_groups").toByteArray();
+		if (!keyGroups.isEmpty()) {
+			codeFile.write(",\r\n");
+			codeFile.write(keyGroups);
 		}
 		codeFile.write("\r\n);\r\n\r\n");
 
@@ -1225,8 +1250,14 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 
 			if (getProperty(rowId, "unique").toBool())
 				codeFile.write(" UNIQUE");
-
 		}
+
+		QByteArray keyGroups = getProperty(tableId, "key_groups").toByteArray();
+		if (!keyGroups.isEmpty()) {
+			codeFile.write(",\r\n");
+			codeFile.write(keyGroups);
+		}
+		codeFile.write("\r\n) ");
 
 		QByteArray inherits = getProperty(tableId, "inherits").toByteArray();
 		if (!inherits.isEmpty()) {
@@ -1262,10 +1293,9 @@ void DatabasesGenerator::createTableModeWithPostgreSql()
 			codeFile.write(" ");
 		}
 
-		codeFile.write("\r\n);\r\n\r\n");
-
 		QByteArray query = getProperty(tableId, "query").toByteArray();
 		if (!query.isEmpty()) {
+			codeFile.write("\r\n\r\n");
 			codeFile.write(query);
 			codeFile.write("\r\n\r\n");
 		}
