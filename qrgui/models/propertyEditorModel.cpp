@@ -38,7 +38,17 @@ int PropertyEditorModel::rowCount(const QModelIndex&) const
 
 int PropertyEditorModel::columnCount(const QModelIndex&) const
 {
-	return 2;
+	return mField->childCount();
+}
+
+int PropertyEditorModel::countOfChilds(const QModelIndex &index) const
+{
+	int row = index.row();
+	Field* temp = mField->child(index.row());
+	int result = mField->numberOfChilds(temp);
+	auto check = mField->getChilds(temp);
+
+	return result;
 }
 
 Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
@@ -74,10 +84,44 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
+
+	int row = index.row();
+	int column = index.column();
+	Field* child;
+
+	if (column != 0) {
+
+		Field* parent = mField->child(index.row());
+		QList<Field*> childs = mField->getChilds(parent);
+
+		for (int i = 0; i < childs.count(); ++i) {
+			if (i == column - 1) {
+				child = childs.at(i);
+				break;
+			}
+		}
+
+
+	} else {
+		Field* parent = mField->child(index.row());
+		child = parent;
+	}
+
+	//int asdf = index.
+//	auto first = mFields[index.row()];
+//	auto fff = mFields[index.row()]->fieldName();
+
+//	auto second = mField->child(index.row());
+
+//	Field* qwe = mField->child(index.row());
+//	auto check = qwe->child(index.row());
+//	int qq = qwe->childCount();
+
+
 	if (role == Qt::ToolTipRole) {
 		if (index.column() == 0) {
 			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-			const QString description = mEditorManagerInterface.propertyDescription(id, mFields[index.row()]->fieldName());
+			const QString description = mEditorManagerInterface.propertyDescription(id, child->fieldName());
 			if (!description.isEmpty()) {
 				return "<body>" + description;
 			} else {
@@ -94,34 +138,39 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-	if (index.column() == 0) {
+	if (index.column() >= 0) {
 		const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, mFields[index.row()]->fieldName());
-		return displayedName.isEmpty() ? mFields[index.row()]->fieldName() : displayedName;
-	} else if (index.column() == 1) {
-		switch (mFields[index.row()]->attributeClass()) {
-		case logicalAttribute: {
-			return mTargetLogicalObject.data(mFields[index.row()]->role()).toString();
-		}
-		case graphicalAttribute:
-			return mTargetGraphicalObject.data(mFields[index.row()]->role());
-		case graphicalIdPseudoattribute:
-			return mTargetGraphicalObject.data(roles::idRole).value<Id>().id();
-		case logicalIdPseudoattribute:
-			return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
-		case metatypePseudoattribute: {
-			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
-		}
-		case namePseudoattribute: {
-			return mTargetLogicalObject.data(Qt::DisplayRole);
-		}
-		default:
-			return QVariant();
-		}
-	} else {
-		return QVariant();
+//		const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, mFields[index.row()]->fieldName());
+		const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, child->fieldName());
+
+		return displayedName.isEmpty() ? child->fieldName() : displayedName;
 	}
+//	} else  {
+////		switch (mFields[index.row()]->attributeClass()) {
+//		switch (child->attributeClass()) {
+
+//		case logicalAttribute: {
+//			return mTargetLogicalObject.data(child->role()).toString();
+//		}
+//		case graphicalAttribute:
+//			return mTargetGraphicalObject.data(child->role());
+//		case graphicalIdPseudoattribute:
+//			return mTargetGraphicalObject.data(roles::idRole).value<Id>().id();
+//		case logicalIdPseudoattribute:
+//			return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
+//		case metatypePseudoattribute: {
+//			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+//			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
+//		}
+//		case namePseudoattribute: {
+//			return mTargetLogicalObject.data(Qt::DisplayRole);
+//		}
+//		default:
+//			return QVariant();
+//		}
+//	}
+	return QVariant();
+
 }
 
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -278,9 +327,10 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 						++j;
 					}
 				}
+				i += j + 1;
 			}
 
-			++i;
+
 		}
 
 		int ddd = 5;

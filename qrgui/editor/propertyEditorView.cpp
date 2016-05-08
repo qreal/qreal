@@ -100,75 +100,128 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setFactoryForManager(mButtonManager, mButtonFactory);
 	mPropertyEditor->setFactoryForManager(mVariantManager, mVariantFactory);
 
-	for (int i = 0, rows = mModel->rowCount(index); i < rows; ++i) {
-		const QModelIndex &valueCell = mModel->index(i, 1);
-		QString name = mModel->data(mModel->index(i, 0)).toString();
-		const QVariant &value = mModel->data(valueCell);
 
-		int type = QVariant::String;
-		QString typeName = mModel->typeName(valueCell).toLower();
-		QList<QPair<QString, QString>> const values = mModel->enumValues(valueCell);
-		bool isButton = false;
-		if (typeName == "int") {
-			type = QVariant::Int;
-		} else if (typeName == "bool") {
-			type = QVariant::Bool;
-		} else if (typeName == "string") {
-			type = QVariant::String;
-		} else if (typeName == "code" || typeName == "directorypath" || typeName == "filepath") {
-			isButton = true;
-		} else if (!values.isEmpty()) {
-			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
-				isButton = true;
-			}
+	int helper = 0;
+	for (int i = 0; i < 2; ++i) {
+		QString name1 = mModel->data(mModel->index(i + helper, 0)).toString();
+		if (name1.isEmpty()) {
+			return;
 		}
+		int type = QVariant::String;
 
 		QtProperty *item = nullptr;
-		if (isButton) {
-			item = mButtonManager->addProperty(name);
-		} else {
-			QtVariantProperty *vItem = mVariantManager->addProperty(type, name);
-
-			vItem->setValue(value);
-			vItem->setToolTip(value.toString());
-
-			if (!values.isEmpty()) {
-				QStringList friendlyNames;
-				for (QPair<QString, QString> const &pair : values) {
-					friendlyNames << pair.second;
-				}
-
-				vItem->setAttribute("enumNames", friendlyNames);
-				vItem->setAttribute("enumEditable", mModel->enumEditable(valueCell));
-				const int idx = enumPropertyIndexOf(valueCell, value.toString());
-				if (mModel->enumEditable(valueCell)) {
-					vItem->setValue(idx < 0 ? value.toString() : values[idx].second);
-				} else {
-					vItem->setValue(idx);
-				}
-			}
-
-			item = vItem;
-		}
-
-		const QString description = propertyDescription(i);
-
-		if (!description.isEmpty()) {
-			item->setToolTip(description);
-		}
-
-		QtProperty *item1 = item;
-
 		QtGroupPropertyManager *groupManager = new QtGroupPropertyManager;
-		item = groupManager->addProperty(name);
-		item->addSubProperty(item1);
+		QtVariantProperty *vItem = mVariantManager->addProperty(type, name1);
 
-		item->addSubProperty(item1);
+		item = vItem;
+
+		item = groupManager->addProperty(name1);
+
+		QList<QtProperty*> list;
+
+		int count = mModel->countOfChilds(mModel->index(i + helper, 0));
+		qDebug() << "ololo" << count;
+
+		for (int j = 1; j < count + 1; ++j) {
+			QString name2 = mModel->data(mModel->index(i + helper, j)).toString();
+//			QModelIndex ololo = mModel->index(i, 0);
+//			auto qwe = mModel->data(mModel->index(1, 1));
+//		//	auto aaa = mModel->data(mModel->index(i, 2));
+
+			QtProperty *item1 = nullptr;
+
+			QtVariantProperty *vItem1 = mVariantManager->addProperty(type, name2);
+
+//			vItem1->setValue(QVariant());
+//			vItem1->setToolTip("");
+
+			item1 = vItem1;
+
+			list.append(item1);
+
+		}
+		helper +=count;
+
+		while (!list.isEmpty()) {
+			item->addSubProperty(list.takeFirst());
+		}
 
 		mPropertyEditor->addProperty(item);
+
+
+
 	}
+
+
+//	for (int i = 0, rows = mModel->rowCount(index); i < rows; ++i) {
+//		const QModelIndex &valueCell = mModel->index(i, 1);
+//		QString name = mModel->data(mModel->index(i, 0)).toString();
+//		const QVariant &value = mModel->data(valueCell);
+
+//		int type = QVariant::String;
+//		QString typeName = mModel->typeName(valueCell).toLower();
+//		QList<QPair<QString, QString>> const values = mModel->enumValues(valueCell);
+//		bool isButton = false;
+//		if (typeName == "int") {
+//			type = QVariant::Int;
+//		} else if (typeName == "bool") {
+//			type = QVariant::Bool;
+//		} else if (typeName == "string") {
+//			type = QVariant::String;
+//		} else if (typeName == "code" || typeName == "directorypath" || typeName == "filepath") {
+//			isButton = true;
+//		} else if (!values.isEmpty()) {
+//			type = QtVariantPropertyManager::enumTypeId();
+//		} else {
+//			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
+//				isButton = true;
+//			}
+//		}
+
+//		QtProperty *item = nullptr;
+//		if (isButton) {
+//			item = mButtonManager->addProperty(name);
+//		} else {
+//			QtVariantProperty *vItem = mVariantManager->addProperty(type, name);
+
+//			vItem->setValue(value);
+//			vItem->setToolTip(value.toString());
+
+//			if (!values.isEmpty()) {
+//				QStringList friendlyNames;
+//				for (QPair<QString, QString> const &pair : values) {
+//					friendlyNames << pair.second;
+//				}
+
+//				vItem->setAttribute("enumNames", friendlyNames);
+//				vItem->setAttribute("enumEditable", mModel->enumEditable(valueCell));
+//				const int idx = enumPropertyIndexOf(valueCell, value.toString());
+//				if (mModel->enumEditable(valueCell)) {
+//					vItem->setValue(idx < 0 ? value.toString() : values[idx].second);
+//				} else {
+//					vItem->setValue(idx);
+//				}
+//			}
+
+//			item = vItem;
+//		}
+
+//		const QString description = propertyDescription(i);
+
+//		if (!description.isEmpty()) {
+//			item->setToolTip(description);
+//		}
+
+//		QtProperty *item1 = item;
+
+//		QtGroupPropertyManager *groupManager = new QtGroupPropertyManager;
+//		item = groupManager->addProperty(name);
+//		item->addSubProperty(item1);
+
+//		item->addSubProperty(item1);
+
+//		mPropertyEditor->addProperty(item);
+//	}
 
 	connect(mButtonManager, SIGNAL(buttonClicked(QtProperty*))
 			, this, SLOT(buttonClicked(QtProperty*)), Qt::UniqueConnection);

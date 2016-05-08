@@ -119,8 +119,13 @@ QString AbstractModel::findPropertyName(const Id &id, const int role) const
 	// role is simply an index of a property in a list of properties.
 	// This convention must be obeyed everywhere, otherwise roles will shift.
 	QStringList properties = mEditorManagerInterface.propertyNames(id.type());
-	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
-	return properties[role - roles::customPropertiesBeginRole];
+// temp 	Q_ASSERT(role - roles::customPropertiesBeginRole < properties.count());
+//	if (role - roles::customPropertiesBeginRole >= properties.count()) {
+//		return properties[role - roles::customPropertiesBeginRole];
+//	} else {
+		return properties[0];
+	//}
+
 }
 
 Qt::DropActions AbstractModel::supportedDropActions() const

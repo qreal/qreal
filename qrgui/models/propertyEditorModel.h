@@ -31,8 +31,12 @@ class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractTableModel
 public:
 	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface, QObject *parent = 0);
 
+	//QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
+
+	int countOfChilds(const QModelIndex &index) const;
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 
@@ -118,6 +122,30 @@ public:
 		Field* parentItem()
 		{
 			return mParentItem;
+		}
+
+		QList<Field*> getChilds(Field* parent)
+		{
+			QList<Field*> result;
+			for (int i = 0; i < mChildItems.count(); ++i) {
+				if ((mChildItems.at(i)->parentItem() == parent)) {
+					result.append(mChildItems.at(i));
+				}
+			}
+
+			return result;
+		}
+
+		int numberOfChilds(Field* parent)
+		{
+			int result = 0;
+			for (int i = 0; i < mChildItems.count(); ++i) {
+				if ((mChildItems.at(i)->parentItem() == parent)) {
+					++result;
+				}
+			}
+
+			return result;
 		}
 
 		int row() const
