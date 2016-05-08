@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Anastasia Semenova
+# Copyright 2016 Anastasia Semenova
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,16 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = \
-	databasesSupport/databasesSupport.pro \
-	databasesEditor/databasesEditor.pro \
-	databasesPhysicalModelMetamodel/sqlServer2008/sqlServer2008.pro \
-	databasesPhysicalModelMetamodel/mySql5/mySql5.pro \
-	databasesPhysicalModelMetamodel/sqlite/sqlite.pro \
-	databasesPhysicalModelMetamodel/microsoftAccess/microsoftAccess.pro \
-	databasesPhysicalModelMetamodel/postgreSql/postgreSql.pro \
-	doc/doc.pro
+include(../../../global.pri)
+
+copyToDestdir(help/ changelog.txt, now)
+
+OTHER_FILES += \
+	changelog.txt \
+	help/index.html \
+	help/interface.html \
+	help/lang.html \
+	help/modelling.html \
+	help/operations.html \
+	help/style.css \
+	help/version.js \
