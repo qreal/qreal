@@ -52,6 +52,8 @@ private:
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;
 
+	//QString mSign;//fix
+	QDomElement mShowCondition;
 	int mIndex;
 	QString mText;
 	QString mTextBinded;

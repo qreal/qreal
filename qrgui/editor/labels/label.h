@@ -30,6 +30,12 @@ class Label : public QGraphicsTextItem, public LabelInterface
 	Q_OBJECT
 
 public:
+	struct LabelVisibilityCondition {
+		QString value;
+		QString sign;
+		QString property;
+	};
+
 	Label(models::GraphicalModelAssistApi &graphicalAssistApi
 			, const Id &elementId
 			, const LabelProperties &properties);
@@ -45,6 +51,8 @@ public:
 	void setFlags(GraphicsItemFlags flags) override;
 
 	void setTextInteractionFlags(Qt::TextInteractionFlags flags) override;
+	void setVisibilityCondition(const QString &property, const QString &sign, const QString &value) override;
+	bool checkCondition() const;
 	void setHtml(const QString &html) override;
 	void setPlainText(const QString &text) override;
 
@@ -105,6 +113,7 @@ private:
 	const Id mId;
 	models::GraphicalModelAssistApi &mGraphicalModelAssistApi;
 	LabelProperties mProperties;
+	LabelVisibilityCondition mVisibilityCondition;
 };
 
 }
