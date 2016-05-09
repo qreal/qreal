@@ -315,7 +315,7 @@ bool DatabasesGenerator::checkLogicalModelCorrectness()
 	bool checkTwo = checkAttributes();
 	bool checkThree = checkEntities();
 	if (checkOne && checkTwo && checkThree) {
-		mErrorReporter->addInformation("Logical diagram is correct.");
+		mErrorReporter->addInformation(tr("Logical diagram is correct."));
 	}
 	return checkOne && checkTwo && checkThree;
 }
@@ -326,7 +326,7 @@ bool DatabasesGenerator::checkPhysicalModelCorrectness()
 	bool checkOne = checkTables();
 	bool checkTwo = checkColumns();
 	if (checkOne && checkTwo) {
-		mErrorReporter->addInformation("Physical diagram is correct.");
+		mErrorReporter->addInformation(tr("Physical diagram is correct."));
 	}
 	return checkOne && checkTwo;
 }
@@ -641,12 +641,12 @@ void DatabasesGenerator::generateSQLCode()
 
 	QString codeFileName = mPreferencesPage->getCodeGenerationFilename();
 	if (codeFileName.isEmpty()) {
-		mErrorReporter->addError(QString("Code file name is empty. Check preferences."));
+		mErrorReporter->addError(tr("Code file name is empty. Check preferences."));
 		return;
 	}
 	codeFile.setFileName(codeFileName);
 	if (!codeFile.open(QIODevice::WriteOnly)) {
-		mErrorReporter->addError(QString("File didn't open."));
+		mErrorReporter->addError(tr("File didn't open."));
 		return;
 	}
 

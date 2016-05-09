@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>MicrosoftAccessPlugin</name>
     <message>
@@ -80,10 +80,6 @@
         <translation>Связи</translation>
     </message>
     <message>
-        <source>Enter name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>BINARY</source>
         <translation type="unfinished"></translation>
     </message>
@@ -109,6 +105,38 @@
     </message>
     <message>
         <source>TEXT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key groups</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CHARACTER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FLOAT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>IMAGE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INTEGER</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MONEY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>REAL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TINYINT</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

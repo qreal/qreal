@@ -377,7 +377,7 @@ void TableMenuWidget::fillTableProperties()
 
 	QVariant tableName = mTableNodeElement->getProperty("tableName");
 	mUi->tableDataTable->setItem(TableName, columnNum, new QTableWidgetItem(tableName.toString()));
-	QString windowTitle = "Menu of table with name '" + tableName.toString() + "'";
+	QString windowTitle = tr("Menu of table with name '") + tableName.toString() + tr("'");
 	this->setWindowTitle(windowTitle);
 
 	QVariant temp = mTableNodeElement->getProperty("temp");

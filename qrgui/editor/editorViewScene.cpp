@@ -823,7 +823,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 		if (e->id().element() == "Table") {
 			mSelectedTableId = e->id();
 			QAction *tableMenuAction = new QAction(this);
-			tableMenuAction->setText("Table menu");
+			tableMenuAction->setText(tr("Table menu"));
 			connect(tableMenuAction, SIGNAL(triggered()), this, SLOT(createTableMenuWidget()), Qt::UniqueConnection);
 			mContextMenu.addAction(tableMenuAction);
 		}

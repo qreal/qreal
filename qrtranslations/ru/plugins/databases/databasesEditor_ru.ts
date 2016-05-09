@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>DatabasesMetamodelPlugin</name>
     <message>
@@ -64,10 +64,6 @@
         <translation>Связи</translation>
     </message>
     <message>
-        <source>Enter name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>BOOL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -97,6 +93,10 @@
     </message>
     <message>
         <source>TEXT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INT</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

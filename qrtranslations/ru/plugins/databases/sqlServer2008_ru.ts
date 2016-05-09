@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>SqlServer2008Plugin</name>
     <message>
@@ -66,10 +66,6 @@
     <message>
         <source>Relationships</source>
         <translation>Связи</translation>
-    </message>
-    <message>
-        <source>Enter name</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>BIGINT</source>
@@ -185,6 +181,10 @@
     </message>
     <message>
         <source>VARCHARf()</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key groups</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

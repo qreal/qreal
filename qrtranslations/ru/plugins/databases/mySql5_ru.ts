@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ru_RU">
+<TS version="2.1" language="ru_RU">
 <context>
     <name>MySql5Plugin</name>
     <message>
@@ -116,10 +116,6 @@
         <translation>Связи</translation>
     </message>
     <message>
-        <source>Enter name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>BDB</source>
         <translation type="unfinished"></translation>
     </message>
@@ -233,6 +229,10 @@
     </message>
     <message>
         <source>YEAR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Key groups</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
