@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
+п»ї<?xml version="1.0"?>
 <Package>
     <DisplayName>Databases Plugin</DisplayName>
-    <DisplayName xml:lang="ru_ru">Плагин БД</DisplayName>
+    <DisplayName xml:lang="ru_ru">РџР»Р°РіРёРЅ Р‘Р”</DisplayName>
     <Description>Databases Plugin.</Description>
-    <Description xml:lang="ru_ru">Плагин БД.</Description>
+    <Description xml:lang="ru_ru">РџР»Р°РіРёРЅ Р‘Р”.</Description>
     <Version>1.0</Version>
     <ReleaseDate>2016-03-13</ReleaseDate>
     <Licenses/>
