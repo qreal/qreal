@@ -140,6 +140,26 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::EventsForKitPluginInterface::interpretationStopped
 			);
 
+	QObject::connect(
+				&configurer.eventsForKitPlugin()
+				, &kitBase::EventsForKitPluginInterface::interpretationStarted
+				, [this](){ /// @todo
+		const bool isQtsInt = mQtsInterpreter->isRunning();
+		mStart.setEnabled(isQtsInt);
+		mStop.setEnabled(isQtsInt);
+	}
+	);
+
+	QObject::connect(
+				&configurer.eventsForKitPlugin()
+				, &kitBase::EventsForKitPluginInterface::interpretationStopped
+				, [this](qReal::interpretation::StopReason reason){ /// @todo
+		Q_UNUSED(reason);
+		mStart.setEnabled(true);
+		mStop.setEnabled(true);
+	}
+	);
+
 	connect(mSystemEvents
 			, &qReal::SystemEvents::activeTabChanged
 			, this
@@ -261,6 +281,7 @@ void TrikKitInterpreterPluginBase::testStart()
 
 		qtsInterpreter()->init();
 
+		qtsInterpreter()->setRunning(true);
 		emit started();
 		qtsInterpreter()->interpretScript(texttab->text());
 	}
