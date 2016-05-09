@@ -166,6 +166,7 @@ void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
+	QString  check = mProperties.nameForRoleProperty();
 
 	if (!mProperties.nameForRoleProperty().isEmpty()) {
 		parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);

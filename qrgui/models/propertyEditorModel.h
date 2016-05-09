@@ -35,6 +35,7 @@ public:
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
 	int countOfChilds(const QModelIndex &index) const;
 
