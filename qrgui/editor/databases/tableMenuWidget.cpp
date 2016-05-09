@@ -343,6 +343,9 @@ void TableMenuWidget::setPropertiesForDbms()
 		mUi->columnDataTable->showColumn(NotNull);
 		mUi->columnDataTable->showColumn(WithCompression);
 		mUi->columnDataTable->showColumn(WithComp);
+
+		mUi->addIndexButton->setEnabled(false);
+		mUi->deleteIndexButton->setEnabled(false);
 	}
 	else if (mDbmsName == "PostgreSql") {
 		mUi->tableDataTable->showRow(Local);
@@ -386,7 +389,6 @@ void TableMenuWidget::fillTableProperties()
 		mUi->tableDataTable->item(Temp, columnNum)->setCheckState(Qt::Checked);
 	else
 		mUi->tableDataTable->item(Temp, columnNum)->setCheckState(Qt::Unchecked);
-	mUi->tableDataTable->item(Temp, columnNum)->setFlags(Qt::NoItemFlags | Qt::ItemIsUserCheckable);
 
 	QVariant temporary = mTableNodeElement->getProperty("temporary");
 	mUi->tableDataTable->setItem(Temporary, columnNum, new QTableWidgetItem());
@@ -561,11 +563,11 @@ void TableMenuWidget::fillIndexProperties()
 				mUi->indexDataTable->item(rowCount, Clustered)->setCheckState(Qt::Unchecked);
 
 			QVariant ifNotExists = mModels.mutableLogicalRepoApi().property(id, "if_not_exists");
-			mUi->indexDataTable->setItem(rowCount, IfNotExists, new QTableWidgetItem());
+			mUi->indexDataTable->setItem(rowCount, IndexIfNotExists, new QTableWidgetItem());
 			if (ifNotExists.toBool())
-				mUi->indexDataTable->item(rowCount, IfNotExists)->setCheckState(Qt::Checked);
+				mUi->indexDataTable->item(rowCount, IndexIfNotExists)->setCheckState(Qt::Checked);
 			else
-				mUi->indexDataTable->item(rowCount, IfNotExists)->setCheckState(Qt::Unchecked);
+				mUi->indexDataTable->item(rowCount, IndexIfNotExists)->setCheckState(Qt::Unchecked);
 
 			QVariant fulltext = mModels.mutableLogicalRepoApi().property(id, "fulltext");
 			mUi->indexDataTable->setItem(rowCount, Fulltext, new QTableWidgetItem());
