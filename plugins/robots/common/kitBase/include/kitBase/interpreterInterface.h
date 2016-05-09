@@ -38,6 +38,7 @@ public:
 signals:
 	/// Emitted when connection to robot established or was broken.
 	void connected(bool isConnected);
+	virtual bool isRunning() const = 0;
 
 public slots:
 	/// Called when establishing connection to a robot is requested. If connection is already established must

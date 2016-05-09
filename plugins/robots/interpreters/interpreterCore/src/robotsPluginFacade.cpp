@@ -385,6 +385,28 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 			);
 
 	QObject::connect(
+				&mEventsForKitPlugin
+				, &kitBase::EventsForKitPluginInterface::interpretationStarted
+				, [this](){ /// @todo
+		const bool isBlockInt = mInterpreter->isRunning();
+		mActionsManager.runAction().setEnabled(isBlockInt);
+		mActionsManager.stopRobotAction().setEnabled(isBlockInt);
+		mActionsManager.setEnableRobotActions(isBlockInt);
+	}
+	);
+
+	QObject::connect(
+				&mEventsForKitPlugin
+				, &kitBase::EventsForKitPluginInterface::interpretationStopped
+				, [this](qReal::interpretation::StopReason reason){ /// @todo
+		Q_UNUSED(reason);
+		mActionsManager.runAction().setEnabled(true);
+		mActionsManager.stopRobotAction().setEnabled(true);
+		mActionsManager.setEnableRobotActions(true);
+	}
+	);
+
+	QObject::connect(
 			&mRobotModelManager
 			, &RobotModelManager::robotModelChanged
 			, [this](kitBase::robotModel::RobotModelInterface &model) {

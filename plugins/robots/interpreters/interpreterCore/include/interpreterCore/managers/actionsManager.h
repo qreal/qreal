@@ -82,6 +82,8 @@ public:
 	/// Provides a possibility to transfer hotkey configurer to engine.
 	void appendHotKey(const QString &actionId, const QString &label, QAction &action);
 
+	void setEnableRobotActions(bool enableRobotActions);
+
 public slots:
 	/// Reacts to selection of another robot model.
 	/// @param model - newly selected robot model.
@@ -96,6 +98,9 @@ private slots:
 
 private:
 	QString kitIdOf(kitBase::robotModel::RobotModelInterface &model) const;
+
+	/// another @todo
+	bool mEnableRobotActions;
 
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();

@@ -81,6 +81,11 @@ BlockInterpreter::~BlockInterpreter()
 	delete mBlocksTable;
 }
 
+bool BlockInterpreter::isRunning() const
+{
+	return mState != InterpreterState::idle;
+}
+
 void BlockInterpreter::interpret()
 {
 	mInterpretersInterface.errorReporter()->clear();

@@ -65,6 +65,8 @@ public:
 
 	~BlockInterpreter() override;
 
+	bool isRunning() const;
+
 public slots:
 	void connectToRobot() override;
 	void interpret() override;
