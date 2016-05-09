@@ -43,7 +43,8 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	}
 	// Default branch.
 	else {
-		const auto engineApi = new TwoDModelEngineApi(*mModel, *mView);
+//		const auto engineApi = new TwoDModelEngineApi(*mModel, *mView);
+		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
 		mApi.reset(engineApi);
 	}
 
