@@ -154,8 +154,6 @@
 				</logic>
 			</node>
 			<node name="Index" displayedName="Index">
-				<graphics>
-				</graphics>
 				<logic>
 					<properties>
 						<property type="string" name="indexName" displayedName="Name">
