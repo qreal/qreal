@@ -30,7 +30,7 @@ WaitForSensorBlock::WaitForSensorBlock(RobotModelInterface &robotModel)
 
 void WaitForSensorBlock::run()
 {
-	const QString port = stringProperty("Port");
+	const QString port = this->port();
 
 	/// @todo Works only with scalar sensors.
 	mPort = RobotModelUtils::findPort(mRobotModel, port, input);
