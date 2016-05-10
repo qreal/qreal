@@ -16,14 +16,18 @@
 
 using namespace qReal;
 
-Metamodel::Metamodel(const QString &id)
-	: mId(id)
+Metamodel::Metamodel()
 {
 }
 
 QString Metamodel::id() const
 {
 	return mId;
+}
+
+void Metamodel::setId(const QString &id)
+{
+	mId = id;
 }
 
 QString Metamodel::version() const
@@ -48,7 +52,9 @@ void Metamodel::setDiagrams(const QStringList &diagrams)
 
 void Metamodel::addDiagram(const QString &diagramName)
 {
-	mDiagrams << diagramName;
+	if (!mDiagrams.contains(diagramName)) {
+		mDiagrams << diagramName;
+	}
 }
 
 QList<ElementType *> Metamodel::elements(const QString &diagram) const
@@ -82,13 +88,15 @@ QStringList Metamodel::enumNames() const
 
 QList<QPair<QString, QString>> Metamodel::enumValues(const QString &name) const
 {
-	return mEnumValues.values(name);
+	return mEnumValues[name];
 }
 
 void Metamodel::addEnum(const QString &name, const QList<QPair<QString, QString> > &values)
 {
 	for (auto &&value : values) {
-		mEnumValues.insert(name, value);
+		if (mEnumValues[name].contains(value)) {
+			mEnumValues[name] << value;
+		}
 	}
 }
 
@@ -129,7 +137,9 @@ ElementType *Metamodel::diagramNode(const QString &diagram) const
 
 void Metamodel::setDiagramNode(const QString &diagram, const QString &elementName)
 {
-	mDiagramNodes[diagram] = elementName;
+	if (!elementName.isEmpty()) {
+		mDiagramNodes[diagram] = elementName;
+	}
 }
 
 QStringList Metamodel::diagramPaletteGroups(const QString &diagram) const
@@ -139,7 +149,9 @@ QStringList Metamodel::diagramPaletteGroups(const QString &diagram) const
 
 void Metamodel::appendDiagramPaletteGroup(const QString &diagram, const QString &group)
 {
-	mPaletteGroups[diagram] << group;
+	if (!mPaletteGroups[diagram].contains(group)) {
+		mPaletteGroups[diagram] << group;
+	}
 }
 
 QStringList Metamodel::diagramPaletteGroupList(const QString &diagram, const QString &group) const

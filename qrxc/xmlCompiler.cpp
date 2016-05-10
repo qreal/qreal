@@ -54,6 +54,11 @@ XmlCompiler::~XmlCompiler()
 	qDeleteAll(mEditors);
 }
 
+QString XmlCompiler::pluginName() const
+{
+	return mPluginName;
+}
+
 bool XmlCompiler::compile(const QString &inputXmlFileName, const QString &sourcesRootFolder)
 {
 	const QFileInfo inputXmlFileInfo(inputXmlFileName);
@@ -176,13 +181,15 @@ void XmlCompiler::generatePluginHeader()
 		<< "\n"
 		<< "#include <metaMetaModel/metamodel.h>\n"
 		<< "\n"
-		<< "class " << mPluginName << "Plugin : public QObject, public qReal::Metamodel\n"
-		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::Metamodel)\n"
+		<< "class " << mPluginName << "Plugin : public QObject, public qReal::MetamodelLoaderInterface\n"
+		<< "{\n\tQ_OBJECT\n\tQ_INTERFACES(qReal::MetamodelLoaderInterface)\n"
 		<< "\tQ_PLUGIN_METADATA(IID \"" << mPluginName << "\")\n"
 		<< "\n"
 		<< "public:\n"
-		<< "\n"
 		<< "\t" << mPluginName << "Plugin();\n"
+		<< "\n"
+		<< "\tQStringList dependencies() const override;\n"
+		<< "\tvoid load(qReal::Metamodel &metamodel) override;\n"
 		<< "\n"
 		<< "private:\n"
 		<< "\tvoid initPlugin();\n"
@@ -192,6 +199,9 @@ void XmlCompiler::generatePluginHeader()
 		<< "\tvoid initPaletteGroupsMap();\n"
 		<< "\tvoid initPaletteGroupsDescriptionMap();\n"
 		<< "\tvoid initShallPaletteBeSortedMap();\n"
+		<< "\n"
+		<< "private:\n"
+		<< "\tqReal::Metamodel *mMetamodel;  // Does not have ownership.\n"
 		<< "};\n"
 		<< "\n";
 }
@@ -227,19 +237,35 @@ void XmlCompiler::generateIncludes(OutFile &out)
 
 	out() << "\n";
 
+	const QString extendedMetamodel = mEditors[mCurrentEditor]->extendedEditor();
+	const QString dependencies = extendedMetamodel.isEmpty() ? QString() : utils::StringUtils::wrap(extendedMetamodel);
+
 	out()
-		//<< "Q_EXPORT_PLUGIN2(qreal_editors, " << mPluginName << "Plugin)\n\n"
 		<< mPluginName << "Plugin::" << mPluginName << "Plugin()\n"
-		<< "\t:Metamodel(\"" << mPluginName << "\")"
+		<< "\t: mMetamodel(nullptr)"
 		<< "{\n"
+		<< "}\n"
+		<< "\n"
+		<< "QStringList " << mPluginName << "Plugin::dependencies() const\n{\n"
+		<< "\treturn {" << dependencies << "};\n"
+		<< "}\n"
+		<< "\n"
+		<< "void " << mPluginName << "Plugin::load(qReal::Metamodel &metamodel)\n{\n"
+		<< "\tmMetamodel = &metamodel;\n"
 		<< "\tinitPlugin();\n"
-		<< "}\n\n";
+		<< "}\n"
+		<< "\n";
 }
 
 void XmlCompiler::generateInitPlugin(OutFile &out)
 {
 	out() << "void " << mPluginName << "Plugin::initPlugin()\n{\n"
-		<< "\tsetVersion(\"" << mPluginVersion << "\");\n"
+		<< "\tif (mMetamodel->id().isEmpty()) {\n"
+		<< "\t\tmMetamodel->setId(\"" << mPluginName << "\");\n"
+		<< "\t}\n"
+		<< "\tif (mMetamodel->version().isEmpty()) {\n"
+		<< "\t\tmMetamodel->setVersion(\"" << mPluginVersion << "\");\n"
+		<< "\t}\n"
 		<< "\n"
 		<< "\tinitMultigraph();\n"
 		<< "\tinitNameMap();\n"
@@ -264,7 +290,7 @@ void XmlCompiler::generateInitMultigraph(OutFile &out)
 		for (const Type *type : diagram->types()) {
 			if (dynamic_cast<const GraphicType *>(type)) {
 				const QString elementType = NameNormalizer::normalize(type->qualifiedName());
-				out() << "\taddNode(*(new " << elementType << "(*this)));\n";
+				out() << "\tmMetamodel->addNode(*(new " << elementType << "(*mMetamodel)));\n";
 			}
 		}
 	}
@@ -299,8 +325,8 @@ void XmlCompiler::generateLinks(OutFile &out, const Type *from, const QStringLis
 		const QString toDiagramName = NameNormalizer::normalize(toType->diagram()->name());
 		const QString fromName = NameNormalizer::normalize(from->qualifiedName());
 		const QString toName = NameNormalizer::normalize(toType->qualifiedName());
-		out() << QString("\tproduceEdge(elementType(\"%1\", \"%2\")"
-				", elementType(\"%3\", \"%4\"), qReal::ElementType::%5);\n")
+		out() << QString("\tmMetamodel->produceEdge(mMetamodel->elementType(\"%1\", \"%2\")"
+				", mMetamodel->elementType(\"%3\", \"%4\"), qReal::ElementType::%5);\n")
 				.arg(fromDiagramName, fromName, toDiagramName, toName, linkType);
 	}
 }
@@ -312,10 +338,10 @@ void XmlCompiler::generateNameMappings(OutFile &out)
 	for (const Diagram * const diagram : mEditors[mCurrentEditor]->diagrams().values()) {
 		const QString diagramName = NameNormalizer::normalize(diagram->name());
 		const QString nodeName = NameNormalizer::normalize(diagram->nodeName());
-		out() << "\taddDiagram(\"" << diagramName << "\");\n";
-		out() << "\tsetDiagramFriendlyName(\"" << diagramName << "\", QObject::tr(\""
+		out() << "\tmMetamodel->addDiagram(\"" << diagramName << "\");\n";
+		out() << "\tmMetamodel->setDiagramFriendlyName(\"" << diagramName << "\", QObject::tr(\""
 				<< diagram->displayedName() << "\"));\n";
-		out() << "\tsetDiagramNode(\"" << diagramName << "\", \"" << nodeName << "\");\n";
+		out() << "\tmMetamodel->setDiagramNode(\"" << diagramName << "\", \"" << nodeName << "\");\n";
 		out() << "\n";
 	}
 
@@ -332,10 +358,10 @@ void XmlCompiler::generatePaletteGroupsLists(utils::OutFile &out)
 		for (const QPair<QString, QStringList> &group : paletteGroups) {
 			const QString groupName = group.first;
 			const QString groupParameters = QString("\"%1\", QObject::tr(\"%2\")").arg(diagramName, groupName);
-			out() << "\tappendDiagramPaletteGroup(" << groupParameters << ");\n";
+			out() << "\tmMetamodel->appendDiagramPaletteGroup(" << groupParameters << ");\n";
 
 			for (const QString &name : group.second) {
-				out() << "\taddElementToDiagramPaletteGroup(" << groupParameters << ", QString::fromUtf8(\""
+				out() << "\tmMetamodel->addElementToDiagramPaletteGroup(" << groupParameters << ", QString::fromUtf8(\""
 						<< NameNormalizer::normalize(name) << "\"));\n";
 			}
 		}
@@ -354,7 +380,7 @@ void XmlCompiler::generatePaletteGroupsDescriptions(utils::OutFile &out)
 			const QString groupParameters = QString("\"%1\", QObject::tr(\"%2\")").arg(diagramName, groupName);
 			const QString descriptionName = paletteGroupsDescriptions[groupName];
 			if (!descriptionName.isEmpty()) {
-				out() << "\tsetDiagramPaletteGroupDescription(" << groupParameters << ", QObject::tr(\""
+				out() << "\tmMetamodel->setDiagramPaletteGroupDescription(" << groupParameters << ", QObject::tr(\""
 						<< descriptionName << "\"));\n";
 			}
 		}
@@ -369,7 +395,7 @@ void XmlCompiler::generateShallPaletteBeSorted(utils::OutFile &out)
 
 	for (const Diagram * const diagram : mEditors[mCurrentEditor]->diagrams().values()) {
 		const QString diagramName = NameNormalizer::normalize(diagram->name());
-		out() << "\tsetPaletteSorted(QString::fromUtf8(\""
+		out() << "\tmMetamodel->setPaletteSorted(QString::fromUtf8(\""
 				<< diagramName << "\"), " << (diagram->shallPaletteBeSorted() ? "true" : "false") << ");\n";
 	}
 
@@ -380,11 +406,12 @@ void XmlCompiler::generateExplosionsMappings(OutFile &out, const GraphicType *gr
 {
 	const QMap<QString, QPair<bool, bool>> &explosions = graphicType->explosions();
 	for (const QString &target : explosions.keys()) {
-		out() << QString("\taddExplosion(elementType(\"%1\", \"%2\"), elementType(\"%3\", \"%4\"), %5, %6);\n").arg(
-				graphicType->diagram()->name(), graphicType->name()
-				, graphicType->diagram()->name(), target
-				, explosions[target].first ? "true" : "false"
-				, explosions[target].second ? "true" : "false");
+		out() << QString("\tmMetamodel->addExplosion(mMetamodel->elementType(\"%1\", \"%2\")"\
+				", mMetamodel->elementType(\"%3\", \"%4\"), %5, %6);\n").arg(
+						graphicType->diagram()->name(), graphicType->name()
+						, graphicType->diagram()->name(), target
+						, explosions[target].first ? "true" : "false"
+						, explosions[target].second ? "true" : "false");
 	}
 }
 
@@ -402,7 +429,7 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 
 	for (const EnumType * const type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
 		const QString name = NameNormalizer::normalize(type->name());
-		out() << "\taddEnum(\"" << name << "\", { ";
+		out() << "\tmMetamodel->addEnum(\"" << name << "\", { ";
 		QStringList pairs;
 		const QMap<QString, QString> values = type->values();
 		for (const QString &name : values.keys()) {
@@ -412,7 +439,8 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 		out() << pairs.join(", ");
 		out() << " });\n";
 
-		out() << "\tsetEnumEditable(\"" << name << "\", " << (type->isEditable() ? "true" : "false") << ");\n";
+		out() << "\tmMetamodel->setEnumEditable(\"" << name << "\", "
+				<< (type->isEditable() ? "true" : "false") << ");\n";
 	}
 
 	out() << "}\n\n";

@@ -32,6 +32,8 @@ class XmlCompiler
 public:
 	XmlCompiler();
 	~XmlCompiler();
+
+	QString pluginName() const;
 	bool compile(const QString &inputXmlFileName, const QString &sourcesRootFolder);
 	Editor *loadXmlFile(const QDir &currentDir, const QString &inputXmlFileName);
 	Diagram *getDiagram(const QString &diagramName);

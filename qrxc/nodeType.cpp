@@ -72,7 +72,7 @@ bool NodeType::copyPictures(GraphicType *parent)
 		if (mSdfDomElement.isNull()) {
 			/// @todo Support this.
 			if (!nodeParent->mSdfDomElement.isNull()) {
-				qDebug() << name()
+				qWarning() << name()
 						<< ": Inheriting pictures for an element without <picture> tag is not currently supported";
 			}
 		} else {
@@ -227,7 +227,9 @@ bool NodeType::initBooleanProperties()
 
 void NodeType::generateCode(OutFile &out)
 {
-	generateSdf();
+	if (!mSdfDomElement.isNull()) {
+		generateSdf();
+	}
 
 	const QString className = NameNormalizer::normalize(qualifiedName());
 
@@ -240,9 +242,12 @@ void NodeType::generateCode(OutFile &out)
 
 	generateCommonData(out);
 
-	out() << "\t\t\tloadSdf(utils::xmlUtils::loadDocument(\":/generated/shapes/"
-			+ className + "Class.sdf\").documentElement());\n"
-			<< "\t\t\tsetSize(QSizeF(" + QString::number(mWidth) + ", " + QString::number(mHeight) + "));\n"
+	if (!mSdfDomElement.isNull()) {
+		out() << "\t\t\tloadSdf(utils::xmlUtils::loadDocument(\":/generated/shapes/"
+				+ className + "Class.sdf\").documentElement());\n";
+	}
+
+	out() << "\t\t\tsetSize(QSizeF(" + QString::number(mWidth) + ", " + QString::number(mHeight) + "));\n"
 			<< "\t\t\tinitProperties();\n";
 
 	generateMouseGesture(out);

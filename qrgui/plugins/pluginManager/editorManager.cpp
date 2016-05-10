@@ -55,29 +55,25 @@ EditorManager::~EditorManager()
 
 void EditorManager::init()
 {
-	const auto pluginsList = mPluginManager.loadAllPlugins<Metamodel>();
+	QSet<MetamodelLoaderInterface *> pluginsList = mPluginManager.loadAllPlugins<MetamodelLoaderInterface>().toSet();
+	pluginsList.remove(nullptr);
 
-	for (Metamodel * const iEditor : pluginsList) {
-		const QString pluginName = mPluginManager.fileName(iEditor);
-
-		if (iEditor) {
-			mPluginsLoaded += iEditor->id();
-			mPluginFileName.insert(iEditor->id(), pluginName);
-			mMetamodels[iEditor->id()] = iEditor;
+	while (!pluginsList.isEmpty()) {
+		for (MetamodelLoaderInterface * const loader : pluginsList) {
+			if (registerPlugin(loader)) {
+				pluginsList.remove(loader);
+				break;
+			}
 		}
 	}
 }
 
 QString EditorManager::loadPlugin(const QString &pluginName)
 {
-	Metamodel *iEditor = mPluginManager.pluginLoadedByName<Metamodel>(pluginName).first;
-	const QString error = mPluginManager.pluginLoadedByName<Metamodel>(pluginName).second;
+	MetamodelLoaderInterface *loader = mPluginManager.pluginLoadedByName<MetamodelLoaderInterface>(pluginName).first;
+	const QString error = mPluginManager.pluginLoadedByName<MetamodelLoaderInterface>(pluginName).second;
 
-	if (iEditor) {
-		mPluginsLoaded += iEditor->id();
-		mPluginFileName.insert(iEditor->id(), pluginName);
-		mMetamodels[iEditor->id()] = iEditor;
-		QLOG_INFO() << "Plugin" << pluginName << "loaded. Version: " << iEditor->version();
+	if (loader && registerPlugin(loader)) {
 		return QString();
 	}
 
@@ -85,14 +81,41 @@ QString EditorManager::loadPlugin(const QString &pluginName)
 	return error;
 }
 
-QString EditorManager::unloadPlugin(const QString &pluginName)
+bool EditorManager::registerPlugin(MetamodelLoaderInterface * const loader)
 {
-	QString resultOfUnloading = "";
-	if (!mPluginFileName[pluginName].isEmpty()) {
-		resultOfUnloading = mPluginManager.unloadPlugin(mPluginFileName[pluginName]);
+	bool allDependenciesAreLoaded = true;
+	const QStringList dependencies = loader->dependencies();
+	for (const QString &dependence : dependencies) {
+		if (!mMetamodels.contains(dependence)) {
+			allDependenciesAreLoaded = false;
+			break;
+		}
+	}
+
+	if (allDependenciesAreLoaded) {
+		const QString pluginName = mPluginManager.fileName(loader);
+		// At the moment dependencies will contain maximally one element (this may change in future).
+		const QString extendedMetamodel = dependencies.isEmpty() ? QString() : dependencies.first();
+		Metamodel *metamodel = extendedMetamodel.isEmpty() ? new Metamodel : mMetamodels[extendedMetamodel];
+		loader->load(*metamodel);
+		mPluginFileNames[metamodel->id()] << pluginName;
+		mMetamodels[metamodel->id()] = metamodel;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+QString EditorManager::unloadPlugin(const QString &metamodelName)
+{
+	QString resultOfUnloading;
+	if (!mPluginFileNames[metamodelName].isEmpty()) {
+		for (const QString &pathToPlugin : mPluginFileNames[metamodelName]) {
+			resultOfUnloading += mPluginManager.unloadPlugin(pathToPlugin);
+		}
 	} else {
 		const QList<QString> namesOfPlugins = mPluginManager.namesOfPlugins();
-		const QString tempName = pluginName.toLower();
+		const QString tempName = metamodelName.toLower();
 		QString newPluginName = "";
 
 		for (const QString &element : namesOfPlugins) {
@@ -105,16 +128,15 @@ QString EditorManager::unloadPlugin(const QString &pluginName)
 		resultOfUnloading = mPluginManager.unloadPlugin(newPluginName);
 	}
 
-	if (mMetamodels.keys().contains(pluginName)) {
-		mMetamodels.remove(pluginName);
-		mPluginFileName.remove(pluginName);
-		mPluginsLoaded.removeAll(pluginName);
+	if (mMetamodels.keys().contains(metamodelName)) {
+		mMetamodels.remove(metamodelName);
+		mPluginFileNames.remove(metamodelName);
 
 		if (!resultOfUnloading.isEmpty()) {
-			QLOG_WARN() << "Editor plugin" << pluginName << "unloading failed: " + resultOfUnloading;
+			QLOG_WARN() << "Editor plugin" << metamodelName << "unloading failed: " + resultOfUnloading;
 		}
 
-		QLOG_INFO() << "Plugin" << pluginName << "unloaded";
+		QLOG_INFO() << "Plugin" << metamodelName << "unloaded";
 	}
 
 	return resultOfUnloading;
@@ -678,7 +700,8 @@ void EditorManager::addEdgeElement(const Id &diagram, const QString &name, const
 
 void EditorManager::createEditorAndDiagram(const QString &name)
 {
-	Metamodel * const interpretedMetamodel = new Metamodel(name);
+	Metamodel * const interpretedMetamodel = new Metamodel();
+	interpretedMetamodel->setId(name);
 	interpretedMetamodel->setFriendlyName(name);
 	interpretedMetamodel->addDiagram(name);
 	interpretedMetamodel->setDiagramFriendlyName(name, name);

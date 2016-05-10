@@ -14,9 +14,7 @@
 
 QREAL_XML = nxtMetamodel.xml
 QREAL_XML_DEPENDS =  \
-		$$PWD/../../../commonMetamodels/kernelMetamodel.xml \
-		$$PWD/../../../commonMetamodels/basicBehaviorsMetamodel.xml \
-		$$PWD/../../../commonMetamodels/basicActionsMetamodel.xml \
+		$$PWD/../common/robotsMetamodel.xml \
 
 QREAL_EDITOR_PATH = robots/editor/nxt
 ROOT = ../../../..
