@@ -38,6 +38,7 @@ void SubprogramBlock::run()
 	if (!properties.isEmpty()) {
 		QDomDocument dynamicProperties;
 		dynamicProperties.setContent(properties);
+		QHash<QString, QVariant> calculatedValues;
 		for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property");
 			!element.isNull();
 			element = element.nextSiblingElement("property"))
@@ -47,11 +48,21 @@ void SubprogramBlock::run()
 			const QString name = element.attribute("text");
 
 			if (type == "bool") {
-				evalCode<bool>(name + " = " + value);
+				calculatedValues.insert(name, evalCode<bool>(value));
 			} else if (type == "int") {
-				evalCode<int>(name + " = " + value);
+				calculatedValues.insert(name, evalCode<int>(value));
 			} else {
-				evalCode<QString>(name + " = " + value);
+				calculatedValues.insert(name, evalCode<QString>(value));
+			}
+		}
+
+		for (QHash<QString, QVariant>::iterator i = calculatedValues.begin(); i != calculatedValues.end(); ++i) {
+			if (i.value().type() == QVariant::Bool) {
+				setVariableValue<bool>(i.key(), i.value().toBool());
+			} else if (i.value().type() == QVariant::Int) {
+				setVariableValue<int>(i.key(), i.value().toInt());
+			} else {
+				setVariableValue<QString>(i.key(), i.value().toString());
 			}
 		}
 	}
