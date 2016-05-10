@@ -5,7 +5,9 @@ set -o errexit
 cd "$(dirname "$0")"
 
 
+mkdir -p $PWD/../data/lib/plugins/tools/editors
 mkdir -p $PWD/../data/lib/plugins/tools/kitPlugins
+cp     $BIN_DIR/plugins/editors/libev3Metamodel.so                      $PWD/../data/lib/plugins/editors/
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-ev3-interpreter.so   $PWD/../data/lib/plugins/tools/kitPlugins/
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-ev3-rbf-generator.so $PWD/../data/lib/plugins/tools/kitPlugins/
 cp -pr $BIN_DIR/librobots-ev3-kit.so*                                   $PWD/../data/lib
