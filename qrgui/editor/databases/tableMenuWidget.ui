@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TableMenuWidget</class>
+ <widget class="QWidget" name="TableMenuWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>419</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QTabWidget" name="Tab">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>781</width>
+     <height>391</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="currentIndex">
+    <number>2</number>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Table properties</string>
+    </attribute>
+    <widget class="QTableWidget" name="tableDataTable">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>256</width>
+       <height>481</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <row>
+      <property name="text">
+       <string>TableName</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Local</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Global</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Temp</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Temporary</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Unlogged</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>If not exists</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Avg row length</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Check sum</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Max rows</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Min rows</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Pack keys</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Delay key write</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Auto increment</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Without row id</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Inherits</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>With</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>With oids</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Without oids</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>On commit</string>
+      </property>
+     </row>
+     <row>
+      <property name="text">
+       <string>Tablespace</string>
+      </property>
+     </row>
+     <column>
+      <property name="text">
+       <string>Property value</string>
+      </property>
+     </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_6">
+    <attribute name="title">
+     <string>Column properties</string>
+    </attribute>
+    <widget class="QTableWidget" name="columnDataTable">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>751</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <column>
+      <property name="text">
+       <string>id</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>datatype</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is primary key</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is unique</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>not null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>default</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>with compression</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>with comp</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>auto increment</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>check</string>
+      </property>
+     </column>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Indexes</string>
+    </attribute>
+    <widget class="QTableWidget" name="indexDataTable">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>751</width>
+       <height>221</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <column>
+      <property name="text">
+       <string>id</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>column names</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>is unique</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>clustered</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>if not exists</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>fulltext</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>concurrently</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>method</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QToolButton" name="addIndexButton">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>290</y>
+       <width>121</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add index</string>
+     </property>
+    </widget>
+    <widget class="QToolButton" name="deleteIndexButton">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>290</y>
+       <width>121</width>
+       <height>19</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Delete index</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="widget">
+    <attribute name="title">
+     <string>Key groups</string>
+    </attribute>
+    <widget class="QTextEdit" name="keyGroupsText">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>511</width>
+       <height>211</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Comment</string>
+    </attribute>
+    <widget class="QTextEdit" name="commentText">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>511</width>
+       <height>211</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_5">
+    <attribute name="title">
+     <string>SQL-query</string>
+    </attribute>
+    <widget class="QTextEdit" name="sqlQueryText">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>40</y>
+       <width>521</width>
+       <height>261</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

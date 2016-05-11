@@ -1,4 +1,4 @@
-/* Copyright 2016 Dmitry Mordvinov
+/* Copyright 2007-2015 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,20 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "linuxFantom.h"
+#include "fantom.h"
 
-#include <gtest/gtest.h>
+#include <QtCore/QObject>
 
-#include <utils/circularQueue.h>
+using namespace nxt::communication;
 
-namespace qrTest {
-namespace robotsTests {
-namespace utilsTests {
-
-class CircularQueueTests : public testing::Test
+bool LinuxFantom::isAvailable() const
 {
-};
-
-}
-}
+	return false;
 }

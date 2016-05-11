@@ -44,6 +44,7 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 		qDebug() << "ERROR: can't parse label";
 		return false;
 	}
+	mIsFocused = element.attribute("isFocused", "false");
 	return true;
 }
 
@@ -82,12 +83,12 @@ void Label::generateCodeForConstructor(OutFile &out)
 		// It is binded label, text for it will be fetched from repo.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
+				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ", " + mIsFocused + ");\n";
 	} else {
 		// It is a static label, text for it is fixed.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
+				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation) + ", " + mIsFocused +  ");\n";
 	}
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
@@ -105,7 +106,14 @@ void Label::generateCodeForConstructor(OutFile &out)
 	}
 
 	out()
-		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
+		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n";
+
+	if (mIsFocused.toLower().trimmed() == "true") {
+		out()
+			<< "			" + titleName() + "->setFocused();\n";
+	}
+
+	out()
 		<< "			titles.append(" + titleName() + ");\n";
 }
 

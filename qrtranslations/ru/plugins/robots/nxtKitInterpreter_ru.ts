@@ -107,6 +107,33 @@
     </message>
 </context>
 <context>
+    <name>nxt::communication::MacFantom</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/communication/macFantom.cpp" line="53"/>
+        <source>Usb connection to robot is impossible. Lego doesn&apos;t have Fantom Driver for 64-bit Mac. You will only be able to connect to NXT via Bluetooth.</source>
+        <translation>Usb-соединение с роботом невозможно. У Lego нет драйвера для 64-битного Mac. Вы можете подключиться к NXT только через Bluetooth.</translation>
+    </message>
+</context>
+<context>
+    <name>nxt::communication::UsbRobotCommunicationThread</name>
+    <message>
+        <source>Fantom Driver is unavailable. Usb connection to robot is impossible.</source>
+        <translation type="vanished">Драйвер Fantom недоступен. Usb-соединение с роботом невозможно.</translation>
+    </message>
+    <message>
+        <source> You can download Fantom Driver on &lt;a href=&apos;%1&apos;&gt;Lego website&lt;/a&gt;</source>
+        <translation type="vanished">Вы можете скачать драйвера Fantom на &lt;a href=&apos;%1&apos;&gt;сайте Lego&lt;/a&gt;</translation>
+    </message>
+    <message>
+        <source>Usb connection to robot is impossible. Lego doesn&apos;t have Fantom Driver for 64-bit Mac. You will only be able to connect to NXT via Bluetooth.</source>
+        <translation type="vanished">Usb-соединение с роботом невозможно. У Lego нет драйвера для 64-битного Mac. Вы можете подключиться к NXT только через Bluetooth.</translation>
+    </message>
+    <message>
+        <source>Usb connection to robot is impossible. Lego doesn&apos;t have Fantom Driver for 64-bit Mac.You will only be able to connect to NXT via Bluetooth.</source>
+        <translation type="vanished">Usb-соединение с роботом невозможно. У Lego нет драйвера для 64-битного Mac. Вы можете подключиться к NXT только через Bluetooth.</translation>
+    </message>
+</context>
+<context>
     <name>nxt::robotModel::real::BluetoothRealRobotModel</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/nxtKitInterpreter/src/robotModel/real/bluetoothRealRobotModel.cpp" line="33"/>

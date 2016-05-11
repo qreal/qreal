@@ -1,0 +1,1205 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="QReal:Databases, help, mannual, user guide" />
+<meta name="description" content="QReal:Databases help center" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Создание программ в QReal:Databases</title>
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="version.js"></script>
+</head>
+
+<!-- TODO: move contents, header and footer into common separate files -->
+<body>
+<div id="wrapper">
+	<div id="banner-wrapper">
+		<div id="logo" class="container">
+			<p>Справка - QReal:Databases %version%</p>
+		</div>
+		<div class="container">
+			<center><img src="pics/kroki.png" width="600" height="250" alt="" /></center>
+		</div>
+	</div>
+	<div id="page" class="container">
+		<div id="sidebar">
+			<div>
+				<h2>Содержание:</h2>
+				<ul class="list-style2">
+					<li><a href="interface.html">Пользовательский интерфейс</a></li>
+						<ul>
+							<li><a href="interface.html#main_menu">Главное меню</a></li>
+							<li><a href="interface.html#preferences">Диалог настроек</a></li>
+						</ul>
+					<li><a href="modelling.html">Моделирование</a></li>
+						<ul>
+							<li><a href="modelling.html#diagram_creation">Создание диаграмм</a></li>
+							<li><a href="modelling.html#elements_and_relationships_creation">Создание элементов и связей</a></li>
+							<li><a href="modelling.html#property_editing">Редактирование свойств элементов</a></li>
+						</ul>
+					<li><a href="operations.html">Работа с БД</a></li>
+						<ul>
+							<li><a href="operations.html#correctness_checking">Проверка диаграмм на корректность</li>
+							<li><a href="operations.html#physical_model_generation">Генерация физической схемы БД из логической схемы</li>
+							<li><a href="operations.html#sql_code_generation">Генерация SQL-кода из логической схемы</li>
+							<li><a href="operations.html#reverse_engineering">Обратное проектирование</li>
+						</ul>
+					<li><a href="lang.html">Описание языков</a></li>
+						<ul>
+							<li><a href="lang.html#logical_lang">Язык логической схемы БД</a></li>
+							<li><a href="lang.html#physical_lang">Язык физической схемы БД</a></li>
+						</ul>
+				</ul>
+			</div>
+		</div>		
+		<div id="content">
+			<div class="post">
+				<h2 class="title">Описание языков<a href="#"></a></h2>
+			</div>
+			
+			
+			
+			<div>
+			В QReal:Databases можно создавать как логические, так и физические схемы БД. (см. раздел <a href="modelling.html#diagram_creation">Создание диаграмм</a>) <br> 
+			</div>
+			
+			<br/>
+			
+			<div>
+			<b>Логическая схема </b> основана на модели "Сущность-связь" и содержит концептуальную информацию о БД - 
+			набор сущностей с атрибутами, связей между ними и ключевые свойства перечисленных элементов.
+			</div>
+			
+			<br/>
+			
+			<div>
+			<b>Физическая схема </b> содержит информацию, специфичную для каждой СУБД - элементы "Таблица" и "Столбец" 
+			меняют набор измяемых свойств в зависимости от СУБД.
+			</div>
+
+			<br>
+			
+			<div>
+			Ниже приведено описание элементов языков логической и физической схем, поддерживаемых средой моделирования QReal:Databases.
+			</div>
+			
+			<br>
+			
+			<h3><a name="lang.html#logical_lang">Язык логической схемы БД</a></h3>
+			<table border="1" width=100% cellpadding=10px>
+				<tr>
+					<td><center><img src="pics/logical_model/entity.jpg"alt="" /></center></td>
+					<td><b>Entity (сущность) </b> <br>
+					Класс объектов, информацию о которых необходимо хранить. <br>
+					<b> Attribute (атрибут сущности) </b> <br>
+					Свойство сущности, которое хотим учитывать при построении модели. Атрибут располагается внутри элемента "сущность", 
+					которому принадлежит.
+					</td>
+				</tr>
+				<tr>
+					<td><center><img src="pics/logical_model/one-to-one.jpg"alt="" /></center></td>
+					<td><b>One-to-one relationship (связь один-к-одному) </b> <br>
+					Связь между двумя сущностями, которая означает, что одному объекту первой сущности соответствует один объект второй сущности. <br>
+					</td>
+				</tr>
+				<tr>
+					<td><center><img src="pics/logical_model/one-to-many.jpg"alt="" /></center></td>
+					<td> <b>One-to-many relationship (связь один-ко-многим) </b> <br>
+					Связь между двумя сущностями, которая означает, что одному объекту первой сущности может соответствовать 
+					несколько объектов второй сущности. Связь изображается в виде стрелки с двумя разными концами: два штриха - для первой сущности, 
+					разветвление - для второй сущности. 
+					</td>
+				</tr>
+				<tr>
+					<td><center><img src="pics/logical_model/many-to-many.jpg"alt="" /></center></td>
+					<td> <b> Many-to-many relationship (связь многие-ко-многим) </b> <br>
+					Связь между двумя сущностями, которая означает, что одному объекту первой сущности может соответствовать несколько 
+					</td>
+				</tr>
+			</table>
+			
+			<br>
+			
+			<h4>Таблица поддерживаемых свойств элементов логической модели:</h4>
+			<table border="1"  width=100% cellpadding=10px>
+			<caption>Свойства элемента "Сущность"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя сущности. Поле не должно быть пустым.
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1"  width=100% cellpadding=10px>
+			<caption>Свойства элемента "Атрибут"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя атрибута. Поле не должно быть пустым.
+					</td>
+			</tr>
+			<tr>
+					<td>Data type</td>
+					<td>строка</td>
+					<td>
+					Тип данных.
+					Возможные значения параметра type:
+					<br> - TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - INT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+					<br> - DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+					<br> - FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+					<br> - DECIMAL(length,decimals) [UNSIGNED] [ZEROFILL]
+					<br> - NUMERIC(length,decimals) [UNSIGNED] [ZEROFILL]
+					<br> - CHAR(length) [BINARY]
+					<br> - VARCHAR(length) [BINARY]
+					<br> - DATE
+					<br> - TIME
+					<br> - TIMESTAMP
+					<br> - DATETIME
+					<br> - TINYBLOB
+					<br> - BLOB
+					<br> - MEDIUMBLOB
+					<br> - LONGBLOB
+					<br> - TINYTEXT
+					<br> - TEXT
+					<br> - MEDIUMTEXT
+					<br> - LONGTEXT
+					<br> - ENUM(value1,value2,value3,...)
+					<br> - SET(value1,value2,value3,...)
+					
+					<br>  По умолчанию стоит значение INT.
+					</td>
+			</tr>
+			<tr>
+					<td>Primary key</td>
+					<td>логическое</td>
+					<td>
+					Задает первичный ключ таблицы. В таблице может быть задан только один первичный ключ. 
+					Данный атрибут должен быть уникальным и ненулевым.
+					</td>
+			</tr>
+			<tr>
+					<td>Unique</td>
+					<td>логическое</td>
+					<td>
+					Задает атрибут, содержащий уникальные значения (значения не повторяются для разных строк).
+					</td>
+			</tr>
+			<tr>
+					<td>Not null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец не может содержать значение NULL.
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1"  width=100% cellpadding=10px>
+			<caption>Свойства связи "Один-к-одному"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя связи.
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1"  width=100% cellpadding=10px>
+			<caption>Свойства элемента "Один-ко-многим"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя связи.
+					</td>
+			</tr>
+			<tr>
+					<td>Column name</td>
+					<td>строка</td>
+					<td>
+					Имя столбца, который будет добавлен к сущности с концом "много".
+					Свойство "Column name" используется при генерации физической модели БД.
+					(См. подробнее <a href="operations.html#physical_model_generation">Генерация физической схемы БД из логической схемы</a>)
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1"  width=100% cellpadding=10px>
+			<caption>Свойства элемента "Многие-ко-многим"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя связи.
+					</td>
+			</tr>
+			<tr>
+					<td>Table name</td>
+					<td>строка</td>
+					<td>
+					Имя таблицы, которая будет создана для связи. Таблица будет содержать столбцы с ключами двух связываемых сущностей.
+					Свойство "Table name" используется при генерации физической модели БД.
+					(См. подробнее <a href="operations.html#physical_model_generation">Генерация физической схемы БД из логической схемы</a>)
+					</td>
+			</tr>
+			</table>
+
+			<br> <br>
+			<h3><a name="lang.html#physical_lang">Язык физической схемы БД</a></h3>
+			<table border="1" width=100% cellpadding=10px>
+				<tr>
+					<td><center><img src="pics/physical_model/table.jpg"alt="" /></center></td>
+					<td> <b>Table (таблица) </b> <br>
+					Элемент, который будет сгенерирован как таблица базы данных. <br>
+					<b> Column (столбец) </b><br>
+					Атрибут таблицы, который будет сгенерирован как столбец таблицы БД, которой принадлежит. Располагается внутри элемента "Таблица". 
+					</td>
+				</tr>
+				<tr>
+					<td><center><img src="pics/physical_model/one-to-many.jpg"alt="" /></center></td>
+					<td> <b>One-to-many relationship (связь один-ко-многим) </b> <br>
+					Cвязь, предназначенная для соединения участников отношения один-ко-многим. Присутствует в схеме для наглядности.
+					</td>
+				</tr>
+				<tr>
+					<td><center><img src="pics/physical_model/many-to-many.jpg"alt="" /></center></td>
+					<td> <b> Many-to-many relationship (связь многие-ко-многим) </b> <br>
+					Cвязь, предназначенная для соединения участников отношения многие-ко-многим со сгенерированной для отношения таблицей. 
+					Присутствует в схеме для наглядности.
+					</td>
+				</tr>
+			</table>
+			
+			<br> <br>
+			
+			<h4>Таблица поддерживаемых свойств элементов физической модели для конкретных СУБД:</h4>
+			<h4> Microsoft SQL Server 2008 </h4>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Таблица"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя таблицы. 
+					</td>
+			</tr>
+			<tr>
+					<td>Comment</td>
+					<td>строка</td>
+					<td>
+					Комментарий к SQL-коду, добавляющему таблицу. 
+					</td>
+			</tr>
+			<tr>
+					<td>Sql-query</td>
+					<td>текст</td>
+					<td>
+					Запросы к таблице, которые будут добавлены в файл. 
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Столбец"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя столбца.
+					</td>
+			</tr>
+			<tr>
+					<td>Data type</td>
+					<td>строка</td>
+					<td>
+					Тип данных.
+					Возможные значения параметра type:
+					<br> - sql_variant
+					<br> - datetime2
+					<br> - datetimeoffset
+					<br> - datetime
+					<br> - smalldatetime
+					<br> - date
+					<br> - time
+					<br> - float
+					<br> - real
+					<br> - decimal
+					<br> - money
+					<br> - smallmoney
+					<br> - bigint
+					<br> - int
+					<br> - smallint
+					<br> - tinyint
+					<br> - bit
+					<br> - nvarchar
+					<br> - nchar
+					<br> - varchar
+					<br> - char
+					<br> - varbinary
+					<br> - binary
+					<br> - uniqueidentifier
+					
+					<br>  По умолчанию стоит значение INT.
+					</td>
+			</tr>
+			<tr>
+					<td>Primary key</td>
+					<td>логическое</td>
+					<td>
+					Задает первичный ключ таблицы. В таблице может быть задан только один первичный ключ. 
+					Данный столбец должен быть уникальным и ненулевым.
+					</td>
+			</tr>
+			<tr>
+					<td>Unique</td>
+					<td>логическое</td>
+					<td>
+					Задает столбец, содержащий уникальные значения (значения не повторяются для разных строк).
+					</td>
+			</tr>
+			<tr>
+					<td>Not null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец не может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Default</td>
+					<td>строка</td>
+					<td>
+					Задает значение по умолчанию для данного столбца. 
+					</td>
+			</tr>
+			<tr>
+					<td>Sparse</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что столбец является разреженным столбцом. Хранилище разреженных столбцов 
+					оптимизируется для значений NULL. Для разреженных столбцов нельзя указать параметр NOT NULL. 
+					</td>
+			</tr>
+			<tr>
+					<td>Clustered</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что для ограничения PRIMARY KEY или UNIQUE создается кластеризованный 
+					индекс. Для ограничений PRIMARY KEY по умолчанию создается кластеризованный индекс (CLUSTERED).
+					Параметр CLUSTERED можно задать только для одного ограничения в CREATE TABLE.
+					</td>
+			</tr>
+			<tr>
+					<td>Nonclustered</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что для ограничения PRIMARY KEY или UNIQUE создается некластеризованный индекс. 
+					Для ограничений UNIQUE по умолчанию создается некластеризованный (NONCLUSTERED).
+					Если для ограничения UNIQUE указан параметр CLUSTERED, и, кроме того, указано ограничение PRIMARY KEY, то для PRIMARY KEY применяется по умолчанию значение NONCLUSTERED.
+					</td>
+			</tr>
+			</table>
+			
+			
+			
+			<br><br>
+			
+			<h4>Sqlite</h4>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Таблица"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя таблицы. 
+					</td>
+			</tr>
+			<tr>
+					<td>Comment</td>
+					<td>строка</td>
+					<td>
+					Комментарий к SQL-коду, добавляющему таблицу. 
+					</td>
+			</tr>
+			<tr>
+					<td>Sql-query</td>
+					<td>текст</td>
+					<td>
+					Запросы к таблице, которые будут добавлены в файл. 
+					</td>
+			</tr>
+			<tr>
+					<td>Temp</td>
+					<td>текст</td>
+					<td>
+					Cоздание временной таблицы в течение только текущего сценария.
+					</td>
+			</tr>
+			<tr>
+					<td>Temporary</td>
+					<td>логическое</td>
+					<td>
+					Cоздание временной таблицы в течение только текущего сценария.
+					</td>
+			</tr>
+			<tr>
+					<td>If not exists</td>
+					<td>логическое</td>
+					<td>
+					Если указан этот параметр и производится попытка создать таблицу с дублирующим именем (т.е. таблица с таким именем в текущей БД уже есть), 
+					то таблица создана не будет и сообщение об ошибке не появится. В противном случае таблица также создана не будет, но команда вызовет ошибку. 
+					При создании сравниваются только имена таблиц.
+					</td>
+			</tr>
+			<tr>
+					<td>Without rowid</td>
+					<td>текст</td>
+					<td>
+					Отмена автоматического создания столбца "rowid", содержащего номер строки и являющегося первичным ключом.
+					Включение данного параметра обязывает задать PRIMARY KEY.
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Столбец"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя столбца.
+					</td>
+			</tr>
+			<tr>
+					<td>Data type</td>
+					<td>строка</td>
+					<td>
+					Тип данных.
+					Возможные значения параметра type:
+					<br> - INT
+					<br> - TINYINT
+					<br> - SMALLINT
+					<br> - MEDIUMINT
+					<br> - BIGINT
+					<br> - UNSIGNED BIG INT
+					<br> - INT2
+					<br> - INT8
+					<br> - INTEGER
+					<br> - CHARACTER(20)
+					<br> - VARCHAR(255)
+					<br> - VARYING CHARACTER(255)
+					<br> - NCHAR(55)
+					<br> - NATIVE CHARACTER(70)
+					<br> - NVARCHAR(100)
+					<br> - CLOB
+					<br> - TEXT
+					<br> - BLOB
+					<br> - no datatype specified
+					<br> - DOUBLE
+					<br> - DOUBLE PRECISION
+					<br> - FLOAT
+					<br> - REAL
+					<br> - DECIMAL(10,5)
+					<br> - BOOLEAN
+					<br> - DATE
+					<br> - DATETIME
+					
+					<br>  По умолчанию стоит значение INT.
+					</td>
+			</tr>
+			<tr>
+					<td>Primary key</td>
+					<td>логическое</td>
+					<td>
+					Задает первичный ключ таблицы. В таблице может быть задан только один первичный ключ. 
+					Данный столбец должен быть уникальным и ненулевым.
+					</td>
+			</tr>
+			<tr>
+					<td>Unique</td>
+					<td>логическое</td>
+					<td>
+					Задает столбец, содержащий уникальные значения (значения не повторяются для разных строк).
+					</td>
+			</tr>
+			<tr>
+					<td>Not null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец не может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Default</td>
+					<td>строка</td>
+					<td>
+					Задает значение по умолчанию для данного столбца. 
+					</td>
+			</tr>
+			<tr>
+					<td>Auto increment</td>
+					<td>логическое</td>
+					<td>
+					При вставке новой записи в таблицу поле с этим атрибутом автоматически получит числовое значение, 
+					на 1 больше самого большого значения для этого поля в текущий момент времени. 
+					Столбец, для которого применяется атрибут AUTO_INCREMENT, должен иметь целочисленный тип. 
+					В таблице может быть только один столбец с атрибутом AUTO_INCREMENT. 
+					Также этот столбец должен быть проиндексирован.
+					Отсчет последовательности чисел для AUTO_INCREMENT начинается с 1, это могут быть только положительные числа.
+					</td>
+			</tr>
+			</table>
+			
+			
+			
+			<br><br>
+			<h4>PostrgeSQL</h4>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Таблица"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя таблицы. 
+					</td>
+			</tr>
+			<tr>
+					<td>Comment</td>
+					<td>строка</td>
+					<td>
+					Комментарий к SQL-коду, добавляющему таблицу. 
+					</td>
+			</tr>
+			<tr>
+					<td>Sql-query</td>
+					<td>текст</td>
+					<td>
+					Запросы к таблице, которые будут добавлены в файл. 
+					</td>
+			</tr>
+			<tr>
+					<td>Local</td>
+					<td>логическое</td>
+					<td>
+					Создание локальной таблицы.
+					</td>
+			</tr>
+			<tr>
+					<td>Global</td>
+					<td>логическое</td>
+					<td>
+					Создание глобальной таблицы.
+					</td>
+			</tr>
+			<tr>
+					<td>Temp</td>
+					<td>логическое</td>
+					<td>
+					Cоздание временной таблицы в течение только текущего сценария.
+					</td>
+			</tr>
+			<tr>
+					<td>Temporary</td>
+					<td>логическое</td>
+					<td>
+					Cоздание временной таблицы в течение только текущего сценария.
+					</td>
+			</tr>
+			<tr>
+					<td>Unlogged</td>
+					<td>логическое</td>
+					<td>
+					Создание нелоггируемой таблицы (таблица не записывает данные в лог).
+					</td>
+			</tr>
+			<tr>
+					<td>If not exists</td>
+					<td>логическое</td>
+					<td>
+					Если указан этот параметр и производится попытка создать таблицу с дублирующим именем (т.е. таблица с таким именем в текущей БД уже есть), 
+					то таблица создана не будет и сообщение об ошибке не появится. В противном случае таблица также создана не будет, но команда вызовет ошибку. 
+					При создании сравниваются только имена таблиц.
+					</td>
+			</tr>
+			<tr>
+					<td>Inherits</td>
+					<td>строка</td>
+					<td>
+					Определяет таблицу, от которой будет наследоваться текущая.
+					</td>
+			</tr>
+			<tr>
+					<td>With</td>
+					<td>строка</td>
+					<td>
+					Специфицирует параметры хранения для таблицы.
+					</td>
+			</tr>
+			<tr>
+					<td>With oids</td>
+					<td>текст</td>
+					<td>
+					Эквивалент WITH (OIDS).
+					</td>
+			</tr>
+			<tr>
+					<td>Without oids</td>
+					<td>текст</td>
+					<td>
+					Эквивалент  WITH (OIDS=FALSE).
+					</td>
+			</tr>
+			<tr>
+					<td>On commit УДАЛИТЬ</td>
+					<td>текст</td>
+					<td>
+					комментарий к sql-коду, добавляющему таблицу
+					</td>
+			</tr>
+			<tr>
+					<td>Tablespace</td>
+					<td>текст</td>
+					<td>
+					Имя пространства таблиц, в котором задается новая таблица.
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Столбец"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя столбца.
+					</td>
+			</tr>
+			<tr>
+					<td>Data type</td>
+					<td>строка</td>
+					<td>
+					Тип данных.
+					Возможные значения параметра type:
+					<br> - char(size)
+					<br> - character(size)
+					<br> - varchar(size)
+					<br> - character varying(size)
+					<br> - text
+					<br> - bit(size)
+					<br> - varbit(size)
+					<br> - bit varying(size)
+					<br> - smallint
+					<br> - int
+					<br> - integer
+					<br> - bigint
+					<br> - smallserial
+					<br> - serial
+					<br> - bigserial
+					<br> - numeric(m,d)
+					<br> - double precision
+					<br> - real
+					<br> - money
+					<br> - bool
+					<br> - boolean
+					<br> - date
+					<br> - timestamp
+					<br> - timestamp without time zone
+					<br> - timestamp with time zone
+					<br> - time
+					<br> - time without time zone
+					<br> - time with time zone
+					
+					<br>  По умолчанию стоит значение INT.
+					</td>
+			</tr>
+			<tr>
+					<td>Primary key</td>
+					<td>логическое</td>
+					<td>
+					Задает первичный ключ таблицы. В таблице может быть задан только один первичный ключ. 
+					Данный столбец должен быть уникальным и ненулевым.
+					</td>
+			</tr>
+			<tr>
+					<td>Unique</td>
+					<td>логическое</td>
+					<td>
+					Задает столбец, содержащий уникальные значения (значения не повторяются для разных строк).
+					</td>
+			</tr>
+			<tr>
+					<td>Not null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец не может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Default</td>
+					<td>строка</td>
+					<td>
+					Задает значение по умолчанию для данного столбца. 
+					</td>
+			</tr>
+			<tr>
+					<td>Check УДАЛИТЬ</td>
+					<td>строка</td>
+					<td>
+					
+					</td>
+			</tr>
+			</table>
+			
+			
+			
+			<br> 
+			<br> 
+			<h4>MySQL 5</h4>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Таблица"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя таблицы.
+					</td>
+			</tr>
+			<tr>
+					<td>Comment</td>
+					<td>строка</td>
+					<td>
+					Комментарий к SQL-коду, добавляющему таблицу.
+					</td>
+			</tr>
+			<tr>
+					<td>Sql-query</td>
+					<td>текст</td>
+					<td>
+					Запросы к таблице, которые будут добавлены в файл. 
+					</td>
+			</tr>
+			<tr>
+					<td>Temporary</td>
+					<td>логическое</td>
+					<td>
+					Cоздание временной таблицы в течение только текущего сценария.
+					</td>
+			</tr>
+			<tr>
+					<td>If not exists</td>
+					<td>логическое</td>
+					<td>
+					Если указан этот параметр и производится попытка создать таблицу с дублирующим именем (т.е. таблица с таким именем в текущей БД уже есть), 
+					то таблица создана не будет и сообщение об ошибке не появится. В противном случае таблица также создана не будет, но команда вызовет ошибку. 
+					При создании сравниваются только имена таблиц.
+					</td>
+			</tr>
+			<tr>
+					<td>Avg row length</td>
+					<td>целое число</td>
+					<td>
+					Приближенное значение средней длины строки для данной таблицы. Имеет смысл устанавливать только для 
+					обширных таблиц с записями переменной длины.
+					</td>
+			</tr>
+			<tr>
+					<td>Check sum</td>
+					<td>{1 | 0} </td>
+					<td>
+					Следует установить в 1, чтобы в MySQL поддерживалась проверка контрольной суммы для всех строк 
+					(это делает таблицы немного более медленными при обновлении, но позволяет легче находить поврежденные таблицы).
+					</td>
+			</tr>
+			<tr>
+					<td>Max rows</td>
+					<td>целое число</td>
+					<td>
+					 Максимальное число строк, которые планируется хранить в данной таблице.
+					</td>
+			</tr>
+			<tr>
+					<td>Min rows</td>
+					<td>целое число</td>
+					<td>
+					Минимальное число строк, которые планируется хранить в данной таблице.
+					</td>
+			</tr>
+			<tr>
+					<td>Pack keys УДАЛИТЬ</td>
+					<td>{0 | 1 | DEFAULT}</td>
+					<td>
+					Следует установить в 1 для получения меньшего индекса. Обычно это замедляет обновление и ускоряет 
+					чтение (MyISAM, ISAM). Установка в 0 отключит уплотнение ключей. При установке в DEFAULT (MySQL 4.0) 
+					обработчик таблиц будет уплотнять только длинные столбцы CHAR/VARCHAR.
+					</td>
+			</tr>
+			<tr>
+					<td>Delay key write УДАЛИТЬ</td>
+					<td> {0 | 1} </td>
+					<td>
+					Установка в 1 задерживает операции обновления таблицы ключей, пока не закроется указанная таблица 
+					(MyISAM).
+					</td>
+			</tr>
+			<tr>
+					<td>Auto increment</td>
+					<td>целое число</td>
+					<td>
+					Устанавливает для данной таблицы следующее значение AUTO_INCREMENT.
+					</td>
+			</tr>
+			<tr>
+					<td>Type</td>
+					<td>строка</td>
+					<td>
+					Задает тип создаваемой таблицы. <br>
+					<p>
+					Возможные типы таблиц в MySQL:
+					<br> - BDB - Таблицы с поддержкой транзакций и блокировкой страниц.
+					<br> - HEAP - Данные этой таблицы храняться только в памяти.
+					<br> - ISAM - Оригинальный обработчик таблиц.
+					<br> - InnoDB - Таблицы с поддержкой транзакций и блокировкой строк.
+					<br> - MERGE - Набор таблиц MyISAM, используемый как одна таблица.
+					<br> - MRG_MYISAM - Псевдоним для MERGE.
+					<br> - MyISAM - Новый обработчик, обеспечивающий переносимость таблиц в бинарном виде, который заменяет ISAM.
+					
+					</p>
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Столбец"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя столбца.
+					</td>
+			</tr>
+			<tr>
+					<td>Data type</td>
+					<td>строка</td>
+					<td>
+					Тип данных.
+					Возможные значения параметра type:
+					<br> - TINYINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - SMALLINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - MEDIUMINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - INT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - INTEGER[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - BIGINT[(length)] [UNSIGNED] [ZEROFILL]
+					<br> - REAL[(length,decimals)] [UNSIGNED] [ZEROFILL]
+					<br> - DOUBLE[(length,decimals)] [UNSIGNED] [ZEROFILL]
+					<br> - FLOAT[(length,decimals)] [UNSIGNED] [ZEROFILL]
+					<br> - DECIMAL(length,decimals) [UNSIGNED] [ZEROFILL]
+					<br> - NUMERIC(length,decimals) [UNSIGNED] [ZEROFILL]
+					<br> - CHAR(length) [BINARY]
+					<br> - VARCHAR(length) [BINARY]
+					<br> - DATE
+					<br> - TIME
+					<br> - TIMESTAMP
+					<br> - DATETIME
+					<br> - TINYBLOB
+					<br> - BLOB
+					<br> - MEDIUMBLOB
+					<br> - LONGBLOB
+					<br> - TINYTEXT
+					<br> - TEXT
+					<br> - MEDIUMTEXT
+					<br> - LONGTEXT
+					<br> - ENUM(value1,value2,value3,...)
+					<br> - SET(value1,value2,value3,...)
+					
+					<br>  По умолчанию стоит значение INT.
+					</td>
+			</tr>
+			<tr>
+					<td>Primary key</td>
+					<td>логическое</td>
+					<td>
+					Задает первичный ключ таблицы. В таблице может быть задан только один первичный ключ. 
+					Данный столбец должен быть уникальным и ненулевым.
+					</td>
+			</tr>
+			<tr>
+					<td>Unique</td>
+					<td>логическое</td>
+					<td>
+					Задает столбец, содержащий уникальные значения (значения не повторяются для разных строк).
+					</td>
+			</tr>
+			<tr>
+					<td>Not null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец не может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>Default</td>
+					<td>строка</td>
+					<td>
+					Задает значение по умолчанию для данного столбца.
+					</td>
+			</tr>
+			<tr>
+					<td>Auto increment</td>
+					<td>логическое</td>
+					<td>
+					При вставке новой записи в таблицу поле с этим атрибутом автоматически получит числовое значение, 
+					на 1 больше самого большого значения для этого поля в текущий момент времени. 
+					Столбец, для которого применяется атрибут AUTO_INCREMENT, должен иметь целочисленный тип. 
+					В таблице может быть только один столбец с атрибутом AUTO_INCREMENT. 
+					Также этот столбец должен быть проиндексирован.
+					Отсчет последовательности чисел для AUTO_INCREMENT начинается с 1, это могут быть только положительные числа.
+					</td>
+			</tr>
+			</table>
+			
+			
+			
+			
+			<br>
+			<h4>Microsoft Access</h4>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Таблица"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя таблицы. 
+					</td>
+			</tr>
+			<tr>
+					<td>Comment</td>
+					<td>строка</td>
+					<td>
+					Комментарий к SQL-коду, добавляющему таблицу. 
+					</td>
+			</tr>
+			<tr>
+					<td>Sql-query</td>
+					<td>текст</td>
+					<td>
+					Запросы к таблице, которые будут добавлены в файл. 
+					</td>
+			</tr>
+			<tr>
+					<td>Temporary</td>
+					<td>логическое</td>
+					<td>
+					Cоздание временной таблицы в течение только текущего сценария.
+					</td>
+			</tr>
+			</table>
+			
+			<br>
+			<table border="1" width=100% cellpadding=10px>
+			<caption>Свойства элемента "Столбец"</caption>
+			<tr>
+					<td><b>название</b></td>
+					<td><b>тип значения</b></td>
+					<td>
+					<b>описание</b>
+					</td>
+			</tr>
+			<tr>
+					<td>Name</td>
+					<td>строка</td>
+					<td>
+					Имя столбца.
+					</td>
+			</tr>
+			<tr>
+					<td>Data type</td>
+					<td>строка</td>
+					<td>
+					По умолчанию стоит значение INT. 
+					</td>
+			</tr>
+			<tr>
+					<td>Primary key</td>
+					<td>логическое</td>
+					<td>
+					Задает первичный ключ таблицы. В таблице может быть задан только один первичный ключ. 
+					Данный столбец должен быть уникальным и ненулевым.
+					</td>
+			</tr>
+			<tr>
+					<td>Unique</td>
+					<td>логическое</td>
+					<td>
+					Задает столбец, содержащий уникальные значения (значения не повторяются для разных строк).
+					</td>
+			</tr>
+			<tr>
+					<td>Not null</td>
+					<td>логическое</td>
+					<td>
+					Указывает, что данный столбец не может содержать значение NULL.
+					</td>
+			</tr>
+			<tr>
+					<td>With compression</td>
+					<td>логическое</td>
+					<td>
+					Включает сжатие столбца для оптимизации хранения. Параметр может быть использован со столбами типа CHARACTER, TEXT и их синонимами.
+					</td>
+			</tr>
+			<tr>
+					<td>With comp</td>
+					<td>логическое</td>
+					<td>
+					Включает сжатие столбца для оптимизации хранения. Параметр может быть использован со столбами типа CHARACTER, TEXT и их синонимами.
+					</td>
+			</tr>
+			</table>
+
+		</div>
+		<!-- end #content -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+</div>
+<div id="footer">
+	<p>© %year% QReal Inc. All rights reserved. </p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

@@ -26,13 +26,13 @@ LabelFactory::LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssist
 {
 }
 
-LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation)
+LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation, bool focused)
 {
-	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, text, rotation));
+	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, text, rotation, focused));
 }
 
 LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &binding, bool readOnly
-		, qreal rotation)
+		, qreal rotation, bool focused)
 {
-	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, binding, readOnly, rotation));
+	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, binding, readOnly, rotation, focused));
 }

@@ -26,6 +26,7 @@
 #include "qrgui/editor/editorDeclSpec.h"
 #include "qrgui/editor/private/clipboardHandler.h"
 #include "qrgui/editor/private/exploserView.h"
+#include "qrgui/editor/databases/tableMenuWidget.h"
 
 namespace qReal {
 
@@ -139,7 +140,6 @@ public:
 
 	/// Enable or Disable mousegestures
 	void enableMouseGestures(bool enabled);
-
 public slots:
 	Id createElement(const QString &type);
 
@@ -207,6 +207,13 @@ private slots:
 private:
 	void deleteElements(const IdList &idsToDelete);
 
+	/// Creates an object of a modal class TableMenuWidget (databases plugin)
+	void createTableMenuWidget();
+	/// Deletes an object of a modal class TableMenuWidget (databases plugin)
+	void deleteTableMenuWidget();
+
+
+private:
 	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
 	void drawGesture();
 	void createEdgeMenu(const QList<Id> &ids);
@@ -291,6 +298,13 @@ private:
 	QAction mActionCopyOnDiagram;
 	QAction mActionPasteOnDiagram;
 	QAction mActionPasteReference;
+
+	/// Last table id that have been selected (databases plugin)
+	Id mSelectedTableId;
+
+	// Has ownership (deletes after close signal)
+	/// Table menu that is created for each context menu for elements "Table" (databases plugin)
+	TableMenuWidget *mTableMenuWidget;
 };
 
 }

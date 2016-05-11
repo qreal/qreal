@@ -55,6 +55,8 @@ public:
 
 	QRectF boundingRect() const override;
 
+	void setFocused() override;
+
 	bool isReadOnly() const;
 	bool isHard() const;
 

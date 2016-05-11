@@ -83,6 +83,7 @@ HEADERS += \
 	$$PWD/commands/foldCommand.h \
 	$$PWD/commands/reshapeEdgeCommand.h \
 	$$PWD/commands/expandCommand.h \
+	$$PWD/databases/tableMenuWidget.h
 
 SOURCES += \
 	$$PWD/editorView.cpp \
@@ -131,6 +132,10 @@ SOURCES += \
 	$$PWD/commands/foldCommand.cpp \
 	$$PWD/commands/reshapeEdgeCommand.cpp \
 	$$PWD/commands/expandCommand.cpp \
+	$$PWD/databases/tableMenuWidget.cpp
 
 RESOURCES += \
 	$$PWD/contextIcons.qrc \
+
+FORMS += \
+	$$PWD/databases/tableMenuWidget.ui

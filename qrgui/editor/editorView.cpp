@@ -27,7 +27,7 @@ using namespace qReal::gui::editor;
 const int zoomAnimationInterval = 20;
 const int zoomAnimationTimes = 4;
 
-EditorView::EditorView(const models::Models &models
+EditorView::EditorView(models::Models &models
 		, Controller &controller
 		, const qReal::gui::editor::SceneCustomizer &customizer
 		, const Id &rootId
