@@ -37,10 +37,11 @@ GenerateSchemaWidget::~GenerateSchemaWidget()
 
 QString GenerateSchemaWidget::getDbms() const
 {
-	if (mDbms == "SQLite")
+	if (mDbms == "SQLite") {
 		return QString("Sqlite");
-	else
+	} else {
 		return QString("MicrosoftAccess");
+	}
 }
 
 QString GenerateSchemaWidget::getFilePath() const

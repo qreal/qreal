@@ -49,9 +49,10 @@ bool DatabasesCustomizer::showInterpeterButton() const
 void DatabasesCustomizer::customizeDocks(gui::MainWindowDockInterface *dockInterface)
 {
 	mDockInterface = dockInterface;
-	mDockInterface->logicalModelDock()->hide();
+	dockInterface->tabifyDockWidget(dockInterface->propertyEditorDock()
+			, dockInterface->graphicalModelDock());
+	dockInterface->logicalModelDock()->hide();
 
-	dockInterface->propertyEditorDock()->setMaximumWidth(260);
 }
 
 QDockWidget *DatabasesCustomizer::produceDockWidget(QString const &title, QWidget *content) const

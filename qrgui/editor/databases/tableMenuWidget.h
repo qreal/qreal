@@ -1,4 +1,4 @@
-/* Copyright 2014-2016 Anastasia Semenova
+/* Copyright 2015-2016 Anastasia Semenova
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@
  * limitations under the License. */
 
 #pragma once
-#include <QWidget>
-#include <QTableWidgetItem>
-#include <QDialog>
+
+#include <QtWidgets/QTableWidgetItem>
+#include <QtWidgets/QDialog>
 
 #include "qrgui/editor/private/exploserView.h"
 #include "qrgui/models/models.h"
@@ -31,33 +31,66 @@ namespace editor {
 class EditorViewScene;
 class NodeElement;
 
+// TODO: Divide this class into classes for each dbms (will make the code less messy)
+// Note: mUi is better to have a common style
 class TableMenuWidget : public QDialog
 {
 	Q_OBJECT
 
 public:
-	TableMenuWidget(const Id &id, EditorViewScene *editorViewScene, models::Models &models, QWidget *parent = 0);
+	TableMenuWidget(const Id &id
+		, EditorViewScene *editorViewScene
+		, models::Models &models
+		, QWidget *parent = 0);
 
 	~TableMenuWidget();
 public slots:
 	void open();
 	void close();
-	void updateTable(QTableWidgetItem *item);
-	void updateColumn(QTableWidgetItem *item);
-	void updateIndex(QTableWidgetItem *item);
 
+	/// Updates properties of the element "Table" according to the changes in the widget
+	void updateTable(QTableWidgetItem *item);
+	/// Updates properties of the elements "Column" according to the changes in the widget
+	void updateColumn(QTableWidgetItem *item);
+	/// Updates properties of the elements "Index" according to the changes in the widget
+	void updateIndex(QTableWidgetItem *item);
+	/// Updates property key_groups of the "Table" according to the changes in the widget
 	void updateKeyGroups();
+	/// Updates property comment of the "Table" according to the changes in the widget
 	void updateComment();
+	/// Updates property sql_query of the "Table" according to the changes in the widget
 	void updateQuery();
 
-	// Fill columnNames depending on the dbms (different set of properties)
+	/// Hides all rows and column that can be different for the dbms
+	void hideUncommonRowsAndColumns();
+	/// Shows rows and columns that exist in Sqlite
+	void showSqliteRowsAndColumns();
+	/// Shows rows and columns that exist in SqlServer2008
+	void showSqlServer2008RowsAndColumns();
+	/// Shows rows and columns that exist in MySql5
+	void showMySql5RowsAndColumns();
+	/// Shows rows and columns that exist in MicrosoftAccess
+	void showMicrosoftAccessRowsAndColumns();
+	/// Shows rows and columns that exist in PostgreSql
+	void showPostgreSqlRowsAndColumns();
+
+	/// Applies previous show-functions depending on the dbms
 	void setPropertiesForDbms();
 
+	/// Adds a new index to the table and in the repository
 	void addIndex();
+	/// Deletes the index from the table and from the repository
 	void deleteIndex();
 
+private slots:
+	void closeEvent(QCloseEvent *event);
+
+signals:
+	void closed();
+
 private:
-	enum TablePropertyRowNumber {
+	enum TablePropertyRowNumber
+	{
 		TableName = 0
 		, Local
 		, Global
@@ -81,7 +114,8 @@ private:
 		, OnCommit
 		, Tablespace
 	};
-	enum ColumnPropertyColumnNumber {
+	enum ColumnPropertyColumnNumber
+	{
 		ElementId = 0
 		 , Name
 		 , DataType
@@ -95,7 +129,9 @@ private:
 		 , ColumnAutoIncrement
 		 , Check
 	};
-	enum IndexPropertyColumnNumber {
+
+	enum IndexPropertyColumnNumber
+	{
 		IndexId = 0
 		, IndexName
 		, ColumnNames
@@ -115,8 +151,13 @@ private:
 
 	Ui::TableMenuWidget *mUi;
 	const Id mId;
+
+	// Doesn't have ownership.
 	NodeElement *mTableNodeElement;
-	models::Models &mModels;
+
+	models::Models const &mModels;
+
+	// Doesn't have ownership.
 	EditorViewScene *mEditorViewScene;
 };
 }

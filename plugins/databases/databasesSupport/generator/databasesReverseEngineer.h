@@ -14,8 +14,7 @@
 
 #pragma once
 
-#include <QObject>
-#include <QMessageBox>
+#include <QtWidgets/QMessageBox>
 #include <QtSql>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
@@ -28,6 +27,7 @@
 namespace qReal {
 namespace databasesSupport {
 
+/// Class for reverse engineering physical schema from the file
 class DatabasesReverseEngineer : public QObject
 {
 	Q_OBJECT
@@ -38,13 +38,14 @@ public:
 signals:
 
 public slots:
+	/// Generates physical schema from the file
 	void generateSchema(const QString &dbms, QString const &filePath);
 private:
 	/// Creates element of diagram from string
 	qReal::Id createElementFromString(QString const &elemName
 			, QPointF coord = QPointF(0,0)
 			, Id const &parentLogicalId = Id::rootId()
-			, bool coordByParent = false); // true means, that coordinates will be taken from parent
+			, bool coordByParent = false);
 	qReal::Id createTable(QString const &tableName
 			, QPointF const &coord = QPointF(0,0)
 			, Id const &parentLogicalId = Id::rootId());

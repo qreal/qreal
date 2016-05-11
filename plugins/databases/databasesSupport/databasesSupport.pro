@@ -22,9 +22,9 @@ TRANSLATIONS = \
 	$$PWD/../../../qrtranslations/ru/plugins/databases/databasesSupport_ru.ts \
 
 DEPLOYMENT += addFiles
+
 @QT += core sql
 QT -= gui@
-
 QT += widgets
 QT += sql
 

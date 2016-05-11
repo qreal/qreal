@@ -208,6 +208,8 @@ private slots:
 
 	/// Creates an object of a modal class TableMenuWidget (databases plugin)
 	void createTableMenuWidget();
+	/// Deletes an object of a modal class TableMenuWidget (databases plugin)
+	void deleteTableMenuWidget();
 
 private:
 	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
@@ -295,8 +297,12 @@ private:
 	QAction mActionPasteOnDiagram;
 	QAction mActionPasteReference;
 
-	/** @brief last table id that have been selected (databases plugin)*/
+	/// Last table id that have been selected (databases plugin)
 	Id mSelectedTableId;
+
+	// Has ownership (deletes after close signal)
+	/// Table menu that is created for each context menu for elements "Table" (databases plugin)
+	TableMenuWidget *mTableMenuWidget;
 };
 
 }

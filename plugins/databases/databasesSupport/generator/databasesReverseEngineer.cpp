@@ -92,11 +92,11 @@ void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const
 	sdb.setDatabaseName(QString(driverInitializerStr + filePath));
 
 	if (!sdb.open()) {
-		mErrorReporter->addError(QString(tr("File didn`t open")));
+		mErrorReporter->addError(tr("File didn`t open"));
 		return;
 	}
 	else {
-		mErrorReporter->addInformation(QString(tr("File opened successfully")));
+		mErrorReporter->addInformation(tr("File opened successfully"));
 	}
 
 	mErrorReporter->clear();
@@ -121,7 +121,7 @@ void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const
 		}
 
 	}
-	mErrorReporter->addInformation(QString("Schema generated succesfully"));
+	mErrorReporter->addInformation(tr("Schema generated succesfully"));
 }
 
 

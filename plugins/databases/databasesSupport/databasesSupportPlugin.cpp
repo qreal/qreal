@@ -96,7 +96,8 @@ void DatabasesSupportPlugin::generatePhysicalModel()
 
 void DatabasesSupportPlugin::generateSchema()
 {
-	mDatabasesReverseEngineer->generateSchema(mGenerateSchemaWidget->getDbms(), mGenerateSchemaWidget->getFilePath());
+	mDatabasesReverseEngineer->generateSchema(mGenerateSchemaWidget->getDbms()
+			, mGenerateSchemaWidget->getFilePath());
 }
 
 }

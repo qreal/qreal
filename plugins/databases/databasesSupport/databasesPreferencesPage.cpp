@@ -38,20 +38,16 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 	if (dbmsName == "SQLite") {
 		mUi->createDatabaseCheckBox->setEnabled(false);
 		emit dbmsChanged("Sqlite");
-	}
-	else if (dbmsName == "Microsoft SQL Server 2008") {
+	} else if (dbmsName == "Microsoft SQL Server 2008") {
 		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("SqlServer2008");
-	}
-	else if (dbmsName == "MySQL 5") {
+	} else if (dbmsName == "MySQL 5") {
 		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("MySql5");
-	}
-	else if (dbmsName == "Microsoft Access") {
+	} else if (dbmsName == "Microsoft Access") {
 		mUi->createDatabaseCheckBox->setEnabled(false);
 		emit dbmsChanged("MicrosoftAccess");
-	}
-	else if (dbmsName == "PostgreSQL") {
+	} else if (dbmsName == "PostgreSQL") {
 		mUi->createDatabaseCheckBox->setEnabled(true);
 		emit dbmsChanged("PostgreSql");
 	}
@@ -62,10 +58,11 @@ void DatabasesPreferencesPage::dbmsChanging(QString const &dbmsName)
 
 void DatabasesPreferencesPage::codeGenerationModeChanging(QString const &mode)
 {
-	if (mode == "CREATE TABLE")
+	if (mode == "CREATE TABLE") {
 		mUi->createDatabaseCheckBox->setEnabled(true);
-	else
+	} else {
 		mUi->createDatabaseCheckBox->setEnabled(false);
+	}
 
 	mUi->databaseName->setEnabled(mUi->createDatabaseCheckBox->isEnabled()
 			&& mUi->createDatabaseCheckBox->isChecked());
@@ -94,10 +91,11 @@ QString DatabasesPreferencesPage::getCodeGenerationFilename() const
 
 CodeGenerationMode DatabasesPreferencesPage::getCodeGenerationMode() const
 {
-	if (mUi->codeGenerationModeBox->currentText() == "CREATE TABLE")
-		return CreateTable;
-	else
-		return AlterTable;
+	if (mUi->codeGenerationModeBox->currentText() == "CREATE TABLE") {
+		return CodeGenerationMode::CreateTable;
+	} else {
+		return CodeGenerationMode::AlterTable;
+	}
 }
 
 bool DatabasesPreferencesPage::databaseCreationScriptIsRequired() const

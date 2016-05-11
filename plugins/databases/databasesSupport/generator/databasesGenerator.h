@@ -16,7 +16,6 @@
 
 #include <QtCore/QTranslator>
 #include <QtWidgets/QApplication>
-#include <QProcess>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
@@ -141,7 +140,7 @@ private:
 	qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
 	Id mCurrentDiagram;
 	IdList mPassedElements;
-	QFile codeFile;
+	QFile mCodeFile;
 	QString mDbms;
 	int **mRelMatrix; // Relationship matrix
 	DatabasesPreferencesPage const *mPreferencesPage;

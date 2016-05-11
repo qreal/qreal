@@ -32,8 +32,9 @@ namespace Ui {
 namespace qReal {
 namespace databasesSupport {
 
-enum CodeGenerationMode {
-	CreateTable
+enum CodeGenerationMode
+{
+	CreateTable = 0
 	, AlterTable
 };
 
