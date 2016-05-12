@@ -83,7 +83,8 @@ void Label::generateCodeForConstructor(OutFile &out)
 		// It is binded label, text for it will be fetched from repo.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ", " + mIsFocused + ");\n";
+				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation)
+				+ ", " + mIsFocused + ");\n";
 	} else {
 		// It is a static label, text for it is fixed.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "

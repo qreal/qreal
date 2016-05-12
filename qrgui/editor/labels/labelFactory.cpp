@@ -26,7 +26,8 @@ LabelFactory::LabelFactory(models::GraphicalModelAssistApi &graphicalModelAssist
 {
 }
 
-LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y, const QString &text, qreal rotation, bool focused)
+LabelInterface *LabelFactory::createLabel(int index, qreal x, qreal y
+		, const QString &text, qreal rotation, bool focused)
 {
 	return new Label(mGraphicalModelAssistApi, mId, LabelProperties(index, x, y, text, rotation, focused));
 }

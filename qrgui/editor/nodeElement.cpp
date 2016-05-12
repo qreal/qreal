@@ -1340,7 +1340,8 @@ void NodeElement::setProperty(const QString &propertyName, const QVariant &prope
 		mLogicalAssistApi.mutableLogicalRepoApi().setProperty(mId, propertyName, propertyValue);
 	}
 
-	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalAssistApi.logicalId(mId), propertyName, propertyValue);
+	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(mGraphicalAssistApi.logicalId(mId)
+			, propertyName, propertyValue);
 }
 
 void NodeElement::initRenderedDiagram()

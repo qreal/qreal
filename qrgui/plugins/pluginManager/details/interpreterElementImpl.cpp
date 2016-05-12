@@ -51,7 +51,8 @@ void InterpreterElementImpl::initLabels(const int &width, const int &height, Lab
 			LabelInterface *title = nullptr;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation, isFocused == "true");
+				title = factory.createLabel(index, x.value(), y.value(), textBinded
+						, readOnly == "true", rotation, isFocused == "true");
 			} else {
 				// This is a statical label, it does not need repository.
 				title = factory.createLabel(index, x.value(), y.value(), text, rotation, isFocused == "true");
