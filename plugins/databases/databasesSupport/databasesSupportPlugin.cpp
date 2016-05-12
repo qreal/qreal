@@ -20,8 +20,8 @@ namespace databasesSupport {
 
 DatabasesSupportPlugin::DatabasesSupportPlugin()
 	: mPreferencesPage(new DatabasesPreferencesPage())
-	, mGenerateCodeAction(NULL)
-	, mCheckCorectnessAction(NULL)
+	, mGenerateCodeAction(nullptr)
+	, mCheckCorectnessAction(nullptr)
 	, mGenerateSchemaWidget(new GenerateSchemaWidget())
 {
 	connect(mGenerateSchemaWidget, SIGNAL(accepted()), this, SLOT(generateSchema()));
@@ -58,22 +58,22 @@ QList<qReal::ActionInfo> DatabasesSupportPlugin::actions()
 
 void DatabasesSupportPlugin::initActions()
 {
-	mCheckCorectnessAction = new QAction(tr("Check correctness of the logical schema"), NULL);
+	mCheckCorectnessAction = new QAction(tr("Check correctness of the logical schema"), nullptr);
 	mCheckCorectnessAction->setShortcut(QKeySequence(Qt::Key_F5));
 	connect(mCheckCorectnessAction, SIGNAL(triggered()), this, SLOT(checkCorrectness()));
 	mActionInfos << ActionInfo(mCheckCorectnessAction, "generators", "tools");
 
-	mGeneratePhysicalModelAction = new QAction(tr("Generate physical model"), NULL);
+	mGeneratePhysicalModelAction = new QAction(tr("Generate physical model"), nullptr);
 	mGeneratePhysicalModelAction->setShortcut(QKeySequence(Qt::Key_F6));
 	connect(mGeneratePhysicalModelAction, SIGNAL(triggered()), this, SLOT(generatePhysicalModel()));
 	mActionInfos << ActionInfo(mGeneratePhysicalModelAction, "generators", "tools");
 
-	mGenerateCodeAction = new QAction(tr("Generate SQL code"), NULL);
+	mGenerateCodeAction = new QAction(tr("Generate SQL code"), nullptr);
 	mGenerateCodeAction->setShortcut(QKeySequence(Qt::Key_F7));
 	connect(mGenerateCodeAction, SIGNAL(triggered()), this, SLOT(generateCode()));
 	mActionInfos << ActionInfo(mGenerateCodeAction, "generators", "tools");
 
-	mGenerateSchemaAction = new QAction(tr("Generate Schema from file"), NULL);
+	mGenerateSchemaAction = new QAction(tr("Generate Schema from file"), nullptr);
 	mGenerateSchemaAction->setShortcut(QKeySequence(Qt::Key_F8));
 	connect(mGenerateSchemaAction, SIGNAL(triggered()), mGenerateSchemaWidget, SLOT(open()));
 	mActionInfos << ActionInfo(mGenerateSchemaAction, "generators", "tools");

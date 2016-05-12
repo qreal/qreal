@@ -138,6 +138,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	qReal::LogicalModelAssistInterface &mLogicalModelApi;
 	qReal::GraphicalModelAssistInterface &mGraphicalModelApi;
+
 	Id mCurrentDiagram;
 	IdList mPassedElements;
 	QFile mCodeFile;
