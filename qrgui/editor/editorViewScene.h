@@ -204,14 +204,13 @@ private slots:
 
 	void deselectLabels();
 
-private:
-	void deleteElements(const IdList &idsToDelete);
-
 	/// Creates an object of a modal class TableMenuWidget (databases plugin)
 	void createTableMenuWidget();
 	/// Deletes an object of a modal class TableMenuWidget (databases plugin)
 	void deleteTableMenuWidget();
 
+private:
+	void deleteElements(const IdList &idsToDelete);
 
 private:
 	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
