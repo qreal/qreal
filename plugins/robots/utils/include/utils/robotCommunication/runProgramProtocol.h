@@ -25,6 +25,7 @@ class QFileInfo;
 namespace utils {
 namespace robotCommunication {
 
+class TcpRobotCommunicatorInterface;
 class Protocol;
 
 /// Protocol for uploading and running program on a robot. Uses state machine to do it asynchronously and track
