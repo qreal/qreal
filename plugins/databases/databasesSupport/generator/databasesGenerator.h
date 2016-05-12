@@ -142,7 +142,10 @@ private:
 	IdList mPassedElements;
 	QFile mCodeFile;
 	QString mDbms;
+
+	// Have ownership.
 	int **mRelMatrix; // Relationship matrix
+
 	DatabasesPreferencesPage const *mPreferencesPage;
 	gui::MainWindowInterpretersInterface &mMainWindowInterface;
 	qReal::ErrorReporterInterface *mErrorReporter;

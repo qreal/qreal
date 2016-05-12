@@ -23,7 +23,8 @@ DatabasesPreferencesPage::DatabasesPreferencesPage(QWidget *parent)
 {
 	mUi->setupUi(this);
 	connect(mUi->dbmsBox, SIGNAL(currentTextChanged(QString)), this, SLOT(dbmsChanging(QString)));
-	connect(mUi->codeGenerationModeBox, SIGNAL(currentTextChanged(QString)), this, SLOT(codeGenerationModeChanging(QString)));
+	connect(mUi->codeGenerationModeBox, SIGNAL(currentTextChanged(QString))
+			, this, SLOT(codeGenerationModeChanging(QString)));
 	connect(mUi->codeGenerationFileButton, SIGNAL(clicked()), this, SLOT(browseCodeGenerationFilename()));
 	connect(mUi->createDatabaseCheckBox, SIGNAL(clicked(bool)), mUi->databaseName, SLOT(setEnabled(bool)));
 }

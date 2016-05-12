@@ -740,10 +740,11 @@ void DatabasesGenerator::generateWithSqlServer2008()
 
 void DatabasesGenerator::generateWithMySql5()
 {
-	if (mCodeGenerationMode == CodeGenerationMode::CreateTable)
+	if (mCodeGenerationMode == CodeGenerationMode::CreateTable) {
 		createTableModeWithMySql5();
-	else if (mCodeGenerationMode == CodeGenerationMode::AlterTable)
+	} else if (mCodeGenerationMode == CodeGenerationMode::AlterTable) {
 		alterTableModeWithMySql5();
+	}
 
 	IdList indexes = findIndexes();
 
@@ -903,7 +904,7 @@ void DatabasesGenerator::createTableModeWithSqlServer2008()
 
 		mCodeFile.write("CREATE TABLE ");
 
-		mCodeFile.write("dbo." + getProperty(tableId, "tableName").toByteArray());
+		mCodeFile.write(getProperty(tableId, "tableName").toByteArray());
 		mCodeFile.write("\r\n(");
 		IdList rowsSet = getChildren(tableId);
 
@@ -1090,8 +1091,7 @@ void DatabasesGenerator::createTableModeWithSqlite()
 
 		if (getProperty(tableId, "temporary").toBool()) {
 			mCodeFile.write("TEMPORARY ");
-		}
-		else if (getProperty(tableId, "temp").toBool()) {
+		} else if (getProperty(tableId, "temp").toBool()) {
 			mCodeFile.write("TEMP ");
 		}
 

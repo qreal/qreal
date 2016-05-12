@@ -89,6 +89,7 @@ signals:
 	void closed();
 
 private:
+	/// List of the table properties which are represented as rows in the widget
 	enum TablePropertyRowNumber
 	{
 		TableName = 0
@@ -114,6 +115,9 @@ private:
 		, OnCommit
 		, Tablespace
 	};
+
+	/// List of the column properties which are represented as columns in the widget
+	/// Columns are represented as rows
 	enum ColumnPropertyColumnNumber
 	{
 		ElementId = 0
@@ -130,6 +134,8 @@ private:
 		 , Check
 	};
 
+	/// List of the index properties which are represented as columns in the widget
+	/// Indexes are represented as rows
 	enum IndexPropertyColumnNumber
 	{
 		IndexId = 0
@@ -149,6 +155,7 @@ private:
 	void fillColumnProperties();
 	void fillIndexProperties();
 
+	// Have ownership.
 	Ui::TableMenuWidget *mUi;
 	const Id mId;
 

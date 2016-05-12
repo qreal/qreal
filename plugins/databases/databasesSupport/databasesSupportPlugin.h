@@ -67,19 +67,26 @@ public slots:
 	void generateSchema();
 
 private:
+	// Doesn't have ownership.
 	DatabasesPreferencesPage *mPreferencesPage;
+	// Have ownership.
+	GenerateSchemaWidget *mGenerateSchemaWidget;
+
 	DatabasesCustomizer mCustomizer;
+
+	// Have ownership.
 	DatabasesGenerator *mDatabasesGenerator;
+	// Have ownership.
 	DatabasesReverseEngineer *mDatabasesReverseEngineer;
+
 	void initActions();
 
+	// Doesn't have ownership.
 	QAction *mGenerateCodeAction;
 	QAction *mCheckCorectnessAction;
 	QAction *mGeneratePhysicalModelAction;
 	QAction *mGenerateSchemaAction;
 	QMenu *mDatabasesMenu;
-
-	GenerateSchemaWidget *mGenerateSchemaWidget;
 
 	QList<qReal::ActionInfo> mActionInfos;
 

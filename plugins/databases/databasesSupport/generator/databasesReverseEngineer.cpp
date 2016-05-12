@@ -71,8 +71,8 @@ qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName
 }
 
 // TODO:
-// QOCI Oracle Call Interface
-// QPSQL  PostgreSQL
+// QOCI - Oracle Call Interface
+// QPSQL - PostgreSQL
 void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const &filePath)
 {
 	mDbms = dbms;
@@ -82,8 +82,7 @@ void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const
 	if (mDbms == "Sqlite") {
 		dbmsType = "QSQLITE";
 		driverInitializerStr = "";
-	}
-	else if (mDbms == "MicrosoftAccess") {
+	} else if (mDbms == "MicrosoftAccess") {
 		dbmsType = "QODBC";
 		driverInitializerStr = "DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};FIL={MSAccess};DBQ=";
 	}
@@ -94,8 +93,7 @@ void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const
 	if (!sdb.open()) {
 		mErrorReporter->addError(tr("File didn`t open"));
 		return;
-	}
-	else {
+	} else {
 		mErrorReporter->addInformation(tr("File opened successfully"));
 	}
 
@@ -105,15 +103,13 @@ void DatabasesReverseEngineer::generateSchema(QString const &dbms, QString const
 
 	QStringList tableNames = sdb.tables();
 	QPointF coord = QPointF(10,10);
-	for (QString const &tableName : tableNames)
-	{
+	for (QString const &tableName : tableNames) {
 		Id logicalTableId = createTable(tableName, coord, logicalDiagramId);
 		coord = QPointF(coord.rx() + 50, coord.ry() + 50);
 
 		QSqlRecord columns = sdb.record(tableName);
 		int columnsCount = columns.count();
-		for (int i = 0; i < columnsCount ; i++)
-		{
+		for (int i = 0; i < columnsCount ; i++) {
 			QSqlField const &column = columns.field(i);
 
 			QVariant type = column.type();

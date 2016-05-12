@@ -48,6 +48,7 @@ public slots:
 
 
 private:
+	// Have ownership.
 	Ui::GenerateSchemaWidget *mUi;
 	QString mDbms;
 	QString mFilePath;

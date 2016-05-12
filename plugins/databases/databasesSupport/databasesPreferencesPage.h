@@ -48,8 +48,11 @@ public:
 
 	void save();
 	virtual void restoreSettings();
+
 	QString getCodeGenerationFilename() const;
 	CodeGenerationMode getCodeGenerationMode() const;
+
+	/// Says whether user wants to generate CREATE DATABASE script
 	bool databaseCreationScriptIsRequired() const;
 	QString databaseName() const;
 public slots:
@@ -59,6 +62,7 @@ public slots:
 signals:
 	void dbmsChanged(QString const &dbmsName);
 private:
+	// Have ownership.
 	Ui::DatabasesPreferencesPage *mUi;
 };
 
