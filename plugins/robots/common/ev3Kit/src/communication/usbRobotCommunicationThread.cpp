@@ -78,7 +78,7 @@ bool UsbRobotCommunicationThread::connect()
 		return false;
 	}
 
-	if (libusb_kernel_driver_active(mHandle,EV3_INTERFACE_NUMBER)) {
+	if (libusb_kernel_driver_active(mHandle, EV3_INTERFACE_NUMBER)) {
 		libusb_detach_kernel_driver(mHandle, EV3_INTERFACE_NUMBER);
 	}
 
@@ -156,12 +156,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 bool UsbRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
 	const bool result = send(buffer);
-	const QByteArray recieved = receive(responseSize);
-	outputBuffer.resize(recieved.size());
-	for (int i = 0; i < recieved.size(); ++i) {
-		outputBuffer[i] = recieved[i];
-	}
-
+	outputBuffer = receive(responseSize);
 	return result;
 }
 
@@ -179,5 +174,10 @@ QByteArray UsbRobotCommunicationThread::receive(int size) const
 	uchar response[EV3_PACKET_SIZE];
 	int actualLength = 0;
 	libusb_bulk_transfer(mHandle, EV3_EP_IN, response, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
-	return QByteArray::fromRawData(reinterpret_cast<char *>(response), size);
+	QByteArray result(qMin(EV3_PACKET_SIZE, size), '\0');
+	for (int i = 0; i < qMin(EV3_PACKET_SIZE, size); ++i) {
+		result[i] = response[i];
+	}
+
+	return result;
 }
