@@ -147,6 +147,9 @@ void TcpRobotCommunicator::onMessageFromRobot(const MessageKind &messageKind, co
 	case MessageKind::text:
 		emit printText(message);
 		break;
+	case MessageKind::fileContents:
+		emit fileContentsFromRobot(message);
+		break;
 	}
 }
 

@@ -26,6 +26,8 @@ Shell::Shell(const DeviceInfo &info, const PortInfo &port
 {
 	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::printText
 			, this, &Shell::textPrinted);
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::fileContentsFromRobot
+			, this, &Shell::fileContents);
 }
 
 void Shell::say(const QString &text)
@@ -65,6 +67,13 @@ void Shell::removeFile(const QString &filePath)
 	const QString pathToCommand = ":/trikQts/templates/files/removeFile.t";
 	const QString directCommand = utils::InFile::readAll(pathToCommand)
 			.replace("@@FILE@@", filePath) + "script.run();";
+
+	mRobotCommunicator.runDirectCommand(directCommand);
+}
+
+void Shell::readFile(const QString &filePath)
+{
+	const QString directCommand = "script.sendMessage(\"fileContents: \" + script.readAll(\"" + filePath + "\"))";
 
 	mRobotCommunicator.runDirectCommand(directCommand);
 }

@@ -26,6 +26,7 @@ namespace robotCommunication {
 enum class MessageKind
 {
 	text
+	, fileContents
 	, info
 	, error
 };

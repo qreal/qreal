@@ -128,6 +128,7 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 	const QString infoMarker("info: ");
 	const QString versionMarker("version: ");
 	const QString printMarker("print: ");
+	const QString fileContentsMarker("fileContents: ");
 	const QString configVersionMarker("configVersion: ");
 
 	if (message.startsWith(versionMarker)) {
@@ -142,6 +143,8 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 		emit messageFromRobot(MessageKind::info, message.mid(infoMarker.length()));
 	} else if (message.startsWith(printMarker)) {
 		emit messageFromRobot(MessageKind::text, message.mid(printMarker.length()));
+	} else if (message.startsWith(fileContentsMarker)) {
+		emit messageFromRobot(MessageKind::fileContents, message.mid(fileContentsMarker.length()));
 	} else if (message == "keepalive") {
 		// Just ignoring it
 	} else if (message.startsWith(configVersionMarker)) {

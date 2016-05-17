@@ -53,6 +53,11 @@ void EmptyShell::removeFile(const QString &filePath)
 	Q_UNUSED(filePath)
 }
 
+void EmptyShell::readFile(const QString &filePath)
+{
+	Q_UNUSED(filePath)
+}
+
 void EmptyShell::initVideoStreaming()
 {
 }

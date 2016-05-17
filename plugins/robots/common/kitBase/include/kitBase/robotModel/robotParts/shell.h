@@ -38,6 +38,9 @@ public:
 signals:
 	/// Emitted when some text is added into robot`s console output.
 	void textPrinted(const QString &text);
+
+	/// Emitted when robot have read file and  have sent its contents.
+	void fileContents(const QString &fileContents);
 };
 
 }
