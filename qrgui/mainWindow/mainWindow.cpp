@@ -720,7 +720,8 @@ void MainWindow::showAbout()
 
 void MainWindow::showHelp()
 {
-	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp");
+	const QString locale = QLocale().name().left(2);
+	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp") + "/" + locale;
 	const QString url = QString("file:///%1/index.html").arg(pathToHelp);
 	QDesktopServices::openUrl(QUrl(url));
 }
