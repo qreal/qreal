@@ -1216,7 +1216,7 @@
 				</graphics>
 				<logic>
                                         <properties>
-                                                <property displayedName="If black and white" type="bool" name="blackwhite">
+                                                <property displayedName="Grayscaled" type="bool" name="Grayscaled">
                                                         <default>false</default>
                                                 </property>
 						<property displayedName="Quality" type="JpgEncoderQuality" name="Quality">

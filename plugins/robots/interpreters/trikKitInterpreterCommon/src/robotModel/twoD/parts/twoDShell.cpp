@@ -70,8 +70,10 @@ void Shell::print(const QString &text)
 	emit textPrinted(text);
 }
 
-void Shell::initVideoStreaming(QString qual, QString blackwhite)
+void Shell::initVideoStreaming(int qual, bool grayscaled)
 {
+    Q_UNUSED(qual)
+    Q_UNUSED(grayscaled)
 	// Video streaming has no sense here (for now at least).
 }
 
