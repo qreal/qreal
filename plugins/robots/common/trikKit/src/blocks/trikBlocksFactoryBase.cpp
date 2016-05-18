@@ -140,13 +140,13 @@ qReal::interpretation::Block *TrikBlocksFactoryBase::produceBlock(const qReal::I
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadButton")) {
 		return new WaitGamepadButtonBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitPadPress")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new WaitPadPressBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadWheel")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new WaitGamepadWheelBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadDisconnect")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new WaitGamepadDisconnectBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "TrikWaitGamepadConnect")) {
-		return new qReal::interpretation::blocks::EmptyBlock();
+		return new WaitGamepadConnectBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "TrikWriteToFile")) {
 		return new WriteToFileBlock(mRobotModelManager->model());
