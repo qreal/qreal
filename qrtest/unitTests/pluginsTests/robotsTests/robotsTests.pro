@@ -15,7 +15,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-
 	commonTests \
 	generatorsTests \
 	interpretersTests \
