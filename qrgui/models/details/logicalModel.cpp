@@ -309,7 +309,8 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 				QString editor = item->id().editor();
 				if (modelName == "Attribute" || modelName == "Column") {
 					if (editor == "Sqlite" || editor == "SqlServer2008" || editor == "MySql5"
-							|| editor == "MicrosoftAccess" || editor == "PostgreSql" || editor == "DatabasesMetamodel") {
+							|| editor == "MicrosoftAccess" || editor == "PostgreSql"
+							|| editor == "DatabasesMetamodel") {
 
 						if (selectedProperty == "isPrimaryKey") {
 							mApi.setProperty(item->id(), "notNull", value);

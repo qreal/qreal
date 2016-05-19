@@ -52,7 +52,8 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &tex
 {
 }
 
-LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation, bool focused)
+LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, bool readOnly
+		, qreal rotation, bool focused)
 	: mIndex(index)
 	, mX(x)
 	, mY(y)
