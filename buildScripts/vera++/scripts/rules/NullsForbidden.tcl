@@ -16,7 +16,9 @@ proc NullsForbidden { fileName } {
   set lineCount 1
   foreach line [getAllLines $fileName] {
     if { [regexp {NULL} $line] } {
-      report $fileName $lineCount "NULL is forbidden, use nullptr instead"
+		if { ![regexp {\".*NULL.*\"} $line] } {
+			report $fileName $lineCount "NULL is forbidden, use nullptr instead"
+		}
     }
     incr lineCount
   }
