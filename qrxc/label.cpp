@@ -64,6 +64,7 @@ Label* Label::clone()
 	returnLabel->mBackground = mBackground;
 	returnLabel->mIsHard = mIsHard;
 	returnLabel->mIsPlainText = mIsPlainText;
+	returnLabel->mIsFocused = mIsFocused;
 	return returnLabel;
 }
 
@@ -89,8 +90,14 @@ void Label::generateCodeForConstructor(OutFile &out)
 		// It is a static label, text for it is fixed.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
 				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation) + ", " + mIsFocused +  ");\n";
+				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation);
+
+		if (!mIsFocused.isEmpty()) {
+			out() << ", " + mIsFocused;
+		}
+		out() << ");\n";
 	}
+
 	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
 
 	const QString scalingX = mX.isScalable() ? "true" : "false";
