@@ -24,14 +24,17 @@
 
 /// Proxy model for property editor, maps single element from main model
 /// (logical or graphical) to a list model with element properties.
-class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractTableModel
+class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
 public:
 	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface, QObject *parent = 0);
 
-	//QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex parent(const QModelIndex &index) const;
+
+	void setValueForIndex(const QModelIndex &index, QString value);
+	QString getValueFromIndex(const QModelIndex &index);
 
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
@@ -171,6 +174,18 @@ public:
 			return mRole;
 		}
 
+		void setValue(int row, QString value)
+		{
+			Field *child = mChildItems.at(row);
+			child->mValue = value;
+			int kk = 1;
+		}
+
+		QString value()
+		{
+			return mValue;
+		}
+
 	private:
 		QList<Field*> mChildItems;
 		Field *mParentItem;
@@ -178,6 +193,7 @@ public:
 		QString mFieldName;
 		AttributeClassEnum mAttributeClass;
 		int mRole;
+		QString mValue;
 
 	};
 

@@ -23,7 +23,7 @@ PropertyEditorModel::PropertyEditorModel(
 		const qReal::EditorManagerInterface &editorManagerInterface
 		, QObject *parent
 		)
-	: QAbstractTableModel(parent)
+	: QAbstractItemModel(parent)
 	, mTargetLogicalModel(nullptr)
 	, mTargetGraphicalModel(nullptr)
 	, mEditorManagerInterface(editorManagerInterface)
@@ -42,9 +42,38 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 	return mField->childCount();
 }
 
+
+void PropertyEditorModel::setValueForIndex(const QModelIndex &index, QString value)
+{
+	//Field *childItem = mField->child(index.row() + index.column());
+	mField->setValue(index.row() + index.column(), value);
+}
+
+QString PropertyEditorModel::getValueFromIndex(const QModelIndex &index)
+{
+	Field *childItem = mField->child(index.row() + index.column());
+	return childItem->value();
+}
+
 QModelIndex PropertyEditorModel::index(int row, int column, const QModelIndex &parent) const
 {
-	 return createIndex(row, column, mField->child(row));
+	Field *childItem = mField->child(row + column);
+		if (childItem)
+			return createIndex(row, column, childItem);
+		else
+			return QModelIndex();
+}
+
+
+QModelIndex PropertyEditorModel::parent(const QModelIndex &index) const
+{
+	Field *childItem = static_cast<Field*>(index.internalPointer());
+	Field *parentItem = childItem->parentItem();
+
+	if (parentItem == mField->parentItem())
+		return QModelIndex();
+
+	return createIndex(parentItem->row(), 0, parentItem);
 }
 
 
@@ -298,14 +327,27 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 	mTargetLogicalObject = logicalModelIndex;
 	mTargetGraphicalObject = graphicalModelIndex;
 
+
+
 	if (!isValid()) {
 		return;
+	}
+
+	qDebug() << "mTargetLogicalObject" << endl;
+
+	for (int i = 0; i < 10; ++i) {
+		qDebug() << mTargetLogicalObject.data(roles::customPropertiesBeginRole + i).toString() << endl;
 	}
 
 	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 
 	if (logicalModelIndex != QModelIndex() || true) {
 		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
+		auto check = mEditorManagerInterface.propertiesWithDefaultValues(logicalId);
+
+		auto h = mEditorManagerInterface.getPropertiesInformation(logicalId);
+		auto qwert = mEditorManagerInterface.children(logicalId);
+
 		int role = roles::customPropertiesBeginRole;
 
 		foreach (QString property, logicalProperties) {
@@ -326,18 +368,30 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 				QString end = temp.mid(first + 1);
 				mField->appendChild(new Field(end, logicalAttribute, role, two));
+				QString val = mTargetLogicalObject.data(role).toString();
+
+				qDebug() << "aaaaaaaaaaaa" << val;
+
+				mField->setValue(i + 1, val);
+				++role;
 
 				int j = 0;
+				int k = 2;
 				while (j < logPropertiesClone.size()) {
 					if (logPropertiesClone.at(j).mid(0, first) == begin) {
 						QString newValue = logPropertiesClone.takeAt(j);
 						newValue = newValue.mid(first + 1);
 						mField->appendChild(new Field(newValue, logicalAttribute, role, two));
+						QString value = mTargetLogicalObject.data(role).toString();
+						mField->setValue(i + k, value);
+						++role;
+
 						j = 0;
+
 					} else {
 						++j;
-						++role;
 					}
+					++k;
 				}
 				i += j + 1;
 			}

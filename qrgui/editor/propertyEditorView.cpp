@@ -103,7 +103,6 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 	int helper = 0;
 	if (mModel->rowCount(index) > 0) {
-		QModelIndex ololo = mModel->index(0, 0);
 		for (int i = 0; i < 2; ++i) {
 			QString name1 = mModel->data(mModel->index(i + helper, 0)).toString();
 			if (name1.isEmpty()) {
@@ -122,27 +121,33 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			QList<QtProperty*> list;
 
 			int count = mModel->countOfChilds(mModel->index(i + helper, 0));
+
 			qDebug() << "ololo" << count;
 
 			for (int j = 1; j < count + 1; ++j) {
 				QString name2 = mModel->data(mModel->index(i + helper, j)).toString();
-	//			QModelIndex ololo = mModel->index(i, 0);
-	//			auto qwe = mModel->data(mModel->index(1, 1));
-	//		//	auto aaa = mModel->data(mModel->index(i, 2));
+				const QModelIndex &valueIndex1 = mModel->index(i + helper, j);
+				QString value1 = mModel->getValueFromIndex(valueIndex1);
+				QVariant val(value1);
+
+
+				qDebug() << "valueIndex1.data()" << value1 << endl;
+
 
 				QtProperty *item1 = nullptr;
 
 				QtVariantProperty *vItem1 = mVariantManager->addProperty(type, name2);
-
-	//			vItem1->setValue(QVariant());
-	//			vItem1->setToolTip("");
+				vItem1->setValue(val);
 
 				item1 = vItem1;
 
 				list.append(item1);
+				bool ololo = item1->hasValue();
+				QString ff = item1->valueText();
+				qDebug () << ff << endl;
 
 			}
-			helper +=count;
+			helper += count;
 
 			while (!list.isEmpty()) {
 				item->addSubProperty(list.takeFirst());
@@ -150,7 +155,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 			mPropertyEditor->addProperty(item);
 
-
+			qDebug() << "buy root-index" << endl;
 
 		}
 	}
@@ -237,7 +242,6 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex &right)
 {
 	int helper = 0;
-	return;
 
 	if (mModel->rowCount(QModelIndex()) <= 0) {
 		return;
@@ -258,27 +262,36 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 		}
 		for (int j = 1; j < childs.count() + 1; ++j) {
 			QtVariantProperty *child = dynamic_cast<QtVariantProperty*>(childs.at(i));
+			QString val = child->valueText();
+			qDebug() << val << endl;
 
 
+			QVariant value(val);
 			const QModelIndex &valueIndex = mModel->index(i + helper, j);
-			QVariant value = valueIndex.data();
+			if (!val.isEmpty()) {
+				mModel->setValueForIndex(valueIndex, val);
+				qDebug() << "mModel->setValueForIndex(valueIndex, val);" << endl;
 
-			if (child) {
-//				if (child->propertyType() == QtVariantPropertyManager::enumTypeId()
-//						&& !mModel->enumEditable(valueIndex))
-//				{
-//					value = enumPropertyIndexOf(valueIndex, value.toString());
-//				}
+	//			QVariant value = valueIndex.data();
 
-				setPropertyValue(child, value);
+				if (child) {
+	//				if (child->propertyType() == QtVariantPropertyManager::enumTypeId()
+	//						&& !mModel->enumEditable(valueIndex))
+	//				{
+	//					value = enumPropertyIndexOf(valueIndex, value.toString());
+	//				}
 
-				const QString description = propertyDescription(i);
-				const QString tooltip = description.isEmpty() ? value.toString() : description;
+					setPropertyValue(child, value);
 
-				child->setToolTip(tooltip);
+					const QString description = propertyDescription(i);
+					const QString tooltip = description.isEmpty() ? value.toString() : description;
+
+					child->setToolTip(tooltip);
+				}
 			}
 		}
 
+		qDebug() << "buy dataChanged" << endl;
 
 
 	}
@@ -312,6 +325,7 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 
 void PropertyEditorView::buttonClicked(QtProperty *property)
 {
+	qDebug() << "buttonClicked" << endl;
 	int row = mPropertyEditor->properties().indexOf(property);
 	const QModelIndex &index = mModel->index(row, 1);
 	QString name = mModel->data(mModel->index(row, 0)).toString();
@@ -349,6 +363,7 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 {
+	qDebug () << "editorValueChanged" << endl;
 	if (mChangingPropertyValue) {
 		return;
 	}
