@@ -499,8 +499,7 @@ bool DatabasesGenerator::processOneToManyRelationships(QList<IdList> const &oneT
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error("Too many relationships from "
 				 + getProperty(from, "entityName").toString()
-				 + "to " + getProperty(to, "entityName").toString(), true, from);
-			return false;
+				 + "to " + getProperty(to, "entityName").toString(), false, from);
 		}
 
 		QString columnNameForRelationship = getProperty(relationship, "columnName").toString();
@@ -542,8 +541,7 @@ bool DatabasesGenerator::processManyToManyRelationships(QList<IdList> const &one
 		if (mRelMatrix[toSet][fromSet] != 0) {
 			error(tr("Too many relationships from ")
 				+ getProperty(from, "entityName").toString()
-				+ tr(" to ") + getProperty(to, "entityName").toString() + tr("."), true, from);
-			return false;
+				+ tr(" to ") + getProperty(to, "entityName").toString() + tr("."), false, from);
 		}
 
 		QString relationshipTableName = getProperty(relationship, "tableName").toString();
