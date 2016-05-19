@@ -303,16 +303,27 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 		default:
 			QString modelName = index.data().toString();
 			if (role >= roles::customPropertiesBeginRole) {
+
 				QString selectedProperty = findPropertyName(item->id(), role);
-				if (modelName == "Attribute" && selectedProperty == "isPrimaryKey") {
-					mApi.setProperty(item->id(), "notNull", value);
-					mApi.setProperty(item->id(), "isUnique", value);
-				}
-				if (modelName == "Attribute" && selectedProperty == "notNull" && value == "false") {
-					mApi.setProperty(item->id(), "isPrimaryKey", false);
-				}
-				if (modelName == "Attribute" && selectedProperty == "isUnique" && value == "false") {
-					mApi.setProperty(item->id(), "isPrimaryKey", false);
+
+				QString editor = item->id().editor();
+				if (modelName == "Attribute" || modelName == "Column") {
+					if (editor == "Sqlite" || editor == "SqlServer2008" || editor == "MySql5"
+							|| editor == "MicrosoftAccess" || editor == "PostgreSql" || editor == "DatabasesMetamodel") {
+
+						if (selectedProperty == "isPrimaryKey") {
+							mApi.setProperty(item->id(), "notNull", value);
+							mApi.setProperty(item->id(), "isUnique", value);
+						}
+
+						if (selectedProperty == "notNull" && value == "false") {
+							mApi.setProperty(item->id(), "isPrimaryKey", false);
+						}
+
+						if (selectedProperty == "isUnique" && value == "false") {
+							mApi.setProperty(item->id(), "isPrimaryKey", false);
+						}
+					}
 				}
 				mApi.setProperty(item->id(), selectedProperty, value);
 				break;
