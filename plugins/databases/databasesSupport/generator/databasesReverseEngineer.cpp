@@ -67,6 +67,7 @@ qReal::Id DatabasesReverseEngineer::createColumn(QString const &columnName
 {
 	Id logicalColumnId = createElementFromString("Column", QPointF(), parentId, true);
 	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, columnName, "columnName");
+	mLogicalModelApi.setPropertyByRoleName(logicalColumnId, columnType, "dataType");
 	return logicalColumnId;
 }
 
