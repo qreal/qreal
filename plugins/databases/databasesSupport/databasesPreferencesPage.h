@@ -21,7 +21,7 @@
 #include <qrkernel/settingsManager.h>
 
 #include <qrgui/preferencesDialog/preferencesPage.h>
-#include <../../../qrkernel/settingsManager.h>
+#include <qrkernel/settingsManager.h>
 
 #include "ui_databasesPreferencesPage.h"
 

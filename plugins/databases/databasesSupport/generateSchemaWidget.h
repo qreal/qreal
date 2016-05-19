@@ -22,7 +22,7 @@
 #include <qrkernel/settingsManager.h>
 
 #include <qrgui/preferencesDialog/preferencesPage.h>
-#include <../../../qrkernel/settingsManager.h>
+#include <qrkernel/settingsManager.h>
 
 namespace Ui {
 class GenerateSchemaWidget;

@@ -19,7 +19,7 @@
 #include <QIcon>
 #include <QObject>
 
-#include <../../../qrkernel/settingsManager.h>
+#include <qrkernel/settingsManager.h>
 #include <qrgui/plugins/toolPluginInterface/customizer.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 

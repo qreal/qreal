@@ -24,9 +24,9 @@
 
 #include <qrutils/expressionsParser/expressionsParser.h>
 #include <qrkernel/ids.h>
-#include <../../../qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
-#include <../../../qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
-#include <../qrgui/preferencesDialog/preferencesPages/behaviourPage.h>
+#include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
+#include <qrgui/preferencesDialog/preferencesPages/behaviourPage.h>
 #include <qrkernel/platformInfo.h>
 
 #include "databasesPreferencesPage.h"
