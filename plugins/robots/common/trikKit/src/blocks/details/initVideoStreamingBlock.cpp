@@ -23,8 +23,8 @@ InitVideoStreamingBlock::InitVideoStreamingBlock(kitBase::robotModel::RobotModel
 
 void InitVideoStreamingBlock::doJob(trik::robotModel::parts::TrikShell &shell)
 {
-    int qual = intProperty("Quality");
-    bool blackwhite = boolProperty("blackwhite");
+	int qual = intProperty("Quality");
+	bool blackwhite = boolProperty("blackwhite");
 	shell.initVideoStreaming(qual, blackwhite);
 	emit done(mNextBlockId);
 }

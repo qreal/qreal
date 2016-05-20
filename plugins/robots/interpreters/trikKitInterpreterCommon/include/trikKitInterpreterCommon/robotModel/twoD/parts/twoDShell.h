@@ -50,7 +50,7 @@ public:
 	void writeToFile(const QString &filePath, const QString &text) override;
 	void removeFile(const QString &filePath) override;
 	void print(const QString &text) override;
-    void initVideoStreaming(int qual, bool grayscaled) override;
+	void initVideoStreaming(int qual, bool grayscaled) override;
 
 	/// Sets the error reporter for writing bubbling messages in say().
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
