@@ -72,12 +72,8 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/timerBlock.cpp \
 	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
-<<<<<<< 5424777f1508a8645e3e3a26c5b4ae3a05da46da
-	$$PWD/src/interpreter/interpreter.cpp \
-	$$PWD/src/interpreter/proxyInterpreter.cpp \
-=======
 	$$PWD/src/interpreter/blockInterpreter.cpp \
->>>>>>> Some ugly stuff (groundwork)
+	$$PWD/src/interpreter/proxyInterpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
