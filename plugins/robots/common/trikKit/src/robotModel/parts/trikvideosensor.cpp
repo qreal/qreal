@@ -12,26 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "trikKit/robotModel/parts/TrikVideoSensor.h"
 
-#include <kitBase/blocksBase/common/deviceBlock.h>
-#include <trikKit/robotModel/parts/trikVideoSensor.h>
+using namespace trik::robotModel::parts;
+using namespace kitBase::robotModel;
 
-namespace trik {
-namespace blocks {
-namespace details {
-
-/// Interpreter implementation for "Detect by Videocamera" block.
-class DetectLineBlock : public kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikVideoSensor>
+TrikVideoSensor::TrikVideoSensor(const DeviceInfo &info, const PortInfo &port)
+	: kitBase::robotModel::robotParts::VectorSensor(info, port)
 {
-public:
-	DetectLineBlock(kitBase::robotModel::RobotModelInterface &robotModel);
-
-protected:
-	virtual void doJob(trik::robotModel::parts::TrikVideoSensor &camera);
-	bool runSpecific() override;
-};
-
-}
-}
 }

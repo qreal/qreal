@@ -53,6 +53,12 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 		, touchSensorInfo()
 	};
 
+	const QList<DeviceInfo> cameraPortConnections = {
+		lineSensorInfo()
+		, objectSensorInfo()
+		, colorSensorInfo()
+	};
+
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
 	addAllowedConnection(PortInfo("SpeakerPort", output), { speakerInfo() });
 
@@ -86,16 +92,10 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
-	addAllowedConnection(PortInfo("LineSensorPort", tr("Line sensor"), input, { "TrikLineSensorPort" }, "lineSensor"
-			, PortInfo::ReservedVariableType::vector), { lineSensorInfo() });
-
-	addAllowedConnection(PortInfo("ObjectSensorXPort", input, {}, "objectSensorX"), { objectSensorInfo() });
-	addAllowedConnection(PortInfo("ObjectSensorYPort", input, {}, "objectSensorY"), { objectSensorInfo() });
-	addAllowedConnection(PortInfo("ObjectSensorSizePort", input, {}, "objectSensorSize"), { objectSensorInfo() });
-
-	addAllowedConnection(PortInfo("ColorSensorRPort", input, {}, "colorSensorR"), { colorSensorInfo() });
-	addAllowedConnection(PortInfo("ColorSensorGPort", input, {}, "colorSensorG"), { colorSensorInfo() });
-	addAllowedConnection(PortInfo("ColorSensorBPort", input, {}, "colorSensorB"), { colorSensorInfo() });
+	addAllowedConnection(PortInfo("VP1", input, {}, "videoSensor1"
+			, PortInfo::ReservedVariableType::vector), cameraPortConnections);
+	addAllowedConnection(PortInfo("VP2", input, {}, "videoSensor2"
+			, PortInfo::ReservedVariableType::vector), cameraPortConnections);
 
 	addAllowedConnection(PortInfo("ShellPort", output), { shellInfo() });
 
@@ -128,9 +128,7 @@ QList<PortInfo> TrikRobotModelBase::configurablePorts() const
 			, PortInfo("D2", input, {}, "sensorD2")
 			};
 
-	return CommonRobotModel::configurablePorts() + digitalPorts + QList<PortInfo>{PortInfo("LineSensorPort"
-			, tr("Line sensor"), input, { "TrikLineSensorPort" }, "lineSensor"
-			, PortInfo::ReservedVariableType::vector)};
+	return CommonRobotModel::configurablePorts() + digitalPorts;
 }
 
 QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
@@ -141,6 +139,7 @@ QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 		, DeviceInfo::create<parts::TrikSonarSensor>()
 		, DeviceInfo::create<parts::TrikMotionSensor>()
 		, DeviceInfo::create<parts::TrikLineSensor>()
+		, DeviceInfo::create<parts::TrikObjectSensor>()
 	};
 }
 

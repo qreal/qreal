@@ -34,7 +34,7 @@ void LineSensor::init()
 {
 }
 
-void LineSensor::detectLine()
+void LineSensor::detect()
 {
 	const QImage image = mEngine.areaUnderSensor(port(), 0.2);
 

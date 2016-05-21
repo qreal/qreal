@@ -59,10 +59,35 @@ TrikTwoDRobotModel::TrikTwoDRobotModel(RobotModelInterface &realModel)
 	}
 }
 
+void TrikTwoDRobotModel::displayConnect(robotParts::Device *display)
+{
+	QStringList portName = {"ObjectSensorXPort", "ObjectSensorYPort", "ObjectSensorSizePort" };
+	foreach (QString name, portName) {
+		const PortInfo objectSensorPort = kitBase::robotModel::RobotModelUtils::findPort
+					(*mRealModel, name, kitBase::robotModel::Direction::input);
+	trik::robotModel::twoD::parts::ObjectSensor *objectSensor =
+	static_cast<trik::robotModel::twoD::parts::ObjectSensor *>(mConfiguration.pendingDevice(objectSensorPort));
+	if (objectSensor)
+		objectSensor->setDisplay(static_cast<trik::robotModel::twoD::parts::Display *>(display));
+		}
+}
+
+void TrikTwoDRobotModel::objectSensorConnect(robotParts::Device *objectSensor)
+{
+	const PortInfo displayPort = kitBase::robotModel::RobotModelUtils::findPort
+					(*mRealModel, "DisplayPort", kitBase::robotModel::Direction::output);
+	trik::robotModel::twoD::parts::Display *display =
+	static_cast<trik::robotModel::twoD::parts::Display *>(mConfiguration.pendingDevice(displayPort));
+	if (display)
+		static_cast<trik::robotModel::twoD::parts::ObjectSensor *>(objectSensor)->setDisplay(display);
+}
+
 robotParts::Device *TrikTwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Display>()) {
-		return new parts::Display(deviceInfo, port, *engine());
+		robotParts::Device * dev = new parts::Display(deviceInfo, port, *engine());
+		displayConnect(dev);
+		return dev;
 	}
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {
@@ -90,7 +115,9 @@ robotParts::Device *TrikTwoDRobotModel::createDevice(const PortInfo &port, const
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikObjectSensor>()) {
-		return new parts::ObjectSensor(deviceInfo, port);
+		robotParts::Device * dev = new parts::ObjectSensor(deviceInfo, port, *engine());
+		objectSensorConnect(dev);
+		return dev;
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikColorSensor>()) {
@@ -150,6 +177,10 @@ QString TrikTwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 		return ":icons/twoDUsRangeSensor.svg";
 	} else if (deviceType.isA<robotModel::parts::TrikLineSensor>()) {
 		return ":icons/twoDVideoModule.svg";
+	} else if (deviceType.isA<robotModel::parts::TrikObjectSensor>()) {
+		return ":icons/twoDVideoModule.svg";
+	} else if (deviceType.isA<robotModel::parts::TrikColorSensor>()) {
+		return ":icons/twoDVideoModule.svg";
 	}
 
 	return QString();
@@ -173,6 +204,10 @@ QRect TrikTwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo 
 		return QRect(-18, -18, 36, 36);
 	} else if (deviceType.isA<robotModel::parts::TrikLineSensor>()) {
 		return QRect(-9, -9, 18, 18);
+	} else if (deviceType.isA<robotModel::parts::TrikObjectSensor>()) {
+		return QRect(-9, -9, 18, 18);
+	} else if (deviceType.isA<robotModel::parts::TrikColorSensor>()) {
+		return QRect(-9, -9, 18, 18);
 	}
 
 	return QRect();
@@ -186,7 +221,7 @@ QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> TrikTwoDRo
 
 QPair<QPoint, qreal> TrikTwoDRobotModel::specialDeviceConfiguration(const PortInfo &port) const
 {
-	if (port == PortInfo("LineSensorPort", input)) {
+	if (port.name() == "VP1" || port.name() == "VP2") {
 		return qMakePair(QPoint(1, 0), 0);
 	}
 

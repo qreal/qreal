@@ -14,22 +14,28 @@
 
 #pragma once
 
-#include <kitBase/blocksBase/common/deviceBlock.h>
-#include <trikKit/robotModel/parts/trikVideoSensor.h>
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 namespace trik {
-namespace blocks {
-namespace details {
+namespace robotModel {
+namespace parts {
 
-/// Interpreter implementation for "Detect by Videocamera" block.
-class DetectLineBlock : public kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikVideoSensor>
+/// Device representing TRIK camera line detector.
+class TrikVideoSensor : public kitBase::robotModel::robotParts::VectorSensor
 {
-public:
-	DetectLineBlock(kitBase::robotModel::RobotModelInterface &robotModel);
+	Q_OBJECT
+	Q_CLASSINFO("name", "TrikVideoSensor")
+	Q_CLASSINFO("friendlyName", tr("Video Sensor"))
 
-protected:
-	virtual void doJob(trik::robotModel::parts::TrikVideoSensor &camera);
-	bool runSpecific() override;
+public:
+	TrikVideoSensor(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
+
+	/// Turns camera on and prepares a sensor.
+	virtual void init() = 0;
+
+	/// Locks dominant color at center of a field of view of a camera as line color and begins tracking it.
+	virtual void detect() = 0;
 };
 
 }

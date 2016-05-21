@@ -15,6 +15,7 @@
 #pragma once
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
+#include "src/engine/items/wallItem.h"
 
 #include <QtCore/QScopedPointer>
 
@@ -59,9 +60,11 @@ public:
 	utils::TimelineInterface &modelTimeline() override;
 	engine::TwoDModelDisplayInterface *display() override;
 	engine::TwoDModelGuiFacade &guiFacade() const override;
+	QList<QPair<QPointF, QPointF>> walls() const override;
 
+	QPair<QPointF, qreal> countPositionAndDirection(const kitBase::robotModel::PortInfo &port) const override;
 private:
-	QPair<QPointF, qreal> countPositionAndDirection(const kitBase::robotModel::PortInfo &port) const;
+
 
 	int readColorFullSensor(QHash<uint, int> const &countsColor) const;
 	int readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const;

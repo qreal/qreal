@@ -106,6 +106,10 @@ protected:
 	/// @todo: see what`s with ownership
 	virtual robotParts::Device *createDevice(const PortInfo &port, const DeviceInfo &deviceInfo);
 
+	/// @todo: Make it private.
+	/// Devices configuration.
+	Configuration mConfiguration;
+
 private slots:
 	void onConnected(bool success);
 
@@ -115,9 +119,6 @@ private:
 	/// Shows which types of devices can be connected to which ports.
 	/// @todo Add a notion of direction.
 	QHash<PortInfo, QList<DeviceInfo>> mAllowedConnections;
-
-	/// Devices configuration.
-	Configuration mConfiguration;
 
 	/// Model connection state.
 	ConnectionState mState;

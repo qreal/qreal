@@ -18,6 +18,9 @@ using namespace trik::robotModel::parts;
 using namespace kitBase::robotModel;
 
 TrikLineSensor::TrikLineSensor(const DeviceInfo &info, const PortInfo &port)
-	: kitBase::robotModel::robotParts::VectorSensor(info, port)
+	: trik::robotModel::parts::TrikVideoSensor(info, port)
 {
+}
+void TrikLineSensor::init(){
+
 }

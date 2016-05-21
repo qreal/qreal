@@ -18,6 +18,7 @@
 
 #include <kitBase/robotModel/commonRobotModel.h>
 
+#include <kitBase/robotModel/robotParts/display.h>
 #include "twoDModel/twoDModelDeclSpec.h"
 #include "twoDModel/engine/twoDModelDisplayWidget.h"
 
@@ -106,8 +107,10 @@ protected:
 
 	virtual kitBase::robotModel::DeviceInfo markerInfo() const;
 
-private:
+	/// @todo Make it private.
 	const kitBase::robotModel::RobotModelInterface *mRealModel;
+
+private:
 	engine::TwoDModelEngineInterface *mEngine = nullptr;  // Does not have ownership.
 };
 

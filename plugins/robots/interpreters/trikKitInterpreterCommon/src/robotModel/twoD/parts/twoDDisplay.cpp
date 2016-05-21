@@ -105,6 +105,29 @@ void Display::drawSmile(bool sad)
 	emit smileChanged(true, !sad);
 }
 
+void Display::drawObjectView(QList<trap> trapList)
+{
+	QPoint pts[4];
+	mCurrentImage = QImage(realWidth, realHeight, QImage::Format_RGB32);
+	mCurrentImage.fill(Qt::white);
+	QPainter* painter = new QPainter(&mCurrentImage);
+	painter->setPen(Qt::green);
+	painter->setBrush(Qt::green);
+	painter->fillRect(0, realHeight / 2, realWidth, realHeight / 2, painter->brush());
+	painter->setPen(Qt::black);
+	painter->setBrush(Qt::red);
+	foreach (trap currentTrap, trapList)
+	{
+		pts[0] = QPoint(currentTrap.x1 / 100.0 * realWidth, realHeight / 2.0 + currentTrap.y1 / 100.0 * realHeight / 2.0);
+		pts[1] = QPoint(currentTrap.x1 / 100.0 * realWidth, realHeight / 2.0 - currentTrap.y1 / 100.0 * realHeight / 2.0);
+		pts[2] = QPoint(currentTrap.x2 / 100.0 * realWidth, realHeight / 2.0 - currentTrap.y2 / 100.0 * realHeight / 2.0);
+		pts[3] = QPoint(currentTrap.x2 / 100.0 * realWidth, realHeight / 2.0 + currentTrap.y2 / 100.0 * realHeight / 2.0);
+		painter->drawPolygon(pts, 4, Qt::WindingFill);
+	}
+	delete painter;
+	mEngine.display()->repaintDisplay();
+}
+
 void Display::setBackground(const QColor &color)
 {
 	mBackground = color;

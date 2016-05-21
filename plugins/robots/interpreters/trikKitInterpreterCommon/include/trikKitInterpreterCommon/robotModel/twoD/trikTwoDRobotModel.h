@@ -69,6 +69,9 @@ private:
 
 	void onInterpretationStarted() override;
 
+	void objectSensorConnect(kitBase::robotModel::robotParts::Device *objectSensor);
+	void displayConnect(kitBase::robotModel::robotParts::Device *display);
+
 	QString mLeftWheelPort;
 	QString mRightWheelPort;
 	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;

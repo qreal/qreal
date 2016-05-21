@@ -40,6 +40,8 @@ public:
 
 	robotParts::Device *device(const PortInfo &port) const override;
 
+	robotParts::Device *pendingDevice(const PortInfo &port) const;
+
 	void clearDevice(const PortInfo &port) override;
 
 signals:

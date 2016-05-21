@@ -75,6 +75,7 @@ HEADERS += \
 	$$PWD/src/blocks/details/initVideoStreamingBlock.h \
 	$$PWD/src/blocks/details/writeToFileBlock.h \
 	$$PWD/src/blocks/details/removeFileBlock.h \
+	$$PWD/include/trikKit/robotModel/parts/trikVideoSensor.h
 
 SOURCES += \
 	$$PWD/src/robotModel/trikRobotModelBase.cpp \
@@ -127,6 +128,7 @@ SOURCES += \
 	$$PWD/src/blocks/details/initVideoStreamingBlock.cpp \
 	$$PWD/src/blocks/details/writeToFileBlock.cpp \
 	$$PWD/src/blocks/details/removeFileBlock.cpp \
+	$$PWD/src/robotModel/parts/trikVideoSensor.cpp
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikKit_ru.ts \

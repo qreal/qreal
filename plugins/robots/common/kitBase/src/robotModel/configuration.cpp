@@ -59,6 +59,11 @@ robotParts::Device *Configuration::device(const PortInfo &port) const
 	return mConfiguredDevices.value(port, nullptr);
 }
 
+robotParts::Device *Configuration::pendingDevice(const PortInfo &port) const
+{
+	return mPendingDevices.value(port, nullptr);
+}
+
 QList<robotParts::Device *> Configuration::devices() const
 {
 	return mConfiguredDevices.values();
