@@ -23,7 +23,7 @@
 #include <twoDModel/robotModel/twoDRobotModel.h>
 
 #include "interpreterCore/managers/kitAutoSwitcher.h"
-#include "interpreterCore/interpreter/interpreter.h"
+#include "interpreterCore/interpreter/blockInterpreter.h"
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "src/ui/robotsSettingsPage.h"
 #include "src/managers/exerciseExportManager.h"
@@ -388,7 +388,7 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 				&mEventsForKitPlugin
 				, &kitBase::EventsForKitPluginInterface::interpretationStarted
 				, [this](){ /// @todo
-		const bool isBlockInt = mInterpreter->isRunning();
+		const bool isBlockInt = mProxyInterpreter.isRunning();
 		mActionsManager.runAction().setEnabled(isBlockInt);
 		mActionsManager.stopRobotAction().setEnabled(isBlockInt);
 		mActionsManager.setEnableRobotActions(isBlockInt);
