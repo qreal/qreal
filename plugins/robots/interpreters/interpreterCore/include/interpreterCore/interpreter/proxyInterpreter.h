@@ -33,6 +33,7 @@ public:
 
 	int timeElapsed() const override;
 	qReal::IdList supportedDiagrams() const override;
+	virtual bool isRunning() const override;
 
 public slots:
 	void connectToRobot() override;

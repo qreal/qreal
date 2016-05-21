@@ -68,3 +68,8 @@ qReal::IdList ProxyInterpreter::supportedDiagrams() const
 {
 	return mProxiedInterpreter ? mProxiedInterpreter->supportedDiagrams() : qReal::IdList();
 }
+
+bool ProxyInterpreter::isRunning() const
+{
+	return mProxiedInterpreter ? mProxiedInterpreter->isRunning() : false;
+}
