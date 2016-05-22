@@ -371,23 +371,27 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
 	int propertyType = property->propertyType();
 
+	QString hhh = prop->displayText();
+	QString aaaa = prop->propertyName();
+
 
 	QList<QtProperty*> list = mPropertyEditor->properties();
-	int row = 0;
-	int column = 1;
+	int row = 1;
+	int column = 0;
 
 	QString firstPart = "";
 
 	for (QtProperty* temp : list) {
-		column = 1;
 		QList<QtProperty*> childs = temp->subProperties();
 		for (QtProperty* child : childs) {
 			if (child == prop) {
 				firstPart = temp->propertyName();
 				break;
+			} else {
+				++row;
 			}
-			++column;
 		}
+
 		if (!firstPart.isEmpty()) {
 			break;
 		}

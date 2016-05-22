@@ -33,6 +33,10 @@ PropertyEditorModel::PropertyEditorModel(
 
 int PropertyEditorModel::rowCount(const QModelIndex&) const
 {
+	if (mFields.isEmpty()) {
+		return -1;
+	}
+
 	return mField->childCount();
 	//return mFields.size();
 }
@@ -335,9 +339,9 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 	qDebug() << "mTargetLogicalObject" << endl;
 
-	for (int i = 0; i < 10; ++i) {
-		qDebug() << mTargetLogicalObject.data(roles::customPropertiesBeginRole + i).toString() << endl;
-	}
+//	for (int i = 0; i < 10; ++i) {
+//		qDebug() << mTargetLogicalObject.data(roles::customPropertiesBeginRole + i).toString() << endl;
+//	}
 
 	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 
@@ -351,9 +355,14 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		int role = roles::customPropertiesBeginRole;
 
 		foreach (QString property, logicalProperties) {
+			if (!property.contains("!")) {
+				return;
+			}
 			mFields.append(new Field(property, logicalAttribute, role, nullptr));
 			++role;
 		}
+
+
 		role = roles::customPropertiesBeginRole;
 		QStringList logPropertiesClone = logicalProperties;
 		int i = 0;
