@@ -111,6 +111,8 @@ private:
 
 	bool isConnect = false;
 
+	int typeOfRobotModel = 2;
+
 	//
 };
 

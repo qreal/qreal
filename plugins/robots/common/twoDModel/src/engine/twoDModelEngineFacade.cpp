@@ -37,14 +37,16 @@ TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotMod
 	//, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
+	this->typeOfRobotModel = typeOfRobotModel;
+
 	if (typeOfRobotModel == 3) {
 		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
 		mApi.reset(engineApi);
 	}
 	// Default branch.
 	else {
-//		const auto engineApi = new TwoDModelEngineApi(*mModel, *mView);
-		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
+		const auto engineApi = new TwoDModelEngineApi(*mModel, *mView);
+//		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
 		mApi.reset(engineApi);
 	}
 
@@ -146,10 +148,16 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				const bool isCurrentModel = modelName == mRobotModelName;
 				if (isCurrentModel) {
 					connectTwoDModel();
+
+					if (typeOfRobotModel == 2) {
 					mDock->attachToMainWindow(Qt::TopDockWidgetArea);
+					}
 				} else {
 					disconnectTwoDModel();
+
+					if (typeOfRobotModel == 2) {
 					mDock->detachFromMainWindow();
+					}
 				}
 			}
 			);
@@ -160,26 +168,10 @@ kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurati
 	return *mView;
 }
 
-// On time
-
 TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 {
-	// On Time
 	return *mApi;
-	//
 }
-
-//
-
-//TwoDModelEngineInterface &TwoDModelEngineFacade::engine2D()
-//{
-//	return *mApi2D;
-//}
-
-//ThreeDModelEngineInterface &TwoDModelEngineFacade::engine3D()
-//{
-//	return *mApi3D;
-//}
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
@@ -187,33 +179,35 @@ void TwoDModelEngineFacade::onStartInterpretation()
 
 	// Initialization 3D model V-Rep in the moment first click on the button.
 
-	if(!isConnect) {
-		clientID = simxStart((simxChar*)"127.0.0.1", portNb, true, true, 2000, 5);
+	if (typeOfRobotModel == 3) {
+		if(!isConnect) {
+			clientID = simxStart((simxChar*)"127.0.0.1", portNb, true, true, 2000, 5);
 
-		if (clientID == -1) {
-			simxFinish(clientID);
-			return;
+			if (clientID == -1) {
+				simxFinish(clientID);
+				return;
+			}
+
+			if (simxGetConnectionId(clientID) == -1) {
+				simxFinish(clientID);
+				return;
+			}
+
+			//simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+			//simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+			simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+			simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+
+			simxGetObjectHandle(clientID, "sensor", &sonarSensorHandle, simx_opmode_oneshot_wait);
+
+			mApi->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
+										backLeftHandle, backRightHandle, sonarSensorHandle);
+
+			isConnect = true;
 		}
 
-		if (simxGetConnectionId(clientID) == -1) {
-			simxFinish(clientID);
-			return;
-		}
-
-		//simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
-		//simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
-		simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
-		simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
-
-		simxGetObjectHandle(clientID, "sensor", &sonarSensorHandle, simx_opmode_oneshot_wait);
-
-		mApi->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
-									backLeftHandle, backRightHandle, sonarSensorHandle);
-
-		isConnect = true;
+		simxStartSimulation(clientID, simx_opmode_oneshot);
 	}
-
-	simxStartSimulation(clientID, simx_opmode_oneshot);
 
 	//
 
@@ -224,7 +218,9 @@ void TwoDModelEngineFacade::onStopInterpretation(qReal::interpretation::StopReas
 {
 	// Block for 3D code
 
-	simxStopSimulation(clientID, simx_opmode_oneshot);
+	if (typeOfRobotModel == 3) {
+		simxStopSimulation(clientID, simx_opmode_oneshot);
+	}
 
 	//simxFinish(clientID);
 

@@ -52,16 +52,16 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 {
 	mRealRobotModel.reset(realRobotModel);
 	mTwoDRobotModel.reset(twoDRobotModel);
-//	mThreeDRobotModel.reset(threeDRobotModel);
+	mThreeDRobotModel.reset(threeDRobotModel);
 	mBlocksFactory = blocksFactory;
 
 	const auto modelEngine2D = new twoDModel::engine::TwoDModelEngineFacade(*mTwoDRobotModel, 2);
-//	const auto modelEngine3D = new twoDModel::engine::TwoDModelEngineFacade(*mThreeDRobotModel, 3);
+	const auto modelEngine3D = new twoDModel::engine::TwoDModelEngineFacade(*mThreeDRobotModel, 3);
 
 	mTwoDRobotModel->setEngine(modelEngine2D->engine());
-//	mThreeDRobotModel->setEngine(modelEngine3D->engine());
+	mThreeDRobotModel->setEngine(modelEngine3D->engine());
 	mTwoDModel.reset(modelEngine2D);
-//	mThreeDModel.reset(modelEngine3D);
+	mThreeDModel.reset(modelEngine3D);
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel->name() });
 }
@@ -82,18 +82,18 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, configurer.qRealConfigurator().projectManager()
 			, configurer.interpreterControl());
 
-	//
-//	mThreeDModel->init(configurer.eventsForKitPlugin()
-//			, configurer.qRealConfigurator().systemEvents()
-//			, configurer.qRealConfigurator().logicalModelApi()
-//			, interpretersInterface
-//			, configurer.qRealConfigurator().projectManager()
-//			, configurer.interpreterControl());
+
+	mThreeDModel->init(configurer.eventsForKitPlugin()
+			, configurer.qRealConfigurator().systemEvents()
+			, configurer.qRealConfigurator().logicalModelApi()
+			, interpretersInterface
+			, configurer.qRealConfigurator().projectManager()
+			, configurer.interpreterControl());
 
 	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 	mTwoDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
-	//
-//	mThreeDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
+
+	mThreeDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mRealRobotModel.data(), &robotModel::TrikRobotModelBase::rereadSettings);
@@ -101,15 +101,15 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
 
-	//
-//	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
-//			, mThreeDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
+
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
+			, mThreeDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()
 {
-//	return {mRealRobotModel.data(), mTwoDRobotModel.data(), mThreeDRobotModel.data()};
-	return {mRealRobotModel.data(), mTwoDRobotModel.data()};
+	return {mRealRobotModel.data(), mTwoDRobotModel.data(), mThreeDRobotModel.data()};
+//	return {mRealRobotModel.data(), mTwoDRobotModel.data()};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPluginBase::blocksFactoryFor(

@@ -31,9 +31,9 @@
 #include "src/engine/items/regions/rectangularRegion.h"
 
 //
-#include <iostream>
+//#include <iostream>
 
-using namespace std;
+//using namespace std;
 //
 
 using namespace twoDModel;
@@ -80,14 +80,23 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 //	cout << "Port = " << (string)port.name() << endl;
 
 
+	if (port.name() == QString("M3")) {
+		simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 1000.0f, simx_opmode_oneshot);
+	}
+
+	if (port.name() == QString("M4")) {
+		simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 1000.0f, simx_opmode_oneshot);
+	}
+
+
 	//simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
 	//simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed * 0.1f, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 1000.0f, simx_opmode_oneshot);
-	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 1000.0f, simx_opmode_oneshot);
+//	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 1000.0f, simx_opmode_oneshot);
+//	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 1000.0f, simx_opmode_oneshot);
 
 	//
 
-	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
+//	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
 }
 
 int ThreeDModelEngineApi::readEncoder(const PortInfo &port) const
@@ -148,10 +157,10 @@ int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 
 	//
 
-	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
+//	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
+//	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
-	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+//	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
 }
 
 QVector<int> ThreeDModelEngineApi::readAccelerometerSensor() const
