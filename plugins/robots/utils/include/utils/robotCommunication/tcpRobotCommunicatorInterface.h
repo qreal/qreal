@@ -106,6 +106,9 @@ signals:
 
 	/// Emitted when new message with "file contents" arrives from robot.
 	void fileContentsFromRobot(const QString &message);
+
+	/// Emitted when new mail arrives from robot.
+	void mailFromRobot(const QString &message);
 };
 
 }

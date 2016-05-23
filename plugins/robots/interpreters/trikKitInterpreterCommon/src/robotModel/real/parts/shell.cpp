@@ -28,6 +28,8 @@ Shell::Shell(const DeviceInfo &info, const PortInfo &port
 			, this, &Shell::textPrinted);
 	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::fileContentsFromRobot
 			, this, &Shell::fileContents);
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::mailFromRobot
+			, this, &Shell::mailArrived);
 }
 
 void Shell::say(const QString &text)

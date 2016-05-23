@@ -27,6 +27,7 @@ enum class MessageKind
 {
 	text
 	, fileContents
+	, mail
 	, info
 	, error
 };
