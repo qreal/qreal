@@ -18,6 +18,7 @@
 #include "enumType.h"
 #include "numericType.h"
 #include "stringType.h"
+#include "roleType.h"
 #include "portType.h"
 #include "nodeType.h"
 #include "edgeType.h"
@@ -36,6 +37,7 @@ Diagram::Diagram(const QString &name, const QString &nodeName, const QString &di
 
 Diagram::~Diagram()
 {
+	qDebug() << "here destruct";
 	qDeleteAll(mTypes);
 }
 
@@ -76,6 +78,7 @@ bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 				qDebug() << "Can't parse node";
 				return false;
 			}
+
 			mTypes[nodeType->qualifiedName()] = nodeType;
 		} else if (element.nodeName() == "edge") {
 			Type *edgeType = new EdgeType(this);
@@ -84,6 +87,8 @@ bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 				qDebug() << "Can't parse edge";
 				return false;
 			}
+			qDebug() << "edge!";
+
 			mTypes[edgeType->qualifiedName()] = edgeType;
 		} else if (element.nodeName() == "import") {
 			ImportSpecification import = {
@@ -91,6 +96,7 @@ bool Diagram::initGraphicTypes(const QDomElement &graphicTypesElement)
 					, element.attribute("as", "")
 					, element.attribute("displayedName", "")
 			};
+
 			mImports.append(import);
 		}
 		else
@@ -122,6 +128,7 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 				qDebug() << "Can't parse enum";
 				return false;
 			}
+
 			mTypes[enumType->qualifiedName()] = enumType;
 		} else if (element.nodeName() == "numeric") {
 			Type *numericType = new NumericType();
@@ -130,6 +137,7 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 				qDebug() << "Can't parse numeric type";
 				return false;
 			}
+
 			mTypes[numericType->qualifiedName()] = numericType;
 		} else if (element.nodeName() == "string") {
 			Type *stringType = new StringType();
@@ -138,6 +146,7 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 				qDebug() << "Can't parse string type";
 				return false;
 			}
+
 			mTypes[stringType->qualifiedName()] = stringType;
 		} else if (element.nodeName() == "port") {
 			Type *portType = new PortType();
@@ -146,7 +155,20 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 				qDebug() << "Can't parse port type";
 				return false;
 			}
+
 			mTypes[portType->qualifiedName()] = portType;
+		} else if  (element.nodeName() == "role") {
+			Type *roleType = new RoleType();
+
+			qDebug() << roleType->name();
+
+			if (!roleType->init(element, mDiagramName)) {
+				delete roleType;
+				qDebug() << "Can't parse roleType type";
+				return false;
+			}
+
+			mTypes[roleType->qualifiedName()] = roleType;
 		}
 		else {
 			qDebug() << "ERROR: unknown non graphic type" << element.nodeName();

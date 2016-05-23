@@ -248,6 +248,8 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 				createPort(tagNonGraphic, id);
 			} else if (objectType == "MetaEntityGroup") {
 				createGroup(tagGroups, id);
+			} else if (objectType == "MetaEntityRole") {
+				createRole(tagNonGraphic, id);
 			}
 		}
 	}
@@ -275,6 +277,18 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 			}
 		}
 	}
+}
+
+void EditorGenerator::createRole(QDomElement &parent, const Id &id)
+{
+	QDomElement roleElement = mDocument.createElement("role");
+	ensureCorrectness(id, roleElement, "name", mApi.name(id));
+	ensureCorrectness(id, roleElement, "arrowType", mApi.stringProperty(id, "arrowType"));
+	ensureCorrectness(id, roleElement, "end", mApi.stringProperty(id, "end"));
+	ensureCorrectness(id, roleElement, "navigable", mApi.stringProperty(id, "navigable"));
+	parent.appendChild(roleElement);
+
+	setProperties(roleElement, id);
 }
 
 void EditorGenerator::createImport(QDomElement &parent, const Id &id)
@@ -351,8 +365,15 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 		graphics.appendChild(lineType);
 
 		QDomElement shapeType = mDocument.createElement("shape");
-		ensureCorrectness(id, shapeType, "type", mApi.stringProperty(id, "shape"));
-		graphics.appendChild(shapeType);
+		QString shapeCheck = mApi.stringProperty(id, "shape");
+		if (shapeCheck.isEmpty()) {
+			ensureCorrectness(id, shapeType, "type", "broken");
+			graphics.appendChild(shapeType);
+
+		} else {
+			ensureCorrectness(id, shapeType, "type", mApi.stringProperty(id, "shape"));
+			graphics.appendChild(shapeType);
+		}
 
 		QString const labelText = mApi.stringProperty(id, "labelText");
 		if (!labelText.isEmpty()) {
@@ -378,14 +399,14 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	QDomElement logic = mDocument.createElement("logic");
 	edge.appendChild(logic);
 
-	setAssociations(logic, id);
+	setRoles(logic, id);
 	setPossibleEdges(logic, id);
 	setProperties(logic, id);
 	setPorts(logic, id, "from");
 	setPorts(logic, id, "to");
 	setGeneralization(logic, id);
 	setExplosion(logic, id);
-	setDividability(logic, id);
+	//setDividability(logic, id);
 }
 
 void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
@@ -505,7 +526,7 @@ void EditorGenerator::setContextMenuFields(QDomElement &parent, const Id &id)
 
 void EditorGenerator::setValues(QDomElement &parent, Id const &id)
 {
-	for(Id const idChild : mApi.children(id)) {
+	for (Id const &idChild : mApi.children(id)) {
 		if (idChild != Id::rootId()) {
 			QDomElement valueTag = mDocument.createElement("value");
 			ensureCorrectness(idChild, valueTag, "name", mApi.stringProperty(idChild, "valueName"));
@@ -531,20 +552,6 @@ void EditorGenerator::setGroupNodes(QDomElement &parent, const Id &id)
 			parent.appendChild(groupNodeTag);
 		}
 	}
-}
-
-
-void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
-{
-	QDomElement associationTag = mDocument.createElement("associations");
-	ensureCorrectness(id, associationTag, "beginType", mApi.stringProperty(id, "beginType"));
-	ensureCorrectness(id, associationTag, "endType", mApi.stringProperty(id, "endType"));
-	parent.appendChild(associationTag);
-
-	QDomElement association = mDocument.createElement("association");
-	ensureCorrectness(id, association, "beginName", mApi.stringProperty(id, "beginName"));
-	ensureCorrectness(id, association, "endName", mApi.stringProperty(id, "endName"));
-	associationTag.appendChild(association);
 }
 
 void EditorGenerator::setUsages(QDomElement &parent, const Id &id)
@@ -576,6 +583,17 @@ void EditorGenerator::newSetConnections(QDomElement &parent, const Id &id,
 	if (!connectionsTag.childNodes().isEmpty()) {
 		parent.appendChild(connectionsTag);
 	}
+}
+
+void EditorGenerator::setRoles(QDomElement &parent, const Id &id)
+{
+	QDomElement beginRole = mDocument.createElement("beginRole");
+	ensureCorrectness(id, beginRole, "role", mApi.stringProperty(id, "beginRole"));
+	parent.appendChild(beginRole);
+
+	QDomElement endRole = mDocument.createElement("endRole");
+	ensureCorrectness(id, endRole, "role", mApi.stringProperty(id, "endRole"));
+	parent.appendChild(endRole);
 }
 
 void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)

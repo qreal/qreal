@@ -28,6 +28,13 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
+
+	if (mTextBinded.contains(':')) {
+		int cutPosition = mTextBinded.indexOf(':', 0);
+		mRoleName = mTextBinded.mid(0, cutPosition);
+		mNameOfPropertyRole = mTextBinded.mid(cutPosition + 1);
+	}
+
 	mPrefix = element.attribute("prefix");
 	mSuffix = element.attribute("suffix");
 	mReadOnly = element.attribute("readOnly", "false");
@@ -71,18 +78,29 @@ QString Label::titleName() const
 	return "title_" + QString("%1").arg(mIndex);
 }
 
+QString Label::roleName() const
+{
+	return mRoleName;
+}
+
 void Label::changeIndex(int i)
 {
 	mIndex = i;
 }
 
-void Label::generateCodeForConstructor(OutFile &out)
+void Label::generateCodeForConstructor(OutFile &out, QString roleName)
 {
 	if (mText.isEmpty()) {
-		// It is binded label, text for it will be fetched from repo.
-		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
+		if (mRoleName.isEmpty()) {
+			// It is binded label, text for it will be fetched from repo.
+			out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
+					+ QString::number(mX.value()) + ", " + QString::number(mY.value())
+					+ ", \"" + mTextBinded + "\", \"\", \"\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
+		} else {
+			out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
+					+ QString::number(mX.value()) + ", " + QString::number(mY.value())
+					+ ", \"" + mRoleName + "\", \"" + roleName + "\", \"" +  mNameOfPropertyRole + "\", "+ mReadOnly + ", " + QString::number(mRotation) + ");\n";
+		}
 	} else {
 		// It is a static label, text for it is fixed.
 		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
@@ -114,7 +132,7 @@ QStringList Label::getListOfStr(const QString &strToParse) const
 	return strToParse.split("##");
 }
 
-void Label::generateCodeForUpdateData(OutFile &out)
+void Label::generateCodeForUpdateData(OutFile &out, QString roleName)
 {
 	if (mTextBinded.isEmpty()) {
 		// Static label
@@ -122,7 +140,13 @@ void Label::generateCodeForUpdateData(OutFile &out)
 		return;
 	}
 
-	QStringList list = getListOfStr(mTextBinded);
+	QStringList list;
+
+	if (!roleName.isEmpty() && !mNameOfPropertyRole.isEmpty()) {
+		list = getListOfStr(roleName  + "!" + mNameOfPropertyRole);
+	} else {
+		list = getListOfStr(mTextBinded);
+	}
 
 	QString resultStr;
 	if (list.count() == 1) {

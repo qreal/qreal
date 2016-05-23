@@ -15,7 +15,7 @@
 include(../global.pri)
 
 
-HEADERS += association.h \
+HEADERS += \
 	diagram.h \
 	edgeType.h \
 	editor.h \
@@ -29,15 +29,16 @@ HEADERS += association.h \
 	numericType.h \
 	pointPort.h \
 	port.h \
+	portType.h \
 	property.h \
 	sdftocpp.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	portType.h \
 	circularPort.h \
+	roleType.h
 
-SOURCES += association.cpp \
+SOURCES += \
 	diagram.cpp \
 	edgeType.cpp \
 	editor.cpp \
@@ -52,12 +53,13 @@ SOURCES += association.cpp \
 	numericType.cpp \
 	pointPort.cpp \
 	port.cpp \
+	portType.cpp \
 	property.cpp \
 	sdftocpp.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	portType.cpp \
+	roleType.cpp \
 	circularPort.cpp \
 
 TEMPLATE = app

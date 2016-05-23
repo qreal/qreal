@@ -79,6 +79,7 @@ public:
 	QStringList portTypes(const Id &id) const override;
 	QString defaultPropertyValue(const Id &id, QString name) const override;
 	QStringList propertiesWithDefaultValues(const Id &id) const override;
+	QStringList getListProperiesOfRole(const Id &id, const QString &element) const override;
 
 	bool hasElement(const Id &element) const override;
 

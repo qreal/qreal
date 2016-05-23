@@ -53,9 +53,9 @@ void Label::init()
 	reinitFont();
 	setRotation(mProperties.rotation());
 	if (!mProperties.isStatic()) {
-		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
+		const QList<QPair<QString, QString>> values = mGraphicalModelAssistApi
 				.editorManagerInterface().enumValues(mId, mProperties.binding());
-		for (QPair<QString, QString> const &pair : values) {
+		for (const QPair<QString, QString> &pair : values) {
 			mEnumValues[pair.first] = pair.second;
 		}
 	}
@@ -166,7 +166,11 @@ void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
-	if (mProperties.binding() == "name") {
+	QString  check = mProperties.nameForRoleProperty();
+
+	if (!mProperties.nameForRoleProperty().isEmpty()) {
+		parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);
+	} else if (mProperties.binding() == "name") {
 		parent->setName(value, withUndoRedo);
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
@@ -286,6 +290,11 @@ void Label::setHard(bool hard)
 bool Label::isReadOnly() const
 {
 	return mProperties.isReadOnly();
+}
+
+QString Label::location() const
+{
+	return mProperties.binding();
 }
 
 void Label::focusOutEvent(QFocusEvent *event)

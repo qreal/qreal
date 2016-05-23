@@ -87,9 +87,19 @@ bool NodeType::copyPictures(GraphicType *parent)
 	return false;
 }
 
-bool NodeType::initAssociations()
+bool NodeType::initRoles()
 {
 	return true;
+}
+
+bool NodeType::initRoleProperties()
+{
+	return true;
+}
+
+QString NodeType::propertyName(Property *property, QString roleName)
+{
+	return "";
 }
 
 bool NodeType::initDividability()
@@ -260,7 +270,7 @@ void NodeType::generateCode(OutFile &out)
 	}
 
 	foreach (Label *label, mLabels) {
-		label->generateCodeForConstructor(out);
+		label->generateCodeForConstructor(out, "");
 	}
 
 	out() << "\t\t}\n\n";
@@ -289,7 +299,7 @@ void NodeType::generateCode(OutFile &out)
 		out() << "\t\t\tQ_UNUSED(repo);\n";
 	} else {
 		foreach (Label *label, mLabels) {
-			label->generateCodeForUpdateData(out);
+			label->generateCodeForUpdateData(out, "");
 		}
 	}
 
@@ -343,6 +353,8 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\tQStringList fromPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
 
 	<< "\t\tQStringList toPortTypes() const\n\t\t{\n\t\t\treturn QStringList(\"NonTyped\");\n\t\t}\n\n"
+	<<"\t\tQString nameOfBeginRole() const\n\t\t{\n\t\t\treturn \"\";\n\t\t}\n\n"
+	<<"\t\tQString nameOfEndRole() const\n\t\t{\n\t\t\treturn \"\";\n\t\t}\n\n"
 
 	<< "\t\tenums::linkShape::LinkShape shapeType() const\n\t\t{\n\t\t\treturn enums::linkShape::square;\n\t\t}\n\n"
 

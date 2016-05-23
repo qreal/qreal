@@ -95,6 +95,9 @@ public:
 	QStringList fromPortTypes() const;
 	QStringList toPortTypes() const;
 
+	QString nameOfBeginRole() const;
+	QString nameOfEndRole() const;
+
 	enums::linkShape::LinkShape shapeType() const;
 
 	bool createChildrenFromMenu() const;

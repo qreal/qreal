@@ -50,7 +50,7 @@ void InterpreterElementImpl::initLabels(const int &width, const int &height, Lab
 			LabelInterface *title = nullptr;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);
+				title = factory.createLabel(index, x.value(), y.value(), textBinded, "", "", readOnly == "true", rotation);
 			} else {
 				// This is a statical label, it does not need repository.
 				title = factory.createLabel(index, x.value(), y.value(), text, rotation);
@@ -291,7 +291,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = labelFactory.createLabel(0, 0, 0, labelText, false, 0);
+				title = labelFactory.createLabel(0, 0, 0, labelText, "", "", false, 0);
 			}
 
 			title->setBackground(QColor(Qt::white));
@@ -496,6 +496,9 @@ void InterpreterElementImpl::drawArrow(QPainter *painter, const QString &type) c
 	} else if (style == "empty_rhomb" || style == "filled_rhomb") {
 		static const QPointF points[] = {QPointF(0, 0), QPointF(-5, 10), QPointF(0, 20), QPointF(5, 10)};
 		painter->drawPolygon(points, 4);
+		static const QPointF added[] =  {QPointF(-2, -3), QPointF(0, -5), QPointF(2, -3)};
+		painter->drawPolygon(added, 3);
+
 	} else if (style == "open_arrow") {
 		static const QPointF points[] = {QPointF(-5, 10), QPointF(0, 0), QPointF(5, 10)};
 		painter->drawPolyline(points, 3);
@@ -596,6 +599,16 @@ QStringList InterpreterElementImpl::fromPortTypes() const
 QStringList InterpreterElementImpl::toPortTypes() const
 {
 	return QStringList("NonTyped");
+}
+
+QString InterpreterElementImpl::nameOfBeginRole() const
+{
+	return "";
+}
+
+QString InterpreterElementImpl::nameOfEndRole() const
+{
+	return "";
 }
 
 enums::linkShape::LinkShape InterpreterElementImpl::shapeType() const

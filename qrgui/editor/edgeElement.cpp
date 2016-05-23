@@ -72,6 +72,9 @@ EdgeElement::EdgeElement(
 	mPenStyle = mElementImpl->getPenStyle();
 	mPenWidth = mElementImpl->getPenWidth();
 	mPenColor = mElementImpl->getPenColor();
+	mBeginRoleName = mElementImpl->nameOfBeginRole();
+	mEndRoleName = mElementImpl->nameOfEndRole();
+
 	setZValue(100);
 	setFlag(ItemIsMovable, true);
 	// if flag is true then draws strangely...
@@ -121,7 +124,7 @@ EdgeElement::~EdgeElement()
 void EdgeElement::initTitles()
 {
 	Element::initTitles();
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 void EdgeElement::initLineHandler()
@@ -156,7 +159,7 @@ void EdgeElement::setLine(const QPolygonF &line)
 	mLine = line;
 	saveConfiguration();
 	update();
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 qreal EdgeElement::fromPort() const
@@ -281,27 +284,36 @@ QPainterPath EdgeElement::shape() const
 	return path;
 }
 
-void EdgeElement::updateLongestPart()
+
+void EdgeElement::updateBeginAndEnd()
 {
-	qreal maxLen = 0.0;
-	int maxIdx = 0;
-	for (int i = 0; i < mLine.size() - 1; ++i) {
-		qreal newLen = QLineF(mLine[i], mLine[i + 1]).length();
-		if (newLen > maxLen) {
-			maxLen = newLen;
-			maxIdx = i;
+	int firstIdx = 0;
+	int lastIdx = mLine.size() - 2;
+
+	int i = 0;
+	int j = 0;
+
+	for (auto label : mLabels) {
+		if (label->location() == "beginRole") {
+			Label *title = label;
+			qreal x = (mLine[firstIdx].x() + 40);
+			qreal y = (mLine[firstIdx].y() + 25 * (i) + 10);
+			title->setPos(x, y);
+			++i;
+		} else if (label->location() == "endRole") {
+			Label *title = label;
+			qreal x = (mLine[lastIdx + 1].x() - 40);
+			qreal y = (mLine[lastIdx + 1].y() + 25 * (j) + 10);
+			title->setPos(x, y);
+			++j;
+		} else {
+			Label *title = label;
+			qreal x = (mLine[firstIdx].x() + mLine[lastIdx + 1].x()) / 2;
+			qreal y = (mLine[firstIdx].y() + mLine[lastIdx + 1].y()) / 2;
+			x -= title->boundingRect().width() / 2;
+			y -= title->boundingRect().height() / 2;
+			title->setPos(x, y);
 		}
-	}
-
-	mLongPart = maxIdx;
-
-	if (mLabels.count() == 1) {
-		Label *title = mLabels[0];
-		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
-		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
-		x -= title->boundingRect().width() / 2;
-		y -= title->boundingRect().height() / 2;
-		title->setPos(x, y);
 	}
 }
 
@@ -920,7 +932,7 @@ void EdgeElement::updateData()
 	mElementImpl->updateData(this);
 
 	update();
-	updateLongestPart();
+	updateBeginAndEnd();
 	highlight(isHanging() ? Qt::red : mPenColor);
 }
 
@@ -964,7 +976,7 @@ void EdgeElement::placeEndTo(const QPointF &place)
 	mModelUpdateIsCalled = true;
 	mGraphicalAssistApi.setPosition(id(), this->pos());
 
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 void EdgeElement::moveConnection(NodeElement *node, const qreal portId)
@@ -1027,6 +1039,9 @@ EdgeInfo EdgeElement::data()
 
 	result.setSrcId(src() ? src()->id() : Id::rootId());
 	result.setDstId(dst() ? dst()->id() : Id::rootId());
+	QStringList ololo = mGraphicalAssistApi.editorManagerInterface().getListProperiesOfRole(this->id(), "role1");
+
+	result.setLogicalProperty("lalalal", "asasasa");
 
 	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
 	for (const QString &property : properties.keys()) {
@@ -1060,7 +1075,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 				}
 			}
 
-			updateLongestPart();
+			updateBeginAndEnd();
 			return value;
 		default:
 			return QGraphicsItem::itemChange(change, value);
@@ -1121,7 +1136,7 @@ void EdgeElement::alignToGrid()
 {
 	prepareGeometryChange();
 	mHandler->alignToGrid();
-	updateLongestPart();
+	updateBeginAndEnd();
 }
 
 

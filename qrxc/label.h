@@ -36,12 +36,13 @@ public:
 	/// @param height Height of parent node or edge.
 	bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
 
-	void generateCodeForConstructor(utils::OutFile &out);
-	void generateCodeForUpdateData(utils::OutFile &out);
+	void generateCodeForConstructor(utils::OutFile &out, QString roleName);
+	void generateCodeForUpdateData(utils::OutFile &out, QString roleName);
 	void generateCodeForFields(utils::OutFile &out);
 	// Default copy constructor ok.
 	Label* clone();
 	void changeIndex(int i);
+	QString roleName() const;
 
 private:
 	QString titleName() const;
@@ -53,6 +54,8 @@ private:
 	utils::ScalableCoordinate mY;
 
 	int mIndex;
+	QString mRoleName;
+	QString mNameOfPropertyRole;
 	QString mText;
 	QString mTextBinded;
 	QString mReadOnly;
