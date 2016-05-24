@@ -102,8 +102,18 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
-	resultCode.replace("@@VARIABLES@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->variables()->generateVariableString(), 1, "\t"));
+
+	const QString constantsString = utils::StringUtils::addIndent(
+			mCustomizer->factory()->variables()->generateConstantsString(), 1, "\t");
+	const QString variablesString = utils::StringUtils::addIndent(
+			mCustomizer->factory()->variables()->generateVariableString(), 1, "\t");
+	if (resultCode.contains("@@CONSTANTS@@")) {
+		resultCode.replace("@@CONSTANTS@@", constantsString);
+		resultCode.replace("@@VARIABLES@@", variablesString);
+	} else {
+		resultCode.replace("@@VARIABLES@@", constantsString + "\n" + variablesString);
+	}
+
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 

@@ -1,0 +1,1 @@
+{ Waiting for motion sensor is not supported yet }

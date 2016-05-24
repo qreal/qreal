@@ -46,6 +46,10 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 		return;
 	}
 
+	mPaletteItems.clear();
+	mPaletteElements.clear();
+	mElementsSet.clear();
+	mItemsVisible.clear();
 	clear();
 	show();
 
@@ -89,6 +93,7 @@ void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem 
 	DraggableElement *element = new DraggableElement(mMainWindow, data
 			, mPaletteTree.iconsView(), *mEditorManager);
 
+	mElementsSet.insert(data);
 	mPaletteElements.insert(data.id(), element);
 	mPaletteItems.insert(data.id(), leaf);
 
@@ -270,6 +275,11 @@ void PaletteTreeWidget::traverse(const PaletteTreeWidget::Action &action) const
 	for (int i = 0; i < topLevelItemCount(); ++i) {
 		traverse(topLevelItem(i), action);
 	}
+}
+
+const QSet<PaletteElement> &PaletteTreeWidget::elementsSet() const
+{
+	return mElementsSet;
 }
 
 void PaletteTreeWidget::traverse(QTreeWidgetItem * const item, const PaletteTreeWidget::Action &action) const

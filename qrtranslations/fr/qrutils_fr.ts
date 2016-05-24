@@ -85,23 +85,23 @@
 <context>
     <name>qReal::BaseGraphTransformationUnit</name>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="45"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="48"/>
         <source>no current diagram</source>
         <translation>Ouvrez un diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="72"/>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="120"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="75"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="123"/>
         <source>Rule &apos;</source>
         <translation>Règle &apos;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="73"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="76"/>
         <source>&apos; has not any appropriate nodes</source>
         <translation>&apos; n&apos;a pas de nœuds appropriés</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="120"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="123"/>
         <source>&apos; has unconnected link</source>
         <translation>&apos; a un lien non connecté</translation>
     </message>
@@ -138,22 +138,22 @@
 <context>
     <name>qReal::interpretation::Interpreter</name>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="55"/>
         <source>Interpreter is already running</source>
         <translation>Interpréteur est déjà en cours d&apos;exécution</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="96"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="97"/>
         <source>Cannot create new thread with already occupied id %1</source>
         <translation>Vous ne pouvez pas créer un nouveau thread avec id déjà occupée %1</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="108"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="109"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Le nombre limite de threads est dépassé. Le max est de %1</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="130"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="131"/>
         <source>Killing non-existent thread %1</source>
         <translation>Terminaison du thread non-existant %1</translation>
     </message>
@@ -161,17 +161,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="113"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Aucun point d&apos;entrée n&apos;est trouvé, ajoutez un nœud initial à un diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="118"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
         <source>Stack overflow</source>
         <translation>Débordement de pile</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="172"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
         <source>Block has disappeared!</source>
         <translation type="unfinished"></translation>
     </message>

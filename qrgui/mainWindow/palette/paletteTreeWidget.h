@@ -71,6 +71,9 @@ public:
 	/// Travels thorough the whole model and calls \a action for each model index.
 	void traverse(const Action &action) const;
 
+	/// Returns set that may let quickly determine should we update palette or no.
+	const QSet<PaletteElement> &elementsSet() const;
+
 protected:
 	void mousePressEvent(QMouseEvent *event);
 
@@ -114,6 +117,7 @@ private:
 	PaletteTree &mPaletteTree;
 	bool mEditable;
 
+	QSet<PaletteElement> mElementsSet;
 	QHash<Id, DraggableElement *> mPaletteElements;  // Takes ownership.
 	QHash<Id, QTreeWidgetItem *> mPaletteItems;  // Takes ownership.
 	QHash<QTreeWidgetItem *, bool> mItemsVisible;

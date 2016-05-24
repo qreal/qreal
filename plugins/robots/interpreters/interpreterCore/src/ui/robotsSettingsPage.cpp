@@ -19,7 +19,7 @@
 #include <QtWidgets/QRadioButton>
 
 #include <qrkernel/settingsManager.h>
-#include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <utils/sensorsGraph.h>
 #include <kitBase/additionalPreferences.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 

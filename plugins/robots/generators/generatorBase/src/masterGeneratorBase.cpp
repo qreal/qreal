@@ -141,7 +141,15 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
-	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
+	const QString constantsString = mCustomizer->factory()->variables()->generateConstantsString();
+	const QString variablesString = mCustomizer->factory()->variables()->generateVariableString();
+	if (resultCode.contains("@@CONSTANTS@@")) {
+		resultCode.replace("@@CONSTANTS@@", constantsString);
+		resultCode.replace("@@VARIABLES@@", variablesString);
+	} else {
+		resultCode.replace("@@VARIABLES@@", constantsString + "\n" + variablesString);
+	}
+
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 

@@ -162,6 +162,18 @@ public:
 		};
 	}
 
+	/// The information about the PascalABC language.
+	static LanguageInfo pascalABC(const QStringList &additionalTokens = QStringList())
+	{
+		return LanguageInfo{"pas"                                            /* extension */
+				, QObject::tr("PascalABC Language Source File")              /* extension description */
+				, false                                                      /* tabs indentation */
+				, 4                                                          /* tab size */
+				, new QsciLexerCPP()                                         /* lexer */
+				, additionalTokens                                           /* additional autocompletion tokens */
+		};
+	}
+
 private:
 	static QList<LanguageInfo> mUserDefinedLanguages;
 };

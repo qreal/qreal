@@ -16,7 +16,7 @@
 
 #include <QtCore/QObject>
 
-#include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <utils/sensorsGraph.h>
 #include <kitBase/devicesConfigurationProvider.h>
 
 #include <qrtext/debuggerInterface.h>

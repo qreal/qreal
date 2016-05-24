@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@
 #include <kitBase/additionalPreferences.h>
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/blocksBase/blocksFactoryInterface.h>
+#include <kitBase/interpreterInterface.h>
 
 namespace kitBase {
 
@@ -114,6 +115,13 @@ public:
 	virtual int priority() const
 	{
 		return 0;
+	}
+
+	/// Returns a list of intepreters specific only for this kit plugin. Intepreters will be selected in correspondence
+	/// with data returned by InterpreterInterface::supportedDiagrams().
+	virtual QList<kitBase::InterpreterInterface *> customInterpreters() const
+	{
+		return {};
 	}
 };
 
