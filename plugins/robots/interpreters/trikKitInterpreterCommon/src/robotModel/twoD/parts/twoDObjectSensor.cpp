@@ -157,7 +157,7 @@ QPair<qreal, qreal> ObjectSensor::get_distance(const QPointF &pt)
 	if(dist == 0){
 		return QPair<qreal, qreal>(0, 0);
 	}
-	if (fabs(pt.y() / dist) > sin_view){
+	if (qAbs(pt.y() / dist) > sin_view){
 		return QPair<qreal, qreal>(0, -1);
 	}
 
