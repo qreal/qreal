@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <qmath.h>
+#include <QtCore/qmath.h>
 #include <trikKit/robotModel/parts/trikObjectSensor.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
 
@@ -34,7 +34,7 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT ObjectSensor : public robotModel
 
 public:
 	ObjectSensor(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface &engine);
+		, const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void init() override;
 	void detect() override;
@@ -43,13 +43,14 @@ public:
 	void setDisplay(trik::robotModel::twoD::parts::Display * display);
 
 protected:
-	bool wall2trap(const QPointF &pos, const QPointF &direct,
-				   const QPointF &wall_start, const QPointF &wall_end, trap &result);
+	bool wall2Trap(const QPointF &pos, const QPointF &direct,
+				   const QPointF &wall_start, const QPointF &wall_end, Trap &result);
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
 	trik::robotModel::twoD::parts::Display *mDis;
 
+	/// Angle of view
 	const qreal view_angle = M_PI/3;
 	const qreal sin_view = qSin(view_angle / 2);
 	const qreal cos_view = qCos(view_angle / 2);
@@ -57,7 +58,7 @@ private:
 	QPair<qreal, qreal> get_intersect(const QPointF &direct, const QPointF &pt1, const QPointF &pt2);
 	QPointF convert_coord(const QPointF &pos, const QPointF &direct, const QPointF &pt);
 	QPair<qreal, qreal> get_distance(const QPointF &pt);
-	trap trap2display(qreal direct1, qreal dist1, qreal direct2, qreal dist2);
+	Trap Trap2display(qreal direct1, qreal dist1, qreal direct2, qreal dist2);
 
 };
 

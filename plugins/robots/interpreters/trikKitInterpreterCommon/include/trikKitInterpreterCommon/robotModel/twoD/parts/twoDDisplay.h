@@ -27,7 +27,7 @@ namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
-struct trap{
+struct Trap{
 	int x1;
 	int y1;
 	int x2;
@@ -77,7 +77,7 @@ public:
 	void paint(QPainter *painter) override;
 	void reset() override;
 	void redraw() override;
-	void drawObjectView(QList<trap> trapList);
+	void drawObjectView(QList<Trap> &TrapList);
 
 signals:
 	/// Emitted when bacground color has changed.

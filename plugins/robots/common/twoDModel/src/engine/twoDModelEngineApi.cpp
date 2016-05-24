@@ -331,6 +331,7 @@ QList<QPair<QPointF, QPointF>> TwoDModelEngineApi::walls() const
 	foreach(items::WallItem *wall, mModel.worldModel().walls()){
 		walls.push_back(QPair<QPointF, QPointF>(wall->begin(), wall->end()));
 	}
+
 	return walls;
 }
 

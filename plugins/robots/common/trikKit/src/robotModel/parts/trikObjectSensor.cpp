@@ -22,5 +22,4 @@ TrikObjectSensor::TrikObjectSensor(const DeviceInfo &info, const PortInfo &port)
 {
 }
 void TrikObjectSensor::init(){
-
 }

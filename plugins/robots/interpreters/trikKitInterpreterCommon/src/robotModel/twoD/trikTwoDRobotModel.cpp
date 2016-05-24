@@ -61,15 +61,16 @@ TrikTwoDRobotModel::TrikTwoDRobotModel(RobotModelInterface &realModel)
 
 void TrikTwoDRobotModel::displayConnect(robotParts::Device *display)
 {
-	QStringList portName = {"ObjectSensorXPort", "ObjectSensorYPort", "ObjectSensorSizePort" };
+	const QStringList portName = {"ObjectSensorXPort", "ObjectSensorYPort", "ObjectSensorSizePort" };
 	foreach (QString name, portName) {
 		const PortInfo objectSensorPort = kitBase::robotModel::RobotModelUtils::findPort
 					(*mRealModel, name, kitBase::robotModel::Direction::input);
-	trik::robotModel::twoD::parts::ObjectSensor *objectSensor =
-	static_cast<trik::robotModel::twoD::parts::ObjectSensor *>(mConfiguration.pendingDevice(objectSensorPort));
-	if (objectSensor)
-		objectSensor->setDisplay(static_cast<trik::robotModel::twoD::parts::Display *>(display));
+		trik::robotModel::twoD::parts::ObjectSensor *objectSensor =
+		static_cast<trik::robotModel::twoD::parts::ObjectSensor *>(mConfiguration.pendingDevice(objectSensorPort));
+		if (objectSensor){
+			objectSensor->setDisplay(static_cast<trik::robotModel::twoD::parts::Display *>(display));
 		}
+	}
 }
 
 void TrikTwoDRobotModel::objectSensorConnect(robotParts::Device *objectSensor)
@@ -78,8 +79,9 @@ void TrikTwoDRobotModel::objectSensorConnect(robotParts::Device *objectSensor)
 					(*mRealModel, "DisplayPort", kitBase::robotModel::Direction::output);
 	trik::robotModel::twoD::parts::Display *display =
 	static_cast<trik::robotModel::twoD::parts::Display *>(mConfiguration.pendingDevice(displayPort));
-	if (display)
+	if (display){
 		static_cast<trik::robotModel::twoD::parts::ObjectSensor *>(objectSensor)->setDisplay(display);
+	}
 }
 
 robotParts::Device *TrikTwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
