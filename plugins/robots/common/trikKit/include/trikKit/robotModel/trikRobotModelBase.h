@@ -44,6 +44,7 @@ protected:
 	virtual kitBase::robotModel::DeviceInfo buttonInfo() const;
 
 	virtual kitBase::robotModel::DeviceInfo powerMotorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo powerMotorsAggregatorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo servoMotorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo encoderInfo() const;
 

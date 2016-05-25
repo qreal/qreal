@@ -26,8 +26,18 @@ EnginesStopBlock::EnginesStopBlock(RobotModelInterface &robotModel)
 
 void EnginesStopBlock::run()
 {
-	for (robotParts::Motor * const motor : parsePorts<robotParts::Motor>()) {
-		motor->off();
+	robotModel::robotParts::MotorsAggregator *aggregator = getMotorsAggregator();
+	QList<robotParts::Motor *> ports = parsePorts<robotParts::Motor>();
+	if (aggregator) {
+		QList<QString> portsNames;
+		for (robotParts::Motor * const motor : ports) {
+			portsNames.append(motor->port().name());
+		}
+		aggregator->off(portsNames);
+	} else {
+		for (robotParts::Motor * const motor : ports) {
+			motor->off();
+		}
 	}
 
 	emit done(mNextBlockId);

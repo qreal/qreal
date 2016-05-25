@@ -31,6 +31,7 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/speaker.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/button.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/powerMotor.h \
+	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/powerMotorsAggregator.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/servoMotor.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/encoderSensor.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/touchSensor.h \
@@ -61,13 +62,14 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h \
 	$$PWD/include/trikKitInterpreterCommon/trikAdditionalPreferences.h \
 	$$PWD/include/trikKitInterpreterCommon/trikDisplayWidget.h \
-	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h \
+	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
 	$$PWD/src/robotModel/real/parts/speaker.cpp \
 	$$PWD/src/robotModel/real/parts/button.cpp \
 	$$PWD/src/robotModel/real/parts/powerMotor.cpp \
+	$$PWD/src/robotModel/real/parts/powerMotorsAggregator.cpp \
 	$$PWD/src/robotModel/real/parts/servoMotor.cpp \
 	$$PWD/src/robotModel/real/parts/encoderSensor.cpp \
 	$$PWD/src/robotModel/real/parts/touchSensor.cpp \
@@ -98,7 +100,7 @@ SOURCES += \
 	$$PWD/src/robotModel/twoD/trikTwoDRobotModel.cpp \
 	$$PWD/src/trikAdditionalPreferences.cpp \
 	$$PWD/src/trikDisplayWidget.cpp \
-	$$PWD/src/trikKitInterpreterPluginBase.cpp \
+	$$PWD/src/trikKitInterpreterPluginBase.cpp
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \

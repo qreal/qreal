@@ -27,6 +27,7 @@
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
 #include "trikKit/robotModel/parts/trikPowerMotor.h"
+#include "trikKit/robotModel/parts/trikPowerMotorsAggregator.h"
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 #include "trikKit/robotModel/parts/trikSonarSensor.h"
 #include "trikKit/robotModel/parts/trikMotionSensor.h"
@@ -67,6 +68,7 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("M2", output, { "М2" }), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M3", output, { "М3" }), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M4", output, { "М4" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("MAll", output, { "MAll" }), { powerMotorsAggregatorInfo() });
 
 	addAllowedConnection(PortInfo("A1", input, { "А1" }, "sensorA1"), analogPortConnections);
 	addAllowedConnection(PortInfo("A2", input, { "А2" }, "sensorA2"), analogPortConnections);
@@ -162,6 +164,11 @@ DeviceInfo TrikRobotModelBase::buttonInfo() const
 DeviceInfo TrikRobotModelBase::powerMotorInfo() const
 {
 	return DeviceInfo::create<robotParts::Motor>();
+}
+
+DeviceInfo TrikRobotModelBase::powerMotorsAggregatorInfo() const
+{
+	return DeviceInfo::create<robotParts::MotorsAggregator>();
 }
 
 DeviceInfo TrikRobotModelBase::servoMotorInfo() const

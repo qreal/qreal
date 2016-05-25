@@ -14,6 +14,8 @@
 
 #include "trikEnginesForwardBlock.h"
 
+#include <QtCore/QPair>
+
 #include <kitBase/robotModel/robotParts/motor.h>
 
 using namespace trik::blocks::details;
@@ -28,8 +30,18 @@ void TrikEnginesForwardBlock::run()
 {
 	const auto result = eval<int>("Power");
 	if (!errorsOccured()) {
-		for (Motor * const motor : parsePorts<Motor>()) {
-			motor->on(result);
+		MotorsAggregator *aggregator = getMotorsAggregator();
+		QList<Motor *> ports = parsePorts<Motor>();
+		if (aggregator) {
+			QList<QPair<QString, int>> portsWithPowers;
+			for (Motor * const motor : ports) {
+				portsWithPowers.append(qMakePair<QString, int>(motor->port().name(), result));
+			}
+			aggregator->on(portsWithPowers);
+		} else {
+			for (Motor * const motor : ports) {
+				motor->on(result);
+			}
 		}
 
 		emit done(mNextBlockId);

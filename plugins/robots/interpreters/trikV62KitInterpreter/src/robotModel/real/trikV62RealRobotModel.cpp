@@ -22,6 +22,7 @@
 #include <trikKitInterpreterCommon/robotModel/real/parts/button.h>
 
 #include <trikKitInterpreterCommon/robotModel/real/parts/powerMotor.h>
+#include <trikKitInterpreterCommon/robotModel/real/parts/powerMotorsAggregator.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/servoMotor.h>
 #include <trikKitInterpreterCommon/robotModel/real/parts/encoderSensor.h>
 
@@ -115,6 +116,8 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 		return new parts::Button(buttonInfo(), port, buttonCodes()[port.name() + "Button"], *mRobotCommunicator);
 	} else if (deviceInfo.isA(powerMotorInfo())) {
 		return new parts::PowerMotor(powerMotorInfo(), port, *mRobotCommunicator);
+	} else if (deviceInfo.isA(powerMotorsAggregatorInfo())) {
+		return new parts::PowerMotorsAggregator(powerMotorsAggregatorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(servoMotorInfo())) {
 		return new parts::ServoMotor(servoMotorInfo(), port, *mRobotCommunicator);
 	} else if (deviceInfo.isA(encoderInfo())) {

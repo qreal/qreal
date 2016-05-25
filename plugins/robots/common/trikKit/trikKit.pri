@@ -45,6 +45,7 @@ HEADERS += \
 	$$PWD/include/trikKit/robotModel/parts/trikSonarSensor.h \
 	$$PWD/include/trikKit/robotModel/parts/trikObjectSensor.h \
 	$$PWD/include/trikKit/robotModel/parts/trikShell.h \
+	$$PWD/include/trikKit/robotModel/parts/trikPowerMotorsAggregator.h \
 	$$PWD/include/trikKit/blocks/trikBlocksFactoryBase.h \
 	$$PWD/include/trikKit/blocks/trikV6BlocksFactory.h \
 	$$PWD/include/trikKit/blocks/trikV62BlocksFactory.h \
@@ -74,7 +75,7 @@ HEADERS += \
 	$$PWD/src/blocks/details/lineDetectorToVariable.h \
 	$$PWD/src/blocks/details/initVideoStreamingBlock.h \
 	$$PWD/src/blocks/details/writeToFileBlock.h \
-	$$PWD/src/blocks/details/removeFileBlock.h \
+	$$PWD/src/blocks/details/removeFileBlock.h
 
 SOURCES += \
 	$$PWD/src/robotModel/trikRobotModelBase.cpp \
@@ -97,6 +98,7 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/trikSonarSensor.cpp \
 	$$PWD/src/robotModel/parts/trikSpeaker.cpp \
 	$$PWD/src/robotModel/parts/trikShell.cpp \
+	$$PWD/src/robotModel/parts/trikPowerMotorsAggregator.cpp \
 	$$PWD/src/blocks/trikBlocksFactoryBase.cpp \
 	$$PWD/src/blocks/trikV6BlocksFactory.cpp \
 	$$PWD/src/blocks/trikV62BlocksFactory.cpp \
@@ -126,7 +128,7 @@ SOURCES += \
 	$$PWD/src/blocks/details/lineDetectorToVariable.cpp \
 	$$PWD/src/blocks/details/initVideoStreamingBlock.cpp \
 	$$PWD/src/blocks/details/writeToFileBlock.cpp \
-	$$PWD/src/blocks/details/removeFileBlock.cpp \
+	$$PWD/src/blocks/details/removeFileBlock.cpp
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/trikKit_ru.ts \

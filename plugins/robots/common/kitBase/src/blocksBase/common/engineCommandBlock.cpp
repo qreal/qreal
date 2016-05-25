@@ -34,6 +34,11 @@ QMap<PortInfo, DeviceInfo> EngineCommandBlock::usedDevices()
 	return result;
 }
 
+robotParts::MotorsAggregator *EngineCommandBlock::getMotorsAggregator() const
+{
+	return robotModel::RobotModelUtils::findDevice<robotParts::MotorsAggregator>(mRobotModel, "MAll");
+}
+
 void EngineCommandBlock::timeout()
 {
 	emit done(mNextBlockId);
