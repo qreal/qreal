@@ -32,7 +32,7 @@ public:
 	SnapshotWindow(const QString &title, QWidget *parent = 0);
 
 	/// @param snapshot - PNG image to be displayed.
-	/// @param deleteImage - determine whether snapshot shall be deleted after usage.
+	/// @param deleteImage - determine whether snapshot shall be deleted after usage in this method.
 	void setImage(QByteArray *snapshot, bool deleteImage);
 
 private:
