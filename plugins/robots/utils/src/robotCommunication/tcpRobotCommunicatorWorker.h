@@ -74,6 +74,9 @@ public:
 	/// Requests telemetry data for given sensor.
 	Q_INVOKABLE void requestData(const QString &sensor);
 
+	/// Requests telemetry data for all ports.
+	Q_INVOKABLE void requestData();
+
 	/// Establishes connection.
 	Q_INVOKABLE void connect();
 
@@ -135,6 +138,9 @@ private slots:
 	void onVersionTimeOut();
 
 private:
+	/// Handles value from telemetry message from robot. Emits signals with sensor data.
+	void handleValue(const QString &data);
+
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(const QString &data, QTcpSocket &socket);
 

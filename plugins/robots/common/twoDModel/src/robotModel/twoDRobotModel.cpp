@@ -34,6 +34,8 @@
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
+const int updateInterval = 20;
+
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;
 
@@ -77,6 +79,11 @@ QString TwoDRobotModel::friendlyName() const
 bool TwoDRobotModel::needsConnection() const
 {
 	return false;
+}
+
+int TwoDRobotModel::updateIntervalForInterpretation() const
+{
+	return updateInterval;
 }
 
 utils::TimelineInterface &TwoDRobotModel::timeline()

@@ -53,6 +53,10 @@ public:
 	/// emits disconnected().
 	void disconnectFromRobot() override;
 
+	void readDataFromAllSensors() const override;
+
+	int updateIntervalForInterpretation() const override;
+
 	bool interpretedModel() const override;
 
 	ConnectionState connectionState() const final;

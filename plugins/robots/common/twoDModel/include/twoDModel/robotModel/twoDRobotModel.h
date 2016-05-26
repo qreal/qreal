@@ -42,6 +42,7 @@ public:
 	QString name() const override;
 	QString friendlyName() const override;
 	bool needsConnection() const override;
+	int updateIntervalForInterpretation() const override;
 	utils::TimelineInterface &timeline() override;
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;

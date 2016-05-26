@@ -124,6 +124,11 @@ void TcpRobotCommunicator::requestData(const QString &sensor)
 	QMetaObject::invokeMethod(mWorker.data(), "requestData", Q_ARG(QString, sensor));
 }
 
+void TcpRobotCommunicator::requestData()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "requestData");
+}
+
 void TcpRobotCommunicator::connect()
 {
 	QMetaObject::invokeMethod(mWorker.data(), "connect");

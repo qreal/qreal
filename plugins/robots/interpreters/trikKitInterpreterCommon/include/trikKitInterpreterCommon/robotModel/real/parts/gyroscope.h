@@ -40,6 +40,7 @@ public slots:
 
 private:
 	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
+	QVector<int> mOldValue;
 };
 
 }
