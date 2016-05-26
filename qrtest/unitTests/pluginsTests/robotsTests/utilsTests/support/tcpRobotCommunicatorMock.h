@@ -29,6 +29,7 @@ public:
 	MOCK_METHOD0(requestCasingVersion, void());
 	MOCK_METHOD0(stopRobot, void());
 	MOCK_METHOD1(requestData, void(const QString &));
+	MOCK_METHOD0(requestData, void());
 	MOCK_METHOD0(connect, void());
 	MOCK_METHOD0(disconnect, void());
 };

@@ -46,6 +46,10 @@ public:
 
 	MOCK_CONST_METHOD0(needsConnection, bool());
 
+	MOCK_CONST_METHOD0(readDataFromAllSensors, void());
+	MOCK_CONST_METHOD0(updateIntervalForInterpretation, int());
+
+
 	MOCK_CONST_METHOD0(configuration
 			, kitBase::robotModel::ConfigurationInterface const &());
 	MOCK_METHOD0(mutableConfiguration, kitBase::robotModel::ConfigurationInterface&());
