@@ -56,6 +56,8 @@ TrikV6RealRobotModel::TrikV6RealRobotModel(const QString &kitId, const QString &
 			, this, &TrikV6RealRobotModel::connected);
 	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::disconnected
 			, this, &TrikV6RealRobotModel::disconnected);
+	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::snapshotReceived
+			, this, &trik::robotModel::TrikRobotModelBase::snapshotReceived);
 }
 
 QString TrikV6RealRobotModel::name() const
@@ -152,4 +154,9 @@ robotParts::Device *TrikV6RealRobotModel::createDevice(const PortInfo &port, con
 	}
 
 	return TrikRobotModelBase::createDevice(port, deviceInfo);
+}
+
+void TrikV6RealRobotModel::takeSnapshot() const
+{
+	mRobotCommunicator->takeSnapshot();
 }

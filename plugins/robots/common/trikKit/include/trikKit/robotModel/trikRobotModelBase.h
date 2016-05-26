@@ -38,6 +38,12 @@ public:
 	/// Returns config file version that shall be on a robot to be able to use this model.
 	virtual QString robotConfigFileVersion() const = 0;
 
+	/// Requests real robot to take a snapshot and send it back to TRIK Studio.
+	virtual void takeSnapshot() const;
+
+signals:
+	void snapshotReceived(QByteArray *snapshot);
+
 protected:
 	virtual kitBase::robotModel::DeviceInfo displayInfo() const;
 	virtual kitBase::robotModel::DeviceInfo speakerInfo() const;

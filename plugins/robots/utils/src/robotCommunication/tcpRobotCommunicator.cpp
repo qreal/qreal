@@ -61,6 +61,9 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
 			, this, &TcpRobotCommunicator::casingVersionReceived, Qt::QueuedConnection);
 
+	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::snapshotReceived
+			, this, &TcpRobotCommunicator::snapshotReceived);
+
 	mWorkerThread.start();
 
 	QMetaObject::invokeMethod(mWorker.data(), "init");

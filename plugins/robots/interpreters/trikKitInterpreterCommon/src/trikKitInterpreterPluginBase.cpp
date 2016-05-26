@@ -28,11 +28,18 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
-	: mTakeSnapshotAction(new QAction(nullptr))
 {
-	mTakeSnapshotAction->setText(tr("Take snapshot"));
-	//mTakeSnapshotAction->setIcon(QIcon(""));
-	connect(mTakeSnapshotAction, &QAction::triggered, this, &TrikKitInterpreterPluginBase::takeSnapshot);
+	QAction *takeSnapshotAction = new QAction(nullptr);
+	takeSnapshotAction->setText(tr("Take snapshot"));
+	mTakeSnapshotAction.reset(takeSnapshotAction);
+
+	connect(mTakeSnapshotAction.data()
+			, &QAction::triggered
+			, this
+			, &TrikKitInterpreterPluginBase::onTakeSnapshotButtonClicked);
+
+	SnapshotWindow *snapshotWindow = new SnapshotWindow(QObject::tr("Snapshot"));
+	mSnapshotWindow.reset(snapshotWindow);
 }
 
 TrikKitInterpreterPluginBase::~TrikKitInterpreterPluginBase()
@@ -55,6 +62,11 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 	mRealRobotModel.reset(realRobotModel);
 	mTwoDRobotModel.reset(twoDRobotModel);
 	mBlocksFactory = blocksFactory;
+
+	connect(mRealRobotModel.data()
+			, &robotModel::TrikRobotModelBase::snapshotReceived
+			, this
+			, &TrikKitInterpreterPluginBase::snapshotReceived);
 
 	const auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(*mTwoDRobotModel);
 
@@ -93,12 +105,14 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 void TrikKitInterpreterPluginBase::onCurrentRobotModelChanged(const QString &modelName)
 {
-	bool modelChanged = modelName == mRealRobotModel->name();
-	mTakeSnapshotAction->setVisible(modelChanged);
+	bool isThisModel = modelName == mRealRobotModel->name();
+	mTakeSnapshotAction.data()->setVisible(isThisModel);
 
-	if (modelChanged) {
-		mCurrentlySelectedModelName = modelName;
+	if (!isThisModel) {
+		mSnapshotWindow->setVisible(false);
 	}
+
+	mCurrentlySelectedModelName = modelName;
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()
@@ -135,7 +149,7 @@ QWidget *TrikKitInterpreterPluginBase::quickPreferencesFor(const kitBase::robotM
 
 QList<qReal::ActionInfo> TrikKitInterpreterPluginBase::customActions()
 {
-	const ActionInfo takeSnapshotActionInfo(mTakeSnapshotAction, "interpreters", "tools");
+	const ActionInfo takeSnapshotActionInfo(mTakeSnapshotAction.data(), "interpreters", "tools");
 	return {takeSnapshotActionInfo};
 }
 
@@ -186,7 +200,18 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 	return quickPreferences;
 }
 
+void TrikKitInterpreterPluginBase::onTakeSnapshotButtonClicked()
+{
+	mSnapshotWindow.data()->show();
+	takeSnapshot();
+}
+
 void TrikKitInterpreterPluginBase::takeSnapshot()
 {
 	mRealRobotModel.data()->takeSnapshot();
+}
+
+void TrikKitInterpreterPluginBase::snapshotReceived(QByteArray *snapshot)
+{
+	mSnapshotWindow.data()->setImage(snapshot, true);
 }
