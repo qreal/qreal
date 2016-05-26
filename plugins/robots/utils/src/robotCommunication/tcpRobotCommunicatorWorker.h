@@ -66,7 +66,7 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	Q_INVOKABLE void stopRobot();
 
-	/// Sends a command to take a snapshot and upload it to Trik Studio.
+	/// Sends a command to take a snapshot and upload it back to TRIK Studio.
 	Q_INVOKABLE void takeSnapshot();
 
 	/// Requests casing version from robot, emits casingVersionReceived() when robot responds.
@@ -124,6 +124,9 @@ signals:
 
 	/// Emitted when received TRIK casing version (model 2014 or model 2015) from robot.
 	void casingVersionReceived(const QString &casingVersion);
+
+	/// Emitted when received a snapshot from robot.
+	void snapshotReceived(QByteArray *snapshot);
 
 private slots:
 	/// Process message from control connection, emits signals when something interesting is received from robot.
