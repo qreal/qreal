@@ -32,7 +32,9 @@ bool LoopWithNextVisitedRule::apply()
 	LoopNode * const thisNode = static_cast<LoopNode *>(mTree->findNodeFor(mId));
 	NonZoneNode * const nextNode = mTree->findNodeFor(mNextLink.target);
 
-	if (thisNode->parentZone() != nextNode->parentZone()) {
+	const bool isLinkToParentLoop = thisNode->parentZone()->parentNode() == nextNode
+			&& dynamic_cast<LoopNode *>(nextNode);
+	if (thisNode->parentZone() != nextNode->parentZone() && !isLinkToParentLoop) {
 		return false;
 	}
 

@@ -94,12 +94,9 @@ public:
 	void installEventFilter(QObject *obj);
 
 	void setElementVisible(const Id &metatype, bool visible);
-
-	void setVisibleForAllElements(bool visible);
-
+	void setVisibleForAllElements(const Id &diagram, bool visible);
 	void setElementEnabled(const Id &metatype, bool enabled);
-
-	void setEnabledForAllElements(bool enabled);
+	void setEnabledForAllElements(const Id &diagram, bool enabled);
 
 	/// Sets user palettes headers and descriptions.
 	void customizeExplosionTitles(const QString &userGroupTitle
@@ -164,6 +161,9 @@ private:
 
 	/// Combobox with editors.
 	QComboBox *mComboBox;
+
+	/// Search field for palette.
+	QWidget *mSearchLineEdit;
 
 	/// Main layout of the widget.
 	QVBoxLayout *mLayout;

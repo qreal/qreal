@@ -54,6 +54,7 @@ void PaletteTree::initUi()
 	ui::SearchLineEdit * const searchField = new ui::SearchLineEdit(this);
 	connect(searchField, &ui::SearchLineEdit::textChanged, this, &PaletteTree::onSearchTextChanged);
 	mLayout->addWidget(searchField);
+	mSearchLineEdit = searchField;
 
 	setMinimumSize(200, 100);
 }
@@ -286,6 +287,7 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 
 	initDone();
 	setComboBoxIndex();
+	mSearchLineEdit->setVisible(!isIconsView);
 }
 
 void PaletteTree::initMainWindow(MainWindow *mainWindow)
@@ -306,10 +308,12 @@ void PaletteTree::setElementVisible(const Id &metatype, bool visible)
 	}
 }
 
-void PaletteTree::setVisibleForAllElements(bool visible)
+void PaletteTree::setVisibleForAllElements(const Id &diagram, bool visible)
 {
-	if (mTree) {
-		mTree->setVisibleForAllElements(visible);
+	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
+		if (tree->diagram() == diagram) {
+			tree->setVisibleForAllElements(visible);
+		}
 	}
 }
 
@@ -320,10 +324,12 @@ void PaletteTree::setElementEnabled(const Id &metatype, bool enabled)
 	}
 }
 
-void PaletteTree::setEnabledForAllElements(bool enabled)
+void PaletteTree::setEnabledForAllElements(const Id &diagram, bool enabled)
 {
-	if (mTree) {
-		mTree->setEnabledForAllElements(enabled);
+	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
+		if (tree->diagram() == diagram) {
+			tree->setEnabledForAllElements(enabled);
+		}
 	}
 }
 
