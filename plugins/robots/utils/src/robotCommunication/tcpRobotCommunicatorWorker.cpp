@@ -187,8 +187,8 @@ void TcpRobotCommunicatorWorker::processTelemetryMessage(const QString &message)
 
 		QString snapshotString = message.right(message.length() - snapshotMarker.length());
 
-		QByteArray *snapshot = new QByteArray(QByteArray::fromBase64(snapshotString.toUtf8()).constData()
-											  , snapshotString.length());
+        QByteArray *snapshot =
+                new QByteArray(QByteArray::fromBase64(snap.toUtf8()).constData(), snapshotString.length());
 
 		emit snapshotReceived(snapshot);
 	} else {
