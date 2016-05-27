@@ -65,7 +65,7 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 private slots:
-    QWidget *produceIpAddressConfigurer(); // Transfers ownership
+	QWidget *produceIpAddressConfigurer(); // Transfers ownership
 
 	void onTakeSnapshotButtonClicked();
 
@@ -98,14 +98,14 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;
 	bool mOwnsAdditionalPreferences = true;
 
-    kitBase::InterpreterControlInterface *mInterpreterControl; // Does not have ownership.
+	kitBase::InterpreterControlInterface *mInterpreterControl; // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 
 	/// Action that requests real robot to send a snapshot
-    QScopedPointer<QAction> mTakeSnapshotAction; // Has ownership
+	QScopedPointer<QAction> mTakeSnapshotAction; // Has ownership
 
 	/// Window that displays snapshot received from real robot.
-    QScopedPointer<SnapshotWindow> mSnapshotWindow; // Has ownership
+	QScopedPointer<SnapshotWindow> mSnapshotWindow; // Has ownership
 };
 
 }
