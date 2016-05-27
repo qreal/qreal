@@ -27,7 +27,7 @@
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
 #include "trikKit/robotModel/parts/trikPowerMotor.h"
-#include "trikKit/robotModel/parts/TrikMotorsAggregator.h"
+#include "trikKit/robotModel/parts/trikMotorsAggregator.h"
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 #include "trikKit/robotModel/parts/trikSonarSensor.h"
 #include "trikKit/robotModel/parts/trikMotionSensor.h"

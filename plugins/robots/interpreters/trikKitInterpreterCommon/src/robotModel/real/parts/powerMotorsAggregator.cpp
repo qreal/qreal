@@ -19,6 +19,7 @@
 #include <qrutils/inFile.h>
 
 using namespace trik::robotModel::real::parts;
+using namespace kitBase::robotModel;
 
 PowerMotorsAggregator::PowerMotorsAggregator(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
