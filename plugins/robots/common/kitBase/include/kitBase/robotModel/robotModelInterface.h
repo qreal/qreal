@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Grigorii Zimin
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,10 +105,10 @@ public:
 	/// user (like 2d model).
 	virtual bool needsConnection() const = 0;
 
-	/// Calls read() for all configured sensors.
-	virtual void readDataFromAllSensors() const = 0;
+	/// Requests updates for all configured sensors.
+	virtual void updateSensorsValues() const = 0;
 
-	/// Returns time interval for request data from robot.
+	/// Returns time interval for polling sensors data.
 	virtual int updateIntervalForInterpretation() const = 0;
 
 	/// Returns true if this robot model will be used for interpretation. This will enable run and stop actions on the

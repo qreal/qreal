@@ -46,7 +46,7 @@ public:
 
 	MOCK_CONST_METHOD0(needsConnection, bool());
 
-	MOCK_CONST_METHOD0(readDataFromAllSensors, void());
+	MOCK_CONST_METHOD0(updateSensorsValues, void());
 	MOCK_CONST_METHOD0(updateIntervalForInterpretation, int());
 
 

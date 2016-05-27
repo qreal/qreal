@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Grigorii Zimin
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,14 @@ void TrikEnginesBackwardBlock::run()
 {
 	const auto result = -eval<int>("Power");
 	if (!errorsOccured()) {
-		MotorsAggregator *aggregator = getMotorsAggregator();
-		QList<Motor *> ports = parsePorts<Motor>();
+		MotorsAggregator *aggregator = findMotorsAggregator();
+		const QList<Motor *> ports = parsePorts<Motor>();
 		if (aggregator) {
 			QList<QPair<QString, int>> portsWithPowers;
 			for (Motor * const motor : ports) {
 				portsWithPowers.append(qMakePair<QString, int>(motor->port().name(), result));
 			}
+
 			aggregator->on(portsWithPowers);
 		} else {
 			for (Motor * const motor : ports) {

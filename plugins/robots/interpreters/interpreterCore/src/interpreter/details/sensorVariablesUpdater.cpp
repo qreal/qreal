@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Grigorii Zimin
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,7 +96,7 @@ void SensorVariablesUpdater::run()
 		}
 	}
 
-	mRobotModelManager.model().readDataFromAllSensors();
+	mRobotModelManager.model().updateSensorsValues();
 
 	mUpdateTimer->start(updateInterval());
 }
@@ -132,7 +132,7 @@ void SensorVariablesUpdater::onVectorSensorResponse(const QVector<int> &reading)
 
 void SensorVariablesUpdater::onTimerTimeout()
 {
-	mRobotModelManager.model().readDataFromAllSensors();
+	mRobotModelManager.model().updateSensorsValues();
 
 	mUpdateTimer->start(updateInterval());
 }

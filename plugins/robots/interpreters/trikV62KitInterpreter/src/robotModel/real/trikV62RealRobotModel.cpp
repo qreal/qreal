@@ -74,7 +74,7 @@ int RealRobotModel::priority() const
 	return 8;  // Right after qts generator
 }
 
-void RealRobotModel::readDataFromAllSensors() const
+void RealRobotModel::updateSensorsValues() const
 {
 	mRobotCommunicator.data()->requestData();
 }

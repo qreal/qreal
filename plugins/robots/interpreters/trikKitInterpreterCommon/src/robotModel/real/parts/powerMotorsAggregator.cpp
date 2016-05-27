@@ -19,11 +19,10 @@
 #include <qrutils/inFile.h>
 
 using namespace trik::robotModel::real::parts;
-using namespace kitBase::robotModel;
 
 PowerMotorsAggregator::PowerMotorsAggregator(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
-	: robotModel::parts::TrikPowerMotorsAggregator(info, port)
+	: robotModel::parts::TrikMotorsAggregator(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
 }
@@ -31,9 +30,9 @@ PowerMotorsAggregator::PowerMotorsAggregator(const DeviceInfo &info, const PortI
 void PowerMotorsAggregator::on(const QList<QPair<QString, int>> &powerForMotors)
 {
 	const QString pathToCommand = ":/trikQts/templates/engines/forward.t";
-	QString command = utils::InFile::readAll(pathToCommand);
+	const QString command = utils::InFile::readAll(pathToCommand);
 
-	QString directCommand = QString();
+	QString directCommand;
 
 	for (const QPair<QString, int> &motorAndPower : powerForMotors) {
 		directCommand += command;
@@ -51,6 +50,7 @@ void PowerMotorsAggregator::stop(const QStringList &ports)
 	for (const QString &str : ports) {
 		pairList.append(qMakePair<QString, int>(str, 0));
 	}
+
 	on(pairList);
 }
 

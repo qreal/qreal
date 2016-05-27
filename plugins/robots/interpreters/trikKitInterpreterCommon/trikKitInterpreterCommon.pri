@@ -62,7 +62,7 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h \
 	$$PWD/include/trikKitInterpreterCommon/trikAdditionalPreferences.h \
 	$$PWD/include/trikKitInterpreterCommon/trikDisplayWidget.h \
-	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h
+	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h \
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -100,7 +100,7 @@ SOURCES += \
 	$$PWD/src/robotModel/twoD/trikTwoDRobotModel.cpp \
 	$$PWD/src/trikAdditionalPreferences.cpp \
 	$$PWD/src/trikDisplayWidget.cpp \
-	$$PWD/src/trikKitInterpreterPluginBase.cpp
+	$$PWD/src/trikKitInterpreterPluginBase.cpp \
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \

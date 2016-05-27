@@ -21,7 +21,7 @@ namespace kitBase {
 namespace robotModel {
 namespace robotParts {
 
-/// Abstract motorsAggregator which can be turned on with given speed or turned off.
+/// Aggregator for motors, it can turns motors (which were specified) on with given speeds or turns them off.
 class ROBOTS_KIT_BASE_EXPORT MotorsAggregator : public Device
 {
 	Q_OBJECT
@@ -30,7 +30,7 @@ class ROBOTS_KIT_BASE_EXPORT MotorsAggregator : public Device
 	Q_CLASSINFO("direction", "output")
 
 public:
-	/// Constructor, takes device type info and port on which motorsAggragator is configured.
+	/// Constructor, takes device type info and port on which motorsAggregator is configured.
 	MotorsAggregator(const DeviceInfo &info, const PortInfo &port);
 
 	/// Returns last speed setted to a motor with given port via 'on', 'stop' or 'off' methods.
@@ -39,9 +39,9 @@ public:
 	/// Turn on all given motors with given speeds (commonly in range -100..100, but it may depend on concrete motor).
 	virtual void on(const QList<QPair<QString, int>> &powerForMotors);
 
-	/// Stops given motor actively, with breaking. For NXT and TRIK it is equivalent to on({QPair{port,0},...})
-	/// , but may depend on motor construction.
-	/// Note that motor still be on and in most real motors it even will consume maximal amount of power
+	/// Stops given motor actively, with breaking. For NXT and TRIK it is equivalent to on({QPair{port,0},...}),
+	/// but may depend on motor construction.
+	/// @note that motor still be on and in most real motors it even will consume maximal amount of power
 	/// in this mode (somewhat counter-intuitive).
 	virtual void stop(const QStringList &ports);
 

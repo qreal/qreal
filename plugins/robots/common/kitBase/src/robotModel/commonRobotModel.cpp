@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Grigorii Zimin
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
 #include "kitBase/robotModel/robotParts/motor.h"
 #include "kitBase/robotModel/robotParts/random.h"
 
-const int updateInterval = 100;
+const int updateInterval = 200;
 
 using namespace kitBase::robotModel;
 
@@ -82,7 +82,7 @@ void CommonRobotModel::disconnectFromRobot()
 	emit disconnected();
 }
 
-void CommonRobotModel::readDataFromAllSensors() const
+void CommonRobotModel::updateSensorsValues() const
 {
 	for (robotParts::Device * const device : mConfiguration.devices()) {
 		robotParts::AbstractSensor * const sensor = dynamic_cast<robotParts::AbstractSensor *>(device);

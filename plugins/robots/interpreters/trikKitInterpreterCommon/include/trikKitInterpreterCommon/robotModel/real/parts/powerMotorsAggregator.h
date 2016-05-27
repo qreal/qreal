@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <trikKit/robotModel/parts/trikPowerMotorsAggregator.h>
+#include <trikKit/robotModel/parts/TrikMotorsAggregator.h>
 #include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
@@ -25,7 +25,7 @@ namespace real {
 namespace parts {
 
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT PowerMotorsAggregator
-	: public robotModel::parts::TrikPowerMotorsAggregator
+	: public robotModel::parts::TrikMotorsAggregator
 {
 	Q_OBJECT
 

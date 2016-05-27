@@ -74,7 +74,7 @@ int TrikV6RealRobotModel::priority() const
 	return 8;  // Right after qts generator
 }
 
-void TrikV6RealRobotModel::readDataFromAllSensors() const
+void TrikV6RealRobotModel::updateSensorsValues() const
 {
 	mRobotCommunicator.data()->requestData();
 }

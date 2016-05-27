@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Grigorii Zimin
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
 #include "trikKit/robotModel/parts/trikPowerMotor.h"
-#include "trikKit/robotModel/parts/trikPowerMotorsAggregator.h"
+#include "trikKit/robotModel/parts/TrikMotorsAggregator.h"
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 #include "trikKit/robotModel/parts/trikSonarSensor.h"
 #include "trikKit/robotModel/parts/trikMotionSensor.h"

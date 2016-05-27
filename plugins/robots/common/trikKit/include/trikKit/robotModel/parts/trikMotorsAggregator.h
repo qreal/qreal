@@ -12,12 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikKit/robotModel/parts/trikPowerMotorsAggregator.h"
+#pragma once
 
-using namespace trik::robotModel::parts;
-using namespace kitBase::robotModel;
+#include <kitBase/robotModel/robotParts/motorsAggregator.h>
 
-TrikPowerMotorsAggregator::TrikPowerMotorsAggregator(const DeviceInfo &info, const PortInfo &port)
-	: kitBase::robotModel::robotParts::MotorsAggregator(info, port)
+namespace trik {
+namespace robotModel {
+namespace parts {
+
+class TrikMotorsAggregator : public kitBase::robotModel::robotParts::MotorsAggregator
 {
+	Q_OBJECT
+	Q_CLASSINFO("name", "trikMotorsAggregator")
+	Q_CLASSINFO("friendlyName", tr("Trik Motors Aggregator"))
+
+public:
+	TrikMotorsAggregator(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
+};
+
+}
+}
 }
