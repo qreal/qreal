@@ -37,6 +37,7 @@ void TrikEnginesForwardBlock::run()
 			for (Motor * const motor : ports) {
 				portsWithPowers.append(qMakePair<QString, int>(motor->port().name(), result));
 			}
+
 			aggregator->on(portsWithPowers);
 		} else {
 			for (Motor * const motor : ports) {
