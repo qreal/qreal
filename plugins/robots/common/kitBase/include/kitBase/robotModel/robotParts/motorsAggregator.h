@@ -50,7 +50,7 @@ public:
 	/// may be noted in advanced physics mode, related to breaking).
 	virtual void off(const QStringList &ports);
 
-private:
+protected:
 	QMap<QString, int> mSpeeds;
 };
 
