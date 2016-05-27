@@ -1215,14 +1215,14 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
-                                        <properties>
-                                                <property displayedName="Grayscaled" type="bool" name="Grayscaled">
-                                                        <default>false</default>
-                                                </property>
+					<properties>
+						<property displayedName="Grayscaled" type="bool" name="Grayscaled">
+							<default>false</default>
+						</property>
 						<property displayedName="Quality" type="JpgEncoderQuality" name="Quality">
 							<default>30</default>
 						</property>
-                                        </properties>
+					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
@@ -2861,7 +2861,7 @@
 						<property displayedName="Text" type="string" name="Text">
 							<default>Hi!</default>
 						</property>
-                                               <property displayedName="Evaluate" type="bool" name="Evaluate">
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
 							<default>false</default>
 						</property>
 					</properties>
