@@ -86,6 +86,9 @@ public:
 	/// Transfers ownership.
 	virtual QWidget *producePainter() const = 0;
 
+	/// Returns true if all clusterization data is initialized and gestures manager is ready to recognize gestures.
+	virtual bool gesturesInitialized() const = 0;
+
 	virtual void initializeGestures() = 0;
 	virtual void mousePress(const QPointF &point) = 0;
 	virtual void mouseMove(const QPointF &point) = 0;

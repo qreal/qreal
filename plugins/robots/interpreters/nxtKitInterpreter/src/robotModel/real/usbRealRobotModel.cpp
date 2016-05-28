@@ -14,12 +14,13 @@
 
 #include "usbRealRobotModel.h"
 
+#include <qrutils/singleton.h>
 #include <nxtKit/communication/usbRobotCommunicationThread.h>
 
 using namespace nxt::robotModel::real;
 
 UsbRealRobotModel::UsbRealRobotModel(const QString &kitId, const QString &robotId)
-	: RealRobotModel(kitId, robotId, new communication::UsbRobotCommunicationThread)
+	: RealRobotModel(kitId, robotId, &utils::Singleton<communication::UsbRobotCommunicationThread>::instance())
 {
 }
 
