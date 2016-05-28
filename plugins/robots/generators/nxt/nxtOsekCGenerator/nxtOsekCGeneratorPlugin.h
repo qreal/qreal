@@ -91,7 +91,7 @@ private:
 	NxtFlashTool *mFlashTool = nullptr;  // Has ownership
 
 	NxtOsekCMasterGenerator *mMasterGenerator;
-	communication::UsbRobotCommunicationThread mCommunicator;
+	communication::UsbRobotCommunicationThread &mCommunicator;
 };
 
 }

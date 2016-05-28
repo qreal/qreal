@@ -49,6 +49,7 @@ public:
 			, const SceneCustomizer &customizer
 			, const Id &rootId
 			, QObject *parent = 0);
+	~EditorViewScene();
 
 	void clearScene();
 
