@@ -81,11 +81,11 @@ void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &
 
 
 	if (port.name() == QString("M3")) {
-		simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 1000.0f, simx_opmode_oneshot);
+		simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 10.0f, simx_opmode_oneshot);
 	}
 
 	if (port.name() == QString("M4")) {
-		simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 1000.0f, simx_opmode_oneshot);
+		simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 10.0f, simx_opmode_oneshot);
 	}
 
 
