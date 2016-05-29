@@ -44,16 +44,18 @@ void InterpreterElementImpl::initLabels(const int &width, const int &height, Lab
 		const QString readOnly = element.attribute("readOnly", "false");
 		const QString background = element.attribute("background", "transparent");
 		const qreal rotation = element.attribute("rotation", "0").toDouble();
+		const QString isFocused = element.attribute("isFocused", "false");
 		if (text.isEmpty() && textBinded.isEmpty()) {
 			qDebug() << "ERROR: can't parse label";
 		} else {
 			LabelInterface *title = nullptr;
 			if (text.isEmpty()) {
 				// It is a binded label, text for it will be taken from repository.
-				title = factory.createLabel(index, x.value(), y.value(), textBinded, readOnly == "true", rotation);
+				title = factory.createLabel(index, x.value(), y.value(), textBinded
+						, readOnly == "true", rotation, isFocused == "true");
 			} else {
 				// This is a statical label, it does not need repository.
-				title = factory.createLabel(index, x.value(), y.value(), text, rotation);
+				title = factory.createLabel(index, x.value(), y.value(), text, rotation, isFocused == "true");
 			}
 
 			title->setBackground(QColor(background));
@@ -291,7 +293,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
 			} else {
 				// It is a binded label, text for it will be taken from repository.
-				title = labelFactory.createLabel(0, 0, 0, labelText, false, 0);
+				title = labelFactory.createLabel(0, 0, 0, labelText, false, 0, 0);
 			}
 
 			title->setBackground(QColor(Qt::white));

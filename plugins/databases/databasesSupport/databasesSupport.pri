@@ -1,0 +1,8 @@
+
+
+
+#RESOURCES = databasesSupport.qrc
+
+
+
+

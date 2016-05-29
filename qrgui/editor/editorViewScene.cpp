@@ -832,6 +832,16 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (e) {
+		// QReal:Databases needs to create a menu for each element "Table" (uses class TableMenuWidget)
+		// TODO: make this possible on the plugin level
+		if (e->id().element() == "Table") {
+			mSelectedTableId = e->id();
+			QAction *tableMenuAction = new QAction(this);
+			tableMenuAction->setText(tr("Table menu"));
+			connect(tableMenuAction, SIGNAL(triggered()), this, SLOT(createTableMenuWidget()), Qt::UniqueConnection);
+			mContextMenu.addAction(tableMenuAction);
+		}
+
 		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
@@ -1389,4 +1399,16 @@ void EditorViewScene::deselectLabels()
 			label->clearMoveFlag();
 		}
 	}
+}
+
+void EditorViewScene::createTableMenuWidget()
+{
+	mTableMenuWidget = new TableMenuWidget(mSelectedTableId, this, mModels);
+	connect(mTableMenuWidget, SIGNAL(closed()), this, SLOT(deleteTableMenuWidget()));
+	mTableMenuWidget->open();
+}
+
+void EditorViewScene::deleteTableMenuWidget()
+{
+	delete mTableMenuWidget;
 }

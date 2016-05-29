@@ -63,4 +63,5 @@ private:
 	qreal mRotation;
 	QString mPrefix;
 	QString mSuffix;
+	QString mIsFocused;
 };

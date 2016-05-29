@@ -95,8 +95,7 @@ bool Property::operator == (const Property &other) const
 		&& other.mIsEnum == mIsEnum
 		&& other.mIsReference == mIsReference
 		&& other.mDescription == mDescription
-		&& other.mDefaultValue == mDefaultValue
-		;
+		&& other.mDefaultValue == mDefaultValue;
 }
 
 bool Property::operator != (const Property &other) const
