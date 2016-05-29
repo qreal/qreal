@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,39 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "rangeSensor.h"
+#include "gyroscope.h"
 
-#include <qrkernel/logging.h>
-
-const unsigned rangeSensorResponseSize = 10;
+const unsigned gyroscopeSensorResponseSize = 9;
 
 using namespace ev3::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-RangeSensor::RangeSensor(const kitBase::robotModel::DeviceInfo &info
+Gyroscope::Gyroscope(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
 		, utils::robotCommunication::RobotCommunicator &robotCommunicator)
-	: robotParts::RangeSensor(info, port)
+	: ev3::robotModel::parts::Ev3Gyroscope(info, port)
 	, mImplementation(robotCommunicator, port)
 	, mRobotCommunicator(robotCommunicator)
 {
 }
 
-void RangeSensor::read()
+void Gyroscope::read()
 {
-	QByteArray command = mImplementation.readySiCommand(mImplementation.lowLevelPort(), 0);
+	const QByteArray command = mImplementation.readyPercentCommand(mImplementation.lowLevelPort(), 0);
 	QByteArray outputBuf;
-	mRobotCommunicator.send(command, rangeSensorResponseSize, outputBuf);
-
-	union {
-		float f;
-		uchar b[4];
-	} floatFromBytesCast;
-	floatFromBytesCast.b[3] = outputBuf.data()[8];
-	floatFromBytesCast.b[2] = outputBuf.data()[7];
-	floatFromBytesCast.b[1] = outputBuf.data()[6];
-	floatFromBytesCast.b[0] = outputBuf.data()[5];
-
-	const int data = qIsNaN(floatFromBytesCast.f) ? 0 : static_cast<int>(floatFromBytesCast.f);
-	emit newData(data);
+	mRobotCommunicator.send(command, gyroscopeSensorResponseSize, outputBuf);
+	emit newData(static_cast<int>(outputBuf.data()[5]));
 }

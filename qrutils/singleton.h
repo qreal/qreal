@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,19 @@
 
 #pragma once
 
-#include <QtCore/QString>
-
 namespace utils {
 
-const QString requiredVersion = "3.1.4";
+/// Instantiates and provides to all callers single instance of the some type.
+template<typename T>
+class Singleton
+{
+public:
+	/// Creates single instance of some type (given in class template) if it does not exist and returns it.
+	static T &instance()
+	{
+		static T result;
+		return result;
+	}
+};
 
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 #include "ev3GeneratorBase/ev3GeneratorPluginBase.h"
 
+#include <qrutils/singleton.h>
 #include <ev3Kit/communication/bluetoothRobotCommunicationThread.h>
 #include <ev3Kit/communication/usbRobotCommunicationThread.h>
 #include <ev3Kit/blocks/ev3BlocksFactory.h>
@@ -25,11 +26,12 @@ using namespace ev3;
 Ev3GeneratorPluginBase::Ev3GeneratorPluginBase(const QString &usbRobotName, const QString &usbRobotFriendlyName
 		, int usbPriority, const QString &bluetoothRobotName
 		, const QString &bluetoothRobotFriendlyName, int bluetoothPriority)
-	: mUsbRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId(), "ev3UsbGeneratorRobot", usbRobotName
-			, usbRobotFriendlyName, usbPriority, new communication::UsbRobotCommunicationThread))
+	: mUsbRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId(), "ev3UsbGeneratorRobot"
+			, usbRobotName, usbRobotFriendlyName, usbPriority
+			, utils::Singleton<communication::UsbRobotCommunicationThread>::instance()))
 	, mBluetoothRobotModel(new robotModel::Ev3GeneratorRobotModel(kitId(), "ev3BluetoothGeneratorRobot"
-			, bluetoothRobotName, bluetoothRobotFriendlyName
-			, bluetoothPriority, new communication::BluetoothRobotCommunicationThread))
+			, bluetoothRobotName, bluetoothRobotFriendlyName, bluetoothPriority
+			, utils::Singleton<communication::BluetoothRobotCommunicationThread>::instance()))
 	, mBlocksFactory(new blocks::Ev3BlocksFactory({}))
 {
 }

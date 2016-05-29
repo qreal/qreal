@@ -13,17 +13,17 @@
         <translation type="vanished">/* Внимание: преобразование типа из строки в целое число пока не поддерживается. Пожалуйста, обратитесь к разработчикам с запросом. */ 0</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="736"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="734"/>
         <source>/* Warning: cast from string to numeric type is not supported */ 0</source>
         <translation>/* Внимание: преобразование типа из строки в числовой тип пока не поддерживается. Пожалуйста, обратитесь к разработчикам с запросом. */ 0</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="740"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="738"/>
         <source>/* Warning: autocast from array to other type is not supported */ 0</source>
         <translation>/* Внимание: автоматическое преобразование типа из массива в другой тип не поддерживается. */ 0</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="744"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/lua/ev3LuaPrinter.cpp" line="742"/>
         <source>/* Warning: autocast is supported only for numeric types */ 0</source>
         <translation>/* Внимание: автоматическое преобразование типов поддерживается только для числовых типов */ 0</translation>
     </message>

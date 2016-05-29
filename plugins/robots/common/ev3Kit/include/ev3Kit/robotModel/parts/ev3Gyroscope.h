@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,23 @@
 
 #pragma once
 
-#include <QtCore/QString>
+#include <kitBase/robotModel/robotParts/scalarSensor.h>
 
-namespace utils {
+namespace ev3 {
+namespace robotModel {
+namespace parts {
 
-const QString requiredVersion = "3.1.4";
+class Ev3Gyroscope : public kitBase::robotModel::robotParts::ScalarSensor
+{
+	Q_OBJECT
+	Q_CLASSINFO("name", "gyroscope")
+	Q_CLASSINFO("friendlyName", tr("Gyroscope"))
 
+public:
+	Ev3Gyroscope(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
+};
+
+}
+}
 }
