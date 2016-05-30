@@ -69,6 +69,9 @@ public:
 	/// Sends a command to take a snapshot and upload it back to TRIK Studio.
 	Q_INVOKABLE void takeSnapshot();
 
+	/// Sends a command to stop taking snapshots.
+	Q_INVOKABLE void stopTakingSnapshots();
+
 	/// Requests casing version from robot, emits casingVersionReceived() when robot responds.
 	Q_INVOKABLE void requestCasingVersion();
 

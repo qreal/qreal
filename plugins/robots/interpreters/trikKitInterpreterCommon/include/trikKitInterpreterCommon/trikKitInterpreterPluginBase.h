@@ -82,8 +82,11 @@ protected:
 	void onCurrentRobotModelChanged(const QString &modelName);
 
 private:
-	/// Requests real robot to send a snapshot
+	/// Requests real robot to send a snapshot.
 	void takeSnapshot();
+
+	/// Requests real robot to stop sending snapshots.
+	void stopTakingSnapshots();
 
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
@@ -98,10 +101,13 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;
 	bool mOwnsAdditionalPreferences = true;
 
+	/// It is true if TRIK Studio is receiving snapshots from real robot now.
+	bool mReceivingSnapshots = false;
+
 	kitBase::InterpreterControlInterface *mInterpreterControl; // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 
-	/// Action that requests real robot to send a snapshot
+	/// Action that requests real robot to start sending snapshots.
 	QScopedPointer<QAction> mTakeSnapshotAction; // Has ownership
 
 	/// Window that displays snapshot received from real robot.

@@ -90,9 +90,14 @@ void RealRobotModel::stopRobot()
 	mRobotCommunicator->stopRobot();
 }
 
-void RealRobotModel::takeSnapshot() const
+void RealRobotModel::takeSnapshot()
 {
 	mRobotCommunicator->takeSnapshot();
+}
+
+void RealRobotModel::stopTakingSnapshots()
+{
+	mRobotCommunicator->stopTakingSnapshots();
 }
 
 void RealRobotModel::disconnectFromRobot()
