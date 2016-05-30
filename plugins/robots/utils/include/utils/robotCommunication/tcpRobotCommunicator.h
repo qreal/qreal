@@ -47,9 +47,9 @@ public:
 
 	void stopRobot() override;
 
-	void takeSnapshot() override;
+	void takeSnapshot();
 
-	void stopTakingSnapshots() override;
+	void stopTakingSnapshots();
 
 	void requestData(const QString &sensor) override;
 

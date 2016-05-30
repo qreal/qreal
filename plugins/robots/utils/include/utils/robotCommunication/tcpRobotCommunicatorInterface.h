@@ -43,12 +43,6 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	virtual void stopRobot() = 0;
 
-	/// Sends a command to take a snapshot and upload it to TRIK Studio.
-	virtual void takeSnapshot() = 0;
-
-	/// Sends a command to stop taking snapshots.
-	virtual void stopTakingSnapshots() = 0;
-
 	/// Requests telemetry data for given sensor.
 	virtual void requestData(const QString &sensor) = 0;
 
