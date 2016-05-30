@@ -272,7 +272,12 @@ QHash<QString, int> TrikRobotModelBase::buttonCodes() const
 	return result;
 }
 
-void TrikRobotModelBase::takeSnapshot() const
+void TrikRobotModelBase::takeSnapshot()
+{
+	/// do nothing by default; reimplemented by real robot classes
+}
+
+void TrikRobotModelBase::stopTakingSnapshots()
 {
 	/// do nothing by default; reimplemented by real robot classes
 }

@@ -31,6 +31,7 @@ TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
 {
 	QAction *takeSnapshotAction = new QAction(nullptr);
 	takeSnapshotAction->setText(tr("Take snapshot"));
+	takeSnapshotAction->setCheckable(true);
 	mTakeSnapshotAction.reset(takeSnapshotAction);
 
 	connect(mTakeSnapshotAction.data()
@@ -78,10 +79,9 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 
 void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
 {
-	connect(&configurer.eventsForKitPlugin()
-			, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, this
-			, &TrikKitInterpreterPluginBase::onCurrentRobotModelChanged);
+	connect(mRealRobotModel.data()
+			, &kitBase::robotModel::RobotModelInterface::disconnected
+			, [this]() { mTakeSnapshotAction->setChecked(false); mReceivingSnapshots = false; });
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurer.qRealConfigurator().mainWindowInterpretersInterface();
@@ -101,6 +101,11 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
+
+	connect(&configurer.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::robotModelChanged
+			, this
+			, &TrikKitInterpreterPluginBase::onCurrentRobotModelChanged);
 }
 
 void TrikKitInterpreterPluginBase::onCurrentRobotModelChanged(const QString &modelName)
@@ -109,7 +114,9 @@ void TrikKitInterpreterPluginBase::onCurrentRobotModelChanged(const QString &mod
 	mTakeSnapshotAction.data()->setVisible(isThisModel);
 
 	if (!isThisModel) {
+		mTakeSnapshotAction->setChecked(false);
 		mSnapshotWindow->setVisible(false);
+		mReceivingSnapshots = false;
 	}
 
 	mCurrentlySelectedModelName = modelName;
@@ -202,13 +209,27 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 
 void TrikKitInterpreterPluginBase::onTakeSnapshotButtonClicked()
 {
+	if (mRealRobotModel.data()->connectionState() ==
+			kitBase::robotModel::RobotModelInterface::ConnectionState::disconnectedState)
+	{
+		mTakeSnapshotAction->setChecked(false);
+		return;
+	}
+
+	mReceivingSnapshots ? stopTakingSnapshots() : takeSnapshot();
 	mSnapshotWindow.data()->show();
-	takeSnapshot();
 }
 
 void TrikKitInterpreterPluginBase::takeSnapshot()
 {
 	mRealRobotModel.data()->takeSnapshot();
+	mReceivingSnapshots = true;
+}
+
+void TrikKitInterpreterPluginBase::stopTakingSnapshots()
+{
+	mRealRobotModel.data()->stopTakingSnapshots();
+	mReceivingSnapshots = false;
 }
 
 void TrikKitInterpreterPluginBase::snapshotReceived(QByteArray *snapshot)

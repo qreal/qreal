@@ -127,6 +127,11 @@ void TcpRobotCommunicator::takeSnapshot()
 	QMetaObject::invokeMethod(mWorker.data(), "takeSnapshot");
 }
 
+void TcpRobotCommunicator::stopTakingSnapshots()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "stopTakingSnapshots");
+}
+
 void TcpRobotCommunicator::requestData(const QString &sensor)
 {
 	QMetaObject::invokeMethod(mWorker.data(), "requestData", Q_ARG(QString, sensor));

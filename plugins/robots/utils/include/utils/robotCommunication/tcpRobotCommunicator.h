@@ -49,6 +49,8 @@ public:
 
 	void takeSnapshot() override;
 
+	void stopTakingSnapshots() override;
+
 	void requestData(const QString &sensor) override;
 
 	void connect() override;
