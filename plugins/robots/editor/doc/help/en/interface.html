@@ -44,7 +44,7 @@
 			<ol>
 				<li>Main menu contains basic operations and settings of TRIK Studio.
 					<ul>
-						<li><i>"File"</i> menu:
+						<li><i>File</i> menu:
 							<ul>
 								<li><i>New project</i> — create a new project.</li>
 								<li><i>Recent projects...</i> — open one of recently edited projects.</li>
@@ -57,14 +57,14 @@
 								<li><i>Quit</i> — exit program.</li>
 							</ul>
 						</li>
-						<li><i>"Edit"</i> menu:
+						<li><i>Edit</i> menu:
 							<ul>
 								<li><i>Undo</i> — undo last command.</li>
 								<li><i>Redo</i> — redo a command  that was undone.</li>
 								<li><i>Find...</i> — open "Find" dialog that allows to search for block names, properties and so on.</li>
 							</ul>
 						</li>
-						<li><i>"View"</i> menu:
+						<li><i>View</i> menu:
 							<ul>
 								<li><i>Zoom In</i> — increase zoom level of a scene.</li>
 								<li><i>Zoom Out</i> — decrease zoom level of a scene.</li>
@@ -73,7 +73,7 @@
 								<li><i>To main page</i> — shows main diagram of a project, even if it was closed accidentally.</li>
 							</ul>
 						</li>
-						<li><i>"Tools"<i> menu. Contents of this menu may depend on installed plugins and current system configuration.
+						<li><i>Tools<i> menu. Contents of this menu may depend on installed plugins and current system configuration.
 							<ul>
 								<li><i>Mouse gestures</i> — open tab with available mouse gestures.</li>
 								<li><i>2D model</i> — switch TRIK Studio interpreter to 2D model mode. Robot program execution will be simulated on 2D model without the need of a real robot.</li>
@@ -103,7 +103,7 @@
 										Available only when interpretation mode or 2D mode is selected.</li>
 							</ul>
 						</li>
-						<li><i>"Settings"</i> menu (for more information about setings see <a href="#settings">Settings dialog</a>):
+						<li><i>Settings</i> menu (for more information about setings see <a href="#settings">Settings dialog</a>):
 							<ul>
 								<li><i>Settings...</i> — open settings window.</li>
 								<li><i>Show grid</i> — turn on/turn off grid on a scene.</li>
@@ -127,15 +127,15 @@
 						</li>
 					</ul>
 				</li>
-				<li><i>"File" toolbar</i> repeats most commonly used actions available from "File" menu.</li>
-				<li><i>"Edit" toolbar</i> contains Undo and Redo buttons.</li>
-				<li><i>"View" toolbar</i> has buttons that allows to scale the scene. Scene can also be scaled by mouse wheel when mouse cursor is over a diagram.</li>
-				<li><i>"Interpreter" toolbar</i> contains buttons that allow to run or stop the execution of a program, buttons for changing interpretation modes between 2D model or real robot, and
+				<li><i>File Toolbar</i> repeats most commonly used actions available from "File" menu.</li>
+				<li><i>Edit Toolbar</i> contains Undo and Redo buttons.</li>
+				<li><i>View Toolbar</i> has buttons that allows to scale the scene. Scene can also be scaled by mouse wheel when mouse cursor is over a diagram.</li>
+				<li><i>Interpreter Toolbar</i> contains buttons that allow to run or stop the execution of a program, buttons for changing interpretation modes between 2D model or real robot, and
 						a button that opens "Settings" window (this window is also available from "Tools" menu). When working with real robot this toolbar also has button that allows to connect 
 						to robot.</li>
-				<li><i>Editor window</i> shows current diagram and allows to edit it. When diagram is interpreted (on 2D model or on a real robot), currently active block is highlighted here.</li>
-				<li><i>Property editor</i> allows to see and edit properties of the element selected in editor.</li>
-				<li><i>Configure devices</i> allows to configure which sensors to which ports are connected. It can also be configured from "Settings" window.</li>
+				<li><i>Editor Window</i> shows current diagram and allows to edit it. When diagram is interpreted (on 2D model or on a real robot), currently active block is highlighted here.</li>
+				<li><i>Property Editor</i> allows to see and edit properties of the element selected in editor.</li>
+				<li><i>Configure Devices</i> allows to configure which sensors to which ports are connected. It can also be configured from "Settings" window.</li>
 				<li><i>Palette</i> contains available blocks which can be added into diagram. Each block corresponds to robot command (such as "Motors forward" or "Wait for touch sensor") or algorithmic
 						construct, like "If" or "Start parallel task". Palette contents depend on selected robotic kit and program execution mode (real robot or 2D model), grey blocks are available 
 						for current kit, but disabled for current mode (for example, robot communication blocks are disabled in 2D model). Blocks from other kits will not even be shown on a palette.
@@ -144,7 +144,7 @@
 						When program is executed on 2D model or on real robot in interpretation mode, sensor variables are updated with values from robot in a real time (once in about 200 ms),
 						in generation mode they are not used (and not updated, so don't worry if all sensor readings are zero).</li>
 				<li><i>Status bar</i> shows current TRIK Studio mode (editing or debugging) and allows to quickly switch between the modes. Just click on a status bar to change mode.</li>
-				<li><i>"Modes" toolbar</i> also shows current TRIK Studio mode and also allows to switch between modes, and can be more convenient.</li>
+				<li><i>Modes</i> toolbar also shows current TRIK Studio mode and also allows to switch between modes, and can be more convenient.</li>
 			</ol>
 
 			<p>
@@ -223,12 +223,13 @@
 					</ul>
 				</li>
 				<li><i>Edge/Loop edges indent</i> — sets an indent from a block of a line that starts and end in the same block.</li>
-				<li><i>Embedded linkers/Size</i> — a size of the embedded linker, i.e. a circle near a block which allows to create an edge between the blocks (see <a href="programming.html#links">Creating links</a> for more info).</li>
+				<li><i>Embedded linkers/Size</i> — a size of the embedded linker, i.e. a circle near a block which allows to create an edge between the blocks 
+						(see <a href="programming.html#links">Creating links</a> for more info).</li>
 				<li><i>Embedded linkers/Indent</i> — a distance between the linker circle and the block.</li>
 				<li><i>Labels/Enable move</i> — allow or disallow to move text labels of the blocks on a diagram.</li>
-				<li><i>Labels/Enable resize</i> — разрешить/запретить менять размер области отображения для надписи.</li>
-				<li><i>Palette/Representation</i> — выбор между режимом отображения иконок и названий или только иконок в палитре.</li>
-				<li><i>Count of items in a row</i> — количество иконок на строку палитры при выбранном режиме "Иконки".</li>
+				<li><i>Labels/Enable resize</i> — allow or disable changing of label rectangle.</li>
+				<li><i>Palette/Representation</i> — change palette representation between icons only or icons and text.</li>
+				<li><i>Count of items in a row</i> — when palette representation is set to "icons only" this setting allows to change count of icons on one row of palette.</li>
 			</ul>
 
 			<h4><a name="robotSettings">"Robots" tab</a></h4>
@@ -236,33 +237,27 @@
 			<center><img src="pics/interface-settings-tab4.png" alt="TRIK Studio settings window, 'Robots' tab" width="750"></center>
 
 			<p>
-				Состав этой вкладки зависит от установленных подключаемых модулей поддержки конструкторов и от текущего выбранного
-						конструктора. Информацию о настройках для конкретного конструктора можно посмотреть в разделе документации,
-						ему соответствующему. Типовые элементы этого окна таковы:
+				Contents of this tab depend on installed robotic kit support modules and on currently selected kit. More info about kit-specific
+				settings you can find in kit documentation. Typical elements of this tab are the following.
 				<ul>
-					<li><i>Конструктор</i> — конструктор, для которого пишутся программы в среде. От этой опции зависит список
-							доступных блоков в палитре и доступных действий на панели инструментов.</li>
-					<li><i>Тип модели робота</i> — выбор типа модели исполнения для выбранного конструктора. В большинстве
-							случаев это двумерная модель или реальный робот, но для некоторых конструкторов одна из моделей
-							может быть недоступной, в этом случае этот пункт в окне не отображается.</li>
-					<li>Настройки соединения — специфичные для конструктора настройки подключения к роботу, такие как IP-адрес
-							робота для ТРИК или COM-порт Bluetooth-соединения для Lego NXT. Если соединение в выбранном режиме не требуется
-							(как на рисунке), не отображается.</li>
-					<li>Настройки сторонних программ — специфичные для конструктора настройки программ, не поставляемых в комплекте
-							с TRIK Studio, которые должны быть установлены на компьютере. Для большинства режимов работы дополнительные
-							установленные программы не нужны, так что соответствующие пункты не отображаются в окне.</li>
-					<li>Настройка сенсоров — здесь указывается, какие сенсоры подключены к портам робота.</li>
-					<li>Запуск после загрузки — запускать программу сразу после загрузки её на робот или нет.
-							Применимо только для некоторых режимов некоторых конструкторов (например, для Lego NXT в режиме генерации).</li>
-					<li><i>Шум/Реалистичные сенсоры</i> — включить/выключить эмуляцию неточностей считывания показаний с сенсоров в 2D модели.</li>
-					<li><i>Шум/Реалистичные моторы</i> — включить/выключить эмуляцию неточностей работы моторов в 2D модели.</li>
-					<li><i>Шум/Уровень приближения</i> — насколько точно выполняется эмуляция погрешностей. </li>
-					<li><i>Интервалы обновления графиков/Сенсоры</i> — интервал в миллисекундах, когда добавляется новая точка
-							с показанием сенсора. </li>
-					<li><i>Интервалы обновления графиков/Масштабирование</i> — интервал в миллисекундах, когда график автоматически
-							изменяет свой масштаб, чтобы оптимально отобразить значения. </li>
-					<li><i>Интервалы обновления графиков/Текстовая информация</i> — интервал в миллисекундах, когда на графике
-							обновляются надписи со значениями. </li>
+					<li><i>Type of constructor kit</i> — robotic kit that is being programmed. This option enables various tools and settings specific to selected kit.
+							Blocks in palette and buttons on toolbars that are not available for selected kit will be hidden. Note that robotic kits are not
+							directly compatible with each other, so a program writen, for example, for TRIK, will not run without modifications on EV3 despite
+							that the blocks used may be very similar.</li>
+					<li><i>Type of robot model</i> — execution mode for a selected robotic kit. The same program may be interpreted on a computer remotely 
+					controlling a real robot, generated into textual form and uploaded to a robot for autonomous execution or executed on 2D model without robot at all.
+					For some robotic kits some options may be unavailable, for some kits more than one textual language or means to communicate with robot are supported.</li>
+					<li><i>Connection settings</i> — connection setting specific to a selected kit, such as IP-address for TRIK robot or COM port for Bluetooth connection
+							with Lego EV3. If there is no need to connect to robot or there are no specific settings (as in a picture), it will be hidden.</li>
+					<li>Thirdparty program settings — settings for kit-specific programs that are not shipped with TRIK Studio and must be installed separately 
+							(for example, path to Pascal or F# compilers). For most modes there is no need for such programs, so these settings are absent.</li>
+					<li><i>Sensors settings</i> — sensors connected to a robot ports can be specified here.</li>
+					<li><i>Running after uploading</i> — run a program after uploading it to robot immediately or allow user to explicitly run it on a robot.
+							Only works for kits that provide such functionality (for example, for Lego NXT in generation mode).</li>
+					<li><i>Graphics Watcher update intervals/Sensors</i> — time interval (in milliseconds) when new data point with sensor readings will be added on a graph.</li>
+					<li><i>Graphics Watcher update intervals/Autoscaling</i> — time interval (in milliseconds) when graph adjusts its scale automatically
+							to better fit sensor readings. </li>
+					<li><i>Graphics Watcher update intervals/Text info</i> — time interval (in milliseconds) when graph updates text labels with sensor readings.</li>
 				</ul>
 			</p>
 
@@ -271,9 +266,8 @@
 			<center><img src="pics/interface-settings-tab5.png" alt="TRIK Studio settings window, 'Shortcuts' tab" width="750"></center>
 
 			<p>
-			Позволяет задать или изменить горячие клавиши для наиболее часто используемых действий. Для этого надо выбрать ячейку,
-			соответствующую действию, и в строке "Сочетание" внизу окна нажать нужное сочетание клавиш. Кнопка "Очистить"
-			удаляет сочетание клавиш из ячейки.
+			Allows to set hotkeys for commonly used actions. To set hotkey one needs to select cell corresponding to an action, click
+			on "Key sequence" textbox below the list of actions and press desired key sequence. "Reset" button removes hotkey for an action.
 			</p>
 
 			<h3><a name="two-d-model">Окно двумерной модели робота</a></h3>
@@ -292,11 +286,11 @@
 
 			<p>
 			Окно двумерной модели робота TRIK Studio доступно для отображения, если в качестве типа модели робота в диалоге
-			настроек робота или на панели инструментов выбран пункт "Двумерная модель" (см. раздел <a href="#settings">Диалог
+			настроек робота или на панели инструментов выбран пункт "2D model" (см. раздел <a href="#settings">Диалог
 			настроек TRIK Studio</a>). В таком случае при переключении в режим отладки будет открыто следующее окно:
 			</p>
 
-			<center><img src="pics/two-d-model.png" alt="Окно двумерной модели робота TRIK Studio" width="750" height="450"></center>
+			<center><img src="pics/two-d-model.png" alt="TRIK Studio 2D simulator model window" width="750" height="450"></center>
 
 			<p>
 			Данное окно также открывается автоматически, если в этом режиме начать выполнение программы с помощью пункта меню
@@ -308,53 +302,57 @@
 				модель робота, обозначенная соответствующей иконкой.</li>
 				<li>Панель редактирования <i>модели мира</i> содержит следующие кнопки:</li>
 				<ul>
-					<li><i>Курсор</i> — переключиться в режим выбора и перестать рисовать стены/линии и т.д. Горячая клавиша: <i>N</i>.</li>
-					<li><i>Стена</i> — добавить на сцену препятствие в виде стены. Препятствие отображается в виде "кирпичной"
+					<li><i>Cursor</i> — переключиться в режим выбора и перестать рисовать стены/линии и т.д. Горячая клавиша: <i>N</i>.</li>
+					<li><i>Wall</i> — добавить на сцену препятствие в виде стены. Препятствие отображается в виде "кирпичной"
 							линии, при касании такой линии сенсором касания или при попадании в зону действия сенсора расстояния
 							происходит срабатывание сенсора, робот не может проехать сквозь стену. При добавлении с нажатой
 							клавишей <i>Shift</i> стена помещается либо под прямым углом, либо под углом в 45 градусов относительно
 							границ окна. Горячая клавиша: <i>W</i>.</li>
-					<li><i>Линия</i> — добавить на сцену прямую линию. При этом срабатывают находящиеся над линией сенсоры
+					<li><i>Line</i> — добавить на сцену прямую линию. При этом срабатывают находящиеся над линией сенсоры
 							света и соответствующие сенсоры цвета. При добавлении с нажатой клавишей <i>Shift</i> линия помещается
 							либо под прямым углом, либо под углом в 45 градусов относительно границ окна. Горячая клавиша: <i>L</i>.</li>
-					<li><i>Эллипс</i> — добавить на сцену эллипс. При этом срабатывают находящиеся над эллипсом сенсоры света
+					<li><i>Bezier curve</i> — .
+							Hotkey: <i>B</i>.</li>
+					<li><i>Rectangle</i> — .
+							Hotkey: <i>R</i>.</li>
+					<li><i>Ellipse</i> — добавить на сцену эллипс. При этом срабатывают находящиеся над эллипсом сенсоры света
 							и соответствующие сенсоры цвета. При добавлении с нажатой клавишей <i>Shift</i> добавляется окружность.
 							Горячая клавиша: <i>E</i>.</li>
-					<li><i>Карандаш</i> — добавить на сцену нарисованную мышью линию. При этом срабатывают находящиеся над
-							линией сенсоры света и соответствующие сенсоры цвета. Горячая клавиша: <i>P</i>.</li>
+					<li><i>Stylus</i> — добавить на сцену нарисованную мышью линию. При этом срабатывают находящиеся над
+							линией сенсоры света и соответствующие сенсоры цвета. Горячая клавиша: <i>S</i>.</li>
 				</ul>
-				<li><i>Эмулятор экрана и кнопок робота</i> отображает вывод программы на экран робота и позволяет эмулировать
+				<li><i>Display</i> emulator отображает вывод программы на экран робота и позволяет эмулировать
 						нажатие на его кнопки (кликом мыши по соответствующей кнопке на роботе).</li>
-				<li>Панель управления <i>портами</i> позволяет менять конфигурацию и расположение сенсоров модели робота.
+				<li><i>Ports configuration</i> panel позволяет менять конфигурацию и расположение сенсоров модели робота.
 						Для каждого порта можно выбрать интересующий датчик, и он автоматически добавится на сцену. При изменении
 						конфигурации сенсоров из настроек сенсоры в двумерной модели автоматически подстраиваются. При этом
 						будет считаться, что сенсор соединен с роботом, то есть при движении иконки робота сенсоры будут двигаться
 						вместе с ним, даже если они находятся на некотором расстоянии от модели робота. Рядом с ультразвуковым
 						или инфракрасным датчиком отображается серый конус, обозначающий область, в которой этот датчик будет
 						регистрировать препятствия.</li>
-				<li>Панель управления<i>моторами</i> позволяет задать, какой из портов моторов будет соответствовать левому и правому колесу.
-						Под ней расположена панель управления физикой, которая позволяет настраивать следующие параметры:
+				<li>Панель управления<i>Motors</i> позволяет задать, какой из портов моторов будет соответствовать левому и правому колесу.
+						Под ней расположена <i>Physics</i> panel управления физикой, которая позволяет настраивать следующие параметры:
 						<ul>
-							<li><i>Реалистичная физика</i> более точно эмулирует силы, действующие на робот: он поворачивает при
+							<li><i>Realistic physics</i> более точно эмулирует силы, действующие на робот: он поворачивает при
 									столкновении со стеной, разгоняется с ускорением и т.д. В таком режиме гораздо сложнее
 									предсказать поведение робота, поэтому по умолчанию он отключён.</li>
-							<li><i>Реалистичные сенсоры</i> — включить/выключить эмуляцию неточной работы сенсоров. То же можно
+							<li><i>Realistic sensors</i> — включить/выключить эмуляцию неточной работы сенсоров. То же можно
 									сделать через окно настроек.</li>
-							<li><i>Реалистичные моторы</i> — включить/выключить эмуляцию неточной работы моторов. То же можно
+							<li><i>Realistic motors</i> — включить/выключить эмуляцию неточной работы моторов. То же можно
 									сделать через окно настроек.</li>
 						</ul>
 				</li>
-				<li><i>Сетка</i> позволяет включить отображение на сцене сетки и привязки стен к её узлам. Слайдер рядом позволяет
+				<li><i>Grid</i> позволяет включить отображение на сцене сетки и привязки стен к её узлам. Слайдер рядом позволяет
 						настроить размер сетки.</li>
-				<li>Панель управления <i>скоростью</i> позволяет задать скорость симуляции. При выборе низкой скорости одной
+				<li>Панель управления <i>Speed</i> позволяет задать скорость симуляции. При выборе низкой скорости одной
 						секунде модельного времени соответствует несколько секунд реального, при выборе высокой скорости — наоборот.
 						Здесь же отображается текущее модельное время, прошедшее с запуска программы на исполнение. Может отличаться
 						от реального времени (зависит от настроек скорости и возможностей компьютера).</li>
-				<li><i>Линейка</i> показывает расстояния на сцене, в сантиметрах (относительно размера робота).</li>
-				<li><i>Кнопка возврата на старт</i> устанавливает робот в исходное положение, задаваемое красным крестиком на сцене.
+				<li><i>Ruler</i> показывает расстояния на сцене, в сантиметрах (относительно размера робота).</li>
+				<li><i>"Back to start"</i> button устанавливает робот в исходное положение, задаваемое красным крестиком на сцене.
 						Крестик можно вращать вокруг своей оси, выделив его и таская конец появившейся стрелки, этим задаётся
 						начальное направление робота.</li>
-				<li><i>Кнопка "Старт/стоп"</i> Позволяет запустить или остановить программу.</li>
+				<li><i>Кнопка "Start/stop"</i> button Позволяет запустить или остановить программу.</li>
 			</ol>
 
 			<p>
@@ -369,15 +367,15 @@
 			<center><img src="pics/two-d-model-context-menu.png" alt="Контекстное меню двумерной модели"></center>
 
 			<ol>
-				<li><i>Режим таскания сцены</i> позволяет перемещать сцену с роботом, стенами и линиями при клике и перетаскивании
+				<li><i>Hand dragging mode</i> позволяет перемещать сцену с роботом, стенами и линиями при клике и перетаскивании
 						на свободный участок сцены.</li>
-				<li><i>Режим выделения</i> позволяет выделять группу стен, линий и других частей модели при клике и перетаскивании
+				<li><i>Multiselection mode</i> позволяет выделять группу стен, линий и других частей модели при клике и перетаскивании
 						на свободный участок сцены.</li>
-				<li><i>Сохранить модель мира</i> позволяет сохранить нарисованную сцену в виде XML-файла, который потом может
+				<li><i>Save world model...</i> позволяет сохранить нарисованную сцену в виде XML-файла, который потом может
 						быть загружен и использован в другом проекте.</li>
-				<li><i>Загрузить модель мира</i> позволяет загрузить ранее сохранённую модель мира.</li>
-				<li><i>Очистить всё</i> удаляет все стены и цветные линии. Робот при этом остаётся на сцене.</li>
-				<li><i>Очистить пол от следов робота</i> удаляет все цветные линии, нарисованные маркером робота. Остальные
+				<li><i>Load world model...</i> позволяет загрузить ранее сохранённую модель мира.</li>
+				<li><i>Clear items</i> удаляет все стены и цветные линии. Робот при этом остаётся на сцене.</li>
+				<li><i>Clear floor</i> удаляет все цветные линии, нарисованные маркером робота. Остальные
 						элементы остаются на сцене.</li>
 			</ol>
 
@@ -385,20 +383,20 @@
 			При выделении линии, карандаша или эллипса появляется всплывающее окно, позволяющее настраивать их цвет и толщину:
 			</p>
 
-			<center><img src="pics/two-d-model-color-item-popup.png" alt="Всплывающее окно цветной линии"></center>
+			<center><img src="pics/two-d-model-color-item-popup.png" alt="Colored line popup control"></center>
 
 			<p>
 			При выделении робота появляется следующее всплывающее окно:
 			</p>
 
-			<center><img src="pics/two-d-model-robot-popup.png" alt="Всплывающее окно робота"></center>
+			<center><img src="pics/two-d-model-robot-popup.png" alt="Robot popup control"></center>
 
 			<ol>
-				<li><i>Центрирование на роботе</i> включает или выключает центрирование камеры на роботе. При включённом режиме
+				<li><i>Camera following robot</i> включает или выключает центрирование камеры на роботе. При включённом режиме
 						центрирования сцена автоматически перемещается, выставляя робот в центр, если он выезжает за границы видимого участка.</li>
-				<li><i>Кнопка возврата на старт</i> работает так же, как кнопка в основном окне двумерной модели — возвращает робот
+				<li><i>Return robot to the initial position</i> работает так же, как кнопка в основном окне двумерной модели — возвращает робот
 						на исходную позицию, обозначаемую красным крестиком.</li>
-				<li><i>Толщина маркера</i> позволяет задать толщину следа, оставляемого роботом при рисовании маркером.</li>
+				<li><i>Marker thickness</i> позволяет задать толщину следа, оставляемого роботом при рисовании маркером.</li>
 			</ol>
 
 		</div>
