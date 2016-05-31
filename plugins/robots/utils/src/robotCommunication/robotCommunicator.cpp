@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Yurii Litvinov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,6 @@ RobotCommunicator::~RobotCommunicator()
 
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
-	delete mRobotCommunicationThreadObject;
 }
 
 void RobotCommunicator::send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize)
@@ -72,7 +71,6 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
-	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
 	mRobotCommunicationThreadObject->allowLongJobs();

@@ -30,6 +30,7 @@
 #include "parts/colorSensorGreen.h"
 #include "parts/colorSensorBlue.h"
 #include "parts/colorSensorPassive.h"
+#include "parts/gyroscope.h"
 
 using namespace ev3::robotModel::real;
 using namespace utils::robotCommunication;
@@ -118,6 +119,10 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA(colorPassiveSensorInfo())) {
 		return new parts::ColorSensorPassive(colorPassiveSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(gyroscopeSensorInfo())) {
+		return new parts::Gyroscope(gyroscopeSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	return Ev3RobotModelBase::createDevice(port, deviceInfo);

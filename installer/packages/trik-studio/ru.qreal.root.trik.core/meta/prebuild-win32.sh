@@ -16,5 +16,5 @@ rm -rf winscp
 mv trik-runtime-builds/winscp $PWD
 mkdir -p trikRuntime
 cd trikRuntime
-tar xfvzh ../trik-runtime-builds/trikRuntime.tar.gz
+tar xfvz ../trik-runtime-builds/trikRuntime.tar.gz
 rm -rf ../trik-runtime-builds

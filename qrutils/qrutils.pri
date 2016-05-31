@@ -34,6 +34,7 @@ HEADERS += \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
 	$$PWD/widgetFinder.h \
+	$$PWD/singleton.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \

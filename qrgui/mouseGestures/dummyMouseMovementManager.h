@@ -42,6 +42,7 @@ public:
 	QWidget *producePainter() const override;
 
 	void initializeGestures() override;
+	bool gesturesInitialized() const override;
 	void mousePress(const QPointF &point) override;
 	void mouseMove(const QPointF &point) override;
 	void clear() override;
