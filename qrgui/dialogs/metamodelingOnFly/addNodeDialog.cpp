@@ -43,7 +43,8 @@ AddNodeDialog::~AddNodeDialog()
 void AddNodeDialog::okButtonClicked()
 {
 	if (mUi->nameEdit->text().isEmpty()) {
-		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled"), QMessageBox::tr("Close"));
+		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled")
+				, QMessageBox::tr("Close"));
 	} else {
 		mNodeName = mUi->nameEdit->text();
 		const IdList nodesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram

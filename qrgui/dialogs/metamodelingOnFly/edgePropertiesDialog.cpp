@@ -43,7 +43,8 @@ EdgePropertiesDialog::~EdgePropertiesDialog()
 void EdgePropertiesDialog::okButtonClicked()
 {
 	if (mUi->nameEdit->text().isEmpty()) {
-		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled"), QMessageBox::tr("Close"));
+		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled")
+				, QMessageBox::tr("Close"));
 	} else {
 		mEdgeName = mUi->nameEdit->text();
 		const IdList edgesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram

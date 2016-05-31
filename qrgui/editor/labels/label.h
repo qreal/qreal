@@ -68,7 +68,7 @@ public:
 
 	void startTextInteraction();
 
-    void updateName();
+	void updateName();
 
 private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

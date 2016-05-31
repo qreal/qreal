@@ -634,7 +634,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		mHandler->endMovingEdge();
 	}
-    updateLongestPart();
+	updateLongestPart();
 }
 
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)

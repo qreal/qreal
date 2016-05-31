@@ -269,7 +269,7 @@ void InterpreterElementImpl::init(QRectF &contents, const PortFactoryInterface &
 			height = sdfElement.attribute("sizey").toInt();
 		}
 
-		initPointPorts(portFactory, ports, width, -height);
+		initPointPorts(portFactory, ports, width, height);
 		initLinePorts(portFactory, ports, width, height);
 		initCircularPorts(portFactory, ports, width, height);
 

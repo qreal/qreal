@@ -47,8 +47,8 @@ signals:
 	void jobDone();
 
 private slots:
-    void nodeButtonClicked();
-    void edgeButtonClicked();
+	void nodeButtonClicked();
+	void edgeButtonClicked();
 
 private:
 	Ui::ChooseTypeDialog *mUi;

@@ -117,7 +117,8 @@ void EditPropertiesDialog::acceptPropertyModifications()
 void EditPropertiesDialog::okButtonClicked()
 {
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
-		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled"), QMessageBox::tr("Close"));
+		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled")
+				, QMessageBox::tr("Close"));
 	} else {
 		const IdList propertiesWithTheSameNameList = mInterpreterEditorManager.propertiesWithTheSameName(mId
 				, mPropertyName, mUi->displayedNameEdit->text());
