@@ -78,7 +78,7 @@ void Shell::print(const QString &text)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
-void Shell::initVideoStreaming(int qual,bool grayscale)
+void Shell::initVideoStreaming(int qual, bool grayscale)
 {
 	const QString shellToExecute = QString("\"/etc/init.d/mjpg-encoder-ov7670 start --jpeg-qual %1 "
 					"--white-black %2 && /etc/init.d/mjpg-streamer-ov7670.sh"
