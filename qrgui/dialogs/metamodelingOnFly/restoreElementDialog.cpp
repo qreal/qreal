@@ -28,6 +28,7 @@ RestoreElementDialog::RestoreElementDialog(QWidget *parent
 	, mElementsWithTheSameNameList(elementsWithTheSameNameList)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	fillSameNameElementsTreeView();
 	connect(mUi->restoreButton, &QPushButton::clicked, this, &RestoreElementDialog::restoreButtonClicked);
 	connect(mUi->createNewButton, &QPushButton::clicked, this, &RestoreElementDialog::createButtonClicked);

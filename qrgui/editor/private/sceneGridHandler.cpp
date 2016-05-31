@@ -238,7 +238,7 @@ void SceneGridHandler::alignToGrid()
 	const QRectF contentsRect = mNode->contentsRect();
 
 	qreal myX1 = nodePos.x() + contentsRect.x();
-	qreal myY1 = nodePos.y() + contentsRect.y();
+	qreal myY1 = nodePos.y();// + contentsRect.y();
 
 	int coefX = static_cast<int>(myX1) / indexGrid;
 	int coefY = static_cast<int>(myY1) / indexGrid;

@@ -150,9 +150,9 @@ QMap<QString, QVariant> NodeElement::logicalProperties() const
 void NodeElement::setGeometry(const QRectF &geom)
 {
 	prepareGeometryChange();
-	setPos(geom.topLeft());
+	setPos(geom.bottomLeft() - mContents.bottomLeft());
 	if (geom.isValid()) {
-		mContents = geom.translated(-geom.topLeft());
+		mContents = geom.translated(-geom.bottomLeft());
 	}
 	mTransform.reset();
 	mTransform.scale(mContents.width(), mContents.height());
@@ -360,7 +360,7 @@ void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos)
 		case None:
 			break;
 	}
-
+/*
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
 	NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
 
@@ -377,7 +377,7 @@ void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos)
 	} else if (mHighlightedNode != nullptr) {
 		mHighlightedNode->erasePlaceholder(true);
 		mHighlightedNode = nullptr;
-	}
+	}*/
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -430,18 +430,16 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		switch (mDragState) {
 		case TopLeft: {
-			newContents.setTopLeft(event->pos() - event->lastPos());
-			newPos = event->scenePos() - parentPos;
+			newContents.setTopLeft(QPoint(event->pos().x() - event->lastPos().x(), newY));
+			newPos = QPoint(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
 		case Top: {
 			newContents.setTop(newY);
-			newPos = QPoint(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case TopRight: {
-			newContents.setTopRight(QPoint(newX, event->pos().y() - event->lastPos().y()));
-			newPos = QPoint(newPos.x(), event->scenePos().y() - parentPos.y());
+			newContents.setTopRight(QPoint(newX, newY));
 			break;
 		}
 		case Left: {
@@ -454,16 +452,18 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			break;
 		}
 		case BottomLeft: {
-			newContents.setBottomLeft(QPoint(event->pos().x() - event->lastPos().x(), newY));
-			newPos = QPoint(event->scenePos().x() - parentPos.x(), pos().y());
+			newContents.setBottomLeft(event->pos() - event->lastPos());
+			newPos = event->scenePos() - parentPos;
 			break;
 		}
 		case Bottom: {
 			newContents.setBottom(newY);
+			newPos = QPoint(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case BottomRight: {
-			newContents.setBottomRight(QPoint(newX, newY));
+			newContents.setBottomRight(QPoint(newX, event->pos().y() - event->lastPos().y()));
+			newPos = QPoint(newPos.x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case None:

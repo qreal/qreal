@@ -6,185 +6,339 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
-    <height>255</height>
+    <width>344</width>
+    <height>217</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Edge properties</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="QLabel" name="nameLabel">
-     <property name="text">
-      <string>name: *</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="nameEdit"/>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="labelTextLabel">
-     <property name="text">
-      <string>labelText:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLineEdit" name="labelTextEdit"/>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="labelTypeLabel">
-     <property name="text">
-      <string>labelType:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="labelTypeComboBox">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <property name="text">
-       <string>Dynamic text</string>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QLabel" name="nameLabel">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>name: *</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="nameEdit"/>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Text</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelTextLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>labelText:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLineEdit" name="labelTextEdit"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelTypeLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>labelType:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QComboBox" name="labelTypeComboBox">
+            <item>
+             <property name="text">
+              <string>Dynamic text</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Static text</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <italic>true</italic>
+          </font>
+         </property>
+         <property name="text">
+          <string>* Need to be filled</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
-      <property name="text">
-       <string>Static text</string>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="title">
+          <string>Line</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="lineTypeLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>lineType:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QComboBox" name="lineTypeComboBox">
+            <item>
+             <property name="text">
+              <string>solidLine</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>dashLine</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>dotLine</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="beginTypeLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>beginType:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QComboBox" name="beginTypeComboBox">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>70</width>
+              <height>15</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>no_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/noArrow.png</normaloff>:/arrows/noArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>open_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/openArrow.png</normaloff>:/arrows/openArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>empty_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/emptyArrow.png</normaloff>:/arrows/emptyArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>filled_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/filledArrow.png</normaloff>:/arrows/filledArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>empty_rhomb</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/emptyRhomb.png</normaloff>:/arrows/emptyRhomb.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>filled_rhomb</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/filledRhomb.png</normaloff>:/arrows/filledRhomb.png</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="endTypeLabel">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>endType:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QComboBox" name="endTypeComboBox">
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>70</width>
+              <height>15</height>
+             </size>
+            </property>
+            <item>
+             <property name="text">
+              <string>no_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/noArrow.png</normaloff>:/arrows/noArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>open_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/openArrow.png</normaloff>:/arrows/openArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>empty_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/emptyArrow.png</normaloff>:/arrows/emptyArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>filled_arrow</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/filledArrow.png</normaloff>:/arrows/filledArrow.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>empty_rhomb</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/emptyRhomb.png</normaloff>:/arrows/emptyRhomb.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>filled_rhomb</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../arrowIcons.qrc">
+               <normaloff>:/arrows/filledRhomb.png</normaloff>:/arrows/filledRhomb.png</iconset>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="okPushButton">
+           <property name="text">
+            <string>OK</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </item>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="lineTypeLabel">
-     <property name="text">
-      <string>lineType:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QComboBox" name="lineTypeComboBox">
-     <item>
-      <property name="text">
-       <string>solidLine</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>dashLine</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>dotLine</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="beginTypeLabel">
-     <property name="text">
-      <string>beginType:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="1">
-    <widget class="QComboBox" name="beginTypeComboBox">
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>no_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>open_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>empty_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>filled_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>empty_rhomb</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>filled_rhomb</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="10" column="0">
-    <widget class="QLabel" name="endTypeLabel">
-     <property name="text">
-      <string>endType:</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="1">
-    <widget class="QComboBox" name="endTypeComboBox">
-     <property name="currentIndex">
-      <number>1</number>
-     </property>
-     <item>
-      <property name="text">
-       <string>no_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>open_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>empty_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>filled_arrow</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>empty_rhomb</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>filled_rhomb</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="12" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>* Need to be filled</string>
-     </property>
-    </widget>
-   </item>
-   <item row="13" column="1">
-    <widget class="QPushButton" name="okPushButton">
-     <property name="text">
-      <string>OK</string>
-     </property>
-    </widget>
+    </layout>
    </item>
   </layout>
+  <zorder></zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="../arrowIcons.qrc"/>
+ </resources>
  <connections/>
 </ui>

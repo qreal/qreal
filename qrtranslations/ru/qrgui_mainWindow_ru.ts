@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>ErrorListWidget</name>
     <message>
@@ -141,7 +141,7 @@
     </message>
     <message>
         <source>Output</source>
-        <translation type="vanished">Вывод</translation>
+        <translation>Вывод</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="341"/>
@@ -160,7 +160,7 @@
     </message>
     <message>
         <source>toolBar</source>
-        <translation type="vanished">Панель инструментов &quot;Генераторы&quot;</translation>
+        <translation>Панель инструментов &quot;Генераторы&quot;</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.ui" line="437"/>
@@ -695,26 +695,26 @@
     <name>qReal::Autosaver</name>
     <message>
         <source>Question</source>
-        <translation type="vanished">Вопрос</translation>
+        <translation>Вопрос</translation>
     </message>
     <message>
         <source>More recent autosaved version of this file was found. Do you wish to open it instead?</source>
-        <translation type="vanished">Похоже, что предыдущая сессия была некоррекно завершена. Найдена более свежая автосохраненная версия выбранного проекта. Открыть ее?</translation>
+        <translation>Похоже, что предыдущая сессия была некоррекно завершена. Найдена более свежая автосохраненная версия выбранного проекта. Открыть ее?</translation>
     </message>
     <message>
         <source>It seems like the last application session was terminated in an unusial way. Do you wish to recover unsaved project?</source>
-        <translation type="vanished">Похоже, что предыдущая сессия была некоррекно завершена. Открыть несохраненный проект?</translation>
+        <translation>Похоже, что предыдущая сессия была некоррекно завершена. Открыть несохраненный проект?</translation>
     </message>
 </context>
 <context>
     <name>qReal::MainWindow</name>
     <message>
         <source>Start test</source>
-        <translation type="vanished">Начать тест</translation>
+        <translation>Начать тест</translation>
     </message>
     <message>
         <source>Finish test</source>
-        <translation type="vanished">Завершить тест</translation>
+        <translation>Завершить тест</translation>
     </message>
     <message>
         <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="718"/>
@@ -825,32 +825,32 @@
         <translation>Показать/спрятать панель ошибок</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1375"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1376"/>
         <source>Gestures Show</source>
         <translation>Жесты мышью</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1658"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1660"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1924"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1926"/>
         <source>Recent projects</source>
         <translation>Недавние проекты</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1955"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1957"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1955"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1957"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Изображения (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2109"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2111"/>
         <source>Getting Started</source>
         <translation>Добро пожаловать!</translation>
     </message>
@@ -859,89 +859,89 @@
     <name>qReal::ProjectManager</name>
     <message>
         <source>Open existing project</source>
-        <translation type="vanished">Открыть проект</translation>
+        <translation>Открыть проект</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="vanished">Сохранить</translation>
+        <translation>Сохранить</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation type="vanished">&amp;Сохранить</translation>
+        <translation>&amp;Сохранить</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="vanished">&amp;Отмена</translation>
+        <translation>&amp;Отмена</translation>
     </message>
     <message>
         <source>&amp;Discard</source>
-        <translation type="vanished">&amp;Не сохранять</translation>
+        <translation>&amp;Не сохранять</translation>
     </message>
     <message>
         <source>Do you want to save current project?</source>
-        <translation type="vanished">Сохранить текущий проект?</translation>
+        <translation>Сохранить текущий проект?</translation>
     </message>
     <message>
         <source>Select file with a save to import</source>
-        <translation type="vanished">Выберите файл для импорта</translation>
+        <translation>Выберите файл для импорта</translation>
     </message>
     <message>
         <source>There are missing plugins</source>
-        <translation type="vanished">Не хватает плагинов</translation>
+        <translation>Не хватает плагинов</translation>
     </message>
     <message>
         <source>These plugins are not present, but needed to load the save:
 </source>
-        <translation type="vanished">Эти плагины отсутствуют, но нужны для загрузки сохранения:
+        <translation>Эти плагины отсутствуют, но нужны для загрузки сохранения:
 </translation>
     </message>
     <message>
         <source>This project contains unknown element %1 and thus can`t be opened. Probably it was created by old or incorrectly working version of QReal.</source>
-        <translation type="vanished">Данный проект содержит неизвестный элемент %1 и потому не может быть открыт. Возможно он был создан старой или некорректной версией QReal.</translation>
+        <translation>Данный проект содержит неизвестный элемент %1 и потому не может быть открыт. Возможно он был создан старой или некорректной версией QReal.</translation>
     </message>
     <message>
         <source>Can`t open project file</source>
-        <translation type="vanished">Не могу открыть проект</translation>
+        <translation>Не могу открыть проект</translation>
     </message>
     <message>
         <source>Unsaved project</source>
-        <translation type="vanished">Несохраненный проект</translation>
+        <translation>Несохраненный проект</translation>
     </message>
     <message>
         <source> [modified]</source>
-        <translation type="vanished"> [изменён]</translation>
+        <translation> [изменён]</translation>
     </message>
     <message>
         <source>Select file to save current metamodel to</source>
-        <translation type="vanished">Выберите файл для сохранения метамодели</translation>
+        <translation>Выберите файл для сохранения метамодели</translation>
     </message>
     <message>
         <source>Select file to save current model to</source>
-        <translation type="vanished">Выберите файл для сохранения модели</translation>
+        <translation>Выберите файл для сохранения модели</translation>
     </message>
     <message>
         <source>QReal Save File (*.qrs)</source>
-        <translation type="vanished">Файлы сохранения QReal (*.qrs)</translation>
+        <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
-        <translation type="vanished">Все файлы (*.*)</translation>
+        <translation>Все файлы (*.*)</translation>
     </message>
     <message>
         <source>QReal Save File(*.qrs)</source>
-        <translation type="vanished">Файлы сохранения QReal (*.qrs)</translation>
+        <translation>Файлы сохранения QReal (*.qrs)</translation>
     </message>
     <message>
         <source>File not found</source>
-        <translation type="vanished">Файл не найден</translation>
+        <translation>Файл не найден</translation>
     </message>
     <message>
         <source>File </source>
-        <translation type="vanished">Файл </translation>
+        <translation>Файл </translation>
     </message>
     <message>
         <source> not found. Try again</source>
-        <translation type="vanished"> не найден. Укажите существующий файл</translation>
+        <translation> не найден. Укажите существующий файл</translation>
     </message>
 </context>
 <context>
@@ -1147,22 +1147,22 @@
 <context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="212"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="213"/>
         <source>INFORMATION:</source>
         <translation>ИНФОРМАЦИЯ:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="214"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="215"/>
         <source>WARNING:</source>
         <translation>ПРЕДУПРЕЖДЕНИЕ:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="216"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="217"/>
         <source>ERROR:</source>
         <translation>ОШИБКА:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="218"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="219"/>
         <source>CRITICAL:</source>
         <translation>КРИТИЧЕСКАЯ ОШИБКА:</translation>
     </message>
@@ -1179,23 +1179,32 @@
     <name>qReal::gui::PaletteTree</name>
     <message>
         <source>Change representation</source>
-        <translation type="vanished">Изменить представление</translation>
+        <translation>Изменить представление</translation>
     </message>
     <message>
         <source>Collapse all</source>
-        <translation type="vanished">Свернуть всё</translation>
+        <translation>Свернуть всё</translation>
     </message>
     <message>
         <source>Expand all</source>
-        <translation type="vanished">Развернуть всё</translation>
+        <translation>Развернуть всё</translation>
     </message>
 </context>
 <context>
     <name>qReal::gui::PaletteTreeWidget</name>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/paletteTreeWidget.cpp" line="145"/>
         <source>Add Element</source>
         <translation>Добавить элемент</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/palette/paletteTreeWidget.cpp" line="142"/>
+        <source>Add Entity</source>
+        <translation>Добавить сущность</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/palette/paletteTreeWidget.cpp" line="143"/>
+        <source>Add Relastionship</source>
+        <translation>Добавить связь</translation>
     </message>
 </context>
 </TS>

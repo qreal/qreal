@@ -109,6 +109,13 @@ void Label::setTextFromRepo(const QString &text)
 	}
 }
 
+void Label::updateName()
+{
+ QGraphicsTextItem::setPlainText(mProperties.isReadOnly() ? mProperties.text() : mProperties.binding());
+ setText(toPlainText());
+ updateData();
+}
+
 void Label::setParentContents(const QRectF &contents)
 {
 	mParentContents = contents;
@@ -127,7 +134,7 @@ void Label::scaleCoordinates(const QRectF &contents)
 	}
 
 	const qreal x = mProperties.x() * (!mProperties.scalingX() ? mContents.width() : contents.width());
-	const qreal y = mProperties.y() * (!mProperties.scalingY() ? mContents.height() : contents.height());
+	const qreal y = 0.2 * (!mProperties.scalingY() ? mContents.height() : contents.height());
 
 	setPos(x, y);
 }
@@ -167,7 +174,9 @@ void Label::updateData(bool withUndoRedo)
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value, withUndoRedo);
+		if (value != parent->name()) {
+			parent->setName(value, withUndoRedo);
+		}
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
 	} else {
@@ -256,7 +265,7 @@ void Label::init(const QRectF &contents)
 		setPos(currentPos);
 	} else {
 		const qreal x = mProperties.x() * mContents.width();
-		const qreal y = mProperties.y() * mContents.height();
+		const qreal y = 0.2 * mContents.height();
 		setPos(x, y);
 		mGraphicalModelAssistApi.createLabel(mId, mProperties.index(), QPointF(x, y), boundingRect().size());
 	}

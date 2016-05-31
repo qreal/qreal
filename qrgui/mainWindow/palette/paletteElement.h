@@ -46,7 +46,7 @@ public:
 	QSize preferredSize() const;
 	Id explosionTarget() const;
 
-	bool operator ==(const PaletteElement &other) const;
+    bool operator ==(const PaletteElement &other) const;
 
 private:
 	Id mId;
@@ -61,8 +61,8 @@ private:
 /// Hash function for PaletteElement for using it in QHash and QSet.
 inline uint qHash(const PaletteElement &key)
 {
-	return qHash(key.id()) ^ qHash(key.name()) ^ ::qHash(key.preferredSize().width())
-			^ ::qHash(key.preferredSize().height()) ^ qHash(key.explosionTarget());
+    return qHash(key.id()) ^ qHash(key.name()) ^ ::qHash(key.preferredSize().width())
+            ^ ::qHash(key.preferredSize().height()) ^ qHash(key.explosionTarget());
 }
 
 }

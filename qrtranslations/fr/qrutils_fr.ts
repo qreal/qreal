@@ -77,9 +77,8 @@
 <context>
     <name>SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.ui" line="26"/>
         <source>SensorsGraph</source>
-        <translation>Graphe</translation>
+        <translation type="vanished">Graphe</translation>
     </message>
 </context>
 <context>
@@ -388,52 +387,43 @@
 <context>
     <name>utils::sensorsGraph::SensorViewer</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="119"/>
         <source>Save values history</source>
-        <translation>Historique des valeurs</translation>
+        <translation type="vanished">Historique des valeurs</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="119"/>
         <source>Comma-Separated Values Files (*.csv)</source>
-        <translation>Comma-Separated Values Files (*.csv)</translation>
+        <translation type="vanished">Comma-Separated Values Files (*.csv)</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="225"/>
         <source>value: </source>
-        <translation>valeur :</translation>
+        <translation type="vanished">valeur :</translation>
     </message>
 </context>
 <context>
     <name>utils::sensorsGraph::SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="136"/>
         <source>Stop tracking</source>
-        <translation>Arrêter le suivi</translation>
+        <translation type="vanished">Arrêter le suivi</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="140"/>
         <source>Start tracking</source>
-        <translation>Démarrer le suivi</translation>
+        <translation type="vanished">Démarrer le suivi</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="144"/>
         <source>Reset plot</source>
-        <translation>Réinitialiser le graphe</translation>
+        <translation type="vanished">Réinitialiser le graphe</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="148"/>
         <source>Zoom In</source>
-        <translation>Zoome avant</translation>
+        <translation type="vanished">Zoome avant</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="152"/>
         <source>Zoom Out</source>
-        <translation>Zoom arrière</translation>
+        <translation type="vanished">Zoom arrière</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="156"/>
         <source>Export values...</source>
-        <translation>Exporter les valeurs...</translation>
+        <translation type="vanished">Exporter les valeurs...</translation>
     </message>
 </context>
 <context>

@@ -112,7 +112,7 @@ void ResizeCommand::resize(NodeElement * const element, const QRectF &geometry)
 {
 	if (element && geometryOf(element) != geometry) {
 		ResizeHandler handler(element);
-		handler.resize(geometry.translated(-geometry.topLeft()), geometry.topLeft(), false);
+		handler.resize(geometry.translated(-geometry.bottomLeft()), geometry.bottomLeft(), false);
 	}
 }
 
@@ -211,7 +211,7 @@ void ResizeCommand::stopEdgeTracking()
 QRectF ResizeCommand::geometryOf(const NodeElement *element) const
 {
 	const QRectF geom = element->contentsRect();
-	return geom.translated(element->pos() - geom.topLeft());
+	return geom.translated(element->pos() - geom.bottomLeft());
 }
 
 QRectF ResizeCommand::geometryBeforeDrag() const

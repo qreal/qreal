@@ -26,6 +26,7 @@ ReferenceList::ReferenceList(qReal::MainWindow *mainWindow, const QPersistentMod
 	, mWindow(mainWindow)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	loadList(refType);
 	highlightCurrentValue(currentValue);
