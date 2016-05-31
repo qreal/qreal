@@ -99,6 +99,15 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	});
 }
 
+EditorViewScene::~EditorViewScene()
+{
+	/// @todo Hack: if gestures manager is not initialized yet then it should not be deleted. Yep, memory will leak,
+	/// but it is a pretty rare scenario to give a f*ck right now.
+	if (!mMouseMovementManager->gesturesInitialized()) {
+		mMouseMovementManager.take();
+	}
+}
+
 qreal EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;

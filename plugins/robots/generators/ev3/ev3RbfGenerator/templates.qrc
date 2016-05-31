@@ -90,11 +90,11 @@
         <file>templates/sensors/colorBlue.t</file>
         <file>templates/sensors/colorNone.t</file>
         <file>templates/sensors/encoder.t</file>
-        <file>templates/sensors/gyroscore.t</file>
         <file>templates/sensors/light.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/sound.t</file>
         <file>templates/sensors/touch.t</file>
+        <file>templates/sensors/gyroscope.t</file>
         <file>templates/sensors/scalar.t</file>
         <file>templates/sensors/vector.t</file>
         <file>templates/functions/abs.t</file>

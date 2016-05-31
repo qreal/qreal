@@ -68,6 +68,14 @@ QWidget *MouseMovementManager::producePainter() const
 	return result;
 }
 
+bool MouseMovementManager::gesturesInitialized() const
+{
+	// This varable can be read from another thread, so lock for writing should be here. But actually this value
+	// is modified 1 time and when everything is ready, so the worst can happen is that we return true here when
+	// the actual value is true :)
+	return !mInitializing;
+}
+
 void MouseMovementManager::drawIdealPath()
 {
 	if (mInitializing) {
