@@ -106,17 +106,20 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::EventsForKitPluginInterface::robotModelChanged
 			, this
 			, &TrikKitInterpreterPluginBase::onCurrentRobotModelChanged);
+
+	configurer.qRealConfigurator().mainWindowDockInterface()
+			.addDockWidget(Qt::RightDockWidgetArea, mSnapshotWindow.data());
+
+	mSnapshotWindow->setVisible(true);
 }
 
 void TrikKitInterpreterPluginBase::onCurrentRobotModelChanged(const QString &modelName)
 {
 	bool isThisModel = modelName == mRealRobotModel->name();
-	mTakeSnapshotAction.data()->setVisible(isThisModel);
+	mTakeSnapshotAction->setVisible(isThisModel);
 
-	if (!isThisModel) {
-		mTakeSnapshotAction->setChecked(false);
-		mSnapshotWindow->setVisible(false);
-		mReceivingSnapshots = false;
+	if (!isThisModel && mReceivingSnapshots) {
+		stopTakingSnapshots();
 	}
 
 	mCurrentlySelectedModelName = modelName;
@@ -224,12 +227,14 @@ void TrikKitInterpreterPluginBase::takeSnapshot()
 {
 	mRealRobotModel.data()->takeSnapshot();
 	mReceivingSnapshots = true;
+	mTakeSnapshotAction->setChecked(true);
 }
 
 void TrikKitInterpreterPluginBase::stopTakingSnapshots()
 {
 	mRealRobotModel.data()->stopTakingSnapshots();
 	mReceivingSnapshots = false;
+	mTakeSnapshotAction->setChecked(false);
 }
 
 void TrikKitInterpreterPluginBase::snapshotReceived(QByteArray *snapshot)

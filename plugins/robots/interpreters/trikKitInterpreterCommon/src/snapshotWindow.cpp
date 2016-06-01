@@ -25,6 +25,8 @@ SnapshotWindow::SnapshotWindow(const QString &title, QWidget *parent)
 	label->setPixmap(image);
 	this->setWidget(label);
 
+	this->setObjectName("Snapshot window");
+
 	mLabel.reset(label);
 }
 
