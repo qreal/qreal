@@ -39,10 +39,10 @@ public:
 	virtual QString robotConfigFileVersion() const = 0;
 
 	/// Requests real robot to start taking snapshots and sending them back to TRIK Studio.
-	virtual void takeSnapshot();
+	virtual void takeSnapshot() const;
 
 	/// Requests real robot to stop taking snapshots.
-	virtual void stopTakingSnapshots();
+	virtual void stopTakingSnapshots() const;
 
 signals:
 	void snapshotReceived(QByteArray *snapshot);

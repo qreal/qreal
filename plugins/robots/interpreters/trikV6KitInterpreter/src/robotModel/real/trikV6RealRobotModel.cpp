@@ -156,12 +156,12 @@ robotParts::Device *TrikV6RealRobotModel::createDevice(const PortInfo &port, con
 	return TrikRobotModelBase::createDevice(port, deviceInfo);
 }
 
-void TrikV6RealRobotModel::takeSnapshot()
+void TrikV6RealRobotModel::takeSnapshot() const
 {
 	mRobotCommunicator->takeSnapshot();
 }
 
-void TrikV6RealRobotModel::stopTakingSnapshots()
+void TrikV6RealRobotModel::stopTakingSnapshots() const
 {
 	mRobotCommunicator->stopTakingSnapshots();
 }

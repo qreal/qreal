@@ -40,8 +40,8 @@ public:
 	bool needsConnection() const override;
 	void connectToRobot() override;
 	void stopRobot() override;
-	void takeSnapshot() override;
-	void stopTakingSnapshots() override;
+	void takeSnapshot() const override;
+	void stopTakingSnapshots() const override;
 	void disconnectFromRobot() override;
 
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
