@@ -41,13 +41,16 @@ ChooseTypeDialog::~ChooseTypeDialog()
 	delete mUi;
 }
 
-void ChooseTypeDialog::nodeButtonClicked() {
+void ChooseTypeDialog::nodeButtonClicked()
+{
 	AddNodeDialog *nodeDialog = new AddNodeDialog(mDiagram, mEditorManagerProxy, parentWidget());
 	connect(nodeDialog, &AddNodeDialog::jobDone, this, &ChooseTypeDialog::jobDone);
 	nodeDialog->setModal(true);
 	nodeDialog->show();
 }
-void ChooseTypeDialog::edgeButtonClicked() {
+
+void ChooseTypeDialog::edgeButtonClicked()
+{
 	EdgePropertiesDialog *edgeDialog = new EdgePropertiesDialog(mDiagram, mEditorManagerProxy, parentWidget());
 	connect(edgeDialog, &EdgePropertiesDialog::jobDone, this, &ChooseTypeDialog::jobDone);
 	edgeDialog->setModal(true);

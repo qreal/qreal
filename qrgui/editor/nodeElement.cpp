@@ -360,24 +360,6 @@ void NodeElement::recalculateHighlightedNode(const QPointF &mouseScenePos)
 		case None:
 			break;
 	}
-/*
-	EditorViewScene *evScene = dynamic_cast<EditorViewScene*>(scene());
-	NodeElement *newParent = evScene->findNewParent(newParentInnerPoint, this);
-
-	// it would be nice optimization to do nothing in case of
-	// mHighlightedNode == newParent, but it's unapplicable here because
-	// of element could be moved inside his parent
-
-	if (newParent) {
-		if (mHighlightedNode) {
-			mHighlightedNode->erasePlaceholder(false);
-		}
-		mHighlightedNode = newParent;
-		mHighlightedNode->drawPlaceholder(EditorViewScene::getPlaceholder(), mouseScenePos);
-	} else if (mHighlightedNode != nullptr) {
-		mHighlightedNode->erasePlaceholder(true);
-		mHighlightedNode = nullptr;
-	}*/
 }
 
 void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

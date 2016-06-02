@@ -634,6 +634,7 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		mHandler->endMovingEdge();
 	}
+
 	updateLongestPart();
 }
 

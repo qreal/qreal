@@ -75,6 +75,6 @@ FORMS += \
 	$$PWD/findReplaceDialog.ui \
 
 RESOURCES += \
-    arrowIcons.qrc
+	arrowIcons.qrc \
 
 DISTFILES +=
