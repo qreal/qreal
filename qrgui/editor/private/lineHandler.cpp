@@ -234,7 +234,7 @@ QPointF LineHandler::portArrangePoint(const NodeElement *node) const
 				: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
 	} else {
 		mEdge->createLoopEdge();
-		return mEdge->mapToItem(mEdge->src(), mEdge->line()[3]);
+		return mEdge->mapToItem(mEdge->src(), mEdge->line().last());
 	}
 }
 

@@ -314,12 +314,6 @@ void EdgeElement::connectToPort()
 
 	mIsLoop = ((newSrc == newDst) && newSrc);
 
-	if (mIsLoop) {
-		connectLoopEdge(newSrc);
-		createLoopEdge();
-		return;
-	}
-
 	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
 
@@ -351,6 +345,12 @@ void EdgeElement::connectToPort()
 
 	mLogicalAssistApi.setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
 	mLogicalAssistApi.setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
+
+	if (mIsLoop) {
+		connectLoopEdge(newSrc);
+		createLoopEdge();
+		return;
+	}
 
 	adjustLink();
 
