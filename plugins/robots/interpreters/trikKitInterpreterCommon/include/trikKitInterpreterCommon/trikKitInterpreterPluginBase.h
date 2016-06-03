@@ -65,11 +65,12 @@ public:
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
 private slots:
-	QWidget *produceIpAddressConfigurer(); // Transfers ownership
+	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
 	void onTakeSnapshotButtonClicked();
 
-	void snapshotReceived(QByteArray *snapshot);
+	/// Emitted when received a snapshot from robot.
+	void snapshotReceived(QByteArray snapshot);
 
 protected:
 	/// Takes ownership over all supplied pointers.

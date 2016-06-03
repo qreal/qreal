@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <QDockWidget>
+#include <QtWidgets/QDockWidget>
 #include <QtWidgets/QLabel>
 #include <QtCore/QScopedPointer>
 
@@ -29,11 +29,11 @@ public:
 	/// Constructor.
 	/// @param title - title of top-level widget.
 	/// @param parent - parent of a window as in Qt widget parent/child relations.
-	SnapshotWindow(const QString &title, QWidget *parent = 0);
+	explicit SnapshotWindow(const QString &title, QWidget *parent = 0);
 
+	/// displays snapshot in snapshot window
 	/// @param snapshot - PNG image to be displayed.
-	/// @param deleteImage - determine whether snapshot shall be deleted after usage in this method.
-	void setImage(QByteArray *snapshot, bool deleteImage);
+	void setImage(QByteArray snapshot);
 
 private:
 	QScopedPointer<QLabel> mLabel;

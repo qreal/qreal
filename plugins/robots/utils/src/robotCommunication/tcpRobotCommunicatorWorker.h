@@ -129,7 +129,7 @@ signals:
 	void casingVersionReceived(const QString &casingVersion);
 
 	/// Emitted when received a snapshot from robot.
-	void snapshotReceived(QByteArray *snapshot);
+	void snapshotReceived(QByteArray snapshot);
 
 private slots:
 	/// Process message from control connection, emits signals when something interesting is received from robot.

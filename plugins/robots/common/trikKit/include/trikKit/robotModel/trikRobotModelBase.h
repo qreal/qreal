@@ -45,7 +45,8 @@ public:
 	virtual void stopTakingSnapshots() const;
 
 signals:
-	void snapshotReceived(QByteArray *snapshot);
+	/// Emitted when received a snapshot from robot.
+	void snapshotReceived(QByteArray snapshot);
 
 protected:
 	virtual kitBase::robotModel::DeviceInfo displayInfo() const;

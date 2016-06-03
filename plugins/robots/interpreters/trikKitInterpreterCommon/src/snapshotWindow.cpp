@@ -18,23 +18,15 @@ using namespace trik;
 
 SnapshotWindow::SnapshotWindow(const QString &title, QWidget *parent)
 	: QDockWidget(title, parent)
+	, mLabel(new QLabel())
 {
-	QPixmap image = QPixmap("");
-	QLabel *label = new QLabel();
-
-	label->setPixmap(image);
-	this->setWidget(label);
-
-	this->setObjectName("Snapshot window");
-
-	mLabel.reset(label);
+	mLabel->setPixmap(QPixmap());
+	setWidget(mLabel.data());
+	setObjectName("Snapshot window");
 }
 
-void SnapshotWindow::setImage(QByteArray *snapshot, bool deleteImage) {
-	QPixmap image = QPixmap("");
-	image.loadFromData(*snapshot, "PNG");
-	mLabel.data()->setPixmap(image);
-	if (deleteImage) {
-		delete snapshot;
-	}
+void SnapshotWindow::setImage(QByteArray snapshot) {
+	QPixmap image = QPixmap();
+	image.loadFromData(snapshot, "PNG");
+	mLabel->setPixmap(image);
 }
