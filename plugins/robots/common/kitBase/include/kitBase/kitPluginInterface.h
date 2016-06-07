@@ -75,7 +75,7 @@ public:
 
 	/// Returns a widget that will be placed at devices configuration widget in the left-hand side dock.
 	/// The default implementation returns nullptr.
-	/// Transfers ownership.
+	/// Takes ownership on result.
 	virtual QWidget *quickPreferencesFor(const robotModel::RobotModelInterface &model)
 	{
 		Q_UNUSED(model)

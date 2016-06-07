@@ -283,10 +283,10 @@ bool RobotsPluginFacade::selectKit()
 
 void RobotsPluginFacade::initSensorWidgets()
 {
-	mDockDevicesConfigurer = new kitBase::DevicesConfigurationWidget(nullptr, true);
+	mDockDevicesConfigurer.reset(new kitBase::DevicesConfigurationWidget(nullptr, true));
 	mDockDevicesConfigurer->loadRobotModels(mKitPluginManager.allRobotModels());
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, mDockDevicesConfigurer, &kitBase::DevicesConfigurationWidget::selectRobotModel);
+			, mDockDevicesConfigurer.data(), &kitBase::DevicesConfigurationWidget::selectRobotModel);
 
 	mWatchListWindow = new utils::WatchListWindow(*mParser);
 
@@ -308,7 +308,7 @@ void RobotsPluginFacade::initSensorWidgets()
 		mActionsManager.stopRobotAction().setVisible(false);
 	});
 
-	mUiManager->placeDevicesConfig(mDockDevicesConfigurer);
+	mUiManager->placeDevicesConfig(mDockDevicesConfigurer.data());
 	mUiManager->placeWatchPlugins(mWatchListWindow, mGraphicsWatcherManager->widget());
 	mActionsManager.appendHotKey("View.ToggleRobotConsole", tr("Toggle robot console panel")
 			, *mUiManager->robotConsole().toggleViewAction());
@@ -319,7 +319,7 @@ void RobotsPluginFacade::initSensorWidgets()
 	}
 
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
-	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer.data());
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
 }
 
