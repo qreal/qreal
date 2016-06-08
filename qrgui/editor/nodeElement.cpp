@@ -1268,14 +1268,6 @@ QList<NodeElement *> const NodeElement::childNodes() const
 	return result;
 }
 
-void NodeElement::updateNodeEdges()
-{
-	arrangeLinks();
-	for (EdgeElement* edge : mEdgeList) {
-		edge->adjustLink();
-	}
-}
-
 AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPointF &position) const
 {
 	EditorViewScene *evScene = dynamic_cast<EditorViewScene *>(scene());

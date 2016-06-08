@@ -186,7 +186,6 @@ public slots:
 	void switchGrid(bool isChecked);
 
 private slots:
-	void updateNodeEdges();
 	void initRenderedDiagram();
 
 private:
