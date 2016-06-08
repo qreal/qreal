@@ -120,7 +120,7 @@ private:
 	QScopedPointer<ExerciseExportManager> mSaveAsTaskManager;
 	QScopedPointer<UiManager> mUiManager;
 
-	kitBase::DevicesConfigurationWidget *mDockDevicesConfigurer;  // Does not have ownership
+	QScopedPointer<kitBase::DevicesConfigurationWidget> mDockDevicesConfigurer;
 	utils::WatchListWindow *mWatchListWindow;  // Does not have ownership
 	GraphicsWatcherManager *mGraphicsWatcherManager;  // Has ownership
 	BlocksFactoryManager mBlocksFactoryManager;
