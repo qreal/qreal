@@ -1184,7 +1184,7 @@ NodeInfo NodeElement::data() const
 
 	// new element should not have references to links connected to original source element
 	result.setGraphicalProperty("links", IdListHelper::toVariant(IdList()));
-	result.setGraphicalProperty("position", mPos);
+	result.setGraphicalProperty("position", pos());
 
 	return result;
 }
