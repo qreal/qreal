@@ -37,6 +37,7 @@ Palette::Palette(QWidget *parent)
 	layout->addWidget(mToolBar);
 
 	mCursorAction->setShortcut(QKeySequence(Qt::Key_N));
+	mCursorAction->setCheckable(true);
 	registerTool(mCursorAction.data());
 }
 
@@ -51,7 +52,6 @@ const QAction &Palette::cursorAction() const
 
 void Palette::registerTool(QAction * const tool)
 {
-	tool->setCheckable(true);
 	tool->setParent(this);
 	mGroup->addAction(tool);
 	mToolBar->addAction(tool);

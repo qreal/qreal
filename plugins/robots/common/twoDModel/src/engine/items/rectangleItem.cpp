@@ -19,7 +19,6 @@
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
-const int currentResizeDrift = resizeDrift;
 const int currentDrift = drift / 2;
 
 RectangleItem::RectangleItem(const QPointF &begin, const QPointF &end)
@@ -43,6 +42,7 @@ QAction *RectangleItem::rectangleTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_rectangle.svg"), tr("Rectangle (R)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_R));
+	result->setCheckable(true);
 	return result;
 }
 
@@ -56,7 +56,7 @@ void RectangleItem::setPrivateData()
 
 QRectF RectangleItem::calcNecessaryBoundingRect() const
 {
-	return QRectF(qMin(x1(), x2()), qMin(y1(), y2()), abs(x2() - x1()), abs(y2() - y1()));
+	return QRectF(qMin(x1(), x2()), qMin(y1(), y2()), qAbs(x2() - x1()), qAbs(y2() - y1()));
 }
 
 QRectF RectangleItem::boundingRect() const

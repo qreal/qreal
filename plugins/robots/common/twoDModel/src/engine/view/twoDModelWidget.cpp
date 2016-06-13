@@ -48,6 +48,7 @@
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/items/imageItem.h"
 
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/model.h"
@@ -98,6 +99,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
+	connect(&mModel.worldModel(), &WorldModel::backgroundChanged, mScene, &TwoDModelScene::setBackground);
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();
@@ -201,6 +203,7 @@ void TwoDModelWidget::initPalette()
 	QAction * const rectangleTool = items::RectangleItem::rectangleTool();
 	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
 	QAction * const stylusTool = items::StylusItem::stylusTool();
+	QAction * const imageTool = items::ImageItem::imageTool();
 
 	mUi->palette->registerTool(wallTool);
 	mUi->palette->registerTool(lineTool);
@@ -208,6 +211,7 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(rectangleTool);
 	mUi->palette->registerTool(ellipseTool);
 	mUi->palette->registerTool(stylusTool);
+	mUi->palette->registerTool(imageTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
@@ -215,6 +219,7 @@ void TwoDModelWidget::initPalette()
 	connect(rectangleTool, &QAction::triggered, mScene, &TwoDModelScene::addRectangle);
 	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
 	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
+	connect(imageTool, &QAction::triggered, mScene, &TwoDModelScene::addImage);
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
 
 	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
@@ -252,6 +257,7 @@ void TwoDModelWidget::connectUiButtons()
 
 	connect(&mActions->saveModelAction(), &QAction::triggered, this, &TwoDModelWidget::saveWorldModel);
 	connect(&mActions->loadModelAction(), &QAction::triggered, this, &TwoDModelWidget::loadWorldModel);
+	connect(&mActions->setBackgroundAction(), &QAction::triggered, this, &TwoDModelWidget::setBackground);
 
 	connect(mUi->speedUpButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedUp);
 	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
@@ -427,6 +433,20 @@ void TwoDModelWidget::loadWorldModel()
 	}
 
 	loadXml(save);
+}
+
+void TwoDModelWidget::setBackground()
+{
+	// Loads world and robot models simultaneously.
+	const QString loadFileName = QRealFileDialog::getOpenFileName("2DSelectBackground", this
+			, tr("Select background image"), "./fields", tr("Graphics (*.*)"));
+	if (loadFileName.isEmpty()) {
+		return;
+	}
+
+	const Image image(loadFileName, false);
+	const QSize size = image.preferedSize();
+	mModel.worldModel().setBackground(image, QRect(QPoint(-size.width()/2, -size.height()/2), size));
 }
 
 void TwoDModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)

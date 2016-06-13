@@ -17,6 +17,8 @@
 #include <QtCore/QMap>
 #include <QtWidgets/QGraphicsScene>
 
+#include "twoDModel/engine/model/image.h"
+
 namespace twoDModel {
 
 namespace model {
@@ -28,17 +30,26 @@ namespace view {
 /// A scene that maintains a copy of the visible world for rendering some pieces of that (for sensors, for example).
 class FakeScene : public QGraphicsScene
 {
+	Q_OBJECT
+
 public:
 	explicit FakeScene(const model::WorldModel &world);
 
 	/// Renders a given piece of the scene and returns resulting image.
 	QImage render(const QRectF &piece);
 
+public slots:
+	/// Sets a background image on the scene and its geometry.
+	void setBackground(const model::Image &background, const QRect &backgroundRect);
+
 private:
 	void addClone(QGraphicsItem * const original, QGraphicsItem * const cloned);
 	void deleteItem(QGraphicsItem * const original);
+	void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 	QMap<QGraphicsItem *, QGraphicsItem *> mClonedItems;
+	model::Image mBackground;
+	QRect mBackgroundRect;
 };
 
 }

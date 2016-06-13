@@ -19,7 +19,6 @@
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
-const int currentResizeDrift = resizeDrift;
 const int currentDrift = drift / 2;
 
 EllipseItem::EllipseItem(const QPointF &begin, const QPointF &end)
@@ -43,6 +42,7 @@ QAction *EllipseItem::ellipseTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_ellipse.png"), tr("Ellipse (E)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_E));
+	result->setCheckable(true);
 	return result;
 }
 
@@ -56,7 +56,7 @@ void EllipseItem::setPrivateData()
 
 QRectF EllipseItem::calcNecessaryBoundingRect() const
 {
-	return QRectF(qMin(x1(), x2()), qMin(y1(), y2()), abs(x2() - x1()), abs(y2() - y1()));
+	return QRectF(qMin(x1(), x2()), qMin(y1(), y2()), qAbs(x2() - x1()), qAbs(y2() - y1()));
 }
 
 QRectF EllipseItem::boundingRect() const
@@ -107,7 +107,7 @@ void EllipseItem::deserialize(const QDomElement &element)
 QPainterPath EllipseItem::shape() const
 {
 	QPainterPath result;
-	result.addEllipse(boundingRect());
+	result.addRect(boundingRect());
 	return result;
 }
 

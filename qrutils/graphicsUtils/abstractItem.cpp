@@ -99,7 +99,7 @@ void AbstractItem::setPenBrushForExtraction(QPainter *painter, const QStyleOptio
 
 void AbstractItem::setPenBrushDriftRect(QPainter *painter)
 {
-	QPen pen(QColor("whitesmoke"));
+	QPen pen(QColor("lightgrey"));
 	pen.setStyle(Qt::SolidLine);
 	pen.setWidth(0);
 	QBrush brush;
