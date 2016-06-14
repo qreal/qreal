@@ -14,8 +14,14 @@
 
 #pragma once
 
-#include <QtGui/QImage>
-#include <QtXml/QDomElement>
+#include <QtCore/QScopedPointer>
+#include <QtCore/QString>
+#include <QtCore/QRect>
+
+class QDomElement;
+class QSvgRenderer;
+class QImage;
+class QPainter;
 
 namespace twoDModel {
 namespace model {
@@ -27,6 +33,8 @@ class Image
 public:
 	Image();
 	Image(const QString &path, bool memorize);
+	Image(const Image &other);
+	~Image();
 
 	/// Reads image from XML-representation.
 	static Image deserialize(const QDomElement &element);
@@ -51,11 +59,16 @@ public:
 
 	bool operator==(const Image &other) const;
 	bool operator!=(const Image &other) const;
+	Image &operator=(const Image &right);
 
 private:
+	QSize preferedSvgSize() const;
+
 	bool mExternal;
+	bool mIsSvg;
 	QString mPath;
-	QImage mImage;
+	QScopedPointer<QImage> mImage;
+	QScopedPointer<QSvgRenderer> mSvgRenderer;
 };
 
 }
