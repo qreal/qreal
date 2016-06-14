@@ -104,6 +104,11 @@ void ImageItem::deserialize(const QDomElement &element)
 	setY2(rect.bottom());
 }
 
+const twoDModel::model::Image &ImageItem::image() const
+{
+	return mImage;
+}
+
 bool ImageItem::memorizes() const
 {
 	return !mImage.external();
@@ -123,6 +128,15 @@ void ImageItem::setPath(const QString &path)
 {
 	mImage.setPath(path);
 	update();
+}
+
+QVariant ImageItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
+{
+	if (change == QGraphicsItem::ItemSelectedHasChanged) {
+		emit selectedChanged(value.toBool());
+	}
+
+	return AbstractItem::itemChange(change, value);
 }
 
 QRect ImageItem::deserializeRect(const QString &string) const

@@ -127,6 +127,9 @@ signals:
 	/// Emitted at any changes of robot list (adding or removing)
 	void robotListChanged(RobotItem *robotItem);
 
+	/// Emitted when user pressed escape during this scene is focused.
+	void escapePressed();
+
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
 
@@ -168,6 +171,7 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;

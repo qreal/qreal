@@ -362,6 +362,31 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
 
+void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	const QList<QGraphicsItem *> itemsUnderCursor = items(mouseEvent->scenePos());
+	const bool isSceneClick = itemsUnderCursor.count() == 1 && itemsUnderCursor.first() == mEmptyRect;
+	if (isSceneClick && mBackgroundRect.contains(mouseEvent->scenePos().toPoint())) {
+		items::ImageItem *item = new items::ImageItem(mBackground, mBackgroundRect);
+		mBackground = model::Image();
+		mBackgroundRect = QRect();
+		addItem(item);
+		item->setSelected(true);
+		connect(this, &TwoDModelScene::escapePressed, this, [=]() { item->setSelected(false); });
+		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {
+			if (!selected) {
+				mBackground = item->image();
+				mBackgroundRect.setLeft(item->x1() + item->x());
+				mBackgroundRect.setTop(item->y1() + item->y());
+				mBackgroundRect.setRight(item->x2() + item->x());
+				mBackgroundRect.setBottom(item->y2() + item->y());
+				delete item;
+				update();
+			}
+		});
+	}
+}
+
 void TwoDModelScene::deleteItem(QGraphicsItem *item)
 {
 	if (!items().contains(item)) {
@@ -440,6 +465,8 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 
 			deleteItem(item);
 		}
+	} else if (event->key() == Qt::Key_Escape) {
+		emit escapePressed();
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}

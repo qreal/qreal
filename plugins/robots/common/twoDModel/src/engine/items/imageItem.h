@@ -46,6 +46,9 @@ public:
 	void serialize(QDomElement &element) const override;
 	void deserialize(const QDomElement &element) override;
 
+	/// Returns image of this item.
+	const model::Image &image() const;
+
 	/// Returns true if this item is embedded into save.
 	bool memorizes() const;
 
@@ -58,7 +61,13 @@ public:
 	/// Sets a path to displayed image.
 	void setPath(const QString &path);
 
-protected:
+signals:
+	/// Emitted when user selects or unselects
+	void selectedChanged(bool selected);
+
+private:
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
 	QRect deserializeRect(const QString &string) const;
 
 	graphicsUtils::RectangleImpl mImpl;
