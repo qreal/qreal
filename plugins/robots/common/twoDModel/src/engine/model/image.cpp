@@ -14,10 +14,13 @@
 
 #include "twoDModel/engine/model/image.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QBuffer>
 #include <QtGui/QPainter>
 #include <QtSvg/QSvgRenderer>
 #include <QtXml/QDomElement>
 
+#include <qrkernel/logging.h>
 #include <qrutils/imagesCache.h>
 
 using namespace twoDModel::model;
@@ -27,18 +30,24 @@ const quint64 maxSvgSize = 1000;
 Image::Image()
 	: mExternal(true)
 	, mIsSvg(false)
+	, mImage(nullptr)
+	, mSvgRenderer(nullptr)
 {
 }
 
 Image::Image(const QString &path, bool memorize)
 	: mExternal(!memorize)
+	, mIsSvg(path.endsWith(".svg"))
 	, mPath(path)
+	, mImage(nullptr)
+	, mSvgRenderer(nullptr)
 {
-	mIsSvg = path.endsWith(".svg");
-	if (mIsSvg) {
-		mSvgRenderer.reset(new QSvgRenderer(path));
-	} else {
-		mImage.reset(new QImage(path));
+	if (!memorize) {
+		if (mIsSvg) {
+			mSvgRenderer.reset(new QSvgRenderer(path));
+		} else {
+			mImage.reset(new QImage(path));
+		}
 	}
 }
 
@@ -48,6 +57,7 @@ Image::Image(const Image &other)
 	mIsSvg = other.mIsSvg;
 	mPath = other.mPath;
 	mImage.reset(other.mImage.data() && !mIsSvg ? new QImage(*other.mImage) : nullptr);
+	mSvgBytes = other.mSvgBytes;
 	mSvgRenderer.reset(mIsSvg ? new QSvgRenderer(mPath) : nullptr);
 }
 
@@ -61,9 +71,19 @@ Image Image::deserialize(const QDomElement &element)
 	const QString path = element.attribute("path");
 	Image image(path, !external);
 	if (!external) {
-		const QByteArray bytes = QByteArray::fromBase64(element.text().toLatin1());
-		QDataStream stream(bytes);
-		stream >> *image.mImage;
+		if (image.mIsSvg) {
+			image.mSvgBytes = element.text().toLatin1();
+			image.mSvgRenderer.reset(new QSvgRenderer(image.mSvgBytes));
+		} else {
+			QByteArray bytes = QByteArray::fromBase64(element.text().toLatin1());
+			QBuffer buffer(&bytes);
+			QImage tempImage;
+			if (!tempImage.load(&buffer, "PNG")) {
+				QLOG_ERROR() << "Corrupted image" << image.mPath << "when loading from save";
+			}
+
+			image.mImage.reset(new QImage(tempImage));
+		}
 	}
 
 	return image;
@@ -71,22 +91,40 @@ Image Image::deserialize(const QDomElement &element)
 
 void Image::serialize(QDomElement &target) const
 {
-	if (isLoaded()) {
+	if (isValid()) {
 		target.setAttribute("path", mPath);
 		target.setAttribute("external", mExternal ? "true" : "false");
-		if (!mExternal) {
+		if (mExternal) {
+			return;
+		}
+
+		if (mIsSvg) {
+			if (mSvgBytes.isEmpty()) {
+				QFile file(mPath);
+				if (file.open(QFile::ReadOnly)) {
+					const QDomText svgText = target.ownerDocument().createTextNode(file.readAll());
+					target.appendChild(svgText);
+				} else {
+					QLOG_ERROR() << "Could not open" << mPath << "for reading when embedding svg into save file";
+				}
+			} else {
+				const QDomText svgText = target.ownerDocument().createTextNode(mSvgBytes);
+				target.appendChild(svgText);
+			}
+		} else {
 			QByteArray bytes;
-			QDataStream stream(bytes);
-			stream << mImage;
+			QBuffer buffer(&bytes);
+			mImage->save(&buffer, "PNG");
+			buffer.close();
 			const QDomText text = target.ownerDocument().createTextNode(bytes.toBase64());
 			target.appendChild(text);
 		}
 	}
 }
 
-bool Image::isLoaded() const
+bool Image::isValid() const
 {
-	return !mImage.isNull();
+	return !mPath.isEmpty();
 }
 
 QSize Image::preferedSize() const
@@ -116,6 +154,24 @@ void Image::setExternal(bool external)
 	mExternal = external;
 }
 
+QString Image::path() const
+{
+	return mPath;
+}
+
+void Image::setPath(const QString &path)
+{
+	mPath = path;
+	mIsSvg = path.endsWith(".svg");
+	mImage.reset(nullptr);
+	mSvgRenderer.reset(nullptr);
+	if (mIsSvg) {
+		mSvgRenderer.reset(new QSvgRenderer(path));
+	} else {
+		mImage.reset(new QImage(path));
+	}
+}
+
 void Image::draw(QPainter &painter, const QRect &rect, qreal zoom)
 {
 	if (mExternal && !mPath.isEmpty()) {
@@ -143,6 +199,7 @@ Image &Image::operator=(const Image &right)
 	mIsSvg = right.mIsSvg;
 	mPath = right.mPath;
 	mImage.reset(!right.mImage.isNull() && !mIsSvg ? new QImage(*right.mImage) : nullptr);
-	mSvgRenderer.reset(mIsSvg ? new QSvgRenderer(mPath) : nullptr);
+	mSvgBytes = right.mSvgBytes;
+	mSvgRenderer.reset(mIsSvg ? (mExternal ? new QSvgRenderer(mPath) : new QSvgRenderer(mSvgBytes)) : nullptr);
 	return *this;
 }

@@ -67,7 +67,7 @@ void FakeScene::deleteItem(QGraphicsItem * const original)
 
 void FakeScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if (mBackground.isLoaded()) {
+	if (mBackground.isValid()) {
 		mBackground.draw(*painter, mBackgroundRect, 1.0);
 	}
 

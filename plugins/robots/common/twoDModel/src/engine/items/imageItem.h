@@ -25,6 +25,8 @@ namespace items {
 class ImageItem : public graphicsUtils::AbstractItem
 {
 	Q_OBJECT
+	Q_PROPERTY(bool memorize READ memorizes WRITE setMemorize)
+	Q_PROPERTY(QString path READ path WRITE setPath)
 
 public:
 	ImageItem(const model::Image &image, const QRect &geometry);
@@ -43,6 +45,18 @@ public:
 
 	void serialize(QDomElement &element) const override;
 	void deserialize(const QDomElement &element) override;
+
+	/// Returns true if this item is embedded into save.
+	bool memorizes() const;
+
+	/// Returns true if this item is embedded into save.
+	QString path() const;
+
+	/// Tells item to embed image into a save or keep it externally.
+	void setMemorize(bool memorize);
+
+	/// Sets a path to displayed image.
+	void setPath(const QString &path);
 
 protected:
 	QRect deserializeRect(const QString &string) const;

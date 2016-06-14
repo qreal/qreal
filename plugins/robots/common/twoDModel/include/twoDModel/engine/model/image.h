@@ -40,7 +40,7 @@ public:
 	static Image deserialize(const QDomElement &element);
 
 	/// Returns true if image was successfully loaded.
-	bool isLoaded() const;
+	bool isValid() const;
 
 	/// Returns the size of the image.
 	QSize preferedSize() const;
@@ -53,6 +53,12 @@ public:
 
 	/// Memorizes or forgets image bytes.
 	void setExternal(bool external);
+
+	/// Returns true if this item is embedded into save.
+	QString path() const;
+
+	/// Sets a path to displayed image.
+	void setPath(const QString &path);
 
 	/// Draws image with \a painter inside the \a rect considering \a zoom.
 	void draw(QPainter &painter, const QRect &rect, qreal zoom = 1.0);
@@ -68,6 +74,7 @@ private:
 	bool mIsSvg;
 	QString mPath;
 	QScopedPointer<QImage> mImage;
+	QByteArray mSvgBytes;
 	QScopedPointer<QSvgRenderer> mSvgRenderer;
 };
 

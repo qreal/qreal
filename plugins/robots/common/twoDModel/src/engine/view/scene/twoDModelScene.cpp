@@ -447,7 +447,7 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 
 void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if (mBackground.isLoaded()) {
+	if (mBackground.isValid()) {
 		mBackground.draw(*painter, mBackgroundRect, currentZoom());
 	}
 

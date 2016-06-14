@@ -35,6 +35,7 @@
 
 #include "parts/actionsBox.h"
 #include "parts/colorItemPopup.h"
+#include "parts/imageItemPopup.h"
 #include "parts/robotItemPopup.h"
 #include "parts/speedPopup.h"
 
@@ -158,6 +159,7 @@ void TwoDModelWidget::initWidget()
 	defaultPen.setWidth(defaultPenWidth);
 	// Popups will listen to scene events, appear, disappear and free itself.
 	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
+	mImageItemPopup = new ImageItemPopup(*mScene, this);
 	mRobotItemPopup = new RobotItemPopup(*mScene, this);
 	mSpeedPopup = new SpeedPopup(this);
 
@@ -166,6 +168,8 @@ void TwoDModelWidget::initWidget()
 		mScene->setPenBrushItems(pen, Qt::NoBrush);
 	});
 	connect(mColorFieldItemPopup, &ColorItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
+
+	connect(mImageItemPopup, &ImageItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;

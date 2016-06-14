@@ -104,6 +104,27 @@ void ImageItem::deserialize(const QDomElement &element)
 	setY2(rect.bottom());
 }
 
+bool ImageItem::memorizes() const
+{
+	return !mImage.external();
+}
+
+QString ImageItem::path() const
+{
+	return mImage.path();
+}
+
+void ImageItem::setMemorize(bool memorize)
+{
+	mImage.setExternal(!memorize);
+}
+
+void ImageItem::setPath(const QString &path)
+{
+	mImage.setPath(path);
+	update();
+}
+
 QRect ImageItem::deserializeRect(const QString &string) const
 {
 	const QStringList splittedStr = string.split(":");
