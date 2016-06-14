@@ -370,7 +370,7 @@ void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		items::ImageItem *item = new items::ImageItem(mBackground, mBackgroundRect);
 		mBackground = model::Image();
 		mBackgroundRect = QRect();
-		addItem(item);
+		mModel.worldModel().addImage(item);
 		item->setSelected(true);
 		connect(this, &TwoDModelScene::escapePressed, this, [=]() { item->setSelected(false); });
 		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {
@@ -380,7 +380,7 @@ void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				mBackgroundRect.setTop(item->y1() + item->y());
 				mBackgroundRect.setRight(item->x2() + item->x());
 				mBackgroundRect.setBottom(item->y2() + item->y());
-				delete item;
+				mModel.worldModel().removeImage(item);
 				update();
 			}
 		});
