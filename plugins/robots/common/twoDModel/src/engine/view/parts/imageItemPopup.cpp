@@ -95,7 +95,7 @@ QWidget *ImageItemPopup::initMemorizationPicker()
 	QCheckBox *box = new QCheckBox(this);
 	mMemorizationPicker = box;
 	box->setIcon(QIcon(":/icons/2d_save.png"));
-	box->setToolTip(tr("Image"));
+	updateMemorizationToolTip();
 	box->setFocusPolicy(Qt::NoFocus);
 	connect(mMemorizationPicker, &QAbstractButton::toggled, this, &ImageItemPopup::updateMemorizationToolTip);
 	connect(mMemorizationPicker, &QAbstractButton::toggled, this, [=](bool memorized){
@@ -115,6 +115,7 @@ QWidget *ImageItemPopup::initPathPicker()
 	button->setFocusPolicy(Qt::NoFocus);
 	button->setFlat(true);
 	button->setIcon(QIcon(":/icons/2d_open.png"));
+	button->setToolTip(tr("Change image..."));
 	connect(button, &QPushButton::clicked, this, [=]() {
 		// Loads world and robot models simultaneously.
 		const QString loadFileName = utils::QRealFileDialog::getOpenFileName("2DSelectImage", mScene.views().first()
