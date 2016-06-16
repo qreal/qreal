@@ -91,14 +91,16 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
-		const bool subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
-				, indentString);
-		if (!subprogramsResult) {
-			if (supportsGotoGeneration()) {
-				mainCode = QString();
-			} else {
-				return QString();
-			}
+		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()->subprograms()->generate(
+				mReadableControlFlowGenerator, indentString);
+		switch (subprogramsResult) {
+		case parts::Subprograms::GenerationResult::success:
+			break;
+		case parts::Subprograms::GenerationResult::error:
+			mainCode = QString();
+			break;
+		case parts::Subprograms::GenerationResult::fatalError:
+			return QString();
 		}
 	} else {
 		if (mReadableControlFlowGenerator->errorsOccured()) {
@@ -112,9 +114,9 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 		const semantics::SemanticTree *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 		if (gotoMainControlFlow) {
 			mainCode = gotoMainControlFlow->toString(1, indentString);
-			const bool gotoSubprogramsResult = mCustomizer->factory()
+			const parts::Subprograms::GenerationResult gotoSubprogramsResult = mCustomizer->factory()
 					->subprograms()->generate(mGotoControlFlowGenerator, indentString);
-			if (!gotoSubprogramsResult) {
+			if (gotoSubprogramsResult != parts::Subprograms::GenerationResult::success) {
 				mainCode = QString();
 			}
 		}
