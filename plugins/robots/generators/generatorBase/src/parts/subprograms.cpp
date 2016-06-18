@@ -83,7 +83,7 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
 		auto readableGenerator = dynamic_cast<ReadableControlFlowGenerator *>(generator);
 		semantics::SemanticTree *controlFlow = generator->generate(Id(), "@@unknown@@");
-		if (!controlFlow || (readableGenerator && !readableGenerator->cantBeGeneratedIntoStructuredCode())) {
+		if (!controlFlow || (readableGenerator && readableGenerator->cantBeGeneratedIntoStructuredCode())) {
 			return GenerationResult::error;
 		}
 
