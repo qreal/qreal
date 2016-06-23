@@ -24,7 +24,7 @@ InitVideoStreamingBlock::InitVideoStreamingBlock(kitBase::robotModel::RobotModel
 void InitVideoStreamingBlock::doJob(trik::robotModel::parts::TrikShell &shell)
 {
 	const int qual = intProperty("Quality");
-	const bool blackwhite = boolProperty("blackwhite");
-	shell.initVideoStreaming(qual, blackwhite);
+	const bool grayscaled = boolProperty("Grayscaled");
+	shell.initVideoStreaming(qual, grayscaled);
 	emit done(mNextBlockId);
 }
