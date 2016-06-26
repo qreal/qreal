@@ -76,5 +76,3 @@ FORMS += \
 
 RESOURCES += \
 	arrowIcons.qrc \
-
-DISTFILES +=
