@@ -73,3 +73,8 @@ FORMS += \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/restoreElementDialog.ui \
 	$$PWD/findReplaceDialog.ui \
+
+RESOURCES += \
+	arrowIcons.qrc \
+
+DISTFILES +=

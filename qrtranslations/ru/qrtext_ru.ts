@@ -219,6 +219,7 @@
         <translation>идентификатор</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/string.h" line="28"/>
         <location filename="../../qrtext/src/lua/luaLexer.cpp" line="101"/>
         <source>string</source>
         <translation>строка</translation>
@@ -244,16 +245,19 @@
         <translation>любой</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/boolean.h" line="28"/>
         <source>boolean</source>
-        <translation type="vanished">логический</translation>
+        <translation>логический</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/float.h" line="28"/>
         <source>float</source>
-        <translation type="vanished">вещественный</translation>
+        <translation>вещественный</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/integer.h" line="28"/>
         <source>integer</source>
-        <translation type="vanished">целый</translation>
+        <translation>целый</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/lua/types/nil.h" line="28"/>
@@ -261,12 +265,14 @@
         <translation>нулевой</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/number.h" line="28"/>
         <source>number</source>
-        <translation type="vanished">число</translation>
+        <translation>число</translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="44"/>
         <source>table[%1]</source>
-        <translation type="vanished">массив[%1]</translation>
+        <translation>массив[%1]</translation>
     </message>
     <message>
         <location filename="../../qrtext/include/qrtext/core/parser/operators/simpleParser.h" line="51"/>

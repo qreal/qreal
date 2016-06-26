@@ -77,9 +77,6 @@ public:
 protected:
 	void mousePressEvent(QMouseEvent *event);
 
-private slots:
-	void addElementPaletteActionTriggered();
-
 private:
 	/// Adds group of editor's elements to appropriate tree to some top element.
 	/// @param tmpList List with sorted group elements.

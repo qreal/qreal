@@ -24,6 +24,7 @@ VisibilityConditionsDialog::VisibilityConditionsDialog(QMap<QString, PropertyInf
 	, mProperties(properties), mItems(items)
 {
 	ui->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	ui->propertyComboBox->addItem(QString());
 	ui->propertyComboBox->addItems(properties.keys());
