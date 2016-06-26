@@ -157,6 +157,29 @@ void TwoDModelScene::onItemRemoved(QGraphicsItem *item)
 	utils::DeleteLaterHelper<QGraphicsItem>::deleteLater(item);
 }
 
+void TwoDModelScene::drawAxes(QPainter *painter)
+{
+	painter->save();
+
+	const int arrowSize = 5;
+	const QRectF visibleRect = views().first()->mapToScene(views().first()->viewport()->geometry()).boundingRect();
+
+	QPen pen = painter->pen();
+	pen.setColor(Qt::gray);
+	pen.setWidth(2);
+	pen.setStyle(Qt::DashLine);
+	painter->setPen(pen);
+
+	painter->drawLine(0, visibleRect.top(), 0, visibleRect.bottom());
+	painter->drawLine(0, visibleRect.bottom(), -arrowSize, visibleRect.bottom() - arrowSize);
+	painter->drawLine(0, visibleRect.bottom(), arrowSize, visibleRect.bottom() - arrowSize);
+	painter->drawLine(visibleRect.left(), 0, visibleRect.right(), 0);
+	painter->drawLine(visibleRect.right(), 0, visibleRect.right() - arrowSize, -arrowSize);
+	painter->drawLine(visibleRect.right(), 0, visibleRect.right() - arrowSize, arrowSize);
+
+	painter->restore();
+}
+
 void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	if (mouseEvent->button() != Qt::LeftButton) {
@@ -417,6 +440,7 @@ void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 		QGraphicsScene::drawBackground(painter, rect);
 		const int cellSize = SettingsManager::value("2dGridCellSize").toInt();
 		mGridDrawer.drawGrid(painter, rect, cellSize);
+		drawAxes(painter);
 	}
 }
 

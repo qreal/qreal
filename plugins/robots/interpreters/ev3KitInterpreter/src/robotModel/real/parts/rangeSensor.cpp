@@ -14,7 +14,9 @@
 
 #include "rangeSensor.h"
 
-const unsigned rangeSensorResponseSize = 9;
+#include <qrkernel/logging.h>
+
+const unsigned rangeSensorResponseSize = 10;
 
 using namespace ev3::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -30,8 +32,19 @@ RangeSensor::RangeSensor(const kitBase::robotModel::DeviceInfo &info
 
 void RangeSensor::read()
 {
-	QByteArray command = mImplementation.readyRawCommand(mImplementation.lowLevelPort(), 0);
+	QByteArray command = mImplementation.readySiCommand(mImplementation.lowLevelPort(), 0);
 	QByteArray outputBuf;
 	mRobotCommunicator.send(command, rangeSensorResponseSize, outputBuf);
-	emit newData(static_cast<int>(outputBuf.data()[5]));
+
+	union {
+		float f;
+		uchar b[4];
+	} floatFromBytesCast;
+	floatFromBytesCast.b[3] = outputBuf.data()[8];
+	floatFromBytesCast.b[2] = outputBuf.data()[7];
+	floatFromBytesCast.b[1] = outputBuf.data()[6];
+	floatFromBytesCast.b[0] = outputBuf.data()[5];
+
+	const int data = qIsNaN(floatFromBytesCast.f) ? 0 : static_cast<int>(floatFromBytesCast.f);
+	emit newData(data);
 }

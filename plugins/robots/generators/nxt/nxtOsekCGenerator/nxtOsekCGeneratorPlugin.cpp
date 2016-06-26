@@ -20,6 +20,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/platformInfo.h>
+#include <qrutils/singleton.h>
 
 #include "nxtOsekCMasterGenerator.h"
 
@@ -34,6 +35,7 @@ NxtOsekCGeneratorPlugin::NxtOsekCGeneratorPlugin()
 	, mUploadProgramAction(new QAction(nullptr))
 	, mNxtToolsPresent(false)
 	, mMasterGenerator(nullptr)
+	, mCommunicator(utils::Singleton<communication::UsbRobotCommunicationThread>::instance())
 {
 	initActions();
 	initHotKeyActions();

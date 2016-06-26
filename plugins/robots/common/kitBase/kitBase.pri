@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2013-2016 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,7 @@ HEADERS += \
 	$$PWD/include/kitBase/devicesConfigurationWidget.h \
 	$$PWD/include/kitBase/eventsForKitPluginInterface.h \
 	$$PWD/include/kitBase/interpreterControlInterface.h \
+	$$PWD/include/kitBase/interpreterInterface.h \
 	$$PWD/include/kitBase/readOnly.h \
 	$$PWD/include/kitBase/blocksBase/robotsBlock.h \
 	$$PWD/include/kitBase/blocksBase/blocksFactoryInterface.h \
