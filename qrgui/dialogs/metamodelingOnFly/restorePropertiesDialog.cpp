@@ -24,6 +24,7 @@ RestorePropertiesDialog::RestorePropertiesDialog(QWidget *parent
 	, mInterpreterEditorManager(interpreterEditorManager)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	mUi->sameNamePropertiesTW->insertColumn(0);
 	mUi->sameNamePropertiesTW->setHorizontalHeaderItem(0, new QTableWidgetItem(tr("Property name")));
 	mUi->sameNamePropertiesTW->insertColumn(1);

@@ -110,6 +110,13 @@ void Label::setTextFromRepo(const QString &text)
 	}
 }
 
+void Label::updateName()
+{
+	QGraphicsTextItem::setPlainText(mProperties.isReadOnly() ? mProperties.text() : mProperties.binding());
+	setText(toPlainText());
+	updateData();
+}
+
 void Label::setParentContents(const QRectF &contents)
 {
 	mParentContents = contents;
@@ -168,7 +175,9 @@ void Label::updateData(bool withUndoRedo)
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value, withUndoRedo);
+		if (value != parent->name()) {
+			parent->setName(value, withUndoRedo);
+		}
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
 	} else {

@@ -96,9 +96,8 @@
 <context>
     <name>SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.ui" line="26"/>
         <source>SensorsGraph</source>
-        <translation>График</translation>
+        <translation type="vanished">График</translation>
     </message>
 </context>
 <context>
@@ -435,52 +434,43 @@
 <context>
     <name>utils::sensorsGraph::SensorViewer</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="119"/>
         <source>Save values history</source>
-        <translation>Сохранить историю показаний</translation>
+        <translation type="vanished">Сохранить историю показаний</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="119"/>
         <source>Comma-Separated Values Files (*.csv)</source>
-        <translation>Значения, разделенные запятой (*.csv)</translation>
+        <translation type="vanished">Значения, разделенные запятой (*.csv)</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="225"/>
         <source>value: </source>
-        <translation>значение: </translation>
+        <translation type="vanished">значение: </translation>
     </message>
 </context>
 <context>
     <name>utils::sensorsGraph::SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="136"/>
         <source>Stop tracking</source>
-        <translation>Остановить слежение</translation>
+        <translation type="vanished">Остановить слежение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="140"/>
         <source>Start tracking</source>
-        <translation>Начать слежение</translation>
+        <translation type="vanished">Начать слежение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="144"/>
         <source>Reset plot</source>
-        <translation>Очистить график</translation>
+        <translation type="vanished">Очистить график</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="148"/>
         <source>Zoom In</source>
-        <translation>Приблизить</translation>
+        <translation type="vanished">Приблизить</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="152"/>
         <source>Zoom Out</source>
-        <translation>Отдалить</translation>
+        <translation type="vanished">Отдалить</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="156"/>
         <source>Export values...</source>
-        <translation>Экспорт значений...</translation>
+        <translation type="vanished">Экспорт значений...</translation>
     </message>
     <message>
         <source>Export values</source>
