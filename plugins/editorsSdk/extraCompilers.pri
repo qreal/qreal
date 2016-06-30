@@ -57,9 +57,13 @@ qrxc_resource.variable_out = NEW_RESOURCES
 
 QMAKE_EXTRA_COMPILERS += qrxc_resource
 
+
+MOC_PATH = $$system(pkg-config --variable=prefix Qt$$QT_MAJOR_VERSION)/bin/moc
+
+
 # Here we need to call moc explicitly because by default it will be called before any files were generated
 new_moc.output  = $$MOC_DIR/moc_${QMAKE_FILE_BASE}.cpp
-new_moc.commands = $$dirname(QMAKE_QMAKE)/moc ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
+new_moc.commands = $$MOC_PATH ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
 new_moc.input = MOC_HEADERS
 new_moc.variable_out = SOURCES
 
@@ -67,7 +71,7 @@ QMAKE_EXTRA_COMPILERS += new_moc
 
 # Here we need to call rcc explicitly because by tefault it will be called before any files were generated
 new_rcc.output  = $$RCC_DIR/rcc_${QMAKE_FILE_BASE}.cpp
-new_rcc.commands = $$dirname(QMAKE_QMAKE)/rcc ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
+new_rcc.commands = $$dirname(MOC_PATH)/rcc ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
 new_rcc.input = NEW_RESOURCES
 new_rcc.variable_out = SOURCES
 
