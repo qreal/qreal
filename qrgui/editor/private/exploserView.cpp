@@ -31,7 +31,8 @@ using namespace qReal::gui::editor::view::details;
 
 ExploserView::ExploserView(const models::Models &models
 		, Controller &controller
-		, const SceneCustomizer &customizer
+		, const SceneCustomizer &sceneCustomizer
+		, const Customizer &customizer
 		, QObject *parent)
 	: QObject(parent)
 	, mModels(models)
@@ -39,6 +40,7 @@ ExploserView::ExploserView(const models::Models &models
 	, mGraphicalApi(models.graphicalModelAssistApi())
 	, mExploser(models.exploser())
 	, mController(controller)
+	, mSceneCustomizer(sceneCustomizer)
 	, mCustomizer(customizer)
 {
 }
@@ -49,8 +51,8 @@ void ExploserView::createAddExplosionMenu(const Element * const element
 {
 	bool hasAnyActions = false;
 	const QString menuName = alreadyConnectedElement.isNull()
-			? mCustomizer.addExplosionMenuName()
-			: mCustomizer.changeExplosionMenuName();
+			? mSceneCustomizer.addExplosionMenuName()
+			: mSceneCustomizer.changeExplosionMenuName();
 	QMenu *addExplosionMenu = new QMenu(menuName);
 
 	for (const Explosion &explosion : explosions) {
@@ -83,7 +85,7 @@ void ExploserView::createAddExplosionMenu(const Element * const element
 	contextMenu.addMenu(addExplosionMenu);
 
 	if (alreadyConnectedElement != Id()) {
-		QAction * const gotoAction = contextMenu.addAction(mCustomizer.goToConnectedMenuName()
+		QAction * const gotoAction = contextMenu.addAction(mSceneCustomizer.goToConnectedMenuName()
 				, this, SLOT(goToActionTriggered()));
 		gotoAction->setData(alreadyConnectedElement.toVariant());
 	}
@@ -96,7 +98,7 @@ void ExploserView::createRemoveExplosionMenu(const Element * const element, QMen
 		return;
 	}
 
-	QAction * const action = contextMenu.addAction(mCustomizer.deleteExplosionMenuName());
+	QAction * const action = contextMenu.addAction(mSceneCustomizer.deleteExplosionMenuName());
 	connect(action, SIGNAL(triggered()), SLOT(removeExplosionActionTriggered()));
 	action->setData(QVariantList() << element->logicalId().toVariant() << outgoingConnection.toVariant());
 }
@@ -114,8 +116,8 @@ void ExploserView::createExpandAction(const Element * const element, QMenu &cont
 	}
 
 	QAction *expandAction = contextMenu.addAction(node->isExpanded()
-			? mCustomizer.collapseExplosionActionText()
-			: mCustomizer.expandExplosionActionText());
+			? mSceneCustomizer.collapseExplosionActionText()
+			: mSceneCustomizer.expandExplosionActionText());
 	connect(expandAction, SIGNAL(triggered()), SLOT(expandExplosionActionTriggered()));
 
 	expandAction->setData(element->id().toVariant());
@@ -137,6 +139,12 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 			connect(addElementToPaletteAction, SIGNAL(triggered()), SLOT(addElementToPaletteActionTriggered()));
 			addElementToPaletteAction->setData(element->id().toVariant());
 		}
+	} else if (element->id().element() == "Subprogram" && mCustomizer.allowSubprogramShapeChanging()) {
+		const Id target = mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId());
+		QAction * const changeAppearancePaletteAction = contextMenu.addAction(tr("Change Appearance"));
+		connect(changeAppearancePaletteAction, &QAction::triggered, this
+				, &ExploserView::changeAppearanceActionTriggered);
+		changeAppearancePaletteAction->setData(target.toVariant());
 	}
 
 	const QList<Explosion> explosions = mLogicalApi.editorManagerInterface().explosions(element->id().type());
@@ -226,6 +234,13 @@ void ExploserView::changeAppearanceActionTriggered()
 {
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
+
+	if (id.element() == "SubprogramDiagram") {
+		const QString propertyValue = mLogicalApi.logicalRepoApi().stringProperty(id, "shape");
+		emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
+		return;
+	}
+
 	const QString propertyValue = mLogicalApi.editorManagerInterface().shape(id);
 	emit openShapeEditor(id, propertyValue, &mLogicalApi.editorManagerInterface(), false);
 }

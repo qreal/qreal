@@ -137,6 +137,16 @@ void NodeElement::connectSceneEvents()
 	}
 }
 
+void NodeElement::updateShape()
+{
+	const Id target = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
+	QDomDocument picture;
+	picture.setContent(shape);
+	mRenderer.load(picture);
+	mExploser.explosionsSetCouldChange();
+}
+
 QMap<QString, QVariant> NodeElement::graphicalProperties() const
 {
 	return mGraphicalAssistApi.properties(id());
@@ -1331,7 +1341,8 @@ void NodeElement::initRenderedDiagram()
 	const Id diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	const Id graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
+	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), evScene->customizer()
+					, graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
 	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mModels.exploser());

@@ -31,7 +31,8 @@ class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
 public:
 	EditorView(const models::Models &models
 			, Controller &controller
-			, const SceneCustomizer &customizer
+			, const SceneCustomizer &sceneCustomizer
+			, const Customizer &customizer
 			, const Id &rootId
 			, QWidget *parent = 0);
 

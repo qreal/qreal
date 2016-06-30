@@ -16,6 +16,8 @@ TEMPLATE = lib
 
 TARGET = qrgui-models
 
+QT += xml
+
 include(../../global.pri)
 
 TRANSLATIONS = \

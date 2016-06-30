@@ -45,13 +45,15 @@ using namespace qReal::gui::editor::commands;
 
 EditorViewScene::EditorViewScene(const models::Models &models
 		, Controller &controller
-		, const SceneCustomizer &customizer
+		, const SceneCustomizer &sceneCustomizer
+		, const Customizer &customizer
 		, const Id &rootId
 		, QObject *parent)
 	: QGraphicsScene(parent)
 	, mModels(models)
 	, mEditorManager(models.logicalModelAssistApi().editorManagerInterface())
 	, mController(controller)
+	, mSceneCustomizer(sceneCustomizer)
 	, mCustomizer(customizer)
 	, mRootId(rootId)
 	, mLastCreatedFromLinker(nullptr)
@@ -68,7 +70,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mTopLeftCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mBottomRightCorner(new QGraphicsRectItem(0, 0, 1, 1))
 	, mMouseGesturesEnabled(false)
-	, mExploser(models, controller, customizer, this)
+	, mExploser(models, controller, sceneCustomizer, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
 	, mActionCutOnDiagram(nullptr)
 	, mActionCopyOnDiagram(nullptr)
@@ -489,6 +491,10 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 					*this, mModels, Id(), Id(), element.parent(), element.position()
 					, QPointF(size.width(), size.height()), element.id() == element.logicalId(), createCommand);
 			mController.execute(insertCommand);
+
+			if (element.explosionTarget() != Id()) {
+				getNodeById(element.id())->updateShape();
+			}
 		}
 	}
 }
@@ -1137,7 +1143,12 @@ const EditorManagerInterface &EditorViewScene::editorManager() const
 	return mEditorManager;
 }
 
-const SceneCustomizer &EditorViewScene::customizer() const
+const SceneCustomizer &EditorViewScene::sceneCustomizer() const
+{
+	return mSceneCustomizer;
+}
+
+const Customizer &EditorViewScene::customizer() const
 {
 	return mCustomizer;
 }

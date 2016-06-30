@@ -21,6 +21,8 @@
 #include "mainWindow/palette/paletteTree.h"
 #include "mainWindow/palette/draggableElement.h"
 
+#include <qrgui/plugins/pluginManager/sdfRenderer.h>
+
 using namespace qReal;
 using namespace gui;
 
@@ -249,9 +251,15 @@ void PaletteTreeWidgets::refreshUserPalette()
 	QMultiMap<Id, Id> const types = mMainWindow->models().exploser().explosions(mDiagram);
 	for (const Id &source : types.uniqueKeys()) {
 		for (const Id &target : types.values(source)) {
+			QString shape = mMainWindow->models().logicalRepoApi().stringProperty(target, "shape");
+			QDomDocument doc;
+			doc.setContent(shape);
+			SdfIconEngineV2 * const engine = new SdfIconEngineV2(doc);
+			QIcon icon(engine);
+
 			groupElements << gui::PaletteElement(source
 					, mMainWindow->models().logicalRepoApi().name(target)
-					, QString(), mEditorManager->icon(source)
+					, QString(), icon
 					, mEditorManager->iconSize(source)
 					, target);
 		}

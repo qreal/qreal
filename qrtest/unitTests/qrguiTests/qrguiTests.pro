@@ -14,6 +14,8 @@
 
 TARGET = qrgui_unittests
 
+QT += xml
+
 include(../common.pri)
 
 links(qrkernel qslog qrutils qrrepo qrgui-controller qrgui-plugin-manager qrgui-tool-plugin-interface)

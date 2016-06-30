@@ -53,9 +53,34 @@ bool ExplosionCommand::processExplosion(bool add)
 
 	if (add) {
 		mLogicalApi.addExplosion(mSource, mTarget);
+		saveTargetShape();
 	} else {
 		mLogicalApi.removeExplosion(mSource, mTarget);
 	}
 
 	return true;
+}
+
+void ExplosionCommand::saveTargetShape()
+{
+	if (!mLogicalApi.mutableLogicalRepoApi().stringProperty(mTarget, "shape").isEmpty()) {
+		return;
+	}
+
+	QDomDocument shape;
+	const QString filePath = ":/generated/shapes/" + mSource.element() + "Class.sdf";
+	QFile file(filePath);
+
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		return;
+	}
+
+	if (!shape.setContent(&file)) {
+		file.close();
+		return;
+	}
+
+	file.close();
+
+	mLogicalApi.mutableLogicalRepoApi().setProperty(mTarget, "shape", shape.toString(4));
 }
