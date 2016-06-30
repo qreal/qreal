@@ -33,7 +33,7 @@ Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 {
 	mAdditionalPreferences = new Ev3AdditionalPreferences;
 
-	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel);
+	auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(mTwoDRobotModel, 2);
 
 	mTwoDRobotModel.setEngine(modelEngine->engine());
 	mTwoDModel.reset(modelEngine);

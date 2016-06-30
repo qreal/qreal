@@ -20,19 +20,36 @@
 
 #include "twoDModel/engine/view/twoDModelWidget.h"
 #include "twoDModel/engine/model/model.h"
+
 #include "twoDModelEngineApi.h"
+#include "threeDModelEngineApi.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 using namespace twoDModel::engine;
 
-TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel)
+TwoDModelEngineFacade::TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel, int typeOfRobotModel)
+//TwoDModelEngineFacade::TwoDModelEngineFacade(kitBase::robotModel::CommonRobotModel &robotModel, int typeOfRobotModel)
 	: mRobotModelName(robotModel.name())
 	, mModel(new model::Model())
 	, mView(new view::TwoDModelWidget(*mModel))
-	, mApi(new TwoDModelEngineApi(*mModel, *mView))
+	//, mApi2D(new TwoDModelEngineApi(*mModel, *mView))
+	//, mApi(new ThreeDModelEngineApi(*mModel, *mView))
 	, mDock(new utils::SmartDock("2dModelDock", mView.data()))
 {
+	this->typeOfRobotModel = typeOfRobotModel;
+
+	if (typeOfRobotModel == 3) {
+		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
+		mApi.reset(engineApi);
+	}
+	// Default branch.
+	else {
+		const auto engineApi = new TwoDModelEngineApi(*mModel, *mView);
+//		const auto engineApi = new ThreeDModelEngineApi(*mModel, *mView);
+		mApi.reset(engineApi);
+	}
+
 	mModel.data()->addRobotModel(robotModel);
 
 	connect(mView.data(), &view::TwoDModelWidget::runButtonPressed, this, &TwoDModelEngineFacade::runButtonPressed);
@@ -131,10 +148,16 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				const bool isCurrentModel = modelName == mRobotModelName;
 				if (isCurrentModel) {
 					connectTwoDModel();
+
+					if (typeOfRobotModel == 2) {
 					mDock->attachToMainWindow(Qt::TopDockWidgetArea);
+					}
 				} else {
 					disconnectTwoDModel();
+
+					if (typeOfRobotModel == 2) {
 					mDock->detachFromMainWindow();
+					}
 				}
 			}
 			);
@@ -152,11 +175,57 @@ TwoDModelEngineInterface &TwoDModelEngineFacade::engine()
 
 void TwoDModelEngineFacade::onStartInterpretation()
 {
+	// Block for 3D model
+
+	// Initialization 3D model V-Rep in the moment first click on the button.
+
+	if (typeOfRobotModel == 3) {
+		if(!isConnect) {
+			clientID = simxStart((simxChar*)"127.0.0.1", portNb, true, true, 2000, 5);
+
+			if (clientID == -1) {
+				simxFinish(clientID);
+				return;
+			}
+
+			if (simxGetConnectionId(clientID) == -1) {
+				simxFinish(clientID);
+				return;
+			}
+
+			//simxGetObjectHandle(clientID, "joint_front_left_wheel", &frontLeftHandle, simx_opmode_oneshot_wait);
+			//simxGetObjectHandle(clientID, "joint_front_right_wheel", &frontRightHandle, simx_opmode_oneshot_wait);
+			simxGetObjectHandle(clientID, "joint_back_left_wheel", &backLeftHandle, simx_opmode_oneshot_wait);
+			simxGetObjectHandle(clientID, "joint_back_right_wheel", &backRightHandle, simx_opmode_oneshot_wait);
+
+			simxGetObjectHandle(clientID, "sensor", &sonarSensorHandle, simx_opmode_oneshot_wait);
+
+			mApi->initParameters3DModel(clientID, frontLeftHandle, frontRightHandle,
+										backLeftHandle, backRightHandle, sonarSensorHandle);
+
+			isConnect = true;
+		}
+
+		simxStartSimulation(clientID, simx_opmode_oneshot);
+	}
+
+	//
+
 	mModel->timeline().start();
 }
 
 void TwoDModelEngineFacade::onStopInterpretation(qReal::interpretation::StopReason reason)
 {
+	// Block for 3D code
+
+	if (typeOfRobotModel == 3) {
+		simxStopSimulation(clientID, simx_opmode_oneshot);
+	}
+
+	//simxFinish(clientID);
+
+	//
+
 	mModel->timeline().stop(reason);
 }
 

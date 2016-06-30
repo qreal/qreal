@@ -1,17 +1,3 @@
-/* Copyright 2007-2015 QReal Research Group
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. */
-
 #pragma once
 
 #include <QtCore/QString>
@@ -25,15 +11,14 @@ namespace engine {
 class TwoDModelDisplayInterface;
 class TwoDModelGuiFacade;
 
-/// An interface for using 2D model in extensibility components.
+/// An interface for using 3D model in extensibility components.
 /// Provides some basic engine methods like scanning the field or playing the sound or working with display.
-class TwoDModelEngineInterface
+class ThreeDModelEngineInterface
 {
 public:
-	virtual ~TwoDModelEngineInterface() {}
+	virtual ~ThreeDModelEngineInterface() {}
 
 	// Block for 3D model
-	// Will be deleted
 
 	/// Set parameters of 3D model V-Rep for connection.
 	virtual void initParameters3DModel(int clientID,
@@ -84,25 +69,26 @@ public:
 	/// Return true if robot currently draws the trace on the floor behind it.
 	virtual bool isMarkerDown() const = 0;
 
-	/// Moves the marker of the 2D model robot down to the floor.
-	/// The robot will draw the trace on the floor behind it.
+	/// Moves the marker of the 3D model robot down to the floor.
+	/// The robot will draw its trace on the floor after that.
 	/// If the marker of another color is already drawing at the moment it will be replaced.
 	virtual void markerDown(const QColor &color) = 0;
 
-	/// Lifts the marker of the 2D model robot up.
+	/// Lifts the marker of the 3D model robot up.
 	/// The robot stops drawing its trace on the floor after that.
 	virtual void markerUp() = 0;
 
-	/// Retuns the timeline implementation for the 2D model time.
+	/// Retuns the timeline implementation for the 3D model time.
 	virtual utils::TimelineInterface &modelTimeline() = 0;
 
-	/// Returns a pointer to 2D model display emulator.
+	/// Returns a pointer to 3D model display emulator.
 	virtual TwoDModelDisplayInterface *display() = 0;
 
-	/// Returns an object for convenient searching and managing widgets of 2D model GUI.
+	/// Returns an object for convenient searching and managing widgets of 3D model GUI.
 	virtual engine::TwoDModelGuiFacade &guiFacade() const = 0;
 
 };
 
 }
 }
+

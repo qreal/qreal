@@ -58,6 +58,21 @@ HEADERS += \
 	$$PWD/include/twoDModel/robotModel/parts/marker.h \
 	$$PWD/include/twoDModel/blocks/markerDownBlock.h \
 	$$PWD/include/twoDModel/blocks/markerUpBlock.h \
+    $$PWD/include/twoDModel/engine/threeDModelEngineInterface.h \
+    $$PWD/src/engine/threeDModelEngineApi.h \
+    $$PWD/src/engine/remoteApi/include/extApiCustomConst.h \
+    $$PWD/src/engine/remoteApi/include/socketInConnection.h \
+    $$PWD/src/engine/remoteApi/include/socketOutConnection.h \
+    $$PWD/src/engine/remoteApi/include/v_repConst.h \
+    $$PWD/src/engine/remoteApi/include/v_repLib.h \
+    $$PWD/src/engine/remoteApi/include/v_repTypes.h \
+    $$PWD/src/engine/remoteApi/extApi.h \
+    $$PWD/src/engine/remoteApi/extApiCustom.h \
+    $$PWD/src/engine/remoteApi/extApiInternal.h \
+    $$PWD/src/engine/remoteApi/extApiPlatform.h \
+    $$PWD/src/engine/remoteApi/include/luaFunctionData.h \
+    $$PWD/src/engine/remoteApi/include/luaFunctionDataItem.h \
+    $$PWD/include/twoDModel/robotModel/threeDRobotModel.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -171,6 +186,11 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/marker.cpp \
 	$$PWD/src/blocks/markerDownBlock.cpp \
 	$$PWD/src/blocks/markerUpBlock.cpp \
+    $$PWD/src/engine/threeDModelEngineApi.cpp \
+    $$PWD/src/engine/remoteApi/extApi.c \
+    $$PWD/src/engine/remoteApi/extApiCustom.c \
+    $$PWD/src/engine/remoteApi/extApiPlatform.c \
+    $$PWD/src/robotModel/threeDRobotModel.cpp
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \

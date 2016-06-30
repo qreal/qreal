@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "twoDModel/robotModel/twoDRobotModel.h"
+#include "twoDModel/robotModel/threeDRobotModel.h"
 
 #include <qrkernel/exception/exception.h>
 
@@ -33,12 +33,12 @@
 #include "twoDModel/robotModel/parts/marker.h"
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
-#include "twoDModel/engine/threeDModelEngineInterface.h"
+//#include "twoDModel/engine/threeDModelEngineInterface.h"
 
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;
 
-TwoDRobotModel::TwoDRobotModel(const RobotModelInterface &realModel)
+ThreeDRobotModel::ThreeDRobotModel(const RobotModelInterface &realModel)
 	: CommonRobotModel(realModel.kitId(), realModel.robotId())
 	, mRealModel(&realModel)
 	, mEngine(nullptr)
@@ -52,67 +52,67 @@ TwoDRobotModel::TwoDRobotModel(const RobotModelInterface &realModel)
 	addAllowedConnection(PortInfo("MarkerPort", output), { markerInfo() });
 }
 
-TwoDRobotModel::TwoDRobotModel(const QString &robotId)
+ThreeDRobotModel::ThreeDRobotModel(const QString &robotId)
 	: CommonRobotModel("", robotId)
 	, mRealModel(nullptr)
 	, mEngine(nullptr)
 {
 }
 
-QString TwoDRobotModel::name() const
+QString ThreeDRobotModel::name() const
 {
 	return "TwoDRobotModelFor" + mRealModel->name();
 }
 
-QString TwoDRobotModel::friendlyName() const
+QString ThreeDRobotModel::friendlyName() const
 {
 	QRegExp versionRegExp("\\(v.*\\)");
 	const int pos = versionRegExp.indexIn(mRealModel->friendlyName());
 	if (pos == -1) {
-		return tr("2D Model");
+		return tr("3D Model");
 	}
 
-	return tr("2D Model") + " " + versionRegExp.capturedTexts().at(0);
+	return tr("3D Model") + " " + versionRegExp.capturedTexts().at(0);
 }
 
-bool TwoDRobotModel::needsConnection() const
+bool ThreeDRobotModel::needsConnection() const
 {
 	return false;
 }
 
-utils::TimelineInterface &TwoDRobotModel::timeline()
+utils::TimelineInterface &ThreeDRobotModel::timeline()
 {
 	return mEngine->modelTimeline();
 }
 
-QList<PortInfo> TwoDRobotModel::configurablePorts() const
+QList<PortInfo> ThreeDRobotModel::configurablePorts() const
 {
 	return mRealModel->configurablePorts();
 }
 
-QList<DeviceInfo> TwoDRobotModel::convertibleBases() const
+QList<DeviceInfo> ThreeDRobotModel::convertibleBases() const
 {
 	return mRealModel->convertibleBases();
 }
 
-int TwoDRobotModel::priority() const
+int ThreeDRobotModel::priority() const
 {
 	return 10;  // The highest priority in all kits.
 }
 
-twoDModel::engine::TwoDModelEngineInterface *TwoDRobotModel::engine()
+twoDModel::engine::TwoDModelEngineInterface *ThreeDRobotModel::engine()
 //twoDModel::engine::ThreeDModelEngineInterface *TwoDRobotModel::engine()
 {
 	return mEngine;
 }
 
-void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
+void ThreeDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 //void TwoDRobotModel::setEngine(engine::ThreeDModelEngineInterface &engine)
 {
 	mEngine = &engine;
 }
 
-robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
+robotParts::Device *ThreeDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Button>()) {
 		return new parts::Button(deviceInfo, port, buttonCodes()[port.name() + "Button"], *mEngine);
@@ -173,7 +173,7 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 	return CommonRobotModel::createDevice(port, deviceInfo);
 }
 
-DeviceInfo TwoDRobotModel::markerInfo() const
+DeviceInfo ThreeDRobotModel::markerInfo() const
 {
 	return DeviceInfo::create<parts::Marker>();
 }

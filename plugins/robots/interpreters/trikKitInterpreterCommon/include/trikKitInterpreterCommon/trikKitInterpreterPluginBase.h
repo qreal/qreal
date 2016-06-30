@@ -17,13 +17,18 @@
 #include <QtCore/QScopedPointer>
 
 #include <kitBase/kitPluginInterface.h>
+
 #include <twoDModel/robotModel/twoDRobotModel.h>
+#include <twoDModel/robotModel/threeDRobotModel.h>
+
 #include <twoDModel/engine/twoDModelControlInterface.h>
 
 #include <trikKit/blocks/trikBlocksFactoryBase.h>
 #include <trikKit/robotModel/trikRobotModelBase.h>
 
 #include "robotModel/twoD/trikTwoDRobotModel.h"
+#include "robotModel/twoD/trikThreeDRobotModel.h"
+
 #include "trikAdditionalPreferences.h"
 
 #include "declSpec.h"
@@ -71,13 +76,18 @@ protected:
 	void initKitInterpreterPluginBase(
 			robotModel::TrikRobotModelBase * const realRobotModel
 			, robotModel::twoD::TrikTwoDRobotModel * const twoDRobotModel
+			, robotModel::twoD::TrikThreeDRobotModel * const threeDRobotModel
+			//, robotModel::twoD::TrikTwoDRobotModel * const threeDRobotModel
 			, blocks::TrikBlocksFactoryBase * const blocksFactory
 			);
 
 private:
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
+	QScopedPointer<twoDModel::TwoDModelControlInterface> mThreeDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
 	QScopedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+	QScopedPointer<robotModel::twoD::TrikThreeDRobotModel> mThreeDRobotModel;
+//	QScopedPointer<robotModel::twoD::TrikTwoDRobotModel> mThreeDRobotModel;
 
 	/// @todo Use shared pointers instead of this sh~.
 	/// Ownership depends on mOwnsBlocksFactory flag.

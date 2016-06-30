@@ -18,8 +18,12 @@
 #include <QtCore/QScopedPointer>
 
 #include "twoDModel/robotModel/twoDRobotModel.h"
+//#include "twoDModel/robotModel/threeDRobotModel.h"
+
 #include "twoDModel/engine/twoDModelControlInterface.h"
+
 #include "twoDModel/engine/twoDModelEngineInterface.h"
+//#include "twoDModel/engine/threeDModelEngineInterface.h"
 
 #include "twoDModel/twoDModelDeclSpec.h"
 
@@ -45,7 +49,9 @@ class TWO_D_MODEL_EXPORT TwoDModelEngineFacade : public TwoDModelControlInterfac
 
 public:
 	/// @param configurer - allows to configure various model parameters specific to a kit. Takes ownership.
-	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel);
+	explicit TwoDModelEngineFacade(twoDModel::robotModel::TwoDRobotModel &robotModel, int typeOfRobotModel);
+//	explicit TwoDModelEngineFacade(kitBase::robotModel::CommonRobotModel &robotModel, int typeOfRobotModel);
+
 
 	~TwoDModelEngineFacade() override;
 
@@ -58,7 +64,15 @@ public:
 
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
 
+	// On Time
+
 	TwoDModelEngineInterface &engine();
+
+	//
+
+//	TwoDModelEngineInterface &engine2D();
+
+//	ThreeDModelEngineInterface &engine3D();
 
 public slots:
 	void onStartInterpretation() override;
@@ -71,8 +85,35 @@ private:
 
 	QScopedPointer<model::Model> mModel;
 	QScopedPointer<view::TwoDModelWidget> mView;
+	//QScopedPointer<TwoDModelEngineInterface> mApi2D;
+
+	// On Time
+
 	QScopedPointer<TwoDModelEngineInterface> mApi;
+	//QScopedPointer<ThreeDModelEngineInterface> mApi3D;
+
+	//
+
 	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
+
+	// Block for 3D model
+
+	int portNb = 19997;
+
+	int clientID = 0;
+
+	int frontLeftHandle = 0;
+	int frontRightHandle = 0;
+	int backLeftHandle = 0;
+	int backRightHandle = 0;
+
+	int sonarSensorHandle = 0;
+
+	bool isConnect = false;
+
+	int typeOfRobotModel = 2;
+
+	//
 };
 
 }

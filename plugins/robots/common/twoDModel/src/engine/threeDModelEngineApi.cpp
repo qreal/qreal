@@ -1,18 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. */
-
-#include "twoDModelEngineApi.h"
+#include "threeDModelEngineApi.h"
 
 #include <QtCore/qmath.h>
 
@@ -44,11 +30,17 @@
 #include "src/engine/items/regions/ellipseRegion.h"
 #include "src/engine/items/regions/rectangularRegion.h"
 
+//
+//#include <iostream>
+
+//using namespace std;
+//
+
 using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view)
+ThreeDModelEngineApi::ThreeDModelEngineApi(model::Model &model, view::TwoDModelWidget &view)
 	: mModel(model)
 	, mView(view)
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
@@ -56,38 +48,68 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidge
 {
 }
 
-TwoDModelEngineApi::~TwoDModelEngineApi()
+ThreeDModelEngineApi::~ThreeDModelEngineApi()
 {
 }
 
 // Block for 3D model
-// Will be deleted
 
-void TwoDModelEngineApi::initParameters3DModel(int clientID,
-											   int frontLeftHandle, int frontRightHandle,
-											   int backLeftHandle, int backRightHandle,
-											   int sonarSensorHandle)
+void ThreeDModelEngineApi::initParameters3DModel(int clientID,
+												 int frontLeftHandle, int frontRightHandle,
+												 int backLeftHandle, int backRightHandle,
+												 int sonarSensorHandle)
 {
+	this->clientID = clientID;
+
+	this->frontLeftHandle = frontLeftHandle;
+	this->frontRightHandle = frontRightHandle;
+	this->backLeftHandle = backLeftHandle;
+	this->backRightHandle = backRightHandle;
+
+	this->sonarSensorHandle = sonarSensorHandle;
 }
 
 //
 
-void TwoDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &port, bool breakMode)
+void ThreeDModelEngineApi::setNewMotor(int speed, uint degrees, const PortInfo &port, bool breakMode)
 {
-	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
+	// Block for 3D model
+
+	// Connect must be only one on every port! (in the future)
+
+//	cout << "Port = " << (string)port.name() << endl;
+
+
+	if (port.name() == QString("M3")) {
+		simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 10.0f, simx_opmode_oneshot);
+	}
+
+	if (port.name() == QString("M4")) {
+		simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 10.0f, simx_opmode_oneshot);
+	}
+
+
+	//simxSetJointTargetVelocity(clientID, frontLeftHandle, (float)speed * 0.1f, simx_opmode_oneshot);
+	//simxSetJointTargetVelocity(clientID, frontRightHandle, -(float)speed * 0.1f, simx_opmode_oneshot);
+//	simxSetJointTargetVelocity(clientID, backLeftHandle, (float)speed * 1000.0f, simx_opmode_oneshot);
+//	simxSetJointTargetVelocity(clientID, backRightHandle, -(float)speed * 1000.0f, simx_opmode_oneshot);
+
+	//
+
+//	mModel.robotModels()[0]->setNewMotor(speed, degrees, port, breakMode);
 }
 
-int TwoDModelEngineApi::readEncoder(const PortInfo &port) const
+int ThreeDModelEngineApi::readEncoder(const PortInfo &port) const
 {
 	return mModel.robotModels()[0]->readEncoder(port);
 }
 
-void TwoDModelEngineApi::resetEncoder(const PortInfo &port)
+void ThreeDModelEngineApi::resetEncoder(const PortInfo &port)
 {
 	mModel.robotModels()[0]->resetEncoder(port);
 }
 
-int TwoDModelEngineApi::readTouchSensor(const PortInfo &port) const
+int ThreeDModelEngineApi::readTouchSensor(const PortInfo &port) const
 {
 	if (!mModel.robotModels()[0]->configuration().type(port).isA<robotParts::TouchSensor>()) {
 		return touchSensorNotPressedSignal;
@@ -96,11 +118,11 @@ int TwoDModelEngineApi::readTouchSensor(const PortInfo &port) const
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	const QPointF position(neededPosDir.first);
 	const qreal rotation = neededPosDir.second / 180 * mathUtils::pi;
-	const QRectF rect = mModel.robotModels()[0]->sensorRect(port, position);
+	const QSizeF size = mModel.robotModels()[0]->sensorRect(port, position).size();
 
 	QPainterPath sensorPath;
-	const qreal touchRegionRadius = qCeil(rect.height() / qSqrt(2));
-	const qreal stickCenter = rect.width() / 2 - rect.height() / 2;
+	const qreal touchRegionRadius = size.height() / 2;
+	const qreal stickCenter = size.width() / 2 - touchRegionRadius;
 	// (0,0) in sensor coordinates is sensor`s center
 	const QPointF ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
 	sensorPath.addEllipse(position + ellipseCenter, touchRegionRadius, touchRegionRadius);
@@ -109,31 +131,55 @@ int TwoDModelEngineApi::readTouchSensor(const PortInfo &port) const
 	return pressed ? touchSensorPressedSignal : touchSensorNotPressedSignal;
 }
 
-int TwoDModelEngineApi::readSonarSensor(const PortInfo &port) const
+int ThreeDModelEngineApi::readSonarSensor(const PortInfo &port) const
 {
-	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
-	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
+	// Block for 3D model
 
-	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+	simxUChar sensorTrigger = 0;
+	simxFloat * sensorPoint = new simxFloat[3];
+
+	if (simxReadProximitySensor(clientID, sonarSensorHandle, &sensorTrigger, sensorPoint, NULL, NULL, simx_opmode_streaming) == simx_return_ok) {
+		if (sensorTrigger) {
+			simxFloat point1 = sensorPoint[0] * 100.0;
+			simxFloat point2 = sensorPoint[1] * 100.0;
+			simxFloat point3 = sensorPoint[2] * 100.0;
+
+			float dist = sqrt(point1 * point1 + point2 * point2 + point3 * point3);
+			delete[] sensorPoint;
+
+			return (int)dist;
+		}
+	}
+
+	delete[] sensorPoint;
+
+	return 0;
+
+	//
+
+//	QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
+//	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
+
+//	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
 }
 
-QVector<int> TwoDModelEngineApi::readAccelerometerSensor() const
+QVector<int> ThreeDModelEngineApi::readAccelerometerSensor() const
 {
 	return mModel.robotModels()[0]->accelerometerReading();
 }
 
-QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
+QVector<int> ThreeDModelEngineApi::readGyroscopeSensor() const
 {
 	return mModel.robotModels()[0]->gyroscopeReading();
 }
 
-int TwoDModelEngineApi::spoilSonarReading(const int distance) const
+int ThreeDModelEngineApi::spoilSonarReading(const int distance) const
 {
 	const qreal ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
 	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
 }
 
-int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
+int ThreeDModelEngineApi::readColorSensor(const PortInfo &port) const
 {
 	const QImage image = areaUnderSensor(port, 1.0);
 	QHash<uint, int> countsColor;
@@ -161,7 +207,7 @@ int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
 	return 0;
 }
 
-uint TwoDModelEngineApi::spoilColor(const uint color) const
+uint ThreeDModelEngineApi::spoilColor(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilColorDispersion);
 
@@ -177,7 +223,7 @@ uint TwoDModelEngineApi::spoilColor(const uint color) const
 	return ((r & 0xFF) << 16) + ((g & 0xFF) << 8) + (b & 0xFF) + ((a & 0xFF) << 24);
 }
 
-QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFactor) const
+QImage ThreeDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFactor) const
 {
 	DeviceInfo device = mModel.robotModels()[0]->configuration().type(port);
 	if (device.isNull()) {
@@ -200,9 +246,9 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
 			, 2 * realWidth, 2 * realWidth);
 	const QImage image(mFakeScene->render(scanningRect));
-	const QPoint offset = QPointF(width, width).toPoint() - QPoint(1, 1);
+	const QPoint offset = QPointF(width, width).toPoint();
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
-	const QRect realImage(rotated.rect().center() - offset, rotated.rect().center() + offset);
+	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
 	QImage result(realImage.size(), QImage::Format_RGB32);
 	result.fill(Qt::white);
 	QPainter painter(&result);
@@ -211,7 +257,7 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	return result;
 }
 
-int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
+int ThreeDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
 {
 	if (countsColor.isEmpty()) {
 		return 0;
@@ -248,12 +294,12 @@ int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor)
 	}
 }
 
-int TwoDModelEngineApi::readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const
+int ThreeDModelEngineApi::readSingleColorSensor(uint color, QHash<uint, int> const &countsColor, int n) const
 {
 	return (static_cast<double>(countsColor[color]) / static_cast<double>(n)) * 100.0;
 }
 
-int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const
+int ThreeDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const
 {
 	double allWhite = static_cast<double>(countsColor[white]);
 
@@ -273,7 +319,7 @@ int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor,
 	return (allWhite / static_cast<qreal>(n)) * 100.0;
 }
 
-int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
+int ThreeDModelEngineApi::readLightSensor(const PortInfo &port) const
 {
 	// Must return 1023 on white and 0 on black normalized to percents
 	// http://stackoverflow.com/questions/596216/formula-to-determine-brightness-of-rgb-color
@@ -302,42 +348,42 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 	return rawValue * 100 / maxLightSensorValue; // Normalizing to percents
 }
 
-void TwoDModelEngineApi::playSound(int timeInMs)
+void ThreeDModelEngineApi::playSound(int timeInMs)
 {
 	mModel.robotModels()[0]->playSound(timeInMs);
 }
 
-bool TwoDModelEngineApi::isMarkerDown() const
+bool ThreeDModelEngineApi::isMarkerDown() const
 {
 	return mModel.robotModels()[0]->markerColor() != Qt::transparent;
 }
 
-void TwoDModelEngineApi::markerDown(const QColor &color)
+void ThreeDModelEngineApi::markerDown(const QColor &color)
 {
 	mModel.robotModels()[0]->markerDown(color);
 }
 
-void TwoDModelEngineApi::markerUp()
+void ThreeDModelEngineApi::markerUp()
 {
 	mModel.robotModels()[0]->markerUp();
 }
 
-utils::TimelineInterface &TwoDModelEngineApi::modelTimeline()
+utils::TimelineInterface &ThreeDModelEngineApi::modelTimeline()
 {
 	return mModel.timeline();
 }
 
-engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
+engine::TwoDModelDisplayInterface *ThreeDModelEngineApi::display()
 {
 	return mView.display();
 }
 
-engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
+engine::TwoDModelGuiFacade &ThreeDModelEngineApi::guiFacade() const
 {
 	return *mGuiFacade;
 }
 
-uint TwoDModelEngineApi::spoilLight(const uint color) const
+uint ThreeDModelEngineApi::spoilLight(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);
 
@@ -350,7 +396,7 @@ uint TwoDModelEngineApi::spoilLight(const uint color) const
 	return color;
 }
 
-QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
+QPair<QPointF, qreal> ThreeDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
 	RobotModel * const robotModel = mModel.robotModels()[0];
 	const QVector2D sensorVector = QVector2D(robotModel->configuration().position(port) - rotatePoint);
@@ -360,7 +406,7 @@ QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortIn
 	return { position, direction };
 }
 
-void TwoDModelEngineApi::enableBackgroundSceneDebugging()
+void ThreeDModelEngineApi::enableBackgroundSceneDebugging()
 {
 	// A crappy piece of code that must be never called in master branch,
 	// but this is a pretty convenient way to debug a fake scene.

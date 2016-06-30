@@ -1,22 +1,22 @@
-/* Copyright 2007-2015 QReal Research Group
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License. */
-
 #pragma once
 
+// On Time
+
+//#include "twoDModel/engine/threeDModelEngineInterface.h"
 #include "twoDModel/engine/twoDModelEngineInterface.h"
 
+//
+
 #include <QtCore/QScopedPointer>
+
+#include "remoteApi/include/socketInConnection.h"
+#include "remoteApi/include/v_repConst.h"
+//#define pi 3.141593f
+
+extern "C" {
+	#include "remoteApi/extApi.h"
+//	#include "remoteApi/extApiCustom.h"
+}
 
 namespace twoDModel {
 
@@ -28,14 +28,15 @@ class TwoDModelWidget;
 class FakeScene;
 }
 
-class TwoDModelEngineApi : public engine::TwoDModelEngineInterface
+// On Time
+//class ThreeDModelEngineApi : public engine::ThreeDModelEngineInterface
+class ThreeDModelEngineApi : public engine::TwoDModelEngineInterface
 {
 public:
-	TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
-	~TwoDModelEngineApi();
+	ThreeDModelEngineApi(model::Model &model, view::TwoDModelWidget &view);
+	~ThreeDModelEngineApi();
 
 	// Block for 3D model
-	// Will be deleted
 
 	void initParameters3DModel(int clientID,
 							   int frontLeftHandle, int frontRightHandle,
@@ -53,8 +54,10 @@ public:
 	/// @todo: move this logic into sensors adding here some more low-level logic instead.
 	int readTouchSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readSonarSensor(const kitBase::robotModel::PortInfo &port) const override;
+
 	QVector<int> readAccelerometerSensor() const override;
 	QVector<int> readGyroscopeSensor() const override;
+
 	int readColorSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readLightSensor(const kitBase::robotModel::PortInfo &port) const override;
 
@@ -87,6 +90,19 @@ private:
 	view::TwoDModelWidget &mView;
 	QScopedPointer<view::FakeScene> mFakeScene;
 	QScopedPointer<engine::TwoDModelGuiFacade> mGuiFacade;
+
+	// Block for 3D model
+
+	int clientID = -1;
+
+	int frontLeftHandle = 0;
+	int frontRightHandle = 0;
+	int backLeftHandle = 0;
+	int backRightHandle = 0;
+
+	int sonarSensorHandle = 0;
+
+	//
 };
 
 }
