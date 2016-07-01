@@ -13,13 +13,15 @@
  * limitations under the License. */
 
 #include "nodeType.h"
-#include "../diagram.h"
-#include "../metaCompiler.h"
-#include "../editor.h"
-#include "../utils/nameNormalizer.h"
-#include "../../qrrepo/repoApi.h"
 
-#include <QDebug>
+#include <qrrepo/repoApi.h>
+
+#include "qrmc/diagram.h"
+#include "qrmc/metaCompiler.h"
+#include "qrmc/editor.h"
+#include "qrmc/utils/nameNormalizer.h"
+
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 using namespace qReal;
@@ -91,6 +93,7 @@ QString NodeType::generateNodeClass(const QString &classTemplate)
 			.replace(elementNameTag, name())
 			.replace(isResizeable, loadBoolProperty(mId, "isResizeable"))
 			.replace("\\n", "\n");
+
 	nodeClass += endline;
 	return nodeClass;
 }
@@ -146,6 +149,7 @@ void NodeType::generateContainerStuff(QString &classTemplate) const
 			break;
 		}
 	}
+
 	if (!foundChild) {
 		classTemplate.replace(sortingContainerTag, "false")
 				.replace(minimizeToChildrenTag, "false")

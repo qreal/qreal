@@ -13,16 +13,17 @@
  * limitations under the License. */
 
 #include "shape.h"
-#include "../utils/defs.h"
-#include "../diagram.h"
-#include "../metaCompiler.h"
-#include "../editor.h"
-#include "graphicType.h"
-#include "../utils/nameNormalizer.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+
+#include "qrmc/utils/defs.h"
+#include "qrmc/diagram.h"
+#include "qrmc/metaCompiler.h"
+#include "qrmc/editor.h"
+#include "graphicType.h"
+#include "qrmc/utils/nameNormalizer.h"
 
 using namespace qrmc;
 
@@ -108,6 +109,7 @@ void Shape::initPointPorts(const QDomElement &portsElement)
 			delete pointPort;
 			return;
 		}
+
 		mPorts.append(pointPort);
 	}
 	return;
@@ -125,6 +127,7 @@ void Shape::initLinePorts(const QDomElement &portsElement)
 			delete linePort;
 			return;
 		}
+
 		mPorts.append(linePort);
 	}
 	return;
@@ -167,23 +170,27 @@ void Shape::generate(QString &classTemplate) const
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
 	}
+
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}
 
-	QString shapeRendererLine = hasPicture()
-								? compiler.getTemplateUtils(nodeLoadShapeRendererTag)
-								: "";
-	QString portRendererLine = (hasLinePorts() || hasPointPorts())
-								? compiler.getTemplateUtils(nodeLoadPortsRendererTag)
-								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
-	QString nodeContentsLine = compiler.getTemplateUtils(nodeContentsTag)
-							.replace(nodeWidthTag, QString::number(mWidth))
-							.replace(nodeHeightTag, QString::number(mHeight));
+	const QString shapeRendererLine = hasPicture()
+			? compiler.getTemplateUtils(nodeLoadShapeRendererTag)
+			: "";
+
+	const QString portRendererLine = (hasLinePorts() || hasPointPorts())
+			? compiler.getTemplateUtils(nodeLoadPortsRendererTag)
+			: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
+
+	const QString nodeContentsLine = compiler.getTemplateUtils(nodeContentsTag)
+			.replace(nodeWidthTag, QString::number(mWidth))
+			.replace(nodeHeightTag, QString::number(mHeight));
+
 	QString portsInitLine;
 	for (Port *port : mPorts) {
 		port->generatePortList(this->mNode->diagram().editor()->getAllPortNames());
-		portsInitLine += port->generateInit(&compiler) + endline;
+		portsInitLine += port->generateInit(compiler) + endline;
 	}
 
 	QString labelsInitLine;

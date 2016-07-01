@@ -157,8 +157,8 @@ QString Metamodel::diagramPaletteGroupDescription(const QString &diagram, const 
 	return mPaletteGroupDescriptions[diagram][group];
 }
 
-void Metamodel::setDiagramPaletteGroupDescription(const QString &diagram
-		, const QString &group, const QString &description)
+void Metamodel::setDiagramPaletteGroupDescription(const QString &diagram, const QString &group
+		, const QString &description)
 {
 	mPaletteGroupDescriptions[diagram][group] = description;
 }

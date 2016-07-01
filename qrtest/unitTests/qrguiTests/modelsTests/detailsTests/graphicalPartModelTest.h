@@ -22,8 +22,8 @@
 
 namespace qrguiTests {
 
-class GraphicalPartModelTest : public testing::Test {
-
+class GraphicalPartModelTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 	virtual void TearDown();

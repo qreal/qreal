@@ -177,7 +177,8 @@ void MainClass::createHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcR
 		, QList<MethodsTester::ResultOfGenerating> timeResult
 		, QList<MethodsTester::ResultOfGenerating> timeResultInterpter)
 {
-//	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult, timeResultInterpter, mGeneratedDirHtml);
+//	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult
+//			, timeResultInterpter, mGeneratedDirHtml);
 }
 
 //void MainClass::appendPluginNames()

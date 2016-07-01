@@ -17,7 +17,8 @@
 using namespace editorPluginTestingFramework;
 using namespace qReal;
 
-//QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(const QList<Metamodel::ExplosionData> &explDataList)
+//QStringList ConvertingMethods::convertQListExplosionDataIntoStringList(
+//		const QList<Metamodel::ExplosionData> &explDataList)
 //{
 //	QStringList resultList;
 //	for (const Metamodel::ExplosionData &element : explDataList) {

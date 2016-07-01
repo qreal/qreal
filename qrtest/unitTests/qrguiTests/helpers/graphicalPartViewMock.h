@@ -16,7 +16,7 @@
 
 #include <QtWidgets/QAbstractItemView>
 
-#include <../qrkernel/ids.h>
+#include <qrkernel/ids.h>
 
 namespace qrguiTests {
 namespace helpers {
