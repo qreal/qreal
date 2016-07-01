@@ -27,7 +27,6 @@ includes(plugins/robots/common/kitBase \
 )
 
 HEADERS += \
-	$$PWD/commandConstants.h \
 	$$PWD/nxtAdditionalPreferences.h \
 	$$PWD/nxtDisplayWidget.h \
 	$$PWD/nxtKitInterpreterPlugin.h \
@@ -88,8 +87,6 @@ SOURCES += \
 FORMS += \
 	$$PWD/nxtAdditionalPreferences.ui \
 	$$PWD/nxtDisplayWidget.ui \
-
-include($$PWD/communication/communication.pri)
 
 TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/ru/plugins/robots/nxtKitInterpreter_ru.ts \

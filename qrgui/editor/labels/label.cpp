@@ -54,6 +54,7 @@ void Label::init()
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable);
 	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+	connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
 
 	reinitFont();
 	setRotation(mProperties.rotation());
@@ -104,14 +105,22 @@ void Label::setText(const QString &text)
 
 void Label::setTextFromRepo(const QString &text)
 {
-	const QString friendlyText = mEnumValues.isEmpty()
-			? text
-			: mEnumValues.contains(text) ? mEnumValues[text] : enumText(text);
+	const QString friendlyText = mEnumValues.contains(text) ? mEnumValues[text] :
+			mEnumValues.isEmpty() || textInteractionFlags() & Qt::TextEditorInteraction
+					? text
+					: enumText(text);
 	if (friendlyText != toPlainText()) {
 		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
 		updateData();
 	}
+}
+
+void Label::updateName()
+{
+	QGraphicsTextItem::setPlainText(mProperties.isReadOnly() ? mProperties.text() : mProperties.binding());
+	setText(toPlainText());
+	updateData();
 }
 
 void Label::setParentContents(const QRectF &contents)
@@ -172,14 +181,16 @@ void Label::updateData(bool withUndoRedo)
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value, withUndoRedo);
+		if (value != parent->name()) {
+			parent->setName(value, withUndoRedo);
+		}
 	} else if (mEnumValues.isEmpty()) {
-		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
-				: enumText(value);
-		parent->setLogicalProperty(mProperties.binding(), repoValue, withUndoRedo);
+				: (withUndoRedo ? enumText(value) : value);
+		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());
@@ -189,6 +200,11 @@ void Label::updateData(bool withUndoRedo)
 void Label::reinitFont()
 {
 	setFont(BrandManager::fonts()->sceneLabelsFont());
+}
+
+void Label::saveToRepo()
+{
+	updateData(false);
 }
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -448,5 +464,5 @@ QString Label::enumText(const QString &enumValue) const
 {
 	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mProperties.binding())
 			? enumValue
-			: QString();
+			: mOldText;
 }

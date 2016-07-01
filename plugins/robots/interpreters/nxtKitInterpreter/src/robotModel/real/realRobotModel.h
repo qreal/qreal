@@ -35,12 +35,12 @@ public:
 	void connectToRobot() override;
 	void disconnectFromRobot() override;
 
-	/// Checks if connection can be established or emits errorOccured();
-	void checkConnection();
-
 signals:
 	/// Emitted when communicator throws an error to be displayed with error reporter.
 	void errorOccured(const QString &text);
+
+	/// Emitted when communicator wants to display user some informational message.
+	void messageArrived(const QString &text);
 
 private:
 	kitBase::robotModel::robotParts::Device *createDevice(

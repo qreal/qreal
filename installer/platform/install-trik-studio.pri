@@ -21,7 +21,7 @@ unix:!macx {
 	BINDIR = $$PREFIX/bin
 	DATADIR = $$PREFIX/share
 	PROGRAMDIR = $$DATADIR/trikStudio
-	PLUGINDIR = $$LIBDIR/trikStudio
+	PLUGINDIR = $$LIBDIR/trikStudio/plugins
 	CONFFILE = /etc/trikStudio.config
 
 	#MAKE INSTALL
@@ -44,6 +44,7 @@ unix:!macx {
 	echo "pathToHelp=$$PROGRAMDIR/help/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToTranslations=$$PROGRAMDIR/translations/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToTrikRuntime=$$PROGRAMDIR/trikRuntime/" >> $(INSTALL_ROOT)$$CONFFILE;\
+	echo "pathToPascalRuntime=$$PROGRAMDIR/trikSharp/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToGeneratorRoot=$$PROGRAMDIR/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToExamples=$$PROGRAMDIR/examples/" >> $(INSTALL_ROOT)$$CONFFILE;\
 	echo "pathToEditorPlugins=$$PLUGINDIR/editors/" >> $(INSTALL_ROOT)$$CONFFILE;\

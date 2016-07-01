@@ -145,6 +145,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/string.h" line="28"/>
         <location filename="../../qrtext/src/lua/luaLexer.cpp" line="101"/>
         <source>string</source>
         <translation type="unfinished"></translation>
@@ -233,6 +234,31 @@
         <location filename="../../qrtext/src/lua/luaSemanticAnalyzer.cpp" line="363"/>
         <source>Undeclared identifier: %1</source>
         <translation>Identificateur non déclaré : %1</translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/boolean.h" line="28"/>
+        <source>boolean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/float.h" line="28"/>
+        <source>float</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/integer.h" line="28"/>
+        <source>integer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/number.h" line="28"/>
+        <source>number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrtext/include/qrtext/lua/types/table.h" line="44"/>
+        <source>table[%1]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

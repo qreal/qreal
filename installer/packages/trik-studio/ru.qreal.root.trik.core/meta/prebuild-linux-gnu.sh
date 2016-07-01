@@ -16,5 +16,5 @@ cd "$(dirname "$0")"/../data
 rm -rf winscp
 mkdir -p resources/trikRuntime
 cd resources/trikRuntime
-tar xfvzh ../../trik-runtime-builds/trikRuntime.tar.gz
+tar xfvz ../../trik-runtime-builds/trikRuntime.tar.gz
 rm -rf ../../trik-runtime-builds

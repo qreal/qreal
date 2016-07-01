@@ -27,7 +27,7 @@ class KitPluginConfigurator
 {
 public:
 	KitPluginConfigurator(const qReal::PluginConfigurator &qRealConfigurator
-			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
+			, kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 			, kitBase::InterpreterControlInterface &interpreterControl)
@@ -46,7 +46,7 @@ public:
 	}
 
 	/// Returns a reference to an object that keeps tracking of the current selected robot model.
-	const kitBase::robotModel::RobotModelManagerInterface &robotModelManager() const
+	kitBase::robotModel::RobotModelManagerInterface &robotModelManager() const
 	{
 		return mRobotModelManager;
 	}
@@ -73,7 +73,7 @@ public:
 
 private:
 	const qReal::PluginConfigurator &mQRealConfigurator;
-	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	qrtext::LanguageToolboxInterface &mTextLanguage;
 	const kitBase::EventsForKitPluginInterface &mEventsForKitPlugin;
 	kitBase::InterpreterControlInterface &mInterpreterControl;

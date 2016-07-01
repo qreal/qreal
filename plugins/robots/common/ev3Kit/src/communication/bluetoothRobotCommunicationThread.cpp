@@ -25,7 +25,7 @@
 #include "ev3Kit/communication/commandConstants.h"
 #include "ev3Kit/communication/ev3DirectCommand.h"
 
-const unsigned keepAliveResponseSize = 5;
+const int keepAliveResponseSize = 5;
 
 using namespace ev3::communication;
 
@@ -41,28 +41,29 @@ BluetoothRobotCommunicationThread::~BluetoothRobotCommunicationThread()
 	disconnect();
 }
 
-void BluetoothRobotCommunicationThread::send(QObject *addressee
-		, const QByteArray &buffer, const unsigned responseSize)
+bool BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArray &buffer, int responseSize)
 {
 	if (!mPort) {
 		emit response(addressee, QByteArray());
-		return;
+		return false;
 	}
 
-	send(buffer);
+	const bool result = send(buffer);
 	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
 		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
 	} else {
 		emit response(addressee, QByteArray());
 	}
+
+	return result;
 }
 
-void BluetoothRobotCommunicationThread::connect()
+bool BluetoothRobotCommunicationThread::connect()
 {
 	if (mPort && mPort->isOpen()) {
 		emit connected(true, QString());
-		return;
+		return true;
 	}
 
 	const QString portName = qReal::SettingsManager::value("Ev3BluetoothPortName").toString();
@@ -79,12 +80,14 @@ void BluetoothRobotCommunicationThread::connect()
 	// Sending "Keep alive" command to check connection.
 	keepAlive();
 	const QByteArray response = receive(keepAliveResponseSize);
+	emit connected(!response.isEmpty(), QString());
 
-	emit connected(response != QByteArray(), QString());
 	mKeepAliveTimer->moveToThread(this->thread());
 	mKeepAliveTimer->disconnect();
 	QObject::connect(mKeepAliveTimer, SIGNAL(timeout()), this, SLOT(checkForConnection()));
 	mKeepAliveTimer->start(500);
+
+	return !response.isEmpty();
 }
 
 void BluetoothRobotCommunicationThread::reconnect()
@@ -109,18 +112,16 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 	Q_UNUSED(allow);
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer
-		, const unsigned responseSize, QByteArray &outputBuffer)
+bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
-	send(buffer);
+	const bool result = send(buffer);
 	outputBuffer = receive(responseSize);
+	return result;
 }
 
-void BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
+bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
 {
-	if (mPort) {
-		mPort->write(buffer);
-	}
+	return mPort && (mPort->write(buffer) > 0);
 }
 
 QByteArray BluetoothRobotCommunicationThread::receive(int size) const
@@ -151,8 +152,4 @@ void BluetoothRobotCommunicationThread::keepAlive()
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::KEEP_ALIVE, command, index);
 	Ev3DirectCommand::addByteParameter(10, command, index); // 10 - Number of minutes before entering sleep mode.
 	send(command);
-}
-
-void BluetoothRobotCommunicationThread::checkConsistency()
-{
 }

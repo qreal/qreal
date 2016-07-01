@@ -72,3 +72,11 @@ Id PaletteElement::explosionTarget() const
 {
 	return mExplosionTarget;
 }
+
+bool PaletteElement::operator ==(const PaletteElement &other) const
+{
+	return mId == other.mId
+			&& mName == other.mName
+			&& mPreferredSize == other.mPreferredSize
+			&& mExplosionTarget == other.mExplosionTarget;
+}

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,11 @@ using namespace qReal;
 using namespace interpreterCore::interpreter;
 using namespace kitBase::robotModel;
 
+const IdList supportedDiagramTypes = {
+		Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")
+		, Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram")
+};
+
 const Id startingElementType = Id("RobotsMetamodel", "RobotsDiagram", "InitialNode");
 const int maxThreadsCount = 100;
 
@@ -36,7 +41,6 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 		, BlocksFactoryManagerInterface &blocksFactoryManager
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &languageToolbox
-		, QAction &connectToRobotAction
 		)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mLogicalModelApi(logicalModelApi)
@@ -44,7 +48,6 @@ Interpreter::Interpreter(const GraphicalModelAssistInterface &graphicalModelApi
 	, mState(idle)
 	, mRobotModelManager(robotModelManager)
 	, mBlocksTable(new details::BlocksTable(blocksFactoryManager, robotModelManager))
-	, mActionConnectToRobot(connectToRobotAction)
 	, mSensorVariablesUpdater(robotModelManager, languageToolbox)
 	, mAutoconfigurer(mGraphicalModelApi, *mBlocksTable, *mInterpretersInterface.errorReporter())
 	, mLanguageToolbox(languageToolbox)
@@ -132,6 +135,11 @@ int Interpreter::timeElapsed() const
 			: 0;
 }
 
+IdList Interpreter::supportedDiagrams() const
+{
+	return supportedDiagramTypes;
+}
+
 void Interpreter::connectedSlot(bool success, const QString &errorString)
 {
 	if (success) {
@@ -146,7 +154,7 @@ void Interpreter::connectedSlot(bool success, const QString &errorString)
 		}
 	}
 
-	mActionConnectToRobot.setChecked(success);
+	emit connected(success);
 }
 
 void Interpreter::devicesConfiguredSlot()
@@ -249,8 +257,7 @@ void Interpreter::connectToRobot()
 		mRobotModelManager.model().connectToRobot();
 	}
 
-	mActionConnectToRobot.setChecked(
-			mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
+	emit connected(mRobotModelManager.model().connectionState() == RobotModelInterface::connectedState);
 }
 
 void Interpreter::reportError(const QString &message)

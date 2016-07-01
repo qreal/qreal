@@ -30,8 +30,6 @@ void InterpreterTest::SetUp()
 	mQrguiFacade->setActiveTab(qReal::Id::loadFromString(
 			"qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{f08fa823-e187-4755-87ba-e4269ae4e798}"));
 
-	mFakeConnectToRobotAction.reset(new QAction(nullptr));
-
 	ON_CALL(mConfigurationInterfaceMock, devices()).WillByDefault(
 			Return(QList<kitBase::robotModel::robotParts::Device *>())
 			);
@@ -126,11 +124,10 @@ void InterpreterTest::SetUp()
 			, mBlocksFactoryManager
 			, mModelManager
 			, *mParser
-			, *mFakeConnectToRobotAction
 			));
 
 	mInterpreterStopped = false;
-	QObject::connect(mInterpreter.data(), &InterpreterInterface::stopped, [this]() {
+	QObject::connect(mInterpreter.data(), &kitBase::InterpreterInterface::stopped, [this]() {
 		mEventLoop.exit();
 		mInterpreterStopped = true;
 	});

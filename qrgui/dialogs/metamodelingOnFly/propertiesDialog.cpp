@@ -37,6 +37,7 @@ PropertiesDialog::PropertiesDialog(const EditorManagerInterface &interpreterEdit
 	, mEditPropertiesDialog(interpreterEditorManager, logicalRepoApi, id)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId.type()));
 	mUi->propertiesNamesList->setWrapping(true);

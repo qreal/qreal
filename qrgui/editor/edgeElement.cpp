@@ -287,6 +287,7 @@ void EdgeElement::updateLongestPart()
 		x -= title->boundingRect().width() / 2;
 		y -= title->boundingRect().height() / 2;
 		title->setPos(x, y);
+		title->updateName();
 	}
 }
 
@@ -298,12 +299,6 @@ void EdgeElement::connectToPort()
 	NodeElement *newDst = getNodeAt(mLine.last(), false);
 
 	mIsLoop = ((newSrc == newDst) && newSrc);
-
-	if (mIsLoop) {
-		connectLoopEdge(newSrc);
-		createLoopEdge();
-		return;
-	}
 
 	mPortFrom = newSrc ? newSrc->portId(mapToItem(newSrc, mLine.first()), fromPortTypes()) : -1.0;
 	mPortTo = newDst ? newDst->portId(mapToItem(newDst, mLine.last()), toPortTypes()) : -1.0;
@@ -336,6 +331,12 @@ void EdgeElement::connectToPort()
 
 	mLogicalAssistApi.setFrom(logicalId(), (mSrc ? mSrc->logicalId() : Id::rootId()));
 	mLogicalAssistApi.setTo(logicalId(), (mDst ? mDst->logicalId() : Id::rootId()));
+
+	if (mIsLoop) {
+		connectLoopEdge(newSrc);
+		createLoopEdge();
+		return;
+	}
 
 	adjustLink();
 
@@ -580,6 +581,8 @@ void EdgeElement::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	} else {
 		mHandler->endMovingEdge();
 	}
+
+	updateLongestPart();
 }
 
 // NOTE: using don`t forget about possible nodeElement`s overlaps (different Z-value)
