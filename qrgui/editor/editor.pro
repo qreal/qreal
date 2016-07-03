@@ -26,7 +26,7 @@ links(qrkernel qslog qrutils \
 
 includes(qrgraph qrgui qrgui/plugins/metaMetaModel)
 
-QT += widgets
+QT += widgets xml
 
 DEFINES += QRGUI_EDITOR_LIBRARY
 
