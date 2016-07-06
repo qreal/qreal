@@ -110,13 +110,6 @@ void Label::setTextFromRepo(const QString &text)
 	}
 }
 
-void Label::updateName()
-{
-	QGraphicsTextItem::setPlainText(mProperties.isReadOnly() ? mProperties.text() : mProperties.binding());
-	setText(toPlainText());
-	updateData();
-}
-
 void Label::setParentContents(const QRectF &contents)
 {
 	mParentContents = contents;
