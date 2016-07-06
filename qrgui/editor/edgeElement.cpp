@@ -302,7 +302,6 @@ void EdgeElement::updateLongestPart()
 		x -= title->boundingRect().width() / 2;
 		y -= title->boundingRect().height() / 2;
 		title->setPos(x, y);
-		title->updateName();
 	}
 }
 
