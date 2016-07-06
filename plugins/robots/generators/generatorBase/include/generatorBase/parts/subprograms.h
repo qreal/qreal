@@ -37,6 +37,16 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 {
 public:
+	/// Represents success state of generation.
+	enum class GenerationResult {
+		/// Generated successfully
+		success = 0
+		/// Generated with error, but another generator may be tried
+		, error
+		/// Diagram contains syntax errors, nothing can be done.
+		, fatalError
+	};
+
 	Subprograms(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const QStringList &pathsToTemplates
@@ -49,7 +59,7 @@ public:
 	void usageFound(const qReal::Id &logicalId);
 
 	/// Starts subprograms code generation process
-	bool generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString);
+	GenerationResult generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString);
 
 	/// Returns the subprograms forward declarations code. If generation was unsuccessfull returns an empty string.
 	QString forwardDeclarations() const;

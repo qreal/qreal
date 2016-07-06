@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>arrows/emptyArrow.png</file>
+        <file>arrows/emptyRhomb.png</file>
+        <file>arrows/filledArrow.png</file>
+        <file>arrows/filledRhomb.png</file>
+        <file>arrows/noArrow.png</file>
+        <file>arrows/openArrow.png</file>
+    </qresource>
+</RCC>

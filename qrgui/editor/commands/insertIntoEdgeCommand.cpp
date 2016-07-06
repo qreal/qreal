@@ -79,8 +79,8 @@ bool InsertIntoEdgeCommand::execute()
 		mParentId = (mParentId == Id::rootId()) ? mScene.rootItemId() : mParentId;
 		Id type = edge->id().type();
 
-		initCommand(mCreateFirst, type);
-		initCommand(mCreateSecond, type);
+		initCommand(mCreateFirst, type, mGraphicalAssistApi.properties(edge->logicalId()));
+		initCommand(mCreateSecond, type, {});
 
 		makeLink(mCreateFirst, oldSrc, mScene.getNodeById(mFirstId));
 		makeLink(mCreateSecond, mScene.getNodeById(mLastId), oldDst);
@@ -130,13 +130,16 @@ bool InsertIntoEdgeCommand::restoreState()
 	return true;
 }
 
-void InsertIntoEdgeCommand::initCommand(CreateElementsCommand *&command, const Id &type)
+void InsertIntoEdgeCommand::initCommand(CreateElementsCommand *&command, const Id &type
+		, const QMap<QString, QVariant> &additionalProperties)
 {
 	if (!command) {
 		const QString name = mLogicalAssistApi.editorManagerInterface().friendlyName(type);
 		const Id newId = type.sameTypeId();
+		QMap<QString, QVariant> logicalProperties = additionalProperties;
+		logicalProperties["name"] = name;
 		const ElementInfo element(newId, mIsLogical ? newId : Id(), mScene.rootItemId(), mParentId
-				, {{"name", name}}, {{"position", mPos}}, Id(), false);
+				, logicalProperties, {{"position", mPos}}, Id(), false);
 		command = new CreateElementsCommand(mModels, {element});
 	}
 }
