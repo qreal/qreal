@@ -14,6 +14,8 @@
 
 #include "loopWithNextVisitedRule.h"
 
+#include "generatorBase/semanticTree/ifNode.h"
+
 using namespace generatorBase::semantics;
 using namespace qReal;
 
@@ -34,11 +36,17 @@ bool LoopWithNextVisitedRule::apply()
 
 	const bool isLinkToParentLoop = thisNode->parentZone()->parentNode() == nextNode
 			&& dynamic_cast<LoopNode *>(nextNode);
-	if (thisNode->parentZone() != nextNode->parentZone() && !isLinkToParentLoop) {
-		return false;
-	}
+	const bool isLinkToMergedBranch = thisNode->parentZone() && nextNode->parentZone()
+			&& thisNode->parentZone()->parentNode() == nextNode->parentZone()->parentNode()
+			&& dynamic_cast<IfNode *>(thisNode->parentZone()->parentNode());
 
-	makeLoopStartingFrom(nextNode);
+	if (thisNode->parentZone() == nextNode->parentZone() || isLinkToParentLoop) {
+		makeLoopStartingFrom(nextNode);
+	} else if (isLinkToMergedBranch) {
+		IfNode *ifParent = dynamic_cast<IfNode *>(nextNode->parentZone()->parentNode());
+		const QLinkedList<SemanticNode *> detachedChildren = nextNode->parentZone()->removeStartingFrom(nextNode);
+		ifParent->appendSiblings(detachedChildren);
+	}
 
 	SemanticNode * const iterationNode = mTree->produceNodeFor(mIterationLink.target);
 	thisNode->bodyZone()->appendChild(iterationNode);

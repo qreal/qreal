@@ -99,9 +99,10 @@ void Label::setText(const QString &text)
 
 void Label::setTextFromRepo(const QString &text)
 {
-	const QString friendlyText = mEnumValues.isEmpty()
-			? text
-			: mEnumValues.contains(text) ? mEnumValues[text] : enumText(text);
+	const QString friendlyText = mEnumValues.contains(text) ? mEnumValues[text] :
+			mEnumValues.isEmpty() || textInteractionFlags() & Qt::TextEditorInteraction
+					? text
+					: enumText(text);
 	if (friendlyText != toPlainText()) {
 		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
@@ -167,13 +168,15 @@ void Label::updateData(bool withUndoRedo)
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value, withUndoRedo);
+		if (value != parent->name()) {
+			parent->setName(value, withUndoRedo);
+		}
 	} else if (mEnumValues.isEmpty()) {
 		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
-				: enumText(value);
+				: (withUndoRedo ? enumText(value) : value);
 		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
 	}
 
@@ -448,5 +451,5 @@ QString Label::enumText(const QString &enumValue) const
 {
 	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mProperties.binding())
 			? enumValue
-			: QString();
+			: mOldText;
 }

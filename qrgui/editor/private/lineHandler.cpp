@@ -137,12 +137,6 @@ void LineHandler::adjust()
 	NodeElement *src = mEdge->src();
 	NodeElement *dst = mEdge->dst();
 
-	if (src && src->isSelected() && dst && dst->isSelected() && !mEdge->isLoop()) {
-		QPointF offset = mEdge->mapFromItem(src, src->portPos(mEdge->fromPort())) - line.first();
-		mEdge->setPos(mEdge->pos() + offset);
-		return;
-	}
-
 	if (src) {
 		line.first() = mEdge->mapFromItem(src, src->portPos(mEdge->fromPort()));
 	}
@@ -234,7 +228,7 @@ QPointF LineHandler::portArrangePoint(const NodeElement *node) const
 				: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
 	} else {
 		mEdge->createLoopEdge();
-		return mEdge->mapToItem(mEdge->src(), mEdge->line()[3]);
+		return mEdge->mapToItem(mEdge->src(), mEdge->line().last());
 	}
 }
 

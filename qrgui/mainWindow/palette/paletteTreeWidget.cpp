@@ -133,22 +133,18 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 	}
 }
 
-void PaletteTreeWidget::addElementPaletteActionTriggered()
-{
-	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
-			, *mEditorManager, &mMainWindow);
-	connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadEditorPlugins);
-	chooseTypeDialog->setModal(true);
-	chooseTypeDialog->show();
-}
-
 void PaletteTreeWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManager->isInterpretationMode()) {
 			QMenu menu;
-			QAction * const addElementPaletteAction = menu.addAction(tr("Add Element"));
-			connect(addElementPaletteAction, SIGNAL(triggered()), this, SLOT(addElementPaletteActionTriggered()));
+			ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
+					, *mEditorManager, &mMainWindow);
+			QAction * const addNodePaletteAction = menu.addAction(tr("Add Entity"));
+			QAction * const addEdgePaletteAction = menu.addAction(tr("Add Relastionship"));
+			connect(addNodePaletteAction, SIGNAL(triggered()), chooseTypeDialog, SLOT(nodeButtonClicked()));
+			connect(addEdgePaletteAction, SIGNAL(triggered()), chooseTypeDialog, SLOT(edgeButtonClicked()));
+			connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadEditorPlugins);
 			menu.exec(QCursor::pos());
 		}
 	}

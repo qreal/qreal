@@ -91,6 +91,10 @@ QString Element::logicalProperty(const QString &roleName) const
 void Element::setLogicalProperty(const QString &roleName, const QString &oldValue
 		, const QString &newValue, bool withUndoRedo)
 {
+	if (oldValue == newValue) {
+		return;
+	}
+
 	commands::AbstractCommand *command = new commands::ChangePropertyCommand(&mLogicalAssistApi
 			, roleName, logicalId(), oldValue, newValue);
 	if (withUndoRedo) {

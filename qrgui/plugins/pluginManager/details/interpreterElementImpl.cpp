@@ -286,7 +286,7 @@ void InterpreterElementImpl::init(LabelFactoryInterface &labelFactory, QList<Lab
 		if (!labelText.isEmpty()) {
 			const QString labelType = mEditorRepoApi->stringProperty(mId, "labelType");
 			LabelInterface* title = nullptr;
-			if (labelType == "staticText") {
+			if (labelType == "Static text") {
 				// This is a statical label, it does not need repository.
 				title = labelFactory.createLabel(0, 0, 0, labelText, 0);
 			} else {
