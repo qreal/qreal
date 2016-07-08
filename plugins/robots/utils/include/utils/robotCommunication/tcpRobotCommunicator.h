@@ -47,11 +47,18 @@ public:
 
 	void stopRobot() override;
 
+	void takeSnapshot();
+
+	void stopTakingSnapshots();
+
 	void requestData(const QString &sensor) override;
 
 	void connect() override;
 
 	void disconnect() override;
+
+signals:
+	void snapshotReceived(QByteArray *snapshot);
 
 private slots:
 	/// Processes message from robot --- classifies it as info, error or text from stdout.

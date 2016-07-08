@@ -36,6 +36,8 @@ public:
 	void connectToRobot() override;
 	void stopRobot() override;
 	void disconnectFromRobot() override;
+	void takeSnapshot() override;
+	void stopTakingSnapshots() override;
 
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
 

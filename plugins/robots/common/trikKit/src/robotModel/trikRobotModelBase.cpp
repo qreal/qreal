@@ -271,3 +271,13 @@ QHash<QString, int> TrikRobotModelBase::buttonCodes() const
 	result["EscButton"] = 1;
 	return result;
 }
+
+void TrikRobotModelBase::takeSnapshot()
+{
+	/// do nothing by default; reimplemented by real robot classes
+}
+
+void TrikRobotModelBase::stopTakingSnapshots()
+{
+	/// do nothing by default; reimplemented by real robot classes
+}

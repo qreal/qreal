@@ -56,6 +56,8 @@ RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId)
 			, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::disconnected
 			, this, &RealRobotModel::disconnected);
+	connect(mRobotCommunicator.data(), &utils::robotCommunication::TcpRobotCommunicator::snapshotReceived
+			, this, &trik::robotModel::TrikRobotModelBase::snapshotReceived);
 }
 
 QString RealRobotModel::name() const
@@ -86,6 +88,16 @@ void RealRobotModel::connectToRobot()
 void RealRobotModel::stopRobot()
 {
 	mRobotCommunicator->stopRobot();
+}
+
+void RealRobotModel::takeSnapshot()
+{
+	mRobotCommunicator->takeSnapshot();
+}
+
+void RealRobotModel::stopTakingSnapshots()
+{
+	mRobotCommunicator->stopTakingSnapshots();
 }
 
 void RealRobotModel::disconnectFromRobot()
