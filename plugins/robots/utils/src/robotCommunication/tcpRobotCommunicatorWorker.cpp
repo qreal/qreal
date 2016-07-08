@@ -103,6 +103,24 @@ void TcpRobotCommunicatorWorker::stopRobot()
 	emit stopRobotDone();
 }
 
+void TcpRobotCommunicatorWorker::takeSnapshot()
+{
+	if (!mTelemetryConnection->isConnected()) {
+		return;
+	}
+
+	mTelemetryConnection->send("takeSnapshot");
+}
+
+void TcpRobotCommunicatorWorker::stopTakingSnapshots()
+{
+	if (!mTelemetryConnection->isConnected()) {
+		return;
+	}
+
+	mTelemetryConnection->send("stopTakingSnapshots");
+}
+
 void TcpRobotCommunicatorWorker::requestCasingVersion()
 {
 	connect();
@@ -155,6 +173,7 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 void TcpRobotCommunicatorWorker::processTelemetryMessage(const QString &message)
 {
 	const QString sensorMarker("sensor:");
+	const QString snapshotMarker("snapshot:");
 
 	if (message.startsWith(sensorMarker)) {
 		QString data(message);
@@ -173,6 +192,14 @@ void TcpRobotCommunicatorWorker::processTelemetryMessage(const QString &message)
 		} else {
 			emit newScalarSensorData(portAndValue[0], portAndValue[1].toInt());
 		}
+	} else if(message.startsWith(snapshotMarker)) {
+
+		const QString snapshotString = message.right(message.length() - snapshotMarker.length());
+
+		QByteArray snapshot = QByteArray(QByteArray::fromBase64(snapshotString.toUtf8()).constData()
+				, snapshotString.length());
+
+		emit snapshotReceived(snapshot);
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
 	}

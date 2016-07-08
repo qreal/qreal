@@ -27,6 +27,7 @@
 #include "trikAdditionalPreferences.h"
 
 #include "declSpec.h"
+#include "snapshotWindow.h"
 
 namespace trik {
 
@@ -66,6 +67,11 @@ public:
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
+	void onTakeSnapshotButtonClicked();
+
+	/// Emitted when received a snapshot from robot.
+	void snapshotReceived(QByteArray snapshot);
+
 protected:
 	/// Takes ownership over all supplied pointers.
 	void initKitInterpreterPluginBase(
@@ -74,7 +80,15 @@ protected:
 			, blocks::TrikBlocksFactoryBase * const blocksFactory
 			);
 
+	void onCurrentRobotModelChanged(const QString &modelName);
+
 private:
+	/// Requests real robot to send a snapshot.
+	void takeSnapshot();
+
+	/// Requests real robot to stop sending snapshots.
+	void stopTakingSnapshots();
+
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
 	QScopedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
@@ -88,8 +102,17 @@ private:
 	TrikAdditionalPreferences *mAdditionalPreferences = nullptr;
 	bool mOwnsAdditionalPreferences = true;
 
-	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	/// It is true if TRIK Studio is receiving snapshots from real robot now.
+	bool mReceivingSnapshots = false;
+
+	kitBase::InterpreterControlInterface *mInterpreterControl; // Does not have ownership.
 	QString mCurrentlySelectedModelName;
+
+	/// Action that requests real robot to start sending snapshots.
+	QScopedPointer<QAction> mTakeSnapshotAction; // Has ownership
+
+	/// Window that displays snapshot received from real robot.
+	QScopedPointer<SnapshotWindow> mSnapshotWindow; // Has ownership
 };
 
 }

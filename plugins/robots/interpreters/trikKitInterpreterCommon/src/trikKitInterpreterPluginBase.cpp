@@ -28,7 +28,16 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase()
+	: mTakeSnapshotAction(new QAction(nullptr))
+	, mSnapshotWindow(new SnapshotWindow(QObject::tr("Snapshot")))
 {
+	mTakeSnapshotAction->setText(tr("Take snapshot"));
+	mTakeSnapshotAction->setCheckable(true);
+
+	connect(mTakeSnapshotAction.data()
+			, &QAction::triggered
+			, this
+			, &TrikKitInterpreterPluginBase::onTakeSnapshotButtonClicked);
 }
 
 TrikKitInterpreterPluginBase::~TrikKitInterpreterPluginBase()
@@ -52,6 +61,11 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 	mTwoDRobotModel.reset(twoDRobotModel);
 	mBlocksFactory = blocksFactory;
 
+	connect(mRealRobotModel.data()
+			, &robotModel::TrikRobotModelBase::snapshotReceived
+			, this
+			, &TrikKitInterpreterPluginBase::snapshotReceived);
+
 	const auto modelEngine = new twoDModel::engine::TwoDModelEngineFacade(*mTwoDRobotModel);
 
 	mTwoDRobotModel->setEngine(modelEngine->engine());
@@ -62,9 +76,9 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 
 void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
 {
-	connect(&configurer.eventsForKitPlugin()
-			, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](const QString &modelName) { mCurrentlySelectedModelName = modelName; });
+	connect(mRealRobotModel.data()
+			, &kitBase::robotModel::RobotModelInterface::disconnected
+			, [this]() { mTakeSnapshotAction->setChecked(false); mReceivingSnapshots = false; });
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurer.qRealConfigurator().mainWindowInterpretersInterface();
@@ -84,6 +98,28 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged
 			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::rereadSettings);
+
+	connect(&configurer.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::robotModelChanged
+			, this
+			, &TrikKitInterpreterPluginBase::onCurrentRobotModelChanged);
+
+	configurer.qRealConfigurator().mainWindowDockInterface()
+			.addDockWidget(Qt::RightDockWidgetArea, mSnapshotWindow.data());
+
+	mSnapshotWindow->setVisible(true);
+}
+
+void TrikKitInterpreterPluginBase::onCurrentRobotModelChanged(const QString &modelName)
+{
+	const bool isThisModel = modelName == mRealRobotModel->name();
+	mTakeSnapshotAction->setVisible(isThisModel);
+
+	if (!isThisModel && mReceivingSnapshots) {
+		stopTakingSnapshots();
+	}
+
+	mCurrentlySelectedModelName = modelName;
 }
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()
@@ -120,7 +156,8 @@ QWidget *TrikKitInterpreterPluginBase::quickPreferencesFor(const kitBase::robotM
 
 QList<qReal::ActionInfo> TrikKitInterpreterPluginBase::customActions()
 {
-	return {};
+	const ActionInfo takeSnapshotActionInfo(mTakeSnapshotAction.data(), "interpreters", "tools");
+	return {takeSnapshotActionInfo};
 }
 
 QList<HotKeyActionInfo> TrikKitInterpreterPluginBase::hotKeyActions()
@@ -169,4 +206,35 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 
 	connect(this, &QObject::destroyed, [quickPreferences]() { delete quickPreferences; });
 	return quickPreferences;
+}
+
+void TrikKitInterpreterPluginBase::onTakeSnapshotButtonClicked()
+{
+	if (mRealRobotModel->connectionState()
+			== kitBase::robotModel::RobotModelInterface::ConnectionState::disconnectedState)
+	{
+		mTakeSnapshotAction->setChecked(false);
+		return;
+	}
+
+	mReceivingSnapshots ? stopTakingSnapshots() : takeSnapshot();
+}
+
+void TrikKitInterpreterPluginBase::takeSnapshot()
+{
+	mRealRobotModel->takeSnapshot();
+	mReceivingSnapshots = true;
+	mTakeSnapshotAction->setChecked(true);
+}
+
+void TrikKitInterpreterPluginBase::stopTakingSnapshots()
+{
+	mRealRobotModel->stopTakingSnapshots();
+	mReceivingSnapshots = false;
+	mTakeSnapshotAction->setChecked(false);
+}
+
+void TrikKitInterpreterPluginBase::snapshotReceived(QByteArray snapshot)
+{
+	mSnapshotWindow.data()->setImage(snapshot);
 }

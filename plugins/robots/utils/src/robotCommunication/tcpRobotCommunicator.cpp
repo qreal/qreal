@@ -61,6 +61,9 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
 			, this, &TcpRobotCommunicator::casingVersionReceived, Qt::QueuedConnection);
 
+	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::snapshotReceived
+			, this, &TcpRobotCommunicator::snapshotReceived);
+
 	mWorkerThread.start();
 
 	QMetaObject::invokeMethod(mWorker.data(), "init");
@@ -117,6 +120,16 @@ void TcpRobotCommunicator::requestCasingVersion()
 void TcpRobotCommunicator::stopRobot()
 {
 	QMetaObject::invokeMethod(mWorker.data(), "stopRobot");
+}
+
+void TcpRobotCommunicator::takeSnapshot()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "takeSnapshot");
+}
+
+void TcpRobotCommunicator::stopTakingSnapshots()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "stopTakingSnapshots");
 }
 
 void TcpRobotCommunicator::requestData(const QString &sensor)

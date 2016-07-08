@@ -47,11 +47,21 @@ public:
 
 	void stopRobot() override;
 
+	/// Requests real robot to start taking snapshots and sending them back to TRIK Studio.
+	void takeSnapshot();
+
+	/// Requests real robot to stop taking snapshots.
+	void stopTakingSnapshots();
+
 	void requestData(const QString &sensor) override;
 
 	void connect() override;
 
 	void disconnect() override;
+
+signals:
+	/// Emitted when received a snapshot from robot.
+	void snapshotReceived(QByteArray snapshot);
 
 private slots:
 	/// Processes message from robot --- classifies it as info, error or text from stdout.
