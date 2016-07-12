@@ -256,7 +256,7 @@ void NodeType::generateCode(OutFile &out)
 	<< "\t\t\tcontents.setHeight(" << mHeight << ");\n";
 
 	foreach (Port *port, mPorts) {
-		port->generateCode(out, mDiagram->editor()->getAllPortNames());
+		port->generateCode(out);
 	}
 
 	foreach (Label *label, mLabels) {

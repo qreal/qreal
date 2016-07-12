@@ -34,12 +34,12 @@ bool LinePort::init(const QDomElement &element, int width, int height)
 	return true;
 }
 
-void LinePort::generateCode(OutFile &out, const QStringList &portTypes)
+void LinePort::generateCode(OutFile &out)
 {
 	QString line = QString("QLineF(%1, %2, %3, %4)").arg(mStartX.value()).arg(mStartY.value())
 			.arg(mEndX.value()).arg(mEndY.value());
 
-	if (!portTypes.contains(mType)) {
+	if (mType.isNull() || mType.isEmpty()) {
 		mType = "NonTyped";
 	}
 

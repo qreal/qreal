@@ -48,7 +48,6 @@ public:
 	Type *findType(const QString &name);
 
 	QSet<EnumType *> getAllEnumTypes();
-	QStringList getAllPortNames() const;
 	Diagram *findDiagram(const QString &name);
 	QMap<QString, Diagram*> diagrams();
 

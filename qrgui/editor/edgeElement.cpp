@@ -57,7 +57,7 @@ EdgeElement::EdgeElement(
 	, mPenColor(Qt::black)
 	, mSrc(nullptr)
 	, mDst(nullptr)
-	, mLineFactory(new LineFactory(this))
+	, mLineFactory(new LineFactory(this, mLogicalAssistApi, mGraphicalAssistApi))
 	, mHandler(nullptr)
 	, mPortFrom(0)
 	, mPortTo(0)

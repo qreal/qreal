@@ -17,11 +17,13 @@
 using namespace qReal;
 using namespace qReal::gui::editor;
 
-BrokenLine::BrokenLine(EdgeElement *edge)
-		: LineHandler(edge)
-		, mDeletePointAction(tr("Delete point"), this)
-		, mDeleteSegmentAction(tr("Delete segment"), this)
-		, mMinimizeAction(tr("Remove all points"), this)
+BrokenLine::BrokenLine(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel)
+	: LineHandler(edge, logicalModel, graphicalModel)
+	, mDeletePointAction(tr("Delete point"), this)
+	, mDeleteSegmentAction(tr("Delete segment"), this)
+	, mMinimizeAction(tr("Remove all points"), this)
 {
 	connectAction(&mDeletePointAction, this, SLOT(deletePoint(const QPointF &)));
 	connectAction(&mDeleteSegmentAction, this, SLOT(deleteSegment(const QPointF &)));

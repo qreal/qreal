@@ -28,7 +28,9 @@ class LineFactory : public QObject
 {
 	Q_OBJECT
 public:
-	LineFactory(EdgeElement *edge);
+	LineFactory(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel);
 
 	/// Create LineHandler according to link type
 	LineHandler *createHandler(const linkShape::LinkShape type) const;
@@ -49,6 +51,8 @@ private slots:
 
 private:
 	EdgeElement *mEdge; // Doesn't take ownership
+	const LogicalModelAssistInterface &mLogicalModel;
+	const GraphicalModelAssistInterface &mGraphicalModel;
 };
 
 }
