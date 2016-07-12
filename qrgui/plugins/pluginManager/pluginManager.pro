@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ TEMPLATE = lib
 
 QT += xml svg
 
-links(qrkernel qslog qrutils qrrepo qrgui-tool-plugin-interface)
+links(qrkernel qslog qrgraph qrutils qrrepo qrgui-tool-plugin-interface qrgui-meta-meta-model)
 
-includes(qrgui)
+includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 
 DEFINES += QRGUI_PLUGINS_MANAGER_LIBRARY
 
@@ -34,31 +34,21 @@ HEADERS += \
 	$$PWD/pluginsManagerDeclSpec.h \
 	$$PWD/editorManager.h \
 	$$PWD/toolPluginManager.h \
-	$$PWD/interpreterEditorManager.h \
 	$$PWD/editorManagerInterface.h \
-	$$PWD/proxyEditorManager.h \
 	$$PWD/pattern.h \
-	$$PWD/explosion.h \
 	$$PWD/sdfRenderer.h \
-	$$PWD/interpretedPluginManager.h \
-	$$PWD/interpretedPluginsLoader.h \
+	$$PWD/qrsMetamodelLoader.h \
+	$$PWD/qrsMetamodelSaver.h \
 	$$PWD/details/patternParser.h \
-	$$PWD/details/interpreterElementImpl.h \
-	$$PWD/details/interpreterPortImpl.h \
 
 SOURCES += \
 	$$PWD/editorManager.cpp \
 	$$PWD/toolPluginManager.cpp \
-	$$PWD/interpreterEditorManager.cpp \
-	$$PWD/proxyEditorManager.cpp \
 	$$PWD/pattern.cpp \
-	$$PWD/explosion.cpp \
 	$$PWD/sdfRenderer.cpp \
-	$$PWD/interpretedPluginManager.cpp \
-	$$PWD/interpretedPluginsLoader.cpp \
+	$$PWD/qrsMetamodelLoader.cpp \
+	$$PWD/qrsMetamodelSaver.cpp \
 	$$PWD/details/patternParser.cpp \
-	$$PWD/details/interpreterElementImpl.cpp \
-	$$PWD/details/interpreterPortImpl.cpp \
 
 RESOURCES += \
 	$$PWD/pluginManager.qrc \

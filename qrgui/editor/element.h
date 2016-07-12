@@ -20,8 +20,7 @@
 #include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
 
-#include <qrgui/plugins/editorPluginInterface/elementRepoInterface.h>
-#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+#include <metaMetaModel/elementRepoInterface.h>
 
 #include <qrgui/models/graphicalModelAssistApi.h>
 #include <qrgui/models/logicalModelAssistApi.h>
@@ -49,8 +48,8 @@ class QRGUI_EDITOR_EXPORT Element : public QObject, public QGraphicsItem, public
 
 public:
 	/// Constructor
-	/// @param elementImpl - pointer to implementation of the element. Takes ownership.
-	Element(ElementImpl *elementImpl, const Id &id, const models::Models &models);
+	/// @param type - reference to type descriptor of the element. Takes ownership.
+	Element(const ElementType &type, const Id &id, const models::Models &models);
 
 	virtual ~Element() {}
 
@@ -65,7 +64,6 @@ public:
 	virtual void connectToPort() {}  // for edge
 	virtual void checkConnectionsToPort() {}  // for node
 
-	virtual bool initPossibleEdges() = 0;
 	virtual void initTitles();
 
 	virtual void setName(const QString &name, bool withUndoRedo = false);
@@ -81,9 +79,6 @@ public:
 	void setController(Controller *controller);
 	Controller *controller() const;
 
-	ElementImpl* elementImpl() const;
-	bool createChildrenFromMenu() const;
-
 	/// Checks if this element is disabled from palette and if it is grayscales it.
 	void updateEnabledState();
 
@@ -96,9 +91,6 @@ protected:
 	bool mEnabled;
 	const Id mId;
 
-	/// Has ownership.
-	ElementImpl * const mElementImpl;
-
 	QList<Label *> mLabels;
 
 	const models::Models &mModels;
@@ -107,6 +99,9 @@ protected:
 
 	/// Does not have ownership.
 	Controller *mController;
+
+private:
+	const ElementType &mType;
 };
 
 }

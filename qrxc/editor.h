@@ -46,13 +46,11 @@ public:
 	bool load(const QDir &currentDir);
 
 	Type *findType(const QString &name);
+	Type *findTypeByNormalizedName(const QString &name);
 
 	QSet<EnumType *> getAllEnumTypes();
 	Diagram *findDiagram(const QString &name);
 	QMap<QString, Diagram*> diagrams();
-
-	void generateListenerIncludes(utils::OutFile &out) const;
-	void generateListenerFactory(utils::OutFile &out, const QString &pluginName) const;
 
 private:
 	XmlCompiler *mXmlCompiler;
@@ -61,5 +59,4 @@ private:
 	QString mVersion;
 	QList<Editor*> mIncludes;
 	QMap<QString, Diagram*> mDiagrams;
-	QList<QPair<QString, QString> > mListeners;
 };

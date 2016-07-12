@@ -34,10 +34,14 @@ void PointPort::generateCode(OutFile &out)
 		mType = "NonTyped";
 	}
 
-	out() << QString("\t\t\tports << portFactory.createPort(QPointF(%1, %2), %3, %4, %5, %6, new %7());\n")
-			.arg(mX.value()).arg(mY.value())
-			.arg(mX.isScalable() ? "true" : "false").arg(mY.isScalable() ? "true" : "false")
-			.arg(mInitWidth).arg(mInitHeight).arg(mType);
+	out() << QString("qReal::PointPortInfo(QPointF(%1, %2), %3, %4, %5, %6, \"%7\")").arg(
+			QString::number(mX.value())
+			, QString::number(mY.value())
+			, mX.isScalable() ? "true" : "false"
+			, mY.isScalable() ? "true" : "false"
+			, QString::number(mInitWidth)
+			, QString::number(mInitHeight)
+			, mType);
 }
 
 Port* PointPort::clone() const

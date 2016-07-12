@@ -17,8 +17,6 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
-
 #include "ast/node.h"
 
 #include "commonInfo/variablesTable.h"

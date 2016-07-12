@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
-
 #include <QtCore/QSharedPointer>
 #include <QtCore/QString>
 

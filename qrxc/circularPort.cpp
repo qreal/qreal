@@ -36,9 +36,8 @@ void CircularPort::generateCode(OutFile &out)
 		mType = "NonTyped";
 	}
 
-	out() << QString("\t\t\tports << portFactory.createPort(QPointF(%1, %2), %3, %4, %5, %6, %7, new %8());\n")
-			.arg(mX.value()).arg(mY.value())
-			 .arg(mR.value())
+	out() << QString("qReal::CircularPortInfo(QPointF(%1, %2), %3, %4, %5, %6, %7, \"%8\")")
+			.arg(mX.value()).arg(mY.value()).arg(mR.value())
 			.arg(mX.isScalable() ? "true" : "false").arg(mY.isScalable() ? "true" : "false")
 			.arg(mInitWidth).arg(mInitHeight).arg(mType);
 }

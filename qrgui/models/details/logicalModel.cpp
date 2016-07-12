@@ -17,9 +17,9 @@
 #include <QtCore/QUuid>
 
 #include <qrkernel/definitions.h>
+#include <metaMetaModel/linkShape.h>
 
 #include "models/details/graphicalModel.h"
-
 
 using namespace qReal;
 using namespace models;
@@ -84,7 +84,7 @@ void LogicalModel::addInsufficientProperties(const Id &id, const QString &name)
 	standardProperties.insert("name", name);
 	standardProperties.insert("from", Id::rootId().toVariant());
 	standardProperties.insert("to", Id::rootId().toVariant());
-	standardProperties.insert("linkShape", static_cast<int>(enums::linkShape::broken));
+	standardProperties.insert("linkShape", static_cast<int>(LinkShape::broken));
 	standardProperties.insert("links", IdListHelper::toVariant(IdList()));
 	standardProperties.insert("outgoingExplosion", Id().toVariant());
 	standardProperties.insert("incomingExplosions", IdListHelper::toVariant(IdList()));
@@ -132,8 +132,7 @@ QMimeData* LogicalModel::mimeData(const QModelIndexList &indexes) const
 		if (index.isValid()) {
 			AbstractModelItem *item = static_cast<AbstractModelItem*>(index.internalPointer());
 			const Id id = item->id();
-			const bool isEdge = mLogicalAssistApi->editorManagerInterface().isNodeOrEdge(
-					id.editor(), id.element()) == -1;
+			const bool isEdge = mLogicalAssistApi->editorManagerInterface().isNodeOrEdge(id.type()) == -1;
 
 			stream << ElementInfo(id, id, mApi.property(id, "name").toString(), mApi.outgoingExplosion(item->id())
 					, isEdge);

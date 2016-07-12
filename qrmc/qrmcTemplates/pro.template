@@ -1,0 +1,15 @@
+QREAL_EDITOR_NAME = @@MetamodelName@@
+
+SOURCES += \
+	$$PWD/pluginInterface.cpp \
+
+HEADERS += \
+	$$PWD/pluginInterface.h \
+	$$PWD/elements.h \
+
+RESOURCES += \
+	$$PWD/plugin.qrc \
+
+# @todo: wat? shall parameterize this with actual path to QRMC.
+include(../../../qrmc/plugins/pluginsCommon.pri)
+

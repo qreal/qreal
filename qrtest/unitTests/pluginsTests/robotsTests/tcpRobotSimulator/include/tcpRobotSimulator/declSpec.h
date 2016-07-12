@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#pragma once
+
 #ifndef TCP_ROBOT_SIMULATOR_EXPORT
 #  if defined(TCP_ROBOT_SIMULATOR_LIBRARY)
 #    define TCP_ROBOT_SIMULATOR_EXPORT Q_DECL_EXPORT

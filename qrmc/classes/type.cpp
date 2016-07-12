@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,25 @@
  * limitations under the License. */
 
 #include "type.h"
-#include "property.h"
-#include "../utils/nameNormalizer.h"
 
-#include <QDebug>
+#include "property.h"
+#include "qrmc/utils/nameNormalizer.h"
+
+#include <QtCore/QDebug>
 
 using namespace qrmc;
 
-Type::Type(bool isResolved, Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
-	: mResolvingFinished(isResolved), mDiagram(diagram), mId(id), mApi(api)
+Type::Type(bool isResolved, const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id)
+	: mResolvingFinished(isResolved)
+	, mDiagram(&diagram)
+	, mId(id)
+	, mApi(api)
 {
 }
 
 Type::~Type()
 {
-	foreach (Property *property, mProperties.values())
-		if (property)
-			delete property;
+	qDeleteAll(mProperties);
 }
 
 bool Type::isResolved() const
@@ -82,19 +84,19 @@ void Type::setDisplayedName(const QString &displayedName)
 	mDisplayedName = displayedName;
 }
 
-Diagram *Type::diagram() const
+const Diagram &Type::diagram() const
 {
-	return mDiagram;
+	return *mDiagram;
 }
 
-QMap<QString, Property*> Type::properties() const
+const QMap<QString, Property *> &Type::properties() const
 {
 	return mProperties;
 }
 
-void Type::setDiagram(Diagram *diagram)
+void Type::setDiagram(Diagram &diagram)
 {
-	mDiagram = diagram;
+	mDiagram = &diagram;
 }
 
 void Type::copyFields(Type *type) const
@@ -103,44 +105,58 @@ void Type::copyFields(Type *type) const
 	type->mContext = mContext;
 	type->mNativeContext = mNativeContext;
 	type->mDisplayedName = mDisplayedName;
-	foreach (QString propertyName, mProperties.keys()) {
+	for (const QString &propertyName : mProperties.keys()) {
 		type->mProperties.insert(propertyName, mProperties[propertyName]->clone());
 	}
+
 	type->mResolvingFinished = mResolvingFinished;
 	type->mDiagram = mDiagram;
 }
 
 bool Type::init(const QString &context)
 {
-	mName = mApi->name(mId);
-	mDisplayedName = mApi->stringProperty(mId, "displayedName");
-	if (mDisplayedName.isEmpty())
+	mName = mApi.name(mId);
+	mDisplayedName = mApi.stringProperty(mId, "displayedName");
+	if (mDisplayedName.isEmpty()) {
 		mDisplayedName = mName;
+	}
+
 	mName = NameNormalizer::normalize(mName);
 	mContext = context;
 	mNativeContext = context;
-	if (mName == "") {
+	if (mName.isEmpty()) {
 		qDebug() << "ERROR: anonymous type found";
 		return false;
 	}
-	if (mApi->hasProperty(mId, "path"))
-		mPath = mApi->stringProperty(mId, "path");
+
+	if (mApi.hasProperty(mId, "path")) {
+		mPath = mApi.stringProperty(mId, "path");
+	}
+
 	return true;
 }
 
 QString Type::generateNames(const QString &lineTemplate) const
 {
-	if (displayedName().isEmpty() || !isGraphicalType())
+	if (displayedName().isEmpty() || !isGraphicalType()) {
 		return "";
+	}
+
 	QString result = lineTemplate;
-	result.replace(elementNameTag, name()).replace(elementDisplayedNameTag, displayedName()).replace(diagramNameTag, mContext);
+	result.replace(elementNameTag
+			, name()).replace(elementDisplayedNameTag
+			, displayedName()).replace(diagramNameTag
+			, mContext);
+
 	return result;
 }
 
 QString Type::generateMouseGestures(const QString &lineTemplate) const
 {
-	if (mPath.isEmpty())
+	if (mPath.isEmpty()) {
 		return "";
+	}
+
 	QString result = lineTemplate;
 	result.replace(elementNameTag, name()).replace(gesturePathTag, mPath).replace(diagramNameTag, mContext);
 	return result;
@@ -148,8 +164,10 @@ QString Type::generateMouseGestures(const QString &lineTemplate) const
 
 QString Type::generateFactory(const QString &lineTemplate) const
 {
-	if (!isGraphicalType())
+	if (!isGraphicalType()) {
 		return "";
+	}
+
 	QString result = lineTemplate;
 	result.replace(elementNameTag, mName);
 	return result;

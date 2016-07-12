@@ -63,8 +63,7 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 	/// not connect edges at all. Proper fix for that shall possibly be in scene instead of this place.
 	for (const Id &childId : mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId)
-				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.editor()
-						, childId.element()) != -1)
+				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.type()) != -1)
 		{
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
@@ -73,8 +72,7 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 
 	for (const Id &childId : mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId)
-				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.editor()
-						, childId.element()) == -1)
+				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.type()) == -1)
 		{
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
