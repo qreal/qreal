@@ -143,6 +143,40 @@ void Label::setTextInteractionFlags(Qt::TextInteractionFlags flags)
 	QGraphicsTextItem::setTextInteractionFlags(flags);
 }
 
+void Label::setVisibilityCondition(const QString &property, const QString &sign, const QString &value)//fix
+{
+	mVisibilityCondition.value = value;
+	mVisibilityCondition.sign = sign;
+	mVisibilityCondition.property = property;
+}
+
+bool Label::checkCondition() const
+{
+	Element * const parent = dynamic_cast<Element *>(parentItem());
+	QString sign = mVisibilityCondition.sign;
+	QString realValue = parent->logicalProperty(mVisibilityCondition.property);
+	QString conditionValue = mVisibilityCondition.value;
+
+	if (sign == "=~") {
+		return QRegExp(conditionValue).exactMatch(realValue);
+	} else if (sign == ">") {
+		return realValue.toInt() > conditionValue.toInt();
+	} else if (sign == "<") {
+		return realValue.toInt() < conditionValue.toInt();
+	} else if (sign == ">=") {
+		return realValue.toInt() >= conditionValue.toInt();
+	} else if (sign == "<=") {
+		return realValue.toInt() <= conditionValue.toInt();
+	} else if (sign == "!=") {
+		return realValue != conditionValue;
+	} else if (sign == "=") {
+		return realValue == conditionValue;
+	} else {
+		qDebug() << "Unsupported logical operator \"" + sign + "\"";
+		return false;
+	}
+}
+
 void Label::setHtml(const QString &html)
 {
 	QGraphicsTextItem::setHtml(html);
@@ -365,6 +399,7 @@ void Label::startTextInteraction()
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+	if (checkCondition()) {
 	if (toPlainText().isEmpty() && !parentItem()->isSelected()
 			&& !isSelected() && dynamic_cast<EdgeElement *>(parentItem())) {
 		/// @todo: Why label decides it? Why not edge element itself?
@@ -392,6 +427,7 @@ void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 	// Default dashed frame is drawn arround the whole bounding rect (arround prefix and suffix too). Disabling it.
 	const_cast<QStyleOptionGraphicsItem *>(option)->state &= ~QStyle::State_Selected & ~QStyle::State_HasFocus;
 	QGraphicsTextItem::paint(painter, option, widget);
+	}
 }
 
 void Label::drawText(QPainter *painter, const QRectF &rect, const QString &text)

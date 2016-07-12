@@ -44,6 +44,8 @@ public:
 	/// @param text Contains current value of the property and its configuration.
 	virtual void setTextFromRepo(const QString& text) = 0;
 
+	virtual void setVisibilityCondition(const QString &property, const QString &sign, const QString &value) = 0;//fix
+
 	/// Allows to set graphics item flags for current label.
 	virtual void setFlags(QGraphicsItem::GraphicsItemFlags flags) = 0;
 

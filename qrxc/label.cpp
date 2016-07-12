@@ -25,6 +25,16 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);
 
+
+//	QDomNodeList shCond = element.childNodes();
+//	QDomNode first = shCond.at(0);
+
+	for (int i = 0; i < element.childNodes().length(); i++) {
+		QDomNode child = element.childNodes().at(i);
+		if (child.nodeName() == "showIf")
+			mShowCondition = child.toElement();
+	}
+
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
@@ -107,6 +117,16 @@ void Label::generateCodeForConstructor(OutFile &out)
 	out()
 		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
 		<< "			titles.append(" + titleName() + ");\n";
+
+	if (!mShowCondition.isNull()) {
+		const QString value = mShowCondition.attribute("value");
+		const QString sign = mShowCondition.attribute("sign");
+		const QString property = mShowCondition.attribute("property");
+		out()
+			<< "			" + titleName()+ "->setVisibilityCondition(\"" + property + "\", \""
+			   + sign + "\", \"" + value + "\");\n";
+	}
+
 }
 
 QStringList Label::getListOfStr(const QString &strToParse) const
