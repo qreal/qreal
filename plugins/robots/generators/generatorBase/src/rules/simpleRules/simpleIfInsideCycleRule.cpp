@@ -36,6 +36,11 @@ bool SimpleIfInsideCycleRule::apply()
 
 	LoopNode * const parentLoop = makeLoopStartingFrom(mNextNode);
 
+	/// If this IfNode is simple we don't need to check other branch
+	if (parentIf->isSimple()) {
+		return true;
+	}
+
 	ZoneNode * const thisZone = mThisNode->parentZone();
 	ZoneNode * const otherZone = parentIf->thenZone() == thisZone
 			? parentIf->elseZone() : parentIf->thenZone();

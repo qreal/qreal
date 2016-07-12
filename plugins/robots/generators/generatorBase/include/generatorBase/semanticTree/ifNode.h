@@ -31,6 +31,9 @@ public:
 	/// Will be called when both branches link to same block, making thus if statement unnesesary.
 	void transformToSimple();
 
+	/// Return true if this IfNode is simple(both branches link to same block
+	bool isSimple();
+
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
