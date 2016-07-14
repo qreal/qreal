@@ -46,6 +46,9 @@ public:
 	/// Requests telemetry data for given sensor.
 	virtual void requestData(const QString &sensor) = 0;
 
+	/// Requests telemetry data for all ports.
+	virtual void requestData() = 0;
+
 	/// Establishes connection and initializes socket. If connection fails, leaves socket
 	/// in invalid state.
 	virtual void connect() = 0;

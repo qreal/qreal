@@ -49,6 +49,8 @@ public:
 
 	void requestData(const QString &sensor) override;
 
+	void requestData() override;
+
 	void connect() override;
 
 	void disconnect() override;

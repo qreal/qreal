@@ -122,6 +122,15 @@ void TcpRobotCommunicatorWorker::requestData(const QString &sensor)
 	mTelemetryConnection->send("sensor:" + sensor);
 }
 
+void TcpRobotCommunicatorWorker::requestData()
+{
+	if (!mTelemetryConnection->isConnected()) {
+		return;
+	}
+
+	mTelemetryConnection->send("data");
+}
+
 void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 {
 	const QString errorMarker("error: ");
@@ -155,26 +164,41 @@ void TcpRobotCommunicatorWorker::processControlMessage(const QString &message)
 void TcpRobotCommunicatorWorker::processTelemetryMessage(const QString &message)
 {
 	const QString sensorMarker("sensor:");
+	const QString allDataMarker("allData:");
 
 	if (message.startsWith(sensorMarker)) {
 		QString data(message);
 		data.remove(0, sensorMarker.length());
-		QStringList portAndValue = data.split(":");
-		if (portAndValue[1].startsWith('(')) {
-			portAndValue[1].remove(0, 1);
-			portAndValue[1].remove(portAndValue[1].length() - 1, 1);
-			const QStringList stringValues = portAndValue[1].split(",");
-			QVector<int> values;
-			for (const QString &value : stringValues) {
-				values.push_back(value.toInt());
-			}
-
-			emit newVectorSensorData(portAndValue[0], values);
-		} else {
-			emit newScalarSensorData(portAndValue[0], portAndValue[1].toInt());
+		handleValue(data);
+	} else if (message.startsWith(allDataMarker)) {
+		QString data(message);
+		data.remove(0, allDataMarker.length());
+		QStringList values = data.split(';');
+		for (QString value : values) {
+			handleValue(value);
 		}
+
 	} else {
 		QLOG_INFO() << "Incoming message of unknown type: " << message;
+	}
+}
+
+void TcpRobotCommunicatorWorker::handleValue(const QString &data)
+{
+	QString temp(data);
+	QStringList portAndValue = temp.split(":");
+	if (portAndValue[1].startsWith('(')) {
+		portAndValue[1].remove(0, 1);
+		portAndValue[1].remove(portAndValue[1].length() - 1, 1);
+		const QStringList stringValues = portAndValue[1].split(",");
+		QVector<int> values;
+		for (const QString &value : stringValues) {
+			values.push_back(value.toInt());
+		}
+
+		emit newVectorSensorData(portAndValue[0], values);
+	} else {
+		emit newScalarSensorData(portAndValue[0], portAndValue[1].toInt());
 	}
 }
 

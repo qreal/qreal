@@ -105,6 +105,12 @@ public:
 	/// user (like 2d model).
 	virtual bool needsConnection() const = 0;
 
+	/// Calls read() for all configured sensors.
+	virtual void readDataFromAllSensors() const = 0;
+
+	/// Returns time interval for request data from robot.
+	virtual int updateIntervalForInterpretation() const = 0;
+
 	/// Returns true if this robot model will be used for interpretation. This will enable run and stop actions on the
 	/// toolbar when this robot model is selected by user.
 	virtual bool interpretedModel() const = 0;

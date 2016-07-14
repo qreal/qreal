@@ -19,9 +19,6 @@
 #include <kitBase/robotModel/robotParts/scalarSensor.h>
 #include <kitBase/robotModel/robotParts/vectorSensor.h>
 
-static const int unrealUpdateInterval = 20;
-static const int realUpdateInterval = 200;
-
 using namespace interpreterCore::interpreter::details;
 using namespace kitBase::robotModel;
 
@@ -68,8 +65,6 @@ void SensorVariablesUpdater::run()
 					, Qt::UniqueConnection
 					);
 
-			scalarSensor->read();
-
 			continue;
 		}
 
@@ -97,11 +92,11 @@ void SensorVariablesUpdater::run()
 					, Qt::UniqueConnection
 					);
 
-			vectorSensor->read();
-
 			continue;
 		}
 	}
+
+	mRobotModelManager.model().readDataFromAllSensors();
 
 	mUpdateTimer->start(updateInterval());
 }
@@ -137,25 +132,14 @@ void SensorVariablesUpdater::onVectorSensorResponse(const QVector<int> &reading)
 
 void SensorVariablesUpdater::onTimerTimeout()
 {
-	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {
-		robotParts::AbstractSensor * const sensor = dynamic_cast<robotParts::AbstractSensor *>(device);
-		if (sensor && !sensor->port().reservedVariable().isEmpty()) {
-
-			if (!sensor->ready() || sensor->isLocked()) {
-				/// @todo Error reporting
-				continue;
-			}
-
-			sensor->read();
-		}
-	}
+	mRobotModelManager.model().readDataFromAllSensors();
 
 	mUpdateTimer->start(updateInterval());
 }
 
 int SensorVariablesUpdater::updateInterval() const
 {
-	return mRobotModelManager.model().needsConnection() ? realUpdateInterval : unrealUpdateInterval;
+	return mRobotModelManager.model().updateIntervalForInterpretation();
 }
 
 void SensorVariablesUpdater::onFailure()
