@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,38 @@
 
 #include "portFactory.h"
 
-#include "editor/ports/statLine.h"
-#include "editor/ports/statPoint.h"
-#include "editor/ports/statCircular.h"
+#include <QtCore/QList>
 
 using namespace qReal::gui::editor;
 
-PortInterface * PortFactory::createPort(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2
-		, int initWidth, int initHeight, PortImpl *impl) const
+// Using list.map can replace this whole class :(
+
+QList<StatPoint *> PortFactory::createPorts(const QList<PointPortInfo> &infos) const
 {
-	return new StatLine(line, propX1, propY1, propX2, propY2, initWidth, initHeight, impl);
+	QList<StatPoint *> result;
+	for (const PointPortInfo &info : infos) {
+		result << new StatPoint(info);
+	}
+
+	return result;
 }
 
-PortInterface * PortFactory::createPort(const QPointF &point, bool propX, bool propY
-		, int initWidth, int initHeight, PortImpl *impl) const
+QList<StatLine *> PortFactory::createPorts(const QList<LinePortInfo> &infos) const
 {
-	return new StatPoint(point, propX, propY, initWidth, initHeight, impl);
+	QList<StatLine *> result;
+	for (const LinePortInfo &info : infos) {
+		result << new StatLine(info);
+	}
+
+	return result;
 }
 
-PortInterface * PortFactory::createPort(const QPointF &center, const qreal &r, bool propX, bool propY
-		, int initWidth, int initHeight, PortImpl *impl) const
+QList<StatCircular *> PortFactory::createPorts(const QList<qReal::CircularPortInfo> &infos) const
 {
-	return new StatCircular(center, r, propX, propY, initWidth, initHeight, impl);
-}
+	QList<StatCircular *> result;
+	for (const CircularPortInfo &info : infos) {
+		result << new StatCircular(info);
+	}
 
+	return result;
+}

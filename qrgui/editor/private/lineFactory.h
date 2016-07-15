@@ -16,8 +16,6 @@
 
 #include "editor/edgeElement.h"
 
-using namespace enums;
-
 namespace qReal {
 namespace gui {
 namespace editor {
@@ -31,16 +29,16 @@ public:
 	LineFactory(EdgeElement *edge);
 
 	/// Create LineHandler according to link type
-	LineHandler *createHandler(const linkShape::LinkShape type) const;
+	LineHandler *createHandler(LinkShape type) const;
 
 	/// Create menu for choosing shape type
 	QMenu *shapeTypeMenu() const;
 
 	/// @return String representation of shapeType
-	static QString shapeToString(const linkShape::LinkShape shapeType);
+	static QString shapeToString(LinkShape shapeType);
 
 	/// @return LinkShape represented by string; return linkShape::unset if string is incorrect
-	static linkShape::LinkShape stringToShape(const QString &string);
+	static LinkShape stringToShape(const QString &string);
 
 private slots:
 	void setSquareLine() const;

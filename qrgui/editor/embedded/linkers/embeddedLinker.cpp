@@ -19,6 +19,9 @@
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QStyleOptionGraphicsItem>
 
+#include <metaMetaModel/nodeElementType.h>
+#include <metaMetaModel/edgeElementType.h>
+
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
 
@@ -284,21 +287,8 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {
-			bool canBeConnected = false;
-			for (const PossibleEdge &pEdge : mEdge->src()->getPossibleEdges()) {
-				if (pEdge.first.second.element() == under->id().element()) {
-					canBeConnected = true;
-					break;
-				} else {
-					// pEdge.second.first is true, if edge can connect items in only one direction.
-					if (!pEdge.second.first) {
-						canBeConnected = (pEdge.first.first.element() == under->id().element());
-						if (canBeConnected) {
-							break;
-						}
-					}
-				}
-			}
+			const bool canBeConnected = !mEdge->edgeType().toPortTypes().toSet().intersect(
+					under->nodeType().portTypes().toSet()).isEmpty();
 
 			if (under->isContainer()) {
 				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos

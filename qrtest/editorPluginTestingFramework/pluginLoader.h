@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +15,28 @@
 #pragma once
 
 #include <QtCore/QString>
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include <QtCore/QFileInfo>
+#include <QtCore/QSharedPointer>
+
+class QPluginLoader;
+
+namespace qReal {
+class Metamodel;
+}
 
 namespace editorPluginTestingFramework {
 
+/// Class that loads editor plugins and maintains their loaders.
 class PluginLoader
 {
 public:
+	~PluginLoader();
 
-	/// gets name of dynamic library and returns loaded plugin
-	qReal::EditorInterface* loadedPlugin(
-			const QString &fileName
-			, const QString &pathToFile
-			, const QString &pluginExtension
-			, const QString &prefix);
-
-	/// returns generated plugins names
-	QStringList pluginNames();
+	/// Loads editor plugin and returns its main interface. Transfers ownership to the caller.
+	qReal::Metamodel* loadPlugin(const QFileInfo &file);
 
 private:
-	QStringList mPluginNames;
+	QList<QSharedPointer<QPluginLoader>> mLoadedPluginLoaders;
 };
 
 }

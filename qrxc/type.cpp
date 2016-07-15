@@ -32,10 +32,11 @@ bool Type::init(const QDomElement &element, const QString &context)
 	mName = element.attribute("name");
 	mContext = context;
 	mNativeContext = context;
-	if (mName == "") {
-		qDebug() << "ERROR: anonymous type found";
+	if (mName.isEmpty()) {
+		qWarning() << "ERROR: anonymous type found. Tag name:" << element.tagName();
 		return false;
 	}
+
 	mDisplayedName = element.attribute("displayedName", mName);
 	mPath = element.attribute("path", "");
 	return true;
@@ -84,6 +85,11 @@ void Type::setName(const QString &name)
 QString Type::displayedName() const
 {
 	return mDisplayedName;
+}
+
+Diagram *Type::diagram() const
+{
+	return mDiagram;
 }
 
 void Type::setDisplayedName(const QString &displayedName)

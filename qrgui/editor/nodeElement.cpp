@@ -28,10 +28,11 @@
 
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/changeParentCommand.h>
-#include <qrgui/plugins/editorPluginInterface/editorInterface.h>
+#include <qrgui/models/commands/renameCommand.h>
+#include <metaMetaModel/edgeElementType.h>
+#include <metaMetaModel/nodeElementType.h>
 
 #include "editor/labels/label.h"
-#include "editor/labels/labelFactory.h"
 #include "editor/editorViewScene.h"
 #include "editor/ports/portFactory.h"
 
@@ -46,9 +47,11 @@ using namespace qReal::commands;
 using namespace qReal::gui::editor;
 using namespace qReal::gui::editor::commands;
 
-NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &models)
-	: Element(impl, id, models)
+NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models::Models &models)
+	: Element(type, id, models)
+	, mType(type)
 	, mSwitchGridAction(tr("Switch on grid"), this)
+	, mContents(QPointF(), type.size())
 	, mDragState(None)
 	, mResizeCommand(nullptr)
 	, mIsExpanded(false)
@@ -65,20 +68,18 @@ NodeElement::NodeElement(ElementImpl *impl, const Id &id, const models::Models &
 	setFlag(ItemClipsChildrenToShape, false);
 	setFlag(QGraphicsItem::ItemDoesntPropagateOpacityToChildren);
 
-	LabelFactory labelFactory(models.graphicalModelAssistApi(), mId);
-	QList<LabelInterface*> titles;
+	mRenderer.load(mType.sdf());
+	mRenderer.setElementRepo(this);
 
-	QList<PortInterface *> ports;
 	PortFactory portFactory;
-	mElementImpl->init(mContents, portFactory, ports, labelFactory, titles, &mRenderer, this);
-	mPortHandler = new PortHandler(this, mGraphicalAssistApi, ports);
+	mPortHandler = new PortHandler(this, mGraphicalAssistApi
+			, portFactory.createPorts(mType.pointPorts())
+			, portFactory.createPorts(mType.linePorts())
+			, portFactory.createPorts(mType.circularPorts()));
 
-	for (LabelInterface * const labelInterface : titles) {
-		Label * const label = dynamic_cast<Label *>(labelInterface);
-		if (!label) {
-			continue;
-		}
-
+	const QList<LabelProperties> labelInfos = mType.labels();
+	for (const LabelProperties &labelInfo : labelInfos) {
+		Label * const label = new Label(mGraphicalAssistApi, mId, labelInfo);
 		label->init(mContents);
 		label->setParentItem(this);
 		mLabels.append(label);
@@ -105,7 +106,6 @@ NodeElement::~NodeElement()
 
 	deleteGuides();
 	qDeleteAll(mLabels);
-	delete mElementImpl;
 	delete mGrid;
 	delete mPortHandler;
 }
@@ -281,23 +281,23 @@ void NodeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	if (isSelected()) {
 		int dragArea = SettingsManager::instance()->value("DragArea").toInt();
 		if (QRectF(mContents.topLeft(), QSizeF(dragArea, dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
+				&& mType.isResizable())
 		{
 			mDragState = TopLeft;
 		} else if (QRectF(mContents.topRight(), QSizeF(-dragArea, dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
+				&& mType.isResizable())
 		{
 			mDragState = TopRight;
 		} else if (QRectF(mContents.bottomRight(), QSizeF(-dragArea, -dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
+				&& mType.isResizable())
 		{
 			mDragState = BottomRight;
 		} else if (QRectF(mContents.bottomLeft(), QSizeF(dragArea, -dragArea)).contains(event->pos())
-				&& mElementImpl->isResizeable())
+				&& mType.isResizable())
 		{
 			mDragState = BottomLeft;
 		} else if (QRectF(QPointF(-20, 0), QPointF(0, 20)).contains(event->pos())
-				&& mElementImpl->isContainer())
+				&& mType.isContainer())
 		{
 			changeFoldState();
 		} else {
@@ -321,7 +321,7 @@ void NodeElement::alignToGrid()
 {
 	if (SettingsManager::value("ActivateGrid").toBool()) {
 		NodeElement *parent = dynamic_cast<NodeElement *>(parentItem());
-		if (!parent || !parent->mElementImpl->isSortingContainer()) {
+		if (!parent || !parent->mType.isSortingContainer()) {
 			mGrid->alignToGrid();
 		}
 	}
@@ -414,7 +414,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 		mGrid->mouseMoveEvent(event);
 		newPos = pos();
-	} else if (mElementImpl->isResizeable()) {
+	} else if (mType.isResizable()) {
 		setVisibleEmbeddedLinkers(false);
 
 		needResizeParent = true;
@@ -566,7 +566,7 @@ void NodeElement::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event);
 
-	if (mElementImpl->isContainer()) {
+	if (mType.isContainer()) {
 		mController->execute(new FoldCommand(this));
 	}
 }
@@ -619,61 +619,30 @@ void NodeElement::setConnectingState(bool arg)
 	mConnectionInProgress = arg;
 }
 
-bool NodeElement::initPossibleEdges()
-{
-	if (!mPossibleEdges.isEmpty()) {
-		return true;
-	}
-
-	const QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
-	for (const QString &elementName : mGraphicalAssistApi.editorManagerInterface().elements(id().editor()
-			, id().diagram())) {
-		int ne = mGraphicalAssistApi.editorManagerInterface().isNodeOrEdge(id().editor(), elementName);
-		if (ne == -1) {
-			const QList<StringPossibleEdge> list = mGraphicalAssistApi.editorManagerInterface()
-					.possibleEdges(id().editor(), elementName);
-			for (const StringPossibleEdge &pEdge : list) {
-				if (portTypes.contains(pEdge.first.first)
-						|| (portTypes.contains(pEdge.first.second) && !pEdge.second.first))
-				{
-					PossibleEdgeType edge(pEdge.second.first, Id(id().editor(), id().diagram(), pEdge.second.second));
-					const QSet<ElementPair> elementPairs = elementsForPossibleEdge(pEdge);
-					if (elementPairs.empty()) {
-						continue;
-					}
-
-					for (const ElementPair &elementPair : elementPairs) {
-						mPossibleEdges.insert(qMakePair(elementPair, edge));
-					}
-
-					mPossibleEdgeTypes.insert(edge);
-				}
-			}
-		}
-	}
-
-	return !mPossibleEdges.isEmpty();
-}
-
 void NodeElement::initEmbeddedLinkers()
 {
 	if (!mEmbeddedLinkers.isEmpty()) {
 		return;
 	}
-	QSet<Id> usedEdges;
-	for (const PossibleEdgeType &type : mPossibleEdgeTypes) {
-		if (usedEdges.contains(type.second)) {
+
+	const IdList elements = mGraphicalAssistApi.editorManagerInterface().elements(id());
+	for (const Id &element : elements) {
+		const ElementType &elementType = mGraphicalAssistApi.editorManagerInterface().elementType(element);
+		if (elementType.type() != ElementType::Type::edge) {
 			continue;
 		}
 
-		EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
-		scene()->addItem(embeddedLinker);
-		embeddedLinker->setEdgeType(type.second);
-		embeddedLinker->setDirected(type.first);
-		mEmbeddedLinkers.append(embeddedLinker);
-		embeddedLinker->setMaster(this);
-		usedEdges.insert(type.second);
+		const EdgeElementType &edge = elementType.toEdge();
+		if (!edge.fromPortTypes().toSet().intersect(mType.portTypes().toSet()).isEmpty()) {
+			EmbeddedLinker* embeddedLinker = new EmbeddedLinker();
+			scene()->addItem(embeddedLinker);
+			embeddedLinker->setEdgeType(edge.typeId());
+			embeddedLinker->setDirected(true);
+			mEmbeddedLinkers.append(embeddedLinker);
+			embeddedLinker->setMaster(this);
+		}
 	}
+
 	setVisibleEmbeddedLinkers(true);
 
 	// TODO: make it customizable
@@ -762,7 +731,6 @@ QRectF NodeElement::contentsRect() const
 
 QRectF NodeElement::boundingRect() const
 {
-//	qDebug() << mContents;
 	return mContents.adjusted(-2 * kvadratik, -2 * kvadratik, kvadratik, kvadratik);
 }
 
@@ -799,7 +767,7 @@ void NodeElement::updateData()
 
 		setGeometry(newRect.translated(newpos));
 	}
-	mElementImpl->updateData(this);
+
 	updateLabels();
 	update();
 }
@@ -811,7 +779,7 @@ const QPointF NodeElement::portPos(qreal id) const
 
 bool NodeElement::isContainer() const
 {
-	return mElementImpl->isContainer();
+	return mType.isContainer();
 }
 
 int NodeElement::numberOfPorts() const
@@ -840,7 +808,7 @@ void NodeElement::setPortsVisible(const QStringList &types)
 
 void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *)
 {
-	mElementImpl->paint(painter, mContents);
+	mRenderer.render(painter, mContents);
 	paint(painter, style);
 
 	if (mSelectionNeeded) {
@@ -864,7 +832,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 			QBrush b;
 
-			if (mElementImpl->isContainer()) {
+			if (mType.isContainer()) {
 				b.setStyle(Qt::NoBrush);
 				painter->setBrush(b);
 
@@ -881,7 +849,7 @@ void NodeElement::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 			painter->setBrush(b);
 			painter->setPen(Qt::blue);
 
-			if (mElementImpl->isResizeable()) {
+			if (mType.isResizable()) {
 				drawLinesForResize(painter);
 			} else {
 				painter->drawRect(QRectF(mContents.bottomRight(), QSizeF(-4, -4)));
@@ -931,6 +899,11 @@ void NodeElement::delEdge(EdgeElement *edge)
 	arrangeLinearPorts();
 }
 
+const NodeElementType &NodeElement::nodeType() const
+{
+	return mType;
+}
+
 void NodeElement::changeExpanded()
 {
 	mIsExpanded = !mIsExpanded;
@@ -975,8 +948,8 @@ void NodeElement::changeFoldState()
 
 void NodeElement::updateLabels()
 {
-	for (Label *title : mLabels) {
-		title->setParentContents(mContents);
+	for (Label * const label : mLabels) {
+		label->setParentContents(mContents);
 	}
 }
 
@@ -997,7 +970,7 @@ void NodeElement::setLinksVisible(bool isVisible)
 void NodeElement::drawPlaceholder(QGraphicsRectItem *placeholder, QPointF pos)
 {
 	// for non-sorting containers no need for drawing placeholder so just make them marked
-	if (!mElementImpl->isSortingContainer()) {
+	if (!mType.isSortingContainer()) {
 		setOpacity(0.2);
 		return;
 	}
@@ -1068,7 +1041,7 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 		changeFoldState();
 	}
 
-	if (mElementImpl->isSortingContainer()) {
+	if (mType.isSortingContainer()) {
 		updateChildrenOrder();
 	}
 
@@ -1078,7 +1051,7 @@ void NodeElement::updateByChild(NodeElement* item, bool isItemAddedOrDeleted)
 void NodeElement::updateByNewParent()
 {
 	NodeElement* parent = dynamic_cast<NodeElement*>(parentItem());
-	if (!parent || parent->mElementImpl->hasMovableChildren()) {
+	if (!parent || parent->mType.hasMovableChildren()) {
 		setFlag(ItemIsMovable, true);
 	} else {
 		setFlag(ItemIsMovable, false);
@@ -1134,33 +1107,7 @@ void NodeElement::updateChildrenOrder()
 
 QList<qreal> NodeElement::borderValues() const
 {
-	return mElementImpl->border();
-}
-
-QSet<ElementPair> NodeElement::elementsForPossibleEdge(const StringPossibleEdge &edge)
-{
-	QStringList elements = mGraphicalAssistApi.editorManagerInterface().elements(id().editor(), id().diagram());
-	QStringList portTypes = mGraphicalAssistApi.editorManagerInterface().portTypes(id().type());
-
-	QSet<ElementPair> result;
-	for (const QString &element : elements) {
-		QStringList otherPortTypes
-				= mGraphicalAssistApi.editorManagerInterface().portTypes(Id(id().editor(), id().diagram(), element));
-		if (portTypes.contains(edge.first.first) && otherPortTypes.contains(edge.first.second)) {
-			result.insert(qMakePair(id().type(), Id(id().editor(), id().diagram(), element)));
-		}
-
-		if (otherPortTypes.contains(edge.first.first) && portTypes.contains(edge.first.second)) {
-			result.insert(qMakePair(Id(id().editor(), id().diagram(), element), id().type()));
-		}
-	}
-
-	return result;
-}
-
-QList<PossibleEdge> NodeElement::getPossibleEdges()
-{
-	return QList<PossibleEdge>::fromSet(mPossibleEdges);
+	return mType.border();
 }
 
 void NodeElement::setColorRect(bool value)
@@ -1201,7 +1148,7 @@ void NodeElement::resize(const QRectF &newContents)
 
 void NodeElement::resize(const QRectF &newContents, const QPointF &newPos, bool needResizeParent)
 {
-	ResizeHandler handler(this);
+	ResizeHandler handler(*this);
 	handler.resize(newContents, newPos, needResizeParent);
 }
 
@@ -1299,9 +1246,9 @@ AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPo
 	return result;
 }
 
-void NodeElement::updateShape(const QString &shape) const
+void NodeElement::updateShape(const QDomElement &graphicsSdf)
 {
-	mElementImpl->updateRendererContent(shape);
+	mRenderer.load(graphicsSdf);
 }
 
 IdList NodeElement::sortedChildren() const
@@ -1360,7 +1307,7 @@ void NodeElement::initRenderedDiagram()
 QRectF NodeElement::diagramRenderingRect() const
 {
 	const NodeElement *initial = new NodeElement(
-			mLogicalAssistApi.editorManagerInterface().elementImpl(id())
+			mLogicalAssistApi.editorManagerInterface().elementType(id()).toNode()
 			, id().sameTypeId()
 			, mModels
 			);

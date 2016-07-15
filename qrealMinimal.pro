@@ -23,18 +23,21 @@ SUBDIRS = \
 	qrgui \
 	qrrepo \
 	qrkernel \
+	qrgraph \
 	qrutils \
 	qrtext \
 	thirdparty \
 	qrtranslations \
 
 qrkernel.depends = thirdparty
+qrgraph.depends = qrkernel
 qrutils.depends = qrkernel qrtext
-qrrepo.depends = qrkernel qrutils
+qrrepo.depends = qrkernel qrgraph qrutils
 qrtext.depends = qrkernel
 
 qrgui.depends = \
 	qrrepo \
 	qrutils \
+	qrgraph \
 	qrkernel \
 	thirdparty \

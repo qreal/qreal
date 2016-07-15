@@ -22,27 +22,28 @@
 #include "qrgui/plugins/pluginManager/pattern.h"
 
 namespace qReal {
-class EditorManager;
 
+class EditorManager;
+class PatternType;
+
+/// @todo: Code of this class should be implicitly moved into qrxc and qrmc.
 class PatternParser
 {
 public:
 	PatternParser();
 
-	void loadXml(const QString &xml);
-	void parseGroups(EditorManager *editorManager, const QString &editor, const QString &diagram);
-	QList<Pattern> patterns() const;
+	bool parseGroup(const EditorManager *editorManager, const PatternType &pattern);
+	const Pattern &pattern() const;
 
 private:
-	void parseGroup(const QDomElement &group);
+	bool parseGroup(const QDomElement &group);
 	void parseNode(const QDomElement &node, Pattern &pattern);
 	void parseEdge(const QDomElement &edge, Pattern &pattern);
 
-	QString mXml;
 	QString mEditor;
 	QString mDiagram;
-	EditorManager *mEditorManager;
-	QList<Pattern> mPatterns;
+	const EditorManager *mEditorManager;
+	Pattern mPattern;
 
 };
 }

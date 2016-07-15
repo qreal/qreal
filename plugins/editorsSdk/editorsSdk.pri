@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-HEADERS		+= \
+HEADERS += \
 	$$ROOT/qrkernel/ids.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/sdfRendererInterface.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/elementImpl.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/elementRepoInterface.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/labelInterface.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/labelFactoryInterface.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/editorInterface.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/listenerInterface.h \
-	$$ROOT/qrgui/plugins/editorPluginInterface/listenerApiInterface.h
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/metamodel.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/elementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/nodeElementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/edgeElementType.h \

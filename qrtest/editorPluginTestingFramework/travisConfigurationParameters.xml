@@ -1,10 +1,11 @@
 <xml>
 	<qmake>qmake</qmake>
 	<make>make</make>
-	<configuration>release</configuration>
+	<configuration>debug</configuration>
 	<pluginExtension>so</pluginExtension>
 	<prefix>lib</prefix>
-	<qrealRoot>../</qrealRoot>
+	<qrealRoot>../../</qrealRoot>
 	<generateHtml>no</generateHtml>
-	<generatedCodeDir>../qrtest/binaries</generatedCodeDir>
+	<generatedCodeDirQrxc>../../plugins/testQrxc/</generatedCodeDirQrxc>
+	<generatedCodeDirQrmc>../../plugins/testQrmc/</generatedCodeDirQrmc>
 </xml>

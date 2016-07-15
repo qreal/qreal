@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,29 @@
 
 #pragma once
 
-#include "plugins/editorPluginInterface/portHelpers.h"
+#include <metaMetaModel/portHelpers.h>
+
+class QPainter;
+class QRectF;
 
 namespace qReal {
 namespace gui {
 namespace editor {
 
 /** @brief line port description */
-class StatLine : public PortInterface
+class StatLine
 {
 public:
-	StatLine(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2, int initWidth, int initHeight
-			, PortImpl *impl);
+	explicit StatLine(const LinePortInfo &info);
 
 	operator QLineF () const;
 	void operator= (const QLineF &l);
 
-	virtual void paint(QPainter *painter, const QRectF &contents) const;
+	void paint(QPainter *painter, const QRectF &contents) const;
 	QLineF transformForContents(const QRectF &contents) const;
+
+	/// Returns type of this port to filter out links that can be connected to it.
+	QString type() const;
 
 private:
 	QLineF mLine;
@@ -43,6 +48,8 @@ private:
 
 	int mInitWidth;
 	int mInitHeight;
+
+	QString mType;
 };
 
 }

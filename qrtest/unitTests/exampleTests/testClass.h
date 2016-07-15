@@ -14,7 +14,8 @@
 
 #pragma once
 
-class TestClass {
+class TestClass
+{
 public:
 	virtual ~TestClass() {}
 	virtual void testMethod() {}

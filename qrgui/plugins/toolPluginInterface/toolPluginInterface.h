@@ -38,4 +38,4 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE(qReal::ToolPluginInterface, "ru.tepkom.QReal.ToolPluginInterface/0.2")
+Q_DECLARE_INTERFACE(qReal::ToolPluginInterface, "ru.spbsu.QReal.ToolPluginInterface/0.2")

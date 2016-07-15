@@ -14,6 +14,7 @@
 
 #include "editorView.h"
 
+#include <QtCore/QDir>
 #include <QtCore/QTimeLine>
 #include <QtGui/QFontDatabase>
 

@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 QT += widgets
 
-links(qrkernel qrrepo qrgui-plugin-manager qrgui-controller)
-includes(qrgui)
+links(qrkernel qrrepo qrgraph qrgui-meta-meta-model qrgui-controller qrgui-plugin-manager)
+includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 
 HEADERS += \
 	$$PWD/modelsDeclSpec.h \

@@ -14,10 +14,10 @@
 
 #pragma once
 
-#include "qrgui/plugins/pluginManager/editorManagerInterface.h"
-#include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
-#include "qrgui/plugins/pluginManager/editorManager.h"
-#include "qrgui/plugins/editorPluginInterface/editorInterface.h"
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+//#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
+#include <metaMetaModel/metamodel.h>
 
 #include "abstractStringGenerator.h"
 
@@ -40,8 +40,11 @@ public:
 
 protected:
 
-	virtual AbstractStringGenerator * initGeneratorWithFirstInterface(const AbstractStringGenerator &generator) const = 0;
-	virtual AbstractStringGenerator * initGeneratorWithSecondInterface(const AbstractStringGenerator &generator) const = 0;
+	virtual AbstractStringGenerator * initGeneratorWithFirstInterface(
+			const AbstractStringGenerator &generator) const = 0;
+
+	virtual AbstractStringGenerator * initGeneratorWithSecondInterface(
+			const AbstractStringGenerator &generator) const = 0;
 
 	/// tests given method if it exists in list of methods to be tested
 	ResultOfGenerating testMethodIfExistsInList(

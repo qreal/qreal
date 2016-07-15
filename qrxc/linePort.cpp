@@ -36,17 +36,24 @@ bool LinePort::init(const QDomElement &element, int width, int height)
 
 void LinePort::generateCode(OutFile &out, const QStringList &portTypes)
 {
-	QString line = QString("QLineF(%1, %2, %3, %4)").arg(mStartX.value()).arg(mStartY.value())
-			.arg(mEndX.value()).arg(mEndY.value());
+	const QString line = QString("QLineF(%1, %2, %3, %4)").arg(
+				QString::number(mStartX.value())
+				, QString::number(mStartY.value())
+				, QString::number(mEndX.value())
+				, QString::number(mEndY.value()));
 
 	if (!portTypes.contains(mType)) {
 		mType = "NonTyped";
 	}
 
-	out() << QString("\t\t\tports << portFactory.createPort(%1, %2, %3, %4, %5, %6, %7, new %8());\n").arg(line)
-			.arg(mStartX.isScalable() ? "true" : "false").arg(mStartY.isScalable() ? "true" : "false")
-			.arg(mEndX.isScalable() ? "true" : "false").arg(mEndY.isScalable() ? "true" : "false")
-			.arg(mInitWidth).arg(mInitHeight).arg(mType);
+	out() << QString("qReal::LinePortInfo(%1, %2, %3, %4, %5, %6, %7, \"%8\")").arg(line
+			, mStartX.isScalable() ? "true" : "false"
+			, mStartY.isScalable() ? "true" : "false"
+			, mEndX.isScalable() ? "true" : "false"
+			, mEndY.isScalable() ? "true" : "false"
+			, QString::number(mInitWidth)
+			, QString::number(mInitHeight)
+			, mType);
 }
 
 Port *LinePort::clone() const

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,17 @@
 
 #include "statPoint.h"
 
+#include <QtGui/QPainter>
+
 using namespace qReal::gui::editor;
 
-StatPoint::StatPoint(const QPointF &point, bool propX, bool propY, int initWidth, int initHeight, PortImpl *impl)
-	: PortInterface(impl), mPoint(point), mPropX(propX), mPropY(propY), mInitWidth(initWidth), mInitHeight(initHeight)
+StatPoint::StatPoint(const PointPortInfo &info)
+	: mPoint(info.point)
+	, mPropX(info.scalesX)
+	, mPropY(info.scalesY)
+	, mInitWidth(info.initWidth)
+	, mInitHeight(info.initHeight)
+	, mType(info.type)
 {}
 
 StatPoint::operator QPointF () const
@@ -63,4 +70,9 @@ QPointF StatPoint::transformForContents(const QRectF &contents) const
 	const qreal y = mPoint.y() * (mPropY ? mInitHeight : contents.height());
 
 	return QPointF(x, y);
+}
+
+QString StatPoint::type() const
+{
+	return mType;
 }
