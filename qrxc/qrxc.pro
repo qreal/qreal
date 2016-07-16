@@ -25,6 +25,7 @@ HEADERS += association.h \
 	linePort.h \
 	nameNormalizer.h \
 	nodeType.h \
+	patternType.h \
 	nonGraphicType.h \
 	numericType.h \
 	pointPort.h \
@@ -34,7 +35,8 @@ HEADERS += association.h \
 	stringType.h \
 	type.h \
 	xmlCompiler.h \
-	portType.h
+	portType.h \
+	circularPort.h \
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -47,6 +49,7 @@ SOURCES += association.cpp \
 	main.cpp \
 	nameNormalizer.cpp \
 	nodeType.cpp \
+	patternType.cpp \
 	nonGraphicType.cpp \
 	numericType.cpp \
 	pointPort.cpp \
@@ -56,7 +59,8 @@ SOURCES += association.cpp \
 	stringType.cpp \
 	type.cpp \
 	xmlCompiler.cpp \
-	portType.cpp
+	portType.cpp \
+	circularPort.cpp \
 
 TEMPLATE = app
 QT += xml gui

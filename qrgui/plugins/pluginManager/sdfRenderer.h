@@ -29,16 +29,15 @@
 #include <QtSvg/QSvgRenderer>
 
 #include <qrkernel/settingsManager.h>
+#include <metaMetaModel/elementRepoInterface.h>
 
-#include <plugins/editorPluginInterface/sdfRendererInterface.h>
-#include <plugins/editorPluginInterface/elementRepoInterface.h>
 #include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 #include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
-class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public SdfRendererInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public QObject
 {
 	Q_OBJECT
 
@@ -49,6 +48,7 @@ public:
 
 	bool load (const QString &filename);
 	bool load(const QDomDocument &document);
+	bool load(const QDomElement &picture);
 	void render(QPainter *painter, const QRectF &bounds, bool isIcon = false);
 	void noScale();
 
@@ -160,11 +160,12 @@ private:
 };
 
 /// Constructs QIcon instance by a given sdf description
-class SdfIconEngineV2 : public SdfIconEngineV2Interface
+class SdfIconEngineV2 : public QIconEngine
 {
 public:
 	explicit SdfIconEngineV2(const QString &file);
 	explicit SdfIconEngineV2(const QDomDocument &document);
+	explicit SdfIconEngineV2(const QDomElement &picture);
 	QSize preferedSize() const;
 	virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state);
 	virtual QIconEngine *clone() const;
@@ -178,21 +179,21 @@ private:
 class SdfIconLoader
 {
 public:
-	/// Returns a pixmap of element in specified sdf-file
-	static QIcon iconOf(const QString &fileName);
+	/// Returns a pixmap of element in specified sdf-description. Descriptions are cached by id.
+	static QIcon iconOf(const Id &id, const QDomElement &sdf);
 
-	/// Returns a size of the pixmap of element in specified sdf-file
-	static QSize preferedSizeOf(const QString &fileName);
+	/// Returns a size of the pixmap of element in specified sdf-description. Descriptions are cached by id.
+	static QSize preferedSizeOf(const Id &id, const QDomElement &sdf);
 
 private:
 	static SdfIconLoader *instance();
-	static QIcon loadPixmap(const QString &fileName);
+	static QIcon loadPixmap(const Id &id, const QDomElement &sdf);
 
 	SdfIconLoader();
 	~SdfIconLoader();
 
-	QMap<QString, QIcon> mLoadedIcons;
-	QMap<QString, QSize> mPreferedSizes;
+	QMap<Id, QIcon> mLoadedIcons;
+	QMap<Id, QSize> mPreferedSizes;
 };
 
 }

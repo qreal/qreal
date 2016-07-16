@@ -47,6 +47,10 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 		return;
 	}
 
+	mPaletteItems.clear();
+	mPaletteElements.clear();
+	mElementsSet.clear();
+	mItemsVisible.clear();
 	clear();
 	show();
 
@@ -90,6 +94,7 @@ void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem 
 	DraggableElement *element = new DraggableElement(mMainWindow, data
 			, mPaletteTree.iconsView(), *mEditorManager);
 
+	mElementsSet.insert(data);
 	mPaletteElements.insert(data.id(), element);
 	mPaletteItems.insert(data.id(), leaf);
 
@@ -129,22 +134,18 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 	}
 }
 
-void PaletteTreeWidget::addElementPaletteActionTriggered()
-{
-	ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
-			, *mEditorManager, &mMainWindow);
-	connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadPlugins);
-	chooseTypeDialog->setModal(true);
-	chooseTypeDialog->show();
-}
-
 void PaletteTreeWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManager->isInterpretationMode()) {
 			QMenu menu;
-			QAction * const addElementPaletteAction = menu.addAction(tr("Add Element"));
-			connect(addElementPaletteAction, SIGNAL(triggered()), this, SLOT(addElementPaletteActionTriggered()));
+			ChooseTypeDialog *chooseTypeDialog = new ChooseTypeDialog(mPaletteTree.currentEditor()
+					, *mEditorManager, &mMainWindow);
+			QAction * const addNodePaletteAction = menu.addAction(tr("Add Entity"));
+			QAction * const addEdgePaletteAction = menu.addAction(tr("Add Relastionship"));
+			connect(addNodePaletteAction, SIGNAL(triggered()), chooseTypeDialog, SLOT(nodeButtonClicked()));
+			connect(addEdgePaletteAction, SIGNAL(triggered()), chooseTypeDialog, SLOT(edgeButtonClicked()));
+			connect(chooseTypeDialog, &ChooseTypeDialog::jobDone, &mMainWindow, &MainWindow::loadEditorPlugins);
 			menu.exec(QCursor::pos());
 		}
 	}
@@ -271,6 +272,11 @@ void PaletteTreeWidget::traverse(const PaletteTreeWidget::Action &action) const
 	for (int i = 0; i < topLevelItemCount(); ++i) {
 		traverse(topLevelItem(i), action);
 	}
+}
+
+const QSet<PaletteElement> &PaletteTreeWidget::elementsSet() const
+{
+	return mElementsSet;
 }
 
 void PaletteTreeWidget::traverse(QTreeWidgetItem * const item, const PaletteTreeWidget::Action &action) const

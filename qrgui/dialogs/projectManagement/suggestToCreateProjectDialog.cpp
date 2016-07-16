@@ -25,6 +25,7 @@ SuggestToCreateProjectDialog::SuggestToCreateProjectDialog(const EditorManagerIn
 	: QDialog(parent)
 {
 	SuggestToCreateDiagramWidget *suggestWidget = new SuggestToCreateDiagramWidget(editorManager, this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	mainLayout->addWidget(suggestWidget);

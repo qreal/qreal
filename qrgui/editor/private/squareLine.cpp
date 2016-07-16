@@ -20,8 +20,10 @@ using namespace qReal::gui::editor;
 const qreal epsilon = 0.0001;
 const qreal offset = 2 * kvadratik;
 
-SquareLine::SquareLine(EdgeElement *edge)
-		: LineHandler(edge)
+SquareLine::SquareLine(EdgeElement *edge
+	, const LogicalModelAssistInterface &logicalModel
+	, const GraphicalModelAssistInterface &graphicalModel)
+		: LineHandler(edge, logicalModel, graphicalModel)
 		, mLayOutAction(tr("Lay out"), this)
 {
 	connectAction(&mLayOutAction, this, SLOT(minimize()));

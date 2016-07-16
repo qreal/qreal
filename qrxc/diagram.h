@@ -35,7 +35,6 @@ public:
 	QString name() const;
 	QString nodeName() const;
 	QString displayedName() const;
-	QString getGroupsXML() const;
 	QList<QPair<QString, QStringList>> paletteGroups() const;
 	QMap<QString, QString> paletteGroupsDescriptions() const;
 	bool shallPaletteBeSorted() const;
@@ -52,7 +51,6 @@ private:
 	QString mDiagramNodeName;
 	QString mDiagramDisplayedName;
 	Editor *mEditor;
-	QString mGroupsXML;
 	QList<QPair<QString, QStringList>> mPaletteGroups;
 	QMap<QString, QString> mPaletteGroupsDescriptions;
 	QList<ImportSpecification> mImports;

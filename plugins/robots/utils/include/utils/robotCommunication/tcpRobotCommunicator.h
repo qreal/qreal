@@ -16,6 +16,7 @@
 
 #include <QtCore/QThread>
 
+#include "utils/robotCommunication/tcpRobotCommunicatorInterface.h"
 #include "utils/utilsDeclSpec.h"
 
 namespace utils {
@@ -24,8 +25,8 @@ namespace robotCommunication {
 class TcpRobotCommunicatorWorker;
 enum class MessageKind;
 
-/// Class that handles connection to robot and sends commands to it.
-class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public QObject
+/// Implementation of a class that handles connection to robot and sends commands to it.
+class ROBOTS_UTILS_EXPORT TcpRobotCommunicator : public TcpRobotCommunicatorInterface
 {
 	Q_OBJECT
 
@@ -36,76 +37,23 @@ public:
 
 	~TcpRobotCommunicator() override;
 
-	/// Reads generated program from a file and uploads it to a robot using "file" command.
-	void uploadProgram(const QString &programName);
+	void uploadProgram(const QString &programName) override;
 
-	/// Sends a command to run previously uploaded file in a robot.
-	void runProgram(const QString &programName);
+	void runProgram(const QString &programName) override;
 
-	/// Sends a script to be executed directly, without a need for a file.
-	/// @param asScript - if true, the state of a robot will be reset before command evalutation.
-	void runDirectCommand(const QString &directCommand, bool asScript = false);
+	void runDirectCommand(const QString &directCommand, bool asScript = false) override;
 
-	/// Sends a command to remotely abort script execution and stop robot.
-	void stopRobot();
+	void requestCasingVersion() override;
 
-	/// Requests telemetry data for given sensor.
-	void requestData(const QString &sensor);
+	void stopRobot() override;
 
-	/// Establishes connection and initializes socket. If connection fails, leaves socket
-	/// in invalid state.
-	void connect();
+	void requestData(const QString &sensor) override;
 
-	/// Disconnects from robot.
-	void disconnect();
+	void requestData() override;
 
-signals:
-	/// Emitted when TCP socket with robot was opened or failed to open.
-	void connected(bool success, const QString &errorMessage);
+	void connect() override;
 
-	/// Emitted each time when connection with robot was aborted.
-	void disconnected();
-
-	/// Emitted when new scalar telemetry data is available for given port.
-	void newScalarSensorData(const QString &port, int data);
-
-	/// Emitted when new vector telemetry data is available for given port.
-	void newVectorSensorData(const QString &port, const QVector<int> &data);
-
-	/// Emitted when a robot wants to print something to stdout.
-	void printText(const QString &text);
-
-	/// Emitted when a robot starts program execution.
-	void startedRunning();
-
-	/// Emitted when program uploaded successfully.
-	void uploadProgramDone();
-
-	/// Emitted when program upload failed by reasons not related to network error.
-	/// @param error - user-readable error message describing what went wrong.
-	void uploadProgramError(const QString &error);
-
-	/// Emitted when direct command sent successfully.
-	void runDirectCommandDone();
-
-	/// Emitted when "stop" command sent successfully.
-	void stopRobotDone();
-
-	/// Emitted when there was a network error.
-	/// @param error - user-readable error message describing what went wrong.
-	void connectionError(const QString &error);
-
-	/// Emitted if we didn't receive version of trikRuntime within 3 seconds.
-	void trikRuntimeVersionGettingError();
-
-	/// Emitted if trikRuntime version does not match version required by this version of TRIK Studio.
-	void trikRuntimeVersionError();
-
-	/// Emitted when new information message arrives from robot.
-	void infoFromRobot(const QString &message);
-
-	/// Emitted when new error message arrives from robot.
-	void errorFromRobot(const QString &message);
+	void disconnect() override;
 
 private slots:
 	/// Processes message from robot --- classifies it as info, error or text from stdout.

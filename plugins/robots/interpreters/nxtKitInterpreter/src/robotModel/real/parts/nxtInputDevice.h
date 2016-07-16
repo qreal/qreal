@@ -16,8 +16,7 @@
 
 #include <kitBase/robotModel/robotParts/abstractSensor.h>
 #include <utils/robotCommunication/robotCommunicator.h>
-
-#include "commandConstants.h"
+#include <nxtKit/communication/nxtCommandConstants.h>
 
 namespace nxt {
 namespace robotModel {

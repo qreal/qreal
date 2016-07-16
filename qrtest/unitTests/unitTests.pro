@@ -19,6 +19,16 @@ SUBDIRS = \
 	pluginsTests \
 	qrguiTests \
 	qrkernelTests \
+	qrgraphTests \
 	qrrepoTests \
 	qrutilsTests \
 	qrtextTests \
+	testUtils \
+
+exampleTests.depends = testUtils
+pluginsTests.depends = testUtils
+qrguiTests.depends = testUtils
+qrkernelTests.depends = testUtils
+qrrepoTests.depends = testUtils
+qrutilsTests.depends = testUtils
+qrtextTests.depends = testUtils

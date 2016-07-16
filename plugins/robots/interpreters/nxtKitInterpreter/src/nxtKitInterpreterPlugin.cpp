@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,13 +63,6 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, [this](const QString &modelName)
 	{
 		mCurrentlySelectedModelName = modelName;
-		if (modelName == mUsbRealRobotModel.name()) {
-			mUsbRealRobotModel.checkConnection();
-		}
-
-		if (modelName == mBluetoothRealRobotModel.name()) {
-			mBluetoothRealRobotModel.checkConnection();
-		}
 	});
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
@@ -78,9 +71,17 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
+	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addInformation(message);
+	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
+	});
+	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addInformation(message);
 	});
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
@@ -164,5 +165,7 @@ kitBase::DevicesConfigurationProvider *NxtKitInterpreterPlugin::devicesConfigura
 
 QWidget *NxtKitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
-	return new ui::ComPortPicker("NxtBluetoothPortName", this);
+	QWidget * const result = new ui::ComPortPicker("NxtBluetoothPortName", this);
+	connect(this, &QObject::destroyed, [result]() { delete result; });
+	return result;
 }

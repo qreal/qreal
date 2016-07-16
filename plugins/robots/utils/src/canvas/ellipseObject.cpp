@@ -82,22 +82,22 @@ void EllipseObject::setFilled(bool filled)
 	mFilled = filled;
 }
 
-void EllipseObject::paint(QPainter *painter)
+void EllipseObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->setBrush(mFilled ? QBrush(color(), Qt::SolidPattern) : QBrush());
 	painter->drawEllipse(mCenter, mSemiDiameterX, mSemiDiameterY);
 }
 
 QJsonObject EllipseObject::toJson() const
 {
-	return QJsonObject({
-		{ "type", "ellipse" }
-		, { "x", mCenter.x() }
-		, { "y", mCenter.y() }
-		, { "a", mSemiDiameterX }
-		, { "b", mSemiDiameterY }
-		, { "color", color().name() }
-		, { "thickness", thickness() }
-	});
+	QJsonObject result;
+	result["type"] = "ellipse";
+	result["x"] = mCenter.x();
+	result["y"] = mCenter.y();
+	result["a"] = mSemiDiameterX;
+	result["b"] = mSemiDiameterY;
+	result["color"] = color().name();
+	result["thickness"] = thickness();
+	return result;
 }

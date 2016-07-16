@@ -1,0 +1,22 @@
+// ----------------------------------------------------------------------- //
+// This file is auto-generated with qrmc v1.0. Do not modify its contents
+// or prepare to lose your edits. If you want to change something in it
+// consider editing language metamodel instead.
+// ----------------------------------------------------------------------- //
+
+#pragma once
+
+#include <QBrush>
+#include <QPainter>
+
+#include <qrgraph/queries.h>
+#include <metaMetaModel/nodeElementType.h>
+#include <metaMetaModel/edgeElementType.h>
+#include <metaMetaModel/patternType.h>
+#include <metaMetaModel/labelProperties.h>
+
+@@NodesList@@
+
+@@EdgesList@@
+
+

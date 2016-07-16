@@ -28,6 +28,8 @@
 #include <qrgui/models/models.h>
 #include <qrgui/mouseGestures/mouseMovementManager.h>
 #include <qrgui/mouseGestures/dummyMouseMovementManager.h>
+#include <metaMetaModel/nodeElementType.h>
+#include <metaMetaModel/edgeElementType.h>
 
 #include "editor/sceneCustomizer.h"
 #include "editor/labels/label.h"
@@ -99,6 +101,15 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	});
 }
 
+EditorViewScene::~EditorViewScene()
+{
+	/// @todo Hack: if gestures manager is not initialized yet then it should not be deleted. Yep, memory will leak,
+	/// but it is a pretty rare scenario to give a f*ck right now.
+	if (!mMouseMovementManager->gesturesInitialized()) {
+		mMouseMovementManager.take();
+	}
+}
+
 qreal EditorViewScene::realIndexGrid()
 {
 	return mRealIndexGrid;
@@ -143,6 +154,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasFormat(DEFAULT_MIME_TYPE)) {
+		event->accept();
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
 		event->ignore();
@@ -151,6 +163,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
+	event->accept();
 	// forming id to check if we can put draggable element to element under cursor
 	const ElementInfo element = ElementInfo::fromMimeData(event->mimeData());
 	const QList<QGraphicsItem*> elements = items(event->scenePos());
@@ -232,7 +245,7 @@ QGraphicsRectItem *EditorViewScene::getPlaceholder()
 
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
+	event->accept();
 	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = nullptr;
@@ -246,6 +259,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
+	event->accept();
 	clearSelection();
 
 	createElement(event->mimeData(), event->scenePos());
@@ -285,20 +299,23 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	QStringList targets;
 	const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
+	const IdList elements = mEditorManager.elements(edge->id());
+	const EdgeElementType &edgeType = *static_cast<const EdgeElementType *>(
+			&mEditorManager.elementType(edge->id().type()));
 
-	for (const PossibleEdge &pEdge : edge->getPossibleEdges()) {
-		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
-		// and vice versa
-		if (mEditorManager.isParentOf(node->id(), pEdge.first.first)) {
-			targets << mEditorManager.allChildrenTypesOf(pEdge.first.second);
+	for (const Id &element : elements) {
+		const ElementType &elementType = mEditorManager.elementType(element);
+		if (elementType.type() != ElementType::Type::node) {
+			continue;
 		}
 
-		if (mEditorManager.isParentOf(node->id(), pEdge.first.second)) {
-			targets << mEditorManager.allChildrenTypesOf(pEdge.first.first);
+		const NodeElementType &nodeType = elementType.toNode();
+		if (!nodeType.portTypes().toSet().intersect(edgeType.toPortTypes().toSet()).isEmpty()) {
+			targets << mEditorManager.allChildrenTypesOf(element);
 		}
 	}
 
-	QSet<QString> const targetsSet = targets.toSet();
+	const QSet<QString> targetsSet = targets.toSet();
 	QMap<QString, QString> targetsInGroups;
 	QStringList targetGroups;
 	for (const QString &group : groups) {
@@ -374,7 +391,7 @@ Id EditorViewScene::createElement(const QString &idString
 	const Id objectId = typeId.sameTypeId();
 	const QString name = mEditorManager.friendlyName(typeId);
 
-	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.editor(), typeId.element()) == -1;
+	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.type()) == -1;
 
 	const ElementInfo elementInfo(objectId, Id(), name, Id(), isEdge);
 	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);
@@ -414,7 +431,7 @@ void EditorViewScene::createElement(const ElementInfo &elementInfo
 
 	QLOG_TRACE() << "Created element, id = " << innerElementInfo.id() << ", position = " << scenePos;
 
-	if (mEditorManager.getPatternNames().contains(innerElementInfo.id().element())) {
+	if (mEditorManager.elementType(innerElementInfo.id()).type() == ElementType::Type::pattern) {
 		innerElementInfo.setPos(scenePos);
 		innerElementInfo.setGraphicalParent(mRootId);
 		innerElementInfo.setLogicalParent(mRootId);
@@ -819,8 +836,8 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	mContextMenu.addActions(mEditorActions);
 
 	QSignalMapper *createChildMapper = nullptr;
-	if (e) {
-		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
+	if (const NodeElement *node = dynamic_cast<NodeElement *>(e)) {
+		if (node->nodeType().createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
@@ -912,32 +929,36 @@ void EditorViewScene::updateMovedElements()
 	}
 }
 
-void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &child)
+void EditorViewScene::getLinkByGesture(const NodeElement &from, const NodeElement &to)
 {
-	QList<PossibleEdge> edges = parent->getPossibleEdges();
-	QList<Id> allLinks;
-	for (const PossibleEdge &possibleEdge : edges) {
-		if (possibleEdge.first.second.editor() == child.id().editor()
-				&& possibleEdge.first.second.diagram() == child.id().diagram()
-				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
-						, possibleEdge.first.second.element(), child.id().diagram(), child.id().element())
-				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
-						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
-		{
-			allLinks.push_back(possibleEdge.second.second);
+	IdList allEdges;
+	const NodeElementType &fromType = from.nodeType();
+	const NodeElementType &toType = to.nodeType();
+	const IdList elements = mEditorManager.elements(from.id());
+	for (const Id &element : elements) {
+		const ElementType &elementType = mEditorManager.elementType(element);
+		if (elementType.type() != ElementType::Type::edge) {
+			continue;
+		}
+
+		const EdgeElementType &edge = elementType.toEdge();
+		const bool canConnectBegin = !edge.fromPortTypes().toSet().intersect(fromType.portTypes().toSet()).isEmpty();
+		const bool canConnectEnd = !edge.toPortTypes().toSet().intersect(toType.portTypes().toSet()).isEmpty();
+		if (canConnectBegin && canConnectEnd) {
+			allEdges << edge.typeId();
 		}
 	}
 
-	if (!allLinks.empty()) {
-		if (allLinks.count() == 1) {
-			createEdge(allLinks.at(0));
+	if (!allEdges.empty()) {
+		if (allEdges.count() == 1) {
+			createEdge(allEdges.first());
 		} else {
-			createEdgeMenu(allLinks);
+			createEdgeMenu(allEdges);
 		}
 	}
 }
 
-void EditorViewScene::createEdgeMenu(const QList<Id> &ids)
+void EditorViewScene::createEdgeMenu(const IdList &ids)
 {
 	QScopedPointer<QMenu> edgeMenu(new QMenu());
 	for (const Id &id : ids) {
@@ -1029,7 +1050,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement * const endNode = findNodeAt(end);
 		if (startNode && endNode && mMouseMovementManager->isEdgeCandidate()
 				&& startNode->id() != endNode->id()) {
-			getLinkByGesture(startNode, *endNode);
+			getLinkByGesture(*startNode, *endNode);
 			deleteGesture();
 		} else {
 			mTimer->start(SettingsManager::value("gestureDelay").toInt());
@@ -1301,9 +1322,7 @@ void EditorViewScene::updateEdgeElements()
 	for (QGraphicsItem *item : items()) {
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			const enums::linkShape::LinkShape shape
-					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
-
+			const LinkShape shape = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 			element->changeShapeType(shape);
 
 			if (SettingsManager::value("ActivateGrid").toBool()) {

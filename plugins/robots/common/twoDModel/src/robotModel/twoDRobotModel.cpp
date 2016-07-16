@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,8 @@
 #include "twoDModel/robotModel/parts/marker.h"
 
 #include "twoDModel/engine/twoDModelEngineInterface.h"
+
+const int updateInterval = 20;
 
 using namespace twoDModel::robotModel;
 using namespace kitBase::robotModel;
@@ -77,6 +79,11 @@ QString TwoDRobotModel::friendlyName() const
 bool TwoDRobotModel::needsConnection() const
 {
 	return false;
+}
+
+int TwoDRobotModel::updateIntervalForInterpretation() const
+{
+	return updateInterval;
 }
 
 utils::TimelineInterface &TwoDRobotModel::timeline()

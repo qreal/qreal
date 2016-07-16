@@ -14,8 +14,6 @@
 
 TARGET = qreal
 
-include(../../global.pri)
-
 TEMPLATE = app
 
 include(mainWindow.pri)

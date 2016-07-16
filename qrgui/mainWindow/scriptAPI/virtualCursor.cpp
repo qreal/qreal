@@ -16,6 +16,7 @@
 
 #include <QtCore/QPropertyAnimation>
 #include <QtCore/QTimer>
+#include <QtGui/QPainter>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 

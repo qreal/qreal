@@ -57,7 +57,8 @@ QList<MethodsTester::ResultOfGenerating> MethodsTester::generateTimeResult()
 	return mTimeResult;
 }
 
-MethodsTester::ResultOfGenerating MethodsTester::generateOutputForOneMethod(const AbstractStringGenerator &stringGenerator)
+MethodsTester::ResultOfGenerating MethodsTester::generateOutputForOneMethod(
+		const AbstractStringGenerator &stringGenerator)
 {
 	AbstractStringGenerator *firstGenerator = initGeneratorWithFirstInterface(stringGenerator);
 	const QString methodName = firstGenerator->methodName();

@@ -27,7 +27,9 @@ class SquareLine : public LineHandler
 {
 	Q_OBJECT
 public:
-	SquareLine(EdgeElement *edge);
+	SquareLine(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel);
 
 	/// Adjust link's ends, keep end segments strait
 	virtual void adjust();

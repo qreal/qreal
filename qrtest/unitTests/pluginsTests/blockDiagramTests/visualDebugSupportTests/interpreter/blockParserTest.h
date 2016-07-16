@@ -15,14 +15,14 @@
 #pragma once
 
 #include <plugins/blockDiagram/visualDebugSupport/interpreter/blockParser.h>
-#include <mocks/qrgui/plugins/toolPluginInterface/usedInterface/errorReporterMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 
 #include <gtest/gtest.h>
 
 namespace qrTest {
 
-class BlockParserTest : public testing::Test {
-
+class BlockParserTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 

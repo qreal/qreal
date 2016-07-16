@@ -33,6 +33,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 	, mGraphicalModelAssistApi(graphicalAssistApi)
 	, mProperties(properties)
 {
+	setTextInteractionFlags(Qt::NoTextInteraction);
 	if (properties.isStatic()) {
 		setText(properties.text());
 	}
@@ -44,10 +45,16 @@ Label::~Label()
 {
 }
 
+const LabelProperties &Label::info() const
+{
+	return mProperties;
+}
+
 void Label::init()
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable);
 	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
+	connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
 
 	reinitFont();
 	setRotation(mProperties.rotation());
@@ -98,9 +105,10 @@ void Label::setText(const QString &text)
 
 void Label::setTextFromRepo(const QString &text)
 {
-	const QString friendlyText = mEnumValues.isEmpty()
-			? text
-			: mEnumValues.contains(text) ? mEnumValues[text] : enumText(text);
+	const QString friendlyText = mEnumValues.contains(text) ? mEnumValues[text] :
+			mEnumValues.isEmpty() || textInteractionFlags() & Qt::TextEditorInteraction
+					? text
+					: enumText(text);
 	if (friendlyText != toPlainText()) {
 		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
@@ -164,16 +172,18 @@ void Label::setSuffix(const QString &text)
 void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
-	NodeElement * const parent = static_cast<NodeElement *>(parentItem());
+	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (mProperties.binding() == "name") {
-		parent->setName(value, withUndoRedo);
+		if (value != parent->name()) {
+			parent->setName(value, withUndoRedo);
+		}
 	} else if (mEnumValues.isEmpty()) {
-		parent->setLogicalProperty(mProperties.binding(), value, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
-				: enumText(value);
-		parent->setLogicalProperty(mProperties.binding(), repoValue, withUndoRedo);
+				: (withUndoRedo ? enumText(value) : value);
+		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());
@@ -183,6 +193,11 @@ void Label::updateData(bool withUndoRedo)
 void Label::reinitFont()
 {
 	setFont(BrandManager::fonts()->sceneLabelsFont());
+}
+
+void Label::saveToRepo()
+{
+	updateData(false);
 }
 
 void Label::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -377,7 +392,7 @@ void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 	painter->save();
 	painter->setFont(font());
 	drawText(painter, prefixRect(), mProperties.prefix());
-	drawText(painter, suffixRect(), mProperties.siffix());
+	drawText(painter, suffixRect(), mProperties.suffix());
 	painter->restore();
 
 	// Default dashed frame is drawn arround the whole bounding rect (arround prefix and suffix too). Disabling it.
@@ -403,7 +418,7 @@ QRectF Label::prefixRect() const
 QRectF Label::suffixRect() const
 {
 	const QRectF thisRect = QGraphicsTextItem::boundingRect();
-	QRectF textRect = this->textRect(mProperties.siffix());
+	QRectF textRect = this->textRect(mProperties.suffix());
 	const qreal x = thisRect.right();
 	const qreal y = thisRect.top() + (thisRect.height() - textRect.height()) / 2;
 	textRect.moveTo(x, y);
@@ -442,5 +457,5 @@ QString Label::enumText(const QString &enumValue) const
 {
 	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mProperties.binding())
 			? enumValue
-			: QString();
+			: mOldText;
 }

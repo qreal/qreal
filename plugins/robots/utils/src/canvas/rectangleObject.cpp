@@ -52,22 +52,22 @@ void RectangleObject::setFilled(bool filled)
 	mFilled = filled;
 }
 
-void RectangleObject::paint(QPainter *painter)
+void RectangleObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->setBrush(mFilled ? QBrush(color(), Qt::SolidPattern) : QBrush());
 	painter->drawRect(mShape);
 }
 
 QJsonObject RectangleObject::toJson() const
 {
-	return QJsonObject({
-		{ "type", "rectangle" }
-		, { "x", mShape.x() }
-		, { "y", mShape.y() }
-		, { "width", mShape.width() }
-		, { "height", mShape.height() }
-		, { "color", color().name() }
-		, { "thickness", thickness() }
-	});
+	QJsonObject result;
+	result["type"] = "rectangle";
+	result["x"] = mShape.x();
+	result["y"] = mShape.y();
+	result["width"] = mShape.width();
+	result["height"] = mShape.height();
+	result["color"] = color().name();
+	result["thickness"] = thickness();
+	return result;
 }

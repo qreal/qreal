@@ -59,9 +59,9 @@ public:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-	EdgeElement* mEdge;
-	NodeElement* mMaster;
-	Label* mTitle;
+	EdgeElement *mEdge;
+	NodeElement *mMaster;
+	Label *mTitle;
 
 	float mSize;
 	float mIndent;

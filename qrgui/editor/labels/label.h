@@ -16,10 +16,10 @@
 
 #include <QtWidgets/QGraphicsTextItem>
 
-#include <qrgui/plugins/editorPluginInterface/labelInterface.h>
+#include <metaMetaModel/labelProperties.h>
 #include <qrgui/models/graphicalModelAssistApi.h>
 
-#include "qrgui/editor/labels/labelProperties.h"
+#include "qrgui/editor/labels/labelInterface.h"
 
 namespace qReal {
 namespace gui {
@@ -35,6 +35,9 @@ public:
 			, const LabelProperties &properties);
 
 	~Label() override;
+
+	/// Returns read-only descriptor of this label.
+	const LabelProperties &info() const;
 
 	void init(const QRectF &contents);
 
@@ -85,6 +88,7 @@ private:
 	void init();
 	void reinitFont();
 
+	void saveToRepo();
 	void updateData(bool withUndoRedo = false);
 	void updateRect(QPointF newBottomRightPoint);
 	void setText(const QString &text);

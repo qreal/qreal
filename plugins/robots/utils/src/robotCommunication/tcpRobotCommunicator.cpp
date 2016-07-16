@@ -58,6 +58,9 @@ TcpRobotCommunicator::TcpRobotCommunicator(const QString &serverIpSettingsKey)
 	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::runDirectCommandDone
 			, this, &TcpRobotCommunicator::runDirectCommandDone, Qt::QueuedConnection);
 
+	QObject::connect(mWorker.data(), &TcpRobotCommunicatorWorker::casingVersionReceived
+			, this, &TcpRobotCommunicator::casingVersionReceived, Qt::QueuedConnection);
+
 	mWorkerThread.start();
 
 	QMetaObject::invokeMethod(mWorker.data(), "init");
@@ -106,6 +109,11 @@ void TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool a
 			, Q_ARG(QString, directCommand), Q_ARG(bool, asScript));
 }
 
+void TcpRobotCommunicator::requestCasingVersion()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "requestCasingVersion");
+}
+
 void TcpRobotCommunicator::stopRobot()
 {
 	QMetaObject::invokeMethod(mWorker.data(), "stopRobot");
@@ -114,6 +122,11 @@ void TcpRobotCommunicator::stopRobot()
 void TcpRobotCommunicator::requestData(const QString &sensor)
 {
 	QMetaObject::invokeMethod(mWorker.data(), "requestData", Q_ARG(QString, sensor));
+}
+
+void TcpRobotCommunicator::requestData()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "requestData");
 }
 
 void TcpRobotCommunicator::connect()
@@ -138,6 +151,12 @@ void TcpRobotCommunicator::onMessageFromRobot(const MessageKind &messageKind, co
 		break;
 	case MessageKind::text:
 		emit printText(message);
+		break;
+	case MessageKind::fileContents:
+		emit fileContentsFromRobot(message);
+		break;
+	case MessageKind::mail:
+		emit mailFromRobot(message);
 		break;
 	}
 }

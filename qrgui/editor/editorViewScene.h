@@ -49,6 +49,7 @@ public:
 			, const SceneCustomizer &customizer
 			, const Id &rootId
 			, QObject *parent = 0);
+	~EditorViewScene();
 
 	void clearScene();
 
@@ -207,9 +208,9 @@ private slots:
 private:
 	void deleteElements(const IdList &idsToDelete);
 
-	void getLinkByGesture(NodeElement *parent, const NodeElement &child);
+	void getLinkByGesture(const NodeElement &from, const NodeElement &to);
 	void drawGesture();
-	void createEdgeMenu(const QList<Id> &ids);
+	void createEdgeMenu(const IdList &ids);
 
 	/// sets sceneRect to (0, 0, 1000, 1000) by adding its corners to the scene
 	/// (to keep ability of scene rect to grow automatically)

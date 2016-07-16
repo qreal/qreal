@@ -273,6 +273,7 @@ protected:
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
 	parts::DeviceVariables *mDeviceVariables;  // Has ownership.
+	int mLoopGeneratorIndex = 0;
 };
 
 }

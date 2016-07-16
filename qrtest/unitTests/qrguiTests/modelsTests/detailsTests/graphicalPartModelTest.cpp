@@ -18,14 +18,14 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "../../helpers/graphicalPartViewMock.h"
+#include "qrtest/unitTests/qrguiTests/helpers/graphicalPartViewMock.h"
 
 using namespace qrguiTests;
 using namespace qReal;
 using namespace qReal::models::details;
 
-Id const element("editor", "diagram", "element", "id");
-Id const graphicalElement("editor", "diagram", "element", "graphicalId");
+const Id element("editor", "diagram", "element", "id");
+const Id graphicalElement("editor", "diagram", "element", "graphicalId");
 
 void GraphicalPartModelTest::SetUp()
 {
@@ -64,7 +64,7 @@ TEST_F(GraphicalPartModelTest, indexParentTest)
 	ASSERT_TRUE(mGraphicalPartModel->index(0, 0).isValid());
 
 	QModelIndex const elementIndex = mGraphicalPartModel->index(0, 0);
-	ASSERT_EQ(NULL, elementIndex.internalPointer());
+	ASSERT_EQ(nullptr, elementIndex.internalPointer());
 
 	QModelIndex const partIndex = mGraphicalPartModel->index(0, 0, elementIndex);
 
@@ -72,7 +72,7 @@ TEST_F(GraphicalPartModelTest, indexParentTest)
 	ASSERT_FALSE(mGraphicalPartModel->index(0, 1, elementIndex).isValid());
 	ASSERT_FALSE(mGraphicalPartModel->index(1, 0, elementIndex).isValid());
 
-	ASSERT_NE(static_cast<void *>(NULL), partIndex.internalPointer());
+	ASSERT_NE(static_cast<void *>(nullptr), partIndex.internalPointer());
 
 	QModelIndex const wrongIndex = mGraphicalPartModel->index(0, 0, partIndex);
 	ASSERT_FALSE(wrongIndex.isValid());
@@ -80,7 +80,7 @@ TEST_F(GraphicalPartModelTest, indexParentTest)
 	mGraphicalPartModel->addGraphicalPart(graphicalElement, 5);
 	ASSERT_FALSE(mGraphicalPartModel->index(0, 1, elementIndex).isValid());
 	ASSERT_TRUE(mGraphicalPartModel->index(1, 0, elementIndex).isValid());
-	ASSERT_NE(static_cast<void *>(NULL), mGraphicalPartModel->index(1, 0, elementIndex).internalPointer());
+	ASSERT_NE(static_cast<void *>(nullptr), mGraphicalPartModel->index(1, 0, elementIndex).internalPointer());
 
 	QModelIndex const newWrongIndex = mGraphicalPartModel->index(0, 0, partIndex);
 	ASSERT_FALSE(newWrongIndex.isValid());

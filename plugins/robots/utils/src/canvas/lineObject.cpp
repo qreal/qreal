@@ -57,21 +57,21 @@ QRect LineObject::boundingRect() const
 			, QPoint(qMax(mBegin.x(), mEnd.x()), qMax(mBegin.y(), mEnd.y())));
 }
 
-void LineObject::paint(QPainter *painter)
+void LineObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->drawLine(mBegin, mEnd);
 }
 
 QJsonObject LineObject::toJson() const
 {
-	return QJsonObject({
-		{ "type", "line" }
-		, { "x1", mBegin.x() }
-		, { "y1", mBegin.y() }
-		, { "x2", mEnd.x() }
-		, { "y2", mEnd.y() }
-		, { "color", color().name() }
-		, { "thickness", thickness() }
-	});
+	QJsonObject result;
+	result["type"] = "line";
+	result["x1"] = mBegin.x();
+	result["y1"] = mBegin.y();
+	result["x2"] = mEnd.x();
+	result["y2"] = mEnd.y();
+	result["color"] = color().name();
+	result["thickness"] = thickness();
+	return result;
 }

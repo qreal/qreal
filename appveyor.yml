@@ -8,7 +8,6 @@ environment:
   matrix:
     - PROJECT_FILE: qrealRobots
     - PROJECT_FILE: qreal
-#   - PROJECT_FILE: qrealMinimal.pro
 
 configuration:
   - debug
@@ -16,10 +15,11 @@ configuration:
 
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
+
 build_script:
   - qmake %PROJECT_FILE%.pro -r -spec win32-g++ CONFIG+=%CONFIGURATION%
   - mingw32-make -j2
-  
+
 artifacts:
  - path: bin\$(configuration)
    name: qreal-$(configuration)-$(PROJECT_FILE)

@@ -35,11 +35,12 @@ public:
 	ErrorReporter();
 	ErrorReporter(ErrorListWidget * const errorListWidget, QDockWidget * const errorList);
 
+public slots:
 	void addInformation(const QString &message, const Id &position = Id::rootId()) override;
 	void addWarning(const QString &message, const Id &position = Id::rootId()) override;
 	void addError(const QString &message, const Id &position = Id::rootId()) override;
 	void addCritical(const QString &message, const Id &position = Id::rootId()) override;
-	bool wereErrors();
+	bool wereErrors() const override;
 
 	void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) override;
 

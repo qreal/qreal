@@ -145,13 +145,14 @@ void ErrorReporter::clearErrors()
 	mErrors.clear();
 }
 
-bool ErrorReporter::wereErrors()
+bool ErrorReporter::wereErrors() const
 {
 	for (const Error &error : mErrors) {
 		if (error.severity() == Error::critical || error.severity() == Error::error) {
 			return true;
 		}
 	}
+
 	return false;
 }
 

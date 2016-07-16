@@ -26,15 +26,17 @@ InfraredSensor::InfraredSensor(const DeviceInfo &info, const PortInfo &port
 			, this, &InfraredSensor::onIncomingData);
 }
 
+
 void InfraredSensor::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
 void InfraredSensor::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }
 

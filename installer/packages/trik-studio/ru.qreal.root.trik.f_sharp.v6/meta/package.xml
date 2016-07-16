@@ -5,8 +5,8 @@
     <Description>Install it for generation of F# code for TRIK</Description>
     <Description xml:lang="ru_ru">Установите это для генерации кода на F# для конструктора ТРИК (старый корпус, с портами энкодеров B1 - B4)</Description>
     <Dependencies>ru.qreal.root.trik.core</Dependencies>
-    <Version>3.1.3-4</Version>
-    <ReleaseDate>2016-01-22</ReleaseDate>
+    <Version>3.1.4-4</Version>
+    <ReleaseDate>2016-06-07</ReleaseDate>
     <SortingPriority>5</SortingPriority>
     <Default>false</Default>
     <ForcedInstallation>false</ForcedInstallation>

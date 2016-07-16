@@ -50,10 +50,8 @@
 #include <qrgui/dialogs/findReplaceDialog.h>
 #include <qrgui/editor/propertyEditorView.h>
 #include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/systemFacade/systemFacade.h>
 
@@ -143,7 +141,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 
 	mSplashScreen->setProgress(60);
 
-	loadPlugins();
+	loadEditorPlugins();
 
 	mSplashScreen->setProgress(70);
 
@@ -349,7 +347,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	emit mFacade->events().closedMainWindow();
 }
 
-void MainWindow::loadPlugins()
+void MainWindow::loadEditorPlugins()
 {
 	mUi->paletteTree->loadPalette(SettingsManager::value("PaletteRepresentation").toBool()
 			, SettingsManager::value("PaletteIconsInARowCount").toInt()
@@ -365,11 +363,6 @@ void MainWindow::clearSelectionOnTabs()
 			tab->scene()->clearSelection();
 		}
 	}
-}
-
-void MainWindow::addEditorElementsToPalette(const Id &editor, const Id &diagram)
-{
-	mUi->paletteTree->addEditorElements(editorManager(), editor, diagram);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -1094,7 +1087,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(const QModelIndex &)>(&MainWindow::closeTab));
 	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](const Id &id) { activateItemOrDiagram(id); });
-	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadPlugins);
+	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadEditorPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
 			(const Id &, const QString &, const EditorManagerInterface *, bool)>(&MainWindow::openShapeEditor));
 
@@ -1372,14 +1365,10 @@ void MainWindow::showGestures()
 	}
 
 	QWidget * const gesturesPainter = getCurrentTab()->mutableScene().gesturesPainterWidget();
-	mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
-	mUi->tabs->setCurrentWidget(gesturesPainter);
-}
-
-
-ProxyEditorManager &MainWindow::editorManagerProxy()
-{
-	return *static_cast<ProxyEditorManager *>(&editorManager());
+	if (gesturesPainter) {
+		mUi->tabs->addTab(gesturesPainter, tr("Gestures Show"));
+		mUi->tabs->setCurrentWidget(gesturesPainter);
+	}
 }
 
 void MainWindow::createDiagram(const QString &idString)
@@ -1387,7 +1376,7 @@ void MainWindow::createDiagram(const QString &idString)
 	closeStartTab();
 	const Id id = Id::loadFromString(idString);
 	Id created;
-	if (editorManager().isNodeOrEdge(id.editor(), id.element())) {
+	if (editorManager().isNodeOrEdge(id.type())) {
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
@@ -1513,7 +1502,7 @@ void MainWindow::updatePaletteIcons()
 	mUi->logicalModelExplorer->viewport()->update();
 
 	const Id currentId = mUi->paletteTree->currentEditor();
-	loadPlugins();
+	loadEditorPlugins();
 
 	mUi->paletteTree->setActiveEditor(currentId);
 	mUi->paletteTree->setComboBox(currentId);
@@ -1813,29 +1802,6 @@ void MainWindow::customizeActionsVisibility()
 	}
 }
 
-void MainWindow::initInterpretedPlugins()
-{
-	mInterpretedPluginLoader.reset(new InterpretedPluginsLoader(
-			editorManagerProxy().proxiedEditorManager()
-			, PluginConfigurator(
-					models().repoControlApi()
-					, models().graphicalModelAssistApi()
-					, models().logicalModelAssistApi()
-					, *this
-					, *this
-					, *mProjectManager
-					, *mSceneCustomizer
-					, mFacade->events()
-					, *mTextManager)
-			)
-	);
-
-	const QList<ActionInfo> actions = mInterpretedPluginLoader->listOfActions();
-	mListOfAdditionalActions = mInterpretedPluginLoader->menuActionsList();
-
-	traverseListOfActions(actions);
-}
-
 void MainWindow::showErrors(const gui::ErrorReporter * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
@@ -1967,7 +1933,7 @@ void MainWindow::changePaletteRepresentation()
 	if (SettingsManager::value("PaletteRepresentation").toBool() != mUi->paletteTree->iconsView()
 			|| SettingsManager::value("PaletteIconsInARowCount").toInt() != mUi->paletteTree->itemsCountInARow())
 	{
-		loadPlugins();
+		loadEditorPlugins();
 	}
 }
 
@@ -2143,15 +2109,11 @@ void MainWindow::setElementInPaletteVisible(const Id &metatype, bool visible)
 	// may be greyed-out and still can't be used on diagrams.
 }
 
-void MainWindow::setVisibleForAllElementsInPalette(bool visible)
+void MainWindow::setVisibleForAllElementsInPalette(const Id &diagram, bool visible)
 {
-	mUi->paletteTree->setVisibleForAllElements(visible);
-	for (const Id &editor : editorManager().editors()) {
-		for (const Id &diagram : editorManager().diagrams(editor)) {
-			for (const Id &element : editorManager().elements(diagram)) {
-				editorManager().setElementEnabled(element, visible);
-			}
-		}
+	mUi->paletteTree->setVisibleForAllElements(diagram, visible);
+	for (const Id &element : editorManager().elements(diagram)) {
+		editorManager().setElementEnabled(element, visible);
 	}
 }
 
@@ -2161,15 +2123,11 @@ void MainWindow::setElementInPaletteEnabled(const Id &metatype, bool enabled)
 	editorManager().setElementEnabled(metatype, enabled);
 }
 
-void MainWindow::setEnabledForAllElementsInPalette(bool enabled)
+void MainWindow::setEnabledForAllElementsInPalette(const Id &diagram, bool enabled)
 {
-	mUi->paletteTree->setEnabledForAllElements(enabled);
-	for (const Id &editor : editorManager().editors()) {
-		for (const Id &diagram: editorManager().diagrams(editor)) {
-			for (const Id &element : editorManager().elements(diagram)) {
-				editorManager().setElementEnabled(element, enabled);
-			}
-		}
+	mUi->paletteTree->setEnabledForAllElements(diagram, enabled);
+	for (const Id &element : editorManager().elements(diagram)) {
+		editorManager().setElementEnabled(element, enabled);
 	}
 }
 

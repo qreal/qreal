@@ -119,10 +119,11 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
-				isButton = true;
-			}
+		}
+
+		/// @todo: Not property name should be hard-coded, new type must be introduced (like 'sdf' or 'qml')!
+		if ((name == "shape" && typeName == "string") || mModel->isReference(valueCell, name)) { // hack
+			isButton = true;
 		}
 
 		QtProperty *item = nullptr;
@@ -163,9 +164,9 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	}
 
 	connect(mButtonManager, SIGNAL(buttonClicked(QtProperty*))
-			, this, SLOT(buttonClicked(QtProperty*)));
+			, this, SLOT(buttonClicked(QtProperty*)), Qt::UniqueConnection);
 	connect(mVariantManager, SIGNAL(valueChanged(QtProperty*, QVariant))
-			, this, SLOT(editorValueChanged(QtProperty *, QVariant)));
+			, this, SLOT(editorValueChanged(QtProperty *, QVariant)), Qt::UniqueConnection);
 	mPropertyEditor->setPropertiesWithoutValueMarked(true);
 	mPropertyEditor->setRootIsDecorated(false);
 }
@@ -178,7 +179,10 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QVariant value = valueIndex.data();
 		if (property) {
 			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
-				value = enumPropertyIndexOf(valueIndex, value.toString());
+				const int index = enumPropertyIndexOf(valueIndex, value.toString());
+				if (!mModel->enumEditable(valueIndex) || index >= 0) {
+					value = index;
+				}
 			}
 
 			setPropertyValue(property, value);
@@ -256,12 +260,13 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 
 	value = QVariant(value.toString());
-	const QVariant oldValue = mModel->data(index);
+	const Id id = mModel->idByIndex(index);
+	const QString propertyName = mModel->propertyName(index);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal
 	qReal::commands::ChangePropertyCommand *changeCommand =
-			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+			new qReal::commands::ChangePropertyCommand(mLogicalModelAssistApi, propertyName, id, value);
 	mController->execute(changeCommand);
 }
 

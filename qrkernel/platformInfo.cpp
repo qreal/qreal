@@ -23,7 +23,7 @@
 
 using namespace qReal;
 
-#if defined Q_OS_WIN32
+#if defined Q_OS_WIN
 QString prettyWindowsVersion(QSysInfo::WinVersion version)
 {
 	// Adapted from https://qt.gitorious.org/qt/thiago-intels-qtbase/commit/5757c458157bcb11da40c43e98eeb7a539d20912
@@ -51,6 +51,8 @@ QString prettyWindowsVersion(QSysInfo::WinVersion version)
 		return "8";
 	case QSysInfo::WV_WINDOWS8_1:
 		return "8.1";
+	case QSysInfo::WV_WINDOWS10:
+		return "10";
 	case QSysInfo::WV_CE:
 		return "CE";
 	case QSysInfo::WV_CENET:
@@ -95,7 +97,19 @@ QString PlatformInfo::applicationDirPath()
 
 QString PlatformInfo::defaultPlatformConfigPath()
 {
-	return QCoreApplication::applicationDirPath() + "/platform.config";
+	const QString applicationName = QCoreApplication::applicationName();
+	const QStringList paths = SettingsManager::value("platformConfigSearchPaths").toStringList();
+	const QStringList names = {"platform.config", applicationName + ".config"};
+	for (const QString &rawPath : paths) {
+		for (const QString &name : names) {
+			const QString path = invariantPath(rawPath + "/" + name);
+			if (QFile(path).exists()) {
+				return path;
+			}
+		}
+	}
+
+	return QString();
 }
 
 QString PlatformInfo::invariantPath(const QString &path)
@@ -122,4 +136,14 @@ QString PlatformInfo::invariantPath(const QString &path)
 QString PlatformInfo::invariantSettingsPath(const QString &settingsKey)
 {
 	return invariantPath(SettingsManager::value(settingsKey).toString());
+}
+
+QString PlatformInfo::cpuArchitecture()
+{
+	return QSysInfo::currentCpuArchitecture();
+}
+
+bool PlatformInfo::isX64()
+{
+	return cpuArchitecture().contains("64");
 }

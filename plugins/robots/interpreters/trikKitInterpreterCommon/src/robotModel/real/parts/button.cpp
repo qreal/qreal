@@ -27,12 +27,13 @@ Button::Button(const DeviceInfo &info, const PortInfo &port, int code
 
 void Button::read()
 {
-	mRobotCommunicator.requestData("button:" + port().name());
+	emit newData(mOldValue);
 }
 
 void Button::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

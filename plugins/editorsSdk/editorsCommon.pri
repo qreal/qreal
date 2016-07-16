@@ -40,7 +40,9 @@ DESTDIR = $$DESTDIR/plugins/editors/
 # Needed because somehow QMake fails to create .rcc directory if RESOURCES is in extra compiler output.
 RCC_DIR = .build/$$CONFIGURATION/obj
 
-links(qrkernel)
+links(qrkernel qrgraph qrutils qrgui-meta-meta-model)
+
+includes(qrgraph qrgui/plugins/metaMetaModel)
 
 isEmpty(QREAL_EDITOR_PATH) {
 	error(Please set QREAL_EDITOR_PATH variable in a .pro file of your editor as a path to that editor .xml file relative to plugins/)

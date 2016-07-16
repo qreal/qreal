@@ -55,6 +55,7 @@ void PaletteTree::initUi()
 	ui::SearchLineEdit * const searchField = new ui::SearchLineEdit(this);
 	connect(searchField, &ui::SearchLineEdit::textChanged, this, &PaletteTree::onSearchTextChanged);
 	mLayout->addWidget(searchField);
+	mSearchLineEdit = searchField;
 
 	setMinimumSize(200, 100);
 }
@@ -112,6 +113,7 @@ void PaletteTree::initDone()
 		connect(mComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveEditor(int)));
 		mComboBox->show();
 	}
+
 	setActiveEditor(SettingsManager::value("CurrentIndex", 0).toInt());
 	if (mTree) {
 		mTree->resizeIcons();
@@ -204,7 +206,7 @@ void PaletteTree::saveConfiguration()
 	SettingsManager::setValue("PaletteRepresentation", mIconsView);
 	SettingsManager::setValue("PaletteIconsInARowCount", mItemsCountInARow);
 	int diagramIndex = 0;
-	foreach (const PaletteTreeWidgets *editorTree, mEditorsTrees) {
+	for (const PaletteTreeWidgets *editorTree : mEditorsTrees) {
 		editorTree->saveConfiguration(mComboBox->itemText(diagramIndex));
 		diagramIndex++;
 	}
@@ -224,8 +226,8 @@ void PaletteTree::setIconsView(bool iconsView)
 
 void PaletteTree::loadEditors(EditorManagerInterface &editorManagerProxy)
 {
-	foreach (const Id &editor, editorManagerProxy.editors()) {
-		foreach (const Id &diagram, editorManagerProxy.diagrams(editor)) {
+	for (const Id &editor : editorManagerProxy.editors()) {
+		for (const Id &diagram : editorManagerProxy.diagrams(editor)) {
 			addEditorElements(editorManagerProxy, editor, diagram);
 		}
 	}
@@ -286,6 +288,7 @@ void PaletteTree::loadPalette(bool isIconsView, int itemsCount, EditorManagerInt
 
 	initDone();
 	setComboBoxIndex();
+	mSearchLineEdit->setVisible(!isIconsView);
 }
 
 void PaletteTree::initMainWindow(MainWindow *mainWindow)
@@ -301,22 +304,34 @@ void PaletteTree::installEventFilter(QObject *obj)
 
 void PaletteTree::setElementVisible(const Id &metatype, bool visible)
 {
-	mTree->setElementVisible(metatype, visible);
+	if (mTree) {
+		mTree->setElementVisible(metatype, visible);
+	}
 }
 
-void PaletteTree::setVisibleForAllElements(bool visible)
+void PaletteTree::setVisibleForAllElements(const Id &diagram, bool visible)
 {
-	mTree->setVisibleForAllElements(visible);
+	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
+		if (tree->diagram() == diagram) {
+			tree->setVisibleForAllElements(visible);
+		}
+	}
 }
 
 void PaletteTree::setElementEnabled(const Id &metatype, bool enabled)
 {
-	mTree->setElementEnabled(metatype, enabled);
+	if (mTree) {
+		mTree->setElementEnabled(metatype, enabled);
+	}
 }
 
-void PaletteTree::setEnabledForAllElements(bool enabled)
+void PaletteTree::setEnabledForAllElements(const Id &diagram, bool enabled)
 {
-	mTree->setEnabledForAllElements(enabled);
+	for (PaletteTreeWidgets * const tree : mEditorsTrees) {
+		if (tree->diagram() == diagram) {
+			tree->setEnabledForAllElements(enabled);
+		}
+	}
 }
 
 void PaletteTree::refreshUserPalettes()

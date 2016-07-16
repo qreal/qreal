@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+include(../../global.pri)
+
 QT += widgets printsupport xml svg
 
 links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor qrgui-controller qrgui-dialogs qrgui-preferences-dialog \
@@ -19,7 +21,7 @@ links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor
 		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
 )
 
-includes(qrgui)
+includes(qrgraph qrgui qrgui/plugins/metaMetaModel)
 
 TRANSLATIONS = \
 	$$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts \

@@ -21,7 +21,6 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 #include <qrutils/interpreter/blockInterface.h>
 #include <qrtext/languageToolboxInterface.h>
 #include <qrutils/parserErrorReporter.h>

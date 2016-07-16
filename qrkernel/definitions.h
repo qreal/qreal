@@ -38,4 +38,8 @@ void lambdaSingleShot(int msec, Func lambda, QObject *parent = 0)
 	timer->start(msec);
 }
 
+#ifndef qUtf8Printable
+# define qUtf8Printable(string) QString(string).toUtf8().constData()
+#endif
+
 }

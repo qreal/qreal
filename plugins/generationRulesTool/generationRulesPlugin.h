@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 #include "ast/node.h"
@@ -25,23 +25,22 @@
 namespace generationRules {
 
 /// Class, which represents example of using interpreted plugin.
-class GenerationRulesPlugin : public QObject, public qReal::InterpretedPluginInterface
+class GenerationRulesPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
-	Q_INTERFACES(qReal::InterpretedPluginInterface)
-	Q_PLUGIN_METADATA(IID "wtfisthis")
+	Q_INTERFACES(qReal::ToolPluginInterface)
+	Q_PLUGIN_METADATA(IID "GenerationRulesPlugin")
 
 public:
 	/// Constructor of class GenerationRulesPlugin.
 	GenerationRulesPlugin();
-	virtual ~GenerationRulesPlugin();
+	~GenerationRulesPlugin() override;
 
 	QList<qReal::ActionInfo> actions() override;
-	QList<QAction*> menuActionList() const override;
+	/// @todo: This is currently ignored by engine. Extend it!
+	QList<QAction *> menuActionList() const;
 
-	void init(const qReal::PluginConfigurator &configurator
-			, qrRepo::LogicalRepoApi &metamodelRepoApi
-			, qReal::EditorManagerInterface *editorManagerInterface) override;
+	void init(const qReal::PluginConfigurator &configurator) override;
 
 private slots:
 	void openWindowForPathsSpecifying();
@@ -63,10 +62,7 @@ private:
 
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // Doesn't have ownership.
 
-	/// Metamodel repo api.
-	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // Doesn't have ownership
-
-	qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
+	const qReal::EditorManagerInterface *mEditorManagerInterface;  // Doesn't have ownership
 
 	qReal::Id mRootId;
 

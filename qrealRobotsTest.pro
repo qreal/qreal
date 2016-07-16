@@ -12,16 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include (qreal.pri)
+include(qreal.pri)
 
 plugins.file = $$PWD/plugins/robots.pro
 
 SUBDIRS += \
-	gmock \
+	googletest \
+	testUtils \
 	robotsTests \
 	trikStudioSimulatorTests \
 
-gmock.file = $$PWD/qrtest/thirdparty/gmock-1.6.0/gmock.pro
+googletest.file = $$PWD/qrtest/thirdparty/googletest/googletest.pro
+testUtils.subdir = $$PWD/qrtest/unitTests/testUtils
 robotsTests.subdir = $$PWD/qrtest/unitTests/pluginsTests/robotsTests
 trikStudioSimulatorTests.subdir = $$PWD/qrtest/trikStudioSimulatorTests
 
@@ -33,3 +35,8 @@ robotsTests.depends = \
 	qrkernel \
 	qrutils \
 	thirdparty \
+	testUtils \
+
+testUtils.depends = \
+	googletest \
+	qrgui \

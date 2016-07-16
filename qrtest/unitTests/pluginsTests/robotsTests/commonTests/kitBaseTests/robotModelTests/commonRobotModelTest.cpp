@@ -17,7 +17,7 @@
 #include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
 
-#include "utils/signalsTester.h"
+#include <testUtils/signalsTester.h>
 
 using namespace qrTest;
 using namespace qrTest::robotsTests::kitBaseTests;

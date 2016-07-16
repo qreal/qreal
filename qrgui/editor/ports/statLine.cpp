@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,19 @@
 
 #include "statLine.h"
 
+#include <QtGui/QPainter>
+
 using namespace qReal::gui::editor;
 
-StatLine::StatLine(const QLineF &line, bool propX1, bool propY1, bool propX2, bool propY2
-		, int initWidth, int initHeight, PortImpl *impl)
-	: PortInterface(impl), mLine(line), mPropX1(propX1), mPropY1(propY1), mPropX2(propX2), mPropY2(propY2)
-	, mInitWidth(initWidth), mInitHeight(initHeight)
+StatLine::StatLine(const LinePortInfo &info)
+	: mLine(info.line)
+	, mPropX1(info.scalesX1)
+	, mPropY1(info.scalesY1)
+	, mPropX2(info.scalesX2)
+	, mPropY2(info.scalesY2)
+	, mInitWidth(info.initWidth)
+	, mInitHeight(info.initHeight)
+	, mType(info.type)
 {}
 
 StatLine::operator QLineF () const
@@ -73,4 +80,9 @@ QLineF StatLine::transformForContents(const QRectF &contents) const
 	const qreal y2 = mLine.y2() * (mPropY2 ? mInitHeight : contents.height());
 
 	return QLineF(x1, y1, x2, y2);
+}
+
+QString StatLine::type() const
+{
+	return mType;
 }

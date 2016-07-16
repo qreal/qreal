@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2015 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,82 +13,141 @@
  * limitations under the License. */
 
 #include "pluginCompiler.h"
-#include <QtCore/QCoreApplication>
-#include <QtCore/QFile>
 
+#include <QtCore/QFile>
+#include <QtCore/QDir>
 #include <QtCore/QProcess>
 #include <QtCore/QDebug>
 
-#include "qrkernel/settingsManager.h"
+#include <qrkernel/exception/exception.h>
+#include <qrrepo/repoApi.h>
+#include <qrutils/nameNormalizer.h>
 
-#include "qrrepo/repoApi.h"
-#include "qrutils/nameNormalizer.h"
+#include "defs.h"
 
-using namespace qrRepo;
-using namespace qReal;
 using namespace editorPluginTestingFramework;
-using namespace utils;
 
-void PluginCompiler::compilePlugin(const QString &fileName
-		, const QString &directoryToCodeToCompile
+QFileInfo PluginCompiler::compilePlugin(const QString &fileWithMetamodel
+		, const QString &directoryToCompile
 		, const QString &pathToQmake
 		, const QString &pathToMake
 		, const QString &configurationParameter
-		)
+		, MetamodelCompiler metamodelCompiler)
 {
-	qDebug() << "STARTING PLUGIN COMPILING";
+	qDebug() << "Compiling plugin from" << fileWithMetamodel << "in folder" << directoryToCompile
+			<< ", configuration: " << configurationParameter;
+
 	QProcess builder;
-	QStringList environment = QProcess::systemEnvironment();
+	const QStringList environment = QProcess::systemEnvironment();
 	builder.setEnvironment(environment);
-	QStringList qmakeArgs;
-	qmakeArgs.append("CONFIG+=" + configurationParameter);
+	QStringList qmakeArgs{"CONFIG+=" + configurationParameter};
 
-	const RepoApi *mRepoApi = new RepoApi(fileName + ".qrs");
-	QString pluginName = "";
-	const IdList metamodels = mRepoApi->children(Id::rootId());
+	const QString pluginName = getPluginName(fileWithMetamodel);
 
-	for (Id const &key : metamodels) {
-		if (mRepoApi->isLogicalElement(key)) {
-			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
-			pluginName = normalizedMetamodelName;
-			break;
-		}
-	}
+	const QString proFileName = metamodelCompiler == MetamodelCompiler::qrxc
+			? patchProFileForQrxc(pluginName, directoryToCompile)
+			: patchProFileForQrmc(pluginName, directoryToCompile);
 
-	if (directoryToCodeToCompile.contains("qrmc"))
-	{
-		QString fileForQrmc = "./" + pluginName + "/" +  pluginName + ".pro";
-		QFile dataQrmc(fileForQrmc);
-		dataQrmc.open(QIODevice::ReadOnly);
-		QByteArray saveDataQrmc = dataQrmc.readAll();
-		dataQrmc.close();
-		dataQrmc.open(QIODevice::WriteOnly);
-		dataQrmc.write(saveDataQrmc + "DESTDIR = ../plugins/editors/qrtest/qrmc/plugins");
-		builder.setWorkingDirectory("./" + pluginName + "/");
-		dataQrmc.close();
-	} else {
-		QString fileForQrxc = directoryToCodeToCompile + "/" + pluginName + ".pro";
-		QFile dataQrxc(fileForQrxc);
-		dataQrxc.open(QIODevice::ReadOnly);
-		QByteArray saveDataQrxc = dataQrxc.readAll();
-		dataQrxc.close();
-		dataQrxc.open(QIODevice::WriteOnly);
-		dataQrxc.write(saveDataQrxc + "DESTDIR = plugins");
-		dataQrxc.close();
-		builder.setWorkingDirectory(directoryToCodeToCompile);
-	}
+	builder.setWorkingDirectory(QFileInfo(proFileName).canonicalPath());
 
-	qmakeArgs.append(pluginName + ".pro");
+	qmakeArgs.append(QFileInfo(proFileName).fileName());
+
+	qDebug() << "Running qmake with the following arguments:" << qmakeArgs << ", from" << builder.workingDirectory();
+
 	builder.start(pathToQmake, qmakeArgs);
 
-	if (builder.waitForFinished() && builder.exitCode() == 0) {
-		builder.start(pathToMake);
+	if (builder.waitForFinished()) {
+		if (builder.exitCode() == 0) {
+			qDebug() << "qmake successful, running make";
 
-		bool const finished = builder.waitForFinished(100000);
-		qDebug()  << "make";
+			builder.start(pathToMake);
 
-		if (finished && builder.exitCode() == 0) {
-			qDebug()  << "make ok";
+			if (!builder.waitForStarted()) {
+				qDebug()  << "make failed to start, used this make command:" << pathToMake;
+				throw qReal::Exception("make failed to start");
+			}
+
+			if (!builder.waitForFinished(100000)) {
+				qDebug()  << "make failed to finish.";
+				throw qReal::Exception("make failed to finish");
+			}
+
+			if (builder.exitCode() == 0) {
+				qDebug()  << "make successful";
+			} else {
+				qDebug()  << "make failed with exit code" << builder.exitCode();
+				throw qReal::Exception("make failed");
+			}
+		} else {
+			qDebug() << "qmake failed with exit code" << builder.exitCode();
+			throw qReal::Exception("qmake failed");
+		}
+	} else {
+		qDebug() << "qmake failed to start. Used this qmake command:" << pathToQmake;
+		throw qReal::Exception("qmake failed to start");
+	}
+
+	if (metamodelCompiler == MetamodelCompiler::qrmc) {
+		/// @todo: implement it.
+	} else {
+		const QDir destdir(directoryToCompile + "/compiledPlugin/");
+		for (const auto fileInfo : destdir.entryInfoList(QDir::Files)) {
+			if (fileInfo.baseName().contains(pluginName)) {
+				qDebug() << stringSeparator;
+				return fileInfo;
+			}
 		}
 	}
+
+	throw qReal::Exception("Compilation result not found.");
+}
+
+QString PluginCompiler::getPluginName(const QString &fileWithMetamodel)
+{
+	/// @todo: here we make an assumption that metamodel is available and lies in application directory, which might
+	///        not be the case.
+	const qrRepo::RepoApi repoApi(fileWithMetamodel + ".qrs");
+	QString pluginName = "";
+	const qReal::IdList metamodels = repoApi.children(qReal::Id::rootId());
+
+	for (const qReal::Id &key : metamodels) {
+		if (repoApi.isLogicalElement(key)) {
+			if (pluginName.isEmpty()) {
+				pluginName = utils::NameNormalizer::normalize(repoApi.stringProperty(key, "name"), false);
+			} else {
+				throw qReal::Exception("More than one metamodel in a .qrs file, will not compile it.");
+			}
+		}
+	}
+
+	return pluginName;
+}
+
+QString PluginCompiler::patchProFileForQrxc(const QString &pluginName, const QString &directoryToCompile)
+{
+	qDebug() << "Using QRXC";
+	const QString proFileName = directoryToCompile + "/" + pluginName + ".pro";
+	QFile proFile(proFileName);
+	proFile.open(QIODevice::ReadOnly);
+	const QByteArray oldProFileContents = proFile.readAll();
+	proFile.close();
+	proFile.open(QIODevice::WriteOnly);
+	proFile.write(oldProFileContents + "\nDESTDIR = compiledPlugin\n");
+	proFile.close();
+	return proFileName;
+}
+
+QString PluginCompiler::patchProFileForQrmc(const QString &pluginName, const QString &directoryToCompile)
+{
+	qDebug() << "Using QRMC";
+	const QString proFileName = directoryToCompile + "/" + pluginName + "/" +  pluginName + ".pro";
+	QFile proFile(proFileName);
+	proFile.open(QIODevice::ReadOnly);
+	const QByteArray oldProFileContents = proFile.readAll();
+	proFile.close();
+	proFile.open(QIODevice::WriteOnly);
+	/// @todo: fix DESTDIR and debug QRMC.
+	proFile.write(oldProFileContents + "\nDESTDIR = compiledPlugin\n");
+	proFile.close();
+	return proFileName;
 }
