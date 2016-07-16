@@ -66,7 +66,7 @@ void Display::clearScreen()
 	Canvas::reset();
 }
 
-void Display::paint(QPainter *painter)
+void Display::paint(QPainter *painter, const QRect &rect)
 {
 	painter->save();
 	painter->scale(static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth
@@ -81,7 +81,7 @@ void Display::paint(QPainter *painter)
 	painter->setFont(font);
 	painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
-	Canvas::paint(painter);
+	Canvas::paint(painter, {0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight()});
 
 	painter->restore();
 }

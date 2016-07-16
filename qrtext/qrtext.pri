@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 CyberTech Labs Ltd., QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,8 +53,9 @@ HEADERS += \
 	$$PWD/include/qrtext/core/types/any.h \
 	$$PWD/include/qrtext/core/types/typeExpression.h \
 	$$PWD/include/qrtext/core/types/typeVariable.h \
-	$$PWD/include/qrtext/lua/luaToolbox.h \
 	$$PWD/include/qrtext/lua/luaAstVisitorInterface.h \
+	$$PWD/include/qrtext/lua/luaStringEscapeUtils.h \
+	$$PWD/include/qrtext/lua/luaToolbox.h \
 	$$PWD/include/qrtext/lua/ast/number.h \
 	$$PWD/include/qrtext/lua/ast/unaryMinus.h \
 	$$PWD/include/qrtext/lua/ast/not.h \
@@ -128,6 +129,7 @@ SOURCES += \
 	$$PWD/src/lua/luaParser.cpp \
 	$$PWD/src/lua/luaPrecedenceTable.cpp \
 	$$PWD/src/lua/luaSemanticAnalyzer.cpp \
+	$$PWD/src/lua/luaStringEscapeUtils.cpp \
 	$$PWD/src/lua/luaToolbox.cpp \
 
 TRANSLATIONS = \

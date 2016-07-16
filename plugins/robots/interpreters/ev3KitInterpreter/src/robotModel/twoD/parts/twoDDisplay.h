@@ -51,9 +51,9 @@ public:
 	void drawRect(int x, int y, int width, int height) override;
 	void drawRect(int x, int y, int width, int height, bool filled) override;
 	void drawCircle(int x, int y, int radius, bool filled) override;
-	void printText(int x, int y, QString const &text) override;
+	void printText(int x, int y, const QString &text) override;
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;

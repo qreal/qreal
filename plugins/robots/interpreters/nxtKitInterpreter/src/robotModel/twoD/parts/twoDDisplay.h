@@ -52,7 +52,7 @@ public:
 	void drawCircle(int x, int y, int radius) override;
 	void printText(int x, int y, const QString &text) override;
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &rect) override;
 
 private:
 	twoDModel::engine::TwoDModelEngineInterface &mEngine;
