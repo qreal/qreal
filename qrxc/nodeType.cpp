@@ -249,19 +249,19 @@ void NodeType::generateCode(OutFile &out)
 
 	for (Port * const pointPort : mPointPorts) {
 		out() << "\t\t\taddPointPort(";
-		pointPort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		pointPort->generateCode(out);
 		out() << ");\n";
 	}
 
 	for (Port * const linePort : mLinePorts) {
 		out() << "\t\t\taddLinePort(";
-		linePort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		linePort->generateCode(out);
 		out() << ");\n";
 	}
 
 	for (Port * const circlePort : mCircularPorts) {
 		out() << "\t\t\taddCircularPort(";
-		circlePort->generateCode(out, mDiagram->editor()->getAllPortNames());
+		circlePort->generateCode(out);
 		out() << ");\n";
 	}
 

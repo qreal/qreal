@@ -21,8 +21,12 @@
 using namespace qReal;
 using namespace qReal::gui::editor;
 
-LineFactory::LineFactory(EdgeElement *edge)
-		: mEdge(edge)
+LineFactory::LineFactory(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel)
+	: mEdge(edge)
+	, mLogicalModel(logicalModel)
+	, mGraphicalModel(graphicalModel)
 {
 }
 
@@ -30,11 +34,11 @@ LineHandler * LineFactory::createHandler(LinkShape type) const
 {
 	switch(type) {
 	case LinkShape::broken:
-		return new BrokenLine(mEdge);
+		return new BrokenLine(mEdge, mLogicalModel, mGraphicalModel);
 	case LinkShape::curve:
-		return new CurveLine(mEdge);
+		return new CurveLine(mEdge, mLogicalModel, mGraphicalModel);
 	default:
-		return new SquareLine(mEdge);
+		return new SquareLine(mEdge, mLogicalModel, mGraphicalModel);
 	}
 }
 

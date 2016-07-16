@@ -873,8 +873,9 @@ void NodeElement::drawPorts(QPainter *painter, bool mouseOver)
 	painter->save();
 	painter->setOpacity(0.7);
 
+	const QStringList mPortsVisibilityKeys = mPortsVisibility.keys(true);
 	const QStringList portTypes = mouseOver ? mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())
-			: mPortsVisibility.keys(true);
+			: mPortsVisibilityKeys;
 	mPortHandler->drawPorts(painter, mContents, portTypes);
 
 	painter->restore();

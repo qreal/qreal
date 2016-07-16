@@ -30,9 +30,9 @@ bool CircularPort::init(const QDomElement &element, int width, int height)
 	return true;
 }
 
-void CircularPort::generateCode(OutFile &out, const QStringList &portTypes)
+void CircularPort::generateCode(OutFile &out)
 {
-	if (!portTypes.contains(mType)) {
+	if (mType.isNull() || mType.isEmpty()) {
 		mType = "NonTyped";
 	}
 

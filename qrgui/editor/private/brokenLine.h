@@ -26,7 +26,9 @@ class BrokenLine : public LineHandler
 {
 	Q_OBJECT
 public:
-	BrokenLine(EdgeElement *edge);
+	BrokenLine(EdgeElement *edge
+			, const LogicalModelAssistInterface &logicalModel
+			, const GraphicalModelAssistInterface &graphicalModel);
 
 	/// Align every non-end point of the link to grid
 	virtual void alignToGrid();

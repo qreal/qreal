@@ -34,7 +34,7 @@ bool LinePort::init(const QDomElement &element, int width, int height)
 	return true;
 }
 
-void LinePort::generateCode(OutFile &out, const QStringList &portTypes)
+void LinePort::generateCode(OutFile &out)
 {
 	const QString line = QString("QLineF(%1, %2, %3, %4)").arg(
 				QString::number(mStartX.value())
@@ -42,7 +42,7 @@ void LinePort::generateCode(OutFile &out, const QStringList &portTypes)
 				, QString::number(mEndX.value())
 				, QString::number(mEndY.value()));
 
-	if (!portTypes.contains(mType)) {
+	if (mType.isNull() || mType.isEmpty()) {
 		mType = "NonTyped";
 	}
 

@@ -50,7 +50,7 @@ EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models
 	, mType(type)
 	, mSrc(nullptr)
 	, mDst(nullptr)
-	, mLineFactory(new LineFactory(this))
+	, mLineFactory(new LineFactory(this, mLogicalAssistApi, mGraphicalAssistApi))
 	, mHandler(nullptr)
 	, mPortFrom(0)
 	, mPortTo(0)

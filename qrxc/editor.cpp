@@ -173,26 +173,6 @@ QSet<EnumType*> Editor::getAllEnumTypes()
 	return result;
 }
 
-QStringList Editor::getAllPortNames() const
-{
-	QStringList result;
-
-	foreach (const Diagram * const diagram, mDiagrams.values()) {
-		foreach (const Type * const type, diagram->types()) {
-			if (dynamic_cast<const PortType * const>(type)) {
-				result << type->name();
-			}
-		}
-	}
-
-	foreach (const Editor * const editor, mIncludes) {
-		result += editor->getAllPortNames();
-	}
-
-	result.removeDuplicates();
-	return result;
-}
-
 Diagram* Editor::findDiagram(const QString &name)
 {
 	if (mDiagrams.contains(name))
