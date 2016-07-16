@@ -1,4 +1,4 @@
-/* Copyright 2013-2016 CyberTech Labs Ltd.
+/* Copyright 2016 Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
 
 #pragma once
 
-#include <kitBase/blocksBase/common/engineCommandBlock.h>
+#include <kitBase/robotModel/robotParts/motorsAggregator.h>
 
 namespace trik {
-namespace blocks {
-namespace details {
+namespace robotModel {
+namespace parts {
 
-class TrikEnginesBackwardBlock : public kitBase::blocksBase::common::EngineCommandBlock
+class TrikMotorsAggregator : public kitBase::robotModel::robotParts::MotorsAggregator
 {
 	Q_OBJECT
+	Q_CLASSINFO("name", "trikMotorsAggregator")
+	Q_CLASSINFO("friendlyName", tr("Trik Motors Aggregator"))
 
 public:
-	explicit TrikEnginesBackwardBlock(kitBase::robotModel::RobotModelInterface &robotModel);
-
-	void run() override;
+	TrikMotorsAggregator(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
 };
 
 }

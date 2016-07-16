@@ -18,12 +18,11 @@
 
 #include <utils/canvas/textObject.h>
 
-
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
-const qreal realWidth = 218;
-const qreal realHeight = 274;
+const int realWidth = 218;
+const int realHeight = 274;
 const int textSize = 20;
 
 Display::Display(const DeviceInfo &info
@@ -117,7 +116,7 @@ void Display::printText(int x, int y, const QString &text)
 	if (mLabelsMap.contains(coords)) {
 		mLabelsMap[coords]->setText(text);
 	} else {
-		utils::TextObject * const textObject = new utils::TextObject(x, y + textSize, text
+		utils::TextObject * const textObject = new utils::TextObject(x, y, text
 			, mCurrentPenColor, mCurrentPenWidth);
 		mObjects << textObject;
 		mLabelsMap[coords] = textObject;
@@ -150,8 +149,10 @@ void Display::setPainterWidth(int penWidth)
 	Canvas::setPainterWidth(penWidth);
 }
 
-void Display::paint(QPainter *painter)
+void Display::paint(QPainter *painter, const QRect &outputRect)
 {
+	Q_UNUSED(outputRect)
+
 	const QRect displayRect(0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight());
 
 	painter->save();
@@ -167,8 +168,10 @@ void Display::paint(QPainter *painter)
 	font.setPixelSize(textSize);
 	painter->setFont(font);
 	painter->setPen(Qt::black);
-	painter->scale(displayRect.width() / realWidth, displayRect.height() / realHeight);
-	Canvas::paint(painter);
+	const qreal xScale = displayRect.width() / (realWidth * 1.0);
+	const qreal yScale = displayRect.height() / (realHeight * 1.0);
+	painter->scale(xScale, yScale);
+	Canvas::paint(painter, {0, 0, realWidth, realHeight});
 	painter->restore();
 }
 

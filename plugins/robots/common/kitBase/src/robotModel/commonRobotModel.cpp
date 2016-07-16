@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,12 @@
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
 #include <utils/realTimeline.h>
+#include <kitBase/robotModel/robotParts/abstractSensor.h>
 
 #include "kitBase/robotModel/robotParts/motor.h"
 #include "kitBase/robotModel/robotParts/random.h"
+
+const int updateInterval = 200;
 
 using namespace kitBase::robotModel;
 
@@ -77,6 +80,27 @@ void CommonRobotModel::stopRobot()
 void CommonRobotModel::disconnectFromRobot()
 {
 	emit disconnected();
+}
+
+void CommonRobotModel::updateSensorsValues() const
+{
+	for (robotParts::Device * const device : mConfiguration.devices()) {
+		robotParts::AbstractSensor * const sensor = dynamic_cast<robotParts::AbstractSensor *>(device);
+		if (sensor && !sensor->port().reservedVariable().isEmpty()) {
+
+			if (!sensor->ready() || sensor->isLocked()) {
+				/// @todo Error reporting
+				continue;
+			}
+
+			sensor->read();
+		}
+	}
+}
+
+int CommonRobotModel::updateIntervalForInterpretation() const
+{
+	return updateInterval;
 }
 
 bool CommonRobotModel::interpretedModel() const

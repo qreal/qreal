@@ -39,4 +39,3 @@ TEST(XmlUtilsTest, loadDocumentTest)
 	ASSERT_EQ(doc.elementsByTagName("logicTypes").size(), 1);
 	ASSERT_EQ(doc.elementsByTagName("diagram").at(0).childNodes().size(), 2);
 }
-
