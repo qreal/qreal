@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2016 Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/accelerometerSensor.h>
+#include <trikKit/robotModel/parts/trikMotorsAggregator.h>
 #include <utils/robotCommunication/tcpRobotCommunicator.h>
 
 #include "trikKitInterpreterCommon/declSpec.h"
@@ -24,24 +24,22 @@ namespace robotModel {
 namespace real {
 namespace parts {
 
-class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Accelerometer
-		: public kitBase::robotModel::robotParts::AccelerometerSensor
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT PowerMotorsAggregator
+	: public robotModel::parts::TrikMotorsAggregator
 {
 	Q_OBJECT
 
 public:
-	Accelerometer(const kitBase::robotModel::DeviceInfo &info
+	PowerMotorsAggregator(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, utils::robotCommunication::TcpRobotCommunicator &robotCommunicator);
+			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
-	void read() override;
-
-public slots:
-	void onIncomingData(const QString &portName, const QVector<int> &value);
+	void on(const QList<QPair<QString, int>> &powerForMotors) override;
+	void stop(const QStringList &ports) override;
+	void off(const QStringList &ports) override;
 
 private:
 	utils::robotCommunication::TcpRobotCommunicator &mRobotCommunicator;
-	QVector<int> mOldValue;
 };
 
 }

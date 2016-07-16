@@ -28,12 +28,13 @@ TouchSensor::TouchSensor(const DeviceInfo &info, const PortInfo &port
 
 void TouchSensor::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
 void TouchSensor::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

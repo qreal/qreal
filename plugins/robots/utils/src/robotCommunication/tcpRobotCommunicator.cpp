@@ -124,6 +124,11 @@ void TcpRobotCommunicator::requestData(const QString &sensor)
 	QMetaObject::invokeMethod(mWorker.data(), "requestData", Q_ARG(QString, sensor));
 }
 
+void TcpRobotCommunicator::requestData()
+{
+	QMetaObject::invokeMethod(mWorker.data(), "requestData");
+}
+
 void TcpRobotCommunicator::connect()
 {
 	QMetaObject::invokeMethod(mWorker.data(), "connect");
@@ -146,6 +151,12 @@ void TcpRobotCommunicator::onMessageFromRobot(const MessageKind &messageKind, co
 		break;
 	case MessageKind::text:
 		emit printText(message);
+		break;
+	case MessageKind::fileContents:
+		emit fileContentsFromRobot(message);
+		break;
+	case MessageKind::mail:
+		emit mailFromRobot(message);
 		break;
 	}
 }
