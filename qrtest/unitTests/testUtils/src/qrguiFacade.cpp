@@ -113,6 +113,11 @@ qReal::LogicalModelAssistInterface &QrguiFacade::logicalModelAssistInterface()
 	return mModels.logicalModelAssistApi();
 }
 
+qReal::Controller &QrguiFacade::controller()
+{
+	return mController;
+}
+
 qReal::ProjectManagementInterface &QrguiFacade::projectManagementInterface()
 {
 	return mProjectManagementInterfaceMock;
