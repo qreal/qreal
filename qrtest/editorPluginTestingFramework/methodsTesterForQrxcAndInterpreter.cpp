@@ -212,7 +212,8 @@ class MethodsTesterForQrxcAndInterpreter::StringGeneratorForProperties
 	}
 };
 
-class MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups : public MethodsTesterForQrxcAndInterpreter::StringGenerator
+class MethodsTesterForQrxcAndInterpreter::StringGeneratorForGroups
+		: public MethodsTesterForQrxcAndInterpreter::StringGenerator
 {
 	virtual QStringList generateList(EditorManagerInterface *editorManagerInterface) const {
 		QStringList resultList;
@@ -1686,7 +1687,8 @@ class MethodsTesterForQrxcAndInterpreter::PaletteGroupDescriptionGenerator
 		mResult = callFunction([editorManagerInterface, editorId, diagramId, group]()
 				{ return editorManagerInterface->paletteGroupDescription(editorId, diagramId, group); });
 
-		return ConvertingMethods::convertStringIntoStringList(editorManagerInterface->paletteGroupDescription(editorId, diagramId, group));
+		return ConvertingMethods::convertStringIntoStringList(
+				editorManagerInterface->paletteGroupDescription(editorId, diagramId, group));
 	}
 
 	virtual AbstractStringGenerator* clone() const

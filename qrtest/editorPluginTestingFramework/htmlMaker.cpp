@@ -51,11 +51,16 @@ void HtmlMaker::makeHtml(
 
 	addTable(body, qrxcAndQrmcResult, QObject::tr("Table with results of comparison between qrxc and qrmc")
 			 , QObject::tr("Method name"), "QRXC", "QRMC");
+
 	QDomElement breakLine = newElement(body, "br");
-	addTable(body, qrxcAndInterpreterResult, QObject::tr("Table with results of comparison between qrxc and interpreter")
+
+	addTable(body, qrxcAndInterpreterResult
+			, QObject::tr("Table with results of comparison between qrxc and interpreter")
 			, QObject::tr("Method name"), "QRXC", "Interpreter");
+
 	addTable(body, timeResult, QObject::tr("Table with results of time qrxc and qrmc")
 			, QObject::tr("Method name"), "qrxc", "qrmc");
+
 	addTable(body, timeResultIntertpter, QObject::tr("Table with results of time qrxc and interpreter")
 			, QObject::tr("Method name"), "qrxc", "interpreter");
 

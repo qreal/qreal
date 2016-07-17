@@ -51,7 +51,7 @@ public:
 	/// Returns the bounding box of this line.
 	QRect boundingRect() const;
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 	QJsonObject toJson() const override;
 
 private:

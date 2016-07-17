@@ -5857,9 +5857,9 @@ void Editor::GoToLine(int lineNo) {
 }
 
 static bool Close(Point pt1, Point pt2) {
-	if (abs(pt1.x - pt2.x) > 3)
+	if (qAbs(pt1.x - pt2.x) > 3)
 		return false;
-	if (abs(pt1.y - pt2.y) > 3)
+	if (qAbs(pt1.y - pt2.y) > 3)
 		return false;
 	return true;
 }

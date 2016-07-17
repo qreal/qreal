@@ -23,7 +23,7 @@ Ev3GeneratorRobotModel::Ev3GeneratorRobotModel(const QString &kitId
 		, const QString &name
 		, const QString &friendlyName
 		, int priority
-		, communication::Ev3RobotCommunicationThread * const communicator)
+		, communication::Ev3RobotCommunicationThread &communicator)
 	: Ev3RobotModelBase(kitId, robotId)
 	, mName(name)
 	, mFriendlyName(friendlyName)
@@ -63,5 +63,5 @@ int Ev3GeneratorRobotModel::priority() const
 
 ev3::communication::Ev3RobotCommunicationThread *Ev3GeneratorRobotModel::communicator()
 {
-	return mCommunicator.data();
+	return &mCommunicator;
 }

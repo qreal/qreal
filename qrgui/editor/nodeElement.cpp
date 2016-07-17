@@ -873,8 +873,9 @@ void NodeElement::drawPorts(QPainter *painter, bool mouseOver)
 	painter->save();
 	painter->setOpacity(0.7);
 
+	const QStringList mPortsVisibilityKeys = mPortsVisibility.keys(true);
 	const QStringList portTypes = mouseOver ? mGraphicalAssistApi.editorManagerInterface().portTypes(id().type())
-			: mPortsVisibility.keys(true);
+			: mPortsVisibilityKeys;
 	mPortHandler->drawPorts(painter, mContents, portTypes);
 
 	painter->restore();
@@ -1131,7 +1132,7 @@ NodeInfo NodeElement::data() const
 
 	// new element should not have references to links connected to original source element
 	result.setGraphicalProperty("links", IdListHelper::toVariant(IdList()));
-	result.setGraphicalProperty("position", mPos);
+	result.setGraphicalProperty("position", pos());
 
 	return result;
 }
@@ -1213,14 +1214,6 @@ QList<NodeElement *> const NodeElement::childNodes() const
 	}
 
 	return result;
-}
-
-void NodeElement::updateNodeEdges()
-{
-	arrangeLinks();
-	for (EdgeElement* edge : mEdgeList) {
-		edge->adjustLink();
-	}
 }
 
 AbstractCommand *NodeElement::changeParentCommand(const Id &newParent, const QPointF &position) const

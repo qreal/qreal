@@ -27,7 +27,8 @@ class ConvertingMethods
 public:
 	/// converters for methods output converting into string list
 	/// from QListExplosionData
-//	static QStringList convertQListExplosionDataIntoStringList(const QList<qReal::Metamodel::ExplosionData> &explDataList);
+//	static QStringList convertQListExplosionDataIntoStringList(
+//			const QList<qReal::Metamodel::ExplosionData> &explDataList);
 
 	/// from QPairList
 	static QStringList convertingQPairListIntoStringList(const QList<QPair<QString, QString>> &qPairList);

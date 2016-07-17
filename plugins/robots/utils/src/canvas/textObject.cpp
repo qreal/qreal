@@ -69,10 +69,13 @@ void TextObject::setText(const QString &text)
 	mText = text;
 }
 
-void TextObject::paint(QPainter *painter)
+void TextObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
-	painter->drawText(mX, mY, mText);
+	CanvasObject::paint(painter, outputRect);
+	QRect rect = outputRect;
+	rect &= rect.translated(mX, mY);
+	painter->setPen(Qt::black);
+	painter->drawText(QRectF(rect), Qt::AlignLeft | Qt::AlignTop, mText);
 }
 
 QJsonObject TextObject::toJson() const
@@ -86,4 +89,3 @@ QJsonObject TextObject::toJson() const
 	result["thickness"] = thickness();
 	return result;
 }
-

@@ -164,9 +164,9 @@ public:
 
 	void beginPaletteModification() override;
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 	void endPaletteModification() override;
 
 	/// Additional actions for interpreter palette.

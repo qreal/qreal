@@ -28,9 +28,9 @@ bool PointPort::init(const QDomElement &element, int width, int height)
 	return true;
 }
 
-void PointPort::generateCode(OutFile &out, const QStringList &portTypes)
+void PointPort::generateCode(OutFile &out)
 {
-	if (!portTypes.contains(mType)) {
+	if (mType.isNull() || mType.isEmpty()) {
 		mType = "NonTyped";
 	}
 

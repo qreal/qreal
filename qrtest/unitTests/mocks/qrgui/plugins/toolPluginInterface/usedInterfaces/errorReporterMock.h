@@ -24,7 +24,8 @@ namespace qrTest {
 
 /// Mock class for ErrorReporter. If configured properly (in QrguiFacade, for example), can emit signal when
 /// new error is reported.
-class ErrorReporterMock : public QObject, public qReal::ErrorReporterInterface {
+class ErrorReporterMock : public QObject, public qReal::ErrorReporterInterface
+{
 	Q_OBJECT
 
 public:

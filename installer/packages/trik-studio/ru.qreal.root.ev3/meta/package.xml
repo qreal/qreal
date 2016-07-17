@@ -4,8 +4,8 @@
     <DisplayName xml:lang="ru_ru">Поддержка Lego EV3</DisplayName>
     <Description>Install it for working with Lego EV3 in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором Lego EV3</Description>
-    <Version>3.1.3-4</Version>
-    <ReleaseDate>2016-01-22</ReleaseDate>
+    <Version>3.1.4-4</Version>
+    <ReleaseDate>2016-06-07</ReleaseDate>
     <Licenses>
         <License name="QextSerialPort Component License" file="QextSerialPort-license.txt" />
     </Licenses>

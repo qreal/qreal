@@ -18,6 +18,8 @@ include(../../../global.pri)
 
 TEMPLATE = lib
 
+QT += xml
+
 includes(qrgui qrgraph)
 
 links(qrkernel qrgraph)

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,24 +63,26 @@ void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, [this](const QString &modelName)
 	{
 		mCurrentlySelectedModelName = modelName;
-		if (modelName == mUsbRealRobotModel.name()) {
-			mUsbRealRobotModel.checkConnection();
-		}
-
-		if (modelName == mBluetoothRealRobotModel.name()) {
-			mBluetoothRealRobotModel.checkConnection();
-		}
 	});
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+
 	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
+	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addInformation(message);
+	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
+	});
+	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addInformation(message);
 	});
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
@@ -161,5 +163,7 @@ kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigura
 
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
-	return new ui::ComPortPicker("Ev3BluetoothPortName", this);
+	QWidget * const result = new ui::ComPortPicker("Ev3BluetoothPortName", this);
+	connect(this, &QObject::destroyed, [result]() { delete result; });
+	return result;
 }

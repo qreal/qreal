@@ -15,15 +15,16 @@
 #include <QtCore/QFile>
 
 #include "metamodelGeneratorSupportTest.h"
-#include "../../../qrutils/inFile.h"
+#include <qrutils/inFile.h>
 
 #include "gtest/gtest.h"
 
 using namespace utils;
 using namespace qrTest;
 
-void MetamodelGeneratorSupportTest::SetUp() {
-	mGenerator = new MetamodelGeneratorSupport(NULL, NULL);
+void MetamodelGeneratorSupportTest::SetUp()
+{
+	mGenerator = new MetamodelGeneratorSupport(nullptr, nullptr);
 
 	QString const elementsXml =
 	"<diagram>"
@@ -92,11 +93,13 @@ void MetamodelGeneratorSupportTest::SetUp() {
 	mDocument = mGenerator->loadElementsFromString(elementsXml);
 }
 
-void MetamodelGeneratorSupportTest::TearDown() {
+void MetamodelGeneratorSupportTest::TearDown()
+{
 	delete mGenerator;
 }
 
-TEST_F(MetamodelGeneratorSupportTest, collectAllGraphicTypesInMetamodelTest) {
+TEST_F(MetamodelGeneratorSupportTest, collectAllGraphicTypesInMetamodelTest)
+{
 	QStringList types = mGenerator->collectAllGraphicTypesInMetamodel(mDocument, true);
 
 	ASSERT_EQ(types.size(), 5);
@@ -116,7 +119,8 @@ TEST_F(MetamodelGeneratorSupportTest, collectAllGraphicTypesInMetamodelTest) {
 	EXPECT_TRUE(types.contains("ControlFlowLocation"));
 }
 
-TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest) {
+TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest)
+{
 	QDomElement const container = mDocument.elementsByTagName("container").at(0).toElement();
 	QStringList elementNames = mGenerator->collectAllGraphicTypesInMetamodel(mDocument, false);
 
@@ -136,7 +140,8 @@ TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest) {
 	EXPECT_TRUE(containsElemNames.contains("TestDiagram::ControlFlowLocation"));
 }
 
-TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest) {
+TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest)
+{
 	QDomElement const elem = mDocument.createElement("TestElement");
 	mGenerator->insertElementInDiagramSublevel(mDocument ,"nonGraphicTypes", elem);
 
@@ -144,7 +149,8 @@ TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("TestElement").size(), 1);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest) {
+TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest)
+{
 	QDomDocument doc = mGenerator->loadElementsFromString("<diagram><testElem1/><testElem2/><testElem3/><></diagram>");
 
 	mGenerator->insertElementsInDiagramSublevel(mDocument ,"nonGraphicTypes"
@@ -159,7 +165,8 @@ TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("testElem3").size(), 1);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, appendElementsTest) {
+TEST_F(MetamodelGeneratorSupportTest, appendElementsTest)
+{
 	QDomDocument doc = mGenerator->loadElementsFromString("<diagram><testElem1/><testElem2/><testElem3/><></diagram>");
 
 	mGenerator->appendElements(mGenerator->diagramElement(mDocument), mGenerator->diagramElement(doc).childNodes());
@@ -170,13 +177,15 @@ TEST_F(MetamodelGeneratorSupportTest, appendElementsTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("testElem3").size(), 1);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, diagramElementTest) {
+TEST_F(MetamodelGeneratorSupportTest, diagramElementTest)
+{
 	QDomElement const elem = mGenerator->diagramElement(mDocument);
 
 	ASSERT_EQ(elem.nodeName(), "diagram");
 }
 
-TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest) {
+TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest)
+{
 	ASSERT_EQ(mDocument.elementsByTagName("diagram").size(), 1);
 	ASSERT_EQ(mDocument.elementsByTagName("graphicTypes").size(), 1);
 	ASSERT_EQ(mDocument.elementsByTagName("node").size(), 3);
@@ -186,7 +195,8 @@ TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("property").size(), 3);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, loadAndSaveMetamodelInFileTest) {
+TEST_F(MetamodelGeneratorSupportTest, loadAndSaveMetamodelInFileTest)
+{
 	QFile file("testMetamodelFile");
 	file.open(QIODevice::ReadWrite);
 

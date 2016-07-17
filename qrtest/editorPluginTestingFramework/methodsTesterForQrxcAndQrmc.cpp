@@ -263,7 +263,8 @@ class MethodsTesterForQrxcAndQrmc::ExplosionsStringGenerator
 				{ return editorInterface->explosions(diagram, element); });
 
 		QStringList result;
-		result = ConvertingMethods::convertQListExplosionDataIntoStringList(editorInterface->explosions(diagram, element));
+		result = ConvertingMethods::convertQListExplosionDataIntoStringList(
+				editorInterface->explosions(diagram, element));
 		return result;
 	}
 
@@ -616,7 +617,8 @@ class MethodsTesterForQrxcAndQrmc::GetPropertyDefaultValueStringGenerator
 		mResult = callFunction([editorInterface, element, property]()
 				{ return editorInterface->getPropertyDefaultValue(element, property); });
 
-		return ConvertingMethods::convertStringIntoStringList(editorInterface->getPropertyDefaultValue(element, property));
+		return ConvertingMethods::convertStringIntoStringList(
+				editorInterface->getPropertyDefaultValue(element, property));
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -981,7 +983,8 @@ class MethodsTesterForQrxcAndQrmc::PropertyDescriptionStringGenerator
 		mResult = callFunction([editorInterface, diagram, element, property]()
 				{ return editorInterface->propertyDescription(diagram, element, property); });
 
-		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDescription(diagram, element, property));
+		return ConvertingMethods::convertStringIntoStringList(
+				editorInterface->propertyDescription(diagram, element, property));
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -1017,7 +1020,8 @@ class MethodsTesterForQrxcAndQrmc::PropertyDisplayedNameStringGenerator
 		mResult = callFunction([editorInterface, diagram, element, property]()
 				{ return editorInterface->propertyDisplayedName(diagram, element, property); });
 
-		return ConvertingMethods::convertStringIntoStringList(editorInterface->propertyDisplayedName(diagram, element, property));
+		return ConvertingMethods::convertStringIntoStringList(
+				editorInterface->propertyDisplayedName(diagram, element, property));
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -1148,7 +1152,8 @@ class MethodsTesterForQrxcAndQrmc::DiagramPaletteGroupDescriptionStringGenerator
 		mResult = callFunction([editorInterface, diagram, element]()
 				{ return editorInterface->diagramPaletteGroupDescription(diagram, element); });
 
-		return ConvertingMethods::convertStringIntoStringList(editorInterface->diagramPaletteGroupDescription(diagram, element));
+		return ConvertingMethods::convertStringIntoStringList(
+				editorInterface->diagramPaletteGroupDescription(diagram, element));
 	}
 
 	virtual AbstractStringGenerator* clone() const
@@ -1181,9 +1186,12 @@ void MethodsTesterForQrxcAndQrmc::testMethods()
 	mGeneratedList.append(testMethodIfExistsInList(EnumValueStringGenerator(), "getEnumValues"));
 	mGeneratedList.append(testMethodIfExistsInList(PropertiesWithDefaultValuesStringGenerator()
 			, "propertiesWithDefaulValues"));
+
 	mGeneratedList.append(testMethodIfExistsInList(IsNodeOrEdgeStringGenerator(), "isNodeOrEdge"));
 	mGeneratedList.append(testMethodIfExistsInList(GetPropertyNamesStringGenerator(), "getPropertyNames"));
-	mGeneratedList.append(testMethodIfExistsInList(GetPropertyDefaultValueStringGenerator(), "getPropertyDefaultValue"));
+	mGeneratedList.append(testMethodIfExistsInList(GetPropertyDefaultValueStringGenerator()
+			, "getPropertyDefaultValue"));
+
 	mGeneratedList.append(testMethodIfExistsInList(DiagramNameStringGenerator(), "diagramName"));
 	mGeneratedList.append(testMethodIfExistsInList(DiagramNodeNameStringGenerator(), "diagramNodeName"));
 	mGeneratedList.append(testMethodIfExistsInList(ElementNameStringGenerator(), "elementName"));

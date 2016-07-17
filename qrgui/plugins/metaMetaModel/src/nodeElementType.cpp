@@ -75,9 +75,7 @@ const QList<PointPortInfo> &NodeElementType::pointPorts() const
 void NodeElementType::addPointPort(const PointPortInfo &port)
 {
 	mPointPorts << port;
-	if (!mPortTypes.contains(port.type)) {
-		mPortTypes << port.type;
-	}
+	mPortTypes << port.type;
 }
 
 const QList<LinePortInfo> &NodeElementType::linePorts() const
@@ -88,9 +86,7 @@ const QList<LinePortInfo> &NodeElementType::linePorts() const
 void NodeElementType::addLinePort(const LinePortInfo &port)
 {
 	mLinePorts << port;
-	if (!mPortTypes.contains(port.type)) {
-		mPortTypes << port.type;
-	}
+	mPortTypes << port.type;
 }
 
 const QList<CircularPortInfo> &NodeElementType::circularPorts() const
@@ -101,9 +97,7 @@ const QList<CircularPortInfo> &NodeElementType::circularPorts() const
 void NodeElementType::addCircularPort(const CircularPortInfo &port)
 {
 	mCircularPorts << port;
-	if (!mPortTypes.contains(port.type)) {
-		mPortTypes << port.type;
-	}
+	mPortTypes << port.type;
 }
 
 const QStringList &NodeElementType::portTypes() const

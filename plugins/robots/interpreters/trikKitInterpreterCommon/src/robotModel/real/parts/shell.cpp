@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,10 @@ Shell::Shell(const DeviceInfo &info, const PortInfo &port
 {
 	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::printText
 			, this, &Shell::textPrinted);
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::fileContentsFromRobot
+			, this, &Shell::fileContents);
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::mailFromRobot
+			, this, &Shell::mailArrived);
 }
 
 void Shell::say(const QString &text)
@@ -69,6 +73,12 @@ void Shell::removeFile(const QString &filePath)
 	mRobotCommunicator.runDirectCommand(directCommand);
 }
 
+void Shell::readFile(const QString &filePath)
+{
+	const QString directCommand = "script.sendMessage(\"fileContents: \" + script.readAll(\"" + filePath + "\"))";
+	mRobotCommunicator.runDirectCommand(directCommand);
+}
+
 void Shell::print(const QString &text)
 {
 	const QString pathToCommand = ":/trikQts/templates/functions/print.t";
@@ -80,6 +90,6 @@ void Shell::print(const QString &text)
 
 void Shell::initVideoStreaming()
 {
-	const QString shellToExecute = "/etc/init.d/mjpg-encoder-ov7670 start && /etc/init.d/mjpg-streamer-ov7670.sh start";
+	const QString shellToExecute = "/etc/init.d/mjpg-encoder-ov7670 start && /etc/init.d/mjpg-streamer-ov7670 start";
 	runCommand(shellToExecute);
 }

@@ -1,0 +1,1 @@
+ArcSin(@@ARGUMENT@@)

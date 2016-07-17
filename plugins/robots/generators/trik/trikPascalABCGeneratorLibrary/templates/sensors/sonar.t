@@ -1,0 +1,1 @@
+{ Sonar sensor is not supported yet }

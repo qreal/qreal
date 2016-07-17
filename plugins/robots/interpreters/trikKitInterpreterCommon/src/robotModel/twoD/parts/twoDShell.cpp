@@ -65,6 +65,14 @@ void Shell::removeFile(const QString &filePath)
 	out.remove();
 }
 
+void Shell::readFile(const QString &filePath)
+{
+	QFile out(filePath);
+	out.open(QIODevice::ReadOnly);
+	QString text{out.readAll()};
+	emit fileContents(text);
+}
+
 void Shell::print(const QString &text)
 {
 	emit textPrinted(text);
