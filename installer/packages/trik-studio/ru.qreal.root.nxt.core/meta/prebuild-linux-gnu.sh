@@ -5,7 +5,9 @@ set -o errexit
 cd "$(dirname "$0")"
 
 
+mkdir -p $PWD/../data/lib/plugins/editors/
 mkdir -p $PWD/../data/lib/plugins/tools/kitPlugins/
+cp     $BIN_DIR/plugins/editors/nxtMetamodel.so                                  $PWD/../data/lib/plugins/editors/
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-nxt-interpreter.so            $PWD/../data/lib/plugins/tools/kitPlugins/
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-nxt-osek-c-generator.so       $PWD/../data/lib/plugins/tools/kitPlugins/
 cp     $BIN_DIR/plugins/tools/kitPlugins/librobots-nxt-russian-c-generator.so    $PWD/../data/lib/plugins/tools/kitPlugins/

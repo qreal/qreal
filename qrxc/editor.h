@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ public:
 	Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler);
 	~Editor();
 
-	XmlCompiler *xmlCompiler();
+	XmlCompiler *xmlCompiler() const;
 
 	QString version() const;
 
@@ -52,10 +52,17 @@ public:
 	Diagram *findDiagram(const QString &name);
 	QMap<QString, Diagram*> diagrams();
 
+	/// Returns name of editor that is extended by this metamodel. In most cases this method will return empty string.
+	/// If some value is returned then this editor is some kind of "plugin" to the returned one.
+	QString extendedEditor() const;
+
 private:
+	QString resolveInclude(const QDomElement &includeElement, const QDir &currentDir);
+
 	XmlCompiler *mXmlCompiler;
 	QDomDocument mXmlDomDocument;
 	bool mLoadingComplete;
+	QString mExtendedMetamodel;
 	QString mVersion;
 	QList<Editor*> mIncludes;
 	QMap<QString, Diagram*> mDiagrams;

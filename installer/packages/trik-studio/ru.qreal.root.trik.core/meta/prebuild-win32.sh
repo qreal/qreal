@@ -4,6 +4,8 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
+mkdir -p $PWD/../data/plugins/editors
+cp    $BIN_DIR/plugins/editors/trikMetamodel.dll                                  $PWD/../data/plugins/editors/
 cp    $BIN_DIR/robots-trik-qts-generator-library.dll                              $PWD/../data/
 cp    $BIN_DIR/robots-trik-generator-base.dll                                     $PWD/../data/
 cp    $BIN_DIR/robots-trik-kit.dll                                                $PWD/../data/
