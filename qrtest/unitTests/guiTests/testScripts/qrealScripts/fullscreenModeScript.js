@@ -52,7 +52,7 @@ expectPanelsAction("File Toolbar", true);
 expectPanelsAction("Edit Toolbar", true);
 expectPanelsAction("View Toolbar", true);
 expectPanelsAction("Interpreter Toolbar", false);
-expectPanelsAction("Generators Toolbar", false);
+expectPanelsAction("Generators Toolbar", true);
 
 utils.activateMenuAction(menu_View, actionFullscreen);
 api.wait(300);
@@ -78,7 +78,7 @@ expectPanelsAction("File Toolbar", true);
 expectPanelsAction("Edit Toolbar", true);
 expectPanelsAction("View Toolbar", true);
 expectPanelsAction("Interpreter Toolbar", false);
-expectPanelsAction("Generators Toolbar", false);
+expectPanelsAction("Generators Toolbar", true);
 
 // try to turn on errors dockwidget and turn off palette dockwidget
 utils.activateMenuAction(menu_View, actionMenuPanels);

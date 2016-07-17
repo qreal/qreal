@@ -42,15 +42,10 @@ var paletteTreeWidget = ui.widget("qReal::gui::PaletteTreeWidget" , "paletteTree
 assert(paletteTreeWidget != null);
 var paletteViewPort = ui.viewPort(paletteTreeWidget);
 assert(paletteViewPort != null);
-activateContextMenuActionLater("Add Element", 200);
-// or invokeLater(utils, "activateContextMenuAction", "Add Element", 200);
+activateContextMenuActionLater("Add Entity", 200);
+// or invokeLater(utils, "activateContextMenuAction", "Add Entity", 200);
 rightClick(paletteViewPort);
 api.wait(200);
-
-clickButtonLater("ChooseTypeDialog", "edgeRadioButton", 200);
-clickButtonLater("ChooseTypeDialog", "nodeRadioButton", 400);
-clickButtonLater("ChooseTypeDialog", "OK", 600);
-api.wait(800);
 
 clickButtonLater("AddNodeDialog", "checkBox", 200);
 fillInputWidgetLater("AddNodeDialog", "nameEdit", "rootNode", 400);

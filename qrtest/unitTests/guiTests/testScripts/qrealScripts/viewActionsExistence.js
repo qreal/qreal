@@ -63,4 +63,4 @@ expectPanelsAction("File Toolbar", true);
 expectPanelsAction("Edit Toolbar", true);
 expectPanelsAction("View Toolbar", true);
 expectPanelsAction("Interpreter Toolbar", false);
-expectPanelsAction("Generators Toolbar", false);
+expectPanelsAction("Generators Toolbar", true);
