@@ -345,6 +345,29 @@ void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 		out() << "\t\t\tpainter->drawEllipse(-5, 0, 10, 10);\n";
 	}
 
+	if (style == "one_relationship") {
+		out() << "\t\t\tQPen pen;\n"
+				 "\t\t\tpen.setWidth(1);\n"
+				 "\t\t\tpainter->setPen(pen);\n";
+		out() << "\t\t\tstatic const QPointF points[] = {\n"
+		"\t\t\t\tQPointF(-7,10),\n\t\t\t\tQPointF(7,10)\n\t\t\t};\n"
+		"\t\t\tpainter->drawPolyline(points, 2);\n";
+
+		out() << "\t\t\tstatic const QPointF points2[] = {\n"
+		"\t\t\t\tQPointF(-7,18),\n\t\t\t\tQPointF(7,18)\n\t\t\t};\n"
+		"\t\t\tpainter->drawPolyline(points2, 2);\n";
+	}
+
+	if (style == "many_relationship") {
+		out() << "\t\t\tQPen pen;\n"
+				 "\t\t\tpen.setWidth(1);\n"
+				 "\t\t\tpainter->setPen(pen);\n";
+		out() << "\t\t\tstatic const QPointF points[] = {\n"
+		"\t\t\t\tQPointF(-7,0),\n\t\t\t\tQPointF(0,15),\n\t\t\t\tQPointF(7,0)\n\t\t\t};\n"
+		"\t\t\tpainter->drawPolyline(points, 3);\n";
+		out() << "\t\t\tpainter->drawEllipse(-5, 15, 10, 10);\n";
+	}
+
 	if (bpmnEdges.contains(style)) {
 		QStringList parts = style.split('_');
 		out() << "\t\t\tpainter->save();\n";
