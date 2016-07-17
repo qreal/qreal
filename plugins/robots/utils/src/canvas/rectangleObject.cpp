@@ -52,9 +52,9 @@ void RectangleObject::setFilled(bool filled)
 	mFilled = filled;
 }
 
-void RectangleObject::paint(QPainter *painter)
+void RectangleObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->setBrush(mFilled ? QBrush(color(), Qt::SolidPattern) : QBrush());
 	painter->drawRect(mShape);
 }

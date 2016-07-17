@@ -68,7 +68,7 @@ public:
 	void drawEllipse(int x, int y, int width, int height) override;
 	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) override;
 	void printText(int x, int y, const QString &text) override;
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 	void reset() override;
 	void redraw() override;
 

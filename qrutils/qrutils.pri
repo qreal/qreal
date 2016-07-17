@@ -69,7 +69,7 @@ TRANSLATIONS = \
 
 QT += xml widgets svg
 
-includes(qrtext)
+includes(qrtext qrgraph)
 
 links(qrkernel qslog qrtext)
 

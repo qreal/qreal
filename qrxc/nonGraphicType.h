@@ -23,18 +23,8 @@ namespace utils {
 class NonGraphicType : public Type
 {
 public:
-	virtual bool resolve();
-	virtual void generateCode(utils::OutFile &out);
-	virtual void generateNameMapping(utils::OutFile &out);
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference);
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
-	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
-	virtual void generateMouseGesturesMap(utils::OutFile &out);
-	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
-	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
-	virtual void generateExplosionsMap(utils::OutFile &out);
+	bool resolve() override;
+	void generateCode(utils::OutFile &out) override;
 
 protected:
 	NonGraphicType();

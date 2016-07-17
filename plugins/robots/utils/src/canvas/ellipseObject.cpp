@@ -82,9 +82,9 @@ void EllipseObject::setFilled(bool filled)
 	mFilled = filled;
 }
 
-void EllipseObject::paint(QPainter *painter)
+void EllipseObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->setBrush(mFilled ? QBrush(color(), Qt::SolidPattern) : QBrush());
 	painter->drawEllipse(mCenter, mSemiDiameterX, mSemiDiameterY);
 }

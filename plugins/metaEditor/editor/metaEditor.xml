@@ -191,9 +191,6 @@
 						<property type="string" name="shape"/>
 						<property type="string" name="description"/>
 						<property type="string" name="abstract"/>
-						<property type="bool" name="isAction">
-							<default>false</default>
-						</property>
 						<property type="string" name="path"/>
 						<property type="bool" name="isResizeable">
 							<default>true</default>
@@ -590,7 +587,7 @@
 					</properties>
 				</logic>
 			</edge>
-			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
+			<node name="MetaEntityPossibleEdge" displayedName="Possible Edge (Deprecated)" description="Сущность для указания элементов, которые можно присоединять к данному с помощью «вытягивания» из него связей. Вкладывается в соответствующий элемент Node">
 				<graphics>
 					<picture sizex="25" sizey="25">
 						<ellipse fill="#ffffff" stroke-style="solid" stroke="#2f4f4f" y1="0" x1="0" y2="25" stroke-width="1" x2="25" fill-style="solid"/>
@@ -653,24 +650,6 @@
 				<properties/>
 				</logic>
 			</node>
-			<node name="Listener" displayedName="Listener" description="Не поддерживается">
-				<graphics>
-					<picture sizex="250" sizey="80">
-						<rectangle fill="#ffffff" stroke-style="solid" stroke="#000000" y1="0" x1="0" y2="80" stroke-width="1" x2="250" fill-style="solid"/>
-					</picture>
-					<labels>
-						<label x="5" y="3" textBinded="class" center="true"/>
-						<label x="5" y="50" textBinded="file" center="true"/>
-					</labels>
-					<ports/>
-				</graphics>
-				<logic>
-					<properties>
-						<property type="string" name="class"/>
-						<property type="string" name="file"/>
-					</properties>
-				</logic>
-			</node>
 		</graphicTypes>
 				<palette>
 			<group name="DSL Elements" description="Элементы метаязыка для описания узлов и связей создаваемого языка">
@@ -688,7 +667,7 @@
 			<group name="Node Properties" description="Элементы метаязыка для указания свойств узлов создаваемого языка">
 				<element name="MetaEntity Attribute"/>
 				<element name="MetaEntityPropertiesAsContainer"/>
-				<element name="MetaEntityPossibleEdge"/>
+				<!-- <element name="MetaEntityPossibleEdge"/> -->
 			</group>
 			<group name="Enum Properties" description="Элементы метаязыка для указания свойств перечисляемого типа создаваемого языка">
 				<element name="MetaEntityValue"/>

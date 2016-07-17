@@ -57,9 +57,9 @@ QRect LineObject::boundingRect() const
 			, QPoint(qMax(mBegin.x(), mEnd.x()), qMax(mBegin.y(), mEnd.y())));
 }
 
-void LineObject::paint(QPainter *painter)
+void LineObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->drawLine(mBegin, mEnd);
 }
 

@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group, Yurii Litvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../global.pri)
+include($$PWD/../../global.pri)
 
 DESTDIR = $$DESTDIR/plugins/editors
 
@@ -27,8 +27,8 @@ if (equals(QMAKE_CXX, "g++")) {
 	QMAKE_LFLAGS += -Wl,-E
 }
 
-QRMC_ROOT = ..
+ROOT = $$PWD/../..
 
 include(pluginsSdk.pri)
 
-includes(qrgui)
+includes($$PWD/../qrgui)

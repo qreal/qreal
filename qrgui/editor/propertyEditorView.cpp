@@ -119,10 +119,11 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
-				isButton = true;
-			}
+		}
+
+		/// @todo: Not property name should be hard-coded, new type must be introduced (like 'sdf' or 'qml')!
+		if ((name == "shape" && typeName == "string") || mModel->isReference(valueCell, name)) { // hack
+			isButton = true;
 		}
 
 		QtProperty *item = nullptr;

@@ -50,10 +50,8 @@
 #include <qrgui/dialogs/findReplaceDialog.h>
 #include <qrgui/editor/propertyEditorView.h>
 #include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/systemFacade/systemFacade.h>
 
@@ -365,11 +363,6 @@ void MainWindow::clearSelectionOnTabs()
 			tab->scene()->clearSelection();
 		}
 	}
-}
-
-void MainWindow::addEditorElementsToPalette(const Id &editor, const Id &diagram)
-{
-	mUi->paletteTree->addEditorElements(editorManager(), editor, diagram);
 }
 
 void MainWindow::adjustMinimapZoom(int zoom)
@@ -1378,18 +1371,12 @@ void MainWindow::showGestures()
 	}
 }
 
-
-ProxyEditorManager &MainWindow::editorManagerProxy()
-{
-	return *static_cast<ProxyEditorManager *>(&editorManager());
-}
-
 void MainWindow::createDiagram(const QString &idString)
 {
 	closeStartTab();
 	const Id id = Id::loadFromString(idString);
 	Id created;
-	if (editorManager().isNodeOrEdge(id.editor(), id.element())) {
+	if (editorManager().isNodeOrEdge(id.type())) {
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
@@ -1808,29 +1795,6 @@ void MainWindow::customizeActionsVisibility()
 			break;
 		}
 	}
-}
-
-void MainWindow::initInterpretedPlugins()
-{
-	mInterpretedPluginLoader.reset(new InterpretedPluginsLoader(
-			editorManagerProxy().proxiedEditorManager()
-			, PluginConfigurator(
-					models().repoControlApi()
-					, models().graphicalModelAssistApi()
-					, models().logicalModelAssistApi()
-					, *this
-					, *this
-					, *mProjectManager
-					, *mSceneCustomizer
-					, mFacade->events()
-					, *mTextManager)
-			)
-	);
-
-	const QList<ActionInfo> actions = mInterpretedPluginLoader->listOfActions();
-	mListOfAdditionalActions = mInterpretedPluginLoader->menuActionsList();
-
-	traverseListOfActions(actions);
 }
 
 void MainWindow::showErrors(const gui::ErrorReporter * const errorReporter)

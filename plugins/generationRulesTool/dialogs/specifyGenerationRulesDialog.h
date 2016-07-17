@@ -16,7 +16,7 @@
 
 #include <QtWidgets/QDialog>
 
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
 #include "mainWindow/mainWindow.h"
 #include "dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
@@ -39,9 +39,8 @@ public:
 	/// @param mainWindow Reference to QReal main window.
 	/// @param interpreterEditorManager Editor manager.
 	/// @param id Id of metamodel element we are specifying generation rules for.
-	SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager
+	SpecifyGenerationRulesDialog(const EditorManagerInterface *interpreterEditorManager
 			, const Id &id
-			, qrRepo::LogicalRepoApi *metamodelRepoApi
 			, QWidget *parent = 0);
 
 	~SpecifyGenerationRulesDialog() override;
@@ -78,10 +77,9 @@ private:
 	QStringList propertiesDisplayedNamesList(const QStringList &propertiesNames);
 
 	Ui::SpecifyGenerationRulesDialog *mUi;  // has ownership
-	EditorManagerInterface *mInterpreterEditorManager;  // doesn't have ownership
+	const EditorManagerInterface *mEditorManager;  // doesn't have ownership
 	const Id mId;
 	QStringList mPropertiesNames;
-	qrRepo::LogicalRepoApi *mMetamodelRepoApi;  // doesn't have ownership
 };
 
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ public:
 	QString name() const override;
 	QString friendlyName() const override;
 	bool needsConnection() const override;
+	int updateIntervalForInterpretation() const override;
 	utils::TimelineInterface &timeline() override;
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;

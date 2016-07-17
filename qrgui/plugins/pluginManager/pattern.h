@@ -45,6 +45,7 @@ public:
 	QString to;
 };
 
+/// @todo: Information returned by getters of this class must be part of PatternType and should be generated.
 class QRGUI_PLUGINS_MANAGER_EXPORT Pattern
 {
 public:
@@ -77,7 +78,7 @@ public:
 	void setRootNode(const QString &rootId);
 
 	QPointF size() const;
-	void countSize(EditorManager *editorManager);
+	void countSize(const EditorManager *editorManager);
 
 private:
 	QString mEditor;

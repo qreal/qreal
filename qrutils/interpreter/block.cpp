@@ -16,6 +16,7 @@
 
 #include <thirdparty/qslog/QsLog.h>
 #include <qrtext/languageToolboxInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 using namespace qReal;
 using namespace interpretation;

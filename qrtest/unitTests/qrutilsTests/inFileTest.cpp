@@ -14,11 +14,12 @@
 
 #include <QtCore/QFile>
 
-#include "../../../qrutils/inFile.h"
+#include <qrutils/inFile.h>
 
 #include "gtest/gtest.h"
 
-TEST(InFileTest, readAllTest) {
+TEST(InFileTest, readAllTest)
+{
 	QFile file("testFile");
 	file.open(QIODevice::ReadWrite);
 
