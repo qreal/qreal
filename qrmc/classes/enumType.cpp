@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,29 @@
  * limitations under the License. */
 
 #include "enumType.h"
-#include "../utils/nameNormalizer.h"
+
+#include "qrmc/utils/nameNormalizer.h"
 
 using namespace qReal;
 using namespace qrmc;
 
-EnumType::EnumType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id) : NonGraphicType(diagram, api, id)
+EnumType::EnumType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id)
+	: NonGraphicType(diagram, api, id)
 {
 }
 
 bool EnumType::init(const QString &context)
 {
 	Type::init(context);
-	IdList children = mApi->children(mId);
-	foreach(Id child, children) {
-		if (!mApi->isLogicalElement(child))
+	const IdList children = mApi.children(mId);
+	for (const Id &child : children) {
+		if (!mApi.isLogicalElement(child)) {
 			continue;
+		}
+
 		if (child.element() == metaEntityValue) {
-			const QString name = mApi->stringProperty(child, "valueName");
-			const QString displayedName = mApi->stringProperty(child, "displayedName");
+			const QString name = mApi.stringProperty(child, "valueName");
+			const QString displayedName = mApi.stringProperty(child, "displayedName");
 			mValues[name] = displayedName;
 		}
 	}
@@ -41,7 +45,7 @@ bool EnumType::init(const QString &context)
 
 Type* EnumType::clone() const
 {
-	EnumType *result = new EnumType(nullptr, mApi, mId);
+	EnumType *result = new EnumType(diagram(), mApi, mId);
 	Type::copyFields(result);
 	result->mValues = mValues;
 	return result;
@@ -63,7 +67,7 @@ QString EnumType::generateEnums(const QString &lineTemplate) const
 			lineForWrite = "qMakePair(QString(\"" + value + "\"), tr(\"" + mValues[value] + "\"))";
 		}
 	}
-	line.replace(qMakeLineTag, lineForWrite).replace(elementNameTag, name());
 
+	line.replace(qMakeLineTag, lineForWrite).replace(elementNameTag, name());
 	return line;
 }

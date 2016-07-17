@@ -14,7 +14,7 @@
 
 #include "autosaver.h"
 
-#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>

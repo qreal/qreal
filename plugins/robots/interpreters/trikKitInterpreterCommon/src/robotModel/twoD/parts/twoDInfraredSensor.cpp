@@ -18,10 +18,6 @@
 
 using namespace trik::robotModel::twoD::parts;
 
-/// The maximal distance that returned by IR sensor; when the object is closer
-/// IR sensor starts to return less values non-lineary.
-const int maxDistance = 93;
-
 TwoDInfraredSensor::TwoDInfraredSensor(const kitBase::robotModel::DeviceInfo &info
 		, const kitBase::robotModel::PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)

@@ -42,7 +42,7 @@ Id ModelsAssistApi::createElement(const Id &parent, const Id &id, const Id &logi
 		newId = id.sameTypeId();
 	}
 
-	const bool isEdge = mEditorManagerInterface.isNodeOrEdge(newId.editor(), newId.element()) == -1;
+	const bool isEdge = mEditorManagerInterface.isNodeOrEdge(newId.type()) == -1;
 
 	ElementInfo info(newId, realLogicalId, isFromLogicalModel ? parent : Id(), isFromLogicalModel ? Id() : parent
 			, {{"name", name}}, {{"position", position}}, Id(), isEdge);

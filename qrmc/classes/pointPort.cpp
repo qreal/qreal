@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  * limitations under the License. */
 
 #include "pointPort.h"
-#include "../utils/defs.h"
-#include "../metaCompiler.h"
+
+#include "qrmc/utils/defs.h"
+#include "qrmc/metaCompiler.h"
 
 using namespace qrmc;
 
@@ -35,16 +36,16 @@ Port* PointPort::clone() const
 	return result;
 }
 
-QString PointPort::generateSdf(MetaCompiler *compiler) const
+QString PointPort::generateSdf(const MetaCompiler &compiler) const
 {
-	QString result = compiler->getTemplateUtils(pointPortTag);
+	QString result = compiler.getTemplateUtils(pointPortTag);
 	result.replace(pointXTag, QString::number(mX * mWidth)).replace(pointYTag, QString::number(mY * mHeight));
 	return result;
 }
 
-QString PointPort::generateInit(MetaCompiler *compiler) const
+QString PointPort::generateInit(const MetaCompiler &compiler) const
 {
-	QString result = compiler->getTemplateUtils(nodePointPortInitTag);
+	QString result = compiler.getTemplateUtils(nodePointPortInitTag);
 	result.replace(pointXTag, QString::number(mX)).replace(pointYTag, QString::number(mY));
 	return result;
 

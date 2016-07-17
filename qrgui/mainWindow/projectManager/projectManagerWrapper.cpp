@@ -29,7 +29,6 @@
 #include <qrgui/models/models.h>
 #include <qrgui/models/propertyEditorModel.h>
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 
 using namespace qReal;
 using namespace utils;
@@ -212,7 +211,7 @@ void ProjectManagerWrapper::close()
 
 void ProjectManagerWrapper::save()
 {
-	mMainWindow->editorManagerProxy().saveMetamodel("");
+	mMainWindow->editorManager().saveMetamodel("");
 	ProjectManager::save();
 }
 
@@ -223,7 +222,7 @@ bool ProjectManagerWrapper::saveOrSuggestToSaveAs()
 	}
 
 	if (mSaveFilePath == mAutosaver.tempFilePath()
-			|| mSaveFilePath == mMainWindow->editorManagerProxy().saveMetamodelFilePath()) {
+			|| mSaveFilePath == mMainWindow->editorManager().saveMetamodelFilePath()) {
 		return suggestToSaveAs();
 	}
 
@@ -242,12 +241,12 @@ bool ProjectManagerWrapper::suggestToSaveAs()
 		return true;
 	}
 
-	if (mMainWindow->editorManagerProxy().isInterpretationMode()) {
+	if (mMainWindow->editorManager().isInterpretationMode()) {
 		const QString newMetamodelFileName = saveFileName(tr("Select file to save current metamodel to"));
 		if (newMetamodelFileName.isEmpty()) {
 			return false;
 		}
-		mMainWindow->editorManagerProxy().saveMetamodel(newMetamodelFileName);
+		mMainWindow->editorManager().saveMetamodel(newMetamodelFileName);
 	}
 
 	return ProjectManager::suggestToSaveAs();

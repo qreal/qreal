@@ -110,7 +110,7 @@ public:
 	/// Serializes shapes into one big JSON array and returns it.
 	QJsonArray toJson() const;
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 
 protected:
 	/// Has ownership

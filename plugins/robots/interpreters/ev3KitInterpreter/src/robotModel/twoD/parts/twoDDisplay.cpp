@@ -62,7 +62,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 
 void Display::printText(int x, int y, const QString &text)
 {
-	Canvas::printText(x, y + textSize, text);
+	Canvas::printText(x, y, text);
 }
 
 void Display::clearScreen()
@@ -70,8 +70,10 @@ void Display::clearScreen()
 	Canvas::reset();
 }
 
-void Display::paint(QPainter *painter)
+void Display::paint(QPainter *painter, const QRect &outputRect)
 {
+	Q_UNUSED(outputRect);
+
 	painter->save();
 	painter->scale(static_cast<qreal>(mEngine.display()->displayWidth()) / ev3DisplayWidth
 			, static_cast<qreal>(mEngine.display()->displayHeight()) / ev3DisplayHeight);
@@ -85,7 +87,7 @@ void Display::paint(QPainter *painter)
 	painter->setFont(font);
 	painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
-	Canvas::paint(painter);
+	Canvas::paint(painter, {0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight()});
 
 	painter->restore();
 }

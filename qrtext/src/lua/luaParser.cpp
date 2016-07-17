@@ -18,8 +18,9 @@
 #include "qrtext/core/parser/operators/parserCombinators.h"
 #include "qrtext/core/parser/operators/expressionParser.h"
 
-#include "qrtext/lua/ast/expression.h"
+#include "qrtext/lua/luaStringEscapeUtils.h"
 
+#include "qrtext/lua/ast/expression.h"
 #include "qrtext/lua/ast/addition.h"
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/bitwiseAnd.h"
@@ -214,8 +215,11 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					// Cut off quotes.
 					string.remove(0, 1);
 					string.chop(1);
-					return new ast::String(string);
 
+					// Replace escape characters.
+					auto transformedString = LuaStringEscapeUtils::unescape(string);
+
+					return new ast::String(transformedString);
 				}
 			| LuaTokenTypes::tripleDot >> reportUnsupported
 			| prefixexp

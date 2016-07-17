@@ -32,6 +32,7 @@ public:
 	QString friendlyName() const override;
 	int priority() const override;
 
+	void updateSensorsValues() const override;
 	bool needsConnection() const override;
 	void connectToRobot() override;
 	void stopRobot() override;

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,28 @@
 
 #include "port.h"
 
-#include <QDomElement>
+#include <QtXml/QDomElement>
 
 namespace qrmc {
-	class MetaCompiler;
 
-	class PointPort : public Port
-	{
-	public:
-		virtual bool init(const QDomElement &element, int width, int height);
-		virtual Port* clone() const;
+class MetaCompiler;
 
-		virtual QString generateSdf(MetaCompiler *compiler) const;
-		virtual QString generateInit(MetaCompiler *compiler) const;
-		virtual void generatePortList(const QStringList &portTypes);
+/// Represents point port.
+class PointPort : public Port
+{
+public:
+	bool init(const QDomElement &element, int width, int height) override;
+	virtual Port* clone() const override;
 
-	private:
-		qreal mX;
-		qreal mY;
-		int mWidth;
-		int mHeight;
-	};
+	virtual QString generateSdf(const MetaCompiler &compiler) const override;
+	virtual QString generateInit(const MetaCompiler &compiler) const override;
+	virtual void generatePortList(const QStringList &portTypes) override;
+
+private:
+	qreal mX = 0;
+	qreal mY = 0;
+	int mWidth = 0;
+	int mHeight = 0;
+};
+
 }

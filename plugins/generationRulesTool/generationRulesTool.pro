@@ -16,7 +16,7 @@ include(../../global.pri)
 
 TEMPLATE = lib
 CONFIG += plugin 
-DESTDIR = $$DESTDIR/plugins/interpreted/
+DESTDIR = $$DESTDIR/plugins/tools/
 
 TRANSLATIONS = $$PWD/../../qrtranslations/ru/plugins/generationRulesTool_ru.ts
 

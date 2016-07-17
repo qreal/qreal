@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,11 @@ void EmptyShell::writeToFile(const QString &filePath, const QString &text)
 }
 
 void EmptyShell::removeFile(const QString &filePath)
+{
+	Q_UNUSED(filePath)
+}
+
+void EmptyShell::readFile(const QString &filePath)
 {
 	Q_UNUSED(filePath)
 }

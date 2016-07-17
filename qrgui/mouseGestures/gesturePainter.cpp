@@ -14,6 +14,8 @@
 
 #include "gesturePainter.h"
 
+#include <QtGui/QPainter>
+
 #include "mouseMovementManager.h"
 
 using namespace qReal::gestures;

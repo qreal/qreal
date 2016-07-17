@@ -17,7 +17,7 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
 #include "ast/node.h"
 #include "variablesTable.h"
@@ -37,7 +37,7 @@ public:
 	/// @param diagramID - current diagram id.
 	/// @param pathToGeneratedCode - path to folder with generated code.
 	GeneratorConfigurer(qReal::LogicalModelAssistInterface *logicalModelInterface
-			, qReal::EditorManagerInterface *editorManagerInterface
+			, const qReal::EditorManagerInterface *editorManagerInterface
 			, const qReal::Id &editorId
 			, const qReal::Id &diagramId
 			, const QString &pathToGeneratedCode)
@@ -55,7 +55,7 @@ public:
 	}
 
 	/// Returns data about metamodel.
-	qReal::EditorManagerInterface *editorManagerInterface() const
+	const qReal::EditorManagerInterface *editorManagerInterface() const
 	{
 		return mEditorManagerInterface;
 	}
@@ -80,7 +80,7 @@ public:
 
 private:
 	qReal::LogicalModelAssistInterface *mLogicalModelAssistInterface;  // doesn't have ownership
-	qReal::EditorManagerInterface *mEditorManagerInterface;  // doesn't have ownership
+	const qReal::EditorManagerInterface *mEditorManagerInterface;  // doesn't have ownership
 	const qReal::Id &mEditorId;
 	const qReal::Id &mDiagramId;
 	const QString &mPathToGeneratedCode;

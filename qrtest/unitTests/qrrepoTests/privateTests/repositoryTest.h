@@ -16,13 +16,13 @@
 
 #include <gtest/gtest.h>
 
-#include "../../../qrrepo/private/repository.h"
-#include "../../../qrrepo/private/serializer.h"
+#include <qrrepo/private/repository.h>
+#include <qrrepo/private/serializer.h>
 
 namespace qrTest {
 
-class RepositoryTest : public testing::Test {
-
+class RepositoryTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 

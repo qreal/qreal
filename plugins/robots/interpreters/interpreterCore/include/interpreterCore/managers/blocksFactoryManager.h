@@ -18,7 +18,7 @@
 #include <QtCore/QSharedPointer>
 
 #include <kitBase/robotModel/robotModelInterface.h>
-#include "blocksFactoryManagerInterface.h"
+#include "interpreterCore/managers/blocksFactoryManagerInterface.h"
 
 namespace interpreterCore {
 

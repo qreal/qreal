@@ -176,43 +176,43 @@
 <context>
     <name>qReal::gui::editor::EditorViewScene</name>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="292"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="283"/>
         <source>Create new element</source>
         <translation type="unfinished">Créer un nouvel élement</translation>
     </message>
     <message>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="342"/>
         <location filename="../../qrgui/editor/editorViewScene.cpp" line="351"/>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="360"/>
         <source>Connect with the current item</source>
         <translation type="unfinished">Relier avec l&apos;élement courant</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="837"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="828"/>
         <source>Add child</source>
         <translation type="unfinished">Rajouter un élement</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1286"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1277"/>
         <source>Delete</source>
         <translation type="unfinished">Supprimer</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1290"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1281"/>
         <source>Copy</source>
         <translation type="unfinished">Copier</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1294"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1285"/>
         <source>Paste</source>
         <translation type="unfinished">Coller</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1298"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1289"/>
         <source>Paste only graphical copy</source>
         <translation type="unfinished">Coller que la copie graphique</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1302"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1293"/>
         <source>Cut</source>
         <translation type="unfinished">Couper</translation>
     </message>

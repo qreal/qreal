@@ -19,6 +19,8 @@
 #include <QtCore/QPointF>
 
 #include <qrkernel/ids.h>
+#include <metaMetaModel/patternType.h>
+#include <metaMetaModel/metamodel.h>
 
 #include "plugins/pluginManager/editorManager.h"
 #include "plugins/pluginManager/pattern.h"
@@ -29,43 +31,42 @@ PatternParser::PatternParser()
 {
 }
 
-void PatternParser::loadXml(const QString &xml)
+bool PatternParser::parseGroup(const EditorManager *editorManager, const PatternType &pattern)
 {
-	mXml = xml;
-	mXml.replace("\\\"", "\"");
-	mXml.replace("\\n", "\n");
-}
+	const QString xml = pattern.xml().replace("\\\"", "\"").replace("\\n", "\n");
 
-void PatternParser::parseGroups(EditorManager *editorManager, const QString &editor, const QString &diagram)
-{
 	QDomDocument doc;
-	if (mXml.isNull()){
-		qDebug() << "ERROR: pattern parser: no xml-file to parse";
-		return;
+	if (xml.isEmpty()){
+		qWarning() << "ERROR: pattern parser: no xml-file to parse";
+		return false;
 	}
 
 	mEditorManager = editorManager;
-	mEditor = editor;
-	mDiagram = diagram;
-	doc.setContent(mXml);
-	QDomElement groups = doc.firstChildElement("groups");
-	if (groups.isNull()) {
-		return;
+	mEditor = pattern.editor();
+	mDiagram = pattern.diagram();
+
+	QString errorMessage;
+	int errorLine, errorColumn;
+	if (!doc.setContent(xml, &errorMessage, &errorLine, &errorColumn)) {
+		qWarning() << QString("%1:%2: %3").arg(QString::number(errorLine), QString::number(errorColumn), errorMessage);
+		return false;
 	}
 
-	for (QDomElement group = groups.firstChildElement("group"); !group.isNull()
-			; group = group.nextSiblingElement("group"))
-	{
-		parseGroup(group);
+	const QDomElement groupElement = doc.documentElement();
+	if (groupElement.tagName() != "group") {
+		qWarning() << "No 'group' root element found";
+		return false;
 	}
+
+	return parseGroup(groupElement);
 }
 
-QList<Pattern> PatternParser::patterns() const
+const Pattern &PatternParser::pattern() const
 {
-	return mPatterns;
+	return mPattern;
 }
 
-void PatternParser::parseGroup(const QDomElement &group)
+bool PatternParser::parseGroup(const QDomElement &group)
 {
 	Pattern pattern(mEditor, mDiagram, group.attribute("name")
 			, group.attribute("inNode"), group.attribute("outNode")
@@ -84,7 +85,8 @@ void PatternParser::parseGroup(const QDomElement &group)
 	}
 
 	pattern.countSize(mEditorManager);
-	mPatterns += pattern;
+	mPattern = pattern;
+	return true;
 }
 
 void PatternParser::parseNode(const QDomElement &node, Pattern &pattern)

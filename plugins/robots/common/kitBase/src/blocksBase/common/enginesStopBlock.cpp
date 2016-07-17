@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,19 @@ EnginesStopBlock::EnginesStopBlock(RobotModelInterface &robotModel)
 
 void EnginesStopBlock::run()
 {
-	for (robotParts::Motor * const motor : parsePorts<robotParts::Motor>()) {
-		motor->off();
+	robotModel::robotParts::MotorsAggregator *aggregator = findMotorsAggregator();
+	const QList<robotParts::Motor *> ports = parsePorts<robotParts::Motor>();
+	if (aggregator) {
+		QList<QString> portsNames;
+		for (robotParts::Motor * const motor : ports) {
+			portsNames.append(motor->port().name());
+		}
+
+		aggregator->off(portsNames);
+	} else {
+		for (robotParts::Motor * const motor : ports) {
+			motor->off();
+		}
 	}
 
 	emit done(mNextBlockId);

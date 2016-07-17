@@ -96,4 +96,4 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE(qReal::PluginInterface, "ru.tepkom.QReal.PluginInterface/0.2")
+Q_DECLARE_INTERFACE(qReal::PluginInterface, "ru.spbsu.QReal.PluginInterface/0.3")

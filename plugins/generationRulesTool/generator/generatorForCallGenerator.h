@@ -17,7 +17,6 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 #include "ast/callGeneratorFor.h"
@@ -50,7 +49,7 @@ private:
 			, const GeneratorConfigurer &generatorConfigurer
 			, ScopeInfo &scopeInfo);
 
-	static qReal::Id idInMetamodel(qReal::EditorManagerInterface *editorManagerInterface
+	static qReal::Id idInMetamodel(const qReal::EditorManagerInterface *editorManagerInterface
 			, const QString &elementName
 			, const qReal::Id &diagramId);
 };

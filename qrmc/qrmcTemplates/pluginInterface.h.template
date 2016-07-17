@@ -1,0 +1,53 @@
+// ----------------------------------------------------------------------- //
+// This file is auto-generated with qrmc v1.0. Do not modify its contents
+// or prepare to lose your edits. If you want to change something in it
+// consider editing language metamodel instead.
+// ----------------------------------------------------------------------- //
+
+#pragma once
+
+#include <metaMetaModel/metamodel.h>
+
+/// Generated implementation of @@MetamodelName@@ editor plugin.
+///  See QRMC template "pluginInterface.h.template".
+class @@MetamodelName@@Plugin : public QObject, public qReal::Metamodel
+{
+	Q_OBJECT
+	Q_INTERFACES(qReal::Metamodel)
+	Q_PLUGIN_METADATA(IID "@@MetamodelName@@")
+
+public:
+
+	@@MetamodelName@@Plugin();
+
+	QString id() const override { return "@@MetamodelName@@"; }
+	QString version() const override { return "1.0.0"; }
+
+	QStringList diagrams() const override;
+
+	QList<QPair<QString, QString>> enumValues(const QString &name) const override;
+	bool isEnumEditable(const QString &name) const override;
+
+	QString editorName() const override;
+	QString diagramName(const QString &diagram) const override;
+	qReal::ElementType *diagramNode(const QString &diagram) const override;
+
+	QStringList diagramPaletteGroups(const QString &diagram) const override;
+	QStringList diagramPaletteGroupList(const QString &diagram, const QString &group) const override;
+	QString diagramPaletteGroupDescription(const QString &diagram, const QString &group) const override;
+	bool shallPaletteBeSorted(const QString &diagram) const override;
+
+private:
+	void initPlugin();
+	void initMouseGestureMap();
+	void initNameMap();
+	void initPropertyMap();
+	void initPropertyDefaultsMap();
+	void initParentsMap();
+
+	QMap<QString, QString> mDiagramNameMap;
+	QMap<QString, QString> mDiagramNodeNameMap;
+	QMap<QString, QList<QPair<QString, QStringList>>> mPaletteGroupsMap;  // Maps element`s lists of all palette groups.
+	QMap<QString, QMap<QString, QString>> mPaletteGroupsDescriptionMap;
+	QMap<QString, bool> mShallPaletteBeSortedMap;
+};

@@ -13,12 +13,8 @@
  * limitations under the License. */
 
 #include "configurationFileParser.h"
-#include "defs.h"
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QDebug>
-
-#include "qrutils/xmlUtils.h"
+#include <qrutils/xmlUtils.h>
 
 using namespace editorPluginTestingFramework;
 
@@ -79,16 +75,17 @@ QString ConfigurationFileParser::htmlGenerationParameter() const
 	return mGenerateHtml;
 }
 
+QString ConfigurationFileParser::generatedDirHtml() const
+{
+	return mGeneratedDirHtml;
+}
+
 QString ConfigurationFileParser::generatedCodeDirQrxc() const
 {
 	return mGeneratedCodeDirQrxc;
 }
+
 QString ConfigurationFileParser::generatedCodeDirQrmc() const
 {
 	return mGeneratedCodeDirQrmc;
-}
-
-QString ConfigurationFileParser::generatedDirHtml() const
-{
-	return mGeneratedDirHtml;
 }

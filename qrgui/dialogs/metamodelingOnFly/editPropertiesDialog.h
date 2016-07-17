@@ -17,12 +17,14 @@
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidgetItem>
 
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-
 #include "qrgui/dialogs/metamodelingOnFly/restorePropertiesDialog.h"
 
 namespace Ui {
 class EditPropertiesDialog;
+}
+
+namespace qrRepo {
+class LogicalRepoApi;
 }
 
 namespace qReal {
