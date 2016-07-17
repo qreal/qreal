@@ -116,7 +116,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
-	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../../qrmc", mLogicalRepoApi);
+	qrmc::MetaCompiler metaCompiler(*mLogicalRepoApi, ".");
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
@@ -337,8 +337,8 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 				delete progress;
 				return;
 			} else if (buildConfiguration == "debug") {
-				if (mMainWindowInterface->loadPlugin(prefix + metamodelName 
-						+ "-d"+ "." + extension, normalizeDirName)) 
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName
+						+ "-d"+ "." + extension, normalizeDirName))
 				{
 					progress->setValue(100);
 				}

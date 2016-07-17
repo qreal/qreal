@@ -14,49 +14,37 @@
 
 #pragma once
 
-#include <QtCore/QSignalMapper>
-#include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSplashScreen>
-#include <QtWidgets/QProgressBar>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QTreeView>
-#include <QtSql/QSqlDatabase>
 
-#include <qrkernel/settingsManager.h>
-
-#include "findManager.h"
-#include "referenceList.h"
-#include "projectManager/projectManagerWrapper.h"
-#include "tabWidget.h"
-#include "startWidget/startWidget.h"
 #include "scriptAPI/scriptAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/editorManager.h>
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
-#include <qrgui/plugins/pluginManager/toolPluginManager.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
-
-#include <qrgui/systemFacade/systemFacade.h>
-#include <qrgui/editor/propertyEditorView.h>
-#include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/controller/controller.h>
 
 #include <qrgui/preferencesDialog/preferencesDialog.h>
-#include <qrgui/dialogs/findReplaceDialog.h>
 
 class QGraphicsView;
+class QSignalMapper;
+class QListWidget;
+class QTreeView;
+
+class PropertyEditorModel;
+class FindManager;
+class FindReplaceDialog;
 
 namespace Ui {
 class MainWindowUi;
 }
 
 namespace qReal {
+class Controller;
+class EditorManagerInterface;
+class ProjectManagerWrapper;
 class SplashScreen;
+class StartWidget;
+class SystemFacade;
+class ToolPluginManager;
+class ActionInfo;
 
 namespace gui {
 class ErrorReporter;
@@ -65,6 +53,7 @@ class PaletteTree;
 namespace editor {
 class SceneCustomizer;
 class EditorView;
+class PropertyEditorView;
 }
 }
 
@@ -83,15 +72,15 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow(const QString &fileToOpen = QString());
+	explicit MainWindow(const QString &fileToOpen = QString());
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
-	qReal::gui::editor::EditorView *getCurrentTab() const;
+	gui::editor::EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
-	qReal::gui::editor::PropertyEditorView *propertyEditor() const;
+	gui::editor::PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
 	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
@@ -110,7 +99,7 @@ public:
 	void openShapeEditor(const Id &id
 			, const QString &propertyValue
 			/// @todo: whan passing it by reference the build on travis fails
-			, const EditorManagerInterface *editorManagerProxy
+			, const EditorManagerInterface *editorManager
 			, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
 			, const int &role);
@@ -137,10 +126,10 @@ public:
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(const Id &id);
 
-	virtual void reportOperation(invocation::LongOperation *operation);
-	virtual QWidget *currentTab();
-	virtual void openTab(QWidget *tab, const QString &title);
-	virtual void closeTab(QWidget *tab);
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
+	QWidget *currentTab() override;
+	void openTab(QWidget *tab, const QString &title) override;
+	void closeTab(QWidget *tab) override;
 
 	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
 
@@ -148,19 +137,11 @@ public:
 	/// @param id Id of a diagram (root element) that we want to close.
 	void closeDiagramTab(const Id &id);
 
-	/// Returns editor manager proxy, which allows to change editor manager implementation.
-	ProxyEditorManager &editorManagerProxy();
-
 	/// Loads (or reloads) available editor plugins and reinits palette.
-	void loadPlugins();
+	void loadEditorPlugins();
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
-
-	/// Adds all elements from given diagram in a given editor to a palette.
-	/// @param editor Id of an editor we need to add elements from.
-	/// @param diagram Id of a diagram we need to add elements from.
-	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 
 	QDockWidget *logicalModelDock() const override;
 	QDockWidget *graphicalModelDock() const override;
@@ -183,9 +164,9 @@ public:
 
 	void beginPaletteModification() override;
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 	void endPaletteModification() override;
 
 	/// Additional actions for interpreter palette.
@@ -215,9 +196,6 @@ public slots:
 
 	void openFirstDiagram();
 	void changeWindowTitle();
-
-	/// Inits interpreted plugins and adds their actions to the toolbar.
-	void initInterpretedPlugins();
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -375,7 +353,7 @@ private:
 	void setVersion(const QString &version);
 
 	Ui::MainWindowUi *mUi;
-	SystemFacade mFacade;
+	QScopedPointer<SystemFacade> mFacade;
 
 	QScopedPointer<SplashScreen> mSplashScreen;
 
@@ -386,9 +364,8 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	Controller *mController;
-	ToolPluginManager mToolManager;
-	InterpretedPluginsLoader mInterpretedPluginLoader;
-	PropertyEditorModel mPropertyModel;
+	QScopedPointer<ToolPluginManager> mToolManager;
+	QScopedPointer<PropertyEditorModel> mPropertyModel;
 	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;

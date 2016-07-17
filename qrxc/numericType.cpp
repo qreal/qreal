@@ -43,31 +43,3 @@ Type* NumericType::clone() const
 	result->mBaseType = mBaseType;
 	return result;
 }
-
-bool NumericType::generateEnumValues(utils::OutFile &out, bool isNotFirst)
-{
-	Q_UNUSED(out);
-	Q_UNUSED(isNotFirst);
-	return false;
-}
-
-void NumericType::generatePropertyTypes(utils::OutFile &out)
-{
-	Q_UNUSED(out);
-}
-
-void NumericType::generatePropertyDefaults(utils::OutFile &out)
-{
-	Q_UNUSED(out);
-}
-
-void NumericType::generateMouseGesturesMap(utils::OutFile &out)
-{
-	Q_UNUSED(out);
-}
-
-void NumericType::generateExplosionsMap(utils::OutFile &out)
-{
-	Q_UNUSED(out)
-}
-

@@ -25,12 +25,14 @@ SUBDIRS = \
 	qrrepo \
 	plugins \
 	qrkernel \
+	qrgraph \
 	qrutils \
 	qrtext \
 	thirdparty \
 	qrtranslations \
 
 qrkernel.depends = thirdparty
+qrgraph.depends = qrkernel
 qrutils.depends = qrkernel qrtext
 qrrepo.depends = qrkernel qrutils
 qrxc.depends = qrutils
@@ -42,6 +44,7 @@ qrgui.depends = \
 	qrrepo \
 	qrutils \
 	qrkernel \
+	qrgraph \
 	qrmc \
 	thirdparty \
 
@@ -50,8 +53,13 @@ plugins.depends = \
 	qrrepo \
 	qrutils \
 	qrkernel \
+	qrgraph \
 	qrmc \
 	qrgui \
 	qrtext \
 
 qrtext.depends = qrkernel
+
+OTHER_FILES += \
+	$$PWD/.travis.yml \
+	$$PWD/appveyor.yml \

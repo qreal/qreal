@@ -30,14 +30,9 @@ Type * PortType::clone() const
 
 void PortType::generateCode(utils::OutFile &out)
 {
-	const QString name = Type::name();
+//	const QString name = Type::name();
 
-	out() << "\tclass " << name << " : public PortImpl\n"
-	<< "\t{\n"
-	<< "\tpublic:\n"
-	<< "\t\t~" << name << "() {}\n"
-	<< "\t\tvirtual QString type() const { return \"" << name << "\"; }\n"
-	<< "\t};\n\n";
+	out() << "\t/* Typed ports are not supported yet */\n";
 }
 
 bool PortType::generateEnumValues(utils::OutFile &out, bool isNotFirst)

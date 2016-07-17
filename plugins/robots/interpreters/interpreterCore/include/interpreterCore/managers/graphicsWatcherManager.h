@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,12 +16,14 @@
 
 #include <QtCore/QObject>
 
-#include <qrutils/graphicsWatcher/sensorsGraph.h>
+#include <utils/sensorsGraph.h>
 #include <kitBase/devicesConfigurationProvider.h>
 
 #include <qrtext/debuggerInterface.h>
 
 namespace interpreterCore {
+
+class RobotModelManager;
 
 /// Incapsulates inner operations on managing graphics watcher in the dock window.
 class GraphicsWatcherManager : public QObject, public kitBase::DevicesConfigurationProvider
@@ -29,12 +31,14 @@ class GraphicsWatcherManager : public QObject, public kitBase::DevicesConfigurat
 public:
 	/// Constructor.
 	/// @param parser - blocks parser, used to show values of variables on graphs.
+	/// @param robotManager - object that controls currently selected robot model.
 	/// @param parent - parent of this widget in Qt widget hierarchy.
-	explicit GraphicsWatcherManager(const qrtext::DebuggerInterface &parser, QObject *parent = 0);
+	GraphicsWatcherManager(const qrtext::DebuggerInterface &parser
+			, RobotModelManager &robotManager
+			, QObject *parent = 0);
 
-	/// Returns the graphics watcher widget itself for placing it into dock.
-	/// Note that if this method will not be called, nobody will delete a widget, which will result in memleak.
-	QWidget *widget();  // Transfers ownership
+	/// Returns the graphics watcher widget itself for placing it into dock. Takes ownership over result.
+	QWidget *widget();
 
 public slots:
 	/// Starts graphics watcher`s job even if user stopped it himself.
@@ -51,7 +55,8 @@ private:
 
 	void updateSensorsList(const QString &currentRobotModel);
 
-	utils::sensorsGraph::SensorsGraph *mWatcher;  // Doesn`t have ownership
+	QScopedPointer<utils::sensorsGraph::SensorsGraph> mWatcher;
+	RobotModelManager &mRobotManager;
 };
 
 }

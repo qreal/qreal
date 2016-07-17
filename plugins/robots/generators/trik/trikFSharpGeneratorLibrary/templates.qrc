@@ -73,12 +73,8 @@
         <file>templates/sensors/motion.t</file>
         <file>templates/sensors/scalar.t</file>
         <file>templates/sensors/vector.t</file>
-        <file>templates/gyroscope/gyroscopeX.t</file>
-        <file>templates/gyroscope/gyroscopeY.t</file>
-        <file>templates/gyroscope/gyroscopeZ.t</file>
-        <file>templates/accelerometer/accelerometerX.t</file>
-        <file>templates/accelerometer/accelerometerY.t</file>
-        <file>templates/accelerometer/accelerometerZ.t</file>
+        <file>templates/gyroscope/gyroscope.t</file>
+        <file>templates/accelerometer/accelerometer.t</file>
         <file>templates/videosensors/LineSensorX.t</file>
         <file>templates/videosensors/LineSensorSize.t</file>
         <file>templates/videosensors/LineSensorCrossroads.t</file>

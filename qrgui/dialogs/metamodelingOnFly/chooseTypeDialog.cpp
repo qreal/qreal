@@ -32,7 +32,8 @@ ChooseTypeDialog::ChooseTypeDialog(const Id &diagram
 		, mEditorManagerProxy(editorManagerProxy)
 {
 	mUi->setupUi(this);
-	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), SIGNAL(clicked()), this, SLOT(okButtonClicked()));
+	connect(mUi->nodeButton, SIGNAL(clicked()), this, SLOT(nodeButtonClicked()));
+	connect(mUi->edgeButton, SIGNAL(clicked()), this, SLOT(edgeButtonClicked()));
 }
 
 ChooseTypeDialog::~ChooseTypeDialog()
@@ -40,17 +41,18 @@ ChooseTypeDialog::~ChooseTypeDialog()
 	delete mUi;
 }
 
-void ChooseTypeDialog::okButtonClicked()
+void ChooseTypeDialog::nodeButtonClicked()
 {
-	if (mUi->nodeRadioButton->isChecked()) {
-		AddNodeDialog *nodeDialog = new AddNodeDialog(mDiagram, mEditorManagerProxy, parentWidget());
-		connect(nodeDialog, &AddNodeDialog::jobDone, this, &ChooseTypeDialog::jobDone);
-		nodeDialog->setModal(true);
-		nodeDialog->show();
-	} else if (mUi->edgeRadioButton->isChecked()) {
-		EdgePropertiesDialog *edgeDialog = new EdgePropertiesDialog(mDiagram, mEditorManagerProxy, parentWidget());
-		connect(edgeDialog, &EdgePropertiesDialog::jobDone, this, &ChooseTypeDialog::jobDone);
-		edgeDialog->setModal(true);
-		edgeDialog->show();
-	}
+	AddNodeDialog *nodeDialog = new AddNodeDialog(mDiagram, mEditorManagerProxy, parentWidget());
+	connect(nodeDialog, &AddNodeDialog::jobDone, this, &ChooseTypeDialog::jobDone);
+	nodeDialog->setModal(true);
+	nodeDialog->show();
+}
+
+void ChooseTypeDialog::edgeButtonClicked()
+{
+	EdgePropertiesDialog *edgeDialog = new EdgePropertiesDialog(mDiagram, mEditorManagerProxy, parentWidget());
+	connect(edgeDialog, &EdgePropertiesDialog::jobDone, this, &ChooseTypeDialog::jobDone);
+	edgeDialog->setModal(true);
+	edgeDialog->show();
 }

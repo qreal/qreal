@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
+/* Copyright 2012-2016 Yurii Litvinov, Dmitry Mordvinov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,20 +40,20 @@ public:
 
 	/// Returns a pointer to communication thread object that currently implementing this communicator.
 	RobotCommunicationThreadInterface *currentCommunicator() const;
-	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
-	/// Checks if connection can be established or emits errorOccured();
-	void checkConsistency();
+	/// Sets object that implements communication with robot. Does not take ownership.
+	void setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication);
 
 signals:
 	void errorOccured(const QString &message);
+	void messageArrived(const QString &message);
 	void connected(bool success, const QString &errorString);
 	void disconnected();
 	void response(QObject *addressee, const QByteArray &buffer);
 
 private:
 	QThread mRobotCommunicationThread;
-	RobotCommunicationThreadInterface *mRobotCommunicationThreadObject;
+	RobotCommunicationThreadInterface *mRobotCommunicationThreadObject;  // Does not have owenrship
 };
 
 }

@@ -19,6 +19,7 @@
 #include "type.h"
 #include "enumType.h"
 #include "portType.h"
+#include "nameNormalizer.h"
 #include <qrutils/outFile.h>
 
 #include <QtCore/QDebug>
@@ -65,15 +66,6 @@ bool Editor::load(const QDir &currentDir)
 			return false;
 		}
 		mIncludes.append(includeFile);
-	}
-
-	//Load listeners
-	for (QDomElement listenerElement = metamodel.firstChildElement("listener"); !listenerElement.isNull();
-		listenerElement = listenerElement.nextSiblingElement("listener"))
-	{
-		QString fileName = listenerElement.attribute("file");
-		QString className = listenerElement.attribute("class");
-		mListeners << QPair<QString, QString>(fileName, className);
 	}
 
 	// Load diagrams part one: don't process inherited properties.
@@ -123,18 +115,41 @@ QString Editor::version() const
 
 Type* Editor::findType(const QString &name)
 {
-	foreach (Diagram *diagram, mDiagrams.values()) {
-		foreach (Type *type, diagram->types()) {
-			if (type->qualifiedName() == name)
+	for (Diagram *diagram : mDiagrams.values()) {
+		for (Type *type : diagram->types()) {
+			if (type->qualifiedName() == name) {
 				return type;
+			}
 		}
 	}
 
-	foreach (Editor *editor, mIncludes) {
+	for (Editor *editor : mIncludes) {
 		Type *type = editor->findType(name);
-		if (type != nullptr && type->qualifiedName() == name)
+		if (type != nullptr && type->qualifiedName() == name) {
 			return type;
+		}
 	}
+
+	return nullptr;
+}
+
+Type *Editor::findTypeByNormalizedName(const QString &name)
+{
+	for (Diagram *diagram : mDiagrams.values()) {
+		for (Type *type : diagram->types()) {
+			if (NameNormalizer::normalize(type->name()) == name) {
+				return type;
+			}
+		}
+	}
+
+	for (Editor *editor : mIncludes) {
+		Type *type = editor->findType(name);
+		if (type != nullptr && NameNormalizer::normalize(type->name()) == name) {
+			return type;
+		}
+	}
+
 	return nullptr;
 }
 
@@ -158,26 +173,6 @@ QSet<EnumType*> Editor::getAllEnumTypes()
 	return result;
 }
 
-QStringList Editor::getAllPortNames() const
-{
-	QStringList result;
-
-	foreach (const Diagram * const diagram, mDiagrams.values()) {
-		foreach (const Type * const type, diagram->types()) {
-			if (dynamic_cast<const PortType * const>(type)) {
-				result << type->name();
-			}
-		}
-	}
-
-	foreach (const Editor * const editor, mIncludes) {
-		result += editor->getAllPortNames();
-	}
-
-	result.removeDuplicates();
-	return result;
-}
-
 Diagram* Editor::findDiagram(const QString &name)
 {
 	if (mDiagrams.contains(name))
@@ -188,27 +183,4 @@ Diagram* Editor::findDiagram(const QString &name)
 QMap<QString, Diagram*> Editor::diagrams()
 {
 	return mDiagrams;
-}
-
-void Editor::generateListenerIncludes(utils::OutFile &out) const
-{
-	typedef QPair<QString, QString> StringPair;
-	foreach (StringPair listener, mListeners) {
-		out() << "#include \"../" << listener.first << ".h\"\n";
-	}
-	out() << "\n";
-}
-
-void Editor::generateListenerFactory(utils::OutFile &out, const QString &pluginName) const
-{
-	out() << "QList<qReal::ListenerInterface*> " + pluginName + "Plugin::listeners() const\n"
-		<< "{\n"
-		<< "\tQList<qReal::ListenerInterface*> result;\n";
-
-	typedef QPair<QString, QString> StringPair;
-	foreach (StringPair listener, mListeners)
-		out() << "\tresult << new " + listener.second + ";\n";
-
-	out() << "\treturn result;\n"
-		<< "}\n";
 }

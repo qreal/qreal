@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 #include <QtWidgets/QGraphicsColorizeEffect>
 
 #include <qrkernel/settingsListener.h>
+#include <qrgui/models/models.h>
+#include <qrgui/models/commands/renameCommand.h>
 #include <qrgui/models/commands/changePropertyCommand.h>
 
 #include "qrgui/editor/labels/label.h"
@@ -27,18 +29,15 @@ using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
-Element::Element(ElementImpl *elementImpl
-		, const Id &id
-		, models::GraphicalModelAssistApi &graphicalAssistApi
-		, models::LogicalModelAssistApi &logicalAssistApi
-		)
+Element::Element(const ElementType &elementType, const Id &id, const models::Models &models)
 	: mMoving(false)
 	, mEnabled(true)
 	, mId(id)
-	, mElementImpl(elementImpl)
-	, mLogicalAssistApi(logicalAssistApi)
-	, mGraphicalAssistApi(graphicalAssistApi)
+	, mModels(models)
+	, mLogicalAssistApi(models.logicalModelAssistApi())
+	, mGraphicalAssistApi(models.graphicalModelAssistApi())
 	, mController(nullptr)
+	, mType(elementType)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemClipsChildrenToShape |
 			ItemClipsToShape | ItemSendsGeometryChanges);
@@ -69,6 +68,32 @@ QString Element::name() const
 void Element::updateData()
 {
 	setToolTip(mGraphicalAssistApi.toolTip(id()));
+	for (Label * const label : mLabels) {
+		if (label->info().binding().isEmpty()) {
+			continue;
+		}
+
+		const QString text = label->info().binding() == "name" ? name() : logicalProperty(label->info().binding());
+		/// @todo: Label must decide what to call itself.
+		if (label->info().isPlainTextMode()) {
+			label->setPlainText(text);
+		} else {
+			label->setTextFromRepo(text);
+		}
+	}
+}
+
+void Element::setName(const QString &value, bool withUndoRedo)
+{
+	commands::AbstractCommand *command = new commands::RenameCommand(mGraphicalAssistApi
+			, id(), value, &mModels.exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+		// Controller will take ownership
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 QString Element::logicalProperty(const QString &roleName) const
@@ -76,10 +101,15 @@ QString Element::logicalProperty(const QString &roleName) const
 	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
 }
 
-void Element::setLogicalProperty(const QString &roleName, const QString &value, bool withUndoRedo)
+void Element::setLogicalProperty(const QString &roleName, const QString &oldValue
+		, const QString &newValue, bool withUndoRedo)
 {
+	if (oldValue == newValue) {
+		return;
+	}
+
 	commands::AbstractCommand *command = new commands::ChangePropertyCommand(&mLogicalAssistApi
-			, roleName, logicalId(), value);
+			, roleName, logicalId(), oldValue, newValue);
 	if (withUndoRedo) {
 		mController->execute(command);
 	} else {
@@ -100,16 +130,6 @@ Controller * Element::controller() const
 
 void Element::initTitles()
 {
-}
-
-ElementImpl* Element::elementImpl() const
-{
-	return mElementImpl;
-}
-
-bool Element::createChildrenFromMenu() const
-{
-	return mElementImpl->createChildrenFromMenu();
 }
 
 void Element::updateEnabledState()
@@ -133,7 +153,7 @@ void Element::updateEnabledState()
 void Element::setHideNonHardLabels(bool hide)
 {
 	for (Label * const label : mLabels) {
-		label->setVisible(label->isHard() || !hide);
+		label->setVisible(label->isHard() || !hide || label->isSelected());
 	}
 }
 

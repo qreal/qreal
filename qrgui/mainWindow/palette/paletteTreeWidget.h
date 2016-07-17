@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <functional>
+
 #include <QtWidgets/QTreeWidget>
 
 #include "mainWindow/palette/paletteElement.h"
@@ -69,11 +71,11 @@ public:
 	/// Travels thorough the whole model and calls \a action for each model index.
 	void traverse(const Action &action) const;
 
+	/// Returns set that may let quickly determine should we update palette or no.
+	const QSet<PaletteElement> &elementsSet() const;
+
 protected:
 	void mousePressEvent(QMouseEvent *event);
-
-private slots:
-	void addElementPaletteActionTriggered();
 
 private:
 	/// Adds group of editor's elements to appropriate tree to some top element.
@@ -112,6 +114,7 @@ private:
 	PaletteTree &mPaletteTree;
 	bool mEditable;
 
+	QSet<PaletteElement> mElementsSet;
 	QHash<Id, DraggableElement *> mPaletteElements;  // Takes ownership.
 	QHash<Id, QTreeWidgetItem *> mPaletteItems;  // Takes ownership.
 	QHash<QTreeWidgetItem *, bool> mItemsVisible;

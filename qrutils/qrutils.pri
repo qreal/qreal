@@ -23,6 +23,7 @@ HEADERS += \
 	$$PWD/scalableCoordinate.h \
 	$$PWD/nameNormalizer.h \
 	$$PWD/fileSystemUtils.h \
+	$$PWD/functionTraits.h \
 	$$PWD/stringUtils.h \
 	$$PWD/qRealDialog.h \
 	$$PWD/qRealFileDialog.h \
@@ -33,6 +34,7 @@ HEADERS += \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
 	$$PWD/widgetFinder.h \
+	$$PWD/singleton.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -65,7 +67,7 @@ TRANSLATIONS = \
 
 QT += xml widgets
 
-includes(qrtext)
+includes(qrtext qrgraph)
 
 links(qrkernel qslog qrtext)
 
@@ -80,14 +82,8 @@ include($$PWD/graphicsUtils/graphicsUtils.pri)
 # Stuff connected with graphs and trees
 include($$PWD/graphUtils/graphUtils.pri)
 
-# Stuff for running long operations in different modes
-include($$PWD/invocationUtils/invocationUtils.pri)
-
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
-
-# Real-time plot
-include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)

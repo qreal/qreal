@@ -43,6 +43,8 @@ public:
 	/// @todo: move this logic into sensors adding here some more low-level logic instead.
 	int readTouchSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readSonarSensor(const kitBase::robotModel::PortInfo &port) const override;
+	QVector<int> readAccelerometerSensor() const override;
+	QVector<int> readGyroscopeSensor() const override;
 	int readColorSensor(const kitBase::robotModel::PortInfo &port) const override;
 	int readLightSensor(const kitBase::robotModel::PortInfo &port) const override;
 

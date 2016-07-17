@@ -14,7 +14,7 @@ mkdir -p $PWD/../data/lib/plugins/tools/
 cp     $INSTALLER_ROOT/platform/$PRODUCT                                $PWD/../data/
 cp     $INSTALLER_ROOT/platform/$PRODUCT-linux-gnu-platform.config      $PWD/../data/bin/platform.config || :
 
-cp -pr $BIN_DIR/libqrkernel.so*                                         $PWD/../data/lib/
+cp -pr $BIN_DIR/libqrgraph.so*                                          $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrrepo.so*                                           $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrutils.so*                                          $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrtext.so*                                           $PWD/../data/lib/
@@ -28,6 +28,7 @@ cp -pr $BIN_DIR/libqrgui-hotkey-manager.so*                             $PWD/../
 cp -pr $BIN_DIR/libqrgui-models.so*                                     $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-mouse-gestures.so*                             $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-plugin-manager.so*                             $PWD/../data/lib/
+cp -pr $BIN_DIR/libqrgui-meta-meta-model.so*                            $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-preferences-dialog.so*                         $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-text-editor.so*                                $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgui-thirdparty.so*                                 $PWD/../data/lib/

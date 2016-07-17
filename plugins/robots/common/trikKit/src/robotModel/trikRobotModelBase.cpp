@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
 #include "trikKit/robotModel/parts/trikPowerMotor.h"
+#include "trikKit/robotModel/parts/trikMotorsAggregator.h"
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 #include "trikKit/robotModel/parts/trikSonarSensor.h"
 #include "trikKit/robotModel/parts/trikMotionSensor.h"
@@ -67,6 +68,7 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("M2", output, { "М2" }), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M3", output, { "М3" }), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M4", output, { "М4" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("MAll", output, { "MAll" }), { powerMotorsAggregatorInfo() });
 
 	addAllowedConnection(PortInfo("A1", input, { "А1" }, "sensorA1"), analogPortConnections);
 	addAllowedConnection(PortInfo("A2", input, { "А2" }, "sensorA2"), analogPortConnections);
@@ -78,13 +80,11 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("D1", input, {}, "sensorD1"), { sonarSensorInfo() });
 	addAllowedConnection(PortInfo("D2", input, {}, "sensorD2"), { sonarSensorInfo() });
 
-	addAllowedConnection(PortInfo("GyroscopePortX", input, {}, "gyroscopeX"), { gyroscopeInfo() });
-	addAllowedConnection(PortInfo("GyroscopePortY", input, {}, "gyroscopeY"), { gyroscopeInfo() });
-	addAllowedConnection(PortInfo("GyroscopePortZ", input, {}, "gyroscopeZ"), { gyroscopeInfo() });
+	addAllowedConnection(PortInfo("GyroscopePort", input, {}, "gyroscope", PortInfo::ReservedVariableType::vector)
+			, { gyroscopeInfo() });
 
-	addAllowedConnection(PortInfo("AccelerometerPortX", input, {}, "accelerometerX"), { accelerometerInfo() });
-	addAllowedConnection(PortInfo("AccelerometerPortY", input, {}, "accelerometerY"), { accelerometerInfo() });
-	addAllowedConnection(PortInfo("AccelerometerPortZ", input, {}, "accelerometerZ"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPort", input, {}, "accelerometer"
+			, PortInfo::ReservedVariableType::vector), { accelerometerInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
@@ -164,6 +164,11 @@ DeviceInfo TrikRobotModelBase::buttonInfo() const
 DeviceInfo TrikRobotModelBase::powerMotorInfo() const
 {
 	return DeviceInfo::create<robotParts::Motor>();
+}
+
+DeviceInfo TrikRobotModelBase::powerMotorsAggregatorInfo() const
+{
+	return DeviceInfo::create<robotParts::MotorsAggregator>();
 }
 
 DeviceInfo TrikRobotModelBase::servoMotorInfo() const

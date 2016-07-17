@@ -14,11 +14,12 @@
 
 #include <QtCore/QFile>
 
-#include "../../../qrutils/xmlUtils.h"
+#include <qrutils/xmlUtils.h>
 
 #include "gtest/gtest.h"
 
-TEST(XmlUtilsTest, loadDocumentTest) {
+TEST(XmlUtilsTest, loadDocumentTest)
+{
 	QFile file("testMetamodelFile");
 	file.open(QIODevice::ReadWrite);
 
@@ -38,4 +39,3 @@ TEST(XmlUtilsTest, loadDocumentTest) {
 	ASSERT_EQ(doc.elementsByTagName("logicTypes").size(), 1);
 	ASSERT_EQ(doc.elementsByTagName("diagram").at(0).childNodes().size(), 2);
 }
-

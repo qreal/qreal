@@ -15,21 +15,21 @@
 #include "specifyGenerationRulesDialog.h"
 #include "ui_specifyGenerationRulesDialog.h"
 
+#include <QtWidgets/QPushButton>
+
 #include "appearance/ruleHighlighter.h"
 #include "appearance/keywords.h"
 
 using namespace qReal;
 using namespace gui;
 
-SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterface *interpreterEditorManager
+SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(const EditorManagerInterface *editorManager
 		, const Id &id
-		, qrRepo::LogicalRepoApi *metamodelRepoApi
 		, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::SpecifyGenerationRulesDialog)
-	, mInterpreterEditorManager(interpreterEditorManager)
+	, mEditorManager(editorManager)
 	, mId(id)
-	, mMetamodelRepoApi(metamodelRepoApi)
 {
 	mUi->setupUi(this);
 
@@ -54,7 +54,7 @@ SpecifyGenerationRulesDialog::SpecifyGenerationRulesDialog(EditorManagerInterfac
 	connect(mUi->buttonBox->button(QDialogButtonBox::Ok), &QPushButton::clicked, this
 			, &SpecifyGenerationRulesDialog::saveGenerationRule);
 
-	this->setWindowTitle(tr("Specify rules for ") + mInterpreterEditorManager->friendlyName(mId));
+	this->setWindowTitle(tr("Specify rules for ") + mEditorManager->friendlyName(mId));
 	this->setVisible(true);
 }
 
@@ -77,12 +77,12 @@ void SpecifyGenerationRulesDialog::insertTemplateIntoCode(QTreeWidgetItem *templ
 
 void SpecifyGenerationRulesDialog::saveGenerationRule()
 {
-	mInterpreterEditorManager->updateGenerationRule(mId, mUi->codeArea->toPlainText());
+	mEditorManager->updateGenerationRule(mId, mUi->codeArea->toPlainText());
 }
 
 void SpecifyGenerationRulesDialog::addPropertiesList()
 {
-	mPropertiesNames = mInterpreterEditorManager->propertyNames(mId);
+	mPropertiesNames = mEditorManager->propertyNames(mId);
 	const QStringList propertiesDisplayedNames = propertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesView->clear();
 	mUi->propertiesView->addItems(propertiesDisplayedNames);
@@ -119,7 +119,7 @@ void SpecifyGenerationRulesDialog::addOneTypeTemplates(const QString &type, cons
 
 void SpecifyGenerationRulesDialog::addOldRule()
 {
-	const auto previousRule = mInterpreterEditorManager->generationRule(mId);
+	const auto previousRule = mEditorManager->generationRule(mId);
 	mUi->codeArea->insertPlainText(previousRule);
 }
 
@@ -127,7 +127,7 @@ QStringList SpecifyGenerationRulesDialog::propertiesDisplayedNamesList(const QSt
 {
 	QStringList propertiesDisplayedNames;
 	for (const auto &propertyName : propertiesNames) {
-		propertiesDisplayedNames << mInterpreterEditorManager->propertyDisplayedName(mId, propertyName);
+		propertiesDisplayedNames << mEditorManager->propertyDisplayedName(mId, propertyName);
 	}
 
 	return propertiesDisplayedNames;

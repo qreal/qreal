@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,32 +32,40 @@ const int maxLineLength = 80;
 class GraphicType : public Type
 {
 public:
-	GraphicType(Diagram *diagram);
-	virtual ~GraphicType();
-	virtual bool init(const QDomElement &element, const QString &context);
-	virtual bool resolve();
-	virtual void generateNameMapping(utils::OutFile &out);
-	virtual void generateDescriptionMapping(utils::OutFile &out);
-	virtual void generatePropertyDisplayedNamesMapping(utils::OutFile &out);
-	virtual void generatePropertyDescriptionMapping(utils::OutFile &out);
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference);
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst);
-	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst);
-	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst);
-	virtual void generatePropertyTypes(utils::OutFile &out);
-	virtual void generatePropertyDefaults(utils::OutFile &out);
-	virtual void generateMouseGesturesMap(utils::OutFile &out);
-	virtual void generateParentsMapping(utils::OutFile &out);
-	virtual void generateExplosionsMap(utils::OutFile &out);
+	explicit GraphicType(Diagram *diagram);
+	~GraphicType() override;
+	bool init(const QDomElement &element, const QString &context) override;
+	bool resolve() override;
+
+	virtual bool copyPictures(GraphicType *parent) = 0;
 	virtual bool copyPorts(NodeType *parent) = 0;
 	void copyLabels(GraphicType *parent);
-	virtual bool copyPictures(GraphicType *parent) = 0;
 
 	QString description() const;
 	void setDescription(const QString &description);
 
+	/// Returns a list of types generalized by this one.
+	QStringList immediateParents() const;
+
+	/// Returns a list of types that instances of this one can contain.
+	/// Types are returned without considering of generalizations.
+	QStringList containedTypes() const;
+
+	/// Returns mapping of element`s possible explosion targets to explosion properties.
+	const QMap<QString, QPair<bool, bool>> &explosions() const;
+
 protected:
+	void generateCommonData(utils::OutFile &out) const;
+	void generateName(utils::OutFile &out) const;
+	void generateFriendlyName(utils::OutFile &out) const;
+	void generateDiagram(utils::OutFile &out) const;
+	void generateDescription(utils::OutFile &out) const;
+	void generateLabels(utils::OutFile &out) const;
+
+	void generatePropertyData(utils::OutFile &out) const;
+
+	QString boolToString(bool value) const;
+
 	/// @todo Remove this sh~.
 	typedef QPair<QPair<QString,QString>,QPair<bool,QString> > PossibleEdge;  // Lol
 
@@ -91,15 +99,12 @@ protected:
 	QStringList mContains;
 	ContainerProperties mContainerProperties;
 	QList<PossibleEdge> mPossibleEdges;
-	QStringList mBonusContextMenuFields;
 	QMap<QString, QPair<bool, bool> > mExplosions;
 	bool mCreateChildrenFromMenu;
 	QString mAbstract;
 	void copyFields(GraphicType *type) const;
 	QString resourceName(const QString &resourceType) const;
 	virtual bool isResolving() const;
-
-	void generateOneCase(utils::OutFile &out, bool isNotFirst) const;
 
 private:
 	class ResolvingHelper {
@@ -112,17 +117,15 @@ private:
 
 	bool mResolving;
 
-	bool initLabels();
-	bool initUsages();
-	bool initParents();
-	bool initBonusContextMenuFields();
-	bool initProperties();
-	bool initContainers();
-	bool initContainerProperties();
-	bool initCreateChildrenFromMenu();
-	bool initPossibleEdges();
-	bool initExplosions();
-	bool initTypeList(const QString &listName, const QString &listElementName
+	virtual bool initLabels();
+	virtual bool initParents();
+	virtual bool initProperties();
+	virtual bool initContainers();
+	virtual bool initContainerProperties();
+	virtual bool initCreateChildrenFromMenu();
+	virtual bool initPossibleEdges();
+	virtual bool initExplosions();
+	virtual bool initTypeList(const QString &listName, const QString &listElementName
 		, QStringList &resultingList) const;
 
 	bool initFieldList(const QString &listName, const QString &listElementName

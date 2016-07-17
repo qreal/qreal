@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,6 +32,11 @@ QMap<PortInfo, DeviceInfo> EngineCommandBlock::usedDevices()
 	}
 
 	return result;
+}
+
+robotParts::MotorsAggregator *EngineCommandBlock::findMotorsAggregator() const
+{
+	return robotModel::RobotModelUtils::findDevice<robotParts::MotorsAggregator>(mRobotModel, "MAll");
 }
 
 void EngineCommandBlock::timeout()

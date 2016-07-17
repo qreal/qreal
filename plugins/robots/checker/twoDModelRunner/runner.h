@@ -49,6 +49,9 @@ public:
 	/// will be closed immediately after the interpretation stopped.
 	bool interpret(const QString &saveFile, bool background);
 
+private slots:
+	void close();
+
 private:
 	void connectRobotModel(const model::RobotModel *robotModel);
 	void onRobotRided(const QPointF &newPosition, const qreal newRotation);

@@ -22,18 +22,19 @@ Gyroscope::Gyroscope(const DeviceInfo &info, const PortInfo &port
 	: kitBase::robotModel::robotParts::GyroscopeSensor(info, port)
 	, mRobotCommunicator(tcpRobotCommunicator)
 {
-	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newScalarSensorData
+	connect(&mRobotCommunicator, &utils::robotCommunication::TcpRobotCommunicator::newVectorSensorData
 			, this, &Gyroscope::onIncomingData);
 }
 
 void Gyroscope::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
-void Gyroscope::onIncomingData(const QString &portName, int value)
+void Gyroscope::onIncomingData(const QString &portName, const QVector<int> &value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

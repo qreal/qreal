@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>QReal BP</Name>
+    <Version>1.0.0</Version>
+    <Title>QReal BP</Title>
+    <Publisher>SPbSU</Publisher>
+    <ProductUrl>http://qreal.ru</ProductUrl>
+
+    <InstallerWindowIcon>../images/qreal.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>../images/qreal.ico</InstallerApplicationIcon>
+    <Logo>../images/qreal-logo.png</Logo>
+    <Watermark>../images/qreal-watermark.png</Watermark>
+
+    <StartMenuDir>QReal BP</StartMenuDir>
+    <RemoveTargetDir>true</RemoveTargetDir>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
+
+    <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
+    <TargetDir>@HomeDir@/QRealBP</TargetDir>
+    <AdminTargetDir>@RootDir@/QRealBP</AdminTargetDir>
+
+    <RunProgram>@TargetDir@/qreal</RunProgram>
+</Installer>

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #include <qrkernel/roles.h>
 
 #include "editor/edgeElement.h"
-#include "models/commands/createElementCommand.h"
+#include "models/commands/createElementsCommand.h"
 
 namespace qReal {
 namespace gui {
@@ -59,9 +59,9 @@ public:
 	virtual void mousePressEvent(QGraphicsSceneMouseEvent* event);
 
 private:
-	EdgeElement* mEdge;
-	NodeElement* mMaster;
-	Label* mTitle;
+	EdgeElement *mEdge;
+	NodeElement *mMaster;
+	Label *mTitle;
 
 	float mSize;
 	float mIndent;
@@ -74,7 +74,7 @@ private:
 	Id mEdgeType;
 
 	QPointF mInitialClickPoint;
-	qReal::commands::CreateElementCommand *mCreateEdgeCommand;
+	qReal::commands::CreateElementsCommand *mCreateEdgeCommand;
 };
 
 }

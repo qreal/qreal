@@ -56,6 +56,9 @@ private:
 	/// in TRIK removes v6 from robot model name).
 	static qReal::ProjectConverter from302to310Converter();
 
+	/// Replaces scalar gyroscope and accelerometer variables to vector ones.
+	static qReal::ProjectConverter from312to313Converter();
+
 	static bool isRobotsDiagram(const qReal::Id &element);
 	static bool isDiagramType(const qReal::Id &element);
 	static bool isEdgeType(const qReal::Id &element);

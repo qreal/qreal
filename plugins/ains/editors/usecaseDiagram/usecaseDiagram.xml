@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
     <namespace>UML 2.0</namespace>
-    <diagram displayedName="Редактор диаграмм прецедентов" nodeName="diagram" name="usecaseEditor">
+    <diagram displayedName="Редактор диаграмм прецедентов" nodeName="usecaseDiagram" name="usecaseEditor">
         <graphicTypes>
 		<node displayedName="Система" name="system">
 			<graphics>

@@ -16,6 +16,8 @@
 
 #include <qrkernel/logging.h>
 
+#include <qrtext/lua/luaStringEscapeUtils.h>
+
 #include <qrtext/lua/ast/number.h>
 #include <qrtext/lua/ast/unaryMinus.h>
 #include <qrtext/lua/ast/not.h>
@@ -374,7 +376,8 @@ void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> 
 void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::String> &node
 		, const QSharedPointer<qrtext::core::ast::Node> &)
 {
-	pushResult(node, readTemplate("string.t").replace("@@VALUE@@", node->string()));
+	auto escapedString = qrtext::lua::LuaStringEscapeUtils::escape(node->string());
+	pushResult(node, readTemplate("string.t").replace("@@VALUE@@", escapedString));
 }
 
 void LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::True> &node
@@ -478,8 +481,8 @@ QString LuaPrinter::to(const QSharedPointer<qrtext::core::types::TypeExpression>
 		return value;
 	}
 
-	QString castTemplate = readTemplate("types/cast.t");
-	const QString typeName = readTemplate(QString("types/%1.t").arg(templateName));
+	QString castTemplate = readTemplate("../types/cast.t");
+	const QString typeName = readTemplate(QString("../types/%1.t").arg(templateName));
 	return castTemplate.replace("@@TYPE@@", typeName).replace("@@EXPRESSION@@", value);
 }
 

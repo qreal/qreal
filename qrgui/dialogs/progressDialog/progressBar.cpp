@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,106 +17,25 @@
 using namespace qReal;
 
 ProgressBar::ProgressBar(QWidget *parent)
-	: QProgressBar(parent), mOperation(nullptr)
+	: QProgressBar(parent)
+	, mCurrentWatcher(nullptr)
 {
 	reset();
 }
 
-invocation::LongOperation *ProgressBar::operation() const
+void ProgressBar::reportOperation(const QFuture<void> &operation, const QString &description)
 {
-	return mOperation;
+	Q_UNUSED(description)
+	QFutureWatcher<void> * const watcher = new QFutureWatcher<void>(this);
+	connect(watcher, &QFutureWatcher<void>::started, this, &QProgressBar::reset);
+	connect(watcher, &QFutureWatcher<void>::progressRangeChanged, this, &QProgressBar::setRange);
+	connect(watcher, &QFutureWatcher<void>::progressValueChanged, this, &QProgressBar::setValue);
+	connect(watcher, &QFutureWatcher<void>::progressTextChanged, this, &QProgressBar::setFormat);
+	mCurrentWatcher = watcher;
+	watcher->setFuture(operation);
 }
 
-bool ProgressBar::isOperationConnected() const
+const QFutureWatcher<void> &ProgressBar::currentOperation() const
 {
-	return mOperation != nullptr;
-}
-
-void ProgressBar::reset()
-{
-	QProgressBar::reset();
-	setFormat("%p%");
-}
-
-void ProgressBar::connectOperation(invocation::LongOperation *operation)
-{
-	reset();
-	if (mOperation) {
-		disconnectOperation();
-	}
-	mOperation = operation;
-	connectOperation();
-}
-
-void ProgressBar::connectOperation()
-{
-	connect(mOperation, SIGNAL(beforeStarted()), this, SLOT(onBeforeStart()));
-	connect(mOperation, SIGNAL(finished(invocation::InvocationState)), this
-			, SLOT(onOperationComplete(invocation::InvocationState)));
-	setTextVisible(mOperation->hasProgress());
-	if (mOperation->hasProgress()) {
-		invocation::Progress *progress = mOperation->progress();
-		setMinimum(progress->minimum());
-		setMaximum(progress->maximum());
-		setValue(progress->value());
-		connect(progress, SIGNAL(minimumChanged(int)), this, SLOT(setMinimum(int)));
-		connect(progress, SIGNAL(maximumChanged(int)), this, SLOT(setMaximum(int)));
-		connect(progress, SIGNAL(valueChanged(int)), this, SLOT(setValue(int)));
-	}
-}
-
-void ProgressBar::disconnectOperation()
-{
-	mOperation->disconnect(this, SLOT(reset()));
-	mOperation->disconnect(this, SLOT(onOperationComplete(invocation::InvocationState)));
-	if (mOperation->hasProgress()) {
-		invocation::Progress *progress = mOperation->progress();
-		progress->disconnect(this, SLOT(setMinimum(int)));
-		progress->disconnect(this, SLOT(setMaximum(int)));
-		progress->disconnect(this, SLOT(setValue(int)));
-	}
-}
-
-void ProgressBar::onBeforeStart()
-{
-	reset();
-	if (!mOperation->hasProgress()) {
-		setMinimum(0);
-		setMaximum(0);
-	}
-}
-
-void ProgressBar::onOperationComplete(invocation::InvocationState result)
-{
-	if (!mOperation->hasProgress()) {
-		setMaximum(100);
-	}
-	switch(result) {
-	case invocation::FinishedNormally:
-		onOperationFinishedNormally();
-		break;
-	case invocation::Canceled:
-		onOperationCanceled();
-		break;
-	default:
-		break;
-	}
-	mOperation = nullptr;
-}
-
-void ProgressBar::onOperationFinishedNormally()
-{
-	if (mOperation->hasProgress()) {
-		invocation::Progress *progress = mOperation->progress();
-		progress->setValue(progress->maximum());
-	}
-}
-
-void ProgressBar::onOperationCanceled()
-{
-	const QString format = (mOperation->hasProgress())
-			? tr("%p% - canceled")
-			: tr("canceled");
-	setTextVisible(true);
-	setFormat(format);
+	return *mCurrentWatcher;
 }

@@ -48,6 +48,7 @@ public:
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
+	void reshapeRectWithShift() override;
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

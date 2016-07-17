@@ -26,6 +26,8 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
 
+#include <qrgui/models/models.h>
+
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
@@ -123,20 +125,8 @@ void DraggableElement::setIconSize(int size)
 
 QMimeData *DraggableElement::mimeData(const Id &elementId) const
 {
-	QByteArray itemData;
-	const bool isFromLogicalModel = false;
-
-	QDataStream stream(&itemData, QIODevice::WriteOnly);
-	stream << elementId.toString();  // uuid
-	stream << Id::rootId().toString();  // pathToItem
-	stream << text();
-	stream << QPointF(0, 0);
-	stream << isFromLogicalModel;
-	stream << mData.explosionTarget().toString();
-
-	QMimeData * const mimeData = new QMimeData;
-	mimeData->setData("application/x-real-uml-data", itemData);
-	return mimeData;
+	const bool isEdge = mEditorManagerProxy.isNodeOrEdge(elementId.type()) < 0;
+	return ElementInfo(elementId, Id(), text(), mData.explosionTarget(), isEdge).mimeData();
 }
 
 void DraggableElement::changePropertiesPaletteActionTriggered()
@@ -194,12 +184,12 @@ void DraggableElement::deleteElement()
 		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
 
-	mMainWindow.loadPlugins();
+	mMainWindow.loadEditorPlugins();
 }
 
 void DraggableElement::checkElementForRootDiagramNode()
 {
-	if (mEditorManagerProxy.isRootDiagramNode(mDeletedElementId)) {
+	if (mEditorManagerProxy.isDiagramNode(mDeletedElementId)) {
 		mIsRootDiagramNode = true;
 		QMessageBox messageBox(
 				tr("Warning")
@@ -312,7 +302,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
 
-	Id elementId(id(), QUuid::createUuid().toString());
+	const Id elementId = id().sameTypeId();
 
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManagerProxy.isInterpretationMode()) {

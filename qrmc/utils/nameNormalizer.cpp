@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2007-2016 QReal Research Group, Dmitry Mordvinov, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,31 +21,26 @@
 QString NameNormalizer::normalize(const QString &name)
 {
 	QString result = name;
-	if (name.contains("::"))
+	if (name.contains("::")) {
 		result = result.right(result.length() - result.lastIndexOf("::") - 2);
+	}
+
 	result = result.simplified().replace(" ", "_");
-	result = result.replace("::", "_");
 	result = upperFirst(result);
-	while (result.endsWith("_"))
-	{
+	while (result.endsWith("_")) {
 		result.chop(1);
 	}
+
 	return result;
 }
 
 QString NameNormalizer::upperFirst(const QString &string)
 {
-	if (string.size() < 1)
-	{
-		return QString();
-	}
-
-	const QStringList tokens = string.split(" ");
+	const QStringList tokens = string.split("_", QString::SkipEmptyParts);
 	QStringList upperedTokens;
-	for (const QString &token : tokens)
-	{
+	for (const QString &token : tokens) {
 		upperedTokens.append(utils::StringUtils::capitalizeFirstLetter(token));
 	}
 
-	return upperedTokens.join("_");
+	return upperedTokens.join("");
 }

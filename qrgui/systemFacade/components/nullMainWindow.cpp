@@ -160,9 +160,10 @@ void NullMainWindow::deleteElementFromDiagram(const Id &id)
 	Q_UNUSED(id)
 }
 
-void NullMainWindow::reportOperation(invocation::LongOperation *operation)
+void NullMainWindow::reportOperation(const QFuture<void> &operation, const QString &description)
 {
 	Q_UNUSED(operation)
+	Q_UNUSED(description)
 }
 
 QWidget *NullMainWindow::currentTab()
@@ -201,8 +202,9 @@ void NullMainWindow::setElementInPaletteVisible(const Id &metatype, bool visible
 	Q_UNUSED(visible)
 }
 
-void NullMainWindow::setVisibleForAllElementsInPalette(bool visible)
+void NullMainWindow::setVisibleForAllElementsInPalette(const Id &diagram, bool visible)
 {
+	Q_UNUSED(diagram)
 	Q_UNUSED(visible)
 }
 
@@ -212,8 +214,9 @@ void NullMainWindow::setElementInPaletteEnabled(const Id &metatype, bool enabled
 	Q_UNUSED(enabled)
 }
 
-void NullMainWindow::setEnabledForAllElementsInPalette(bool enabled)
+void NullMainWindow::setEnabledForAllElementsInPalette(const Id &diagram, bool enabled)
 {
+	Q_UNUSED(diagram)
 	Q_UNUSED(enabled)
 }
 

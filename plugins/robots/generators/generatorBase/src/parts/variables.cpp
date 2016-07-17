@@ -37,12 +37,10 @@ Variables::Variables(const QStringList &pathsToTemplates
 {
 }
 
-QString Variables::generateVariableString() const
+QString Variables::generateConstantsString() const
 {
-	QString result;
 	const QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> variables = mLuaToolbox.variableTypes();
-	const QStringList reservedNames = mLuaToolbox.specialIdentifiers();
-
+	QString result;
 	for (const QString &constantName : mLuaToolbox.specialConstants()) {
 		const QString value = mLuaToolbox.variableTypes()[constantName]->is<qrtext::lua::types::Float>()
 				? readTemplateIfExists("floatFormat.t", "@@VALUE@@")
@@ -52,6 +50,15 @@ QString Variables::generateVariableString() const
 				.replace("@@VALUE@@", value);
 	}
 
+	return result;
+}
+
+QString Variables::generateVariableString() const
+{
+	const QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> variables = mLuaToolbox.variableTypes();
+	const QStringList reservedNames = mLuaToolbox.specialIdentifiers();
+
+	QString result;
 	for (const QString &curVariable : variables.keys()) {
 		if (reservedNames.contains(curVariable)) {
 			continue;

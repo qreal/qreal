@@ -46,9 +46,13 @@ public:
 
 	MOCK_CONST_METHOD0(needsConnection, bool());
 
+	MOCK_CONST_METHOD0(updateSensorsValues, void());
+	MOCK_CONST_METHOD0(updateIntervalForInterpretation, int());
+
+
 	MOCK_CONST_METHOD0(configuration
 			, kitBase::robotModel::ConfigurationInterface const &());
-	MOCK_METHOD0(mutableConfiguration,  kitBase::robotModel::ConfigurationInterface&());
+	MOCK_METHOD0(mutableConfiguration, kitBase::robotModel::ConfigurationInterface&());
 
 	MOCK_CONST_METHOD0(availablePorts, QList< kitBase::robotModel::PortInfo>());
 	MOCK_CONST_METHOD0(buttonCodes, StringIntHash());

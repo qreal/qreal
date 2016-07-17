@@ -153,6 +153,8 @@ private slots:
 
 	void onItemRemoved(QGraphicsItem *item);
 
+	void drawAxes(QPainter *painter);
+
 private:
 	enum DrawingAction
 	{

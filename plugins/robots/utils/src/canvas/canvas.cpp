@@ -153,9 +153,9 @@ QJsonArray Canvas::toJson() const
 	return result;
 }
 
-void Canvas::paint(QPainter *painter)
+void Canvas::paint(QPainter *painter, const QRect &outputRect)
 {
 	for (CanvasObject * object : mObjects) {
-		object->paint(painter);
+		object->paint(painter, outputRect);
 	}
 }

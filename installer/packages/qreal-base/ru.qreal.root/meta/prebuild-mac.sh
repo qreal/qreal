@@ -11,6 +11,7 @@ cp    $INSTALLER_ROOT/platform/$PRODUCT-mac-platform.config               "$BUND
 mkdir -p "$BUNDLE_CONTENTS/Lib/plugins/tools"
 
 cp -pR $BIN_DIR/libqrkernel*.dylib                                        "$BUNDLE_CONTENTS/Lib"
+cp -pR $BIN_DIR/libqrgraph*.dylib                                         "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrrepo*.dylib                                          "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrutils*.dylib                                         "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrtext*.dylib                                          "$BUNDLE_CONTENTS/Lib"
@@ -24,6 +25,7 @@ cp -pR $BIN_DIR/libqrgui-hotkey-manager*.dylib                            "$BUND
 cp -pR $BIN_DIR/libqrgui-models*.dylib                                    "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-mouse-gestures*.dylib                            "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-plugin-manager*.dylib                            "$BUNDLE_CONTENTS/Lib"
+cp -pR $BIN_DIR/libqrgui-meta-meta-model*.dylib                           "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-preferences-dialog*.dylib                        "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-text-editor*.dylib                               "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-thirdparty*.dylib                                "$BUNDLE_CONTENTS/Lib"

@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Dmitry Mordvinov, Yurii Litvinov
+/* Copyright 2013-2016 CyberTech Labs Ltd., Dmitry Mordvinov, Yurii Litvinov, Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ namespace robotCommunication {
 enum class MessageKind
 {
 	text
+	, fileContents
+	, mail
 	, info
 	, error
 };
@@ -36,7 +38,9 @@ class TcpRobotCommunicatorWorker : public QObject
 	Q_OBJECT
 
 public:
-
+	/// Constructor.
+	/// @param robotIpRegistryKey - key in a registry where current robot IP address is stored. IP address refreshes
+	///        from registry every time new connection needs to be established.
 	explicit TcpRobotCommunicatorWorker(const QString &robotIpRegistryKey);
 
 	~TcpRobotCommunicatorWorker() override;
@@ -64,14 +68,20 @@ public:
 	/// Sends a command to remotely abort script execution and stop robot.
 	Q_INVOKABLE void stopRobot();
 
+	/// Requests casing version from robot, emits casingVersionReceived() when robot responds.
+	Q_INVOKABLE void requestCasingVersion();
+
 	/// Requests telemetry data for given sensor.
 	Q_INVOKABLE void requestData(const QString &sensor);
+
+	/// Requests telemetry data for all ports.
+	Q_INVOKABLE void requestData();
 
 	/// Establishes connection.
 	Q_INVOKABLE void connect();
 
 	/// Disconnects from robot.
-	Q_INVOKABLE void disconnect();
+	Q_INVOKABLE void disconnectConnection();
 
 signals:
 	/// Emitted when TCP socket with robot was opened or failed to open.
@@ -114,12 +124,23 @@ signals:
 	/// Emitted when direct command is sent.
 	void runDirectCommandDone();
 
+	/// Emitted when received TRIK casing version (model 2014 or model 2015) from robot.
+	void casingVersionReceived(const QString &casingVersion);
+
 private slots:
+	/// Process message from control connection, emits signals when something interesting is received from robot.
 	void processControlMessage(const QString &message);
+
+	/// Process telemetry message from robot. Emits signals with sensor data.
 	void processTelemetryMessage(const QString &message);
-	void versionTimeOut();
+
+	/// TRIK Runtime version request timed out. Most likely caused by network problems.
+	void onVersionTimeOut();
 
 private:
+	/// Handles value from telemetry message from robot. Emits signals with sensor data.
+	void handleValue(const QString &data);
+
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(const QString &data, QTcpSocket &socket);
 
@@ -130,11 +151,14 @@ private:
 	/// during the work and it is easier to get it from registry every time.
 	const QString mRobotIpRegistryKey;
 
+	/// Current IP address of a robot.
 	QString mCurrentIp;
-	QScopedPointer<TcpConnectionHandler> mControlConnection;
-	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
-	bool mIsConnected;
+	/// Connection on which all commands are sent to a robot.
+	QScopedPointer<TcpConnectionHandler> mControlConnection;
+
+	/// Connection on which robot sends telemetry data.
+	QScopedPointer<TcpConnectionHandler> mTelemetryConnection;
 
 	/// Timer for version request.
 	QScopedPointer<QTimer> mVersionTimer;

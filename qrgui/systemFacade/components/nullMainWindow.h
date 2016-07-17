@@ -69,7 +69,7 @@ public:
 
 	void deleteElementFromDiagram(const Id &id) override;
 
-	void reportOperation(invocation::LongOperation *operation) override;
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 
 	QWidget *currentTab() override;
 	void openTab(QWidget *tab, const QString &title) override;
@@ -81,11 +81,11 @@ public:
 
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
 
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 
 	void endPaletteModification() override;
 

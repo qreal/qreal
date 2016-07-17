@@ -1,10 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>graphicsWatcher/icons/stop_btn.png</file>
-        <file>graphicsWatcher/icons/start_btn.png</file>
-        <file>graphicsWatcher/icons/zoomOut_btn.png</file>
-        <file>graphicsWatcher/icons/zoomIn_btn.png</file>
-        <file>graphicsWatcher/icons/reset_btn.png</file>
         <file>widgets/icons/find.svg</file>
     </qresource>
 </RCC>

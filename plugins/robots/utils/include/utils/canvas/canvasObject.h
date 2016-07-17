@@ -48,7 +48,7 @@ public:
 
 	/// Must be redefined to paint an object via \a painter. Base implementation
 	/// must be called to set pen and brush correctly.
-	virtual void paint(QPainter *painter);
+	virtual void paint(QPainter *painter, const QRect &outputRect);
 
 	/// Override must serialize current canvas object state into the instance of JSON object.
 	virtual QJsonObject toJson() const = 0;

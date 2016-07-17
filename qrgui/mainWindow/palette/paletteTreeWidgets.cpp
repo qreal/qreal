@@ -16,6 +16,8 @@
 
 #include <models/exploser.h>
 
+#include <qrgui/models/models.h>
+
 #include "mainWindow/palette/paletteTree.h"
 #include "mainWindow/palette/draggableElement.h"
 
@@ -51,6 +53,11 @@ PaletteTreeWidgets::PaletteTreeWidgets(PaletteTree &parent, MainWindow *mainWind
 	initUserTree();
 }
 
+Id PaletteTreeWidgets::diagram() const
+{
+	return mDiagram;
+}
+
 void PaletteTreeWidgets::initWidgets()
 {
 	initWidget(mEditorTree);
@@ -66,7 +73,7 @@ void PaletteTreeWidgets::initWidget(PaletteTreeWidget * const tree)
 
 void PaletteTreeWidgets::initEditorTree()
 {
-	IdList elements = mEditorManager->elements(mDiagram) + mEditorManager->groups(mDiagram);
+	IdList elements = mEditorManager->elements(mDiagram);
 	const bool sort = mEditorManager->shallPaletteBeSorted(mEditor, mDiagram);
 	if (sort) {
 		PaletteTreeWidget::sortByFriendlyName(elements);
@@ -202,7 +209,7 @@ void PaletteTreeWidgets::setElementVisible(const Id &metatype, bool visible)
 
 void PaletteTreeWidgets::setVisibleForAllElements(bool visible)
 {
-	foreach (QWidget * const element, mPaletteElements.values()) {
+	for (QWidget * const element : mPaletteElements.values()) {
 		element->setVisible(visible);
 	}
 
@@ -220,7 +227,7 @@ void PaletteTreeWidgets::setElementEnabled(const Id &metatype, bool enabled)
 
 void PaletteTreeWidgets::setEnabledForAllElements(bool enabled)
 {
-	foreach (QWidget * const element, mPaletteElements.values()) {
+	for (QWidget * const element : mPaletteElements.values()) {
 		element->setEnabled(enabled);
 	}
 
@@ -254,7 +261,12 @@ void PaletteTreeWidgets::refreshUserPalette()
 		groups << qMakePair(mUserGroupTitle, groupElements);
 	}
 
-	mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
+	// This condition will filter out most of the cases.
+	if (groupElements.toSet() != mUserTree->elementsSet()) {
+		mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
+	} else if (groupElements.isEmpty()) {
+		mUserTree->hide();
+	}
 }
 
 void PaletteTreeWidgets::filter(const QRegExp &regexp)

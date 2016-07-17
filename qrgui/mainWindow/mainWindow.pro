@@ -25,15 +25,11 @@ links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor
 		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
 )
 
-includes(qrgui)
+includes(qrgraph qrgui qrgui/plugins/metaMetaModel)
 
 TRANSLATIONS = \
 	$$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts \
 	$$PWD/../../qrtranslations/fr/qrgui_mainWindow_fr.ts \
-
-!macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
-}
 
 HEADERS += \
 	$$PWD/qrealApplication.h \

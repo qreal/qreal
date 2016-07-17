@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 
 #include "editorView.h"
 
+#include <QtCore/QDir>
 #include <QtCore/QTimeLine>
 #include <QtGui/QFontDatabase>
 
@@ -299,9 +300,8 @@ void EditorView::zoom(const qreal zoomFactor)
 		mScene.setRealIndexGrid(mScene.realIndexGrid() * zoomFactor);
 	}
 
-	mMVIface.invalidateImagesZoomCache(transform().m11());
-
 	checkGrid();
+	emit zoomChanged(transform().m11());
 }
 
 void EditorView::setSceneFont()

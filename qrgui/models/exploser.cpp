@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@
 
 #include "exploser.h"
 
-#include "models/logicalModelAssistApi.h"
+#include <controller/commands/doNothingCommand.h>
+#include <metaMetaModel/elementType.h>
+
+#include "models/models.h"
 #include "models/commands/explosionCommand.h"
-#include "models/commands/createElementCommand.h"
+#include "models/commands/createElementsCommand.h"
 #include "models/commands/renameExplosionCommand.h"
 #include "models/commands/renameCommand.h"
-#include "models/commands/createGroupCommand.h"
-#include "controller/commands/doNothingCommand.h"
+#include "models/commands/createPatternCommand.h"
 
 using namespace qReal;
 using namespace models;
@@ -38,19 +40,19 @@ QMultiMap<Id, Id> Exploser::explosions(const Id &diagram) const
 	const IdList childTypes = mApi.editorManagerInterface().elements(diagram);
 
 	for (const Id &child : childTypes) {
-		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(child);
+		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(child);
 
-		for (const Explosion &explosion : explosions) {
-			if (!explosion.isReusable()) {
+		for (const Explosion *explosion : explosions) {
+			if (!explosion->isReusable()) {
 				continue;
 			}
 
-			const Id targetNodeOrGroup = explosion.target();
+			const Id targetNodeOrGroup = explosion->target().typeId();
 			Id target;
-			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup.editor(), targetNodeOrGroup.element())) {
+			if (mApi.editorManagerInterface().isNodeOrEdge(targetNodeOrGroup)) {
 				target = targetNodeOrGroup;
 			} else {
-				const Pattern pattern = mApi.editorManagerInterface().getPatternByName(targetNodeOrGroup.element());
+				const Pattern pattern = mApi.editorManagerInterface().parsePattern(targetNodeOrGroup);
 				target = Id(targetNodeOrGroup.editor(), targetNodeOrGroup.diagram(), pattern.rootType());
 			}
 
@@ -69,10 +71,17 @@ IdList Exploser::elementsWithHardDependencyFrom(const Id &id) const
 	IdList result;
 	const Id targetType = id.type();
 	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(id);
-	foreach (const Id &incoming, incomingExplosions) {
-		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
-		foreach (const Explosion &explosion, explosions) {
-			if (explosion.target() == targetType && explosion.requiresImmediateLinkage()) {
+	for (const Id &incoming : incomingExplosions) {
+		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
+		for (const Explosion *explosion : explosions) {
+			/// @todo: Explosion may link some group. For now we add here convention that this group name will
+			/// start with its root element type name (for example "SubprogramDiagram" and "SubprogramDiagramGroup").
+			/// This is bad, pattern root element must be compared directly, but is expensive for the moment because
+			/// pattern must be parsed each time. Can be fixed with adding some cache for patterns.
+			const bool isSameType = explosion->target().editor() == targetType.editor()
+					&& explosion->target().diagram() == targetType.diagram()
+					&& explosion->target().name().startsWith(targetType.element());
+			if (isSameType && explosion->requiresImmediateLinkage()) {
 				result << incoming;
 			}
 		}
@@ -81,7 +90,23 @@ IdList Exploser::elementsWithHardDependencyFrom(const Id &id) const
 	return result;
 }
 
-void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const command)
+void Exploser::handleCreationWithExplosion(AbstractCommand *createCommand, const models::Models &models
+		, const Id &source, const Id &target) const
+{
+	if (target.isNull()) {
+		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(source);
+		for (const Explosion *explosion : explosions) {
+			if (explosion->source().typeId() == source.type() && explosion->requiresImmediateLinkage()) {
+				createCommand->addPostAction(createElementWithIncomingExplosionCommand(
+						source, explosion->target().typeId(), models));
+			}
+		}
+	} else {
+		createCommand->addPostAction(addExplosionCommand(source, target, &models.graphicalModelAssistApi()));
+	}
+}
+
+void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const command) const
 {
 	const Id outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
 	if (!outgoing.isNull()) {
@@ -91,9 +116,9 @@ void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const 
 	const Id targetType = logicalId.type();
 	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
 	foreach (const Id &incoming, incomingExplosions) {
-		QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(incoming.type());
-		foreach (const Explosion &explosion, explosions) {
-			if (explosion.target() == targetType && !explosion.requiresImmediateLinkage()) {
+		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
+		foreach (const Explosion *explosion, explosions) {
+			if (explosion->target().typeId() == targetType && !explosion->requiresImmediateLinkage()) {
 				command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
 			}
 		}
@@ -101,23 +126,24 @@ void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const 
 }
 
 AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(const Id &source
-		, const Id &targetType, GraphicalModelAssistApi &graphicalApi)
+		, const Id &targetType, const models::Models &models) const
 {
 	AbstractCommand *result = nullptr;
 	Id newElementId;
-	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.editor(), targetType.element())) {
+	if (mApi.editorManagerInterface().isNodeOrEdge(targetType.type()) == 1) {
 		const QString friendlyTargetName = mApi.editorManagerInterface().friendlyName(targetType);
-		newElementId = Id(targetType, QUuid::createUuid().toString());
-		result = new CreateElementCommand(mApi, graphicalApi, *this, Id::rootId()
-				, Id::rootId(), newElementId, false, friendlyTargetName, QPointF());
+		newElementId = targetType.sameTypeId();
+		const ElementInfo toCreate(newElementId, Id(), Id::rootId(), Id::rootId()
+				, {{"name", friendlyTargetName}}, {}, Id(), false);
+		result = new CreateElementsCommand(models, {toCreate});
 	} else {
-		result = new CreateGroupCommand(mApi, graphicalApi, *this, Id::rootId()
-				, Id::rootId(), targetType, false, QPointF());
-		newElementId = static_cast<CreateGroupCommand *>(result)->rootId();
+		const ElementInfo toCreate(targetType, Id(), Id::rootId(), Id::rootId(), {}, {}, Id(), true);
+		result = new CreatePatternCommand(models, {toCreate});
+		newElementId = static_cast<CreatePatternCommand *>(result)->rootId();
 	}
 
-	result->addPostAction(addExplosionCommand(source, newElementId, &graphicalApi));
-	result->addPostAction(new RenameExplosionCommand(mApi, &graphicalApi, *this, newElementId));
+	result->addPostAction(addExplosionCommand(source, newElementId, &models.graphicalModelAssistApi()));
+	result->addPostAction(new RenameExplosionCommand(mApi, &models.graphicalModelAssistApi(), *this, newElementId));
 	connect(result, SIGNAL(undoComplete(bool)), this, SIGNAL(explosionTargetRemoved()));
 	return result;
 }
@@ -133,15 +159,16 @@ IdList Exploser::explosionsHierarchy(const Id &oneOfIds) const
 
 Id Exploser::immediateExplosionTarget(const Id &id)
 {
-	QList<Explosion> const explosions = mApi.editorManagerInterface().explosions(id.type());
-	if (explosions.size() == 1 && explosions[0].requiresImmediateLinkage()) {
-		return explosions[0].target();
+	const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(id.type());
+	if (explosions.size() == 1 && explosions[0]->requiresImmediateLinkage()) {
+		return explosions[0]->target().typeId();
 	}
+
 	return Id();
 }
 
 AbstractCommand *Exploser::addExplosionCommand(const Id &source, const Id &target
-		, GraphicalModelAssistApi * const graphicalApi)
+		, GraphicalModelAssistApi * const graphicalApi) const
 {
 	AbstractCommand *result = new ExplosionCommand(mApi, graphicalApi, source, target, true);
 	connectCommand(result);

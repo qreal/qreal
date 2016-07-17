@@ -15,6 +15,9 @@
 #include "baseGraphTransformationUnit.h"
 
 #include <QtCore/QEventLoop>
+#include <QtCore/QTimer>
+
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 using namespace qReal;
 

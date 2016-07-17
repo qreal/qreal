@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,10 @@ SdfRenderer::~SdfRenderer()
 
 bool SdfRenderer::load(const QString &filename)
 {
+	if (filename.isEmpty()) {
+		return false;
+	}
+
 	QFile file(filename);
 
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -79,13 +83,24 @@ bool SdfRenderer::load(const QDomDocument &document)
 	return true;
 }
 
-void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo){
+bool SdfRenderer::load(const QDomElement &picture)
+{
+	doc.appendChild(doc.importNode(picture, true));
+	const QDomElement docElem = doc.firstChildElement("picture");
+	first_size_x = docElem.attribute("sizex").toInt();
+	first_size_y = docElem.attribute("sizey").toInt();
+
+	return true;
+}
+
+void SdfRenderer::setElementRepo(ElementRepoInterface *elementRepo)
+{
 	mElementRepo = elementRepo;
 }
 
-void SdfRenderer::invalidateSvgCache(double zoomFactor)
+void SdfRenderer::setZoom(qreal zoomFactor)
 {
-	mImagesCache.invalidateSvgCache(zoomFactor);
+	mZoom = zoomFactor;
 }
 
 void SdfRenderer::render(QPainter *painter, const QRectF &bounds, bool isIcon)
@@ -322,8 +337,7 @@ void SdfRenderer::image_draw(QDomElement &element)
 			+ element.attribute("name", "default");
 
 	const QRect rect(x1, y1, x2 - x1, y2 - y1);
-
-	mImagesCache.drawImage(fileName, *painter, rect);
+	ImagesCache::instance().drawImage(fileName, *painter, rect, mZoom);
 }
 
 void SdfRenderer::point(QDomElement &element)
@@ -779,30 +793,44 @@ void SdfRenderer::noScale()
 	mNeedScale = false;
 }
 
-void SdfRenderer::ImagesCache::drawImage(
-		const QString &fileName
-		, QPainter &painter
-		, const QRect &rect)
+SdfRenderer::ImagesCache::ImagesCache()
 {
-	auto savePrerenderedSvg = [this, &rect, &fileName] (QSvgRenderer &renderer) {
-		QTransform scale;
-		scale.scale(mCurrentZoomFactor, mCurrentZoomFactor);
-		auto scaledRect = scale.mapRect(rect);
+}
+
+SdfRenderer::ImagesCache::~ImagesCache()
+{
+}
+
+SdfRenderer::ImagesCache &SdfRenderer::ImagesCache::instance()
+{
+	static ImagesCache instance;
+	return instance;
+}
+
+void SdfRenderer::ImagesCache::drawImage(const QString &fileName, QPainter &painter, const QRect &rect, qreal zoom)
+{
+	if (mFileNamePixmapMap.contains(fileName)) {
+		painter.drawPixmap(rect, mFileNamePixmapMap.value(fileName));
+		return;
+	}
+
+	QTransform scale;
+	scale.scale(zoom, zoom);
+	auto scaledRect = scale.mapRect(rect);
+	auto savePrerenderedSvg = [this, &fileName, &scaledRect] (QSvgRenderer &renderer) {
 		QPixmap pixmap(scaledRect.size());
 		pixmap.fill(Qt::transparent);
 		QPainter pixmapPainter(&pixmap);
-		renderer.render(&pixmapPainter, scaledRect);
-		mPrerenderedSvgs.insert(fileName, pixmap);
+		renderer.render(&pixmapPainter, scaledRect.translated(-scaledRect.topLeft()));
+		mPrerenderedSvgs[fileName].insert(scaledRect, pixmap);
 	};
 
-	if (mFileNamePixmapMap.contains(fileName)) {
-		painter.drawPixmap(rect, mFileNamePixmapMap.value(fileName));
-	} else if (mFileNameSvgRendererMap.contains(fileName)) {
-		if (!mPrerenderedSvgs.contains(fileName)) {
+	if (mFileNameSvgRendererMap.contains(fileName)) {
+		if (!mPrerenderedSvgs.contains(fileName) || !mPrerenderedSvgs[fileName].contains(scaledRect)) {
 			savePrerenderedSvg(*mFileNameSvgRendererMap.value(fileName));
 		}
 
-		painter.drawPixmap(rect, mPrerenderedSvgs.value(fileName));
+		painter.drawPixmap(rect, mPrerenderedSvgs[fileName][scaledRect]);
 	} else {
 		// Cache miss - finding best file to load and loading it.
 		const QFileInfo actualFile = selectBestImageFile(PlatformInfo::invariantPath(fileName));
@@ -811,8 +839,8 @@ void SdfRenderer::ImagesCache::drawImage(
 		if (actualFile.suffix() == "svg") {
 			QSharedPointer<QSvgRenderer> renderer(new QSvgRenderer(rawImage));
 			mFileNameSvgRendererMap.insert(fileName, renderer);
-			renderer->render(&painter, rect);
 			savePrerenderedSvg(*renderer);
+			painter.drawPixmap(rect, mPrerenderedSvgs[fileName][scaledRect]);
 		} else {
 			QPixmap pixmap;
 			pixmap.loadFromData(rawImage);
@@ -859,12 +887,6 @@ QByteArray SdfRenderer::ImagesCache::loadPixmap(const QFileInfo &fileInfo)
 	return file.readAll();
 }
 
-void SdfRenderer::ImagesCache::invalidateSvgCache(double zoomFactor)
-{
-	mPrerenderedSvgs.clear();
-	mCurrentZoomFactor = zoomFactor;
-}
-
 
 SdfIconEngineV2::SdfIconEngineV2(const QString &file)
 {
@@ -877,6 +899,14 @@ SdfIconEngineV2::SdfIconEngineV2(const QDomDocument &document)
 {
 	mRenderer.load(document);
 	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
+}
+
+SdfIconEngineV2::SdfIconEngineV2(const QDomElement &picture)
+{
+	mRenderer.load(picture);
+	mRenderer.noScale();
+	mSize = QSize(mRenderer.pictureWidth(), mRenderer.pictureHeight());
 }
 
 void SdfIconEngineV2::paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state)
@@ -917,15 +947,15 @@ QSize SdfIconEngineV2::preferedSize() const
 }
 
 
-QIcon SdfIconLoader::iconOf(const QString &fileName)
+QIcon SdfIconLoader::iconOf(const Id &id, const QDomElement &sdf)
 {
-	return loadPixmap(fileName);
+	return loadPixmap(id, sdf);
 }
 
-QSize SdfIconLoader::preferedSizeOf(const QString &fileName)
+QSize SdfIconLoader::preferedSizeOf(const Id &id, const QDomElement &sdf)
 {
-	loadPixmap(fileName);
-	return instance()->mPreferedSizes[fileName];
+	loadPixmap(id, sdf);
+	return instance()->mPreferedSizes[id];
 }
 
 SdfIconLoader *SdfIconLoader::instance()
@@ -942,15 +972,15 @@ SdfIconLoader::~SdfIconLoader()
 {
 }
 
-QIcon SdfIconLoader::loadPixmap(const QString &fileName)
+QIcon SdfIconLoader::loadPixmap(const Id &id, const QDomElement &sdf)
 {
-	if (!instance()->mLoadedIcons.contains(fileName)) {
-		SdfIconEngineV2 * const engine = new SdfIconEngineV2(fileName);
+	if (!instance()->mLoadedIcons.contains(id)) {
+		SdfIconEngineV2 * const engine = new SdfIconEngineV2(sdf);
 		// QIcon takes ownership over SdfIconEngineV2
 		QIcon icon(engine);
-		instance()->mLoadedIcons[fileName] = icon;
-		instance()->mPreferedSizes[fileName] = engine->preferedSize();
+		instance()->mLoadedIcons[id] = icon;
+		instance()->mPreferedSizes[id] = engine->preferedSize();
 	}
 
-	return instance()->mLoadedIcons[fileName];
+	return instance()->mLoadedIcons[id];
 }

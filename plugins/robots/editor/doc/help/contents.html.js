@@ -30,6 +30,7 @@ document.write('\
                     <ul>\
                         <li><a href="trik.html#textual-programming-qts">Qt Script</a></li>\
                         <li><a href="trik.html#textual-programming-fsharp">F#</a></li>\
+                        <li><a href="trik.html#textual-programming-pascal">Pascal</a></li>\
                     </ul>\
                     <li><a href="trik.html#run-programs">Запуск программ</a></li>\
                     <ul>\
@@ -60,6 +61,7 @@ document.write('\
                     <li><a href="ev3.html#run-programs">Запуск программ</a></li>\
                     <ul>\
                         <li><a href="ev3.html#run-programs-bluetooth">Интерпретация по Bluetooth</a></li>\
+                        <li><a href="ev3.html#run-programs-flashing">Прошивка в робота</a></li>\
                     </ul>\
                 </ul>\
             </li>\

@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
+#include <QtCore/QThread>
 #include <QtCore/QSettings>
 #include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
@@ -28,7 +29,6 @@
 
 #include "mainWindow/palette/paletteElement.h"
 #include "mainWindow/mainWindow.h"
-#include "plugins/pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 namespace gui {
@@ -42,7 +42,7 @@ public:
 	DraggableElement(MainWindow &mainWindow
 		, const PaletteElement &paletteElement
 		, bool iconsOnly
-		, const EditorManagerInterface &editorManagerProxy
+		, const EditorManagerInterface &editorManager
 		, QWidget *parent = nullptr
 		);
 

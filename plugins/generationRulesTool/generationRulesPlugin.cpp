@@ -66,17 +66,12 @@ QList<QAction *> GenerationRulesPlugin::menuActionList() const
 	return {addGenerationRuleAction};
 }
 
-void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator
-		, qrRepo::LogicalRepoApi &metamodelRepoApi
-		, qReal::EditorManagerInterface *editorManagerInterface)
+void GenerationRulesPlugin::init(const qReal::PluginConfigurator &configurator)
 {
 	mRepo = &configurator.repoControlInterface();
 	mMainWindowInterpretersInterface = &configurator.mainWindowInterpretersInterface();
 	mLogicalModelAssistInterface = &configurator.logicalModelApi();
-
-	mMetamodelRepoApi = &metamodelRepoApi;
-
-	mEditorManagerInterface = editorManagerInterface;
+	mEditorManagerInterface = &configurator.logicalModelApi().editorManagerInterface();
 }
 
 void GenerationRulesPlugin::generateCodeForAllElements()
@@ -138,15 +133,13 @@ void GenerationRulesPlugin::openGenerationRulesWindow()
 {
 	const auto * const action = static_cast<QAction *>(sender());
 	const auto id = action->data().value<qReal::Id>();
-	const auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface
-			, id, mMetamodelRepoApi);
-
+	const auto specifyGenerationRulesDialog = new qReal::gui::SpecifyGenerationRulesDialog(mEditorManagerInterface, id);
 	Q_UNUSED(specifyGenerationRulesDialog);
 }
 
 void GenerationRulesPlugin::openWindowForPathsSpecifying()
 {
-	mSpecifyPathsDialog = new qReal::gui::SpecifyPathToGeneratedCodeDialog(mMetamodelRepoApi);
+	mSpecifyPathsDialog = new qReal::gui::SpecifyPathToGeneratedCodeDialog;
 
 	connect(mSpecifyPathsDialog, &qReal::gui::SpecifyPathToGeneratedCodeDialog::pathsSpecified, this
 			, &GenerationRulesPlugin::generateCodeForAllElements);

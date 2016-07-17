@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ Ev3KitInterpreterPlugin::Ev3KitInterpreterPlugin()
 	: mUsbRealRobotModel(kitId(), "ev3KitUsbRobot") // todo: somewhere generate robotId for each robot
 	, mBluetoothRealRobotModel(kitId(), "ev3KitBluetoothRobot")
 	, mTwoDRobotModel(mUsbRealRobotModel)
-	, mBlocksFactory(new blocks::Ev3BlocksFactory)
+	, mBlocksFactory(new blocks::Ev3BlocksFactory({"ev3KitUsbRobot", "ev3KitBluetoothRobot"}))
 {
 	mAdditionalPreferences = new Ev3AdditionalPreferences;
 
@@ -63,24 +63,26 @@ void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, [this](const QString &modelName)
 	{
 		mCurrentlySelectedModelName = modelName;
-		if (modelName == mUsbRealRobotModel.name()) {
-			mUsbRealRobotModel.checkConnection();
-		}
-
-		if (modelName == mBluetoothRealRobotModel.name()) {
-			mBluetoothRealRobotModel.checkConnection();
-		}
 	});
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
+
 	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
+	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addInformation(message);
+	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
 			, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
+	});
+	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
+			, [&interpretersInterface](const QString &message) {
+				interpretersInterface.errorReporter()->addInformation(message);
 	});
 
 	mTwoDModel->init(configurator.eventsForKitPlugin()
@@ -110,9 +112,12 @@ QList<kitBase::robotModel::RobotModelInterface *> Ev3KitInterpreterPlugin::robot
 kitBase::blocksBase::BlocksFactoryInterface *Ev3KitInterpreterPlugin::blocksFactoryFor(
 		const kitBase::robotModel::RobotModelInterface *model)
 {
-	Q_UNUSED(model)
-	mOwnsBlocksFactory = false;
-	return mBlocksFactory;
+	if (robotModels().contains(const_cast<kitBase::robotModel::RobotModelInterface *>(model))) {
+		mOwnsBlocksFactory = false;
+		return mBlocksFactory;
+	} else {
+		return nullptr;
+	}
 }
 
 kitBase::robotModel::RobotModelInterface *Ev3KitInterpreterPlugin::defaultRobotModel()
@@ -159,5 +164,7 @@ kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigura
 
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
-	return new ui::ComPortPicker("Ev3BluetoothPortName", this);
+	QWidget * const result = new ui::ComPortPicker("Ev3BluetoothPortName", this);
+	connect(this, &QObject::destroyed, [result]() { delete result; });
+	return result;
 }

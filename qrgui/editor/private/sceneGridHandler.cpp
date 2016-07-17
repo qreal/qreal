@@ -301,16 +301,7 @@ void SceneGridHandler::drawGuides()
 void SceneGridHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
-	if (dynamic_cast<NodeElement*>(mNode->parentItem())) {
-		return;
+	if (!dynamic_cast<NodeElement *>(mNode->parentItem())) {
+		drawGuides();
 	}
-
-	for (QGraphicsItem * const item : mNode->scene()->items()) {
-		NodeElement * const element = dynamic_cast<NodeElement *>(item);
-		if (element && element->isSelected()) {
-			element->alignToGrid();
-		}
-	}
-
-	drawGuides();
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,9 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QGraphicsItem>
 #include <QtWidgets/QStyleOptionGraphicsItem>
+
+#include <metaMetaModel/nodeElementType.h>
+#include <metaMetaModel/edgeElementType.h>
 
 #include "editor/edgeElement.h"
 #include "editor/nodeElement.h"
@@ -249,7 +252,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		if (scene->editorManager().hasElement(Id::loadFromString(type))) {
 			mMaster->setConnectingState(true);
 			mInitialClickPoint = event->scenePos();
-			const Id edgeId = scene->createElement(type, event->scenePos(), true, &mCreateEdgeCommand, false);
+			const Id edgeId = scene->createElement(type, event->scenePos(), &mCreateEdgeCommand, false);
 			mCreateEdgeCommand->redo();
 			mEdge = dynamic_cast<EdgeElement*>(scene->getElem(edgeId));
 		}
@@ -269,6 +272,7 @@ void EmbeddedLinker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	hide();
+	mMaster->setConnectingState(false);
 	mMaster->setSelected(false);
 	EditorViewScene* scene = dynamic_cast<EditorViewScene*>(mMaster->scene());
 
@@ -279,25 +283,12 @@ void EmbeddedLinker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		mEdge->show();
 		int result = 0;
 
-		CreateElementCommand *createElementFromMenuCommand = nullptr;
+		CreateElementsCommand *createElementFromMenuCommand = nullptr;
 		if (!under) {
 			result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos, false, &createElementFromMenuCommand);
 		} else {
-			bool canBeConnected = false;
-			for (const PossibleEdge &pEdge : mEdge->src()->getPossibleEdges()) {
-				if (pEdge.first.second.element() == under->id().element()) {
-					canBeConnected = true;
-					break;
-				} else {
-					// pEdge.second.first is true, if edge can connect items in only one direction.
-					if (!pEdge.second.first) {
-						canBeConnected = (pEdge.first.first.element() == under->id().element());
-						if (canBeConnected) {
-							break;
-						}
-					}
-				}
-			}
+			const bool canBeConnected = !mEdge->edgeType().toPortTypes().toSet().intersect(
+					under->nodeType().portTypes().toSet()).isEmpty();
 
 			if (under->isContainer()) {
 				result = scene->launchEdgeMenu(mEdge, mMaster, eScenePos

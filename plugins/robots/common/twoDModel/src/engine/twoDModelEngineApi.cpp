@@ -105,6 +105,16 @@ int TwoDModelEngineApi::readSonarSensor(const PortInfo &port) const
 	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
 }
 
+QVector<int> TwoDModelEngineApi::readAccelerometerSensor() const
+{
+	return mModel.robotModels()[0]->accelerometerReading();
+}
+
+QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
+{
+	return mModel.robotModels()[0]->gyroscopeReading();
+}
+
 int TwoDModelEngineApi::spoilSonarReading(const int distance) const
 {
 	const qreal ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
@@ -178,9 +188,9 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
 			, 2 * realWidth, 2 * realWidth);
 	const QImage image(mFakeScene->render(scanningRect));
-	const QPoint offset = QPointF(width, width).toPoint();
+	const QPoint offset = QPointF(width, width).toPoint() - QPoint(1, 1);
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
-	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
+	const QRect realImage(rotated.rect().center() - offset, rotated.rect().center() + offset);
 	QImage result(realImage.size(), QImage::Format_RGB32);
 	result.fill(Qt::white);
 	QPainter painter(&result);

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,38 +15,46 @@
 #pragma once
 
 #include <QtXml/QDomElement>
+
 #include "scalableCoordinate.h"
 
 namespace qrmc {
-	class MetaCompiler;
 
-	class Label
-	{
-	public:
-		// Default copy constructor is ok.
+class MetaCompiler;
 
-		bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
+/// Represents label on a node or edge.
+class Label
+{
+public:
+	/// Constructor.
+	/// @param element - XML node that contains label information.
+	/// @param index - index of a label in a list of labels of given node or edge.
+	/// @param nodeLabel - is it node or edge label.
+	/// @param width - default width of a figure this label belongs to.
+	/// @param height - default height of a figure this label belongs to.
+	bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
 
-		QString generateInit(MetaCompiler *compiler, bool isNode) const;
-		QString generateUpdate(MetaCompiler *compiler) const;
-		QString generateDefinition(MetaCompiler *compiler) const;
+	QString generateInit(const MetaCompiler &compiler, bool isNode) const;
+	QString generateUpdate(const MetaCompiler &compiler) const;
+	QString generateDefinition(const MetaCompiler &compiler) const;
 
-	private:
-		void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
-		QString titleName() const;
-		QStringList getListOfStr(const QString &strToParse) const;
-		QString generateCodeForUpdateData() const;
+private:
+	void initCoordinate(ScalableCoordinate &field, const QString &coordinate, int maxValue);
+	QString titleName() const;
+	QStringList getListOfStr(const QString &strToParse) const;
+	QString generateCodeForUpdateData() const;
 
-		ScalableCoordinate mX;
-		ScalableCoordinate mY;
-		int mIndex;
-		QString mText;
-		QString mTextBinded;
-		QString mReadOnly;
-		QString mBackground;
-		QString mCenter;
-		QString scalingX;
-		QString scalingY;
-		qreal mRotation;
-	};
+	ScalableCoordinate mX;
+	ScalableCoordinate mY;
+	int mIndex = 0;
+	QString mText;
+	QString mTextBinded;
+	QString mReadOnly;
+	QString mBackground;
+	QString mCenter;
+	QString mScalingX;
+	QString mScalingY;
+	qreal mRotation = 0;
+};
+
 }

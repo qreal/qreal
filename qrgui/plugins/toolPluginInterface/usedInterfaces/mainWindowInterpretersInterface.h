@@ -15,20 +15,21 @@
 #pragma once
 
 #include <QtGui/QColor>
-#include <QtCore/QFileInfo>
 
 #include <qrkernel/ids.h>
-#include <qrutils/invocationUtils/longOperation.h>
 
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/progressReporterInterface.h"
 
 namespace qReal {
+
+class ErrorReporterInterface;
+
 namespace gui {
 
 class PreferencesPage;
 class ErrorReporter;
 
-class MainWindowInterpretersInterface
+class MainWindowInterpretersInterface : public ProgressReporterInterface
 {
 public:
 	virtual ~MainWindowInterpretersInterface() {}
@@ -89,11 +90,6 @@ public:
 
 	virtual void deleteElementFromDiagram(const Id &id) = 0;
 
-	/// Must be called before some long operation start.
-	/// Shows progress bar on operation start
-	/// @param operation Operation that going to be invoced
-	virtual void reportOperation(invocation::LongOperation *operation) = 0;
-
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, const QString &title) = 0;
 	virtual void closeTab(QWidget *tab) = 0;
@@ -112,18 +108,20 @@ public:
 	/// @param visible - true, if element shall be visible, false if hidden.
 	virtual void setElementInPaletteVisible(const Id &metatype, bool visible) = 0;
 
-	/// Shows or hides all elements in palette.
+	/// Shows or hides all elements in palette for some editor.
+	/// @param diagram - two-part id of the editor whoose elements we show or hide.
 	/// @param visible - true, if all elements shall be visible, false if hidden.
-	virtual void setVisibleForAllElementsInPalette(bool visible) = 0;
+	virtual void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) = 0;
 
 	/// Disables/enables given element on a palette.
 	/// @param metatype - id of an element type to be disabled/enabled.
 	/// @param enabled - true, if element shall be enabled, false if disabled (greyed out).
 	virtual void setElementInPaletteEnabled(const Id &metatype, bool enabled) = 0;
 
-	/// Enables or disables all elements in palette.
+	/// Enables or disables all elements in palette for some editor.
+	/// @param diagram - two-part id of the editor whoose elements we show or hide.
 	/// @param enabled - true, if all elements shall be enabled, false if all elements shall be disabled.
-	virtual void setEnabledForAllElementsInPalette(bool enabled) = 0;
+	virtual void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) = 0;
 
 	/// Commits palette modification in the system: shows or hides elements in palette, linker menus,
 	/// gestures tab and enables or disables elements on diagram.

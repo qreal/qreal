@@ -21,22 +21,16 @@ ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * con
 	: mLogicalModel(model)
 	, mId(id)
 	, mPropertyName(property)
-	, mPropertyEditorModel(nullptr)
 	, mOldValue(mLogicalModel->propertyByRoleName(mId, mPropertyName))
 	, mNewValue(newValue)
 {
 }
 
-ChangePropertyCommand::ChangePropertyCommand(
-		PropertyEditorModel * const model
-		, const QModelIndex &index
-		, const QVariant &oldValue
-		, const QVariant &newValue
-		, int role)
-	: mLogicalModel(nullptr)
-	, mPropertyEditorModel(model)
-	, mPropertyEditorIndex(index)
-	, mPropertyEditorRole(role)
+ChangePropertyCommand::ChangePropertyCommand(qReal::models::LogicalModelAssistApi * const model
+		, const QString &property, const qReal::Id &id, const QVariant &oldValue, const QVariant &newValue)
+	: mLogicalModel(model)
+	, mId(id)
+	, mPropertyName(property)
 	, mOldValue(oldValue)
 	, mNewValue(newValue)
 {
@@ -54,9 +48,6 @@ bool ChangePropertyCommand::restoreState()
 
 bool ChangePropertyCommand::setProperty(const QVariant &value)
 {
-	if (mPropertyEditorModel) {
-		return mPropertyEditorModel->setData(mPropertyEditorIndex, value, mPropertyEditorRole);
-	}
 	mLogicalModel->setPropertyByRoleName(mId, value, mPropertyName);
 	return true;
 }

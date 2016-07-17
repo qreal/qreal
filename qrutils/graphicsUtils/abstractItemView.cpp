@@ -46,6 +46,10 @@ void AbstractView::wheelEvent(QWheelEvent *event)
 void AbstractView::scrollContentsBy(int dx, int dy)
 {
 	QGraphicsView::scrollContentsBy(dx, dy);
+	if (scene()) {
+		scene()->update();
+	}
+
 	emit contentsRectChanged();
 }
 

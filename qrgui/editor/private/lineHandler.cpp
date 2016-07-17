@@ -12,6 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <QtCore/qmath.h>
+
 #include "editor/private/lineHandler.h"
 
 #include "editor/nodeElement.h"
@@ -20,13 +22,17 @@
 using namespace qReal;
 using namespace qReal::gui::editor;
 
-LineHandler::LineHandler(EdgeElement *edge)
-		: mEdge(edge)
-		, mSavedLine(mEdge->line())
-		, mDragType(EdgeElement::noPort)
-		, mNodeWithHighlightedPorts(nullptr)
-		, mReshapeCommand(nullptr)
-		, mReshapeStarted(false)
+LineHandler::LineHandler(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel)
+	: mEdge(edge)
+	, mSavedLine(mEdge->line())
+	, mDragType(EdgeElement::noPort)
+	, mNodeWithHighlightedPorts(nullptr)
+	, mReshapeCommand(nullptr)
+	, mReshapeStarted(false)
+	, mLogicalModel(logicalModel)
+	, mGraphicalModel(graphicalModel)
 {
 }
 
@@ -137,12 +143,6 @@ void LineHandler::adjust()
 	NodeElement *src = mEdge->src();
 	NodeElement *dst = mEdge->dst();
 
-	if (src && src->isSelected() && dst && dst->isSelected() && !mEdge->isLoop()) {
-		QPointF offset = mEdge->mapFromItem(src, src->portPos(mEdge->fromPort())) - line.first();
-		mEdge->setPos(mEdge->pos() + offset);
-		return;
-	}
-
 	if (src) {
 		line.first() = mEdge->mapFromItem(src, src->portPos(mEdge->fromPort()));
 	}
@@ -179,15 +179,23 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 
 	if (src && reconnectSrc) {
 		const int targetLinePoint = firstOutsidePoint(true);
+		const qreal oldFrom = mEdge->fromPort();
 		const qreal newFrom = src->portId(mEdge->mapToItem(src, mEdge->line()[targetLinePoint])
 				, mEdge->fromPortTypes());
-		mEdge->setFromPort(newFrom);
+		const QStringList localPortTypes = mLogicalModel.editorManagerInterface().portTypes(src->id().type());
+		if (localPortTypes.at(qFloor(oldFrom)) == localPortTypes.at(qFloor(newFrom))) {
+			mEdge->setFromPort(newFrom);
+		}
 	}
 
 	if (dst && reconnectDst) {
 		const int targetLinePoint = firstOutsidePoint(false);
+		const qreal oldTo = mEdge->toPort();
 		const qreal newTo = dst->portId(mEdge->mapToItem(dst, mEdge->line()[targetLinePoint]), mEdge->toPortTypes());
-		mEdge->setToPort(newTo);
+		const QStringList localPortTypes = mLogicalModel.editorManagerInterface().portTypes(dst->id().type());
+		if (localPortTypes.at(qFloor(oldTo)) == localPortTypes.at(qFloor(newTo))) {
+			mEdge->setToPort(newTo);
+		}
 	}
 }
 
@@ -234,7 +242,7 @@ QPointF LineHandler::portArrangePoint(const NodeElement *node) const
 				: mEdge->mapToItem(mEdge->dst(), mEdge->line()[mEdge->line().count() - 2]);
 	} else {
 		mEdge->createLoopEdge();
-		return mEdge->mapToItem(mEdge->src(), mEdge->line()[3]);
+		return mEdge->mapToItem(mEdge->src(), mEdge->line().last());
 	}
 }
 

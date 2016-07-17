@@ -13,8 +13,10 @@
  * limitations under the License. */
 
 #include "rulesChecker.h"
+
 #include <QtWidgets/QFileDialog>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <qrrepo/repoApi.h>
 
 using namespace qReal::rulesChecker;
