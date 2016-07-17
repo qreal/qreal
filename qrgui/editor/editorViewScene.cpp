@@ -1167,6 +1167,12 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 	}
 }
 
+void EditorViewScene::focusInEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusInEvent(event);
+	mController.setActiveModule(mRootId.toString());
+}
+
 void EditorViewScene::setNeedDrawGrid(bool show)
 {
 	mNeedDrawGrid = show;

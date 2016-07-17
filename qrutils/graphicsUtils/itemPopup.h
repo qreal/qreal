@@ -38,6 +38,12 @@ public:
 	/// Enables or disables automatic popping up.
 	void setEnabled(bool enabled);
 
+signals:
+	/// @todo: This is pretty ugly way to separate this popup from executing commands itself, should be worked on.
+	/// Emitted when \a property of \a items must be changed to \a value. External code may process this signal to
+	/// enable undo/redo for that actions.
+	void propertyChanged(const QStringList &items, const QString &property, const QVariant &value);
+
 protected slots:
 	/// This will set fixed size of this window in consideration with layout.
 	/// Must be called each time when layout of this widget changes.

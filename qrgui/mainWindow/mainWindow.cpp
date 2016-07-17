@@ -788,7 +788,7 @@ void MainWindow::closeTab(int index)
 
 	if (diagram) {
 		const Id diagramId = diagram->editorViewScene().rootItemId();
-		mController->diagramClosed(diagramId);
+		mController->moduleClosed(diagramId.toString());
 		emit mFacade->events().diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		emit mFacade->events().codeTabClosed(QFileInfo(path));
@@ -1017,7 +1017,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
 		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()), &EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
-		mController->diagramOpened(diagramId);
+		mController->moduleOpened(diagramId.toString());
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
@@ -1209,11 +1209,11 @@ void MainWindow::switchToTab(int index)
 			getCurrentTab()->mutableMvIface().setLogicalModel(models().logicalModel());
 			mRootIndex = editorView->mvIface().rootIndex();
 			const Id diagramId = models().graphicalModelAssistApi().idByIndex(mRootIndex);
-			mController->setActiveDiagram(diagramId);
+			mController->setActiveModule(diagramId.toString());
 		}
 	} else {
 		mUi->tabs->setEnabled(false);
-		mController->setActiveDiagram(Id());
+		mController->setActiveModule(QString());
 	}
 }
 
@@ -1722,6 +1722,7 @@ void MainWindow::initToolPlugins()
 	mToolManager->init(PluginConfigurator(models().repoControlApi()
 		, models().graphicalModelAssistApi()
 		, models().logicalModelAssistApi()
+		, *mController
 		, *this
 		, *this
 		, *mProjectManager

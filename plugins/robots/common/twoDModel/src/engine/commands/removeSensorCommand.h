@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,25 @@
 
 #pragma once
 
-#include <QtWidgets/QAction>
+#include <qrgui/controller/commands/abstractCommand.h>
+
+#include "createRemoveSensorImplementation.h"
 
 namespace twoDModel {
-namespace items {
+namespace commands {
 
-/// @brief Represents an item on 2D model palette.
-class Tool
+class RemoveSensorCommand : public qReal::commands::AbstractCommand
 {
 public:
-	Tool(const QIcon &icon, const QString &displayedName);
-	~Tool();
-
-	/// Returns an icon that will be drawn on 2D model palette.
-	QIcon icon() const;
-
-	/// Returns name of this tool that will be shown in a tooltip of item on 2D model palette.
-	QString displayedName() const;
-
-	/// Returns an action
-	QAction &action() const;
+	RemoveSensorCommand(model::SensorsConfiguration &configurator
+			, const QString &robotModel
+			, const kitBase::robotModel::PortInfo &port);
 
 private:
-	const QIcon mIcon;
-	const QString mDisplayedName;
-	QAction mAction;
+	bool execute() override;
+	bool restoreState() override;
+
+	CreateRemoveSensorImplementation mImpl;
 };
 
 }

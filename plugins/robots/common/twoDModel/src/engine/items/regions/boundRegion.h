@@ -31,7 +31,7 @@ public:
 	/// Sets a width of the stripe on which region item wider than item it is bound to.
 	void setStroke(int stroke);
 
-	void serialize(QDomElement &element) override;
+	void serialize(QDomElement &element) const override;
 	void deserialize(const QDomElement &element) override;
 
 	QRectF boundingRect() const override;

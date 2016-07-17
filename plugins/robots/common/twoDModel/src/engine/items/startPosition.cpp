@@ -47,16 +47,24 @@ void StartPosition::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *
 	painter->restore();
 }
 
-void StartPosition::serialize(QDomElement &robotElement, QDomDocument &target) const
+QDomElement StartPosition::serialize(QDomElement &parent) const
 {
-	QDomElement startPositionElement = target.createElement("startPosition");
+	QDomElement startPositionElement = RotateItem::serialize(parent);
+	startPositionElement.setTagName("startPosition");
 	startPositionElement.setAttribute("x", QString::number(scenePos().x()));
 	startPositionElement.setAttribute("y", QString::number(scenePos().y()));
 	startPositionElement.setAttribute("direction", QString::number(rotation()));
-	robotElement.appendChild(startPositionElement);
+	return startPositionElement;
 }
 
-void StartPosition::deserialize(const QDomElement &robotElement)
+void StartPosition::deserialize(const QDomElement &startPositionElement)
+{
+	setX(startPositionElement.attribute("x").toDouble());
+	setY(startPositionElement.attribute("y").toDouble());
+	setRotation(startPositionElement.attribute("direction").toDouble());
+}
+
+void StartPosition::deserializeCompatibly(const QDomElement &robotElement)
 {
 	const QDomElement startPositionElement = robotElement.firstChildElement("startPosition");
 	if (startPositionElement.isNull()) {
@@ -67,9 +75,7 @@ void StartPosition::deserialize(const QDomElement &robotElement)
 		setY(robotY.toDouble() + robotHeight / 2);
 		setRotation(robotElement.attribute("direction").toDouble());
 	} else {
-		setX(startPositionElement.attribute("x").toDouble());
-		setY(startPositionElement.attribute("y").toDouble());
-		setRotation(startPositionElement.attribute("direction").toDouble());
+		deserialize(startPositionElement);
 	}
 }
 

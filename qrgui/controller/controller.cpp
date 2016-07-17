@@ -32,11 +32,12 @@ Controller::~Controller()
 	disconnect(this, SLOT(resetModifiedState()));
 	disconnect(this, SLOT(resetCanRedoState()));
 	disconnect(this, SLOT(resetCanUndoState()));
-	foreach (UndoStack *stack, mDiagramStacks) {
+	for (UndoStack * const stack : mModuleStacks) {
 		// 'delete stack;' causes segfaults when app is beeing closed:
 		// for some reason slots are still connected
 		stack->deleteLater();
 	}
+
 	mGlobalStack->deleteLater();
 }
 
@@ -50,13 +51,14 @@ bool Controller::canRedo() const
 	return mCanRedoState;
 }
 
-void Controller::setActiveDiagram(const Id &diagramId)
+void Controller::setActiveModule(const QString &moduleId)
 {
-	if (diagramId != Id()) {
-		setActiveStack(mDiagramStacks[diagramId.toString()]);
-	} else {
+	if (moduleId.isEmpty()) {
 		setActiveStack(nullptr);
+	} else {
+		setActiveStack(mModuleStacks[moduleId]);
 	}
+
 	resetAll();
 }
 
@@ -65,9 +67,9 @@ void Controller::execute(commands::AbstractCommand *command)
 	execute(command, mActiveStack);
 }
 
-void Controller::execute(commands::AbstractCommand *command, const Id &diagramid)
+void Controller::execute(commands::AbstractCommand *command, const QString &moduleId)
 {
-	execute(command, mDiagramStacks[diagramid.toString()]);
+	execute(command, mModuleStacks[moduleId]);
 }
 
 void Controller::executeGlobal(AbstractCommand *command)
@@ -82,29 +84,30 @@ void Controller::execute(commands::AbstractCommand *command, UndoStack *stack)
 	}
 }
 
-void Controller::diagramOpened(const Id &diagramId)
+void Controller::moduleOpened(const QString &moduleId)
 {
-	if (diagramId.isNull()) {
+	if (moduleId.isEmpty()) {
 		return;
 	}
+
 	UndoStack *stack = new UndoStack;
 	connectStack(stack);
-	mDiagramStacks.insert(diagramId.toString(), stack);
+	mModuleStacks.insert(moduleId, stack);
 	resetAll();
 }
 
-void Controller::diagramClosed(const Id &diagramId)
+void Controller::moduleClosed(const QString &moduleId)
 {
-	if (diagramId.isNull() || !mDiagramStacks.keys().contains(diagramId.toString())) {
+	if (moduleId.isEmpty() || !mModuleStacks.keys().contains(moduleId)) {
 		return;
 	}
 
-	if (mActiveStack == mDiagramStacks[diagramId.toString()]) {
+	if (mActiveStack == mModuleStacks[moduleId]) {
 		mActiveStack = nullptr;
 	}
 
-	delete mDiagramStacks[diagramId.toString()];
-	mDiagramStacks.remove(diagramId.toString());
+	delete mModuleStacks[moduleId];
+	mModuleStacks.remove(moduleId);
 	resetAll();
 }
 
@@ -112,12 +115,13 @@ void Controller::resetModifiedState()
 {
 	bool wasModified = false;
 	QList<UndoStack *> const undoStacks = stacks();
-	foreach (UndoStack *stack, undoStacks) {
+	for (UndoStack * const stack : undoStacks) {
 		if (stack && !stack->isClean()) {
 			wasModified = true;
 			break;
 		}
 	}
+
 	if (wasModified != mModifiedState) {
 		mModifiedState = wasModified;
 		emit modifiedChanged(mModifiedState);
@@ -151,13 +155,13 @@ void Controller::resetAll()
 
 QList<UndoStack *> Controller::stacks() const
 {
-	return mDiagramStacks.values() << mGlobalStack;
+	return mModuleStacks.values() << mGlobalStack;
 }
 
 void Controller::projectSaved()
 {
 	mGlobalStack->setClean();
-	foreach (UndoStack * const stack, mDiagramStacks) {
+	foreach (UndoStack * const stack, mModuleStacks) {
 		stack->setClean();
 	}
 }
@@ -186,24 +190,24 @@ void Controller::undo()
 UndoStack *Controller::selectActiveStack(bool forUndo)
 {
 	const int shift = forUndo ? -1 : 0;
-	const int diagramIndex = mActiveStack ? mActiveStack->index() + shift : -1;
+	const int moduleIndex = mActiveStack ? mActiveStack->index() + shift : -1;
 	const int globalIndex = mGlobalStack->index() + shift;
-	const AbstractCommand *diagramCommand = diagramIndex < 0 ? nullptr
-			: dynamic_cast<const AbstractCommand *>(mActiveStack->command(diagramIndex));
+	const AbstractCommand *moduleCommand = moduleIndex < 0 ? nullptr
+			: dynamic_cast<const AbstractCommand *>(mActiveStack->command(moduleIndex));
 	const AbstractCommand *globalCommand = globalIndex < 0 ? nullptr
 			: dynamic_cast<const AbstractCommand *>(mGlobalStack->command(globalIndex));
-	if (!diagramCommand && !globalCommand) {
+	if (!moduleCommand && !globalCommand) {
 		return nullptr;
 	}
-	if (!diagramCommand) {
+	if (!moduleCommand) {
 		return mGlobalStack;
 	}
 	if (!globalCommand) {
 		return mActiveStack;
 	}
-	const uint diagramTimestamp = diagramCommand->timestamp();
+	const uint moduleTimestamp = moduleCommand->timestamp();
 	const uint globalTimestamp = globalCommand->timestamp();
-	return forUndo == (diagramTimestamp < globalTimestamp) ? mGlobalStack : mActiveStack;
+	return forUndo == (moduleTimestamp < globalTimestamp) ? mGlobalStack : mActiveStack;
 }
 
 void Controller::setActiveStack(UndoStack *stack)

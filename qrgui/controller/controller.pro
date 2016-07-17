@@ -18,7 +18,6 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-links(qrkernel)
 includes(qrgui)
 
 QT += widgets
@@ -27,6 +26,7 @@ DEFINES += QRGUI_CONTROLLER_LIBRARY
 
 HEADERS += \
 	$$PWD/controllerDeclSpec.h \
+	$$PWD/controllerInterface.h \
 	$$PWD/controller.h \
 	$$PWD/undoStack.h \
 	$$PWD/commands/abstractCommand.h \

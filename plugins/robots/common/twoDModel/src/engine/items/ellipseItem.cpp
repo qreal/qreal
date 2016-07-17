@@ -71,14 +71,14 @@ void EllipseItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* op
 	mEllipseImpl.drawEllipseItem(painter, x1(), y1(), x2(), y2());
 }
 
-QDomElement EllipseItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement EllipseItem::serialize(QDomElement &parent) const
 {
-	QDomElement ellipseNode = setPenBrushToDoc(document, "ellipse");
-	AbstractItem::serialize(ellipseNode);
-	ellipseNode.setAttribute("begin", QString::number(x1() + scenePos().x() - topLeftPicture.x())
-			 + ":" + QString::number(y1() + scenePos().y() - topLeftPicture.y()));
-	ellipseNode.setAttribute("end", QString::number(x2() + scenePos().x() - topLeftPicture.x())
-			 + ":" + QString::number(y2() + scenePos().y() - topLeftPicture.y()));
+	QDomElement ellipseNode = ColorFieldItem::serialize(parent);
+	setPenBrushToElement(ellipseNode, "ellipse");
+	ellipseNode.setAttribute("begin", QString::number(x1() + scenePos().x())
+			 + ":" + QString::number(y1() + scenePos().y()));
+	ellipseNode.setAttribute("end", QString::number(x2() + scenePos().x())
+			 + ":" + QString::number(y2() + scenePos().y()));
 	return ellipseNode;
 }
 

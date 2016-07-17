@@ -392,15 +392,18 @@ bool RobotModel::onTheGround() const
 	return mIsOnTheGround;
 }
 
-QDomElement RobotModel::serialize(QDomDocument &target) const
+QDomElement RobotModel::serialize(QDomElement &parent) const
 {
-	QDomElement robot = target.createElement("robot");
+	QDomElement robot = parent.ownerDocument().createElement("robot");
+	parent.appendChild(robot);
 	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", QString::number(mAngle));
-	mSensorsConfiguration.serialize(robot, target);
-	mStartPositionMarker->serialize(robot, target);
+
+	mSensorsConfiguration.serialize(robot);
+	mStartPositionMarker->serialize(robot);
 	serializeWheels(robot);
+
 	return robot;
 }
 
@@ -413,7 +416,7 @@ void RobotModel::deserialize(const QDomElement &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
-	mStartPositionMarker->deserialize(robotElement);
+	mStartPositionMarker->deserializeCompatibly(robotElement);
 	deserializeWheels(robotElement);
 	nextFragment();
 }

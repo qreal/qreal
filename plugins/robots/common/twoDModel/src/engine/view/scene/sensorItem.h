@@ -47,10 +47,8 @@ public:
 	void changeDragState(qreal x, qreal y) override;
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
-	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-
-	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+	QDomElement serialize(QDomElement &parent) const override;
+	void deserialize(const QDomElement &element) override;
 
 protected:
 	class PortItem : public QGraphicsItem
@@ -74,6 +72,11 @@ protected:
 	QString pathToImage() const;
 
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+
+	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
