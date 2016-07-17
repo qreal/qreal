@@ -36,7 +36,7 @@ SUBDIRS += \
 	$$PWD/tools/exterminatus/exterminatus.pro \
 	$$PWD/tools/visualInterpreter/visualInterpreter.pro \
 	$$PWD/tools/refactoring/refactoring.pro \
-	$$PWD/tools/uxInfo/uxInfo.pro \
+#	$$PWD/tools/uxInfo/uxInfo.pro \
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils

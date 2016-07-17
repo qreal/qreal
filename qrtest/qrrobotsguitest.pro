@@ -1,4 +1,4 @@
-# Copyright 2015 QReal Research Group
+# Copyright 2015-2016 Kirill Nikolsky
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ include(../global.pri)
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	gmock \
+	googletest \
 	unitTests \
 
-unitTests.depends = gmock
+unitTests.depends = googletest
 unitTests.file = $$PWD/unitTests/guiTests/qRealRobotsGuiTests.pro
 
-gmock.file = thirdparty/gmock-1.6.0/gmock.pro
+googletest.file = thirdparty/googletest/googletest.pro
 

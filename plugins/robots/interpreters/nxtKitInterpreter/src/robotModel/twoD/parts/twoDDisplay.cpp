@@ -68,6 +68,7 @@ void Display::clearScreen()
 
 void Display::paint(QPainter *painter, const QRect &rect)
 {
+	Q_UNUSED(rect)
 	painter->save();
 	painter->scale(static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth
 			, static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight);

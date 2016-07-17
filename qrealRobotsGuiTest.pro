@@ -1,4 +1,4 @@
-# Copyright 2015 QReal Research Group
+# Copyright 2015-2016 Kirill Nikolsky, Dmitry Mordvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,49 +14,10 @@
 
 contains(QT_VERSION, ^4.*){
 	message("Cannot build qreal using Qt version $${QT_VERSION}")
-	error("Use at least Qt 5.5")
+	error("Use at least Qt 5.3")
 }
 
-TEMPLATE = subdirs
-
-SUBDIRS = \
-	qrmc \
-	qrxc \
-	qrgui \
-	qrrepo \
-	qrkernel \
-	qrutils \
-	qrtext \
-	thirdparty \
-	qrtranslations \
-	plugins \
-
-qrtext.depends = qrkernel
-qrkernel.depends = thirdparty
-qrutils.depends = qrkernel qrtext
-qrrepo.depends = qrkernel qrutils
-qrxc.depends = qrutils
-qrmc.depends = qrrepo
-qrmc.file = $$PWD/qrmc/qrmc-lib.pro
-
-qrgui.depends = \
-	qrxc \
-	qrrepo \
-	qrutils \
-	qrkernel \
-	qrmc \
-	thirdparty \
-
-plugins.depends = \
-	qrxc \
-	qrrepo \
-	qrutils \
-	qrkernel \
-	qrmc \
-	qrgui \
-	qrtext \
-
-CONFIG += c++11
+include(qreal.pri)
 
 SUBDIRS += \
 	qrtest \
@@ -74,6 +35,3 @@ qrtest.depends = \
 qrtest.file = $$PWD/qrtest/qrrobotsguitest.pro
 
 plugins.file = $$PWD/plugins/robots.pro
-
-RESOURCES += \
-	qrgui/mainwindow/qrgui.qrc

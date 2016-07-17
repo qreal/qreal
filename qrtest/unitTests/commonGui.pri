@@ -1,4 +1,4 @@
-# Copyright 2015 QReal Research Group
+# Copyright 2015-2016 Kirill Nikolsky
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,16 +21,14 @@ QT += widgets
 
 if (equals(QMAKE_CXX, "g++") : !macx) {
 	QMAKE_LFLAGS += -Wl,-E
-	# For gmock
+	# For googletest
 	QMAKE_CXXFLAGS += -Wno-unused-local-typedefs
 }
 
 INCLUDEPATH += \
 	$$PWD/ \
 	$$PWD/../../ \
-	$$PWD/../thirdparty/gmock-1.6.0/include \
-	$$PWD/../thirdparty/gmock-1.6.0/gtest/include \
+	$$PWD/../thirdparty/googletest/googletest/include \
+	$$PWD/../thirdparty/googletest/googlemock/include \
 
-links(gmock)
-
-include($$PWD/utils/utils.pri)
+links(googletest)
