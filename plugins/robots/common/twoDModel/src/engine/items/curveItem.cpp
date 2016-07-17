@@ -63,6 +63,7 @@ QAction *CurveItem::curveTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_bezier.svg"), tr("Bezier Curve (B)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_B));
+	result->setCheckable(true);
 	return result;
 }
 

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets xml
+QT += widgets xml svg
 
 DEFINES += TWO_D_MODEL_LIBRARY
 
@@ -40,6 +40,7 @@ HEADERS += \
 	$$PWD/include/twoDModel/engine/model/robotModel.h \
 	$$PWD/include/twoDModel/engine/model/sensorsConfiguration.h \
 	$$PWD/include/twoDModel/engine/model/settings.h \
+	$$PWD/include/twoDModel/engine/model/image.h \
 	$$PWD/include/twoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/twoDModel/robotModel/parts/button.h \
 	$$PWD/include/twoDModel/robotModel/parts/colorSensorBlue.h \
@@ -72,6 +73,7 @@ HEADERS += \
 	$$PWD/src/engine/view/parts/gridParameters.h \
 	$$PWD/src/engine/view/parts/detailsTab.h \
 	$$PWD/src/engine/view/parts/colorItemPopup.h \
+	$$PWD/src/engine/view/parts/imageItemPopup.h \
 	$$PWD/src/engine/view/parts/robotItemPopup.h \
 	$$PWD/src/engine/view/parts/speedPopup.h \
 	$$PWD/src/engine/view/parts/ruler.h \
@@ -95,6 +97,7 @@ HEADERS += \
 	$$PWD/src/engine/items/colorFieldItem.h \
 	$$PWD/src/engine/items/rectangleItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
+	$$PWD/src/engine/items/imageItem.h \
 	$$PWD/src/engine/items/startPosition.h \
 	$$PWD/src/engine/items/regions/regionItem.h \
 	$$PWD/src/engine/items/regions/ellipseRegion.h \
@@ -119,6 +122,7 @@ SOURCES += \
 	$$PWD/src/engine/view/parts/gridParameters.cpp \
 	$$PWD/src/engine/view/parts/detailsTab.cpp \
 	$$PWD/src/engine/view/parts/colorItemPopup.cpp \
+	$$PWD/src/engine/view/parts/imageItemPopup.cpp \
 	$$PWD/src/engine/view/parts/robotItemPopup.cpp \
 	$$PWD/src/engine/view/parts/speedPopup.cpp \
 	$$PWD/src/engine/view/parts/ruler.cpp \
@@ -129,6 +133,7 @@ SOURCES += \
 	$$PWD/src/engine/model/sensorsConfiguration.cpp \
 	$$PWD/src/engine/model/worldModel.cpp \
 	$$PWD/src/engine/model/timeline.cpp \
+	$$PWD/src/engine/model/image.cpp \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
@@ -141,6 +146,7 @@ SOURCES += \
 	$$PWD/src/engine/items/colorFieldItem.cpp \
 	$$PWD/src/engine/items/rectangleItem.cpp \
 	$$PWD/src/engine/items/ellipseItem.cpp \
+	$$PWD/src/engine/items/imageItem.cpp \
 	$$PWD/src/engine/items/startPosition.cpp \
 	$$PWD/src/engine/items/regions/regionItem.cpp \
 	$$PWD/src/engine/items/regions/ellipseRegion.cpp \

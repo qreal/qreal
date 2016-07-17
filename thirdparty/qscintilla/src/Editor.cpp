@@ -986,7 +986,7 @@ void Editor::ScrollTo(int line, bool moveThumb) {
 		// Try to optimise small scrolls
 #ifndef UNDER_CE
 		int linesToMove = topLine - topLineNew;
-		bool performBlit = (abs(linesToMove) <= 10) && (paintState == notPainting);
+		bool performBlit = (qAbs(linesToMove) <= 10) && (paintState == notPainting);
 		willRedrawAll = !performBlit;
 #endif
 		SetTopLine(topLineNew);

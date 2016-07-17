@@ -22,6 +22,7 @@
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtXml/QDomDocument>
 
+#include "twoDModel/engine/model/image.h"
 #include "twoDModel/twoDModelDeclSpec.h"
 
 class QGraphicsItem;
@@ -31,6 +32,7 @@ namespace twoDModel {
 namespace items {
 class WallItem;
 class ColorFieldItem;
+class ImageItem;
 class RegionItem;
 }
 
@@ -61,6 +63,9 @@ public:
 	/// Returns a list of color field items in the world model.
 	const QList<items::ColorFieldItem *> &colorFields() const;
 
+	/// Returns a list of image items in the world model.
+	const QList<items::ImageItem *> &imageItems() const;
+
 	/// Returns a list of trace items on the floor.
 	const QList<QGraphicsLineItem *> &trace() const;
 
@@ -71,6 +76,12 @@ public:
 
 	void addColorField(items::ColorFieldItem *colorField);
 	void removeColorField(items::ColorFieldItem *colorField);
+
+	/// Adds image item into 2D model.
+	void addImage(items::ImageItem *image);
+
+	/// Removes image item from 2D model.
+	void removeImage(items::ImageItem *image);
 
 	void clear();
 
@@ -87,12 +98,18 @@ public:
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
 	QGraphicsObject *findId(const QString &id) const;
 
+	/// Sets a background image on the scene and its geometry.
+	void setBackground(const Image &image, const QRect &rect);
+
 signals:
 	/// Emitted each time when model is appended with some new wall.
 	void wallAdded(items::WallItem *item);
 
 	/// Emitted each time when model is appended with some new color field item.
 	void colorItemAdded(items::ColorFieldItem *item);
+
+	/// Emitted each time when model is appended with some new color field item.
+	void imageItemAdded(items::ImageItem *item);
 
 	/// Emitted each time when model is appended with some new item.
 	void regionItemAdded(items::RegionItem *item);
@@ -106,16 +123,23 @@ signals:
 	/// Emitted when robot trace is non-empty any more or was cleared from the floor.
 	void robotTraceAppearedOrDisappeared(bool appeared);
 
+	/// Emitted when user changes background image or its size.
+	void backgroundChanged(const Image &image, const QRect &backgroundRect);
+
 private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(const int distance, const QPointF &position
 			, const qreal direction, const QPainterPath &wallPath) const;
 	QPainterPath buildWallPath() const;
+	QRect deserializeRect(const QString &string) const;
 
 	QList<items::WallItem *> mWalls;
 	QList<items::ColorFieldItem *> mColorFields;
+	QList<items::ImageItem *> mImages;
 	QList<QGraphicsLineItem *> mRobotTrace;
 	QList<items::RegionItem *> mRegions;
+	Image mBackgroundImage;
+	QRect mBackgroundRect;
 };
 
 }

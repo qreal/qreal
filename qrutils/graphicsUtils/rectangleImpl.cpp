@@ -85,3 +85,15 @@ void RectangleImpl::drawImageItem(QPainter *painter, qreal x1, qreal y1, qreal x
 {
 	painter->drawImage(QRectF(qMin(x1, x2), qMin(y1, y2), qAbs(x2 - x1), qAbs(y2 - y1)), myImage);
 }
+
+QPointF RectangleImpl::deserializePoint(const QString &string) const
+{
+	const QStringList splittedStr = string.split(":");
+	if (splittedStr.count() == 2) {
+		const qreal x = splittedStr[0].toDouble();
+		const qreal y = splittedStr[1].toDouble();
+		return QPointF(x, y);
+	}
+
+	return QPointF();
+}

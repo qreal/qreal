@@ -23,6 +23,8 @@
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/readOnly.h>
 
+#include "twoDModel/engine/model/image.h"
+
 namespace twoDModel {
 
 namespace items {
@@ -81,6 +83,9 @@ public slots:
 	/// Sets a flag that next user mouse actions should draw an ellipse on the scene.
 	void addEllipse();
 
+	/// Shows dialog proposing user to add image on a scene.
+	void addImage();
+
 	/// Resets all drawing flags: next user mouse actions will behavior like usially.
 	void setNoneStatus();
 
@@ -100,6 +105,15 @@ public slots:
 	/// Focuses all graphics views on the robot if it is not visible.
 	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
+	/// Returns a path to scene background image.
+	model::Image background() const;
+
+	/// Returns a scene background image size and position.
+	QRect backgroundRect() const;
+
+	/// Sets a background image on the scene and its geometry.
+	void setBackground(const model::Image &background, const QRect &backgroundRect);
+
 signals:
 	/// Emitted each time when user presses mouse button somewhere on the scene.
 	void mousePressed();
@@ -112,6 +126,9 @@ signals:
 
 	/// Emitted at any changes of robot list (adding or removing)
 	void robotListChanged(RobotItem *robotItem);
+
+	/// Emitted when user pressed escape during this scene is focused.
+	void escapePressed();
 
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
@@ -130,6 +147,10 @@ private slots:
 	/// Called after new color field item is added to a world model.
 	void onColorItemAdded(graphicsUtils::AbstractItem *item);
 
+	/// Called after new image item is added to a world model.
+	void onImageItemAdded(graphicsUtils::AbstractItem *item);
+
+	/// Called after some item was kicked away from a world model.
 	void onItemRemoved(QGraphicsItem *item);
 
 	void drawAxes(QPainter *painter);
@@ -150,6 +171,7 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
@@ -168,8 +190,12 @@ private:
 
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
+	qreal currentZoom() const;
+
 	model::Model &mModel;
 
+	model::Image mBackground;
+	QRect mBackgroundRect;
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
 
