@@ -16,6 +16,8 @@
 
 #include <QtGui/QPixmap>
 
+#include "qrutils/utilsDeclSpec.h"
+
 class QSvgRenderer;
 class QFileInfo;
 
@@ -23,7 +25,7 @@ namespace utils {
 
 /// Cache for images that contains them pre-loaded and parsed and is able to quickly draw it on a painter.
 /// Pixmaps and svg images are contained separately as they are rendered differently.
-class ImagesCache
+class QRUTILS_EXPORT ImagesCache
 {
 public:
 	static ImagesCache &instance();
