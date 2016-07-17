@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "label.h"
 
 #include <QtCore/QDebug>
@@ -14,26 +28,29 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
+	mPrefix = element.attribute("prefix");
+	mSuffix = element.attribute("suffix");
 	mReadOnly = element.attribute("readOnly", "false");
 	mRotation = element.attribute("rotation", "0").toDouble();
 
 	if (mTextBinded.contains("##")) {
 		mReadOnly = "true";
 	}
+
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel && mTextBinded.isEmpty() ? "transparent" : "white");
 	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
 	mIsPlainText = element.attribute("isPlainText", "false").toLower().trimmed() == "true";
 	if ((mText.isEmpty() && mTextBinded.isEmpty()) || (mReadOnly != "true" && mReadOnly != "false")) {
-		qDebug() << "ERROR: can't parse label";
+		qWarning() << "ERROR: can't parse label";
 		return false;
 	}
 	return true;
 }
 
-Label* Label::clone()
+Label *Label::clone()
 {
-	Label* returnLabel = new Label();
+	Label *returnLabel = new Label();
 	returnLabel->mX = mX;
 	returnLabel->mY = mY;
 
@@ -50,9 +67,9 @@ Label* Label::clone()
 	return returnLabel;
 }
 
-QString Label::titleName() const
+QString Label::labelName() const
 {
-	return "title_" + QString("%1").arg(mIndex);
+	return "label_" + QString("%1").arg(mIndex);
 }
 
 void Label::changeIndex(int i)
@@ -60,82 +77,42 @@ void Label::changeIndex(int i)
 	mIndex = i;
 }
 
-void Label::generateCodeForConstructor(OutFile &out)
+void Label::generateCodeForConstructor(OutFile &out) const
 {
 	if (mText.isEmpty()) {
 		// It is binded label, text for it will be fetched from repo.
-		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", \"" + mTextBinded + "\", " + mReadOnly + ", " + QString::number(mRotation) + ");\n";
+		out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\", %6, %7);\n").arg(labelName()
+						, QString::number(mIndex)
+						, QString::number(mX.value())
+						, QString::number(mY.value())
+						, mTextBinded, mReadOnly
+						, QString::number(mRotation));
 	} else {
 		// It is a static label, text for it is fixed.
-		out() << "			" + titleName() + " = factory.createLabel(" + QString::number(mIndex) + ", "
-				+ QString::number(mX.value()) + ", " + QString::number(mY.value())
-				+ ", QObject::tr(\"" + mText + "\"), " + QString::number(mRotation) + ");\n";
+		out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, QObject::tr(\"%5\"), %6);\n").arg(labelName()
+				, QString::number(mIndex)
+				, QString::number(mX.value())
+				, QString::number(mY.value())
+				, mText
+				, QString::number(mRotation));
 	}
-	out() << "			" + titleName() + "->setBackground(Qt::" + mBackground + ");\n";
+
+	out() << QString("\t\t\t%1.setBackground(Qt::%2);\n").arg(labelName(), mBackground);
 
 	const QString scalingX = mX.isScalable() ? "true" : "false";
 	const QString scalingY = mY.isScalable() ? "true" : "false";
-	out() << "			" + titleName() + "->setScaling(" + scalingX + ", " + scalingY + ");\n";
-	out() << "			" + titleName() + "->setHard(" + (mIsHard ? "true" : "false") + ");\n";
+	out() << QString("\t\t\t%1.setScalingX(%2);\n").arg(labelName(), scalingX);
+	out() << QString("\t\t\t%1.setScalingY(%2);\n").arg(labelName(), scalingY);
+	out() << QString("\t\t\t%1.setHard(%2);\n").arg(labelName(), mIsHard ? "true" : "false");
+	out() << QString("\t\t\t%1.setPlainTextMode(%2);\n").arg(labelName(), mIsPlainText ? "true" : "false");
 
-	out()
-		<< "			" + titleName() + "->setTextInteractionFlags(Qt::NoTextInteraction);\n"
-		<< "			titles.append(" + titleName() + ");\n";
-}
-
-QStringList Label::getListOfStr(const QString &strToParse) const
-{
-	return strToParse.split("##");
-}
-
-void Label::generateCodeForUpdateData(OutFile &out)
-{
-	if (mTextBinded.isEmpty()) {
-		// Static label
-		out() << "\t\t\tQ_UNUSED(repo);\n";
-		return;
+	if (!mPrefix.isEmpty()) {
+		out() << QString("\t\t\t%1.setPrefix(QObject::tr(\"%2\"));\n").arg(labelName(), mPrefix);
 	}
 
-	QStringList list = getListOfStr(mTextBinded);
-
-	QString resultStr;
-	if (list.count() == 1) {
-		if (list.first() == "name") {
-			resultStr = "repo->name()";
-		} else {
-			resultStr = "repo->logicalProperty(\"" + list.first() + "\")";
-		}
-	} else {
-		int counter = 1;
-		foreach (const QString &listElement, list) {
-			QString field;
-			if (counter % 2 == 0) {
-				if (listElement == "name") {
-					field = "repo->name()";
-				} else {
-					field = "repo->logicalProperty(\"" + listElement + "\")";
-				}
-			} else {
-				field = "QObject::tr(\"" + listElement + "\")";
-			}
-
-			resultStr += " + " +  field;
-			counter++;
-		}
-		resultStr = resultStr.mid(3);
+	if (!mSuffix.isEmpty()) {
+		out() << QString("\t\t\t%1.setSuffix(QObject::tr(\"%2\"));\n").arg(labelName(), mSuffix);
 	}
-	if (mIsPlainText) {
-		out() << QString("\t\t\t%1->setPlainText(%2);\n")
-				.arg(titleName(), resultStr);
-	} else {
-		out() << "\t\t\t" + titleName() + "->setTextFromRepo("
-			 + resultStr + ");\n";
-	}
-}
 
-void Label::generateCodeForFields(OutFile &out)
-{
-	out() << "		qReal::LabelInterface *" + titleName() + ";\n";
+	out() << QString("\t\t\taddLabel(%1);\n").arg(labelName());
 }

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "regionItem.h"
 
 #include <QtXml/QDomElement>
@@ -101,15 +115,15 @@ void RegionItem::serialize(QDomElement &element)
 
 	if (!text().isEmpty()) {
 		element.setAttribute("text", text());
-		element.setAttribute("textX", textPosition().x());
-		element.setAttribute("textY", textPosition().y());
+		element.setAttribute("textX", QString::number(textPosition().x()));
+		element.setAttribute("textY", QString::number(textPosition().y()));
 	}
 
 	QSizeF const size = boundingRect().size();
-	element.setAttribute("height", size.height());
-	element.setAttribute("width", size.width());
-	element.setAttribute("x", pos().x());
-	element.setAttribute("y", pos().y());
+	element.setAttribute("height", QString::number(size.height()));
+	element.setAttribute("width", QString::number(size.width()));
+	element.setAttribute("x", QString::number(pos().x()));
+	element.setAttribute("y", QString::number(pos().y()));
 
 	element.setAttribute("visible", isVisible() ? "true" : "false");
 

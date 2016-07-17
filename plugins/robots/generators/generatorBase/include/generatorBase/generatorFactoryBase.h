@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <qrkernel/ids.h>
@@ -140,9 +154,14 @@ public:
 	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
 
-	/// Implementation must return a path to a folder containing templates for
-	/// customizing concrete generator
-	virtual QString pathToTemplates() const = 0;
+	/// Returns a pointer to a code generator that replaces all @@RANDOM_ID@@ occurences to random c++ identifier string
+	virtual simple::AbstractSimpleGenerator *randomIdGenerator(simple::AbstractSimpleGenerator *other);
+
+	/// Implementation must return a list of paths to folders containing templates for
+	/// customizing concrete generator. List must be sorted by folder priority --- generator looks for template
+	/// in a first folder, then, if there is no template with such name, it looks in a next folder and so on.
+	/// It is needed to be able to redefine only part of templates in different generator plugins.
+	virtual QStringList pathsToTemplates() const = 0;
 
 	// ----------------------------- Converters --------------------------------
 
@@ -254,6 +273,7 @@ protected:
 	parts::Sensors *mSensors;
 	parts::Functions *mFunctions;
 	parts::DeviceVariables *mDeviceVariables;  // Has ownership.
+	int mLoopGeneratorIndex = 0;
 };
 
 }

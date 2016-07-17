@@ -1,9 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "conditionsFactory.h"
 
 #include <QtCore/QSharedPointer>
 
+#include <qrutils/mathUtils/geometry.h>
+
 #include "event.h"
-#include "src/engine/model/robotModel.h"
+#include "twoDModel/engine/model/robotModel.h"
 #include "src/engine/items/regions/regionItem.h"
 
 using namespace twoDModel::constraints::details;
@@ -29,11 +45,13 @@ Condition ConditionsFactory::combined(const QList<Condition> &conditions, Glue g
 {
 	return [conditions, glue]() {
 		for (const Condition &condition : conditions) {
-			if (glue == Glue::And && !condition()) {
+			const bool value = condition();
+
+			if (glue == Glue::And && !value) {
 				return false;
 			}
 
-			if (glue == Glue::Or && condition()) {
+			if (glue == Glue::Or && value) {
 				return true;
 			}
 		}
@@ -120,7 +138,13 @@ Condition ConditionsFactory::inside(const QString &objectId, const QString &regi
 			}
 
 			if (model::RobotModel * const robotModel = dynamic_cast<model::RobotModel *>(mObjects[robotId])) {
-				return region->containsPoint(robotModel->configuration().position(device->port()));
+				const QPointF devicePosition = robotModel->configuration().position(device->port());
+				const QPointF deviceRelativeToCenter = devicePosition
+						+ robotModel->position() - robotModel->rotationCenter();
+				const QPointF realDevicePosition = QTransform().rotate(robotModel->rotation())
+						.map(deviceRelativeToCenter) + robotModel->rotationCenter();
+
+				return region->containsPoint(realDevicePosition);
 			}
 
 			return false;
@@ -177,7 +201,15 @@ Condition ConditionsFactory::timerCondition(int timeout, bool forceDrop, const V
 	};
 }
 
-void ConditionsFactory::reportError(const QString &message)
+Condition ConditionsFactory::usingCondition(const Condition &returns, const Trigger &trigger) const
+{
+	return [returns, trigger]() {
+		trigger();
+		return returns();
+	};
+}
+
+void ConditionsFactory::reportError(const QString &message) const
 {
 	emit mStatus.checkerError(message);
 }

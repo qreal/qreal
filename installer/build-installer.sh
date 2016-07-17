@@ -14,6 +14,8 @@ export QT_DIR=$1/../
 export QTIFW_DIR=$2
 export PRODUCT=$3 
 export OS=$OSTYPE
+
+grep -q "darwin" <<< $OSTYPE && export OS="mac" || :
 # All windows platforms can be enumerated below
 [ $OSTYPE == "msys" ] && export OS="win32" || :
 [ $OSTYPE == "linux-gnu" ] && OS_EXT=$OS`getconf LONG_BIT` || OS_EXT=$OS
@@ -22,10 +24,15 @@ export OS=$OSTYPE
 
 # $2 will be passed to all prebuild.sh scripts
 echo "Executing prebuild actions..."
-find $PWD -name prebuild-common.sh -print0 | xargs -0 chmod +x
-find $PWD -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
-find $PWD -name prebuild-common.sh | bash
-find $PWD -name prebuild-$OS.sh | bash
+find $PWD/packages/qreal-base -name prebuild-common.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/qreal-base -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/qreal-base -name prebuild-common.sh | bash
+find $PWD/packages/qreal-base -name prebuild-$OS.sh | bash
+
+find $PWD/packages/$PRODUCT -name prebuild-common.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/$PRODUCT -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
+find $PWD/packages/$PRODUCT -name prebuild-common.sh | bash
+find $PWD/packages/$PRODUCT -name prebuild-$OS.sh | bash
 
 echo "Building online installer..."
 $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS_EXT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-$OS_EXT-installer

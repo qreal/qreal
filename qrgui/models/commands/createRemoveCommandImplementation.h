@@ -1,57 +1,67 @@
+/* Copyright 2013-2016 Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
-#include "models/exploser.h"
+#include <QtCore/QPointF>
+
+#include "qrgui/models/elementInfo.h"
 
 namespace qReal {
+
+namespace models {
+class Models;
+class LogicalModelAssistApi;
+class GraphicalModelAssistApi;
+class Exploser;
+}
+
 namespace commands {
 
-class QRGUI_MODELS_EXPORT CreateRemoveCommandImplementation
+/// Implements logic for creation and deletion a set of nodes and edges.
+class CreateRemoveCommandImplementation
 {
 public:
-	CreateRemoveCommandImplementation(
-			models::LogicalModelAssistApi &logicalApi
-			, models::GraphicalModelAssistApi &graphicalApi
-			, const models::Exploser &exploser
-			, const Id &logicalParent
-			, const Id &graphicalParent
-			, const Id &id
-			, bool isFromLogicalModel
-			, const QString &name
-			, const QPointF &position);
+	CreateRemoveCommandImplementation(const models::Models &models, const QList<ElementInfo> &elements);
 
-	Id create();
+	/// Creates all elements given in constructor. Factical ids of elements after creation may be obtained by results().
+	void create();
+
+	/// Removes all elements given in constructor.
 	void remove();
 
-	Id id() const;
+	/// Rewrites current elements list that will be created with \a elements.
+	void setElements(const QList<ElementInfo> &elements);
 
-	bool equals(const CreateRemoveCommandImplementation &other) const;
+	/// Returns information about all elements created or removed by this command.
+	/// If creation was performed then result will contain ids that elements got after creation.
+	const QList<ElementInfo> &results() const;
 
 	/// @todo: Bad method, required only for linkers. Get rid of it.
-	/// Modifies command setting new creation position.
+	/// Modifies command setting new creation position for the first element info given.
 	void setNewPosition(const QPointF &position);
 
 private:
+	void removeOne(ElementInfo &element);
+
 	void refreshAllPalettes();
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	const models::Exploser &mExploser;
-	const Id mLogicalParent;
-	const Id mGraphicalParent;
-	Id mId;
-	const bool mIsFromLogicalModel;
-	const QString mName;
-	QPointF mPosition;
-	QMap<QString, QVariant> mLogicalPropertiesSnapshot;
-	QMap<QString, QVariant> mGraphicalPropertiesSnapshot;
-	Id mOldLogicalId;
+	QList<ElementInfo> mElements;
 };
-
-inline bool operator==(const CreateRemoveCommandImplementation &i1
-		, const CreateRemoveCommandImplementation &i2)
-{
-	return i1.equals(i2);
-}
 
 }
 }

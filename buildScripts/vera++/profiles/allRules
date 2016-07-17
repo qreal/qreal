@@ -2,8 +2,10 @@
 
 set rules {
   CommaAtTheEnd
+  CopyrightNotice
   IncludeGuards
   LineLength
+  LineEndings
   NoSpacesAtTheStart
   NoRelativePathsInIncludes
   OpeningParethesisForClass

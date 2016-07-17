@@ -1,8 +1,21 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
-
 
 #include "twoDModel/robotModel/twoDRobotModel.h"
 #include "twoDModel/engine/twoDModelControlInterface.h"
@@ -10,13 +23,17 @@
 
 #include "twoDModel/twoDModelDeclSpec.h"
 
+namespace utils {
+class SmartDock;
+}
+
 namespace twoDModel {
 
 namespace model {
 class Model;
 }
 namespace view {
-class D2ModelWidget;
+class TwoDModelWidget;
 }
 
 namespace engine {
@@ -36,26 +53,26 @@ public:
 			, const qReal::SystemEvents &systemEvents
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
-	qReal::ActionInfo &showTwoDModelWidgetActionInfo() override;
 	kitBase::DevicesConfigurationProvider &devicesConfigurationProvider() override;
 
 	TwoDModelEngineInterface &engine();
 
 public slots:
 	void onStartInterpretation() override;
-	void onStopInterpretation() override;
+	void onStopInterpretation(qReal::interpretation::StopReason reason) override;
 
 private:
 	void loadReadOnlyFlags(const qReal::LogicalModelAssistInterface &logicalModel);
 
 	const QString mRobotModelName;
-	qReal::ActionInfo mTwoDModelActionInfo;  // Has ownership over contained QAction object.
 
 	QScopedPointer<model::Model> mModel;
-	QScopedPointer<view::D2ModelWidget> mView;
+	QScopedPointer<view::TwoDModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
+	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
 };
 
 }

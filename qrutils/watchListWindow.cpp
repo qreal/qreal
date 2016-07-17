@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"
 
@@ -39,14 +53,14 @@ void WatchListWindow::updateVariables()
 	int row = 0;
 
 	std::function<QStringList()> identifiers;
-	std::function<QStringList(const QString &)> value;
+	std::function<QVariant(const QString &)> value;
 
 	if (!mNewParser) {
 		identifiers = [this] () { return mParser->variables().keys(); };
-		value = [this] (const QString &name) { return mParser->variables().value(name)->toStringList(); };
+		value = [this] (const QString &name) { return mParser->variables().value(name)->value(); };
 	} else {
 		identifiers = [this] () { return mNewParser->identifiers(); };
-		value = [this] (const QString &name) { return mNewParser->value<QStringList>(name); };
+		value = [this] (const QString &name) { return mNewParser->value<QVariant>(name); };
 	}
 
 	QStringList sortedIdentifiers = identifiers();
@@ -58,18 +72,12 @@ void WatchListWindow::updateVariables()
 
 		if (row >= mUi->watchListTableWidget->rowCount()) {
 			mUi->watchListTableWidget->insertRow(row);
-			QTableWidgetItem* item = new QTableWidgetItem(identifier);
-			mUi->watchListTableWidget->setItem(row, 0, item);
-			const QStringList v = value(identifier);
-			const QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
-			item = new QTableWidgetItem(text);
-			mUi->watchListTableWidget->setItem(row, 1, item);
-		} else {
-			mUi->watchListTableWidget->item(row, 0)->setText(identifier);
-			const QStringList v = value(identifier);
-			const QString text = v.size() == 1 ? v[0] : (v.isEmpty() ? "" : QString("{ %1 }").arg(v.join(',')));
-			mUi->watchListTableWidget->item(row, 1)->setText(text);
+			mUi->watchListTableWidget->setItem(row, 0, new QTableWidgetItem());
+			mUi->watchListTableWidget->setItem(row, 1, new QTableWidgetItem());
 		}
+
+		mUi->watchListTableWidget->item(row, 0)->setText(identifier);
+		mUi->watchListTableWidget->item(row, 1)->setText(toString(value(identifier)));
 
 		++row;
 	}
@@ -77,6 +85,30 @@ void WatchListWindow::updateVariables()
 	for (int i = row; i < mUi->watchListTableWidget->rowCount(); ++i) {
 		mUi->watchListTableWidget->removeRow(row);
 	}
+}
+
+QString WatchListWindow::toString(const QVariant &value) const
+{
+	if (value.type() == QVariant::StringList) {
+		const QStringList list = value.toStringList();
+		return list.isEmpty() ? "" : QString("{ %1 }").arg(list.join(", "));
+	}
+
+	if (value.type() == QVariant::List) {
+		QString result = "{";
+		for (const QVariant &i : value.value<QVariantList>()) {
+			result += toString(i) + ", ";
+		}
+
+		if (result.size() >= 2) {
+			result.chop(2);
+		}
+
+		result += "}";
+		return result;
+	}
+
+	return value.toString();
 }
 
 void WatchListWindow::hideVariables(const QStringList &variableNames)

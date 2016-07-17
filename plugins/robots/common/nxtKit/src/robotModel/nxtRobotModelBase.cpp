@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtKit/robotModel/nxtRobotModelBase.h"
 
 #include <kitBase/robotModel/robotParts/display.h>
@@ -48,12 +62,12 @@ NxtRobotModelBase::NxtRobotModelBase(const QString &kitId, const QString &robotI
 	addAllowedConnection(PortInfo("Escape", input, {}, "buttonEscape"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("A", output, { QString::fromUtf8("А") }), { motorInfo() });
-	addAllowedConnection(PortInfo("B", output, { QString::fromUtf8("Б") }), { motorInfo() });
-	addAllowedConnection(PortInfo("C", output, { QString::fromUtf8("В"), QString::fromUtf8("С") }), { motorInfo() });
+	addAllowedConnection(PortInfo("B", output, { QString::fromUtf8("В") }), { motorInfo() });
+	addAllowedConnection(PortInfo("C", output, { QString::fromUtf8("С") }), { motorInfo() });
 
-	addAllowedConnection(PortInfo("A", input, {}, "encoderA"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B", input, {}, "encoderB"), { encoderInfo() });
-	addAllowedConnection(PortInfo("C", input, {}, "encoderC"), { encoderInfo() });
+	addAllowedConnection(PortInfo("A", input, { QString::fromUtf8("А") }, "encoderA"), { encoderInfo() });
+	addAllowedConnection(PortInfo("B", input, { QString::fromUtf8("В") }, "encoderB"), { encoderInfo() });
+	addAllowedConnection(PortInfo("C", input, { QString::fromUtf8("С") }, "encoderC"), { encoderInfo() });
 
 	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
 	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);

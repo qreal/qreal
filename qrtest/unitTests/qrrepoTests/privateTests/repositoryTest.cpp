@@ -1,37 +1,52 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "repositoryTest.h"
+
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "repositoryTest.h"
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrkernel/exception/exception.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrRepo;
 using namespace details;
 using namespace qReal;
 using namespace qrTest;
 
-Id const parent("editor1", "diagram1", "element1", "parent");
-Id const root("editor1", "diagram1", "element2", "root");
+const Id parent("editor1", "diagram1", "element1", "parent");
+const Id root("editor1", "diagram1", "element2", "root");
 
-Id const child1("editor1", "diagram2", "element3", "child1");
-Id const child2("editor1", "diagram2", "element3", "child2");
-Id const child3("editor2", "diagram3", "element4", "child3");
+const Id child1("editor1", "diagram2", "element3", "child1");
+const Id child2("editor1", "diagram2", "element3", "child2");
+const Id child3("editor2", "diagram3", "element4", "child3");
 
-Id const child1_child("editor2", "diagram3", "element5", "child1_child");
-Id const child2_child("editor2", "diagram4", "element6", "child2_child");
-Id const child3_child("editor2", "diagram4", "element7", "child3_child");
+const Id child1_child("editor2", "diagram3", "element5", "child1_child");
+const Id child2_child("editor2", "diagram4", "element6", "child2_child");
+const Id child3_child("editor2", "diagram4", "element7", "child3_child");
 
-Id const rootLogicalId("editor2", "diagram3", "element5", "child1_child");
-Id const child1LogicalId("editor2", "diagram3", "element5", "child1_child");
-Id const child1_childLogicalId("editor2", "diagram4", "element6", "child2_child");
-Id const child2_childLogicalId("editor2", "diagram4", "element6", "child2_child");
+const Id rootLogicalId("editor2", "diagram3", "element5", "child1_child");
+const Id child1LogicalId("editor2", "diagram3", "element5", "child1_child");
+const Id child1_childLogicalId("editor2", "diagram4", "element6", "child2_child");
+const Id child2_childLogicalId("editor2", "diagram4", "element6", "child2_child");
 
-Id const fakeParent("fake", "fake", "fake", "fake");
-Id const notExistingId("1", "1", "1", "1");
+const Id fakeParent("fake", "fake", "fake", "fake");
+const Id notExistingId("1", "1", "1", "1");
 
-Id const newId1("editor1", "diagram1", "element1", "id1");
-Id const newId2("editor2", "diagram2", "element2", "id2");
+const Id newId1("editor1", "diagram1", "element1", "id1");
+const Id newId2("editor2", "diagram2", "element2", "id2");
 
 
 void RepositoryTest::removeDirectory(QString const &dirName)
@@ -52,12 +67,6 @@ void RepositoryTest::removeDirectory(QString const &dirName)
 }
 
 void RepositoryTest::SetUp() {
-	mOldTempFolder = SettingsManager::value("temp").toString();
-	mNewTempFolder = QDir::currentPath() + "/unsaved";
-	SettingsManager::setValue("temp", mNewTempFolder);
-
-	mSerializer = new Serializer("saveFile");
-
 	LogicalObject parentObj(parent);
 	parentObj.setParent(fakeParent);
 
@@ -108,12 +117,11 @@ void RepositoryTest::SetUp() {
 	list.push_back(&child2_childObj);
 	list.push_back(&child3_childObj);
 
-	mSerializer->saveToDisk(list, QHash<QString, QVariant>());
-
+	Serializer serializer("saveFile");
+	serializer.saveToDisk(list, QHash<QString, QVariant>());
 	mRepository = new Repository("saveFile.qrs");
 
-	mSerializer->clearWorkingDir();
-	delete mSerializer;
+	serializer.clearWorkingDir();
 
 	LogicalObject newObj1(newId1);
 	LogicalObject newObj2(newId2);
@@ -125,21 +133,15 @@ void RepositoryTest::SetUp() {
 	newList.push_back(&newObj1);
 	newList.push_back(&newObj2);
 
-	mSerializer = new Serializer("newSaveFile");
-	mSerializer->saveToDisk(newList, QHash<QString, QVariant>());
+	serializer.setWorkingFile("newSaveFile");
+	serializer.saveToDisk(newList, QHash<QString, QVariant>());
 }
 
 void RepositoryTest::TearDown() {
 	delete mRepository;
 
-	mSerializer->clearWorkingDir();
-	delete mSerializer;
-
 	QFile::remove("saveFile.qrs");
 	QFile::remove("newSaveFile.qrs");
-	QDir().rmdir(mNewTempFolder);
-
-	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
 TEST_F(RepositoryTest, replacePropertiesTest) {
@@ -272,8 +274,8 @@ TEST_F(RepositoryTest, childOperationsTest) {
 	EXPECT_TRUE(mRepository->children(root).contains(child1_child));
 	EXPECT_EQ(mRepository->parent(child1_child), root);
 
-	Id const child("child", "child", "child", "child");
-	Id const childLogId("child", "child", "child", "childLogId");
+	const Id child("child", "child", "child", "child");
+	const Id childLogId("child", "child", "child", "childLogId");
 	mRepository->addChild(child1_child, child, childLogId);
 
 	ASSERT_EQ(mRepository->children(child1_child).size(), 1);
@@ -338,17 +340,11 @@ TEST_F(RepositoryTest, removeIdTest) {
 
 // Same as removeFromDisk test fro Serializer
 TEST_F(RepositoryTest, removeIdListTest) {
-	mSerializer->decompressFile("saveFile.qrs");
+	mRepository->serializer().decompressFile("saveFile.qrs");
 	IdList toRemove;
 	toRemove << child3 << child1_child << child2_child << child3_child;
 	mRepository->remove(toRemove);
 
-	//EXPECT_FALSE(QFile::exists("unsaved/tree/logical/editor2/diagram4/element7/child3_child"));
-	//EXPECT_FALSE(QFile::exists("unsaved/tree/logical/editor2/diagram3/element4/child3"));
-	//EXPECT_FALSE(QDir().exists("unsaved/tree/logical/editor2"));
-	//EXPECT_FALSE(QFile::exists("unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
-	//EXPECT_FALSE(QFile::exists("unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
-	//EXPECT_FALSE(QDir().exists("unsaved/tree/graphical/editor2"));
 	EXPECT_TRUE(true);
 }
 
@@ -368,7 +364,7 @@ TEST_F(RepositoryTest, stackBeforeTest) {
 }
 
 TEST_F(RepositoryTest, cloneObjectTest) {
-	Id const clonedId = mRepository->cloneObject(root);
+	const Id clonedId = mRepository->cloneObject(root);
 	EXPECT_EQ(clonedId.type(), root.type());
 	EXPECT_TRUE(clonedId != root);
 }
@@ -507,9 +503,9 @@ TEST_F(RepositoryTest, copyPropertiesTest) {
 }
 
 TEST_F(RepositoryTest, backReferenceTest) {
-	Id const backReference1("editor", "diagram", "element", "backReference1");
-	Id const backReference2("editor1", "diagram2", "element3", "child1");
-	Id const backReference3("editor1", "diagram2", "element3", "child2");
+	const Id backReference1("editor", "diagram", "element", "backReference1");
+	const Id backReference2("editor1", "diagram2", "element3", "child1");
+	const Id backReference3("editor1", "diagram2", "element3", "child2");
 
 	EXPECT_EQ(mRepository->property(root, "backReferences"), QVariant());
 	EXPECT_THROW(mRepository->removeBackReference(root, backReference1), Exception);
@@ -529,11 +525,11 @@ TEST_F(RepositoryTest, backReferenceTest) {
 }
 
 TEST_F(RepositoryTest, temporaryRemovedLinksTest) {
-	Id const linkTo1("editor", "diagram", "element", "linkTo1");
-	Id const linkTo2("editor", "diagram", "element", "linkTo2");
-	Id const linkFrom1("editor", "diagram", "element", "linkFrom1");
-	Id const linkFrom2("editor", "diagram", "element", "linkFrom2");
-	Id const link("editor", "diagram", "element", "link");
+	const Id linkTo1("editor", "diagram", "element", "linkTo1");
+	const Id linkTo2("editor", "diagram", "element", "linkTo2");
+	const Id linkFrom1("editor", "diagram", "element", "linkFrom1");
+	const Id linkFrom2("editor", "diagram", "element", "linkFrom2");
+	const Id link("editor", "diagram", "element", "link");
 
 	IdList to;
 	IdList from;
@@ -579,6 +575,7 @@ TEST_F(RepositoryTest, temporaryRemovedLinksTest) {
 }
 
 TEST_F(RepositoryTest, saveAllTest) {
+	mRepository->serializer().clearWorkingDir();
 	mRepository->remove(root);
 	mRepository->saveAll();
 	mRepository->open("saveFile.qrs");
@@ -594,6 +591,7 @@ TEST_F(RepositoryTest, saveAllTest) {
 }
 
 TEST_F(RepositoryTest, saveTest) {
+	mRepository->serializer().clearWorkingDir();
 	IdList toSave;
 	toSave << child1 << child2 << child3;
 	mRepository->save(toSave);
@@ -609,6 +607,7 @@ TEST_F(RepositoryTest, saveTest) {
 }
 
 TEST_F(RepositoryTest, saveWithLogicalIdTest) {
+	mRepository->serializer().clearWorkingDir();
 	IdList toSave;
 	toSave << child1 << child3_child;
 	mRepository->saveWithLogicalId(toSave);
@@ -622,6 +621,7 @@ TEST_F(RepositoryTest, saveWithLogicalIdTest) {
 }
 
 TEST_F(RepositoryTest, saveDiagramsByIdTest) {
+	mRepository->serializer().clearWorkingDir();
 	IdList toSave;
 	toSave << child1;
 
@@ -630,13 +630,14 @@ TEST_F(RepositoryTest, saveDiagramsByIdTest) {
 
 	mRepository->saveDiagramsById(diagramIds);
 
-	mSerializer->decompressFile("diagram1.qrs");
+	mRepository->serializer().decompressFile("diagram1.qrs");
 
-	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor1/diagram2/element3/child1"));
-	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor2/diagram3/element5/child1_child"));
-	EXPECT_TRUE(QFile::exists("unsaved/tree/graphical/editor2/diagram4/element6/child2_child"));
-	EXPECT_FALSE(QFile::exists("unsaved/tree/graphical/editor1/diagram1/element2/root"));
-	EXPECT_FALSE(QDir().exists("unsaved/tree/logical"));
+	const QString unsavedTree = mRepository->serializer().workingDirectory() + "/tree/";
+	EXPECT_TRUE(QFile::exists(unsavedTree + "graphical/editor1/diagram2/element3/child1"));
+	EXPECT_TRUE(QFile::exists(unsavedTree + "graphical/editor2/diagram3/element5/child1_child"));
+	EXPECT_TRUE(QFile::exists(unsavedTree + "graphical/editor2/diagram4/element6/child2_child"));
+	EXPECT_FALSE(QFile::exists(unsavedTree + "graphical/editor1/diagram1/element2/root"));
+	EXPECT_FALSE(QDir().exists(unsavedTree + "logical"));
 
 	QFile::remove("diagram1.qrs");
 }

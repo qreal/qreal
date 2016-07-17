@@ -1,9 +1,25 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 EDITOR_PATH = $$PWD/../$$QREAL_EDITOR_PATH
 
 win32 {
 	QRXC_COMMAND = cd $$EDITOR_PATH && $$QRXC
-} else {
+} else:!macx {
 	QRXC_COMMAND = export LD_LIBRARY_PATH=$$QRXC_DIR && cd $$EDITOR_PATH && $$QRXC
+} else {
+	QRXC_COMMAND = export DYLD_LIBRARY_PATH=$$QRXC_DIR && cd $$EDITOR_PATH && $$QRXC
 }
 
 qrxc_source.commands = $$QRXC_COMMAND $$QREAL_XML $$ROOT
@@ -43,7 +59,7 @@ QMAKE_EXTRA_COMPILERS += qrxc_resource
 
 # Here we need to call moc explicitly because by default it will be called before any files were generated
 new_moc.output  = $$MOC_DIR/moc_${QMAKE_FILE_BASE}.cpp
-new_moc.commands = $$dirname(QMAKE_QMAKE)/moc ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
+new_moc.commands = $$dirname(QMAKE_QMAKE)/moc -I $$ROOT/qrgui/plugins/metaMetaModel/include/ ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
 new_moc.input = MOC_HEADERS
 new_moc.variable_out = SOURCES
 

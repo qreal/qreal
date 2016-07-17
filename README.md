@@ -3,6 +3,8 @@
 #[QReal] (http://qreal.ru)
 
 [![Build Status](https://travis-ci.org/qreal/qreal.svg?branch=master)](https://travis-ci.org/qreal/qreal)
+[![Coverity](https://scan.coverity.com/projects/7874/badge.svg)](https://scan.coverity.com/projects/qreal-qreal)
+[![codecov.io](https://codecov.io/github/qreal/qreal/coverage.svg?branch=master)](https://codecov.io/github/qreal/qreal?branch=master)
 
 QReal представляет собой metaCASE-инструментарий, т.е. среду для создания новых визуальных языков и интегрированных сред программирования для них.
 Руководители: [Юрий Литвинов](https://github.com/yurii-litvinov) и [Тимофей Брыксин](https://github.com/jzuken)
@@ -37,7 +39,7 @@ QReal:Robots — среда визуального программирован�
 * [QReal:Robots](https://groups.google.com/forum/?fromgroups#!forum/qreal-robot)
 
 ##Лицензии
-QReal распространяется под лицензией [GNU GPL v3](http://www.gnu.org/copyleft/gpl.html) [(перевод на русский)](http://citforum.ru/operating_systems/articles/gpl_rus.shtml)
+QReal распространяется под лицензией [Apache License v2.0](https://www.apache.org/licenses/LICENSE-2.0) [(перевод на русский)](http://licenseit.ru/wiki/index.php/Apache_License_version_2.0#.D0.A2.D0.B5.D0.BA.D1.81.D1.82_.D0.BD.D0.B0_.D1.80.D1.83.D1.81.D1.81.D0.BA.D0.BE.D0.BC_.D1.8F.D0.B7.D1.8B.D0.BA.D0.B5)
 
 ##Контакты руководителей
 **Тимофей Брыксин**

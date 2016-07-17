@@ -1,3 +1,17 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "logicalModelAssistApi.h"
 
 #include <QtCore/QUuid>
@@ -10,7 +24,6 @@ LogicalModelAssistApi::LogicalModelAssistApi(LogicalModel &logicalModel
 		, const EditorManagerInterface &editorManagerInterface)
 	: mModelsAssistApi(logicalModel, editorManagerInterface)
 	, mLogicalModel(logicalModel)
-	, mEditorManager(editorManagerInterface)
 {
 	connect(&logicalModel, &LogicalModel::elementAdded, this, &LogicalModelAssistApi::elementAdded);
 }
@@ -39,9 +52,11 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &type)
 	Q_ASSERT(type.idSize() == 3);
 	Q_ASSERT(parent.idSize() == 4);
 
-	const Id newElementId(type, QUuid::createUuid().toString());
+	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	mLogicalModel.addElementToModel(parent, newElementId, Id(), elementFriendlyName, QPointF(0, 0));
+	const bool isEdge = mModelsAssistApi.editorManagerInterface().isNodeOrEdge(newElementId.type()) == -1;
+	ElementInfo newElement(newElementId, Id(), parent, Id(), {{"name", elementFriendlyName}}, {}, Id(), isEdge);
+	mLogicalModel.addElementToModel(newElement);
 	return newElementId;
 }
 
@@ -51,6 +66,16 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &id
 {
 	Q_UNUSED(preferedLogicalId)
 	return mModelsAssistApi.createElement(parent, id, id, isFromLogicalModel, name, position);
+}
+
+void LogicalModelAssistApi::createElements(QList<ElementInfo> &elements)
+{
+	mLogicalModel.addElementsToModel(elements);
+}
+
+Id LogicalModelAssistApi::parent(const Id &element) const
+{
+	return mLogicalModel.api().parent(element);
 }
 
 IdList LogicalModelAssistApi::children(const Id &element) const
@@ -173,7 +198,7 @@ void LogicalModelAssistApi::removeReferencesTo(const Id &id)
 
 void LogicalModelAssistApi::removeReferencesFrom(const Id &id)
 {
-	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
+	QStringList referenceProperties = mModelsAssistApi.editorManagerInterface().referenceProperties(id.type());
 
 	foreach (const QString &property, referenceProperties) {
 		QStringList propertyValue = mLogicalModel.api().property(id, property).toString().split(','
@@ -187,7 +212,7 @@ void LogicalModelAssistApi::removeReferencesFrom(const Id &id)
 
 void LogicalModelAssistApi::removeReference(const Id &id, const Id &reference)
 {
-	QStringList referenceProperties = mEditorManager.referenceProperties(id.type());
+	QStringList referenceProperties = mModelsAssistApi.editorManagerInterface().referenceProperties(id.type());
 
 	foreach (const QString &propertyName, referenceProperties) {
 		QStringList stringData = mLogicalModel.api().property(id, propertyName).toString().split(','

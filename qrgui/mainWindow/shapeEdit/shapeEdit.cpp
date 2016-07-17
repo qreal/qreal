@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "shapeEdit.h"
 #include "ui_shapeEdit.h"
 
@@ -11,7 +25,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
-#include <qrutils/graphicsUtils/colorListEditor.h>
+#include <qrutils/widgets/colorListEditor.h>
 
 #include "mainWindow/shapeEdit/xmlLoader.h"
 #include "mainWindow/mainWindow.h"
@@ -49,7 +63,7 @@ ShapeEdit::ShapeEdit(
 	, const EditorManagerInterface &editorManager
 	, const qrRepo::GraphicalRepoApi &graphicalRepoApi
 	, MainWindow *mainWindow
-	, EditorView *editorView
+	, qReal::gui::editor::EditorView *editorView
 	, bool useTypedPorts
 	)
 	: QWidget(nullptr)
@@ -322,18 +336,18 @@ void ShapeEdit::save()
 	if (mIndex.isValid()) {
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 	} else {
-		mEditorManager->updateShape(mId, mDocument.toString(4));
+		mEditorManager->updateShape(mId, mDocument.documentElement());
 		foreach (const Id graphicalElement, mGraphicalElements) {
-			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
+			mEditorManager->updateShape(graphicalElement, mDocument.documentElement());
 			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
-				NodeElement * const element = dynamic_cast<NodeElement *>(item);
+				qReal::gui::editor::NodeElement * const element = dynamic_cast<qReal::gui::editor::NodeElement *>(item);
 				if (element && element->id().type() == mId.type()) {
-					element->updateShape(mDocument.toString(4));
+					element->updateShape(mDocument.documentElement());
 				}
 			}
 		}
 
-		mMainWindow->loadPlugins();
+		mMainWindow->loadEditorPlugins();
 	}
 
 	QMessageBox::information(this, tr("Saving"), "Saved successfully");

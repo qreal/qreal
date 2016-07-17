@@ -1,0 +1,1 @@
+AND32(@@LEFT@@, @@RIGHT@@, @@RESULT)

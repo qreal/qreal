@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtXml/QDomElement>
@@ -25,6 +39,7 @@ public:
 	QString path() const;
 	QString qualifiedName() const;
 	QString displayedName() const;
+	Diagram *diagram() const;
 
 	QMap<QString, Property*> properties() const;
 
@@ -32,19 +47,8 @@ public:
 	void setDiagram(Diagram *diagram);
 	void setContext(const QString &newContext);
 	void setDisplayedName(const QString &displayedName);
+
 	virtual void generateCode(utils::OutFile &out) = 0;
-	virtual void generateNameMapping(utils::OutFile &out) = 0;
-	virtual bool generateObjectRequestString(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generateProperties(utils::OutFile &out, bool isNotFirst, bool isReference) = 0;
-	virtual bool generatePorts(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generateContainedTypes(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generatePossibleEdges(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual bool generateEnumValues(utils::OutFile &out, bool isNotFirst) = 0;
-	virtual void generatePropertyTypes(utils::OutFile &out) = 0;
-	virtual void generatePropertyDefaults(utils::OutFile &out) = 0;
-	virtual void generatePropertyDescriptionMapping(utils::OutFile &out) = 0;
-	virtual void generateMouseGesturesMap(utils::OutFile &out) = 0;
-	virtual void generateExplosionsMap(utils::OutFile &out) = 0;
 
 protected:
 	void copyFields(Type *type) const;

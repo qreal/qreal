@@ -1,6 +1,18 @@
-#include "repository.h"
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
-#include <QtCore/QDebug>
+#include "repository.h"
 
 #include <qrkernel/exception/exception.h>
 #include "singleXmlSerializer.h"
@@ -17,7 +29,6 @@ Repository::Repository(const QString &workingFile)
 	loadFromDisk();
 }
 
-
 void Repository::init()
 {
 	mObjects.insert(Id::rootId(), new LogicalObject(Id::rootId()));
@@ -28,6 +39,11 @@ Repository::~Repository()
 {
 	mSerializer.clearWorkingDir();
 	qDeleteAll(mObjects);
+}
+
+Serializer &Repository::serializer()
+{
+	return mSerializer;
 }
 
 IdList Repository::findElementsByName(const QString &name, bool sensitivity, bool regExpression) const
@@ -101,7 +117,7 @@ qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue
 	return result;
 }
 
-void Repository::replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue)
+void Repository::replaceProperties(const qReal::IdList &toReplace, const QString &value, const QString &newValue)
 {
 	foreach (const qReal::Id &currentId, toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);

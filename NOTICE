@@ -1,0 +1,18 @@
+This software may use following third-party components:
+* QScintilla by Riverbank Computing Limited, licensed under GNU GPL v3. Copy of this license can be found in installer/licenses/gpl-3.0.txt.
+  QScintilla also has Riverbank GPL Exception for open source licenses, in particular for Apache License, alowing to use QScintilla component in this software. Copy of this exception can be found in installer/licenses/QScintilla-GPL-exception.txt.
+  It uses Scintilla component by Neil Hodgson, license for it can be found in installer/licenses/Scintilla-license.txt.
+* QtPropertyBrowser by Digia Plc, licensed under BSD License. Copy of this license can be found in installer/licenses/QtPropertyBrowser-license.txt.
+* QsKineticScroller by Razvan Petru, licensed under BSD License. Copy of this license can be found in installer/licenses/QsKineticScroller-license.txt.
+* WindowsModernStyle by Michał Męciński, licensed under BSD License. Copy of this license can be found in installer/licenses/WindowsModernStyle-license.txt.
+* QextSerialPort, by Wayne Roth, Stefan Sander, Michal Policht, Brandon Fosdick, Liam Staskawicz, Debao Zhang. 
+  It is licensed under MIT License. Copy of this license can be found in installer/licenses/QextSerialPort-license.txt.
+
+It also uses Pfennig font by Daniel Johnson, licensed under SIL Open Font License (OFL). Copy of this license can be found in installer/licenses/OFL.txt.
+
+Some icons are provided by Tatiana Yanchuk and are available under Creative Commons Attribution 4.0 International license (http://creativecommons.org/licenses/by/4.0/legalcode)
+
+We are very grateful to the authors of components and resources above for allowing us to use their work in our product.
+
+Considering license information, our product is licensed under Apache License v2.0 (installer/licenses/ApacheLicense-v2.0.txt).
+Its source code is available at our GitHub repository: https://github.com/qreal/qreal

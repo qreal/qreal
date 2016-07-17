@@ -1,6 +1,23 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "editorViewMVIface.h"
 
+#include <QtCore/QPair>
+
 #include <qrkernel/definitions.h>
+#include <metaMetaModel/elementType.h>
 
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
@@ -8,6 +25,7 @@
 #include "plugins/pluginManager/editorManagerInterface.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 EditorViewMViface::EditorViewMViface(EditorView *view, EditorViewScene *scene)
 	: QAbstractItemView(0)
@@ -122,93 +140,73 @@ Id EditorViewMViface::rootId() const
 
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
+	mScene->setEnabled(true);
+
+	QList<QPair<NodeElement *, QPersistentModelIndex>> nodes;
+	QList<QPair<EdgeElement *, QPersistentModelIndex>> edges;
+
 	for (int row = start; row <= end; ++row) {
-		mScene->setEnabled(true);
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
 		if (!isDescendentOf(current, rootIndex())) {
 			continue;
 		}
+
 		Id currentId = current.data(roles::idRole).value<Id>();
 		if (currentId == Id::rootId()) {
 			continue;
 		}
+
 		Id parentUuid;
 		if (parent != rootIndex()) {
 			parentUuid = parent.data(roles::idRole).value<Id>();
 		}
+
 		if (!parent.isValid()) {
 			setRootIndex(current);
 			continue;
 		}
 
-		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
-		Element *elem = elementImpl->isNode()
-				? dynamic_cast<Element *>(
-						new NodeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi, *mExploser)
-						)
-				: dynamic_cast<Element *>(
-						new EdgeElement(elementImpl, currentId, *mGraphicalAssistApi, *mLogicalAssistApi)
-						);
+		const ElementType &elementType = mLogicalAssistApi->editorManagerInterface().elementType(currentId);
+		Element *elem = elementType.type() == ElementType::Type::node
+				? static_cast<Element *>(new NodeElement(elementType.toNode(), currentId, mScene->models()))
+				: static_cast<Element *>(new EdgeElement(elementType.toEdge(), currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 
-		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
+		if (elementType.type() == ElementType::Type::node) {
+			nodes.append(qMakePair(dynamic_cast<NodeElement *>(elem), current));
+		} else {
+			edges.append(qMakePair(dynamic_cast<EdgeElement *>(elem), current));
+		}
+	}
+
+	handleNodeElementsForRowsInserted(nodes, parent);
+	handleEdgeElementsForRowsInserted(edges, parent);
+
+	QAbstractItemView::rowsInserted(parent, start, end);
+}
+
+void EditorViewMViface::handleNodeElementsForRowsInserted(
+		const QList<QPair<NodeElement *, QPersistentModelIndex> > &nodes
+		, const QModelIndex &parent
+		)
+{
+	for (const QPair<NodeElement *, QPersistentModelIndex> &p : nodes) {
+		NodeElement *elem = p.first;
+		QPersistentModelIndex current = p.second;
+		Id currentId = current.data(roles::idRole).value<Id>();
 		bool needToProcessChildren = true;
 
-		// TODO: It is impossible for elem to be nullptr here.
 		if (elem) {
+			QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
+			elem->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect().translated(ePos.toPoint()));
+			handleAddingSequenceForRowsInserted(parent, elem, current);
+			handleElemDataForRowsInserted(elem, current);
 
-			NodeElement *node = dynamic_cast<NodeElement *>(elem);
-			if (node) {
-				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect());
-			}
-
-			if (item(parent)) {
-				elem->setParentItem(item(parent));
-				QModelIndex next = current.sibling(current.row() + 1, 0);
-				if(next.isValid() && item(next) != nullptr) {
-					elem->stackBefore(item(next));
-				}
-			} else {
-				mScene->addItem(elem);
-			}
-
-			setItem(current, elem);
-			elem->updateData();
-			elem->connectToPort();
-			elem->checkConnectionsToPort();
-			elem->initPossibleEdges();
-			elem->initTitles();
-			mView->setFocus();
-			// TODO: brush up init~()
-
-			bool isEdgeFromEmbeddedLinker = false;
-			QList<QGraphicsItem*> selectedItems = mScene->selectedItems();
-			if (selectedItems.size() == 1) {
-				NodeElement* master = dynamic_cast<NodeElement*>(selectedItems.at(0));
-				if (master && master->connectionInProgress()) {
-					isEdgeFromEmbeddedLinker = true;
-				}
-			}
-
-			if (!isEdgeFromEmbeddedLinker) {
-				for (QGraphicsItem *item : scene()->items()) {
-					Element* element = dynamic_cast<Element*>(item);
-					if (element) {
-						element->setSelectionState(false);
-						element->select(false);
-					}
-				}
-
-				elem->select(true);
-			}
-
-			NodeElement* nodeElem = dynamic_cast<NodeElement*>(elem);
-			if (nodeElem && currentId.element() == "Class" &&
-				mGraphicalAssistApi->children(currentId).empty())
+			if (currentId.element() == "Class" && mGraphicalAssistApi->children(currentId).empty())
 			{
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
@@ -218,31 +216,59 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 							, false,  "(anonymous something)", QPointF(0, 0));
 				}
 			}
-
-			EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem);
-			if (edgeElem) {
-				edgeElem->layOut();
-			}
 		}
 
 		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}
 
-		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
-		if (nodeElement) {
-			nodeElement->alignToGrid();
+		if (elem) {
+			elem->alignToGrid();
 		}
 	}
+}
 
-	foreach (QGraphicsItem *item, mScene->items()) {
-		NodeElement* node = dynamic_cast<NodeElement*>(item);
-		if (node) {
-			node->adjustLinks();
+void EditorViewMViface::handleEdgeElementsForRowsInserted(
+		const QList<QPair<EdgeElement *, QPersistentModelIndex> > &edges
+		, const QModelIndex &parent
+		)
+{
+	for (const QPair<EdgeElement *, QPersistentModelIndex> &p : edges) {
+		EdgeElement *elem = p.first;
+		QPersistentModelIndex current = p.second;
+
+		if (elem) {
+			QPointF ePos = model()->data(current, roles::positionRole).toPointF();
+			// setting position before parent definition 'itemChange' to work correctly
+			elem->setPos(ePos);
+			handleAddingSequenceForRowsInserted(parent, elem, current);
+			handleElemDataForRowsInserted(elem, current);
+			elem->adjustLink();
+			elem->layOut();
 		}
 	}
+}
 
-	QAbstractItemView::rowsInserted(parent, start, end);
+void EditorViewMViface::handleAddingSequenceForRowsInserted(const QModelIndex &parent
+		, Element *elem, const QPersistentModelIndex &current)
+{
+	if (item(parent)) {
+		elem->setParentItem(item(parent));
+		QModelIndex next = current.sibling(current.row() + 1, 0);
+		if(next.isValid() && item(next) != nullptr) {
+			elem->stackBefore(item(next));
+		}
+	} else {
+		mScene->addItem(elem);
+	}
+}
+
+void EditorViewMViface::handleElemDataForRowsInserted(Element *elem, const QPersistentModelIndex &current)
+{
+	setItem(current, elem);
+	elem->updateData();
+	elem->initTitles();
+	mView->setFocus();
 }
 
 void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int start, int end)
@@ -252,7 +278,7 @@ void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int sta
 		if (curr == rootIndex()) {
 			// Root id was removed, time to close current tab.
 			emit rootElementRemoved(curr);
-			// Now we will be deletted, nipping off...
+			// Now we will be deleted, nipping off...
 			return;
 		}
 
@@ -324,8 +350,10 @@ void EditorViewMViface::rowsMoved(const QModelIndex &sourceParent, int sourceSta
 	movedElement->updateData();
 }
 
-void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void EditorViewMViface::dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+		, const QVector<int> &roles)
 {
+	Q_UNUSED(roles)
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
 		const QModelIndex curr = topLeft.sibling(row, 0);
 		Element *element = item(curr);
@@ -352,27 +380,17 @@ models::LogicalModelAssistApi *EditorViewMViface::logicalAssistApi() const
 
 void EditorViewMViface::clearItems()
 {
-	QList<QGraphicsItem *> toRemove;
-	foreach (const IndexElementPair &pair, mItems) {
-		if (!pair.second->parentItem()) {
-			toRemove.append(pair.second);
-		}
-	}
-
-	foreach (QGraphicsItem * const item, toRemove) {
-		delete item;
-	}
-
 	mItems.clear();
 }
 
 Element *EditorViewMViface::item(const QPersistentModelIndex &index) const
 {
-	foreach (const IndexElementPair &pair, mItems) {
+	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
 			return pair.second;
 		}
 	}
+
 	return nullptr;
 }
 
@@ -386,10 +404,15 @@ void EditorViewMViface::setItem(const QPersistentModelIndex &index, Element *ite
 
 void EditorViewMViface::removeItem(const QPersistentModelIndex &index)
 {
-	foreach (const IndexElementPair &pair, mItems) {
+	QList<IndexElementPair> itemsForRemoving;
+	for (const IndexElementPair &pair : mItems) {
 		if (pair.first == index) {
-			mItems.remove(pair);
+			itemsForRemoving.append(pair);
 		}
+	}
+
+	for (const auto &element : itemsForRemoving) {
+		mItems.remove(element);
 	}
 }
 
@@ -415,22 +438,12 @@ void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QMo
 		const QModelIndex curr = topLeft.sibling(row, 0);
 		const Id logicalId = curr.data(roles::idRole).value<Id>();
 		const IdList graphicalIds = mGraphicalAssistApi->graphicalIdsByLogicalId(logicalId);
-		foreach (const Id &graphicalId, graphicalIds) {
+		for (const Id &graphicalId : graphicalIds) {
 			const QModelIndex graphicalIndex = mGraphicalAssistApi->indexById(graphicalId);
 			Element *graphicalItem = item(graphicalIndex);
 			if (graphicalItem) {
 				graphicalItem->updateData();
 			}
-		}
-	}
-}
-
-void EditorViewMViface::invalidateImagesZoomCache(qreal zoomFactor)
-{
-	for (const IndexElementPair & item : mItems) {
-		auto node = dynamic_cast<NodeElement *>(item.second);
-		if (node) {
-			node->invalidateImagesZoomCache(zoomFactor);
 		}
 	}
 }

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/primaryControlFlowValidator.h"
 
 using namespace generatorBase;
@@ -146,24 +160,24 @@ void PrimaryControlFlowValidator::visitLoop(const Id &id
 	}
 
 	// In correct case must be non-null and different
-	const LinkInfo *iterationLink = nullptr;
+	const LinkInfo *bodyLink = nullptr;
 	const LinkInfo *nonMarkedBlock = nullptr;
 
 	for (const LinkInfo &link : links) {
 		checkForConnected(link);
 
 		switch (guardOf(link.linkId)) {
-		case iterationGuard:
-			if (iterationLink) {
-				error(QObject::tr("Two outgoing links marked with \"iteration\" found"), id);
+		case bodyGuard:
+			if (bodyLink) {
+				error(QObject::tr("Two outgoing links marked with \"body\" found"), id);
 				return;
 			} else {
-				iterationLink = &link;
+				bodyLink = &link;
 			}
 			break;
 		default:
 			if (nonMarkedBlock) {
-				error(QObject::tr("There must be a link with \"iteration\" marker on it"), id);
+				error(QObject::tr("There must be a link with \"body\" marker on it"), id);
 				return;
 			} else {
 				nonMarkedBlock = &link;
@@ -172,11 +186,11 @@ void PrimaryControlFlowValidator::visitLoop(const Id &id
 		}
 	}
 
-	if (iterationLink->target == nonMarkedBlock->target) {
+	if (bodyLink->target == nonMarkedBlock->target) {
 		error(QObject::tr("Outgoing links from loop block must be connected to different blocks"), id);
 	}
 
-	mLoopBranches[id] = qMakePair(*iterationLink, *nonMarkedBlock);
+	mLoopBranches[id] = qMakePair(*bodyLink, *nonMarkedBlock);
 }
 
 void PrimaryControlFlowValidator::visitSwitch(const Id &id

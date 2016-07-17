@@ -1,9 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "luaToolboxTest.h"
 
 #include "gtest/gtest.h"
 
 #include "qrtext/lua/ast/integerNumber.h"
 #include "qrtext/lua/types/integer.h"
+#include "qrtext/lua/types/float.h"
 
 using namespace qrtext::lua;
 using namespace qrTest;
@@ -47,6 +62,19 @@ TEST_F(LuaToolboxTest, intrinsicFunction)
 	EXPECT_TRUE(mToolbox->errors().isEmpty());
 
 	EXPECT_EQ(3, result);
+}
+
+TEST_F(LuaToolboxTest, intrinsicFunctionAsIdentifier)
+{
+	mToolbox->addIntrinsicFunction("f", new types::Integer(), {new types::Integer()}
+			, [] (QList<QVariant> params) { return params[0].toInt() + 2; }
+			);
+
+	qReal::Id const testId = qReal::Id("1", "2", "3", "test");
+
+	mToolbox->interpret<int>(testId, "test", "f = 1");
+
+	EXPECT_EQ(2, mToolbox->errors().size());
 }
 
 TEST_F(LuaToolboxTest, errorProcessingSanityCheck)
@@ -111,4 +139,41 @@ TEST_F(LuaToolboxTest, integerDivision)
 	auto result = mToolbox->interpret<int>("s");
 	ASSERT_TRUE(mToolbox->errors().isEmpty());
 	EXPECT_EQ(2, result);
+}
+
+TEST_F(LuaToolboxTest, twoDTables)
+{
+	mToolbox->interpret<int>("a = {{1}}");
+	int result = mToolbox->interpret<int>("a[0][0]");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
+	EXPECT_EQ(1, result);
+}
+
+TEST_F(LuaToolboxTest, twoFunctions)
+{
+	const auto add1aryFunction = [this] (const QString &name
+			, qrtext::core::types::TypeExpression * const returnType
+			, qrtext::core::types::TypeExpression * const argumentType
+			, std::function<QVariant(QVariant)> const &function)
+	{
+		mToolbox->addIntrinsicFunction(name, returnType
+				, {argumentType}
+				, [function] (const QList<QVariant> &params) {
+						Q_ASSERT(!params.isEmpty());
+						return function(params.first());
+				});
+	};
+
+	const auto addFloatFunction = [this, add1aryFunction] (const QString &name
+			, std::function<qreal(qreal)> const &function)
+	{
+		add1aryFunction(name, new types::Float, new types::Float
+				, [function](const QVariant &arg) { return function(arg.toReal()); });
+	};
+
+	addFloatFunction("cos", [](qreal x) {return cos(x); });
+
+	mToolbox->interpret<int>("cos(1)");
+	mToolbox->interpret<int>("cos(1)");
+	ASSERT_TRUE(mToolbox->errors().isEmpty());
 }

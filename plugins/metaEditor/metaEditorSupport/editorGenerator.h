@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -12,13 +26,15 @@
 namespace metaEditor {
 
 /// Generates metamodel in .xml format to be compiled into C++ sources by qrxc tool
+/// @todo Unify it with QrsMetamodelSerializer!
 class EditorGenerator
 {
 public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
 	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
-	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile, QString const &pathToQRealSource);
+	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile
+			, QString const &pathToQRealSource);
 
 private:
 	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);
@@ -30,7 +46,6 @@ private:
 	void createGroup(QDomElement &parent, const qReal::Id &id);
 	void setProperties(QDomElement &parent, qReal::Id const &id);
 	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
-	void setContextMenuFields(QDomElement &parent, qReal::Id const &id);
 	void setValues(QDomElement &parent, qReal::Id const &id);
 	void setGroupNodes(QDomElement &parent, const qReal::Id &id);
 	void setAssociations(QDomElement &parent, qReal::Id const &id);
@@ -38,8 +53,9 @@ private:
 	void setConnections(QDomElement &parent, qReal::Id const &id);
 	void setGeneralization(QDomElement &parent, qReal::Id const &id);
 	void setPossibleEdges(QDomElement &parent, qReal::Id const &id);
-	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName, QString const &propertyName);
-	void setAction(QDomElement &parent, qReal::Id const &id);
+	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName
+			, QString const &propertyName);
+
 	void setCreateChildrenFromMenu(QDomElement &parent, qReal::Id const &id);
 	void createDiagrams(QDomElement &parent, qReal::Id const &id);
 	void setContainer(QDomElement &parent, qReal::Id const &id);

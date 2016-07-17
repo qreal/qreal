@@ -1,5 +1,20 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "editorView.h"
 
+#include <QtCore/QDir>
 #include <QtCore/QTimeLine>
 #include <QtGui/QFontDatabase>
 
@@ -8,13 +23,14 @@
 #include <qrgui/models/models.h>
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const int zoomAnimationInterval = 20;
 const int zoomAnimationTimes = 4;
 
 EditorView::EditorView(const models::Models &models
 		, Controller &controller
-		, const SceneCustomizer &customizer
+		, const qReal::gui::editor::SceneCustomizer &customizer
 		, const Id &rootId
 		, QWidget *parent)
 	: QGraphicsView(parent)
@@ -150,11 +166,7 @@ void EditorView::mouseMoveEvent(QMouseEvent *event)
 	} else {
 		if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ControlModifier)) {
 			setDragMode(RubberBandDrag);
-			mScene.itemSelectUpdate();
-		/*} else 	if ((event->buttons() & Qt::LeftButton) && (event->modifiers() & Qt::ShiftModifier)) {
-			setDragMode(ScrollHandDrag); //  (see #615)
-			mScene->itemSelectUpdate();*/
-		} else if (event->buttons() & Qt::LeftButton ) {
+		} else if (event->buttons() & Qt::LeftButton) {
 			EdgeElement *newEdgeEl = dynamic_cast<EdgeElement *>(itemAt(event->pos()));
 			if (newEdgeEl && newEdgeEl->isBreakPointPressed()) {
 				newEdgeEl->breakPointUnpressed();
@@ -170,6 +182,7 @@ void EditorView::mouseReleaseEvent(QMouseEvent *event)
 		mWheelPressed = false;
 		mMouseOldPosition = QPointF();
 	}
+
 	QGraphicsView::mouseReleaseEvent(event);
 }
 
@@ -189,9 +202,6 @@ void EditorView::mousePressEvent(QMouseEvent *event)
 		if (!(event->buttons() & Qt::RightButton) && !mTouchManager.isGestureRunning()
 				&& !itemAt(event->pos())) {
 			setDragMode(RubberBandDrag);
-		}
-		if (event->modifiers() & Qt::ControlModifier) {
-			mScene.itemSelectUpdate();
 		}
 	}
 }
@@ -222,15 +232,16 @@ void EditorView::keyReleaseEvent(QKeyEvent *event)
 
 bool EditorView::viewportEvent(QEvent *event)
 {
-	switch (event->type()) {
-	case QEvent::TouchBegin:
-	case QEvent::TouchUpdate:
-	case QEvent::TouchEnd:
-		// For some reason touch viewport events can`t be processed in manual event
-		// filters, so catching them here
-		return mTouchManager.processTouchEvent(static_cast<QTouchEvent *>(event));
-	default:
-		break;
+	switch (event->type())
+	{
+		case QEvent::TouchBegin:
+		case QEvent::TouchUpdate:
+		case QEvent::TouchEnd:
+			// For some reason touch viewport events can`t be processed in manual event
+			// filters, so catching them here
+			return mTouchManager.processTouchEvent(static_cast<QTouchEvent *>(event));
+		default:
+			break;
 	}
 	return QGraphicsView::viewportEvent(event);
 }
@@ -288,9 +299,8 @@ void EditorView::zoom(const qreal zoomFactor)
 		mScene.setRealIndexGrid(mScene.realIndexGrid() * zoomFactor);
 	}
 
-	mMVIface.invalidateImagesZoomCache(transform().m11());
-
 	checkGrid();
+	emit zoomChanged(transform().m11());
 }
 
 void EditorView::setSceneFont()

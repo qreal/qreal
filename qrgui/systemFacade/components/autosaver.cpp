@@ -1,9 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "autosaver.h"
 
-#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 #include "qrgui/systemFacade/components/projectManager.h"
 
@@ -69,7 +84,7 @@ QString Autosaver::autosaveFilePath(const QString &currentFilePath) const
 	const QFileInfo currentProject(currentFilePath);
 	const QString autosaveDirectory = currentProject.absoluteDir().exists()
 			? currentProject.absolutePath()
-			: QApplication::applicationDirPath();
+			: PlatformInfo::applicationDirPath();
 	const QString currentFileName = currentProject.fileName();
 	const QString autosaveFile = currentFileName.startsWith("~")
 			? currentFileName : "~" + currentFileName;
@@ -79,7 +94,7 @@ QString Autosaver::autosaveFilePath(const QString &currentFilePath) const
 QString Autosaver::tempFilePath() const
 {
 	return QString("%1/%2.qrs").arg(
-			QApplication::applicationDirPath()
+			PlatformInfo::applicationDirPath()
 			, SettingsManager::value("AutosaveTempFile").toString());
 }
 

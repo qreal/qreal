@@ -1,7 +1,6 @@
 *~
 *.autosave
 *.a
-*.core
 *.moc
 *.o
 *.obj
@@ -23,6 +22,7 @@ bin/*
 *.prf
 usabilityFiles/*
 **/.build/*
+**/uic_wrapper.sh
 
 # Generated editors
 **/generated/elements.h
@@ -36,3 +36,6 @@ plugin.qrc
 
 # Visual Paradigm temporaries
 umlDocumentation/*\~*
+
+# Installers temporary data
+**/ru.qreal.root*/data/*

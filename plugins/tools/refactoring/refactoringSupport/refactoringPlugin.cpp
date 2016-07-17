@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "refactoringPlugin.h"
 
 #include <QtCore/QProcess>
@@ -16,7 +30,7 @@ using namespace utils;
 
 RefactoringPlugin::RefactoringPlugin()
 	: mPreferencesPage(new RefactoringPreferencesPage())
-	, mRefactoringWindow(NULL)
+	, mRefactoringWindow(nullptr)
 {
 }
 
@@ -70,37 +84,37 @@ QList<qReal::ActionInfo> RefactoringPlugin::actions()
 	mRefactoringMenu = new QMenu(tr("Refactoring"));
 	ActionInfo refactoringMenuInfo(mRefactoringMenu, "tools");
 
-	mGenerateAndLoadRefactoringEditorAction = new QAction(tr("Generate and load refactoring editor"), NULL);
+	mGenerateAndLoadRefactoringEditorAction = new QAction(tr("Generate and load refactoring editor"), nullptr);
 	connect(mGenerateAndLoadRefactoringEditorAction, SIGNAL(triggered()), this, SLOT(generateRefactoringMetamodel()));
 	mRefactoringMenu->addAction(mGenerateAndLoadRefactoringEditorAction);
 
-	mOpenRefactoringWindowAction = new QAction(tr("Open Refactoring Window"), NULL);
+	mOpenRefactoringWindowAction = new QAction(tr("Open Refactoring Window"), nullptr);
 	connect(mOpenRefactoringWindowAction, SIGNAL(triggered()), this, SLOT(openRefactoringWindow()));
 	mRefactoringMenu->addAction(mOpenRefactoringWindowAction);
 
-	mSaveRefactoringAction = new QAction(tr("Save Refactoring"), NULL);
+	mSaveRefactoringAction = new QAction(tr("Save Refactoring"), nullptr);
 	connect(mSaveRefactoringAction, SIGNAL(triggered()), this, SLOT(saveRefactoring()));
 	mRefactoringMenu->addAction(mSaveRefactoringAction);
 
-	mCreateRefactoringAction = new QAction(tr("Create Refactoring"), NULL);
+	mCreateRefactoringAction = new QAction(tr("Create Refactoring"), nullptr);
 	connect(mCreateRefactoringAction, SIGNAL(triggered()), this, SLOT(createRefactoring()));
 	mRefactoringMenu->addAction(mCreateRefactoringAction);
 
 	mPlaceMenu = new QMenu(tr("Automatically arrange elements"));
 
-	mPlaceTBAction = new QAction(tr("Top-Bottom"), NULL);
+	mPlaceTBAction = new QAction(tr("Top-Bottom"), nullptr);
 	connect(mPlaceTBAction, SIGNAL(triggered()), this, SLOT(arrangeElementsTB()));
 	mPlaceMenu->addAction(mPlaceTBAction);
 
-	mPlaceLRAction = new QAction(tr("Left-Right"), NULL);
+	mPlaceLRAction = new QAction(tr("Left-Right"), nullptr);
 	connect(mPlaceLRAction, SIGNAL(triggered()), this, SLOT(arrangeElementsLR()));
 	mPlaceMenu->addAction(mPlaceLRAction);
 
-	mPlaceBTAction = new QAction(tr("Bottom-Top"), NULL);
+	mPlaceBTAction = new QAction(tr("Bottom-Top"), nullptr);
 	connect(mPlaceBTAction, SIGNAL(triggered()), this, SLOT(arrangeElementsBT()));
 	mPlaceMenu->addAction(mPlaceBTAction);
 
-	mPlaceRLAction = new QAction(tr("Right-Left"), NULL);
+	mPlaceRLAction = new QAction(tr("Right-Left"), nullptr);
 	connect(mPlaceRLAction, SIGNAL(triggered()), this, SLOT(arrangeElementsRL()));
 	mPlaceMenu->addAction(mPlaceRLAction);
 
@@ -117,7 +131,7 @@ void RefactoringPlugin::generateRefactoringMetamodel()
 
 	QString editorMetamodelFilePath =
 			QFileDialog::getOpenFileName(
-					NULL
+					nullptr
 					, tr("Select xml file to load refactoring metamodel")
 					, currentDir.absolutePath()
 					, "XML files (*.xml)"
@@ -254,7 +268,7 @@ void RefactoringPlugin::saveRefactoring()
 		}
 	}
 	mRepoControlIFace->saveDiagramsById(diagramIds);
-	QMessageBox::information(NULL, tr("Information"), tr("Saved successfully"), tr("Ok"));
+	QMessageBox::information(nullptr, tr("Information"), tr("Saved successfully"), tr("Ok"));
 }
 
 QDomElement RefactoringPlugin::createPaletteElement(QString const &elementType

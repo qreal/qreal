@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/core/semantics/semanticAnalyzer.h"
 
 #include "qrtext/core/types/any.h"
@@ -19,6 +33,8 @@ QSharedPointer<ast::Node> SemanticAnalyzer::analyze(QSharedPointer<ast::Node> co
 	if (!root) {
 		return root;
 	}
+
+	precheck(root);
 
 	mRecheckNeeded = true;
 
@@ -42,12 +58,12 @@ void SemanticAnalyzer::collect(QSharedPointer<ast::Node> const &node)
 	analyzeNode(node);
 }
 
-void SemanticAnalyzer::finalizeResolve(QSharedPointer<ast::Node> const &node)
+void SemanticAnalyzer::finalizeResolve(const QSharedPointer<ast::Node> &node)
 {
 	if (node->is<ast::Expression>()) {
-		auto expression = as<ast::Expression>(node);
+		const auto expression = as<ast::Expression>(node);
 		if (mTypes.contains(expression)) {
-			QSharedPointer<types::TypeVariable> const &typeVariable = mTypes.value(expression);
+			const QSharedPointer<types::TypeVariable> &typeVariable = mTypes.value(expression);
 			if (typeVariable->isEmpty()) {
 				reportError(expression, QObject::tr("Type mismatch"));
 			} else if (!typeVariable->isResolved()) {
@@ -100,7 +116,7 @@ void SemanticAnalyzer::clear()
 	mIdentifierDeclarations.clear();
 }
 
-void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
+void SemanticAnalyzer::forget(const QSharedPointer<ast::Node> &root)
 {
 	if (!root) {
 		return;
@@ -120,14 +136,24 @@ void SemanticAnalyzer::forget(QSharedPointer<ast::Node> const &root)
 	}
 }
 
-void SemanticAnalyzer::assign(QSharedPointer<ast::Node> const &expression
+void SemanticAnalyzer::assign(const QSharedPointer<ast::Node> &expression
 		, const QSharedPointer<types::TypeExpression> &type)
 {
+	const auto castExpression = as<ast::Expression>(expression);
+
 	if (!type->is<types::TypeVariable>()) {
-		mTypes.insert(as<ast::Expression>(expression)
-				, QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
+		if (mTypes.contains(castExpression)) {
+			// If type variable for that expression already exists, we must constrain it rather than create
+			// new variable. Else it doesn't play well with coercion --- variable gets created, then coerced,
+			// then program is rechecked to verify coercion results, new variable is created during recheck,
+			// gets coerced and so on, infinitely.
+			mTypes[castExpression]->constrain(QList<QSharedPointer<types::TypeExpression>>{type}
+					, *mGeneralizationsTable);
+		} else {
+			mTypes.insert(castExpression, QSharedPointer<types::TypeVariable>(new types::TypeVariable(type)));
+		}
 	} else {
-		mTypes.insert(as<ast::Expression>(expression), type.dynamicCast<types::TypeVariable>());
+		mTypes.insert(castExpression, type.dynamicCast<types::TypeVariable>());
 	}
 }
 
@@ -189,4 +215,15 @@ QSharedPointer<types::TypeVariable> SemanticAnalyzer::typeVariable(QSharedPointe
 void SemanticAnalyzer::requestRecheck()
 {
 	mRecheckNeeded = true;
+}
+
+bool SemanticAnalyzer::isGeneralization(const QSharedPointer<types::TypeExpression> &specific
+		, const QSharedPointer<types::TypeExpression> &general) const
+{
+	return generalizationsTable().isGeneralization(specific, general);
+}
+
+void SemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
+{
+	Q_UNUSED(node)
 }

@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/robotsGeneratorPluginBase.h"
 
 #include <QtCore/QDateTime>
 
+#include <qrkernel/platformInfo.h>
 #include <qrutils/inFile.h>
 #include <qrutils/nameNormalizer.h>
 #include <qrutils/parserErrorReporter.h>
@@ -36,12 +51,12 @@ QString RobotsGeneratorPluginBase::generatorName() const
 QString RobotsGeneratorPluginBase::defaultProjectName() const
 {
 	const QString filePath = mProjectManager->saveFilePath();
-	return filePath.isEmpty() ? "example" : QFileInfo(filePath).baseName();
+	return filePath.isEmpty() ? "example" : QFileInfo(filePath).completeBaseName();
 }
 
 bool RobotsGeneratorPluginBase::canGenerateTo(const QString &project)
 {
-	const QFileInfo fileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(project));
+	const QFileInfo fileInfo = generationTarget(project);
 	const int difference = fileInfo.lastModified().toMSecsSinceEpoch() - fileInfo.created().toMSecsSinceEpoch();
 	return !fileInfo.exists() || difference < maxTimestampsDifference;
 }
@@ -72,6 +87,11 @@ void RobotsGeneratorPluginBase::onCurrentDiagramChanged(const TabInfo &info)
 	}
 }
 
+QFileInfo RobotsGeneratorPluginBase::generationTarget(const QString &pathFromRoot) const
+{
+	return QFileInfo(PlatformInfo::invariantSettingsPath("pathToGeneratorRoot") + "/" + defaultFilePath(pathFromRoot));
+}
+
 QFileInfo RobotsGeneratorPluginBase::srcPath()
 {
 	const Id &activeDiagram = mMainWindowInterface->activeDiagram();
@@ -85,8 +105,8 @@ QFileInfo RobotsGeneratorPluginBase::srcPath()
 		++exampleNumber;
 	} while (!canGenerateTo(projectName));
 
-	QFileInfo fileInfo = QFileInfo(QApplication::applicationDirPath() + "/" + defaultFilePath(projectName));
-	QList<QFileInfo> const pathsList = mCodePath.values(activeDiagram);
+	QFileInfo fileInfo = generationTarget(projectName);
+	const QList<QFileInfo> pathsList = mCodePath.values(activeDiagram);
 
 	if (!pathsList.isEmpty()) {
 		for (const QFileInfo &path : pathsList) {
@@ -110,10 +130,11 @@ QFileInfo RobotsGeneratorPluginBase::generateCodeForProcessing()
 
 	if (!activeDiagram.isNull()) {
 		if (generateCode(false)) {
-			foreach (const QFileInfo &path, mCodePath.values(activeDiagram)) {
+			for (const QFileInfo &path : mCodePath.values(activeDiagram)) {
 				if (mTextManager->isDefaultPath(path.absoluteFilePath())
 					&& (!mTextManager->isModifiedEver(path.absoluteFilePath()))
-					&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName())) {
+					&& !mTextManager->generatorName(path.absoluteFilePath()).compare(generatorName()))
+				{
 					fileInfo = path;
 					break;
 				}
@@ -164,7 +185,9 @@ QString RobotsGeneratorPluginBase::friendlyKitName() const
 bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
 	mProjectManager->save();
+	/// @todo: clearErrors() and clear() are absolutely different methods without documentation - wtf?
 	mMainWindowInterface->errorReporter()->clearErrors();
+	mMainWindowInterface->errorReporter()->clear();
 
 	MasterGeneratorBase * const generator = masterGenerator();
 	const QFileInfo path = srcPath();

@@ -1,18 +1,32 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "xmlParser.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QUuid>
 #include <QtCore/QPointF>
-#include <QtCore/QProcess>
+#include <QtCore/QDir>
 #include <QtWidgets/QMessageBox>
 #include <QtGui/QPolygonF>
 #include <QtXml/QDomDocument>
 
 #include "math.h"
 
-#include "../../../qrrepo/repoApi.h"
-#include "../../../qrutils/xmlUtils.h"
-#include "../../../qrkernel/exception/exception.h"
+#include <qrrepo/repoApi.h>
+#include <qrutils/xmlUtils.h>
+#include <qrkernel/exception/exception.h>
 
 using namespace qReal;
 using namespace metaEditor;
@@ -60,15 +74,6 @@ void XmlParser::parseFile(const QString &fileName)
 
 	Id const packageId = getPackageId();
 	initMetamodel(doc, filePathName, fileBaseName, pathToQRealSourceFiles, packageId);
-
-	QDomNodeList const listeners = doc.elementsByTagName("listener");
-	int listenerPositionY = 100;
-	for (int i = 0; i < listeners.length(); ++i) {
-		QDomElement listener = listeners.at(i).toElement();
-		Id id = initListener("(Listener)", listener.attribute("class", ""), listener.attribute("file", ""));
-		mApi.setProperty(id, "position", QPointF(0,listenerPositionY));
-		listenerPositionY += 90;
-	}
 
 	QDomNodeList const diagrams = doc.elementsByTagName("diagram");
 
@@ -119,7 +124,9 @@ void XmlParser::loadIncludeList(const QString &fileName)
 	QStringList includeList = getIncludeList(fileName);
 	if (includeList.isEmpty())
 		return;
-	if (QMessageBox::question(NULL, QObject::tr("loading.."),"Do you want to load connected metamodels?", QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+	if (QMessageBox::question(nullptr, QObject::tr("loading.."),"Do you want to load connected metamodels?"
+			, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
+	{
 		foreach (QString const &include, includeList) {
 			if (!containsName(include))
 				parseFile(include);
@@ -134,6 +141,7 @@ bool XmlParser::containsName(const QString &name)
 		if (mApi.name(id) == name)
 			return true;
 	}
+
 	return false;
 }
 
@@ -150,7 +158,8 @@ Id XmlParser::getPackageId()
 	return packageId;
 }
 
-void XmlParser::initMetamodel(const QDomDocument &document, const QString &directoryName, const QString &baseName, const QString &pathToRoot, const Id &id)
+void XmlParser::initMetamodel(const QDomDocument &document, const QString &directoryName, const QString &baseName
+		, const QString &pathToRoot, const Id &id)
 {
 	QString fileBaseName = baseName;
 
@@ -178,16 +187,6 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	mApi.setProperty(mMetamodel, "relative path to QReal Source Files", pathToRoot);
 
 	mApi.addExplosion(metamodelId, mMetamodel);
-}
-
-Id XmlParser::initListener(const QString &name, const QString &className, const QString &fileName)
-{
-	Id listenerId("MetaEditor", "MetaEditor", "Listener",
-			QUuid::createUuid().toString());
-	setStandartConfigurations(listenerId, mMetamodel, name, name);
-	mApi.setProperty(listenerId, "class", className);
-	mApi.setProperty(listenerId, "file", fileName);
-	return listenerId;
 }
 
 void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
@@ -373,10 +372,6 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setConnections(attribute, nodeId);
 		else if (attribute.tagName() == "usages")
 			setUsages(attribute, nodeId);
-		else if (attribute.tagName() == "action")
-			setAction(nodeId);
-		else if (attribute.tagName() == "bonusContextMenuFields")
-			setFields(attribute, nodeId);
 	}
 }
 
@@ -561,11 +556,6 @@ void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId
 		if (possibleEdge.tagName() == "possibleEdge")
 			initPossibleEdge(possibleEdge, elementId);
 	}
-}
-
-void XmlParser::setAction(const Id &elementId)
-{
-	mApi.setProperty(elementId, "isAction", "true");
 }
 
 void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elementId)

@@ -1,9 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/templateParametrizedEntity.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QUuid>
 
 #include <qrutils/inFile.h>
-#include <qrkernel/exception/exception.h>
+#include <qrutils/nameNormalizer.h>
+#include <qrkernel/logging.h>
 
 using namespace generatorBase;
 
@@ -11,8 +27,8 @@ TemplateParametrizedEntity::TemplateParametrizedEntity()
 {
 }
 
-TemplateParametrizedEntity::TemplateParametrizedEntity(const QString &pathToTemplates)
-	: mPathToRoot(pathToTemplates)
+TemplateParametrizedEntity::TemplateParametrizedEntity(const QStringList &pathsToTemplates)
+	: mPathsToRoot(pathsToTemplates)
 {
 }
 
@@ -22,47 +38,69 @@ TemplateParametrizedEntity::~TemplateParametrizedEntity()
 
 QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) const
 {
-	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
-	QString result;
+	for (const QString &path: mPathsToRoot) {
+		const QString fullPath = path + '/' + pathFromRoot;
+		if (QFile::exists(fullPath)) {
+			QString errorMessage;
+			const QString result = utils::InFile::readAll(fullPath, &errorMessage);
+			if (!errorMessage.isEmpty()) {
+				QLOG_ERROR() << "Reading from template while generating code failed";
+				qWarning() << "TemplateParametrizedEntity::readTemplate" << errorMessage;
+			}
 
-	try {
-		result = utils::InFile::readAll(fullPath);
-	} catch (const qReal::Exception &exception) {
-		// Without this try-catch program would be failing every time when
-		// someone forgets or missprints tamplate name or unknown block with
-		// common generation rule will ty to read template
-		qDebug() << "UNHANDLED EXCEPTION: " + exception.message();
+			return result;
+		}
 	}
 
-	return result;
+	QLOG_ERROR() << "Template" << pathFromRoot << "not found in" << mPathsToRoot;
+	qWarning() << "Template" << pathFromRoot << "not found in" << mPathsToRoot;
+
+	return "";
 }
 
 QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFromRoot, const QString &fallback) const
 {
-	const QString fullPath = mPathToRoot + '/' + pathFromRoot;
-	if (!QFile(fullPath).exists()) {
-		return fallback;
+	for (const QString &path: mPathsToRoot) {
+		const QString fullPath = path + '/' + pathFromRoot;
+		if (QFile::exists(fullPath)) {
+			QString errorMessage;
+			const QString result = utils::InFile::readAll(fullPath, &errorMessage);
+			if (!errorMessage.isEmpty()) {
+				QLOG_ERROR() << "Reading from template while generating code failed";
+				qWarning() << "TemplateParametrizedEntity::readTemplate" << errorMessage;
+			} else {
+				return result;
+			}
+		}
 	}
 
-	QString result = fallback;
+	return fallback;
+}
 
-	try {
-		result = utils::InFile::readAll(fullPath);
-	} catch (const qReal::Exception &) {
-		// Without this try-catch program would be failing every time when
-		// someone forgets or missprints tamplate name or unknown block with
-		// common generation rule will ty to read template
+QStringList TemplateParametrizedEntity::pathsToRoot() const
+{
+	return mPathsToRoot;
+}
+
+QString TemplateParametrizedEntity::addRandomIds(QString templateString) const
+{
+	int index = 0;
+	QString randomId = utils::NameNormalizer::normalizeStrongly(QUuid::createUuid().toString(), false);
+	templateString.replace("@@RANDOM_ID@@", randomId);
+	while (true) {
+		const QString pattern = QString("@@RANDOM_ID_%1@@").arg(++index);
+		if (!templateString.contains(pattern)) {
+			break;
+		}
+
+		randomId = utils::NameNormalizer::normalizeStrongly(QUuid::createUuid().toString(), false);
+		templateString.replace(pattern, randomId);
 	}
 
-	return result;
+	return templateString;
 }
 
-QString TemplateParametrizedEntity::pathToRoot() const
+void TemplateParametrizedEntity::setPathsToTemplates(const QStringList &pathsTemplates)
 {
-	return mPathToRoot;
-}
-
-void TemplateParametrizedEntity::setPathToTemplates(const QString &pathTemplates)
-{
-	mPathToRoot = pathTemplates;
+	mPathsToRoot = pathsTemplates;
 }

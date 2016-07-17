@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <qrutils/interpreter/block.h>
 
 #include <thirdparty/qslog/QsLog.h>
 #include <qrtext/languageToolboxInterface.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 
 using namespace qReal;
 using namespace interpretation;
@@ -41,6 +56,11 @@ bool Block::initNextBlocks()
 		return false;
 	}
 
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(id())) {
+		error(tr("Block has disappeared!"));
+		return false;
+	}
+
 	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	if (links.count() > 1) {
@@ -71,7 +91,7 @@ const Id Block::id() const
 	return mGraphicalId;
 }
 
-void Block::interpret()
+void Block::interpret(Thread *thread)
 {
 	// mState == running is not filtered out due to recursions and forks
 	if (mState == failed) {
@@ -79,6 +99,7 @@ void Block::interpret()
 	}
 
 	mState = running;
+	mThread = thread;
 	if (initNextBlocks()) {
 		run();
 	}
@@ -94,43 +115,51 @@ void Block::finishedRunning()
 	mState = idle;
 }
 
-QVariant Block::property(const QString &propertyName) const
+QVariant Block::property(const QString &propertyName)
 {
 	return property(id(), propertyName);
 }
 
-QString Block::stringProperty(const QString &propertyName) const
+QString Block::stringProperty(const QString &propertyName)
 {
 	return stringProperty(id(), propertyName);
 }
 
-int Block::intProperty(const QString &propertyName) const
+int Block::intProperty(const QString &propertyName)
 {
 	return intProperty(id(), propertyName);
 }
 
-bool Block::boolProperty(const QString &propertyName) const
+bool Block::boolProperty(const QString &propertyName)
 {
 	return boolProperty(id(), propertyName);
 }
 
-QVariant Block::property(const Id &id, const QString &propertyName) const
+QVariant Block::property(const Id &id, const QString &propertyName)
 {
 	const Id logicalId = mGraphicalModelApi->logicalId(id);
+	if (logicalId.isNull()) {
+		// If we get here we definitely have such situation:
+		// graphical id existed when this Block instance was constructed (or we just will not get here),
+		// but now the logical instance has suddenly disppeared.
+		error(tr("Block has disappeared!"));
+		return QVariant();
+	}
+
 	return mLogicalModelApi->propertyByRoleName(logicalId, propertyName);
 }
 
-QString Block::stringProperty(const Id &id, const QString &propertyName) const
+QString Block::stringProperty(const Id &id, const QString &propertyName)
 {
 	return property(id, propertyName).toString();
 }
 
-int Block::intProperty(const Id &id, const QString &propertyName) const
+int Block::intProperty(const Id &id, const QString &propertyName)
 {
 	return property(id, propertyName).toInt();
 }
 
-bool Block::boolProperty(const Id &id, const QString &propertyName) const
+bool Block::boolProperty(const Id &id, const QString &propertyName)
 {
 	return property(id, propertyName).toBool();
 }

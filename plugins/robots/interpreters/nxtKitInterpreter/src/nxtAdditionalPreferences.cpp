@@ -1,8 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "nxtAdditionalPreferences.h"
 #include "ui_nxtAdditionalPreferences.h"
 
 #include <qrkernel/settingsManager.h>
-#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
+#include <utils/widgets/comPortPicker.h>
 
 using namespace nxt;
 using namespace qReal;
@@ -31,22 +45,7 @@ void NxtAdditionalPreferences::save()
 
 void NxtAdditionalPreferences::restoreSettings()
 {
-	QList<QextPortInfo> const ports = QextSerialEnumerator::getPorts();
-	const QString defaultPortName = SettingsManager::value("NxtBluetoothPortName").toString();
-	mUi->comPortComboBox->clear();
-
-	for (const QextPortInfo &info : ports) {
-		const QRegExp portNameRegexp("COM\\d+", Qt::CaseInsensitive);
-		if (portNameRegexp.indexIn(info.portName) != -1) {
-			const QString portName = portNameRegexp.cap();
-			mUi->comPortComboBox->addItem(portName);
-		}
-	}
-
-	const int defaultIndex = mUi->comPortComboBox->findText(defaultPortName);
-	if (defaultIndex != -1) {
-		mUi->comPortComboBox->setCurrentIndex(defaultIndex);
-	}
+	ui::ComPortPicker::populate(*mUi->comPortComboBox, "NxtBluetoothPortName");
 
 	if (mUi->comPortComboBox->count() == 0) {
 		mUi->comPortComboBox->hide();
@@ -55,7 +54,7 @@ void NxtAdditionalPreferences::restoreSettings()
 		mUi->noComPortsFoundLabel->show();
 		mUi->directInputComPortLabel->show();
 		mUi->directInputComPortLineEdit->show();
-		mUi->directInputComPortLineEdit->setText(defaultPortName);
+		mUi->directInputComPortLineEdit->setText(SettingsManager::value("NxtBluetoothPortName").toString());
 	} else {
 		mUi->comPortComboBox->show();
 		mUi->comPortLabel->show();

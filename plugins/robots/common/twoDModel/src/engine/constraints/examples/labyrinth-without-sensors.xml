@@ -22,7 +22,7 @@
 			<region type="rectangle" visible="true" color="red" text="Финиш" x="450" y="-400" width="150" height="150"/>
 
 			<region id="warzone" type="rectangle" visible="false" x="-450" y="-400" width="1050" height="600"/>
-			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="50" height="50"/>
+			<region id="factical finish" type="rectangle" visible="false" x="500" y="-350" width="100" height="150"/>
 		</regions>
 	</world>
 	<robots>
@@ -44,39 +44,39 @@
 		<constraint checkOnce="true" failMessage="У робота не должно быть датчиков">
 			<conditions glue="and">
 				<equals>
-					<typeOf objectId="robot1.A1_in"/>
+					<typeOf objectId="robot1.A1"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A2_in"/>
+					<typeOf objectId="robot1.A2"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A3_in"/>
+					<typeOf objectId="robot1.A3"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A4_in"/>
+					<typeOf objectId="robot1.A4"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A5_in"/>
+					<typeOf objectId="robot1.A5"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.A6_in"/>
+					<typeOf objectId="robot1.A6"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.D1_in"/>
+					<typeOf objectId="robot1.D1"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.D2_in"/>
+					<typeOf objectId="robot1.D2"/>
 					<string value="undefined"/>
 				</equals>
 				<equals>
-					<typeOf objectId="robot1.F1_in"/>
+					<typeOf objectId="robot1.F1"/>
 					<string value="undefined"/>
 				</equals>
 			</conditions>
@@ -84,7 +84,17 @@
 		<constraint failMessage="Робот попытался объехать лабиринт!">
 			<inside objectId="robot1" regionId="warzone"/>
 		</constraint>
+
+		<!-- Finish checker should not be setted up initially, else we can drag robot into finish zone and this event will be emitted together with error -->
 		<event settedUpInitially="true">
+			<condition>
+				<timer timeout="100" forceDropOnTimeout="true"/>
+			</condition>
+			<trigger>
+				<setUp id="finish checker"/>
+			</trigger>
+		</event>
+		<event id="finish checker" settedUpInitially="false">
 			<condition>
 				<inside objectId="robot1" regionId="factical finish"/>
 			</condition>

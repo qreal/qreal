@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -50,7 +64,9 @@ signals:
 
 private slots:
 	void threadStopped();
-	void newThread(const qReal::Id &startBlockId);
+	void newThread(const qReal::Id &startBlockId, const QString &threadId);
+	void killThread(const QString &threadId);
+	void sendMessage(const QString &threadId, const QString &message);
 
 private:
 	enum InterpreterState {
@@ -58,7 +74,7 @@ private:
 		, idle
 	};
 
-	void addThread(Thread * const thread);
+	void addThread(Thread * const thread, const QString &threadId);
 
 	void reportError(const QString &message);
 
@@ -67,7 +83,7 @@ private:
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 
 	InterpreterState mState;
-	QList<Thread *> mThreads;  // Has ownership
+	QHash<QString, Thread *> mThreads;  // Has ownership
 	BlocksTableInterface &mBlocksTable;  // Has ownership
 
 	/// Reference to a parser to be able to clear parser state when starting interpretation.

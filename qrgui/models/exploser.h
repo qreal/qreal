@@ -1,7 +1,18 @@
-#pragma once
+/* Copyright 2013-2016 Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
-#include <QtCore/QList>
-#include <QtWidgets/QTreeWidgetItem>
+#pragma once
 
 #include <qrkernel/ids.h>
 
@@ -18,6 +29,7 @@ class AbstractCommand;
 }
 
 namespace models {
+class Models;
 class LogicalModelAssistApi;
 class GraphicalModelAssistApi;
 
@@ -37,9 +49,15 @@ public:
 	/// Returns all elements that have specified id as explosion target with hard nessesarity
 	IdList elementsWithHardDependencyFrom(const Id &id) const;
 
+	/// Appends to \a createCommand child command that creates explosion from \a source to \a target.
+	/// If \a target is null and explosion requires immediate linkage creates new target of specified in
+	/// metamodel type and adds explosion into it.
+	void handleCreationWithExplosion(qReal::commands::AbstractCommand *createCommand
+			, const models::Models &models, const Id &source, const Id &target) const;
+
 	/// Appends to given command child commands that clear outgoing explosion and
 	/// all non-hard incoming explosions
-	void handleRemoveCommand(const Id &logicalId, commands::AbstractCommand * const command);
+	void handleRemoveCommand(const Id &logicalId, commands::AbstractCommand * const command) const;
 
 	/// This method checks if explosion must be created immediately for given type
 	/// and if yes returns type with explosion target. Otherwise returns Id().
@@ -49,7 +67,7 @@ public:
 	/// instances with explosion link and adds explosion instance into user blocks
 	/// palette if nessesary.
 	commands::AbstractCommand *addExplosionCommand(const Id &source, const Id &target
-			, models::GraphicalModelAssistApi * const graphicalApi = nullptr);
+			, models::GraphicalModelAssistApi * const graphicalApi = nullptr) const;
 
 	/// Produces and returns command that unbinds elements with explosion link and
 	/// removes explosion instance from user blocks palette if nessesary.
@@ -58,7 +76,7 @@ public:
 	/// Produces and returns command that creates element of target type and
 	/// binds given element with new element with explosion link
 	commands::AbstractCommand *createElementWithIncomingExplosionCommand(const Id &source
-			, const Id &targetType, models::GraphicalModelAssistApi &graphicalApi);
+			, const Id &targetType, const models::Models &models) const;
 
 	/// Produces and returns a command that performs the renaming of the whole
 	/// explosions  hierarchy and binded palette items
@@ -70,7 +88,7 @@ signals:
 	/// Emitted each time when automatically created explosion target was removed
 	void explosionTargetRemoved();
 
-	/// @todo: Emit it exaclty when explosions set changes.
+	/// @todo: Emit it exactly when explosions set changes.
 	/// Emitted when explosions set potentially changes (when elements are added or removed
 	/// or renamed or explosion link was added or edited directly).
 	void explosionsSetCouldChange();
@@ -90,8 +108,6 @@ private:
 	/// Recursively travels through the explosions tree and puts all elements
 	/// ids into @param targetIds
 	void explosionsHierarchyPrivate(const Id &currentId, IdList &targetIds) const;
-
-	void refreshPalette(gui::PaletteTreeWidget * const tree, const Id &diagram);
 
 	void connectCommand(const commands::AbstractCommand *command) const;
 

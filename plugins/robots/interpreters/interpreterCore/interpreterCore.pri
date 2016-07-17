@@ -1,3 +1,17 @@
+# Copyright 2013-2016 CyberTech Labs Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += svg xml widgets
 
 includes(plugins/robots/interpreters/interpreterCore \
@@ -8,7 +22,7 @@ includes(plugins/robots/interpreters/interpreterCore \
 )
 
 links(qrkernel qrrepo qrutils qrtext qrgui-models qrgui-controller qrgui-preferences-dialog qrgui-plugin-manager \
-		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model \
+		qrgui-tool-plugin-interface robots-kit-base robots-utils robots-2d-model qslog \
 )
 
 HEADERS += \
@@ -26,7 +40,7 @@ HEADERS += \
 	$$PWD/include/interpreterCore/customizer.h \
 	$$PWD/include/interpreterCore/defaultRobotModel.h \
 	$$PWD/include/interpreterCore/interpreter/interpreter.h \
-	$$PWD/include/interpreterCore/interpreter/interpreterInterface.h \
+	$$PWD/include/interpreterCore/interpreter/proxyInterpreter.h \
 	$$PWD/include/interpreterCore/interpreter/details/autoconfigurer.h \
 	$$PWD/include/interpreterCore/interpreter/details/blocksTable.h \
 	$$PWD/include/interpreterCore/interpreter/details/sensorVariablesUpdater.h \
@@ -35,9 +49,11 @@ HEADERS += \
 	$$PWD/src/coreBlocks/details/timerBlock.h \
 	$$PWD/src/coreBlocks/details/printTextBlock.h \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.h \
+	$$PWD/src/managers/uiManager.h \
 	$$PWD/src/managers/exerciseExportManager.h \
 	$$PWD/src/ui/exerciseExportDialog.h \
 	$$PWD/src/ui/robotsSettingsPage.h \
+	$$PWD/src/ui/modeStripe.h \
 
 SOURCES += \
 	$$PWD/src/customizer.cpp \
@@ -48,12 +64,14 @@ SOURCES += \
 	$$PWD/src/coreBlocks/details/printTextBlock.cpp \
 	$$PWD/src/coreBlocks/details/clearScreenBlock.cpp \
 	$$PWD/src/interpreter/interpreter.cpp \
+	$$PWD/src/interpreter/proxyInterpreter.cpp \
 	$$PWD/src/interpreter/details/autoconfigurer.cpp \
 	$$PWD/src/interpreter/details/blocksTable.cpp \
 	$$PWD/src/interpreter/details/sensorVariablesUpdater.cpp \
 	$$PWD/src/managers/actionsManager.cpp \
 	$$PWD/src/managers/blocksFactoryManager.cpp \
 	$$PWD/src/managers/devicesConfigurationManager.cpp \
+	$$PWD/src/managers/uiManager.cpp \
 	$$PWD/src/managers/exerciseExportManager.cpp \
 	$$PWD/src/managers/graphicsWatcherManager.cpp \
 	$$PWD/src/managers/kitAutoSwitcher.cpp \
@@ -64,11 +82,14 @@ SOURCES += \
 	$$PWD/src/textLanguage/robotsBlockParser.cpp \
 	$$PWD/src/ui/exerciseExportDialog.cpp \
 	$$PWD/src/ui/robotsSettingsPage.cpp \
+	$$PWD/src/ui/modeStripe.cpp \
 
 FORMS += \
 	$$PWD/src/ui/robotsSettingsPage.ui \
 
-TRANSLATIONS += $$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCore_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/interpreterCore_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/interpreterCore_fr.ts \
 
 RESOURCES += \
 	$$PWD/interpreterCore.qrc \

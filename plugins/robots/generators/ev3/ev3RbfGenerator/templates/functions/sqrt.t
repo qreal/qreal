@@ -1,0 +1,1 @@
+MATH(SQRT, @@ARGUMENT@@, @@RESULT@@)

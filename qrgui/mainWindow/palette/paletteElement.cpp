@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "paletteElement.h"
 
 using namespace qReal;
@@ -19,12 +33,13 @@ PaletteElement::PaletteElement(const Id &id
 }
 
 PaletteElement::PaletteElement(const EditorManagerInterface &manager, const Id &element)
-	: mId(element)
-	, mName(manager.friendlyName(element))
-	, mDescription(manager.description(element))
-	, mIcon(manager.icon(element))
-	, mPreferredSize(manager.iconSize(element))
-	, mExplosionTarget()
+	: PaletteElement(
+		element
+		, manager.friendlyName(element)
+		, manager.description(element)
+		, manager.icon(element)
+		, manager.iconSize(element)
+		, Id())
 {
 }
 
@@ -56,4 +71,12 @@ QSize PaletteElement::preferredSize() const
 Id PaletteElement::explosionTarget() const
 {
 	return mExplosionTarget;
+}
+
+bool PaletteElement::operator ==(const PaletteElement &other) const
+{
+	return mId == other.mId
+			&& mName == other.mName
+			&& mPreferredSize == other.mPreferredSize
+			&& mExplosionTarget == other.mExplosionTarget;
 }

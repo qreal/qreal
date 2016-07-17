@@ -1,28 +1,43 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "element.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QGraphicsColorizeEffect>
 
 #include <qrkernel/settingsListener.h>
+#include <qrgui/models/models.h>
+#include <qrgui/models/commands/renameCommand.h>
+#include <qrgui/models/commands/changePropertyCommand.h>
 
-#include "models/commands/changePropertyCommand.h"
+#include "qrgui/editor/labels/label.h"
 
 using namespace qReal;
+using namespace qReal::gui::editor;
 
 const qreal disabledEffectStrength = 0.9;
 
-Element::Element(ElementImpl *elementImpl
-		, const Id &id
-		, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-		, qReal::models::LogicalModelAssistApi &logicalAssistApi
-		)
+Element::Element(const ElementType &elementType, const Id &id, const models::Models &models)
 	: mMoving(false)
 	, mEnabled(true)
 	, mId(id)
-	, mElementImpl(elementImpl)
-	, mLogicalAssistApi(logicalAssistApi)
-	, mGraphicalAssistApi(graphicalAssistApi)
+	, mModels(models)
+	, mLogicalAssistApi(models.logicalModelAssistApi())
+	, mGraphicalAssistApi(models.graphicalModelAssistApi())
 	, mController(nullptr)
+	, mType(elementType)
 {
 	setFlags(ItemIsSelectable | ItemIsMovable | ItemIsFocusable | ItemClipsChildrenToShape |
 			ItemClipsToShape | ItemSendsGeometryChanges);
@@ -40,7 +55,7 @@ Id Element::id() const
 	return mId;
 }
 
-qReal::Id Element::logicalId() const
+Id Element::logicalId() const
 {
 	return mGraphicalAssistApi.logicalId(mId);
 }
@@ -53,12 +68,32 @@ QString Element::name() const
 void Element::updateData()
 {
 	setToolTip(mGraphicalAssistApi.toolTip(id()));
+	for (Label * const label : mLabels) {
+		if (label->info().binding().isEmpty()) {
+			continue;
+		}
+
+		const QString text = label->info().binding() == "name" ? name() : logicalProperty(label->info().binding());
+		/// @todo: Label must decide what to call itself.
+		if (label->info().isPlainTextMode()) {
+			label->setPlainText(text);
+		} else {
+			label->setTextFromRepo(text);
+		}
+	}
 }
 
-QList<ContextMenuAction*> Element::contextMenuActions(const QPointF &pos)
+void Element::setName(const QString &value, bool withUndoRedo)
 {
-	Q_UNUSED(pos)
-	return QList<ContextMenuAction*>();
+	commands::AbstractCommand *command = new commands::RenameCommand(mGraphicalAssistApi
+			, id(), value, &mModels.exploser());
+	if (withUndoRedo) {
+		mController->execute(command);
+		// Controller will take ownership
+	} else {
+		command->redo();
+		delete command;
+	}
 }
 
 QString Element::logicalProperty(const QString &roleName) const
@@ -66,10 +101,15 @@ QString Element::logicalProperty(const QString &roleName) const
 	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
 }
 
-void Element::setLogicalProperty(const QString &roleName, const QString &value, bool withUndoRedo)
+void Element::setLogicalProperty(const QString &roleName, const QString &oldValue
+		, const QString &newValue, bool withUndoRedo)
 {
+	if (oldValue == newValue) {
+		return;
+	}
+
 	commands::AbstractCommand *command = new commands::ChangePropertyCommand(&mLogicalAssistApi
-			, roleName, logicalId(), value);
+			, roleName, logicalId(), oldValue, newValue);
 	if (withUndoRedo) {
 		mController->execute(command);
 	} else {
@@ -83,46 +123,13 @@ void Element::setController(Controller *controller)
 	mController = controller;
 }
 
-qReal::Controller * Element::controller() const
+Controller * Element::controller() const
 {
 	return mController;
 }
 
 void Element::initTitles()
 {
-}
-
-void Element::select(const bool singleSelected)
-{
-	if (singleSelected) {
-		setSelectionState(true);
-	}
-
-	emit switchFolding(!singleSelected);
-}
-
-void Element::setSelectionState(const bool selected)
-{
-	if (isSelected() != selected) {
-		setSelected(selected);
-	}
-	if (!selected) {
-		select(false);
-	}
-
-	foreach (Label * const label, mLabels) {
-		label->setParentSelected(selected);
-	}
-}
-
-ElementImpl* Element::elementImpl() const
-{
-	return mElementImpl;
-}
-
-bool Element::createChildrenFromMenu() const
-{
-	return mElementImpl->createChildrenFromMenu();
 }
 
 void Element::updateEnabledState()
@@ -145,14 +152,8 @@ void Element::updateEnabledState()
 
 void Element::setHideNonHardLabels(bool hide)
 {
-	for (const Label * const label : mLabels) {
-		if (label->isSelected()) {
-			return;
-		}
-	}
-
 	for (Label * const label : mLabels) {
-		label->setVisible(label->isHard() || !hide);
+		label->setVisible(label->isHard() || !hide || label->isSelected());
 	}
 }
 

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QHash>
@@ -7,7 +21,6 @@
 
 #include "classes/graphicalObject.h"
 #include "classes/logicalObject.h"
-#include "qrRepoGlobal.h"
 #include "serializer.h"
 
 namespace qrRepo {
@@ -17,14 +30,17 @@ namespace details {
 class Repository
 {
 public:
-	QRREPO_EXPORT Repository(const QString &workingFile);
-	QRREPO_EXPORT virtual ~Repository();
+	explicit Repository(const QString &workingFile);
+	~Repository();
+
+	/// Returns a reference to serializer component used for low-level saving operations.
+	Serializer &serializer();
 
 	/// replacing property values that contains input value with new value
 	/// @param toReplace - id list that contains ids of elements that properties should be replaced
 	/// @param value - input value that should be contained by any property of each element
 	/// @param newValue - string representation of value with what property values should be replaced
-	void replaceProperties(const qReal::IdList &toReplace, const QString value, const QString newValue);
+	void replaceProperties(const qReal::IdList &toReplace, const QString &value, const QString &newValue);
 
 	/// returning IdList of elements that names contains input string
 	/// @param name - string that should be contained by names of elements that Id's are in the output list
@@ -40,11 +56,11 @@ public:
 
 	qReal::IdList children(const qReal::Id &id) const;
 	qReal::Id parent(const qReal::Id &id) const;
-	/**
-	  Clones object recursively in internal structures.
-	  This doesn't mean it'll appear on your diagrams
-	  */
+
+	/// Clones object recursively in internal structures.
+	/// This doesn't mean it'll appear on your diagrams
 	qReal::Id cloneObject(const qReal::Id &id);
+
 	void setParent(const qReal::Id &id, const qReal::Id &parent);
 	void addChild(const qReal::Id &id, const qReal::Id &child);
 	void addChild(const qReal::Id &id, const qReal::Id &child, const qReal::Id &logicalId);
@@ -145,7 +161,7 @@ private:
 	QList<Object*> allChildrenOf(qReal::Id id) const;
 	QList<Object*> allChildrenOfWithLogicalId(qReal::Id id) const;
 
-	QHash<qReal::Id, Object*> mObjects;
+	QHash<qReal::Id, Object *> mObjects;
 	QHash<QString, QVariant> mMetaInfo;
 
 	/// Name of the current save file for project.

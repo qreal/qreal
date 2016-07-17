@@ -1,4 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "stylusItem.h"
+
+#include <QtWidgets/QAction>
 
 using namespace twoDModel::items;
 using namespace graphicsUtils;
@@ -6,26 +22,54 @@ using namespace graphicsUtils;
 StylusItem::StylusItem(qreal x1, qreal y1)
 	: mStylusImpl()
 {
-	mPen.setColor(Qt::black);
-	mPen.setCapStyle(Qt::RoundCap);
-	mX1 = x1;
-	mY1 = y1;
+	QPen pen(this->pen());
+	pen.setColor(Qt::black);
+	pen.setCapStyle(Qt::RoundCap);
+	setPen(pen);
+	setX1(x1);
+	setY1(y1);
 	mTmpX1 = x1;
 	mTmpY1 = y1;
 }
 
+AbstractItem *StylusItem::clone() const
+{
+	const auto cloned = new StylusItem(x1(), y1());
+	AbstractItem::copyTo(cloned);
+	connect(this, &StylusItem::segmentAdded, [=](LineItem * const segment) {
+		cloned->mAbstractListLine << segment->clone();
+		cloned->recalculateProperties();
+	});
+	cloned->mTmpX1 = mTmpX1;
+	cloned->mTmpY1 = mTmpY1;
+	cloned->mBoundingRect = mBoundingRect;
+	for (const AbstractItem *item : mAbstractListLine) {
+		cloned->mAbstractListLine.push_back(static_cast<const LineItem *>(item)->clone());
+	}
+
+	return cloned;
+}
+
+QAction *StylusItem::stylusTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_pencil.png"), tr("Stylus (S)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_S));
+	return result;
+}
+
 void StylusItem::addLine(qreal x2, qreal y2)
 {
-	mX2 = x2;
-	mY2 = y2;
-	LineItem *line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(mX2, mY2));
-	line->setPen(mPen);
-	line->setBrush(mBrush);
+	setX2(x2);
+	setY2(y2);
+	LineItem * const line = new LineItem(QPointF(mTmpX1, mTmpY1), QPointF(this->x2(), this->y2()));
+	line->setPen(pen());
+	line->setBrush(brush());
 	line->setSerializeName(QString("stylusLine"));
 	mAbstractListLine.push_back(line);
 	recalculateProperties();
-	mTmpX1 = mX2;
-	mTmpY1 = mY2;
+	mTmpX1 = this->x2();
+	mTmpY1 = this->y2();
+	emit segmentAdded(line);
 }
 
 QPainterPath StylusItem::shape() const
@@ -88,14 +132,15 @@ void StylusItem::setBrushColor(const QString& text)
 	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
-QDomElement StylusItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
+QDomElement StylusItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
 {
 	QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
 	AbstractItem::serialize(stylusNode);
-	for (AbstractItem *abstractItem : mAbstractListLine) {
-			LineItem *line = dynamic_cast<LineItem *>(abstractItem);
+	for (AbstractItem * const abstractItem : mAbstractListLine) {
+			LineItem * const line = static_cast<LineItem *>(abstractItem);
 			line->setSerializeName("stylusLine");
-			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())));
+			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x())
+					, static_cast<int>(scenePos().y())));
 			stylusNode.appendChild(item);
 	}
 
@@ -109,18 +154,19 @@ void StylusItem::deserialize(const QDomElement &element)
 	recalculateProperties();
 
 	readPenBrush(element);
-	mPen.setCapStyle(Qt::RoundCap);
+	QPen pen(this->pen());
+	pen.setCapStyle(Qt::RoundCap);
+	setPen(pen);
 	QDomNodeList stylusAttributes = element.childNodes();
 	for (int i = 0; i < stylusAttributes.length(); ++i) {
 			QDomElement type = stylusAttributes.at(i).toElement();
 			if (type.tagName() == "stylusLine") {
 				LineItem * const line = new LineItem(QPointF(0, 0), QPointF(0, 0));
 				line->deserialize(type);
-				line->setPen(mPen);
+				line->setPen(this->pen());
 				mAbstractListLine.append(line);
+				emit segmentAdded(line);
 				recalculateProperties();
-			} else {
-//				Tracer::debug(tracer::enums::d2Model, "StylusItem::deserialize", "Incorrect stylus tag");
 			}
 	}
 }

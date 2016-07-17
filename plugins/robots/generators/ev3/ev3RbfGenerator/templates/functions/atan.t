@@ -1,0 +1,1 @@
+MATH(ATAN, @@ARGUMENT@@, @@RESULT@@)

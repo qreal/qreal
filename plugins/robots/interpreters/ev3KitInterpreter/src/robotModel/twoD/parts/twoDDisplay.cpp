@@ -1,102 +1,99 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "twoDDisplay.h"
 
-using namespace nxtKitInterpreter::robotModel::twoD::parts;
+const int textSize = 20;
+const int ev3DisplayHeight = 128;
+const int ev3DisplayWidth = 178;
+
+using namespace ev3::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
-Display::Display(DeviceInfo const &info
-		, PortInfo const &port
+Display::Display(const DeviceInfo &info
+		, const PortInfo &port
 		, twoDModel::engine::TwoDModelEngineInterface &engine)
-	: robotModel::parts::NxtDisplay(info, port)
+	: robotModel::parts::Ev3Display(info, port)
 	, mEngine(engine)
 {
 	mEngine.display()->setPainter(this);
 }
 
+void Display::redraw()
+{
+	mEngine.display()->repaintDisplay();
+}
+
 void Display::drawPixel(int x, int y)
 {
-	mPoints << QPoint(x, y);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawPixel(x, y);
 }
 
 void Display::drawLine(int x1, int y1, int x2, int y2)
 {
-	mLines << QLine(x1, y1, x2, y2);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawLine(x1, y1, x2, y2);
 }
 
 void Display::drawRect(int x, int y, int width, int height)
 {
-	mRects << QRect(x, y, width, height);
-	mEngine.display()->repaintDisplay();
+	drawRect(x, y, width, height, false);
 }
 
-void Display::drawCircle(int x, int y, int radius)
+void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
-	mCircles << QRect(x - radius, y - radius, 2 * radius, 2 * radius);
-	mEngine.display()->repaintDisplay();
+	Canvas::drawRect(x, y, width, height, filled);
 }
 
-void Display::printText(int x, int y, QString const &text)
+void Display::drawCircle(int x, int y, int radius, bool filled)
 {
-	mStringPlaces << QPoint(x, y);
-	mStrings << text;
-	mEngine.display()->repaintDisplay();
+	Canvas::drawEllipse(x, y, radius, radius, filled);
+}
+
+void Display::printText(int x, int y, const QString &text)
+{
+	Canvas::printText(x, y, text);
 }
 
 void Display::clearScreen()
 {
-	mPoints.clear();
-	mLines.clear();
-	mRects.clear();
-	mCircles.clear();
-	mStrings.clear();
-	mStringPlaces.clear();
-	mEngine.display()->repaintDisplay();
+	Canvas::reset();
 }
 
-void Display::paint(QPainter *painter)
+void Display::paint(QPainter *painter, const QRect &outputRect)
 {
-	/// @todo ZOMG.
-	qreal const pixWidth = static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth;
-	qreal const pixHeight = static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight;
+	Q_UNUSED(outputRect);
+
+	painter->save();
+	painter->scale(static_cast<qreal>(mEngine.display()->displayWidth()) / ev3DisplayWidth
+			, static_cast<qreal>(mEngine.display()->displayHeight()) / ev3DisplayHeight);
 
 	QPen pen;
 	QFont font;
-	font.setPixelSize(pixHeight * textPixelHeight);
+	font.setPixelSize(textSize);
 
-	painter->setBrush(QBrush(Qt::black, Qt::SolidPattern));
-	foreach (QPoint const &point, mPoints) {
-		painter->drawRect(point.x() * pixWidth, point.y() * pixHeight, pixWidth, pixHeight);
-	}
-
-	pen.setWidth((pixWidth + pixHeight) / 2);
 	painter->setPen(pen);
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
+	painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
-	foreach (QLine const &line, mLines) {
-		painter->drawLine(line.x1() * pixWidth, line.y1() * pixHeight, line.x2() * pixWidth, line.y2() * pixHeight);
-	}
+	Canvas::paint(painter, {0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight()});
 
-	foreach (QRect const &circle, mCircles) {
-		painter->drawEllipse(circle.x() * pixWidth, circle.y() * pixHeight, circle.width() * pixWidth, circle.height() * pixHeight);
-	}
-
-	foreach (QRect const &rect, mRects) {
-		painter->drawRect(rect.x() * pixWidth, rect.y() * pixHeight, rect.width() * pixWidth, rect.height() * pixHeight);
-	}
-
-	QListIterator<QString> strings(mStrings);
-	QListIterator<QPoint> strPlaces(mStringPlaces);
-	while (strings.hasNext() && strPlaces.hasNext()) {
-		QString const str = strings.next();
-		QPoint const place = strPlaces.next();
-		painter->drawText(place.x() * pixWidth * nxtDisplayWidth / textPixelWidth
-				, place.y() * pixHeight * nxtDisplayHeight / textPixelHeight, str);
-	}
+	painter->restore();
 }
 
-void Display::clear()
+void Display::reset()
 {
 	clearScreen();
+	redraw();
 }

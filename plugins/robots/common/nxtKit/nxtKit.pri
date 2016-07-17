@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += widgets
 
 includes(plugins/robots/common/nxtKit \
@@ -11,12 +25,25 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base qextserialport qslog \
 )
 
+win32 {
+	LIBS += -llibusb-1.0
+}
+
+unix {
+	LIBS += -lusb-1.0
+}
+
 HEADERS += \
 	$$PWD/include/nxtKit/robotModel/nxtRobotModelBase.h \
 	$$PWD/include/nxtKit/robotModel/parts/nxtDisplay.h \
 	$$PWD/include/nxtKit/robotModel/parts/nxtSpeaker.h \
 	$$PWD/include/nxtKit/robotModel/parts/nxtMotor.h \
 	$$PWD/include/nxtKit/blocks/nxtBlocksFactory.h \
+	$$PWD/include/nxtKit/communication/nxtCommandConstants.h \
+	$$PWD/include/nxtKit/communication/bluetoothRobotCommunicationThread.h \
+	$$PWD/include/nxtKit/communication/usbRobotCommunicationThread.h \
+	$$PWD/include/nxtKit/communication/i2cCommunicator.h \
+	$$PWD/include/nxtKit/communication/nxtUsbDriverInstaller.h \
 	$$PWD/src/blocks/details/speakerBlock.h \
 	$$PWD/src/blocks/details/beepBlock.h \
 	$$PWD/src/blocks/details/playToneBlock.h \
@@ -42,5 +69,11 @@ SOURCES += \
 	$$PWD/src/blocks/details/drawRectBlock.cpp \
 	$$PWD/src/blocks/details/nxtEnginesBackwardBlock.cpp \
 	$$PWD/src/blocks/details/nxtEnginesForwardBlock.cpp \
+	$$PWD/src/communication/bluetoothRobotCommunicationThread.cpp \
+	$$PWD/src/communication/usbRobotCommunicationThread.cpp \
+	$$PWD/src/communication/i2cCommunicator.cpp \
+	$$PWD/src/communication/nxtUsbDriverInstaller.cpp \
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/nxtKit_ru.ts
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/nxtKit_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/nxtKit_fr.ts \

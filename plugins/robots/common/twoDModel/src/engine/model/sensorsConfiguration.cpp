@@ -1,10 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QStringList>
 
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "constants.h"
-#include "sensorsConfiguration.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/sensorsConfiguration.h"
 
 using namespace twoDModel::model;
 using namespace kitBase::robotModel;
@@ -88,7 +102,7 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 		sensorElem.setAttribute("position"
 				, QString::number(sensor.position.x()) + ":" + QString::number(sensor.position.y()));
 
-		sensorElem.setAttribute("direction", sensor.direction);
+		sensorElem.setAttribute("direction", QString::number(sensor.direction));
 	}
 
 	robot.appendChild(sensorsElem);

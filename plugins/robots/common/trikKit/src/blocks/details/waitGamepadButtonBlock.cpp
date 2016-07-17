@@ -1,5 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "waitGamepadButtonBlock.h"
 
+#include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotModelInterface.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 
@@ -11,7 +26,7 @@ using namespace kitBase::robotModel;
 WaitGamepadButtonBlock::WaitGamepadButtonBlock(kitBase::robotModel::RobotModelInterface &robotModel)
 	: WaitBlock(robotModel)
 {
-	mActiveWaitingTimer.setInterval(200);
+	mActiveWaitingTimer->setInterval(200);
 }
 
 void WaitGamepadButtonBlock::run()
@@ -22,7 +37,7 @@ void WaitGamepadButtonBlock::run()
 	mButton = RobotModelUtils::findDevice<robotModel::parts::TrikGamepadButton>(mRobotModel, portName);
 
 	if (!mButton) {
-		mActiveWaitingTimer.stop();
+		mActiveWaitingTimer->stop();
 		error(tr("Incorrect port for gamepad button %1").arg(port));
 		return;
 	}
@@ -30,7 +45,7 @@ void WaitGamepadButtonBlock::run()
 	connect(mButton, &robotModel::parts::TrikGamepadButton::newData, this, &WaitGamepadButtonBlock::responseSlot);
 
 	mButton->read();
-	mActiveWaitingTimer.start();
+	mActiveWaitingTimer->start();
 }
 
 void WaitGamepadButtonBlock::timerTimeout()

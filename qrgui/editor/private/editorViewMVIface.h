@@ -1,17 +1,30 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QAbstractItemView>
 
 #include <qrkernel/ids.h>
 
+#include "editor/edgeElement.h"
+#include "editor/nodeElement.h"
+
 /// @todo: Make editor view mviface fully private.
 #include "qrgui/editor/editorDeclSpec.h"
 
 namespace qReal {
-
-class EditorView;
-class EditorViewScene;
-class Element;
 
 namespace models {
 class Exploser;
@@ -19,12 +32,20 @@ class GraphicalModelAssistApi;
 class LogicalModelAssistApi;
 }
 
+
+namespace gui {
+namespace editor {
+
+class EditorView;
+class EditorViewScene;
+class Element;
+
 class QRGUI_EDITOR_EXPORT EditorViewMViface : public QAbstractItemView
 {
 	Q_OBJECT
 
 public:
-	EditorViewMViface(qReal::EditorView *view, EditorViewScene *scene);
+	EditorViewMViface(EditorView *view, EditorViewScene *scene);
 	~EditorViewMViface();
 
 	QModelIndex indexAt(const QPoint &point) const;
@@ -41,10 +62,6 @@ public:
 	models::GraphicalModelAssistApi *graphicalAssistApi() const;
 	models::LogicalModelAssistApi *logicalAssistApi() const;
 
-	/// Clears prerendered images.
-	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateImagesZoomCache(qreal zoomFactor);
-
 signals:
 	/// Emitted when for some reason root index was removed from the model.
 	void rootElementRemoved(const QModelIndex &graphicsIndex);
@@ -58,7 +75,8 @@ public slots:
 			, const QModelIndex &destinationParent, int destinationRow);
 
 private slots:
-	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
+			, const QVector<int> &roles = QVector<int>()) override;
 	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
 	void rowsInserted(const QModelIndex &parent, int start, int end);
 	void logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
@@ -67,7 +85,7 @@ private:
 	typedef QPair<QPersistentModelIndex, Element*> IndexElementPair;
 
 	EditorViewScene *mScene;
-	qReal::EditorView *mView;
+	EditorView *mView;
 	models::GraphicalModelAssistApi *mGraphicalAssistApi;
 	models::LogicalModelAssistApi *mLogicalAssistApi;
 	models::Exploser *mExploser;
@@ -89,8 +107,18 @@ private:
 	Element *item(const QPersistentModelIndex &index) const;
 	void setItem(const QPersistentModelIndex &index, Element *item);
 	void removeItem(const QPersistentModelIndex &index);
-
 	void clearItems();
+
+	void handleAddingSequenceForRowsInserted(const QModelIndex &parent
+		, Element *elem, const QPersistentModelIndex &current);
+
+	void handleElemDataForRowsInserted(Element *elem, const QPersistentModelIndex &current);
+	void handleNodeElementsForRowsInserted(const QList<QPair<NodeElement *, QPersistentModelIndex>> &nodes
+			, const QModelIndex &parent);
+	void handleEdgeElementsForRowsInserted(const QList<QPair<EdgeElement *, QPersistentModelIndex>> &edges
+			, const QModelIndex &parent);
 };
 
+}
+}
 }

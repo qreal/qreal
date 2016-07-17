@@ -1,5 +1,18 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "sonarSensor.h"
-#include <utils/tracer.h>
 
 using namespace nxt::robotModel::real::parts;
 using namespace kitBase::robotModel;
@@ -44,8 +57,7 @@ void SonarSensor::doConfiguration()
 void SonarSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 {
 	if (reading.isEmpty()) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
-				, "Something is wrong, response is empty");
+		/// @todo: log trace error?
 	} else if (reading.size() == 1 && reading[0] == 0) {
 		// Sensor configured, now we can send actual request.
 		QByteArray command(2, 0);
@@ -53,11 +65,8 @@ void SonarSensor::sensorSpecificProcessResponse(const QByteArray &reading)
 		command[1] = enums::sonarRegisters::RESULT_1;
 		sendCommand(command, 1);
 	} else if (reading.size() == 1 && reading[0] != 0) {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
-				, "Reading malformed: " + QString::number(static_cast<unsigned int>(reading[0])));
+		/// @todo: log trace error?
 	} else {
-		utils::Tracer::debug(utils::Tracer::sensors, "BluetoothSonarSensorImplementation::sensorSpecificProcessResponse"
-				, "Data received: " + QString::number(0xff & reading[1]) + " cm");
 		mImplementation.setState(NxtInputDevice::idle);
 		emit newData(0xff & reading[1]);
 	}

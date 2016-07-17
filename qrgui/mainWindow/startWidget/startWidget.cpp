@@ -1,11 +1,30 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "startWidget.h"
 
+#include <QtCore/QSignalMapper>
+#include <QtGui/QPainter>
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QScrollArea>
 
 #include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/plugins/pluginManager/qrsMetamodelLoader.h>
 
 #include "mainWindow/mainWindow.h"
+#include "mainWindow/errorReporter.h"
 #include "styledButton.h"
 #include "circleWidget.h"
 #include "brandManager/brandManager.h"
@@ -65,9 +84,10 @@ QWidget *StartWidget::createHeader()
 	appName->setStyleSheet(BrandManager::styles()->startTabLabelLevel1Style());
 
 	QLabel * const appLogo = new QLabel;
-	appLogo->setPixmap(QPixmap::fromImage(BrandManager::applicationLogo()));
-	appLogo->setScaledContents(true);
 	appLogo->setFixedSize(200, 100);
+	appLogo->setScaledContents(false);
+	appLogo->setPixmap(QPixmap::fromImage(BrandManager::applicationLogo()).scaled(appLogo->size()
+			, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
 	QHBoxLayout * const headerLayout = new QHBoxLayout;
 	headerLayout->addWidget(appName);
@@ -261,7 +281,7 @@ QWidget *StartWidget::createPluginButton(const Id &editor, const Id &diagram, QW
 	QSignalMapper *pluginMapper = new QSignalMapper(result);
 	pluginMapper->setMapping(result, "qrm:/" + editor.editor() + "/" + diagram.diagram() + "/" + diagramNodeName);
 	connect(result, SIGNAL(clicked()), pluginMapper, SLOT(map()));
-	connect(pluginMapper, SIGNAL(mapped(QString)), mMainWindow, SLOT(createDiagram(QString)));
+	connect(pluginMapper, SIGNAL(mapped(QString)), mMainWindow, SLOT(createProject(QString)));
 
 	return result;
 }
@@ -270,68 +290,84 @@ void StartWidget::openInterpretedDiagram()
 {
 	hide();
 	const QString fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
-	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
 
-	if (!fileName.isEmpty()) {
-		editorManagerProxy.setProxyManager(new InterpreterEditorManager(fileName));
-		QStringList interpreterDiagramsList;
-		foreach (const Id &editor, editorManagerProxy.editors()) {
-			foreach (const Id &diagram, editorManagerProxy.diagrams(editor)) {
-				const QString diagramNodeName = editorManagerProxy.diagramNodeName(editor.editor(), diagram.diagram());
-				if (diagramNodeName.isEmpty()) {
-					continue;
-				}
-
-				interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
-						+ diagram.diagram() + "/" + diagramNodeName);
-			}
-		}
-
-		mMainWindow->initInterpretedPlugins();
-
-		foreach (const QString &interpreterIdString, interpreterDiagramsList) {
-			// TODO: ???
-			mMainWindow->models().repoControlApi().exterminate();
-			mMainWindow->models().reinit();
-			mMainWindow->loadPlugins();
-			mMainWindow->createDiagram(interpreterIdString);
-		}
-	} else {
+	if (fileName.isEmpty()) {
 		show();
-		editorManagerProxy.setProxyManager(new EditorManager());
+		return;
+	}
+
+	EditorManagerInterface &editorManager = mMainWindow->editorManager();
+	editorManager.setInterpretationMode(true);
+	editorManager.unloadAllPlugins();
+
+	QrsMetamodelLoader loader;
+	connect(&loader, &QrsMetamodelLoader::errorOccured
+			, static_cast<gui::ErrorReporter *>(mMainWindow->errorReporter()), &gui::ErrorReporter::addError);
+	const QList<Metamodel *> metamodels = loader.load(fileName);
+	for (Metamodel *metamodel : metamodels) {
+		editorManager.loadMetamodel(*metamodel);
+	}
+
+	/// @todo: Hack for rereading palette, must be done automaticly on plugins set changed!
+	mMainWindow->loadEditorPlugins();
+
+	QStringList interpreterDiagramsList;
+	for (const Id &editor : editorManager.editors()) {
+		for (const Id &diagram : editorManager.diagrams(editor)) {
+			const QString diagramNodeName = editorManager.diagramNodeName(editor.editor(), diagram.diagram());
+			if (diagramNodeName.isEmpty()) {
+				continue;
+			}
+
+			interpreterDiagramsList.append("qrm:/" + editor.editor() + "/"
+					+ diagram.diagram() + "/" + diagramNodeName);
+		}
+	}
+
+	for (const QString &interpreterIdString : interpreterDiagramsList) {
+		// TODO: ???
+		mMainWindow->models().repoControlApi().exterminate();
+		mMainWindow->models().reinit();
+		mMainWindow->loadEditorPlugins();
+		mMainWindow->createDiagram(interpreterIdString);
 	}
 }
 
 void StartWidget::createInterpretedDiagram()
 {
 	hide();
-	ProxyEditorManager &editorManagerProxy = mMainWindow->editorManagerProxy();
-	editorManagerProxy.setProxyManager(new InterpreterEditorManager(""));
 	bool ok = false;
-	QString name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
-			, QLineEdit::Normal, "", &ok);
-	while (ok && name.isEmpty()) {
+	QString name;
+	do {
 		name = QInputDialog::getText(this, tr("Enter the diagram name:"), tr("diagram name:")
 				, QLineEdit::Normal, "", &ok);
-	}
+	} while (ok && name.isEmpty());
+
+	EditorManagerInterface &editorManager = mMainWindow->editorManager();
+	editorManager.setInterpretationMode(true);
+	editorManager.unloadAllPlugins();
 
 	if (ok) {
-		QPair<Id, Id> editorAndDiagram = editorManagerProxy.createEditorAndDiagram(name);
-		mMainWindow->addEditorElementsToPalette(editorAndDiagram.first, editorAndDiagram.second);
+		editorManager.createEditorAndDiagram(name);
 		mMainWindow->models().repoControlApi().exterminate();
 		mMainWindow->models().reinit();
-		mMainWindow->loadPlugins();
-		mMainWindow->initInterpretedPlugins();
+		mMainWindow->loadEditorPlugins();
 	} else {
 		show();
-		editorManagerProxy.setProxyManager(new EditorManager());
 	}
 }
 
 void StartWidget::setVisibleForInterpreterButton(const bool visible)
 {
-	mOpenInterpreterButton->setVisible(visible);
-	mCreateInterpreterButton->setVisible(visible);
+	if (!visible) {
+		/// @todo: For some reason setVisible on interpreter buttons still leaves them visible.
+		/// This surely can be fixed and then setVisible(visible) call must be restored,
+		/// but for now working it arround...
+		delete mOpenInterpreterButton;
+		delete mCreateInterpreterButton;
+		mOpenInterpreterButton = nullptr;
+		mCreateInterpreterButton = nullptr;
+	}
 
 	const int editorsCount = mMainWindow->editorManager().editors().count();
 	QList<QPushButton *> toCentralize;

@@ -1,7 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "thread.h"
 
 #include <QtWidgets/QApplication>
+#include <QtCore/QTimer>
+
 #include <qrkernel/settingsManager.h>
+
+#include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
 
 using namespace qReal;
 using namespace interpretation;
@@ -12,7 +30,8 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, BlocksTableInterface &blocksTable
-		, const Id &initialNode)
+		, const Id &initialNode
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -21,6 +40,7 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
@@ -29,7 +49,8 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 		, gui::MainWindowInterpretersInterface &interpretersInterface
 		, const Id &initialNodeType
 		, const Id &diagramToInterpret
-		, BlocksTableInterface &blocksTable)
+		, BlocksTableInterface &blocksTable
+		, const QString &threadId)
 	: mGraphicalModelApi(graphicalModelApi)
 	, mInterpretersInterface(interpretersInterface)
 	, mInitialNodeType(initialNodeType)
@@ -39,6 +60,7 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 	, mBlocksSincePreviousEventsProcessing(0)
 	, mProcessEventsTimer(new QTimer(this))
 	, mProcessEventsMapper(new QSignalMapper(this))
+	, mId(threadId)
 {
 	initTimer();
 }
@@ -55,7 +77,7 @@ Thread::~Thread()
 void Thread::initTimer()
 {
 	mProcessEventsTimer->setSingleShot(true);
-	mProcessEventsTimer->setInterval(true);
+	mProcessEventsTimer->setInterval(0);
 	connect(mProcessEventsTimer, SIGNAL(timeout())
 			, mProcessEventsMapper, SLOT(map()));
 
@@ -70,6 +92,11 @@ void Thread::interpret()
 	} else {
 		stepInto(mInitialDiagram);
 	}
+}
+
+void Thread::stop(qReal::interpretation::StopReason reason)
+{
+	emit stopped(reason);
 }
 
 void Thread::nextBlock(const Id &blockId)
@@ -100,18 +127,23 @@ void Thread::stepInto(const Id &diagram)
 void Thread::finishedSteppingInto()
 {
 	if (mStack.isEmpty()) {
-		emit stopped();
+		emit stopped(qReal::interpretation::StopReason::finised);
 		return;
 	}
 
 	mCurrentBlock = mStack.top();
+
+	// If block already connected then nothing will happen because of Qt::UniquieConnection modifiers.
+	// But if it is disconnected (for example, we did it in turnOff() on recursive lifting) we should connect it back.
+	connectBlock(mCurrentBlock);
+
 	// Execution must proceed here
 	mCurrentBlock->finishedSteppingInto();
 }
 
 void Thread::failure()
 {
-	emit stopped();
+	emit stopped(qReal::interpretation::StopReason::error);
 }
 
 void Thread::error(const QString &message, const Id &source)
@@ -137,17 +169,19 @@ void Thread::turnOn(BlockInterface * const block)
 {
 	mCurrentBlock = block;
 	if (!mCurrentBlock) {
-		/// @todo: report error if we met unknown block type?
 		finishedSteppingInto();
 		return;
 	}
 
-	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock);
-	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread);
-	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure);
-	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto);
+	if (!mGraphicalModelApi->graphicalRepoApi().exist(block->id())) {
+		// If we get non-null block instance, but non-existing id then the block
+		// was removed from diagram during the interpretation.
+		error(tr("Block has disappeared!"));
+		return;
+	}
 
+	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
+	connectBlock(mCurrentBlock);
 	mStack.push(mCurrentBlock);
 
 	++mBlocksSincePreviousEventsProcessing;
@@ -167,7 +201,7 @@ void Thread::turnOn(BlockInterface * const block)
 		mProcessEventsMapper->setMapping(mProcessEventsTimer, mCurrentBlock);
 		mProcessEventsTimer->start();
 	} else {
-		mCurrentBlock->interpret();
+		mCurrentBlock->interpret(this);
 	}
 }
 
@@ -175,7 +209,7 @@ void Thread::interpretAfterEventsProcessing(QObject *blockObject)
 {
 	BlockInterface * const block = dynamic_cast<BlockInterface *>(blockObject);
 	if (block) {
-		block->interpret();
+		block->interpret(this);
 	}
 }
 
@@ -193,4 +227,42 @@ void Thread::turnOff(BlockInterface * const block)
 
 	mStack.pop();
 	mInterpretersInterface.dehighlight(block->id());
+}
+
+void Thread::connectBlock(BlockInterface * const block)
+{
+	connect(block, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
+	connect(block, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
+	connect(block, &BlockInterface::killThread, this, &Thread::killThread, Qt::UniqueConnection);
+	connect(block, &BlockInterface::sendMessage, this, &Thread::sendMessage, Qt::UniqueConnection);
+	connect(block, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
+	connect(block, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
+}
+
+void Thread::newMessage(const QString &message)
+{
+	if (mMessages.isEmpty()) {
+		blocks::ReceiveThreadMessageBlock *block = dynamic_cast<blocks::ReceiveThreadMessageBlock *>(mCurrentBlock);
+		if (block) {
+			block->receiveMessage(message);
+			return;
+		}
+	}
+
+	mMessages.enqueue(message);
+}
+
+bool Thread::getMessage(QString &message)
+{
+	if (!mMessages.isEmpty()) {
+		message = mMessages.dequeue();
+		return true;
+	}
+
+	return false;
+}
+
+QString Thread::id() const
+{
+	return mId;
 }

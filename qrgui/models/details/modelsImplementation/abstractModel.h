@@ -1,3 +1,17 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
@@ -6,6 +20,7 @@
 
 #include <qrrepo/repoApi.h>
 
+#include "qrgui/models/elementInfo.h"
 #include "qrgui/models/details/modelsAssistApi.h"
 #include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 #include "qrgui/models/details/modelsImplementation/abstractModelItem.h"
@@ -36,8 +51,19 @@ public:
 	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const = 0;
 	bool dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int column, const QModelIndex &parent);
 
-	virtual void addElementToModel(const Id &parent, const Id &id, const Id &logicalId
-			, const QString &name, const QPointF &position) = 0;
+	/// Creates element described by the given parameters set.
+	/// @param elementInfo Element properties container describing element that must be created.
+	/// @warning logicalId entry may be replaced with actual one if empty or incorrect id is provided.
+	virtual void addElementToModel(ElementInfo &elementInfo) = 0;
+
+	/// Creates elements set described by the given parameters list. Elements will be created in one bunch,
+	/// causing rowsInserted with multiple rows in performance considerations. This is much more efficient way
+	/// to create group of elements than calling addElementToModel() multiple times.
+	/// @param elementsInfo Element properties containers list  describing element that must be created.
+	/// @warning Creation will be performed in order items are placed in the list. Sorting items to satisfy
+	/// dependencies (for example parent-child relation) must be performed by the caller.
+	virtual void addElementsToModel(QList<ElementInfo> &elementsInfo) = 0;
+
 	QPersistentModelIndex rootIndex() const;
 	const EditorManagerInterface &editorManagerInterface() const;
 

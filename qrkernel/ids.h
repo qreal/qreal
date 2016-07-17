@@ -1,10 +1,20 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
-#include <QtCore/QString>
-#include <QtCore/QStringList>
 #include <QtCore/QUrl>
-#include <QtCore/QHash>
-#include <QtCore/QMetaType>
 #include <QtCore/QDebug>
 
 #include "kernelDeclSpec.h"
@@ -92,15 +102,19 @@ private:
 	QString mDiagram;
 	QString mElement;
 	QString mId;
+
+	friend bool operator==(const Id &i1, const Id &i2);
+	friend bool operator<(const Id &i1, const Id &i2);
+	friend uint qHash(const Id &key);
 };
 
 /// Id equality operator. Ids are equal when all their parts are equal.
 inline bool operator==(const Id &i1, const Id &i2)
 {
-	return i1.editor() == i2.editor()
-			&& i1.diagram() == i2.diagram()
-			&& i1.element() == i2.element()
-			&& i1.id() == i2.id();
+	return i1.mEditor == i2.mEditor
+			&& i1.mDiagram == i2.mDiagram
+			&& i1.mElement == i2.mElement
+			&& i1.mId == i2.mId;
 }
 
 /// Id inequality operator.
@@ -112,14 +126,17 @@ inline bool operator!=(const Id &i1, const Id &i2)
 /// Comparison operator for using Id in maps
 inline bool operator<(const Id &i1, const Id &i2)
 {
-	return i1.toString() < i2.toString();
+	// Faster implementation then just comapring toString().
+	return i1.mEditor != i2.mEditor ? i1.mEditor < i2.mEditor
+			: i1.mDiagram != i2.mDiagram ? i1.mDiagram < i2.mDiagram
+			: i1.mElement != i2.mElement ? i1.mElement < i2.mElement
+			: i1.mId < i2.mId;
 }
 
 /// Hash function for Id for using it in QHash.
 inline uint qHash(const Id &key)
 {
-	return qHash(key.editor()) ^ qHash(key.diagram()) ^ qHash(key.element())
-			^ qHash(key.id());
+	return qHash(key.mEditor) ^ qHash(key.mDiagram) ^ qHash(key.mElement) ^ qHash(key.mId);
 }
 
 /// Operator for printing Id in QDebug.

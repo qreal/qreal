@@ -9,61 +9,80 @@
         <translation>Настроки EV3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="32"/>
         <source>Type of Communication</source>
-        <translation>Тип связи</translation>
+        <translation type="vanished">Тип связи</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="41"/>
         <source>Bluetooth</source>
-        <translation>Bluetooth</translation>
+        <translation type="vanished">Bluetooth</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="54"/>
         <source>USB</source>
-        <translation>USB</translation>
+        <translation type="vanished">USB</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="67"/>
         <source>Wi-fi</source>
-        <translation>Wi-Fi</translation>
+        <translation type="vanished">Wi-Fi</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="80"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="32"/>
         <source>Bluetooth Settings</source>
         <translation>Настройки Bluetooth</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="86"/>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="103"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="55"/>
         <source>COM Port:</source>
         <translation>COM-Порт</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="110"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="62"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
         <translation>COM-порты не найдены. Если установлено Bluetooth-соединение с активным COM-портом, пожалуйста, укажите его имя. Пример: COM3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="123"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="75"/>
         <source>Specify COM port manually</source>
         <translation>Указать COM-порт вручную</translation>
     </message>
 </context>
 <context>
+    <name>Ev3DisplayWidget</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3DisplayWidget.ui" line="435"/>
+        <source>tr(Ev3Display)</source>
+        <translation>Дисплей EV3</translation>
+    </message>
+</context>
+<context>
     <name>ev3::Ev3KitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="29"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="100"/>
         <source>Lego EV3</source>
         <translation>Лего EV3</translation>
     </message>
 </context>
 <context>
+    <name>ev3::robotModel::real::BluetoothRealRobotModel</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/bluetoothRealRobotModel.cpp" line="33"/>
+        <source>Interpretation (Bluetooth)</source>
+        <translation>Интерпретация (Bluetooth)</translation>
+    </message>
+</context>
+<context>
     <name>ev3::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/realRobotModel.cpp" line="36"/>
         <source>Interpretation (USB, Bluetooth)</source>
-        <translation>Интерпретация (USB, Bluetooth)</translation>
+        <translation type="vanished">Интерпретация (USB, Bluetooth)</translation>
+    </message>
+</context>
+<context>
+    <name>ev3::robotModel::real::UsbRealRobotModel</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/usbRealRobotModel.cpp" line="33"/>
+        <source>Interpretation (USB)</source>
+        <translation>Интерпретация (USB)</translation>
     </message>
 </context>
 <context>

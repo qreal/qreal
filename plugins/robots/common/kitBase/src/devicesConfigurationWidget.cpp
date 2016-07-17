@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "kitBase/devicesConfigurationWidget.h"
 
 #include <QtWidgets/QBoxLayout>
@@ -27,6 +41,13 @@ DevicesConfigurationWidget::DevicesConfigurationWidget(QWidget *parent, bool aut
 	setPalette(palette);
 }
 
+DevicesConfigurationWidget::~DevicesConfigurationWidget()
+{
+	qDeleteAll(mRobotModelConfigurers);
+	mRobotModelConfigurers.clear();
+	mConfigurers.clear();
+}
+
 void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> const &models)
 {
 	for (RobotModelInterface * const model : models) {
@@ -39,6 +60,10 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
+	if (mCurrentModelType == robotModel.name() && mCurrentModelId == robotModel.robotId()) {
+		return;
+	}
+
 	mCurrentModelType = robotModel.name();
 	mCurrentModelId = robotModel.robotId();
 	takeWidget();
@@ -68,6 +93,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	palette.setColor(QPalette::Background, Qt::transparent);
 	result->setPalette(palette);
 	QVBoxLayout * const layout = new QVBoxLayout(result);
+	layout->setContentsMargins(0, 0, 0, 0);
 	QList<PortInfo> const configurablePorts = robotModel.configurablePorts();
 	for (const PortInfo &port : configurablePorts) {
 		layout->addLayout(initPort(robotModel.name(), port, robotModel.allowedDevices(port)));
@@ -77,11 +103,16 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 }
 
 QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
-		, const PortInfo &port, QList<DeviceInfo> const &sensors)
+		, const PortInfo &port, const QList<DeviceInfo> &sensors)
 {
 	const QString labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
-	QLabel * const portLabel = new QLabel(labelText.arg(port.name()), this);
+	QLabel * const portLabel = new QLabel(labelText.arg(port.userFriendlyName()), this);
 	QComboBox * const comboBox = new QComboBox(this);
+	QPalette palette = comboBox->palette();
+	palette.setColor(QPalette::Base, Qt::white);
+	comboBox->setPalette(Qt::white);
+	comboBox->setObjectName("Port " + port.name() + " DeviceConfig");
+	comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	comboBox->setProperty("robotModel", robotModel);
 	comboBox->setProperty("port", QVariant::fromValue(port));
 	mConfigurers << comboBox;
@@ -103,7 +134,6 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 	return layout;
 }
 
-
 void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotModel
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
@@ -117,7 +147,6 @@ void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &rob
 		refresh();
 	}
 }
-
 
 void DevicesConfigurationWidget::refresh()
 {

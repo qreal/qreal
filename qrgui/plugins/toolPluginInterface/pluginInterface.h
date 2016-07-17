@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -54,6 +68,12 @@ public:
 		return {};
 	}
 
+	/// Shall be overriden to return facade for access to plugin`s user interface from scripting language.
+	virtual QObject *guiScriptFacade()
+	{
+		return nullptr;
+	}
+
 	/// Returns a list of project converters provided by this plugin.
 	/// Convereters are applied to save containing corresponding diagrams
 	/// sequentially moving from save`s version to system one.
@@ -64,7 +84,7 @@ public:
 		return {};
 	}
 
-	/// Returns a list of pathes to ini files that contain default settings in key-value format
+	/// Returns a list of paths to ini files that contain default settings in key-value format
 	/// for this plugin. If there are collisions between keys in different plugins then selected
 	/// value is undefined. However engine`s default settings can be 'overloaded' by plugin ones.
 	/// Default implementation returns empty list.
@@ -76,4 +96,4 @@ public:
 
 }
 
-Q_DECLARE_INTERFACE(qReal::PluginInterface, "ru.tepkom.QReal.PluginInterface/0.2")
+Q_DECLARE_INTERFACE(qReal::PluginInterface, "ru.spbsu.QReal.PluginInterface/0.3")

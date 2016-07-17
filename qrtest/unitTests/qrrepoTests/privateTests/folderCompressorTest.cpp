@@ -1,16 +1,31 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
 #include "folderCompressorTest.h"
 
 using namespace qrTest;
+using namespace qrRepo::details;
 
 void FolderCompressorTest::removeDirectory(QString const &dirName)
 {
-	QDir const dir(dirName);
+	const QDir dir(dirName);
 
-	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden
-			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
+	for (QFileInfo info : dir.entryInfoList(
+			 QDir::Hidden | QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {
 			removeDirectory(info.absoluteFilePath());
@@ -61,9 +76,9 @@ TEST_F(FolderCompressorTest, decompressTest) {
 	file2.open(QIODevice::ReadWrite);
 	file3.open(QIODevice::ReadWrite);
 
-	QString line1(file1.readLine());
-	QString line2(file2.readLine());
-	QString line3(file3.readLine());
+	const QString line1(file1.readLine());
+	const QString line2(file2.readLine());
+	const QString line3(file3.readLine());
 
 	EXPECT_EQ(line1, "text1");
 	EXPECT_EQ(line2, "text2");

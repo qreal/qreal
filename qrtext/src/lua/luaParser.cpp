@@ -1,11 +1,26 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/src/lua/luaParser.h"
 
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserCombinators.h"
 #include "qrtext/core/parser/operators/expressionParser.h"
 
-#include "qrtext/lua/ast/expression.h"
+#include "qrtext/lua/luaStringEscapeUtils.h"
 
+#include "qrtext/lua/ast/expression.h"
 #include "qrtext/lua/ast/addition.h"
 #include "qrtext/lua/ast/assignment.h"
 #include "qrtext/lua/ast/bitwiseAnd.h"
@@ -200,8 +215,11 @@ QSharedPointer<ParserInterface<LuaTokenTypes>> LuaParser::grammar()
 					// Cut off quotes.
 					string.remove(0, 1);
 					string.chop(1);
-					return new ast::String(string);
 
+					// Replace escape characters.
+					auto transformedString = LuaStringEscapeUtils::unescape(string);
+
+					return new ast::String(transformedString);
 				}
 			| LuaTokenTypes::tripleDot >> reportUnsupported
 			| prefixexp

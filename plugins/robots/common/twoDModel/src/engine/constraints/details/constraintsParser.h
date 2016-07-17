@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "defines.h"
@@ -54,6 +68,7 @@ private:
 	Event *parseEventTag(const QDomElement &element);
 	Event *parseConstraintTag(const QDomElement &element);
 	Event *parseTimeLimitTag(const QDomElement &element);
+	Event *parseInitializationTag(const QDomElement &element);
 
 	Condition parseConditionsAlternative(const QDomElement &element, Event &event);
 	Condition parseConditionsTag(const QDomElement &element, Event &event);
@@ -65,6 +80,7 @@ private:
 	Condition parseInsideTag(const QDomElement &element);
 	Condition parseEventSettedDroppedTag(const QDomElement &element);
 	Condition parseTimerTag(const QDomElement &element, Event &event);
+	Condition parseUsingTag(const QDomElement &element, Event &event);
 
 	Trigger parseTriggersAlternative(const QDomElement &element);
 	Trigger parseTriggersTag(const QDomElement &element);
@@ -73,23 +89,25 @@ private:
 
 	Trigger parseFailTag(const QDomElement &element);
 	Trigger parseSuccessTag(const QDomElement &element);
-	Trigger parseSetVariableTag(const QDomElement &element);
-	Trigger parseAddToVariableTag(const QDomElement &element);
+	Trigger parseSetterTag(const QDomElement &element);
 	Trigger parseEventSetDropTag(const QDomElement &element);
+	Trigger parseSetObjectStateTag(const QDomElement &element);
 
 	Value parseValue(const QDomElement &element);
+	Value parseBoolTag(const QDomElement &element);
 	Value parseIntTag(const QDomElement &element);
 	Value parseDoubleTag(const QDomElement &element);
 	Value parseStringTag(const QDomElement &element);
 	Value parseVariableValueTag(const QDomElement &element);
 	Value parseTypeOfTag(const QDomElement &element);
 	Value parseObjectStateTag(const QDomElement &element);
+	Value parseUnaryValueTag(const QDomElement &element);
+	Value parseBinaryValueTag(const QDomElement &element);
 
 	QString id(const QDomElement &element) const;
-	int intAttribute(const QDomElement &element, QString const &attributeName, int defaultValue = -1);
-	qreal doubleAttribute(const QDomElement &element, QString const &attributeName, qreal defaultValue = 0.0);
-	bool boolAttribute(const QDomElement &element, QString const &attributeName, bool defaultValue = false);
-	QVariant bestVariant(const QString &value) const;
+	int intAttribute(const QDomElement &element, const QString &attributeName, int defaultValue = -1);
+	qreal doubleAttribute(const QDomElement &element, const QString &attributeName, qreal defaultValue = 0.0);
+	bool boolAttribute(const QDomElement &element, const QString &attributeName, bool defaultValue = false);
 
 	bool addToEvents(Event * const event);
 	bool assertChildrenExactly(const QDomElement &element, int count);

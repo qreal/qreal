@@ -1,11 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
-#include "constants.h"
-#include "worldModel.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/model/worldModel.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/curveItem.h"
+#include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/regions/ellipseRegion.h"
@@ -119,6 +135,11 @@ QList<items::ColorFieldItem *> const &WorldModel::colorFields() const
 	return mColorFields;
 }
 
+const QList<QGraphicsLineItem *> &WorldModel::trace() const
+{
+	return mRobotTrace;
+}
+
 int WorldModel::wallsCount() const
 {
 	return mWalls.count();
@@ -174,7 +195,7 @@ void WorldModel::appendRobotTrace(const QPen &pen, const QPointF &begin, const Q
 	}
 
 	mRobotTrace << traceItem;
-	emit otherItemAdded(traceItem);
+	emit traceItemAdded(traceItem);
 }
 
 void WorldModel::clearRobotTrace()
@@ -200,34 +221,22 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
-QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement WorldModel::serialize(QDomDocument &document) const
 {
 	QDomElement result = document.createElement("world");
-
-	QDomElement trace = document.createElement("trace");
-	result.appendChild(trace);
-	for (QGraphicsLineItem *line : mRobotTrace) {
-		QDomElement traceSegment = document.createElement("segment");
-		traceSegment.setAttribute("x1", line->line().x1());
-		traceSegment.setAttribute("x2", line->line().x2());
-		traceSegment.setAttribute("y1", line->line().y1());
-		traceSegment.setAttribute("y2", line->line().y2());
-		traceSegment.setAttribute("color", line->pen().color().name());
-		traceSegment.setAttribute("width", line->pen().width());
-		trace.appendChild(traceSegment);
-	}
 
 	QDomElement walls = document.createElement("walls");
 	result.appendChild(walls);
 	for (items::WallItem * const wall : mWalls) {
-		QDomElement wallNode = wall->serialize(document, topLeftPicture.toPoint());
+		QDomElement wallNode = document.createElement("wall");
+		wall->serialize(wallNode);
 		walls.appendChild(wallNode);
 	}
 
 	QDomElement colorFields = document.createElement("colorFields");
 	result.appendChild(colorFields);
-	for (items::ColorFieldItem *colorField : mColorFields) {
-		QDomElement colorFiedlNode = colorField->serialize(document, topLeftPicture.toPoint());
+	for (items::ColorFieldItem * const colorField : mColorFields) {
+		QDomElement colorFiedlNode = colorField->serialize(document, QPointF());
 		colorFields.appendChild(colorFiedlNode);
 	}
 
@@ -238,6 +247,8 @@ QDomElement WorldModel::serialize(QDomDocument &document, const QPointF &topLeft
 		region->serialize(regionElement);
 		regions.appendChild(regionElement);
 	}
+
+	// Robot trace saving is disabled
 
 	return result;
 }
@@ -251,10 +262,10 @@ void WorldModel::deserialize(const QDomElement &element)
 
 	clear();
 
-	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull();
-			traceNode = traceNode.nextSiblingElement("trace")) {
-		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull();
-				segmentNode = segmentNode.nextSiblingElement("segment")) {
+	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull()
+			; traceNode = traceNode.nextSiblingElement("trace")) {
+		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull()
+				; segmentNode = segmentNode.nextSiblingElement("segment")) {
 			const QPointF from(segmentNode.attribute("x1").toDouble(), segmentNode.attribute("y1").toDouble());
 			const QPointF to(segmentNode.attribute("x2").toDouble(), segmentNode.attribute("y2").toDouble());
 			QPen pen;
@@ -264,34 +275,49 @@ void WorldModel::deserialize(const QDomElement &element)
 		}
 	}
 
-	for (QDomElement wallsNode = element.firstChildElement("walls"); !wallsNode.isNull();
-			wallsNode = wallsNode.nextSiblingElement("walls")) {
-		for (QDomElement wallNode = wallsNode.firstChildElement("wall"); !wallNode.isNull();
-				wallNode = wallNode.nextSiblingElement("wall")) {
+	for (QDomElement wallsNode = element.firstChildElement("walls"); !wallsNode.isNull()
+			; wallsNode = wallsNode.nextSiblingElement("walls")) {
+		for (QDomElement wallNode = wallsNode.firstChildElement("wall"); !wallNode.isNull()
+				; wallNode = wallNode.nextSiblingElement("wall")) {
 			items::WallItem *wall = new items::WallItem(QPointF(0, 0), QPointF(0, 0));
 			wall->deserialize(wallNode);
 			addWall(wall);
 		}
 	}
 
-	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull();
-			colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
-		for (QDomElement ellipseNode = colorFieldsNode.firstChildElement("ellipse"); !ellipseNode.isNull();
-				ellipseNode = ellipseNode.nextSiblingElement("ellipse")) {
+	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull()
+			; colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
+
+		for (QDomElement rectangleNode = colorFieldsNode.firstChildElement("rectangle"); !rectangleNode.isNull()
+				; rectangleNode = rectangleNode.nextSiblingElement("rectangle")) {
+			items::RectangleItem *rectangleItem = new items::RectangleItem(QPointF(0, 0), QPointF(0, 0));
+			rectangleItem->deserialize(rectangleNode);
+			addColorField(rectangleItem);
+		}
+
+		for (QDomElement ellipseNode = colorFieldsNode.firstChildElement("ellipse"); !ellipseNode.isNull()
+				; ellipseNode = ellipseNode.nextSiblingElement("ellipse")) {
 			items::EllipseItem *ellipseItem = new items::EllipseItem(QPointF(0, 0), QPointF(0, 0));
 			ellipseItem->deserialize(ellipseNode);
 			addColorField(ellipseItem);
 		}
 
-		for (QDomElement lineNode = colorFieldsNode.firstChildElement("line"); !lineNode.isNull();
-				lineNode = lineNode.nextSiblingElement("line")) {
+		for (QDomElement lineNode = colorFieldsNode.firstChildElement("line"); !lineNode.isNull()
+				; lineNode = lineNode.nextSiblingElement("line")) {
 			items::LineItem* lineItem = new items::LineItem(QPointF(0, 0), QPointF(0, 0));
 			lineItem->deserialize(lineNode);
 			addColorField(lineItem);
 		}
 
-		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull();
-				stylusNode = stylusNode.nextSiblingElement("stylus")) {
+		for (QDomElement curveNode = colorFieldsNode.firstChildElement("cubicBezier"); !curveNode.isNull()
+				; curveNode = curveNode.nextSiblingElement("cubicBezier")) {
+			items::CurveItem *curveItem = new items::CurveItem(QPointF(0, 0), QPointF(0, 0));
+			curveItem->deserialize(curveNode);
+			addColorField(curveItem);
+		}
+
+		for (QDomElement stylusNode = colorFieldsNode.firstChildElement("stylus"); !stylusNode.isNull()
+				; stylusNode = stylusNode.nextSiblingElement("stylus")) {
 			items::StylusItem *stylusItem = new items::StylusItem(0, 0);
 			stylusItem->deserialize(stylusNode);
 			addColorField(stylusItem);
@@ -310,21 +336,22 @@ void WorldModel::deserialize(const QDomElement &element)
 			item = new items::RectangularRegion;
 		} else if (type == "bound") {
 			const QString id = regionNode.attribute("boundItem");
-			QGraphicsItem const *boundItem = findId(id);
+			const QGraphicsObject *boundItem = findId(id);
 			if (boundItem) {
 				item = new items::BoundRegion(*boundItem, id);
+				connect(item, &QObject::destroyed, this, [this, item]() { mRegions.removeAll(item); });
 			} /// @todo: else report error
 		}
 
 		if (item) {
 			item->deserialize(regionNode);
 			mRegions.append(item);
-			emit otherItemAdded(item);
+			emit regionItemAdded(item);
 		}
 	}
 }
 
-QGraphicsItem *WorldModel::findId(const QString &id)
+QGraphicsObject *WorldModel::findId(const QString &id) const
 {
 	if (id.isEmpty()) {
 		return nullptr;

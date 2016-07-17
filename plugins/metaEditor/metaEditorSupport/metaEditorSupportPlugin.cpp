@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "metaEditorSupportPlugin.h"
 
 #include <QtCore/QProcess>
@@ -17,10 +31,10 @@ using namespace qReal;
 using namespace metaEditor;
 
 MetaEditorSupportPlugin::MetaEditorSupportPlugin()
-		: mGenerateEditorForQrxcAction(NULL)
-		, mGenerateEditorWithQrmcAction(NULL)
-		, mParseEditorXmlAction(NULL)
-		, mRepoControlApi(NULL)
+		: mGenerateEditorForQrxcAction(nullptr)
+		, mGenerateEditorWithQrmcAction(nullptr)
+		, mParseEditorXmlAction(nullptr)
+		, mRepoControlApi(nullptr)
 		, mCompilerSettingsPage(new PreferencesCompilerPage())
 {
 }
@@ -73,15 +87,19 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 		QString const nameOfTheDirectory = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(nameOfTheDirectory);
-		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory, pathToQRealRoot);
+		QPair<QString, QString> const metamodelNames = editorGenerator.generateEditor(key, nameOfTheDirectory
+				, pathToQRealRoot);
 
 		if (!mMainWindowInterface->errorReporter()->wereErrors()) {
 			if (QMessageBox::question(mMainWindowInterface->windowWidget()
-					, tr("loading.."), QString(tr("Do you want to load generated editor %1?")).arg(metamodelNames.first),
-					QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
+					, tr("loading..")
+					, QString(tr("Do you want to load generated editor %1?"))
+							.arg(metamodelNames.first)
+					, QMessageBox::Yes, QMessageBox::No) == QMessageBox::No)
 			{
 				return;
 			}
+
 			loadNewEditor(nameOfTheDirectory, metamodelNames
 					, SettingsManager::value("pathToQmake").toString()
 					, SettingsManager::value("pathToMake").toString()
@@ -90,6 +108,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 					, mLogicalRepoApi->stringProperty(key, "buildConfiguration"));
 		}
 	}
+
 	if (metamodelList.isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(tr("There is nothing to generate"));
 	}
@@ -97,7 +116,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 
 void MetaEditorSupportPlugin::generateEditorWithQrmc()
 {
-	qrmc::MetaCompiler metaCompiler(qApp->applicationDirPath() + "/../qrmc", mLogicalRepoApi);
+	qrmc::MetaCompiler metaCompiler(*mLogicalRepoApi, ".");
 
 	IdList const metamodels = mLogicalRepoApi->children(Id::rootId());
 
@@ -133,6 +152,14 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 			progress->setValue(5);
 
+			const QString normalizedName = nameOfMetamodel.at(0).toUpper() + nameOfMetamodel.mid(1);
+			const bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizedName);
+			if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
+				progress->close();
+				delete progress;
+				return;
+			}
+
 			if (!metaCompiler.compile(nameOfMetamodel)) { // generating source code for all metamodels
 				QMessageBox::warning(mMainWindowInterface->windowWidget()
 						, tr("error")
@@ -141,24 +168,36 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 			}
 			progress->setValue(20);
 
+			QStringList qmakeArgs;
+			qmakeArgs.append("CONFIG+=" + mLogicalRepoApi->stringProperty(key, "buildConfiguration"));
+			qmakeArgs.append(nameOfMetamodel + ".pro");
+
 			QProcess builder;
-			builder.setWorkingDirectory("../qrmc/plugins");
-			builder.start(SettingsManager::value("pathToQmake").toString());
+			builder.setWorkingDirectory(nameOfTheDirectory);
+			const QStringList environment = QProcess::systemEnvironment();
+			builder.setEnvironment(environment);
+			builder.start(SettingsManager::value("pathToQmake").toString(), qmakeArgs);
+
 			qDebug()  << "qmake";
 			if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 				progress->setValue(40);
-
 				builder.start(SettingsManager::value("pathToMake").toString());
 
 				bool finished = builder.waitForFinished(100000);
 				qDebug()  << "make";
-				if (finished && (builder.exitCode() == 0)) {
-					qDebug()  << "make ok";
 
+				if (finished && (builder.exitCode() == 0)) {
+					if (stateOfLoad) {
+						QMessageBox::warning(mMainWindowInterface->windowWidget()
+								, tr("Attention!"), tr("Please restart QReal."));
+						progress->close();
+						delete progress;
+						return;
+					}
+					qDebug()  << "make ok";
 					progress->setValue(progress->value() + forEditor / 2);
 
-					QString normalizedName = nameOfPlugin.at(0).toUpper() + nameOfPlugin.mid(1);
-					if (!nameOfPlugin.isEmpty()) {
+					if (!nameOfMetamodel.isEmpty()) {
 						if (!mMainWindowInterface->unloadPlugin(normalizedName)) {
 							QMessageBox::warning(mMainWindowInterface->windowWidget()
 									, tr("error")
@@ -169,8 +208,14 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 						}
 					}
 
+					QString suffix = "";
+					if (mLogicalRepoApi->stringProperty(key, "buildConfiguration") == "debug") {
+						suffix = "-d";
+					}
+
 					QString const generatedPluginFileName = SettingsManager::value("prefix").toString()
-							+ nameOfPlugin
+							+ nameOfMetamodel
+							+ suffix
 							+ "."
 							+ SettingsManager::value("pluginExtension").toString()
 							;
@@ -194,7 +239,9 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 void MetaEditorSupportPlugin::parseEditorXml()
 {
 	if (!mMainWindowInterface->pluginLoaded("MetaEditor")) {
-		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error"), tr("required plugin (MetaEditor) is not loaded"));
+		QMessageBox::warning(mMainWindowInterface->windowWidget(), tr("error")
+				, tr("required plugin (MetaEditor) is not loaded"));
+
 		return;
 	}
 	QDir dir(".");
@@ -258,6 +305,7 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	progress->setRange(0, 100);
 	progress->setValue(5);
 
+	const bool stateOfLoad = mMainWindowInterface->pluginLoaded(normalizeDirName);
 	if (!mMainWindowInterface->unloadPlugin(normalizeDirName)) {
 		progress->close();
 		delete progress;
@@ -265,19 +313,39 @@ void MetaEditorSupportPlugin::loadNewEditor(QString const &directoryName
 	}
 
 	progress->setValue(20);
+	QStringList qmakeArgs;
+	qmakeArgs.append("CONFIG+=" + buildConfiguration);
+	qmakeArgs.append(metamodelName + ".pro");
 
 	QProcess builder;
 	builder.setWorkingDirectory(directoryName);
-	builder.start(commandFirst, {"CONFIG+=" + buildConfiguration});
+	const QStringList environment = QProcess::systemEnvironment();
+	builder.setEnvironment(environment);
+	builder.start(commandFirst, qmakeArgs);
 
 	if ((builder.waitForFinished()) && (builder.exitCode() == 0)) {
 		progress->setValue(60);
 		builder.start(commandSecond);
-		if (builder.waitForFinished() && (builder.exitCode() == 0)) {
+
+		if (builder.waitForFinished(60000) && (builder.exitCode() == 0)) {
 			progress->setValue(80);
 
-			if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
-				progress->setValue(100);
+			if (stateOfLoad) {
+				QMessageBox::warning(mMainWindowInterface->windowWidget()
+						, tr("Attention!"), tr("Please restart QReal."));
+				progress->close();
+				delete progress;
+				return;
+			} else if (buildConfiguration == "debug") {
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName
+						+ "-d"+ "." + extension, normalizeDirName))
+				{
+					progress->setValue(100);
+				}
+			} else {
+				if (mMainWindowInterface->loadPlugin(prefix + metamodelName + "." + extension, normalizeDirName)) {
+					progress->setValue(100);
+				}
 			}
 		}
 	}

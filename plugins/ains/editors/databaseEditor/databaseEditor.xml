@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metamodel xmlns="http://schema.real.com/schema/">
-	<include>../../../commonMetamodels/kernelMetamodel.xml</include>
+    <include>../../../commonMetamodels/kernelMetamodel.xml</include>
     <include>../../../commonMetamodels/basicBehaviorsMetamodel.xml</include>
     <include>../../../commonMetamodels/basicActionsMetamodel.xml</include>
     <namespace>UML 2.0</namespace>
@@ -60,10 +60,10 @@
                     <ports/>
                 </graphics>
                 <logic>
-					<properties>
-						<property name="saveToTheDirectory" type="string" displayedName="saveToTheDirectory"/>
-						<property name="filename" type="string" displayedName="filename"/>
-					</properties>
+                    <properties>
+                        <property name="saveToTheDirectory" type="string" displayedName="saveToTheDirectory"/>
+                        <property name="filename" type="string" displayedName="filename"/>
+                    </properties>
                 </logic>
             </node>
             <node displayedName="Таблица" description="Новая таблица" name="Table">
@@ -79,7 +79,7 @@
                             <start startx="0" starty="30"/>
                             <end endx="0" endy="150"/>
                         </linePort>
-                        <linePort>
+                        <linePort>type
                             <start startx="30" starty="0"/>
                             <end endx="120" endy="0"/>
                         </linePort>
@@ -97,12 +97,12 @@
                     <container>
                         <contains type="AbstractColumn"/>
                         <properties>
-                            <forestalling size="25"/>
+                            <forestalling size="25,25,25,25"/>
                             <childrenForestalling size="5"/>
                             <sortContainer/>
                             <banChildrenMove/>
                             <minimizeToChildren/>
-                            <maximizeChildren/>
+                            <maximizeChildren/>type
                         </properties>
                     </container>
                 </logic>
@@ -145,10 +145,10 @@
                         <property displayedName="Строковый тип" type="StringType" name="StringTypeProperty">
                             <default>CHAR</default>
                         </property>
-						<property type="bool" name="is Primary Key">
-							<default>false</default>
-						</property>
-						<property displayedName="Максимальное число символов" type="int" name="maxtypeLength"/>
+                        <property type="bool" name="is Primary Key">
+                            <default>false</default>
+                        </property>
+                        <property displayedName="Максимальное число символов" type="int" name="maxtypeLength"/>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractColumn"/>
@@ -188,21 +188,22 @@
                         <property displayedName="Числовой тип" type="NumType" name="NumTypeProperty">
                             <default>int</default>
                         </property>
-						<property type="bool" name="is Primary Key">
-							<default>false</default>
-						</property>
-						<property displayedName="Число знаков" type="int" name="numberOfSigns">
-							<default>0</default>
-						</property>
-						<property displayedName="Число знаков после запятой" type="int" name="numberOfSignAfterPoint">
-							<default>0</default>
-						</property>
+                        <property type="bool" name="is Primary Key">
+                            <default>false</default>
+                        </property>
+                        <property displayedName="Число знаков" type="int" name="numberOfSigns">
+                            <default>0</default>
+                        </property>
+                        <property displayedName="Число знаков после запятой" type="int" name="numberOfSignAfterPoint">
+                            <default>0</default>
+                        </property>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractColumn"/>
                     </generalizations>
                 </logic>
             </node>
+
             <node displayedName="Столбец типа дата-время" name="ColumnDate">
                 <graphics>
                     <picture sizex="200" sizey="20">
@@ -234,11 +235,11 @@
                     <container/>
                     <properties>
                         <property displayedName="Тип" type="DateType" name="TypeProperty">
-							<default>date</default>
-						</property>
-						<property type="bool" name="is Primary Key">
-							<default>false</default>
-						</property>
+                            <default>date</default>
+                        </property>
+                        <property type="bool" name="is Primary Key">
+                            <default>false</default>
+                        </property>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractColumn"/>
@@ -276,11 +277,11 @@
                     <container/>
                     <properties>
                         <property displayedName="Тип" type="OtherType" name="TypeProperty">
-							<default>cursor</default>
-						</property>
-						<property type="bool" name="is Primary Key">
-							<default>false</default>
-						</property>
+                            <default>cursor</default>
+                        </property>
+                        <property type="bool" name="is Primary Key">
+                            <default>false</default>
+                        </property>
                     </properties>
                     <generalizations>
                         <parent parentName="AbstractColumn"/>

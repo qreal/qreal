@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>trikDefaultSettings.ini</file>
+        <file>icons/trikTwoDRobot.svg</file>
+        <file>icons/switch-2d.svg</file>
+        <file>icons/switch-real-trik.svg</file>
+        <file>icons/trik_controller.png</file>
+        <file>icons/trik_button_power_pressed.png</file>
+        <file>icons/trik_button_power.png</file>
+        <file>icons/trik_button_ok_pressed.png</file>
+        <file>icons/trik_button_ok.png</file>
+        <file>icons/trik_button_escape_pressed.png</file>
+        <file>icons/trik_button_escape.png</file>
+        <file>icons/trik_button_left_pressed.png</file>
+        <file>icons/trik_button_left.png</file>
+        <file>icons/trik_button_right_pressed.png</file>
+        <file>icons/trik_button_right.png</file>
+        <file>icons/trik_button_up_pressed.png</file>
+        <file>icons/trik_button_up.png</file>
+        <file>icons/trik_button_down_pressed.png</file>
+        <file>icons/trik_button_down.png</file>
+        <file>icons/icon.png</file>
+        <file>icons/sadSmile.png</file>
+        <file>icons/smile.png</file>
+        <file>icons/twoDColorEmpty.svg</file>
+        <file>icons/twoDVideoModule.svg</file>
+        <file>icons/twoDIrRangeSensor.svg</file>
+        <file>icons/twoDUsRangeSensor.svg</file>
+    </qresource>
+</RCC>

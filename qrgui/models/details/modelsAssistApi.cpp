@@ -1,3 +1,17 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "modelsAssistApi.h"
 
 #include "models/details/modelsImplementation/abstractModel.h"
@@ -25,10 +39,15 @@ Id ModelsAssistApi::createElement(const Id &parent, const Id &id, const Id &logi
 	Id realLogicalId = logicalId;
 	if (isFromLogicalModel) {
 		realLogicalId = id;
-		newId = Id(id.editor(), id.diagram(), id.element(), QUuid::createUuid().toString());
+		newId = id.sameTypeId();
 	}
 
-	mModel.addElementToModel(parent, newId, realLogicalId, name, position);
+	const bool isEdge = mEditorManagerInterface.isNodeOrEdge(newId.type()) == -1;
+
+	ElementInfo info(newId, realLogicalId, isFromLogicalModel ? parent : Id(), isFromLogicalModel ? Id() : parent
+			, {{"name", name}}, {{"position", position}}, Id(), isEdge);
+
+	mModel.addElementToModel(info);
 	return newId;
 }
 

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QHash>
@@ -5,8 +19,8 @@
 #include <QtCore/QString>
 #include <QtXml/QDomElement>
 
-#include "../../../qrkernel/ids.h"
-#include "../../../qrrepo/logicalRepoApi.h"
+#include <qrkernel/ids.h>
+#include <qrrepo/logicalRepoApi.h>
 
 namespace metaEditor {
 
@@ -24,7 +38,6 @@ private:
 	qReal::Id getPackageId();
 	void initMetamodel(QDomDocument const &document, QString const &directoryName
 			, QString const &baseName, QString const &pathToRoot, qReal::Id const &id);
-	qReal::Id initListener(QString const &name, QString const &className, QString const &fileName);
 	void createDiagramAttributes(QDomElement const &diagram, qReal::Id const &diagramId);
 	void createNonGraphicElements(QDomElement const &type, qReal::Id const &diagramId);
 	void createGraphicElements(QDomElement const &type, qReal::Id const &diagramId);
@@ -50,7 +63,6 @@ private:
 	void setUsages(QDomElement const &element, qReal::Id const &elementId);
 	void setPossibleEdges(QDomElement const &element, qReal::Id const &elementId);
 	void setFields(QDomElement const &element, qReal::Id const &elementId);
-	void setAction(qReal::Id const &elementId);
 	void setLineType(QDomElement const &tag, qReal::Id const &edgeId);
 	void initPossibleEdge(QDomElement const &possibleEdge, qReal::Id const &elementId);
 	void initDiagram(QDomElement const &diagram, qReal::Id const &parent,

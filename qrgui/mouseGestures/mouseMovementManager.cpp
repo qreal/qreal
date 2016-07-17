@@ -1,4 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "mouseMovementManager.h"
+
+#include <QtConcurrent/QtConcurrent>
 
 #include <qrkernel/logging.h>
 
@@ -20,14 +36,24 @@ MouseMovementManager::MouseMovementManager(const Id &diagram
 		, const qReal::EditorManagerInterface &editorManagerInterface)
 	: mDiagram(diagram)
 	, mEditorManagerInterface(editorManagerInterface)
+	, mInitializing(true)
 {
 	mKeyStringManager.reset(new KeyManager);
 	mGesturesManager.reset(new MixedGesturesManager);
-	initializeGestures();
+
+	// Initialization process is pretty long, so it must be performed in another thread.
+	// mInitializing flag will be set to false when initialization process is finished.
+	QtConcurrent::run(this, &MouseMovementManager::initializeGestures);
 }
 
 QWidget *MouseMovementManager::producePainter() const
 {
+	if (mInitializing) {
+		QLOG_WARN() << "Requested gestures widget while gestures still beeing initialized.";
+		return nullptr;
+	}
+
+	/// @todo: Remove copy-paste in DummyMouseMovementManager
 	GesturesWidget * const result = new GesturesWidget;
 	QList<QPair<QString, Id> > elements;
 	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
@@ -36,13 +62,27 @@ QWidget *MouseMovementManager::producePainter() const
 		}
 	}
 
+	connect(result, &GesturesWidget::currentElementChanged
+			, this, &MouseMovementManager::drawIdealPath, Qt::QueuedConnection);
 	result->setElements(elements);
-	connect(result, &GesturesWidget::currentElementChanged, this, &MouseMovementManager::drawIdealPath);
 	return result;
+}
+
+bool MouseMovementManager::gesturesInitialized() const
+{
+	// This varable can be read from another thread, so lock for writing should be here. But actually this value
+	// is modified 1 time and when everything is ready, so the worst can happen is that we return true here when
+	// the actual value is true :)
+	return !mInitializing;
 }
 
 void MouseMovementManager::drawIdealPath()
 {
+	if (mInitializing) {
+		QLOG_WARN() << "Requested to draw ideal path while gestures still beeing initialized.";
+		return;
+	}
+
 	GesturesWidget * const gesturesPainter = static_cast<GesturesWidget *>(sender());
 	const Id currentElement = gesturesPainter->currentElement();
 	if (mEditorManagerInterface.elements(mDiagram).contains(currentElement)) {
@@ -69,6 +109,10 @@ QLineF MouseMovementManager::newLine()
 
 void MouseMovementManager::initializeGestures()
 {
+	if (!mInitializing) {
+		return;
+	}
+
 	QMap<QString, PathVector> gestures;
 	gestures.insert(deletionGestureKey, stringToPath(deletionGesture));
 	for (const Id &element : mEditorManagerInterface.elements(mDiagram)) {
@@ -80,6 +124,7 @@ void MouseMovementManager::initializeGestures()
 	}
 
 	mGesturesManager->initIdealGestures(gestures);
+	mInitializing = false;
 }
 
 void MouseMovementManager::recountCentre()
@@ -96,11 +141,10 @@ void MouseMovementManager::recountCentre()
 	mCenter = ((count - 1) * mCenter + mPath.back().back()) / count;
 }
 
-void MouseMovementManager::mousePress(const QPointF &pnt)
+void MouseMovementManager::mousePress(const QPointF &point)
 {
-	QList<QPointF> path;
-	path.push_back(pnt);
-	mPath.push_back(path);
+	const QList<QPointF> element = {point};
+	mPath << element;
 	recountCentre();
 }
 
@@ -145,6 +189,11 @@ QPoint MouseMovementManager::parsePoint(const QString &str)
 
 MouseMovementManager::GestureResult MouseMovementManager::result()
 {
+	if (mInitializing) {
+		QLOG_WARN() << "Gesture already drawn and result requested while gestures still beeing initialized.";
+		return GestureResult(invalidGesture);
+	}
+
 	initializeGestures();
 	GestureResult result;
 	mGesturesManager->setKey(mPath);
@@ -202,35 +251,4 @@ bool MouseMovementManager::isEdgeCandidate()
 bool MouseMovementManager::pathIsEmpty()
 {
 	return mPath.isEmpty();
-}
-
-MouseMovementManager::GestureResult::GestureResult()
-	: mType(invalidGesture)
-{
-}
-
-MouseMovementManager::GestureResult::GestureResult(MouseMovementManager::GestureResultType type, const qReal::Id &id)
-	: mType(type)
-	, mId(id)
-{
-}
-
-MouseMovementManager::GestureResultType MouseMovementManager::GestureResult::type() const
-{
-	return mType;
-}
-
-qReal::Id MouseMovementManager::GestureResult::elementType() const
-{
-	return mId;
-}
-
-void MouseMovementManager::GestureResult::setType(MouseMovementManager::GestureResultType type)
-{
-	mType = type;
-}
-
-void MouseMovementManager::GestureResult::setElementType(const qReal::Id &id)
-{
-	mId = id;
 }

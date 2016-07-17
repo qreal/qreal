@@ -1,15 +1,29 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/parts/subprograms.h"
 
-#include "generatorBase/controlFlowGeneratorBase.h"
+#include "src/readableControlFlowGenerator.h"
 
 using namespace generatorBase::parts;
 using namespace qReal;
 
 Subprograms::Subprograms(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
-		, const QString &pathToTemplates
+		, const QStringList &pathsToTemplates
 		, const simple::Binding::ConverterInterface *nameNormalizer)
-	: TemplateParametrizedEntity(pathToTemplates)
+	: TemplateParametrizedEntity(pathsToTemplates)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
 	, mNameNormalizer(nameNormalizer)
@@ -44,7 +58,8 @@ void Subprograms::usageFound(const Id &logicalId)
 	}
 }
 
-bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString)
+Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *mainGenerator
+		, const QString &indentString)
 {
 	QMap<Id, QString> declarations;
 	QMap<Id, QString> implementations;
@@ -56,19 +71,20 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator, const QStrin
 		const Id graphicalDiagramId = graphicalId(toGen);
 		if (graphicalDiagramId.isNull()) {
 			mErrorReporter.addError(QObject::tr("Graphical diagram instance not found"));
-			return false;
+			return GenerationResult::fatalError;
 		}
 
 		const QString rawIdentifier = mRepo.name(toGen);
 		const QString identifier = mNameNormalizer->convert(rawIdentifier);
 		if (!checkIdentifier(identifier, rawIdentifier)) {
-			return false;
+			return GenerationResult::fatalError;
 		}
 
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
+		auto readableGenerator = dynamic_cast<ReadableControlFlowGenerator *>(generator);
 		semantics::SemanticTree *controlFlow = generator->generate(Id(), "@@unknown@@");
-		if (!controlFlow) {
-			return false;
+		if (!controlFlow || (readableGenerator && readableGenerator->cantBeGeneratedIntoStructuredCode())) {
+			return GenerationResult::error;
 		}
 
 		implementations[toGen] = controlFlow->toString(1, indentString);
@@ -81,7 +97,7 @@ bool Subprograms::generate(ControlFlowGeneratorBase *mainGenerator, const QStrin
 
 	obtainCode(declarations, implementations);
 
-	return true;
+	return GenerationResult::success;
 }
 
 void Subprograms::obtainCode(QMap<Id, QString> const &declarations

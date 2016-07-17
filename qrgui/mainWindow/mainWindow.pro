@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 TARGET = qreal
 
 include(../../global.pri)
@@ -11,13 +25,11 @@ links(qrkernel qslog qrutils qrtext qrrepo qscintilla2 qrgui-models qrgui-editor
 		qrgui-facade qrgui-plugin-manager qrgui-tool-plugin-interface qrgui-thirdparty \
 )
 
-includes(qrgui)
+includes(qrgraph qrgui qrgui/plugins/metaMetaModel)
 
-TRANSLATIONS = $$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts
-
-!macx {
-	QMAKE_LFLAGS="-Wl,-O1,-rpath,."
-}
+TRANSLATIONS = \
+	$$PWD/../../qrtranslations/ru/qrgui_mainWindow_ru.ts \
+	$$PWD/../../qrtranslations/fr/qrgui_mainWindow_fr.ts \
 
 HEADERS += \
 	$$PWD/qrealApplication.h \
@@ -85,14 +97,6 @@ unix {
 		$$PWD/linuxExternBrowser.cpp \
 }
 
-macx {
-	HEADERS += \
-		$$PWD/macExternBrowser.h \
-
-	SOURCES += \
-		$$PWD/macExternBrowser.cpp \
-}
-
 FORMS += \
 	$$PWD/mainWindow.ui \
 	$$PWD/referenceList.ui \
@@ -147,4 +151,14 @@ FORMS += \
 	$$PWD/shapeEdit/visibilityConditionsDialog.ui \
 
 RESOURCES = $$PWD/mainWindow.qrc
-RC_FILE = $$PWD/mainWindow.rc
+
+win32 {
+	RC_FILE = $$PWD/mainWindow.rc
+}
+
+macx {
+	ICON = icon.icns
+}
+
+include(scriptAPI/scriptAPI.pri)
+

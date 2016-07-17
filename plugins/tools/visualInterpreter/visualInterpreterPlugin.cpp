@@ -1,12 +1,26 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QProcess>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QFileDialog>
 
 #include "visualInterpreterPlugin.h"
 
-#include "../../../qrutils/xmlUtils.h"
-#include "../../../qrutils/outFile.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrutils/xmlUtils.h>
+#include <qrutils/outFile.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 using namespace visualInterpreter;
@@ -14,7 +28,7 @@ using namespace utils;
 
 VisualInterpreterPlugin::VisualInterpreterPlugin()
 	: mPreferencesPage(new VisualInterpreterPreferencesPage())
-	, mWatchListWindow(NULL)
+	, mWatchListWindow(nullptr)
 {
 }
 
@@ -45,26 +59,26 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 	mVisualInterpreterMenu = new QMenu(tr("Visual interpret"));
 	ActionInfo visualInterpreterMenu(mVisualInterpreterMenu, "tools");
 
-	mGenerateAndLoadSemanticsEditorAction = new QAction(tr("Generate and load semantics editor"), NULL);
+	mGenerateAndLoadSemanticsEditorAction = new QAction(tr("Generate and load semantics editor"), nullptr);
 	connect(mGenerateAndLoadSemanticsEditorAction, SIGNAL(triggered()), this, SLOT(generateMetamodels()));
 	mVisualInterpreterMenu->addAction(mGenerateAndLoadSemanticsEditorAction);
 
-	mLoadSemanticsAction = new QAction(tr("Load semantics model"), NULL);
+	mLoadSemanticsAction = new QAction(tr("Load semantics model"), nullptr);
 	mLoadSemanticsAction->setShortcut(QKeySequence(Qt::Key_Q));
 	connect(mLoadSemanticsAction, SIGNAL(triggered()), this, SLOT(loadSemantics()));
 	mVisualInterpreterMenu->addAction(mLoadSemanticsAction);
 
-	mInterpretAction = new QAction(tr("Interpret"), NULL);
+	mInterpretAction = new QAction(tr("Interpret"), nullptr);
 	mInterpretAction->setShortcut(QKeySequence(Qt::Key_W));
 	connect(mInterpretAction, SIGNAL(triggered()), this, SLOT(interpret()));
 	mVisualInterpreterMenu->addAction(mInterpretAction);
 
-	mStopInterpretationAction = new QAction(tr("Stop interpretation"), NULL);
+	mStopInterpretationAction = new QAction(tr("Stop interpretation"), nullptr);
 	mStopInterpretationAction->setShortcut(QKeySequence(Qt::Key_E));
 	connect(mStopInterpretationAction, SIGNAL(triggered()), this, SLOT(stopInterpretation()));
 	mVisualInterpreterMenu->addAction(mStopInterpretationAction);
 
-	mWatchListAction = new QAction(tr("Show watch list"), NULL);
+	mWatchListAction = new QAction(tr("Show watch list"), nullptr);
 	connect(mWatchListAction, SIGNAL(triggered()), this, SLOT(showWatchList()));
 	mVisualInterpreterMenu->addAction(mWatchListAction);
 
@@ -76,7 +90,7 @@ QList<qReal::ActionInfo> VisualInterpreterPlugin::actions()
 void VisualInterpreterPlugin::generateMetamodels() const
 {
 	QString editorMetamodelFilePath =
-			QFileDialog::getOpenFileName(NULL, tr("Specify editor metamodel:"), QString(), "xml (*.xml)");
+			QFileDialog::getOpenFileName(nullptr, tr("Specify editor metamodel:"), QString(), "xml (*.xml)");
 	QString qrealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
 
 	if (editorMetamodelFilePath.isEmpty() || qrealSourceFilesPath.isEmpty()) {
@@ -159,7 +173,8 @@ void VisualInterpreterPlugin::generateEditorMetamodel(QString const &editorMetam
 			, SettingsManager::value("prefix").toString());
 }
 
-void VisualInterpreterPlugin::insertSemanticsEnums(QDomDocument metamodel, QString const &name, QStringList const &values) const
+void VisualInterpreterPlugin::insertSemanticsEnums(QDomDocument metamodel, QString const &name
+		, QStringList const &values) const
 {
 	QDomElement semanticsEnum = metamodel.createElement("enum");
 	semanticsEnum.setAttribute("name", name);
@@ -235,7 +250,8 @@ void VisualInterpreterPlugin::insertIdPropertyToBasicElements(QDomDocument metam
 	insertIdPropertyInSpecificElemType(metamodel, metamodel.elementsByTagName("edge"));
 }
 
-void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument metamodel, QDomNodeList const &nodes) const
+void VisualInterpreterPlugin::insertIdPropertyInSpecificElemType(QDomDocument metamodel
+		, QDomNodeList const &nodes) const
 {
 	for (int i = 0; i < nodes.length(); i++) {
 		QDomElement const elem = nodes.at(i).toElement();
@@ -275,12 +291,18 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 	"<node displayedName=\"Semantics Rule\" name=\"SemanticsRule\">"
 		"<graphics>"
 			"<picture sizex=\"100\" sizey=\"100\">"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"10\" x1=\"0\" y2=\"10\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"10\" x1=\"100\" y2=\"100\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"100\" x1=\"100\" y2=\"100\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"100\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"50\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"50\" y2=\"10\" stroke-width=\"2\" x2=\"50\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"10\" x1=\"0\" y2=\"10\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"10\" x1=\"100\" y2=\"100\" stroke-width=\"2\" x2=\"100\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"100\" x1=\"100\" y2=\"100\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"100\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"0\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"50\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"0\" x1=\"50\" y2=\"10\" stroke-width=\"2\" x2=\"50\" fill-style=\"solid\" />"
 			"</picture>"
 			"<labels>"
 				"<label x=\"0\" y=\"0\" textBinded=\"ruleName\"/>"
@@ -305,10 +327,14 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 	"<node displayedName=\"Wildcard\" name=\"Wildcard\">"
 		"<graphics>"
 			"<picture sizex=\"50\" sizey=\"50\">"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"10\" x1=\"10\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"10\" x1=\"40\" y2=\"40\" stroke-width=\"2\" x2=\"10\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"1\" x1=\"25\" y2=\"49\" stroke-width=\"2\" x2=\"25\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"25\" x1=\"1\" y2=\"25\" stroke-width=\"2\" x2=\"49\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"10\" x1=\"10\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"10\" x1=\"40\" y2=\"40\" stroke-width=\"2\" x2=\"10\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"1\" x1=\"25\" y2=\"49\" stroke-width=\"2\" x2=\"25\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"25\" x1=\"1\" y2=\"25\" stroke-width=\"2\" x2=\"49\" fill-style=\"solid\" />"
 			"</picture>"
 			"<ports>"
 				"<pointPort x=\"10\" y=\"10\"/>"
@@ -332,10 +358,14 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 	"<node displayedName=\"Initialization\" name=\"Initialization\">"
 		"<graphics>"
 			"<picture sizex=\"50\" sizey=\"50\">"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"40\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
-				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"40\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"0\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"0\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"0\" x1=\"0\" y2=\"0\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"40\" x1=\"0\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
+				"<line fill=\"#000000\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"0\" x1=\"40\" y2=\"40\" stroke-width=\"2\" x2=\"40\" fill-style=\"solid\" />"
 			"</picture>"
 		"</graphics>"
 		"<logic>"
@@ -353,7 +383,8 @@ void VisualInterpreterPlugin::insertSpecialSemanticsElements(QDomDocument metamo
 	"<node displayedName=\"Control Flow Mark\" name=\"ControlFlowMark\">"
 		"<graphics>"
 			"<picture sizex=\"20\" sizey=\"20\">"
-				"<ellipse fill=\"#FFFFFF\" stroke-style=\"solid\" stroke=\"#000000\" y1=\"0\" x1=\"0\" y2=\"20\" stroke-width=\"1\" x2=\"20\" fill-style=\"solid\"/>"
+				"<ellipse fill=\"#FFFFFF\" stroke-style=\"solid\" stroke=\"#000000\" "
+						"y1=\"0\" x1=\"0\" y2=\"20\" stroke-width=\"1\" x2=\"20\" fill-style=\"solid\"/>"
 			"</picture>"
 			"<ports>"
 				"<pointPort x=\"0\" y=\"10\"/>"

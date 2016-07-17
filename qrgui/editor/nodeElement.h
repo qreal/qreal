@@ -1,3 +1,17 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 /** @file nodeElement.h
 *  @brief class for an element object on a diagram
 **/
@@ -12,8 +26,8 @@
 #include <QtCore/QList>
 #include <QtCore/QTimer>
 
-#include <plugins/pluginManager/sdfRenderer.h>
-#include <plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/plugins/pluginManager/sdfRenderer.h>
+#include <qrgui/models/nodeInfo.h>
 
 #include "qrgui/editor/element.h"
 #include "qrgui/editor/edgeElement.h"
@@ -23,48 +37,42 @@
 #include "qrgui/editor/private/umlPortHandler.h"
 #include "qrgui/editor/private/portHandler.h"
 
-#include "editor/serializationData.h"
 
 namespace qReal {
+
+class NodeElementType;
+
+namespace gui {
+namespace editor {
 
 namespace commands {
 class ResizeCommand;
 }
 
+/// Represents an instance of some node element on diagram.
+/// Node elements represent some entity in model, can be dragged and reshaped by mouse and be connected each to other
+/// by edge elements.
 class QRGUI_EDITOR_EXPORT NodeElement : public Element
 {
 	Q_OBJECT
 
 public:
-	explicit NodeElement(ElementImpl *impl
+	explicit NodeElement(const NodeElementType &type
 			, const Id &id
-			, qReal::models::GraphicalModelAssistApi &graphicalAssistApi
-			, qReal::models::LogicalModelAssistApi &logicalAssistApi
-			, qReal::models::Exploser &exploser
-			);
+			, const models::Models &models);
 
-	virtual ~NodeElement();
-
-	/**
-	 * Makes copy of current NodeElement.
-	 * @param toCursorPos Indicates if need to place new element at cursor position.
-	 * @param searchForParents Parameter of createElement method in EditorViewScene.
-	 * @return Copy of current NodeElement.
-	 */
-	NodeElement *clone(bool toCursorPos = false, bool searchForParents = true);
+	~NodeElement() override;
 
 	QMap<QString, QVariant> graphicalProperties() const;
 	QMap<QString, QVariant> logicalProperties() const;
 
-	/// Clears prerendered images.
-	/// @param zoomFactor - current zoom factor to render images.
-	void invalidateImagesZoomCache(qreal zoomFactor);
+	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w) override;
 
-	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w);
+	QRectF boundingRect() const override;
 
-	QRectF boundingRect() const;
 	/// Current value of mContents
 	QRectF contentsRect() const;
+
 	/// Folded contents of node
 	QRectF foldedContentsRect() const;
 
@@ -79,8 +87,6 @@ public:
 	bool isContainer() const;
 
 	void storeGeometry();
-	virtual void setName(const QString &name, bool withUndoRedo = false);
-	//void shift(const QPointF &pos, EdgeElement* called);
 
 	/// Returns port position relative to the top left corner of NodeElement
 	/// (position of NodeElement).
@@ -109,10 +115,11 @@ public:
 	/// Remove edge from node's edge list, rearrange linear ports
 	void delEdge(EdgeElement *edge);
 
-	NodeData& data();
+	/// Returns descriptor of this node element's type.
+	const NodeElementType &nodeType() const;
 
-	virtual bool initPossibleEdges();
-	QList<PossibleEdge> getPossibleEdges();
+	/// Collects data about this instance and returns structure describing it.
+	NodeInfo data() const;
 
 	/// Make ports of specified types visible, hide other ports
 	void setPortsVisible(const QStringList &types);
@@ -121,7 +128,6 @@ public:
 
 	//void resizeChild(const QRectF &newContents, const QRectF &oldContents);
 
-	virtual QList<ContextMenuAction *> contextMenuActions(const QPointF &pos);
 	void switchAlignment(bool isSwitchedOn);
 	void showAlignment(bool isChecked);
 
@@ -144,7 +150,7 @@ public:
 	* @brief Returns element that follows placeholder
 	* @return element or nullptr
 	*/
-	Element *getPlaceholderNextElement();
+	Element *getPlaceholderNextElement() const;
 
 	void changeExpanded();
 	bool isExpanded() const;
@@ -156,7 +162,7 @@ public:
 	QList<NodeElement *> const childNodes() const;
 
 	void setVisibleEmbeddedLinkers(const bool show);
-	void updateShape(const QString &shape) const;
+	void updateShape(const QDomElement &graphicsSdf);
 
 	void changeFoldState();
 
@@ -182,13 +188,9 @@ public:
 	IdList sortedChildren() const;
 
 public slots:
-	virtual void select(const bool singleSelected);
-	virtual void setSelectionState(const bool selected);
 	void switchGrid(bool isChecked);
-	NodeElement *copyAndPlaceOnDiagram(const QPointF &offset);
 
 private slots:
-	void updateNodeEdges();
 	void initRenderedDiagram();
 
 private:
@@ -226,18 +228,18 @@ private:
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void deleteGuides();
-	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
+	void connectSceneEvents();
 
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event);
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseDoubleClickEvent (QGraphicsSceneMouseEvent *event) override;
 
-	virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-	virtual void hoverMoveEvent(QGraphicsSceneHoverEvent *event);
-	virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+	void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt);
 	void drawPorts(QPainter *painter, bool mouseOver);
@@ -247,12 +249,13 @@ private:
 	 * @param mouseScenePos Current mouse scene position.
 	 */
 	void recalculateHighlightedNode(const QPointF &mouseScenePos);
-	virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 	void setLinksVisible(bool);
 
 	void updateByChild(NodeElement *item, bool isItemAddedOrDeleted);
 	void updateByNewParent();
+	void updateBySelection();
 
 	void updateChildrenOrder();
 
@@ -260,9 +263,9 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
-	commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
+	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
-	models::Exploser &mExploser;
+	const NodeElementType &mType;
 
 	ContextMenuAction mSwitchGridAction;
 
@@ -273,12 +276,9 @@ private:
 
 	DragState mDragState;
 	QPointF mDragPosition;
-	qReal::commands::ResizeCommand *mResizeCommand;
+	commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
-
-	QSet<PossibleEdge> mPossibleEdges;
-	QSet<PossibleEdgeType> mPossibleEdgeTypes;
 
 	QTransform mTransform;
 
@@ -292,14 +292,10 @@ private:
 
 	bool mLeftPressed;
 
-	NodeElement *mParentNodeElement;
-
 	QPointF mPos;
 	bool mSelectionNeeded;
 
 	bool mConnectionInProgress;
-
-	QList<ContextMenuAction *> mBonusContextMenuActions;
 
 	SceneGridHandler *mGrid;
 	PortHandler *mPortHandler;
@@ -307,10 +303,10 @@ private:
 	QGraphicsRectItem *mPlaceholder;
 	NodeElement *mHighlightedNode;
 
-	NodeData mData;
-
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
 };
 
+}
+}
 }

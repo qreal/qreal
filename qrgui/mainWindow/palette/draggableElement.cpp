@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "draggableElement.h"
 
 #include <QtCore/QUuid>
@@ -11,6 +25,8 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
+
+#include <qrgui/models/models.h>
 
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
@@ -56,7 +72,7 @@ DraggableElement::DraggableElement(
 	QString description = mData.description();
 	if (!description.isEmpty()) {
 		const QString rawGesture = mEditorManagerProxy.mouseGesture(data.id());
-		if (!rawGesture.isEmpty()) {
+		if (!rawGesture.isEmpty() && qReal::SettingsManager::value("gesturesEnabled").toBool()) {
 			const QSize size(gestureTipSize, gestureTipSize);
 			gestures::GesturePainter painter(rawGesture, Qt::white, Qt::blue, gestureTipSize);
 			const QPixmap gesture = painter.pixmap(size, QIcon::Mode::Normal, QIcon::State::Off);
@@ -73,8 +89,8 @@ DraggableElement::DraggableElement(
 	}
 
 	setCursor(Qt::OpenHandCursor);
-
 	setAttribute(Qt::WA_AcceptTouchEvents);
+	setObjectName(mData.name());
 }
 
 QIcon DraggableElement::icon() const
@@ -105,6 +121,12 @@ QSize DraggableElement::iconsPreferredSize() const
 void DraggableElement::setIconSize(int size)
 {
 	mLabel->setPixmap(mData.icon().pixmap(size , size));
+}
+
+QMimeData *DraggableElement::mimeData(const Id &elementId) const
+{
+	const bool isEdge = mEditorManagerProxy.isNodeOrEdge(elementId.type()) < 0;
+	return ElementInfo(elementId, Id(), text(), mData.explosionTarget(), isEdge).mimeData();
 }
 
 void DraggableElement::changePropertiesPaletteActionTriggered()
@@ -162,12 +184,12 @@ void DraggableElement::deleteElement()
 		mMainWindow.models().logicalModel()->removeRow(index.row(), index.parent());
 	}
 
-	mMainWindow.loadPlugins();
+	mMainWindow.loadEditorPlugins();
 }
 
 void DraggableElement::checkElementForRootDiagramNode()
 {
-	if (mEditorManagerProxy.isRootDiagramNode(mDeletedElementId)) {
+	if (mEditorManagerProxy.isDiagramNode(mDeletedElementId)) {
 		mIsRootDiagramNode = true;
 		QMessageBox messageBox(
 				tr("Warning")
@@ -280,7 +302,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 	// new element's ID is being generated here
 	// may this epic event should take place in some more appropriate place
 
-	Id elementId(id(), QUuid::createUuid().toString());
+	const Id elementId = id().sameTypeId();
 
 	if (event->button() == Qt::RightButton) {
 		if (mEditorManagerProxy.isInterpretationMode()) {
@@ -313,22 +335,8 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			menu->exec(QCursor::pos());
 		}
 	} else {
-		QByteArray itemData;
-		bool isFromLogicalModel = false;
-
-		QDataStream stream(&itemData, QIODevice::WriteOnly);
-		stream << elementId.toString();  // uuid
-		stream << Id::rootId().toString();  // pathToItem
-		stream << QString(text());
-		stream << QPointF(0, 0);
-		stream << isFromLogicalModel;
-		stream << mData.explosionTarget().toString();
-
-		QMimeData *mimeData = new QMimeData;
-		mimeData->setData("application/x-real-uml-data", itemData);
-
 		QDrag *drag = new QDrag(this);
-		drag->setMimeData(mimeData);
+		drag->setMimeData(mimeData(elementId));
 
 		const QPixmap pixmap = icon().pixmap(mData.preferredSize());
 

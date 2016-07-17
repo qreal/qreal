@@ -1,3 +1,17 @@
+# Copyright 2007-2016 CyberTech Labs Ltd., QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 HEADERS += \
 	$$PWD/include/qrtext/debuggerInterface.h \
 	$$PWD/include/qrtext/declSpec.h \
@@ -34,14 +48,14 @@ HEADERS += \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryList.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryPair.h \
 	$$PWD/include/qrtext/core/parser/temporaryNodes/temporaryToken.h \
-	$$PWD/include/qrtext/core/parser/utils/functionTraits.h \
 	$$PWD/include/qrtext/core/semantics/semanticAnalyzer.h \
 	$$PWD/include/qrtext/core/semantics/generalizationsTableInterface.h \
 	$$PWD/include/qrtext/core/types/any.h \
 	$$PWD/include/qrtext/core/types/typeExpression.h \
 	$$PWD/include/qrtext/core/types/typeVariable.h \
-	$$PWD/include/qrtext/lua/luaToolbox.h \
 	$$PWD/include/qrtext/lua/luaAstVisitorInterface.h \
+	$$PWD/include/qrtext/lua/luaStringEscapeUtils.h \
+	$$PWD/include/qrtext/lua/luaToolbox.h \
 	$$PWD/include/qrtext/lua/ast/number.h \
 	$$PWD/include/qrtext/lua/ast/unaryMinus.h \
 	$$PWD/include/qrtext/lua/ast/not.h \
@@ -115,9 +129,12 @@ SOURCES += \
 	$$PWD/src/lua/luaParser.cpp \
 	$$PWD/src/lua/luaPrecedenceTable.cpp \
 	$$PWD/src/lua/luaSemanticAnalyzer.cpp \
+	$$PWD/src/lua/luaStringEscapeUtils.cpp \
 	$$PWD/src/lua/luaToolbox.cpp \
 
-TRANSLATIONS = $$PWD/../qrtranslations/ru/qrtext_ru.ts
+TRANSLATIONS = \
+	$$PWD/../qrtranslations/ru/qrtext_ru.ts \
+	$$PWD/../qrtranslations/fr/qrtext_fr.ts \
 
 includes(qrkernel thirdparty/qslog)
 links(qrkernel qslog)

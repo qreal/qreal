@@ -1,3 +1,17 @@
+# Copyright 2013-2016 CyberTech Labs Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 QT += widgets xml
 
 links(qrkernel qslog qrutils qrtext qrgui-preferences-dialog robots-utils)
@@ -5,55 +19,9 @@ includes(qrtext plugins/robots/utils)
 
 DEFINES += ROBOTS_KIT_BASE_LIBRARY
 
-TRANSLATIONS = $$PWD/../../../../qrtranslations/ru/plugins/robots/kitBase_ru.ts
-
-SOURCES += \
-	$$PWD/src/devicesConfigurationProvider.cpp \
-	$$PWD/src/devicesConfigurationWidget.cpp \
-	$$PWD/src/blocksBase/robotsBlock.cpp \
-	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
-	$$PWD/src/blocksBase/common/clearEncoderBlock.cpp \
-	$$PWD/src/blocksBase/common/engineCommandBlock.cpp \
-	$$PWD/src/blocksBase/common/enginesStopBlock.cpp \
-	$$PWD/src/blocksBase/common/waitBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForAccelerometerBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForColorBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForColorIntensityBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForColorSensorBlockBase.cpp \
-	$$PWD/src/blocksBase/common/waitForEncoderBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForGyroscopeSensorBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForLightSensorBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForSensorBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForSonarDistanceBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForSoundSensorBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForTouchSensorBlock.cpp \
-	$$PWD/src/blocksBase/common/waitForButtonBlock.cpp \
-	$$PWD/src/robotModel/configuration.cpp \
-	$$PWD/src/robotModel/commonRobotModel.cpp \
-	$$PWD/src/robotModel/robotModelUtils.cpp \
-	$$PWD/src/robotModel/portInfo.cpp \
-	$$PWD/src/robotModel/deviceInfo.cpp \
-	$$PWD/src/robotModel/robotParts/speaker.cpp \
-	$$PWD/src/robotModel/robotParts/motor.cpp \
-	$$PWD/src/robotModel/robotParts/display.cpp \
-	$$PWD/src/robotModel/robotParts/button.cpp \
-	$$PWD/src/robotModel/robotParts/abstractSensor.cpp \
-	$$PWD/src/robotModel/robotParts/accelerometerSensor.cpp \
-	$$PWD/src/robotModel/robotParts/colorSensor.cpp \
-	$$PWD/src/robotModel/robotParts/colorSensorPassive.cpp \
-	$$PWD/src/robotModel/robotParts/colorSensorFull.cpp \
-	$$PWD/src/robotModel/robotParts/colorSensorRed.cpp \
-	$$PWD/src/robotModel/robotParts/colorSensorGreen.cpp \
-	$$PWD/src/robotModel/robotParts/colorSensorBlue.cpp \
-	$$PWD/src/robotModel/robotParts/encoderSensor.cpp \
-	$$PWD/src/robotModel/robotParts/gyroscopeSensor.cpp \
-	$$PWD/src/robotModel/robotParts/lightSensor.cpp \
-	$$PWD/src/robotModel/robotParts/device.cpp \
-	$$PWD/src/robotModel/robotParts/rangeSensor.cpp \
-	$$PWD/src/robotModel/robotParts/scalarSensor.cpp \
-	$$PWD/src/robotModel/robotParts/soundSensor.cpp \
-	$$PWD/src/robotModel/robotParts/touchSensor.cpp \
-	$$PWD/src/robotModel/robotParts/vectorSensor.cpp \
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/kitBase_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/kitBase_fr.ts \
 
 HEADERS += \
 	$$PWD/include/kitBase/kitBaseDeclSpec.h \
@@ -64,6 +32,7 @@ HEADERS += \
 	$$PWD/include/kitBase/devicesConfigurationWidget.h \
 	$$PWD/include/kitBase/eventsForKitPluginInterface.h \
 	$$PWD/include/kitBase/interpreterControlInterface.h \
+	$$PWD/include/kitBase/interpreterInterface.h \
 	$$PWD/include/kitBase/readOnly.h \
 	$$PWD/include/kitBase/blocksBase/robotsBlock.h \
 	$$PWD/include/kitBase/blocksBase/blocksFactoryInterface.h \
@@ -73,6 +42,7 @@ HEADERS += \
 	$$PWD/include/kitBase/blocksBase/common/enginesStopBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/deviceBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/displayBlock.h \
+	$$PWD/include/kitBase/blocksBase/common/randomInitBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/waitBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/waitForAccelerometerBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/waitForColorBlock.h \
@@ -86,6 +56,7 @@ HEADERS += \
 	$$PWD/include/kitBase/blocksBase/common/waitForSoundSensorBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/waitForTouchSensorBlock.h \
 	$$PWD/include/kitBase/blocksBase/common/waitForButtonBlock.h \
+	$$PWD/include/kitBase/blocksBase/common/getButtonCodeBlock.h \
 	$$PWD/include/kitBase/robotModel/configuration.h \
 	$$PWD/include/kitBase/robotModel/commonRobotModel.h \
 	$$PWD/include/kitBase/robotModel/configurationInterface.h \
@@ -111,8 +82,64 @@ HEADERS += \
 	$$PWD/include/kitBase/robotModel/robotParts/gyroscopeSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/lightSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/device.h \
+	$$PWD/include/kitBase/robotModel/robotParts/random.h \
 	$$PWD/include/kitBase/robotModel/robotParts/rangeSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/scalarSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/soundSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/touchSensor.h \
 	$$PWD/include/kitBase/robotModel/robotParts/vectorSensor.h \
+	$$PWD/include/kitBase/robotModel/robotParts/shell.h \
+	$$PWD/include/kitBase/robotModel/robotParts/motorsAggregator.h
+
+SOURCES += \
+	$$PWD/src/devicesConfigurationProvider.cpp \
+	$$PWD/src/devicesConfigurationWidget.cpp \
+	$$PWD/src/blocksBase/robotsBlock.cpp \
+	$$PWD/src/blocksBase/commonBlocksFactory.cpp \
+	$$PWD/src/blocksBase/common/clearEncoderBlock.cpp \
+	$$PWD/src/blocksBase/common/engineCommandBlock.cpp \
+	$$PWD/src/blocksBase/common/enginesStopBlock.cpp \
+	$$PWD/src/blocksBase/common/randomInitBlock.cpp \
+	$$PWD/src/blocksBase/common/waitBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForAccelerometerBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForColorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForColorIntensityBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForColorSensorBlockBase.cpp \
+	$$PWD/src/blocksBase/common/waitForEncoderBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForGyroscopeSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForLightSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForSonarDistanceBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForSoundSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForTouchSensorBlock.cpp \
+	$$PWD/src/blocksBase/common/waitForButtonBlock.cpp \
+	$$PWD/src/blocksBase/common/getButtonCodeBlock.cpp \
+	$$PWD/src/robotModel/configuration.cpp \
+	$$PWD/src/robotModel/commonRobotModel.cpp \
+	$$PWD/src/robotModel/robotModelUtils.cpp \
+	$$PWD/src/robotModel/portInfo.cpp \
+	$$PWD/src/robotModel/deviceInfo.cpp \
+	$$PWD/src/robotModel/robotParts/speaker.cpp \
+	$$PWD/src/robotModel/robotParts/motor.cpp \
+	$$PWD/src/robotModel/robotParts/display.cpp \
+	$$PWD/src/robotModel/robotParts/button.cpp \
+	$$PWD/src/robotModel/robotParts/abstractSensor.cpp \
+	$$PWD/src/robotModel/robotParts/accelerometerSensor.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensor.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorPassive.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorFull.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorRed.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorGreen.cpp \
+	$$PWD/src/robotModel/robotParts/colorSensorBlue.cpp \
+	$$PWD/src/robotModel/robotParts/encoderSensor.cpp \
+	$$PWD/src/robotModel/robotParts/gyroscopeSensor.cpp \
+	$$PWD/src/robotModel/robotParts/lightSensor.cpp \
+	$$PWD/src/robotModel/robotParts/device.cpp \
+	$$PWD/src/robotModel/robotParts/random.cpp \
+	$$PWD/src/robotModel/robotParts/rangeSensor.cpp \
+	$$PWD/src/robotModel/robotParts/scalarSensor.cpp \
+	$$PWD/src/robotModel/robotParts/soundSensor.cpp \
+	$$PWD/src/robotModel/robotParts/touchSensor.cpp \
+	$$PWD/src/robotModel/robotParts/vectorSensor.cpp \
+	$$PWD/src/robotModel/robotParts/shell.cpp \
+	$$PWD/src/robotModel/robotParts/motorsAggregator.cpp

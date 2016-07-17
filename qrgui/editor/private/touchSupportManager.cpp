@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "touchSupportManager.h"
 
 #include <QtWidgets/QPinchGesture>
@@ -7,7 +21,7 @@
 
 #include "editor/editorView.h"
 
-using namespace qReal::view::details;
+using namespace qReal::gui::editor::view::details;
 
 TouchSupportManager::TouchSupportManager(EditorView *editorView)
 	: mEditorView(editorView)
@@ -45,7 +59,7 @@ bool TouchSupportManager::eventFilter(QObject *object, QEvent *event)
 		return false;
 	}
 
-	QMouseEvent * const mouseEvent = static_cast<QMouseEvent *>(event);
+	QMouseEvent * const mouseEvent = dynamic_cast<QMouseEvent *>(event);
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 3, 0))
 	if (isMouseEvent && mouseEvent->source() != Qt::MouseEventNotSynthesized) {
 		// Starting from version 5.3.0 Qt generates extra mouse events even on
@@ -170,6 +184,10 @@ void TouchSupportManager::processGestureState(QGesture *gesture)
 
 bool TouchSupportManager::processTouchEvent(QTouchEvent *event)
 {
+	if (event->device()->type() == 1) {
+		return false;
+	}
+
 	event->accept();
 	mGestureIsRunning = event->type() != QEvent::TouchEnd;
 	mEditorView->setDragMode(QGraphicsView::NoDrag);

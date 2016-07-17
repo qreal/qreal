@@ -6,7 +6,7 @@ document.write('\
                 <ul>\
                     <li><a href="interface.html#overview">Обзор</li>\
                     <li><a href="interface.html#settings">Диалог настроек TRIKStudio</li>\
-                    <li><a href="interface.html#d2model">Диалог двумерной модели робота</li>\
+                    <li><a href="interface.html#two-d-model">Окно двумерной модели робота</li>\
                 </ul>\
             </li>\
             <li><a href="programming.html">Создание программ</a>\
@@ -18,6 +18,7 @@ document.write('\
                     <li><a href="programming.html#properties">Редактирование свойств элементов</a></li>\
                     <li><a href="programming.html#graphs">Графики</a></li>\
                     <li><a href="programming.html#text-tab">Программирование на текстовом языке</a></li>\
+                    <li><a href="programming.html#exercises">Упражнения</a></li>\
                 </ul>\
             </li>\
             <li><a href="trik.html">ТРИК</a>\
@@ -29,6 +30,7 @@ document.write('\
                     <ul>\
                         <li><a href="trik.html#textual-programming-qts">Qt Script</a></li>\
                         <li><a href="trik.html#textual-programming-fsharp">F#</a></li>\
+                        <li><a href="trik.html#textual-programming-pascal">Pascal</a></li>\
                     </ul>\
                     <li><a href="trik.html#run-programs">Запуск программ</a></li>\
                     <ul>\
@@ -59,6 +61,7 @@ document.write('\
                     <li><a href="ev3.html#run-programs">Запуск программ</a></li>\
                     <ul>\
                         <li><a href="ev3.html#run-programs-bluetooth">Интерпретация по Bluetooth</a></li>\
+                        <li><a href="ev3.html#run-programs-flashing">Прошивка в робота</a></li>\
                     </ul>\
                 </ul>\
             </li>\

@@ -1,13 +1,23 @@
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "interpreterCore/interpreter/details/sensorVariablesUpdater.h"
 
-#include <utils/tracer.h>
 #include <utils/timelineInterface.h>
 #include <utils/abstractTimer.h>
 #include <kitBase/robotModel/robotParts/scalarSensor.h>
 #include <kitBase/robotModel/robotParts/vectorSensor.h>
-
-static const int unrealUpdateInterval = 20;
-static const int realUpdateInterval = 200;
 
 using namespace interpreterCore::interpreter::details;
 using namespace kitBase::robotModel;
@@ -55,8 +65,6 @@ void SensorVariablesUpdater::run()
 					, Qt::UniqueConnection
 					);
 
-			scalarSensor->read();
-
 			continue;
 		}
 
@@ -84,11 +92,11 @@ void SensorVariablesUpdater::run()
 					, Qt::UniqueConnection
 					);
 
-			vectorSensor->read();
-
 			continue;
 		}
 	}
+
+	mRobotModelManager.model().updateSensorsValues();
 
 	mUpdateTimer->start(updateInterval());
 }
@@ -124,42 +132,18 @@ void SensorVariablesUpdater::onVectorSensorResponse(const QVector<int> &reading)
 
 void SensorVariablesUpdater::onTimerTimeout()
 {
-	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {
-		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
-		if (scalarSensor && !scalarSensor->port().reservedVariable().isEmpty()) {
-
-			if (!scalarSensor->ready()) {
-				/// @todo Error reporting
-				continue;
-			}
-
-			scalarSensor->read();
-		}
-
-		robotParts::VectorSensor * const vectorSensor = dynamic_cast<robotParts::VectorSensor *>(device);
-		if (vectorSensor && !vectorSensor->port().reservedVariable().isEmpty()) {
-
-			if (!vectorSensor->ready()) {
-				/// @todo Error reporting
-				continue;
-			}
-
-			vectorSensor->read();
-		}
-
-	}
+	mRobotModelManager.model().updateSensorsValues();
 
 	mUpdateTimer->start(updateInterval());
 }
 
 int SensorVariablesUpdater::updateInterval() const
 {
-	return mRobotModelManager.model().needsConnection() ? realUpdateInterval : unrealUpdateInterval;
+	return mRobotModelManager.model().updateIntervalForInterpretation();
 }
 
 void SensorVariablesUpdater::onFailure()
 {
-	utils::Tracer::debug(utils::Tracer::autoupdatedSensorValues, "Interpreter::slotFailure", "");
 }
 
 void SensorVariablesUpdater::updateScalarSensorVariables(const PortInfo &sensorPortInfo, int reading)
@@ -169,12 +153,6 @@ void SensorVariablesUpdater::updateScalarSensorVariables(const PortInfo &sensorP
 
 void SensorVariablesUpdater::updateScalarSensorVariable(const QString &variable, int reading)
 {
-	utils::Tracer::debug(
-			utils::Tracer::autoupdatedSensorValues
-			, "SensorVariablesUpdater::updateScalarSensorVariable"
-			, variable + QString::number(reading)
-			);
-
 	mParser.setVariableValue(variable, reading);
 }
 
@@ -191,6 +169,14 @@ void SensorVariablesUpdater::updateVectorSensorVariable(const QString &variable,
 void SensorVariablesUpdater::resetVariables()
 {
 	for (robotParts::Device * const device : mRobotModelManager.model().configuration().devices()) {
+		robotParts::AbstractSensor * const sensor = dynamic_cast<robotParts::ScalarSensor *>(device);
+		if (!sensor) {
+			return;
+		}
+
+		// Sensor state must be unlocked before interpretation starts even if it was not unlocked previous session.
+		sensor->setLocked(false);
+
 		robotParts::ScalarSensor * const scalarSensor = dynamic_cast<robotParts::ScalarSensor *>(device);
 		if (scalarSensor) {
 			updateScalarSensorVariables(scalarSensor->port(), 0);
@@ -198,6 +184,7 @@ void SensorVariablesUpdater::resetVariables()
 
 		robotParts::VectorSensor * const vectorSensor = dynamic_cast<robotParts::VectorSensor *>(device);
 		if (vectorSensor) {
+			scalarSensor->setLocked(false);
 			updateVectorSensorVariables(vectorSensor->port(), {});
 		}
 	}

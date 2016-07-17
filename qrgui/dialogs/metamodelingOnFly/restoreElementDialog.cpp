@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtGui/QStandardItemModel>
 
 #include "restoreElementDialog.h"
@@ -14,6 +28,7 @@ RestoreElementDialog::RestoreElementDialog(QWidget *parent
 	, mElementsWithTheSameNameList(elementsWithTheSameNameList)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	fillSameNameElementsTreeView();
 	connect(mUi->restoreButton, &QPushButton::clicked, this, &RestoreElementDialog::restoreButtonClicked);
 	connect(mUi->createNewButton, &QPushButton::clicked, this, &RestoreElementDialog::createButtonClicked);
@@ -31,7 +46,7 @@ void RestoreElementDialog::fillSameNameElementsTreeView()
 	QStandardItem *item = standardModel->invisibleRootItem();
 	for (const auto &element: mElementsWithTheSameNameList) {
 		QString state = tr("Existed");
-		if (mInterpreterEditorManager.getIsHidden(element) == "true") {
+		if (mInterpreterEditorManager.isHidden(element)) {
 			state = tr("Deleted");
 		}
 
@@ -79,7 +94,7 @@ void RestoreElementDialog::restoreButtonClicked()
 
 	const int selectedRow = mUi->sameNameElementsTreeView->selectionModel()->selectedIndexes().first().row();
 	const Id node = mElementsWithTheSameNameList[selectedRow];
-	if (mInterpreterEditorManager.getIsHidden(node) == "true") {
+	if (mInterpreterEditorManager.isHidden(node)) {
 		mInterpreterEditorManager.resetIsHidden(node);
 		emit jobDone();
 	}

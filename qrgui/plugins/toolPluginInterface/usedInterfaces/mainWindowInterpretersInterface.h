@@ -1,20 +1,35 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtGui/QColor>
-#include <QtCore/QFileInfo>
 
 #include <qrkernel/ids.h>
-#include <qrutils/invocationUtils/longOperation.h>
 
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include "qrgui/plugins/toolPluginInterface/usedInterfaces/progressReporterInterface.h"
 
 namespace qReal {
+
+class ErrorReporterInterface;
+
 namespace gui {
 
 class PreferencesPage;
 class ErrorReporter;
 
-class MainWindowInterpretersInterface
+class MainWindowInterpretersInterface : public ProgressReporterInterface
 {
 public:
 	virtual ~MainWindowInterpretersInterface() {}
@@ -75,16 +90,14 @@ public:
 
 	virtual void deleteElementFromDiagram(const Id &id) = 0;
 
-	/// Must be called before some long operation start.
-	/// Shows progress bar on operation start
-	/// @param operation Operation that going to be invoced
-	virtual void reportOperation(invocation::LongOperation *operation) = 0;
-
 	virtual QWidget *currentTab() = 0;
 	virtual void openTab(QWidget *tab, const QString &title) = 0;
 	virtual void closeTab(QWidget *tab) = 0;
 	/// Sets text on the header of the tab containing the given widget or does nothing if such tab was not found.
 	virtual void setTabText(QWidget *tab, const QString &text) = 0;
+
+	/// Shows start tab even if other tabs are opened.
+	virtual void openStartTab() = 0;
 
 	/// Signals that engine must prepare for modifying blocks set.
 	/// After each beginPaletteModification() call there must be endPaletteModification() call.
@@ -95,18 +108,20 @@ public:
 	/// @param visible - true, if element shall be visible, false if hidden.
 	virtual void setElementInPaletteVisible(const Id &metatype, bool visible) = 0;
 
-	/// Shows or hides all elements in palette.
+	/// Shows or hides all elements in palette for some editor.
+	/// @param diagram - two-part id of the editor whoose elements we show or hide.
 	/// @param visible - true, if all elements shall be visible, false if hidden.
-	virtual void setVisibleForAllElementsInPalette(bool visible) = 0;
+	virtual void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) = 0;
 
 	/// Disables/enables given element on a palette.
 	/// @param metatype - id of an element type to be disabled/enabled.
 	/// @param enabled - true, if element shall be enabled, false if disabled (greyed out).
 	virtual void setElementInPaletteEnabled(const Id &metatype, bool enabled) = 0;
 
-	/// Enables or disables all elements in palette.
+	/// Enables or disables all elements in palette for some editor.
+	/// @param diagram - two-part id of the editor whoose elements we show or hide.
 	/// @param enabled - true, if all elements shall be enabled, false if all elements shall be disabled.
-	virtual void setEnabledForAllElementsInPalette(bool enabled) = 0;
+	virtual void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) = 0;
 
 	/// Commits palette modification in the system: shows or hides elements in palette, linker menus,
 	/// gestures tab and enables or disables elements on diagram.

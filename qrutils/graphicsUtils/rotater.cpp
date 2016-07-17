@@ -1,7 +1,22 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "rotater.h"
 
+#include <QtCore/qmath.h>
 #include <QtGui/QCursor>
-#include <qmath.h>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/graphicsUtils/rotateItem.h>
@@ -22,9 +37,10 @@ Rotater::Rotater()
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(2);
 
-	mPen.setColor(Qt::blue);
-	mPen.setWidth(3);
-	mBrush.setStyle(Qt::NoBrush);
+	QPen pen(Qt::blue);
+	pen.setWidth(3);
+	setPen(pen);
+	setBrush(Qt::NoBrush);
 }
 
 void Rotater::setMasterItem(RotateItem *masterItem)
@@ -43,11 +59,11 @@ void Rotater::setMasterItem(RotateItem *masterItem)
 	setParentItem(mMaster);
 
 	/// @todo Dispose of hardcoding
-	mX1 = rect.right();
+	setX1(rect.right());
 	// Placing rotater into the center of item`s rigth side
-	mY1 = rect.y() + rect.height() / 2;
-	mX2 = mX1 + mLength;
-	mY2 = mY1;
+	setY1(rect.y() + rect.height() / 2);
+	setX2(x1() + mLength);
+	setY2(y1());
 }
 
 void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style, QWidget *widget)
@@ -59,17 +75,17 @@ void Rotater::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *style,
 	const int addLength = mLength / 3;
 	const qreal angle = addAngle;
 	// Must be equal to mLength
-	const qreal checkLength = sqrt((mX2 - mX1) * (mX2 - mX1) + (mY2 - mY1) * (mY2 - mY1));
-	const qreal x0 = ((checkLength - addLength) * mX2 + addLength * mX1) / checkLength;
-	const qreal y0 = ((checkLength - addLength) * mY2 + addLength * mY1) / checkLength;
-	const QPointF first = QTransform().translate(mX2 - x0, mY2 - y0).rotate(- angle).translate(- mX2 + x0, - mY2 + y0)
+	const qreal checkLength = sqrt((x2() - x1()) * (x2() - x1()) + (y2() - y1()) * (y2() - y1()));
+	const qreal x0 = ((checkLength - addLength) * x2() + addLength * x1()) / checkLength;
+	const qreal y0 = ((checkLength - addLength) * y2() + addLength * y1()) / checkLength;
+	const QPointF first = QTransform().translate(x2() - x0, y2() - y0).rotate(-angle).translate(-x2() + x0, -y2() + y0)
 			.rotate(angle).map(QPointF(x0, y0));
-	const QPointF second = QTransform().translate(mX2 - x0, mY2 - y0).rotate(angle).translate(- mX2 + x0, - mY2 + y0)
-			.rotate(- angle).map(QPointF(x0, y0));
+	const QPointF second = QTransform().translate(x2() - x0, y2() - y0).rotate(angle).translate(-x2() + x0, -y2() + y0)
+			.rotate(-angle).map(QPointF(x0, y0));
 
-	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
-	mLineImpl.drawItem(painter, mX2, mY2, first.x(), first.y());
-	mLineImpl.drawItem(painter, mX2, mY2, second.x(), second.y());
+	mLineImpl.drawItem(painter, x1(), y1(), x2(), y2());
+	mLineImpl.drawItem(painter, x2(), y2(), first.x(), first.y());
+	mLineImpl.drawItem(painter, x2(), y2(), second.x(), second.y());
 }
 
 void Rotater::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option)
@@ -82,18 +98,18 @@ void Rotater::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGrap
 
 void Rotater::drawExtractionForItem(QPainter *painter)
 {
-	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, mDrift);
+	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), mDrift);
 	drawFieldForResizeItem(painter);
 }
 
 void Rotater::drawFieldForResizeItem(QPainter *painter)
 {
-	painter->drawEllipse(QPointF(mX2, mY2), mResizeDrift, mResizeDrift);
+	painter->drawEllipse(QPointF(x2(), y2()), mResizeDrift, mResizeDrift);
 }
 
 QRectF Rotater::boundingRect() const
 {
-	return mLineImpl.boundingRect(mX1, mY1, mX2, mY2, mPen.width(), drift);
+	return mLineImpl.boundingRect(x1(), y1(), x2(), y2(), pen().width(), drift);
 }
 
 void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
@@ -140,7 +156,7 @@ void Rotater::calcResizeItem(QGraphicsSceneMouseEvent *event)
 
 void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState == BottomRight) {
+	if (dragState() == BottomRight) {
 		if (mMaster->editable()) {
 			AbstractItem::resizeItem(event);
 		}
@@ -149,7 +165,7 @@ void Rotater::resizeItem(QGraphicsSceneMouseEvent *event)
 
 void Rotater::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState != BottomRight) {
+	if (dragState() != BottomRight) {
 		event->ignore();
 	}
 
@@ -159,7 +175,7 @@ void Rotater::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Rotater::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState == BottomRight) {
+	if (dragState() == BottomRight) {
 		if (mMaster->editable()) {
 			AbstractItem::resizeItem(event);
 		}
@@ -170,7 +186,7 @@ void Rotater::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (mDragState == BottomRight) {
+	if (dragState() == BottomRight) {
 		AbstractItem::mouseReleaseEvent(event);
 	}
 }

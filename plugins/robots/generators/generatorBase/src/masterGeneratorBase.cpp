@@ -1,14 +1,30 @@
-#include <QtCore/QPair>
-#include <QtCore/QStack>
+/* Copyright 2013-2016 CyberTech Labs Ltd., Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
 #include "generatorBase/masterGeneratorBase.h"
 
+#include <QtCore/QDir>
+#include <QtCore/QPair>
+#include <QtCore/QStack>
+
 #include <qrutils/outFile.h>
+#include <qrutils/fileSystemUtils.h>
 #include <qrutils/stringUtils.h>
 #include <qrtext/languageToolboxInterface.h>
 
 #include "readableControlFlowGenerator.h"
-#include "gotoControlFlowGenerator.h"
+#include "generatorBase/gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
@@ -36,7 +52,7 @@ MasterGeneratorBase::MasterGeneratorBase(const qrRepo::RepoApi &repo
 
 void MasterGeneratorBase::setProjectDir(const QFileInfo &fileInfo)
 {
-	mProjectName = fileInfo.baseName();
+	mProjectName = fileInfo.completeBaseName();
 	mProjectDir = fileInfo.absolutePath();
 }
 
@@ -44,7 +60,7 @@ void MasterGeneratorBase::initialize()
 {
 	mCustomizer = createCustomizer();
 	mCustomizer->factory()->initialize();
-	setPathToTemplates(mCustomizer->factory()->pathToTemplates());
+	setPathsToTemplates(mCustomizer->factory()->pathsToTemplates());
 
 	mValidator = createValidator();
 
@@ -77,14 +93,16 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
-		const bool subprogramsResult = mCustomizer->factory()->subprograms()->generate(mReadableControlFlowGenerator
-				, indentString);
-		if (!subprogramsResult) {
-			if (supportsGotoGeneration()) {
-				mainCode = QString();
-			} else {
-				return QString();
-			}
+		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()->subprograms()->generate(
+				mReadableControlFlowGenerator, indentString);
+		switch (subprogramsResult) {
+		case parts::Subprograms::GenerationResult::success:
+			break;
+		case parts::Subprograms::GenerationResult::error:
+			mainCode = QString();
+			break;
+		case parts::Subprograms::GenerationResult::fatalError:
+			return QString();
 		}
 	} else {
 		if (mReadableControlFlowGenerator->errorsOccured()) {
@@ -98,9 +116,9 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 		const semantics::SemanticTree *gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 		if (gotoMainControlFlow) {
 			mainCode = gotoMainControlFlow->toString(1, indentString);
-			const bool gotoSubprogramsResult = mCustomizer->factory()
+			const parts::Subprograms::GenerationResult gotoSubprogramsResult = mCustomizer->factory()
 					->subprograms()->generate(mGotoControlFlowGenerator, indentString);
-			if (!gotoSubprogramsResult) {
+			if (gotoSubprogramsResult != parts::Subprograms::GenerationResult::success) {
 				mainCode = QString();
 			}
 		}
@@ -127,7 +145,15 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 			mCustomizer->factory()->terminateCode(), 1, indentString));
 	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
-	resultCode.replace("@@VARIABLES@@", mCustomizer->factory()->variables()->generateVariableString());
+	const QString constantsString = mCustomizer->factory()->variables()->generateConstantsString();
+	const QString variablesString = mCustomizer->factory()->variables()->generateVariableString();
+	if (resultCode.contains("@@CONSTANTS@@")) {
+		resultCode.replace("@@CONSTANTS@@", constantsString);
+		resultCode.replace("@@VARIABLES@@", variablesString);
+	} else {
+		resultCode.replace("@@VARIABLES@@", constantsString + "\n" + variablesString);
+	}
+
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
@@ -145,23 +171,23 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 
 void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 {
-	QString const open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
-	QString const close = "@#%1#@";
+	const QString open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
+	const QString close = "@#%1#@";
 	QRegExp re;
-	QStack< QPair<QString, int> > stack;
-	QList< QPair<QString, QPair<int, int> > > results;
+	QStack <QPair<QString, int>> stack;
+	QList <QPair<QString, QPair<int, int>>> results;
 	int lineNumber = 1;
 
-	for (QString const &line : resultCode.split("\n")){
+	for (const QString &line : resultCode.split("\n")){
 		re.setPattern(open);
-		int const pos = re.indexIn(line);
+		const int pos = re.indexIn(line);
 		if (pos > -1) {
-			QString const id = re.cap(1);
+			const QString id = re.cap(1);
 			stack.push(QPair<QString, int>(id, lineNumber));
 		}
 
 		if (!stack.isEmpty()) {
-			QString const id = stack.top().first;
+			const QString id = stack.top().first;
 			if (line.contains(close.arg(id))) {
 				results.append(QPair<QString, QPair<int, int>>(id
 						, QPair<int, int>(stack.top().second, lineNumber)));
@@ -175,14 +201,14 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 	QString out;
 
 	qSort(results.begin(), results.end()
-		  , [](QPair<QString, QPair<int, int> > r1, QPair<QString, QPair<int, int> > r2) -> bool {
+			, [](QPair<QString, QPair<int, int>> r1, QPair<QString, QPair<int, int>> r2) -> bool {
 				return r1.second.first < r2.second.first;
-			}
-			);
+			});
 
-	for (QPair<QString, QPair<int, int>> res : results) {
-		out += res.first + "@" + QString::number(res.second.first) + "@" + QString::number(res.second.second)
-				+ "\n";
+	for (const QPair<QString, QPair<int, int>> &res : results) {
+		out += QString("%1@%2@%3\n").arg(res.first
+				, QString::number(res.second.first)
+				, QString::number(res.second.second));
 	}
 
 	outputCode(targetPath() + ".dbg", out);
@@ -215,8 +241,12 @@ void MasterGeneratorBase::afterGeneration()
 
 void MasterGeneratorBase::outputCode(const QString &path, const QString &code)
 {
-	// File must be removed to leave created and modified timestamps equal.
 	QFile::remove(path);
+
+	// File creation and modified timestamps should be equal after all.
+	// But straitforward removal will not work due to the tunel file system effect:
+	// http://stackoverflow.com/questions/661977/why-windows-sets-new-created-files-created-time-property-to-old-time
 	utils::OutFile out(path);
+	utils::FileSystemUtils::setCreationDateToNow(path);
 	out() << code;
 }

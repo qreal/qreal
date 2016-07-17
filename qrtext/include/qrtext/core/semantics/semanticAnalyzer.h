@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QSharedPointer>
@@ -71,6 +85,10 @@ public:
 	/// Returns a mapping of variable identifiers known to semantic analyzer to their types.
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
 
+	/// Returns true if \a specific type is a subtype of \a general type, including case when they are equivalent.
+	bool isGeneralization(const QSharedPointer<core::types::TypeExpression> &specific
+			, const QSharedPointer<core::types::TypeExpression> &general) const;
+
 	/// Clears the state of semantic analyzer, forgetting known identifiers and expression types.
 	virtual void clear();
 
@@ -126,6 +144,11 @@ private:
 	/// Analyzes given node assuming that all its descendants were analysed and provides type information for it
 	/// using methods like constrain() and unify(). Shall be defined in concrete analyzers.
 	virtual void analyzeNode(QSharedPointer<ast::Node> const &node) = 0;
+
+	/// Called for entire tree to be analyzed, shall be redefined in concrete analyzers if they wish
+	/// to do some context-sensitive checks before main "analyzeNode" pass. Default implementation
+	/// does nothing.
+	virtual void precheck(QSharedPointer<ast::Node> const &node);
 
 	/// Contains mapping from expression to its type. Type is always stored as type variable to make further analysis
 	/// more convenient.

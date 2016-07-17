@@ -1,3 +1,17 @@
+/* Copyright 2007-2016 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "errorReporter.h"
 
 #include <QtWidgets/QMessageBox>
@@ -7,6 +21,7 @@
 #include <qrkernel/exception/exception.h>
 
 #include "mainWindow/errorListWidget.h"
+#include "scriptAPI/hintReporter.h"
 
 using namespace qReal;
 using namespace gui;
@@ -39,6 +54,31 @@ void ErrorReporter::updateVisibility(bool isVisible)
 	} else if (mErrorListWidget->count() > 0) {
 		mErrorList->show();
 	}
+}
+
+void ErrorReporter::reportOperation(const QFuture<void> &operation, const QString &description)
+{
+	ProgressBar * const progressBar = new ProgressBar;
+	progressBar->reportOperation(operation, description);
+	progressBar->setToolTip(description);
+
+	QListWidgetItem *item = new QListWidgetItem(mErrorListWidget);
+	progressBar->hide();
+
+	connect(&progressBar->currentOperation(), &QFutureWatcher<void>::started, this, [=]() {
+		mErrorListWidget->addItem(item);
+		mErrorListWidget->setItemWidget(item, progressBar);
+		progressBar->show();
+		mErrorList->show();
+	});
+	connect(&progressBar->currentOperation(), &QFutureWatcher<void>::finished, this, [=]() {
+		delete item;
+		progressBar->deleteLater();
+	});
+	connect(&progressBar->currentOperation(), &QFutureWatcher<void>::canceled, this, [=]() {
+		delete item;
+		progressBar->deleteLater();
+	});
 }
 
 void ErrorReporter::addInformation(const QString &message, const Id &position)
@@ -105,14 +145,26 @@ void ErrorReporter::clearErrors()
 	mErrors.clear();
 }
 
-bool ErrorReporter::wereErrors()
+bool ErrorReporter::wereErrors() const
 {
 	for (const Error &error : mErrors) {
 		if (error.severity() == Error::critical || error.severity() == Error::error) {
 			return true;
 		}
 	}
+
 	return false;
+}
+
+void ErrorReporter::sendBubblingMessage(const QString &message, int duration, QWidget *parent)
+{
+	if (!parent) {
+		// A bit hacky, but not criminal way to get main window.
+		parent = mErrorListWidget->topLevelWidget();
+	}
+
+	// The message will show and dispose itself.
+	new HintReporter(parent, message, duration);
 }
 
 void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorListWidget) const
@@ -126,6 +178,7 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	}
 
 	QListWidgetItem *item = new QListWidgetItem(errorListWidget);
+	item->setData(ErrorListWidget::positionRole, error.position().toString());
 	const QString message = QString(" <font color='gray'>%1</font> <u>%2</u> %3").arg(
 			error.timestamp(), severityMessage(error), error.message());
 	switch (error.severity()) {
@@ -148,7 +201,6 @@ void ErrorReporter::showError(const Error &error, ErrorListWidget * const errorL
 	QLabel *label = new QLabel(message.trimmed());
 	label->setAlignment(Qt::AlignVCenter);
 	label->setOpenExternalLinks(true);
-	item->setToolTip(error.position().toString());
 	errorListWidget->addItem(item);
 	errorListWidget->setItemWidget(item, label);
 	errorListWidget->setCurrentItem(item);

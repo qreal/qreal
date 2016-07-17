@@ -1,10 +1,28 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "propertyEditorView.h"
 
 #include <QtWidgets/QApplication>
 
+#include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
 
 #include "models/commands/changePropertyCommand.h"
+
+using namespace qReal;
+using namespace qReal::gui::editor;
 
 PropertyEditorView::PropertyEditorView(QWidget *parent)
 		: QWidget(parent)
@@ -101,10 +119,11 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
-				isButton = true;
-			}
+		}
+
+		/// @todo: Not property name should be hard-coded, new type must be introduced (like 'sdf' or 'qml')!
+		if ((name == "shape" && typeName == "string") || mModel->isReference(valueCell, name)) { // hack
+			isButton = true;
 		}
 
 		QtProperty *item = nullptr;
@@ -115,6 +134,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 			vItem->setValue(value);
 			vItem->setToolTip(value.toString());
+
 			if (!values.isEmpty()) {
 				QStringList friendlyNames;
 				for (QPair<QString, QString> const &pair : values) {
@@ -130,15 +150,23 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 					vItem->setValue(idx);
 				}
 			}
+
 			item = vItem;
 		}
+
+		const QString description = propertyDescription(i);
+
+		if (!description.isEmpty()) {
+			item->setToolTip(description);
+		}
+
 		mPropertyEditor->addProperty(item);
 	}
 
 	connect(mButtonManager, SIGNAL(buttonClicked(QtProperty*))
-			, this, SLOT(buttonClicked(QtProperty*)));
+			, this, SLOT(buttonClicked(QtProperty*)), Qt::UniqueConnection);
 	connect(mVariantManager, SIGNAL(valueChanged(QtProperty*, QVariant))
-			, this, SLOT(editorValueChanged(QtProperty *, QVariant)));
+			, this, SLOT(editorValueChanged(QtProperty *, QVariant)), Qt::UniqueConnection);
 	mPropertyEditor->setPropertiesWithoutValueMarked(true);
 	mPropertyEditor->setRootIsDecorated(false);
 }
@@ -151,11 +179,18 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QVariant value = valueIndex.data();
 		if (property) {
 			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
-				value = enumPropertyIndexOf(valueIndex, value.toString());
+				const int index = enumPropertyIndexOf(valueIndex, value.toString());
+				if (!mModel->enumEditable(valueIndex) || index >= 0) {
+					value = index;
+				}
 			}
 
 			setPropertyValue(property, value);
-			property->setToolTip(value.toString());
+
+			const QString description = propertyDescription(i);
+			const QString tooltip = description.isEmpty() ? value.toString() : description;
+
+			property->setToolTip(tooltip);
 		}
 	}
 }
@@ -178,12 +213,16 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 		if (typeName == "code") {
 			emit textEditorRequested(actualIndex, role, propertyValue);
 		} else if (typeName == "directorypath") {
-			const QString startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			const QString startPath = propertyValue.isEmpty()
+					? QDir::homePath()
+					: propertyValue;
 			const QString location = utils::QRealFileDialog::getExistingDirectory("OpenDirectoryForPropertyEditor"
 					, this, tr("Specify directory:"), startPath);
 			mModel->setData(index, location);
 		} else if (typeName == "filepath") {
-			const QString startPath = propertyValue.isEmpty() ? qApp->applicationDirPath() : propertyValue;
+			const QString startPath = propertyValue.isEmpty()
+					? QDir::homePath()
+					: propertyValue;
 			const QString location = utils::QRealFileDialog::getOpenFileName("OpenFileForPropertyEditor"
 					, this, tr("Select file:"), startPath);
 			mModel->setData(index, location);
@@ -221,12 +260,13 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 
 	value = QVariant(value.toString());
-	const QVariant oldValue = mModel->data(index);
+	const Id id = mModel->idByIndex(index);
+	const QString propertyName = mModel->propertyName(index);
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal
 	qReal::commands::ChangePropertyCommand *changeCommand =
-			new qReal::commands::ChangePropertyCommand(mModel, index, oldValue, value);
+			new qReal::commands::ChangePropertyCommand(mLogicalModelAssistApi, propertyName, id, value);
 	mController->execute(changeCommand);
 }
 
@@ -236,6 +276,12 @@ void PropertyEditorView::setPropertyValue(QtVariantProperty *property, const QVa
 	mChangingPropertyValue = true;
 	property->setValue(value);
 	mChangingPropertyValue = old;
+}
+
+QString PropertyEditorView::propertyDescription(const int cellIndex) const
+{
+	const QModelIndex keyIndex = mModel->index(cellIndex, 0);
+	return mModel->data(keyIndex, Qt::ToolTipRole).toString();
 }
 
 int PropertyEditorView::enumPropertyIndexOf(const QModelIndex &index, const QString &value)

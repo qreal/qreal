@@ -1,4 +1,20 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "generatorBase/controlFlowGeneratorBase.h"
+
+#include <QtCore/QUuid>
 
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "generatorBase/parts/threads.h"
@@ -145,8 +161,25 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 
 	// Determine which thread is the main by examining guards of outgoing links
 	// If there are no guards then a random thread will be chosen as main
+	bool foundMain = false;
+	for (const LinkInfo &thread : links) {
+		if (mRepo.stringProperty(thread.linkId, "Guard") == mThreadId) {
+			foundMain = true;
+			break;
+		}
+	}
+
 	for (const LinkInfo &thread : links) {
 		QString threadId = mRepo.stringProperty(thread.linkId, "Guard");
+		if (threadId.isEmpty()) {
+			if (!foundMain) {
+				threadId = mThreadId;
+				foundMain = true;
+			} else {
+				threadId = QUuid::createUuid().toString();
+			}
+		}
+
 		threadIds[thread.linkId] = threadId;
 		if (threadId == mThreadId) {
 			currentThread = thread;

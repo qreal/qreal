@@ -1,10 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtGui/QPainter>
-#include <QtWidgets/QStyle>
-#include <QtWidgets/QStyleOptionGraphicsItem>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QGraphicsSceneMouseEvent>
 
 #include <qrkernel/settingsManager.h>
+
 #include "lineItem.h"
-#include "wallItem.h"
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -13,221 +27,131 @@ using namespace graphicsUtils;
 LineItem::LineItem(const QPointF &begin, const QPointF &end, int cornerRadius)
 	: mLineImpl()
 	, mCornerRadius(cornerRadius)
-	, mCellNumbX1(0)
-	, mCellNumbY1(0)
-	, mCellNumbX2(0)
-	, mCellNumbY2(0)
 {
-	mX1 = begin.x();
-	mY1 = begin.y();
-	mX2 = end.x();
-	mY2 = end.y();
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	setX1(begin.x());
+	setY1(begin.y());
+	setX2(end.x());
+	setY2(end.y());
 	setPrivateData();
+}
+
+AbstractItem *LineItem::clone() const
+{
+	const auto cloned = new LineItem({x1(), y1()}, {x2(), y2()}, mCornerRadius);
+	AbstractItem::copyTo(cloned);
+	return cloned;
+}
+
+QAction *LineItem::lineTool()
+{
+	QAction * const result = new QAction(QIcon(":/icons/2d_ruler.png"), tr("Line (L)"), nullptr);
+	result->setShortcut(QKeySequence(Qt::Key_L));
+	return result;
 }
 
 void LineItem::setPrivateData()
 {
-	mPen.setColor(Qt::green);
-	mPen.setStyle(Qt::SolidLine);
+	QPen pen(this->pen());
+	pen.setColor(Qt::green);
+	pen.setStyle(Qt::SolidLine);
+	setPen(pen);
 	mSerializeName = "line";
 }
 
 QRectF LineItem::boundingRect() const
 {
-	return mLineImpl.boundingRect(mX1, mY1, mX2, mY2, mPen.width(), drift);
+	return mLineImpl.boundingRect(x1(), y1(), x2(), y2(), pen().width(), drift);
 }
 
 void LineItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
 {
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
-	mLineImpl.drawItem(painter, mX1, mY1, mX2, mY2);
+	mLineImpl.drawItem(painter, x1(), y1(), x2(), y2());
 }
 
 void LineItem::drawExtractionForItem(QPainter* painter)
 {
-	mLineImpl.drawPointExtractionForItem(painter, mX1, mY1, mX2, mY2);
+	mLineImpl.drawPointExtractionForItem(painter, x1(), y1(), x2(), y2());
 	setPenBrushDriftRect(painter);
-	mLineImpl.drawExtractionForItem(painter, mX1, mY1, mX2, mY2, drift);
-	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, mX1, mY1, mX2, mY2);
-
-	painter->setPen(QPen(Qt::red));
-	painter->setBrush(QBrush(Qt::SolidPattern));
+	mLineImpl.drawExtractionForItem(painter, x1(), y1(), x2(), y2(), drift);
+	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, x1(), y1(), x2(), y2());
 }
 
 QPainterPath LineItem::shape() const
 {
-	return mLineImpl.shape(drift, mX1, mY1, mX2, mY2);
+	return mLineImpl.shape(drift, x1(), y1(), x2(), y2());
 }
 
 void LineItem::resizeItem(QGraphicsSceneMouseEvent *event)
 {
-	if (event->modifiers() & Qt::ShiftModifier) {
-		mX2 = event->scenePos().x();
-		mY2 = event->scenePos().y();
+	const bool isResizing = dragState() == TopLeft || dragState() == BottomRight;
+	if (event->modifiers() & Qt::ShiftModifier && isResizing) {
+		AbstractItem::resizeItem(event);
 		reshapeRectWithShift();
+	} else if (isResizing) {
+		AbstractItem::resizeItem(event);
 	} else {
-		if (SettingsManager::value("2dShowGrid").toBool()
-				&& (mDragState == TopLeft || mDragState == BottomRight)
-				&& dynamic_cast<WallItem *>(this))
-		{
-			calcResizeItem(event, SettingsManager::value("2dGridCellSize").toInt());
-		} else {
-			if (mDragState == TopLeft || mDragState == BottomRight) {
-				AbstractItem::resizeItem(event);
-			} else {
-				setFlag(QGraphicsItem::ItemIsMovable, true);
-			}
-		}
-	}
-}
-
-void LineItem::calcResizeItem(QGraphicsSceneMouseEvent *event, int indexGrid)
-{
-	const qreal x = mapFromScene(event->scenePos()).x();
-	const qreal y = mapFromScene(event->scenePos()).y();
-	if (mDragState != None) {
-		setFlag(QGraphicsItem::ItemIsMovable, false);
-	}
-	if (mDragState == TopLeft) {
-		mX1 = x;
-		mY1 = y;
-		resizeBeginWithGrid(indexGrid);
-	} else if (mDragState == BottomRight) {
-		mX2 = x;
-		mY2 = y;
-		reshapeEndWithGrid(indexGrid);
+		setFlag(QGraphicsItem::ItemIsMovable, true);
 	}
 }
 
 void LineItem::reshapeRectWithShift()
 {
-	qreal differenceX = abs(mX2 - mX1);
-	qreal differenceY = abs(mY2 - mY1);
-	qreal differenceXY = abs(differenceX - differenceY);
-	qreal size = qMax(differenceX, differenceY);
+	const qreal differenceX = qAbs(x2() - x1());
+	const qreal differenceY = qAbs(y2() - y1());
+	const qreal differenceXY = qAbs(differenceX - differenceY);
+	const qreal size = qMax(differenceX, differenceY);
 	const int delta = size / 2;
 	if (differenceXY > delta) {
-		QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(mX1, mY1, mX2, mY2, differenceX, differenceY, size);
-		setX2andY2(res.first, res.second);
-	} else
-		AbstractItem::reshapeRectWithShift();
-}
-
-void LineItem::resizeBeginWithGrid(int indexGrid)
-{
-	const int coefX = static_cast<int>(mX1) / indexGrid;
-	const int coefY = static_cast<int>(mY1) / indexGrid;
-
-	setX1andY1(alignedCoordinate(mX1, coefX, indexGrid), alignedCoordinate(mY1, coefY, indexGrid));
-
-	mCellNumbX1 = mX1 / indexGrid;
-	mCellNumbY1 = mY1 / indexGrid;
-}
-
-void LineItem::reshapeEndWithGrid(int indexGrid)
-{
-	const int coefX = static_cast<int>(mX2) / indexGrid;
-	const int coefY = static_cast<int>(mY2) / indexGrid;
-
-	setX2andY2(alignedCoordinate(mX2, coefX, indexGrid), alignedCoordinate(mY2, coefY, indexGrid));
-
-	mCellNumbX2 = mX2 / indexGrid;
-	mCellNumbY2 = mY2 / indexGrid;
-}
-
-void LineItem::reshapeBeginWithGrid(int indexGrid)
-{
-	const int coefX = static_cast<int> (mX1) / indexGrid;
-	const int coefY = static_cast<int> (mY1) / indexGrid;
-	setX1andY1(alignedCoordinate(mX1, coefX, indexGrid), alignedCoordinate(mY1, coefY, indexGrid));
-	mCellNumbX1 = mX1 / indexGrid;
-	mCellNumbY1 = mY1 / indexGrid;
-}
-
-void LineItem::alignTheWall(int indexGrid)
-{
-	if (mX1 != mX2 && mY1 != mY2) {
-		countCellNumbCoordinates(indexGrid);
-	}
-
-	setBeginCoordinatesWithGrid(indexGrid);
-	setEndCoordinatesWithGrid(indexGrid);
-}
-
-void LineItem::countCellNumbCoordinates(int indexGrid)
-{
-	mCellNumbX1 = mX1 / indexGrid;
-	mCellNumbY1 = mY1 / indexGrid;
-
-	if (qAbs(mY2 - mY1) > qAbs(mX2 - mX1)) {
-		mCellNumbX2 = mCellNumbX1;
-		mCellNumbY2 = mY2 / indexGrid;
+		const qreal corner1X = dragState() == TopLeft ? x2() : x1();
+		const qreal corner1Y = dragState() == TopLeft ? y2() : y1();
+		const qreal corner2X = dragState() == TopLeft ? x1() : x2();
+		const qreal corner2Y = dragState() == TopLeft ? y1() : y2();
+		const QPair<qreal, qreal> res = mLineImpl.reshapeRectWithShiftForLine(corner1X, corner1Y, corner2X, corner2Y
+				, differenceX, differenceY, size);
+		if (dragState() == TopLeft) {
+			setX1(res.first);
+			setY1(res.second);
+		} else {
+			setX2(res.first);
+			setY2(res.second);
+		}
 	} else {
-		mCellNumbX2 = mX2 / indexGrid;
-		mCellNumbY2 = mCellNumbY1;
+		const qreal size = qMax(qAbs(x2() - x1()), qAbs(y2() - y1()));
+		if (dragState() == TopLeft) {
+			setX1(x1() > x2() ? x2() + size : x2() - size);
+			setY1(y1() > y2() ? y2() + size : y2() - size);
+		} else {
+			setX2(x2() > x1() ? x1() + size : x1() - size);
+			setY2(y2() > y1() ? y1() + size : y1() - size);
+		}
 	}
 }
 
-void LineItem::setBeginCoordinatesWithGrid(int indexGrid)
-{
-	setX1andY1(mCellNumbX1 * indexGrid, mCellNumbY1 * indexGrid);
-}
-
-void LineItem::setEndCoordinatesWithGrid(int indexGrid)
-{
-	setX2andY2(mCellNumbX2 * indexGrid, mCellNumbY2 * indexGrid);
-}
-
-void LineItem::setDraggedEnd(qreal x, qreal y)
-{
-	setX2andY2(mX1 - x, mY1 - y);
-}
-
-qreal LineItem::alignedCoordinate(qreal coord, int coef, const int indexGrid) const
-{
-	const int coefSign = coef ? coef / qAbs(coef) : 0;
-
-	if (qAbs(qAbs(coord) - qAbs(coef) * indexGrid) <= indexGrid / 2) {
-		return coef * indexGrid;
-	} else if (qAbs(qAbs(coord) - (qAbs(coef) + 1) * indexGrid) <= indexGrid / 2) {
-		return (coef + coefSign) * indexGrid;
-	}
-
-	return coord;
-}
-
-QDomElement LineItem::serialize(QDomDocument &document, const QPoint &topLeftPicture)
+QDomElement LineItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
 {
 	QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
 	AbstractItem::serialize(lineNode);
-	lineNode.setAttribute("begin", QString::number(mX1 + scenePos().x() - topLeftPicture.x())
-			+ ":" + QString::number(mY1 + scenePos().y() - topLeftPicture.y()));
-	lineNode.setAttribute("end", QString::number(mX2 + scenePos().x() - topLeftPicture.x())
-			+ ":" + QString::number(mY2 + scenePos().y() - topLeftPicture.y()));
+	mLineImpl.serialize(lineNode
+			, x1() + scenePos().x() - topLeftPicture.x()
+			, y1() + scenePos().y() - topLeftPicture.y()
+			, x2() + scenePos().x() - topLeftPicture.x()
+			, y2() + scenePos().y() - topLeftPicture.y());
 	return lineNode;
 }
 
 void LineItem::deserialize(const QDomElement &element)
 {
 	AbstractItem::deserialize(element);
-	const QString beginStr = element.attribute("begin", "0:0");
-	QStringList splittedStr = beginStr.split(":");
-	int x = splittedStr[0].toInt();
-	int y = splittedStr[1].toInt();
-	const QPointF begin = QPointF(x, y);
+	const QPair<QPointF, QPointF> points = mLineImpl.deserialize(element);
+	const QPointF begin = points.first;
+	const QPointF end = points.second;
 
-	const QString endStr = element.attribute("end", "0:0");
-	splittedStr = endStr.split(":");
-	x = splittedStr[0].toInt();
-	y = splittedStr[1].toInt();
-	const QPointF end = QPointF(x, y);
-
-	mX1 = begin.x();
-	mY1 = begin.y();
-	mX2 = end.x();
-	mY2 = end.y();
+	setX1(begin.x());
+	setY1(begin.y());
+	setX2(end.x());
+	setY2(end.y());
 
 	deserializePenBrush(element);
 }

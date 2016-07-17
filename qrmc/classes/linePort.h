@@ -1,31 +1,49 @@
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
-#include <QDomElement>
+#include <QtXml/QDomElement>
 
 #include "port.h"
 #include "scalableCoordinate.h"
 
 namespace qrmc {
-	class LinePort : public Port
-	{
-	public:
-		virtual bool init(const QDomElement &element, int width, int height);
 
-		virtual Port* clone() const;
+/// Represents line port.
+class LinePort : public Port
+{
+public:
+	bool init(const QDomElement &element, int width, int height) override;
 
-		virtual QString generateSdf(MetaCompiler *compiler) const;
-		virtual QString generateInit(MetaCompiler *compiler) const;
+	Port* clone() const override;
 
-	private:
-		ScalableCoordinate mStartX;
-		ScalableCoordinate mStartY;
-		ScalableCoordinate mEndX;
-		ScalableCoordinate mEndY;
+	QString generateSdf(const MetaCompiler &compiler) const override;
+	QString generateInit(const MetaCompiler &compiler) const override;
+	void generatePortList(const QStringList &portTypes) override;
 
-		int mWidth;
-		int mHeight;
+private:
+	ScalableCoordinate mStartX;
+	ScalableCoordinate mStartY;
+	ScalableCoordinate mEndX;
+	ScalableCoordinate mEndY;
 
-		void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
-		QString generate(const QString &lineTemplate, bool isScaled) const;
-	};
+	int mWidth = 0;
+	int mHeight = 0;
+
+	void initCoordinate(ScalableCoordinate &field, QString coordinate, int maxValue);
+	QString generate(const QString &lineTemplate, bool isScaled) const;
+};
+
 }

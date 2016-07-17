@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QAbstractItemModel>
@@ -35,28 +49,21 @@ public:
 	GraphicalPartModel(qrRepo::GraphicalRepoApi &repoApi
 			, const modelsImplementation::ModelIndexesInterface &graphicalModel);
 
-	virtual ~GraphicalPartModel();
+	~GraphicalPartModel() override;
 
-	// Override.
-	virtual QVariant data(const QModelIndex &index, int role) const;
+	QVariant data(const QModelIndex &index, int role) const override;
 
-	// Override.
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
-	// Override.
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-	// Override.
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
-	// Override.
-	virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
-	// Override.
-	virtual QModelIndex parent(const QModelIndex &index) const;
+	QModelIndex parent(const QModelIndex &index) const override;
 
-	// Override.
-	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
 	/// Adds new graphical part to model and repository.
 	/// @param element - id of an element to which a part shall be added. It shall already exist in repository,

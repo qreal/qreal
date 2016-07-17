@@ -1,10 +1,28 @@
+/* Copyright 2013-2016 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "kitBase/robotModel/commonRobotModel.h"
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
 #include <utils/realTimeline.h>
+#include <kitBase/robotModel/robotParts/abstractSensor.h>
 
 #include "kitBase/robotModel/robotParts/motor.h"
+#include "kitBase/robotModel/robotParts/random.h"
+
+const int updateInterval = 200;
 
 using namespace kitBase::robotModel;
 
@@ -19,6 +37,8 @@ CommonRobotModel::CommonRobotModel(const QString &kitId, const QString &robotId)
 
 	connect(this, &CommonRobotModel::connected, this, &CommonRobotModel::onConnected);
 	connect(this, &CommonRobotModel::disconnected, this, &CommonRobotModel::onDisconnected);
+
+	addAllowedConnection(PortInfo("RandomPort", input), { DeviceInfo::create<robotParts::Random>() });
 }
 
 CommonRobotModel::~CommonRobotModel()
@@ -60,6 +80,27 @@ void CommonRobotModel::stopRobot()
 void CommonRobotModel::disconnectFromRobot()
 {
 	emit disconnected();
+}
+
+void CommonRobotModel::updateSensorsValues() const
+{
+	for (robotParts::Device * const device : mConfiguration.devices()) {
+		robotParts::AbstractSensor * const sensor = dynamic_cast<robotParts::AbstractSensor *>(device);
+		if (sensor && !sensor->port().reservedVariable().isEmpty()) {
+
+			if (!sensor->ready() || sensor->isLocked()) {
+				/// @todo Error reporting
+				continue;
+			}
+
+			sensor->read();
+		}
+	}
+}
+
+int CommonRobotModel::updateIntervalForInterpretation() const
+{
+	return updateInterval;
 }
 
 bool CommonRobotModel::interpretedModel() const
@@ -173,6 +214,11 @@ void CommonRobotModel::applyConfiguration()
 	}
 }
 
+QHash<QString, int> CommonRobotModel::buttonCodes() const
+{
+	return QHash<QString, int>();
+}
+
 QList<DeviceInfo> CommonRobotModel::convertibleBases() const
 {
 	return {};
@@ -196,10 +242,16 @@ void CommonRobotModel::addAllowedConnection(const PortInfo &port, QList<DeviceIn
 	mAllowedConnections[port].append(devices);
 }
 
+void CommonRobotModel::removeAllowedConnections(const PortInfo &port)
+{
+	mAllowedConnections.remove(port);
+}
+
 robotParts::Device * CommonRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
-	Q_UNUSED(port);
-	Q_UNUSED(deviceInfo);
+	if (deviceInfo.isA<robotParts::Random>()) {
+		return new robotParts::Random(deviceInfo, port);
+	}
 
 	/// @todo Handle error?
 	return nullptr;

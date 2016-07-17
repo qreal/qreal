@@ -1,3 +1,17 @@
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "trikKit/robotModel/trikRobotModelBase.h"
 
 #include <kitBase/robotModel/robotParts/display.h>
@@ -8,10 +22,12 @@
 
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
 
+#include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
 
 #include "trikKit/robotModel/parts/trikServoMotor.h"
 #include "trikKit/robotModel/parts/trikPowerMotor.h"
+#include "trikKit/robotModel/parts/trikMotorsAggregator.h"
 #include "trikKit/robotModel/parts/trikInfraredSensor.h"
 #include "trikKit/robotModel/parts/trikSonarSensor.h"
 #include "trikKit/robotModel/parts/trikMotionSensor.h"
@@ -35,6 +51,7 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	QList<DeviceInfo> const analogPortConnections = {
 		lightSensorInfo()
 		, infraredSensorInfo()
+		, touchSensorInfo()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -47,47 +64,31 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("Enter", input, {}, "buttonEnter"), { buttonInfo() });
 	addAllowedConnection(PortInfo("Esc", input, {}, "buttonEsc"), { buttonInfo() });
 
-	addAllowedConnection(PortInfo("C1", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("C2", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("C3", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E1", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E2", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E3", output, {}), { servoMotorInfo() });
-	addAllowedConnection(PortInfo("E4", output, {}), { servoMotorInfo() });
+	addAllowedConnection(PortInfo("M1", output, { "М1" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M2", output, { "М2" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M3", output, { "М3" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("M4", output, { "М4" }), { powerMotorInfo() });
+	addAllowedConnection(PortInfo("MAll", output, { "MAll" }), { powerMotorsAggregatorInfo() });
 
-	addAllowedConnection(PortInfo("M1", output, {}), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M2", output, {}), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M3", output, {}), { powerMotorInfo() });
-	addAllowedConnection(PortInfo("M4", output, {}), { powerMotorInfo() });
-
-	addAllowedConnection(PortInfo("B1", input, {"M1"}, "encoder1"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B2", input, {"M2"}, "encoder2"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B3", input, {"M3"}, "encoder3"), { encoderInfo() });
-	addAllowedConnection(PortInfo("B4", input, {"M4"}, "encoder4"), { encoderInfo() });
-
-	addAllowedConnection(PortInfo("A1", input, {}, "sensorA1"), analogPortConnections);
-	addAllowedConnection(PortInfo("A2", input, {}, "sensorA2"), analogPortConnections);
-	addAllowedConnection(PortInfo("A3", input, {}, "sensorA3"), analogPortConnections);
-	addAllowedConnection(PortInfo("A4", input, {}, "sensorA4"), analogPortConnections);
-	addAllowedConnection(PortInfo("A5", input, {}, "sensorA5"), analogPortConnections);
-	addAllowedConnection(PortInfo("A6", input, {}, "sensorA6"), analogPortConnections);
+	addAllowedConnection(PortInfo("A1", input, { "А1" }, "sensorA1"), analogPortConnections);
+	addAllowedConnection(PortInfo("A2", input, { "А2" }, "sensorA2"), analogPortConnections);
+	addAllowedConnection(PortInfo("A3", input, { "А3" }, "sensorA3"), analogPortConnections);
+	addAllowedConnection(PortInfo("A4", input, { "А4" }, "sensorA4"), analogPortConnections);
+	addAllowedConnection(PortInfo("A5", input, { "А5" }, "sensorA5"), analogPortConnections);
+	addAllowedConnection(PortInfo("A6", input, { "А6" }, "sensorA6"), analogPortConnections);
 
 	addAllowedConnection(PortInfo("D1", input, {}, "sensorD1"), { sonarSensorInfo() });
 	addAllowedConnection(PortInfo("D2", input, {}, "sensorD2"), { sonarSensorInfo() });
 
-	addAllowedConnection(PortInfo("F1", input, {}, "sensorF1"), { motionSensorInfo() });
+	addAllowedConnection(PortInfo("GyroscopePort", input, {}, "gyroscope", PortInfo::ReservedVariableType::vector)
+			, { gyroscopeInfo() });
 
-	addAllowedConnection(PortInfo("GyroscopePortX", input, {}, "gyroscopeX"), { gyroscopeInfo() });
-	addAllowedConnection(PortInfo("GyroscopePortY", input, {}, "gyroscopeY"), { gyroscopeInfo() });
-	addAllowedConnection(PortInfo("GyroscopePortZ", input, {}, "gyroscopeZ"), { gyroscopeInfo() });
-
-	addAllowedConnection(PortInfo("AccelerometerPortX", input, {}, "accelerometerX"), { accelerometerInfo() });
-	addAllowedConnection(PortInfo("AccelerometerPortY", input, {}, "accelerometerY"), { accelerometerInfo() });
-	addAllowedConnection(PortInfo("AccelerometerPortZ", input, {}, "accelerometerZ"), { accelerometerInfo() });
+	addAllowedConnection(PortInfo("AccelerometerPort", input, {}, "accelerometer"
+			, PortInfo::ReservedVariableType::vector), { accelerometerInfo() });
 
 	addAllowedConnection(PortInfo("LedPort", output), { ledInfo() });
 
-	addAllowedConnection(PortInfo("LineSensorPort", input, { "TrikLineSensorPort" }, "lineSensor"
+	addAllowedConnection(PortInfo("LineSensorPort", tr("Line sensor"), input, { "TrikLineSensorPort" }, "lineSensor"
 			, PortInfo::ReservedVariableType::vector), { lineSensorInfo() });
 
 	addAllowedConnection(PortInfo("ObjectSensorXPort", input, {}, "objectSensorX"), { objectSensorInfo() });
@@ -127,17 +128,21 @@ QList<PortInfo> TrikRobotModelBase::configurablePorts() const
 	QList<PortInfo> const digitalPorts = {
 			  PortInfo("D1", input, {}, "sensorD1")
 			, PortInfo("D2", input, {}, "sensorD2")
-			, PortInfo("F1", input, {}, "sensorF1") };
+			};
 
-	return CommonRobotModel::configurablePorts() + digitalPorts;
+	return CommonRobotModel::configurablePorts() + digitalPorts + QList<PortInfo>{PortInfo("LineSensorPort"
+			, tr("Line sensor"), input, { "TrikLineSensorPort" }, "lineSensor"
+			, PortInfo::ReservedVariableType::vector)};
 }
 
 QList<DeviceInfo> TrikRobotModelBase::convertibleBases() const
 {
-	return { DeviceInfo::create<robotParts::LightSensor>()
+	return { DeviceInfo::create<robotParts::TouchSensor>()
+		, DeviceInfo::create<robotParts::LightSensor>()
 		, DeviceInfo::create<parts::TrikInfraredSensor>()
 		, DeviceInfo::create<parts::TrikSonarSensor>()
 		, DeviceInfo::create<parts::TrikMotionSensor>()
+		, DeviceInfo::create<parts::TrikLineSensor>()
 	};
 }
 
@@ -161,6 +166,11 @@ DeviceInfo TrikRobotModelBase::powerMotorInfo() const
 	return DeviceInfo::create<robotParts::Motor>();
 }
 
+DeviceInfo TrikRobotModelBase::powerMotorsAggregatorInfo() const
+{
+	return DeviceInfo::create<robotParts::MotorsAggregator>();
+}
+
 DeviceInfo TrikRobotModelBase::servoMotorInfo() const
 {
 	return DeviceInfo::create<robotParts::Motor>();
@@ -169,6 +179,11 @@ DeviceInfo TrikRobotModelBase::servoMotorInfo() const
 DeviceInfo TrikRobotModelBase::encoderInfo() const
 {
 	return DeviceInfo::create<robotParts::EncoderSensor>();
+}
+
+DeviceInfo TrikRobotModelBase::touchSensorInfo() const
+{
+	return DeviceInfo::create<robotParts::TouchSensor>();
 }
 
 DeviceInfo TrikRobotModelBase::lightSensorInfo() const
@@ -249,4 +264,17 @@ DeviceInfo TrikRobotModelBase::gamepadWheelInfo() const
 DeviceInfo TrikRobotModelBase::gamepadConnectionIndicatorInfo() const
 {
 	return DeviceInfo::create<parts::TrikGamepadConnectionIndicator>();
+}
+
+QHash<QString, int> TrikRobotModelBase::buttonCodes() const
+{
+	QHash<QString, int> result;
+	result["LeftButton"] = 105;
+	result["RightButton"] = 106;
+	result["UpButton"] = 103;
+	result["DownButton"] = 108;
+	result["EnterButton"] = 28;
+	result["PowerButton"] = 116;
+	result["EscButton"] = 1;
+	return result;
 }

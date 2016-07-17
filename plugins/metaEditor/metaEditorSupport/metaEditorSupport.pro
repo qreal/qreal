@@ -1,3 +1,17 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 include(../../../global.pri)
 
 QT += xml widgets
@@ -10,20 +24,22 @@ DESTDIR = $$DESTDIR/plugins/tools/
 links(qrkernel qrutils qrmc qrgui-preferences-dialog)
 
 HEADERS += \
-	metaEditorSupportPlugin.h \
-	editorGenerator.h \
-	xmlParser.h \
-	compilerPage.h \
+	$$PWD/metaEditorSupportPlugin.h \
+	$$PWD/editorGenerator.h \
+	$$PWD/xmlParser.h \
+	$$PWD/compilerPage.h \
 
 SOURCES += \
-	metaEditorSupportPlugin.cpp \
-	editorGenerator.cpp \
-	xmlParser.cpp \
-	compilerPage.cpp \
+	$$PWD/metaEditorSupportPlugin.cpp \
+	$$PWD/editorGenerator.cpp \
+	$$PWD/xmlParser.cpp \
+	$$PWD/compilerPage.cpp \
 
 FORMS += \
-	compilerPage.ui \
+	$$PWD/compilerPage.ui \
 
-TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/metaEditorSupport_ru.ts
+TRANSLATIONS += \
+	$$PWD/../../../qrtranslations/ru/plugins/metaEditorSupport_ru.ts \
 
-RESOURCES = metaEditorSupport.qrc
+RESOURCES += \
+	$$PWD/metaEditorSupport.qrc

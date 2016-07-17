@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QMap>
@@ -23,9 +37,19 @@ namespace parts {
 class ROBOTS_GENERATOR_EXPORT Subprograms : public TemplateParametrizedEntity
 {
 public:
+	/// Represents success state of generation.
+	enum class GenerationResult {
+		/// Generated successfully
+		success = 0
+		/// Generated with error, but another generator may be tried
+		, error
+		/// Diagram contains syntax errors, nothing can be done.
+		, fatalError
+	};
+
 	Subprograms(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
-			, const QString &pathToTemplates
+			, const QStringList &pathsToTemplates
 			, const simple::Binding::ConverterInterface *nameNormalizer);
 
 	~Subprograms() override;
@@ -35,7 +59,7 @@ public:
 	void usageFound(const qReal::Id &logicalId);
 
 	/// Starts subprograms code generation process
-	bool generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString);
+	GenerationResult generate(ControlFlowGeneratorBase *mainGenerator, const QString &indentString);
 
 	/// Returns the subprograms forward declarations code. If generation was unsuccessfull returns an empty string.
 	QString forwardDeclarations() const;

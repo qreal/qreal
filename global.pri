@@ -1,12 +1,36 @@
+# Copyright 2007-2015 QReal Research Group
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 win32 {
 	PLATFORM = windows
-} else {
+}
+
+unix:!macx {
 	PLATFORM = linux
+}
+
+macx {
+	PLATFORM = mac
 }
 
 CONFIG(debug, debug | release) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
+	unix {
+		QMAKE_CXXFLAGS += -coverage
+		QMAKE_LFLAGS += -coverage
+	}
 } else {
 	CONFIGURATION = release
 	CONFIGURATION_SUFFIX =
@@ -24,11 +48,33 @@ isEmpty(TARGET) {
 }
 
 equals(TEMPLATE, app) {
-	!macx {
-		QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+	unix:!macx {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
-	} else {
-		CONFIG -= app_bundle
+		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+	}
+}
+
+macx {
+	QMAKE_CXXFLAGS += -stdlib=libc++
+	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
+}
+
+unix:!macx {
+	CONFIG(debug):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
+		# Ubsan is turned on by default into debug build
+		CONFIG += sanitizer sanitize_undefined
+	}
+
+	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
+		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
+		# That must be disabled. Variables for confguring ubsan are taken from here:
+		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
+		# They can change in some version of Qt, keep track of it.
+		# By the way, simply setting QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS instead of those used below
+		# will not work due to arguments order ("-fsanitize=undefined" must be declared before "-fno-sanitize=vptr").
+		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
+		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
+		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
 	}
 }
 
@@ -43,7 +89,7 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-CONFIG += c++11
+CONFIG += c++14
 QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
 
 GLOBAL_PWD = $$PWD
@@ -55,17 +101,23 @@ defineTest(copyToDestdir) {
 	NOW = $$2
 
 	for(FILE, FILES) {
-		DESTDIR_SUFFIX = 
+		DESTDIR_SUFFIX =
+		isEmpty(QMAKE_SH) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
-		win32:AFTER_SLASH = $$section(FILE, "/", -1, -1)
-		win32:BASE_NAME = $$section(FILE, "/", -2, -2)
-		win32:equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
+			win32 {
+				AFTER_SLASH = $$section(FILE, "/", -1, -1)
+				BASE_NAME = $$section(FILE, "/", -2, -2)
+				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
 
-		win32:FILE ~= s,/$,,g
+				FILE ~= s,/$,,g
 
-		win32:FILE ~= s,/,\,g
-		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/
-		win32:DDIR ~= s,/,\,g
+				FILE ~= s,/,\,g
+			}
+			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+			win32:DDIR ~= s,/,\,g
+		} else {
+			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+		}
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
@@ -74,8 +126,14 @@ defineTest(copyToDestdir) {
 		} else {
 			win32 {
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
-			} else {
-				system("cp -r $$FILE $$DESTDIR")
+			}
+
+			unix:!macx {
+				system("cp -r -f $$FILE $$DDIR")
+			}
+
+			macx {
+				system("cp -R $$FILE $$DDIR/$$FILE")
 			}
 		}
 	}

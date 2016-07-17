@@ -1,12 +1,27 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <type_traits>
+
+#include <qrutils/functionTraits.h>
 
 #include "qrtext/core/parser/parserRef.h"
 #include "qrtext/core/parser/operators/parserInterface.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryDiscardableNode.h"
 #include "qrtext/core/parser/temporaryNodes/temporaryErrorNode.h"
-#include "qrtext/core/parser/utils/functionTraits.h"
 
 namespace qrtext {
 namespace core {
@@ -27,9 +42,9 @@ public:
 	QSharedPointer<ast::Node> parse(TokenStream<TokenType> &tokenStream
 			, ParserContext<TokenType> &parserContext) const override
 	{
-		typedef typename function_traits<Transformation>::template arg<0>::type PointerToNodeType;
+		typedef typename utils::function_traits<Transformation>::template arg<0>::type PointerToNodeType;
 		typedef decltype(&PointerToNodeType::operator *) DereferenceOperatorType;
-		typedef typename function_traits<DereferenceOperatorType>::result_type NodeReference;
+		typedef typename utils::function_traits<DereferenceOperatorType>::result_type NodeReference;
 		typedef typename std::remove_reference<NodeReference>::type NodeType;
 
 		QSharedPointer<ast::Node> parserResult = mParser->parse(tokenStream, parserContext);

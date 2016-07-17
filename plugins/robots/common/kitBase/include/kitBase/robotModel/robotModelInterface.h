@@ -1,3 +1,17 @@
+/* Copyright 2013-2016 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -91,6 +105,12 @@ public:
 	/// user (like 2d model).
 	virtual bool needsConnection() const = 0;
 
+	/// Requests updates for all configured sensors.
+	virtual void updateSensorsValues() const = 0;
+
+	/// Returns time interval for polling sensors data.
+	virtual int updateIntervalForInterpretation() const = 0;
+
 	/// Returns true if this robot model will be used for interpretation. This will enable run and stop actions on the
 	/// toolbar when this robot model is selected by user.
 	virtual bool interpretedModel() const = 0;
@@ -108,6 +128,9 @@ public:
 
 	/// Lists all available ports for that model.
 	virtual QList<PortInfo> availablePorts() const = 0;
+
+	/// Returns a map of button names to button codes.
+	virtual QHash<QString, int> buttonCodes() const = 0;
 
 	/// Returns a list of ports that are allowed to be configured by user. Recommended implementation shall use
 	/// allowedDevices() and make port configurable only when allowedDevices() allows some choice, but this method

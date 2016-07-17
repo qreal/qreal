@@ -1,9 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include "editor/edgeElement.h"
 #include "editor/commands/reshapeEdgeCommand.h"
 
 namespace qReal {
+namespace gui {
+namespace editor {
 
 /// Base class for classes representing different link types (Strategy pattern).
 /// Performs mouse events handling, link rendering and everything connected to laying the link out, reconnecting
@@ -13,9 +29,11 @@ namespace qReal {
 class LineHandler : public QObject
 {
 	Q_OBJECT
+
 public:
-	LineHandler(EdgeElement *edge);
-	virtual ~LineHandler() {}
+	LineHandler(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel);
 
 	/// Start reshape links, determine whether user tries to move point, segment or port of the link
 	int startMovingEdge(const QPointF &pos);
@@ -131,6 +149,11 @@ protected:
 
 	commands::ReshapeEdgeCommand *mReshapeCommand;
 	bool mReshapeStarted;
+
+	const LogicalModelAssistInterface &mLogicalModel;
+	const GraphicalModelAssistInterface &mGraphicalModel;
 };
 
+}
+}
 }

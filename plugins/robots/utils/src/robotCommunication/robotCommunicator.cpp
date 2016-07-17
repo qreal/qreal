@@ -1,4 +1,19 @@
+/* Copyright 2012-2016 Yurii Litvinov, Dmitry Mordvinov, CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QMetaType>
+#include <QtCore/QMetaObject>
 
 #include "utils/robotCommunication/robotCommunicator.h"
 
@@ -21,7 +36,6 @@ RobotCommunicator::~RobotCommunicator()
 
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
-	delete mRobotCommunicationThreadObject;
 }
 
 void RobotCommunicator::send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize)
@@ -36,19 +50,17 @@ void RobotCommunicator::send(const QByteArray &buffer, const unsigned responseSi
 
 void RobotCommunicator::connect()
 {
-	mRobotCommunicationThreadObject->connect();
+	QMetaObject::invokeMethod(mRobotCommunicationThreadObject, "connect");
 }
 
 void RobotCommunicator::disconnect()
 {
-	mRobotCommunicationThreadObject->disconnect();
+	QMetaObject::invokeMethod(mRobotCommunicationThreadObject, "disconnect");
 }
 
-void RobotCommunicator::checkConsistency()
+RobotCommunicationThreadInterface *RobotCommunicator::currentCommunicator() const
 {
-	if (mRobotCommunicationThreadObject) {
-		mRobotCommunicationThreadObject->checkConsistency();
-	}
+	return mRobotCommunicationThreadObject;
 }
 
 void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThreadInterface *robotCommunication)
@@ -59,7 +71,6 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 
 	mRobotCommunicationThread.quit();
 	mRobotCommunicationThread.wait();
-	delete mRobotCommunicationThreadObject;
 	mRobotCommunicationThreadObject = robotCommunication;
 	mRobotCommunicationThreadObject->moveToThread(&mRobotCommunicationThread);
 	mRobotCommunicationThreadObject->allowLongJobs();
@@ -73,6 +84,6 @@ void RobotCommunicator::setRobotCommunicationThreadObject(RobotCommunicationThre
 			, this, &RobotCommunicator::response);
 	QObject::connect(mRobotCommunicationThreadObject, &RobotCommunicationThreadInterface::errorOccured
 			, this, &RobotCommunicator::errorOccured);
-
-	mRobotCommunicationThreadObject->checkConsistency();
+	QObject::connect(mRobotCommunicationThreadObject, &RobotCommunicationThreadInterface::messageArrived
+			, this, &RobotCommunicator::messageArrived);
 }

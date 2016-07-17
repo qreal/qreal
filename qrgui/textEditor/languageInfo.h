@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -32,7 +46,8 @@ struct LanguageInfo
 	int tabSize;
 
 	/// A pointer to text edit colorer object; nullptr can be passed to disable coloring.
-	QSharedPointer<QsciLexer> lexer;
+	/// Transfers ownership to editor.
+	QsciLexer *lexer;
 
 	/// A list of tokens that will be proposed to user in autocompletion window.
 	QStringList additionalAutocompletionTokens;
@@ -68,7 +83,7 @@ public:
 				, QObject::tr("Text File")                                   /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(nullptr)                         /* lexer */
+				, nullptr                                                    /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -80,7 +95,7 @@ public:
 				, QObject::tr("C Language Source File")                      /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -93,7 +108,7 @@ public:
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
 				/// @todo: write own lexer
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -105,7 +120,19 @@ public:
 				, QObject::tr("Python Source File")                          /* extension description */
 				, false                                                      /* tabs indentation */
 				, 2                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(new QsciLexerPython())           /* lexer */
+				, new QsciLexerPython()                                      /* lexer */
+				, additionalTokens                                           /* additional autocompletion tokens */
+		};
+	}
+
+	/// The information about the java script language.
+	static LanguageInfo javaScript(const QStringList &additionalTokens = QStringList())
+	{
+		return LanguageInfo{"js"                                             /* extension */
+				, QObject::tr("Java Script Language Source File")            /* extension description */
+				, true                                                       /* tabs indentation */
+				, 8                                                          /* tab size */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -117,7 +144,7 @@ public:
 				, QObject::tr("QtScript Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -129,8 +156,20 @@ public:
 				, QObject::tr("F# Language Source File")                     /* extension description */
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
-				/// @todo: write own lexer
-				, QSharedPointer<QsciLexer>(new QsciLexerCPP())              /* lexer */
+				/// @todo: write own lexer?
+				, new QsciLexerCPP()                                         /* lexer */
+				, additionalTokens                                           /* additional autocompletion tokens */
+		};
+	}
+
+	/// The information about the PascalABC language.
+	static LanguageInfo pascalABC(const QStringList &additionalTokens = QStringList())
+	{
+		return LanguageInfo{"pas"                                            /* extension */
+				, QObject::tr("PascalABC Language Source File")              /* extension description */
+				, false                                                      /* tabs indentation */
+				, 4                                                          /* tab size */
+				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QList>
@@ -56,12 +70,20 @@ public:
 	}
 
 	/// Calls visit() method of the given visitor for all children and self.
-	void acceptRecursively(AstVisitorInterface &visitor) const;
+	/// @param pointer Shared pointer for 'this' instance.
+	/// @param parent  Shared pointer for parent node. Must be nullptr for AST root.
+	void acceptRecursively(AstVisitorInterface &visitor
+			, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent);
 
 	/// Calls visit() method of the given visitor for self.
 	/// The descendants should override this method to call corresponding visit() method overload.
 	/// See 'visitor' design pattern (http://www.oodesign.com/visitor-pattern.html).
-	virtual void accept(AstVisitorInterface &visitor) const;
+	/// @param pointer Shared pointer for 'this' instance.
+	/// @param parent  Shared pointer for parent node. Must be nullptr for AST root.
+	virtual void accept(AstVisitorInterface &visitor
+			, const QSharedPointer<Node> &pointer
+			, const QSharedPointer<Node> &parent);
 
 	static int nodesCount() {
 		return mNodesCount;

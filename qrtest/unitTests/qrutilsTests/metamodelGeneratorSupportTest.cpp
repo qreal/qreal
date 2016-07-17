@@ -1,15 +1,30 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QFile>
 
 #include "metamodelGeneratorSupportTest.h"
-#include "../../../qrutils/inFile.h"
+#include <qrutils/inFile.h>
 
 #include "gtest/gtest.h"
 
 using namespace utils;
 using namespace qrTest;
 
-void MetamodelGeneratorSupportTest::SetUp() {
-	mGenerator = new MetamodelGeneratorSupport(NULL, NULL);
+void MetamodelGeneratorSupportTest::SetUp()
+{
+	mGenerator = new MetamodelGeneratorSupport(nullptr, nullptr);
 
 	QString const elementsXml =
 	"<diagram>"
@@ -78,11 +93,13 @@ void MetamodelGeneratorSupportTest::SetUp() {
 	mDocument = mGenerator->loadElementsFromString(elementsXml);
 }
 
-void MetamodelGeneratorSupportTest::TearDown() {
+void MetamodelGeneratorSupportTest::TearDown()
+{
 	delete mGenerator;
 }
 
-TEST_F(MetamodelGeneratorSupportTest, collectAllGraphicTypesInMetamodelTest) {
+TEST_F(MetamodelGeneratorSupportTest, collectAllGraphicTypesInMetamodelTest)
+{
 	QStringList types = mGenerator->collectAllGraphicTypesInMetamodel(mDocument, true);
 
 	ASSERT_EQ(types.size(), 5);
@@ -102,7 +119,8 @@ TEST_F(MetamodelGeneratorSupportTest, collectAllGraphicTypesInMetamodelTest) {
 	EXPECT_TRUE(types.contains("ControlFlowLocation"));
 }
 
-TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest) {
+TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest)
+{
 	QDomElement const container = mDocument.elementsByTagName("container").at(0).toElement();
 	QStringList elementNames = mGenerator->collectAllGraphicTypesInMetamodel(mDocument, false);
 
@@ -122,7 +140,8 @@ TEST_F(MetamodelGeneratorSupportTest, appendTypesToElementTest) {
 	EXPECT_TRUE(containsElemNames.contains("TestDiagram::ControlFlowLocation"));
 }
 
-TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest) {
+TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest)
+{
 	QDomElement const elem = mDocument.createElement("TestElement");
 	mGenerator->insertElementInDiagramSublevel(mDocument ,"nonGraphicTypes", elem);
 
@@ -130,7 +149,8 @@ TEST_F(MetamodelGeneratorSupportTest, insertElementInDiagramSublevelTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("TestElement").size(), 1);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest) {
+TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest)
+{
 	QDomDocument doc = mGenerator->loadElementsFromString("<diagram><testElem1/><testElem2/><testElem3/><></diagram>");
 
 	mGenerator->insertElementsInDiagramSublevel(mDocument ,"nonGraphicTypes"
@@ -145,7 +165,8 @@ TEST_F(MetamodelGeneratorSupportTest, insertElementsInDiagramSublevelTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("testElem3").size(), 1);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, appendElementsTest) {
+TEST_F(MetamodelGeneratorSupportTest, appendElementsTest)
+{
 	QDomDocument doc = mGenerator->loadElementsFromString("<diagram><testElem1/><testElem2/><testElem3/><></diagram>");
 
 	mGenerator->appendElements(mGenerator->diagramElement(mDocument), mGenerator->diagramElement(doc).childNodes());
@@ -156,13 +177,15 @@ TEST_F(MetamodelGeneratorSupportTest, appendElementsTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("testElem3").size(), 1);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, diagramElementTest) {
+TEST_F(MetamodelGeneratorSupportTest, diagramElementTest)
+{
 	QDomElement const elem = mGenerator->diagramElement(mDocument);
 
 	ASSERT_EQ(elem.nodeName(), "diagram");
 }
 
-TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest) {
+TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest)
+{
 	ASSERT_EQ(mDocument.elementsByTagName("diagram").size(), 1);
 	ASSERT_EQ(mDocument.elementsByTagName("graphicTypes").size(), 1);
 	ASSERT_EQ(mDocument.elementsByTagName("node").size(), 3);
@@ -172,7 +195,8 @@ TEST_F(MetamodelGeneratorSupportTest, loadElementsFromStringTest) {
 	ASSERT_EQ(mDocument.elementsByTagName("property").size(), 3);
 }
 
-TEST_F(MetamodelGeneratorSupportTest, loadAndSaveMetamodelInFileTest) {
+TEST_F(MetamodelGeneratorSupportTest, loadAndSaveMetamodelInFileTest)
+{
 	QFile file("testMetamodelFile");
 	file.open(QIODevice::ReadWrite);
 

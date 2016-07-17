@@ -1,56 +1,64 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
-#include <QtCore/QSignalMapper>
-#include <QtCore/QDir>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSplashScreen>
-#include <QtWidgets/QProgressBar>
-#include <QtWidgets/QListWidget>
-#include <QtSql/QSqlDatabase>
 
-#include <qrkernel/settingsManager.h>
-
-#include "findManager.h"
-#include "referenceList.h"
-#include "projectManager/projectManagerWrapper.h"
-#include "tabWidget.h"
-#include "startWidget/startWidget.h"
+#include "scriptAPI/scriptAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/editorManager.h>
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
-#include <qrgui/plugins/pluginManager/toolPluginManager.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
-
-#include <qrgui/systemFacade/systemFacade.h>
-#include <qrgui/editor/propertyEditorView.h>
-#include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/controller/controller.h>
 
 #include <qrgui/preferencesDialog/preferencesDialog.h>
-#include <qrgui/dialogs/findReplaceDialog.h>
 
 class QGraphicsView;
+class QSignalMapper;
+class QListWidget;
+class QTreeView;
+
+class PropertyEditorModel;
+class FindManager;
+class FindReplaceDialog;
 
 namespace Ui {
 class MainWindowUi;
 }
 
 namespace qReal {
-
-class EditorView;
-class SceneCustomizer;
-
-namespace models {
-class Models;
-}
+class Controller;
+class EditorManagerInterface;
+class ProjectManagerWrapper;
+class SplashScreen;
+class StartWidget;
+class SystemFacade;
+class ToolPluginManager;
+class ActionInfo;
 
 namespace gui {
 class ErrorReporter;
 class PaletteTree;
+
+namespace editor {
+class SceneCustomizer;
+class EditorView;
+class PropertyEditorView;
+}
+}
+
+namespace models {
+class Models;
 }
 
 namespace text {
@@ -64,15 +72,15 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindow(const QString &fileToOpen = QString());
+	explicit MainWindow(const QString &fileToOpen = QString());
 	~MainWindow();
 
 	EditorManagerInterface &editorManager();
-	EditorView *getCurrentTab() const;
+	gui::editor::EditorView *getCurrentTab() const;
 	bool isCurrentTabShapeEdit() const;
 	models::Models &models();
 	Controller *controller() const;
-	PropertyEditorView *propertyEditor() const;
+	gui::editor::PropertyEditorView *propertyEditor() const;
 	QTreeView *graphicalModelExplorer() const;
 	QTreeView *logicalModelExplorer() const;
 	PropertyEditorModel &propertyModel();
@@ -91,7 +99,7 @@ public:
 	void openShapeEditor(const Id &id
 			, const QString &propertyValue
 			/// @todo: whan passing it by reference the build on travis fails
-			, const EditorManagerInterface *editorManagerProxy
+			, const EditorManagerInterface *editorManager
 			, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
 			, const int &role);
@@ -118,10 +126,10 @@ public:
 	virtual void updateActiveDiagram();
 	virtual void deleteElementFromDiagram(const Id &id);
 
-	virtual void reportOperation(invocation::LongOperation *operation);
-	virtual QWidget *currentTab();
-	virtual void openTab(QWidget *tab, const QString &title);
-	virtual void closeTab(QWidget *tab);
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
+	QWidget *currentTab() override;
+	void openTab(QWidget *tab, const QString &title) override;
+	void closeTab(QWidget *tab) override;
 
 	QMap<QString, gui::PreferencesPage *> preferencesPages() const override;
 
@@ -129,36 +137,36 @@ public:
 	/// @param id Id of a diagram (root element) that we want to close.
 	void closeDiagramTab(const Id &id);
 
-	/// Returns editor manager proxy, which allows to change editor manager implementation.
-	ProxyEditorManager &editorManagerProxy();
-
 	/// Loads (or reloads) available editor plugins and reinits palette.
-	void loadPlugins();
+	void loadEditorPlugins();
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
 
-	/// Adds all elements from given diagram in a given editor to a palette.
-	/// @param editor Id of an editor we need to add elements from.
-	/// @param diagram Id of a diagram we need to add elements from.
-	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
+	QDockWidget *logicalModelDock() const override;
+	QDockWidget *graphicalModelDock() const override;
+	QDockWidget *propertyEditorDock() const override;
+	QDockWidget *errorReporterDock() const override;
+	QDockWidget *paletteDock() const override;
+	QStatusBar *statusBar() const override;
+	QList<QToolBar *> toolBars() const override;
 
-	virtual QDockWidget *logicalModelDock() const;
-	virtual QDockWidget *graphicalModelDock() const;
-	virtual QDockWidget *propertyEditorDock() const;
-	virtual QDockWidget *errorReporterDock() const;
-	virtual QDockWidget *paletteDock() const;
+	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
+	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+	void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) override;
 
-	virtual void tabifyDockWidget(QDockWidget *first, QDockWidget *second);
-	virtual void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget);
+	QByteArray saveState(int version = 0) const override;
+	bool restoreState(const QByteArray &state, int version = 0) override;
+
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	void setTabText(QWidget *tab, const QString &text) override;
 
 	void beginPaletteModification() override;
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 	void endPaletteModification() override;
 
 	/// Additional actions for interpreter palette.
@@ -189,9 +197,6 @@ public slots:
 	void openFirstDiagram();
 	void changeWindowTitle();
 
-	/// Inits interpreted plugins and adds their actions to the toolbar.
-	void initInterpretedPlugins();
-
 private slots:
 	/// Suggests user to select a root diagram for the new project
 	/// if more than one diagram loaded or creates project with the only diagram
@@ -201,6 +206,7 @@ private slots:
 	/// Diagram opening must happen after plugins initialization
 	void initPluginsAndStartWidget();
 	void initToolPlugins();
+	void customizeActionsVisibility();
 
 	/// handler for menu 'button find' pressed
 	void showFindDialog();
@@ -214,10 +220,11 @@ private slots:
 	void showHelp();
 
 	void fullscreen();
+	void hideBottomDocks();
+
 	void openRecentProjectsMenu();
 
 	void saveDiagramAsAPicture();
-
 	void print();
 	void makeSvg();
 	void showGrid(bool isChecked);
@@ -267,11 +274,11 @@ private:
 	/// models, connects to various main window actions and so on
 	/// @param tab Tab to be initialized
 	/// @param rootIndex Index of a graphical model element that will be root of a diagram shown in this tab
-	void initCurrentTab(EditorView * const tab, const QModelIndex &rootIndex);
+	void initCurrentTab(qReal::gui::editor::EditorView * const tab, const QModelIndex &rootIndex);
 
 	/// Sets shortcuts for a given tab which don`t have own buttons anywhere
 	/// @param tab Tab to be initialized with shortcuts
-	void setShortcuts(EditorView * const tab);
+	void setShortcuts(qReal::gui::editor::EditorView * const tab);
 
 	void setDefaultShortcuts();
 
@@ -308,7 +315,7 @@ private:
 
 	/// Traverses list of actions and adds buttons to toolbar.
 	/// @param actions - list of actions to traverse
-	void traverseListOfActions(QList<ActionInfo> const &actions);
+	void traverseListOfActions(const QList<ActionInfo> &actions);
 
 	void setIndexesOfPropertyEditor(const Id &id);
 
@@ -339,6 +346,8 @@ private:
 	void initDocks();
 	void initExplorers();
 	void initRecentProjectsMenu();
+	void initScriptAPI();
+	void initActionWidgetsNames();
 	void openStartTab();
 
 	void setVersion(const QString &version);
@@ -346,7 +355,9 @@ private:
 	void highlightCode(Id const &graphicalId, bool highlight);
 
 	Ui::MainWindowUi *mUi;
-	SystemFacade mFacade;
+	QScopedPointer<SystemFacade> mFacade;
+
+	QScopedPointer<SplashScreen> mSplashScreen;
 
 	/// elements & theirs ids
 	QMap<QString, Id> mElementsNamesAndIds;
@@ -355,9 +366,8 @@ private:
 	FindReplaceDialog *mFindReplaceDialog;
 
 	Controller *mController;
-	ToolPluginManager mToolManager;
-	InterpretedPluginsLoader mInterpretedPluginLoader;
-	PropertyEditorModel mPropertyModel;
+	QScopedPointer<ToolPluginManager> mToolManager;
+	QScopedPointer<PropertyEditorModel> mPropertyModel;
 	text::TextManager *mTextManager;
 
 	QVector<bool> mSaveListChecked;
@@ -374,7 +384,7 @@ private:
 	QMap<QString, bool> mDocksVisibility;
 
 	QString mTempDir;
-	gui::PreferencesDialog mPreferencesDialog;
+	qReal::gui::PreferencesDialog mPreferencesDialog;
 
 	int mRecentProjectsLimit;
 	QSignalMapper *mRecentProjectsMapper;
@@ -384,7 +394,7 @@ private:
 	ProjectManagerWrapper *mProjectManager;
 	StartWidget *mStartWidget;
 
-	SceneCustomizer *mSceneCustomizer;
+	qReal::gui::editor::SceneCustomizer *mSceneCustomizer;
 	QList<QDockWidget *> mAdditionalDocks;
 	QMap<QWidget *, int> mLastTabBarIndexes;
 
@@ -392,6 +402,8 @@ private:
 
 	/// A field for storing file name passed as console argument
 	QString mInitialFileToOpen;
+
+	gui::ScriptAPI mScriptAPI;
 };
 
 }

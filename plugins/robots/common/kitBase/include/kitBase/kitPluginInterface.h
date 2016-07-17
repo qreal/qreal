@@ -1,3 +1,17 @@
+/* Copyright 2013-2016 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -14,6 +28,7 @@
 #include <kitBase/additionalPreferences.h>
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/blocksBase/blocksFactoryInterface.h>
+#include <kitBase/interpreterInterface.h>
 
 namespace kitBase {
 
@@ -29,7 +44,7 @@ public:
 		Q_UNUSED(configurator)
 	}
 
-	/// An identifier of constructor kit. Kit plugins with same kitId are automaticly groupped
+	/// An identifier of constructor kit. Kit plugins with same kitId are automaticly grouped
 	/// together extending each other.
 	virtual QString kitId() const = 0;
 
@@ -60,7 +75,7 @@ public:
 
 	/// Returns a widget that will be placed at devices configuration widget in the left-hand side dock.
 	/// The default implementation returns nullptr.
-	/// Transfers ownership.
+	/// Takes ownership on result.
 	virtual QWidget *quickPreferencesFor(const robotModel::RobotModelInterface &model)
 	{
 		Q_UNUSED(model)
@@ -86,25 +101,27 @@ public:
 	/// It is guaranteed that this method will be called with the robot model provided by this kit.
 	virtual QIcon iconForFastSelector(const robotModel::RobotModelInterface &robotModel) const = 0;
 
-	/// Returns an integer number that specifies the count of recommended robot models.
-	/// Robot models are sorted by their priorities ("importance" for user). Then robot models switching menu is
-	/// ordered due to this sorting. Then if the number of robot models provided by kit is too large some of most
-	/// important robot models can be highlighted from robot models set as recommended by TRIK Studio.
-	/// The number of such highlighted robot models is specified by this method.
-	/// Different kit plugins for the same kit id can return different values. The engine will select maximal of them
-	/// as the fact value.
-	/// Default implementation returns 2.
-	virtual int topRecommendedRobotModels() const
-	{
-		return 2;
-	}
-
 	/// Sensor configuration provider object for this plugin that needs to be registered in providers network.
 	/// Can be a root of plugin-specific providers network. Null, if there is no need for sensors configuration.
 	/// Does not transfer ownership.
 	virtual kitBase::DevicesConfigurationProvider * devicesConfigurationProvider()
 	{
 		return nullptr;
+	}
+
+	/// Returns kit plugin priority over other plugins. Priority will be used by kits auto switching system
+	/// when switching can be performed to multiple kits. If priorities are equal the selected kit is undefined.
+	/// Returns 0 if not overrided.
+	virtual int priority() const
+	{
+		return 0;
+	}
+
+	/// Returns a list of intepreters specific only for this kit plugin. Intepreters will be selected in correspondence
+	/// with data returned by InterpreterInterface::supportedDiagrams().
+	virtual QList<kitBase::InterpreterInterface *> customInterpreters() const
+	{
+		return {};
 	}
 };
 

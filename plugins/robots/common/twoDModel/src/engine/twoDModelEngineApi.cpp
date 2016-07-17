@@ -1,10 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "twoDModelEngineApi.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/qmath.h>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/logging.h>
 #include <qrutils/mathUtils/math.h>
+#include <qrutils/mathUtils/geometry.h>
 /// @todo: Get rid of it!
 #include <kitBase/robotModel/robotParts/touchSensor.h>
 #include <kitBase/robotModel/robotParts/colorSensorFull.h>
@@ -13,20 +28,35 @@
 #include <kitBase/robotModel/robotParts/colorSensorGreen.h>
 #include <kitBase/robotModel/robotParts/colorSensorBlue.h>
 
-#include "model/model.h"
-#include "model/constants.h"
+#include "twoDModel/engine/twoDModelGuiFacade.h"
+#include "twoDModel/engine/model/model.h"
+#include "twoDModel/engine/model/constants.h"
+#include "twoDModel/engine/view/twoDModelWidget.h"
 
-#include "twoDModel/engine/view/d2ModelWidget.h"
-#include "view/d2ModelScene.h"
-#include "view/robotItem.h"
+#include "view/scene/twoDModelScene.h"
+#include "view/scene/robotItem.h"
+#include "view/scene/fakeScene.h"
+
+#include "src/engine/items/wallItem.h"
+#include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/stylusItem.h"
+#include "src/engine/items/regions/ellipseRegion.h"
+#include "src/engine/items/regions/rectangularRegion.h"
 
 using namespace twoDModel;
 using namespace kitBase::robotModel;
 using namespace twoDModel::model;
 
-TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::D2ModelWidget &view)
+TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidget &view)
 	: mModel(model)
 	, mView(view)
+	, mFakeScene(new view::FakeScene(mModel.worldModel()))
+	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
+{
+}
+
+TwoDModelEngineApi::~TwoDModelEngineApi()
 {
 }
 
@@ -54,11 +84,11 @@ int TwoDModelEngineApi::readTouchSensor(const PortInfo &port) const
 	QPair<QPointF, qreal> const neededPosDir = countPositionAndDirection(port);
 	const QPointF position(neededPosDir.first);
 	const qreal rotation = neededPosDir.second / 180 * mathUtils::pi;
-	const QSizeF size = mModel.robotModels()[0]->sensorRect(port, position).size();
+	const QRectF rect = mModel.robotModels()[0]->sensorRect(port, position);
 
 	QPainterPath sensorPath;
-	const qreal touchRegionRadius = size.height() / 2;
-	const qreal stickCenter = size.width() / 2 - touchRegionRadius;
+	const qreal touchRegionRadius = qCeil(rect.height() / qSqrt(2));
+	const qreal stickCenter = rect.width() / 2 - rect.height() / 2;
 	// (0,0) in sensor coordinates is sensor`s center
 	const QPointF ellipseCenter = QPointF(stickCenter * cos(rotation), stickCenter * sin(rotation));
 	sensorPath.addEllipse(position + ellipseCenter, touchRegionRadius, touchRegionRadius);
@@ -73,6 +103,16 @@ int TwoDModelEngineApi::readSonarSensor(const PortInfo &port) const
 	const int res = mModel.worldModel().sonarReading(neededPosDir.first, neededPosDir.second);
 
 	return mModel.settings().realisticSensors() ? spoilSonarReading(res) : res;
+}
+
+QVector<int> TwoDModelEngineApi::readAccelerometerSensor() const
+{
+	return mModel.robotModels()[0]->accelerometerReading();
+}
+
+QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
+{
+	return mModel.robotModels()[0]->gyroscopeReading();
 }
 
 int TwoDModelEngineApi::spoilSonarReading(const int distance) const
@@ -105,7 +145,7 @@ int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
 		return readSingleColorSensor(blue, countsColor, n);
 	}
 
-	qDebug() << "Incorrect 2d model sensor configuration";
+	QLOG_ERROR() << "Incorrect 2d model sensor configuration";
 	return 0;
 }
 
@@ -135,43 +175,28 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 		}
 	}
 
-	QGraphicsItem * const sensorItem = mView.sensorItem(port);
 	const QPair<QPointF, qreal> neededPosDir = countPositionAndDirection(port);
 	const QPointF position = neededPosDir.first;
 	const qreal direction = neededPosDir.second;
 	const QRect imageRect = mModel.robotModels()[0]->info().sensorImageRect(device);
 	const qreal width = imageRect.width() * widthFactor / 2.0;
-	const qreal rotationFactor = sensorItem->mapToScene(imageRect).boundingRect().width() / imageRect.width();
+
+	const QRectF sensorRectangle = QTransform().rotate(direction).map(QPolygonF(QRectF(imageRect))).boundingRect();
+	const qreal rotationFactor = sensorRectangle.width() / imageRect.width();
+
 	const qreal realWidth = width * rotationFactor;
 	const QRectF scanningRect = QRectF(position.x() - realWidth, position.y() - realWidth
 			, 2 * realWidth, 2 * realWidth);
-
-	QImage image(scanningRect.size().toSize(), QImage::Format_RGB32);
-	QPainter painter(&image);
-
-	QBrush brush(Qt::SolidPattern);
-	brush.setColor(Qt::white);
-	painter.setBrush(brush);
-	painter.setPen(QPen(Qt::white));
-	painter.drawRect(scanningRect.translated(-scanningRect.topLeft()));
-
-	view::RobotItem * const robot = dynamic_cast<view::RobotItem *>(mView.sensorItem(port)->parentItem());
-	const bool wasSelected = sensorItem->isSelected();
-	const bool rotaterWasVisible = robot->rotater().isVisible();
-	const bool rotaterWasSelected = robot->rotater().isSelected();
-	robot->setVisible(false);
-
-	mView.scene()->render(&painter, QRectF(), scanningRect);
-
-	mView.sensorItem(port)->setSelected(wasSelected);
-	robot->setVisible(true);
-	robot->rotater().setVisible(rotaterWasVisible);
-	robot->rotater().setSelected(rotaterWasSelected);
-
-	const QPoint offset = QPointF(width, width).toPoint();
+	const QImage image(mFakeScene->render(scanningRect));
+	const QPoint offset = QPointF(width, width).toPoint() - QPoint(1, 1);
 	const QImage rotated(image.transformed(QTransform().rotate(-(90 + direction))));
-	const QRect realImage(rotated.rect().center() - offset + QPoint(1, 1), rotated.rect().center() + offset);
-	return rotated.copy(realImage);
+	const QRect realImage(rotated.rect().center() - offset, rotated.rect().center() + offset);
+	QImage result(realImage.size(), QImage::Format_RGB32);
+	result.fill(Qt::white);
+	QPainter painter(&result);
+	painter.drawImage(QRect(QPoint(), result.size()), rotated, realImage);
+	painter.end();
+	return result;
 }
 
 int TwoDModelEngineApi::readColorFullSensor(QHash<uint, int> const &countsColor) const
@@ -256,17 +281,23 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 		const int g = (color >> 8) & 0xFF;
 		const int r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
-		const int brightness = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+		const uint brightness = static_cast<uint>(0.2126 * r + 0.7152 * g + 0.0722 * b);
 
 		sum += 4 * brightness; // 4 = max sensor value / max brightness value
 	}
-	const qreal rawValue = sum / n; // Average by whole region
-	return rawValue * 100 / maxLightSensorValur; // Normalizing to percents
+
+	const qreal rawValue = sum * 1.0 / n; // Average by whole region
+	return rawValue * 100 / maxLightSensorValue; // Normalizing to percents
 }
 
 void TwoDModelEngineApi::playSound(int timeInMs)
 {
 	mModel.robotModels()[0]->playSound(timeInMs);
+}
+
+bool TwoDModelEngineApi::isMarkerDown() const
+{
+	return mModel.robotModels()[0]->markerColor() != Qt::transparent;
 }
 
 void TwoDModelEngineApi::markerDown(const QColor &color)
@@ -289,6 +320,11 @@ engine::TwoDModelDisplayInterface *TwoDModelEngineApi::display()
 	return mView.display();
 }
 
+engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
+{
+	return *mGuiFacade;
+}
+
 uint TwoDModelEngineApi::spoilLight(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);
@@ -304,8 +340,31 @@ uint TwoDModelEngineApi::spoilLight(const uint color) const
 
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
-	const view::SensorItem *sensor = mView.sensorItem(port);
-	const QPointF position = sensor ? sensor->scenePos() : QPointF();
-	const qreal direction = sensor ? sensor->rotation() + mModel.robotModels()[0]->rotation() : 0;
+	RobotModel * const robotModel = mModel.robotModels()[0];
+	const QVector2D sensorVector = QVector2D(robotModel->configuration().position(port) - rotatePoint);
+	const QPointF rotatedVector = mathUtils::Geometry::rotateVector(sensorVector, robotModel->rotation()).toPointF();
+	const QPointF position = robotModel->position() + rotatePoint + rotatedVector;
+	const qreal direction = robotModel->configuration().direction(port) + robotModel->rotation();
 	return { position, direction };
+}
+
+void TwoDModelEngineApi::enableBackgroundSceneDebugging()
+{
+	// A crappy piece of code that must be never called in master branch,
+	// but this is a pretty convenient way to debug a fake scene.
+	// If called from constructor (where robotModels are not initialized yet)
+	// then NXT and TRIK 2D fake scenes will be shown.
+	QGraphicsView * const fakeScene = new QGraphicsView;
+	fakeScene->setScene(mFakeScene.data());
+	QTimer * const timer = new QTimer;
+	QObject::connect(timer, SIGNAL(timeout()), mFakeScene.data(), SLOT(update()));
+	timer->setInterval(300);
+	timer->setSingleShot(false);
+	fakeScene->setMinimumWidth(700);
+	fakeScene->setMinimumHeight(600);
+	fakeScene->setWindowFlags(fakeScene->windowFlags() | Qt::WindowStaysOnTopHint);
+	fakeScene->setVisible(mModel.robotModels().isEmpty()
+			? true
+			: mModel.robotModels()[0]->info().robotId().contains("trik"));
+	timer->start();
 }

@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "kitBase/robotModel/configuration.h"
 
 using namespace kitBase::robotModel;
@@ -13,7 +27,8 @@ void Configuration::configureDevice(robotParts::Device * const device)
 	Q_ASSERT(device);
 
 	if (mConfiguredDevices.contains(device->port())
-			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo())
+			&& mConfiguredDevices.value(device->port())->deviceInfo() == device->deviceInfo()
+			&& device->port().name() != "DisplayPort")  // hack for cleaning display in 2D model
 	{
 		// It is same device that is already configured on that port, we don't need to do anything.
 		return;
@@ -23,7 +38,8 @@ void Configuration::configureDevice(robotParts::Device * const device)
 	mConfiguredDevices.remove(device->port());
 
 	if (mPendingDevices.contains(device->port())) {
-		if (mPendingDevices.value(device->port())->deviceInfo() == device->deviceInfo()) {
+		if (mPendingDevices.value(device->port())->deviceInfo() == device->deviceInfo()
+			&& device->port().name() != "DisplayPort") { // hack for cleaning display in 2D model
 			// It is same device that is already pending for configuration on that port, we don't need to do anything.
 			return;
 		}
@@ -84,6 +100,7 @@ void Configuration::onDeviceConfigured(bool success)
 
 	mConfiguredDevices.insert(device->port(), device);
 
+	emit deviceConfigured(device);
 	checkAllDevicesConfigured();
 }
 

@@ -1,10 +1,26 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
+
 #include <QtCore/QString>
+
+namespace qrmc {
 
 const QString endline = "\n";
 const QString nodeIndent = "\t\t\t";
 
-const QString generatedDir = "../qrmc/plugins";
 const QString shapesDir = "shapes";
 const QString generatedShapesDir = "generated";
 const QString pluginHeaderName = "pluginInterface.h";
@@ -13,7 +29,7 @@ const QString elementsFileName = "elements.h";
 const QString resourceFileName = "plugin.qrc";
 const QString pluginsProjectFileName = "plugin.pro";
 
-const QString templatesDir = "templates";
+const QString templatesDir = "qrmcTemplates";
 const QString pluginHeaderTemplate = "pluginInterface.h.template";
 const QString pluginSourceTemplate = "pluginInterface.cpp.template";
 const QString elementsHeaderTemplate = "elements.h.template";
@@ -29,6 +45,7 @@ const QString metamodelNameTag = "@@MetamodelName@@";
 const QString initDiagramNameMapLineTag = "@@InitDiagramNameMapLine@@";
 const QString initDiagramNodeNameMapLineTag = "@@InitDiagramNodeNameMapLine@@";
 const QString initPropertyDisplayedNamesTag = "@@InitPropertyNamesMapLine@@";
+const QString dispNameTag = "@@DispName@@";
 const QString initElementNameMapLineTag = "@@InitElementNameMapLine@@";
 const QString initParentsMapLineTag = "@@InitParentsMapLine@@";
 const QString initPropertyTypesMapLineTag = "@@InitPropertyTypesMapLine@@";
@@ -37,6 +54,11 @@ const QString getGraphicalObjectLineTag = "@@GetGraphicalObjectLine@@";
 const QString initPropertyDefaultMapLineTag = "@@InitPropertyDefaultMapLine@@";
 const QString getContainersLineTag = "@@GetContainedByLine@@";
 const QString getReferencePropertiesLineTag = "@@GetReferencePropertiesLine@@";
+
+const QString getPortTypesLineTag = "@@GetPortTypesLine@@";
+const QString portTypesListTag = "@@PortTypesList@@";
+
+const QString getPropertyNameTag = "@@GetPropertyNamesLine@@";
 const QString getConnectionsLineTag = "@@GetConnectedTypesLine@@";
 const QString getUsagesLineTag = "@@GetUsedTypesLine@@";
 const QString getIsNodeOrEdgeLineTag = "@@IsNodeOrEdgeLine@@";
@@ -81,6 +103,9 @@ const QString propertyDefaultTag = "@@PropertyDefaultValue@@";
 const QString containersListTag = "@@ContainedByList@@";
 const QString connectionsListTag = "@@ConnectedToList@@";
 const QString referencePropertiesListTag = "@@ReferencePropertiesList@@";
+const QString elementDescriptionMapTag = "@@ElementDescriptionMapLine@@";
+const QString descriptionTag = "@@Description@@";
+const QString propertyNameListTag = "@@PropertiesList@@";
 const QString usagesListTag = "@@UsedTypesList@@";
 const QString isNodeOrEdgeTag = "@@IsNodeOrEdgeValue@@";
 const QString enumsListTag = "@@EnumValuesList@@";
@@ -97,6 +122,8 @@ const QString startXScalabilityTag = "@@NodeLinePortStartXScalable@@";
 const QString startYScalabilityTag = "@@NodeLinePortStartYScalable@@";
 const QString endXScalabilityTag = "@@NodeLinePortEndXScalable@@";
 const QString endYScalabilityTag = "@@NodeLinePortEndYScalable@@";
+const QString labelRotationTag = "@@Rotation@@";
+const QString portsForFromPortTypesTag = "@@PortsForFromPortTypes@@";
 const QString labelXTag = "@@LabelX@@";
 const QString labelYTag = "@@LabelY@@";
 const QString labelNameTag = "@@LabelName@@";
@@ -157,4 +184,6 @@ const QString metaEntityAssociation = "MetaEntityAssociation";
 
 const QString nameOfTheDirectory = "name of the directory";
 
+const QString qMakeLineTag = "@@qMakeLine@@";
 
+}

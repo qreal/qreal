@@ -1,0 +1,1 @@
+MUL@@TYPE@@(@@LEFT@@, @@RIGHT@@, @@RESULT@@)

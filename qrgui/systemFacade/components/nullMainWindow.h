@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
@@ -55,22 +69,23 @@ public:
 
 	void deleteElementFromDiagram(const Id &id) override;
 
-	void reportOperation(invocation::LongOperation *operation) override;
+	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 
 	QWidget *currentTab() override;
 	void openTab(QWidget *tab, const QString &title) override;
 	void closeTab(QWidget *tab) override;
 	void setTabText(QWidget *tab, const QString &text) override;
+	void openStartTab() override;
 
 	void beginPaletteModification() override;
 
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
 
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 
 	void endPaletteModification() override;
 
@@ -81,12 +96,20 @@ public:
 	QDockWidget *propertyEditorDock() const override;
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
+	QStatusBar *statusBar() const override;
+	QList<QToolBar *> toolBars() const override;
 
 	void tabifyDockWidget(QDockWidget *first, QDockWidget *second) override;
 	void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockWidget) override;
+	void addToolBar(Qt::ToolBarArea area, QToolBar * const toolbar) override;
+
+	QByteArray saveState(int version = 0) const override;
+	bool restoreState(const QByteArray &state, int version = 0) override;
+
+	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	/// Sends close event via SystemEvents.
-	void emulateClose();
+	void emulateClose(int returnCode = 0);
 
 private:
 	void openFirstDiagram();
@@ -96,11 +119,13 @@ private:
 	SystemEvents &mEvents;
 	const GraphicalModelAssistInterface *mGraphicalModel;
 	Id mActiveId;
+	QWidget *mWindowWidget;  // Takes ownership
 	QDockWidget *mLogicalModelDock;  // Takes ownership
 	QDockWidget *mGraphicalModelDock;  // Takes ownership
 	QDockWidget *mPropertyEditorDock;  // Takes ownership
 	QDockWidget *mErrorReporterDock;  // Takes ownership
 	QDockWidget *mPaletteDock;  // Takes ownership
+	QStatusBar *mStatusBar;  // Takes ownership
 	bool mClosed = false;
 };
 

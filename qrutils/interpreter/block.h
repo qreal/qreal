@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QObject>
@@ -7,7 +21,6 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
-#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 #include <qrutils/interpreter/blockInterface.h>
 #include <qrtext/languageToolboxInterface.h>
 #include <qrutils/parserErrorReporter.h>
@@ -15,13 +28,15 @@
 namespace qReal {
 namespace interpretation {
 
+class Thread;
+
 /// Base class for all blocks implementations used in interpreter.
 class QRUTILS_EXPORT Block : public BlockInterface
 {
 	Q_OBJECT
 
 public:
-	void interpret() override;
+	void interpret(Thread *thread) override;
 
 	void setFailedStatus() override;
 
@@ -52,28 +67,28 @@ protected:
 	Block();
 
 	/// Returns a property of current block with given name as QVariant.
-	QVariant property(const QString &propertyName) const;
+	QVariant property(const QString &propertyName);
 
 	/// Returns a property of current block with given name as QString.
-	QString stringProperty(const QString &propertyName) const;
+	QString stringProperty(const QString &propertyName);
 
 	/// Returns a property of current block with given name as int, or 0 if it can't be converted to int.
-	int intProperty(const QString &propertyName) const;
+	int intProperty(const QString &propertyName);
 
 	/// Returns a property of current block with given name as bool, or "false" if it can't be converted to bool.
-	bool boolProperty(const QString &propertyName) const;
+	bool boolProperty(const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as QVariant.
-	QVariant property(const qReal::Id &id, const QString &propertyName) const;
+	QVariant property(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as QString.
-	QString stringProperty(const qReal::Id &id, const QString &propertyName) const;
+	QString stringProperty(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as int, or 0 if it can't be converted to int.
-	int intProperty(const qReal::Id &id, const QString &propertyName) const;
+	int intProperty(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property with given name of block with given id as bool, or "false" if it can't be converted to bool.
-	bool boolProperty(const qReal::Id &id, const QString &propertyName) const;
+	bool boolProperty(const qReal::Id &id, const QString &propertyName);
 
 	/// Returns a property of current block with given name as color.
 	QColor propertyToColor(const QString &property) const;
@@ -133,6 +148,7 @@ protected:
 	const qReal::LogicalModelAssistInterface *mLogicalModelApi;  // Doesn't have ownership.
 
 	qReal::Id mGraphicalId;
+	Thread *mThread;
 
 private slots:
 	void finishedRunning();

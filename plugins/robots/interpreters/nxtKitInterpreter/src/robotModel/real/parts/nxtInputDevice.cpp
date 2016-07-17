@@ -1,6 +1,18 @@
-#include "nxtInputDevice.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
 
-#include <utils/tracer.h>
+#include "nxtInputDevice.h"
 
 using namespace nxt::robotModel::real::parts;
 using namespace utils;
@@ -34,25 +46,15 @@ void NxtInputDevice::processResponse(const QByteArray &reading)
 	if (reading.isEmpty()) {
 		mState = idle;
 		if (mResetDone) {
-			Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-					, "Response is empty, seems to be a connection failure");
 			// Just ignore connection failures for now
 			// emit failure();
 		}
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::RESETINPUTSCALEDVALUE) {
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Response is a reset input scaled value response package");
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		mState = idle;
 		mResetDone = true;
 		emit configured(true);
 	} else if (reading.size() >= 5 && reading[3] == enums::commandCode::SETINPUTMODE) {
 		mState = idle;
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Response is a configuration response package");
-		Tracer::debug(Tracer::sensors, "BluetoothSensorImplementation::processResponse"
-				, "Status byte is: " + QString::number(static_cast<int>(reading[4])));
 		QByteArray command(5, 0);
 		command[0] = 0x03;
 		command[1] = 0x00;

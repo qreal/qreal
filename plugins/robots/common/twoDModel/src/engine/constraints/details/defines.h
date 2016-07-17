@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <functional>
@@ -17,7 +31,11 @@ class StatusReporter : public QObject
 
 signals:
 	/// Emitted when <success> tag triggered.
-	void success();
+	/// @param deferred If true then the program execution will not be stopped immediately.
+	/// Instead the success trigger will be emitted just when program execution is stopped.
+	/// However this will not be done if during the period between deferred success event and
+	/// program finish fail event will be fired. Then the program will just be considered failed.
+	void success(bool deferred);
 
 	/// Emitted when <fail> tag triggered.
 	void fail(const QString &message);
@@ -29,7 +47,9 @@ signals:
 /// Represents logical operations that can be used for concatenating conditions.
 enum class Glue
 {
+	/// Logical 'and'
 	And = 0
+	/// Logical 'or'
 	, Or
 };
 

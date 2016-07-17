@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "scene.h"
 
 #include <limits>
@@ -55,7 +69,8 @@ QPointF Scene::setCXandCY(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mLine->setX2andY2(mX2, mY2);
+	mLine->setX2(mX2);
+	mLine->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mLine->reshapeRectWithShift();
 }
@@ -63,7 +78,8 @@ void Scene::reshapeLine(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mLinePort->setX2andY2(mX2, mY2);
+	mLinePort->setX2(mX2);
+	mLinePort->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mLinePort->reshapeRectWithShift();
 }
@@ -71,7 +87,8 @@ void Scene::reshapeLinePort(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mEllipse->setX2andY2(mX2, mY2);
+	mEllipse->setX2(mX2);
+	mEllipse->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mEllipse->reshapeRectWithShift();
 }
@@ -79,7 +96,8 @@ void Scene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeRectangle(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mRectangle->setX2andY2(mX2, mY2);
+	mRectangle->setX2(mX2);
+	mRectangle->setY2(mY2);
 	if (event->modifiers() & Qt::ShiftModifier)
 		mRectangle->reshapeRectWithShift();
 }
@@ -93,7 +111,8 @@ void Scene::reshapeStylus(QGraphicsSceneMouseEvent *event)
 void Scene::reshapeCurveFirst(QGraphicsSceneMouseEvent *event)
 {
 	setX2andY2(event);
-	mCurve->setX2andY2(mX2, mY2);
+	mCurve->setX2(mX2);
+	mCurve->setY2(mY2);
 }
 
 void Scene::reshapeCurveSecond(QGraphicsSceneMouseEvent *event)
@@ -133,7 +152,7 @@ QPair<bool, Item *> Scene::checkOnResize(qreal x, qreal y)
 	foreach (Item *item, list) {
 		item->changeDragState(x, y);
 		item->changeScalingPointState(x, y);
-		if (item->getDragState() != Item::None)  {
+		if (item->dragState() != Item::None)  {
 			mView->setDragMode(QGraphicsView::NoDrag);
 			return QPair<bool, Item *>(true, item);
 		}

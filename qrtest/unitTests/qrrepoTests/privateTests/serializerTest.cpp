@@ -1,11 +1,26 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include "serializerTest.h"
+
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 #include <QtCore/QPointF>
 
-#include "serializerTest.h"
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrrepo/private/classes/graphicalObject.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrrepo/private/classes/graphicalObject.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrRepo;
 using namespace details;
@@ -16,7 +31,7 @@ void SerializerTest::removeDirectory(QString const &dirName)
 {
 	QDir const dir(dirName);
 
-	foreach (QFileInfo const &info, dir.entryInfoList(QDir::Hidden
+	foreach (const QFileInfo &info, dir.entryInfoList(QDir::Hidden
 			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {
@@ -31,10 +46,6 @@ void SerializerTest::removeDirectory(QString const &dirName)
 
 void SerializerTest::SetUp()
 {
-	mOldTempFolder = SettingsManager::value("temp").toString();
-	mNewTempFolder = QDir::currentPath() + "/unsaved";
-	SettingsManager::setValue("temp", mNewTempFolder);
-
 	mSerializer = new Serializer("saveFile");
 }
 
@@ -44,9 +55,6 @@ void SerializerTest::TearDown()
 	delete mSerializer;
 
 	QFile::remove("saveFile.qrs");
-	QDir().rmdir(mNewTempFolder);
-
-	SettingsManager::setValue("temp", mOldTempFolder);
 }
 
 TEST_F(SerializerTest, saveAndLoadFromDiskTest)
@@ -55,11 +63,11 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 	metaInfo["key1"] = "info1";
 	metaInfo["key2"] = 2;
 
-	Id const id1("editor1", "diagram1", "element1", "id1");
+	const Id id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
 
-	Id const id2("editor1", "diagram2", "element2", "id2");
+	const Id id2("editor1", "diagram2", "element2", "id2");
 	LogicalObject obj2(id2);
 	obj2.setProperty("property2", "value2");
 
@@ -91,11 +99,11 @@ TEST_F(SerializerTest, saveAndLoadFromDiskTest)
 // path without parent folder /tree and /logical or /graphical according to id type.
 TEST_F(SerializerTest, removeFromDiskTest)
 {
-	Id const id1("editor1", "diagram1", "element1", "id1");
+	const Id id1("editor1", "diagram1", "element1", "id1");
 	LogicalObject obj1(id1);
 	obj1.setProperty("property1", "value1");
 
-	Id const id2("editor1", "diagram2", "element2", "id2");
+	const Id id2("editor1", "diagram2", "element2", "id2");
 	LogicalObject obj2(id2);
 	obj2.setProperty("property2", "value2");
 
@@ -114,10 +122,10 @@ TEST_F(SerializerTest, removeFromDiskTest)
 
 TEST_F(SerializerTest, saveAndLoadGraphicalPartsTest)
 {
-	Id const element("editor", "diagram", "element", "id");
+	const Id element("editor", "diagram", "element", "id");
 	LogicalObject logicalObj(element);
 
-	Id const graphicalElement("editor", "diagram", "element", "graphicalId");
+	const Id graphicalElement("editor", "diagram", "element", "graphicalId");
 
 	GraphicalObject graphicalObj(graphicalElement, Id(), element);
 
@@ -137,7 +145,7 @@ TEST_F(SerializerTest, saveAndLoadGraphicalPartsTest)
 
 	ASSERT_TRUE(map.contains(graphicalElement));
 
-	GraphicalObject const * const deserializedGraphicalObject
+	const GraphicalObject * const deserializedGraphicalObject
 			= dynamic_cast<GraphicalObject const *>(map.value(graphicalElement));
 
 	ASSERT_EQ(QPointF(10, 20), deserializedGraphicalObject->graphicalPartProperty(0, "Coord"));

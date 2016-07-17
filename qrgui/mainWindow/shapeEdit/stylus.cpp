@@ -1,11 +1,25 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "stylus.h"
 
 Stylus::Stylus(qreal x1, qreal y1, Item* parent) : Item(parent), mStylusImpl()
 {
 	mNeedScalingRect = false;
-	mPen.setColor(Qt::black);
-	mX1 = x1;
-	mY1 = y1;
+	setPen(QPen(Qt::black));
+	setX1(x1);
+	setY1(y1);
 	mTmpX1 = x1;
 	mTmpY1 = y1;
 	mDomElementType = pictureType;
@@ -15,13 +29,13 @@ Stylus::Stylus(const Stylus &other)
 	:Item()
 {
 	mNeedScalingRect = other.mNeedScalingRect ;
-	mPen = other.mPen;
-	mBrush = other.mBrush;
+	setPen(other.pen());
+	setBrush(other.brush());
 	mDomElementType = pictureType;
-	mX1 = other.mX1;
-	mX2 = other.mX2;
-	mY1 = other.mY1;
-	mY2 = other.mY2;
+	setX1(other.x1());
+	setX2(other.x2());
+	setY1(other.y1());
+	setY2(other.y2());
 	mTmpX1 = other.mTmpX1;
 	mTmpY1 = other.mTmpY1;
 	mListScalePoint = other.mListScalePoint;
@@ -40,14 +54,14 @@ Item* Stylus::clone()
 
 void Stylus::addLine(qreal x2, qreal y2)
 {
-	mX2 = x2;
-	mY2 = y2;
-	Line *line = new Line(mTmpX1, mTmpY1, mX2, mY2, nullptr);
-	line->setPen(mPen);
-	line->setBrush(mBrush);
+	setX2(x2);
+	setY2(y2);
+	Line *line = new Line(mTmpX1, mTmpY1, this->x2(), this->y2(), nullptr);
+	line->setPen(pen());
+	line->setBrush(brush());
 	mAbstractListLine.push_back(dynamic_cast<AbstractItem *>(line));
-	mTmpX1 = mX2;
-	mTmpY1 = mY2;
+	mTmpX1 = this->x2();
+	mTmpY1 = this->y2();
 }
 
 void Stylus::addLineInList(Line *line)

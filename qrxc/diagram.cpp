@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "diagram.h"
 
 #include "type.h"
@@ -7,6 +21,7 @@
 #include "portType.h"
 #include "nodeType.h"
 #include "edgeType.h"
+#include "patternType.h"
 #include "editor.h"
 
 #include <QtCore/QDebug>
@@ -95,12 +110,27 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 		element = element.nextSiblingElement())
 	{
 		if (element.nodeName() == "groups") {
-			mGroupsXML = "";			QString xml;
-			QTextStream stream(&xml);
-			element.save(stream, 1);
-			xml.replace("\"", "\\\"");
-			xml.replace("\n", "\\n");
-			mGroupsXML = xml;
+			/// @todo: How the f*ck groups are not graphics type? They describe graphical positions and connections of
+			/// elements! It is also now explicitly inherited from GraphicType, so it should be generated into
+			/// a graphics section.
+			for (QDomElement group = element.firstChildElement("group")
+					;!group.isNull()
+					; group = group.nextSiblingElement("group"))
+			{
+				QString xml;
+				QTextStream stream(&xml);
+				group.save(stream, 1);
+				xml.replace("\"", "\\\"");
+				xml.replace("\n", "\\n");
+				PatternType *patternType = new PatternType(this, xml);
+				if (!patternType->init(group, mDiagramName)) {
+					delete patternType;
+					qWarning() << "Can't parse pattern";
+					return false;
+				}
+
+				mTypes[patternType->qualifiedName()] = patternType;
+			}
 		} else if (element.nodeName() == "enum") {
 			Type *enumType = new EnumType();
 			if (!enumType->init(element, mDiagramName)) {
@@ -238,9 +268,4 @@ QMap<QString, QString> Diagram::paletteGroupsDescriptions() const
 bool Diagram::shallPaletteBeSorted() const
 {
 	return mShallPaletteBeSorted;
-}
-
-QString Diagram::getGroupsXML() const
-{
-	return mGroupsXML;
 }

@@ -1,3 +1,17 @@
+/* Copyright 2013-2016 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QString>
@@ -28,6 +42,7 @@ public:
 	QString name() const override;
 	QString friendlyName() const override;
 	bool needsConnection() const override;
+	int updateIntervalForInterpretation() const override;
 	utils::TimelineInterface &timeline() override;
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;
@@ -48,7 +63,7 @@ public:
 	virtual kitBase::robotModel::PortInfo defaultRightWheelPort() const = 0;
 
 	/// Returns a pointer to a widget with display emulator for current robot model.
-	virtual engine::TwoDModelDisplayWidget *displayWidget(QWidget * parent) const = 0;
+	virtual engine::TwoDModelDisplayWidget *displayWidget() const = 0;
 
 	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
 	virtual QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const
@@ -81,9 +96,10 @@ public:
 		return qMakePair(QPoint(), 0);
 	}
 
-protected:
+	/// Returns a reference to object providing different parts of 2D model emulator.
 	engine::TwoDModelEngineInterface *engine();
 
+protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &deviceInfo

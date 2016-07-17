@@ -1,10 +1,25 @@
-#include "../../../../qrutils/expressionsParser/number.h"
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
+#include <qrutils/expressionsParser/number.h>
 
 #include "gtest/gtest.h"
 
 using namespace utils;
 
-TEST(NumberTest, ariphmeticsIntTest) {
+TEST(NumberTest, ariphmeticsIntTest)
+{
 	Number n1(2, Number::intType);
 	Number n2(3, Number::intType);
 
@@ -27,7 +42,8 @@ TEST(NumberTest, ariphmeticsIntTest) {
 	EXPECT_EQ(n1.value().toInt(), -3);
 }
 
-TEST(NumberTest, ariphmeticsDoubleTest) {
+TEST(NumberTest, ariphmeticsDoubleTest)
+{
 	Number n1(2.3, Number::doubleType);
 	Number n2(2.2, Number::doubleType);
 
@@ -47,7 +63,8 @@ TEST(NumberTest, ariphmeticsDoubleTest) {
 	EXPECT_EQ(n2.value().toDouble(), -2.3);
 }
 
-TEST(NumberTest, ariphmeticsBothTypesTest) {
+TEST(NumberTest, ariphmeticsBothTypesTest)
+{
 	Number n1(2, Number::intType);
 	Number n2(2.5, Number::doubleType);
 
@@ -71,7 +88,8 @@ TEST(NumberTest, ariphmeticsBothTypesTest) {
 	EXPECT_EQ(n1.value().toDouble(), 2.0);
 }
 
-TEST(NumberTest, comparisonTest) {
+TEST(NumberTest, comparisonTest)
+{
 	Number n1(2, Number::intType);
 	Number n2(3, Number::intType);
 	Number n3(2.5, Number::doubleType);

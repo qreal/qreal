@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "qrtext/src/lua/luaGeneralizationsTable.h"
 
 #include "qrtext/core/types/any.h"
@@ -25,15 +39,21 @@ bool LuaGeneralizationsTable::isStructurallyEquivalent(const QSharedPointer<Type
 {
 	if (type1->is<Any>() && type2->is<Any>()) {
 		return true;
-	} if (type1->is<Boolean>() && type2->is<Boolean>()) {
+	} else if (type1->is<Boolean>() && type2->is<Boolean>()) {
 		return true;
-	} if (type1->is<Float>() && type2->is<Float>()) {
+	} else if (type1->is<Float>() && type2->is<Float>()) {
 		return true;
-	} if (type1->is<Integer>() && type2->is<Integer>()) {
+	} else if (type1->is<Integer>() && type2->is<Integer>()) {
 		return true;
-	} if (type1->is<Nil>() && type2->is<Nil>()) {
+	} else if (type1->is<Nil>() && type2->is<Nil>()) {
 		return true;
-	} if (type1->is<String>() && type2->is<String>()) {
+	} else if (type1->is<String>() && type2->is<String>()) {
+		return true;
+	} else if (type1->is<Table>() && type2->is<Table>()) {
+		return isStructurallyEquivalent(type1.dynamicCast<Table>()->elementType()
+				, type2.dynamicCast<Table>()->elementType());
+	} else if (type1->is<Function>() && type2->is<Function>()) {
+		/// @todo: Actually compare function types.
 		return true;
 	}
 

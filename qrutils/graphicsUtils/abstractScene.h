@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtWidgets/QGraphicsScene>
@@ -36,6 +50,19 @@ public:
 	void setBrushStyleItems(const QString &text);
 	void setBrushColorItems(const QString &text);
 
+	/// Appends the given action to the context menu shown on empty scene.
+	void addAction(QAction * const action);
+
+	/// Appends the given list of action to the context menu shown on empty scene.
+	void addActions(const QList<QAction *> &actions);
+
+signals:
+	/// Emitted when user pressed left mouse button on this scene.
+	void leftButtonPressed();
+
+	/// Emitted when user releases left mouse button on this scene.
+	void leftButtonReleased();
+
 protected:
 	void setEmptyRect(int x, int y, int w, int h);
 
@@ -47,11 +74,18 @@ protected:
 	void removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem* item);
 	void setMoveFlag(QGraphicsSceneMouseEvent *event);
 
+	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+
 	QString penStyleItems();
 	int penWidthItems();
 	QString penColorItems();
 	QString brushStyleItems();
 	QString brushColorItems();
+
+	QList<AbstractItem *> abstractItems(const QPointF &scenePos) const;
+
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
 
 	AbstractView *mView;
 	graphicsUtils::AbstractItem *mGraphicsItem;
@@ -71,6 +105,8 @@ protected:
 	int mFirstPenWidth;
 
 	QGraphicsRectItem *mEmptyRect;
+
+	QList<QAction *> mActions;
 };
 
 }

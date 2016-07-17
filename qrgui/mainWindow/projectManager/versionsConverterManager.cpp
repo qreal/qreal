@@ -1,6 +1,24 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "versionsConverterManager.h"
 
 #include <QtWidgets/QMessageBox>
+
+#include <qrgui/models/models.h>
+#include <qrgui/plugins/pluginManager/toolPluginManager.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "mainWindow/mainWindow.h"
 
@@ -19,8 +37,8 @@ bool VersionsConverterManager::validateCurrentProject()
 		editorsToCheck << element.editor();
 	}
 
-	QMap<Id, Version> const savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
-	QMultiMap<QString, ProjectConverter> const converters = mMainWindow.toolManager().projectConverters();
+	const QMap<Id, Version> savedVersions = mMainWindow.models().logicalModelAssistApi().editorVersions();
+	const QMultiMap<QString, ProjectConverter> converters = mMainWindow.toolManager().projectConverters();
 
 	for (const QString &editor : editorsToCheck) {
 		const Version currentVersion = mMainWindow.editorManager().version(Id(editor));
@@ -58,7 +76,7 @@ bool VersionsConverterManager::convertProject(const Version &enviromentVersion
 	// Stage II: Checking that versions are not overlapped
 	for (int index = 0; index < sortedConverters.count() - 1; ++index) {
 		if (sortedConverters[index].toVersion() > sortedConverters[index + 1].fromVersion()) {
-			qDebug() << "Converter versions are overlapped!";
+			qWarning() << "Converter versions are overlapped!";
 			return false;
 		}
 	}
@@ -91,6 +109,8 @@ bool VersionsConverterManager::convertProject(const Version &enviromentVersion
 	if (converterApplied) {
 		mMainWindow.errorReporter()->addInformation(QObject::tr("Project was automaticly converted to version %1."\
 				" Please check its contents.").arg(enviromentVersion.toString()));
+		mMainWindow.models().mutableLogicalRepoApi().setMetaInformation(
+				converters.first().editor() + "Version", enviromentVersion.toString());
 	}
 
 	return true;

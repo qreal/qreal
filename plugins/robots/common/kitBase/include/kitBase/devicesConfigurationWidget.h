@@ -1,3 +1,17 @@
+/* Copyright 2007-2015 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 /// @todo: More apropriate place for it?
@@ -29,6 +43,7 @@ public:
 	/// @param autosaveMode - should save happen on each modification or would be called manually.
 	/// @param compactMode - widget must minimize its horizontal size.
 	explicit DevicesConfigurationWidget(QWidget *parent = 0, bool autosaveMode = false, bool compactMode = false);
+	~DevicesConfigurationWidget();
 
 	/// Creates configuration widgets for all robot models in a list and prepares them to be shown when
 	/// selectRobotModel() is called.

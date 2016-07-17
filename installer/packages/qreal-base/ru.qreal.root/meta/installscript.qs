@@ -56,7 +56,7 @@ function Component()
 	// Executable names must be lower-case product name with hyphens instead of spaces
 	installer.executableName = installer.value("ProductName").toLowerCase().replace(/\s/g, "-");
 	installer.linkExtension = installer.value("os") === "win" ? ".lnk" : "";
-	installer.execExtension = installer.value("os") === "win" ? ".exe" : "";
+	installer.execExtension = installer.value("os") === "win" ? ".exe" : installer.value("os") === "mac" ? ".app" : "";
 	installer.maintenanceName = "maintenance" + installer.execExtension;
 	installer.shouldDeinstallPrevious = false;
 
@@ -76,16 +76,19 @@ Component.prototype.createOperations = function()
 		}
 	}
 	component.createOperations();
-	component.addOperation("CreateShortcut"
-			, "@TargetDir@/" + installer.executableName + installer.execExtension
-			, "@StartMenuDir@/@ProductName@ @Version@" + installer.linkExtension);
-	component.addOperation("CreateShortcut"
-			, "@TargetDir@/" + installer.maintenanceName
-			, "@StartMenuDir@/Uninstall @ProductName@" + installer.linkExtension);
 	if (installer.value("os") == "win") {
+		component.addOperation("CreateShortcut"
+				, "@TargetDir@/" + installer.executableName + installer.execExtension
+				, "@StartMenuDir@/@ProductName@ @Version@" + installer.linkExtension);
+		component.addOperation("CreateShortcut"
+				, "@TargetDir@/" + installer.maintenanceName
+				, "@StartMenuDir@/Uninstall @ProductName@" + installer.linkExtension);
 		component.addOperation("Execute"
 				, "@TargetDir@/" + installer.executableName + installer.execExtension
 				, "--clear-conf");
+	} else if (installer.value("os") == "mac") {
+		component.addOperation("Execute"
+				, "@TargetDir@/" + installer.value("ProductName") + ".app/Contents/MacOS/" + installer.executableName, "--clear-conf");
 	} else {
 		component.addOperation("Execute"
 				, "bash"
@@ -199,7 +202,7 @@ Component.prototype.targetChanged = function (text) {
 		return;
 	}
 
-	if (widget != null) {
+	if (installer.isInstaller() && widget != null) {
 		if (text != "") {
 			widget.complete = true;
 			installer.setValue("TargetDir", text);
