@@ -904,6 +904,9 @@
 						<property displayedName="Redraw" type="bool" name="Redraw">
 							<default>true</default>
 						</property>
+						<property displayedName="Filled" type="bool" name="Filled">
+							<default>false</default>
+						</property>
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>

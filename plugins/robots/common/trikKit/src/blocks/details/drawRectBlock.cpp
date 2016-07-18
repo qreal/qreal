@@ -31,9 +31,10 @@ void DrawRectBlock::doJob(kitBase::robotModel::robotParts::Display &display)
 	const int width = eval<int>("WidthRect");
 	const int height = eval<int>("HeightRect");
 	const bool redraw = boolProperty("Redraw");
+	const bool filled = boolProperty("Filled");
 
 	if (!errorsOccured()) {
-		trikDisplay->drawRect(x, y, width, height);
+		trikDisplay->drawRect(x, y, width, height, filled);
 		if (redraw) {
 			trikDisplay->redraw();
 		}

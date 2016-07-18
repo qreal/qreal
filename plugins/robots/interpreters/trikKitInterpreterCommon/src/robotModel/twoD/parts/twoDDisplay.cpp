@@ -77,9 +77,9 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	emit shapesSetChanged();
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
-	Canvas::drawRect(x, y, width, height);
+	Canvas::drawRect(x, y, width, height, filled);
 	emit shapesSetChanged();
 }
 

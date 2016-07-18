@@ -45,14 +45,9 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	Canvas::drawLine(x1, y1, x2, y2);
 }
 
-void Display::drawRect(int x, int y, int width, int height)
-{
-	drawRect(x, y, width, height, false);
-}
-
 void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
-	Canvas::drawRect(x, y, width, height, filled);
+	drawRect(x, y, width, height, filled);
 }
 
 void Display::drawCircle(int x, int y, int radius, bool filled)
