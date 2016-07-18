@@ -83,9 +83,9 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	emit shapesSetChanged();
 }
 
-void Display::drawEllipse(int x, int y, int width, int height)
+void Display::drawEllipse(int x, int y, int width, int height, bool filled)
 {
-	Canvas::drawEllipse(x, y, width, height);
+	Canvas::drawEllipse(x, y, width, height, filled);
 	emit shapesSetChanged();
 }
 

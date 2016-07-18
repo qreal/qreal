@@ -96,12 +96,13 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	Q_UNUSED(filled)
 }
 
-void Display::drawEllipse(int x, int y, int width, int height)
+void Display::drawEllipse(int x, int y, int width, int height, bool filled)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
+	Q_UNUSED(filled)
 }
 
 void Display::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)

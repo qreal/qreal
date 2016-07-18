@@ -901,11 +901,11 @@
 						<property displayedName="Height" type="string" name="HeightRect">
 							<default>5</default>
 						</property>
-						<property displayedName="Redraw" type="bool" name="Redraw">
-							<default>true</default>
-						</property>
 						<property displayedName="Filled" type="bool" name="Filled">
 							<default>false</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -940,6 +940,9 @@
 						</property>
 						<property displayedName="Height" type="string" name="HeightEllipse">
 							<default>5</default>
+						</property>
+						<property displayedName="Filled" type="bool" name="Filled">
+							<default>false</default>
 						</property>
 						<property displayedName="Redraw" type="bool" name="Redraw">
 							<default>true</default>

@@ -40,7 +40,8 @@ public:
 	/// @param y - y coordinate.
 	/// @param width - width of ellipse.
 	/// @param height - height of ellipse.
-	virtual void drawEllipse(int x, int y, int width, int height) = 0;
+	/// @param filled - filling of ellipse.
+	virtual void drawEllipse(int x, int y, int width, int height, bool filled) = 0;
 
 	/// Draw arc on the widget without redrawing it.
 	/// @param x - x coordinate.
