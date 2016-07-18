@@ -32,6 +32,8 @@ DrawEllipseGenerator::DrawEllipseGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->intPropertyConverter(id, "WidthEllipse"))
 					, Binding::createConverting("@@HeightEllipse@@", "HeightEllipse"
 							, customizer.factory()->intPropertyConverter(id, "HeightEllipse"))
+					, Binding::createConverting("@@FilledEllipse@@", "Filled"
+						, customizer.factory()->boolPropertyConverter(id, "Filled", false))
 			}
 			, parent)
 {
