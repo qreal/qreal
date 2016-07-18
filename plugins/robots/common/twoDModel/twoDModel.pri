@@ -16,7 +16,7 @@ QT += widgets xml
 
 DEFINES += TWO_D_MODEL_LIBRARY
 
-links(qrkernel qslog qrutils qrgui-tool-plugin-interface robots-utils robots-kit-base)
+links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base)
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
 
@@ -86,7 +86,6 @@ HEADERS += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
-	$$PWD/src/engine/items/tool.h \
 	$$PWD/src/engine/items/solidItem.h \
 	$$PWD/src/engine/items/wallItem.h \
 	$$PWD/src/engine/items/stylusItem.h \
@@ -100,6 +99,15 @@ HEADERS += \
 	$$PWD/src/engine/items/regions/ellipseRegion.h \
 	$$PWD/src/engine/items/regions/rectangularRegion.h \
 	$$PWD/src/engine/items/regions/boundRegion.h \
+	$$PWD/src/engine/commands/createWorldItemCommand.h \
+	$$PWD/src/engine/commands/removeWorldItemCommand.h \
+	$$PWD/src/engine/commands/removeWorldItemsCommand.h \
+	$$PWD/src/engine/commands/createRemoveWorldItemImplementation.h \
+	$$PWD/src/engine/commands/createSensorCommand.h \
+	$$PWD/src/engine/commands/removeSensorCommand.h \
+	$$PWD/src/engine/commands/createRemoveSensorImplementation.h \
+	$$PWD/src/engine/commands/changePropertyCommand.h \
+	$$PWD/src/engine/commands/reshapeCommand.h \
 	$$PWD/src/robotModel/nullTwoDRobotModel.h \
 
 SOURCES += \
@@ -132,7 +140,6 @@ SOURCES += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
-	$$PWD/src/engine/items/tool.cpp \
 	$$PWD/src/engine/items/solidItem.cpp \
 	$$PWD/src/engine/items/wallItem.cpp \
 	$$PWD/src/engine/items/stylusItem.cpp \
@@ -152,6 +159,15 @@ SOURCES += \
 	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
 	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
 	$$PWD/src/engine/constraints/details/valuesFactory.cpp \
+	$$PWD/src/engine/commands/createWorldItemCommand.cpp \
+	$$PWD/src/engine/commands/removeWorldItemCommand.cpp \
+	$$PWD/src/engine/commands/removeWorldItemsCommand.cpp \
+	$$PWD/src/engine/commands/createRemoveWorldItemImplementation.cpp \
+	$$PWD/src/engine/commands/createSensorCommand.cpp \
+	$$PWD/src/engine/commands/removeSensorCommand.cpp \
+	$$PWD/src/engine/commands/createRemoveSensorImplementation.cpp \
+	$$PWD/src/engine/commands/changePropertyCommand.cpp \
+	$$PWD/src/engine/commands/reshapeCommand.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/nullTwoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \

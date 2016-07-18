@@ -125,16 +125,16 @@ void CurveItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-QDomElement CurveItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement CurveItem::serialize(QDomElement &parent) const
 {
-	QDomElement curveNode = setPenBrushToDoc(document, "cubicBezier");
-	AbstractItem::serialize(curveNode);
-	const qreal x1 = this->x1() + scenePos().x() - topLeftPicture.x();
-	const qreal y1 = this->y1() + scenePos().y() - topLeftPicture.y();
-	const qreal x2 = this->x2() + scenePos().x() - topLeftPicture.x();
-	const qreal y2 = this->y2() + scenePos().y() - topLeftPicture.y();
-	const QPointF cp1 = mMarker1.pos() + scenePos() - topLeftPicture;
-	const QPointF cp2 = mMarker2.pos() + scenePos() - topLeftPicture;
+	QDomElement curveNode = ColorFieldItem::serialize(parent);
+	setPenBrushToElement(curveNode, "cubicBezier");
+	const qreal x1 = this->x1() + scenePos().x();
+	const qreal y1 = this->y1() + scenePos().y();
+	const qreal x2 = this->x2() + scenePos().x();
+	const qreal y2 = this->y2() + scenePos().y();
+	const QPointF cp1 = mMarker1.pos() + scenePos();
+	const QPointF cp2 = mMarker2.pos() + scenePos();
 	curveNode.setAttribute("begin", QString::number(x1) + ":" + QString::number(y1));
 	curveNode.setAttribute("end", QString::number(x2) + ":" + QString::number(y2));
 	curveNode.setAttribute("cp1", QString::number(cp1.x()) + ":" + QString::number(cp1.y()));
@@ -224,6 +224,7 @@ QVariant CurveItem::Marker::itemChange(QGraphicsItem::GraphicsItemChange change,
 void CurveItem::Marker::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
+	emit static_cast<AbstractItem *>(parentItem())->mouseInteractionStarted();
 }
 
 void CurveItem::Marker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -235,4 +236,5 @@ void CurveItem::Marker::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void CurveItem::Marker::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	Q_UNUSED(event)
+	emit static_cast<AbstractItem *>(parentItem())->mouseInteractionStopped();
 }

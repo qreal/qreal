@@ -132,16 +132,14 @@ void StylusItem::setBrushColor(const QString& text)
 	mStylusImpl.setBrushColor(mAbstractListLine, text);
 }
 
-QDomElement StylusItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement StylusItem::serialize(QDomElement &parent) const
 {
-	QDomElement stylusNode = setPenBrushToDoc(document, "stylus");
-	AbstractItem::serialize(stylusNode);
+	QDomElement stylusNode = ColorFieldItem::serialize(parent);
+	setPenBrushToElement(stylusNode, "stylus");
 	for (AbstractItem * const abstractItem : mAbstractListLine) {
 			LineItem * const line = static_cast<LineItem *>(abstractItem);
 			line->setSerializeName("stylusLine");
-			QDomElement item = line->serialize(document, topLeftPicture - QPoint(static_cast<int>(scenePos().x())
-					, static_cast<int>(scenePos().y())));
-			stylusNode.appendChild(item);
+			line->serializeWithIndent(stylusNode, -scenePos());
 	}
 
 	return stylusNode;

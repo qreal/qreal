@@ -55,23 +55,31 @@ public:
 	/// Checks if the given path intersects some wall.
 	bool checkCollision(const QPainterPath &path) const;
 
-	/// Returns a list of walls in the world model.
-	const QList<items::WallItem *> &walls() const;
+	/// Returns a set of walls in the world model. Result is mapping of wall ids to walls themselves.
+	const QMap<QString, items::WallItem *> &walls() const;
 
-	/// Returns a list of color field items in the world model.
-	const QList<items::ColorFieldItem *> &colorFields() const;
+	/// Returns a set of color field items in the world model. Result is mapping of field ids to fields themselves.
+	const QMap<QString, items::ColorFieldItem *> &colorFields() const;
+
+	/// Returns a set of region items in the world model. Result is mapping of field ids to regions themselves.
+	const QMap<QString, items::RegionItem *> &regions() const;
 
 	/// Returns a list of trace items on the floor.
 	const QList<QGraphicsLineItem *> &trace() const;
 
-	int wallsCount() const;
-	items::WallItem *wallAt(int index) const;
+	/// Appends \a wall into world model.
 	void addWall(items::WallItem *wall);
+
+	/// Removes \a wall from the world model.
 	void removeWall(items::WallItem *wall);
 
+	/// Appends colored item \a colorField into the world model.
 	void addColorField(items::ColorFieldItem *colorField);
+
+	/// Removes colored item \a colorField form the world model.
 	void removeColorField(items::ColorFieldItem *colorField);
 
+	/// Removes all walls, colored items, regions and robot traces from the world model.
 	void clear();
 
 	/// Appends one more segment of the given to the robot`s trace.
@@ -81,11 +89,45 @@ public:
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomDocument &document) const;
+	QDomElement serialize(QDomElement &parent) const;
+
+	/// Saves all information about the item with \a id into XML element. Item then can be recreated from
+	/// this specification using createElement(QDomElement) method.
+	QDomElement serializeItem(const QString &id) const;
+
+	/// Restores world model XML specification.
+	/// @param element Root element of the world model XML specification.
 	void deserialize(const QDomElement &element);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
 	QGraphicsObject *findId(const QString &id) const;
+
+	/// Creates element from serialized XML specification.
+	void createElement(const QDomElement &element);
+
+	/// Creates wall item described by \a element in the world model.
+	void createWall(const QDomElement &element);
+
+	/// Creates line colored item described by \a element in the world model.
+	void createLine(const QDomElement &element);
+
+	/// Creates rectangular colored item described by \a element in the world model.
+	void createRectangle(const QDomElement &element);
+
+	/// Creates ellipse colored item described by \a element in the world model.
+	void createEllipse(const QDomElement &element);
+
+	/// Creates cubic bezier colored item described by \a element in the world model.
+	void createCubicBezier(const QDomElement &element);
+
+	/// Creates stylus colored item described by \a element in the world model.
+	void createStylus(const QDomElement &element);
+
+	/// Creates region item described by \a element in the world model.
+	void createRegion(const QDomElement &element);
+
+	/// Removes item with the \a id from the world model.
+	void removeItem(const QString &id);
 
 signals:
 	/// Emitted each time when model is appended with some new wall.
@@ -112,10 +154,11 @@ private:
 			, const qreal direction, const QPainterPath &wallPath) const;
 	QPainterPath buildWallPath() const;
 
-	QList<items::WallItem *> mWalls;
-	QList<items::ColorFieldItem *> mColorFields;
+	QMap<QString, items::WallItem *> mWalls;
+	QMap<QString, items::ColorFieldItem *> mColorFields;
+	QMap<QString, items::RegionItem *> mRegions;
 	QList<QGraphicsLineItem *> mRobotTrace;
-	QList<items::RegionItem *> mRegions;
+	QScopedPointer<QDomDocument> mXmlFactory;
 };
 
 }

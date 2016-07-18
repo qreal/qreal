@@ -43,7 +43,8 @@ public:
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	void reshapeRectWithShift() override;
 
-	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const override;
+	QDomElement serializeWithIndent(QDomElement &parent, const QPointF &topLeftPicture) const;
+	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &element) override;
 
 	void deserializePenBrush(const QDomElement &element);

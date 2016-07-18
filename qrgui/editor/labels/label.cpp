@@ -39,6 +39,7 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 	}
 
 	init();
+	setAcceptDrops(true);
 }
 
 Label::~Label()

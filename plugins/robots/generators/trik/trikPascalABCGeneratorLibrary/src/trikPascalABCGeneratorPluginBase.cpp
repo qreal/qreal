@@ -62,7 +62,7 @@ TrikPascalABCGeneratorPluginBase::TrikPascalABCGeneratorPluginBase(
 			, ":/trik/pascalABC/images/flashRobot.svg"
 			/// @todo: hmmm
 			, "trikV62Kit"
-			, commands
+			, ::commands
 			, QObject::tr("Attention! Started to download Pascal runtime."
 					" Please do not turn off the robot.")
 			, [](){ return qReal::SettingsManager::value("TrikTcpServer").toString(); }

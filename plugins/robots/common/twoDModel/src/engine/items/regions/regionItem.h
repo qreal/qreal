@@ -71,7 +71,7 @@ public:
 
 	QRectF boundingRect() const override;
 
-	virtual void serialize(QDomElement &element);
+	virtual void serialize(QDomElement &element) const;
 	virtual void deserialize(const QDomElement &element);
 
 protected:

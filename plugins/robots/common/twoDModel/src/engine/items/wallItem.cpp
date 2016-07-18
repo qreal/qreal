@@ -169,7 +169,7 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 
 		setDraggedEnd(deltaX, deltaY);
 	}  else if (mDragged) {
-		QGraphicsItem::mouseMoveEvent(event);
+		AbstractItem::mouseMoveEvent(event);
 	}
 
 	// Items under cursor cannot be dragged when adding new item,
@@ -193,16 +193,17 @@ qreal WallItem::width() const
 
 void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-	QGraphicsItem::mouseReleaseEvent(event);
+	AbstractItem::mouseReleaseEvent(event);
 	mDragged = false;
 }
 
-void WallItem::serialize(QDomElement &wallNode) const
+QDomElement WallItem::serialize(QDomElement &parent) const
 {
+	QDomElement wallNode = SolidItem::serialize(parent);
 	wallNode.setTagName("wall");
-	AbstractItem::serialize(wallNode);
 	mLineImpl.serialize(wallNode, x1() + scenePos().x(), y1() + scenePos().y()
 			, x2() + scenePos().x(), y2() + scenePos().y());
+	return wallNode;
 }
 
 void WallItem::deserialize(const QDomElement &element)

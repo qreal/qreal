@@ -14,6 +14,7 @@
 
 #include "regionItem.h"
 
+#include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 #include <QtGui/QPainter>
 
@@ -25,6 +26,7 @@ using namespace twoDModel::items;
 RegionItem::RegionItem(QGraphicsItem *parent)
 	: QGraphicsObject(parent)
 	, mTextItem(new QGraphicsTextItem(this))
+	, mId(QUuid::createUuid().toString())
 	, mFilled(true)
 	, mColor(defaultColor)
 	, mSize(defaultSize)
@@ -104,7 +106,7 @@ QRectF RegionItem::boundingRect() const
 	return QRectF(QPointF(), mSize);
 }
 
-void RegionItem::serialize(QDomElement &element)
+void RegionItem::serialize(QDomElement &element) const
 {
 	if (!id().isEmpty()) {
 		element.setAttribute("id", id());

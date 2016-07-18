@@ -79,7 +79,7 @@ QVariant ItemPopup::dominantPropertyValue(const QString &property) const
 	QMap<QVariant, int> valuesCounts;
 	for (QGraphicsItem * const item : mCurrentItems) {
 		if (QObject * const object = dynamic_cast<QObject *>(item)) {
-			const QVariant value = object->property(property.toLocal8Bit());
+			const QVariant value = object->property(qUtf8Printable(property));
 			if (value.isValid()) {
 				++valuesCounts[value];
 			}
@@ -98,13 +98,18 @@ QVariant ItemPopup::dominantPropertyValue(const QString &property) const
 
 void ItemPopup::setPropertyMassively(const QString &property, const QVariant &value)
 {
+	QStringList idsForExternalProcessing;
 	for (QGraphicsItem * const item : mCurrentItems) {
-		if (QObject * const object = dynamic_cast<QObject *>(item)) {
-			object->setProperty(property.toLocal8Bit(), value);
+		if (AbstractItem * const object = dynamic_cast<AbstractItem *>(item)) {
+			// If item is abstract item then changing its property with undo/redo tracking
+			idsForExternalProcessing << object->id();
+		} else if (QObject * const object = dynamic_cast<QObject *>(item)) {
+			// Else just setting it for 1 time, no way to track it
+			object->setProperty(qUtf8Printable(property), value);
 		}
 	}
 
-	emit somethingChanged();
+	emit propertyChanged(idsForExternalProcessing, property, value);
 }
 
 void ItemPopup::onMousePressedScene()
@@ -167,7 +172,7 @@ bool ItemPopup::hasProperty(const QString &property) const
 {
 	for (QGraphicsItem * const item : mCurrentItems) {
 		if (QObject * const object = dynamic_cast<QObject *>(item)) {
-			if (object->metaObject()->indexOfProperty(property.toLocal8Bit()) >= 0) {
+			if (object->metaObject()->indexOfProperty(qUtf8Printable(property)) >= 0) {
 				return true;
 			}
 		}

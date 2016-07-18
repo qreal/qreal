@@ -48,11 +48,13 @@ TwoDModelEngineFacade::~TwoDModelEngineFacade()
 void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eventsForKitPlugin
 		, const qReal::SystemEvents &systemEvents
 		, qReal::LogicalModelAssistInterface &logicalModel
+		, qReal::ControllerInterface &controller
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 		, const qReal::ProjectManagementInterface &projectManager
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
+	mView->setController(controller);
 
 	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)
 	{

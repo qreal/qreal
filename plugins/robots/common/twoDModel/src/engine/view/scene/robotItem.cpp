@@ -136,6 +136,26 @@ void RobotItem::resizeItem(QGraphicsSceneMouseEvent *event)
 	Q_UNUSED(event);
 }
 
+QDomElement RobotItem::serialize(QDomElement &parent) const
+{
+	QDomElement result = RotateItem::serialize(parent);
+	result.setTagName("robot");
+	result.setAttribute("position", QString::number(x()) + ":" + QString::number(y()));
+	result.setAttribute("direction", QString::number(rotation()));
+	return result;
+}
+
+void RobotItem::deserialize(const QDomElement &element)
+{
+	const QString positionStr = element.attribute("position", "0:0");
+	const QStringList splittedStr = positionStr.split(":");
+	const qreal x = static_cast<qreal>(splittedStr[0].toDouble());
+	const qreal y = static_cast<qreal>(splittedStr[1].toDouble());
+	setPos(QPointF(x, y));
+
+	setRotation(element.attribute("direction", "0").toDouble());
+}
+
 QMap<kitBase::robotModel::PortInfo, SensorItem *> const &RobotItem::sensors() const
 {
 	return mSensors;

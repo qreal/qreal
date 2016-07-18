@@ -86,15 +86,15 @@ DeviceInfo SensorsConfiguration::type(const PortInfo &port) const
 	return currentConfiguration(mRobotModelName, port);
 }
 
-void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document) const
+void SensorsConfiguration::serialize(QDomElement &robot) const
 {
-	QDomElement sensorsElem = document.createElement("sensors");
+	QDomElement sensorsElem = robot.ownerDocument().createElement("sensors");
 	robot.appendChild(sensorsElem);
 
 	for (const PortInfo &port: mSensorsInfo.keys()) {
 		const DeviceInfo device = currentConfiguration(mRobotModelName, port);
 		const SensorInfo sensor = mSensorsInfo.value(port);
-		QDomElement sensorElem = document.createElement("sensor");
+		QDomElement sensorElem = robot.ownerDocument().createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
 		sensorElem.setAttribute("port", port.toString());
 		sensorElem.setAttribute("type", device.toString());
@@ -104,8 +104,6 @@ void SensorsConfiguration::serialize(QDomElement &robot, QDomDocument &document)
 
 		sensorElem.setAttribute("direction", QString::number(sensor.direction));
 	}
-
-	robot.appendChild(sensorsElem);
 }
 
 void SensorsConfiguration::deserialize(const QDomElement &element)

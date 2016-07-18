@@ -129,16 +129,21 @@ void LineItem::reshapeRectWithShift()
 	}
 }
 
-QDomElement LineItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement LineItem::serializeWithIndent(QDomElement &parent, const QPointF &topLeftPicture) const
 {
-	QDomElement lineNode = setPenBrushToDoc(document, mSerializeName);
-	AbstractItem::serialize(lineNode);
+	QDomElement lineNode = ColorFieldItem::serialize(parent);
+	setPenBrushToElement(lineNode, mSerializeName);
 	mLineImpl.serialize(lineNode
 			, x1() + scenePos().x() - topLeftPicture.x()
 			, y1() + scenePos().y() - topLeftPicture.y()
 			, x2() + scenePos().x() - topLeftPicture.x()
 			, y2() + scenePos().y() - topLeftPicture.y());
 	return lineNode;
+}
+
+QDomElement LineItem::serialize(QDomElement &parent) const
+{
+	return serializeWithIndent(parent, QPointF());
 }
 
 void LineItem::deserialize(const QDomElement &element)
@@ -148,6 +153,7 @@ void LineItem::deserialize(const QDomElement &element)
 	const QPointF begin = points.first;
 	const QPointF end = points.second;
 
+	setPos(QPointF());
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());
