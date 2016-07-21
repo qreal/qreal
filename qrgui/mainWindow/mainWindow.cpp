@@ -2074,7 +2074,7 @@ void MainWindow::openStartTab()
 	const bool hadTabs = mUi->tabs->count() > 0;
 	mUi->tabs->insertTab(0, mStartWidget, tr("Getting Started"));
 	mUi->tabs->setTabUnclosable(hadTabs);
-	mStartWidget->setVisibleForInterpreterButton(mToolManager->customizer()->showInterpeterButton());
+	mStartWidget->setVisibleForInterpreterButton(mToolManager->customizer()->showInterpreterButton());
 }
 
 void MainWindow::initScriptAPI()

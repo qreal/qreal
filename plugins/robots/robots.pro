@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group and Dmitry Mordvinov
+# Copyright 2012-2016 CyberTech Labs Ltd, Dmitry Mordvinov, Yurii Litvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,17 +15,18 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \
-	editor \
-	examples \
-	common \
-	interpreters \
-	generators \
+	core \
+	nxt \
+	ev3 \
+	trik \
 	utils \
 	checker \
 	thirdparty \
+	doc \
 
 utils.depends = thirdparty
-common.depends = thirdparty utils
-interpreters.depends = common thirdparty utils
-generators.depends = common utils
-checker.depends = interpreters
+core.depends = thirdparty utils
+checker.depends = core
+nxt.depends = core
+ev3.depends = core
+trik.depends = core

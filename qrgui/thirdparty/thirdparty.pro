@@ -16,6 +16,8 @@ TARGET = qrgui-thirdparty
 
 include(../../global.pri)
 
+CONFIG += warn_off
+
 TEMPLATE = lib
 
 DEFINES += QRGUI_THIRDPARTY_LIBRARY

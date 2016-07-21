@@ -37,7 +37,7 @@ public:
 	virtual ~Customizer() {}
 
 	/// Tells if we should show the button of opening the interpreted diagram or not
-	virtual bool showInterpeterButton() const
+	virtual bool showInterpreterButton() const
 	{
 		return true;
 	}

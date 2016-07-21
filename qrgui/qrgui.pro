@@ -81,3 +81,4 @@ brandManager.depends = \
 
 pluginManager.depends = \
 	toolPluginInterface \
+	metaMetaModel \
