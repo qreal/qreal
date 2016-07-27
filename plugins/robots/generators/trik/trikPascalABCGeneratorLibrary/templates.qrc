@@ -14,9 +14,6 @@
         <file>templates/playTone.t</file>
         <file>templates/say.t</file>
         <file>templates/system.t</file>
-        <file>templates/accelerometer/accelerometerZ.t</file>
-        <file>templates/accelerometer/accelerometerX.t</file>
-        <file>templates/accelerometer/accelerometerY.t</file>
         <file>templates/backgroundColors/black.t</file>
         <file>templates/backgroundColors/blue.t</file>
         <file>templates/backgroundColors/cyan.t</file>
@@ -188,10 +185,10 @@
         <file>templates/ledColors/off.t</file>
         <file>templates/ledColors/orange.t</file>
         <file>templates/ledColors/red.t</file>
-        <file>templates/gyroscope/gyroscopeX.t</file>
-        <file>templates/gyroscope/gyroscopeY.t</file>
-        <file>templates/gyroscope/gyroscopeZ.t</file>
         <file>templates/sensors/touch.t</file>
         <file>templates/wait/touch.t</file>
+        <file>templates/accelerometer/accelerometer.t</file>
+        <file>templates/gyroscope/gyroscope.t</file>
+        <file>templates/variables/randomInitialization.t</file>
     </qresource>
 </RCC>
