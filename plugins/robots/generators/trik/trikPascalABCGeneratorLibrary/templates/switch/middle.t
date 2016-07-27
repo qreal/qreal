@@ -1,2 +1,4 @@
 @@CONDITION@@
+begin
 @@BODY@@
+end;
