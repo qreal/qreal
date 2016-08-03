@@ -42,6 +42,9 @@ public:
 	/// Returns a reference to action that prompts user to import current world model from some file.
 	QAction &loadModelAction() const;
 
+	/// Returns a reference to action that prompts user to import some vector graphics file as scene background.
+	QAction &setBackgroundAction() const;
+
 	/// Returns a reference to action that clears all items from 2D model scene;
 	QAction &deleteAllAction() const;
 
@@ -69,6 +72,10 @@ private:
 	QScopedPointer<QAction> mLoadWorldModelAction;
 
 	QScopedPointer<QAction> mSeparator2;
+
+	QScopedPointer<QAction> mSetBackgroundAction;
+
+	QScopedPointer<QAction> mSeparator3;
 
 	QScopedPointer<QAction> mDeleteAllAction;
 	QScopedPointer<QAction> mClearFloorAction;

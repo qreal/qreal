@@ -25,6 +25,8 @@ ActionsBox::ActionsBox(QObject *parent)
 	, mSaveWorldModelAction(new QAction(QIcon(":/icons/2d_save.png"), tr("Save world model..."), nullptr))
 	, mLoadWorldModelAction(new QAction(QIcon(":/icons/2d_open.png"), tr("Load world model..."), nullptr))
 	, mSeparator2(new QAction(nullptr))
+	, mSetBackgroundAction(new QAction(QIcon(":/icons/2d_background.svg"), tr("Set background..."), nullptr))
+	, mSeparator3(new QAction(nullptr))
 	, mDeleteAllAction(new QAction(QIcon(":/icons/2d_clear.png"), tr("Clear items"), nullptr))
 	, mClearFloorAction(new QAction(QIcon(":/icons/2d_clear_floor.svg"), tr("Clear floor"), nullptr))
 {
@@ -34,6 +36,7 @@ ActionsBox::ActionsBox(QObject *parent)
 	mSceneModeActions.addAction(mMultiSelectionModeAction.data());
 	mSeparator1->setSeparator(true);
 	mSeparator2->setSeparator(true);
+	mSeparator3->setSeparator(true);
 }
 
 ActionsBox::~ActionsBox()
@@ -60,6 +63,11 @@ QAction &ActionsBox::loadModelAction() const
 	return *mLoadWorldModelAction;
 }
 
+QAction &ActionsBox::setBackgroundAction() const
+{
+	return *mSetBackgroundAction;
+}
+
 QAction &ActionsBox::deleteAllAction() const
 {
 	return *mDeleteAllAction;
@@ -79,6 +87,8 @@ QList<QAction *> ActionsBox::sceneContextMenuActions() const
 		, &saveModelAction()
 		, &loadModelAction()
 		, mSeparator2.data()
+		, &setBackgroundAction()
+		, mSeparator3.data()
 		, &deleteAllAction()
 		, &clearFloorAction()
 	};

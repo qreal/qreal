@@ -137,6 +137,11 @@ void SmartDock::checkCentralWidget()
 	const bool tabsVisible = isFloating() || !isVisible() || mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea;
 	for (QTabWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QTabWidget *>()) {
 		centralWidget->setVisible(tabsVisible);
+		if (tabsVisible) {
+			centralWidget->setFocus();
+		} else {
+			mInnerWidget->setFocus();
+		}
 	}
 
 	mMainWindow->centralWidget()->setSizePolicy(QSizePolicy::Preferred

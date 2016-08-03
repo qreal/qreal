@@ -58,6 +58,7 @@ class SensorItem;
 class RobotItem;
 class ActionsBox;
 class ColorItemPopup;
+class ImageItemPopup;
 class RobotItemPopup;
 class SpeedPopup;
 
@@ -128,6 +129,7 @@ private slots:
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
+	void setBackground();
 
 	void onSelectionChange();
 
@@ -211,6 +213,7 @@ private:
 	TwoDModelScene *mScene = nullptr;
 	QScopedPointer<ActionsBox> mActions;
 	ColorItemPopup *mColorFieldItemPopup;  // Takes ownership
+	ImageItemPopup *mImageItemPopup;  // Takes ownership
 	RobotItemPopup *mRobotItemPopup;  // Takes ownership
 	SpeedPopup *mSpeedPopup;  // Takes owneship
 

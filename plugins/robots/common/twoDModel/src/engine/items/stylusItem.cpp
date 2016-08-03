@@ -54,6 +54,7 @@ QAction *StylusItem::stylusTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_pencil.png"), tr("Stylus (S)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_S));
+	result->setCheckable(true);
 	return result;
 }
 
