@@ -458,7 +458,7 @@
              <normaloff>:/icons/2d_left.png</normaloff>:/icons/2d_left.png</iconset>
            </property>
            <property name="flat">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -638,7 +638,6 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
   <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
   <include location="../../../../../interpreters/interpreterCore/interpreterCore.qrc"/>
  </resources>

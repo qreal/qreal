@@ -696,6 +696,8 @@ void TwoDModelWidget::setDetailsVisibility(bool visible)
 	mUi->detailsContainer->setVisible(visible);
 	const QString direction = visible ? "right" : "left";
 	mUi->toggleDetailsButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	mUi->toggleDetailsButton->setFlat(visible);
+	mUi->toggleDetailsButton->setToolTip(visible ? tr("Hide details") : tr("Show details"));
 	SettingsManager::setValue("2d_detailsVisible", visible);
 }
 
