@@ -171,6 +171,11 @@ void Rotater::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	AbstractItem::mousePressEvent(event);
 	mMaster->setSelected(true);
+	// Deselecting parent in QGraphicsItem::mousePressEvent will ungrab mouse from rotater. We need to workarround here.
+	/// @todo: This must be fixed in RotateItem itemChange method.
+	grabMouse();
+
+	emit mMaster->mouseInteractionStarted();
 }
 
 void Rotater::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
@@ -188,6 +193,9 @@ void Rotater::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (dragState() == BottomRight) {
 		AbstractItem::mouseReleaseEvent(event);
+		ungrabMouse();
+
+		emit mMaster->mouseInteractionStopped();
 	}
 }
 

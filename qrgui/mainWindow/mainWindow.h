@@ -352,6 +352,8 @@ private:
 
 	void setVersion(const QString &version);
 
+	void highlightCode(Id const &graphicalId, bool highlight);
+
 	Ui::MainWindowUi *mUi;
 	QScopedPointer<SystemFacade> mFacade;
 

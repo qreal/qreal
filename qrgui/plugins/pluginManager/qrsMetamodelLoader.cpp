@@ -63,7 +63,8 @@ QList<Metamodel *> QrsMetamodelLoader::load(const QString &pathToQrs)
 
 Metamodel *QrsMetamodelLoader::parseMetamodel(const qrRepo::RepoApi &repo, const Id &metamodelDiagram)
 {
-	Metamodel *result = new Metamodel(validateName(repo, metamodelDiagram));
+	Metamodel *result = new Metamodel();
+	result->setId(validateName(repo, metamodelDiagram));
 	result->setFriendlyName(stringProperty(repo, metamodelDiagram, "displayedName"));
 	result->setVersion(stringProperty(repo, metamodelDiagram, "version"));
 

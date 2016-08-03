@@ -56,6 +56,11 @@ public:
 	/// Appends the given list of action to the context menu shown on empty scene.
 	void addActions(const QList<QAction *> &actions);
 
+	/// Performs search of the AbstractItem with \a id among all scene items.
+	/// @returns found item or nullptr if no such item exists.
+	/// @warning This function works lineary of scene size.
+	AbstractItem *findItem(const QString &id) const;
+
 signals:
 	/// Emitted when user pressed left mouse button on this scene.
 	void leftButtonPressed();

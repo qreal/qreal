@@ -42,7 +42,7 @@ public:
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
-	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const override;
+	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &element) override;
 
 private:

@@ -43,8 +43,8 @@ public:
 	void setPainterWidth(int penWidth) override;
 	void drawPixel(int x, int y) override;
 	void drawLine(int x1, int y1, int x2, int y2) override;
-	void drawRect(int x, int y, int width, int height)  override;
-	void drawEllipse(int x, int y, int width, int height) override;
+	void drawRect(int x, int y, int width, int height, bool filled)  override;
+	void drawEllipse(int x, int y, int width, int height, bool filled) override;
 	void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)  override;
 	void redraw();
 

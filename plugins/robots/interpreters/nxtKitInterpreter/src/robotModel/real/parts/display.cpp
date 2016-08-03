@@ -36,12 +36,13 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	Q_UNUSED(y2)
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
 	Q_UNUSED(x)
 	Q_UNUSED(y)
 	Q_UNUSED(width)
 	Q_UNUSED(height)
+	Q_UNUSED(filled)
 }
 
 void Display::drawCircle(int x, int y, int radius)

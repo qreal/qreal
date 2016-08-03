@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2013-2016 CyberTech Labs Ltd., Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
 #include "generatorBase/masterGeneratorBase.h"
 
 #include <QtCore/QDir>
+#include <QtCore/QPair>
+#include <QtCore/QStack>
 
 #include <qrutils/outFile.h>
 #include <qrutils/fileSystemUtils.h>
@@ -157,12 +159,61 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 
 	processGeneratedCode(resultCode);
 
+	generateLinkingInfo(resultCode);
+
 	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
 
 	afterGeneration();
 
 	return pathToOutput;
+}
+
+void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
+{
+	const QString open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
+	const QString close = "@#%1#@";
+	QRegExp re;
+	QStack <QPair<QString, int>> stack;
+	QList <QPair<QString, QPair<int, int>>> results;
+	int lineNumber = 1;
+
+	for (const QString &line : resultCode.split("\n")){
+		re.setPattern(open);
+		const int pos = re.indexIn(line);
+		if (pos > -1) {
+			const QString id = re.cap(1);
+			stack.push(QPair<QString, int>(id, lineNumber));
+		}
+
+		if (!stack.isEmpty()) {
+			const QString id = stack.top().first;
+			if (line.contains(close.arg(id))) {
+				results.append(QPair<QString, QPair<int, int>>(id
+						, QPair<int, int>(stack.top().second, lineNumber)));
+				stack.pop();
+			}
+		}
+
+		lineNumber++;
+	}
+
+	QString out;
+
+	qSort(results.begin(), results.end()
+			, [](QPair<QString, QPair<int, int>> r1, QPair<QString, QPair<int, int>> r2) -> bool {
+				return r1.second.first < r2.second.first;
+			});
+
+	for (const QPair<QString, QPair<int, int>> &res : results) {
+		out += QString("%1@%2@%3\n").arg(res.first
+				, QString::number(res.second.first)
+				, QString::number(res.second.second));
+	}
+
+	outputCode(targetPath() + ".dbg", out);
+
+	resultCode = resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
 }
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()

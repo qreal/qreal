@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,28 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "tool.h"
+#include "removeSensorCommand.h"
 
-using namespace twoDModel::items;
+using namespace twoDModel::commands;
 
-Tool::Tool(const QIcon &icon, const QString &displayedName)
-	: mIcon(icon)
-	, mDisplayedName(displayedName)
-	, mAction(icon, displayedName, nullptr)
+RemoveSensorCommand::RemoveSensorCommand(model::SensorsConfiguration &configurator
+		, const QString &robotModel
+		, const kitBase::robotModel::PortInfo &port)
+	: mImpl(configurator, robotModel, port, kitBase::robotModel::DeviceInfo(), QPointF(), 0)
 {
 }
 
-Tool::~Tool()
+bool RemoveSensorCommand::execute()
 {
+	mImpl.remove();
+	return true;
 }
 
-QIcon Tool::icon() const
+bool RemoveSensorCommand::restoreState()
 {
-	return mIcon;
+	mImpl.create();
+	return true;
 }
-
-QString Tool::displayedName() const
-{
-	return mDisplayedName;
-}
-

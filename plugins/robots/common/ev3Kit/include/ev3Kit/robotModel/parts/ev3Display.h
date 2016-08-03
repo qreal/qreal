@@ -28,7 +28,6 @@ public:
 	Ev3Display(const kitBase::robotModel::DeviceInfo &info, const kitBase::robotModel::PortInfo &port);
 
 	virtual void drawCircle(int x, int y, int radius, bool filled) = 0;
-	virtual void drawRect(int x, int y, int width, int height, bool filled) = 0;
 };
 
 }

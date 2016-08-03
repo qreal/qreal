@@ -30,11 +30,13 @@ namespace qReal {
 class QRGUI_META_META_MODEL_EXPORT Metamodel : public qrgraph::Multigraph
 {
 public:
-	/// @param internal and non-localized name of this metamodel that will be used as first part of elements ids.
-	explicit Metamodel(const QString &id);
+	Metamodel();
 
 	/// Returns the name of this metamodel. This is internal and non-localized name and hence cannot be shown to user.
 	QString id() const;
+
+	/// Sets the internal and non-localized name of this metamodel that will be used as first part of elements ids.
+	void setId(const QString &id);
 
 	/// Returns current version stamp of this metamodel. This version can be used for checking and providing
 	/// backward compability with user saves written in editors of previous version.
@@ -57,6 +59,10 @@ public:
 	/// Returns a list of type descriptors of elements belonging to \a diagram. If metamodel does not contain
 	/// \a diagram empty list will be returned.
 	QList<ElementType *> elements(const QString &diagram) const;
+
+	/// Can be called to append new entity into this metamodel.
+	/// @note Metamodel will take ownership on \a entity.
+	void addNode(qrgraph::Node &entity) override;
 
 	/// Returns type descriptor of the given element (the vertex of this multigraph with the given name).
 	/// @warning If this metamodel does not contain \a diagram or \a diagram does not contain \a element
@@ -147,17 +153,13 @@ public:
 	/// @note Metamodel will take ownership in created explosion.
 	void addExplosion(ElementType &source, ElementType &target, bool isReusable, bool requiresImmediateLinkage);
 
-protected:
-	/// Can be called by subtypes to append new entity into this metamodel.
-	/// @note Metamodel will take ownership on \a entity.
-	void addNode(qrgraph::Node &entity) override;
-
+private:
 	QString mId;
 	QString mVersion;
 	QStringList mDiagrams;
 	QString mFriendlyName;
 	QMap<QString, QMap<QString, ElementType *>> mElements;
-	QMultiMap<QString, QPair<QString, QString>> mEnumValues;
+	QMap<QString, QList<QPair<QString, QString>>> mEnumValues;
 	QMap<QString, QString> mEnumDisplayedNames;
 	QMap<QString, bool> mEnumsEditability;
 	QMap<QString, QString> mDiagramFriendlyNames;
@@ -168,6 +170,21 @@ protected:
 	QMap<QString, bool> mPaletteSorting;
 };
 
+/// An interface for all objects that load information into metamodel.
+class MetamodelLoaderInterface
+{
+public:
+	virtual ~MetamodelLoaderInterface() {}
+
+	/// Will be implemented to return the a list of names of metamodels that should be loaded before this one.
+	/// @todo: This should be an information in plugin metadata and be processed by common code in plugin manager.
+	virtual QStringList dependencies() const = 0;
+
+	/// Will be implemented to fill or extend \a metamodel's data.
+	virtual void load(Metamodel &metamodel) = 0;
+};
+
 }
 
 Q_DECLARE_INTERFACE(qReal::Metamodel, "ru.spbsu.QReal.Metamodel/0.1")
+Q_DECLARE_INTERFACE(qReal::MetamodelLoaderInterface, "ru.spbsu.QReal.MetamodelLoaderInterface/0.1")

@@ -22,6 +22,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 #include <qrgui/editor/sceneCustomizationInterface.h>
 #include <qrgui/textEditor/textManagerInterface.h>
+#include <qrgui/controller/controller.h>
 
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterfaceMock.h>
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterfaceMock.h>
@@ -43,6 +44,7 @@ public:
 	qReal::gui::MainWindowDockInterface &mainWindowDockInterface();
 	qReal::GraphicalModelAssistInterface &graphicalModelAssistInterface();
 	qReal::LogicalModelAssistInterface &logicalModelAssistInterface();
+	qReal::Controller &controller();
 	qReal::ProjectManagementInterface &projectManagementInterface();
 	qrRepo::RepoControlInterface &repoControlInterface();
 	qReal::SystemEvents &systemEvents();
@@ -55,6 +57,7 @@ private:
 	qReal::EditorManager mEditorManager;
 	qReal::models::Models mModels;
 	qReal::SystemEvents mSystemEvents;
+	qReal::Controller mController;
 	MainWindowInterpretersInterfaceMock mMainWindowInterpretersInterfaceMock;
 	MainWindowDockInterfaceMock mMainWindowDockInterfaceMock;
 	SceneCustomizationInterfaceMock mSceneCustomizationInterfaceMock;

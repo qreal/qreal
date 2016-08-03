@@ -53,6 +53,7 @@ bool TextManager::openFile(const QString &filePath, const QString &generatorName
 		mPathType.insert(filePath, true);
 		mModified.insert(filePath, QPair<bool, bool>(false, false));
 		mGeneratorName.insert(filePath, generatorName);
+		mCodeBlockManager.addNewCode(filePath);
 
 		connect(area, SIGNAL(textWasModified(text::QScintillaTextEdit*))
 				, this, SLOT(setModified(text::QScintillaTextEdit*)));
@@ -89,6 +90,7 @@ bool TextManager::closeFile(const QString &filePath)
 	mModified.remove(filePath);
 	mGeneratorName.remove(filePath);
 	unbindCode(filePath);
+	mCodeBlockManager.removeCode(filePath);
 	return mText.remove(filePath);
 }
 
@@ -165,11 +167,16 @@ bool TextManager::isModifiedEver(const QString &path) const
 
 void TextManager::setModified(text::QScintillaTextEdit *code, bool modified)
 {
-	QPair<bool, bool> mod = mModified.value(mPath.value(code));
+	QString const &path = mPath.value(code);
+	QPair<bool, bool> mod = mModified.value(path);
 	mod.first = !modified || mod.first;
 	mod.second = modified && code->isUndoAvailable();
 	code->setModified(mod.second);
-	mModified.insert(mPath.value(code), mod);
+	mModified.insert(path, mod);
+
+	if (isDefaultPath(path)) {
+		mCodeBlockManager.setActive(path, !(modified && code->isUndoAvailable()));
+	}
 
 	emit textChanged(modified && code->isUndoAvailable());
 }
@@ -277,4 +284,9 @@ bool TextManager::saveText(bool saveAs)
 QString TextManager::generatorName(const QString &filePath) const
 {
 	return mGeneratorName.value(filePath, "");
+}
+
+CodeBlockManager &TextManager::codeBlockManager()
+{
+	return mCodeBlockManager;
 }

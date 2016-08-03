@@ -21,6 +21,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
+#include <qrgui/controller/controllerInterface.h>
 #include <qrgui/editor/sceneCustomizationInterface.h>
 #include <qrgui/textEditor/textManagerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
@@ -35,6 +36,7 @@ public:
 		qrRepo::RepoControlInterface &repoControlInterface
 		, GraphicalModelAssistInterface &graphicalModelApi
 		, LogicalModelAssistInterface &logicalModelApi
+		, ControllerInterface &controller
 		, gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface
 		, gui::MainWindowDockInterface &mainWindowDockInterface
 		, ProjectManagementInterface &projectManager
@@ -45,6 +47,7 @@ public:
 		: mRepoControlInterface(repoControlInterface)
 		, mGraphicalModelApi(graphicalModelApi)
 		, mLogicalModelApi(logicalModelApi)
+		, mController(controller)
 		, mMainWindowInterpretersInterface(mainWindowInterpretersInterface)
 		, mMainWindowDockInterface(mainWindowDockInterface)
 		, mProjectManager(projectManager)
@@ -66,6 +69,11 @@ public:
 	LogicalModelAssistInterface &logicalModelApi() const
 	{
 		return mLogicalModelApi;
+	}
+
+	ControllerInterface &controller() const
+	{
+		return mController;
 	}
 
 	gui::MainWindowInterpretersInterface &mainWindowInterpretersInterface() const
@@ -102,6 +110,7 @@ private:
 	qrRepo::RepoControlInterface &mRepoControlInterface;
 	GraphicalModelAssistInterface &mGraphicalModelApi;
 	LogicalModelAssistInterface &mLogicalModelApi;
+	ControllerInterface &mController;
 	gui::MainWindowInterpretersInterface &mMainWindowInterpretersInterface;
 	gui::MainWindowDockInterface &mMainWindowDockInterface;
 	ProjectManagementInterface &mProjectManager;

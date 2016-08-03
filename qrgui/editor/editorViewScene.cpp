@@ -1167,6 +1167,12 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 	}
 }
 
+void EditorViewScene::focusInEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusInEvent(event);
+	mController.setActiveModule(mRootId.toString());
+}
+
 void EditorViewScene::setNeedDrawGrid(bool show)
 {
 	mNeedDrawGrid = show;
@@ -1178,7 +1184,7 @@ void EditorViewScene::drawGesture()
 	QGraphicsLineItem *item = new QGraphicsLineItem(line);
 	qreal size = mGesture.size() * 0.1;
 	qreal color_ratio = pow(fabs(sin(size)), 1.5);
-	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
+	QColor penColor(static_cast<int>(255 * color_ratio), static_cast<int>(255 * (1 - color_ratio)), 255);
 	item->setPen(penColor);
 	addItem(item);
 	mGesture.push_back(item);

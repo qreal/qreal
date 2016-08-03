@@ -20,6 +20,7 @@
 
 #include "qrgui/textEditor/textEditorDeclSpec.h"
 #include "qrgui/textEditor/textManagerInterface.h"
+#include "qrgui/textEditor/codeBlockManager.h"
 
 namespace qReal {
 
@@ -73,6 +74,7 @@ public:
 	bool saveText(bool saveAs);
 
 	QString generatorName(const QString &filepath) const;
+	CodeBlockManager &codeBlockManager();
 
 private slots:
 	void setModified(text::QScintillaTextEdit *code, bool modified = true);
@@ -96,6 +98,7 @@ private:
 
 	gui::MainWindowInterpretersInterface &mMainWindow;
 	SystemEvents &mSystemEvents;
+	CodeBlockManager mCodeBlockManager;
 };
 
 }

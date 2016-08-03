@@ -76,20 +76,19 @@ QPainterPath ImageItem::shape() const
 	return result;
 }
 
-void ImageItem::serialize(QDomElement &target) const
+QDomElement ImageItem::serialize(QDomElement &parent) const
 {
-	if (target.tagName().isEmpty()) {
-		target.setTagName("image");
-	}
+	QDomElement imageNode = AbstractItem::serialize(parent);
+	imageNode.setTagName("image");
 
-	AbstractItem::serialize(target);
-	mImage.serialize(target);
-	target.setAttribute("rect", QString("%1:%2:%3:%4").arg(
+	mImage.serialize(imageNode);
+	imageNode.setAttribute("rect", QString("%1:%2:%3:%4").arg(
 			QString::number(x1())
 			, QString::number(y1())
 			, QString::number(x2() - x1())
 			, QString::number(y2() - y1())));
-	target.setAttribute("position", QString::number(x()) + ":" + QString::number(y()));
+	imageNode.setAttribute("position", QString::number(x()) + ":" + QString::number(y()));
+	return imageNode;
 }
 
 void ImageItem::deserialize(const QDomElement &element)

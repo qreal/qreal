@@ -33,6 +33,8 @@
 
 namespace qReal {
 
+class MetamodelLoaderInterface;
+
 namespace gui {
 namespace editor {
 class Element;
@@ -60,7 +62,7 @@ public:
 	bool shallPaletteBeSorted(const Id &editor, const Id &diagram) const override;
 
 	QString loadPlugin(const QString &pluginName) override;
-	QString unloadPlugin(const QString &pluginName) override;
+	QString unloadPlugin(const QString &metamodelName) override;
 	bool unloadAllPlugins() override;
 	void loadMetamodel(Metamodel &metamodel) override;
 
@@ -150,17 +152,16 @@ private:
 	Metamodel *metamodel(const QString &editor) const;
 
 	void init();
+	bool registerPlugin(MetamodelLoaderInterface * const loader);
 
 	bool isParentOf(const Metamodel *plugin, const QString &childDiagram, const QString &child
 			, const QString &parentDiagram, const QString &parent) const;
 
-	QStringList mPluginsLoaded;
-	QMap<QString, QString> mPluginFileName;
+	QMap<QString, QStringList> mPluginFileNames;
 	QMap<QString, Pattern> mGroups;
 	QMap<QString, Metamodel *> mMetamodels;
 
 	QDir mPluginsDir;
-	QStringList mPluginFileNames;
 
 	/// Common part of plugin loaders
 	PluginManager mPluginManager;

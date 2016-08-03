@@ -14,71 +14,45 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include <QtCore/QMap>
 
-#include <qrkernel/ids.h>
-
-#include "qrgui/controller/controllerDeclSpec.h"
+#include "qrgui/controller/controllerInterface.h"
 #include "qrgui/controller/undoStack.h"
-#include "qrgui/controller/commands/abstractCommand.h"
 
 namespace qReal {
 
 /// A controller class for all user actions watching.
 /// A part of global MVC architecture.
-class QRGUI_CONTROLLER_EXPORT Controller : public QObject
+/// Module is identified with unique string. This may be root node id for diagram stacks or ids of some other editors
+/// like shape editor or 2D model world editor.
+class QRGUI_CONTROLLER_EXPORT Controller : public ControllerInterface
 {
 	Q_OBJECT
 
 public:
 	Controller();
-	virtual ~Controller();
+	~Controller();
 
-	bool canUndo() const;
-	bool canRedo() const;
+	bool canUndo() const override;
+	bool canRedo() const override;
 
 public slots:
-	/// Tells controller that user swithed to diagram with specified id as root
-	void setActiveDiagram(const Id &diagramId);
+	void setActiveModule(const QString &moduleId) override;
+	void moduleOpened(const QString &moduleId) override;
+	void moduleClosed(const QString &moduleId) override;
 
-	/// Executes given command regarding it binded to active diagram
-	void execute(commands::AbstractCommand *command);
+	void execute(commands::AbstractCommand *command) override;
+	void execute(commands::AbstractCommand *command, const QString &moduleId) override;
+	void executeGlobal(commands::AbstractCommand *command) override;
 
-	/// Executes given command regarding it binded to specified diagram
-	void execute(commands::AbstractCommand *command, const Id &diagramid);
-
-	/// Executes given command regarding it binded to global application space.
-	/// Using this method supposes that @param command is not binded to any diagram
-	/// (for example, removing diagrams themselves from model explorers)
-	void executeGlobal(commands::AbstractCommand *command);
-
-	/// Tells controller that user opened diagram with specified id
-	void diagramOpened(const Id &diagramId);
-
-	/// Tells controller that user closed diagram with specified id
-	void diagramClosed(const Id &diagramId);
+	void redo() override;
+	void undo() override;
 
 	/// Tells controller that user saved project
 	void projectSaved();
 
 	/// Tells controller that current project was closed
 	void projectClosed();
-
-	/// Invokes the latest command on one of the stacks: active diagram stack or global one
-	void redo();
-
-	/// Rolls back the earliest command on one of the stacks: active diagram stack or global one
-	void undo();
-
-signals:
-	/// Emitted when at least one of the stacks has modifications
-	void modifiedChanged(bool modified);
-
-	/// Emitted whenever the value of canUndo() changes
-	void canUndoChanged(bool canUndo);
-
-	/// Emitted whenever the value of canRedo() changes
-	void canRedoChanged(bool canRedo);
 
 private slots:
 	void resetModifiedState();
@@ -96,9 +70,9 @@ private:
 
 	void execute(commands::AbstractCommand *command, UndoStack *stack);
 
-	UndoStack *mGlobalStack;
-	UndoStack *mActiveStack;
-	QMap<QString, UndoStack *> mDiagramStacks;
+	UndoStack *mGlobalStack;                   // Has ownership.
+	UndoStack *mActiveStack;                   // Has ownership.
+	QMap<QString, UndoStack *> mModuleStacks;  // Has ownership.
 	bool mModifiedState;
 	bool mCanRedoState;
 	bool mCanUndoState;

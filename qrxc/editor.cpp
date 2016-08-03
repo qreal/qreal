@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,9 +30,11 @@ Editor::Editor(QDomDocument domDocument, XmlCompiler *xmlCompiler)
 
 Editor::~Editor()
 {
-	foreach(Diagram *diagram, mDiagrams.values())
-		if (diagram)
+	for (Diagram *diagram : mDiagrams.values()) {
+		if (diagram && diagram->editor() == this) {
 			delete diagram;
+		}
+	}
 }
 
 bool Editor::isLoaded()
@@ -45,52 +47,46 @@ bool Editor::load(const QDir &currentDir)
 	const QDomElement metamodel = mXmlDomDocument.firstChildElement("metamodel");
 	if (metamodel.isNull())
 	{
-		qDebug() << "ERROR: metamodel tag not found";
+		qCritical() << "Metamodel tag not found";
 		return false;
 	}
 
 	mVersion = metamodel.attribute("version");
-
-	//Load includes
-	for (QDomElement includeElement = metamodel.firstChildElement("include"); !includeElement.isNull();
-		includeElement = includeElement.nextSiblingElement("include"))
-	{
-		QString includeFileName = includeElement.text();
-		QFileInfo includeFileInfo(currentDir, includeFileName);
-		QDir newDir = currentDir;
-		newDir.cd(includeFileInfo.canonicalPath());
-		Editor *includeFile = mXmlCompiler->loadXmlFile(newDir, includeFileInfo.fileName());
-		if (!includeFile)
-		{
-			qDebug() << "ERROR: can't include file" << includeFileName;
+	QDomElement extended = metamodel.firstChildElement("extends");
+	if (!extended.isNull()) {
+		mExtendedMetamodel = resolveInclude(extended, currentDir);
+		if (mExtendedMetamodel.isEmpty()) {
 			return false;
 		}
-		mIncludes.append(includeFile);
+	}
+
+	// Load includes
+	for (QDomElement includeElement = metamodel.firstChildElement("include")
+		; !includeElement.isNull()
+		; includeElement = includeElement.nextSiblingElement("include"))
+	{
+		resolveInclude(includeElement, currentDir);
 	}
 
 	// Load diagrams part one: don't process inherited properties.
-	for (QDomElement diagramElement = metamodel.firstChildElement("diagram"); !diagramElement.isNull();
-		diagramElement = diagramElement.nextSiblingElement("diagram"))
+	for (QDomElement diagramElement = metamodel.firstChildElement("diagram")
+		; !diagramElement.isNull()
+		; diagramElement = diagramElement.nextSiblingElement("diagram"))
 	{
-		QString diagramName = diagramElement.attribute("name");
-		QString nodeName = diagramElement.attribute("nodeName", "");
-		QString diagramDisplayedName = diagramElement.attribute("displayedName", diagramName);
+		const QString diagramName = diagramElement.attribute("name");
+		const QString nodeName = diagramElement.attribute("nodeName", "");
+		const QString diagramDisplayedName = diagramElement.attribute("displayedName", diagramName);
 
-		const Diagram *existingDiagram = mXmlCompiler->getDiagram(diagramName);
-		if (existingDiagram)
-		{
-			qDebug() << "ERROR: diagram" << diagramName << "is already loaded";
-			return false;
-		}
-		qDebug() << "parsing diagram" << diagramName;
 		Diagram *diagram = new Diagram(diagramName, nodeName, diagramDisplayedName, this);
-		if (!diagram->init(diagramElement))
-		{
-			qDebug() << "ERROR: diagram" << diagramName << "can't be parsed";
+		qDebug() << "Parsing diagram" << diagramName;
+		if (!diagram->init(diagramElement)) {
+			qCritical() << "Diagram" << diagramName << "can't be parsed";
 			delete diagram;
 			return false;
 		}
-		qDebug() << "diagram" << diagramName << "parsed";
+
+		qDebug() << "Diagram" << diagramName << "parsed";
+
 		mDiagrams[diagramName] = diagram;
 	}
 
@@ -103,7 +99,7 @@ bool Editor::load(const QDir &currentDir)
 	return true;
 }
 
-XmlCompiler* Editor::xmlCompiler()
+XmlCompiler* Editor::xmlCompiler() const
 {
 	return mXmlCompiler;
 }
@@ -183,4 +179,25 @@ Diagram* Editor::findDiagram(const QString &name)
 QMap<QString, Diagram*> Editor::diagrams()
 {
 	return mDiagrams;
+}
+
+QString Editor::resolveInclude(const QDomElement &includeElement, const QDir &currentDir)
+{
+	const QString includeFileName = includeElement.text();
+	const QFileInfo includeFileInfo(currentDir, includeFileName);
+	QDir newDir = currentDir;
+	newDir.cd(includeFileInfo.canonicalPath());
+	Editor *includeFile = mXmlCompiler->loadXmlFile(newDir, includeFileInfo.fileName());
+	if (!includeFile) {
+		qCritical() << "Can't include file" << includeFileName;
+		return nullptr;
+	}
+
+	mIncludes.append(includeFile);
+	return NameNormalizer::normalize(includeFileInfo.completeBaseName());;
+}
+
+QString Editor::extendedEditor() const
+{
+	return mExtendedMetamodel;
 }

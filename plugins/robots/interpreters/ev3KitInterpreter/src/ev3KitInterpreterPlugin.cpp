@@ -88,6 +88,7 @@ void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
 			, configurator.qRealConfigurator().logicalModelApi()
+			, configurator.qRealConfigurator().controller()
 			, interpretersInterface
 			, configurator.qRealConfigurator().projectManager()
 			, configurator.interpreterControl());
