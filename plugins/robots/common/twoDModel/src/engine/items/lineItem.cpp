@@ -46,6 +46,7 @@ QAction *LineItem::lineTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_ruler.png"), tr("Line (L)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_L));
+	result->setCheckable(true);
 	return result;
 }
 

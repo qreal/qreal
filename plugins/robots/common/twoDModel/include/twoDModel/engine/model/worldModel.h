@@ -22,6 +22,7 @@
 #include <QtWidgets/QGraphicsLineItem>
 #include <QtXml/QDomDocument>
 
+#include "twoDModel/engine/model/image.h"
 #include "twoDModel/twoDModelDeclSpec.h"
 
 class QGraphicsItem;
@@ -31,6 +32,7 @@ namespace twoDModel {
 namespace items {
 class WallItem;
 class ColorFieldItem;
+class ImageItem;
 class RegionItem;
 }
 
@@ -64,6 +66,9 @@ public:
 	/// Returns a set of region items in the world model. Result is mapping of field ids to regions themselves.
 	const QMap<QString, items::RegionItem *> &regions() const;
 
+	/// Returns a list of image items in the world model.
+	const QMap<QString, items::ImageItem *> &imageItems() const;
+
 	/// Returns a list of trace items on the floor.
 	const QList<QGraphicsLineItem *> &trace() const;
 
@@ -78,6 +83,12 @@ public:
 
 	/// Removes colored item \a colorField form the world model.
 	void removeColorField(items::ColorFieldItem *colorField);
+
+	/// Adds image item into 2D model.
+	void addImage(items::ImageItem *image);
+
+	/// Removes image item from 2D model.
+	void removeImage(items::ImageItem *image);
 
 	/// Removes all walls, colored items, regions and robot traces from the world model.
 	void clear();
@@ -102,6 +113,9 @@ public:
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
 	QGraphicsObject *findId(const QString &id) const;
 
+	/// Sets a background image on the scene and its geometry.
+	void setBackground(const Image &image, const QRect &rect);
+
 	/// Creates element from serialized XML specification.
 	void createElement(const QDomElement &element);
 
@@ -123,6 +137,9 @@ public:
 	/// Creates stylus colored item described by \a element in the world model.
 	void createStylus(const QDomElement &element);
 
+	/// Creates image item described by \a element in the world model.
+	void createImage(const QDomElement &element);
+
 	/// Creates region item described by \a element in the world model.
 	void createRegion(const QDomElement &element);
 
@@ -136,6 +153,9 @@ signals:
 	/// Emitted each time when model is appended with some new color field item.
 	void colorItemAdded(items::ColorFieldItem *item);
 
+	/// Emitted each time when model is appended with some new color field item.
+	void imageItemAdded(items::ImageItem *item);
+
 	/// Emitted each time when model is appended with some new item.
 	void regionItemAdded(items::RegionItem *item);
 
@@ -148,16 +168,24 @@ signals:
 	/// Emitted when robot trace is non-empty any more or was cleared from the floor.
 	void robotTraceAppearedOrDisappeared(bool appeared);
 
+	/// Emitted when user changes background image or its size.
+	void backgroundChanged(const Image &image, const QRect &backgroundRect);
+
 private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(const int distance, const QPointF &position
 			, const qreal direction, const QPainterPath &wallPath) const;
 	QPainterPath buildWallPath() const;
+	QRect deserializeRect(const QString &string) const;
+	void deserializeBackground(const QDomElement &backgroundElement);
 
 	QMap<QString, items::WallItem *> mWalls;
 	QMap<QString, items::ColorFieldItem *> mColorFields;
+	QMap<QString, items::ImageItem *> mImages;
 	QMap<QString, items::RegionItem *> mRegions;
 	QList<QGraphicsLineItem *> mRobotTrace;
+	Image mBackgroundImage;
+	QRect mBackgroundRect;
 	QScopedPointer<QDomDocument> mXmlFactory;
 };
 

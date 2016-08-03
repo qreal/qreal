@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd., Anna Deripaska
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/worldModel.h"
+#include "twoDModel/engine/model/image.h"
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
@@ -24,6 +25,7 @@
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/items/imageItem.h"
 #include "src/engine/items/regions/ellipseRegion.h"
 #include "src/engine/items/regions/rectangularRegion.h"
 #include "src/engine/items/regions/boundRegion.h"
@@ -83,8 +85,7 @@ QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, qreal dire
 	const qreal rangeInPixels = range * pixelsInCm;
 
 	QPainterPath rayPath;
-	rayPath.arcTo(QRect(-rangeInPixels, -rangeInPixels
-			, 2 * rangeInPixels, 2 * rangeInPixels)
+	rayPath.arcTo(QRectF(-rangeInPixels, -rangeInPixels, 2 * rangeInPixels, 2 * rangeInPixels)
 			, -direction - rayWidthDegrees, 2 * rayWidthDegrees);
 	rayPath.closeSubpath();
 	const QTransform sensorPositionTransform = QTransform().translate(position.x(), position.y());
@@ -136,6 +137,11 @@ const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
 	return mColorFields;
 }
 
+const QMap<QString, items::ImageItem *> &WorldModel::imageItems() const
+{
+	return mImages;
+}
+
 const QMap<QString, items::RegionItem *> &WorldModel::regions() const
 {
 	return mRegions;
@@ -158,6 +164,18 @@ void WorldModel::removeColorField(items::ColorFieldItem *colorField)
 	emit itemRemoved(colorField);
 }
 
+void WorldModel::addImage(items::ImageItem *image)
+{
+	mImages[image->id()] = image;
+	emit imageItemAdded(image);
+}
+
+void WorldModel::removeImage(items::ImageItem *image)
+{
+	mImages.remove(image->id());
+	emit itemRemoved(image);
+}
+
 void WorldModel::clear()
 {
 	while (!mWalls.isEmpty()) {
@@ -168,6 +186,10 @@ void WorldModel::clear()
 		removeColorField(mColorFields.last());
 	}
 
+	while (!mImages.isEmpty()) {
+		removeImage(mImages.last());
+	}
+
 	while (!mRegions.isEmpty()) {
 		QGraphicsItem * const toRemove = mRegions.last();
 		mRegions.remove(mRegions.lastKey());
@@ -175,6 +197,7 @@ void WorldModel::clear()
 	}
 
 	clearRobotTrace();
+	setBackground(Image(), QRect());
 }
 
 void WorldModel::appendRobotTrace(const QPen &pen, const QPointF &begin, const QPointF &end)
@@ -217,10 +240,40 @@ QPainterPath WorldModel::buildWallPath() const
 	return wallPath;
 }
 
+QRect WorldModel::deserializeRect(const QString &string) const
+{
+	const QStringList splittedStr = string.split(":");
+	if (splittedStr.count() == 4) {
+		const int x = splittedStr[0].toInt();
+		const int y = splittedStr[1].toInt();
+		const int w = splittedStr[2].toInt();
+		const int h = splittedStr[3].toInt();
+		return QRect(x, y, w, h);
+	}
+
+	return QRect();
+}
+
+void WorldModel::deserializeBackground(const QDomElement &backgroundElement)
+{
+	const Image image = Image::deserialize(backgroundElement);
+	const QRect backgroundRect = deserializeRect(backgroundElement.attribute("backgroundRect"));
+	setBackground(image, backgroundRect);
+}
+
 QDomElement WorldModel::serialize(QDomElement &parent) const
 {
 	QDomElement result = parent.ownerDocument().createElement("world");
 	parent.appendChild(result);
+
+	QDomElement background = parent.ownerDocument().createElement("background");
+	mBackgroundImage.serialize(background);
+	background.setAttribute("backgroundRect", QString("%1:%2:%3:%4").arg(
+			QString::number(mBackgroundRect.x())
+			, QString::number(mBackgroundRect.y())
+			, QString::number(mBackgroundRect.width())
+			, QString::number(mBackgroundRect.height())));
+	result.appendChild(background);
 
 	QDomElement walls = parent.ownerDocument().createElement("walls");
 	result.appendChild(walls);
@@ -232,6 +285,12 @@ QDomElement WorldModel::serialize(QDomElement &parent) const
 	result.appendChild(colorFields);
 	for (const items::ColorFieldItem *colorField : mColorFields) {
 		colorField->serialize(colorFields);
+	}
+
+	QDomElement images = parent.ownerDocument().createElement("images");
+	result.appendChild(images);
+	for (items::ImageItem * const image : mImages) {
+		image->serialize(parent);
 	}
 
 	QDomElement regions = parent.ownerDocument().createElement("regions");
@@ -267,6 +326,8 @@ void WorldModel::deserialize(const QDomElement &element)
 
 	clear();
 
+	deserializeBackground(element.firstChildElement("background"));
+
 	for (QDomElement traceNode = element.firstChildElement("trace"); !traceNode.isNull()
 			; traceNode = traceNode.nextSiblingElement("trace")) {
 		for (QDomElement segmentNode = traceNode.firstChildElement("segment"); !segmentNode.isNull()
@@ -296,6 +357,14 @@ void WorldModel::deserialize(const QDomElement &element)
 		}
 	}
 
+	for (QDomElement imagesNode = element.firstChildElement("images"); !imagesNode.isNull()
+			; imagesNode = imagesNode.nextSiblingElement("images")) {
+		for (QDomElement imageNode = imagesNode.firstChildElement("image"); !imageNode.isNull()
+				; imageNode = imageNode.nextSiblingElement("image")) {
+			createImage(imageNode);
+		}
+	}
+
 	for (QDomElement regionNode = element.firstChildElement("regions").firstChildElement("region")
 			; !regionNode.isNull()
 			; regionNode = regionNode.nextSiblingElement("region"))
@@ -318,11 +387,24 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 		return mColorFields[id];
 	}
 
+	if (mImages.contains(id)) {
+		return mImages[id];
+	}
+
 	if (mRegions.contains(id)) {
 		return mRegions[id];
 	}
 
 	return nullptr;
+}
+
+void WorldModel::setBackground(const Image &image, const QRect &rect)
+{
+	if (image != mBackgroundImage || rect != mBackgroundRect) {
+		mBackgroundImage = image;
+		mBackgroundRect = rect;
+		emit backgroundChanged(mBackgroundImage, mBackgroundRect);
+	}
 }
 
 void WorldModel::createElement(const QDomElement &element)
@@ -337,10 +419,14 @@ void WorldModel::createElement(const QDomElement &element)
 		createCubicBezier(element);
 	} else if (element.tagName() == "stylus") {
 		createStylus(element);
+	} else if (element.tagName() == "image") {
+		createImage(element);
 	} else if (element.tagName() == "wall") {
 		createWall(element);
 	} else if (element.tagName() == "region") {
 		createRegion(element);
+	} else if (element.tagName() == "background") {
+		deserializeBackground(element);
 	}
 }
 
@@ -386,6 +472,13 @@ void WorldModel::createStylus(const QDomElement &element)
 	addColorField(stylusItem);
 }
 
+void WorldModel::createImage(const QDomElement &element)
+{
+	items::ImageItem *image = new items::ImageItem(model::Image(), QRect());
+	image->deserialize(element);
+	addImage(image);
+}
+
 void WorldModel::createRegion(const QDomElement &element)
 {
 	const QString type = element.attribute("type", "ellipse").toLower();
@@ -418,5 +511,7 @@ void WorldModel::removeItem(const QString &id)
 		removeWall(wall);
 	} else if (items::ColorFieldItem *colorItem = dynamic_cast<items::ColorFieldItem *>(item)) {
 		removeColorField(colorItem);
+	} else if (items::ImageItem *image = dynamic_cast<items::ImageItem *>(item)) {
+		removeImage(image);
 	}
 }

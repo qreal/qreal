@@ -19,7 +19,6 @@
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
-const int currentResizeDrift = resizeDrift;
 const int currentDrift = drift / 2;
 
 RectangleItem::RectangleItem(const QPointF &begin, const QPointF &end)
@@ -43,6 +42,7 @@ QAction *RectangleItem::rectangleTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_rectangle.svg"), tr("Rectangle (R)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_R));
+	result->setCheckable(true);
 	return result;
 }
 

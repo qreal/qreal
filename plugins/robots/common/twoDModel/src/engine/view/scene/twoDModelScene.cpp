@@ -20,6 +20,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
+#include <qrutils/qRealFileDialog.h>
 #include <qrgui/controller/controllerInterface.h>
 
 #include <kitBase/robotModel/robotParts/touchSensor.h>
@@ -31,6 +32,7 @@
 #include "robotItem.h"
 
 #include "twoDModel/engine/model/model.h"
+#include "twoDModel/engine/model/image.h"
 #include "src/engine/view/scene/sensorItem.h"
 #include "src/engine/view/scene/sonarSensorItem.h"
 #include "src/engine/items/wallItem.h"
@@ -38,6 +40,7 @@
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/imageItem.h"
 #include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
 
@@ -69,6 +72,7 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::imageItemAdded, this, &TwoDModelScene::onImageItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &TwoDModelScene::onItemRemoved);
@@ -173,6 +177,14 @@ void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 	item->setEditable(!mWorldReadOnly);
 }
 
+void TwoDModelScene::onImageItemAdded(graphicsUtils::AbstractItem *item)
+{
+	addItem(item);
+	subscribeItem(item);
+	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	item->setEditable(!mWorldReadOnly);
+}
+
 void TwoDModelScene::onItemRemoved(QGraphicsItem *item)
 {
 	mGraphicsItem = nullptr;
@@ -195,12 +207,12 @@ void TwoDModelScene::drawAxes(QPainter *painter)
 	pen.setStyle(Qt::DashLine);
 	painter->setPen(pen);
 
-	painter->drawLine(0, visibleRect.top(), 0, visibleRect.bottom());
-	painter->drawLine(0, visibleRect.bottom(), -arrowSize, visibleRect.bottom() - arrowSize);
-	painter->drawLine(0, visibleRect.bottom(), arrowSize, visibleRect.bottom() - arrowSize);
-	painter->drawLine(visibleRect.left(), 0, visibleRect.right(), 0);
-	painter->drawLine(visibleRect.right(), 0, visibleRect.right() - arrowSize, -arrowSize);
-	painter->drawLine(visibleRect.right(), 0, visibleRect.right() - arrowSize, arrowSize);
+	painter->drawLine(QLineF(0, visibleRect.top(), 0, visibleRect.bottom()));
+	painter->drawLine(QLineF(0, visibleRect.bottom(), -arrowSize, visibleRect.bottom() - arrowSize));
+	painter->drawLine(QLineF(0, visibleRect.bottom(), arrowSize, visibleRect.bottom() - arrowSize));
+	painter->drawLine(QLineF(visibleRect.left(), 0, visibleRect.right(), 0));
+	painter->drawLine(QLineF(visibleRect.right(), 0, visibleRect.right() - arrowSize, -arrowSize));
+	painter->drawLine(QLineF(visibleRect.right(), 0, visibleRect.right() - arrowSize, arrowSize));
 
 	painter->restore();
 }
@@ -362,17 +374,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		break;
 	}
 
-	if (createdItem) {
-		createdItem->setSelected(true);
-		if (mDrawingAction != none && mController) {
-			commands::CreateWorldItemCommand *command = new commands::CreateWorldItemCommand(mModel, createdItem->id());
-			// Command was already executed when element was drawn by user. So we should create it in redone state.
-			command->setRedoEnabled(false);
-			mController->execute(command);
-			command->setRedoEnabled(true);
-		}
-	}
-
+	registerInUndoStack(createdItem);
 	setMoveFlag(mouseEvent);
 
 	for (RobotItem * const robotItem : mRobots) {
@@ -383,6 +385,31 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
 
+void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+	const QList<QGraphicsItem *> itemsUnderCursor = items(mouseEvent->scenePos());
+	const bool isSceneClick = itemsUnderCursor.count() == 1 && itemsUnderCursor.first() == mEmptyRect;
+	if (isSceneClick && mBackgroundRect.contains(mouseEvent->scenePos().toPoint())) {
+		items::ImageItem *item = new items::ImageItem(mBackground, mBackgroundRect);
+		mBackground = model::Image();
+		mBackgroundRect = QRect();
+		mModel.worldModel().addImage(item);
+		item->setSelected(true);
+		connect(this, &TwoDModelScene::escapePressed, this, [=]() { item->setSelected(false); });
+		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {
+			if (!selected) {
+				mBackground = item->image();
+				mBackgroundRect.setLeft(item->x1() + item->x());
+				mBackgroundRect.setTop(item->y1() + item->y());
+				mBackgroundRect.setRight(item->x2() + item->x());
+				mBackgroundRect.setBottom(item->y2() + item->y());
+				mModel.worldModel().removeImage(item);
+				update();
+			}
+		});
+	}
+}
+
 void TwoDModelScene::deleteSelectedItems()
 {
 	QStringList worldItemsToDelete;
@@ -391,6 +418,7 @@ void TwoDModelScene::deleteSelectedItems()
 		SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
 		items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
 		items::ColorFieldItem * const colorField = dynamic_cast<items::ColorFieldItem *>(item);
+		items::ImageItem * const image = dynamic_cast<items::ImageItem *>(item);
 
 		if (sensor && !mSensorsReadOnly) {
 			for (RobotItem * const robotItem : mRobots.values()) {
@@ -409,6 +437,8 @@ void TwoDModelScene::deleteSelectedItems()
 			mCurrentEllipse = nullptr;
 			mCurrentRectangle = nullptr;
 			mCurrentCurve = nullptr;
+		} else if (image && !mWorldReadOnly) {
+			mModel.worldModel().removeImage(image);
 		}
 	}
 
@@ -464,6 +494,8 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete) {
 		deleteSelectedItems();
+	} else if (event->key() == Qt::Key_Escape) {
+		emit escapePressed();
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
@@ -479,6 +511,10 @@ void TwoDModelScene::focusInEvent(QFocusEvent *event)
 
 void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
+	if (mBackground.isValid()) {
+		mBackground.draw(*painter, mBackgroundRect, currentZoom());
+	}
+
 	if (SettingsManager::value("2dShowGrid").toBool()) {
 		mWidthOfGrid = SettingsManager::value("GridWidth").toReal() / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
@@ -517,6 +553,25 @@ void TwoDModelScene::addRectangle()
 void TwoDModelScene::addEllipse()
 {
 	mDrawingAction = ellipse;
+}
+
+void TwoDModelScene::addImage()
+{
+	// Loads world and robot models simultaneously.
+	const QString loadFileName = utils::QRealFileDialog::getOpenFileName("2DSelectImage", views().first()
+			, tr("Select image"), "./fields", tr("Graphics (*.*)"));
+	if (loadFileName.isEmpty()) {
+		return;
+	}
+
+	mDrawingAction = image;
+	const model::Image image(loadFileName, false);
+	const QSize size = image.preferedSize();
+	const QRect rect(QPoint(-size.width() / 2, -size.height() / 2), size);
+	twoDModel::items::ImageItem *result = new twoDModel::items::ImageItem(image, rect);
+	mModel.worldModel().addImage(result);
+	registerInUndoStack(result);
+	setNoneStatus();
 }
 
 void TwoDModelScene::setNoneStatus()
@@ -663,6 +718,20 @@ void TwoDModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void TwoDModelScene::registerInUndoStack(AbstractItem *item)
+{
+	if (item) {
+		item->setSelected(true);
+		if (mDrawingAction != none && mController) {
+			commands::CreateWorldItemCommand *command = new commands::CreateWorldItemCommand(mModel, item->id());
+			// Command was already executed when element was drawn by user. So we should create it in redone state.
+			command->setRedoEnabled(false);
+			mController->execute(command);
+			command->setRedoEnabled(true);
+		}
+	}
+}
+
 void TwoDModelScene::subscribeItem(AbstractItem *item)
 {
 	connect(item, &AbstractItem::mouseInteractionStarted, this, [=]() {
@@ -713,6 +782,11 @@ void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath 
 	}
 }
 
+qreal TwoDModelScene::currentZoom() const
+{
+	return views().isEmpty() ? 1.0 : views().first()->transform().m11();
+}
+
 void TwoDModelScene::alignWalls()
 {
 	if (SettingsManager::value("2dShowGrid").toBool()) {
@@ -744,6 +818,25 @@ void TwoDModelScene::centerOnRobot(RobotItem *selectedItem)
 			setSceneRect(itemsBoundingRect().united(requiredViewPort));
 			view->centerOn(robotItem);
 		}
+	}
+}
+
+model::Image TwoDModelScene::background() const
+{
+	return mBackground;
+}
+
+QRect TwoDModelScene::backgroundRect() const
+{
+	return mBackgroundRect;
+}
+
+void TwoDModelScene::setBackground(const model::Image &background, const QRect &backgroundRect)
+{
+	if (mBackground != background || mBackgroundRect != backgroundRect) {
+		mBackground = background;
+		mBackgroundRect = backgroundRect;
+		update();
 	}
 }
 

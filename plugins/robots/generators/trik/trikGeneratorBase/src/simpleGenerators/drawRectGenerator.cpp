@@ -32,6 +32,8 @@ DrawRectGenerator::DrawRectGenerator(const qrRepo::RepoApi &repo
 							, customizer.factory()->intPropertyConverter(id, "WidthRect"))
 					, Binding::createConverting("@@HeightRect@@", "HeightRect"
 							, customizer.factory()->intPropertyConverter(id, "HeightRect"))
+					, Binding::createConverting("@@FilledRect@@", "Filled"
+						   , customizer.factory()->boolPropertyConverter(id, "Filled", false))
 			}
 			, parent)
 {

@@ -69,10 +69,10 @@ void AbstractItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* opti
 
 void AbstractItem::drawExtractionForItem(QPainter* painter)
 {
-	painter->drawPoint(x1(), y1());
-	painter->drawPoint(x1(), y2());
-	painter->drawPoint(x2(), y1());
-	painter->drawPoint(x2(), y2());
+	painter->drawPoint(QPointF(x1(), y1()));
+	painter->drawPoint(QPointF(x1(), y2()));
+	painter->drawPoint(QPointF(x2(), y1()));
+	painter->drawPoint(QPointF(x2(), y2()));
 	drawFieldForResizeItem(painter);
 }
 
@@ -85,10 +85,10 @@ void AbstractItem::drawFieldForResizeItem(QPainter* painter)
 	const qreal y2 = itemBoundingRect.bottom();
 
 	setPenBrushDriftRect(painter);
-	painter->drawRect(x1, y1, resizeDrift, resizeDrift);
-	painter->drawRect(x2 - resizeDrift, y2 - resizeDrift, resizeDrift, resizeDrift);
-	painter->drawRect(x1, y2 - resizeDrift, resizeDrift, resizeDrift);
-	painter->drawRect(x2 - resizeDrift, y1, resizeDrift, resizeDrift);
+	painter->drawRect(QRectF(x1, y1, resizeDrift, resizeDrift));
+	painter->drawRect(QRectF(x2 - resizeDrift, y2 - resizeDrift, resizeDrift, resizeDrift));
+	painter->drawRect(QRectF(x1, y2 - resizeDrift, resizeDrift, resizeDrift));
+	painter->drawRect(QRectF(x2 - resizeDrift, y1, resizeDrift, resizeDrift));
 }
 
 void AbstractItem::setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option)
@@ -101,7 +101,7 @@ void AbstractItem::setPenBrushForExtraction(QPainter *painter, const QStyleOptio
 
 void AbstractItem::setPenBrushDriftRect(QPainter *painter)
 {
-	QPen pen(QColor("whitesmoke"));
+	QPen pen(QColor("lightgrey"));
 	pen.setStyle(Qt::SolidLine);
 	pen.setWidth(0);
 	QBrush brush;
@@ -421,7 +421,7 @@ void AbstractItem::readPenBrush(const QDomElement &docItem)
 
 	mBrush.setColor(QColor(docItem.attribute("fill", "")));
 	mPen.setColor(QColor(docItem.attribute("stroke", "")));
-	mPen.setWidth((docItem.attribute("stroke-width", "")).toDouble());
+	mPen.setWidth(static_cast<int>(docItem.attribute("stroke-width", "").toDouble()));
 
 	QString penStyle = docItem.attribute("stroke-style", "");
 	if (penStyle == "solid") {
