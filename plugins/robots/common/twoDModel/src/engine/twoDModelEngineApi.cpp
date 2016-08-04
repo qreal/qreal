@@ -118,7 +118,7 @@ QVector<int> TwoDModelEngineApi::readGyroscopeSensor() const
 int TwoDModelEngineApi::spoilSonarReading(const int distance) const
 {
 	const qreal ran = mathUtils::Math::gaussianNoise(spoilSonarDispersion);
-	return mathUtils::Math::truncateToInterval(0, 255, round(distance + ran));
+	return mathUtils::Math::truncateToInterval(0, 255, qRound(distance + ran));
 }
 
 int TwoDModelEngineApi::readColorSensor(const PortInfo &port) const
@@ -153,9 +153,9 @@ uint TwoDModelEngineApi::spoilColor(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilColorDispersion);
 
-	int r = round(((color >> 16) & 0xFF) + noise);
-	int g = round(((color >> 8) & 0xFF) + noise);
-	int b = round(((color >> 0) & 0xFF) + noise);
+	int r = qRound(((color >> 16) & 0xFF) + noise);
+	int g = qRound(((color >> 8) & 0xFF) + noise);
+	int b = qRound(((color >> 0) & 0xFF) + noise);
 	const int a = (color >> 24) & 0xFF;
 
 	r = mathUtils::Math::truncateToInterval(0, 255, r);
@@ -243,7 +243,7 @@ int TwoDModelEngineApi::readSingleColorSensor(uint color, QHash<uint, int> const
 
 int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor, int n) const
 {
-	double allWhite = static_cast<double>(countsColor[white]);
+	qreal allWhite = static_cast<qreal>(countsColor[white]);
 
 	QHashIterator<uint, int> i(countsColor);
 	while(i.hasNext()) {
@@ -258,7 +258,7 @@ int TwoDModelEngineApi::readColorNoneSensor(QHash<uint, int> const &countsColor,
 		}
 	}
 
-	return (allWhite / static_cast<qreal>(n)) * 100.0;
+	return static_cast<int>((allWhite / static_cast<qreal>(n)) * 100.0);
 }
 
 int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
@@ -276,10 +276,10 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 	const int n = image.byteCount() / 4;
 
 	for (int i = 0; i < n; ++i) {
-		const int color = mModel.settings().realisticSensors() ? spoilLight(data[i]) : data[i];
-		const int b = (color >> 0) & 0xFF;
-		const int g = (color >> 8) & 0xFF;
-		const int r = (color >> 16) & 0xFF;
+		const uint color = mModel.settings().realisticSensors() ? spoilLight(data[i]) : data[i];
+		const uint b = (color >> 0) & 0xFF;
+		const uint g = (color >> 8) & 0xFF;
+		const uint r = (color >> 16) & 0xFF;
 		// brightness in [0..256]
 		const uint brightness = static_cast<uint>(0.2126 * r + 0.7152 * g + 0.0722 * b);
 
@@ -287,7 +287,7 @@ int TwoDModelEngineApi::readLightSensor(const PortInfo &port) const
 	}
 
 	const qreal rawValue = sum * 1.0 / n; // Average by whole region
-	return rawValue * 100 / maxLightSensorValue; // Normalizing to percents
+	return static_cast<int>(rawValue * 100.0 / maxLightSensorValue); // Normalizing to percents
 }
 
 void TwoDModelEngineApi::playSound(int timeInMs)

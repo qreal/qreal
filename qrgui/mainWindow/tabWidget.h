@@ -22,7 +22,7 @@ namespace qReal {
 namespace gui {
 
 /// Custom class for showing tabs in main window.
-class TabWidget : public QTabWidget, EditorInterface
+class TabWidget : public QTabWidget, public EditorInterface
 {
 	Q_OBJECT
 
@@ -36,16 +36,12 @@ public:
 	QString editorId() const override;
 
 	bool supportsZooming() const override;
-	bool supportsUndoRedo() const override;
 	bool supportsCopying() const override;
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
 
 	void zoomIn() override;
 	void zoomOut() override;
-
-	void undo() override;
-	void redo() override;
 
 	void copy() override;
 	void paste() override;

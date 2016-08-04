@@ -345,3 +345,9 @@ void AbstractScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 		QGraphicsScene::contextMenuEvent(event);
 	}
 }
+
+void AbstractScene::focusInEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusInEvent(event);
+	emit focused();
+}

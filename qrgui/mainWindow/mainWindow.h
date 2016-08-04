@@ -198,6 +198,13 @@ public slots:
 	void changeWindowTitle();
 
 	void registerEditor(EditorInterface &editor) override;
+	QAction *zoomInAction() const override;
+	QAction *zoomOutAction() const override;
+	QAction *undoAction() const override;
+	QAction *redoAction() const override;
+	QAction *copyAction() const override;
+	QAction *pasteAction() const override;
+	QAction *cutAction() const override;
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -301,11 +308,6 @@ private:
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();
-	void disconnectZoom(QGraphicsView *view);
-	void connectZoom(QGraphicsView *view);
-	void disconnectActionZoomTo(QWidget* widget);
-	void connectActionZoomTo(QWidget* widget);
-	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
 
 	void setShowGrid(bool isChecked);

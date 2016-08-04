@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QGraphicsView>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include "qrgui/editor/editorViewScene.h"
 #include "qrgui/editor/private/touchSupportManager.h"
 #include "qrgui/editor/private/editorViewMVIface.h"
@@ -24,7 +25,7 @@ namespace qReal {
 namespace gui {
 namespace editor {
 
-class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView
+class QRGUI_EDITOR_EXPORT EditorView : public QGraphicsView, public EditorInterface
 {
 	Q_OBJECT
 
@@ -44,6 +45,12 @@ public:
 	void ensureElementVisible(const Element * const element);
 	void ensureElementVisible(const Element * const element, int xMargin, int yMargin);
 
+	QString editorId() const override;
+	bool supportsZooming() const override;
+	bool supportsCopying() const override;
+	bool supportsPasting() const override;
+	bool supportsCutting() const override;
+
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
 	void rootElementRemoved(const QModelIndex &rootGraphicsIndex);
@@ -53,22 +60,26 @@ signals:
 
 public slots:
 	void toggleAntialiasing(bool);
-	void zoomIn();
-	void zoomOut();
+	void zoomIn() override;
+	void zoomOut() override;
 	void zoom(const qreal zoomFactor);
 
+	void copy() override;
+	void paste() override;
+	void cut() override;
+
 protected:
-	virtual void mouseMoveEvent(QMouseEvent *event);
-	virtual void mouseReleaseEvent(QMouseEvent *event);
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void scrollContentsBy(int dx, int dy);
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void scrollContentsBy(int dx, int dy) override;
 
-	virtual void keyPressEvent(QKeyEvent *event);
-	virtual void keyReleaseEvent(QKeyEvent *event);
+	void keyPressEvent(QKeyEvent *event) override;
+	void keyReleaseEvent(QKeyEvent *event) override;
 
-	virtual bool viewportEvent(QEvent *event);
-	void focusOutEvent(QFocusEvent* event);
-	void focusInEvent(QFocusEvent * event);
+	bool viewportEvent(QEvent *event) override;
+	void focusOutEvent(QFocusEvent* event) override;
+	void focusInEvent(QFocusEvent * event) override;
 
 private slots:
 	void zoomInTime();

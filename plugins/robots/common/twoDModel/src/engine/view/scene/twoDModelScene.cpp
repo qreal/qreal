@@ -54,8 +54,6 @@ using namespace view;
 using namespace qReal;
 using namespace graphicsUtils;
 
-const QString twoDModelUndoStackName = "2D-model-undo-stack";
-
 TwoDModelScene::TwoDModelScene(model::Model &model
 		, AbstractView *view
 		, QObject *parent)
@@ -93,7 +91,6 @@ bool TwoDModelScene::oneRobot() const
 void TwoDModelScene::setController(ControllerInterface &controller)
 {
 	mController = &controller;
-	mController->moduleOpened(twoDModelUndoStackName);
 }
 
 void TwoDModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
@@ -498,14 +495,6 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 		emit escapePressed();
 	} else {
 		QGraphicsScene::keyPressEvent(event);
-	}
-}
-
-void TwoDModelScene::focusInEvent(QFocusEvent *event)
-{
-	QGraphicsScene::focusInEvent(event);
-	if (mController) {
-		mController->setActiveModule(twoDModelUndoStackName);
 	}
 }
 

@@ -24,6 +24,7 @@
 #include <QtWidgets/QPushButton>
 
 #include <qrutils/qRealDialog.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 using namespace utils;
 
@@ -137,10 +138,11 @@ void SmartDock::checkCentralWidget()
 	const bool tabsVisible = isFloating() || !isVisible() || mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea;
 	for (QTabWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QTabWidget *>()) {
 		centralWidget->setVisible(tabsVisible);
-		if (tabsVisible) {
-			centralWidget->setFocus();
-		} else {
-			mInnerWidget->setFocus();
+		qReal::EditorInterface *editor = tabsVisible
+				? dynamic_cast<qReal::EditorInterface *>(centralWidget)
+				: dynamic_cast<qReal::EditorInterface *>(mInnerWidget);
+		if (editor) {
+			editor->forceFocus();
 		}
 	}
 

@@ -266,6 +266,31 @@ void EditorView::ensureElementVisible(const Element * const element
 	}
 }
 
+QString EditorView::editorId() const
+{
+	return mScene.rootItemId().toString();
+}
+
+bool EditorView::supportsZooming() const
+{
+	return true;
+}
+
+bool EditorView::supportsCopying() const
+{
+	return true;
+}
+
+bool EditorView::supportsPasting() const
+{
+	return true;
+}
+
+bool EditorView::supportsCutting() const
+{
+	return true;
+}
+
 void EditorView::zoomInTime()
 {
 	const qreal zoomFactor = SettingsManager::value("zoomFactor").toReal();
@@ -302,6 +327,21 @@ void EditorView::zoom(const qreal zoomFactor)
 
 	checkGrid();
 	emit zoomChanged(transform().m11());
+}
+
+void EditorView::copy()
+{
+	mScene.copy();
+}
+
+void EditorView::paste()
+{
+	mScene.paste(false);
+}
+
+void EditorView::cut()
+{
+	mScene.cut();
 }
 
 void EditorView::setSceneFont()

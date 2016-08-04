@@ -63,7 +63,6 @@ using namespace robotParts;
 
 const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
 const int defaultSpeedFactorIndex = 3;
-const QString twoDModelUndoStackName = "2D-model-undo-stack";
 
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
@@ -189,6 +188,7 @@ void TwoDModelWidget::initWidget()
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->verticalRuler, SLOT(update()));
+	connect(mScene, &AbstractScene::focused, this, [=]() { onFocusIn(); });
 	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->horizontalRuler, SLOT(update()));
 	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->horizontalRuler, SLOT(update()));
@@ -336,11 +336,7 @@ void TwoDModelWidget::trainingModeChanged(bool enabled)
 void TwoDModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
-		mScene->mainView()->zoomIn();
-	} else if (event->matches(QKeySequence::ZoomOut)) {
-		mScene->mainView()->zoomOut();
-	} else if (event->key() == Qt::Key_F5) {
+	if (event->key() == Qt::Key_F5) {
 		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
@@ -559,6 +555,12 @@ void TwoDModelWidget::closeEvent(QCloseEvent *event)
 	emit widgetClosed();
 }
 
+void TwoDModelWidget::focusInEvent(QFocusEvent *event)
+{
+	QWidget::focusInEvent(event);
+	onFocusIn();
+}
+
 SensorItem *TwoDModelWidget::sensorItem(const kitBase::robotModel::PortInfo &port)
 {
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
@@ -578,8 +580,8 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 {
 	if (mController) {
 		// Clearing 2D model undo stack...
-		mController->moduleClosed(twoDModelUndoStackName);
-		mController->moduleOpened(twoDModelUndoStackName);
+		mController->moduleClosed(editorId());
+		mController->moduleOpened(editorId());
 	}
 
 	mScene->clearScene(true, Reason::loading);
@@ -658,6 +660,26 @@ void TwoDModelWidget::setCompactMode(bool enabled)
 	mCompactMode = enabled;
 	setRunStopButtonsVisibility();
 	mActions->setSaveLoadActionsShortcutsEnabled(!mCompactMode);
+}
+
+QString TwoDModelWidget::editorId() const
+{
+	return "TrikStudio.2DModel.Editor";
+}
+
+bool TwoDModelWidget::supportsZooming() const
+{
+	return true;
+}
+
+void TwoDModelWidget::zoomIn()
+{
+	mScene->mainView()->zoomIn();
+}
+
+void TwoDModelWidget::zoomOut()
+{
+	mScene->mainView()->zoomOut();
 }
 
 void TwoDModelWidget::enableRobotFollowing(bool on)

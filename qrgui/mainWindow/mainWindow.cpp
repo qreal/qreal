@@ -203,8 +203,19 @@ void MainWindow::connectActions()
 	connect(mUi->graphicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromGraphicalExplorer);
 
-	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
-	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
+	connect(mUi->actionZoom_In, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->zoomIn();
+		}
+	});
+	connect(mUi->actionZoom_Out, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->zoomOut();
+		}
+	});
+
+	connect(mUi->actionUndo, &QAction::triggered, mController, &Controller::undo);
+	connect(mUi->actionRedo, &QAction::triggered, mController, &Controller::redo);
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -697,15 +708,48 @@ void MainWindow::registerEditor(EditorInterface &editor)
 	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
 		mCurrentEditor = &editor;
 		const bool zoomingEnabled = editor.supportsZooming();
-		const bool undoRedoEnabled = editor.supportsUndoRedo();
 		const bool copyEnabled = editor.supportsCopying();
 		const bool pasteEnabled = editor.supportsPasting();
 		const bool cutEnabled = editor.supportsCutting();
 		mUi->actionZoom_In->setEnabled(zoomingEnabled);
 		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
-		mUi->actionUndo->setEnabled(undoRedoEnabled);
-		mUi->actionRedo->setEnabled(undoRedoEnabled);
+		mController->setActiveModule(editor.editorId());
 	});
+}
+
+QAction *MainWindow::zoomInAction() const
+{
+	return mUi->actionZoom_In;
+}
+
+QAction *MainWindow::zoomOutAction() const
+{
+	return mUi->actionZoom_Out;
+}
+
+QAction *MainWindow::undoAction() const
+{
+	return mUi->actionUndo;
+}
+
+QAction *MainWindow::redoAction() const
+{
+	return mUi->actionRedo;
+}
+
+QAction *MainWindow::copyAction() const
+{
+	return nullptr;
+}
+
+QAction *MainWindow::pasteAction() const
+{
+	return nullptr;
+}
+
+QAction *MainWindow::cutAction() const
+{
+	return nullptr;
 }
 
 void MainWindow::setTextChanged(bool changed)
@@ -856,7 +900,6 @@ void MainWindow::openShapeEditor(
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 // This method is for Interpreter.
@@ -873,7 +916,6 @@ void MainWindow::openShapeEditor(const Id &id
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, const int role
@@ -891,7 +933,6 @@ void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, co
 
 	mUi->tabs->addTab(textEdit, tr("Text Editor"));
 	mUi->tabs->setCurrentWidget(textEdit);
-	setConnectActionZoomTo(textEdit);
 }
 
 void MainWindow::openShapeEditor()
@@ -899,7 +940,6 @@ void MainWindow::openShapeEditor()
 	ShapeEdit * const shapeEdit = new ShapeEdit;
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openReferenceList(const QPersistentModelIndex &index
@@ -909,53 +949,6 @@ void MainWindow::openReferenceList(const QPersistentModelIndex &index
 	connect(&referenceList, SIGNAL(referenceSet(QStringList, QPersistentModelIndex, int))
 			, this, SLOT(setReference(QStringList, QPersistentModelIndex, int)));
 	referenceList.exec();
-}
-
-void MainWindow::disconnectZoom(QGraphicsView *view)
-{
-	disconnect(mUi->actionZoom_In, SIGNAL(triggered()), view, SLOT(zoomIn()));
-	disconnect(mUi->actionZoom_Out, SIGNAL(triggered()), view, SLOT(zoomOut()));
-}
-
-void MainWindow::connectZoom(QGraphicsView *view)
-{
-	connect(mUi->actionZoom_In, SIGNAL(triggered()), view, SLOT(zoomIn()));
-	connect(mUi->actionZoom_Out, SIGNAL(triggered()), view, SLOT(zoomOut()));
-}
-
-void MainWindow::disconnectActionZoomTo(QWidget* widget)
-{
-	EditorView * const view = dynamic_cast<EditorView *>(widget);
-	if (view != nullptr) {
-		disconnectZoom(view);
-	} else {
-		ShapeEdit *const shapeWidget = dynamic_cast<ShapeEdit *>(widget);
-		if (shapeWidget != nullptr) {
-			disconnectZoom(shapeWidget->getView());
-		}
-	}
-}
-
-void MainWindow::connectActionZoomTo(QWidget* widget)
-{
-	EditorView * const view = (dynamic_cast<EditorView *>(widget));
-	if (view != nullptr) {
-		connectZoom(view);
-	} else {
-		ShapeEdit * const shapeWidget = (dynamic_cast<ShapeEdit *>(widget));
-		if (shapeWidget != nullptr) {
-			connectZoom(shapeWidget->getView());
-		}
-	}
-}
-
-void MainWindow::setConnectActionZoomTo(QWidget* widget)
-{
-	for (int i = 0; i < mUi->tabs->count(); i++) {
-		disconnectActionZoomTo(mUi->tabs->widget(i));
-	}
-
-	connectActionZoomTo(widget);
 }
 
 void MainWindow::centerOn(const Id &id)
@@ -1183,7 +1176,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	const bool isEditorTab = getCurrentTab();
-	const bool isShape = isCurrentTabShapeEdit();
 	const bool isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
 	const bool isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
 	const bool isDecorativeTab = isStartTab || isGesturesTab;
@@ -1192,14 +1184,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	mUi->actionPrint->setEnabled(!isDecorativeTab);
-
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
 	mUi->actionFind->setEnabled(!isDecorativeTab);
-
-	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
-	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
-
 	mUi->actionGesturesShow->setEnabled(qReal::SettingsManager::value("gesturesEnabled").toBool());
 
 	if (isEditorTab) {
@@ -1221,18 +1206,14 @@ void MainWindow::switchToTab(int index)
 	if (index != -1) {
 		mUi->tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
-		setConnectActionZoomTo(mUi->tabs->currentWidget());
 
 		if (editorView) {
 			getCurrentTab()->mutableMvIface().setModel(models().graphicalModel());
 			getCurrentTab()->mutableMvIface().setLogicalModel(models().logicalModel());
 			mRootIndex = editorView->mvIface().rootIndex();
-			const Id diagramId = models().graphicalModelAssistApi().idByIndex(mRootIndex);
-			mController->setActiveModule(diagramId.toString());
 		}
 	} else {
 		mUi->tabs->setEnabled(false);
-		mController->setActiveModule(QString());
 	}
 }
 
@@ -1887,6 +1868,7 @@ void MainWindow::initTabs()
 {
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);
+	registerEditor(*mUi->tabs);
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }

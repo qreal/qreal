@@ -35,12 +35,6 @@ public:
 		return false;
 	}
 
-	/// Can be reimplemented to enable undo-redo actions on toolbar and in main menu  when this editor is active.
-	virtual bool supportsUndoRedo() const
-	{
-		return false;
-	}
-
 	/// Can be reimplemented to enable copying actions on toolbar and in main menu  when this editor is active.
 	virtual bool supportsCopying() const
 	{
@@ -67,14 +61,6 @@ public:
 	/// supportsZooming() returns true.
 	virtual void zoomOut() {}
 
-	/// Can be reimplemented to roll last user action back. Implementation has sense only when
-	/// supportsUndoRedo() returns true.
-	virtual void undo() {}
-
-	/// Can be reimplemented to repeat last cancelled user action. Implementation has sense only when
-	/// supportsUndoRedo() returns true.
-	virtual void redo() {}
-
 	/// Can be to copy current editor items into the clipoard. Implementation has sense only when
 	/// supportsCopyPaste() returns true.
 	virtual void copy() {}
@@ -87,8 +73,11 @@ public:
 	/// supportsCopyPaste() returns true.
 	virtual void cut() {}
 
-	/// Can be reimplemented to force focus capturing when system requires that.
-	virtual void forceFocus() {}
+	/// Can be reimplemented to force focus capturing when system requires that. By default simply triggers focusAction.
+	virtual void forceFocus()
+	{
+		onFocusIn();
+	}
 
 	/// Returns action that is triggered when editor is focused. Conceptually this is a simple signal, but
 	/// signals are impossible here becuse inheritors will have ambiguous QObject base.

@@ -19,6 +19,7 @@
 #include <QtWidgets/QGraphicsView>
 
 #include <qrutils/graphicsUtils/lineImpl.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <kitBase/readOnly.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
@@ -62,7 +63,9 @@ class ImageItemPopup;
 class RobotItemPopup;
 class SpeedPopup;
 
-class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget
+		, public kitBase::DevicesConfigurationProvider
+		, public qReal::EditorInterface
 {
 	Q_OBJECT
 
@@ -96,6 +99,13 @@ public:
 	/// In a compact mode 2D model window has less controls, they may seem in another way.
 	void setCompactMode(bool enabled);
 
+	QString editorId() const override;
+	bool supportsZooming() const override;
+
+public slots:
+	void zoomIn() override;
+	void zoomOut() override;
+
 signals:
 	/// Emitted each time when user closes 2D model window.
 	void widgetClosed();
@@ -117,6 +127,8 @@ protected:
 	void showEvent(QShowEvent *e) override;
 	void keyPressEvent(QKeyEvent *event) override;
 	void closeEvent(QCloseEvent *event) override;
+
+	void focusInEvent(QFocusEvent *event) override;
 
 	void onDeviceConfigurationChanged(const QString &robotModel
 			, const kitBase::robotModel::PortInfo &port

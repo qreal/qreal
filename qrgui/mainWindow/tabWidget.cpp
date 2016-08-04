@@ -47,11 +47,6 @@ bool TabWidget::supportsZooming() const
 	return currentEditor() ? currentEditor()->supportsZooming() : false;
 }
 
-bool TabWidget::supportsUndoRedo() const
-{
-	return currentEditor() ? currentEditor()->supportsUndoRedo() : false;
-}
-
 bool TabWidget::supportsCopying() const
 {
 	return currentEditor() ? currentEditor()->supportsCopying() : false;
@@ -81,20 +76,6 @@ void TabWidget::zoomOut()
 	}
 }
 
-void TabWidget::undo()
-{
-	if (EditorInterface *editor = currentEditor()) {
-		editor->undo();
-	}
-}
-
-void TabWidget::redo()
-{
-	if (EditorInterface *editor = currentEditor()) {
-		editor->redo();
-	}
-}
-
 void TabWidget::copy()
 {
 	if (EditorInterface *editor = currentEditor()) {
@@ -118,9 +99,7 @@ void TabWidget::cut()
 
 void TabWidget::forceFocus()
 {
-	if (EditorInterface *editor = currentEditor()) {
-		editor->forceFocus();
-	}
+	onTabChanged();
 }
 
 void TabWidget::mousePressEvent(QMouseEvent *event)

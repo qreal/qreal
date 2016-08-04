@@ -332,6 +332,41 @@ void NullMainWindow::registerEditor(EditorInterface &editor)
 	Q_UNUSED(editor)
 }
 
+QAction *NullMainWindow::zoomInAction() const
+{
+	return nullptr;
+}
+
+QAction *NullMainWindow::zoomOutAction() const
+{
+	return nullptr;
+}
+
+QAction *NullMainWindow::undoAction() const
+{
+	return nullptr;
+}
+
+QAction *NullMainWindow::redoAction() const
+{
+	return nullptr;
+}
+
+QAction *NullMainWindow::copyAction() const
+{
+	return nullptr;
+}
+
+QAction *NullMainWindow::pasteAction() const
+{
+	return nullptr;
+}
+
+QAction *NullMainWindow::cutAction() const
+{
+	return nullptr;
+}
+
 void NullMainWindow::emulateClose(int returnCode)
 {
 	if (mClosed) {
