@@ -53,6 +53,7 @@
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <qrgui/systemFacade/systemFacade.h>
 
 #include <dialogs/projectManagement/suggestToCreateProjectDialog.h>
@@ -98,6 +99,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
 	, mSplashScreen(new SplashScreen(SettingsManager::value("Splashscreen").toBool()))
 	, mController(new Controller)
+	, mCurrentEditor(nullptr)
 	, mRootIndex(QModelIndex())
 	, mErrorReporter(nullptr)
 	, mIsFullscreen(false)
@@ -688,6 +690,22 @@ void MainWindow::changeWindowTitle()
 	} else {
 		setWindowTitle(windowTitle);
 	}
+}
+
+void MainWindow::registerEditor(EditorInterface &editor)
+{
+	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
+		mCurrentEditor = &editor;
+		const bool zoomingEnabled = editor.supportsZooming();
+		const bool undoRedoEnabled = editor.supportsUndoRedo();
+		const bool copyEnabled = editor.supportsCopying();
+		const bool pasteEnabled = editor.supportsPasting();
+		const bool cutEnabled = editor.supportsCutting();
+		mUi->actionZoom_In->setEnabled(zoomingEnabled);
+		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
+		mUi->actionUndo->setEnabled(undoRedoEnabled);
+		mUi->actionRedo->setEnabled(undoRedoEnabled);
+	});
 }
 
 void MainWindow::setTextChanged(bool changed)

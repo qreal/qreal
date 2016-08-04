@@ -327,6 +327,11 @@ void NullMainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
 	Q_UNUSED(area)
 }
 
+void NullMainWindow::registerEditor(EditorInterface &editor)
+{
+	Q_UNUSED(editor)
+}
+
 void NullMainWindow::emulateClose(int returnCode)
 {
 	if (mClosed) {
