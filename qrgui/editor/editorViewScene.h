@@ -21,11 +21,11 @@
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrgui/models/clipboard.h>
 #include <qrgui/mouseGestures/mouseMovementManagerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
-#include "qrgui/editor/private/clipboardHandler.h"
 #include "qrgui/editor/private/exploserView.h"
 
 namespace qReal {
@@ -36,6 +36,9 @@ class CreateElementsCommand;
 
 namespace gui {
 namespace editor {
+
+class NodeElement;
+class EdgeElement;
 
 const int arrowMoveOffset = 5;
 
@@ -137,6 +140,9 @@ public:
 
 	QString editorId() const override;
 
+	/// Returns a list of ids of currently selected elements.
+	IdList selectedIds() const;
+
 public slots:
 	Id createElement(const QString &type);
 
@@ -217,7 +223,6 @@ private:
 
 	void initializeActions();
 	void initContextMenu(Element *e, const QPointF &pos);
-	bool isEmptyClipboard();
 
 	inline bool isArrow(int key);
 
@@ -225,6 +230,7 @@ private:
 	bool moveNodes();
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
+	QPointF currentMousePos() const;
 
 	void createElement(const ElementInfo &elementInfo
 			, const QPointF &scenePos
@@ -242,7 +248,7 @@ private:
 	/// Does not have ownership.
 	qReal::commands::CreateElementsCommand *mLastCreatedFromLinkerCommand;
 
-	ClipboardHandler mClipboardHandler;
+	models::Clipboard mClipboardHandler;
 
 	bool mRightButtonPressed;
 	bool mLeftButtonPressed;

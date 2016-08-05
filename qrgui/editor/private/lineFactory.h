@@ -36,12 +36,6 @@ public:
 	/// Create menu for choosing shape type
 	QMenu *shapeTypeMenu() const;
 
-	/// @return String representation of shapeType
-	static QString shapeToString(LinkShape shapeType);
-
-	/// @return LinkShape represented by string; return linkShape::unset if string is incorrect
-	static LinkShape stringToShape(const QString &string);
-
 private slots:
 	void setSquareLine() const;
 	void setBrokenLine() const;

@@ -494,12 +494,7 @@ void MainWindow::sceneSelectionChanged()
 		return;
 	}
 
-	IdList selectedIds;
-	for (const QGraphicsItem *item : static_cast<QGraphicsScene *>(sender())->selectedItems()) {
-		if (const Element *element = dynamic_cast<const Element *>(item)) {
-			selectedIds << element->id();
-		}
-	}
+	const IdList selectedIds = dynamic_cast<EditorViewScene *>(sender())->selectedIds();
 
 	if (selectedIds.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());

@@ -14,11 +14,37 @@
 
 #include "edgeInfo.h"
 
+#include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+
 using namespace qReal;
 
 EdgeInfo::EdgeInfo()
 	: ElementInfo(true)
 {
+}
+
+EdgeInfo::EdgeInfo(const Id &graphicalId
+		, const Id &logicalId
+		, LogicalModelAssistInterface &logicalModel
+		, GraphicalModelAssistInterface &graphicalModel)
+	: EdgeInfo(graphicalId, logicalId, logicalModel.parent(logicalId), graphicalModel.parent(graphicalId)
+			, graphicalModel.fromPort(graphicalId), graphicalModel.toPort(graphicalId)
+			, graphicalModel.configuration(graphicalId), static_cast<int>(
+					stringToShape(graphicalModel.graphicalRepoApi().property(graphicalId, "linkShape").toString())))
+{
+	setSrcId(graphicalModel.from(graphicalId));
+	setDstId(graphicalModel.to(graphicalId));
+
+	const QMap<QString, QVariant> properties = graphicalModel.properties(logicalId);
+	for (const QString &property : properties.keys()) {
+		if (property != "from" && property != "to") {
+			setLogicalProperty(property, properties[property]);
+		}
+	}
+
+	setGraphicalProperty("position", graphicalModel.position(graphicalId));
 }
 
 EdgeInfo::EdgeInfo(const Id &id
@@ -36,6 +62,33 @@ EdgeInfo::EdgeInfo(const Id &id
 	, mConfiguration(configuration)
 	, mShapeType(shapeType)
 {
+}
+
+QString EdgeInfo::shapeToString(LinkShape shapeType)
+{
+	switch (shapeType) {
+	case LinkShape::broken:
+		return "broken";
+	case LinkShape::curve:
+		return "curve";
+	case LinkShape::square:
+		return "square";
+	}
+
+	return "broken";
+}
+
+LinkShape EdgeInfo::stringToShape(const QString &string)
+{
+	if (string == "broken") {
+		return LinkShape::broken;
+	} else if (string == "square") {
+		return LinkShape::square;
+	} else if (string == "curve") {
+		return LinkShape::curve;
+	} else {
+		return static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
+	}
 }
 
 QDataStream &EdgeInfo::serialize(QDataStream &out) const

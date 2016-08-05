@@ -28,6 +28,11 @@ class QRGUI_MODELS_EXPORT NodeInfo : public ElementInfo
 public:
 	NodeInfo();
 
+	NodeInfo(const Id &graphicalId
+			, const Id &logicalId
+			, LogicalModelAssistInterface &logicalModel
+			, GraphicalModelAssistInterface &graphicalModel);
+
 	NodeInfo(const Id &id
 			, const Id &logicalId
 			, const Id &logicalParent

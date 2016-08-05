@@ -57,7 +57,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mCustomizer(customizer)
 	, mRootId(rootId)
 	, mLastCreatedFromLinker(nullptr)
-	, mClipboardHandler(*this, controller)
+	, mClipboardHandler(controller, models)
 	, mRightButtonPressed(false)
 	, mLeftButtonPressed(false)
 	, mHighlightNode(nullptr)
@@ -628,12 +628,13 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 
 void EditorViewScene::cut()
 {
-	mClipboardHandler.cut();
+	mClipboardHandler.copy(selectedIds());
+	deleteSelectedItems();
 }
 
 void EditorViewScene::copy()
 {
-	mClipboardHandler.copy();
+	mClipboardHandler.copy(selectedIds());
 }
 
 void EditorViewScene::paste()
@@ -643,7 +644,23 @@ void EditorViewScene::paste()
 
 void EditorViewScene::paste(bool isGraphicalCopy)
 {
-	mClipboardHandler.paste(isGraphicalCopy);
+	mClipboardHandler.paste(rootItemId(), currentMousePos(), isGraphicalCopy);
+}
+
+QPointF EditorViewScene::currentMousePos() const
+{
+	const EditorView *editor = nullptr;
+	for (const QGraphicsView * const view : views()) {
+		if ((editor = dynamic_cast<const EditorView *>(view))) {
+			break;
+		}
+	}
+
+	if (!editor) {
+		return QPointF();
+	}
+
+	return editor->mapToScene(editor->mapFromGlobal(QCursor::pos()));
 }
 
 Element *EditorViewScene::lastCreatedFromLinker() const
@@ -653,15 +670,7 @@ Element *EditorViewScene::lastCreatedFromLinker() const
 
 void EditorViewScene::deleteSelectedItems()
 {
-	const QList<QGraphicsItem *> itemsToDelete = selectedItems();
-	IdList idsToDelete;
-	for (const QGraphicsItem *item : itemsToDelete) {
-		const Element *element = dynamic_cast<const Element *>(item);
-		if (element) {
-			idsToDelete << element->id();
-		}
-	}
-
+	IdList idsToDelete = selectedIds();
 	if (!idsToDelete.isEmpty()) {
 		deleteElements(idsToDelete);
 	}
@@ -871,13 +880,7 @@ void EditorViewScene::updateActions()
 	mActionDeleteFromDiagram.setEnabled(elementActionsEnabled);
 	mCopyAction->setEnabled(elementActionsEnabled);
 	mCutAction->setEnabled(elementActionsEnabled);
-	mPasteAction->setEnabled(!isEmptyClipboard());
-}
-
-bool EditorViewScene::isEmptyClipboard()
-{
-	const QMimeData *mimeData = QApplication::clipboard()->mimeData();
-	return mimeData->data(DEFAULT_MIME_TYPE).isEmpty();
+	mPasteAction->setEnabled(!mClipboardHandler.isEmpty());
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -1360,6 +1363,20 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 QString EditorViewScene::editorId() const
 {
 	return mRootId.toString();
+}
+
+IdList EditorViewScene::selectedIds() const
+{
+	IdList result;
+	const QList<QGraphicsItem *> items = selectedItems();
+	for (const QGraphicsItem *item : items) {
+		const Element *element = dynamic_cast<const Element *>(item);
+		if (element) {
+			result << element->id();
+		}
+	}
+
+	return result;
 }
 
 void EditorViewScene::deselectLabels()
