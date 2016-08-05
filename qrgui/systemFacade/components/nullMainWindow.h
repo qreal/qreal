@@ -109,13 +109,6 @@ public:
 	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
 	void registerEditor(EditorInterface &editor) override;
-	QAction *zoomInAction() const override;
-	QAction *zoomOutAction() const override;
-	QAction *undoAction() const override;
-	QAction *redoAction() const override;
-	QAction *copyAction() const override;
-	QAction *pasteAction() const override;
-	QAction *cutAction() const override;
 
 	/// Sends close event via SystemEvents.
 	void emulateClose(int returnCode = 0);

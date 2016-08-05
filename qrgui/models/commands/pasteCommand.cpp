@@ -17,6 +17,8 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 
+#include <qrkernel/definitions.h>
+
 #include "models/models.h"
 #include "models/nodeInfo.h"
 #include "models/edgeInfo.h"
@@ -116,7 +118,7 @@ void PasteCommand::pullDataFromClipboard(QList<NodeInfo> &nodesData, QList<EdgeI
 	const QClipboard *clipboard = QApplication::clipboard();
 	const QMimeData *mimeData = clipboard->mimeData();
 
-	QByteArray data = mimeData->data("application/x-real-uml-model-data");
+	QByteArray data = mimeData->data(DEFAULT_MIME_TYPE);
 	QDataStream stream(&data, QIODevice::ReadOnly);
 
 	stream >> nodesData;

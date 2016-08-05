@@ -17,6 +17,7 @@
 #include <QtWidgets/QApplication>
 #include <QtGui/QClipboard>
 
+#include <qrkernel/definitions.h>
 #include <models/models.h>
 #include <models/commands/pasteCommand.h>
 
@@ -125,7 +126,7 @@ void ClipboardHandler::pushDataToClipboard(const QList<NodeInfo> &nodesData, con
 	stream << edgesData;
 
 	QMimeData *mimeData = new QMimeData();
-	mimeData->setData("application/x-real-uml-model-data", data);
+	mimeData->setData(DEFAULT_MIME_TYPE, data);
 
 	QClipboard *clipboard = QApplication::clipboard();
 	clipboard->setMimeData(mimeData);

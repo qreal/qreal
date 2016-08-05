@@ -55,23 +55,8 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
-	mView->setController(controller);
-
 	dockInterface.registerEditor(*mView);
-	const QList<QAction *> editorActions = {
-		dockInterface.zoomInAction()
-		, dockInterface.zoomOutAction()
-		, dockInterface.undoAction()
-		, dockInterface.redoAction()
-		, dockInterface.copyAction()
-		, dockInterface.pasteAction()
-		, dockInterface.cutAction()
-	};
-	for (QAction * const action : editorActions) {
-		if (action) {
-			mView->addAction(action);
-		}
-	}
+	mView->setController(controller);
 
 	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)
 	{

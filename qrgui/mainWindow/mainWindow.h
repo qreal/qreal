@@ -198,13 +198,6 @@ public slots:
 	void changeWindowTitle();
 
 	void registerEditor(EditorInterface &editor) override;
-	QAction *zoomInAction() const override;
-	QAction *zoomOutAction() const override;
-	QAction *undoAction() const override;
-	QAction *redoAction() const override;
-	QAction *copyAction() const override;
-	QAction *pasteAction() const override;
-	QAction *cutAction() const override;
 
 private slots:
 	/// Suggests user to select a root diagram for the new project

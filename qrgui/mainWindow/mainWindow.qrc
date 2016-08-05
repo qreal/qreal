@@ -31,6 +31,9 @@
         <file>images/save_as.png</file>
         <file>images/undo.png</file>
         <file>images/redo.png</file>
+        <file>images/copy.svg</file>
+        <file>images/paste.svg</file>
+        <file>images/cut.svg</file>
         <file>images/kroki6.png</file>
         <file>images/newDiagram.svg</file>
         <file>images/newProject.svg</file>

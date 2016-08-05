@@ -16,7 +16,6 @@
 
 #include <QtWidgets/QGraphicsView>
 
-#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include "qrgui/editor/editorViewScene.h"
 #include "qrgui/editor/private/touchSupportManager.h"
 #include "qrgui/editor/private/editorViewMVIface.h"
@@ -50,6 +49,8 @@ public:
 	bool supportsCopying() const override;
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
+	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut) override;
 
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
@@ -78,8 +79,6 @@ protected:
 	void keyReleaseEvent(QKeyEvent *event) override;
 
 	bool viewportEvent(QEvent *event) override;
-	void focusOutEvent(QFocusEvent* event) override;
-	void focusInEvent(QFocusEvent * event) override;
 
 private slots:
 	void zoomInTime();

@@ -81,27 +81,6 @@ public:
 	/// Tells main window to attend the focus changes of the given \a editor. When \a editor obtains focus
 	/// actions on toolbar and in main menu such as zoom in-out and undo-redo will be automaticly attached to it.
 	virtual void registerEditor(EditorInterface &editor) = 0;
-
-	/// Returns zoom in action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *zoomInAction() const = 0;
-
-	/// Returns zoom out action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *zoomOutAction() const = 0;
-
-	/// Returns undo action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *undoAction() const = 0;
-
-	/// Returns redo action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *redoAction() const = 0;
-
-	/// Returns copy action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *copyAction() const = 0;
-
-	/// Returns paste action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *pasteAction() const = 0;
-
-	/// Returns cut action on main window toolbar and in main menu. Result may be null in general case.
-	virtual QAction *cutAction() const = 0;
 };
 
 }

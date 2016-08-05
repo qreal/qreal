@@ -214,6 +214,22 @@ void MainWindow::connectActions()
 		}
 	});
 
+	connect(mUi->actionCopy, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->copy();
+		}
+	});
+	connect(mUi->actionPaste, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->paste();
+		}
+	});
+	connect(mUi->actionCut, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->cut();
+		}
+	});
+
 	connect(mUi->actionUndo, &QAction::triggered, mController, &Controller::undo);
 	connect(mUi->actionRedo, &QAction::triggered, mController, &Controller::redo);
 
@@ -713,43 +729,13 @@ void MainWindow::registerEditor(EditorInterface &editor)
 		const bool cutEnabled = editor.supportsCutting();
 		mUi->actionZoom_In->setEnabled(zoomingEnabled);
 		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
+		mUi->actionCopy->setEnabled(copyEnabled);
+		mUi->actionPaste->setEnabled(pasteEnabled);
+		mUi->actionCut->setEnabled(cutEnabled);
+		editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
+				, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut);
 		mController->setActiveModule(editor.editorId());
 	});
-}
-
-QAction *MainWindow::zoomInAction() const
-{
-	return mUi->actionZoom_In;
-}
-
-QAction *MainWindow::zoomOutAction() const
-{
-	return mUi->actionZoom_Out;
-}
-
-QAction *MainWindow::undoAction() const
-{
-	return mUi->actionUndo;
-}
-
-QAction *MainWindow::redoAction() const
-{
-	return mUi->actionRedo;
-}
-
-QAction *MainWindow::copyAction() const
-{
-	return nullptr;
-}
-
-QAction *MainWindow::pasteAction() const
-{
-	return nullptr;
-}
-
-QAction *MainWindow::cutAction() const
-{
-	return nullptr;
 }
 
 void MainWindow::setTextChanged(bool changed)
@@ -1190,8 +1176,8 @@ void MainWindow::currentTabChanged(int newIndex)
 	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
 		mToolManager->activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
-		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
-		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
+//		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
+//		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 	} else if (text::QScintillaTextEdit * const text = dynamic_cast<text::QScintillaTextEdit *>(currentTab())) {
 		mToolManager->activeTabChanged(TabInfo(mTextManager->path(text), text));
 	} else {

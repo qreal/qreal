@@ -672,6 +672,13 @@ bool TwoDModelWidget::supportsZooming() const
 	return true;
 }
 
+void TwoDModelWidget::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut)
+{
+	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut);
+	addActions({ mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction });
+}
+
 void TwoDModelWidget::zoomIn()
 {
 	mScene->mainView()->zoomIn();

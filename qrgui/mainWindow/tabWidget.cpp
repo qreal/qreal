@@ -102,6 +102,17 @@ void TabWidget::forceFocus()
 	onTabChanged();
 }
 
+int TabWidget::addTab(QWidget *widget, const QString &name)
+{
+	const int result = QTabWidget::addTab(widget, name);
+	if (EditorInterface * const editor = dynamic_cast<EditorInterface *>(widget)) {
+		editor->configure(*mZoomInAction, *mZoomOutAction, *mUndoAction, *mRedoAction
+				, *mCopyAction, *mPasteAction, *mCutAction);
+	}
+
+	return result;
+}
+
 void TabWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::MiddleButton && tabBar()->tabAt(event->pos()) > -1) {

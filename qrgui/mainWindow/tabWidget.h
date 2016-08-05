@@ -49,6 +49,9 @@ public:
 
 	void forceFocus() override;
 
+	/// Overrides tab widget behaviour configuring editors with actions.
+	int addTab(QWidget *widget, const QString &name);
+
 protected:
 	void mousePressEvent(QMouseEvent *event) override;
 

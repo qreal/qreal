@@ -23,8 +23,21 @@ namespace qReal {
 class EditorInterface
 {
 public:
-	EditorInterface() : mFocusAction(nullptr) {}
-	virtual ~EditorInterface() {}
+	EditorInterface()
+		: mZoomInAction(nullptr)
+		, mZoomOutAction(nullptr)
+		, mUndoAction(nullptr)
+		, mRedoAction(nullptr)
+		, mCopyAction(nullptr)
+		, mPasteAction(nullptr)
+		, mCutAction(nullptr)
+		, mFocusAction(nullptr)
+	{
+	}
+
+	virtual ~EditorInterface()
+	{
+	}
 
 	/// Should be reimplemented to return unique string identifier used by controller undo stack.
 	virtual QString editorId() const = 0;
@@ -79,6 +92,19 @@ public:
 		onFocusIn();
 	}
 
+	/// Configures editor with the given set of editor actions.
+	virtual void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut)
+	{
+		mZoomInAction = &zoomIn;
+		mZoomOutAction = &zoomOut;
+		mUndoAction = &undo;
+		mRedoAction = &redo;
+		mCopyAction = &copy;
+		mPasteAction = &paste;
+		mCutAction = &cut;
+	}
+
 	/// Returns action that is triggered when editor is focused. Conceptually this is a simple signal, but
 	/// signals are impossible here becuse inheritors will have ambiguous QObject base.
 	/// Implementors should call onFocusIn() to trigger focus action.
@@ -91,6 +117,19 @@ protected:
 	void onFocusIn() {
 		mFocusAction.trigger();
 	}
+
+	QList<QAction *> editorActions() const
+	{
+		return { mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction };
+	}
+
+	QAction *mZoomInAction;  // Does not have ownership.
+	QAction *mZoomOutAction;  // Does not have ownership.
+	QAction *mUndoAction;  // Does not have ownership.
+	QAction *mRedoAction;  // Does not have ownership.
+	QAction *mCopyAction;  // Does not have ownership.
+	QAction *mPasteAction;  // Does not have ownership.
+	QAction *mCutAction;  // Does not have ownership.
 
 private:
 	QAction mFocusAction;
