@@ -30,6 +30,7 @@
 #include <qrutils/inFile.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/widgets/consoleDock.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/shell.h>
 
@@ -107,6 +108,7 @@ void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
 {
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
+	mMainWindow.registerEditor(*dynamic_cast<qReal::EditorInterface *>(watchWindow));
 	watchWindow->setObjectName("variablesDebuggerDock");
 	watchWindow->setFloating(false);
 

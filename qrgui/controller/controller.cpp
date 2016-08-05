@@ -55,6 +55,11 @@ bool Controller::canRedo() const
 
 void Controller::setActiveModule(const QString &moduleId)
 {
+	if (!moduleId.isEmpty() && !mModuleStacks.contains(moduleId)) {
+		// Ignoring editors without undo-redo support.
+		return;
+	}
+
 	if (moduleId.isEmpty()) {
 		setActiveStack(nullptr);
 	} else {

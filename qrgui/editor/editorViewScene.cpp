@@ -257,6 +257,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 	event->accept();
 	clearSelection();
+	forceFocus();
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
