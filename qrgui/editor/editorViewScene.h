@@ -196,7 +196,8 @@ protected:
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent) override;
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
-	void focusInEvent(QFocusEvent *event);
+	void focusInEvent(QFocusEvent *event) override;
+	void focusOutEvent(QFocusEvent *event) override;
 
 private slots:
 	void createEdge(const Id &id);

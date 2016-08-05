@@ -87,7 +87,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	connect(mTimer, SIGNAL(timeout()), this, SLOT(getObjectByGesture()));
 	connect(mTimerForArrowButtons, SIGNAL(timeout()), this, SLOT(updateMovedElements()));
 	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::deselectLabels);
-	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
@@ -628,7 +627,7 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 
 void EditorViewScene::cut()
 {
-	mClipboardHandler.copy(selectedIds());
+	copy();
 	deleteSelectedItems();
 }
 
@@ -1174,7 +1173,19 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 void EditorViewScene::focusInEvent(QFocusEvent *event)
 {
 	QGraphicsScene::focusInEvent(event);
+	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
+	onFocusIn();
 	updateActions();
+	mActionDeleteFromDiagram.setEnabled(true);
+}
+
+void EditorViewScene::focusOutEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusOutEvent(event);
+	disconnect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
+	if (event->reason() != Qt::PopupFocusReason) {
+		mActionDeleteFromDiagram.setEnabled(false);
+	}
 }
 
 void EditorViewScene::setNeedDrawGrid(bool show)
@@ -1301,6 +1312,7 @@ void EditorViewScene::initializeActions()
 	mActionDeleteFromDiagram.setShortcut(QKeySequence(Qt::Key_Delete));
 	mActionDeleteFromDiagram.setText(tr("Delete"));
 	connect(&mActionDeleteFromDiagram, &QAction::triggered, this, &EditorViewScene::deleteSelectedItems);
+	mActionDeleteFromDiagram.setEnabled(false);
 }
 
 void EditorViewScene::updateEdgeElements()

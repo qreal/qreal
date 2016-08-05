@@ -716,6 +716,8 @@ void MainWindow::changeWindowTitle()
 
 void MainWindow::registerEditor(EditorInterface &editor)
 {
+	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
+			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut);
 	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
 		mCurrentEditor = &editor;
 		const bool zoomingEnabled = editor.supportsZooming();
@@ -727,8 +729,6 @@ void MainWindow::registerEditor(EditorInterface &editor)
 		mUi->actionCopy->setEnabled(copyEnabled);
 		mUi->actionPaste->setEnabled(pasteEnabled);
 		mUi->actionCut->setEnabled(cutEnabled);
-		editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
-				, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut);
 		mController->setActiveModule(editor.editorId());
 	});
 }
@@ -1171,8 +1171,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
 		mToolManager->activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
-//		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
-//		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 	} else if (text::QScintillaTextEdit * const text = dynamic_cast<text::QScintillaTextEdit *>(currentTab())) {
 		mToolManager->activeTabChanged(TabInfo(mTextManager->path(text), text));
 	} else {
@@ -1877,15 +1875,14 @@ void MainWindow::initExplorers()
 	mUi->propertyEditor->init(models().logicalModelAssistApi(), *mController);
 	mUi->propertyEditor->setModel(mPropertyModel.data());
 
+	registerEditor(*mUi->graphicalModelExplorer);
+	registerEditor(*mUi->logicalModelExplorer);
+
 	mUi->graphicalModelExplorer->setModel(models().graphicalModel());
-	mUi->graphicalModelExplorer->setController(mController);
-	mUi->graphicalModelExplorer->setAssistApi(&models().graphicalModelAssistApi());
-	mUi->graphicalModelExplorer->setExploser(models().exploser());
+	mUi->graphicalModelExplorer->initialize(*mController, models(), models().graphicalModelAssistApi());
 
 	mUi->logicalModelExplorer->setModel(models().logicalModel());
-	mUi->logicalModelExplorer->setController(mController);
-	mUi->logicalModelExplorer->setAssistApi(&models().logicalModelAssistApi());
-	mUi->logicalModelExplorer->setExploser(models().exploser());
+	mUi->logicalModelExplorer->initialize(*mController, models(), models().logicalModelAssistApi());
 
 	mPropertyModel->setSourceModels(models().logicalModel(), models().graphicalModel());
 
