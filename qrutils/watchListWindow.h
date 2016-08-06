@@ -20,6 +20,7 @@
 #include <QtWidgets/QDockWidget>
 
 #include <qrtext/debuggerInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include "expressionsParser/expressionsParser.h"
 
@@ -32,7 +33,7 @@ const int watchWindowRefreshInterval = 500;
 namespace utils {
 
 /// Dock window that shows current values of all variables that are currently known to parser.
-class QRUTILS_EXPORT WatchListWindow : public QDockWidget
+class QRUTILS_EXPORT WatchListWindow : public QDockWidget, public qReal::EditorInterface
 {
 	Q_OBJECT
 
@@ -52,12 +53,18 @@ public:
 	/// Do not show variables with given names.
 	void hideVariables(const QStringList &variableNames);
 
+	QString editorId() const override;
+	bool supportsCopying() const override;
+
+public slots:
+	void copy() override;
 
 private slots:
 	void updateVariables();
 
 private:
 	QString toString(const QVariant &value) const;
+	void focusInEvent(QFocusEvent *event) override;
 
 	WatchListWindow(const utils::ExpressionsParser * const parser
 			, const qrtext::DebuggerInterface * const newParser

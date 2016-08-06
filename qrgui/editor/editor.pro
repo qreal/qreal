@@ -44,7 +44,6 @@ HEADERS += \
 	$$PWD/private/pushButtonProperty.h \
 	$$PWD/private/editorViewMVIface.h \
 	$$PWD/private/exploserView.h \
-	$$PWD/private/clipboardHandler.h \
 	$$PWD/private/touchSupportManager.h \
 	$$PWD/edgeElement.h \
 	$$PWD/element.h \
@@ -91,7 +90,6 @@ SOURCES += \
 	$$PWD/private/pushButtonProperty.cpp \
 	$$PWD/private/editorViewMVIface.cpp \
 	$$PWD/private/exploserView.cpp \
-	$$PWD/private/clipboardHandler.cpp \
 	$$PWD/private/touchSupportManager.cpp \
 	$$PWD/edgeElement.cpp \
 	$$PWD/element.cpp \

@@ -16,6 +16,9 @@
 
 #include <qrgui/models/models.h>
 
+#include "nodeElement.h"
+#include "edgeElement.h"
+
 using namespace qReal;
 using namespace qReal::commands;
 using namespace qReal::gui::editor::commands;

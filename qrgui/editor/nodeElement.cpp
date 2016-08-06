@@ -137,16 +137,6 @@ void NodeElement::connectSceneEvents()
 	}
 }
 
-QMap<QString, QVariant> NodeElement::graphicalProperties() const
-{
-	return mGraphicalAssistApi.properties(id());
-}
-
-QMap<QString, QVariant> NodeElement::logicalProperties() const
-{
-	return mGraphicalAssistApi.properties(logicalId());
-}
-
 void NodeElement::setGeometry(const QRectF &geom)
 {
 	prepareGeometryChange();
@@ -1119,22 +1109,6 @@ void NodeElement::setColorRect(bool value)
 void NodeElement::checkConnectionsToPort() // it is strange method
 {
 	mPortHandler->checkConnectionsToPort();
-}
-
-NodeInfo NodeElement::data() const
-{
-	NodeInfo result(id(), logicalId(), mLogicalAssistApi.parent(logicalId()), mGraphicalAssistApi.parent(id())
-			, {}, {}, mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId())
-	);
-
-	result.setAllLogicalProperties(logicalProperties());
-	result.setAllGraphicalProperties(graphicalProperties());
-
-	// new element should not have references to links connected to original source element
-	result.setGraphicalProperty("links", IdListHelper::toVariant(IdList()));
-	result.setGraphicalProperty("position", pos());
-
-	return result;
 }
 
 void NodeElement::resize()

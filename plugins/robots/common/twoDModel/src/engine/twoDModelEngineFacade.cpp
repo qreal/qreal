@@ -50,10 +50,12 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::ControllerInterface &controller
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, qReal::gui::MainWindowDockInterface &dockInterface
 		, const qReal::ProjectManagementInterface &projectManager
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
+	dockInterface.registerEditor(*mView);
 	mView->setController(controller);
 
 	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)

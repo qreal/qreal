@@ -20,6 +20,9 @@ class QStatusBar;
 class QToolBar;
 
 namespace qReal {
+
+class EditorInterface;
+
 namespace gui {
 
 class MainWindowDockInterface
@@ -74,6 +77,10 @@ public:
 
 	/// Sets the given dock widget @arg area to occupy the specified @arg corner.
 	virtual void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) = 0;
+
+	/// Tells main window to attend the focus changes of the given \a editor. When \a editor obtains focus
+	/// actions on toolbar and in main menu such as zoom in-out and undo-redo will be automaticly attached to it.
+	virtual void registerEditor(EditorInterface &editor) = 0;
 };
 
 }

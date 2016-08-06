@@ -54,6 +54,7 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::ControllerInterface &controller
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::gui::MainWindowDockInterface &dockInterface
 			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 

@@ -22,6 +22,7 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/controller/controllerInterface.h>
 #include <kitBase/devicesConfigurationProvider.h>
@@ -51,6 +52,7 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::ControllerInterface &controller
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::gui::MainWindowDockInterface &dockInterface
 			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) = 0;
 

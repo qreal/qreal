@@ -24,7 +24,8 @@
 
 #include "mainWindow/shapeEdit/scene.h"
 #include "mainWindow/shapeEdit/item.h"
-#include "plugins/pluginManager/editorManagerInterface.h"
+#include <qrgui/plugins/pluginManager/editorManagerInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 // TODO: lolwut?
 #include "models/details/logicalModel.h"
@@ -40,7 +41,7 @@ namespace qReal {
 
 class MainWindow;
 
-class ShapeEdit : public QWidget
+class ShapeEdit : public QWidget, public EditorInterface
 {
 	Q_OBJECT
 
@@ -56,6 +57,15 @@ public:
 	graphicsUtils::AbstractView* getView();
 	void load(const QString &text);
 
+	QString editorId() const override;
+	bool supportsZooming() const override;
+	bool supportsCopying() const override;
+	bool supportsPasting() const override;
+	bool supportsCutting() const override;
+
+	void zoomIn() override;
+	void zoomOut() override;
+
 signals:
 	void shapeSaved(const QString &shape, const QPersistentModelIndex &index, const int &role);
 	void saveSignal();
@@ -63,8 +73,8 @@ signals:
 	void openSignal();
 
 protected:
-	void changeEvent(QEvent *e);
-	virtual void keyPressEvent(QKeyEvent *event);
+	void changeEvent(QEvent *e) override;
+	void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
 	void drawLine(bool checked);

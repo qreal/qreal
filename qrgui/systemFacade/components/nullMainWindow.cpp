@@ -15,8 +15,10 @@
 #include "nullMainWindow.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include <QtCore/QCoreApplication>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QStatusBar>
 
 using namespace qReal;
@@ -325,6 +327,12 @@ void NullMainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
 {
 	Q_UNUSED(corner)
 	Q_UNUSED(area)
+}
+
+void NullMainWindow::registerEditor(EditorInterface &editor)
+{
+	QAction *dummyAction = new QAction(this);
+	editor.configure(*dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction);
 }
 
 void NullMainWindow::emulateClose(int returnCode)

@@ -89,6 +89,7 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, configurator.qRealConfigurator().logicalModelApi()
 			, configurator.qRealConfigurator().controller()
 			, interpretersInterface
+			, configurator.qRealConfigurator().mainWindowDockInterface()
 			, configurator.qRealConfigurator().projectManager()
 			, configurator.interpreterControl());
 }

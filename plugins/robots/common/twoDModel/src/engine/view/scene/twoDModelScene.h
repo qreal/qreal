@@ -192,12 +192,10 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
-
-	void focusInEvent(QFocusEvent *event);
 
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 

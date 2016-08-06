@@ -57,7 +57,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mCustomizer(customizer)
 	, mRootId(rootId)
 	, mLastCreatedFromLinker(nullptr)
-	, mClipboardHandler(*this, controller)
+	, mClipboardHandler(controller, models)
 	, mRightButtonPressed(false)
 	, mLeftButtonPressed(false)
 	, mHighlightNode(nullptr)
@@ -72,10 +72,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
-	, mActionCutOnDiagram(nullptr)
-	, mActionCopyOnDiagram(nullptr)
-	, mActionPasteOnDiagram(nullptr)
-	, mActionPasteReference(nullptr)
 
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
@@ -261,6 +257,7 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 	event->accept();
 	clearSelection();
+	forceFocus();
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
@@ -631,17 +628,39 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 
 void EditorViewScene::cut()
 {
-	mClipboardHandler.cut();
+	copy();
+	deleteSelectedItems();
 }
 
 void EditorViewScene::copy()
 {
-	mClipboardHandler.copy();
+	mClipboardHandler.copy(selectedIds());
+}
+
+void EditorViewScene::paste()
+{
+	paste(false);
 }
 
 void EditorViewScene::paste(bool isGraphicalCopy)
 {
-	mClipboardHandler.paste(isGraphicalCopy);
+	mClipboardHandler.paste(rootItemId(), currentMousePos(), isGraphicalCopy);
+}
+
+QPointF EditorViewScene::currentMousePos() const
+{
+	const EditorView *editor = nullptr;
+	for (const QGraphicsView * const view : views()) {
+		if ((editor = dynamic_cast<const EditorView *>(view))) {
+			break;
+		}
+	}
+
+	if (!editor) {
+		return QPointF();
+	}
+
+	return editor->mapToScene(editor->mapFromGlobal(QCursor::pos()));
 }
 
 Element *EditorViewScene::lastCreatedFromLinker() const
@@ -651,15 +670,7 @@ Element *EditorViewScene::lastCreatedFromLinker() const
 
 void EditorViewScene::deleteSelectedItems()
 {
-	const QList<QGraphicsItem *> itemsToDelete = selectedItems();
-	IdList idsToDelete;
-	for (const QGraphicsItem *item : itemsToDelete) {
-		const Element *element = dynamic_cast<const Element *>(item);
-		if (element) {
-			idsToDelete << element->id();
-		}
-	}
-
+	IdList idsToDelete = selectedIds();
 	if (!idsToDelete.isEmpty()) {
 		deleteElements(idsToDelete);
 	}
@@ -829,11 +840,16 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 		mContextMenu.close();
 	}
 
-	disableActions(e);
+	if (e && selectedItems().empty()) {
+		e->setSelected(true);
+	}
+
 	mContextMenu.clear();
 	mContextMenu.addAction(&mActionDeleteFromDiagram);
 	mContextMenu.addSeparator();
-	mContextMenu.addActions(mEditorActions);
+	mContextMenu.addAction(mCopyAction);
+	mContextMenu.addAction(mPasteAction);
+	mContextMenu.addAction(mCutAction);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (const NodeElement *node = dynamic_cast<NodeElement *>(e)) {
@@ -855,28 +871,16 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	}
 
 	mContextMenu.exec(QCursor::pos());
-
-	setActionsEnabled(true);
 	delete createChildMapper;
 }
 
-void EditorViewScene::disableActions(Element *focusElement)
+void EditorViewScene::updateActions()
 {
-	if (!focusElement) {
-		mActionDeleteFromDiagram.setEnabled(false);
-		mActionCopyOnDiagram.setEnabled(false);
-		mActionCutOnDiagram.setEnabled(false);
-	}
-	if (isEmptyClipboard()) {
-		mActionPasteOnDiagram.setEnabled(false);
-		mActionPasteReference.setEnabled(false);
-	}
-}
-
-bool EditorViewScene::isEmptyClipboard()
-{
-	const QMimeData *mimeData = QApplication::clipboard()->mimeData();
-	return mimeData->data(DEFAULT_MIME_TYPE).isEmpty();
+	const bool elementActionsEnabled = !selectedItems().empty();
+	mActionDeleteFromDiagram.setEnabled(elementActionsEnabled);
+	mCopyAction->setEnabled(elementActionsEnabled);
+	mCutAction->setEnabled(elementActionsEnabled);
+	mPasteAction->setEnabled(!mClipboardHandler.isEmpty());
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -1170,7 +1174,19 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 void EditorViewScene::focusInEvent(QFocusEvent *event)
 {
 	QGraphicsScene::focusInEvent(event);
-	mController.setActiveModule(mRootId.toString());
+	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
+	onFocusIn();
+	updateActions();
+	mActionDeleteFromDiagram.setEnabled(true);
+}
+
+void EditorViewScene::focusOutEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusOutEvent(event);
+	disconnect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
+	if (event->reason() != Qt::PopupFocusReason) {
+		mActionDeleteFromDiagram.setEnabled(false);
+	}
 }
 
 void EditorViewScene::setNeedDrawGrid(bool show)
@@ -1294,33 +1310,10 @@ void EditorViewScene::setCorners(const QPointF &topLeft, const QPointF &bottomRi
 
 void EditorViewScene::initializeActions()
 {
-	QAction * const separator = new QAction(this);
-	separator->setSeparator(true);
-
 	mActionDeleteFromDiagram.setShortcut(QKeySequence(Qt::Key_Delete));
 	mActionDeleteFromDiagram.setText(tr("Delete"));
 	connect(&mActionDeleteFromDiagram, &QAction::triggered, this, &EditorViewScene::deleteSelectedItems);
-
-	mActionCopyOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-	mActionCopyOnDiagram.setText(tr("Copy"));
-	connect(&mActionCopyOnDiagram, &QAction::triggered, this, &EditorViewScene::copy);
-
-	mActionPasteOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
-	mActionPasteOnDiagram.setText(tr("Paste"));
-	connect(&mActionPasteOnDiagram, &QAction::triggered, [=]() { paste(false); });
-
-	mActionPasteReference.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-	mActionPasteReference.setText(tr("Paste only graphical copy"));
-	connect(&mActionPasteReference, &QAction::triggered, [=]() { paste(true); });
-
-	mActionCutOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
-	mActionCutOnDiagram.setText(tr("Cut"));
-	connect(&mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
-
-	mEditorActions << &mActionCutOnDiagram
-			<< &mActionCopyOnDiagram
-			<< &mActionPasteOnDiagram
-			<< &mActionPasteReference;
+	mActionDeleteFromDiagram.setEnabled(false);
 }
 
 void EditorViewScene::updateEdgeElements()
@@ -1364,20 +1357,6 @@ QAction &EditorViewScene::deleteAction()
 	return mActionDeleteFromDiagram;
 }
 
-QList<QAction *> const &EditorViewScene::editorActions() const
-{
-	return mEditorActions;
-}
-
-void EditorViewScene::setActionsEnabled(bool enabled)
-{
-	for (QAction * const action : mEditorActions) {
-		action->setEnabled(enabled);
-	}
-
-	mActionDeleteFromDiagram.setEnabled(enabled);
-}
-
 void EditorViewScene::onElementDeleted(Element *element)
 {
 	/// @todo: Make it more automated, conceptually this method is not needed.
@@ -1392,6 +1371,25 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 	} else {
 		mMouseMovementManager.reset(new gestures::DummyMouseMovementManager(mRootId, mEditorManager));
 	}
+}
+
+QString EditorViewScene::editorId() const
+{
+	return mRootId.toString();
+}
+
+IdList EditorViewScene::selectedIds() const
+{
+	IdList result;
+	const QList<QGraphicsItem *> items = selectedItems();
+	for (const QGraphicsItem *item : items) {
+		const Element *element = dynamic_cast<const Element *>(item);
+		if (element) {
+			result << element->id();
+		}
+	}
+
+	return result;
 }
 
 void EditorViewScene::deselectLabels()

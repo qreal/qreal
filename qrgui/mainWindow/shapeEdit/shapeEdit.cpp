@@ -397,6 +397,41 @@ void ShapeEdit::load(const QString &text)
 	loader.readString(text);
 }
 
+QString ShapeEdit::editorId() const
+{
+	return "qReal.ShapeEditor";
+}
+
+bool ShapeEdit::supportsZooming() const
+{
+	return true;
+}
+
+bool ShapeEdit::supportsCopying() const
+{
+	return false;
+}
+
+bool ShapeEdit::supportsPasting() const
+{
+	return false;
+}
+
+bool ShapeEdit::supportsCutting() const
+{
+	return false;
+}
+
+void ShapeEdit::zoomIn()
+{
+	mUi->graphicsView->zoomIn();
+}
+
+void ShapeEdit::zoomOut()
+{
+	mUi->graphicsView->zoomOut();
+}
+
 void ShapeEdit::addImage(bool checked)
 {
 	if (checked) {

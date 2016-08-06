@@ -59,7 +59,7 @@ public:
 	EdgeElement(const EdgeElementType &type, const Id &id, const models::Models &models);
 	~EdgeElement() override;
 
-	void updateData();
+	void updateData() override;
 
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
@@ -117,17 +117,15 @@ public:
 	/// Resort edges connected to linear ports of adjacent nodes
 	void arrangeLinearPorts();
 
-	virtual void connectToPort();
+	void connectToPort() override;
 
-	virtual void setColorRect(bool bl);
+	void setColorRect(bool bl) override;
 
 	void breakPointHandler(const QPointF &pos);
 	bool isBreakPointPressed();
 	void breakPointUnpressed();
 
 	void highlight(const QColor &color = Qt::red);
-
-	EdgeInfo data();
 
 	/// Change link type and redraw it
 	void changeShapeType(const LinkShape shapeType);

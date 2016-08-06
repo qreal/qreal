@@ -119,8 +119,7 @@ void EdgeElement::initLineHandler()
 void EdgeElement::changeShapeType(LinkShape shapeType)
 {
 	mShapeType = shapeType;
-	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
-			, mLineFactory->shapeToString(shapeType));
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape", EdgeInfo::shapeToString(shapeType));
 	initLineHandler();
 	layOut();
 }
@@ -948,33 +947,6 @@ void EdgeElement::highlight(const QColor &color)
 {
 	mColor = color;
 	update();
-}
-
-EdgeInfo EdgeElement::data()
-{
-	EdgeInfo result(id()
-			, logicalId()
-			, mLogicalAssistApi.parent(logicalId())
-			, mGraphicalAssistApi.parent(id())
-			, mPortFrom
-			, mPortTo
-			, mGraphicalAssistApi.configuration(mId)
-			, static_cast<int>(mShapeType)
-	);
-
-	result.setSrcId(src() ? src()->id() : Id::rootId());
-	result.setDstId(dst() ? dst()->id() : Id::rootId());
-
-	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
-	for (const QString &property : properties.keys()) {
-		if (property != "from" && property != "to") {
-			result.setLogicalProperty(property, properties[property]);
-		}
-	}
-
-	result.setGraphicalProperty("position", mGraphicalAssistApi.position(mId));
-
-	return result;
 }
 
 QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &value)
