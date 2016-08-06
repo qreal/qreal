@@ -25,7 +25,9 @@ class CurveLine : public LineHandler
 {
 	Q_OBJECT
 public:
-	CurveLine(EdgeElement *edge);
+	CurveLine(EdgeElement *edge
+			, const LogicalModelAssistInterface &logicalModel
+			, const GraphicalModelAssistInterface &graphicalModel);
 
 	/// Draws Bezier curve
 	virtual void drawLine(QPainter *painter, bool drawSavedLine);

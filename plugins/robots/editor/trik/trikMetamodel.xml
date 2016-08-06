@@ -1,0 +1,1256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<extends>../common/robotsMetamodel.xml</extends>
+	<namespace>UML 2.0</namespace>
+	<diagram name="RobotsDiagram">
+		<nonGraphicTypes>
+			<enum name="TrikV6DigitalSensorPort">
+				<value name="D1"/>
+				<value name="D2"/>
+			</enum>
+			<enum name="TrikV6AnalogSensorPort">
+				<value name="A1"/>
+				<value name="A2"/>
+				<value name="A3"/>
+				<value name="A4"/>
+				<value name="A5"/>
+				<value name="A6"/>
+			</enum>
+			<enum name="TrikV6EncoderPort">
+				<value name="B1"/>
+				<value name="B2"/>
+				<value name="B3"/>
+				<value name="B4"/>
+			</enum>
+			<enum name="TrikV62EncoderPort">
+				<value name="E1"/>
+				<value name="E2"/>
+				<value name="E3"/>
+				<value name="E4"/>
+			</enum>
+			<enum name="TrikLedColor">
+				<value name="green" displayedName="green"/>
+				<value name="red" displayedName="red"/>
+				<value name="off" displayedName="off"/>
+				<value name="orange" displayedName="orange"/>
+			</enum>
+			<enum name="BackgroundColor">
+				<value name="white" displayedName="white"/>
+				<value name="black" displayedName="black"/>
+				<value name="red" displayedName="red"/>
+				<value name="darkRed" displayedName="dark red"/>
+				<value name="green" displayedName="green"/>
+				<value name="darkGreen" displayedName="dark green"/>
+				<value name="blue" displayedName="blue"/>
+				<value name="darkBlue" displayedName="dark blue"/>
+				<value name="cyan" displayedName="cyan"/>
+				<value name="darkCyan" displayedName="dark cyan"/>
+				<value name="magenta" displayedName="magenta"/>
+				<value name="darkMagenta" displayedName="dark magenta"/>
+				<value name="yellow" displayedName="yellow"/>
+				<value name="darkYellow" displayedName="dark yellow"/>
+				<value name="gray" displayedName="gray"/>
+				<value name="darkGray" displayedName="dark gray"/>
+				<value name="lightGray" displayedName="light gray"/>
+			</enum>
+			<enum name="VideoSensor">
+				<value name="line" displayedName="Line sensor"/>
+				<value name="object" displayedName="Object sensor"/>
+				<value name="color" displayedName="Color sensor"/>
+			</enum>
+			<enum name="DetectableVideoSensor">
+				<value name="line" displayedName="Line sensor"/>
+				<value name="object" displayedName="Object sensor"/>
+			</enum>
+			<enum name="TrikButtons">
+				<value name="Up"/>
+				<value name="Down"/>
+				<value name="Left"/>
+				<value name="Right"/>
+				<value name="Enter"/>
+				<value name="Esc"/>
+			</enum>
+		</nonGraphicTypes>
+		<graphicTypes>
+			<!-- Algorithms -->
+			<node name="TrikV6EngineMovementCommand">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports" >
+							<default>M3, M4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Motors Backward" name="TrikV6EnginesBackward" path="111, 224 : 0, 113 :  | 113, 0 : 0, 113 :  | 0, 113 : 287, 113 : " description="Enables motors on the given ports in reverse mode with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the usual mode.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesBackwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikV6EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Motors Forward" name="TrikV6EnginesForward" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Enables motors on the given ports with the given power. Ports are specified in accordance with TRIK controller notations (for example M1, E2) and divided by commas. The power is specified in percents with the number from -100 to 100, if negative number is specified then the motor is enabled in the reverse mode.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesForwardBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:" />
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Power:" suffix="%" />
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikV6EngineMovementCommand"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Angular Servo" name="TrikAngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>E1</default>
+						</property>
+						<property displayedName="Angle (degrees)" type="string" name="Power">
+							<default>0</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Stop Motors" name="TrikV6EnginesStop" path="49, 117 : 185, 117 :  | 223, 118 : 222, 128 : 221, 138 : 218, 148 : 215, 158 : 211, 167 : 205, 176 : 199, 184 : 192, 192 : 184, 199 : 176, 205 : 167, 211 : 158, 215 : 148, 218 : 138, 221 : 128, 222 : 118, 223 : 108, 222 : 98, 221 : 88, 218 : 78, 215 : 69, 211 : 60, 205 : 52, 199 : 44, 192 : 37, 184 : 31, 176 : 25, 167 : 21, 158 : 18, 148 : 15, 138 : 14, 128 : 13, 118 : 14, 108 : 15, 98 : 18, 88 : 21, 78 : 25, 69 : 31, 60 : 37, 52 : 44, 44 : 52, 37 : 60, 31 : 69, 25 : 78, 21 : 88, 18 : 98, 15 : 108, 14 : 118, 13 : 128, 14 : 138, 15 : 148, 18 : 158, 21 : 167, 25 : 176, 31 : 184, 37 : 192, 44 : 199, 52 : 205, 60 : 211, 69 : 215, 78 : 218, 88 : 221, 98 : 222, 108 : 223, 118 : " description="Disables motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>M1, M2, M3, M4</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+
+			<node displayedName="Play Tone" name="TrikPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="-35" textBinded="FileName" background="white" prefix="File name:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="File Name" type="string" name="FileName">
+							<default>media/beep.wav</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Clear Encoder" name="TrikV6ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>B1, B2, B3, B4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="System Call" name="TrikSystem" description="Invokes bash script-style command on the robot. If 'Evaluate' property is set to true then the value of 'Command' property is interpreted as a formula, otherwise it is interpreted as plain string.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/systemBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Command" background="white" prefix="Command:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Command" type="string" name="Command">
+							<default>echo 123</default>
+						</property>
+						<property displayedName="Code" type="bool" name="Code">
+							<default>false</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Write To File" name="TrikWriteToFile" description="Writes a given message to a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/writeToFileBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
+						<label x="33" y="90" textBinded="Text" background="white" prefix="Text:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default>output.txt</default>
+						</property>
+						<property displayedName="Text" type="string" name="Text"/>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Remove File" name="TrikRemoveFile" description="Removes a file. File path may be absolute or relative to a directory containing TRIK Studio executable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/removeFileBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="33" y="60" textBinded="File" background="white" prefix="File:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="File" type="string" name="File">
+							<default>output.txt</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Enable Video Streaming" name="TrikInitVideoStreaming" description="Enables video stream on robot. Video then can be watched on TRIK gamepad or in browser using URL http://ROBOT.IP.ADDRESS:8080/?action=stream">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initVideoStreamingBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-25" y="60" text="Enable Video Streaming" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/initCameraBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Mode" hard="true" background="white" prefix="Mode:"/>
+						<label x="-25" y="60" text="Initialize Videocamera" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Mode" type="VideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Detect by Videocamera" name="TrikDetect" description="Initializes videocamera line or object detector with the color of the object in the middle of the camera`s sight.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/detectBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Mode" hard="true" background="white" prefix="Mode:"/>
+						<label x="-25" y="60" text="Detect by Videocamera" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Mode" type="DetectableVideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Line Detector into Variable" name="TrikDetectorToVariable" description="Stores videocamera line detector`s value into a given variable.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/lineDetectorIntoVariableBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-15" y="60" text="Line Detector into Variable" background="white"/>
+						<label x="40" y="90" textBinded="Variable" background="white" prefix="Variable:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>err</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Led" name="TrikLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/ledBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-35" textBinded="Color" hard="true" background="white" prefix="Color:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Color" type="TrikLedColor" name="Color">
+							<default>red</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- Waiting for sensors blocks, TRIK v6 -->
+			<node name="TrikSensorBlock">
+				<logic>
+					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="TrikAnalogSensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV6AnalogSensorPort" name="Port">
+							<default>A1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node name="TrikDigitalSensorBlock">
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV6DigitalSensorPort" name="Port">
+							<default>D1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Light" name="TrikWaitForLight" path="249, 220 : 349, 220 :  | 130, 12 : 130, 102 :  | 249, 221 : 248, 232 : 247, 244 : 244, 255 : 240, 266 : 235, 276 : 229, 286 : 222, 296 : 214, 304 : 206, 312 : 196, 319 : 186, 325 : 176, 330 : 165, 334 : 154, 337 : 142, 338 : 131, 339 : 120, 338 : 108, 337 : 97, 334 : 86, 330 : 76, 325 : 66, 319 : 56, 312 : 48, 304 : 40, 296 : 33, 286 : 27, 276 : 22, 266 : 18, 255 : 15, 244 : 14, 232 : 13, 221 : 14, 210 : 15, 198 : 18, 187 : 22, 176 : 27, 166 : 33, 156 : 40, 146 : 48, 138 : 56, 130 : 66, 123 : 76, 117 : 86, 112 : 97, 108 : 108, 105 : 120, 104 : 131, 103 : 142, 104 : 154, 105 : 165, 108 : 176, 112 : 186, 117 : 196, 123 : 206, 130 : 214, 138 : 222, 146 : 229, 156 : 235, 166 : 240, 176 : 244, 187 : 247, 198 : 248, 210 : 249, 221 : " description="Waits till the value returned by the light sensor on the given port will be greater or less than the given in the 'Percents' parameter value (0 to 100).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForLightBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Percents" prefix="Percents:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Percents" type="string" name="Percents">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikAnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Ultrasonic Distance" name="TrikWaitForSonarDistance" description="Waits till the value returned by the ultrasonic sensor on the given port will be greater or less than the given in the 'Distance' parameter value (the distance is specified in centimeters, from 0 to 300).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Distance" prefix="Distance:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Distance" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikDigitalSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Infrared Distance" name="TrikWaitForIRDistance" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Waits till the value returned by the infrared sensor on the given port will be greater or less than the given in the 'Distance' parameter value. By default on ports A1 and A2 the distance is specified in centimeters (from 0 to 100). It is not recommended to plug IR sensor into other ports because its raw value will be processed by software on robot with expectation of another sensor type.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForSonarDistanceBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Distance" prefix="Distance:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Distance" type="string" name="Distance">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="TrikAnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Touch Sensor" name="TrikWaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="TrikAnalogSensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="TrikWaitForGyroscope" description="Waits till the value returned by the gyroscope on the given port will be greater or less than the given in the 'Degrees/sec' parameter value.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="55" y="60" textBinded="Degrees" prefix="Degrees/sec:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Degrees/sec" type="string" name="Degrees">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Accelerometer" name="TrikWaitForAccelerometer">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForAccelerometerBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="Acceleration" prefix="Acceleration:"/>
+						<label x="50" y="90" textBinded="Sign" prefix="Sign:"/>
+						<label x="50" y="120" textBinded="AccelerationAxis" prefix="Axis:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Acceleration" type="string" name="Acceleration">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+						<property displayedName="Acceleration Axis" type="Accelerations" name="AccelerationAxis">
+							<default>xAxis</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Motion" name="TrikWaitForMotion" description="Waits till the motion sensor on the given port is triggered.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForMotionBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" text="F1" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Encoder" name="TrikWaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV6EncoderPort" name="Port">
+							<default>B3</default>
+						</property>
+						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Button" name="TrikWaitForButton" description="Waits for press of a button on a brick.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForButtonsBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Button" prefix="Button:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Button" type="TrikButtons" name="Button">
+							<default>Up</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait Gamepad Button" name="TrikWaitGamepadButton" description="Waits for Android gamepad 'magic button' press. Buttons are identified by numbers from 1 to 5 (from left to right)">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitGamepadButtonBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-35" y="60" text="Wait gamepad button" background="white"/>
+						<label x="50" y="-35" textBinded="Button" hard="true" prefix="Button:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Button" type="int" name="Button">
+							<default>1</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Wait Pad Press" name="TrikWaitPadPress" description="Waits for Android gamepad pad press (left pad has number 1, right pad - number 2).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitPadPressBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-20" y="60" text="Wait pad press" background="white"/>
+						<label x="50" y="-35" textBinded="Pad" hard="true" prefix="Pad:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Pad" type="int" name="Pad">
+							<default>1</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Wait for Gamepad Wheel" name="TrikWaitGamepadWheel" description="Waits till the value returned by gamepad wheel be greater or less than the given in the 'Angle' parameter value. Angle is measured from -100 (max left) to 100 (max right).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitGamepadWheelBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-70" y="-35" text="Wait for Gamepad Wheel" hard="true"/>
+						<label x="55" y="60" textBinded="Angle" prefix="Angle:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Angle" type="string" name="Angle">
+							<default>0</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Gamepad Disconnect" name="TrikWaitGamepadDisconnect" description="Waits until Android gamepad is disconnected.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitGamepadDisconnectBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-70" y="-35" text="Wait for Gamepad Disconnect" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties />
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Gamepad Connect" name="TrikWaitGamepadConnect" description="Waits until Android gamepad is connected.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/trikWaitGamepadConnectBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="-70" y="-35" text="Wait for Gamepad Connect" hard="true"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties />
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Painter Color" name="TrikSetPainterColor" description="Sets the painter color.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/brushColorBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" hard="true" prefix="Color:" textBinded="Color"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Color" type="BackgroundColor" name="Color">
+							<default>black</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Painter Width" name="TrikSetPainterWidth" description="Sets the painter width.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/brushWidthBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="-35" textBinded="Width" hard="true" prefix="Width:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Width" type="string" name="Width">
+							<default>1</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Pixel" name="TrikDrawPixel" description="Draws one pixel in the specified coordinates on the robot screen.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawPixelBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="XCoordinatePix" prefix="X:"/>
+						<label x="36" y="90" textBinded="YCoordinatePix" prefix="Y:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="string" name="XCoordinatePix">
+							<default>5</default>
+						</property>
+						<property displayedName="Y" type="string" name="YCoordinatePix">
+							<default>5</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Line" name="TrikDrawLine" description="Draws a segment on the robot screen. The parameters specify the ends of the segment.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawLineBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="36" y="60" textBinded="X1CoordinateLine" prefix="X1:"/>
+						<label x="36" y="90" textBinded="Y1CoordinateLine" prefix="Y1:"/>
+						<label x="36" y="120" textBinded="X2CoordinateLine" prefix="X2:"/>
+						<label x="36" y="150" textBinded="Y2CoordinateLine" prefix="Y2:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X1" type="string" name="X1CoordinateLine">
+							<default>0</default>
+						</property>
+						<property displayedName="Y1" type="string" name="Y1CoordinateLine">
+							<default>0</default>
+						</property>
+						<property displayedName="X2" type="string" name="X2CoordinateLine">
+							<default>10</default>
+						</property>
+						<property displayedName="Y2" type="string" name="Y2CoordinateLine">
+							<default>10</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Rectangle" name="TrikDrawRect" description="Draws a rectangle on the robot screen. The parameters specify the coordinates of top-left corner, the width and the height of the rectangle.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawRectBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateRect" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateRect" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthRect" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightRect" prefix="Height:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="string" name="XCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="string" name="YCoordinateRect">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="string" name="WidthRect">
+							<default>5</default>
+						</property>
+						<property displayedName="Height" type="string" name="HeightRect">
+							<default>5</default>
+						</property>
+						<property displayedName="Filled" type="bool" name="Filled">
+							<default>false</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Ellipse" name="TrikDrawEllipse" description="Draws the ellipse defined by the rectangle beginning at (x, y) with the given width and height.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawCircleBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateEllipse" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateEllipse" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthEllipse" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightEllipse" prefix="Height:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="string" name="XCoordinateEllipse">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="string" name="YCoordinateEllipse">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="string" name="WidthEllipse">
+							<default>5</default>
+						</property>
+						<property displayedName="Height" type="string" name="HeightEllipse">
+							<default>5</default>
+						</property>
+						<property displayedName="Filled" type="bool" name="Filled">
+							<default>false</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Draw Arc" name="TrikDrawArc" description="Draws the arc defined by the rectangle beginning at (x, y) with the specified width and height, and the given startAngle and spanAngle.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/drawArcBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="XCoordinateArc" prefix="X:"/>
+						<label x="50" y="90" textBinded="YCoordinateArc" prefix="Y:"/>
+						<label x="50" y="120" textBinded="WidthArc" prefix="Width:"/>
+						<label x="50" y="150" textBinded="HeightArc" prefix="Height:"/>
+						<label x="50" y="180" textBinded="StartAngle" prefix="Start Angle:"/>
+						<label x="50" y="210" textBinded="SpanAngle" prefix="Span Angle:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="X" type="string" name="XCoordinateArc">
+							<default>0</default>
+						</property>
+						<property displayedName="Y" type="string" name="YCoordinateArc">
+							<default>0</default>
+						</property>
+						<property displayedName="Width" type="string" name="WidthArc">
+							<default>5</default>
+						</property>
+						<property displayedName="Height" type="string" name="HeightArc">
+							<default>5</default>
+						</property>
+						<property displayedName="StartAngle" type="int" name="StartAngle">
+							<default>20</default>
+						</property>
+						<property displayedName="SpanAngle" type="int" name="SpanAngle">
+							<default>20</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Smile" name="TrikSmile" path="161, 71 : 166, 57 :  | 149, 82 : 161, 70 :  | 113, 91 : 149, 83 :  | 67, 91 : 113, 91 :  | 29, 84 : 65, 91 :  | 17, 74 : 28, 83 :  | 12, 59 : 17, 73 :  | 130, 13 : 130, 51 :  | 62, 12 : 62, 51 : " description="Draws a smile on the robot`s screen :)">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/smileBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Sad Smile" name="TrikSadSmile" path="156, 91 : 173, 110 :  | 115, 73 : 156, 91 :  | 78, 73 : 114, 73 :  | 33, 85 : 78, 73 :  | 12, 106 : 33, 85 :  | 126, 12 : 126, 48 :  | 63, 12 : 63, 49 : " description="Draws a sad smile on the robot`s screen :(">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sadSmileBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Background Color" name="TrikSetBackground" description="Sets the background color of the current picture on the robot`s screen.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/setBackgroundBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-35" textBinded="Color" hard="true" prefix="Color:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Color" type="BackgroundColor" name="Color">
+							<default>white</default>
+						</property>
+						<property displayedName="Redraw" type="bool" name="Redraw">
+							<default>true</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Say" name="TrikSay" description="Synthesizes the given phrase and plays it on the robot. If 'Evaluate' property is set to true then the value of 'Text' property is interpreted as a formula, otherwise it is interpreted as plain string.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sayBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-35" textBinded="Text" hard="true" prefix="Text:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Text" type="string" name="Text">
+							<default>Hi!</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Send message" name="TrikSendMessage" description="Sends message to another robot.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="45" y="60" textBinded="Message" hard="false" prefix="Message:"/>
+						<label x="45" y="90" textBinded="HullNumber" hard="false" prefix="Hull number:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Message" type="string" name="Message" />
+						<property displayedName="Hull Number" type="string" name="HullNumber" />
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Message" name="TrikWaitForMessage" description="Stores a message from another robot into a given variable. When no incoming messages are present at the moment, a robot will wait for incoming message if 'Synchronized' property is true, and empty string will be assigned to a variable otherwise.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="60" textBinded="Variable" hard="false" prefix="Variable:"/>
+						<label x="50" y="90" textBinded="Synchronized" hard="false" prefix="Synchronized:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable" />
+						<property displayedName="Synchronized" type="bool" name="Synchronized">
+							<default>true</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- TRIK version 6.2 (new case) specifics -->
+			<node displayedName="Angular Servo" name="TrikV62AngularServo" description="Manages angular servomotor. Sets up rotation angle on the given port in degrees. Values from 0 to 90 are correspond to a clockwise rotation and values from -90 to 0 correspond to counterclockwise rotation.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/angularServoBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+						<label x="35" y="60" textBinded="Power" background="white" prefix="Angle:" suffix="°"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="EngineCommand"/>
+					</generalizations>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>S1</default>
+						</property>
+						<property displayedName="Angle (degrees)" type="string" name="Power">
+							<default>0</default>
+						</property>
+					</properties>
+				</logic>
+			</node>
+			<node displayedName="Clear Encoder" name="TrikV62ClearEncoder" path="112, 176 : 78, 142 :  | 112, 176 : 148, 140 :  | 112, 33 : 112, 176 :  | 12, 12 : 210, 12 : 210, 210 : 12, 210 : 12, 12 : " description="Nullifies tacho limit of the motors on the given ports.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/nullificationEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Ports" type="string" name="Ports">
+							<default>E1, E2, E3, E4</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Encoder" name="TrikV62WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForEncoderBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" prefix="Port:"/>
+						<label x="40" y="60" textBinded="TachoLimit" prefix="Tacho Limit:"/>
+						<label x="40" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Port" type="TrikV62EncoderPort" name="Port">
+							<default>E3</default>
+						</property>
+						<property displayedName="Tacho Limit" type="string" name="TachoLimit"/>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+		</graphicTypes>
+
+		<palette sorted="false">
+			<group name="Actions">
+				<element name="TrikPlayTone"/>
+				<element name="TrikV6EnginesForward"/>
+				<element name="TrikV6EnginesBackward"/>
+				<element name="TrikV6EnginesStop"/>
+				<element name="TrikV6ClearEncoder"/>
+				<element name="TrikV62ClearEncoder"/>
+				<element name="TrikAngularServo"/>
+				<element name="TrikV62AngularServo"/>
+				<element name="TrikSay"/>
+				<element name="TrikLed" />
+				<element name="TrikSystem" />
+				<element name="TrikInitCamera" />
+				<element name="TrikDetect" />
+				<element name="TrikDetectorToVariable" />
+				<element name="TrikInitVideoStreaming" />
+				<element name="TrikSendMessage" />
+				<element name="TrikWriteToFile"/>
+				<element name="TrikRemoveFile"/>
+			</group>
+			<group name="Wait">
+				<element name="TrikWaitForTouchSensor"/>
+				<element name="TrikWaitForLight"/>
+				<element name="TrikWaitForSonarDistance"/>
+				<element name="TrikWaitForIRDistance"/>
+				<!-- <element name="TrikWaitForMotion"/> -->
+				<element name="TrikWaitForEncoder"/>
+				<element name="TrikV62WaitForEncoder"/>
+				<element name="TrikWaitForButton"/>
+				<element name="TrikWaitForMessage" />
+				<element name="TrikWaitGamepadButton" />
+				<element name="TrikWaitPadPress" />
+				<element name="TrikWaitGamepadWheel" />
+				<element name="TrikWaitGamepadDisconnect" />
+				<element name="TrikWaitGamepadConnect" />
+			</group>
+			<group name="Drawing">
+				<element name="TrikSetPainterColor"/>
+				<element name="TrikSetPainterWidth"/>
+				<element name="TrikDrawPixel"/>
+				<element name="TrikDrawLine"/>
+				<element name="TrikDrawRect"/>
+				<element name="TrikDrawEllipse"/>
+				<element name="TrikDrawArc"/>
+				<element name="TrikSmile"/>
+				<element name="TrikSadSmile"/>
+				<element name="TrikSetBackground"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>

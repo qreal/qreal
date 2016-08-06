@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,9 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	mTwoDModel->init(configurer.eventsForKitPlugin()
 			, configurer.qRealConfigurator().systemEvents()
 			, configurer.qRealConfigurator().logicalModelApi()
+			, configurer.qRealConfigurator().controller()
 			, interpretersInterface
+			, configurer.qRealConfigurator().mainWindowDockInterface()
 			, configurer.qRealConfigurator().projectManager()
 			, configurer.interpreterControl());
 
@@ -167,5 +169,6 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});
 
+	connect(this, &QObject::destroyed, [quickPreferences]() { delete quickPreferences; });
 	return quickPreferences;
 }

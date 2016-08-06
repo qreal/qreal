@@ -19,7 +19,6 @@
 using namespace twoDModel::items;
 using namespace graphicsUtils;
 
-const int currentResizeDrift = resizeDrift;
 const int currentDrift = drift / 2;
 
 RectangleItem::RectangleItem(const QPointF &begin, const QPointF &end)
@@ -43,6 +42,7 @@ QAction *RectangleItem::rectangleTool()
 {
 	QAction * const result = new QAction(QIcon(":/icons/2d_rectangle.svg"), tr("Rectangle (R)"), nullptr);
 	result->setShortcut(QKeySequence(Qt::Key_R));
+	result->setCheckable(true);
 	return result;
 }
 
@@ -56,7 +56,7 @@ void RectangleItem::setPrivateData()
 
 QRectF RectangleItem::calcNecessaryBoundingRect() const
 {
-	return QRectF(qMin(x1(), x2()), qMin(y1(), y2()), abs(x2() - x1()), abs(y2() - y1()));
+	return QRectF(qMin(x1(), x2()), qMin(y1(), y2()), qAbs(x2() - x1()), qAbs(y2() - y1()));
 }
 
 QRectF RectangleItem::boundingRect() const
@@ -71,14 +71,14 @@ void RectangleItem::drawItem(QPainter* painter, const QStyleOptionGraphicsItem* 
 	mRectangleImpl.drawRectItem(painter, x1(), y1(), x2(), y2());
 }
 
-QDomElement RectangleItem::serialize(QDomDocument &document, const QPointF &topLeftPicture) const
+QDomElement RectangleItem::serialize(QDomElement &parent) const
 {
-	QDomElement rectangleNode = setPenBrushToDoc(document, "rectangle");
-	AbstractItem::serialize(rectangleNode);
-	rectangleNode.setAttribute("begin", QString::number(x1() + scenePos().x() - topLeftPicture.x())
-			 + ":" + QString::number(y1() + scenePos().y() - topLeftPicture.y()));
-	rectangleNode.setAttribute("end", QString::number(x2() + scenePos().x() - topLeftPicture.x())
-			 + ":" + QString::number(y2() + scenePos().y() - topLeftPicture.y()));
+	QDomElement rectangleNode = ColorFieldItem::serialize(parent);
+	setPenBrushToElement(rectangleNode, "rectangle");
+	rectangleNode.setAttribute("begin", QString::number(x1() + scenePos().x())
+			 + ":" + QString::number(y1() + scenePos().y()));
+	rectangleNode.setAttribute("end", QString::number(x2() + scenePos().x())
+			 + ":" + QString::number(y2() + scenePos().y()));
 	return rectangleNode;
 }
 

@@ -58,9 +58,9 @@ QPoint PointObject::pos() const
 	return QPoint(mX, mY);
 }
 
-void PointObject::paint(QPainter *painter)
+void PointObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	painter->drawPoint(mX, mY);
 }
 

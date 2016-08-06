@@ -77,31 +77,30 @@
 <context>
     <name>SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.ui" line="26"/>
         <source>SensorsGraph</source>
-        <translation>Graphe</translation>
+        <translation type="vanished">Graphe</translation>
     </message>
 </context>
 <context>
     <name>qReal::BaseGraphTransformationUnit</name>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="45"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="48"/>
         <source>no current diagram</source>
         <translation>Ouvrez un diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="72"/>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="120"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="75"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="123"/>
         <source>Rule &apos;</source>
         <translation>Règle &apos;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="73"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="76"/>
         <source>&apos; has not any appropriate nodes</source>
         <translation>&apos; n&apos;a pas de nœuds appropriés</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="120"/>
+        <location filename="../../qrutils/graphUtils/baseGraphTransformationUnit.cpp" line="123"/>
         <source>&apos; has unconnected link</source>
         <translation>&apos; a un lien non connecté</translation>
     </message>
@@ -138,22 +137,22 @@
 <context>
     <name>qReal::interpretation::Interpreter</name>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="55"/>
         <source>Interpreter is already running</source>
         <translation>Interpréteur est déjà en cours d&apos;exécution</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="96"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="97"/>
         <source>Cannot create new thread with already occupied id %1</source>
         <translation>Vous ne pouvez pas créer un nouveau thread avec id déjà occupée %1</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="108"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="109"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
         <translation>Le nombre limite de threads est dépassé. Le max est de %1</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/interpreter.cpp" line="130"/>
+        <location filename="../../qrutils/interpreter/interpreter.cpp" line="131"/>
         <source>Killing non-existent thread %1</source>
         <translation>Terminaison du thread non-existant %1</translation>
     </message>
@@ -161,17 +160,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="113"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Aucun point d&apos;entrée n&apos;est trouvé, ajoutez un nœud initial à un diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="118"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
         <source>Stack overflow</source>
         <translation>Débordement de pile</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="172"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
         <source>Block has disappeared!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -388,52 +387,43 @@
 <context>
     <name>utils::sensorsGraph::SensorViewer</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="119"/>
         <source>Save values history</source>
-        <translation>Historique des valeurs</translation>
+        <translation type="vanished">Historique des valeurs</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="119"/>
         <source>Comma-Separated Values Files (*.csv)</source>
-        <translation>Comma-Separated Values Files (*.csv)</translation>
+        <translation type="vanished">Comma-Separated Values Files (*.csv)</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorViewer.cpp" line="225"/>
         <source>value: </source>
-        <translation>valeur :</translation>
+        <translation type="vanished">valeur :</translation>
     </message>
 </context>
 <context>
     <name>utils::sensorsGraph::SensorsGraph</name>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="136"/>
         <source>Stop tracking</source>
-        <translation>Arrêter le suivi</translation>
+        <translation type="vanished">Arrêter le suivi</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="140"/>
         <source>Start tracking</source>
-        <translation>Démarrer le suivi</translation>
+        <translation type="vanished">Démarrer le suivi</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="144"/>
         <source>Reset plot</source>
-        <translation>Réinitialiser le graphe</translation>
+        <translation type="vanished">Réinitialiser le graphe</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="148"/>
         <source>Zoom In</source>
-        <translation>Zoome avant</translation>
+        <translation type="vanished">Zoome avant</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="152"/>
         <source>Zoom Out</source>
-        <translation>Zoom arrière</translation>
+        <translation type="vanished">Zoom arrière</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsWatcher/sensorsGraph.cpp" line="156"/>
         <source>Export values...</source>
-        <translation>Exporter les valeurs...</translation>
+        <translation type="vanished">Exporter les valeurs...</translation>
     </message>
 </context>
 <context>

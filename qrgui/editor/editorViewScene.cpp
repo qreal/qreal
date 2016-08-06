@@ -28,6 +28,8 @@
 #include <qrgui/models/models.h>
 #include <qrgui/mouseGestures/mouseMovementManager.h>
 #include <qrgui/mouseGestures/dummyMouseMovementManager.h>
+#include <metaMetaModel/nodeElementType.h>
+#include <metaMetaModel/edgeElementType.h>
 
 #include "editor/sceneCustomizer.h"
 #include "editor/labels/label.h"
@@ -57,7 +59,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mCustomizer(customizer)
 	, mRootId(rootId)
 	, mLastCreatedFromLinker(nullptr)
-	, mClipboardHandler(*this, controller)
+	, mClipboardHandler(controller, models)
 	, mRightButtonPressed(false)
 	, mLeftButtonPressed(false)
 	, mHighlightNode(nullptr)
@@ -72,10 +74,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, sceneCustomizer, customizer, this)
 	, mActionDeleteFromDiagram(nullptr)
-	, mActionCutOnDiagram(nullptr)
-	, mActionCopyOnDiagram(nullptr)
-	, mActionPasteOnDiagram(nullptr)
-	, mActionPasteReference(nullptr)
 
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
@@ -99,6 +97,15 @@ EditorViewScene::EditorViewScene(const models::Models &models
 			mController.execute(new ExpandCommand(node));
 		}
 	});
+}
+
+EditorViewScene::~EditorViewScene()
+{
+	/// @todo Hack: if gestures manager is not initialized yet then it should not be deleted. Yep, memory will leak,
+	/// but it is a pretty rare scenario to give a f*ck right now.
+	if (!mMouseMovementManager->gesturesInitialized()) {
+		mMouseMovementManager.take();
+	}
 }
 
 qreal EditorViewScene::realIndexGrid()
@@ -145,6 +152,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
 	if (mimeData->hasFormat(DEFAULT_MIME_TYPE)) {
+		event->accept();
 		QGraphicsScene::dragEnterEvent(event);
 	} else {
 		event->ignore();
@@ -153,6 +161,7 @@ void EditorViewScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 
 void EditorViewScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 {
+	event->accept();
 	// forming id to check if we can put draggable element to element under cursor
 	const ElementInfo element = ElementInfo::fromMimeData(event->mimeData());
 	const QList<QGraphicsItem*> elements = items(event->scenePos());
@@ -234,7 +243,7 @@ QGraphicsRectItem *EditorViewScene::getPlaceholder()
 
 void EditorViewScene::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	Q_UNUSED(event);
+	event->accept();
 	if (mHighlightNode) {
 		mHighlightNode->erasePlaceholder(true);
 		mHighlightNode = nullptr;
@@ -248,7 +257,9 @@ void EditorViewScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 		return;
 	}
 
+	event->accept();
 	clearSelection();
+	forceFocus();
 
 	createElement(event->mimeData(), event->scenePos());
 	if (mHighlightNode) {
@@ -287,20 +298,23 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 
 	QStringList targets;
 	const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
+	const IdList elements = mEditorManager.elements(edge->id());
+	const EdgeElementType &edgeType = *static_cast<const EdgeElementType *>(
+			&mEditorManager.elementType(edge->id().type()));
 
-	for (const PossibleEdge &pEdge : edge->getPossibleEdges()) {
-		// if pEdge.first.first is parent of node->id(), then add all children of pEdge.first.second to the list
-		// and vice versa
-		if (mEditorManager.isParentOf(node->id(), pEdge.first.first)) {
-			targets << mEditorManager.allChildrenTypesOf(pEdge.first.second);
+	for (const Id &element : elements) {
+		const ElementType &elementType = mEditorManager.elementType(element);
+		if (elementType.type() != ElementType::Type::node) {
+			continue;
 		}
 
-		if (mEditorManager.isParentOf(node->id(), pEdge.first.second)) {
-			targets << mEditorManager.allChildrenTypesOf(pEdge.first.first);
+		const NodeElementType &nodeType = elementType.toNode();
+		if (!nodeType.portTypes().toSet().intersect(edgeType.toPortTypes().toSet()).isEmpty()) {
+			targets << mEditorManager.allChildrenTypesOf(element);
 		}
 	}
 
-	QSet<QString> const targetsSet = targets.toSet();
+	const QSet<QString> targetsSet = targets.toSet();
 	QMap<QString, QString> targetsInGroups;
 	QStringList targetGroups;
 	for (const QString &group : groups) {
@@ -376,7 +390,7 @@ Id EditorViewScene::createElement(const QString &idString
 	const Id objectId = typeId.sameTypeId();
 	const QString name = mEditorManager.friendlyName(typeId);
 
-	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.editor(), typeId.element()) == -1;
+	const bool isEdge = mEditorManager.isNodeOrEdge(typeId.type()) == -1;
 
 	const ElementInfo elementInfo(objectId, Id(), name, Id(), isEdge);
 	createElement(elementInfo, scenePos, createCommandPointer, executeImmediately);
@@ -416,7 +430,7 @@ void EditorViewScene::createElement(const ElementInfo &elementInfo
 
 	QLOG_TRACE() << "Created element, id = " << innerElementInfo.id() << ", position = " << scenePos;
 
-	if (mEditorManager.getPatternNames().contains(innerElementInfo.id().element())) {
+	if (mEditorManager.elementType(innerElementInfo.id()).type() == ElementType::Type::pattern) {
 		innerElementInfo.setPos(scenePos);
 		innerElementInfo.setGraphicalParent(mRootId);
 		innerElementInfo.setLogicalParent(mRootId);
@@ -626,17 +640,39 @@ QList<NodeElement*> EditorViewScene::getCloseNodes(NodeElement *node) const
 
 void EditorViewScene::cut()
 {
-	mClipboardHandler.cut();
+	copy();
+	deleteSelectedItems();
 }
 
 void EditorViewScene::copy()
 {
-	mClipboardHandler.copy();
+	mClipboardHandler.copy(selectedIds());
+}
+
+void EditorViewScene::paste()
+{
+	paste(false);
 }
 
 void EditorViewScene::paste(bool isGraphicalCopy)
 {
-	mClipboardHandler.paste(isGraphicalCopy);
+	mClipboardHandler.paste(rootItemId(), currentMousePos(), isGraphicalCopy);
+}
+
+QPointF EditorViewScene::currentMousePos() const
+{
+	const EditorView *editor = nullptr;
+	for (const QGraphicsView * const view : views()) {
+		if ((editor = dynamic_cast<const EditorView *>(view))) {
+			break;
+		}
+	}
+
+	if (!editor) {
+		return QPointF();
+	}
+
+	return editor->mapToScene(editor->mapFromGlobal(QCursor::pos()));
 }
 
 Element *EditorViewScene::lastCreatedFromLinker() const
@@ -646,15 +682,7 @@ Element *EditorViewScene::lastCreatedFromLinker() const
 
 void EditorViewScene::deleteSelectedItems()
 {
-	const QList<QGraphicsItem *> itemsToDelete = selectedItems();
-	IdList idsToDelete;
-	for (const QGraphicsItem *item : itemsToDelete) {
-		const Element *element = dynamic_cast<const Element *>(item);
-		if (element) {
-			idsToDelete << element->id();
-		}
-	}
-
+	IdList idsToDelete = selectedIds();
 	if (!idsToDelete.isEmpty()) {
 		deleteElements(idsToDelete);
 	}
@@ -824,15 +852,20 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 		mContextMenu.close();
 	}
 
-	disableActions(e);
+	if (e && selectedItems().empty()) {
+		e->setSelected(true);
+	}
+
 	mContextMenu.clear();
 	mContextMenu.addAction(&mActionDeleteFromDiagram);
 	mContextMenu.addSeparator();
-	mContextMenu.addActions(mEditorActions);
+	mContextMenu.addAction(mCopyAction);
+	mContextMenu.addAction(mPasteAction);
+	mContextMenu.addAction(mCutAction);
 
 	QSignalMapper *createChildMapper = nullptr;
-	if (e) {
-		if (e->createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
+	if (const NodeElement *node = dynamic_cast<NodeElement *>(e)) {
+		if (node->nodeType().createChildrenFromMenu() && !mEditorManager.containedTypes(e->id().type()).empty()) {
 			mCreatePoint = pos;
 			QMenu *createChildMenu = mContextMenu.addMenu(tr("Add child"));
 			createChildMapper = new QSignalMapper();
@@ -850,28 +883,16 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	}
 
 	mContextMenu.exec(QCursor::pos());
-
-	setActionsEnabled(true);
 	delete createChildMapper;
 }
 
-void EditorViewScene::disableActions(Element *focusElement)
+void EditorViewScene::updateActions()
 {
-	if (!focusElement) {
-		mActionDeleteFromDiagram.setEnabled(false);
-		mActionCopyOnDiagram.setEnabled(false);
-		mActionCutOnDiagram.setEnabled(false);
-	}
-	if (isEmptyClipboard()) {
-		mActionPasteOnDiagram.setEnabled(false);
-		mActionPasteReference.setEnabled(false);
-	}
-}
-
-bool EditorViewScene::isEmptyClipboard()
-{
-	const QMimeData *mimeData = QApplication::clipboard()->mimeData();
-	return mimeData->data(DEFAULT_MIME_TYPE).isEmpty();
+	const bool elementActionsEnabled = !selectedItems().empty();
+	mActionDeleteFromDiagram.setEnabled(elementActionsEnabled);
+	mCopyAction->setEnabled(elementActionsEnabled);
+	mCutAction->setEnabled(elementActionsEnabled);
+	mPasteAction->setEnabled(!mClipboardHandler.isEmpty());
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -924,32 +945,36 @@ void EditorViewScene::updateMovedElements()
 	}
 }
 
-void EditorViewScene::getLinkByGesture(NodeElement *parent, const NodeElement &child)
+void EditorViewScene::getLinkByGesture(const NodeElement &from, const NodeElement &to)
 {
-	QList<PossibleEdge> edges = parent->getPossibleEdges();
-	QList<Id> allLinks;
-	for (const PossibleEdge &possibleEdge : edges) {
-		if (possibleEdge.first.second.editor() == child.id().editor()
-				&& possibleEdge.first.second.diagram() == child.id().diagram()
-				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
-						, possibleEdge.first.second.element(), child.id().diagram(), child.id().element())
-				&& mEditorManager.isParentOf(child.id().editor(), child.id().diagram()
-						, possibleEdge.first.first.element(), child.id().diagram(), parent->id().element()))
-		{
-			allLinks.push_back(possibleEdge.second.second);
+	IdList allEdges;
+	const NodeElementType &fromType = from.nodeType();
+	const NodeElementType &toType = to.nodeType();
+	const IdList elements = mEditorManager.elements(from.id());
+	for (const Id &element : elements) {
+		const ElementType &elementType = mEditorManager.elementType(element);
+		if (elementType.type() != ElementType::Type::edge) {
+			continue;
+		}
+
+		const EdgeElementType &edge = elementType.toEdge();
+		const bool canConnectBegin = !edge.fromPortTypes().toSet().intersect(fromType.portTypes().toSet()).isEmpty();
+		const bool canConnectEnd = !edge.toPortTypes().toSet().intersect(toType.portTypes().toSet()).isEmpty();
+		if (canConnectBegin && canConnectEnd) {
+			allEdges << edge.typeId();
 		}
 	}
 
-	if (!allLinks.empty()) {
-		if (allLinks.count() == 1) {
-			createEdge(allLinks.at(0));
+	if (!allEdges.empty()) {
+		if (allEdges.count() == 1) {
+			createEdge(allEdges.first());
 		} else {
-			createEdgeMenu(allLinks);
+			createEdgeMenu(allEdges);
 		}
 	}
 }
 
-void EditorViewScene::createEdgeMenu(const QList<Id> &ids)
+void EditorViewScene::createEdgeMenu(const IdList &ids)
 {
 	QScopedPointer<QMenu> edgeMenu(new QMenu());
 	for (const Id &id : ids) {
@@ -1041,7 +1066,7 @@ void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		NodeElement * const endNode = findNodeAt(end);
 		if (startNode && endNode && mMouseMovementManager->isEdgeCandidate()
 				&& startNode->id() != endNode->id()) {
-			getLinkByGesture(startNode, *endNode);
+			getLinkByGesture(*startNode, *endNode);
 			deleteGesture();
 		} else {
 			mTimer->start(SettingsManager::value("gestureDelay").toInt());
@@ -1163,6 +1188,24 @@ void EditorViewScene::drawBackground(QPainter *painter, const QRectF &rect)
 	}
 }
 
+void EditorViewScene::focusInEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusInEvent(event);
+	connect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
+	onFocusIn();
+	updateActions();
+	mActionDeleteFromDiagram.setEnabled(true);
+}
+
+void EditorViewScene::focusOutEvent(QFocusEvent *event)
+{
+	QGraphicsScene::focusOutEvent(event);
+	disconnect(this, &QGraphicsScene::selectionChanged, this, &EditorViewScene::updateActions);
+	if (event->reason() != Qt::PopupFocusReason) {
+		mActionDeleteFromDiagram.setEnabled(false);
+	}
+}
+
 void EditorViewScene::setNeedDrawGrid(bool show)
 {
 	mNeedDrawGrid = show;
@@ -1174,7 +1217,7 @@ void EditorViewScene::drawGesture()
 	QGraphicsLineItem *item = new QGraphicsLineItem(line);
 	qreal size = mGesture.size() * 0.1;
 	qreal color_ratio = pow(fabs(sin(size)), 1.5);
-	QColor penColor(255 * color_ratio, 255 * (1 - color_ratio), 255);
+	QColor penColor(static_cast<int>(255 * color_ratio), static_cast<int>(255 * (1 - color_ratio)), 255);
 	item->setPen(penColor);
 	addItem(item);
 	mGesture.push_back(item);
@@ -1284,33 +1327,10 @@ void EditorViewScene::setCorners(const QPointF &topLeft, const QPointF &bottomRi
 
 void EditorViewScene::initializeActions()
 {
-	QAction * const separator = new QAction(this);
-	separator->setSeparator(true);
-
 	mActionDeleteFromDiagram.setShortcut(QKeySequence(Qt::Key_Delete));
 	mActionDeleteFromDiagram.setText(tr("Delete"));
 	connect(&mActionDeleteFromDiagram, &QAction::triggered, this, &EditorViewScene::deleteSelectedItems);
-
-	mActionCopyOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_C));
-	mActionCopyOnDiagram.setText(tr("Copy"));
-	connect(&mActionCopyOnDiagram, &QAction::triggered, this, &EditorViewScene::copy);
-
-	mActionPasteOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_V));
-	mActionPasteOnDiagram.setText(tr("Paste"));
-	connect(&mActionPasteOnDiagram, &QAction::triggered, [=]() { paste(false); });
-
-	mActionPasteReference.setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_V));
-	mActionPasteReference.setText(tr("Paste only graphical copy"));
-	connect(&mActionPasteReference, &QAction::triggered, [=]() { paste(true); });
-
-	mActionCutOnDiagram.setShortcut(QKeySequence(Qt::CTRL + Qt::Key_X));
-	mActionCutOnDiagram.setText(tr("Cut"));
-	connect(&mActionCutOnDiagram, &QAction::triggered, this, &EditorViewScene::cut);
-
-	mEditorActions << &mActionCutOnDiagram
-			<< &mActionCopyOnDiagram
-			<< &mActionPasteOnDiagram
-			<< &mActionPasteReference;
+	mActionDeleteFromDiagram.setEnabled(false);
 }
 
 void EditorViewScene::updateEdgeElements()
@@ -1318,9 +1338,7 @@ void EditorViewScene::updateEdgeElements()
 	for (QGraphicsItem *item : items()) {
 		EdgeElement *const element = dynamic_cast<EdgeElement*>(item);
 		if (element) {
-			const enums::linkShape::LinkShape shape
-					= static_cast<enums::linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
-
+			const LinkShape shape = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 			element->changeShapeType(shape);
 
 			if (SettingsManager::value("ActivateGrid").toBool()) {
@@ -1356,20 +1374,6 @@ QAction &EditorViewScene::deleteAction()
 	return mActionDeleteFromDiagram;
 }
 
-QList<QAction *> const &EditorViewScene::editorActions() const
-{
-	return mEditorActions;
-}
-
-void EditorViewScene::setActionsEnabled(bool enabled)
-{
-	for (QAction * const action : mEditorActions) {
-		action->setEnabled(enabled);
-	}
-
-	mActionDeleteFromDiagram.setEnabled(enabled);
-}
-
 void EditorViewScene::onElementDeleted(Element *element)
 {
 	/// @todo: Make it more automated, conceptually this method is not needed.
@@ -1384,6 +1388,25 @@ void EditorViewScene::enableMouseGestures(bool enabled)
 	} else {
 		mMouseMovementManager.reset(new gestures::DummyMouseMovementManager(mRootId, mEditorManager));
 	}
+}
+
+QString EditorViewScene::editorId() const
+{
+	return mRootId.toString();
+}
+
+IdList EditorViewScene::selectedIds() const
+{
+	IdList result;
+	const QList<QGraphicsItem *> items = selectedItems();
+	for (const QGraphicsItem *item : items) {
+		const Element *element = dynamic_cast<const Element *>(item);
+		if (element) {
+			result << element->id();
+		}
+	}
+
+	return result;
 }
 
 void EditorViewScene::deselectLabels()

@@ -56,12 +56,20 @@ public:
 	/// Appends the given list of action to the context menu shown on empty scene.
 	void addActions(const QList<QAction *> &actions);
 
+	/// Performs search of the AbstractItem with \a id among all scene items.
+	/// @returns found item or nullptr if no such item exists.
+	/// @warning This function works lineary of scene size.
+	AbstractItem *findItem(const QString &id) const;
+
 signals:
 	/// Emitted when user pressed left mouse button on this scene.
 	void leftButtonPressed();
 
 	/// Emitted when user releases left mouse button on this scene.
 	void leftButtonReleased();
+
+	/// Emitted when user focuses in the scene.
+	void focused();
 
 protected:
 	void setEmptyRect(int x, int y, int w, int h);
@@ -85,7 +93,8 @@ protected:
 
 	QList<AbstractItem *> abstractItems(const QPointF &scenePos) const;
 
-	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+	void focusInEvent(QFocusEvent *event) override;
 
 	AbstractView *mView;
 	graphicsUtils::AbstractItem *mGraphicsItem;

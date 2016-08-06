@@ -14,6 +14,7 @@
 
 #include "sceneAPI.h"
 
+#include <qrkernel/definitions.h>
 #include <editor/editorView.h>
 #include <editor/editorViewScene.h>
 
@@ -71,7 +72,7 @@ QString SceneAPI::createBlockOnScene(const DraggableElement * const paletteEleme
 				paletteElement->mimeData(elementId)
 				, currentTab->mapToScene(QPoint(xSceneCoord, ySceneCoord)));
 
-		QByteArray itemData = mimeData->data("application/x-real-uml-data");
+		QByteArray itemData = mimeData->data(DEFAULT_MIME_TYPE);
 		QDataStream inStream(&itemData, QIODevice::ReadOnly);
 		QString uuid;
 		inStream >> uuid;

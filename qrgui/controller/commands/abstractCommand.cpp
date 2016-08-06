@@ -163,14 +163,14 @@ void AbstractCommand::removeDuplicates()
 	removeDuplicatesOn(mPostActions);
 }
 
-qReal::Id AbstractCommand::diagramBinded() const
+QString AbstractCommand::moduleBinded() const
 {
-	return mDiagramBinded;
+	return mModuleBinded;
 }
 
-void AbstractCommand::bindToDiagram(const qReal::Id &diagramId)
+void AbstractCommand::bindToModule(const QString &moduleId)
 {
-	mDiagramBinded = diagramId;
+	mModuleBinded = moduleId;
 }
 
 uint AbstractCommand::timestamp() const
@@ -180,7 +180,7 @@ uint AbstractCommand::timestamp() const
 
 void AbstractCommand::removeDuplicatesOn(QList<AbstractCommand *> &list)
 {
-	foreach (AbstractCommand * const command, list) {
+	for (AbstractCommand * const command : list) {
 		if (hierarchyContains(command)) {
 			list.removeAll(command);
 			delete command;

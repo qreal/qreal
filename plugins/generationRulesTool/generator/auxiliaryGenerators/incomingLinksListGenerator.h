@@ -17,7 +17,7 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedPointer>
 
-#include <qrgui/plugins/interpretedPluginInterface/interpretedPluginInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
 #include "ast/identifier.h"
 

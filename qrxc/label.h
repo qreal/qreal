@@ -36,19 +36,14 @@ public:
 	/// @param height Height of parent node or edge.
 	bool init(const QDomElement &element, int index, bool nodeLabel, int width, int height);
 
-	void generateCodeForConstructor(utils::OutFile &out);
-	void generateCodeForUpdateData(utils::OutFile &out);
-	void generateCodeForFields(utils::OutFile &out);
-	// Default copy constructor ok.
-	Label* clone();
+	void generateCodeForConstructor(utils::OutFile &out) const;
+
+	Label *clone();
 	void changeIndex(int i);
 
+	QString labelName() const;
+
 private:
-	QString titleName() const;
-
-	/// Split the string into substrings wherever "##" occurs and return the list of those strings.
-	QStringList getListOfStr(const QString &strToParse) const;
-
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;
 

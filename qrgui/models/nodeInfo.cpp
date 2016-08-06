@@ -14,10 +14,25 @@
 
 #include "nodeInfo.h"
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+
 using namespace qReal;
 
 NodeInfo::NodeInfo()
 {
+}
+
+NodeInfo::NodeInfo(const Id &graphicalId
+		, const Id &logicalId
+		, LogicalModelAssistInterface &logicalModel
+		, GraphicalModelAssistInterface &graphicalModel)
+	: NodeInfo(graphicalId, logicalId, logicalModel.parent(logicalId), graphicalModel.parent(graphicalId)
+			, graphicalModel.properties(graphicalId), graphicalModel.properties(logicalId)
+			, logicalModel.logicalRepoApi().outgoingExplosion(logicalId))
+{
+	setGraphicalProperty("links", IdListHelper::toVariant(IdList()));
+	setGraphicalProperty("position", graphicalModel.position(graphicalId));
 }
 
 NodeInfo::NodeInfo(const Id &id

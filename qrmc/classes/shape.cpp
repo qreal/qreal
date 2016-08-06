@@ -13,22 +13,25 @@
  * limitations under the License. */
 
 #include "shape.h"
-#include "../utils/defs.h"
-#include "../diagram.h"
-#include "../metaCompiler.h"
-#include "../editor.h"
-#include "graphicType.h"
-#include "../utils/nameNormalizer.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
+#include "qrmc/utils/defs.h"
+#include "qrmc/diagram.h"
+#include "qrmc/metaCompiler.h"
+#include "qrmc/editor.h"
+#include "graphicType.h"
+#include "qrmc/utils/nameNormalizer.h"
+
 using namespace qrmc;
 
-Shape::Shape(const QString &shape) : mNode(nullptr)
+Shape::Shape(const QString &shape, const QString targetDirectory)
+	: mNode(nullptr)
+	, mTargetDirectory(targetDirectory)
 {
-	init(shape)	;
+	init(shape);
 }
 
 Shape::~Shape()
@@ -74,15 +77,13 @@ void Shape::initLabels(const QDomElement &graphics)
 		element = element.nextSiblingElement("label"))
 	{
 		Label *label = new Label();
-		if (!label->init(element, count, true, mWidth, mHeight))
+		if (!label->init(element, count, true, mWidth, mHeight)) {
 			delete label;
-		else {
+		} else {
 			mLabels.append(label);
 			++count;
 		}
 	}
-	return;
-
 }
 
 void Shape::initPorts(const QDomElement &graphics)
@@ -108,6 +109,7 @@ void Shape::initPointPorts(const QDomElement &portsElement)
 			delete pointPort;
 			return;
 		}
+
 		mPorts.append(pointPort);
 	}
 	return;
@@ -125,6 +127,7 @@ void Shape::initLinePorts(const QDomElement &portsElement)
 			delete linePort;
 			return;
 		}
+
 		mPorts.append(linePort);
 	}
 	return;
@@ -132,22 +135,26 @@ void Shape::initLinePorts(const QDomElement &portsElement)
 
 void Shape::changeDir(QDir &dir) const
 {
-	if (!dir.exists(generatedDir)) {
-		dir.mkdir(generatedDir);
+	if (!dir.exists(mTargetDirectory)) {
+		dir.mkdir(mTargetDirectory);
 	}
-	dir.cd(generatedDir);
-	QString editorName = mNode->diagram()->editor()->name()	;
+
+	dir.cd(mTargetDirectory);
+	QString editorName = mNode->diagram().editor()->name();
 	if (!dir.exists(editorName)) {
 		dir.mkdir(editorName);
 	}
+
 	dir.cd(editorName);
 	if (!dir.exists(generatedShapesDir)) {
 		dir.mkdir(generatedShapesDir);
 	}
+
 	dir.cd(generatedShapesDir);
 	if (!dir.exists(shapesDir)) {
 		dir.mkdir(shapesDir);
 	}
+
 	dir.cd(shapesDir);
 }
 
@@ -158,27 +165,31 @@ void Shape::generate(QString &classTemplate) const
 
 	generateSdf();
 
-	MetaCompiler *compiler = mNode->diagram()->editor()->metaCompiler();
+	MetaCompiler &compiler = mNode->diagram().editor()->metaCompiler();
 	QString unused;
 	if (!hasPointPorts()) {
 		unused += nodeIndent + "Q_UNUSED(pointPorts)" + endline;
 	}
+
 	if (!hasLabels()) {
 		unused += nodeIndent + "Q_UNUSED(titles);" + endline + nodeIndent + "Q_UNUSED(factory)" + endline;
 	}
 
-	QString shapeRendererLine = hasPicture()
-								? compiler->getTemplateUtils(nodeLoadShapeRendererTag)
-								: "";
-	QString portRendererLine = (hasLinePorts() || hasPointPorts())
-								? compiler->getTemplateUtils(nodeLoadPortsRendererTag)
-								: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
-	QString nodeContentsLine = compiler->getTemplateUtils(nodeContentsTag)
-							.replace(nodeWidthTag, QString::number(mWidth))
-							.replace(nodeHeightTag, QString::number(mHeight));
+	const QString shapeRendererLine = hasPicture()
+			? compiler.getTemplateUtils(nodeLoadShapeRendererTag)
+			: "";
+
+	const QString portRendererLine = (hasLinePorts() || hasPointPorts())
+			? compiler.getTemplateUtils(nodeLoadPortsRendererTag)
+			: nodeIndent +  "mRenderer->setElementRepo(elementRepo);";
+
+	const QString nodeContentsLine = compiler.getTemplateUtils(nodeContentsTag)
+			.replace(nodeWidthTag, QString::number(mWidth))
+			.replace(nodeHeightTag, QString::number(mHeight));
+
 	QString portsInitLine;
 	for (Port *port : mPorts) {
-		port->generatePortList(this->mNode->diagram()->editor()->getAllPortNames());
+		port->generatePortList(this->mNode->diagram().editor()->getAllPortNames());
 		portsInitLine += port->generateInit(compiler) + endline;
 	}
 
@@ -186,7 +197,7 @@ void Shape::generate(QString &classTemplate) const
 	QString labelsUpdateLine;
 	QString labelsDefinitionLine;
 
-	foreach(Label *label, mLabels) {
+	for (const Label * const label : mLabels) {
 		labelsInitLine += label->generateInit(compiler, true) + endline;
 		labelsUpdateLine += label->generateUpdate(compiler) + endline;
 		labelsDefinitionLine += label->generateDefinition(compiler) + endline;

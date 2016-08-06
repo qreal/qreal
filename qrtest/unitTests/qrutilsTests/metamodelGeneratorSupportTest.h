@@ -14,14 +14,14 @@
 
 #pragma once
 
-#include "../../../qrutils/metamodelGeneratorSupport.h"
+#include <qrutils/metamodelGeneratorSupport.h>
 
 #include "gtest/gtest.h"
 
 namespace qrTest {
 
-class MetamodelGeneratorSupportTest : public testing::Test {
-
+class MetamodelGeneratorSupportTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 

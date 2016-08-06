@@ -16,6 +16,8 @@
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QMessageBox>
 
+#include <qrrepo/logicalRepoApi.h>
+
 #include "propertiesDialog.h"
 #include "ui_propertiesDialog.h"
 
@@ -35,8 +37,9 @@ PropertiesDialog::PropertiesDialog(const EditorManagerInterface &interpreterEdit
 	, mEditPropertiesDialog(interpreterEditorManager, logicalRepoApi, id)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId));
+	setWindowTitle(tr("Properties: ") + mInterpreterEditorManager.friendlyName(mId.type()));
 	mUi->propertiesNamesList->setWrapping(true);
 	updatePropertiesNamesList();
 
@@ -64,7 +67,7 @@ QStringList PropertiesDialog::getPropertiesDisplayedNamesList(const QStringList 
 
 void PropertiesDialog::updatePropertiesNamesList()
 {
-	mPropertiesNames = mInterpreterEditorManager.propertyNames(mId);
+	mPropertiesNames = mInterpreterEditorManager.propertyNames(mId.type());
 	const QStringList propertiesDisplayedNames = getPropertiesDisplayedNamesList(mPropertiesNames);
 	mUi->propertiesNamesList->clear();
 	mUi->propertiesNamesList->addItems(propertiesDisplayedNames);

@@ -46,9 +46,9 @@ void Display::drawLine(int x1, int y1, int x2, int y2)
 	Canvas::drawLine(x1, y1, x2, y2);
 }
 
-void Display::drawRect(int x, int y, int width, int height)
+void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
-	Canvas::drawRect(x, y, width, height);
+	Canvas::drawRect(x, y, width, height, filled);
 }
 
 void Display::drawCircle(int x, int y, int radius)
@@ -66,8 +66,10 @@ void Display::clearScreen()
 	Canvas::reset();
 }
 
-void Display::paint(QPainter *painter)
+void Display::paint(QPainter *painter, const QRect &rect)
 {
+	Q_UNUSED(rect)
+
 	painter->save();
 	painter->scale(static_cast<qreal>(mEngine.display()->displayWidth()) / nxtDisplayWidth
 			, static_cast<qreal>(mEngine.display()->displayHeight()) / nxtDisplayHeight);
@@ -79,8 +81,9 @@ void Display::paint(QPainter *painter)
 	painter->setPen(pen);
 	painter->setBrush(QBrush(Qt::black, Qt::NoBrush));
 	painter->setFont(font);
+	painter->setRenderHint(QPainter::HighQualityAntialiasing);
 
-	Canvas::paint(painter);
+	Canvas::paint(painter, {0, 0, mEngine.display()->displayWidth(), mEngine.display()->displayHeight()});
 
 	painter->restore();
 }

@@ -16,10 +16,9 @@
 #include "ui_editorPage.h"
 
 #include <qrkernel/settingsManager.h>
-#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
+#include <qrgui/plugins/metaMetaModel/include/metaMetaModel/linkShape.h>
 
 using namespace qReal;
-using namespace enums::linkShape;
 
 PreferencesEditorPage::PreferencesEditorPage(QWidget *parent)
 	: PreferencesPage(parent)
@@ -148,7 +147,7 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 
 	const LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
-	mUi->lineMode->setCurrentIndex(type);
+	mUi->lineMode->setCurrentIndex(static_cast<int>(type));
 
 	mUi->fontCheckBox->setChecked(SettingsManager::value("CustomFont").toBool());
 	mUi->fontSelectionButton->setVisible(mUi->fontCheckBox->isChecked());

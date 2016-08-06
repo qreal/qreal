@@ -29,7 +29,6 @@
 
 #include "mainWindow/palette/paletteElement.h"
 #include "mainWindow/mainWindow.h"
-#include "plugins/pluginManager/proxyEditorManager.h"
 
 namespace qReal {
 namespace gui {
@@ -44,7 +43,7 @@ public:
 		, const PaletteElement &paletteElement
 		, bool iconsOnly
 		, bool inUserPalette
-		, const EditorManagerInterface &editorManagerProxy
+		, const EditorManagerInterface &editorManager
 		, QWidget *parent = nullptr
 		);
 

@@ -75,15 +75,6 @@ void XmlParser::parseFile(const QString &fileName)
 	Id const packageId = getPackageId();
 	initMetamodel(doc, filePathName, fileBaseName, pathToQRealSourceFiles, packageId);
 
-	QDomNodeList const listeners = doc.elementsByTagName("listener");
-	int listenerPositionY = 100;
-	for (int i = 0; i < listeners.length(); ++i) {
-		QDomElement listener = listeners.at(i).toElement();
-		Id id = initListener("(Listener)", listener.attribute("class", ""), listener.attribute("file", ""));
-		mApi.setProperty(id, "position", QPointF(0,listenerPositionY));
-		listenerPositionY += 90;
-	}
-
 	QDomNodeList const diagrams = doc.elementsByTagName("diagram");
 
 	mElementsColumn = ceil(sqrt(static_cast<qreal>(diagrams.length())));
@@ -196,16 +187,6 @@ void XmlParser::initMetamodel(const QDomDocument &document, const QString &direc
 	mApi.setProperty(mMetamodel, "relative path to QReal Source Files", pathToRoot);
 
 	mApi.addExplosion(metamodelId, mMetamodel);
-}
-
-Id XmlParser::initListener(const QString &name, const QString &className, const QString &fileName)
-{
-	Id listenerId("MetaEditor", "MetaEditor", "Listener",
-			QUuid::createUuid().toString());
-	setStandartConfigurations(listenerId, mMetamodel, name, name);
-	mApi.setProperty(listenerId, "class", className);
-	mApi.setProperty(listenerId, "file", fileName);
-	return listenerId;
 }
 
 void XmlParser::initDiagram(const QDomElement &diagram, const Id &parent,
@@ -391,10 +372,6 @@ void XmlParser::setNodeConfigurations(const QDomElement &tag, const Id &nodeId)
 			setConnections(attribute, nodeId);
 		else if (attribute.tagName() == "usages")
 			setUsages(attribute, nodeId);
-		else if (attribute.tagName() == "action")
-			setAction(nodeId);
-		else if (attribute.tagName() == "bonusContextMenuFields")
-			setFields(attribute, nodeId);
 	}
 }
 
@@ -579,11 +556,6 @@ void XmlParser::setPossibleEdges(const QDomElement &element, const Id &elementId
 		if (possibleEdge.tagName() == "possibleEdge")
 			initPossibleEdge(possibleEdge, elementId);
 	}
-}
-
-void XmlParser::setAction(const Id &elementId)
-{
-	mApi.setProperty(elementId, "isAction", "true");
 }
 
 void XmlParser::initPossibleEdge(const QDomElement &possibleEdge, const Id &elementId)

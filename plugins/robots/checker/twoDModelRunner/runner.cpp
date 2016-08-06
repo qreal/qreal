@@ -28,6 +28,7 @@ Runner::Runner(const QString &report, const QString &trajectory)
 	, mConfigurator(mQRealFacade.models().repoControlApi()
 			, mQRealFacade.models().graphicalModelAssistApi()
 			, mQRealFacade.models().logicalModelAssistApi()
+			, mController
 			, mMainWindow
 			, mMainWindow
 			, mProjectManager
@@ -68,7 +69,7 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &interpreterCore::interpreter::InterpreterInterface::stopped, [&]() {
+		connect(&mPluginFacade.interpreter(), &kitBase::InterpreterInterface::stopped, [&]() {
 			QTimer::singleShot(0, this, SLOT(close()));
 		});
 	}

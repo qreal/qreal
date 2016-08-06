@@ -19,6 +19,7 @@
 #include <qrgui/systemFacade/components/nullMainWindow.h>
 #include <qrgui/systemFacade/components/projectManager.h>
 #include <qrgui/systemFacade/components/nullTextManager.h>
+#include <qrgui/controller/controller.h>
 #include <qrgui/editor/sceneCustomizer.h>
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <interpreterCore/robotsPluginFacade.h>
@@ -58,6 +59,7 @@ private:
 			, const QString &property, const QVariant &value);
 
 	qReal::SystemFacade mQRealFacade;
+	qReal::Controller mController;
 	qReal::ConsoleErrorReporter mErrorReporter;
 	qReal::ProjectManager mProjectManager;
 	qReal::NullMainWindow mMainWindow;

@@ -19,6 +19,7 @@ SUBDIRS = \
 	pluginsTests \
 	qrguiTests \
 	qrkernelTests \
+	qrgraphTests \
 	qrrepoTests \
 	qrutilsTests \
 	qrtextTests \

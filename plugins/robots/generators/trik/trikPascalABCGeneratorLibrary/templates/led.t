@@ -1,0 +1,1 @@
+model.Led.SetColor(@@COLOR@@)

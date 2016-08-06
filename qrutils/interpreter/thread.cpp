@@ -134,6 +134,11 @@ void Thread::finishedSteppingInto()
 	}
 
 	mCurrentBlock = mStack.top().block();
+
+	// If block already connected then nothing will happen because of Qt::UniquieConnection modifiers.
+	// But if it is disconnected (for example, we did it in turnOff() on recursive lifting) we should connect it back.
+	connectBlock(mCurrentBlock);
+
 	// Execution must proceed here
 	mCurrentBlock->finishedSteppingInto();
 }
@@ -178,15 +183,10 @@ void Thread::turnOn(BlockInterface * const block)
 	}
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
-	connect(mCurrentBlock, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
-	connect(mCurrentBlock, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
-	connect(mCurrentBlock, &BlockInterface::killThread, this, &Thread::killThread, Qt::UniqueConnection);
-	connect(mCurrentBlock, &BlockInterface::sendMessage, this, &Thread::sendMessage, Qt::UniqueConnection);
-	connect(mCurrentBlock, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
-	connect(mCurrentBlock, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
+	connectBlock(mCurrentBlock);
 
-	//Check subprogram block
-	const blocks::SubprogramBlock * const subprogram = dynamic_cast<blocks::SubprogramBlock*>(mCurrentBlock);
+	// Check subprogram block
+	const blocks::SubprogramBlock * const subprogram = dynamic_cast<blocks::SubprogramBlock *>(mCurrentBlock);
 	if (subprogram) {
 		QList<QPair<QString, QVariant>> properties;
 		const QStringList identifiers = subprogram->identifiers();
@@ -262,6 +262,16 @@ void Thread::turnOff(BlockInterface * const block)
 
 	mStack.pop();
 	mInterpretersInterface.dehighlight(block->id());
+}
+
+void Thread::connectBlock(BlockInterface * const block)
+{
+	connect(block, &BlockInterface::done, this, &Thread::nextBlock, Qt::UniqueConnection);
+	connect(block, &BlockInterface::newThread, this, &Thread::newThread, Qt::UniqueConnection);
+	connect(block, &BlockInterface::killThread, this, &Thread::killThread, Qt::UniqueConnection);
+	connect(block, &BlockInterface::sendMessage, this, &Thread::sendMessage, Qt::UniqueConnection);
+	connect(block, &BlockInterface::failure, this, &Thread::failure, Qt::UniqueConnection);
+	connect(block, &BlockInterface::stepInto, this, &Thread::stepInto, Qt::UniqueConnection);
 }
 
 void Thread::newMessage(const QString &message)

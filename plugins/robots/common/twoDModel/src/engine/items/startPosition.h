@@ -27,8 +27,9 @@ public:
 	QRectF boundingRect() const override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
-	void serialize(QDomElement &robotElement, QDomDocument &target) const;
-	void deserialize(const QDomElement &robotElement) override;
+	QDomElement serialize(QDomElement &parent) const override;
+	void deserialize(const QDomElement &startPositionElement) override;
+	void deserializeCompatibly(const QDomElement &robotElement);
 
 private:
 	void drawFieldForResizeItem(QPainter* painter) override;

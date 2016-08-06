@@ -30,6 +30,7 @@
 #include "parts/colorSensorGreen.h"
 #include "parts/colorSensorBlue.h"
 #include "parts/colorSensorPassive.h"
+#include "parts/gyroscope.h"
 
 using namespace ev3::robotModel::real;
 using namespace utils::robotCommunication;
@@ -43,6 +44,7 @@ RealRobotModel::RealRobotModel(const QString &kitId, const QString &robotId
 	connect(mRobotCommunicator, &RobotCommunicator::connected, this, &RealRobotModel::connected);
 	connect(mRobotCommunicator, &RobotCommunicator::disconnected, this, &RealRobotModel::disconnected);
 	connect(mRobotCommunicator, &RobotCommunicator::errorOccured, this, &RealRobotModel::errorOccured);
+	connect(mRobotCommunicator, &RobotCommunicator::messageArrived, this, &RealRobotModel::messageArrived);
 	mRobotCommunicator->setRobotCommunicationThreadObject(communicationThread);
 }
 
@@ -59,11 +61,6 @@ void RealRobotModel::connectToRobot()
 void RealRobotModel::disconnectFromRobot()
 {
 	mRobotCommunicator->disconnect();
-}
-
-void RealRobotModel::checkConnection()
-{
-	mRobotCommunicator->checkConsistency();
 }
 
 robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
@@ -122,6 +119,10 @@ robotParts::Device *RealRobotModel::createDevice(const PortInfo &port, const Dev
 
 	if (deviceInfo.isA(colorPassiveSensorInfo())) {
 		return new parts::ColorSensorPassive(colorPassiveSensorInfo(), port, *mRobotCommunicator);
+	}
+
+	if (deviceInfo.isA(gyroscopeSensorInfo())) {
+		return new parts::Gyroscope(gyroscopeSensorInfo(), port, *mRobotCommunicator);
 	}
 
 	return Ev3RobotModelBase::createDevice(port, deviceInfo);

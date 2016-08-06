@@ -34,6 +34,8 @@ HEADERS += \
 	$$PWD/deleteLaterHelper.h \
 	$$PWD/generator/abstractGenerator.h \
 	$$PWD/widgetFinder.h \
+	$$PWD/singleton.h \
+	$$PWD/imagesCache.h \
 
 SOURCES += \
 	$$PWD/outFile.cpp \
@@ -54,6 +56,7 @@ SOURCES += \
 	$$PWD/parserErrorReporter.cpp \
 	$$PWD/generator/abstractGenerator.cpp \
 	$$PWD/widgetFinder.cpp \
+	$$PWD/imagesCache.cpp \
 
 FORMS += \
 	$$PWD/watchListWindow.ui
@@ -64,9 +67,9 @@ TRANSLATIONS = \
 	$$PWD/../qrtranslations/ru/qrutils_ru.ts \
 	$$PWD/../qrtranslations/fr/qrutils_fr.ts \
 
-QT += xml widgets
+QT += xml widgets svg
 
-includes(qrtext)
+includes(qrtext qrgraph)
 
 links(qrkernel qslog qrtext)
 
@@ -83,9 +86,6 @@ include($$PWD/graphUtils/graphUtils.pri)
 
 # Math Utils
 include($$PWD/mathUtils/mathUtils.pri)
-
-# Real-time plot
-include($$PWD/graphicsWatcher/sensorsGraph.pri)
 
 #Plugin managers
 include($$PWD/pluginManagers/pluginManagers.pri)

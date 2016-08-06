@@ -67,7 +67,7 @@ public:
 	/// @warning This is not the exact bounding rectangle of the arc.
 	QRect boundingRect() const;
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 	QJsonObject toJson() const override;
 
 private:

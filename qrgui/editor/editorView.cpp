@@ -14,6 +14,7 @@
 
 #include "editorView.h"
 
+#include <QtCore/QDir>
 #include <QtCore/QTimeLine>
 #include <QtGui/QFontDatabase>
 
@@ -51,6 +52,7 @@ EditorView::EditorView(const models::Models &models
 	setResizeAnchor(QGraphicsView::AnchorUnderMouse);
 
 	setScene(&mScene);
+	connect(&mScene.focusAction(), &QAction::triggered, this, [=]() { onFocusIn(); });
 
 	setAcceptDrops(true);
 	setDragMode(RubberBandDrag);
@@ -65,9 +67,7 @@ EditorView::EditorView(const models::Models &models
 	SettingsListener::listen("GridWidth", &mScene, &EditorViewScene::redraw);
 	SettingsListener::listen("CurrentFont", this, &EditorView::setSceneFont);
 
-	mScene.setActionsEnabled(false);
 	addAction(&mScene.deleteAction());
-	addActions(mScene.editorActions());
 }
 
 const EditorViewMViface &EditorView::mvIface() const
@@ -78,19 +78,6 @@ const EditorViewMViface &EditorView::mvIface() const
 EditorViewMViface &EditorView::mutableMvIface()
 {
 	return mMVIface;
-}
-
-void EditorView::focusOutEvent(QFocusEvent *event)
-{
-	if (event->reason() != Qt::PopupFocusReason) {
-		mScene.setActionsEnabled(false);
-	}
-}
-
-void EditorView::focusInEvent(QFocusEvent *event)
-{
-	Q_UNUSED(event)
-	mScene.setActionsEnabled(true);
 }
 
 const EditorViewScene &EditorView::editorViewScene() const
@@ -265,6 +252,37 @@ void EditorView::ensureElementVisible(const Element * const element
 	}
 }
 
+QString EditorView::editorId() const
+{
+	return mScene.editorId();
+}
+
+bool EditorView::supportsZooming() const
+{
+	return true;
+}
+
+bool EditorView::supportsCopying() const
+{
+	return true;
+}
+
+bool EditorView::supportsPasting() const
+{
+	return true;
+}
+
+bool EditorView::supportsCutting() const
+{
+	return true;
+}
+
+void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut)
+{
+	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut);
+}
+
 void EditorView::zoomInTime()
 {
 	const qreal zoomFactor = SettingsManager::value("zoomFactor").toReal();
@@ -301,6 +319,21 @@ void EditorView::zoom(const qreal zoomFactor)
 
 	checkGrid();
 	emit zoomChanged(transform().m11());
+}
+
+void EditorView::copy()
+{
+	mScene.copy();
+}
+
+void EditorView::paste()
+{
+	mScene.paste();
+}
+
+void EditorView::cut()
+{
+	mScene.cut();
 }
 
 void EditorView::setSceneFont()

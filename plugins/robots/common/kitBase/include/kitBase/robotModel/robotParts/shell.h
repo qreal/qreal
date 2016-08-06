@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,12 @@ public:
 signals:
 	/// Emitted when some text is added into robot`s console output.
 	void textPrinted(const QString &text);
+
+	/// Emitted when robot have read file and have sent its contents.
+	void fileContents(const QString &fileContents);
+
+	/// Emitted when new mail arrives from robot.
+	void mailArrived(const QString &mail);
 };
 
 }

@@ -25,12 +25,25 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base qextserialport qslog \
 )
 
+win32 {
+	LIBS += -llibusb-1.0
+}
+
+unix {
+	LIBS += -lusb-1.0
+}
+
 HEADERS += \
 	$$PWD/include/nxtKit/robotModel/nxtRobotModelBase.h \
 	$$PWD/include/nxtKit/robotModel/parts/nxtDisplay.h \
 	$$PWD/include/nxtKit/robotModel/parts/nxtSpeaker.h \
 	$$PWD/include/nxtKit/robotModel/parts/nxtMotor.h \
 	$$PWD/include/nxtKit/blocks/nxtBlocksFactory.h \
+	$$PWD/include/nxtKit/communication/nxtCommandConstants.h \
+	$$PWD/include/nxtKit/communication/bluetoothRobotCommunicationThread.h \
+	$$PWD/include/nxtKit/communication/usbRobotCommunicationThread.h \
+	$$PWD/include/nxtKit/communication/i2cCommunicator.h \
+	$$PWD/include/nxtKit/communication/nxtUsbDriverInstaller.h \
 	$$PWD/src/blocks/details/speakerBlock.h \
 	$$PWD/src/blocks/details/beepBlock.h \
 	$$PWD/src/blocks/details/playToneBlock.h \
@@ -56,6 +69,10 @@ SOURCES += \
 	$$PWD/src/blocks/details/drawRectBlock.cpp \
 	$$PWD/src/blocks/details/nxtEnginesBackwardBlock.cpp \
 	$$PWD/src/blocks/details/nxtEnginesForwardBlock.cpp \
+	$$PWD/src/communication/bluetoothRobotCommunicationThread.cpp \
+	$$PWD/src/communication/usbRobotCommunicationThread.cpp \
+	$$PWD/src/communication/i2cCommunicator.cpp \
+	$$PWD/src/communication/nxtUsbDriverInstaller.cpp \
 
 TRANSLATIONS = \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/nxtKit_ru.ts \

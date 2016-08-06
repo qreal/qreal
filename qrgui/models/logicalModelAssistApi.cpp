@@ -54,8 +54,7 @@ Id LogicalModelAssistApi::createElement(const Id &parent, const Id &type)
 
 	const Id newElementId = type.sameTypeId();
 	const QString elementFriendlyName = mModelsAssistApi.editorManagerInterface().friendlyName(type);
-	const bool isEdge = mModelsAssistApi.editorManagerInterface().isNodeOrEdge(
-			newElementId.editor(), newElementId.element()) == -1;
+	const bool isEdge = mModelsAssistApi.editorManagerInterface().isNodeOrEdge(newElementId.type()) == -1;
 	ElementInfo newElement(newElementId, Id(), parent, Id(), {{"name", elementFriendlyName}}, {}, Id(), isEdge);
 	mLogicalModel.addElementToModel(newElement);
 	return newElementId;

@@ -23,23 +23,18 @@
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrgui/controller/controllerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
 #include <kitBase/robotModel/robotParts/motor.h>
-#include <kitBase/robotModel/robotParts/touchSensor.h>
-#include <kitBase/robotModel/robotParts/colorSensor.h>
-#include <kitBase/robotModel/robotParts/lightSensor.h>
-#include <kitBase/robotModel/robotParts/rangeSensor.h>
-#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 #include "parts/actionsBox.h"
 #include "parts/colorItemPopup.h"
+#include "parts/imageItemPopup.h"
 #include "parts/robotItemPopup.h"
 #include "parts/speedPopup.h"
 
-#include "scene/sensorItem.h"
-#include "scene/sonarSensorItem.h"
 #include "scene/twoDModelScene.h"
 #include "scene/robotItem.h"
 
@@ -48,6 +43,8 @@
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
 #include "src/engine/items/stylusItem.h"
+#include "src/engine/items/imageItem.h"
+#include "src/engine/commands/changePropertyCommand.h"
 
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/model.h"
@@ -98,6 +95,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
+	connect(&mModel.worldModel(), &WorldModel::backgroundChanged, mScene, &TwoDModelScene::setBackground);
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();
@@ -156,14 +154,17 @@ void TwoDModelWidget::initWidget()
 	defaultPen.setWidth(defaultPenWidth);
 	// Popups will listen to scene events, appear, disappear and free itself.
 	mColorFieldItemPopup = new ColorItemPopup(defaultPen, *mScene, this);
+	mImageItemPopup = new ImageItemPopup(*mScene, this);
 	mRobotItemPopup = new RobotItemPopup(*mScene, this);
 	mSpeedPopup = new SpeedPopup(this);
 
 	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
-		mScene->setPenBrushItems(pen, Qt::NoBrush);
+		mScene->setPenBrushItems(pen, QBrush(pen.color(), Qt::NoBrush));
 	});
-	connect(mColorFieldItemPopup, &ColorItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
+	connect(mColorFieldItemPopup, &ColorItemPopup::propertyChanged, this, &TwoDModelWidget::saveToRepo);
+
+	connect(mImageItemPopup, &ImageItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;
@@ -187,6 +188,7 @@ void TwoDModelWidget::initWidget()
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->verticalRuler, SLOT(update()));
+	connect(mScene, &AbstractScene::focused, this, [=]() { onFocusIn(); });
 	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->horizontalRuler, SLOT(update()));
 	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->horizontalRuler, SLOT(update()));
@@ -201,6 +203,7 @@ void TwoDModelWidget::initPalette()
 	QAction * const rectangleTool = items::RectangleItem::rectangleTool();
 	QAction * const ellipseTool = items::EllipseItem::ellipseTool();
 	QAction * const stylusTool = items::StylusItem::stylusTool();
+	QAction * const imageTool = items::ImageItem::imageTool();
 
 	mUi->palette->registerTool(wallTool);
 	mUi->palette->registerTool(lineTool);
@@ -208,6 +211,7 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(rectangleTool);
 	mUi->palette->registerTool(ellipseTool);
 	mUi->palette->registerTool(stylusTool);
+	mUi->palette->registerTool(imageTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
@@ -215,6 +219,7 @@ void TwoDModelWidget::initPalette()
 	connect(rectangleTool, &QAction::triggered, mScene, &TwoDModelScene::addRectangle);
 	connect(ellipseTool, &QAction::triggered, mScene, &TwoDModelScene::addEllipse);
 	connect(stylusTool, &QAction::triggered, mScene, &TwoDModelScene::addStylus);
+	connect(imageTool, &QAction::triggered, mScene, &TwoDModelScene::addImage);
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
 
 	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
@@ -252,6 +257,7 @@ void TwoDModelWidget::connectUiButtons()
 
 	connect(&mActions->saveModelAction(), &QAction::triggered, this, &TwoDModelWidget::saveWorldModel);
 	connect(&mActions->loadModelAction(), &QAction::triggered, this, &TwoDModelWidget::loadWorldModel);
+	connect(&mActions->setBackgroundAction(), &QAction::triggered, this, &TwoDModelWidget::setBackground);
 
 	connect(mUi->speedUpButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedUp);
 	connect(mUi->speedDownButton, &QAbstractButton::clicked, this, &TwoDModelWidget::speedDown);
@@ -330,11 +336,7 @@ void TwoDModelWidget::trainingModeChanged(bool enabled)
 void TwoDModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
-		mScene->mainView()->zoomIn();
-	} else if (event->matches(QKeySequence::ZoomOut)) {
-		mScene->mainView()->zoomOut();
-	} else if (event->key() == Qt::Key_F5) {
+	if (event->key() == Qt::Key_F5) {
 		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
@@ -429,40 +431,18 @@ void TwoDModelWidget::loadWorldModel()
 	loadXml(save);
 }
 
-void TwoDModelWidget::reinitSensor(RobotItem *robotItem, const PortInfo &port)
+void TwoDModelWidget::setBackground()
 {
-	robotItem->removeSensor(port);
-	RobotModel &robotModel = robotItem->robotModel();
-
-	const DeviceInfo &device = robotModel.configuration().type(port);
-	if (device.isNull() || (
-			/// @todo: Add supported by 2D model sensors here
-			!device.isA<TouchSensor>()
-			&& !device.isA<ColorSensor>()
-			&& !device.isA<LightSensor>()
-			&& !device.isA<RangeSensor>()
-			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
-			&& !device.isA<VectorSensor>()
-			))
-	{
+	// Loads world and robot models simultaneously.
+	const QString loadFileName = QRealFileDialog::getOpenFileName("2DSelectBackground", this
+			, tr("Select background image"), "./fields", tr("Graphics (*.*)"));
+	if (loadFileName.isEmpty()) {
 		return;
 	}
 
-	SensorItem *sensor = device.isA<RangeSensor>()
-			? new SonarSensorItem(mModel.worldModel(), robotModel.configuration()
-					, port
-					, robotModel.info().sensorImagePath(device)
-					, robotModel.info().sensorImageRect(device)
-					)
-			: new SensorItem(robotModel.configuration()
-					, port
-					, robotModel.info().sensorImagePath(device)
-					, robotModel.info().sensorImageRect(device)
-					);
-
-	sensor->setEditable(!mSensorsReadOnly);
-
-	robotItem->addSensor(port, sensor);
+	const Image image(loadFileName, false);
+	const QSize size = image.preferedSize();
+	mModel.worldModel().setBackground(image, QRect(QPoint(-size.width()/2, -size.height()/2), size));
 }
 
 bool TwoDModelWidget::isColorItem(AbstractItem * const item) const
@@ -575,6 +555,12 @@ void TwoDModelWidget::closeEvent(QCloseEvent *event)
 	emit widgetClosed();
 }
 
+void TwoDModelWidget::focusInEvent(QFocusEvent *event)
+{
+	QWidget::focusInEvent(event);
+	onFocusIn();
+}
+
 SensorItem *TwoDModelWidget::sensorItem(const kitBase::robotModel::PortInfo &port)
 {
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
@@ -592,6 +578,12 @@ QDomDocument TwoDModelWidget::generateXml() const
 
 void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 {
+	if (mController) {
+		// Clearing 2D model undo stack...
+		mController->moduleClosed(editorId());
+		mController->moduleOpened(editorId());
+	}
+
 	mScene->clearScene(true, Reason::loading);
 	mModel.deserialize(worldModel);
 	updateWheelComboBoxes();
@@ -601,6 +593,21 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 Model &TwoDModelWidget::model() const
 {
 	return mModel;
+}
+
+void TwoDModelWidget::setController(ControllerInterface &controller)
+{
+	mController = &controller;
+	mScene->setController(controller);
+
+	auto setItemsProperty = [=](const QStringList &items, const QString &property, const QVariant &value) {
+		if (mController) {
+			mController->execute(new commands::ChangePropertyCommand(*mScene, mModel, items, property, value));
+		}
+	};
+
+	connect(mRobotItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
+	connect(mColorFieldItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
 }
 
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
@@ -655,6 +662,33 @@ void TwoDModelWidget::setCompactMode(bool enabled)
 	mActions->setSaveLoadActionsShortcutsEnabled(!mCompactMode);
 }
 
+QString TwoDModelWidget::editorId() const
+{
+	return "TrikStudio.2DModel.Editor";
+}
+
+bool TwoDModelWidget::supportsZooming() const
+{
+	return true;
+}
+
+void TwoDModelWidget::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut)
+{
+	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut);
+	addActions({ mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction });
+}
+
+void TwoDModelWidget::zoomIn()
+{
+	mScene->mainView()->zoomIn();
+}
+
+void TwoDModelWidget::zoomOut()
+{
+	mScene->mainView()->zoomOut();
+}
+
 void TwoDModelWidget::enableRobotFollowing(bool on)
 {
 	mFollowRobot = on;
@@ -691,6 +725,8 @@ void TwoDModelWidget::setDetailsVisibility(bool visible)
 	mUi->detailsContainer->setVisible(visible);
 	const QString direction = visible ? "right" : "left";
 	mUi->toggleDetailsButton->setIcon(QIcon(QString(":/icons/2d_%1.png").arg(direction)));
+	mUi->toggleDetailsButton->setFlat(visible);
+	mUi->toggleDetailsButton->setToolTip(visible ? tr("Hide details") : tr("Show details"));
 	SettingsManager::setValue("2d_detailsVisible", visible);
 }
 
@@ -882,7 +918,7 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 
 	if (robotItem) {
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded
-				, [this, robotItem](const PortInfo &port) { reinitSensor(robotItem, port); });
+				, [this, robotItem](const PortInfo &port) { mScene->reinitSensor(robotItem, port); });
 
 		auto checkAndSaveToRepo = [this](const PortInfo &port, bool isLoaded) {
 			Q_UNUSED(port);

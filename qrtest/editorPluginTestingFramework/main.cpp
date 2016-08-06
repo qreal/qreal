@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,35 +16,53 @@
 #include <QtCore/QStringList>
 #include <QtCore/QDebug>
 #include <QtCore/QTranslator>
+#include <QtCore/QCommandLineParser>
 
 #include "mainClass.h"
 
 using namespace editorPluginTestingFramework;
 
-void myMessageOutput(QtMsgType type, const char *msg)
+static const QString description = QObject::tr(
+		"Compares results of editor plugin generation from QRXC and QRMC, checks that the same metamodel "
+		"loaded into metamodel interpreter produces the same results. Requires metamodel file and configuration"
+		"file. Example:\n") +
+		"    editorPluginTestingFramework fileName.qrs configurationFile.xml";
+
+void myMessageOutput(QtMsgType type, const QMessageLogContext &context, const QString &message)
 {
+	Q_UNUSED(context)
+	QByteArray localMsg = message.toLocal8Bit();
 	switch (type) {
 		case QtDebugMsg:
-			fprintf(stdout, "Debug: %s\n", msg);
+			fprintf(stdout, "Debug: %s\n", localMsg.constData());
 			break;
 		case QtWarningMsg:
-			fprintf(stderr, "Warning: %s\n", msg);
+			fprintf(stderr, "Warning: %s\n", localMsg.constData());
 			break;
 		case QtCriticalMsg:
-			fprintf(stderr, "Critical: %s\n", msg);
+			fprintf(stderr, "Critical: %s\n", localMsg.constData());
 			break;
 		case QtFatalMsg:
-			fprintf(stderr, "Fatal: %s\n", msg);
+			fprintf(stderr, "Fatal: %s\n", localMsg.constData());
 			abort();
-		case QtInfoMsg:
-			fprintf(stderr, "Warning: %s\n", msg);
+		default:
+			fprintf(stderr, "Info: %s\n", localMsg.constData());
 			break;
 	}
 }
 
 int main(int argc, char *argv[])
 {
+	qInstallMessageHandler(myMessageOutput);
 	QCoreApplication app(argc, argv);
+
+	QCoreApplication::setApplicationName("QReal Editor Plugin Testing Framework");
+	QCoreApplication::setApplicationVersion("1.0");
+
+	QCommandLineParser parser;
+	parser.setApplicationDescription(description);
+	parser.addHelpOption();
+	parser.addVersionOption();
 
 	QTranslator appTranslator;
 	if (!app.arguments().contains("--no-locale")) {
@@ -52,15 +70,22 @@ int main(int argc, char *argv[])
 		app.installTranslator(&appTranslator);
 	}
 
-	if (argc != 3) {
-		qDebug() << "Usage: editorPluginTestTool fileName.qrs configurationFile.xml";
-		return 1;
+	parser.addPositionalArgument("metamodel", QObject::tr("Metamodel file to be processed."));
+	parser.addPositionalArgument("config", QObject::tr("XML file with configuration of the test."));
+
+	parser.process(app);
+
+	const QStringList positionalArgs = parser.positionalArguments();
+	if (positionalArgs.size() != 2) {
+		parser.showHelp();
 	}
 
-	const QString workingCopyDir = argv[1];
-	const QString &configurationFileName = argv[2];
-	MainClass newMainClass(workingCopyDir, qApp->applicationDirPath() + "/../../qrmc/"
-			, qApp->applicationDirPath(), configurationFileName);
-	return newMainClass.travisTestResult();
-}
+	const QString metamodel = positionalArgs.first();
+	const QString configurationFileName = positionalArgs.at(1);
 
+	/// @todo: is path to QRMC shall be configured?
+	MainClass mainClass(metamodel, qApp->applicationDirPath() + "/../../qrmc/"
+			, qApp->applicationDirPath(), configurationFileName);
+
+	return mainClass.testResult();
+}

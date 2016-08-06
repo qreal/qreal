@@ -28,12 +28,13 @@ GamepadWheel::GamepadWheel(const DeviceInfo &info, const PortInfo &port
 
 void GamepadWheel::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
 void GamepadWheel::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

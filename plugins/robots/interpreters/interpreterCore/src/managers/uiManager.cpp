@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2014-2016 CyberTech Labs Ltd., Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@
 #include <qrutils/inFile.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/widgets/consoleDock.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/shell.h>
 
@@ -107,6 +108,7 @@ void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWatch)
 {
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, watchWindow);
+	mMainWindow.registerEditor(*dynamic_cast<qReal::EditorInterface *>(watchWindow));
 	watchWindow->setObjectName("variablesDebuggerDock");
 	watchWindow->setFloating(false);
 
@@ -127,7 +129,6 @@ void UiManager::addWidgetToToolbar(kitBase::robotModel::RobotModelInterface &rob
 		return;
 	}
 
-	// Toolbar will take ownership on widget and resulting action.
 	QAction * const action = mCustomWidgetsBar->addWidget(widget);
 	mToolBarWidgets[action] = &robotModel;
 
@@ -256,7 +257,7 @@ void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatus
 
 	result->setVisible(false);
 	statusBar->addWidget(result, 10);
-	connect(this, &QObject::destroyed, [result]() { result->setParent(nullptr); });
+	connect(this, &QObject::destroyed, [result]() { delete result; });
 }
 
 int UiManager::currentMode() const

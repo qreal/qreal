@@ -85,6 +85,11 @@ void DummyMouseMovementManager::initializeGestures()
 {
 }
 
+bool DummyMouseMovementManager::gesturesInitialized() const
+{
+	return true;
+}
+
 void DummyMouseMovementManager::recountCentre()
 {
 	if (mPath.empty() || mPath.back().empty()) {

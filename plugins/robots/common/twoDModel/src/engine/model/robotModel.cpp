@@ -143,7 +143,8 @@ void RobotModel::countMotorTurnover()
 	for (Motor * const motor : mMotors) {
 		const PortInfo port = mMotors.key(motor);
 		const qreal degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
-		mTurnoverEngines[mMotorToEncoderPortMap[port]] += degrees;
+		const qreal actualDegrees = mPhysicsEngine->isRobotStuck() ? 0 : degrees;
+		mTurnoverEngines[mMotorToEncoderPortMap[port]] += actualDegrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit)
 				&& (mTurnoverEngines[mMotorToEncoderPortMap[port]] >= motor->degrees))
 		{
@@ -391,15 +392,18 @@ bool RobotModel::onTheGround() const
 	return mIsOnTheGround;
 }
 
-QDomElement RobotModel::serialize(QDomDocument &target) const
+QDomElement RobotModel::serialize(QDomElement &parent) const
 {
-	QDomElement robot = target.createElement("robot");
+	QDomElement robot = parent.ownerDocument().createElement("robot");
+	parent.appendChild(robot);
 	robot.setAttribute("id", mRobotModel.robotId());
 	robot.setAttribute("position", QString::number(mPos.x()) + ":" + QString::number(mPos.y()));
 	robot.setAttribute("direction", QString::number(mAngle));
-	mSensorsConfiguration.serialize(robot, target);
-	mStartPositionMarker->serialize(robot, target);
+
+	mSensorsConfiguration.serialize(robot);
+	mStartPositionMarker->serialize(robot);
 	serializeWheels(robot);
+
 	return robot;
 }
 
@@ -412,7 +416,7 @@ void RobotModel::deserialize(const QDomElement &robotElement)
 	onRobotReturnedOnGround();
 	setPosition(QPointF(x, y));
 	setRotation(robotElement.attribute("direction", "0").toDouble());
-	mStartPositionMarker->deserialize(robotElement);
+	mStartPositionMarker->deserializeCompatibly(robotElement);
 	deserializeWheels(robotElement);
 	nextFragment();
 }

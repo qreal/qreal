@@ -81,11 +81,11 @@ public:
 
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
 
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
 
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 
 	void endPaletteModification() override;
 
@@ -107,6 +107,8 @@ public:
 	bool restoreState(const QByteArray &state, int version = 0) override;
 
 	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
+
+	void registerEditor(EditorInterface &editor) override;
 
 	/// Sends close event via SystemEvents.
 	void emulateClose(int returnCode = 0);

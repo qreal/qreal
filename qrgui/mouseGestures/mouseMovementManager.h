@@ -42,6 +42,7 @@ public:
 	/// Transfers ownership.
 	QWidget *producePainter() const override;
 
+	bool gesturesInitialized() const override;
 	void initializeGestures() override;
 	void mousePress(const QPointF &point) override;
 	void mouseMove(const QPointF &point) override;
@@ -68,6 +69,7 @@ private:
 	QSet<Id> mInitializedGestures;
 	QScopedPointer<KeyManager> mKeyStringManager;
 	QScopedPointer<GesturesManager> mGesturesManager;
+	bool mInitializing;
 };
 
 }

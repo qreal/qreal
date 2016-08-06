@@ -15,8 +15,10 @@
 #include "nullMainWindow.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include <QtCore/QCoreApplication>
+#include <QtWidgets/QAction>
 #include <QtWidgets/QStatusBar>
 
 using namespace qReal;
@@ -202,8 +204,9 @@ void NullMainWindow::setElementInPaletteVisible(const Id &metatype, bool visible
 	Q_UNUSED(visible)
 }
 
-void NullMainWindow::setVisibleForAllElementsInPalette(bool visible)
+void NullMainWindow::setVisibleForAllElementsInPalette(const Id &diagram, bool visible)
 {
+	Q_UNUSED(diagram)
 	Q_UNUSED(visible)
 }
 
@@ -213,8 +216,9 @@ void NullMainWindow::setElementInPaletteEnabled(const Id &metatype, bool enabled
 	Q_UNUSED(enabled)
 }
 
-void NullMainWindow::setEnabledForAllElementsInPalette(bool enabled)
+void NullMainWindow::setEnabledForAllElementsInPalette(const Id &diagram, bool enabled)
 {
+	Q_UNUSED(diagram)
 	Q_UNUSED(enabled)
 }
 
@@ -323,6 +327,12 @@ void NullMainWindow::setCorner(Qt::Corner corner, Qt::DockWidgetArea area)
 {
 	Q_UNUSED(corner)
 	Q_UNUSED(area)
+}
+
+void NullMainWindow::registerEditor(EditorInterface &editor)
+{
+	QAction *dummyAction = new QAction(this);
+	editor.configure(*dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction);
 }
 
 void NullMainWindow::emulateClose(int returnCode)

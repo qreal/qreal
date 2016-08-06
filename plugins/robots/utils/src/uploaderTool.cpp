@@ -39,7 +39,7 @@ UploaderTool::UploaderTool(
 	, mStartedMessage(startedMessage)
 	, mRobotIpGetter(robotIpGetter)
 {
-	connect(mAction, &QAction::triggered, this, &UploaderTool::uploadRuntime);
+	connect(mAction, &QAction::triggered, this, &UploaderTool::upload);
 	mAction->setVisible(qReal::SettingsManager::value("SelectedRobotKit").toString() == kit);
 	qReal::SettingsListener::listen("SelectedRobotKit", [this, kit](const QString selectedKit) {
 		mAction->setVisible(selectedKit == kit);
@@ -74,7 +74,7 @@ qReal::ActionInfo UploaderTool::action() const
 	return qReal::ActionInfo(mAction, "", "tools");
 }
 
-void UploaderTool::uploadRuntime()
+void UploaderTool::upload()
 {
 	if (mProcess.state() != QProcess::NotRunning) {
 		QLOG_WARN() << "Attempted to upload during uploading!";
@@ -108,13 +108,13 @@ void UploaderTool::uploadRuntime()
 	const QStringList args = { "-x", "-c", actions.join("; ") };
 #endif
 
-	QLOG_INFO() << "TRIK Runtime uploading is about to start. Path:" << uploaderPath << "Args: " << args;
+	QLOG_INFO() << "Uploading is about to start. Path:" << uploaderPath << "Args: " << args;
 	mProcess.start(uploaderPath, args);
 }
 
 void UploaderTool::onUploadStarted()
 {
-	QLOG_INFO() << "TRIK Runtime uploading process started successfully...";
+	QLOG_INFO() << "Uploading process started successfully...";
 	if (mMainWindowInterface) {
 		mMainWindowInterface->errorReporter()->addWarning(mStartedMessage);
 	}
@@ -127,10 +127,10 @@ void UploaderTool::onUploadError(QProcess::ProcessError reason)
 	}
 
 	if (reason == QProcess::FailedToStart) {
-		QLOG_ERROR() << "TRIK Runtime uploading process failed to start! Details:" << mProcess.errorString();
+		QLOG_ERROR() << "Uploading process failed to start! Details:" << mProcess.errorString();
 		mMainWindowInterface->errorReporter()->addError(tr("WinSCP process failed to launch, check path in settings."));
 	} else {
-		QLOG_ERROR() << "TRIK Runtime uploading process failed! Details:" << mProcess.errorString();
+		QLOG_ERROR() << "Uploading process failed! Details:" << mProcess.errorString();
 		mMainWindowInterface->errorReporter()->addError(tr("Uploading failed, check connection and try again."));
 	}
 }
@@ -142,10 +142,10 @@ void UploaderTool::onUploadFinished(int exitCode)
 	}
 
 	if (exitCode == 0) {
-		QLOG_INFO() << "TRIK Runtime uploading process successfully finished.";
+		QLOG_INFO() << "Uploading process successfully finished.";
 		mMainWindowInterface->errorReporter()->addInformation(tr("Uploaded successfully!"));
 	} else {
-		QLOG_ERROR() << "TRIK Runtime uploading process failed with exit code" << exitCode;
+		QLOG_ERROR() << "Uploading process failed with exit code" << exitCode;
 		mMainWindowInterface->errorReporter()->addError(tr("Uploading failed, check connection and try again."));
 	}
 }

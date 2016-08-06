@@ -141,19 +141,14 @@ void DynamicPropertiesDialog::saveButtonClicked()
 			value = mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
 		}
 
-		QDomElement label1 = dynamicLabels.createElement("label");
-		label1.setAttribute("x", x);
-		label1.setAttribute("y", y);
-		label1.setAttribute("textBinded", QUuid::createUuid().toString());
-		label1.setAttribute("type", type);
-		label1.setAttribute("value", value);
-		labels.appendChild(label1);
-
-		QDomElement label2 = dynamicLabels.createElement("label");
-		label2.setAttribute("x", x - 70);
-		label2.setAttribute("y", y);
-		label2.setAttribute("text", name);
-		labels.appendChild(label2);
+		QDomElement label = dynamicLabels.createElement("label");
+		label.setAttribute("x", x);
+		label.setAttribute("y", y);
+		label.setAttribute("textBinded", QUuid::createUuid().toString());
+		label.setAttribute("type", type);
+		label.setAttribute("value", value);
+		label.setAttribute("text", name);
+		labels.appendChild(label);
 
 		y += 30;
 	}

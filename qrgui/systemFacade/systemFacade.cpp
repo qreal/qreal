@@ -19,7 +19,7 @@
 using namespace qReal;
 
 SystemFacade::SystemFacade()
-	: mEditorManager(new EditorManager)
+	: mEditorManager()
 	, mModels(QString(), mEditorManager)
 {
 	QObject::connect(&mModels.logicalModelAssistApi(), &models::LogicalModelAssistApi::elementAdded

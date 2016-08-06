@@ -7,6 +7,6 @@ Exec=trikStudio
 Icon=trikStudio
 Terminal=false
 Type=Application
-Categories=QT;Education;
+Categories=Education;
 Keywords=robot;trik;lego;nxt;ev3;
 Keywords[ru]=робот;трик;лего;

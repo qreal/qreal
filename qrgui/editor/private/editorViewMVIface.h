@@ -18,6 +18,9 @@
 
 #include <qrkernel/ids.h>
 
+#include "editor/edgeElement.h"
+#include "editor/nodeElement.h"
+
 /// @todo: Make editor view mviface fully private.
 #include "qrgui/editor/editorDeclSpec.h"
 
@@ -105,6 +108,15 @@ private:
 	void setItem(const QPersistentModelIndex &index, Element *item);
 	void removeItem(const QPersistentModelIndex &index);
 	void clearItems();
+
+	void handleAddingSequenceForRowsInserted(const QModelIndex &parent
+		, Element *elem, const QPersistentModelIndex &current);
+
+	void handleElemDataForRowsInserted(Element *elem, const QPersistentModelIndex &current);
+	void handleNodeElementsForRowsInserted(const QList<QPair<NodeElement *, QPersistentModelIndex>> &nodes
+			, const QModelIndex &parent);
+	void handleEdgeElementsForRowsInserted(const QList<QPair<EdgeElement *, QPersistentModelIndex>> &edges
+			, const QModelIndex &parent);
 };
 
 }

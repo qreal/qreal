@@ -116,6 +116,7 @@ private:
 
 	void turnOn(BlockInterface * const block);
 	void turnOff(BlockInterface * const block);
+	void connectBlock(BlockInterface * const block);
 
 	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership
 	const qReal::LogicalModelAssistInterface *mLogicalModelApi;

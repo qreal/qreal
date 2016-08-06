@@ -27,7 +27,6 @@
 #include <QtCore/QTimer>
 
 #include <qrgui/plugins/pluginManager/sdfRenderer.h>
-#include <qrgui/plugins/editorPluginInterface/elementImpl.h>
 #include <qrgui/models/nodeInfo.h>
 
 #include "qrgui/editor/element.h"
@@ -40,6 +39,9 @@
 
 
 namespace qReal {
+
+class NodeElementType;
+
 namespace gui {
 namespace editor {
 
@@ -47,24 +49,23 @@ namespace commands {
 class ResizeCommand;
 }
 
+/// Represents an instance of some node element on diagram.
+/// Node elements represent some entity in model, can be dragged and reshaped by mouse and be connected each to other
+/// by edge elements.
 class QRGUI_EDITOR_EXPORT NodeElement : public Element
 {
 	Q_OBJECT
 
 public:
-	explicit NodeElement(ElementImpl *impl
+	explicit NodeElement(const NodeElementType &type
 			, const Id &id
-			, const models::Models &models
-			);
+			, const models::Models &models);
 
-	virtual ~NodeElement();
+	~NodeElement() override;
 
-	QMap<QString, QVariant> graphicalProperties() const;
-	QMap<QString, QVariant> logicalProperties() const;
+	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w) override;
 
-	virtual void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w);
-
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	/// Current value of mContents
 	QRectF contentsRect() const;
@@ -72,7 +73,7 @@ public:
 	/// Folded contents of node
 	QRectF foldedContentsRect() const;
 
-	virtual void updateData();
+	void updateData() override;
 	void setGeometry(const QRectF &geom);
 	void setPos(const QPointF &pos);
 	void setPos(qreal x, qreal y);
@@ -111,10 +112,8 @@ public:
 	/// Remove edge from node's edge list, rearrange linear ports
 	void delEdge(EdgeElement *edge);
 
-	NodeInfo data() const;
-
-	virtual bool initPossibleEdges();
-	QList<PossibleEdge> getPossibleEdges();
+	/// Returns descriptor of this node element's type.
+	const NodeElementType &nodeType() const;
 
 	/// Make ports of specified types visible, hide other ports
 	void setPortsVisible(const QStringList &types);
@@ -157,7 +156,7 @@ public:
 	QList<NodeElement *> const childNodes() const;
 
 	void setVisibleEmbeddedLinkers(const bool show);
-	void updateShape(const QString &shape) const;
+	void updateShape(const QDomElement &graphicsSdf);
 
 	void changeFoldState();
 
@@ -189,7 +188,6 @@ public slots:
 	void updateDynamicProperties(const Id &target);
 
 private slots:
-	void updateNodeEdges();
 	void initRenderedDiagram();
 
 private:
@@ -227,7 +225,6 @@ private:
 	void drawSeveralLines(QPainter *painter, int dx, int dy);
 
 	void deleteGuides();
-	QSet<ElementPair> elementsForPossibleEdge(const StringPossibleEdge &edge);
 
 	void initPortsVisibility();
 	void connectSceneEvents();
@@ -267,6 +264,8 @@ private:
 
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
+	const NodeElementType &mType;
+
 	ContextMenuAction mSwitchGridAction;
 
 	QMap<QString, bool> mPortsVisibility;
@@ -279,9 +278,6 @@ private:
 	commands::ResizeCommand *mResizeCommand;
 
 	QList<EmbeddedLinker *> mEmbeddedLinkers;
-
-	QSet<PossibleEdge> mPossibleEdges;
-	QSet<PossibleEdgeType> mPossibleEdgeTypes;
 
 	QTransform mTransform;
 

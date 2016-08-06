@@ -95,7 +95,7 @@ private slots:
 
 private:
 	void createAddExplosionMenu(const Element * const element
-			, QMenu &contextMenu, QList<Explosion> const &explosions
+			, QMenu &contextMenu, QList<const Explosion *> const &explosions
 			, const Id &alreadyConnectedElement) const;
 
 	void createRemoveExplosionMenu(const Element * const element

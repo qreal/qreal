@@ -20,6 +20,7 @@ using namespace twoDModel::model::physics;
 
 PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel)
 	: mWorldModel(worldModel)
+	, mStuck(false)
 {
 }
 
@@ -35,4 +36,9 @@ QVector2D PhysicsEngineBase::shift() const
 qreal PhysicsEngineBase::rotation() const
 {
 	return mRotation;
+}
+
+bool PhysicsEngineBase::isRobotStuck() const
+{
+	return mStuck;
 }

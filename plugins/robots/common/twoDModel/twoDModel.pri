@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets xml
+QT += widgets xml svg
 
 DEFINES += TWO_D_MODEL_LIBRARY
 
-links(qrkernel qslog qrutils qrgui-tool-plugin-interface robots-utils robots-kit-base)
+links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base)
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
 
@@ -40,6 +40,7 @@ HEADERS += \
 	$$PWD/include/twoDModel/engine/model/robotModel.h \
 	$$PWD/include/twoDModel/engine/model/sensorsConfiguration.h \
 	$$PWD/include/twoDModel/engine/model/settings.h \
+	$$PWD/include/twoDModel/engine/model/image.h \
 	$$PWD/include/twoDModel/robotModel/twoDRobotModel.h \
 	$$PWD/include/twoDModel/robotModel/parts/button.h \
 	$$PWD/include/twoDModel/robotModel/parts/colorSensorBlue.h \
@@ -72,6 +73,7 @@ HEADERS += \
 	$$PWD/src/engine/view/parts/gridParameters.h \
 	$$PWD/src/engine/view/parts/detailsTab.h \
 	$$PWD/src/engine/view/parts/colorItemPopup.h \
+	$$PWD/src/engine/view/parts/imageItemPopup.h \
 	$$PWD/src/engine/view/parts/robotItemPopup.h \
 	$$PWD/src/engine/view/parts/speedPopup.h \
 	$$PWD/src/engine/view/parts/ruler.h \
@@ -86,7 +88,6 @@ HEADERS += \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
-	$$PWD/src/engine/items/tool.h \
 	$$PWD/src/engine/items/solidItem.h \
 	$$PWD/src/engine/items/wallItem.h \
 	$$PWD/src/engine/items/stylusItem.h \
@@ -95,11 +96,21 @@ HEADERS += \
 	$$PWD/src/engine/items/colorFieldItem.h \
 	$$PWD/src/engine/items/rectangleItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
+	$$PWD/src/engine/items/imageItem.h \
 	$$PWD/src/engine/items/startPosition.h \
 	$$PWD/src/engine/items/regions/regionItem.h \
 	$$PWD/src/engine/items/regions/ellipseRegion.h \
 	$$PWD/src/engine/items/regions/rectangularRegion.h \
 	$$PWD/src/engine/items/regions/boundRegion.h \
+	$$PWD/src/engine/commands/createWorldItemCommand.h \
+	$$PWD/src/engine/commands/removeWorldItemCommand.h \
+	$$PWD/src/engine/commands/removeWorldItemsCommand.h \
+	$$PWD/src/engine/commands/createRemoveWorldItemImplementation.h \
+	$$PWD/src/engine/commands/createSensorCommand.h \
+	$$PWD/src/engine/commands/removeSensorCommand.h \
+	$$PWD/src/engine/commands/createRemoveSensorImplementation.h \
+	$$PWD/src/engine/commands/changePropertyCommand.h \
+	$$PWD/src/engine/commands/reshapeCommand.h \
 	$$PWD/src/robotModel/nullTwoDRobotModel.h \
 
 SOURCES += \
@@ -119,6 +130,7 @@ SOURCES += \
 	$$PWD/src/engine/view/parts/gridParameters.cpp \
 	$$PWD/src/engine/view/parts/detailsTab.cpp \
 	$$PWD/src/engine/view/parts/colorItemPopup.cpp \
+	$$PWD/src/engine/view/parts/imageItemPopup.cpp \
 	$$PWD/src/engine/view/parts/robotItemPopup.cpp \
 	$$PWD/src/engine/view/parts/speedPopup.cpp \
 	$$PWD/src/engine/view/parts/ruler.cpp \
@@ -129,10 +141,10 @@ SOURCES += \
 	$$PWD/src/engine/model/sensorsConfiguration.cpp \
 	$$PWD/src/engine/model/worldModel.cpp \
 	$$PWD/src/engine/model/timeline.cpp \
+	$$PWD/src/engine/model/image.cpp \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
-	$$PWD/src/engine/items/tool.cpp \
 	$$PWD/src/engine/items/solidItem.cpp \
 	$$PWD/src/engine/items/wallItem.cpp \
 	$$PWD/src/engine/items/stylusItem.cpp \
@@ -141,6 +153,7 @@ SOURCES += \
 	$$PWD/src/engine/items/colorFieldItem.cpp \
 	$$PWD/src/engine/items/rectangleItem.cpp \
 	$$PWD/src/engine/items/ellipseItem.cpp \
+	$$PWD/src/engine/items/imageItem.cpp \
 	$$PWD/src/engine/items/startPosition.cpp \
 	$$PWD/src/engine/items/regions/regionItem.cpp \
 	$$PWD/src/engine/items/regions/ellipseRegion.cpp \
@@ -152,6 +165,15 @@ SOURCES += \
 	$$PWD/src/engine/constraints/details/conditionsFactory.cpp \
 	$$PWD/src/engine/constraints/details/triggersFactory.cpp \
 	$$PWD/src/engine/constraints/details/valuesFactory.cpp \
+	$$PWD/src/engine/commands/createWorldItemCommand.cpp \
+	$$PWD/src/engine/commands/removeWorldItemCommand.cpp \
+	$$PWD/src/engine/commands/removeWorldItemsCommand.cpp \
+	$$PWD/src/engine/commands/createRemoveWorldItemImplementation.cpp \
+	$$PWD/src/engine/commands/createSensorCommand.cpp \
+	$$PWD/src/engine/commands/removeSensorCommand.cpp \
+	$$PWD/src/engine/commands/createRemoveSensorImplementation.cpp \
+	$$PWD/src/engine/commands/changePropertyCommand.cpp \
+	$$PWD/src/engine/commands/reshapeCommand.cpp \
 	$$PWD/src/robotModel/twoDRobotModel.cpp \
 	$$PWD/src/robotModel/nullTwoDRobotModel.cpp \
 	$$PWD/src/robotModel/parts/button.cpp \

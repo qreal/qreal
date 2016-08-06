@@ -39,6 +39,11 @@ public:
 	/// Returns robot angle modification for the time interval given in the last recalculateParams() call
 	qreal rotation() const;
 
+	/// A hacky method to understand when robot in simple physics mode got stuck in the wall.
+	/// @todo: This is needed for more realistic encoders behaviour. In future physical engine must
+	/// recalculate encoders itself.
+	bool isRobotStuck() const;
+
 	/// Counts robot`s parameters modifications for the given time interval
 	virtual void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
 			, bool engine1Break, bool engine2Break
@@ -49,6 +54,7 @@ protected:
 	const WorldModel &mWorldModel;
 	QVector2D mPositionShift;
 	qreal mRotation;
+	bool mStuck;
 };
 
 }

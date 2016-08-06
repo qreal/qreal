@@ -45,7 +45,8 @@ protected:
 	virtual bool restoreState();
 
 private:
-	void initCommand(qReal::commands::CreateElementsCommand *&command, const Id &type);
+	void initCommand(qReal::commands::CreateElementsCommand *&command, const Id &type
+			, const QMap<QString, QVariant> &additionalProperties);
 	void makeLink(qReal::commands::CreateElementsCommand *command, NodeElement *src, NodeElement *dst);
 
 	EditorViewScene &mScene;

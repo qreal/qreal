@@ -19,6 +19,7 @@
 #include <QtWidgets/QGraphicsView>
 
 #include <qrutils/graphicsUtils/lineImpl.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <kitBase/readOnly.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
@@ -40,6 +41,10 @@ namespace graphicsUtils {
 class AbstractItem;
 }
 
+namespace qReal {
+class ControllerInterface;
+}
+
 namespace twoDModel {
 
 namespace model {
@@ -54,10 +59,13 @@ class SensorItem;
 class RobotItem;
 class ActionsBox;
 class ColorItemPopup;
+class ImageItemPopup;
 class RobotItemPopup;
 class SpeedPopup;
 
-class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget
+		, public kitBase::DevicesConfigurationProvider
+		, public qReal::EditorInterface
 {
 	Q_OBJECT
 
@@ -79,6 +87,9 @@ public:
 	/// Returns a reference to a model part of 2D model MVC architecture.
 	model::Model &model() const;
 
+	/// Passes into view a reference to controller object that will execute commands.
+	void setController(qReal::ControllerInterface &controller);
+
 	/// Sets groups of items on 2d model that can not be modified by user. Used for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
 	/// @see ReadOnly
@@ -87,6 +98,15 @@ public:
 	/// Enables or disables compact 2D model mode.
 	/// In a compact mode 2D model window has less controls, they may seem in another way.
 	void setCompactMode(bool enabled);
+
+	QString editorId() const override;
+	bool supportsZooming() const override;
+	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut) override;
+
+public slots:
+	void zoomIn() override;
+	void zoomOut() override;
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -110,6 +130,8 @@ protected:
 	void keyPressEvent(QKeyEvent *event) override;
 	void closeEvent(QCloseEvent *event) override;
 
+	void focusInEvent(QFocusEvent *event) override;
+
 	void onDeviceConfigurationChanged(const QString &robotModel
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
@@ -121,6 +143,7 @@ private slots:
 	void saveToRepo();
 	void saveWorldModel();
 	void loadWorldModel();
+	void setBackground();
 
 	void onSelectionChange();
 
@@ -169,9 +192,6 @@ private:
 	/// Get QPushButton for current sensor
 	QPushButton *currentPortButton();
 
-	/// Reread sensor configuration on given port, delete old sensor item and create new.
-	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
-
 	void setCursorTypeForDrawing(CursorType type);
 	void setCursorType(int cursorType);
 	void setCursorType(CursorType cursor);
@@ -207,6 +227,7 @@ private:
 	TwoDModelScene *mScene = nullptr;
 	QScopedPointer<ActionsBox> mActions;
 	ColorItemPopup *mColorFieldItemPopup;  // Takes ownership
+	ImageItemPopup *mImageItemPopup;  // Takes ownership
 	RobotItemPopup *mRobotItemPopup;  // Takes ownership
 	SpeedPopup *mSpeedPopup;  // Takes owneship
 
@@ -214,6 +235,7 @@ private:
 	kitBase::DevicesConfigurationWidget *mCurrentConfigurer;
 
 	model::Model &mModel;
+	qReal::ControllerInterface *mController = nullptr;
 
 	engine::TwoDModelDisplayWidget *mDisplay = nullptr;
 	engine::TwoDModelDisplayWidget *mNullDisplay = nullptr;

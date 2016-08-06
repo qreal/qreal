@@ -67,7 +67,7 @@ public:
 	/// Fills ellipse with its color or makes it empty.
 	void setFilled(bool filled);
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 	QJsonObject toJson() const override;
 
 private:

@@ -63,8 +63,7 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 	/// not connect edges at all. Proper fix for that shall possibly be in scene instead of this place.
 	for (const Id &childId : mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId)
-				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.editor()
-						, childId.element()) != -1)
+				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.type()) != -1)
 		{
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
@@ -73,8 +72,7 @@ void GraphicalModel::loadSubtreeFromClient(GraphicalModelItem * const parent)
 
 	for (const Id &childId : mApi.children(parent->id())) {
 		if (mApi.isGraphicalElement(childId)
-				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.editor()
-						, childId.element()) == -1)
+				&& mGraphicalAssistApi->editorManagerInterface().isNodeOrEdge(childId.type()) == -1)
 		{
 			GraphicalModelItem * const child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
@@ -287,12 +285,16 @@ bool GraphicalModel::setData(const QModelIndex &index, const QVariant &value, in
 		case Qt::EditRole:
 			setNewName(item->id(), value.toString());
 			break;
+		// We actually do not want to notify about configuration and position changes in performance reasons.
+		// For example QTreeView of model browsers will refresh itself on every dataChanged() signal which
+		// is really expensive when moving node with a number of links connected to it with mouse
+		// (see it with your eyes in valgrind if you dont believe). This hack worth it.
 		case roles::positionRole:
 			mApi.setPosition(item->id(), value);
-			break;
+			return true;
 		case roles::configurationRole:
 			mApi.setConfiguration(item->id(), value);
-			break;
+			return true;
 		case roles::fromRole:
 			mApi.setFrom(item->id(), value.value<Id>());
 			break;

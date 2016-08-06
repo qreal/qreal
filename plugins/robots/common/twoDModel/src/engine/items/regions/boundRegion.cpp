@@ -14,6 +14,8 @@
 
 #include "boundRegion.h"
 
+#include <src/engine/items/lineItem.h>
+
 #include <QtXml/QDomElement>
 
 using namespace twoDModel::items;
@@ -40,7 +42,7 @@ void BoundRegion::setStroke(int stroke)
 	mStroke = stroke;
 }
 
-void BoundRegion::serialize(QDomElement &element)
+void BoundRegion::serialize(QDomElement &element) const
 {
 	RegionItem::serialize(element);
 	element.setAttribute("boundItem", mBoundId);
@@ -66,13 +68,15 @@ QRectF BoundRegion::boundingRect() const
 
 QPainterPath BoundRegion::shape() const
 {
+	const QPainterPath originalShape = mBoundItem.shape();
 	if (!mStroke) {
-		return mBoundItem.shape();
+		return originalShape;
 	}
 
 	QPainterPathStroker stroker;
 	stroker.setWidth(mStroke);
-	return stroker.createStroke(mBoundItem.shape());
+	const QPainterPath result = stroker.createStroke(originalShape);
+	return dynamic_cast<const LineItem *>(&mBoundItem) ? result.united(originalShape) : result;
 }
 
 QString BoundRegion::regionType() const

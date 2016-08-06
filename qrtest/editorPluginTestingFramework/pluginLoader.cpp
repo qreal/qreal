@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,58 +13,37 @@
  * limitations under the License. */
 
 #include "pluginLoader.h"
+
 #include <QtCore/QPluginLoader>
-#include <QtCore/QDir>
 
-#include "qrrepo/repoApi.h"
-#include "qrutils/nameNormalizer.h"
+#include <metaMetaModel/metamodel.h>
 
-using namespace qReal;
+#include "defs.h"
+
 using namespace editorPluginTestingFramework;
-using namespace utils;
-using namespace qrRepo;
 
-EditorInterface* PluginLoader::loadedPlugin(
-		const QString &fileName
-		, const QString &pathToFile
-		, const QString &pluginExtension
-		, const QString &prefix)
+PluginLoader::~PluginLoader()
 {
-	qDebug() << "STARTING PLUGIN LOADING";
-	QDir mPluginDir = QDir(pathToFile);
-
-	QString normalizedFileName = fileName;
-	if (!fileName.contains(".qrs")) {
-		normalizedFileName += ".qrs";
-	}
-
-	const RepoApi *mRepoApi = new RepoApi(normalizedFileName);
-	const IdList metamodels = mRepoApi->children(Id::rootId());
-
-	for (Id const &key : metamodels) {
-		if (mRepoApi->isLogicalElement(key)) {
-			const QString &normalizedMetamodelName = NameNormalizer::normalize(mRepoApi->stringProperty(key, "name"), false);
-			const QString &pluginName = prefix + normalizedMetamodelName + "-d" + "." + pluginExtension;
-			mPluginNames.append(pluginName);
-
-			QPluginLoader * const loader = new QPluginLoader(mPluginDir.absoluteFilePath(pluginName));
-			loader->load();
-			QObject *plugin = loader->instance();
-
-			if (plugin) {
-				qDebug() << "plugin is loaded";
-				EditorInterface * const iEditor = qobject_cast<EditorInterface *>(plugin);
-				return iEditor;
-			}
-
-			qDebug() << "plugin is NOT loaded";
-		}
-	}
-
-	return nullptr;
 }
 
-QStringList PluginLoader::pluginNames()
+qReal::Metamodel* PluginLoader::loadPlugin(const QFileInfo &file)
 {
-	return mPluginNames;
+	qDebug() << "Loading plugin...";
+
+	const QSharedPointer<QPluginLoader> loader(new QPluginLoader(file.canonicalFilePath()));
+	mLoadedPluginLoaders.append(loader);
+	loader->load();
+	QObject *plugin = loader->instance();
+
+	if (plugin) {
+		qDebug() << "Plugin loaded successfully";
+		qReal::Metamodel * const pluginInterface = qobject_cast<qReal::Metamodel *>(plugin);
+		qDebug() << stringSeparator;
+		return pluginInterface;
+	}
+
+	qDebug() << "Plugin loading failed";
+	mLoadedPluginLoaders.removeAll(loader);
+
+	return nullptr;
 }

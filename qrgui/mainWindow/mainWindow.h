@@ -39,9 +39,7 @@ class MainWindowUi;
 namespace qReal {
 class Controller;
 class EditorManagerInterface;
-class InterpretedPluginsLoader;
 class ProjectManagerWrapper;
-class ProxyEditorManager;
 class SplashScreen;
 class StartWidget;
 class SystemFacade;
@@ -90,43 +88,43 @@ public:
 
 	QModelIndex rootIndex() const;
 
-	virtual void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red);
-	virtual void dehighlight(const Id &graphicalId);
-	virtual void dehighlight();
-	virtual ErrorReporterInterface *errorReporter();
-	virtual Id activeDiagram() const;
+	void highlight(const Id &graphicalId, bool exclusive = true, const QColor &color = Qt::red) override;
+	void dehighlight(const Id &graphicalId) override;
+	void dehighlight() override;
+	ErrorReporterInterface *errorReporter() override;
+	Id activeDiagram() const override;
 	void openShapeEditor(const QPersistentModelIndex &index, int role, const QString &propertyValue
 		, bool useTypedPorts);
 	void openQscintillaTextEditor(const QPersistentModelIndex &index, const int role, const QString &propertyValue);
 	void openShapeEditor(const Id &id
 			, const QString &propertyValue
 			/// @todo: whan passing it by reference the build on travis fails
-			, const EditorManagerInterface *editorManagerProxy
+			, const EditorManagerInterface *editorManager
 			, bool useTypedPorts);
 	void showAndEditPropertyInTextEditor(const QString &title, const QString &text, const QPersistentModelIndex &index
 			, const int &role);
 	void openReferenceList(const QPersistentModelIndex &index, const QString &referenceType
 			, const QString &propertyValue, int role);
 
-	virtual void openSettingsDialog(const QString &tab);
+	void openSettingsDialog(const QString &tab) override;
 
 	void showErrors(gui::ErrorReporter *reporter);
 
 	/// Tells if we should display trace connections menu or not
 	//virtual void showInTextEditor(const QFileInfo &fileInfo);
-	virtual void reinitModels();
+	void reinitModels() override;
 
-	virtual QWidget *windowWidget();
+	QWidget *windowWidget() override;
 
-	virtual bool unloadPlugin(const QString &pluginName);
-	virtual bool loadPlugin(const QString &fileName, const QString &pluginName);
-	virtual bool pluginLoaded(const QString &pluginName);
+	bool unloadPlugin(const QString &pluginName) override;
+	bool loadPlugin(const QString &fileName, const QString &pluginName) override;
+	bool pluginLoaded(const QString &pluginName) override;
 
-	virtual void saveDiagramAsAPictureToFile(const QString &fileName);
-	virtual void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles);
-	virtual IdList selectedElementsOnActiveDiagram();
-	virtual void updateActiveDiagram();
-	virtual void deleteElementFromDiagram(const Id &id);
+	void saveDiagramAsAPictureToFile(const QString &fileName) override;
+	void arrangeElementsByDotRunner(const QString &algorithm, const QString &absolutePathToDotFiles) override;
+	IdList selectedElementsOnActiveDiagram() override;
+	void updateActiveDiagram() override;
+	void deleteElementFromDiagram(const Id &id) override;
 
 	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 	QWidget *currentTab() override;
@@ -139,19 +137,11 @@ public:
 	/// @param id Id of a diagram (root element) that we want to close.
 	void closeDiagramTab(const Id &id);
 
-	/// Returns editor manager proxy, which allows to change editor manager implementation.
-	ProxyEditorManager &editorManagerProxy();
-
 	/// Loads (or reloads) available editor plugins and reinits palette.
 	void loadEditorPlugins();
 
 	/// Clears selection on all opened tabs.
 	void clearSelectionOnTabs();
-
-	/// Adds all elements from given diagram in a given editor to a palette.
-	/// @param editor Id of an editor we need to add elements from.
-	/// @param diagram Id of a diagram we need to add elements from.
-	void addEditorElementsToPalette(const Id &editor, const Id &diagram);
 
 	QDockWidget *logicalModelDock() const override;
 	QDockWidget *graphicalModelDock() const override;
@@ -174,9 +164,9 @@ public:
 
 	void beginPaletteModification() override;
 	void setElementInPaletteVisible(const Id &metatype, bool visible) override;
-	void setVisibleForAllElementsInPalette(bool visible) override;
+	void setVisibleForAllElementsInPalette(const Id &diagram, bool visible) override;
 	void setElementInPaletteEnabled(const Id &metatype, bool enabled) override;
-	void setEnabledForAllElementsInPalette(bool enabled) override;
+	void setEnabledForAllElementsInPalette(const Id &diagram, bool enabled) override;
 	void endPaletteModification() override;
 
 	/// Additional actions for interpreter palette.
@@ -188,10 +178,10 @@ signals:
 public slots:
 	void propertyEditorScrollTo(const QModelIndex &index);
 
-	virtual void activateItemOrDiagram(const Id &id, bool setSelected = true);
+	void activateItemOrDiagram(const Id &id, bool setSelected = true) override;
 	void activateItemOrDiagram(const QModelIndex &idx, bool setSelected = true);
-	virtual void selectItem(const Id &id);
-	virtual void selectItemOrDiagram(const Id &graphicalId);
+	void selectItem(const Id &id) override;
+	void selectItemOrDiagram(const Id &graphicalId) override;
 
 	void selectItemWithError(const Id &id);
 	void showErrors(const gui::ErrorReporter * const errorReporter);
@@ -207,8 +197,7 @@ public slots:
 	void openFirstDiagram();
 	void changeWindowTitle();
 
-	/// Inits interpreted plugins and adds their actions to the toolbar.
-	void initInterpretedPlugins();
+	void registerEditor(EditorInterface &editor) override;
 
 private slots:
 	/// Suggests user to select a root diagram for the new project
@@ -299,7 +288,7 @@ private:
 
 	QListWidget* createSaveListWidget();
 
-	virtual void closeEvent(QCloseEvent *event);
+	void closeEvent(QCloseEvent *event) override;
 	void deleteFromLogicalExplorer();
 	void deleteFromGraphicalExplorer();
 
@@ -312,11 +301,6 @@ private:
 	int getTabIndex(const QModelIndex &index);
 
 	void initGridProperties();
-	void disconnectZoom(QGraphicsView *view);
-	void connectZoom(QGraphicsView *view);
-	void disconnectActionZoomTo(QWidget* widget);
-	void connectActionZoomTo(QWidget* widget);
-	void setConnectActionZoomTo(QWidget* widget);
 	void clickErrorListWidget();
 
 	void setShowGrid(bool isChecked);
@@ -361,9 +345,11 @@ private:
 	void initRecentProjectsMenu();
 	void initScriptAPI();
 	void initActionWidgetsNames();
-	void openStartTab();
+	void openStartTab() override;
 
 	void setVersion(const QString &version);
+
+	void highlightCode(Id const &graphicalId, bool highlight);
 
 	Ui::MainWindowUi *mUi;
 	QScopedPointer<SystemFacade> mFacade;
@@ -378,9 +364,9 @@ private:
 
 	Controller *mController;
 	QScopedPointer<ToolPluginManager> mToolManager;
-	QScopedPointer<InterpretedPluginsLoader> mInterpretedPluginLoader;
 	QScopedPointer<PropertyEditorModel> mPropertyModel;
 	text::TextManager *mTextManager;
+	EditorInterface *mCurrentEditor;
 
 	QVector<bool> mSaveListChecked;
 

@@ -17,6 +17,7 @@
 #include "twoDModel/engine/model/worldModel.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/colorFieldItem.h"
+#include "src/engine/items/imageItem.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -26,10 +27,12 @@ FakeScene::FakeScene(const WorldModel &world)
 {
 	connect(&world, &WorldModel::wallAdded, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
 	connect(&world, &WorldModel::colorItemAdded, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
+	connect(&world, &WorldModel::imageItemAdded, [=](items::ImageItem *item) { addClone(item, item->clone()); });
 	connect(&world, &WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) {
 		addClone(item, new QGraphicsLineItem(item->line()));
 	});
 	connect(&world, &WorldModel::itemRemoved, this, &FakeScene::deleteItem);
+	connect(&world, &WorldModel::backgroundChanged, this, &FakeScene::setBackground);
 }
 
 void FakeScene::addClone(QGraphicsItem * const original, QGraphicsItem * const cloned)
@@ -62,6 +65,15 @@ void FakeScene::deleteItem(QGraphicsItem * const original)
 	}
 }
 
+void FakeScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+	if (mBackground.isValid()) {
+		mBackground.draw(*painter, mBackgroundRect, 1.0);
+	}
+
+	QGraphicsScene::drawBackground(painter, rect);
+}
+
 QImage view::FakeScene::render(const QRectF &piece)
 {
 	QImage result(piece.size().toSize(), QImage::Format_RGB32);
@@ -69,4 +81,13 @@ QImage view::FakeScene::render(const QRectF &piece)
 	QPainter painter(&result);
 	QGraphicsScene::render(&painter, QRectF(), piece);
 	return result;
+}
+
+void FakeScene::setBackground(const Image &background, const QRect &backgroundRect)
+{
+	if (mBackground != background || mBackgroundRect != backgroundRect) {
+		mBackground = background;
+		mBackgroundRect = backgroundRect;
+		update();
+	}
 }

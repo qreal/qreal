@@ -14,6 +14,8 @@
 
 #include "subprogramBlock.h"
 
+#include <QtXml/QDomDocument>
+
 #include <qrutils/nameNormalizer.h>
 
 using namespace qReal::interpretation::blocks;

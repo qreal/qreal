@@ -21,24 +21,28 @@
 using namespace qReal;
 using namespace qReal::gui::editor;
 
-LineFactory::LineFactory(EdgeElement *edge)
-		: mEdge(edge)
+LineFactory::LineFactory(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel)
+	: mEdge(edge)
+	, mLogicalModel(logicalModel)
+	, mGraphicalModel(graphicalModel)
 {
 }
 
-LineHandler * LineFactory::createHandler(const linkShape::LinkShape type) const
+LineHandler * LineFactory::createHandler(LinkShape type) const
 {
 	switch(type) {
-	case linkShape::broken:
-		return new BrokenLine(mEdge);
-	case linkShape::curve:
-		return new CurveLine(mEdge);
+	case LinkShape::broken:
+		return new BrokenLine(mEdge, mLogicalModel, mGraphicalModel);
+	case LinkShape::curve:
+		return new CurveLine(mEdge, mLogicalModel, mGraphicalModel);
 	default:
-		return new SquareLine(mEdge);
+		return new SquareLine(mEdge, mLogicalModel, mGraphicalModel);
 	}
 }
 
-QMenu * LineFactory::shapeTypeMenu() const
+QMenu *LineFactory::shapeTypeMenu() const
 {
 	QMenu * const menu = new QMenu();
 
@@ -54,42 +58,17 @@ QMenu * LineFactory::shapeTypeMenu() const
 	return menu;
 }
 
-QString LineFactory::shapeToString(const linkShape::LinkShape shapeType)
-{
-	switch (shapeType) {
-	case linkShape::broken:
-		return "broken";
-	case linkShape::curve:
-		return "curve";
-	default:
-		return "square";
-	}
-}
-
-linkShape::LinkShape LineFactory::stringToShape(const QString &string)
-{
-	if (string == "broken") {
-		return linkShape::broken;
-	} else if (string == "square") {
-		return linkShape::square;
-	} else if (string == "curve") {
-		return linkShape::curve;
-	} else {
-		return static_cast<linkShape::LinkShape>(SettingsManager::value("LineType").toInt());
-	}
-}
-
 void LineFactory::setSquareLine() const
 {
-	mEdge->changeShapeType(linkShape::square);
+	mEdge->changeShapeType(LinkShape::square);
 }
 
 void LineFactory::setBrokenLine() const
 {
-	mEdge->changeShapeType(linkShape::broken);
+	mEdge->changeShapeType(LinkShape::broken);
 }
 
 void LineFactory::setCurveLine() const
 {
-	mEdge->changeShapeType(linkShape::curve);
+	mEdge->changeShapeType(LinkShape::curve);
 }
