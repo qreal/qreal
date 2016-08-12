@@ -31,6 +31,7 @@ EdgePropertiesDialog::EdgePropertiesDialog(const Id &diagram
 		, mEditorManagerProxy(editorManagerProxy)
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	connect(mUi->okPushButton, SIGNAL(clicked()), this, SLOT(okButtonClicked()));
 }
 
@@ -42,7 +43,8 @@ EdgePropertiesDialog::~EdgePropertiesDialog()
 void EdgePropertiesDialog::okButtonClicked()
 {
 	if (mUi->nameEdit->text().isEmpty()) {
-		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
+		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled")
+				, QMessageBox::tr("Close"));
 	} else {
 		mEdgeName = mUi->nameEdit->text();
 		const IdList edgesWithTheSameNameList = mEditorManagerProxy.elementsWithTheSameName(mDiagram

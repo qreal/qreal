@@ -28,7 +28,7 @@ includes(plugins/robots/interpreters/interpreterCore \
 )
 
 links(qslog qrkernel qrutils qrgui-tool-plugin-interface qrgui-preferences-dialog qrgui-facade \
-		qrgui-models qrgui-editor qrgui-plugin-manager qrgui-text-editor \
+		qrgui-models qrgui-editor qrgui-plugin-manager qrgui-text-editor qrgui-controller \
 		robots-utils robots-kit-base robots-interpreter-core robots-2d-model \
 )
 

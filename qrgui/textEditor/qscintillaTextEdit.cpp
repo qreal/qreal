@@ -63,6 +63,56 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 	}
 }
 
+QString QScintillaTextEdit::editorId() const
+{
+	return "qReal.TextEditor." + QString::number(mIndex.internalId());
+}
+
+bool QScintillaTextEdit::supportsZooming() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsCopying() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsPasting() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsCutting() const
+{
+	return true;
+}
+
+void QScintillaTextEdit::zoomIn()
+{
+	QsciScintilla::zoomIn();
+}
+
+void QScintillaTextEdit::zoomOut()
+{
+	QsciScintilla::zoomOut();
+}
+
+void QScintillaTextEdit::copy()
+{
+	QsciScintilla::copy();
+}
+
+void QScintillaTextEdit::paste()
+{
+	QsciScintilla::paste();
+}
+
+void QScintillaTextEdit::cut()
+{
+	QsciScintilla::cut();
+}
+
 void QScintillaTextEdit::init()
 {
 	// For some reason c++11-style connections do not work here!

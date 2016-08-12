@@ -16,9 +16,10 @@
 
 #include <QtGui/QPolygon>
 
-#include "elementInfo.h"
+#include <metaMetaModel/linkShape.h>
 
 #include "modelsDeclSpec.h"
+#include "elementInfo.h"
 
 namespace qReal {
 
@@ -27,6 +28,11 @@ class QRGUI_MODELS_EXPORT EdgeInfo : public ElementInfo
 {
 public:
 	EdgeInfo();
+
+	EdgeInfo(const Id &graphicalId
+			, const Id &logicalId
+			, LogicalModelAssistInterface &logicalModel
+			, GraphicalModelAssistInterface &graphicalModel);
 
 	EdgeInfo(const Id &id
 			, const Id &logicalId
@@ -37,6 +43,12 @@ public:
 			, const QPolygon &configuration
 			, int shapeType
 	);
+
+	/// @return String representation of shapeType
+	static QString shapeToString(LinkShape shapeType);
+
+	/// @return LinkShape represented by string; return linkShape::unset if string is incorrect
+	static LinkShape stringToShape(const QString &string);
 
 	QDataStream &serialize(QDataStream &out) const override;
 	QDataStream &deserialize(QDataStream &in) override;

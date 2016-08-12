@@ -17,8 +17,6 @@
 #include <QtCore/QList>
 #include <QtWidgets/QUndoCommand>
 
-#include <qrkernel/ids.h>
-
 #include "qrgui/controller/controllerDeclSpec.h"
 
 namespace qReal {
@@ -38,36 +36,33 @@ public:
 	void setRedoEnabled(bool enabled);
 	void setUndoEnabled(bool enabled);
 
-	/// Adds @param command into a list of commands to be executed
-	/// before this command
+	/// Adds \a command into a list of commands to be executed before this command.
 	void addPreAction(AbstractCommand * const command);
 
-	/// Adds @param command into a specified place of the list of commands
-	/// to be executed before this command
+	/// Adds \a command into a specified place of the list of commands to be executed before this command.
 	void insertPreAction(AbstractCommand * const command, int index);
 
-	/// Adds @param command into a list of commands to be executed
-	/// after this command
+	/// Adds \a command into a list of commands to be executed after this command.
 	void addPostAction(AbstractCommand * const command);
 
-	/// Adds @param command into a specified place of the list of commands
-	/// to be executed after this command
+	/// Adds \a command into a specified place of the list of commands
+	/// to be executed after this command.
 	void insertPostAction(AbstractCommand * const command, int index);
 
 	virtual bool equals(const AbstractCommand &other) const;
 
 	/// Performs command tree filtering with all duplicates to be removed.
 	/// Removes duplicate closer to root, with search only in current subtree.
-	/// Root command is never removed
+	/// Root command is never removed.
 	void removeDuplicates();
 
-	/// Returns id of the root diagram whose tab is the parent for this command
-	/// @see bindToDiagram()
-	Id diagramBinded() const;
+	/// Returns id of the module that produced this command.
+	/// @see bindToModule().
+	QString moduleBinded() const;
 
-	/// Binds this command to the tab associated with the specified root diagram
-	/// @see diagramBinded()
-	void bindToDiagram(const Id &diagramId);
+	/// Binds this command to the tab associated with the specified module with \a moduleId.
+	/// @see moduleBinded().
+	void bindToModule(const QString &moduleId);
 
 	/// Returns time of this command creation in ms since epoch
 	uint timestamp() const;
@@ -102,7 +97,7 @@ private:
 	bool mUndoEnabled;
 	QList<AbstractCommand *> mPreActions;
 	QList<AbstractCommand *> mPostActions;
-	Id mDiagramBinded;
+	QString mModuleBinded;
 	uint mTimestamp;
 };
 

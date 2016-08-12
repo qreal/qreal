@@ -17,9 +17,9 @@
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
-#include "blocksFactoryManagerInterface.h"
-#include "kitPluginManager.h"
-#include "robotModelManager.h"
+#include "interpreterCore/managers/blocksFactoryManagerInterface.h"
+#include "interpreterCore/managers/kitPluginManager.h"
+#include "interpreterCore/managers/robotModelManager.h"
 
 namespace interpreterCore {
 

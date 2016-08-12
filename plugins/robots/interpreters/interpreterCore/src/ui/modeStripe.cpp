@@ -27,7 +27,10 @@ ModeStripe::ModeStripe(QAction &modeAction, const QString &text, QWidget *parent
 	setFrameShadow(QFrame::Plain);
 	setLineWidth(0);
 	addAction(&modeAction);
-	connect(&modeAction, &QAction::changed, this, [&modeAction, this]() {
+	connect(&modeAction, &QAction::changed, this, [&modeAction, parent, this]() {
+		// This is kind of hack to prevent main window expanding over the screen on small resolutions.
+		// Status bar will be shown back in UiManager::toggleModeButtons().
+		parent->setVisible(false);
 		setVisible(modeAction.isVisible() && !modeAction.isChecked());
 	});
 }

@@ -29,7 +29,7 @@ public:
 	virtual ~PainterInterface() {}
 
 	/// Implements the painting process itself.
-	virtual void paint(QPainter *painter) = 0;
+	virtual void paint(QPainter *painter, const QRect &outputRect) = 0;
 
 	/// Clears all drawn stuff.
 	virtual void reset() = 0;

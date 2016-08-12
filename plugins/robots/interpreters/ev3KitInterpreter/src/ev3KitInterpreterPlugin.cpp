@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,7 +88,9 @@ void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 	mTwoDModel->init(configurator.eventsForKitPlugin()
 			, configurator.qRealConfigurator().systemEvents()
 			, configurator.qRealConfigurator().logicalModelApi()
+			, configurator.qRealConfigurator().controller()
 			, interpretersInterface
+			, configurator.qRealConfigurator().mainWindowDockInterface()
 			, configurator.qRealConfigurator().projectManager()
 			, configurator.interpreterControl());
 }
@@ -163,5 +165,7 @@ kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigura
 
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
-	return new ui::ComPortPicker("Ev3BluetoothPortName", this);
+	QWidget * const result = new ui::ComPortPicker("Ev3BluetoothPortName", this);
+	connect(this, &QObject::destroyed, [result]() { delete result; });
+	return result;
 }

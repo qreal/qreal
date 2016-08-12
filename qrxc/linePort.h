@@ -28,7 +28,7 @@ class LinePort : public Port
 {
 public:
 	virtual bool init(const QDomElement &element, int width, int height);
-	virtual void generateCode(utils::OutFile &out, const QStringList &portTypes);
+	virtual void generateCode(utils::OutFile &out);
 	virtual Port* clone() const;
 
 private:

@@ -5,8 +5,8 @@
     <Description>Install it for working with Pascal (PascalABC.NET dialect) in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором ТРИК на языке Паскаль (с помощью PascalABC.NET, который надо установить отдельно)</Description>
     <Dependencies>ru.qreal.root.trik.core</Dependencies>
-    <Version>3.1.4</Version>
-    <ReleaseDate>2016-03-24</ReleaseDate>
+    <Version>3.1.4-4</Version>
+    <ReleaseDate>2016-06-07</ReleaseDate>
     <SortingPriority>5</SortingPriority>
     <Default>true</Default>
     <ForcedInstallation>false</ForcedInstallation>

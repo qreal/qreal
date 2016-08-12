@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,19 @@
 #include <kitBase/devicesConfigurationProvider.h>
 #include <kitBase/readOnly.h>
 
+#include "twoDModel/engine/model/image.h"
+
+namespace qReal {
+class ControllerInterface;
+namespace commands {
+class AbstractCommand;
+}
+}
+
+namespace graphicsUtils {
+class AbstractItem;
+}
+
 namespace twoDModel {
 
 namespace items {
@@ -37,6 +50,10 @@ class EllipseItem;
 namespace model {
 class Model;
 class RobotModel;
+}
+
+namespace commands {
+class ReshapeCommand;
 }
 
 namespace view {
@@ -56,6 +73,9 @@ public:
 
 	/// Returns true if existing only one robot
 	bool oneRobot() const;
+
+	/// Passes into scene a reference to controller object that will execute commands.
+	void setController(qReal::ControllerInterface &controller);
 
 	/// Forbid all interaction with specified categories of objects on scene, for "challenge" mode where student
 	/// shall provide program that makes robot do specific task in given unmodifyable world model.
@@ -81,6 +101,9 @@ public slots:
 	/// Sets a flag that next user mouse actions should draw an ellipse on the scene.
 	void addEllipse();
 
+	/// Shows dialog proposing user to add image on a scene.
+	void addImage();
+
 	/// Resets all drawing flags: next user mouse actions will behavior like usially.
 	void setNoneStatus();
 
@@ -100,6 +123,18 @@ public slots:
 	/// Focuses all graphics views on the robot if it is not visible.
 	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
+	/// Returns a path to scene background image.
+	model::Image background() const;
+
+	/// Returns a scene background image size and position.
+	QRect backgroundRect() const;
+
+	/// Sets a background image on the scene and its geometry.
+	void setBackground(const model::Image &background, const QRect &backgroundRect);
+
+	/// Reread sensor configuration on given port, delete old sensor item and create new.
+	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
+
 signals:
 	/// Emitted each time when user presses mouse button somewhere on the scene.
 	void mousePressed();
@@ -112,6 +147,9 @@ signals:
 
 	/// Emitted at any changes of robot list (adding or removing)
 	void robotListChanged(RobotItem *robotItem);
+
+	/// Emitted when user pressed escape during this scene is focused.
+	void escapePressed();
 
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
@@ -130,7 +168,13 @@ private slots:
 	/// Called after new color field item is added to a world model.
 	void onColorItemAdded(graphicsUtils::AbstractItem *item);
 
+	/// Called after new image item is added to a world model.
+	void onImageItemAdded(graphicsUtils::AbstractItem *item);
+
+	/// Called after some item was kicked away from a world model.
 	void onItemRemoved(QGraphicsItem *item);
+
+	void drawAxes(QPainter *painter);
 
 private:
 	enum DrawingAction
@@ -142,20 +186,23 @@ private:
 		, stylus
 		, rectangle
 		, ellipse
-		, noneWordLoad
+		, image
 	};
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
 
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
-	void deleteItem(QGraphicsItem *item);
 	void deleteSelectedItems();
+	void deleteWithCommand(const QStringList &worldItems
+			, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors
+			, const QList<qReal::commands::AbstractCommand *> &additionalCommands);
 
 	void reshapeWall(QGraphicsSceneMouseEvent *event);
 	void reshapeLine(QGraphicsSceneMouseEvent *event);
@@ -164,10 +211,17 @@ private:
 	void reshapeRectangle(QGraphicsSceneMouseEvent *event);
 	void reshapeEllipse(QGraphicsSceneMouseEvent *event);
 
+	void registerInUndoStack(graphicsUtils::AbstractItem *item);
+	void subscribeItem(graphicsUtils::AbstractItem *item);
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
-	model::Model &mModel;
+	qreal currentZoom() const;
 
+	model::Model &mModel;
+	qReal::ControllerInterface *mController = nullptr;
+
+	model::Image mBackground;
+	QRect mBackgroundRect;
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
 
@@ -183,6 +237,8 @@ private:
 	items::StylusItem *mCurrentStylus = nullptr;
 	items::RectangleItem *mCurrentRectangle = nullptr;
 	items::EllipseItem *mCurrentEllipse = nullptr;
+
+	commands::ReshapeCommand *mCurrentReshapeCommand = nullptr;
 
 	bool mWorldReadOnly = false;
 	bool mRobotReadOnly = false;

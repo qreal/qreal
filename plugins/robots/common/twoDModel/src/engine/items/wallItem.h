@@ -54,7 +54,7 @@ public:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
-	void serialize(QDomElement &element) const override;
+	QDomElement serialize(QDomElement &element) const override;
 	void deserialize(const QDomElement &element) override;
 
 	void onOverlappedWithRobot(bool overlapped = true);

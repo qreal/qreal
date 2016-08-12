@@ -798,32 +798,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1375"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1376"/>
         <source>Gestures Show</source>
         <translation>Afficher les gestes</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1658"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1660"/>
         <source>Shortcuts</source>
         <translation>Raccourcis</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1924"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1926"/>
         <source>Recent projects</source>
         <translation>Projets récents</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1955"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1957"/>
         <source>Save File</source>
         <translation>Enregister le fichier</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1955"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="1957"/>
         <source>Images (*.png *.jpg)</source>
         <translation>Images (*.png *.jpg)</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2109"/>
+        <location filename="../../qrgui/mainWindow/mainWindow.cpp" line="2111"/>
         <source>Getting Started</source>
         <translation>Commencer</translation>
     </message>
@@ -1031,22 +1031,22 @@
 <context>
     <name>qReal::gui::ErrorReporter</name>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="212"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="213"/>
         <source>INFORMATION:</source>
         <translation>INFORMATION :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="214"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="215"/>
         <source>WARNING:</source>
         <translation>ATTENTION :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="216"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="217"/>
         <source>ERROR:</source>
         <translation>ERREUR :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="218"/>
+        <location filename="../../qrgui/mainWindow/errorReporter.cpp" line="219"/>
         <source>CRITICAL:</source>
         <translation>CRITIQUE :</translation>
     </message>
@@ -1062,9 +1062,18 @@
 <context>
     <name>qReal::gui::PaletteTreeWidget</name>
     <message>
-        <location filename="../../qrgui/mainWindow/palette/paletteTreeWidget.cpp" line="145"/>
         <source>Add Element</source>
-        <translation>Ajouter un élément</translation>
+        <translation type="vanished">Ajouter un élément</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/palette/paletteTreeWidget.cpp" line="142"/>
+        <source>Add Entity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/mainWindow/palette/paletteTreeWidget.cpp" line="143"/>
+        <source>Add Relastionship</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

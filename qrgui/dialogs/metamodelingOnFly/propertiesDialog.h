@@ -16,8 +16,6 @@
 
 #include <QtWidgets/QDialog>
 
-#include <qrgui/plugins/pluginManager/interpreterEditorManager.h>
-
 #include "qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.h"
 
 namespace Ui {

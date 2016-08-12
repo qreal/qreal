@@ -22,6 +22,7 @@ ManagedClosableDialog::ManagedClosableDialog(QWidget *parent, bool isClosable)
 	: QDialog(parent, isClosable ? Qt::Dialog : Qt::WindowMinimizeButtonHint)
 	, mIsClosable(isClosable)
 {
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 void ManagedClosableDialog::setClosability(bool isClosable)

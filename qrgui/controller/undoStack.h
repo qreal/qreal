@@ -16,7 +16,7 @@
 
 #include <QtWidgets/QUndoStack>
 
-#include "controller/commands/abstractCommand.h"
+#include "qrgui/controller/commands/abstractCommand.h"
 
 namespace qReal {
 

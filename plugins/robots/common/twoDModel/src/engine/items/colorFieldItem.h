@@ -45,10 +45,6 @@ public:
 
 	/// Creates a copy of this graphical item. Transfers ownership to the caller.
 	virtual AbstractItem *clone() const = 0;
-
-	virtual QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const = 0;
-
-	virtual QRectF boundingRect() const = 0;
 };
 
 }

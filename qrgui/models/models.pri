@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 QT += widgets
 
-links(qrkernel qrrepo qrgui-plugin-manager qrgui-controller)
-includes(qrgui)
+links(qrkernel qrrepo qrgraph qrgui-meta-meta-model qrgui-controller qrgui-plugin-manager)
+includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 
 HEADERS += \
 	$$PWD/modelsDeclSpec.h \
@@ -27,6 +27,7 @@ HEADERS += \
 	$$PWD/elementInfo.h \
 	$$PWD/nodeInfo.h \
 	$$PWD/edgeInfo.h \
+	$$PWD/clipboard.h \
 	$$PWD/commands/createElementsCommand.h \
 	$$PWD/commands/createPatternCommand.h \
 	$$PWD/commands/removeElementsCommand.h \
@@ -61,6 +62,7 @@ SOURCES += \
 	$$PWD/elementInfo.cpp \
 	$$PWD/nodeInfo.cpp \
 	$$PWD/edgeInfo.cpp \
+	$$PWD/clipboard.cpp \
 	$$PWD/commands/createElementsCommand.cpp \
 	$$PWD/commands/removeElementsCommand.cpp \
 	$$PWD/commands/createPatternCommand.cpp \

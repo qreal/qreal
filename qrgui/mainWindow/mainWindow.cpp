@@ -50,11 +50,10 @@
 #include <qrgui/dialogs/findReplaceDialog.h>
 #include <qrgui/editor/propertyEditorView.h>
 #include <qrgui/models/propertyEditorModel.h>
-#include <qrgui/plugins/pluginManager/interpretedPluginsLoader.h>
 #include <qrgui/plugins/pluginManager/toolPluginManager.h>
 #include <qrgui/plugins/pluginManager/editorManagerInterface.h>
-#include <qrgui/plugins/pluginManager/proxyEditorManager.h>
 #include <qrgui/plugins/toolPluginInterface/systemEvents.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <qrgui/systemFacade/systemFacade.h>
 
 #include <dialogs/projectManagement/suggestToCreateProjectDialog.h>
@@ -76,6 +75,7 @@
 #include <mouseGestures/gesturesWidget.h>
 
 #include <textEditor/textManager.h>
+#include <textEditor/codeBlockManager.h>
 #include <textEditor/qscintillaTextEdit.h>
 
 #include "qrealApplication.h"
@@ -99,6 +99,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	: mUi(new Ui::MainWindowUi)
 	, mSplashScreen(new SplashScreen(SettingsManager::value("Splashscreen").toBool()))
 	, mController(new Controller)
+	, mCurrentEditor(nullptr)
 	, mRootIndex(QModelIndex())
 	, mErrorReporter(nullptr)
 	, mIsFullscreen(false)
@@ -202,8 +203,35 @@ void MainWindow::connectActions()
 	connect(mUi->graphicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromGraphicalExplorer);
 
-	connect(mUi->actionUndo, SIGNAL(triggered()), mController, SLOT(undo()));
-	connect(mUi->actionRedo, SIGNAL(triggered()), mController, SLOT(redo()));
+	connect(mUi->actionZoom_In, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->zoomIn();
+		}
+	});
+	connect(mUi->actionZoom_Out, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->zoomOut();
+		}
+	});
+
+	connect(mUi->actionCopy, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->copy();
+		}
+	});
+	connect(mUi->actionPaste, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->paste();
+		}
+	});
+	connect(mUi->actionCut, &QAction::triggered, [=]() {
+		if (mCurrentEditor) {
+			mCurrentEditor->cut();
+		}
+	});
+
+	connect(mUi->actionUndo, &QAction::triggered, mController, &Controller::undo);
+	connect(mUi->actionRedo, &QAction::triggered, mController, &Controller::redo);
 
 	connect(mUi->actionPreferences, SIGNAL(triggered()), this, SLOT(showPreferencesDialog()));
 
@@ -367,11 +395,6 @@ void MainWindow::clearSelectionOnTabs()
 	}
 }
 
-void MainWindow::addEditorElementsToPalette(const Id &editor, const Id &diagram)
-{
-	mUi->paletteTree->addEditorElements(editorManager(), editor, diagram);
-}
-
 void MainWindow::adjustMinimapZoom(int zoom)
 {
 	mUi->minimapView->resetMatrix();
@@ -471,12 +494,7 @@ void MainWindow::sceneSelectionChanged()
 		return;
 	}
 
-	IdList selectedIds;
-	for (const QGraphicsItem *item : static_cast<QGraphicsScene *>(sender())->selectedItems()) {
-		if (const Element *element = dynamic_cast<const Element *>(item)) {
-			selectedIds << element->id();
-		}
-	}
+	const IdList selectedIds = dynamic_cast<EditorViewScene *>(sender())->selectedIds();
 
 	if (selectedIds.isEmpty()) {
 		mUi->graphicalModelExplorer->setCurrentIndex(QModelIndex());
@@ -696,6 +714,25 @@ void MainWindow::changeWindowTitle()
 	}
 }
 
+void MainWindow::registerEditor(EditorInterface &editor)
+{
+	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
+			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut);
+	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
+		mCurrentEditor = &editor;
+		const bool zoomingEnabled = editor.supportsZooming();
+		const bool copyEnabled = editor.supportsCopying();
+		const bool pasteEnabled = editor.supportsPasting();
+		const bool cutEnabled = editor.supportsCutting();
+		mUi->actionZoom_In->setEnabled(zoomingEnabled);
+		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
+		mUi->actionCopy->setEnabled(copyEnabled);
+		mUi->actionPaste->setEnabled(pasteEnabled);
+		mUi->actionCut->setEnabled(cutEnabled);
+		mController->setActiveModule(editor.editorId());
+	});
+}
+
 void MainWindow::setTextChanged(bool changed)
 {
 	text::QScintillaTextEdit *area = static_cast<text::QScintillaTextEdit *>(currentTab());
@@ -796,7 +833,7 @@ void MainWindow::closeTab(int index)
 
 	if (diagram) {
 		const Id diagramId = diagram->editorViewScene().rootItemId();
-		mController->diagramClosed(diagramId);
+		mController->moduleClosed(diagramId.toString());
 		emit mFacade->events().diagramClosed(diagramId);
 	} else if (mTextManager->unbindCode(possibleCodeTab)) {
 		emit mFacade->events().codeTabClosed(QFileInfo(path));
@@ -845,7 +882,6 @@ void MainWindow::openShapeEditor(
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 // This method is for Interpreter.
@@ -862,7 +898,6 @@ void MainWindow::openShapeEditor(const Id &id
 
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, const int role
@@ -880,7 +915,6 @@ void MainWindow::openQscintillaTextEditor(const QPersistentModelIndex &index, co
 
 	mUi->tabs->addTab(textEdit, tr("Text Editor"));
 	mUi->tabs->setCurrentWidget(textEdit);
-	setConnectActionZoomTo(textEdit);
 }
 
 void MainWindow::openShapeEditor()
@@ -888,7 +922,6 @@ void MainWindow::openShapeEditor()
 	ShapeEdit * const shapeEdit = new ShapeEdit;
 	mUi->tabs->addTab(shapeEdit, tr("Shape Editor"));
 	mUi->tabs->setCurrentWidget(shapeEdit);
-	setConnectActionZoomTo(shapeEdit);
 }
 
 void MainWindow::openReferenceList(const QPersistentModelIndex &index
@@ -898,53 +931,6 @@ void MainWindow::openReferenceList(const QPersistentModelIndex &index
 	connect(&referenceList, SIGNAL(referenceSet(QStringList, QPersistentModelIndex, int))
 			, this, SLOT(setReference(QStringList, QPersistentModelIndex, int)));
 	referenceList.exec();
-}
-
-void MainWindow::disconnectZoom(QGraphicsView *view)
-{
-	disconnect(mUi->actionZoom_In, SIGNAL(triggered()), view, SLOT(zoomIn()));
-	disconnect(mUi->actionZoom_Out, SIGNAL(triggered()), view, SLOT(zoomOut()));
-}
-
-void MainWindow::connectZoom(QGraphicsView *view)
-{
-	connect(mUi->actionZoom_In, SIGNAL(triggered()), view, SLOT(zoomIn()));
-	connect(mUi->actionZoom_Out, SIGNAL(triggered()), view, SLOT(zoomOut()));
-}
-
-void MainWindow::disconnectActionZoomTo(QWidget* widget)
-{
-	EditorView * const view = dynamic_cast<EditorView *>(widget);
-	if (view != nullptr) {
-		disconnectZoom(view);
-	} else {
-		ShapeEdit *const shapeWidget = dynamic_cast<ShapeEdit *>(widget);
-		if (shapeWidget != nullptr) {
-			disconnectZoom(shapeWidget->getView());
-		}
-	}
-}
-
-void MainWindow::connectActionZoomTo(QWidget* widget)
-{
-	EditorView * const view = (dynamic_cast<EditorView *>(widget));
-	if (view != nullptr) {
-		connectZoom(view);
-	} else {
-		ShapeEdit * const shapeWidget = (dynamic_cast<ShapeEdit *>(widget));
-		if (shapeWidget != nullptr) {
-			connectZoom(shapeWidget->getView());
-		}
-	}
-}
-
-void MainWindow::setConnectActionZoomTo(QWidget* widget)
-{
-	for (int i = 0; i < mUi->tabs->count(); i++) {
-		disconnectActionZoomTo(mUi->tabs->widget(i));
-	}
-
-	connectActionZoomTo(widget);
 }
 
 void MainWindow::centerOn(const Id &id)
@@ -1025,7 +1011,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
 		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()), &EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
-		mController->diagramOpened(diagramId);
+		mController->moduleOpened(diagramId.toString());
 		initCurrentTab(view, index);
 		mUi->tabs->addTab(view, index.data().toString());
 		mUi->tabs->setCurrentWidget(view);
@@ -1172,7 +1158,6 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->minimapView->changeSource(newIndex);
 
 	const bool isEditorTab = getCurrentTab();
-	const bool isShape = isCurrentTabShapeEdit();
 	const bool isStartTab = dynamic_cast<StartWidget *>(mUi->tabs->widget(newIndex));
 	const bool isGesturesTab = dynamic_cast<gestures::GesturesWidget *>(mUi->tabs->widget(newIndex));
 	const bool isDecorativeTab = isStartTab || isGesturesTab;
@@ -1181,21 +1166,12 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave_as->setEnabled(!isDecorativeTab);
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	mUi->actionPrint->setEnabled(!isDecorativeTab);
-
-	mUi->actionRedo->setEnabled(mController->canRedo() && !isShape && !isDecorativeTab);
-	mUi->actionUndo->setEnabled(mController->canUndo() && !isShape && !isDecorativeTab);
 	mUi->actionFind->setEnabled(!isDecorativeTab);
-
-	mUi->actionZoom_In->setEnabled(isEditorTab || isShape);
-	mUi->actionZoom_Out->setEnabled(isEditorTab || isShape);
-
 	mUi->actionGesturesShow->setEnabled(qReal::SettingsManager::value("gesturesEnabled").toBool());
 
 	if (isEditorTab) {
 		const Id currentTabId = getCurrentTab()->mvIface().rootId();
 		mToolManager->activeTabChanged(TabInfo(currentTabId, getCurrentTab()));
-		mUi->graphicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
-		mUi->logicalModelExplorer->changeEditorActionsSet(getCurrentTab()->editorViewScene().editorActions());
 	} else if (text::QScintillaTextEdit * const text = dynamic_cast<text::QScintillaTextEdit *>(currentTab())) {
 		mToolManager->activeTabChanged(TabInfo(mTextManager->path(text), text));
 	} else {
@@ -1210,18 +1186,14 @@ void MainWindow::switchToTab(int index)
 	if (index != -1) {
 		mUi->tabs->setEnabled(true);
 		EditorView *editorView = getCurrentTab();
-		setConnectActionZoomTo(mUi->tabs->currentWidget());
 
 		if (editorView) {
 			getCurrentTab()->mutableMvIface().setModel(models().graphicalModel());
 			getCurrentTab()->mutableMvIface().setLogicalModel(models().logicalModel());
 			mRootIndex = editorView->mvIface().rootIndex();
-			const Id diagramId = models().graphicalModelAssistApi().idByIndex(mRootIndex);
-			mController->setActiveDiagram(diagramId);
 		}
 	} else {
 		mUi->tabs->setEnabled(false);
-		mController->setActiveDiagram(Id());
 	}
 }
 
@@ -1379,18 +1351,12 @@ void MainWindow::showGestures()
 	}
 }
 
-
-ProxyEditorManager &MainWindow::editorManagerProxy()
-{
-	return *static_cast<ProxyEditorManager *>(&editorManager());
-}
-
 void MainWindow::createDiagram(const QString &idString)
 {
 	closeStartTab();
 	const Id id = Id::loadFromString(idString);
 	Id created;
-	if (editorManager().isNodeOrEdge(id.editor(), id.element())) {
+	if (editorManager().isNodeOrEdge(id.type())) {
 		created = models().graphicalModelAssistApi().createElement(Id::rootId(), id);
 	} else {
 		// It is a group
@@ -1468,6 +1434,8 @@ void MainWindow::setIndexesOfPropertyEditor(const Id &id)
 
 void MainWindow::highlight(const Id &graphicalId, bool exclusive, const QColor &color)
 {
+	highlightCode(models().graphicalModelAssistApi().logicalId(graphicalId), true);
+
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
 		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
 		if (!view) {
@@ -1482,8 +1450,29 @@ void MainWindow::highlight(const Id &graphicalId, bool exclusive, const QColor &
 	}
 }
 
+void MainWindow::highlightCode(Id const &graphicalId, bool highlight)
+{
+	text::QScintillaTextEdit *area = dynamic_cast<text::QScintillaTextEdit *>(currentTab());
+
+	if (area) {
+		if (highlight) {
+			QString const filePath = mTextManager->path(area);
+			QPair<int, int> const interval = mTextManager->codeBlockManager().intervalById(filePath, graphicalId);
+			area->setMarkerBackgroundColor(QColor::fromRgb(0, 255, 0));
+			area->markerDefine(text::QScintillaTextEdit::Background, text::QScintillaTextEdit::SC_MARK_BACKGROUND);
+			for (int i = interval.first; i <= interval.second; i++) {
+				area->markerAdd(i - 1, text::QScintillaTextEdit::SC_MARK_BACKGROUND);
+			}
+		} else {
+			area->markerDeleteAll();
+		}
+	}
+}
+
 void MainWindow::dehighlight(const Id &graphicalId)
 {
+	highlightCode(models().graphicalModelAssistApi().logicalId(graphicalId), false);
+
 	for (int i = 0; i < mUi->tabs->count(); ++i) {
 		EditorView * const view = dynamic_cast<EditorView *>(mUi->tabs->widget(i));
 		if (!view) {
@@ -1496,6 +1485,12 @@ void MainWindow::dehighlight(const Id &graphicalId)
 			scene->dehighlight();
 		} else {
 			scene->dehighlight(graphicalId);
+		}
+
+		for (text::QScintillaTextEdit *area : mTextManager->code(view->mvIface().rootId())) {
+			if (mTextManager->isDefaultPath(mTextManager->path(area))) {
+				area->markerDeleteAll();
+			}
 		}
 	}
 }
@@ -1736,6 +1731,7 @@ void MainWindow::initToolPlugins()
 	mToolManager->init(PluginConfigurator(models().repoControlApi()
 		, models().graphicalModelAssistApi()
 		, models().logicalModelAssistApi()
+		, *mController
 		, *this
 		, *this
 		, *mProjectManager
@@ -1811,29 +1807,6 @@ void MainWindow::customizeActionsVisibility()
 	}
 }
 
-void MainWindow::initInterpretedPlugins()
-{
-	mInterpretedPluginLoader.reset(new InterpretedPluginsLoader(
-			editorManagerProxy().proxiedEditorManager()
-			, PluginConfigurator(
-					models().repoControlApi()
-					, models().graphicalModelAssistApi()
-					, models().logicalModelAssistApi()
-					, *this
-					, *this
-					, *mProjectManager
-					, *mSceneCustomizer
-					, mFacade->events()
-					, *mTextManager)
-			)
-	);
-
-	const QList<ActionInfo> actions = mInterpretedPluginLoader->listOfActions();
-	mListOfAdditionalActions = mInterpretedPluginLoader->menuActionsList();
-
-	traverseListOfActions(actions);
-}
-
 void MainWindow::showErrors(const gui::ErrorReporter * const errorReporter)
 {
 	errorReporter->showErrors(mUi->errorListWidget, mUi->errorDock);
@@ -1875,6 +1848,7 @@ void MainWindow::initTabs()
 {
 	mUi->tabs->setTabsClosable(true);
 	mUi->tabs->setMovable(true);
+	registerEditor(*mUi->tabs);
 	connect(mUi->tabs, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
 	connect(mUi->tabs, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 }
@@ -1902,15 +1876,14 @@ void MainWindow::initExplorers()
 	mUi->propertyEditor->init(models().logicalModelAssistApi(), *mController);
 	mUi->propertyEditor->setModel(mPropertyModel.data());
 
+	registerEditor(*mUi->graphicalModelExplorer);
+	registerEditor(*mUi->logicalModelExplorer);
+
 	mUi->graphicalModelExplorer->setModel(models().graphicalModel());
-	mUi->graphicalModelExplorer->setController(mController);
-	mUi->graphicalModelExplorer->setAssistApi(&models().graphicalModelAssistApi());
-	mUi->graphicalModelExplorer->setExploser(models().exploser());
+	mUi->graphicalModelExplorer->initialize(*mController, models(), models().graphicalModelAssistApi());
 
 	mUi->logicalModelExplorer->setModel(models().logicalModel());
-	mUi->logicalModelExplorer->setController(mController);
-	mUi->logicalModelExplorer->setAssistApi(&models().logicalModelAssistApi());
-	mUi->logicalModelExplorer->setExploser(models().exploser());
+	mUi->logicalModelExplorer->initialize(*mController, models(), models().logicalModelAssistApi());
 
 	mPropertyModel->setSourceModels(models().logicalModel(), models().graphicalModel());
 

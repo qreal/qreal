@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,6 +104,12 @@ public:
 	/// Returns false if model is always connected to a robot and there is no need for special order to connect from
 	/// user (like 2d model).
 	virtual bool needsConnection() const = 0;
+
+	/// Requests updates for all configured sensors.
+	virtual void updateSensorsValues() const = 0;
+
+	/// Returns time interval for polling sensors data.
+	virtual int updateIntervalForInterpretation() const = 0;
 
 	/// Returns true if this robot model will be used for interpretation. This will enable run and stop actions on the
 	/// toolbar when this robot model is selected by user.

@@ -39,7 +39,7 @@ public:
 	QRectF calcNecessaryBoundingRect() const override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
-	QDomElement serialize(QDomDocument &document, const QPointF &topLeftPicture) const override;
+	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &element) override;
 
 	QPainterPath shape() const override;

@@ -29,9 +29,11 @@ namespace editor {
 class LineHandler : public QObject
 {
 	Q_OBJECT
+
 public:
-	LineHandler(EdgeElement *edge);
-	virtual ~LineHandler() {}
+	LineHandler(EdgeElement *edge
+		, const LogicalModelAssistInterface &logicalModel
+		, const GraphicalModelAssistInterface &graphicalModel);
 
 	/// Start reshape links, determine whether user tries to move point, segment or port of the link
 	int startMovingEdge(const QPointF &pos);
@@ -147,6 +149,9 @@ protected:
 
 	commands::ReshapeEdgeCommand *mReshapeCommand;
 	bool mReshapeStarted;
+
+	const LogicalModelAssistInterface &mLogicalModel;
+	const GraphicalModelAssistInterface &mGraphicalModel;
 };
 
 }

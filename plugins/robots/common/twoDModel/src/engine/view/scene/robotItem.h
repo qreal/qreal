@@ -39,6 +39,9 @@ public:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 
+	QDomElement serialize(QDomElement &parent) const override;
+	void deserialize(const QDomElement &element) override;
+
 	/// Returns a mapping of ports to connected configured sensors.
 	QMap<kitBase::robotModel::PortInfo, SensorItem *> const &sensors() const;
 

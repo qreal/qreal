@@ -17,6 +17,7 @@
 #include <QtCore/QPersistentModelIndex>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintilla.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include "qrgui/textEditor/textEditorDeclSpec.h"
 #include "qrgui/textEditor/languageInfo.h"
@@ -27,7 +28,7 @@ namespace text {
 /// QScintillaTextEdit is text editor widget based on QsciScintilla (Qt version of Scintilla project) which
 /// can highlight source code on different textual programming languages, can do autocompletion and have lots
 /// of other functionalities of standart code editors.
-class QRGUI_TEXT_EDITOR_EXPORT QScintillaTextEdit : public QsciScintilla
+class QRGUI_TEXT_EDITOR_EXPORT QScintillaTextEdit : public QsciScintilla, public EditorInterface
 {
 	Q_OBJECT
 
@@ -44,6 +45,20 @@ public:
 	/// Applies language editor settings to current editor instance.
 	/// Takes ownership on passed language.
 	void setCurrentLanguage(const LanguageInfo &language);
+
+	QString editorId() const override;
+	bool supportsZooming() const override;
+	bool supportsCopying() const override;
+	bool supportsPasting() const override;
+	bool supportsCutting() const override;
+
+public slots:
+	void zoomIn() override;
+	void zoomOut() override;
+
+	void copy() override;
+	void paste() override;
+	void cut() override;
 
 signals:
 	/// Emitted in destructor to save written text to according model element

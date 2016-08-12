@@ -78,9 +78,9 @@ QRect ArcObject::boundingRect() const
 	return mRect;
 }
 
-void ArcObject::paint(QPainter *painter)
+void ArcObject::paint(QPainter *painter, const QRect &outputRect)
 {
-	CanvasObject::paint(painter);
+	CanvasObject::paint(painter, outputRect);
 	// Multiplying on 16 needed because Qt require argument in 1/16 degree format.
 	painter->drawArc(ellipseRect(), mStartAngle * 16, mSpanAngle * 16);
 }

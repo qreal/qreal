@@ -26,6 +26,9 @@ class QMimeData;
 
 namespace qReal {
 
+class LogicalModelAssistInterface;
+class GraphicalModelAssistInterface;
+
 /// Base for convenient storing node or edge element data for passing it into methods with just one parameter.
 class QRGUI_MODELS_EXPORT ElementInfo
 {

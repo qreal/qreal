@@ -21,7 +21,7 @@ unix:!macx {
 	BINDIR = $$PREFIX/bin
 	DATADIR = $$PREFIX/share
 	PROGRAMDIR = $$DATADIR/trikStudio
-	PLUGINDIR = $$LIBDIR/trikStudio
+	PLUGINDIR = $$LIBDIR/trikStudio/plugins
 	CONFFILE = /etc/trikStudio.config
 
 	#MAKE INSTALL

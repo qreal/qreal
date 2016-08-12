@@ -336,13 +336,13 @@ void ShapeEdit::save()
 	if (mIndex.isValid()) {
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 	} else {
-		mEditorManager->updateShape(mId, mDocument.toString(4));
+		mEditorManager->updateShape(mId, mDocument.documentElement());
 		foreach (const Id graphicalElement, mGraphicalElements) {
-			mEditorManager->updateShape(graphicalElement, mDocument.toString(4));
+			mEditorManager->updateShape(graphicalElement, mDocument.documentElement());
 			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
 				qReal::gui::editor::NodeElement * const element = dynamic_cast<qReal::gui::editor::NodeElement *>(item);
 				if (element && element->id().type() == mId.type()) {
-					element->updateShape(mDocument.toString(4));
+					element->updateShape(mDocument.documentElement());
 				}
 			}
 		}
@@ -395,6 +395,41 @@ void ShapeEdit::load(const QString &text)
 
 	XmlLoader loader(mScene);
 	loader.readString(text);
+}
+
+QString ShapeEdit::editorId() const
+{
+	return "qReal.ShapeEditor";
+}
+
+bool ShapeEdit::supportsZooming() const
+{
+	return true;
+}
+
+bool ShapeEdit::supportsCopying() const
+{
+	return false;
+}
+
+bool ShapeEdit::supportsPasting() const
+{
+	return false;
+}
+
+bool ShapeEdit::supportsCutting() const
+{
+	return false;
+}
+
+void ShapeEdit::zoomIn()
+{
+	mUi->graphicsView->zoomIn();
+}
+
+void ShapeEdit::zoomOut()
+{
+	mUi->graphicsView->zoomOut();
 }
 
 void ShapeEdit::addImage(bool checked)

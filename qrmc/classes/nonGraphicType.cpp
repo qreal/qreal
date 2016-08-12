@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,9 +18,10 @@
 
 using namespace qrmc;
 
-NonGraphicType::NonGraphicType(Diagram *diagram, qrRepo::LogicalRepoApi *api, const qReal::Id &id)
+NonGraphicType::NonGraphicType(const Diagram &diagram, const qrRepo::LogicalRepoApi &api, const qReal::Id &id)
 	: Type(true, diagram, api, id)
-{}
+{
+}
 
 bool NonGraphicType::resolve()
 {

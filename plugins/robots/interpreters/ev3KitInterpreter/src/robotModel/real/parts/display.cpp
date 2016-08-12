@@ -81,14 +81,6 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 	mRobotCommunicator.send(this, command, 3);
 }
 
-void Display::drawRect(int x, int y, int width, int height)
-{
-	Q_UNUSED(x)
-	Q_UNUSED(y)
-	Q_UNUSED(width)
-	Q_UNUSED(height)
-}
-
 void Display::drawCircle(int x, int y, int radius, bool filled)
 {
 	QByteArray command = Ev3DirectCommand::formCommand(22, 0, 0, 0

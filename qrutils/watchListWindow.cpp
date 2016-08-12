@@ -15,6 +15,7 @@
 #include "watchListWindow.h"
 #include "ui_watchListWindow.h"
 
+#include <QtGui/QClipboard>
 #include <functional>
 
 using namespace utils;
@@ -40,6 +41,7 @@ WatchListWindow::WatchListWindow(const utils::ExpressionsParser * const parser
 	mUi->setupUi(this);
 	connect(&mTimer, &QTimer::timeout, this, &WatchListWindow::updateVariables);
 	mTimer.start(watchWindowRefreshInterval);
+	connect(mUi->watchListTableWidget, &QTableWidget::cellClicked, &focusAction(), &QAction::trigger);
 }
 
 WatchListWindow::~WatchListWindow()
@@ -111,9 +113,34 @@ QString WatchListWindow::toString(const QVariant &value) const
 	return value.toString();
 }
 
+void WatchListWindow::focusInEvent(QFocusEvent *event)
+{
+	QDockWidget::focusInEvent(event);
+	onFocusIn();
+}
+
 void WatchListWindow::hideVariables(const QStringList &variableNames)
 {
 	for (const QString &variableName : variableNames) {
 		mHiddenVariables.insert(variableName);
+	}
+}
+
+QString WatchListWindow::editorId() const
+{
+	return "TrikStudio.WatchListWindow";
+}
+
+bool WatchListWindow::supportsCopying() const
+{
+	return true;
+}
+
+void WatchListWindow::copy()
+{
+	QTableWidgetItem * const currentItem = mUi->watchListTableWidget->currentItem();
+	if (currentItem && !currentItem->text().isEmpty()) {
+		QClipboard *clipboard = QApplication::clipboard();
+		clipboard->setText(currentItem->text());
 	}
 }

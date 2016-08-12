@@ -14,17 +14,18 @@
 
 #include "statCircular.h"
 
+#include <QtGui/QPainter>
+
 using namespace qReal::gui::editor;
 
-StatCircular::StatCircular(const QPointF &center, const qreal &r, bool propX, bool propY, int initWidth
-		, int initHeight, PortImpl *impl)
-	: PortInterface(impl)
-	, mCenter(center)
-	, mPropX(propX)
-	, mPropY(propY)
-	, mR(r)
-	, mInitWidth(initWidth)
-	, mInitHeight(initHeight)
+StatCircular::StatCircular(const CircularPortInfo &info)
+	: mCenter(info.center)
+	, mPropX(info.scalesX)
+	, mPropY(info.scalesY)
+	, mR(info.radius)
+	, mInitWidth(info.initWidth)
+	, mInitHeight(info.initHeight)
+	, mType(info.type)
 {
 }
 
@@ -68,4 +69,9 @@ StatCircular::CircularPort StatCircular::transformForContents(const QRectF &cont
 	port.rx = rx;
 	port.ry = ry;
 	return port;
+}
+
+QString StatCircular::type() const
+{
+	return mType;
 }

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,11 @@
 
 #include <QtGui/QFocusEvent>
 
-#include "models/commands/renameCommand.h"
-#include "models/details/modelsImplementation/abstractModel.h"
+#include <qrgui/controller/controller.h>
+#include <qrgui/models/clipboard.h>
+#include <qrgui/models/models.h>
+#include <qrgui/models/commands/renameCommand.h>
+#include <qrgui/models/details/modelsImplementation/abstractModel.h>
 
 using namespace qReal;
 using namespace gui;
@@ -27,39 +30,78 @@ ModelExplorer::ModelExplorer(QWidget *parent)
 	: QTreeView(parent)
 	, mController(nullptr)
 	, mModel(nullptr)
+	, mExploser(nullptr)
+	, mClipboard(nullptr)
 	, mDeleteAction(tr("Delete"), this)
-	, mDeleteActionSeparator(this)
 {
 	mDeleteAction.setShortcut(QKeySequence(Qt::Key_Delete));
 	connect(&mDeleteAction, &QAction::triggered, this, &ModelExplorer::elementRemoved);
-	mDeleteActionSeparator.setSeparator(true);
 	mDeleteAction.setEnabled(false);
-}
 
-void ModelExplorer::setController(Controller * const controller)
-{
-	mController = controller;
-}
-
-void ModelExplorer::setAssistApi(details::ModelsAssistInterface * const model)
-{
-	mModel = model;
-}
-
-void ModelExplorer::setExploser(const models::Exploser &exploser)
-{
-	mExploser = &exploser;
-}
-
-void ModelExplorer::changeEditorActionsSet(QList<QAction *> const &actions)
-{
-	for (QAction * const action : this->actions()) {
-		removeAction(action);
-	}
+	QAction * const deleteActionSeparator = new QAction(this);
+	deleteActionSeparator->setSeparator(true);
 
 	addAction(&mDeleteAction);
-	addAction(&mDeleteActionSeparator);
-	addActions(actions);
+	addAction(deleteActionSeparator);
+}
+
+ModelExplorer::~ModelExplorer()
+{
+}
+
+void ModelExplorer::initialize(Controller &controller, const models::Models &models
+		, details::ModelsAssistInterface &model)
+{
+	mController = &controller;
+	mModel = &model;
+	mExploser = &models.exploser();
+	mClipboard.reset(new models::Clipboard(controller, models));
+
+	// This is bad, but for now we consider that registerEditor() was already invoked by system.
+	// Later when model explorers will be pluginized this will be done manually in init(), so this
+	// consideration will live for a while.
+	addAction(mCopyAction);
+	addAction(mPasteAction);
+	addAction(mCutAction);
+}
+
+QString ModelExplorer::editorId() const
+{
+	return "qReal." + objectName();
+}
+
+bool ModelExplorer::supportsCopying() const
+{
+	return true;
+}
+
+bool ModelExplorer::supportsPasting() const
+{
+	return true;
+}
+
+bool ModelExplorer::supportsCutting() const
+{
+	return true;
+}
+
+void ModelExplorer::copy()
+{
+	const Id id = mModel->idByIndex(currentIndex());
+	mClipboard->copy({id});
+}
+
+void ModelExplorer::paste()
+{
+	const Id selectedId = mModel->idByIndex(currentIndex());
+	const Id rootId = selectedId.isNull() ? Id::rootId() : selectedId;
+	mClipboard->paste(rootId, QPointF(), false);
+}
+
+void ModelExplorer::cut()
+{
+	copy();
+	emit elementRemoved();
 }
 
 void ModelExplorer::commitData(QWidget *editor)
@@ -73,23 +115,32 @@ void ModelExplorer::commitData(QWidget *editor)
 	}
 }
 
-
-void ModelExplorer::focusOutEvent(QFocusEvent *event)
+void ModelExplorer::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-	if (event->reason() != Qt::PopupFocusReason) {
-		setActionsEnabled(false);
-	}
+	QTreeView::selectionChanged(selected, deselected);
+	updateActions();
 }
 
 void ModelExplorer::focusInEvent(QFocusEvent *event)
 {
-	Q_UNUSED(event)
-	setActionsEnabled(true);
+	QTreeView::focusInEvent(event);
+	onFocusIn();
+	updateActions();
+	mDeleteAction.setEnabled(true);
 }
 
-void ModelExplorer::setActionsEnabled(bool enabled)
+void ModelExplorer::focusOutEvent(QFocusEvent *event)
 {
-	for (QAction * const action : actions()) {
-		action->setEnabled(enabled);
+	QTreeView::focusOutEvent(event);
+	if (event->reason() != Qt::PopupFocusReason) {
+		mDeleteAction.setEnabled(false);
 	}
+}
+
+void ModelExplorer::updateActions()
+{
+	const bool itemSelected = !selectedIndexes().isEmpty();
+	mCopyAction->setEnabled(itemSelected);
+	mCutAction->setEnabled(itemSelected);
+	mPasteAction->setEnabled(!mClipboard.isNull() && !mClipboard->isEmpty());
 }

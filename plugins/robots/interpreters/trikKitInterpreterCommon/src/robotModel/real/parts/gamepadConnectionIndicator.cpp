@@ -28,12 +28,13 @@ GamepadConnectionIndicator::GamepadConnectionIndicator(const DeviceInfo &info, c
 
 void GamepadConnectionIndicator::read()
 {
-	mRobotCommunicator.requestData(port().name());
+	emit newData(mOldValue);
 }
 
 void GamepadConnectionIndicator::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
-		emit newData(value);
+		mOldValue = value;
+		emit newData(mOldValue);
 	}
 }

@@ -55,7 +55,7 @@ void GraphicalModelView::rowsInserted(const QModelIndex &parent, int start, int 
 		// structures may be very different by themselves.
 		LogicalModel * const logicalModel = static_cast<LogicalModel *>(mModel);
 
-		const bool isEdge = mModel->editorManagerInterface().isNodeOrEdge(logicalId.editor(), logicalId.element());
+		const bool isEdge = mModel->editorManagerInterface().isNodeOrEdge(logicalId.type());
 
 		ElementInfo elementInfo(logicalId, logicalId, parentLogicalId, Id(), {{"name", name}}, {}, Id(), isEdge);
 		logicalModel->addElementToModel(elementInfo);
@@ -71,8 +71,7 @@ void GraphicalModelView::dataChanged(const QModelIndex &topLeft, const QModelInd
 	}
 
 	for (int row = topLeft.row(); row <= bottomRight.row(); ++row) {
-		QModelIndex current = topLeft.sibling(row, 0);
-
+		const QModelIndex current = topLeft.sibling(row, 0);
 		const Id logicalId = current.data(roles::logicalIdRole).value<Id>();
 		static_cast<LogicalModel *>(mModel)->updateElements(logicalId, current.data(Qt::DisplayRole).toString());
 	}

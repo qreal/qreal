@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2013-2016 CyberTech Labs Ltd., Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ protected:
 	virtual kitBase::robotModel::DeviceInfo buttonInfo() const;
 
 	virtual kitBase::robotModel::DeviceInfo powerMotorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo powerMotorsAggregatorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo servoMotorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo encoderInfo() const;
 

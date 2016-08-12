@@ -12,13 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include "repositoryTest.h"
+
 #include <QtCore/QFile>
 #include <QtCore/QDir>
 
-#include "repositoryTest.h"
-#include "../../../qrrepo/private/classes/logicalObject.h"
-#include "../../../qrkernel/exception/exception.h"
-#include "../../../qrkernel/settingsManager.h"
+#include <qrrepo/private/classes/logicalObject.h>
+#include <qrkernel/exception/exception.h>
+#include <qrkernel/settingsManager.h>
 
 using namespace qrRepo;
 using namespace details;

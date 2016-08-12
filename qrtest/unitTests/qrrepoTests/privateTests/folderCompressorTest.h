@@ -20,8 +20,8 @@
 
 namespace qrTest {
 
-class FolderCompressorTest : public testing::Test {
-
+class FolderCompressorTest : public testing::Test
+{
 protected:
 	virtual void SetUp();
 

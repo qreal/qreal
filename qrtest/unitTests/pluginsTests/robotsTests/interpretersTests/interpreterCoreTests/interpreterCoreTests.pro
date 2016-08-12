@@ -20,12 +20,11 @@ include(../../../../../../plugins/robots/interpreters/interpreterCore/interprete
 
 links(qrkernel qslog test-utils qrgui-text-editor)
 
-INCLUDEPATH += \
-	$$PWD/../../../../../../plugins/robots/interpreters \
-	$$PWD/../../../../../../plugins/robots/interpreters/interpreterCore \
-	$$PWD/../../../../../../plugins/robots/common/kitBase/include \
-	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include \
-	$$PWD/../../../../mocks/plugins/robots/interpreters \
+includes(plugins/robots/interpreters \
+	plugins/robots/interpreters/interpreterCore \
+	plugins/robots/common/kitBase \
+	qrtest/unitTests/mocks/plugins/robots/common/kitBase \
+	qrtest/unitTests/mocks/plugins/robots/interpreters)
 
 # Tests
 HEADERS += \

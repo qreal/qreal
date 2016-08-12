@@ -58,7 +58,8 @@ public:
 	/// @param y - y coordinate.
 	/// @param width - rect's width.
 	/// @param height - rect's height.
-	virtual void drawRect(int x, int y, int width, int height) = 0;
+	/// @param filled - rect's fill.
+	virtual void drawRect(int x, int y, int width, int height, bool filled) = 0;
 
 	/// Redraws all the contents on the screen.
 	/// @warning This opeartion is pretty slow, so it shouldn`t be called without need.

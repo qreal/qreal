@@ -1,4 +1,4 @@
-/* Copyright 2007-2016 QReal Research Group, Dmitry Mordvinov, Yurii Litvinov
+/* Copyright 2013-2016 CyberTech Labs Ltd., Dmitry Mordvinov, Yurii Litvinov, Grigorii Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ namespace robotCommunication {
 enum class MessageKind
 {
 	text
+	, fileContents
+	, mail
 	, info
 	, error
 };
@@ -71,6 +73,9 @@ public:
 
 	/// Requests telemetry data for given sensor.
 	Q_INVOKABLE void requestData(const QString &sensor);
+
+	/// Requests telemetry data for all ports.
+	Q_INVOKABLE void requestData();
 
 	/// Establishes connection.
 	Q_INVOKABLE void connect();
@@ -133,6 +138,9 @@ private slots:
 	void onVersionTimeOut();
 
 private:
+	/// Handles value from telemetry message from robot. Emits signals with sensor data.
+	void handleValue(const QString &data);
+
 	/// Sends message using message length protocol (message is in form "<data length in bytes>:<data>").
 	void send(const QString &data, QTcpSocket &socket);
 

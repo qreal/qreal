@@ -119,10 +119,11 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			isButton = true;
 		} else if (!values.isEmpty()) {
 			type = QtVariantPropertyManager::enumTypeId();
-		} else {
-			if (name == "shape" || mModel->isReference(valueCell, name)) { // hack
-				isButton = true;
-			}
+		}
+
+		/// @todo: Not property name should be hard-coded, new type must be introduced (like 'sdf' or 'qml')!
+		if ((name == "shape" && typeName == "string") || mModel->isReference(valueCell, name)) { // hack
+			isButton = true;
 		}
 
 		QtProperty *item = nullptr;
@@ -177,10 +178,11 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 		QVariant value = valueIndex.data();
 		if (property) {
-			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()
-					&& !mModel->enumEditable(valueIndex))
-			{
-				value = enumPropertyIndexOf(valueIndex, value.toString());
+			if (property->propertyType() == QtVariantPropertyManager::enumTypeId()) {
+				const int index = enumPropertyIndexOf(valueIndex, value.toString());
+				if (!mModel->enumEditable(valueIndex) || index >= 0) {
+					value = index;
+				}
 			}
 
 			setPropertyValue(property, value);

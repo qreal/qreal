@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,34 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
+#include <qrutils/qRealFileDialog.h>
+#include <qrgui/controller/controllerInterface.h>
+
+#include <kitBase/robotModel/robotParts/touchSensor.h>
+#include <kitBase/robotModel/robotParts/colorSensor.h>
+#include <kitBase/robotModel/robotParts/lightSensor.h>
+#include <kitBase/robotModel/robotParts/rangeSensor.h>
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 #include "robotItem.h"
 
 #include "twoDModel/engine/model/model.h"
+#include "twoDModel/engine/model/image.h"
+#include "src/engine/view/scene/sensorItem.h"
+#include "src/engine/view/scene/sonarSensorItem.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
+#include "src/engine/items/imageItem.h"
 #include "src/engine/items/regions/regionItem.h"
 #include "src/engine/items/startPosition.h"
+
+#include "src/engine/commands/createWorldItemCommand.h"
+#include "src/engine/commands/removeWorldItemsCommand.h"
+#include "src/engine/commands/removeSensorCommand.h"
+#include "src/engine/commands/reshapeCommand.h"
 
 using namespace twoDModel;
 using namespace view;
@@ -53,6 +70,7 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::imageItemAdded, this, &TwoDModelScene::onImageItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &TwoDModelScene::onItemRemoved);
@@ -68,6 +86,11 @@ TwoDModelScene::~TwoDModelScene()
 bool TwoDModelScene::oneRobot() const
 {
 	return mRobots.size() == 1;
+}
+
+void TwoDModelScene::setController(ControllerInterface &controller)
+{
+	mController = &controller;
 }
 
 void TwoDModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
@@ -115,6 +138,7 @@ void TwoDModelScene::onRobotAdd(model::RobotModel *robotModel)
 
 	addItem(robotItem);
 	addItem(robotItem->robotModel().startPositionMarker());
+	subscribeItem(static_cast<AbstractItem *>(robotModel->startPositionMarker()));
 
 	mRobots.insert(robotModel, robotItem);
 
@@ -136,6 +160,7 @@ void TwoDModelScene::onRobotRemove(model::RobotModel *robotModel)
 void TwoDModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
+	subscribeItem(wall);
 	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
 	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
@@ -144,6 +169,15 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
 	addItem(item);
+	subscribeItem(item);
+	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	item->setEditable(!mWorldReadOnly);
+}
+
+void TwoDModelScene::onImageItemAdded(graphicsUtils::AbstractItem *item)
+{
+	addItem(item);
+	subscribeItem(item);
 	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	item->setEditable(!mWorldReadOnly);
 }
@@ -155,6 +189,29 @@ void TwoDModelScene::onItemRemoved(QGraphicsItem *item)
 	// We delete the item not immediately cause in other handlers of WorldModel`s itemRemoved() signal
 	// it may still be used.
 	utils::DeleteLaterHelper<QGraphicsItem>::deleteLater(item);
+}
+
+void TwoDModelScene::drawAxes(QPainter *painter)
+{
+	painter->save();
+
+	const int arrowSize = 5;
+	const QRectF visibleRect = views().first()->mapToScene(views().first()->viewport()->geometry()).boundingRect();
+
+	QPen pen = painter->pen();
+	pen.setColor(Qt::gray);
+	pen.setWidth(2);
+	pen.setStyle(Qt::DashLine);
+	painter->setPen(pen);
+
+	painter->drawLine(QLineF(0, visibleRect.top(), 0, visibleRect.bottom()));
+	painter->drawLine(QLineF(0, visibleRect.bottom(), -arrowSize, visibleRect.bottom() - arrowSize));
+	painter->drawLine(QLineF(0, visibleRect.bottom(), arrowSize, visibleRect.bottom() - arrowSize));
+	painter->drawLine(QLineF(visibleRect.left(), 0, visibleRect.right(), 0));
+	painter->drawLine(QLineF(visibleRect.right(), 0, visibleRect.right() - arrowSize, -arrowSize));
+	painter->drawLine(QLineF(visibleRect.right(), 0, visibleRect.right() - arrowSize, arrowSize));
+
+	painter->restore();
 }
 
 void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
@@ -269,55 +326,52 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	emit mouseReleased();
 
 	// After dragging item may be null. We mustn`t select it in that case.
-	QGraphicsItem *itemToSelect = nullptr;
+	AbstractItem *createdItem = nullptr;
 	switch (mDrawingAction){
 	case wall: {
 		reshapeWall(mouseEvent);
-		itemToSelect = mCurrentWall;
+		createdItem = mCurrentWall;
 		mCurrentWall = nullptr;
 		break;
 	}
 	case line: {
 		reshapeLine(mouseEvent);
-		itemToSelect = mCurrentLine;
+		createdItem = mCurrentLine;
 		mCurrentLine = nullptr;
 		break;
 	}
 	case bezier: {
 		reshapeCurve(mouseEvent);
-		itemToSelect = mCurrentCurve;
+		createdItem = mCurrentCurve;
 		mCurrentCurve = nullptr;
 		break;
 	}
 	case stylus: {
 		reshapeStylus(mouseEvent);
-		itemToSelect = mCurrentStylus;
+		createdItem = mCurrentStylus;
 		mCurrentStylus = nullptr;
 		break;
 	}
 	case rectangle: {
 		reshapeRectangle(mouseEvent);
-		itemToSelect = mCurrentRectangle;
+		createdItem = mCurrentRectangle;
 		mCurrentRectangle = nullptr;
 		break;
 	}
 	case ellipse: {
 		reshapeEllipse(mouseEvent);
-		itemToSelect = mCurrentEllipse;
+		createdItem = mCurrentEllipse;
 		mCurrentEllipse = nullptr;
 		break;
 	}
 	default:
-		if (itemToSelect) {
+		if (createdItem) {
 			forReleaseResize(mouseEvent);
 		}
 		break;
 	}
 
-	if (itemToSelect) {
-		itemToSelect->setSelected(true);
-	}
-
+	registerInUndoStack(createdItem);
 	setMoveFlag(mouseEvent);
 
 	for (RobotItem * const robotItem : mRobots) {
@@ -328,37 +382,84 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
 
-void TwoDModelScene::deleteItem(QGraphicsItem *item)
+void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	if (!items().contains(item)) {
-		return;
-	}
-
-	if (SensorItem * const sensor = dynamic_cast<SensorItem *>(item)) {
-		for (RobotItem * const robotItem : mRobots.values()) {
-			const kitBase::robotModel::PortInfo port = robotItem->sensors().key(sensor);
-			if (port.isValid()) {
-				deviceConfigurationChanged(robotItem->robotModel().info().robotId()
-						, port, kitBase::robotModel::DeviceInfo(), Reason::userAction);
+	const QList<QGraphicsItem *> itemsUnderCursor = items(mouseEvent->scenePos());
+	const bool isSceneClick = itemsUnderCursor.count() == 1 && itemsUnderCursor.first() == mEmptyRect;
+	if (isSceneClick && mBackgroundRect.contains(mouseEvent->scenePos().toPoint())) {
+		items::ImageItem *item = new items::ImageItem(mBackground, mBackgroundRect);
+		mBackground = model::Image();
+		mBackgroundRect = QRect();
+		mModel.worldModel().addImage(item);
+		item->setSelected(true);
+		connect(this, &TwoDModelScene::escapePressed, this, [=]() { item->setSelected(false); });
+		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {
+			if (!selected) {
+				mBackground = item->image();
+				mBackgroundRect.setLeft(item->x1() + item->x());
+				mBackgroundRect.setTop(item->y1() + item->y());
+				mBackgroundRect.setRight(item->x2() + item->x());
+				mBackgroundRect.setBottom(item->y2() + item->y());
+				mModel.worldModel().removeImage(item);
+				update();
 			}
-		}
-	} else if (items::WallItem * const wall = dynamic_cast<items::WallItem *>(item)) {
-		mModel.worldModel().removeWall(wall);
-		mCurrentWall = nullptr;
-	} else if (items::ColorFieldItem *colorField = dynamic_cast<items::ColorFieldItem *>(item)) {
-		mModel.worldModel().removeColorField(colorField);
-		mCurrentLine = nullptr;
-		mCurrentStylus = nullptr;
-		mCurrentEllipse = nullptr;
-		mCurrentRectangle = nullptr;
-		mCurrentCurve = nullptr;
+		});
 	}
 }
 
 void TwoDModelScene::deleteSelectedItems()
 {
+	QStringList worldItemsToDelete;
+	QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> sensorsToDelete;
 	for (QGraphicsItem * const item : selectedItems()) {
-		deleteItem(item);
+		SensorItem * const sensor = dynamic_cast<SensorItem *>(item);
+		items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
+		items::ColorFieldItem * const colorField = dynamic_cast<items::ColorFieldItem *>(item);
+		items::ImageItem * const image = dynamic_cast<items::ImageItem *>(item);
+
+		if (sensor && !mSensorsReadOnly) {
+			for (RobotItem * const robotItem : mRobots.values()) {
+				const kitBase::robotModel::PortInfo port = robotItem->sensors().key(sensor);
+				if (port.isValid()) {
+					sensorsToDelete << qMakePair(&robotItem->robotModel(), port);
+				}
+			}
+		} else if (wall && !mWorldReadOnly) {
+			worldItemsToDelete << wall->id();
+			mCurrentWall = nullptr;
+		} else if (colorField && !mWorldReadOnly) {
+			worldItemsToDelete << colorField->id();
+			mCurrentLine = nullptr;
+			mCurrentStylus = nullptr;
+			mCurrentEllipse = nullptr;
+			mCurrentRectangle = nullptr;
+			mCurrentCurve = nullptr;
+		} else if (image && !mWorldReadOnly) {
+			mModel.worldModel().removeImage(image);
+		}
+	}
+
+	deleteWithCommand(worldItemsToDelete, sensorsToDelete, {});
+}
+
+void TwoDModelScene::deleteWithCommand(const QStringList &worldItems
+		, const QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> &sensors
+		, const QList<qReal::commands::AbstractCommand *> &additionalCommands)
+{
+	const bool shouldCreateCommand = !worldItems.isEmpty() || !sensors.isEmpty();
+	if (mController && shouldCreateCommand) {
+		auto command = new commands::RemoveWorldItemsCommand(mModel, worldItems);
+		// Appending sensors deletion commands
+		for (const QPair<model::RobotModel *, kitBase::robotModel::PortInfo> &sensor : sensors) {
+			command->addPostAction(new commands::RemoveSensorCommand(sensor.first->configuration()
+					, sensor.first->info().robotId(), sensor.second));
+		}
+
+		for (qReal::commands::AbstractCommand * const additionalCommand : additionalCommands) {
+			command->addPostAction(additionalCommand);
+		}
+
+		mController->execute(command);
 	}
 }
 
@@ -388,22 +489,10 @@ void TwoDModelScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 
 void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Delete && (selectedItems().size() > 0)) {
-		for (QGraphicsItem * const item : selectedItems()) {
-			const bool isWorldItem = dynamic_cast<items::ColorFieldItem *>(item)
-					|| dynamic_cast<items::WallItem *>(item);
-			const bool isRobotItem = dynamic_cast<RobotItem *>(item) != nullptr;
-			const bool isSensorItem = dynamic_cast<SensorItem *>(item) != nullptr;
-			if (isWorldItem && mWorldReadOnly) {
-				return;
-			} else if (isRobotItem && mRobotReadOnly) {
-				return;
-			} else if (isSensorItem && mSensorsReadOnly) {
-				return;
-			}
-
-			deleteItem(item);
-		}
+	if (event->key() == Qt::Key_Delete) {
+		deleteSelectedItems();
+	} else if (event->key() == Qt::Key_Escape) {
+		emit escapePressed();
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
@@ -411,12 +500,17 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 
 void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
+	if (mBackground.isValid()) {
+		mBackground.draw(*painter, mBackgroundRect, currentZoom());
+	}
+
 	if (SettingsManager::value("2dShowGrid").toBool()) {
 		mWidthOfGrid = SettingsManager::value("GridWidth").toReal() / 100;
 		painter->setPen(QPen(Qt::black, mWidthOfGrid));
 		QGraphicsScene::drawBackground(painter, rect);
 		const int cellSize = SettingsManager::value("2dGridCellSize").toInt();
 		mGridDrawer.drawGrid(painter, rect, cellSize);
+		drawAxes(painter);
 	}
 }
 
@@ -450,6 +544,25 @@ void TwoDModelScene::addEllipse()
 	mDrawingAction = ellipse;
 }
 
+void TwoDModelScene::addImage()
+{
+	// Loads world and robot models simultaneously.
+	const QString loadFileName = utils::QRealFileDialog::getOpenFileName("2DSelectImage", views().first()
+			, tr("Select image"), "./fields", tr("Graphics (*.*)"));
+	if (loadFileName.isEmpty()) {
+		return;
+	}
+
+	mDrawingAction = image;
+	const model::Image image(loadFileName, false);
+	const QSize size = image.preferedSize();
+	const QRect rect(QPoint(-size.width() / 2, -size.height() / 2), size);
+	twoDModel::items::ImageItem *result = new twoDModel::items::ImageItem(image, rect);
+	mModel.worldModel().addImage(result);
+	registerInUndoStack(result);
+	setNoneStatus();
+}
+
 void TwoDModelScene::setNoneStatus()
 {
 	mDrawingAction = none;
@@ -457,16 +570,56 @@ void TwoDModelScene::setNoneStatus()
 
 void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 {
-	mModel.worldModel().clear();
+	if (reason == Reason::userAction) {
+		// User pressed clear button, this action must be undone when required, so executing it with command.
 
-	for (model::RobotModel *robotModel : mRobots.keys()) {
-		robotModel->clear();
-		if (removeRobot) {
-			for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
-				deviceConfigurationChanged(robotModel->info().robotId()
-						, port, kitBase::robotModel::DeviceInfo(), reason);
+		QStringList worldItemsToDelete;
+		for (const items::WallItem *wall : mModel.worldModel().walls()) {
+			worldItemsToDelete << wall->id();
+		}
+		for (const items::ColorFieldItem *colorField : mModel.worldModel().colorFields()) {
+			worldItemsToDelete << colorField->id();
+		}
+		for (const items::RegionItem *region : mModel.worldModel().regions()) {
+			worldItemsToDelete << region->id();
+		}
+
+		QList<QPair<model::RobotModel *, kitBase::robotModel::PortInfo>> sensorsToDelete;
+		QList<qReal::commands::AbstractCommand *> additionalCommands;
+		for (model::RobotModel *robotModel : mRobots.keys()) {
+			commands::ReshapeCommand * const reshapeCommand = new commands::ReshapeCommand(*this, mModel
+					, {mRobots[robotModel]->id()});
+			reshapeCommand->startTracking();
+			robotModel->clear();
+			reshapeCommand->stopTracking();
+			additionalCommands << reshapeCommand;
+			if (removeRobot) {
+				for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
+					sensorsToDelete << qMakePair(robotModel, port);
+				}
 			}
 		}
+
+		deleteWithCommand(worldItemsToDelete, sensorsToDelete, additionalCommands);
+
+		// Clear trace action mustn`t be undone though
+		mModel.worldModel().clearRobotTrace();
+
+	} else {
+		// The model is being reloaded, we can make it without undo-redo, so a bit faster
+
+		mModel.worldModel().clear();
+
+		for (model::RobotModel *robotModel : mRobots.keys()) {
+			robotModel->clear();
+			if (removeRobot) {
+				for (const kitBase::robotModel::PortInfo &port : robot(*robotModel)->sensors().keys()) {
+					deviceConfigurationChanged(robotModel->info().robotId()
+							, port, kitBase::robotModel::DeviceInfo(), reason);
+				}
+			}
+		}
+
 	}
 }
 
@@ -554,6 +707,48 @@ void TwoDModelScene::reshapeEllipse(QGraphicsSceneMouseEvent *event)
 	}
 }
 
+void TwoDModelScene::registerInUndoStack(AbstractItem *item)
+{
+	if (item) {
+		item->setSelected(true);
+		if (mDrawingAction != none && mController) {
+			commands::CreateWorldItemCommand *command = new commands::CreateWorldItemCommand(mModel, item->id());
+			// Command was already executed when element was drawn by user. So we should create it in redone state.
+			command->setRedoEnabled(false);
+			mController->execute(command);
+			command->setRedoEnabled(true);
+		}
+	}
+}
+
+void TwoDModelScene::subscribeItem(AbstractItem *item)
+{
+	connect(item, &AbstractItem::mouseInteractionStarted, this, [=]() {
+		if (mDrawingAction == none) {
+			QStringList selectedIds;
+			for (const QGraphicsItem *item : selectedItems()) {
+				if (const AbstractItem *itemWithId = dynamic_cast<const AbstractItem *>(item)) {
+					selectedIds << itemWithId->id();
+				}
+			}
+
+			mCurrentReshapeCommand = new commands::ReshapeCommand(*this, mModel, selectedIds);
+			mCurrentReshapeCommand->startTracking();
+		}
+	});
+
+	connect(item, &AbstractItem::mouseInteractionStopped, this, [=]() {
+		if (mDrawingAction == none) {
+			mCurrentReshapeCommand->stopTracking();
+			if (mController) {
+				mController->execute(mCurrentReshapeCommand);
+			}
+
+			mCurrentReshapeCommand = nullptr;
+		}
+	});
+}
+
 void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos)
 {
 	bool isNeedStop = false;
@@ -574,6 +769,11 @@ void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath 
 			wall->setCoordinates(oldPos);
 		}
 	}
+}
+
+qreal TwoDModelScene::currentZoom() const
+{
+	return views().isEmpty() ? 1.0 : views().first()->transform().m11();
 }
 
 void TwoDModelScene::alignWalls()
@@ -608,4 +808,60 @@ void TwoDModelScene::centerOnRobot(RobotItem *selectedItem)
 			view->centerOn(robotItem);
 		}
 	}
+}
+
+model::Image TwoDModelScene::background() const
+{
+	return mBackground;
+}
+
+QRect TwoDModelScene::backgroundRect() const
+{
+	return mBackgroundRect;
+}
+
+void TwoDModelScene::setBackground(const model::Image &background, const QRect &backgroundRect)
+{
+	if (mBackground != background || mBackgroundRect != backgroundRect) {
+		mBackground = background;
+		mBackgroundRect = backgroundRect;
+		update();
+	}
+}
+
+void TwoDModelScene::reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port)
+{
+	robotItem->removeSensor(port);
+	model::RobotModel &robotModel = robotItem->robotModel();
+
+	const kitBase::robotModel::DeviceInfo &device = robotModel.configuration().type(port);
+	if (device.isNull() || (
+			/// @todo: Add supported by 2D model sensors here
+			!device.isA<kitBase::robotModel::robotParts::TouchSensor>()
+			&& !device.isA<kitBase::robotModel::robotParts::ColorSensor>()
+			&& !device.isA<kitBase::robotModel::robotParts::LightSensor>()
+			&& !device.isA<kitBase::robotModel::robotParts::RangeSensor>()
+			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
+			&& !device.isA<kitBase::robotModel::robotParts::VectorSensor>()
+			))
+	{
+		return;
+	}
+
+	SensorItem *sensor = device.isA<kitBase::robotModel::robotParts::RangeSensor>()
+			? new SonarSensorItem(mModel.worldModel(), robotModel.configuration()
+					, port
+					, robotModel.info().sensorImagePath(device)
+					, robotModel.info().sensorImageRect(device)
+					)
+			: new SensorItem(robotModel.configuration()
+					, port
+					, robotModel.info().sensorImagePath(device)
+					, robotModel.info().sensorImageRect(device)
+					);
+
+	sensor->setEditable(!mSensorsReadOnly);
+	subscribeItem(sensor);
+
+	robotItem->addSensor(port, sensor);
 }

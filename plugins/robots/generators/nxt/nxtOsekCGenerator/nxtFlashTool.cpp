@@ -107,7 +107,7 @@ bool NxtFlashTool::flashRobot()
 					<< "for reading:" << firmwareBinary.errorString();
 			error(tr("Could not open %1 for reading.").arg(firmwareBinaryName.absoluteFilePath()));
 			mIsFlashing = false;
-			return false;
+			return;
 		}
 
 		if (firmwareBinary.size() > 256 * 1024) {
@@ -115,7 +115,7 @@ bool NxtFlashTool::flashRobot()
 					<< "bytes which is too large for NXT";
 			error(tr("Firmware file is too large to fit into NXT brick memory."));
 			mIsFlashing = false;
-			return false;
+			return;
 		}
 
 		QDataStream firmwareStream(&firmwareBinary);
@@ -125,14 +125,14 @@ bool NxtFlashTool::flashRobot()
 			QLOG_ERROR() << "Could not flash firmware into NXT brick. See details above";
 			error(tr("Could not write firmware into NXT memory."));
 			mIsFlashing = false;
-			return false;
+			return;
 		}
 
 		if (!startNewFirmware()) {
 			QLOG_ERROR() << "Could not jump to start new firmware";
 			error(tr("Firmware successfully flashed into robot, but starting it failed."));
 			mIsFlashing = false;
-			return false;
+			return;
 		}
 
 		future.setProgressValue(future.progressMaximum());
@@ -140,7 +140,7 @@ bool NxtFlashTool::flashRobot()
 		QLOG_INFO() << "Firmware flashed successfully";
 		usbCommunicator->disconnect();
 		mIsFlashing = false;
-		return true;
+		return;
 	};
 
 	mErrorReporter.reportOperation(QtConcurrent::run(flashProcess), tr("Flashing NXT brick..."));

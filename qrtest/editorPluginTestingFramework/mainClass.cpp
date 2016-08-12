@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Yurii Litvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,13 @@
  * limitations under the License. */
 
 #include "mainClass.h"
+
+#include <QtCore/QDir>
+#include <QtCore/QFileInfo>
+
+#include <qrutils/xmlUtils.h>
+#include <qrkernel/exception/exception.h>
+
 #include "defs.h"
 #include "methodsTesterForQrxcAndQrmc.h"
 #include "methodsTesterForQrxcAndInterpreter.h"
@@ -21,47 +28,41 @@
 #include "qrgui/plugins/pluginManager/interpreterEditorManager.h"
 #include "qrgui/plugins/pluginManager/editorManagerInterface.h"
 #include "qrgui/plugins/pluginManager/editorManager.h"
-#include "qrutils/xmlUtils.h"
-
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
 
 using namespace qReal;
 using namespace editorPluginTestingFramework;
 using namespace qrRepo;
 
-MainClass::MainClass(
-		const QString &fileName
+MainClass::MainClass(const QString &metamodelFileName
 		, const QString &pathToQrmc
 		, const QString &applicationPath
 		, const QString &configurationFileName)
 		: mTempOldValue(SettingsManager::value("temp").toString())
 		, mApplicationPath(applicationPath)
 {
-	setTempValueInSettingsManager();
+	setTempFolderValue();
 
 	qDebug() << "configuration file: " << configurationFileName;
-	parseConfigurationFile(configurationFileName);
+	mConfiguration.parseConfigurationFile(configurationFileName);
 
-	deleteOldBinaries(mGeneratedCodeDirQrxc);
-	deleteOldBinaries(mGeneratedCodeDirQrmc);
+	deleteOldFiles(mConfiguration.generatedCodeDirQrxc());
+	deleteOldFiles(mConfiguration.generatedCodeDirQrmc());
 
-	createNewFolders();
-	const QString normalizedFileName = normalizedName(fileName);
+	const QString normalizedFileName = normalizedName(metamodelFileName);
 
-	copyTestMetamodel(fileName);
+	launchEditorGenerator(metamodelFileName, mConfiguration.generatedCodeDirQrxc());
+	const QFileInfo qrxcPluginBinaryInfo = compilePlugin(normalizedFileName, PluginCompiler::MetamodelCompiler::qrxc);
+	Metamodel * const qrxcGeneratedPlugin = loadPlugin(qrxcPluginBinaryInfo);
 
-	launchQrxc(normalizedFileName);
-	compilePlugin(mGeneratedCodeDirQrxc + pathToQrxcGeneratedCode, normalizedFileName);
-	EditorInterface* const qrxcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
-	appendPluginNames();
+//	appendPluginNames();
 
-	launchQrmc(fileName, pathToQrmc);
-	compilePlugin(mGeneratedCodeDirQrmc + pathToQrmcGeneratedCode, normalizedFileName);
-	EditorInterface* const qrmcGeneratedPlugin = loadedPlugin(normalizedFileName, mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
+	launchQrmc(metamodelFileName);
+	const QFileInfo qrmcPluginBinaryInfo = compilePlugin(normalizedFileName, PluginCompiler::MetamodelCompiler::qrmc);
+	Metamodel * const qrmcGeneratedPlugin = loadPlugin(qrmcPluginBinaryInfo);
 
-	InterpreterEditorManager interpreterEditorManager(fileName, nullptr);
-	QString path = "plugins/editors/qrtest/qrxc/plugins";
+	/*
+	InterpreterEditorManager interpreterEditorManager(metamodelFileName, nullptr);
+	const QString path = "plugins/editors/qrtest/qrxc/plugins";
 	EditorManager qrxcEditorManager(path);
 	// we cast qrxc plugin to Editor Manager
 
@@ -71,18 +72,20 @@ MainClass::MainClass(
 
 	QList<MethodsTester::ResultOfGenerating> interpreterMethodsTesterOutput =
 			interpreterMethodsTester->generatedResult();
-	QList<MethodsTester::ResultOfGenerating> methodsTimeOutputInterpreter = interpreterMethodsTester->generateTimeResult();
 
+	QList<MethodsTester::ResultOfGenerating> methodsTimeOutputInterpreter =
+			interpreterMethodsTester->generateTimeResult();
 
-	if ((qrxcGeneratedPlugin != NULL) && (qrmcGeneratedPlugin != NULL)) {
-		MethodsTesterForQrxcAndQrmc* const methodsTester = new MethodsTesterForQrxcAndQrmc(
+	if ((qrxcGeneratedPlugin != nullptr) && (qrmcGeneratedPlugin != nullptr)) {
+		MethodsTesterForQrxcAndQrmc * const methodsTester = new MethodsTesterForQrxcAndQrmc(
 				qrmcGeneratedPlugin, qrxcGeneratedPlugin);
 
-		QList<MethodsTester::ResultOfGenerating> methodsTesterOutput = methodsTester->generatedOutput();
-		QList<MethodsTester::ResultOfGenerating> methodsTimeOutput = methodsTester->generateTimeResult();
+		const QList<MethodsTester::ResultOfGenerating> methodsTesterOutput = methodsTester->generatedOutput();
+		const QList<MethodsTester::ResultOfGenerating> methodsTimeOutput = methodsTester->generateTimeResult();
 
 		if (mGenerateHtml == "yes") {
-			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput, methodsTimeOutput, methodsTimeOutputInterpreter);
+			createHtml(methodsTesterOutput, interpreterMethodsTesterOutput, methodsTimeOutput
+					, methodsTimeOutputInterpreter);
 		}
 
 		mResultOfTesting = MethodsCheckerForTravis::calculateResult(methodsTesterOutput
@@ -90,49 +93,29 @@ MainClass::MainClass(
 	} else {
 		qDebug() << "Generation of plugins failed";
 	}
+*/
 
-	returnOldValueOfTemp();
+	restoreOldValueOfTempFolder();
 }
 
-int MainClass::travisTestResult() const
+int MainClass::testResult() const
 {
 	return mResultOfTesting;
 }
 
-void MainClass::createFolder(const QString &path)
-{
-	QDir dir;
-	if (!dir.exists(path)) {
-		dir.mkdir(path);
-	}
-}
-
-void MainClass::createNewFolders()
-{
-	createFolder(mGeneratedCodeDirQrxc);
-	createFolder(mGeneratedCodeDirQrxc + pluginsDir);
-	createFolder(mGeneratedCodeDirQrxc + sourcesDir);
-	createFolder(mGeneratedCodeDirQrmc + pathToQrmcGeneratedPlugin);
-	createFolder(mGeneratedCodeDirQrxc + pathToQrxcGeneratedPlugin);
-}
-
 QString MainClass::normalizedName(const QString &fileName)
 {
-	QString normalizedName = fileName;
-	if (fileName.contains("/")) {
-		QStringList splittedName = normalizedName.split("/");
-		normalizedName = splittedName.last();
-	}
-
-	if (normalizedName.contains(".qrs")) {
-		normalizedName.chop(4);
-	}
-
-	return normalizedName;
+	return QFileInfo(fileName).baseName();
 }
 
-void MainClass::deleteOldBinaries(const QString &directory)
+void MainClass::deleteOldFiles(const QString &directory)
 {
+	if (directory.isEmpty()) {
+		throw qReal::Exception("Trying to delete everything in application directory, possibly error in a config file");
+	}
+
+	qDebug() << "Wiping directory" << directory;
+
 	QDir dir(directory);
 	if (!dir.exists()) {
 		return;
@@ -140,7 +123,7 @@ void MainClass::deleteOldBinaries(const QString &directory)
 
 	for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		if (fileInfo.isDir()) {
-			deleteOldBinaries(fileInfo.filePath());
+			deleteOldFiles(fileInfo.filePath());
 			dir.rmdir(fileInfo.fileName());
 		} else {
 			dir.remove(fileInfo.fileName());
@@ -148,52 +131,45 @@ void MainClass::deleteOldBinaries(const QString &directory)
 	}
 }
 
-void MainClass::copyTestMetamodel(const QString &fileName)
-{
-	const QString workingDirName = pathToTestMetamodel;
-	QDir sourceDir(workingDirName);
-
-	const QFileInfo destDirInfo;
-	QDir destDir = destDirInfo.dir();
-
-	QFile::copy(sourceDir.absolutePath() + "/" + fileName, destDir.absolutePath() + "/" + fileName);
-}
-
-void MainClass::setTempValueInSettingsManager()
+void MainClass::setTempFolderValue()
 {
 	SettingsManager::setValue("temp", mApplicationPath + tempValueForSettingsManager);
 }
 
-void MainClass::returnOldValueOfTemp() const
+void MainClass::restoreOldValueOfTempFolder() const
 {
 	SettingsManager::setValue("temp", mTempOldValue);
 }
 
-void MainClass::launchQrmc(const QString &fileName, const QString &pathToQrmc)
+void MainClass::launchQrmc(const QString &fileName)
 {
-	mQrmcLauncher.launchQrmc(fileName, pathToQrmc, mGeneratedCodeDirQrmc);
+	QrmcLauncher::launchQrmc(fileName, mConfiguration.generatedCodeDirQrmc());
 }
 
-void MainClass::compilePlugin(const QString &directoryToCodeToCompile, const QString &fileName)
+QFileInfo MainClass::compilePlugin(const QString &fileWithMetamodel
+		, PluginCompiler::MetamodelCompiler metamodelCompiler)
 {
-	mPluginCompiler.compilePlugin(
-			fileName
-			, directoryToCodeToCompile
-			, mQmakeParameter
-			, mMakeParameter
-			, mConfigurationParameter
+	return PluginCompiler::compilePlugin(
+			fileWithMetamodel
+			, metamodelCompiler == PluginCompiler::MetamodelCompiler::qrxc
+					? mConfiguration.generatedCodeDirQrxc()
+					: mConfiguration.generatedCodeDirQrmc()
+			, mConfiguration.qmakeParameter()
+			, mConfiguration.makeParameter()
+			, mConfiguration.configurationParameter()
+			, metamodelCompiler
 	);
 }
 
-void MainClass::launchQrxc(const QString &fileName)
+void MainClass::launchEditorGenerator(const QString &fileName, const QString &generatedXmlForQrxcDir)
 {
-	QString tempPath = "plugins/editors/qrtest/qrxc";
-	mQrxcLauncher.launchQrxc(fileName, mQRealRootPath, tempPath);
+	MetamodelXmlGeneratorLauncher::launchEditorGenerator(fileName, mConfiguration.qRealRootPath()
+			, generatedXmlForQrxcDir);
 }
 
-EditorInterface* MainClass::loadedPlugin(const QString &fileName, const QString &pathToFile)
+Metamodel* MainClass::loadPlugin(const QFileInfo &file)
 {
-	return mPluginLoader.loadedPlugin(fileName, pathToFile, mPluginExtension, mPrefix);
+	return mPluginLoader.loadPlugin(file);
 }
 
 void MainClass::createHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcResult
@@ -201,27 +177,11 @@ void MainClass::createHtml(QList<MethodsTester::ResultOfGenerating> qrxcAndQrmcR
 		, QList<MethodsTester::ResultOfGenerating> timeResult
 		, QList<MethodsTester::ResultOfGenerating> timeResultInterpter)
 {
-	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult, timeResultInterpter, mGeneratedDirHtml);
+//	mHtmlMaker.makeHtml(qrxcAndQrmcResult, qrxcAndInterpreterResult, timeResult
+//			, timeResultInterpter, mGeneratedDirHtml);
 }
 
-void MainClass::appendPluginNames()
-{
-	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
-}
-
-void MainClass::parseConfigurationFile(const QString &fileName)
-{
-	mConfigurationFileParser.parseConfigurationFile(fileName);
-
-	mQmakeParameter = mConfigurationFileParser.qmakeParameter();
-	mMakeParameter = mConfigurationFileParser.makeParameter();
-	mConfigurationParameter = mConfigurationFileParser.configurationParameter();
-	mPluginExtension = mConfigurationFileParser.pluginExtension();
-	mPrefix = mConfigurationFileParser.prefix();
-	mQRealRootPath = mConfigurationFileParser.qRealRootPath();
-	mGenerateHtml = mConfigurationFileParser.htmlGenerationParameter();
-	mGeneratedCodeDirQrxc = mConfigurationFileParser.generatedCodeDirQrxc();
-	mGeneratedCodeDirQrmc = mConfigurationFileParser.generatedCodeDirQrmc();
-	mGeneratedDirHtml = mConfigurationFileParser.generatedDirHtml();
-}
-
+//void MainClass::appendPluginNames()
+//{
+//	mQrxcGeneratedPluginsList.append(mPluginLoader.pluginNames());
+//}

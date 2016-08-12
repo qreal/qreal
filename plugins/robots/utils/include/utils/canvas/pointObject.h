@@ -47,7 +47,7 @@ public:
 	/// Returns the coordinates of the point.
 	QPoint pos() const;
 
-	void paint(QPainter *painter) override;
+	void paint(QPainter *painter, const QRect &outputRect) override;
 	QJsonObject toJson() const override;
 
 private:

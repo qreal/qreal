@@ -48,7 +48,6 @@ int ColorItemPopup::lastThickness() const
 
 bool ColorItemPopup::suits(QGraphicsItem *item)
 {
-	/// @todo: Make wall not inheriting from ColorFieldItem.
 	return dynamic_cast<items::ColorFieldItem *>(item) != nullptr;
 }
 
@@ -78,7 +77,7 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	return true;
 }
 
-void twoDModel::view::ColorItemPopup::initWidget()
+void ColorItemPopup::initWidget()
 {
 	QVBoxLayout * const layout = new QVBoxLayout(this);
 	QHBoxLayout * const firstRow = new QHBoxLayout;

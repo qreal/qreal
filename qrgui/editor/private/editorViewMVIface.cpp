@@ -14,7 +14,10 @@
 
 #include "editorViewMVIface.h"
 
+#include <QtCore/QPair>
+
 #include <qrkernel/definitions.h>
+#include <metaMetaModel/elementType.h>
 
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
@@ -138,6 +141,10 @@ Id EditorViewMViface::rootId() const
 void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	mScene->setEnabled(true);
+
+	QList<QPair<NodeElement *, QPersistentModelIndex>> nodes;
+	QList<QPair<EdgeElement *, QPersistentModelIndex>> edges;
+
 	for (int row = start; row <= end; ++row) {
 
 		QPersistentModelIndex current = model()->index(row, 0, parent);
@@ -160,46 +167,46 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 			continue;
 		}
 
-		ElementImpl * const elementImpl = mLogicalAssistApi->editorManagerInterface().elementImpl(currentId);
-		Element *elem = elementImpl->isNode()
-				? static_cast<Element *>(new NodeElement(elementImpl, currentId, mScene->models()))
-				: static_cast<Element *>(new EdgeElement(elementImpl, currentId, mScene->models()));
+		const ElementType &elementType = mLogicalAssistApi->editorManagerInterface().elementType(currentId);
+		Element *elem = elementType.type() == ElementType::Type::node
+				? static_cast<Element *>(new NodeElement(elementType.toNode(), currentId, mScene->models()))
+				: static_cast<Element *>(new EdgeElement(elementType.toEdge(), currentId, mScene->models()));
 
 		elem->setController(&mScene->controller());
 
-		QPointF ePos = model()->data(current, roles::positionRole).toPointF();
+		if (elementType.type() == ElementType::Type::node) {
+			nodes.append(qMakePair(dynamic_cast<NodeElement *>(elem), current));
+		} else {
+			edges.append(qMakePair(dynamic_cast<EdgeElement *>(elem), current));
+		}
+	}
+
+	handleNodeElementsForRowsInserted(nodes, parent);
+	handleEdgeElementsForRowsInserted(edges, parent);
+
+	QAbstractItemView::rowsInserted(parent, start, end);
+}
+
+void EditorViewMViface::handleNodeElementsForRowsInserted(
+		const QList<QPair<NodeElement *, QPersistentModelIndex> > &nodes
+		, const QModelIndex &parent
+		)
+{
+	for (const QPair<NodeElement *, QPersistentModelIndex> &p : nodes) {
+		NodeElement *elem = p.first;
+		QPersistentModelIndex current = p.second;
+		Id currentId = current.data(roles::idRole).value<Id>();
 		bool needToProcessChildren = true;
 
 		if (elem) {
+			QPointF ePos = model()->data(current, roles::positionRole).toPointF();
 			// setting position before parent definition 'itemChange' to work correctly
 			elem->setPos(ePos);
+			elem->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect().translated(ePos.toPoint()));
+			handleAddingSequenceForRowsInserted(parent, elem, current);
+			handleElemDataForRowsInserted(elem, current);
 
-			if (NodeElement * const node = dynamic_cast<NodeElement *>(elem)) {
-				node->setGeometry(mGraphicalAssistApi->configuration(elem->id()).boundingRect()
-						.translated(ePos.toPoint()));
-			}
-
-			if (item(parent)) {
-				elem->setParentItem(item(parent));
-				QModelIndex next = current.sibling(current.row() + 1, 0);
-				if(next.isValid() && item(next) != nullptr) {
-					elem->stackBefore(item(next));
-				}
-			} else {
-				mScene->addItem(elem);
-			}
-
-			setItem(current, elem);
-			elem->updateData();
-			elem->connectToPort();
-			elem->checkConnectionsToPort();
-			elem->initPossibleEdges();
-			elem->initTitles();
-			mView->setFocus();
-			// TODO: brush up init~()
-
-			if (dynamic_cast<NodeElement *>(elem) && currentId.element() == "Class" &&
-					mGraphicalAssistApi->children(currentId).empty())
+			if (currentId.element() == "Class" && mGraphicalAssistApi->children(currentId).empty())
 			{
 				needToProcessChildren = false;
 				for (int i = 0; i < 2; i++) {
@@ -209,23 +216,59 @@ void EditorViewMViface::rowsInserted(const QModelIndex &parent, int start, int e
 							, false,  "(anonymous something)", QPointF(0, 0));
 				}
 			}
-
-			if (EdgeElement * const edgeElem = dynamic_cast<EdgeElement *>(elem)) {
-				edgeElem->layOut();
-			}
 		}
 
 		if (needToProcessChildren && model()->hasChildren(current)) {
 			rowsInserted(current, 0, model()->rowCount(current) - 1);
 		}
 
-		NodeElement * nodeElement = dynamic_cast<NodeElement*>(elem);
-		if (nodeElement) {
-			nodeElement->alignToGrid();
+		if (elem) {
+			elem->alignToGrid();
 		}
 	}
+}
 
-	QAbstractItemView::rowsInserted(parent, start, end);
+void EditorViewMViface::handleEdgeElementsForRowsInserted(
+		const QList<QPair<EdgeElement *, QPersistentModelIndex> > &edges
+		, const QModelIndex &parent
+		)
+{
+	for (const QPair<EdgeElement *, QPersistentModelIndex> &p : edges) {
+		EdgeElement *elem = p.first;
+		QPersistentModelIndex current = p.second;
+
+		if (elem) {
+			QPointF ePos = model()->data(current, roles::positionRole).toPointF();
+			// setting position before parent definition 'itemChange' to work correctly
+			elem->setPos(ePos);
+			handleAddingSequenceForRowsInserted(parent, elem, current);
+			handleElemDataForRowsInserted(elem, current);
+			elem->adjustLink();
+			elem->layOut();
+		}
+	}
+}
+
+void EditorViewMViface::handleAddingSequenceForRowsInserted(const QModelIndex &parent
+		, Element *elem, const QPersistentModelIndex &current)
+{
+	if (item(parent)) {
+		elem->setParentItem(item(parent));
+		QModelIndex next = current.sibling(current.row() + 1, 0);
+		if(next.isValid() && item(next) != nullptr) {
+			elem->stackBefore(item(next));
+		}
+	} else {
+		mScene->addItem(elem);
+	}
+}
+
+void EditorViewMViface::handleElemDataForRowsInserted(Element *elem, const QPersistentModelIndex &current)
+{
+	setItem(current, elem);
+	elem->updateData();
+	elem->initTitles();
+	mView->setFocus();
 }
 
 void EditorViewMViface::rowsAboutToBeRemoved(QModelIndex  const &parent, int start, int end)

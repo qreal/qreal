@@ -16,29 +16,25 @@
 
 #include <QtWidgets/QWidget>
 #include <QtXml/QDomDocument>
-#include <QtGui/QPen>
-#include <QtGui/QBrush>
 #include <QtGui/QPainter>
 #include <QtGui/QFont>
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtCore/QFileInfo>
-#include <QtCore/QHash>
 #include <QtCore/QSharedPointer>
 #include <QtGui/QIconEngine>
 #include <QtSvg/QSvgRenderer>
 
 #include <qrkernel/settingsManager.h>
+#include <metaMetaModel/elementRepoInterface.h>
 
-#include <plugins/editorPluginInterface/sdfRendererInterface.h>
-#include <plugins/editorPluginInterface/elementRepoInterface.h>
 #include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 #include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
 
-class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public SdfRendererInterface
+class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public QObject
 {
 	Q_OBJECT
 
@@ -49,6 +45,7 @@ public:
 
 	bool load (const QString &filename);
 	bool load(const QDomDocument &document);
+	bool load(const QDomElement &picture);
 	void render(QPainter *painter, const QRectF &bounds, bool isIcon = false);
 	void noScale();
 
@@ -62,45 +59,6 @@ public slots:
 	void setZoom(qreal zoomFactor);
 
 private:
-
-	/// Cache for images that contains them pre-loaded and parsed and is able to quickly draw it on a painter.
-	/// Pixmaps and svg images are contained separately as they are rendered differently.
-	class ImagesCache
-	{
-	public:
-		static ImagesCache &instance();
-
-		/// Draws image with given file name on given painter in given rectangle. Note that actual file, from which
-		/// an image will be loaded may be different from fileName, as described in selectBestImageFile.
-		/// @see selectBestImageFile
-		void drawImage(const QString &fileName, QPainter &painter, const QRect &rect, qreal zoom);
-
-	private:
-		ImagesCache();
-		~ImagesCache();
-
-		/// Selects "best available" image file, using following rules:
-		/// - if there is .svg file with given name in a directory from filePath, it is used as actual image file.
-		/// - else if there is a file with other extension but with correct name, it is used.
-		/// - else, if there is no such file, it tries to select a file with name "default" in given directory, using
-		///   the rules above.
-		/// - if everything above fails, system default image file, from qrgui/icons (or, when compiled,
-		///   from ":/icons/default.svg"), is used.
-		static QFileInfo selectBestImageFile(const QString &filePath);
-
-		/// Loads pixmap from given file, returns empty QByteArray if file does not exist.
-		static QByteArray loadPixmap(const QFileInfo &fileInfo);
-
-		/// Maps file name to pre-loaded pixmap with image.
-		QHash<QString, QPixmap> mFileNamePixmapMap;
-
-		/// Maps file name to a svg renderer object.
-		QHash<QString, QSharedPointer<QSvgRenderer>> mFileNameSvgRendererMap;
-
-		/// Maps file name to pixmaps with pre-rendered svg images.
-		QHash<QString, QHash<QRect, QPixmap>> mPrerenderedSvgs;
-	};
-
 	QString mWorkingDirName;
 
 	int first_size_x;
@@ -160,11 +118,12 @@ private:
 };
 
 /// Constructs QIcon instance by a given sdf description
-class SdfIconEngineV2 : public SdfIconEngineV2Interface
+class SdfIconEngineV2 : public QIconEngine
 {
 public:
 	explicit SdfIconEngineV2(const QString &file);
 	explicit SdfIconEngineV2(const QDomDocument &document);
+	explicit SdfIconEngineV2(const QDomElement &picture);
 	QSize preferedSize() const;
 	virtual void paint(QPainter *painter, const QRect &rect, QIcon::Mode mode, QIcon::State state);
 	virtual QIconEngine *clone() const;
@@ -178,26 +137,21 @@ private:
 class SdfIconLoader
 {
 public:
-	/// Returns a pixmap of element in specified sdf-file
-	static QIcon iconOf(const QString &fileName);
+	/// Returns a pixmap of element in specified sdf-description. Descriptions are cached by id.
+	static QIcon iconOf(const Id &id, const QDomElement &sdf);
 
-	/// Returns a size of the pixmap of element in specified sdf-file
-	static QSize preferedSizeOf(const QString &fileName);
+	/// Returns a size of the pixmap of element in specified sdf-description. Descriptions are cached by id.
+	static QSize preferedSizeOf(const Id &id, const QDomElement &sdf);
 
 private:
 	static SdfIconLoader *instance();
-	static QIcon loadPixmap(const QString &fileName);
+	static QIcon loadPixmap(const Id &id, const QDomElement &sdf);
 
 	SdfIconLoader();
 	~SdfIconLoader();
 
-	QMap<QString, QIcon> mLoadedIcons;
-	QMap<QString, QSize> mPreferedSizes;
+	QMap<Id, QIcon> mLoadedIcons;
+	QMap<Id, QSize> mPreferedSizes;
 };
 
-}
-
-inline uint qHash(const QRect &rect)
-{
-	return qHash(rect.width()) ^ qHash(rect.height()) ^ qHash(rect.top()) ^ qHash(rect.left());
 }

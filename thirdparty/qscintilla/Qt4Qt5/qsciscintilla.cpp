@@ -2859,7 +2859,7 @@ int QsciScintilla::markerDefine(const QImage &im, int markerNumber)
 // Add a marker to a line.
 int QsciScintilla::markerAdd(int linenr, int markerNumber)
 {
-    if (markerNumber < 0 || markerNumber > MARKER_MAX || (allocatedMarkers & (1 << markerNumber)) == 0)
+	if (markerNumber < 0 || markerNumber > MARKER_MAX || (allocatedMarkers & (1 << markerNumber)) == 0)
         return -1;
 
     return SendScintilla(SCI_MARKERADD, linenr, markerNumber);
@@ -2890,7 +2890,7 @@ void QsciScintilla::markerDelete(int linenr, int markerNumber)
                 am >>= 1;
             }
         }
-        else if (allocatedMarkers & (1 << markerNumber))
+		else if (allocatedMarkers & (1 << markerNumber))
             SendScintilla(SCI_MARKERDELETE, linenr, markerNumber);
     }
 }

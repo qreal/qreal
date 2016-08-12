@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SOURCES		+=
+SOURCES += \
 
-HEADERS		+= \
-			$$QRMC_ROOT/../../qrgui/editorPluginInterface/sdfRendererInterface.h \
-			$$QRMC_ROOT/../../qrgui/editorPluginInterface/elementImpl.h \
-			$$QRMC_ROOT/../../qrgui/editorPluginInterface/elementRepoInterface.h \
-			$$QRMC_ROOT/../../qrgui/editorPluginInterface/elementTitleHelpers.h \
-			$$QRMC_ROOT/../../qrgui/editorPluginInterface/editorInterface.h \
+HEADERS += \
+	$$ROOT/qrkernel/ids.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/metamodel.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/elementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/nodeElementType.h \
+	$$ROOT/qrgui/plugins/metaMetaModel/include/metaMetaModel/edgeElementType.h \

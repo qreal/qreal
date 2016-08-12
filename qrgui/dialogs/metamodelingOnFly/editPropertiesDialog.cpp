@@ -14,6 +14,8 @@
 
 #include <QtWidgets/QMessageBox>
 
+#include <qrrepo/logicalRepoApi.h>
+
 #include "editPropertiesDialog.h"
 #include "ui_editPropertiesDialog.h"
 
@@ -34,6 +36,7 @@ EditPropertiesDialog::EditPropertiesDialog(const EditorManagerInterface &interpr
 	, mElementsOnDiagram(IdList())
 {
 	mUi->setupUi(this);
+	this->setWindowFlags(this->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 	connect(mUi->okPushButton, &QPushButton::clicked, this, &EditPropertiesDialog::okButtonClicked);
 }
 
@@ -116,7 +119,8 @@ void EditPropertiesDialog::acceptPropertyModifications()
 void EditPropertiesDialog::okButtonClicked()
 {
 	if (mUi->attributeTypeEdit->text().isEmpty() || mUi->displayedNameEdit->text().isEmpty()) {
-		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled!"));
+		QMessageBox::critical(this, tr("Error"), tr("All required properties should be filled")
+				, QMessageBox::tr("Close"));
 	} else {
 		const IdList propertiesWithTheSameNameList = mInterpreterEditorManager.propertiesWithTheSameName(mId
 				, mPropertyName, mUi->displayedNameEdit->text());

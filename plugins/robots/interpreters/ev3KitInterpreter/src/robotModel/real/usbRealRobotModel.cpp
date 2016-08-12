@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,13 @@
 
 #include "usbRealRobotModel.h"
 
+#include <qrutils/singleton.h>
 #include <ev3Kit/communication/usbRobotCommunicationThread.h>
 
 using namespace ev3::robotModel::real;
 
 UsbRealRobotModel::UsbRealRobotModel(const QString &kitId, const QString &robotId)
-	: RealRobotModel(kitId, robotId, new communication::UsbRobotCommunicationThread)
+	: RealRobotModel(kitId, robotId, &utils::Singleton<communication::UsbRobotCommunicationThread>::instance())
 {
 }
 

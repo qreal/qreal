@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2012-2016 Yurii Litvinov, Dmitry Mordvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,16 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	doc \
 	images \
-	generated \
+	common \
+	nxt \
+	ev3 \
+	trik \
 
-generated.file = $$PWD/generated/robotsMetamodel.pro
+common.file = $$PWD/common/robotsMetamodel.pro
+nxt.file = $$PWD/nxt/nxtMetamodel.pro
+ev3.file = $$PWD/ev3/ev3Metamodel.pro
+trik.file = $$PWD/trik/trikMetamodel.pro
+
+nxt.depends = common
+ev3.depends = common
+trik.depends = common

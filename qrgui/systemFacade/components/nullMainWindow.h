@@ -108,6 +108,8 @@ public:
 
 	void setCorner(Qt::Corner corner, Qt::DockWidgetArea area) override;
 
+	void registerEditor(EditorInterface &editor) override;
+
 	/// Sends close event via SystemEvents.
 	void emulateClose(int returnCode = 0);
 
