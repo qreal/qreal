@@ -70,6 +70,12 @@
 				<value name="Enter"/>
 				<value name="Esc"/>
 			</enum>
+			<enum name="JpgEncoderQuality">
+				<value name="15" displayedName="15"/>
+				<value name="30" displayedName="30"/>
+				<value name="50" displayedName="50"/>
+				<value name="80" displayedName="80"/>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<!-- Algorithms -->
@@ -300,6 +306,14 @@
 					<nonResizeable/>
 				</graphics>
 				<logic>
+					<properties>
+						<property displayedName="Grayscaled" type="bool" name="Grayscaled">
+							<default>false</default>
+						</property>
+						<property displayedName="Quality" type="JpgEncoderQuality" name="Quality">
+							<default>30</default>
+						</property>
+					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
 					</generalizations>
