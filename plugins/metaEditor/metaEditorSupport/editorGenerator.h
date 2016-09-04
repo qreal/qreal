@@ -41,6 +41,7 @@ private:
 	void createImport(QDomElement &parent, qReal::Id const &id);
 	void createNode(QDomElement &parent, qReal::Id const &id);
 	void createEdge(QDomElement &parent, qReal::Id const &id);
+	void createRole(QDomElement &parent, qReal::Id const &id);
 	void createEnum(QDomElement &parent, qReal::Id const &id);
 	void createPort(QDomElement &parent, qReal::Id const &id);
 	void createGroup(QDomElement &parent, const qReal::Id &id);
@@ -52,6 +53,7 @@ private:
 	void setUsages(QDomElement &parent, qReal::Id const &id);
 	void setConnections(QDomElement &parent, qReal::Id const &id);
 	void setGeneralization(QDomElement &parent, qReal::Id const &id);
+	void setRoles(QDomElement &parent, qReal::Id const &id);
 	void setPossibleEdges(QDomElement &parent, qReal::Id const &id);
 	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName
 			, QString const &propertyName);

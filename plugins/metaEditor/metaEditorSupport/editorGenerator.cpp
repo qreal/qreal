@@ -237,6 +237,8 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 				createPort(tagNonGraphic, id);
 			} else if (objectType == "MetaEntityGroup") {
 				createGroup(tagGroups, id);
+			} else if (objectType == "MetaEntityRole") {
+				createRole(tagNonGraphic, id);
 			}
 		}
 	}
@@ -366,6 +368,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	edge.appendChild(logic);
 
 	setAssociations(logic, id);
+	setRoles(logic, id);
 	setPossibleEdges(logic, id);
 	setProperties(logic, id);
 	setPorts(logic, id, "from");
@@ -374,6 +377,19 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setExplosion(logic, id);
 	setDividability(logic, id);
 }
+
+void EditorGenerator::createRole(QDomElement &parent, Id const &id)
+{
+	QDomElement roleElement = mDocument.createElement("role");
+	ensureCorrectness(id, roleElement, "name", mApi.name(id));
+	ensureCorrectness(id, roleElement, "arrowType", mApi.stringProperty(id, "arrowType"));
+	ensureCorrectness(id, roleElement, "end", mApi.stringProperty(id, "end"));
+	ensureCorrectness(id, roleElement, "navigable", mApi.stringProperty(id, "navigable"));
+	parent.appendChild(roleElement);
+
+	setProperties(roleElement, id);
+}
+
 
 void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
 {
@@ -544,6 +560,17 @@ void EditorGenerator::newSetConnections(QDomElement &parent, const Id &id,
 	if (!connectionsTag.childNodes().isEmpty()) {
 		parent.appendChild(connectionsTag);
 	}
+}
+
+void EditorGenerator::setRoles(QDomElement &parent, const Id &id)
+{
+	QDomElement beginRole = mDocument.createElement("beginRole");
+	ensureCorrectness(id, beginRole, "role", mApi.stringProperty(id, "beginRole"));
+	parent.appendChild(beginRole);
+
+	QDomElement endRole = mDocument.createElement("endRole");
+	ensureCorrectness(id, endRole, "role", mApi.stringProperty(id, "endRole"));
+	parent.appendChild(endRole);
 }
 
 void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
