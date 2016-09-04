@@ -140,7 +140,7 @@ bool GraphicType::init(const QDomElement &element, const QString &context)
 		}
 
 		mGraphics = element.firstChildElement("graphics");
-		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
+		return initRoles() && initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
 				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
 				&& initCreateChildrenFromMenu() && initContainerProperties()
 				&& initExplosions();
@@ -183,6 +183,8 @@ bool GraphicType::initParents()
 
 bool GraphicType::initProperties()
 {
+	bool check = initRoleProperties();
+
 	const QDomElement propertiesElement = mLogic.firstChildElement("properties");
 	if (propertiesElement.isNull()) {
 		return true;
@@ -196,7 +198,7 @@ bool GraphicType::initProperties()
 			delete property;
 			continue;
 		}
-		if (!addProperty(property)) {
+		if (!addProperty(property, "")) {
 			return false;
 		}
 	}
@@ -384,9 +386,13 @@ bool GraphicType::initLabels()
 	return true;
 }
 
-bool GraphicType::addProperty(Property *property)
+bool GraphicType::addProperty(Property *property, QString roleName)
 {
-	const QString propertyName = property->name();
+
+	QString propertyName = this->propertyName(property, roleName);
+	if (propertyName.isEmpty()) {
+		propertyName = property->name();
+	}
 	if (mProperties.contains(propertyName)) {
 		// This will automaticly dispose property in this branch.
 		QScopedPointer<Property> propertyDisposer(property);
@@ -448,7 +454,7 @@ bool GraphicType::resolve()
 		}
 
 		for (Property *property : parent->properties().values()) {
-			if (!addProperty(property->clone())) {
+			if (!addProperty(property->clone(), "")) {
 				return false;
 			}
 		}

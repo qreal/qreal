@@ -74,6 +74,21 @@ bool PatternType::initAssociations()
 	return true;
 }
 
+bool PatternType::initRoles()
+{
+	return true;
+}
+
+bool PatternType::initRoleProperties()
+{
+	return true;
+}
+
+QString PatternType::propertyName(Property *property, QString roleName)
+{
+	return "";
+}
+
 bool PatternType::initDividability()
 {
 	return true;

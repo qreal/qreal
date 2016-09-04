@@ -19,6 +19,7 @@
 #include <qrutils/outFile.h>
 
 #include "association.h"
+#include "roleType.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"
@@ -112,6 +113,65 @@ bool EdgeType::initAssociations()
 	}
 
 	return true;
+}
+
+bool EdgeType::initRoles()
+{
+	QDomElement beginRoleElement = mLogic.firstChildElement("beginRole");
+	QDomElement endRoleElement = mLogic.firstChildElement("endRole");
+
+	mBeginRoleName = beginRoleElement.attribute("role");
+	mEndRoleName = endRoleElement.attribute("role");
+	QList<Type*> allExistingTypes = mDiagram->types().values();
+
+	for (auto element : allExistingTypes) {
+		QString name = element->displayedName();
+
+		if (name == mBeginRoleName || name == mEndRoleName) {
+			RoleType *temp =  new RoleType();
+			temp = dynamic_cast<RoleType *> (element->clone());
+			mRoles.append(temp);
+		}
+	}
+
+	for (auto role : mRoles) {
+		if (role->name() == mBeginRoleName && role->name() == mEndRoleName) {
+			mBeginArrowType = role->typeOfArrow();
+			mEndArrowType = role->typeOfArrow();
+		} else if (role->name() == mBeginRoleName) {
+			mBeginArrowType = role->typeOfArrow();
+		} else if (role->name() == mEndRoleName) {
+			mEndArrowType = role->typeOfArrow();
+		}
+	}
+
+	return true;
+}
+
+bool EdgeType::initRoleProperties()
+{
+	for (RoleType *role : mRoles) {
+			for (Property *property : role->getPropertiesOfRole()) {
+				bool check = addProperty(property, role->name());
+			}
+		}
+
+	return true;
+}
+
+QString EdgeType::propertyName(Property *property, QString roleName)
+{
+	for (auto role : mRoles) {
+		if (role->name() == roleName) {
+			for (auto currentProperty : role->getPropertiesOfRole()) {
+				if (currentProperty->name() == property->name()) {
+					return role->name() + "!" + property->name();
+				}
+			}
+		}
+	}
+
+	return "";
 }
 
 bool EdgeType::initGraphics()

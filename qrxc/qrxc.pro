@@ -37,6 +37,7 @@ HEADERS += association.h \
 	xmlCompiler.h \
 	portType.h \
 	circularPort.h \
+    roleType.h
 
 SOURCES += association.cpp \
 	diagram.cpp \
@@ -61,6 +62,7 @@ SOURCES += association.cpp \
 	xmlCompiler.cpp \
 	portType.cpp \
 	circularPort.cpp \
+    roleType.cpp
 
 TEMPLATE = app
 QT += xml gui

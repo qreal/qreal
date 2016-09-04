@@ -100,6 +100,21 @@ bool NodeType::initAssociations()
 	return true;
 }
 
+bool NodeType::initRoles()
+{
+	return true;
+}
+
+bool NodeType::initRoleProperties()
+{
+	return true;
+}
+
+QString NodeType::propertyName(Property *property, QString roleName)
+{
+	return "";
+}
+
 bool NodeType::initDividability()
 {
 	return true;
