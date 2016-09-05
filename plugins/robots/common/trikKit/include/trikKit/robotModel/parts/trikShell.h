@@ -50,7 +50,7 @@ public:
 	virtual void readFile(const QString &filePath) = 0;
 
 	/// Enables video streaming on the robot.
-	virtual void initVideoStreaming() = 0;
+	virtual void initVideoStreaming(int qual, bool grayscale) = 0;
 };
 
 }
