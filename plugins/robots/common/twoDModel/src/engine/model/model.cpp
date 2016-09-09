@@ -21,8 +21,9 @@
 #include "src/engine/constraints/constraintsChecker.h"
 #include "src/robotModel/nullTwoDRobotModel.h"
 
-#include "physics/simplePhysicsEngine.h"
-#include "physics/realisticPhysicsEngine.h"
+//#include "physics/simplePhysicsEngine.h"
+//#include "physics/realisticPhysicsEngine.h"
+#include "physics/box2DPhysicsEngine.h"
 
 using namespace twoDModel::model;
 
@@ -228,11 +229,12 @@ void Model::replaceRobotModel(const twoDModel::robotModel::TwoDRobotModel &oldMo
 void Model::resetPhysics()
 {
 	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
-	if (mSettings.realisticPhysics()) {
-		mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel, mRobotModels, mTimeline);
-	} else {
-		mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
-	}
+//	if (mSettings.realisticPhysics()) {
+//		mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel, mRobotModels, mTimeline);
+//	} else {
+//		mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
+//	}
+	mPhysicsEngine = new physics::Box2DPhysicsEngine(mWorldModel, mRobotModels);
 
 	connect(&mTimeline, &Timeline::tick, [=]() { mPhysicsEngine->recalculateParameters(Timeline::timeInterval); });
 	connect(this, &model::Model::robotAdded, mPhysicsEngine, &physics::PhysicsEngineBase::addRobot);

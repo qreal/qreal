@@ -22,8 +22,10 @@ using namespace twoDModel::model::physics;
 
 PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> robots)
 	: mWorldModel(worldModel)
-	, mRobots(robots)
 {
+	for (RobotModel * const robot : robots) {
+		addRobot(robot);
+	}
 }
 
 PhysicsEngineBase::~PhysicsEngineBase()

@@ -195,6 +195,11 @@ qreal TrikTwoDRobotModel::mass() const
 	return 1.05;
 }
 
+qreal TrikTwoDRobotModel::friction() const
+{
+	return 0.3;  /// @todo measure it
+}
+
 qreal TrikTwoDRobotModel::onePercentAngularVelocity() const
 {
 	return 0.0055;

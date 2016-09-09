@@ -44,6 +44,7 @@ public:
 	engine::TwoDModelDisplayWidget *displayWidget() const;
 
 	qreal mass() const override;
+	qreal friction() const override;
 	qreal onePercentAngularVelocity() const override;
 
 private:

@@ -67,6 +67,9 @@ public:
 	/// Returns robot`s mass in kilograms. Mass will be used by physical engine to process collisions correctly.
 	virtual qreal mass() const = 0;
 
+	/// Returns robot`s fixture friction coefficient.
+	virtual qreal friction() const = 0;
+
 	/// Returns robot`s rectangle size in pixels.
 	/// By default returns (50, 50).
 	virtual QSizeF size() const;

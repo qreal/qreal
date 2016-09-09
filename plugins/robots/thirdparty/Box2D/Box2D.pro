@@ -2,8 +2,6 @@ include(../../../../global.pri)
 
 TEMPLATE = lib
 
-TARGET = box2D
-
 CONFIG += warn_off
 
 INCLUDEPATH += . ..
