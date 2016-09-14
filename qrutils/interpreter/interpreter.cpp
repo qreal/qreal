@@ -99,7 +99,7 @@ void Interpreter::newThread(const Id &startBlockId, const QString &threadId)
 	}
 
 	Thread * const thread = new Thread(&mGraphicalModelApi, mInterpretersInterface
-				, mInitialNodeType, mBlocksTable, startBlockId, threadId);
+			, mInitialNodeType, mBlocksTable, startBlockId, threadId);
 	addThread(thread, threadId);
 }
 

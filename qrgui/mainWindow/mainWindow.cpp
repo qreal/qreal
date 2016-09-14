@@ -1006,8 +1006,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
 		const Id diagramId = models().graphicalModelAssistApi().idByIndex(index);
-		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, *toolManager().customizer()
-												 , diagramId, this);
+		EditorView * const view = new EditorView(models(), *controller(), *mSceneCustomizer, diagramId, this);
 		view->mutableScene().enableMouseGestures(qReal::SettingsManager::value("gesturesEnabled").toBool());
 		SettingsListener::listen("gesturesEnabled", &(view->mutableScene()), &EditorViewScene::enableMouseGestures);
 		SettingsListener::listen("gesturesEnabled", mUi->actionGesturesShow ,&QAction::setEnabled);
@@ -1760,6 +1759,8 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
+	const bool allowExplosionsCustomization = toolManager().customizer()->allowSubprogramPropertiesChanging();
+	mSceneCustomizer->setAllowSubprogramPropertiesChanging(allowExplosionsCustomization);
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());

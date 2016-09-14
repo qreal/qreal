@@ -46,7 +46,6 @@ const int gestureTipSize = 30;
 DraggableElement::DraggableElement(MainWindow &mainWindow
 		, const PaletteElement &data
 		, bool iconsOnly
-		, bool inUserPalette
 		, const EditorManagerInterface &editorManagerProxy
 		, QWidget *parent
 		)
@@ -54,7 +53,6 @@ DraggableElement::DraggableElement(MainWindow &mainWindow
 	, mData(data)
 	, mEditorManagerProxy(editorManagerProxy)
 	, mMainWindow(mainWindow)
-	, mInUserPalette(inUserPalette)
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 4, 0, 4);
@@ -347,7 +345,7 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 			}
 
 			menu->exec(QCursor::pos());
-		} else if (elementId.element() == "Subprogram" && mInUserPalette) {
+		} else if (!mData.explosionTarget().isNull()) {
 			QMenu * const menu = new QMenu();
 			if (mMainWindow.toolManager().customizer()->allowSubprogramPropertiesChanging()) {
 				QAction * const changePropertiesAction = menu->addAction(tr("Change Properties"));

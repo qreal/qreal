@@ -41,9 +41,9 @@ void SubprogramBlock::run()
 		QDomDocument dynamicProperties;
 		dynamicProperties.setContent(properties);
 		QHash<QString, QVariant> calculatedValues;
-		for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property");
-			!element.isNull();
-			element = element.nextSiblingElement("property"))
+		for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property")
+			; !element.isNull()
+			; element = element.nextSiblingElement("property"))
 		{
 			const QString type = element.attribute("type");
 			const QString value = element.attribute("value");

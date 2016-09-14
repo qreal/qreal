@@ -53,9 +53,10 @@ public:
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
 
-	//mParser methods
+	/// A list of identifiers currently known to interpreter.
 	QStringList identifiers() const;
 
+	/// A value of identifier with given name.
 	template<typename T>
 	T value(const QString &identifier) const
 	{

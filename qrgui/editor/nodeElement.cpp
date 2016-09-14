@@ -210,7 +210,7 @@ void NodeElement::updateDynamicProperties(const Id &target)
 		properties.appendChild(property);
 	}
 
-	//Saving dynamic properties in source.
+	// Saving dynamic properties in source.
 	dynamicProperties.appendChild(properties);
 	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties",
 			dynamicProperties.toString(4));
@@ -1026,8 +1026,8 @@ void NodeElement::updateLabels()
 
 void NodeElement::updateDynamicLabels()
 {
-	for (Label *title : mLabels) {
-		title->updateDynamicData();
+	for (Label *label : mLabels) {
+		label->updateDynamicData();
 	}
 }
 
@@ -1340,8 +1340,7 @@ void NodeElement::initRenderedDiagram()
 	const Id diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	const Id graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), evScene->customizer()
-					, graphicalDiagram);
+	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
 	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mModels.exploser());

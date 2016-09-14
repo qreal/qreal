@@ -18,7 +18,7 @@
 using namespace qReal;
 using namespace gui;
 
-const QRectF mBounds = QRectF(12.5, 12.5, 50.0, 50.0);
+const QRectF bounds = QRectF(12.5, 12.5, 50.0, 50.0);
 
 ShapeWidget::ShapeWidget(int index, QWidget *parent)
 	: QWidget(parent)
@@ -31,7 +31,7 @@ ShapeWidget::ShapeWidget(int index, QWidget *parent)
 void ShapeWidget::setShape(const QString &shape)
 {
 	mShape = shape;
-	const QString shapeXml= DynamicPropertiesDialog::generateShapeXml(mShape);
+	const QString shapeXml = DynamicPropertiesDialog::generateShapeXml(mShape);
 	QDomDocument dynamicShape;
 	dynamicShape.setContent(shapeXml);
 	mRenderer.load(dynamicShape);
@@ -50,12 +50,12 @@ void ShapeWidget::removeSelection()
 	repaint();
 }
 
-int ShapeWidget::getIndex()
+int ShapeWidget::index() const
 {
 	return mIndex;
 }
 
-QString ShapeWidget::getShape()
+QString ShapeWidget::shape() const
 {
 	return mShape;
 }
@@ -67,7 +67,8 @@ void ShapeWidget::paintEvent(QPaintEvent *)
 		painter.setPen(QPen(Qt::gray, 5));
 		painter.drawRect(rect());
 	}
-	mRenderer.render(&painter, mBounds);
+
+	mRenderer.render(&painter, bounds);
 }
 
 void ShapeWidget::mousePressEvent(QMouseEvent *)

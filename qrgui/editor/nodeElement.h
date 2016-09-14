@@ -305,8 +305,7 @@ private:
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
 
-	///It is used in NodeElement::updateDynamicProperties(const Id &target),
-	/// when we deleting old dynamic labels
+	/// Used in updateDynamicProperties() for deleting old dynamic labels.
 	int mStartingLabelsCount;
 };
 

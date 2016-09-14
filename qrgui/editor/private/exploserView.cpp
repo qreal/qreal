@@ -34,7 +34,6 @@ using namespace qReal::gui::editor::view::details;
 ExploserView::ExploserView(const models::Models &models
 		, Controller &controller
 		, const SceneCustomizer &sceneCustomizer
-		, const Customizer &customizer
 		, QObject *parent)
 	: QObject(parent)
 	, mModels(models)
@@ -43,7 +42,6 @@ ExploserView::ExploserView(const models::Models &models
 	, mExploser(models.exploser())
 	, mController(controller)
 	, mSceneCustomizer(sceneCustomizer)
-	, mCustomizer(customizer)
 {
 }
 
@@ -142,7 +140,7 @@ void ExploserView::createConnectionSubmenus(QMenu &contextMenu, const Element * 
 		}
 	} else if (element->id().element() == "Subprogram") {
 		const Id target = mLogicalApi.logicalRepoApi().outgoingExplosion(element->logicalId());
-		if (mCustomizer.allowSubprogramPropertiesChanging()) {
+		if (mSceneCustomizer.allowSubprogramPropertiesChanging()) {
 			QAction * const changeDynamicPropertiesAction = contextMenu.addAction(tr("Change Properties"));
 			connect(changeDynamicPropertiesAction, &QAction::triggered, this
 					, &ExploserView::changeDynamicPropertiesActionTriggered);

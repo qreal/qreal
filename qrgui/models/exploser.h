@@ -93,7 +93,7 @@ signals:
 	/// or renamed or explosion link was added or edited directly).
 	void explosionsSetCouldChange();
 
-	///Emitted when explosion target changes dynamic properties
+	/// Emitted when explosion target changes dynamic properties.
 	void explosionTargetCouldChangeProperties(const Id &target);
 
 private:

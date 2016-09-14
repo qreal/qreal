@@ -22,22 +22,29 @@
 namespace qReal {
 namespace gui {
 
+/// Displays a set of avaliable SDF shapes and provides user a possibility to select one.
 class ShapePropertyWidget : public QWidget
 {
 	Q_OBJECT
+
 public:
 	explicit ShapePropertyWidget(QWidget *parent = 0);
-	void initShapes(const QStringList &shapes, const QString &currentShape, bool backround);
-	QString getSelectedShape();
 
-protected:
-	void paintEvent(QPaintEvent *);
+	/// Configures widget instance to use the set of \a shapes.
+	/// @param currentShape Currently selected shape.
+	/// @param background If false then default image is not appended into the collection of displayed images.
+	void initShapes(const QStringList &shapes, const QString &currentShape, bool background);
+
+	/// Returns currently selected by user shape.
+	QString selectedShape() const;
 
 private slots:
 	void shapeClicked();
 
 private:
-	void addShape(int &index, qreal &x, const QString &shape, const QString &currentShape, bool &findedCurrentShape);
+	void paintEvent(QPaintEvent *event) override;
+
+	void addShape(int &index, qreal &x, const QString &shape, const QString &currentShape, bool &foundCurrentShape);
 
 	qreal mWidthOfGrid;
 	graphicsUtils::GridDrawer mGridDrawer;

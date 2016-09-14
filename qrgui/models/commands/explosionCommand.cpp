@@ -75,7 +75,7 @@ void ExplosionCommand::saveTargetShape()
 	const QString filePath = ":/generated/shapes/" + mSource.element() + "Class.sdf";
 	utils::InFile::readAll(filePath, &errorString);
 	if (!errorString.isEmpty()) {
-		QLOG_ERROR() << "Error while saving shape:" << errorString;
+		QLOG_ERROR() << "IO error while saving shape:" << errorString;
 		return;
 	}
 

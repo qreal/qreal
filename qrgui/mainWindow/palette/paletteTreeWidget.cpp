@@ -90,8 +90,7 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(mMainWindow, data
-			, mPaletteTree.iconsView(), mEditable, *mEditorManager);
+	DraggableElement *element = new DraggableElement(mMainWindow, data, mPaletteTree.iconsView(), *mEditorManager);
 
 	mElementsSet.insert(data);
 	mPaletteElements.insert(data.id(), element);
@@ -116,7 +115,7 @@ void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWid
 		QHBoxLayout *layout = new QHBoxLayout;
 		int count = mPaletteTree.itemsCountInARow();
 		for (; it != items.end() && --count > 0; ++it) {
-			DraggableElement *element = new DraggableElement(mMainWindow, *it, true, mEditable, *mEditorManager);
+			DraggableElement *element = new DraggableElement(mMainWindow, *it, true, *mEditorManager);
 			element->setToolTip((*it).description());
 			layout->addWidget(element, count > 0 ? 50 : 0);
 		}

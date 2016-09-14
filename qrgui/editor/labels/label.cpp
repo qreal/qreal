@@ -395,16 +395,15 @@ void Label::startTextInteraction()
 
 void Label::updateDynamicData()
 {
-	const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(mGraphicalModelAssistApi.
-			logicalId(mId), "dynamicProperties").toString();
+	const QString properties = mLogicalModelAssistApi.mutableLogicalRepoApi().property(
+			mGraphicalModelAssistApi.logicalId(mId), "dynamicProperties").toString();
 	if (!properties.isEmpty()) {
 		QDomDocument dynamicProperties;
 		dynamicProperties.setContent(properties);
 
-		for (QDomElement element
-				= dynamicProperties.firstChildElement("properties").firstChildElement("property");
-				!element.isNull();
-				element = element.nextSiblingElement("property"))
+		for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property")
+				; !element.isNull()
+				; element = element.nextSiblingElement("property"))
 		{
 			if (element.attribute("textBinded") == mProperties.binding()) {
 				setText(element.attribute("value"));

@@ -30,6 +30,7 @@ class DynamicPropertiesDialog;
 namespace qReal {
 namespace gui {
 
+/// Dialog providing user a possibility to configure appearance and set of labels of some block on scene.
 class QRGUI_DIALOGS_EXPORT DynamicPropertiesDialog : public QDialog
 {
 	Q_OBJECT
@@ -39,7 +40,8 @@ public:
 			, models::Exploser &exploser, QWidget *parent = 0);
 	~DynamicPropertiesDialog();
 
-	static QString generateShapeXml(const QString &shape, const QString &background = QString());
+	/// Creates and returns SDF description using path to background and foreground images.
+	static QString generateShapeXml(const QString &foreground, const QString &background = QString());
 
 private slots:
 	void addLabelButtonClicked();
@@ -49,7 +51,7 @@ private slots:
 
 private:
 	void init();
-	bool canSave();
+	QString tryToSave() const;
 	void addLabel(const QString &name, const QString &type, const QString &value);
 
 	Ui::DynamicPropertiesDialog *mUi;
@@ -60,7 +62,6 @@ private:
 	qrRepo::LogicalRepoApi &mLogicalRepoApi;
 	models::Exploser &mExploser;
 	const Id mId;
-
 };
 
 }

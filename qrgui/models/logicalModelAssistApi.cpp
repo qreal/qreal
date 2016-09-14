@@ -103,27 +103,29 @@ void LogicalModelAssistApi::setPropertyByRoleName(const Id &elem, const QVariant
 {
 	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole) {
-		const QString dynamicProperties = this->logicalRepoApi().stringProperty(elem, "dynamicProperties");
+		const QString dynamicProperties = logicalRepoApi().stringProperty(elem, "dynamicProperties");
 		if (dynamicProperties.isEmpty()) {
 			return;
 		}
-		int propertiesCount = this->editorManagerInterface().propertyNames(elem.type()).count();
+
+		const int propertiesCount = editorManagerInterface().propertyNames(elem.type()).count();
 		int index = 0;
-		QDomDocument dynamProperties;
-		dynamProperties.setContent(dynamicProperties);
-		for (QDomElement element
-				= dynamProperties.firstChildElement("properties").firstChildElement("property");
-				!element.isNull();
-				element = element.nextSiblingElement("property"))
+		QDomDocument dynamicPropertiesXml;
+		dynamicPropertiesXml.setContent(dynamicProperties);
+		for (QDomElement element = dynamicPropertiesXml.firstChildElement("properties").firstChildElement("property")
+				; !element.isNull()
+				; element = element.nextSiblingElement("property"))
 		{
 			if (element.attribute("textBinded") == roleName) {
 				break;
 			}
-			index++;
+
+			++index;
 		}
 
 		roleIndex = roles::customPropertiesBeginRole + propertiesCount + index;
 	}
+
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
 }
 

@@ -32,7 +32,6 @@ public:
 	EditorView(const models::Models &models
 			, Controller &controller
 			, const SceneCustomizer &sceneCustomizer
-			, const Customizer &customizer
 			, const Id &rootId
 			, QWidget *parent = 0);
 

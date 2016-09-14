@@ -39,7 +39,6 @@ HEADERS += \
 	$$PWD/blocks/randomInitBlock.h \
 	$$PWD/stackFrame.h \
 
-
 SOURCES += \
 	$$PWD/interpreter.cpp \
 	$$PWD/thread.cpp \

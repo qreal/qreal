@@ -33,6 +33,7 @@ public:
 	MOCK_CONST_METHOD0(showExpandConnectionAction, bool());
 	MOCK_CONST_METHOD0(expandExplosionActionText, QString());
 	MOCK_CONST_METHOD0(collapseExplosionActionText, QString());
+	MOCK_CONST_METHOD0(allowSubprogramPropertiesChanging, bool());
 	MOCK_METHOD1(setAddExplosionMenuName, void(const QString &));
 	MOCK_METHOD1(setChangeExplosionMenuName, void(const QString &));
 	MOCK_METHOD1(setDeleteExplosionMenuName, void(const QString &));
@@ -40,6 +41,7 @@ public:
 	MOCK_METHOD1(setShowExpandConnectionAction, void(bool));
 	MOCK_METHOD1(setExpandExplosionActionText, void(const QString &));
 	MOCK_METHOD1(setCollapseExplosionActionText, void(const QString &));
+	MOCK_METHOD1(setAllowSubprogramPropertiesChanging, void(bool));
 };
 
 }

@@ -19,19 +19,25 @@
 namespace qReal {
 namespace interpretation {
 
+/// An entry in call stack.
 class StackFrame
 {
 public:
 	StackFrame();
-	StackFrame(BlockInterface *block);
+	explicit StackFrame(BlockInterface *block);
 	StackFrame(BlockInterface *block, const QList<QPair<QString, QVariant>> &properties);
+
+	/// Returns an instance of block executing during this frame.
 	BlockInterface *block() const;
-	QList<QPair<QString, QVariant>> const &properties() const;
+
+	/// Returns a list of arguments that were passed to subprogram when this block was called.
+	const QList<QPair<QString, QVariant>> &properties() const;
 
 private:
-	BlockInterface *mBlock;
-	//<property name, property value>
+	BlockInterface *mBlock;  // Doesn't have ownership
+	/// Maps property name to property value.
 	QList<QPair<QString, QVariant>> mProperties;
 };
+
 }
 }

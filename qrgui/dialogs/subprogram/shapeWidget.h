@@ -20,25 +20,36 @@
 namespace qReal {
 namespace gui {
 
+/// Displays an SDF shape.
 class ShapeWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	ShapeWidget(int index, QWidget *parent = 0);
-	void setShape(const QString &shape);
-	void addSelection();
-	void removeSelection();
-	int getIndex();
-	QString getShape();
+	explicit ShapeWidget(int index, QWidget *parent = 0);
 
-	signals:
+	/// Returns index of this widget in the list of available shapes.
+	int index() const;
+
+	/// Returns the shape XML drawn by this widget.
+	QString shape() const;
+
+	/// Sets shape XML drawn by this widget.
+	void setShape(const QString &shape);
+
+	/// Redraws this widget with the graphical effect of selection.
+	void addSelection();
+
+	/// Redraws this widget without the graphical effect of selection.
+	void removeSelection();
+
+signals:
+	/// Emitted when user clicks this widget.
 	void clicked();
 
-protected:
-	void paintEvent(QPaintEvent *);
-	void mousePressEvent(QMouseEvent *);
-
 private:
+	void paintEvent(QPaintEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+
 	qReal::SdfRenderer mRenderer;
 	QString mShape;
 	bool mSelected;

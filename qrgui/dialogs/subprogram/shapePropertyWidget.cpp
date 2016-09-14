@@ -14,8 +14,9 @@
 
 #include "shapePropertyWidget.h"
 
-#include <qrkernel/settingsManager.h>
 #include <QtGui/QPainter>
+
+#include <qrkernel/settingsManager.h>
 
 using namespace qReal;
 using namespace gui;
@@ -32,30 +33,28 @@ ShapePropertyWidget::ShapePropertyWidget(QWidget *parent)
 	setPalette(pal);
 }
 
-void ShapePropertyWidget::initShapes(const QStringList &shapes, const QString &currentShape, bool backround)
+void ShapePropertyWidget::initShapes(const QStringList &shapes, const QString &currentShape, bool background)
 {
 	qreal x = 0.0;
 	int index = 0;
 	bool findedCurrentShape = false;
-	if (!backround) {
+	if (!background) {
+		/// @todo: Robots images should not be used here.
 		const QString defaultShape = "images/subprogramRobotsBlock.png";
 		addShape(index, x, defaultShape, currentShape, findedCurrentShape);
 	}
-	for (const QString shape : shapes) {
+
+	for (const QString &shape : shapes) {
 		addShape(index, x, shape, currentShape, findedCurrentShape);
 	}
 
-	int width = (index * 75 < minWidth) ? minWidth : index * 75;
+	const int width = (index * 75 < minWidth) ? minWidth : index * 75;
 	setFixedSize(width, 75);
 }
 
-QString ShapePropertyWidget::getSelectedShape()
+QString ShapePropertyWidget::selectedShape() const
 {
-	if (!mShapes.isEmpty() && mSelectedShapeIndex != -1) {
-		return mShapes.at(mSelectedShapeIndex)->getShape();
-	} else {
-		return QString();
-	}
+	return mShapes.isEmpty() || mSelectedShapeIndex == -1 ? QString() : mShapes.at(mSelectedShapeIndex)->shape();
 }
 
 void ShapePropertyWidget::paintEvent(QPaintEvent *)
@@ -64,39 +63,39 @@ void ShapePropertyWidget::paintEvent(QPaintEvent *)
 	QPainter painter(this);
 	painter.setPen(QPen(Qt::black, mWidthOfGrid));
 
-	const QRectF r = QRectF(rect());
 	const int indexGrid = SettingsManager::value("IndexGrid").toInt();
-	mGridDrawer.drawGrid(&painter, r, indexGrid);
+	mGridDrawer.drawGrid(&painter, rect(), indexGrid);
 }
 
 void ShapePropertyWidget::shapeClicked()
 {
-	const int newSelectedIndex = dynamic_cast<ShapeWidget *>(sender())->getIndex();
+	const int newSelectedIndex = dynamic_cast<ShapeWidget *>(sender())->index();
 
 	if (mSelectedShapeIndex != newSelectedIndex) {
 		if (mSelectedShapeIndex != -1) {
 			mShapes.at(mSelectedShapeIndex)->removeSelection();
 		}
+
 		mSelectedShapeIndex = newSelectedIndex;
 	}
 }
 
 void ShapePropertyWidget::addShape(int &index, qreal &x, const QString &shape, const QString &currentShape
-							, bool &findedCurrentShape)
+		, bool &foundCurrentShape)
 {
 	ShapeWidget *shapeWidget = new ShapeWidget(index, this);
 	shapeWidget->setGeometry(x, 0, 0, 0);
 	mShapes << shapeWidget;
 	shapeWidget->setShape(shape);
 
-	if (!findedCurrentShape && shape == currentShape) {
+	if (!foundCurrentShape && shape == currentShape) {
 		shapeWidget->addSelection();
 		mSelectedShapeIndex = index;
-		findedCurrentShape = true;
+		foundCurrentShape = true;
 	}
 
 	shapeWidget->show();
 	connect(shapeWidget, &ShapeWidget::clicked, this, &ShapePropertyWidget::shapeClicked);
-	index++;
+	++index;
 	x += 75.0;
 }

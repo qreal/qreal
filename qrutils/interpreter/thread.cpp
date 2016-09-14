@@ -191,7 +191,7 @@ void Thread::turnOn(BlockInterface * const block)
 		QList<QPair<QString, QVariant>> properties;
 		const QStringList identifiers = subprogram->identifiers();
 		for (const QString &identifier : identifiers) {
-			properties << QPair<QString, QVariant>(identifier, subprogram->value<QVariant>(identifier));
+			properties << qMakePair(identifier, subprogram->value<QVariant>(identifier));
 		}
 
 		mStack.push(StackFrame(mCurrentBlock, properties));
@@ -240,23 +240,23 @@ void Thread::turnOff(BlockInterface * const block)
 		sender()->disconnect(this);
 	}
 
-	//restore old properties
+	// Restoring old properties...
 	const QList<QPair<QString, QVariant>> &oldProperties = mStack.top().properties();
-	Block * const b = dynamic_cast<Block*>(mStack.top().block());
-	for (const QPair<QString, QVariant> &x : oldProperties) {
-		const QString propertyName = x.first;
-		const QVariant propertyValue = x.second;
+	Block * const topBlock = dynamic_cast<Block *>(mStack.top().block());
+	for (const QPair<QString, QVariant> &property : oldProperties) {
+		const QString propertyName = property.first;
+		const QVariant propertyValue = property.second;
 
 		if (propertyValue.type() == QVariant::Int) {
-			b->setVariableValue<int>(propertyName, propertyValue.toInt());
+			topBlock->setVariableValue<int>(propertyName, propertyValue.toInt());
 		} else if (propertyValue.type() == QVariant::Bool) {
-			b->setVariableValue<bool>(propertyName, propertyValue.toBool());
+			topBlock->setVariableValue<bool>(propertyName, propertyValue.toBool());
 		} else if (propertyValue.type() == QVariant::Double) {
-			b->setVariableValue<double>(propertyName, propertyValue.toDouble());
+			topBlock->setVariableValue<qreal>(propertyName, propertyValue.toReal());
 		} else if (propertyValue.type() == QVariant::StringList) {
-			b->setVectorVariableValue(propertyName, propertyValue.toStringList().toVector());
+			topBlock->setVectorVariableValue(propertyName, propertyValue.toStringList().toVector());
 		} else {
-			b->setVariableValue<QString>(propertyName, propertyValue.toString());
+			topBlock->setVariableValue<QString>(propertyName, propertyValue.toString());
 		}
 	}
 

@@ -45,14 +45,14 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->setupUi(this);
 	setWindowTitle(tr("Properties"));
 	mUi->labels->setColumnCount(4);
-	mUi->labels->setHorizontalHeaderLabels(QStringList() << "Name" << "Type" << "Value" << "");
+	mUi->labels->setHorizontalHeaderLabels({"Name", "Type", "Value", ""});
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 	if (hideLabels) {
 		mUi->labels->hide();
 		mUi->addLabel->hide();
 		mUi->label->hide();
-		this->setFixedHeight(350);
+		setFixedHeight(350);
 	}
 
 	mShapeScrollArea->setWidget(mShapeWidget);
@@ -73,28 +73,29 @@ DynamicPropertiesDialog::~DynamicPropertiesDialog()
 	delete mUi;
 }
 
-QString DynamicPropertiesDialog::generateShapeXml(const QString &shape, const QString &background)
+QString DynamicPropertiesDialog::generateShapeXml(const QString &foreground, const QString &background)
 {
 	QDomDocument shapeDoc;
 	QDomElement picture = shapeDoc.createElement("picture");
 	picture.setAttribute("sizey", 50);
 	picture.setAttribute("sizex", 50);
 	if (!background.isEmpty()) {
-		QDomElement image1 = shapeDoc.createElement("image");
-		image1.setAttribute("name", background);
-		image1.setAttribute("x1", 0);
-		image1.setAttribute("y1", 0);
-		image1.setAttribute("x2", 50);
-		image1.setAttribute("y2", 50);
-		picture.appendChild(image1);
+		QDomElement backgroundSdf = shapeDoc.createElement("image");
+		backgroundSdf.setAttribute("name", background);
+		backgroundSdf.setAttribute("x1", 0);
+		backgroundSdf.setAttribute("y1", 0);
+		backgroundSdf.setAttribute("x2", 50);
+		backgroundSdf.setAttribute("y2", 50);
+		picture.appendChild(backgroundSdf);
 	}
-	QDomElement image2 = shapeDoc.createElement("image");
-	image2.setAttribute("name", shape);
-	image2.setAttribute("x1", 0);
-	image2.setAttribute("y1", 0);
-	image2.setAttribute("x2", 50);
-	image2.setAttribute("y2", 50);
-	picture.appendChild(image2);
+
+	QDomElement foregroundSdf = shapeDoc.createElement("image");
+	foregroundSdf.setAttribute("name", foreground);
+	foregroundSdf.setAttribute("x1", 0);
+	foregroundSdf.setAttribute("y1", 0);
+	foregroundSdf.setAttribute("x2", 50);
+	foregroundSdf.setAttribute("y2", 50);
+	picture.appendChild(foregroundSdf);
 	shapeDoc.appendChild(picture);
 
 	return shapeDoc.toString(0);
@@ -102,29 +103,29 @@ QString DynamicPropertiesDialog::generateShapeXml(const QString &shape, const QS
 
 void DynamicPropertiesDialog::addLabelButtonClicked()
 {
-	QPushButton *button = new QPushButton("Delete");
-	int rowCount = mUi->labels->rowCount();
+	QPushButton *button = new QPushButton("Delete", this);
+	const int rowCount = mUi->labels->rowCount();
 	mUi->labels->setRowCount(rowCount + 1);
 	mUi->labels->setCellWidget(rowCount, 3, button);
 	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
-	QComboBox *types = new QComboBox();
-	types->addItems(QStringList() << "int" << "bool" << "string");
+	QComboBox *types = new QComboBox(this);
+	types->addItems({"int", "bool", "string"});
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
 }
 
 void DynamicPropertiesDialog::saveButtonClicked()
 {
-	if (!canSave()) {
-		QMessageBox::critical(this, tr("Error"), tr("Save error, maybe you forgot fill Name"
-		", Or int value isn't int, Or some names are the same"));
+	const QString error = tryToSave();
+	if (!error.isEmpty()) {
+		QMessageBox::critical(this, tr("Error"), error);
 		return;
 	}
 
 	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
-	const QString selectedShape = mShapeWidget->getSelectedShape();
-	const QString selectedBackground = mShapeBackgroundWidget->getSelectedShape();
+	const QString selectedShape = mShapeWidget->selectedShape();
+	const QString selectedBackground = mShapeBackgroundWidget->selectedShape();
 	mLogicalRepoApi.setProperty(mId, "shape", generateShapeXml(selectedShape, selectedBackground));
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
@@ -132,14 +133,11 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	int x = 40;
 	int y = 60;
 	for (int i = 0; i < mUi->labels->rowCount(); ++i) {
-		QString name = mUi->labels->item(i, 0)->text();
-		QString type = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 1))->currentText();
-		QString value;
-		if (type == "bool") {
-			value = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 2))->currentText();
-		} else {
-			value = mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
-		}
+		const QString name = mUi->labels->item(i, 0)->text();
+		const QString type = qobject_cast<QComboBox *>(mUi->labels->cellWidget(i, 1))->currentText();
+		const QString value = type == "bool"
+				? qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 2))->currentText()
+				: mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
 
 		QDomElement label = dynamicLabels.createElement("label");
 		label.setAttribute("x", x);
@@ -170,7 +168,7 @@ void DynamicPropertiesDialog::deleteButtonClicked()
 
 void DynamicPropertiesDialog::typeChanged(const QString &newType)
 {
-	int row;
+	int row = -1;
 	for (int i = 0; i < mUi->labels->rowCount(); ++i) {
 		if (mUi->labels->cellWidget(i, 1) == sender()) {
 			row = i;
@@ -178,9 +176,13 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 		}
 	}
 
+	if (row < 0) {
+		return;
+	}
+
 	if (newType == "bool") {
 		QComboBox *boolValues = new QComboBox();
-		boolValues->addItems(QStringList() << "false" << "true");
+		boolValues->addItems({"false", "true"});
 		mUi->labels->setCellWidget(row, 2, boolValues);
 	} else {
 		mUi->labels->removeCellWidget(row, 2);
@@ -234,10 +236,9 @@ void DynamicPropertiesDialog::init()
 
 	QDomDocument dynamicLabels;
 	dynamicLabels.setContent(labels);
-	for (QDomElement element
-			= dynamicLabels.firstChildElement("labels").firstChildElement("label");
-			!element.isNull();
-			element = element.nextSiblingElement("label"))
+	for (QDomElement element = dynamicLabels.firstChildElement("labels").firstChildElement("label")
+			; !element.isNull()
+			; element = element.nextSiblingElement("label"))
 	{
 		const QString type = element.attribute("type");
 		const QString value = element.attribute("value");
@@ -247,14 +248,14 @@ void DynamicPropertiesDialog::init()
 	}
 }
 
-bool DynamicPropertiesDialog::canSave()
+QString DynamicPropertiesDialog::tryToSave() const
 {
 	QSet<QString> names;
 	const int rowCount = mUi->labels->rowCount();
 	for (int i = 0; i < rowCount; ++i) {
-		// return false if "Name" not filled
+		// Return false if "Name" not filled
 		if (!mUi->labels->item(i, 0) || mUi->labels->item(i, 0)->text().isEmpty()) {
-			return false;
+			return tr("Name is not filled in row %1").arg(i);
 		}
 
 		const QString type = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 1))->currentText();
@@ -263,9 +264,9 @@ bool DynamicPropertiesDialog::canSave()
 			if (!value.isEmpty()) {
 				bool ok;
 				value.toInt(&ok);
-				// return false if "int" value isn't int
+				// Return false if "int" value isn't int
 				if (!ok) {
-					return false;
+					return tr("Value in row %1 is not integer").arg(i);
 				}
 			}
 		}
@@ -273,8 +274,12 @@ bool DynamicPropertiesDialog::canSave()
 		names << mUi->labels->item(i, 0)->text();
 	}
 
-	// return false if some names are the same
-	return names.count() == rowCount;
+	// Return false if some names are the same
+	if (names.count() == rowCount) {
+		return tr("Duplicate names");
+	}
+
+	return QString();
 }
 
 void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type, const QString &value)
@@ -285,8 +290,8 @@ void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type,
 	mUi->labels->setCellWidget(rowCount, 3, button);
 	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
-	QComboBox *types = new QComboBox();
-	types->addItems(QStringList() << "int" << "bool" << "string");
+	QComboBox *types = new QComboBox(this);
+	types->addItems({"int", "bool", "string"});
 	types->setCurrentText(type);
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
@@ -295,8 +300,8 @@ void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type,
 	mUi->labels->setItem(rowCount, 0, nameItem);
 
 	if (type == "bool") {
-		QComboBox *boolValues = new QComboBox();
-		boolValues->addItems(QStringList() << "false" << "true");
+		QComboBox *boolValues = new QComboBox(this);
+		boolValues->addItems({"false", "true"});
 		boolValues->setCurrentText(value);
 		mUi->labels->setCellWidget(rowCount, 2, boolValues);
 	} else {

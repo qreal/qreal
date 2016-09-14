@@ -42,7 +42,6 @@ public:
 	DraggableElement(MainWindow &mainWindow
 		, const PaletteElement &paletteElement
 		, bool iconsOnly
-		, bool inUserPalette
 		, const EditorManagerInterface &editorManager
 		, QWidget *parent = nullptr
 		);
@@ -106,7 +105,6 @@ private:
 	MainWindow &mMainWindow;
 	Id mDeletedElementId;
 	bool mIsRootDiagramNode;
-	bool mInUserPalette;
 };
 
 }

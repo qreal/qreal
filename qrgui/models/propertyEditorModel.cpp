@@ -257,26 +257,15 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		if (!dynamicProperties.isEmpty()) {
 			QDomDocument dynamProperties;
 			dynamProperties.setContent(dynamicProperties);
-			for (QDomElement element
-					= dynamProperties.firstChildElement("properties").firstChildElement("property");
-					!element.isNull();
-					element = element.nextSiblingElement("property"))
+			for (QDomElement element = dynamProperties.firstChildElement("properties").firstChildElement("property")
+					; !element.isNull()
+					; element = element.nextSiblingElement("property"))
 			{
 				mFields << Field(element.attribute("text"), logicalAttribute, role);
 				++role;
 			}
 		}
-		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
-//		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
 	}
-
-	// There are no custom attributes for graphical objects, but they shall be
-	// added soon.
-//	if (graphicalModelIndex != QModelIndex()) {
-//		mFields << Field(tr("Graphical Id"), graphicalIdPseudoattribute);
-//	}
-
-//	mFields << Field(tr("Metatype"), metatypePseudoattribute);
 
 	beginResetModel();
 	endResetModel();

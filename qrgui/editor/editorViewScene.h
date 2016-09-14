@@ -51,7 +51,6 @@ public:
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
 			, const SceneCustomizer &sceneCustomizer
-			, const Customizer &customizer
 			, const Id &rootId
 			, QObject *parent = 0);
 	~EditorViewScene();
@@ -83,7 +82,6 @@ public:
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
 	const qReal::gui::editor::SceneCustomizer &sceneCustomizer() const;
-	const Customizer &customizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -244,7 +242,6 @@ private:
 	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
 	const SceneCustomizer &mSceneCustomizer;
-	const Customizer &mCustomizer;
 	const Id mRootId;
 
 	Id mLastCreatedFromLinker;
