@@ -492,7 +492,9 @@ void EditorViewScene::createSingleElement(const ElementInfo &element
 					, QPointF(size.width(), size.height()), element.id() == element.logicalId(), createCommand);
 			mController.execute(insertCommand);
 
-			if (!mModels.logicalRepoApi().outgoingExplosion(element.logicalId()).isNull()) {
+			if (!element.logicalId().isNull()
+					&& !mModels.logicalRepoApi().outgoingExplosion(element.logicalId()).isNull())
+			{
 				NodeElement * const elem = getNodeById(element.id());
 				elem->initExplosionConnections();
 				if (!element.explosionTarget().isNull()) {
