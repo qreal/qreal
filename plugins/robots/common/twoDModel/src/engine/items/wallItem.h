@@ -89,8 +89,8 @@ private:
 	bool mOverlappedWithRobot = false;
 	const QImage mImage;
 
-	int mOldX1 = 0;
-	int mOldY1 = 0;
+	qreal mOldX1 = 0;
+	qreal mOldY1 = 0;
 	int mCellNumbX1 = 0;
 	int mCellNumbY1 = 0;
 	int mCellNumbX2 = 0;

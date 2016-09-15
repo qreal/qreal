@@ -152,6 +152,7 @@ void StylusItem::deserialize(const QDomElement &element)
 	mAbstractListLine.clear();
 	recalculateProperties();
 
+	setPos(QPointF());
 	readPenBrush(element);
 	QPen pen(this->pen());
 	pen.setCapStyle(Qt::RoundCap);

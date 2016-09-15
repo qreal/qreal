@@ -741,7 +741,9 @@ void TwoDModelScene::subscribeItem(AbstractItem *item)
 		if (mDrawingAction == none) {
 			mCurrentReshapeCommand->stopTracking();
 			if (mController) {
+				mCurrentReshapeCommand->setRedoEnabled(false);
 				mController->execute(mCurrentReshapeCommand);
+				mCurrentReshapeCommand->setRedoEnabled(true);
 			}
 
 			mCurrentReshapeCommand = nullptr;

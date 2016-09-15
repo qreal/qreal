@@ -162,10 +162,10 @@ void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 		if (SettingsManager::value("2dShowGrid").toBool()) {
 			const int indexGrid = SettingsManager::value("2dGridCellSize").toInt();
 			reshapeBeginWithGrid(indexGrid);
-			mCellNumbX1 = x1() / indexGrid;
-			mCellNumbY1 = y1() / indexGrid;
-			mCellNumbX2 = x2() / indexGrid;
-			mCellNumbY2 = y2() / indexGrid;
+			mCellNumbX1 = static_cast<int>(x1() / indexGrid);
+			mCellNumbY1 = static_cast<int>(y1() / indexGrid);
+			mCellNumbX2 = static_cast<int>(x2() / indexGrid);
+			mCellNumbY2 = static_cast<int>(y2() / indexGrid);
 		}
 
 		setDraggedEnd(deltaX, deltaY);
@@ -214,6 +214,7 @@ void WallItem::deserialize(const QDomElement &element)
 	const QPointF begin = points.first;
 	const QPointF end = points.second;
 
+	setPos(QPointF());
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());
