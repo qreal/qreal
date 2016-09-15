@@ -97,6 +97,7 @@ void EllipseItem::deserialize(const QDomElement &element)
 	y = splittedStr[1].toInt();
 	const QPointF end = QPointF(x, y);
 
+	setPos(QPointF());
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());
