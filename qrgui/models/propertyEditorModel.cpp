@@ -13,6 +13,7 @@
  * limitations under the License. */
 
 #include "propertyEditorModel.h"
+#include "details/logicalModel.h"
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/definitions.h>
@@ -242,6 +243,8 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 	}
 
 	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
+	const QString dynamicProperties = dynamic_cast<models::details::LogicalModel *>(mTargetLogicalModel)->
+			logicalModelAssistApi().logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
 
 	if (logicalModelIndex != QModelIndex()) {
 		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
@@ -250,17 +253,19 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 			mFields << Field(property, logicalAttribute, role);
 			++role;
 		}
-		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
-//		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
+
+		if (!dynamicProperties.isEmpty()) {
+			QDomDocument dynamProperties;
+			dynamProperties.setContent(dynamicProperties);
+			for (QDomElement element = dynamProperties.firstChildElement("properties").firstChildElement("property")
+					; !element.isNull()
+					; element = element.nextSiblingElement("property"))
+			{
+				mFields << Field(element.attribute("text"), logicalAttribute, role);
+				++role;
+			}
+		}
 	}
-
-	// There are no custom attributes for graphical objects, but they shall be
-	// added soon.
-//	if (graphicalModelIndex != QModelIndex()) {
-//		mFields << Field(tr("Graphical Id"), graphicalIdPseudoattribute);
-//	}
-
-//	mFields << Field(tr("Metatype"), metatypePseudoattribute);
 
 	beginResetModel();
 	endResetModel();
@@ -312,7 +317,30 @@ QString PropertyEditorModel::typeName(const QModelIndex &index) const
 
 QString PropertyEditorModel::propertyName(const QModelIndex &index) const
 {
-	return mFields[index.row()].fieldName;
+	QString fieldName = mFields[index.row()].fieldName;
+	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
+	const QString dynamicProperties = dynamic_cast<models::details::LogicalModel *>(mTargetLogicalModel)->
+	logicalModelAssistApi().logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
+
+	if (!dynamicProperties.isEmpty()) {
+		int propertiesCount = mEditorManagerInterface.propertyNames(logicalId.type()).count();
+		QDomDocument dynamProperties;
+		dynamProperties.setContent(dynamicProperties);
+		int i = 0;
+		for (QDomElement element
+				= dynamProperties.firstChildElement("properties").firstChildElement("property");
+				!element.isNull();
+				element = element.nextSiblingElement("property"))
+		{
+			if (i == index.row() - propertiesCount) {
+				fieldName = element.attribute("textBinded");
+				break;
+			}
+			++i;
+		}
+	}
+
+	return fieldName;
 }
 
 bool PropertyEditorModel::setData(const Id &id, const QString &propertyName, const QVariant &value)

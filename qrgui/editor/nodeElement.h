@@ -181,8 +181,11 @@ public:
 	 */
 	IdList sortedChildren() const;
 
+	void initExplosionConnections();
+
 public slots:
 	void switchGrid(bool isChecked);
+	void updateDynamicProperties(const Id &target);
 
 private slots:
 	void initRenderedDiagram();
@@ -257,6 +260,8 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
+	void updateDynamicLabels();
+
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
 	const NodeElementType &mType;
@@ -299,6 +304,9 @@ private:
 
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
+
+	/// Used in updateDynamicProperties() for deleting old dynamic labels.
+	int mStartingLabelsCount;
 };
 
 }

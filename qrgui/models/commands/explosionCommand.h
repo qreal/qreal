@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ protected:
 
 private:
 	bool processExplosion(bool add);
+	void saveTargetShape();
 
 	models::LogicalModelAssistApi &mLogicalApi;
 	const models::GraphicalModelAssistApi * const mGraphicalApi;  // Doesn't take ownership.

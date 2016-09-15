@@ -149,17 +149,17 @@
 <context>
     <name>qReal::gui::editor::BrokenLine</name>
     <message>
-        <location filename="../../qrgui/editor/private/brokenLine.cpp" line="22"/>
+        <location filename="../../qrgui/editor/private/brokenLine.cpp" line="24"/>
         <source>Delete point</source>
         <translation type="unfinished">Удалить точку</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/brokenLine.cpp" line="23"/>
+        <location filename="../../qrgui/editor/private/brokenLine.cpp" line="25"/>
         <source>Delete segment</source>
         <translation type="unfinished">Удалить отрезок</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/brokenLine.cpp" line="24"/>
+        <location filename="../../qrgui/editor/private/brokenLine.cpp" line="26"/>
         <source>Remove all points</source>
         <translation type="unfinished">Удалить все точки</translation>
     </message>
@@ -167,12 +167,12 @@
 <context>
     <name>qReal::gui::editor::EdgeElement</name>
     <message>
-        <location filename="../../qrgui/editor/edgeElement.cpp" line="66"/>
+        <location filename="../../qrgui/editor/edgeElement.cpp" line="59"/>
         <source>Reverse</source>
         <translation type="unfinished">Развернуть</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/edgeElement.cpp" line="67"/>
+        <location filename="../../qrgui/editor/edgeElement.cpp" line="60"/>
         <source>Change shape type</source>
         <translation type="unfinished">Изменить тип линии</translation>
     </message>
@@ -180,61 +180,57 @@
 <context>
     <name>qReal::gui::editor::EditorViewScene</name>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="283"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="291"/>
         <source>Create new element</source>
         <translation type="unfinished">Создать новый элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="342"/>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="351"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="353"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="362"/>
         <source>Connect with the current item</source>
         <translation type="unfinished">Соединить с данным элементом</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="828"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="866"/>
         <source>Add child</source>
         <translation type="unfinished">Добавить элемент</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1277"/>
+        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1322"/>
         <source>Delete</source>
         <translation type="unfinished">Удалить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1281"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation type="obsolete">Копировать</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1285"/>
         <source>Paste</source>
-        <translation type="unfinished">Вставить</translation>
+        <translation type="obsolete">Вставить</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1289"/>
         <source>Paste only graphical copy</source>
-        <translation type="unfinished">Вставить только графическую копию</translation>
+        <translation type="obsolete">Вставить только графическую копию</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/editorViewScene.cpp" line="1293"/>
         <source>Cut</source>
-        <translation type="unfinished">Вырезать</translation>
+        <translation type="obsolete">Вырезать</translation>
     </message>
 </context>
 <context>
     <name>qReal::gui::editor::LineFactory</name>
     <message>
-        <location filename="../../qrgui/editor/private/lineFactory.cpp" line="45"/>
+        <location filename="../../qrgui/editor/private/lineFactory.cpp" line="49"/>
         <source>Broken</source>
         <translation type="unfinished">Ломаная</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/lineFactory.cpp" line="48"/>
+        <location filename="../../qrgui/editor/private/lineFactory.cpp" line="52"/>
         <source>Square</source>
         <translation type="unfinished">Прямоугольная</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/lineFactory.cpp" line="51"/>
+        <location filename="../../qrgui/editor/private/lineFactory.cpp" line="55"/>
         <source>Curve</source>
         <translation type="unfinished">Кривая</translation>
     </message>
@@ -242,7 +238,7 @@
 <context>
     <name>qReal::gui::editor::NodeElement</name>
     <message>
-        <location filename="../../qrgui/editor/nodeElement.cpp" line="51"/>
+        <location filename="../../qrgui/editor/nodeElement.cpp" line="54"/>
         <source>Switch on grid</source>
         <translation type="unfinished">Включить сетку</translation>
     </message>
@@ -250,12 +246,12 @@
 <context>
     <name>qReal::gui::editor::PropertyEditorView</name>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="218"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="220"/>
         <source>Specify directory:</source>
         <translation type="unfinished">Выберите каталог:</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="225"/>
+        <location filename="../../qrgui/editor/propertyEditorView.cpp" line="227"/>
         <source>Select file:</source>
         <translation type="unfinished">Выберите файл:</translation>
     </message>
@@ -271,7 +267,7 @@
 <context>
     <name>qReal::gui::editor::SquareLine</name>
     <message>
-        <location filename="../../qrgui/editor/private/squareLine.cpp" line="25"/>
+        <location filename="../../qrgui/editor/private/squareLine.cpp" line="27"/>
         <source>Lay out</source>
         <translation type="unfinished">Переразложить</translation>
     </message>
@@ -279,23 +275,24 @@
 <context>
     <name>qReal::gui::editor::view::details::ExploserView</name>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="78"/>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="183"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="80"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="191"/>
         <source>New </source>
         <translation type="unfinished">Новый </translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="128"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="130"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="144"/>
         <source>Change Properties</source>
         <translation type="unfinished">Изменить свойства</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="131"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="133"/>
         <source>Change Appearance</source>
         <translation type="unfinished">Изменить внешний вид</translation>
     </message>
     <message>
-        <location filename="../../qrgui/editor/private/exploserView.cpp" line="136"/>
+        <location filename="../../qrgui/editor/private/exploserView.cpp" line="137"/>
         <source>Add element to palette</source>
         <translation type="unfinished">Добавить элемент в палитру</translation>
     </message>

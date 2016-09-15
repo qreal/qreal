@@ -90,8 +90,7 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(mMainWindow, data
-			, mPaletteTree.iconsView(), *mEditorManager);
+	DraggableElement *element = new DraggableElement(mMainWindow, data, mPaletteTree.iconsView(), *mEditorManager);
 
 	mElementsSet.insert(data);
 	mPaletteElements.insert(data.id(), element);

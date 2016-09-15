@@ -93,6 +93,9 @@ signals:
 	/// or renamed or explosion link was added or edited directly).
 	void explosionsSetCouldChange();
 
+	/// Emitted when explosion target changes dynamic properties.
+	void explosionTargetCouldChangeProperties(const Id &target);
+
 private:
 	/// This method takes one of the elements of the diagram and tries
 	/// to move through its explosions hierarchy to the root.

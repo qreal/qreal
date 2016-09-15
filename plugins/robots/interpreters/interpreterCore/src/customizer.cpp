@@ -65,6 +65,11 @@ bool Customizer::showInterpeterButton() const
 	return false;
 }
 
+bool Customizer::allowSubprogramPropertiesChanging() const
+{
+	return true;
+}
+
 QString Customizer::userPaletteTitle() const
 {
 	return QObject::tr("Subprograms");

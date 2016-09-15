@@ -27,6 +27,7 @@ SceneCustomizer::SceneCustomizer()
 	, mShowExpandConnectionAction(false)
 	, mExpandExplosionActionText(QObject::tr("Expand explosion"))
 	, mCollapseExplosionActionText(QObject::tr("Collapse explosion"))
+	, mAllowSubprogramPropertiesChanging(true)
 {
 }
 
@@ -65,6 +66,11 @@ QString SceneCustomizer::collapseExplosionActionText() const
 	return mCollapseExplosionActionText;
 }
 
+bool SceneCustomizer::allowSubprogramPropertiesChanging() const
+{
+	return mAllowSubprogramPropertiesChanging;
+}
+
 void SceneCustomizer::setAddExplosionMenuName(const QString &text)
 {
 	mAddExplosionMenuName = text;
@@ -98,4 +104,9 @@ void SceneCustomizer::setExpandExplosionActionText(const QString &text)
 void SceneCustomizer::setCollapseExplosionActionText(const QString &text)
 {
 	mCollapseExplosionActionText = text;
+}
+
+void SceneCustomizer::setAllowSubprogramPropertiesChanging(bool allow)
+{
+	mAllowSubprogramPropertiesChanging = allow;
 }

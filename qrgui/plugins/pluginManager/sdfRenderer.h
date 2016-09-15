@@ -25,14 +25,16 @@
 #include <QtGui/QIconEngine>
 #include <QtSvg/QSvgRenderer>
 
+#include <qrkernel/ids.h>
 #include <qrkernel/settingsManager.h>
-#include <metaMetaModel/elementRepoInterface.h>
 
 #include "plugins/pluginManager/pluginsManagerDeclSpec.h"
 
 #include "pluginsManagerDeclSpec.h"
 
 namespace qReal {
+
+class ElementRepoInterface;
 
 class QRGUI_PLUGINS_MANAGER_EXPORT SdfRenderer : public QObject
 {
@@ -118,7 +120,7 @@ private:
 };
 
 /// Constructs QIcon instance by a given sdf description
-class SdfIconEngineV2 : public QIconEngine
+class QRGUI_PLUGINS_MANAGER_EXPORT SdfIconEngineV2 : public QIconEngine
 {
 public:
 	explicit SdfIconEngineV2(const QString &file);

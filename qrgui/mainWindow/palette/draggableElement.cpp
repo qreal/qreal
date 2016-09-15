@@ -31,17 +31,19 @@
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
 #include "dialogs/metamodelingOnFly/propertiesDialog.h"
+#include "dialogs/subprogram/dynamicPropertiesDialog.h"
 #include "mouseGestures/gesturePainter.h"
 #include "editor/editorView.h"
 #include "editor/editorViewScene.h"
+
+#include <plugins/pluginManager/toolPluginManager.h>
 
 using namespace qReal;
 using namespace gui;
 
 const int gestureTipSize = 30;
 
-DraggableElement::DraggableElement(
-		MainWindow &mainWindow
+DraggableElement::DraggableElement(MainWindow &mainWindow
 		, const PaletteElement &data
 		, bool iconsOnly
 		, const EditorManagerInterface &editorManagerProxy
@@ -137,6 +139,16 @@ void DraggableElement::changePropertiesPaletteActionTriggered()
 			, mMainWindow.models().mutableLogicalRepoApi(), id, &mMainWindow);
 	propDialog->setModal(true);
 	propDialog->show();
+}
+
+void DraggableElement::changeDynamicPropertiesPaletteActionTriggered()
+{
+	const QAction * const action = static_cast<const QAction *>(sender());
+	const Id id = action->data().value<Id>();
+	DynamicPropertiesDialog * const dynamicPropertiesDialog = new DynamicPropertiesDialog(id
+			, mMainWindow.models().mutableLogicalRepoApi(), mMainWindow.models().exploser(), &mMainWindow);
+	dynamicPropertiesDialog->setModal(true);
+	dynamicPropertiesDialog->show();
 }
 
 void DraggableElement::changeAppearancePaletteActionTriggered()
@@ -330,6 +342,16 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 				for (QAction *action : additionalMenuActions) {
 					action->setData(elementId.toVariant());
 				}
+			}
+
+			menu->exec(QCursor::pos());
+		} else if (!mData.explosionTarget().isNull()) {
+			QMenu * const menu = new QMenu();
+			if (mMainWindow.toolManager().customizer()->allowSubprogramPropertiesChanging()) {
+				QAction * const changePropertiesAction = menu->addAction(tr("Change Properties"));
+				connect(changePropertiesAction, &QAction::triggered, this
+						, &DraggableElement::changeDynamicPropertiesPaletteActionTriggered);
+				changePropertiesAction->setData(explosionTarget().toVariant());
 			}
 
 			menu->exec(QCursor::pos());

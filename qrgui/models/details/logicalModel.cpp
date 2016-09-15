@@ -273,15 +273,43 @@ QVariant LogicalModel::data(const QModelIndex &index, int role) const
 			case roles::toRole:
 				return mApi.to(item->id()).toVariant();
 		}
+
 		if (role >= roles::customPropertiesBeginRole) {
-			QString selectedProperty = findPropertyName(item->id(), role);
-			return mApi.property(item->id(), selectedProperty);
+			const QString selectedProperty = findPropertyName(item->id(), role);
+			return selectedProperty.isEmpty()
+					? dynamicPropertyData(item->id(), role)
+					: mApi.property(item->id(), selectedProperty);
 		}
+
 		Q_ASSERT(role < Qt::UserRole);
 		return QVariant();
 	} else {
 		return QVariant();
 	}
+}
+
+QVariant LogicalModel::dynamicPropertyData(const Id &id, int role) const
+{
+	const int propertiesCount = mLogicalAssistApi->editorManagerInterface().propertyNames(id.type()).count();
+	const QString dynamicProperties = mApi.property(id, "dynamicProperties").toString();
+
+	if (!dynamicProperties.isEmpty()) {
+		QDomDocument dynamProperties;
+		dynamProperties.setContent(dynamicProperties);
+		int index = 0;
+		for (QDomElement element = dynamProperties.firstChildElement("properties").firstChildElement("property")
+				; !element.isNull()
+				; element = element.nextSiblingElement("property"))
+		{
+			if (index != role - propertiesCount - roles::customPropertiesBeginRole) {
+				++index;
+				continue;
+			}
+
+			return element.attribute("value");
+		}
+	}
+
 }
 
 bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -302,7 +330,34 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 		default:
 			if (role >= roles::customPropertiesBeginRole) {
 				QString selectedProperty = findPropertyName(item->id(), role);
-				mApi.setProperty(item->id(), selectedProperty, value);
+				if (!selectedProperty.isEmpty()) {
+					mApi.setProperty(item->id(), selectedProperty, value);
+					break;
+				}
+
+				int propertiesCount = mLogicalAssistApi->editorManagerInterface().
+						propertyNames(item->id().type()).count();
+				const QString dynamicProperties = mApi.property(item->id(), "dynamicProperties").toString();
+
+				if (!dynamicProperties.isEmpty()) {
+					QDomDocument dynamProperties;
+					dynamProperties.setContent(dynamicProperties);
+					int index = 0;
+					for (QDomElement element
+							= dynamProperties.firstChildElement("properties").firstChildElement("property");
+							!element.isNull();
+							element = element.nextSiblingElement("property"))
+					{
+						if (index != role - propertiesCount - roles::customPropertiesBeginRole) {
+							index++;
+							continue;
+						}
+
+						element.setAttribute("value", value.toString());
+						mApi.setProperty(item->id(), "dynamicProperties", dynamProperties.toString(4));
+						break;
+					}
+				}
 				break;
 			}
 			Q_ASSERT(role < Qt::UserRole);

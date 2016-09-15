@@ -87,7 +87,7 @@ public:
 	/// @param id - element id.
 	virtual QString generationRule(const Id &id) const = 0;
 
-	virtual QStringList propertyNames(const Id &id) const = 0;
+	virtual const QStringList &propertyNames(const Id &id) const = 0;
 	virtual QStringList portTypes(const Id &id) const = 0;
 	virtual QString defaultPropertyValue(const Id &id, QString name) const = 0;
 

@@ -77,7 +77,7 @@ EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models
 
 	const QList<LabelProperties> labelsInfos = mType.labels();
 	for (const LabelProperties &labelInfo : labelsInfos) {
-		Label * const label = new Label(mGraphicalAssistApi, mId, labelInfo);
+		Label * const label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
 		label->init(boundingRect());
 		label->setParentItem(this);
 		label->setShouldCenter(false);
