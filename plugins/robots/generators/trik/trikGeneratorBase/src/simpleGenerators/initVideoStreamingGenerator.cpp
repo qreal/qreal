@@ -17,6 +17,7 @@
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
+using namespace generatorBase::simple;
 
 InitVideoStreamingGenerator::InitVideoStreamingGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
@@ -24,7 +25,8 @@ InitVideoStreamingGenerator::InitVideoStreamingGenerator(const qrRepo::RepoApi &
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "videosensors/initVideoStreaming.t"
-			, {}
+			, { Binding::createDirect("@@QUALITY@@", "Quality")
+			, Binding::createDirect("@@GRAYSCALED@@", "Grayscaled")}
 			, parent)
 {
 }
