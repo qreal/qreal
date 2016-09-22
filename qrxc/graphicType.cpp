@@ -527,7 +527,10 @@ void GraphicType::generateDescription(OutFile &out) const
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
-	for (const Property *property : mProperties) {
+	auto keys = mProperties.keys();
+	for (QString key : keys) {
+		Property *property = mProperties[key];
+
 		// Validating property names.
 		if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
@@ -537,9 +540,18 @@ void GraphicType::generatePropertyData(OutFile &out) const
 			continue;
 		}
 
+
+		QString name = "";
+		if (key == property->name()) {
+			name = property->name();
+		} else {
+			name = key;
+		}
+
+
 		const QString stringConstructor = property->type() == "string" ? "QObject::tr" : "QString::fromUtf8";
 		out() << QString("\t\t\taddProperty(\"%1\", \"%2\", %3(\"%4\"), QObject::tr(\"%5\"), "\
-				"QObject::tr(\"%6\"), %7);\n").arg(property->name(), property->type(), stringConstructor
+				"QObject::tr(\"%6\"), %7);\n").arg(name, property->type(), stringConstructor
 						, property->defaultValue(), property->displayedName(), property->description()
 						, property->isReferenceProperty() ? "true" : "false");
 	}

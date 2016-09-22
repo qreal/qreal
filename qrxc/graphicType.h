@@ -60,7 +60,7 @@ protected:
 	void generateFriendlyName(utils::OutFile &out) const;
 	void generateDiagram(utils::OutFile &out) const;
 	void generateDescription(utils::OutFile &out) const;
-	void generateLabels(utils::OutFile &out) const;
+	virtual void generateLabels(utils::OutFile &out) const;
 
 	void generatePropertyData(utils::OutFile &out) const;
 

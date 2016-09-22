@@ -337,6 +337,20 @@ void EdgeType::generateCode(OutFile &out)
 	out() << "\t};\n\n";
 }
 
+void EdgeType::generateLabels(OutFile &out) const
+{
+	for (Label *label : mLabels) {
+		if (label->location() == "beginRole") {
+			label->setRoleName(mBeginRoleName);
+		} else if(label->location() == "endRole") {
+			label->setRoleName(mEndRoleName);
+		}
+
+		label->generateCodeForConstructor(out);
+	}
+}
+
+
 void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 {
 	QString style = styleString;

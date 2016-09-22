@@ -267,25 +267,33 @@ QPainterPath EdgeElement::shape() const
 
 void EdgeElement::updateLongestPart()
 {
-	qreal maxLen = 0.0;
-	int maxIdx = 0;
-	for (int i = 0; i < mLine.size() - 1; ++i) {
-		qreal newLen = QLineF(mLine[i], mLine[i + 1]).length();
-		if (newLen > maxLen) {
-			maxLen = newLen;
-			maxIdx = i;
+	int firstIdx = 0;
+	int lastIdx = mLine.size() - 2;
+
+	int i = 0;
+	int j = 0;
+
+	for (auto label : mLabels) {
+		if (label->location() == "beginRole") {
+			Label *title = label;
+			qreal x = (mLine[firstIdx].x() + 40);
+			qreal y = (mLine[firstIdx].y() + 25 * (i) + 10);
+			title->setPos(x, y);
+			++i;
+		} else if (label->location() == "endRole") {
+			Label *title = label;
+			qreal x = (mLine[lastIdx + 1].x() - 40);
+			qreal y = (mLine[lastIdx + 1].y() + 25 * (j) + 10);
+			title->setPos(x, y);
+			++j;
+		} else {
+			Label *title = label;
+			qreal x = (mLine[firstIdx].x() + mLine[lastIdx + 1].x()) / 2;
+			qreal y = (mLine[firstIdx].y() + mLine[lastIdx + 1].y()) / 2;
+			x -= title->boundingRect().width() / 2;
+			y -= title->boundingRect().height() / 2;
+			title->setPos(x, y);
 		}
-	}
-
-	mLongPart = maxIdx;
-
-	if (mLabels.count() == 1) {
-		Label *title = mLabels[0];
-		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
-		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
-		x -= title->boundingRect().width() / 2;
-		y -= title->boundingRect().height() / 2;
-		title->setPos(x, y);
 	}
 }
 

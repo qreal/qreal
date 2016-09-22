@@ -57,6 +57,7 @@ private:
 	QStringList mFromPorts;
 	QStringList mToPorts;
 
+	virtual void generateLabels(utils::OutFile &out) const;
 	virtual bool initAssociations();
 	virtual bool initRoles();
 	virtual bool initRoleProperties();
