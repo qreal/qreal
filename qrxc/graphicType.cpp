@@ -140,7 +140,7 @@ bool GraphicType::init(const QDomElement &element, const QString &context)
 		}
 
 		mGraphics = element.firstChildElement("graphics");
-		return initRoles() && initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
+		return initRoles() && initParents() && initProperties() && initDividability() && initContainers()
 				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
 				&& initCreateChildrenFromMenu() && initContainerProperties()
 				&& initExplosions();
@@ -183,7 +183,7 @@ bool GraphicType::initParents()
 
 bool GraphicType::initProperties()
 {
-	bool check = initRoleProperties();
+	initRoleProperties();
 
 	const QDomElement propertiesElement = mLogic.firstChildElement("properties");
 	if (propertiesElement.isNull()) {

@@ -19,7 +19,6 @@
 
 #include "graphicType.h"
 
-class Association;
 class RoleType;
 namespace utils {
 	class OutFile;
@@ -39,7 +38,6 @@ public:
 
 
 private:
-	QList<Association*> mAssociations;
 	QList<RoleType*> mRoles;
 
 	QString mBeginArrowType;
@@ -47,8 +45,6 @@ private:
 	QString mBeginRoleName;
 	QString mEndRoleName;
 
-	QString mBeginType;
-	QString mEndType;
 	QString mLineType;
 	QString mShapeType;
 	QColor mLineColor;
@@ -58,7 +54,6 @@ private:
 	QStringList mToPorts;
 
 	virtual void generateLabels(utils::OutFile &out) const;
-	virtual bool initAssociations();
 	virtual bool initRoles();
 	virtual bool initRoleProperties();
 	virtual QString propertyName(Property *property, QString roleName);

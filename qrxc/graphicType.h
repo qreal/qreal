@@ -138,7 +138,6 @@ private:
 	virtual bool initRoleProperties() = 0;
 	virtual QString propertyName(Property *property, QString roleName) = 0;
 
-	virtual bool initAssociations() = 0;
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count) = 0;

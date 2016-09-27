@@ -367,7 +367,6 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	QDomElement logic = mDocument.createElement("logic");
 	edge.appendChild(logic);
 
-	setAssociations(logic, id);
 	setRoles(logic, id);
 	setPossibleEdges(logic, id);
 	setProperties(logic, id);
@@ -515,20 +514,6 @@ void EditorGenerator::setGroupNodes(QDomElement &parent, const Id &id)
 			parent.appendChild(groupNodeTag);
 		}
 	}
-}
-
-
-void EditorGenerator::setAssociations(QDomElement &parent, const Id &id)
-{
-	QDomElement associationTag = mDocument.createElement("associations");
-	ensureCorrectness(id, associationTag, "beginType", mApi.stringProperty(id, "beginType"));
-	ensureCorrectness(id, associationTag, "endType", mApi.stringProperty(id, "endType"));
-	parent.appendChild(associationTag);
-
-	QDomElement association = mDocument.createElement("association");
-	ensureCorrectness(id, association, "beginName", mApi.stringProperty(id, "beginName"));
-	ensureCorrectness(id, association, "endName", mApi.stringProperty(id, "endName"));
-	associationTag.appendChild(association);
 }
 
 void EditorGenerator::setUsages(QDomElement &parent, const Id &id)

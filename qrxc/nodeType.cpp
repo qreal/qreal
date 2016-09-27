@@ -95,11 +95,6 @@ bool NodeType::copyPictures(GraphicType *parent)
 	return false;
 }
 
-bool NodeType::initAssociations()
-{
-	return true;
-}
-
 bool NodeType::initRoles()
 {
 	return true;
@@ -112,6 +107,8 @@ bool NodeType::initRoleProperties()
 
 QString NodeType::propertyName(Property *property, QString roleName)
 {
+	Q_UNUSED(property);
+	Q_UNUSED(roleName);
 	return "";
 }
 

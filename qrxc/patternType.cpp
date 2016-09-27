@@ -69,11 +69,6 @@ bool PatternType::initGraphics()
 	return true;
 }
 
-bool PatternType::initAssociations()
-{
-	return true;
-}
-
 bool PatternType::initRoles()
 {
 	return true;
@@ -86,6 +81,8 @@ bool PatternType::initRoleProperties()
 
 QString PatternType::propertyName(Property *property, QString roleName)
 {
+	Q_UNUSED(property);
+	Q_UNUSED(roleName);
 	return "";
 }
 

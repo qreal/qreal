@@ -15,7 +15,7 @@
 include(../global.pri)
 
 
-HEADERS += association.h \
+HEADERS += \
 	diagram.h \
 	edgeType.h \
 	editor.h \
@@ -39,7 +39,7 @@ HEADERS += association.h \
 	circularPort.h \
     roleType.h
 
-SOURCES += association.cpp \
+SOURCES += \
 	diagram.cpp \
 	edgeType.cpp \
 	editor.cpp \

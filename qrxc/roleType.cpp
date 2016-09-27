@@ -17,7 +17,7 @@ bool RoleType::init(const QDomElement &element, const QString &context)
 		 ; propertyElement = propertyElement.nextSiblingElement("property"))
 	{
 		Property *property = new Property();
-		bool check = property->init(propertyElement);
+		property->init(propertyElement);
 		mProperties.append(property);
 	}
 
@@ -25,7 +25,7 @@ bool RoleType::init(const QDomElement &element, const QString &context)
 }
 
 
-Type* RoleType::clone() const
+RoleType* RoleType::clone() const
 {
 	RoleType *result = new RoleType();
 	result->mArrowType = mArrowType;

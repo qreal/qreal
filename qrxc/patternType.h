@@ -31,7 +31,6 @@ public:
 
 	bool init(const QDomElement &element, const QString &context);
 	bool initGraphics() override;
-	bool initAssociations() override;
 	bool initRoles() override;
 	bool initRoleProperties() override;
 	QString propertyName(Property *property, QString roleName) override;

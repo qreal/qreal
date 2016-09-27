@@ -49,7 +49,6 @@ private:
 	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
 	void setValues(QDomElement &parent, qReal::Id const &id);
 	void setGroupNodes(QDomElement &parent, const qReal::Id &id);
-	void setAssociations(QDomElement &parent, qReal::Id const &id);
 	void setUsages(QDomElement &parent, qReal::Id const &id);
 	void setConnections(QDomElement &parent, qReal::Id const &id);
 	void setGeneralization(QDomElement &parent, qReal::Id const &id);

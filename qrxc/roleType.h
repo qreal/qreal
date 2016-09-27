@@ -25,7 +25,7 @@ class RoleType : public NonGraphicType
 {
 public:
 	bool init(const QDomElement &element, const QString &context) override;
-	Type* clone() const override;
+	RoleType* clone() const override;
 	QString typeOfArrow();
 	QList<Property*> getPropertiesOfRole();
 	bool isEnding();
