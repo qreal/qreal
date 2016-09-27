@@ -45,7 +45,6 @@ public:
 	QString location() const;
 	void setRoleName(const QString roleName);
 
-
 private:
 	utils::ScalableCoordinate mX;
 	utils::ScalableCoordinate mY;

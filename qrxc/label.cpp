@@ -78,12 +78,10 @@ void Label::setRoleName(const QString roleName)
 	mRoleName = roleName;
 }
 
-
 QString Label::labelName() const
 {
 	return "label_" + QString("%1").arg(mIndex);
 }
-
 
 QString Label::location() const
 {
@@ -108,7 +106,7 @@ void Label::generateCodeForConstructor(OutFile &out) const
 						, mTextBinded, mReadOnly
 						, QString::number(mRotation));
 		} else {
-			// It is binded label, text for it will be fetched from repo.
+			// It is binded label, with role logic.
 			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\",\"%6\",\"%7\", %8, %9);\n").arg(labelName()
 							, QString::number(mIndex)
 							, QString::number(mX.value())

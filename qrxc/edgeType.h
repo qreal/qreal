@@ -36,7 +36,6 @@ public:
 	bool copyPictures(GraphicType *parent) override;
 	QList<RoleType*> getRoles();
 
-
 private:
 	QList<RoleType*> mRoles;
 

@@ -24,7 +24,6 @@ bool RoleType::init(const QDomElement &element, const QString &context)
 	return true;
 }
 
-
 RoleType* RoleType::clone() const
 {
 	RoleType *result = new RoleType();
@@ -36,7 +35,6 @@ RoleType* RoleType::clone() const
 	return result;
 }
 
-
 bool RoleType::isEnding()
 {
 	return mEnd == "true";
@@ -47,12 +45,10 @@ bool RoleType::isNavigable()
 	return mNavigable == "true";
 }
 
-
 QString RoleType::typeOfArrow()
 {
 	return mArrowType;
 }
-
 
 QList<Property*> RoleType::getPropertiesOfRole()
 {

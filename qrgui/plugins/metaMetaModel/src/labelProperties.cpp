@@ -162,12 +162,10 @@ QString LabelProperties::roleName() const
 	return mRoleName;
 }
 
-
 QString LabelProperties::nameForRoleProperty() const
 {
 	return mRoleName + "!" + mNameOfPropertyRole;
 }
-
 
 void LabelProperties::setBinding(const QString &binding)
 {

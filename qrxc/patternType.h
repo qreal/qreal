@@ -35,7 +35,6 @@ public:
 	bool initRoleProperties() override;
 	QString propertyName(Property *property, QString roleName) override;
 
-
 	bool initDividability() override;
 	bool initPortTypes() override;
 	bool initLabel(Label *label, const QDomElement &element, const int &count) override;

@@ -175,12 +175,10 @@ QString Label::location() const
 	return mProperties.binding();
 }
 
-
 void Label::updateData(bool withUndoRedo)
 {
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
-	auto check = mProperties.nameForRoleProperty();
 	if (!mProperties.nameForRoleProperty().isEmpty()) {
 		parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);
 	} else if (mProperties.binding() == "name") {
