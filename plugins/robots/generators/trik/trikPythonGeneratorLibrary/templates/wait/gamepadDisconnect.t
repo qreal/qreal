@@ -1,3 +1,2 @@
-while (gamepad.isConnected()) {
-	script.wait(10);
-}
+while gamepad.isConnected():
+  script.wait(10)

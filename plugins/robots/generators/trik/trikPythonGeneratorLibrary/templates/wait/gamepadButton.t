@@ -1,3 +1,2 @@
-while (!gamepad.buttonWasPressed(@@BUTTON@@)) {
-	script.wait(10);
-}
+while not gamepad.buttonWasPressed(@@BUTTON@@):
+  script.wait(10)

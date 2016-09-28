@@ -1,3 +1,2 @@
-while (@@CONDITION@@) {
+while @@CONDITION@@:
 @@BODY@@
-}

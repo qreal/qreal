@@ -1,3 +1,2 @@
-if (@@CONDITION@@) {
+if @@CONDITION@@:
 @@THEN_BODY@@
-}

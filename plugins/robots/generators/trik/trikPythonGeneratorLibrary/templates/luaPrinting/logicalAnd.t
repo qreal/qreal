@@ -1,1 +1,1 @@
-@@LEFT@@ && @@RIGHT@@
+@@LEFT@@ and @@RIGHT@@

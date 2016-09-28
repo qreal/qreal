@@ -1,1 +1,2 @@
-return;
+brick.stop()
+return

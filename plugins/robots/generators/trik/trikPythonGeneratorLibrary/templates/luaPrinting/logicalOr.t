@@ -1,1 +1,1 @@
-@@LEFT@@ || @@RIGHT@@
+@@LEFT@@ or @@RIGHT@@

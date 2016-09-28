@@ -1,4 +1,2 @@
-@@NAME@@ = function()
-{
+def @@NAME@@:
 @@BODY@@
-}

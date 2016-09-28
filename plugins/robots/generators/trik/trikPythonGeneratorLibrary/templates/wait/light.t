@@ -1,3 +1,2 @@
-while (!(brick.sensor(@@PORT@@).read() @@SIGN@@ @@PERCENTS@@)) {
-	script.wait(10);
-}
+while not (brick.sensor("@@PORT@@").read() @@SIGN@@ @@PERCENTS@@):
+  script.wait(10)

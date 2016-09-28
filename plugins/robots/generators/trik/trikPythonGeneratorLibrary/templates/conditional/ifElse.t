@@ -1,5 +1,4 @@
-if (@@CONDITION@@) {
+if (@@CONDITION@@):
 @@THEN_BODY@@
-} else {
+else:
 @@ELSE_BODY@@
-}

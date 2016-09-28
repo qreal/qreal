@@ -1,3 +1,4 @@
-do {
+while True:
 @@BODY@@
-} while (@@CONDITION@@);
+  if not (@@CONDITION@@):
+    break;

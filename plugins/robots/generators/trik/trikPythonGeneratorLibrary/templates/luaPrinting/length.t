@@ -1,1 +1,1 @@
-@@OPERAND@@.Length
+len(@@OPERAND@@)

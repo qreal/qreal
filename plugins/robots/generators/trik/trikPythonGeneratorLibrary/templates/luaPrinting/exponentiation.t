@@ -1,1 +1,1 @@
-Math.pow(@@LEFT@@, @@RIGHT@@)
+math.pow(@@LEFT@@, @@RIGHT@@)

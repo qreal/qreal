@@ -1,3 +1,2 @@
-while (!(gamepad.wheel() @@SIGN@@ @@ANGLE@@)) {
-	script.wait(10);
-}
+while not (gamepad.wheel() @@SIGN@@ @@ANGLE@@):
+  script.wait(10)

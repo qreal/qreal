@@ -1,4 +1,2 @@
-default:
+else:
 @@BODY@@
-	break;
-}

@@ -1,1 +1,1 @@
-brick.motor(@@PORT@@).powerOff();
+brick.motor("@@PORT@@").powerOff()

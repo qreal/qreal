@@ -1,1 +1,1 @@
-brick.keys().wasPressed(KeysEnum.Right)
+brick.keys().wasPressed(106)
