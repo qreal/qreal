@@ -1,0 +1,1 @@
+brick.say(@@TEXT@@);
