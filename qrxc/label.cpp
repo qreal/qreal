@@ -107,14 +107,15 @@ void Label::generateCodeForConstructor(OutFile &out) const
 						, QString::number(mRotation));
 		} else {
 			// It is binded label, with role logic.
-			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\",\"%6\",\"%7\", %8, %9);\n").arg(labelName()
-							, QString::number(mIndex)
-							, QString::number(mX.value())
-							, QString::number(mY.value())
-							, mLocation, mRoleName //roleName
-							, mNameOfPropertyRole
-							, mReadOnly
-							, QString::number(mRotation));
+			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\",\"%6\",\"%7\", %8, %9);\n")
+					 .arg(labelName()
+					, QString::number(mIndex)
+					, QString::number(mX.value())
+					, QString::number(mY.value())
+					, mLocation, mRoleName //roleName
+					, mNameOfPropertyRole
+					, mReadOnly
+					, QString::number(mRotation));
 		}
 	} else {
 		// It is a static label, text for it is fixed.
