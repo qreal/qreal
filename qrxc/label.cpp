@@ -97,7 +97,6 @@ void Label::generateCodeForConstructor(OutFile &out) const
 {
 	if (mText.isEmpty()) {
 		if (mRoleName.isEmpty()) {
-
 		// It is binded label, text for it will be fetched from repo.
 		out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\", %6, %7);\n").arg(labelName()
 						, QString::number(mIndex)
