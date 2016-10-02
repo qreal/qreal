@@ -199,10 +199,10 @@ void EditorGenerator::copyImages(QString const &pathToFile)
 	}
 }
 
-void EditorGenerator::createDiagrams(QDomElement &parent, Id const &id)
+void EditorGenerator::createDiagrams(QDomElement &parent, const Id &id)
 {
 	IdList const rootElements = mApi.children(id);
-	foreach (Id const typeElement, rootElements) {
+	foreach (const Id typeElement, rootElements) {
 		QString const objectType = typeElement.element();
 		if (objectType == "MetaEditorDiagramNode") {
 			QDomElement diagram = mDocument.createElement("diagram");
@@ -219,7 +219,7 @@ void EditorGenerator::createDiagrams(QDomElement &parent, Id const &id)
 	}
 }
 
-void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
+void EditorGenerator::serializeObjects(QDomElement &parent, const Id &idParent)
 {
 	IdList const childElems = mApi.children(idParent);
 	mElements = childElems;
@@ -228,7 +228,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	QDomElement tagNonGraphic = mDocument.createElement("nonGraphicTypes");
 	QDomElement tagGroups = mDocument.createElement("groups");
 
-	foreach (Id const &id, childElems) {
+	foreach (const Id &id, childElems) {
 		if (idParent != Id::rootId()) {
 			QString const objectType = id.element();
 			if (objectType == "MetaEntityEnum") {
@@ -254,7 +254,7 @@ void EditorGenerator::serializeObjects(QDomElement &parent, Id const &idParent)
 	QDomElement tagGraphic = mDocument.createElement("graphicTypes");
 	parent.appendChild(tagGraphic);
 
-	foreach (Id const &id, childElems) {
+	foreach (const Id &id, childElems) {
 		if (idParent != Id::rootId()) {
 			QString const objectType = id.element();
 			if (objectType == "MetaEntityImport") {
@@ -282,7 +282,7 @@ void EditorGenerator::createImport(QDomElement &parent, const Id &id)
 	parent.appendChild(import);
 }
 
-void EditorGenerator::createNode(QDomElement &parent, Id const &id)
+void EditorGenerator::createNode(QDomElement &parent, const Id &id)
 {
 	QDomElement node = mDocument.createElement("node");
 	ensureCorrectness(id, node, "name", mApi.name(id));
@@ -321,7 +321,7 @@ void EditorGenerator::createNode(QDomElement &parent, Id const &id)
 	setExplosion(logic, id);
 }
 
-void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
+void EditorGenerator::createEdge(QDomElement &parent, const Id &id)
 {
 	QDomElement edge = mDocument.createElement("edge");
 	ensureCorrectness(id, edge, "name", mApi.name(id));
@@ -377,7 +377,7 @@ void EditorGenerator::createEdge(QDomElement &parent, Id const &id)
 	setDividability(logic, id);
 }
 
-void EditorGenerator::createRole(QDomElement &parent, Id const &id)
+void EditorGenerator::createRole(QDomElement &parent, const Id &id)
 {
 	QDomElement roleElement = mDocument.createElement("role");
 	ensureCorrectness(id, roleElement, "name", mApi.name(id));
@@ -389,8 +389,7 @@ void EditorGenerator::createRole(QDomElement &parent, Id const &id)
 	setProperties(roleElement, id);
 }
 
-
-void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
+void EditorGenerator::createEnum(QDomElement &parent, const Id &id)
 {
 	QDomElement enumElement = mDocument.createElement("enum");
 	ensureCorrectness(id, enumElement, "name", mApi.name(id));
@@ -401,7 +400,7 @@ void EditorGenerator::createEnum(QDomElement &parent, Id const &id)
 	setValues(enumElement, id);
 }
 
-void EditorGenerator::createPort(QDomElement &parent, Id const &id)
+void EditorGenerator::createPort(QDomElement &parent, const Id &id)
 {
 	QDomElement portElement = mDocument.createElement("port");
 	ensureCorrectness(id, portElement, "name", mApi.name(id));
@@ -423,9 +422,9 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 
 	IdList const inLinks = mApi.incomingLinks(id);
 
-	foreach (Id const &inLink, inLinks) {
+	foreach (const Id &inLink, inLinks) {
 		if (inLink.element() == "Inheritance") {
-			Id const parentId = mApi.from(inLink);
+			const Id parentId = mApi.from(inLink);
 			if ((parentId.element() == "MetaEntityImport")
 					|| (parentId.element() == "MetaEntityNode")
 					|| (parentId.element() == "MetaEntityEdge"))
@@ -443,12 +442,12 @@ void EditorGenerator::setGeneralization(QDomElement &parent, const Id &id)
 	}
 }
 
-void EditorGenerator::setProperties(QDomElement &parent, Id const &id)
+void EditorGenerator::setProperties(QDomElement &parent, const Id &id)
 {
 	QDomElement tagProperties = mDocument.createElement("properties");
 	IdList const childElems = mApi.children(id);
 
-	foreach (Id const &idChild, childElems) {
+	foreach (const Id &idChild, childElems) {
 		if (idChild != Id::rootId()) {
 			QString const objectType = idChild.element();
 			if (objectType == "MetaEntity_Attribute") {
@@ -472,23 +471,23 @@ void EditorGenerator::setProperties(QDomElement &parent, Id const &id)
 	}
 }
 
-void EditorGenerator::setPorts(QDomElement &parent, Id const &id, QString const &direction)
+void EditorGenerator::setPorts(QDomElement &parent, const Id &id, QString const &direction)
 {
 	QString const propertyName = direction + "Ports";
 	QDomElement portsTag = mDocument.createElement(propertyName);
 	QStringList const ports = mApi.stringProperty(id, propertyName).split(',', QString::SkipEmptyParts);
 	foreach (QString const &port, ports) {
 		QDomElement portElem = mDocument.createElement("port");
-		Id const portId = Id::loadFromString(port);
+		const Id portId = Id::loadFromString(port);
 		portElem.setAttribute("type", mApi.name(portId));
 		portsTag.appendChild(portElem);
 	}
 	parent.appendChild(portsTag);
 }
 
-void EditorGenerator::setValues(QDomElement &parent, Id const &id)
+void EditorGenerator::setValues(QDomElement &parent, const Id &id)
 {
-	for(Id const idChild : mApi.children(id)) {
+	for(const Id idChild : mApi.children(id)) {
 		if (idChild != Id::rootId()) {
 			QDomElement valueTag = mDocument.createElement("value");
 			ensureCorrectness(idChild, valueTag, "name", mApi.stringProperty(idChild, "valueName"));
@@ -533,7 +532,7 @@ void EditorGenerator::newSetConnections(QDomElement &parent, const Id &id,
 
 	QDomElement connectionsTag = mDocument.createElement(commonTagName);
 
-	foreach (Id const idChild, childElems) {
+	foreach (const Id idChild, childElems) {
 		QString const objectType = idChild.editor();
 		if (objectType == typeName) {
 			QDomElement connection = mDocument.createElement(internalTagName);
@@ -564,7 +563,7 @@ void EditorGenerator::setPossibleEdges(QDomElement &parent, const Id &id)
 
 	QDomElement possibleEdges = mDocument.createElement("possibleEdges");
 
-	foreach (Id const idChild, childElems) {
+	foreach (const Id idChild, childElems) {
 		QString const objectType = idChild.editor();
 		if (objectType == "MetaEntityPossibleEdge") {
 			QDomElement possibleEdge = mDocument.createElement("possibleEdge");
@@ -586,7 +585,7 @@ void EditorGenerator::setCreateChildrenFromMenu(QDomElement &parent, const Id &i
 }
 
 void EditorGenerator::setStatusElement(
-		QDomElement &parent, Id const &id, QString const &tagName, QString const &propertyName)
+		QDomElement &parent, const Id &id, QString const &tagName, QString const &propertyName)
 {
 	if (mApi.stringProperty(id, propertyName) == "true") {
 		QDomElement statusElement = mDocument.createElement(tagName);
@@ -594,15 +593,15 @@ void EditorGenerator::setStatusElement(
 	}
 }
 
-void EditorGenerator::setContainer(QDomElement &parent, Id const &id)
+void EditorGenerator::setContainer(QDomElement &parent, const Id &id)
 {
 	QDomElement container = mDocument.createElement("container");
 	parent.appendChild(container);
 
 	IdList inLinks = mApi.outgoingLinks(id);
-	foreach (Id const inLink, inLinks) {
+	foreach (const Id inLink, inLinks) {
 		if (inLink.element() == "Container") {
-			Id const elementId = mApi.to(inLink);
+			const Id elementId = mApi.to(inLink);
 			QString const typeName = elementId.element();
 			if (typeName == "MetaEntityNode") {
 				QDomElement contains = mDocument.createElement("contains");
@@ -620,11 +619,11 @@ void EditorGenerator::setContainer(QDomElement &parent, Id const &id)
 	setContainerProperties(container, id);
 }
 
-void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
+void EditorGenerator::setContainerProperties(QDomElement &parent, const Id &id)
 {
 	IdList elements = mApi.children(id);
 
-	foreach (Id const idChild, elements) {
+	foreach (const Id idChild, elements) {
 		if (idChild.element() == "MetaEntityPropertiesAsContainer") {
 			QDomElement properties = mDocument.createElement("properties");
 			parent.appendChild(properties);
@@ -640,13 +639,13 @@ void EditorGenerator::setContainerProperties(QDomElement &parent, Id const &id)
 	}
 }
 
-void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
+void EditorGenerator::setExplosion(QDomElement &parent, const Id &id)
 {
 	QDomElement explodesTo = mDocument.createElement("explodesTo");
 	parent.appendChild(explodesTo);
 
 	IdList const inLinks = mApi.incomingLinks(id);
-	foreach (Id const inLink, inLinks) {
+	foreach (const Id inLink, inLinks) {
 		if (inLink.element() == "Explosion") {
 			const Id elementId = mApi.from(inLink);
 			const QString typeName = elementId.element();
@@ -666,7 +665,7 @@ void EditorGenerator::setExplosion(QDomElement &parent, Id const &id)
 	}
 }
 
-void EditorGenerator::setExplosionProperties(QDomElement &target, Id const &linkId)
+void EditorGenerator::setExplosionProperties(QDomElement &target, const Id &linkId)
 {
 	target.setAttribute("makeReusable", mApi.property(linkId, "makeReusable").toString());
 	target.setAttribute("requireImmediateLinkage", mApi.property(linkId, "requireImmediateLinkage").toString());
@@ -679,7 +678,7 @@ void EditorGenerator::setDividability(QDomElement &parent, const Id &id)
 	dividability.setAttribute("isDividable", mApi.stringProperty(id, "isDividable"));
 }
 
-void EditorGenerator::setSizesForContainer(QString const &propertyName, QDomElement &properties, Id const &id)
+void EditorGenerator::setSizesForContainer(QString const &propertyName, QDomElement &properties, const Id &id)
 {
 	if (mApi.stringProperty(id, propertyName + "Size") != "") {
 		QDomElement property = mDocument.createElement(propertyName);
@@ -688,7 +687,7 @@ void EditorGenerator::setSizesForContainer(QString const &propertyName, QDomElem
 	}
 }
 
-void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, Id const &id)
+void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, const Id &id)
 {
 	if (mApi.stringProperty(id, propertyName) == "true") {
 		QDomElement property = mDocument.createElement(propertyName);
@@ -697,7 +696,7 @@ void EditorGenerator::setBoolValuesForContainer(QString const &propertyName, QDo
 }
 
 void EditorGenerator::ensureCorrectness(
-		Id const &id, QDomElement element, QString const &tagName, QString const &value)
+		const Id &id, QDomElement element, QString const &tagName, QString const &value)
 {
 	if (value.isEmpty() && (tagName == "displayedName")) {
 		return;
@@ -726,7 +725,7 @@ void EditorGenerator::ensureCorrectness(
 
 bool EditorGenerator::findPort(QString const &name) const
 {
-	foreach (Id const &port, mApi.elementsByType("MetaEntityPort")) {
+	foreach (const Id &port, mApi.elementsByType("MetaEntityPort")) {
 		if (mApi.name(port) == name) {
 			return true;
 		}
@@ -735,9 +734,9 @@ bool EditorGenerator::findPort(QString const &name) const
 	return false;
 }
 
-void EditorGenerator::checkRootNodeValid(Id const &diagram, QString const rootNode)
+void EditorGenerator::checkRootNodeValid(const Id &diagram, QString const rootNode)
 {
-	for (Id const &child : mApi.children(diagram)) {
+	for (const Id &child : mApi.children(diagram)) {
 		if ((child.element() == "MetaEntityNode" || child.element() == "MetaEntityGroup")
 				&& mApi.name(child) == rootNode) {
 			return;

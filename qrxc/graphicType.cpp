@@ -388,11 +388,11 @@ bool GraphicType::initLabels()
 
 bool GraphicType::addProperty(Property *property, QString roleName)
 {
-
 	QString propertyName = this->propertyName(property, roleName);
 	if (propertyName.isEmpty()) {
 		propertyName = property->name();
 	}
+
 	if (mProperties.contains(propertyName)) {
 		// This will automaticly dispose property in this branch.
 		QScopedPointer<Property> propertyDisposer(property);
@@ -527,8 +527,8 @@ void GraphicType::generateDescription(OutFile &out) const
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
-	auto keys = mProperties.keys();
-	for (QString key : keys) {
+	auto const keys = mProperties.keys();
+	for (const QString key : keys) {
 		Property *property = mProperties[key];
 
 		// Validating property names.
@@ -540,15 +540,7 @@ void GraphicType::generatePropertyData(OutFile &out) const
 			continue;
 		}
 
-
-		QString name = "";
-		if (key == property->name()) {
-			name = property->name();
-		} else {
-			name = key;
-		}
-
-
+		const QString name = key == property->name() ? property->name() : key;
 		const QString stringConstructor = property->type() == "string" ? "QObject::tr" : "QString::fromUtf8";
 		out() << QString("\t\t\taddProperty(\"%1\", \"%2\", %3(\"%4\"), QObject::tr(\"%5\"), "\
 				"QObject::tr(\"%6\"), %7);\n").arg(name, property->type(), stringConstructor

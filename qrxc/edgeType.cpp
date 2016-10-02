@@ -48,7 +48,7 @@ Type *EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
-	foreach (RoleType *role, mRoles) {
+	for (RoleType * const role : mRoles) {
 		result->mRoles.append(new RoleType(*role));
 	}
 	result->mBeginArrowType = mBeginArrowType;
@@ -133,11 +133,11 @@ bool EdgeType::initRoleProperties()
 	return true;
 }
 
-QString EdgeType::propertyName(Property *property, QString roleName)
+QString EdgeType::propertyName(Property *property, const QString roleName)
 {
-	for (auto role : mRoles) {
+	for (RoleType* const role : mRoles) {
 		if (role->name() == roleName) {
-			for (auto currentProperty : role->getPropertiesOfRole()) {
+			for (Property* const currentProperty : role->getPropertiesOfRole()) {
 				if (currentProperty->name() == property->name()) {
 					return role->name() + "!" + property->name();
 				}
@@ -323,7 +323,6 @@ void EdgeType::generateLabels(OutFile &out) const
 		label->generateCodeForConstructor(out);
 	}
 }
-
 
 void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)
 {
