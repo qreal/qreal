@@ -103,7 +103,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 	int helper = 0;
 	if (mModel->rowCount(index) > 0) {
-		for (int i = 0; i < 2; ++i) {
+		for (int i = 0; i < mModel->rowCount(index); ++i) {
 			QString name1 = mModel->data(mModel->index(i + helper, 0)).toString();
 			if (name1.isEmpty()) {
 				return;
@@ -354,6 +354,18 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			break;
 		}
 		++row;
+	}
+
+	if (firstPart.isEmpty()) {
+		row = 0;
+		for (QtProperty* temp : list) {
+			if (temp != prop) {
+				++row;
+			} else {
+				break;
+			}
+		}
+
 	}
 
 	const QModelIndex &index = mModel->index(row + column, column); //row

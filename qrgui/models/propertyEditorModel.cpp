@@ -359,10 +359,23 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 
 		role = roles::customPropertiesBeginRole;
-		QStringList logPropertiesClone = logicalProperties;
+
+		QStringList cloneWithRoles;
+		QStringList cloneWithPure;
+
+		for (const QString &prop : logicalProperties) {
+			if (prop.contains("!")) {
+				cloneWithRoles.append(prop);
+			} else {
+				cloneWithPure.append(prop);
+			}
+		}
+
 		int i = 0;
-		while (logPropertiesClone.size() > 0) {
-			QString temp = logPropertiesClone.takeAt(0);
+
+
+		while (cloneWithRoles.size() > 0) {
+			QString temp = cloneWithRoles.takeAt(0);
 			if (temp.contains("!")) {
 				int first = temp.indexOf("!");
 				QString begin = temp.mid(0, first);
@@ -381,9 +394,9 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 				int j = 0;
 				int k = 2;
-				while (j < logPropertiesClone.size()) {
-					if (logPropertiesClone.at(j).mid(0, first) == begin) {
-						QString newValue = logPropertiesClone.takeAt(j);
+				while (j < cloneWithRoles.size()) {
+					if (cloneWithRoles.at(j).mid(0, first) == begin) {
+						QString newValue = cloneWithRoles.takeAt(j);
 						newValue = newValue.mid(first + 1);
 						mField->appendChild(new Field(newValue, logicalAttribute, role, two));
 						QString value = mTargetLogicalObject.data(role).toString();
@@ -399,17 +412,19 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 				}
 				i += j + 1;
 			}
-			else {
-				mField->appendChild(new Field(temp, logicalAttribute, role, nullptr));
-				QString val = mTargetLogicalObject.data(role).toString();
+		}
+		while (cloneWithPure.size() > 0) {
 
-				qDebug() << "aaaaaaaafffffffffaaaa" << val;
+			QString temp = cloneWithPure.takeAt(0);
 
-				mField->setValue(i, val);
-				++i;
-				++role;
-			}
+			mField->appendChild(new Field(temp, logicalAttribute, role, nullptr));
+			QString val = mTargetLogicalObject.data(role).toString();
 
+			qDebug() << "aaaaaaaafffffffffaaaa" << val;
+
+			mField->setValue(i, val);
+			++i;
+			++role;
 
 		}
 
