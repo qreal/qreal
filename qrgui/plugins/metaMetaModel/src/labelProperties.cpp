@@ -60,7 +60,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 	, mBinding(binding)
 	, mRoleName(roleName)
 	, mNameOfPropertyRole(nameOfRoleProperty)
-	, mReadOnly(readOnly)
+	, mReadOnly(false)
 	, mRotation(rotation)
 	, mBackground(Qt::transparent)
 	, mScalingX(false)

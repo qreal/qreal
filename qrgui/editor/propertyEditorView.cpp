@@ -103,8 +103,12 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 	int helper = 0;
 	if (mModel->rowCount(index) > 0) {
-		for (int i = 0; i < 2; ++i) {
-			QString name1 = mModel->data(mModel->index(i + helper, 0)).toString();
+
+
+		int i = 0;
+
+		while (i < mModel->rowCount(index)) {
+			QString name1 = mModel->data(mModel->index(i, 0)).toString();
 			if (name1.isEmpty()) {
 				return;
 			}
@@ -115,24 +119,26 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			QtVariantProperty *vItem = mVariantManager->addProperty(type, name1);
 
 			item = vItem;
+			if (name1.contains("Role")) {
+				item = groupManager->addProperty(name1);
 
-			item = groupManager->addProperty(name1);
+			} else {
+				const QModelIndex &valueIndex = mModel->index(i, 0);
+				QString value = mModel->getValueFromIndex(valueIndex);
+				QVariant val(value);
+				vItem->setValue(val);
+			}
+
 
 			QList<QtProperty*> list;
 
-			int count = mModel->countOfChilds(mModel->index(i + helper, 0));
-
-			qDebug() << "ololo" << count;
-
-			for (int j = 1; j < count + 1; ++j) {
-				QString name2 = mModel->data(mModel->index(i + helper, j)).toString();
-				const QModelIndex &valueIndex1 = mModel->index(i + helper, j);
+			int count = mModel->countOfChilds(mModel->index(i, 0));
+			for (int j = 0; j < count; ++j) {
+				// +1 because offset
+				QString name2 = mModel->data(mModel->index(i, j + 1)).toString();
+				const QModelIndex &valueIndex1 = mModel->index(i, j + 1);
 				QString value1 = mModel->getValueFromIndex(valueIndex1);
 				QVariant val(value1);
-
-
-				qDebug() << "valueIndex1.data()" << value1 << endl;
-
 
 				QtProperty *item1 = nullptr;
 
@@ -140,24 +146,23 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 				vItem1->setValue(val);
 
 				item1 = vItem1;
-
 				list.append(item1);
-				bool ololo = item1->hasValue();
-				QString ff = item1->valueText();
-				qDebug () << ff << endl;
 
 			}
-			helper += count;
 
 			while (!list.isEmpty()) {
 				item->addSubProperty(list.takeFirst());
 			}
 
 			mPropertyEditor->addProperty(item);
-
-			qDebug() << "buy root-index" << endl;
+			if (count > 0) {
+				i += count + 1;
+			} else {
+				++i;
+			}
 
 		}
+
 	}
 
 
@@ -239,7 +244,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setRootIsDecorated(false);
 }
 
-void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex &right)
+void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 {
 
 	if (mModel->rowCount(QModelIndex()) <= 0) {
@@ -250,6 +255,7 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 	QList<QtProperty*> list = mPropertyEditor->properties();
 
 	int i = 0;
+	int row = 0;
 	while (i < list.count()) {
 		QtProperty *temp = list.at(i);
 		if (!temp) {
@@ -258,7 +264,35 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 
 		QList<QtProperty*> childs = temp->subProperties();
 		if (childs.isEmpty()) {
-			break;
+			QtVariantProperty *prop = dynamic_cast<QtVariantProperty*>(temp);
+			QString val = prop->valueText();
+
+			QVariant value(val);
+			const QModelIndex &valueIndex = mModel->index(row, 0);
+			if (!val.isEmpty()) {
+				mModel->setValueForIndex(valueIndex, val);
+				if (prop) {
+
+					//todo i don't khow what is it
+					//				if (temp->propertyType() == QtVariantPropertyManager::enumTypeId()
+					//						&& !mModel->enumEditable(valueIndex))
+					//				{
+					//					value = enumPropertyIndexOf(valueIndex, value.toString());
+					//				}
+
+
+					setPropertyValue(prop, value);
+
+					const QString description = propertyDescription(i);
+					const QString tooltip = description.isEmpty() ? value.toString() : description;
+
+					prop->setToolTip(tooltip);
+
+
+
+				}
+
+			}
 		}
 
 		for (int j = 0; j < childs.count(); ++j) {
@@ -266,7 +300,7 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 			QString val = child->valueText();
 			QVariant value(val);
 			// +1 because in model numbers of elements are a sequence
-			const QModelIndex &valueIndex = mModel->index(i, j + 1);
+			const QModelIndex &valueIndex = mModel->index(row, j + 1);
 			if (!val.isEmpty()) {
 				mModel->setValueForIndex(valueIndex, val);
 				if (child) {
@@ -290,12 +324,14 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 
 				}
 
-
-
 			}
 		}
-
-		i += childs.count() + 1;
+		if (childs.count() != 0) {
+			row += childs.count() + 1;
+		} else {
+			++row;
+		}
+		++i;
 	}
 }
 
@@ -348,14 +384,15 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	int propertyType = property->propertyType();
 
 
-
 	QList<QtProperty*> list = mPropertyEditor->properties();
-	int row = 1;
+	int row = 0;
 	int column = 0;
 
 	QString firstPart = "";
+	int i = 0;
 
-	for (QtProperty* temp : list) {
+	while (i < list.length()) {
+		QtProperty* temp = list.at(i);
 		QList<QtProperty*> childs = temp->subProperties();
 		for (QtProperty* child : childs) {
 			if (child == prop) {
@@ -365,14 +402,15 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 				++row;
 			}
 		}
-
 		if (!firstPart.isEmpty()) {
 			break;
 		}
-		++row;
+
+		i += childs.count() + 1;
+
 	}
 
-	const QModelIndex &index = mModel->index(row + column, column); //row
+	const QModelIndex &index = mModel->index(row, 0); //row
 
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
 		QList<QPair<QString, QString>> const values = mModel->enumValues(index);
@@ -394,11 +432,14 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	const Id id = mModel->idByIndex(index);
 
 	const QString propertyName = mModel->propertyName(index);
+	if (!firstPart.isEmpty()) {
+		firstPart += "!";
+	}
 
 	// TODO: edit included Qt Property Browser framework or inherit new browser
 	// from it and create propertyCommited() and propertyCancelled() signal
 	qReal::commands::ChangePropertyCommand *changeCommand =
-			new qReal::commands::ChangePropertyCommand(mLogicalModelAssistApi, firstPart + "!" + propertyName, id, value);
+			new qReal::commands::ChangePropertyCommand(mLogicalModelAssistApi, firstPart + propertyName, id, value);
 	mController->execute(changeCommand);
 }
 
