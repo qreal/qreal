@@ -44,7 +44,6 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 
 void PropertyEditorModel::setValueForIndex(const QModelIndex &index, QString value)
 {
-	//Field *childItem = mField->child(index.row() + index.column());
 	mField->setValue(index.row() + index.column(), value);
 }
 
@@ -320,12 +319,11 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 {
 	beginResetModel();
 	mFields.clear();
-	mField = new Field("start", logicalAttribute, 265, nullptr);
+	mField = new Field("start", logicalAttribute, -1, nullptr);
 	endResetModel();
 
 	mTargetLogicalObject = logicalModelIndex;
 	mTargetGraphicalObject = graphicalModelIndex;
-
 
 
 	if (!isValid()) {
@@ -334,34 +332,19 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 	qDebug() << "mTargetLogicalObject" << endl;
 
-//	for (int i = 0; i < 10; ++i) {
-//		qDebug() << mTargetLogicalObject.data(roles::customPropertiesBeginRole + i).toString() << endl;
-//	}
 
 	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 
 	if (logicalModelIndex != QModelIndex() || true) {
 		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
 
-		auto h = mEditorManagerInterface.getPropertiesInformation(logicalId);
-		auto qwert = mEditorManagerInterface.children(logicalId);
 
 		int role = roles::customPropertiesBeginRole;
-// not right assemption
-//		foreach (QString property, logicalProperties) {
-//			if (!property.contains("!")) {
-
-//			} else {
-//				mFields.append(new Field(property, logicalAttribute, role, nullptr));
-//				++role;
-//			}
-//		}
-
-
-		role = roles::customPropertiesBeginRole;
 
 		QStringList cloneWithRoles;
 		QStringList cloneWithPure;
+
+		//todo sort abc < ac
 
 		for (const QString &prop : logicalProperties) {
 			if (prop.contains("!")) {
@@ -372,81 +355,58 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		}
 
 		int i = 0;
-
-
+		role = roles::customPropertiesBeginRole;
 		while (cloneWithRoles.size() > 0) {
 			QString temp = cloneWithRoles.takeAt(0);
-			if (temp.contains("!")) {
-				int first = temp.indexOf("!");
-				QString begin = temp.mid(0, first);
-				mField->appendChild(new Field(begin, logicalAttribute, role, nullptr));
+			int first = temp.indexOf("!");
+			QString begin = temp.mid(0, first);
+			mField->appendChild(new Field(begin, logicalAttribute, -1, nullptr));
+			auto two = mField->child(i);
 
-				auto two = mField->child(i);
 
-				QString end = temp.mid(first + 1);
-				mField->appendChild(new Field(end, logicalAttribute, role, two));
-				QString val = mTargetLogicalObject.data(role).toString();
+			QString end = temp.mid(first + 1);
+			mField->appendChild(new Field(end, logicalAttribute, role, two));
+			++i;
+			QString val = mTargetLogicalObject.data(role).toString();
+			mField->setValue(i, val);
+			++role;
 
-				qDebug() << "aaaaaaaaaaaa" << val;
-
-				mField->setValue(i + 1, val);
-				++role;
-
-				int j = 0;
-				int k = 2;
-				while (j < cloneWithRoles.size()) {
-					if (cloneWithRoles.at(j).mid(0, first) == begin) {
-						QString newValue = cloneWithRoles.takeAt(j);
-						newValue = newValue.mid(first + 1);
-						mField->appendChild(new Field(newValue, logicalAttribute, role, two));
-						QString value = mTargetLogicalObject.data(role).toString();
-						mField->setValue(i + k, value);
-						++role;
-
-						j = 0;
-
-					} else {
-						++j;
-					}
-					++k;
+			int j = 0;
+			while (j < cloneWithRoles.size()) {
+				if (cloneWithRoles.at(j).mid(0, first) == begin) {
+					QString newValue = cloneWithRoles.takeAt(j);
+					newValue = newValue.mid(first + 1);
+					mField->appendChild(new Field(newValue, logicalAttribute, role, two));
+					++i;
+					QString value = mTargetLogicalObject.data(role).toString();
+					mField->setValue(i, value);
+					++role;
+					j = 0;
+				} else {
+					++j;
 				}
-				i += j + 1;
 			}
+
+			++i;
 		}
-		while (cloneWithPure.size() > 0) {
 
+
+		while (cloneWithPure.size()  > 0) {
 			QString temp = cloneWithPure.takeAt(0);
-
 			mField->appendChild(new Field(temp, logicalAttribute, role, nullptr));
 			QString val = mTargetLogicalObject.data(role).toString();
-
-			qDebug() << "aaaaaaaafffffffffaaaa" << val;
-
 			mField->setValue(i, val);
 			++i;
 			++role;
-
 		}
 
-		int ddd = 5;
-//		if (i > 0) {
 
-////				auto one = mField[i-1];
-//			auto two = mField->child(i-1);
-//			mField->appendChild(new Field(property, logicalAttribute, role, two));
-
-//		} else {
-//			mField->appendChild(new Field(property, logicalAttribute, role, nullptr));
-//		}
-//		++i;
 
 
 		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
 //		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
 	}
 
-	int ololo = mField->childCount();
-	auto check = mField->parentItem();
 	// There are no custom attributes for graphical objects, but they shall be
 	// added soon.
 //	if (graphicalModelIndex != QModelIndex()) {

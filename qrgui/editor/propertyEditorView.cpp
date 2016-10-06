@@ -103,7 +103,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 	int helper = 0;
 	if (mModel->rowCount(index) > 0) {
-		for (int i = 0; i < mModel->rowCount(index); ++i) {
+		for (int i = 0; i < 2; ++i) {
 			QString name1 = mModel->data(mModel->index(i + helper, 0)).toString();
 			if (name1.isEmpty()) {
 				return;
@@ -115,21 +115,25 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 			QtVariantProperty *vItem = mVariantManager->addProperty(type, name1);
 
 			item = vItem;
-			if (name1.contains("Role")) {
-				item = groupManager->addProperty(name1);
 
-			}
-
+			item = groupManager->addProperty(name1);
 
 			QList<QtProperty*> list;
 
 			int count = mModel->countOfChilds(mModel->index(i + helper, 0));
+
+			qDebug() << "ololo" << count;
 
 			for (int j = 1; j < count + 1; ++j) {
 				QString name2 = mModel->data(mModel->index(i + helper, j)).toString();
 				const QModelIndex &valueIndex1 = mModel->index(i + helper, j);
 				QString value1 = mModel->getValueFromIndex(valueIndex1);
 				QVariant val(value1);
+
+
+				qDebug() << "valueIndex1.data()" << value1 << endl;
+
+
 				QtProperty *item1 = nullptr;
 
 				QtVariantProperty *vItem1 = mVariantManager->addProperty(type, name2);
@@ -138,6 +142,9 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 				item1 = vItem1;
 
 				list.append(item1);
+				bool ololo = item1->hasValue();
+				QString ff = item1->valueText();
+				qDebug () << ff << endl;
 
 			}
 			helper += count;
@@ -148,6 +155,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 			mPropertyEditor->addProperty(item);
 
+			qDebug() << "buy root-index" << endl;
 
 		}
 	}
@@ -158,12 +166,10 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 //		QString name = mModel->data(mModel->index(i, 0)).toString();
 //		const QVariant &value = mModel->data(valueCell);
 
-
 //		int type = QVariant::String;
 //		QString typeName = mModel->typeName(valueCell).toLower();
 //		QList<QPair<QString, QString>> const values = mModel->enumValues(valueCell);
 //		bool isButton = false;
-
 //		if (typeName == "int") {
 //			type = QVariant::Int;
 //		} else if (typeName == "bool") {
@@ -235,15 +241,16 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex &right)
 {
-	int helper = 0;
 
 	if (mModel->rowCount(QModelIndex()) <= 0) {
 		return;
 	}
 
+	//QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(mPropertyEditor->properties().at(i));
 	QList<QtProperty*> list = mPropertyEditor->properties();
 
-	for (int i = 0; i < list.count(); ++i) {
+	int i = 0;
+	while (i < list.count()) {
 		QtProperty *temp = list.at(i);
 		if (!temp) {
 			break;
@@ -257,20 +264,20 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 		for (int j = 0; j < childs.count(); ++j) {
 			QtVariantProperty *child = dynamic_cast<QtVariantProperty*>(childs.at(j));
 			QString val = child->valueText();
-			qDebug() << val << endl;
-
-
 			QVariant value(val);
-			const QModelIndex &valueIndex = mModel->index(i + helper, j + 1);
+			// +1 because in model numbers of elements are a sequence
+			const QModelIndex &valueIndex = mModel->index(i, j + 1);
 			if (!val.isEmpty()) {
 				mModel->setValueForIndex(valueIndex, val);
-
 				if (child) {
-					if (child->propertyType() == QtVariantPropertyManager::enumTypeId()
-							&& !mModel->enumEditable(valueIndex))
-					{
-						value = enumPropertyIndexOf(valueIndex, value.toString());
-					}
+
+					//todo i don't khow what is it
+					//				if (child->propertyType() == QtVariantPropertyManager::enumTypeId()
+					//						&& !mModel->enumEditable(valueIndex))
+					//				{
+					//					value = enumPropertyIndexOf(valueIndex, value.toString());
+					//				}
+
 
 					setPropertyValue(child, value);
 
@@ -278,11 +285,18 @@ void PropertyEditorView::dataChanged(const QModelIndex &left, const QModelIndex 
 					const QString tooltip = description.isEmpty() ? value.toString() : description;
 
 					child->setToolTip(tooltip);
+
+
+
 				}
+
+
+
 			}
 		}
-	}
 
+		i += childs.count() + 1;
+	}
 }
 
 void PropertyEditorView::buttonClicked(QtProperty *property)
@@ -333,6 +347,8 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	QtVariantProperty *property = dynamic_cast<QtVariantProperty*>(prop);
 	int propertyType = property->propertyType();
 
+
+
 	QList<QtProperty*> list = mPropertyEditor->properties();
 	int row = 1;
 	int column = 0;
@@ -354,18 +370,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 			break;
 		}
 		++row;
-	}
-
-	if (firstPart.isEmpty()) {
-		row = 0;
-		for (QtProperty* temp : list) {
-			if (temp != prop) {
-				++row;
-			} else {
-				break;
-			}
-		}
-
 	}
 
 	const QModelIndex &index = mModel->index(row + column, column); //row
