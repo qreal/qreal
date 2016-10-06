@@ -386,7 +386,7 @@ bool GraphicType::initLabels()
 	return true;
 }
 
-bool GraphicType::addProperty(Property *property, QString roleName)
+bool GraphicType::addProperty(Property *property, const QString &roleName)
 {
 	QString propertyName = this->propertyName(property, roleName);
 	if (propertyName.isEmpty()) {
@@ -527,8 +527,8 @@ void GraphicType::generateDescription(OutFile &out) const
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
-	auto const keys = mProperties.keys();
-	for (const QString key : keys) {
+	const auto keys = mProperties.keys();
+	for (const QString &key : keys) {
 		Property *property = mProperties[key];
 
 		// Validating property names.

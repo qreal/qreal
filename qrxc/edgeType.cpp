@@ -125,15 +125,15 @@ bool EdgeType::initRoles()
 bool EdgeType::initRoleProperties()
 {
 	for (RoleType *role : mRoles) {
-			for (Property *property : role->getPropertiesOfRole()) {
-				addProperty(property, role->name());
-			}
+		for (Property *property : role->getPropertiesOfRole()) {
+			addProperty(property, role->name());
 		}
+	}
 
 	return true;
 }
 
-QString EdgeType::propertyName(Property *property, const QString roleName)
+QString EdgeType::propertyName(Property *property, const QString &roleName)
 {
 	for (RoleType* const role : mRoles) {
 		if (role->name() == roleName) {

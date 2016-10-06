@@ -73,7 +73,7 @@ Label *Label::clone()
 	return returnLabel;
 }
 
-void Label::setRoleName(const QString roleName)
+void Label::setRoleName(const QString &roleName)
 {
 	mRoleName = roleName;
 }

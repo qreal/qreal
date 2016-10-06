@@ -49,7 +49,7 @@ private:
 	virtual bool initDividability();
 	virtual bool initPortTypes();
 	virtual bool initRoleProperties();
-	virtual QString propertyName(Property *property, const QString roleName);
+	virtual QString propertyName(Property *property, const QString &roleName);
 
 	bool initSdf();
 	void generateSdf() const;

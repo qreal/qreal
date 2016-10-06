@@ -105,7 +105,7 @@ bool NodeType::initRoleProperties()
 	return true;
 }
 
-QString NodeType::propertyName(Property *property, const QString roleName)
+QString NodeType::propertyName(Property *property, const QString &roleName)
 {
 	Q_UNUSED(property);
 	Q_UNUSED(roleName);

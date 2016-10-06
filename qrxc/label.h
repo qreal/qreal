@@ -43,7 +43,7 @@ public:
 
 	QString labelName() const;
 	QString location() const;
-	void setRoleName(const QString roleName);
+	void setRoleName(const QString &roleName);
 
 private:
 	utils::ScalableCoordinate mX;

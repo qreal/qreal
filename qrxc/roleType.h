@@ -21,14 +21,23 @@ namespace utils {
 	class OutFile;
 }
 
+/// Class represents one of the ends of edge.
 class RoleType : public NonGraphicType
 {
 public:
 	bool init(const QDomElement &element, const QString &context) override;
 	RoleType* clone() const override;
+
+	/// Returns the type of arrow.
 	QString typeOfArrow();
+
+	//// Returns list properties of role.
 	QList<Property*> getPropertiesOfRole();
+
+	/// I have no idea what is it. Something based on standard UML 2.5.
 	bool isEnding();
+
+	/// Returns navigability of role.
 	bool isNavigable();
 
 private:
