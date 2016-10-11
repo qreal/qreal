@@ -164,7 +164,11 @@ QString LabelProperties::roleName() const
 
 QString LabelProperties::nameForRoleProperty() const
 {
-	return mRoleName + "!" + mNameOfPropertyRole;
+	if (!mRoleName.isEmpty() && !mNameOfPropertyRole.isEmpty()) {
+		return mRoleName + "!" + mNameOfPropertyRole;
+	}
+
+	return "";
 }
 
 void LabelProperties::setBinding(const QString &binding)

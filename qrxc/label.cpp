@@ -111,7 +111,7 @@ void Label::generateCodeForConstructor(OutFile &out) const
 					, QString::number(mIndex)
 					, QString::number(mX.value())
 					, QString::number(mY.value())
-					, mLocation, mRoleName //roleName
+					, mLocation, mRoleName
 					, mNameOfPropertyRole
 					, mReadOnly
 					, QString::number(mRotation));
