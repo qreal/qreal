@@ -31,9 +31,14 @@ Label::Label(models::GraphicalModelAssistApi &graphicalAssistApi
 	, mShouldMove(false)
 	, mId(elementId)
 	, mGraphicalModelAssistApi(graphicalAssistApi)
-	, mProperties(properties)
 {
+	mProperties = properties;
+
+	qDebug() << "Label constructor other props is read-only1" << properties.isReadOnly();
+	qDebug() << "Label constructor new props is read-only2" << mProperties.isReadOnly();
+
 	setTextInteractionFlags(Qt::NoTextInteraction);
+
 	if (properties.isStatic()) {
 		setText(properties.text());
 	}

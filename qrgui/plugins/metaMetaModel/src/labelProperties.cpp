@@ -60,7 +60,7 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &bin
 	, mBinding(binding)
 	, mRoleName(roleName)
 	, mNameOfPropertyRole(nameOfRoleProperty)
-	, mReadOnly(false)
+	, mReadOnly(readOnly)
 	, mRotation(rotation)
 	, mBackground(Qt::transparent)
 	, mScalingX(false)
@@ -164,7 +164,11 @@ QString LabelProperties::roleName() const
 
 QString LabelProperties::nameForRoleProperty() const
 {
-	return mRoleName + "!" + mNameOfPropertyRole;
+	if (!mRoleName.isEmpty() && !mNameOfPropertyRole.isEmpty()) {
+		return mRoleName + "!" + mNameOfPropertyRole;
+	}
+
+	return "";
 }
 
 void LabelProperties::setBinding(const QString &binding)

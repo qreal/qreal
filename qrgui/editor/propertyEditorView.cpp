@@ -100,10 +100,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setFactoryForManager(mButtonManager, mButtonFactory);
 	mPropertyEditor->setFactoryForManager(mVariantManager, mVariantFactory);
 
-
-	int helper = 0;
 	if (mModel->rowCount(index) > 0) {
-
 
 		int i = 0;
 
@@ -394,21 +391,34 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	while (i < list.length()) {
 		QtProperty* temp = list.at(i);
 		QList<QtProperty*> childs = temp->subProperties();
-		for (QtProperty* child : childs) {
-			if (child == prop) {
-				firstPart = temp->propertyName();
-				break;
-			} else {
+
+		if (!childs.isEmpty()) {
+			++row;
+
+			for (QtProperty* property : childs) {
+				if (property == prop) {
+					firstPart = temp->propertyName();
+					break;
+				}
+
 				++row;
 			}
-		}
-		if (!firstPart.isEmpty()) {
-			break;
+
+			if (!firstPart.isEmpty()) {
+				break;
+			}
+
+		} else {
+			if (temp == prop) {
+				break;
+			}
+
+			++row;
 		}
 
-		i += childs.count() + 1;
-
+		++i;
 	}
+
 
 	const QModelIndex &index = mModel->index(row, 0); //row
 

@@ -205,7 +205,6 @@ private:
 	QPersistentModelIndex mTargetLogicalObject;
 	QPersistentModelIndex mTargetGraphicalObject;
 
-	QList<Field*> mFields;
 	Field* mField;
 
 	const qReal::EditorManagerInterface &mEditorManagerInterface;

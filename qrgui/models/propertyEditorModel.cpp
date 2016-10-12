@@ -91,7 +91,7 @@ Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
 	if (index.column() == 0)
 		return Qt::ItemIsEnabled;
 
-	switch (mFields[index.row()]->attributeClass()) {
+	switch (mField->child(index.row())->attributeClass()) {
 	case logicalAttribute:
 	case graphicalAttribute:
 	case namePseudoattribute:
@@ -224,7 +224,7 @@ QList<QPair<QString, QString>> PropertyEditorModel::enumValues(const QModelIndex
 		return {};
 	}
 
-	const AttributeClassEnum attrClass = mFields[index.row()]->attributeClass();
+	const AttributeClassEnum attrClass = mField->child(index.row())->attributeClass();
 	// metatype, ids and name are definitely not enums
 	if (attrClass != logicalAttribute && attrClass != graphicalAttribute) {
 		return {};
@@ -239,7 +239,7 @@ QList<QPair<QString, QString>> PropertyEditorModel::enumValues(const QModelIndex
 	/// becomes invalid index.
 	return id.isNull()
 			? QList<QPair<QString, QString>>()
-			: mEditorManagerInterface.enumValues(id, mFields[index.row()]->fieldName());
+			: mEditorManagerInterface.enumValues(id, mField->child(index.row())->fieldName());
 }
 
 void PropertyEditorModel::rereadData(const QModelIndex &topLeftIndex, const QModelIndex &bottomRightIndex)
@@ -254,7 +254,7 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	mTargetGraphicalModel = sourceGraphicalModel;
 
 	beginResetModel();
-	mFields.clear();
+	mField = new Field("start", logicalAttribute, -1, nullptr);
 	endResetModel();
 
 	if (mTargetLogicalModel)
@@ -273,7 +273,6 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		, const QModelIndex &graphicalModelIndex)
 {
 	beginResetModel();
-	mFields.clear();
 	mField = new Field("start", logicalAttribute, -1, nullptr);
 	endResetModel();
 
@@ -406,7 +405,7 @@ QModelIndex PropertyEditorModel::modelIndex(int row) const
 
 int PropertyEditorModel::roleByIndex(int row) const
 {
-	return mFields[row]->role();
+	return mField->child(row)->role();
 }
 
 QString PropertyEditorModel::typeName(const QModelIndex &index) const
@@ -415,7 +414,7 @@ QString PropertyEditorModel::typeName(const QModelIndex &index) const
 	if (id.isNull()) {
 		return "";
 	}
-	return mEditorManagerInterface.typeName(id, mFields[index.row()]->fieldName());
+	return mEditorManagerInterface.typeName(id, mField->child(index.row())->fieldName());
 }
 
 QString PropertyEditorModel::propertyName(const QModelIndex &index) const
@@ -425,7 +424,7 @@ QString PropertyEditorModel::propertyName(const QModelIndex &index) const
 
 bool PropertyEditorModel::setData(const Id &id, const QString &propertyName, const QVariant &value)
 {
-	if (mFields.isEmpty() || idByIndex(index(0, 0)) != id) {
+	if (mField->childCount() == 0 || idByIndex(index(0, 0)) != id) {
 		return false;
 	}
 
