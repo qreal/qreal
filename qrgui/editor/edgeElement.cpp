@@ -76,17 +76,11 @@ EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models
 	setAcceptHoverEvents(true);
 
 	const QList<LabelProperties> labelsInfos = mType.labels();
-	qDebug() << "edge constructor";
 	for (const LabelProperties &labelInfo : labelsInfos) {
-		qDebug() << "read-obly from edge constructor" << labelInfo.isReadOnly();
 		Label * const label = new Label(mGraphicalAssistApi, mId, labelInfo);
-		qDebug() << "label is read-only1" << label->info().isReadOnly();
-
 		label->init(boundingRect());
 		label->setParentItem(this);
 		label->setShouldCenter(false);
-		qDebug() << "label is read-only2" << label->info().isReadOnly();
-
 		mLabels.append(label);
 	}
 
