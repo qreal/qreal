@@ -45,6 +45,12 @@
 					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
 				</group>
 			</groups>
+  			 <role arrowType="no_arrow" name="NoArrowRole">
+                		<properties/>
+			</role>
+ 			<role arrowType="open_arrow" name="OpenArrowRole">
+                		<properties/>
+			</role>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<!-- Algorithms -->
@@ -298,9 +304,8 @@
 					</labels>
 				</graphics>
 				<logic>
-					<associations endType="open_arrow" beginType="no_arrow">
-						<association beginName="begin" endName="end"/>
-					</associations>
+					<beginRole role="NoArrowRole"/>
+					<endRole role="OpenArrowRole"/>
 					<possibleEdges>
 						<possibleEdge beginName="NonTyped" directed="false" endName="NonTyped"/>
 					</possibleEdges>

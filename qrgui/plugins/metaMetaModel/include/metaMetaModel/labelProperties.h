@@ -47,6 +47,8 @@ public:
 	LabelProperties(int index, qreal x, qreal y, const QString &text, qreal rotation);
 	LabelProperties(int index, qreal x, qreal y, const QString &binding, bool isReadOnly, qreal rotation);
 	LabelProperties(const LabelProperties &other);
+	LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName
+			, const QString &nameOfRoleProperty , bool isReadOnly, qreal rotation);
 
 	/// Returns label`s index among other siblings.
 	int index() const;
@@ -78,6 +80,12 @@ public:
 
 	/// Returns the property name in repository that will be synced with label text.
 	QString binding() const;
+
+	/// Returns the name of role.
+	QString roleName() const;
+
+	/// Returns full name of common role and concrete property role name.
+	QString nameForRoleProperty() const;
 
 	/// Sets the property name in repository that will be synced with label text.
 	void setBinding(const QString &binding);
@@ -190,6 +198,8 @@ private:
 	qreal mY;
 	QString mText;
 	QString mBinding;
+	QString mRoleName;
+	QString mNameOfPropertyRole;
 	bool mReadOnly;
 	bool mIsPlainText;
 	qreal mRotation;

@@ -42,6 +42,8 @@ public:
 	void changeIndex(int i);
 
 	QString labelName() const;
+	QString location() const;
+	void setRoleName(const QString &roleName);
 
 private:
 	utils::ScalableCoordinate mX;
@@ -50,6 +52,9 @@ private:
 	int mIndex;
 	QString mText;
 	QString mTextBinded;
+	QString mLocation;
+	QString mRoleName;
+	QString mNameOfPropertyRole;
 	QString mReadOnly;
 	QString mBackground;
 	QString mCenter;

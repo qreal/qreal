@@ -19,7 +19,7 @@
 
 #include "graphicType.h"
 
-class Association;
+class RoleType;
 namespace utils {
 	class OutFile;
 }
@@ -34,11 +34,16 @@ public:
 	virtual bool generateEnumValues(utils::OutFile &/*out*/, bool /*isNotFirst*/) { return false; }
 	bool copyPorts(NodeType* parent) override;
 	bool copyPictures(GraphicType *parent) override;
+	QList<RoleType*> getRoles();
 
 private:
-	QList<Association*> mAssociations;
-	QString mBeginType;
-	QString mEndType;
+	QList<RoleType*> mRoles;
+
+	QString mBeginArrowType;
+	QString mEndArrowType;
+	QString mBeginRoleName;
+	QString mEndRoleName;
+
 	QString mLineType;
 	QString mShapeType;
 	QColor mLineColor;
@@ -47,7 +52,10 @@ private:
 	QStringList mFromPorts;
 	QStringList mToPorts;
 
-	virtual bool initAssociations();
+	virtual void generateLabels(utils::OutFile &out) const;
+	virtual bool initRoles();
+	virtual bool initRoleProperties();
+	virtual QString propertyName(Property *property, const QString &roleName);
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();

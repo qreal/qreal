@@ -18,7 +18,7 @@
 
 #include <qrutils/outFile.h>
 
-#include "association.h"
+#include "roleType.h"
 #include "xmlCompiler.h"
 #include "diagram.h"
 #include "editor.h"
@@ -34,7 +34,7 @@ EdgeType::EdgeType(Diagram *diagram) : GraphicType(diagram)
 
 EdgeType::~EdgeType()
 {
-	qDeleteAll(mAssociations);
+	qDeleteAll(mRoles);
 }
 
 
@@ -48,11 +48,13 @@ Type *EdgeType::clone() const
 {
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
-	foreach (Association *association, mAssociations) {
-		result->mAssociations.append(new Association(*association));
+	for (RoleType * const role : mRoles) {
+		result->mRoles.append(new RoleType(*role));
 	}
-	result->mBeginType = mBeginType;
-	result->mEndType = mEndType;
+	result->mBeginArrowType = mBeginArrowType;
+	result->mBeginRoleName = mBeginRoleName;
+	result->mEndArrowType = mEndArrowType;
+	result->mEndRoleName = mEndRoleName;
 	result->mLineType = mLineType;
 	result->mShapeType = mShapeType;
 	result->mFromPorts = mFromPorts;
@@ -64,16 +66,19 @@ bool EdgeType::copyPictures(GraphicType *parent)
 {
 	EdgeType *pictureParent = dynamic_cast<EdgeType*>(parent);
 	if (pictureParent != nullptr) {
-		for (auto association : pictureParent->mAssociations) {
-			mAssociations.append(association->clone());
+		for (auto role : pictureParent->mRoles) {
+			mRoles.append(role->clone());
 		}
 
 		mLineType = pictureParent->mLineType;
 		mShapeType = pictureParent->mShapeType;
 		mLineColor = pictureParent->mLineColor;
 		mLineWidth = pictureParent->mLineWidth;
-		mBeginType = pictureParent->mBeginType;
-		mEndType = pictureParent->mEndType;
+
+		mBeginArrowType = pictureParent->mBeginArrowType;
+		mBeginRoleName = pictureParent->mBeginRoleName;
+		mEndArrowType = pictureParent->mEndArrowType;
+		mEndRoleName = pictureParent->mEndRoleName;
 		mIsDividable = pictureParent->mIsDividable;
 		mFromPorts = pictureParent->mFromPorts;
 		mToPorts = pictureParent->mToPorts;
@@ -84,34 +89,63 @@ bool EdgeType::copyPictures(GraphicType *parent)
 	return false;
 }
 
-bool EdgeType::initAssociations()
+bool EdgeType::initRoles()
 {
-	QDomElement associationsElement = mLogic.firstChildElement("associations");
-	if (associationsElement.isNull()) {
-		return true;
-	}
+	QDomElement beginRoleElement = mLogic.firstChildElement("beginRole");
+	QDomElement endRoleElement = mLogic.firstChildElement("endRole");
 
-	mBeginType = associationsElement.attribute("beginType");
-	mEndType = associationsElement.attribute("endType");
-	if (mBeginType.isEmpty() || mEndType.isEmpty()) {
-		qDebug() << "ERROR: can't parse associations";
-		return false;
-	}
+	mBeginRoleName = beginRoleElement.attribute("role");
+	mEndRoleName = endRoleElement.attribute("role");
+	QList<Type*> allExistingTypes = mDiagram->types().values();
 
-	for (QDomElement element = associationsElement.firstChildElement("association");
-		!element.isNull();
-		element = element.nextSiblingElement("association"))
-	{
-		Association *association = new Association();
-		if (!association->init(element)) {
-			delete association;
-			return false;
+	for (auto element : allExistingTypes) {
+		QString name = element->displayedName();
+
+		if (name == mBeginRoleName || name == mEndRoleName) {
+			RoleType *temp =  new RoleType();
+			temp = dynamic_cast<RoleType *> (element->clone());
+			mRoles.append(temp);
 		}
+	}
 
-		mAssociations.append(association);
+	for (auto role : mRoles) {
+		if (role->name() == mBeginRoleName && role->name() == mEndRoleName) {
+			mBeginArrowType = role->typeOfArrow();
+			mEndArrowType = role->typeOfArrow();
+		} else if (role->name() == mBeginRoleName) {
+			mBeginArrowType = role->typeOfArrow();
+		} else if (role->name() == mEndRoleName) {
+			mEndArrowType = role->typeOfArrow();
+		}
 	}
 
 	return true;
+}
+
+bool EdgeType::initRoleProperties()
+{
+	for (RoleType *role : mRoles) {
+		for (Property *property : role->getPropertiesOfRole()) {
+			addProperty(property, role->name());
+		}
+	}
+
+	return true;
+}
+
+QString EdgeType::propertyName(Property *property, const QString &roleName)
+{
+	for (RoleType* const role : mRoles) {
+		if (role->name() == roleName) {
+			for (Property* const currentProperty : role->getPropertiesOfRole()) {
+				if (currentProperty->name() == property->name()) {
+					return role->name() + "!" + property->name();
+				}
+			}
+		}
+	}
+
+	return "";
 }
 
 bool EdgeType::initGraphics()
@@ -266,15 +300,28 @@ void EdgeType::generateCode(OutFile &out)
 	<< "\t\tvirtual ~" << className << "() {}\n\n";
 
 	out() << "\t\tvoid drawStartArrow(QPainter * painter) const override\n\t\t{\n";
-	generateEdgeStyle(mBeginType, out);
+	generateEdgeStyle(mBeginArrowType, out);
 
 	out() << "\t\tvoid drawEndArrow(QPainter * painter) const override\n\t\t{\n";
-	generateEdgeStyle(mEndType, out);
+	generateEdgeStyle(mEndArrowType, out);
 
 	out() << "\tprivate:\n";
 	generatePropertyData(out);
 
 	out() << "\t};\n\n";
+}
+
+void EdgeType::generateLabels(OutFile &out) const
+{
+	for (Label *label : mLabels) {
+		if (label->location() == "beginRole") {
+			label->setRoleName(mBeginRoleName);
+		} else if(label->location() == "endRole") {
+			label->setRoleName(mEndRoleName);
+		}
+
+		label->generateCodeForConstructor(out);
+	}
 }
 
 void EdgeType::generateEdgeStyle(const QString &styleString, OutFile &out)

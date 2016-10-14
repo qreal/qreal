@@ -51,6 +51,25 @@ LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &tex
 	, mSuffix()
 {
 }
+LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, const QString &roleName
+		, const QString &nameOfRoleProperty, bool readOnly, qreal rotation)
+	: mIndex(index)
+	, mX(x)
+	, mY(y)
+	, mText()
+	, mBinding(binding)
+	, mRoleName(roleName)
+	, mNameOfPropertyRole(nameOfRoleProperty)
+	, mReadOnly(readOnly)
+	, mRotation(rotation)
+	, mBackground(Qt::transparent)
+	, mScalingX(false)
+	, mScalingY(false)
+	, mIsHard(false)
+	, mPrefix()
+	, mSuffix()
+{
+}
 
 LabelProperties::LabelProperties(int index, qreal x, qreal y, const QString &binding, bool readOnly, qreal rotation)
 	: mIndex(index)
@@ -136,6 +155,20 @@ void LabelProperties::setText(const QString &text)
 QString LabelProperties::binding() const
 {
 	return mBinding;
+}
+
+QString LabelProperties::roleName() const
+{
+	return mRoleName;
+}
+
+QString LabelProperties::nameForRoleProperty() const
+{
+	if (!mRoleName.isEmpty() && !mNameOfPropertyRole.isEmpty()) {
+		return mRoleName + "!" + mNameOfPropertyRole;
+	}
+
+	return "";
 }
 
 void LabelProperties::setBinding(const QString &binding)
@@ -273,7 +306,8 @@ void LabelProperties::copyFrom(const LabelProperties &other)
 	this->mY = other.mY;
 	this->mText = other.mText;
 	this->mBinding = other.mBinding;
-	this->mReadOnly = other.mReadOnly;
+	this->mRoleName = other.mRoleName;
+	this->mNameOfPropertyRole = other.mNameOfPropertyRole;
 	this->mIsPlainText = other.mIsPlainText;
 	this->mRotation = other.mRotation;
 	this->mBackground = other.mBackground;
@@ -282,4 +316,5 @@ void LabelProperties::copyFrom(const LabelProperties &other)
 	this->mIsHard = other.mIsHard;
 	this->mPrefix = other.mPrefix;
 	this->mSuffix = other.mSuffix;
+	this->mReadOnly = other.mReadOnly;
 }
