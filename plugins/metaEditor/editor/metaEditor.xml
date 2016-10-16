@@ -297,8 +297,6 @@
 						</property>
 						<property type="MetaEntityRole" name="beginRole"/>
 						<property type="MetaEntityRole" name="endRole"/>        
-						<property type="string" name="beginName"/>
-						<property type="string" name="endName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>

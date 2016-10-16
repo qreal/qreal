@@ -60,8 +60,13 @@ void Label::init()
 	reinitFont();
 	setRotation(mProperties.rotation());
 	if (!mProperties.isStatic()) {
+		QString propertyName = mProperties.binding();
+		if (!mProperties.nameForRoleProperty().isEmpty()) {
+			propertyName = mProperties.nameForRoleProperty();
+		}
+
 		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
-				.editorManagerInterface().enumValues(mId, mProperties.binding());
+				.editorManagerInterface().enumValues(mId, propertyName);
 		for (QPair<QString, QString> const &pair : values) {
 			mEnumValues[pair.first] = pair.second;
 		}
@@ -180,7 +185,16 @@ void Label::updateData(bool withUndoRedo)
 	const QString value = toPlainText();
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (!mProperties.nameForRoleProperty().isEmpty()) {
-		parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);
+		if (mEnumValues.isEmpty()) {
+			parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);
+		} else {
+			const QString repoValue = mEnumValues.values().contains(value)
+					? mEnumValues.key(value)
+					: (withUndoRedo ? enumText(value) : value);
+			parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, repoValue, withUndoRedo);
+		}
+
+
 	} else if (mProperties.binding() == "name") {
 		if (value != parent->name()) {
 			parent->setName(value, withUndoRedo);

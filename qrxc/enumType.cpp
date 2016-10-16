@@ -49,6 +49,7 @@ Type* EnumType::clone() const
 	EnumType *result = new EnumType();
 	Type::copyFields(result);
 	result->mValues = mValues;
+	result->mIsEditable = mIsEditable;
 	return result;
 }
 

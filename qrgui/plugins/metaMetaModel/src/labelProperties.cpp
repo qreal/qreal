@@ -308,6 +308,7 @@ void LabelProperties::copyFrom(const LabelProperties &other)
 	this->mBinding = other.mBinding;
 	this->mRoleName = other.mRoleName;
 	this->mNameOfPropertyRole = other.mNameOfPropertyRole;
+	this->mReadOnly = other.mReadOnly;
 	this->mIsPlainText = other.mIsPlainText;
 	this->mRotation = other.mRotation;
 	this->mBackground = other.mBackground;

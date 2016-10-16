@@ -77,10 +77,8 @@ QModelIndex PropertyEditorModel::parent(const QModelIndex &index) const
 
 int PropertyEditorModel::countOfChilds(const QModelIndex &index) const
 {
-	int row = index.row();
 	Field* temp = mField->child(index.row());
 	int result = mField->numberOfChilds(temp);
-	auto check = mField->getChilds(temp);
 
 	return result;
 }
@@ -118,51 +116,50 @@ QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	}
 
-
-	int row = index.row();
-	int column = index.column();
 	Field* child;
-
-
 	child = mField->child(index.row() + index.column());
-
-
-
+	if (role == Qt::ToolTipRole) {
 		const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-		const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, child->fieldName());
 
-		return displayedName.isEmpty() ? child->fieldName() : displayedName;
+		const QString description = mEditorManagerInterface.propertyDescription(id, child->fieldName());
+	}
 
-//	} else {
 
-//		switch (child->attributeClass()) {
+	const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+	const QString displayedName = mEditorManagerInterface.propertyDisplayedName(id, child->fieldName());
 
-//		case logicalAttribute: {
-//			return mTargetLogicalObject.data(child->role()).toString();
-//		}
-//		case graphicalAttribute:
-//			return mTargetGraphicalObject.data(child->role());
-//		case graphicalIdPseudoattribute:
-//			return mTargetGraphicalObject.data(roles::idRole).value<Id>().id();
-//		case logicalIdPseudoattribute:
-//			return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
-//		case metatypePseudoattribute: {
-//			const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
-//			return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
-//		}
-//		case namePseudoattribute: {
-//			return mTargetLogicalObject.data(Qt::DisplayRole);
-//		}
-//		default:
-//			return QVariant();
-//		}
-//	}
-	return QVariant();
+	return displayedName.isEmpty() ? child->fieldName() : displayedName;
+
+
+	switch (child->attributeClass()) {
+
+	case logicalAttribute: {
+		return mTargetLogicalObject.data(child->role()).toString();
+	}
+	case graphicalAttribute:
+		return mTargetGraphicalObject.data(child->role());
+	case graphicalIdPseudoattribute:
+		return mTargetGraphicalObject.data(roles::idRole).value<Id>().id();
+	case logicalIdPseudoattribute:
+		return mTargetLogicalObject.data(roles::idRole).value<Id>().id();
+	case metatypePseudoattribute: {
+		const Id id = mTargetLogicalObject.data(roles::idRole).value<Id>();
+		return QVariant(id.editor() + "/" + id.diagram() + "/" + id.element());
+	}
+	case namePseudoattribute: {
+		return mTargetLogicalObject.data(Qt::DisplayRole);
+	}
+	default:
+		return QVariant();
+	}
+
 
 }
 
 bool PropertyEditorModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+	qDebug() << "setData" << endl;
+
 	bool modelChanged = true;
 
 	if (!isValid()) {
@@ -211,11 +208,29 @@ bool PropertyEditorModel::enumEditable(const QModelIndex &index) const
 		return false;
 	}
 
+	Field* child = mField->child(index.row() + index.column());
+	Field* parent = child->parentItem();
+
+	QString childName = child->fieldName();
+
+	QString propertyName = "";
+	if (parent) {
+		QString parentName = parent->fieldName();
+		propertyName = parentName + "!" + childName;
+	} else {
+		if (child->role() == -1) {
+			return {};
+		}
+
+		propertyName = childName;
+	}
+
+
 	const Id id = attrClass == logicalAttribute
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
-	return mEditorManagerInterface.isEnumEditable(id, mField->child(index.row())->fieldName());
+	return mEditorManagerInterface.isEnumEditable(id, propertyName);
 }
 
 QList<QPair<QString, QString>> PropertyEditorModel::enumValues(const QModelIndex &index) const
@@ -234,16 +249,35 @@ QList<QPair<QString, QString>> PropertyEditorModel::enumValues(const QModelIndex
 			? mTargetLogicalObject.data(roles::idRole).value<Id>()
 			: mTargetGraphicalObject.data(roles::idRole).value<Id>();
 
+	Field* child = mField->child(index.row() + index.column());
+	Field* parent = child->parentItem();
+
+	QString childName = child->fieldName();
+
+	QString propertyName = "";
+	if (parent) {
+		QString parentName = parent->fieldName();
+		propertyName = parentName + "!" + childName;
+	} else {
+		if (child->role() == -1) {
+			return {};
+		}
+
+		propertyName = childName;
+	}
+
 	/// @todo: null id must not be met here but for some reason sometimes it happens.
 	/// This is pretty strange because mTargetLogicalObject without manual modification
 	/// becomes invalid index.
 	return id.isNull()
 			? QList<QPair<QString, QString>>()
-			: mEditorManagerInterface.enumValues(id, mField->child(index.row())->fieldName());
+			: mEditorManagerInterface.enumValues(id, propertyName);
 }
 
 void PropertyEditorModel::rereadData(const QModelIndex &topLeftIndex, const QModelIndex &bottomRightIndex)
 {
+	qDebug() << "rereadData" << endl;
+
 	emit dataChanged(topLeftIndex, bottomRightIndex);
 }
 
@@ -285,15 +319,19 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 	}
 
 	qDebug() << "mTargetLogicalObject" << endl;
+	qDebug() << mTargetLogicalObject.data(Qt::DisplayRole);
+	qDebug() << "mTargetLogicalObject111";
 
 
 	const Id logicalId = mTargetLogicalObject.data(roles::idRole).value<Id>();
 
 	if (logicalModelIndex != QModelIndex()) {
 		const QStringList logicalProperties = mEditorManagerInterface.propertyNames(logicalId.type());
+		//mEditorManagerInterface.enumValues()
 
 
 		int role = roles::customPropertiesBeginRole;
+
 
 		QStringList cloneWithRoles;
 		QStringList cloneWithPure;
@@ -354,8 +392,13 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 			++role;
 		}
 
-		int check = 0;
 
+		for (int i = 0; i < 300; ++i) {
+			qDebug() << "i" << i << " mTargetLogicalObject.data(role)" << mTargetLogicalObject.data(role).toString() << endl;
+
+		}
+
+		int check = 0;
 
 		// Ids and metatype commented out as they shall not be visible to user, uncomment for debugging.
 //		mFields << Field(tr("Logical Id"), logicalIdPseudoattribute);
@@ -414,7 +457,26 @@ QString PropertyEditorModel::typeName(const QModelIndex &index) const
 	if (id.isNull()) {
 		return "";
 	}
-	return mEditorManagerInterface.typeName(id, mField->child(index.row())->fieldName());
+
+	Field* child = mField->child(index.row() + index.column());
+	Field* parent = child->parentItem();
+
+	QString childName = child->fieldName();
+
+	QString propertyName = "";
+	if (parent) {
+		QString parentName = parent->fieldName();
+		propertyName = parentName + "!" + childName;
+	} else {
+		if (child->role() == -1) {
+			return "";
+		}
+
+		propertyName = childName;
+	}
+
+
+	return mEditorManagerInterface.typeName(id, propertyName);
 }
 
 QString PropertyEditorModel::propertyName(const QModelIndex &index) const
@@ -451,24 +513,7 @@ bool PropertyEditorModel::isReference(const QModelIndex &index, const QString &p
 
 Id PropertyEditorModel::idByIndex(const QModelIndex &index) const
 {
-	Field* child = mField->child(index.row());
-	auto ololo = mTargetLogicalObject.data(roles::idRole);
-	auto check = mTargetLogicalObject.child(0, 0);
-
-
-	auto ss = mTargetLogicalModel->buddy(index);
-	auto qq = ss.data(roles::idRole);
-	auto rr = ss.child(0, 0);
-	auto asdf = ss.child(1,1);
-//	auto qwert = index.data(roles::idRole);
-//	auto fff = index.child(0, 0);
-//	auto ggg = mTargetLogicalObject.model();
-//	auto ccc = mTargetLogicalObject.column();
-//	auto aaa = mTargetLogicalModel->children();
-//	auto xxx = aaa.at(0);
-
-//	QList<Field*> childs = mField->getChilds(parent);
-//	Field* child = childs.at(index.column() - 1);
+	Field* child = mField->child(index.row() + index.column());
 
 	switch (child->attributeClass()) {
 		case logicalAttribute:
