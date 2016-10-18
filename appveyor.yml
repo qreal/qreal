@@ -24,7 +24,7 @@ build_script:
 #temp hack to copy dlls
 after_build:
   - set trikRuntimeBinDir=C:\qreal\plugins\robots\thirdparty\trikRuntime\trikRuntime\bin\x86-%CONFIGURATION%
-  - xcopy %trikRuntimeBinDir% C:\qreal\bin\%configuration% /Y /C
+  - if %PROJECT_FILE%==qrealRobots xcopy %trikRuntimeBinDir% C:\qreal\bin\%configuration% /Y /C
 
 artifacts:
  - path: bin\$(configuration)
