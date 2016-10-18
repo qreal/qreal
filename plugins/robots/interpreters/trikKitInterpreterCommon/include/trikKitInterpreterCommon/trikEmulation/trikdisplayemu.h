@@ -33,8 +33,8 @@ public slots:
 	virtual void setPainterWidth(int penWidth) override;
 	virtual void drawLine(int x1, int y1, int x2, int y2) override;
 	virtual void drawPoint(int x, int y) override;
-	virtual void drawRect(int x, int y, int width, int height) override;
-	virtual void drawEllipse(int x, int y, int width, int height) override;
+	virtual void drawRect(int x, int y, int width, int height, bool filled) override;
+	virtual void drawEllipse(int x, int y, int width, int height, bool filled) override;
 	virtual void drawArc(int x, int y, int width, int height, int startAngle, int spanAngle) override;
 	virtual void setBackground(const QString &color) override;
 	virtual void hide() override {}
