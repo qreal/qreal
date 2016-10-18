@@ -9,6 +9,7 @@
 #include "trikEmulation/trikdisplayemu.h"
 #include "trikEmulation/triksensoremu.h"
 #include "trikEmulation/trikmotoremu.h"
+#include "trikEmulation/trikkeysinterfacestub.h"
 
 namespace trik {
 
@@ -46,7 +47,7 @@ public slots:
 	trikControl::SoundSensorInterface *soundSensor(const QString &port) override {return nullptr;}
 	trikControl::EncoderInterface *encoder(const QString &port) override {return nullptr;}
 	trikControl::BatteryInterface *battery() override {return nullptr;}
-	trikControl::KeysInterface *keys() override {return nullptr;}
+	trikControl::KeysInterface *keys() override {return &mKeys;}
 	trikControl::DisplayInterface *display() override;
 	trikControl::LedInterface *led() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
@@ -60,6 +61,7 @@ private:
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
 	TrikDisplayEmu mDisplay;
+	TrikKeysInterfaceStub mKeys;
 
 	QHash<QString, TrikMotorEmu *> mMotors;
 	QHash<QString, TrikSensorEmu *> mSensors;
