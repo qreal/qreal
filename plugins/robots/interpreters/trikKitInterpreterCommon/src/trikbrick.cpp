@@ -12,13 +12,18 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
 }
 
+void TrikBrick::reset()
+{
+	//todo: reset motos/device maps?
+}
+
 void TrikBrick::printToShell(const QString &msg)
 {
 	using namespace kitBase::robotModel;
 	robotParts::Shell* sh =
 	        RobotModelUtils::findDevice<robotParts::Shell>(*mTwoDRobotModel, "ShellPort");
 	if (sh == nullptr) {
-		qDebug(" =( ");
+		qDebug("Error: 2d model shell part was not found");
 		return;
 	}
 	sh->print(msg);

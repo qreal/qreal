@@ -21,6 +21,11 @@ build_script:
   - qmake %PROJECT_FILE%.pro -r -spec win32-g++ CONFIG+=%CONFIGURATION%
   - mingw32-make -j2
 
+#temp hack to copy dlls
+after_build:
+  - set trikRuntimeBinDir=C:\qreal\plugins\robots\thirdparty\trikRuntime\trikRuntime\bin\x86-%CONFIGURATION%
+  - xcopy %trikRuntimeBinDir% C:\qreal\bin\%configuration% /Y /C
+
 artifacts:
  - path: bin\$(configuration)
    name: qreal-$(configuration)-$(PROJECT_FILE)
