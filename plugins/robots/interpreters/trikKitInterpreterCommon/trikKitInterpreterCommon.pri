@@ -74,7 +74,8 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/displaywidgetemu.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikdisplayemu.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/triksensoremu.h \
-	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikmotoremu.h
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikmotoremu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikkeysinterfacestub.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
