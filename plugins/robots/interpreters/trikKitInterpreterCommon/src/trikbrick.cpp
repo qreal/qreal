@@ -1,12 +1,27 @@
 #include <trikKitInterpreterCommon/trikbrick.h>
 
+#include <trikKit/robotModel/parts/trikShell.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
 using namespace trik;
 
-TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model) : mTwoDRobotModel(model), mDisplay(model)
+TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
+    : mTwoDRobotModel(model), mDisplay(model)
 {
+	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
+}
+
+void TrikBrick::printToShell(const QString &msg)
+{
+	using namespace kitBase::robotModel;
+	robotParts::Shell* sh =
+	        RobotModelUtils::findDevice<robotParts::Shell>(*mTwoDRobotModel, "ShellPort");
+	if (sh == nullptr) {
+		qDebug(" =( ");
+		return;
+	}
+	sh->print(msg);
 }
 
 void TrikBrick::init()

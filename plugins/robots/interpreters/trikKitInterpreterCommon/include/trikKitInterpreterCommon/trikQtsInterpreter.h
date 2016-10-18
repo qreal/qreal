@@ -33,6 +33,7 @@ public:
 
 private slots:
 	void reportError(const QString &msg);
+	void reportLog(const QString &msg);
 
 private:
 	//QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;

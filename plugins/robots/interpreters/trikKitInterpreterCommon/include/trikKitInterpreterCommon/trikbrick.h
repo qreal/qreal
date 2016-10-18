@@ -54,6 +54,7 @@ public slots:
 
 signals:
 	void error(const QString &msg);
+	void log(const QString &msg);
 
 private:
 
@@ -64,6 +65,7 @@ private:
 	QHash<QString, TrikMotorEmu *> mMotors;
 	QHash<QString, TrikSensorEmu *> mSensors;
 
+	void printToShell(const QString &msg);
 };
 
 }
