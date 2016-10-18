@@ -21,9 +21,8 @@ public:
 	TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
 	void reset() override {}
 	QString configVersion() const {return QString();}
-	trikControl::DisplayWidgetInterface &graphicsWidget() override {
-		trikControl::DisplayWidgetInterface temp;
-		return temp;
+	trikControl::DisplayWidgetInterface *graphicsWidget() override {
+		return nullptr;
 	}
 	void init();
 
@@ -66,6 +65,12 @@ private:
 	QHash<QString, TrikSensorEmu *> mSensors;
 
 	void printToShell(const QString &msg);
+
+	// BrickInterface interface
+public slots:
+	virtual void playTone(int hzFreq, int msDuration) override {}
+	virtual trikControl::EventDeviceInterface *eventDevice(const QString &deviceFile) override {return nullptr;}
+	virtual void stopEventDevice(const QString &deviceFile) override {}
 };
 
 }

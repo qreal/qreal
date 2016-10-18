@@ -71,24 +71,26 @@ void TrikDisplayEmu::drawPoint(int x, int y)
 	                          Q_ARG(int, y));
 }
 
-void TrikDisplayEmu::drawRect(int x, int y, int width, int height)
+void TrikDisplayEmu::drawRect(int x, int y, int width, int height, bool filled)
 {
 	QMetaObject::invokeMethod(mDisplay,
 	                          "drawRect",
 	                          Q_ARG(int, x),
 	                          Q_ARG(int, y),
 	                          Q_ARG(int, width),
-	                          Q_ARG(int, height));
+	                          Q_ARG(int, height),
+	                          Q_ARG(bool, filled));
 }
 
-void TrikDisplayEmu::drawEllipse(int x, int y, int width, int height)
+void TrikDisplayEmu::drawEllipse(int x, int y, int width, int height, bool filled)
 {
 	QMetaObject::invokeMethod(mDisplay,
 	                          "drawEllipse",
 	                          Q_ARG(int, x),
 	                          Q_ARG(int, y),
 	                          Q_ARG(int, width),
-	                          Q_ARG(int, height));
+	                          Q_ARG(int, height),
+	                          Q_ARG(bool, filled));
 }
 
 void TrikDisplayEmu::drawArc(int x, int y, int width, int height, int startAngle, int spanAngle)
