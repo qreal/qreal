@@ -4,11 +4,28 @@
 
 #include <QDebug>
 
+QScriptValue printRedirect(QScriptContext * context, QScriptEngine * engine)
+{
+	QString result;
+	for (int i = 0; i < context->argumentCount(); ++i) {
+		if (i > 0) {
+			result.append(" ");
+		}
+
+		result.append(context->argument(i).toString());
+	}
+
+	engine->evaluate(QString("brick.log(\"print: %1\");").arg(result));
+
+	return engine->toScriptValue(result);
+}
+
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
         const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model
 		) : mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr, nullptr), mErrorReporter(nullptr)
 {
 	connect(&mBrick, &TrikBrick::error, this, &TrikQtsInterpreter::reportError);
+	mScriptRunner.registerUserFunction("print", printRedirect);
 //	connect(&mBrick, &TrikBrick::log, [this](const QString &msg){
 //		QMetaObject::invokeMethod(this, "reportLog", Q_ARG(const QString &, msg));
 //	});
@@ -17,7 +34,7 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 //		eng->globalObject().property("brick").
 //		return QScriptValue();
 //	};
-//	mScriptRunner.registerUserFunction("print", redirectPrint);
+	mScriptRunner.registerUserFunction("print", printRedirect);
 }
 
 trik::TrikQtsInterpreter::~TrikQtsInterpreter()
@@ -32,8 +49,8 @@ void trik::TrikQtsInterpreter::interpretCommand(const QString &script)
 
 void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 {
-	mScriptRunner.run(script);
 	mRunning = true;
+	mScriptRunner.run(script);
 }
 
 void trik::TrikQtsInterpreter::abort()

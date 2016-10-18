@@ -281,7 +281,6 @@ void TrikKitInterpreterPluginBase::testStart()
 
 		qtsInterpreter()->init();
 
-		qtsInterpreter()->setRunning(true);
 		emit started();
 		qtsInterpreter()->interpretScript(texttab->text());
 	}
