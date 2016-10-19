@@ -268,35 +268,37 @@
 				<logic>
 					<generalizations/>
 					<properties>
+						<property type="MetaEntityRole" name="beginRole"/>
+						<property type="string" name="description"/>						
 						<property type="string" name="displayedName"/>
-						<property type="string" name="description"/>
-						<property type="string" name="path"/>
-						<property type="bool" name="isDividable">
-							<default>false</default>
+						<property type="MetaEntityRole" name="endRole"/>
+						<property type="reference" name="fromPorts">
+							<reference type="MetaEntityPort"/>
 						</property>
+						<property type="string" name="path"/>
+						
 						<property type="bool" name="hardLabel">
 							<default>true</default>
 						</property>
+						<property type="bool" name="isDividable">
+							<default>false</default>
+						</property>
+						<property type="string" name="labelText"/>
 						<property type="labelTypes" name="labelType">
 							<default>dynamicText</default>
 							<description>тип текста(статический, динамический)</description>
 						</property>
-						<property type="string" name="labelText"/>
+						
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
 							<description>тип линии (прямая, пунктирная и т.д.)</description>
 						</property>
-						<property type="reference" name="fromPorts">
-							<reference type="MetaEntityPort"/>
+						<property type="linkShapeType" name="shape">
+							<default>broken</default>
 						</property>
 						<property type="reference" name="toPorts">
 							<reference type="MetaEntityPort"/>
 						</property>
-						<property type="linkShapeType" name="shape">
-							<default>broken</default>
-						</property>
-						<property type="MetaEntityRole" name="beginRole"/>
-						<property type="MetaEntityRole" name="endRole"/>        
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
