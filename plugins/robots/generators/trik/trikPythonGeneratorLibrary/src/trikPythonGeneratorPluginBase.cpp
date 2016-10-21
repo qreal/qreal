@@ -190,7 +190,7 @@ void TrikPythonGeneratorPluginBase::runProgram()
 		connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::success, this ,[=]() {
 			const QString directCommand =
 					"script.system(\"mv /home/root/trik/scripts/%1 /home/root/; "
-					"python '`/home/root/%1'\")";
+					"python '/home/root/%1'\")";
 			mCommunicator->runDirectCommand(directCommand.arg(fileInfo.fileName()), false);
 		});
 		mUploadProgramProtocol->run(fileInfo);
