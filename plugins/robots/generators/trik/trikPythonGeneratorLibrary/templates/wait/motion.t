@@ -1,2 +1,2 @@
 while self.brick.sensor("F1").read() == 0:
-  script.wait(10)
+  self.script.wait(10)

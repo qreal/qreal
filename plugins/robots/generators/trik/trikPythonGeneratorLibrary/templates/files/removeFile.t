@@ -1,1 +1,1 @@
-script.removeFile("@@FILE@@");
+self.script.removeFile("@@FILE@@");

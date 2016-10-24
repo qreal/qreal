@@ -1,1 +1,1 @@
-@@VARIABLE@@ = script.random(@@FROM@@, @@TO@@);
+@@VARIABLE@@ = self.script.random(@@FROM@@, @@TO@@);

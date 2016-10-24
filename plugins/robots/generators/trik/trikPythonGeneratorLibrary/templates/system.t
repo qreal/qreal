@@ -1,1 +1,1 @@
-script.system(@@COMMAND@@)
+self.script.system(@@COMMAND@@)

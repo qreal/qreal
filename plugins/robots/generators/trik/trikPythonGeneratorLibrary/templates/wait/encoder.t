@@ -1,2 +1,2 @@
 while not (self.brick.encoder("@@PORT@@").read() @@SIGN@@ @@TACHO_LIMIT@@):
-  script.wait(10)
+  self.script.wait(10)

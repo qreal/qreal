@@ -1,2 +1,2 @@
 while not gamepad.isConnected():
-  script.wait(10)
+  self.script.wait(10)

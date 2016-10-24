@@ -1,2 +1,2 @@
 while not self.brick.keys().wasPressed(@@BUTTON@@):
-  script.wait(100)
+  self.script.wait(100)

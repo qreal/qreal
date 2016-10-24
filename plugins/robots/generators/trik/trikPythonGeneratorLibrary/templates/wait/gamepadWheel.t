@@ -1,2 +1,2 @@
 while not (gamepad.wheel() @@SIGN@@ @@ANGLE@@):
-  script.wait(10)
+  self.script.wait(10)

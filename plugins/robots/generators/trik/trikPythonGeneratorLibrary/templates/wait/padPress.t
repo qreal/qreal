@@ -1,2 +1,2 @@
 while not gamepad.isPadPressed(@@PAD@@):
-  script.wait(10)
+  self.script.wait(10)
