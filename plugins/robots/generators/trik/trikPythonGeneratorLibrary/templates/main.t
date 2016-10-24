@@ -11,37 +11,36 @@ from script import script
 
 
 class Program():
-    __interpretation_started_timestamp__ = time.time() * 1000
+  __interpretation_started_timestamp__ = time.time() * 1000
 
-    app = QtGui.QApplication(sys.argv)
-    brick = trikControl.trikControl.BrickFactory.create("home/root/trik/", "home/root/trik/media/")
-    #gamepad = trikControl.trikNetwork.GamepadFactory.create(@@PORT@@)
-    script = script()
+  app = QtGui.QApplication(sys.argv)
+  brick = trikControl.trikControl.BrickFactory.create("home/root/trik/", "home/root/trik/media/")
+  script = script()
 
-    @@VARIABLES@@
+  @@VARIABLES@@
 
-    @@SUBPROGRAMS_FORWARDING@@
+  @@SUBPROGRAMS_FORWARDING@@
 
-    @@THREADS_FORWARDING@@
+  @@THREADS_FORWARDING@@
 
-    @@SUBPROGRAMS@@
+  @@SUBPROGRAMS@@
 
-    @@THREADS@@
+  @@THREADS@@
 
-    def sigint_handler(self):
-        self.app.quit()
+  def sigint_handler(self):
+    self.app.quit()
 
-    def execMain(self):
-        signal.signal(signal.SIGINT, self.sigint_handler)
+  def execMain(self):
+    signal.signal(signal.SIGINT, self.sigint_handler)
 
-        @@MAIN_CODE@@
+  @@MAIN_CODE@@
 
-        sys.exit(self.app.exec_())
+    sys.exit(self.app.exec_())
 
 
 def main():
-    program = Program()
-    program.execMain()
+  program = Program()
+  program.execMain()
 
 if __name__ == '__main__':
-    main()
+  main()
