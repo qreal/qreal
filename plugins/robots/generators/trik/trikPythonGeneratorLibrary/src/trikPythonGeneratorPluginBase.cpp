@@ -64,6 +64,7 @@ void TrikPythonGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &c
 	NetworkCommunicationErrorReporter::connectErrorReporter(*mCommunicator, *errorReporter);
 
 	mUploadProgramProtocol.reset(new UploadProgramProtocol(*mCommunicator));
+	mRunProgramProtocol.reset(new RunProgramProtocol(*mCommunicator, mRobotModel.robotConfigFileVersion()));
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
 	const auto timeout = [this, errorReporter]() {
@@ -72,17 +73,32 @@ void TrikPythonGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &c
 	};
 
 	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::timeout, timeout);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::timeout, timeout);
 	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, timeout);
 
 	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::error
+			, this, &TrikPythonGeneratorPluginBase::onProtocolFinished);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::error
 			, this, &TrikPythonGeneratorPluginBase::onProtocolFinished);
 	connect(mStopRobotProtocol.data(), &StopRobotProtocol::error
 			, this, &TrikPythonGeneratorPluginBase::onProtocolFinished);
 
 	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::success
 			, this, &TrikPythonGeneratorPluginBase::onProtocolFinished);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::success
+			, this, &TrikPythonGeneratorPluginBase::onProtocolFinished);
 	connect(mStopRobotProtocol.data(), &StopRobotProtocol::success
 			, this, &TrikPythonGeneratorPluginBase::onProtocolFinished);
+
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::configVersionMismatch
+			, [this, errorReporter](const QString &expected, const QString &actual) {
+				Q_UNUSED(expected)
+				Q_UNUSED(actual)
+				errorReporter->addError(
+						QString(tr("Casing model mismatch, check TRIK Studio settings, \"Robots\" page. It seems that "
+								"TRIK casing version selected in TRIK Studio differs from version on robot.")));
+			}
+	);
 }
 
 QList<ActionInfo> TrikPythonGeneratorPluginBase::customActions()
@@ -186,14 +202,12 @@ void TrikPythonGeneratorPluginBase::runProgram()
 {
 	const QFileInfo fileInfo = generateCodeForProcessing();
 	if (fileInfo != QFileInfo() && !fileInfo.absoluteFilePath().isEmpty()) {
-		disableButtons();
-		connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::success, this ,[=]() {
-			const QString directCommand =
-					"script.system(\"mv /home/root/trik/scripts/%1 /home/root/; "
-					"python '/home/root/%1'\")";
-			mCommunicator->runDirectCommand(directCommand.arg(fileInfo.fileName()), false);
-		});
-		mUploadProgramProtocol->run(fileInfo);
+		if (mRunProgramProtocol) {
+			disableButtons();
+			mRunProgramProtocol->run(fileInfo);
+		} else {
+			QLOG_ERROR() << "Run program protocol is not initialized";
+		}
 	} else {
 		QLOG_ERROR() << "Code generation failed, aborting";
 	}

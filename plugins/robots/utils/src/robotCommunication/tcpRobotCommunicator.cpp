@@ -100,11 +100,20 @@ void TcpRobotCommunicator::uploadProgram(const QString &programName)
 
 void TcpRobotCommunicator::runProgram(const QString &programName)
 {
-	QMetaObject::invokeMethod(mWorker.data(), "runProgram", Q_ARG(QString, programName));
+	/// @todo: temporary hack. This must be done in TRIK Runtime
+	if (programName.endsWith(".py")) {
+		const QString directCommand =
+				"script.system(\"mv /home/root/trik/scripts/%1 /home/root/; "
+				"python '/home/root/%1'\")";
+		runDirectCommand(directCommand.arg(programName));
+	} else {
+		QMetaObject::invokeMethod(mWorker.data(), "runProgram", Q_ARG(QString, programName));
+	}
 }
 
 void TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool asScript)
 {
+	qDebug() << "TcpRobotCommunicator::runDirectCommand" << directCommand;
 	QMetaObject::invokeMethod(mWorker.data(), "runDirectCommand"
 			, Q_ARG(QString, directCommand), Q_ARG(bool, asScript));
 }
