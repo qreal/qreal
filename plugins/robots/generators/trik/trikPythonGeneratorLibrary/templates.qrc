@@ -183,6 +183,7 @@
         <file>templates/luaPrinting/functionCall.t</file>
         <file>templates/luaPrinting/greaterOrEqual.t</file>
         <file>templates/luaPrinting/greaterThan.t</file>
+        <file>templates/luaPrinting/identifier.t</file>
         <file>templates/luaPrinting/implicitKeyFieldInitialization.t</file>
         <file>templates/luaPrinting/indexingExpression.t</file>
         <file>templates/luaPrinting/inequality.t</file>
