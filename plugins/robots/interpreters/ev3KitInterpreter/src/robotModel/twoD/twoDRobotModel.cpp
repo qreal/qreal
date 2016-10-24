@@ -95,7 +95,7 @@ QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 }
 
 
-QRect TwoDRobotModel::sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<robotParts::TouchSensor>()) {
 		return QRect(-12, -5, 25, 10);

@@ -119,6 +119,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 
 	processGeneratedCode(resultCode);
 
+	generateLinkingInfo(resultCode);
+
 	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
 
