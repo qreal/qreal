@@ -15,6 +15,7 @@ class Program():
 
     app = QtGui.QApplication(sys.argv)
     brick = trikControl.trikControl.BrickFactory.create("home/root/trik/", "home/root/trik/media/")
+    #gamepad = trikControl.trikNetwork.GamepadFactory.create(@@PORT@@)
     script = script()
 
     @@VARIABLES@@

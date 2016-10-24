@@ -1,1 +1,1 @@
-brick.sadSmile();
+self.brick.sadSmile();

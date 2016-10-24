@@ -1,1 +1,1 @@
-brick.lineSensor("video1").detect();
+self.brick.lineSensor("video1").detect();

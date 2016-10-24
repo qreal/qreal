@@ -1,1 +1,1 @@
-brick.playSound("@@FILENAME@@")
+self.brick.playSound("@@FILENAME@@")

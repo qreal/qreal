@@ -1,1 +1,1 @@
-brick.smile();
+self.brick.smile();

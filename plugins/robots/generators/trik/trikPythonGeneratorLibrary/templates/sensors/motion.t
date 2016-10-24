@@ -1,1 +1,1 @@
-brick.sensor("F1").read()
+self.brick.sensor("F1").read()

@@ -1,1 +1,1 @@
-brick.objectSensor("video1").detect();
+self.brick.objectSensor("video1").detect();

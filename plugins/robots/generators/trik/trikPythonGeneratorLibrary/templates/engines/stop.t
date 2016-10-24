@@ -1,1 +1,1 @@
-brick.motor("@@PORT@@").powerOff()
+self.brick.motor("@@PORT@@").powerOff()

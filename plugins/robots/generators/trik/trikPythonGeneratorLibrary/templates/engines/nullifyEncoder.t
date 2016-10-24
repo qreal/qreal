@@ -1,1 +1,1 @@
-brick.encoder("@@PORT@@").reset()
+self.brick.encoder("@@PORT@@").reset()

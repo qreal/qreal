@@ -1,1 +1,1 @@
-brick.objectSensor("video1").read()[1]
+self.brick.objectSensor("video1").read()[1]

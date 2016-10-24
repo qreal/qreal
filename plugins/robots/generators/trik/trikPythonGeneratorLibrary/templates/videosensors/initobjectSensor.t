@@ -1,2 +1,2 @@
-brick.configure("video1", "objectSensor");
-brick.objectSensor("video1").init(true);
+self.brick.configure("video1", "objectSensor");
+self.brick.objectSensor("video1").init(true);

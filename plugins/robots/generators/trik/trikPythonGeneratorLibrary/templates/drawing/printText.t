@@ -1,2 +1,2 @@
-brick.display().addLabel(@@TEXT@@, @@X@@, @@Y@@);
+self.brick.display().addLabel(@@TEXT@@, @@X@@, @@Y@@);
 @@REDRAW@@

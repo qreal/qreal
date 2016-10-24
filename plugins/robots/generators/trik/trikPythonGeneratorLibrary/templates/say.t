@@ -1,1 +1,1 @@
-brick.say(@@TEXT@@)
+self.brick.say(@@TEXT@@)
