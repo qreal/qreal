@@ -33,49 +33,50 @@ public:
 	explicit EditorGenerator(qrRepo::LogicalRepoApi const &api, qReal::ErrorReporterInterface &errorReporter);
 
 	QHash<qReal::Id, QPair<QString, QString> > getMetamodelList();
-	QPair<QString, QString> generateEditor(qReal::Id const &metamodelId, QString const &pathToFile
-			, QString const &pathToQRealSource);
+	QPair<QString, QString> generateEditor(const qReal::Id &metamodelId, const QString &pathToFile
+			, const QString &pathToQRealSource);
 
 private:
-	void serializeObjects(QDomElement &parent, qReal::Id const &idParent);
-	void createImport(QDomElement &parent, qReal::Id const &id);
-	void createNode(QDomElement &parent, qReal::Id const &id);
-	void createEdge(QDomElement &parent, qReal::Id const &id);
-	void createEnum(QDomElement &parent, qReal::Id const &id);
-	void createPort(QDomElement &parent, qReal::Id const &id);
+	void serializeObjects(QDomElement &parent, const qReal::Id &idParent);
+	void createImport(QDomElement &parent, const qReal::Id &id);
+	void createNode(QDomElement &parent, const qReal::Id &id);
+	void createEdge(QDomElement &parent, const qReal::Id &id);
+	void createRole(QDomElement &parent, const qReal::Id &id);
+	void createEnum(QDomElement &parent, const qReal::Id &id);
+	void createPort(QDomElement &parent, const qReal::Id &id);
 	void createGroup(QDomElement &parent, const qReal::Id &id);
-	void setProperties(QDomElement &parent, qReal::Id const &id);
-	void setPorts(QDomElement &parent, qReal::Id const &id, QString const &direction);
-	void setValues(QDomElement &parent, qReal::Id const &id);
+	void setProperties(QDomElement &parent, const qReal::Id &id);
+	void setPorts(QDomElement &parent, const qReal::Id &id, const QString &direction);
+	void setValues(QDomElement &parent, const qReal::Id &id);
 	void setGroupNodes(QDomElement &parent, const qReal::Id &id);
-	void setAssociations(QDomElement &parent, qReal::Id const &id);
-	void setUsages(QDomElement &parent, qReal::Id const &id);
-	void setConnections(QDomElement &parent, qReal::Id const &id);
-	void setGeneralization(QDomElement &parent, qReal::Id const &id);
-	void setPossibleEdges(QDomElement &parent, qReal::Id const &id);
-	void setStatusElement(QDomElement &parent, qReal::Id const &id, QString const &tagName
-			, QString const &propertyName);
+	void setUsages(QDomElement &parent, const qReal::Id &id);
+	void setConnections(QDomElement &parent, const qReal::Id &id);
+	void setGeneralization(QDomElement &parent, const qReal::Id &id);
+	void setRoles(QDomElement &parent, const qReal::Id &id);
+	void setPossibleEdges(QDomElement &parent, const qReal::Id &id);
+	void setStatusElement(QDomElement &parent, const qReal::Id &id, const QString &tagName
+			, const QString &propertyName);
 
-	void setCreateChildrenFromMenu(QDomElement &parent, qReal::Id const &id);
-	void createDiagrams(QDomElement &parent, qReal::Id const &id);
-	void setContainer(QDomElement &parent, qReal::Id const &id);
-	void setContainerProperties(QDomElement &parent, qReal::Id const &id);
-	void setExplosion(QDomElement &parent, qReal::Id const &id);
-	void setExplosionProperties(QDomElement &target, qReal::Id const &linkId);
+	void setCreateChildrenFromMenu(QDomElement &parent, const qReal::Id &id);
+	void createDiagrams(QDomElement &parent, const qReal::Id &id);
+	void setContainer(QDomElement &parent, const qReal::Id &id);
+	void setContainerProperties(QDomElement &parent, const qReal::Id &id);
+	void setExplosion(QDomElement &parent, const qReal::Id &id);
+	void setExplosionProperties(QDomElement &target, const qReal::Id &linkId);
 	void setDividability(QDomElement &parent, const qReal::Id &id);
 	void newSetConnections(QDomElement &parent, const qReal::Id &id
-			, QString const &commonTagName, QString const &internalTagName, QString const &typeName);
-	void ensureCorrectness(qReal::Id const &id, QDomElement element, QString const &tagName, QString const &value);
-	bool findPort(QString const &name) const;
-	void setBoolValuesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
-	void setSizesForContainer(QString const &propertyName, QDomElement &properties, qReal::Id const &id);
-	static void copyImages(QString const &pathToFile);
-	static QString calculateEditorPath(QString const &pathToFile, QString const &pathToQRealSource);
-	static QString calculateRelativeQRealSourcesPath(QString const &pathToFile, QString const &pathToQRealSource);
-	static QString calculateRelativePath(QString const &pathOne, QString const &pathTwo);
-	static void generateTranslations(QString const &path, QString const &name, QString const &qrealRoot);
+			, const QString &commonTagName, const QString &internalTagName, const QString &typeName);
+	void ensureCorrectness(const qReal::Id &id, QDomElement element, const QString &tagName, const QString &value);
+	bool findPort(const QString &name) const;
+	void setBoolValuesForContainer(const QString &propertyName, QDomElement &properties, const qReal::Id &id);
+	void setSizesForContainer(const QString &propertyName, QDomElement &properties, const qReal::Id &id);
+	static void copyImages(const QString &pathToFile);
+	static QString calculateEditorPath(const QString &pathToFile, const QString &pathToQRealSource);
+	static QString calculateRelativeQRealSourcesPath(const QString &pathToFile, const QString &pathToQRealSource);
+	static QString calculateRelativePath(const QString &pathOne, const QString &pathTwo);
+	static void generateTranslations(const QString &path, const QString &name, const QString &qrealRoot);
 
-	void checkRootNodeValid(qReal::Id const &diagram, QString const rootNode);
+	void checkRootNodeValid(const qReal::Id &diagram, const QString rootNode);
 
 	qrRepo::LogicalRepoApi const &mApi;
 	QDomDocument mDocument;

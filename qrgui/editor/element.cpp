@@ -73,7 +73,12 @@ void Element::updateData()
 			continue;
 		}
 
-		const QString text = label->info().binding() == "name" ? name() : logicalProperty(label->info().binding());
+		QString roleName = label->info().nameForRoleProperty();
+		if (roleName.isEmpty()) {
+			roleName = label->info().binding();
+		}
+
+		const QString text = label->info().binding() == "name" ? name() : logicalProperty(roleName);
 		/// @todo: Label must decide what to call itself.
 		if (label->info().isPlainTextMode()) {
 			label->setPlainText(text);

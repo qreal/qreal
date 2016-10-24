@@ -60,7 +60,7 @@ protected:
 	void generateFriendlyName(utils::OutFile &out) const;
 	void generateDiagram(utils::OutFile &out) const;
 	void generateDescription(utils::OutFile &out) const;
-	void generateLabels(utils::OutFile &out) const;
+	virtual void generateLabels(utils::OutFile &out) const;
 
 	void generatePropertyData(utils::OutFile &out) const;
 
@@ -106,6 +106,9 @@ protected:
 	QString resourceName(const QString &resourceType) const;
 	virtual bool isResolving() const;
 
+protected:
+	bool addProperty(Property *property, const QString &roleName);
+
 private:
 	class ResolvingHelper {
 	public:
@@ -132,12 +135,14 @@ private:
 		, QStringList &resultingList, const QString &fieldName, const bool isNeedToNormalizeAtt) const;
 
 	virtual bool initGraphics() = 0;
-	virtual bool initAssociations() = 0;
+	virtual bool initRoles() = 0;
+	virtual bool initRoleProperties() = 0;
+	virtual QString propertyName(Property *property, const QString &roleName) = 0;
+
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;
 	virtual bool initLabel(Label *label, const QDomElement &element, const int &count) = 0;
 
-	bool addProperty(Property *property);
 	bool addPort(Port *port);
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, const QStringList &list) const;
 

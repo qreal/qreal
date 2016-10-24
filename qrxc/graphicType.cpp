@@ -140,7 +140,7 @@ bool GraphicType::init(const QDomElement &element, const QString &context)
 		}
 
 		mGraphics = element.firstChildElement("graphics");
-		return initParents() && initProperties() && initDividability() && initContainers() && initAssociations()
+		return initRoles() && initParents() && initProperties() && initDividability() && initContainers()
 				&& initGraphics() && initLabels() && initPossibleEdges() && initPortTypes()
 				&& initCreateChildrenFromMenu() && initContainerProperties()
 				&& initExplosions();
@@ -183,6 +183,8 @@ bool GraphicType::initParents()
 
 bool GraphicType::initProperties()
 {
+	initRoleProperties();
+
 	const QDomElement propertiesElement = mLogic.firstChildElement("properties");
 	if (propertiesElement.isNull()) {
 		return true;
@@ -196,7 +198,7 @@ bool GraphicType::initProperties()
 			delete property;
 			continue;
 		}
-		if (!addProperty(property)) {
+		if (!addProperty(property, "")) {
 			return false;
 		}
 	}
@@ -384,9 +386,13 @@ bool GraphicType::initLabels()
 	return true;
 }
 
-bool GraphicType::addProperty(Property *property)
+bool GraphicType::addProperty(Property *property, const QString &roleName)
 {
-	const QString propertyName = property->name();
+	QString propertyName = this->propertyName(property, roleName);
+	if (propertyName.isEmpty()) {
+		propertyName = property->name();
+	}
+
 	if (mProperties.contains(propertyName)) {
 		// This will automaticly dispose property in this branch.
 		QScopedPointer<Property> propertyDisposer(property);
@@ -448,7 +454,7 @@ bool GraphicType::resolve()
 		}
 
 		for (Property *property : parent->properties().values()) {
-			if (!addProperty(property->clone())) {
+			if (!addProperty(property->clone(), "")) {
 				return false;
 			}
 		}
@@ -521,7 +527,10 @@ void GraphicType::generateDescription(OutFile &out) const
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
-	for (const Property *property : mProperties) {
+	const auto keys = mProperties.keys();
+	for (const QString &key : keys) {
+		Property *property = mProperties[key];
+
 		// Validating property names.
 		if (property->name() == "fromPort" || property->name() == "toPort"
 				|| property->name() == "from" || property->name() == "to"
@@ -531,9 +540,10 @@ void GraphicType::generatePropertyData(OutFile &out) const
 			continue;
 		}
 
+		const QString name = key == property->name() ? property->name() : key;
 		const QString stringConstructor = property->type() == "string" ? "QObject::tr" : "QString::fromUtf8";
 		out() << QString("\t\t\taddProperty(\"%1\", \"%2\", %3(\"%4\"), QObject::tr(\"%5\"), "\
-				"QObject::tr(\"%6\"), %7);\n").arg(property->name(), property->type(), stringConstructor
+				"QObject::tr(\"%6\"), %7);\n").arg(name, property->type(), stringConstructor
 						, property->defaultValue(), property->displayedName(), property->description()
 						, property->isReferenceProperty() ? "true" : "false");
 	}

@@ -37,6 +37,12 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 		mReadOnly = "true";
 	}
 
+	if (mTextBinded.contains('!')) {
+		const int cutPosition = mTextBinded.indexOf('!', 0);
+		mLocation = mTextBinded.mid(0, cutPosition);
+		mNameOfPropertyRole = mTextBinded.mid(cutPosition + 1);
+	}
+
 	mIndex = index;
 	mBackground = element.attribute("background", nodeLabel && mTextBinded.isEmpty() ? "transparent" : "white");
 	mIsHard = element.attribute("hard", "false").toLower().trimmed() == "true";
@@ -67,9 +73,19 @@ Label *Label::clone()
 	return returnLabel;
 }
 
+void Label::setRoleName(const QString &roleName)
+{
+	mRoleName = roleName;
+}
+
 QString Label::labelName() const
 {
 	return "label_" + QString("%1").arg(mIndex);
+}
+
+QString Label::location() const
+{
+	return mLocation;
 }
 
 void Label::changeIndex(int i)
@@ -80,13 +96,26 @@ void Label::changeIndex(int i)
 void Label::generateCodeForConstructor(OutFile &out) const
 {
 	if (mText.isEmpty()) {
-		// It is binded label, text for it will be fetched from repo.
-		out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\", %6, %7);\n").arg(labelName()
-						, QString::number(mIndex)
-						, QString::number(mX.value())
-						, QString::number(mY.value())
-						, mTextBinded, mReadOnly
-						, QString::number(mRotation));
+		if (mRoleName.isEmpty()) {
+			// It is binded label, text for it will be fetched from repo.
+			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\", %6, %7);\n").arg(labelName()
+					, QString::number(mIndex)
+					, QString::number(mX.value())
+					, QString::number(mY.value())
+					, mTextBinded, mReadOnly
+					, QString::number(mRotation));
+		} else {
+			// It is binded label, with role logic.
+			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\",\"%6\",\"%7\", %8, %9);\n")
+					 .arg(labelName()
+					, QString::number(mIndex)
+					, QString::number(mX.value())
+					, QString::number(mY.value())
+					, mLocation, mRoleName
+					, mNameOfPropertyRole
+					, mReadOnly
+					, QString::number(mRotation));
+		}
 	} else {
 		// It is a static label, text for it is fixed.
 		out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, QObject::tr(\"%5\"), %6);\n").arg(labelName()
