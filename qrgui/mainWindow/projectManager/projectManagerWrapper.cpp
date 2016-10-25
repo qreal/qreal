@@ -16,6 +16,9 @@
 
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTreeView>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
@@ -92,14 +95,43 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
-
 		return openProject(dequotedFileName);
-	} else if (fileInfo.exists()) {
+	} else if (fileInfo.suffix() == "qrp") {
+		return openQRProject(fileInfo);
+	}
+	else if (fileInfo.exists()) {
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
 	}
 
 	return true;
+}
+
+bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo) {
+	QFile qrp(fileInfo.absoluteFilePath());
+	qrp.open(QFile::ReadOnly | QFile::Text);
+	QByteArray qrpData = qrp.readAll();
+	qrp.close();
+	QJsonParseError er;
+	QJsonDocument proj = QJsonDocument::fromJson(qrpData, &er);
+	if (er.error != QJsonParseError::NoError) {
+		qDebug() << er.errorString();
+		/// @todo: properly handle er
+	}
+	QJsonObject projObj = proj.object();
+	QDir projDir(fileInfo.absoluteDir());
+	QString qrs = projDir.absoluteFilePath(projObj["qrs"].toString());
+	QStringList sources;
+	for (const auto &s : projObj["sources"].toArray()) {
+		sources.append(projDir.absoluteFilePath(s.toString()));
+	}
+
+	// open with qdir
+	bool success = open(qrs);
+	for (const auto &s : sources) {
+		success = open(s) || success; // success || open() ?
+	}
+	return success;
 }
 
 QString ProjectManagerWrapper::textFileFilters() const
