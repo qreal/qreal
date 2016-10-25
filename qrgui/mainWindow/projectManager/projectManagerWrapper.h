@@ -71,10 +71,11 @@ private:
 
 	void showMessage(const QString &title, const QString &message) const override;
 
+	bool openQRProject(const QFileInfo &fileInfo);
+
 	MainWindow *mMainWindow;
 	TextManagerInterface *mTextManager;
 	VersionsConverterManager mVersionsConverter;
-	bool openQRProject(const QFileInfo &fileInfo); //move to public?
 };
 
 }

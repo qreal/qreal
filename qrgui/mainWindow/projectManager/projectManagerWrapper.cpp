@@ -16,9 +16,9 @@
 
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTreeView>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
 
 #include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
@@ -99,8 +99,7 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 		return openProject(dequotedFileName);
 	} else if (fileInfo.suffix() == "qrp") {
 		return openQRProject(fileInfo);
-	}
-	else if (fileInfo.exists()) {
+	} else if (fileInfo.exists()) {
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
 	}
@@ -108,7 +107,8 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 	return true;
 }
 
-bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo) {
+bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo)
+{
 	QFile qrp(fileInfo.absoluteFilePath());
 	qrp.open(QFile::ReadOnly | QFile::Text);
 	QByteArray qrpData = qrp.readAll();
@@ -127,10 +127,9 @@ bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo) {
 		sources.append(projDir.absoluteFilePath(s.toString()));
 	}
 
-	// open with qdir
 	bool success = open(qrs);
 	for (const auto &s : sources) {
-		success = open(s) || success; // success || open() ?
+		success = open(s) || success;
 	}
 	return success;
 }
