@@ -74,6 +74,7 @@ private:
 	MainWindow *mMainWindow;
 	TextManagerInterface *mTextManager;
 	VersionsConverterManager mVersionsConverter;
+	bool openQRProject(const QFileInfo &fileInfo); //move to public?
 };
 
 }
