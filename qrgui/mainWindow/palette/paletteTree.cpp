@@ -14,11 +14,12 @@
 
 #include "paletteTree.h"
 
+#include <QtCore/QtAlgorithms>
 #include <QtCore/QUuid>
 #include <QtGui/QMouseEvent>
-#include <QtCore/QtAlgorithms>
-#include <QtWidgets/QVBoxLayout>
 #include <QtGui/QDrag>
+#include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QVBoxLayout>
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/definitions.h>
@@ -35,6 +36,7 @@ PaletteTree::PaletteTree(QWidget *parent)
 	: QWidget(parent)
 	, mTree(nullptr)
 	, mCurrentEditor(0)
+	, mTemporarySpacer(nullptr)
 {
 	initUi();
 }
@@ -54,6 +56,8 @@ void PaletteTree::initUi()
 	ui::SearchLineEdit * const searchField = new ui::SearchLineEdit(this);
 	connect(searchField, &ui::SearchLineEdit::textChanged, this, &PaletteTree::onSearchTextChanged);
 	mLayout->addWidget(searchField);
+	mTemporarySpacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Expanding);
+	mLayout->addSpacerItem(mTemporarySpacer);
 	mSearchLineEdit = searchField;
 
 	setMinimumSize(200, 100);
@@ -100,6 +104,12 @@ void PaletteTree::addEditorElements(EditorManagerInterface &editorManagerProxy, 
 	editorTree->hide();
 
 	mEditorsTrees.push_back(editorTree);
+	if (mTemporarySpacer) {
+		mLayout->removeItem(mTemporarySpacer);
+		delete mTemporarySpacer;
+		mTemporarySpacer = nullptr;
+	}
+
 	mLayout->addWidget(editorTree);
 }
 
