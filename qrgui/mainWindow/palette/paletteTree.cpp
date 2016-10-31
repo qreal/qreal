@@ -260,6 +260,11 @@ int PaletteTree::maxItemsCountInARow() const
 
 void PaletteTree::onSearchTextChanged(const QRegExp &searchText)
 {
+	if (!mTree) {
+		// When there is no loaded plugin, palette will not be initialized, it is perfectly normal situation.
+		return;
+	}
+
 	mTree->filter(searchText);
 }
 
