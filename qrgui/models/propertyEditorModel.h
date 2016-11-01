@@ -210,4 +210,6 @@ private:
 	const qReal::EditorManagerInterface &mEditorManagerInterface;
 
 	bool isValid() const;
+
+	QString fullPropertyName(const QModelIndex &index) const;
 };
