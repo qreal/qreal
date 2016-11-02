@@ -12,7 +12,7 @@ class TrikSensorEmu : public trikControl::SensorInterface
 
 	// DeviceInterface interface
 public:
-	TrikSensorEmu(kitBase::robotModel::robotParts::ScalarSensor * sensor);
+	TrikSensorEmu(kitBase::robotModel::robotParts::ScalarSensor *sensor);
 
 	Status status() const override {return Status::ready;}
 
