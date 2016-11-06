@@ -39,6 +39,13 @@ StyledButton::StyledButton(const QString &text, const QString &icon
 	QLabel * const textLabel = new QLabel(text);
 	textLabel->setWordWrap(true);
 	textLabel->setAttribute(Qt::WA_Hover);
+
+	// Beginning from some version of Qt >= 5.5 QLabel does not take into account word wrap when calculating size hint,
+	// so second line becomes clipped off. We use two lines for some buttons, so we manually set minimum height of a
+	// label to fit two lines with our default font. Somebody who has internet connection shall provide more adequate
+	// solution.
+	textLabel->setMinimumHeight(55);
+
 	layout->addWidget(textLabel);
 	bindHighlightedOnHover(textLabel);
 
