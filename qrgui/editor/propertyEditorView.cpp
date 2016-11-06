@@ -103,6 +103,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setFactoryForManager(mVariantManager, mVariantFactory);
 
 	if (mModel->rowCount(index) > 0) {
+		int ololo = 1;
 
 		int i = 0;
 
