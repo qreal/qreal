@@ -20,7 +20,7 @@ class TrikDisplayEmu : public trikControl::DisplayInterface
 
 	// DisplayInterface interface
 public:
-	TrikDisplayEmu(QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> model);
+	TrikDisplayEmu(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
 	virtual trikControl::DisplayWidgetInterface &graphicsWidget() override;
 
 	void init();

@@ -22,6 +22,7 @@
 #include <qrkernel/settingsListener.h>
 
 #include <qrgui/textEditor/qscintillaTextEdit.h>
+#include <qrgui/textEditor/languageInfo.h>
 
 using namespace trik;
 using namespace qReal;
@@ -125,8 +126,12 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 //		}
 	});
 
-	connect(&mStart, &QAction::triggered, this, &trik::TrikKitInterpreterPluginBase::testStart);
-	connect(&mStop, &QAction::triggered, this, &trik::TrikKitInterpreterPluginBase::testStop);
+	connect(&mStart, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStart);
+	connect(&mStop, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStop);
+	connect(mQtsInterpreter.data()
+			, &TrikQtsInterpreter::completed
+			, this
+			, &TrikKitInterpreterPluginBase::testStop);
 	// refactor?
 	connect(this
 			, &TrikKitInterpreterPluginBase::started
@@ -265,8 +270,9 @@ void TrikKitInterpreterPluginBase::testStart()
 
 
 	auto texttab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
+	auto isJS = [](const QString &ext){ return ext == "js" || ext == "qts"; };
 
-	if (texttab) {
+	if (texttab && isJS(texttab->currentLanguage().extension)) {
 
 		auto model = mTwoDRobotModel;
 		model->stopRobot(); // testStop?
@@ -284,6 +290,11 @@ void TrikKitInterpreterPluginBase::testStart()
 		qtsInterpreter()->setRunning(true);
 		emit started();
 		qtsInterpreter()->interpretScript(texttab->text());
+	} else {
+		qDebug("wrong tab selected");
+		mStop.setVisible(false);
+		mStart.setVisible(true);
+		/// todo: refactor the whole button shenanigans
 	}
 }
 
