@@ -449,9 +449,19 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 				}
 			}
 		} else {
-			const int intValue = value.toInt();
-			if (intValue >= 0 && intValue < values.length()) {
-				value = values.at(intValue).first;
+			QString tempValue = "";
+			for (const auto &keyValue : values) {
+				if (keyValue.second == value) {
+					value = keyValue.first;
+					tempValue = value.toString();
+				}
+			}
+
+			if (tempValue.isEmpty()) {
+				const int intValue = value.toInt();
+				if (intValue >= 0 && intValue < values.length()) {
+					value = values.at(intValue).first;
+				}
 			}
 		}
 	}
