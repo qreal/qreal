@@ -6,7 +6,8 @@
 
 using namespace trik;
 
-TrikDisplayEmu::TrikDisplayEmu(QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> model) : mTwoDRobotModel(model), mDisplay(nullptr)
+TrikDisplayEmu::TrikDisplayEmu(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
+	: mTwoDRobotModel(model), mDisplay(nullptr)
 {
 }
 
@@ -119,7 +120,9 @@ void TrikDisplayEmu::clear()
 
 void TrikDisplayEmu::reset()
 {
-	QMetaObject::invokeMethod(mDisplay, "reset");
+	if (mDisplay) {
+		QMetaObject::invokeMethod(mDisplay, "reset");
+	}
 }
 
 void TrikDisplayEmu::redraw()

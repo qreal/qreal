@@ -1,20 +1,36 @@
 #include <trikKitInterpreterCommon/trikbrick.h>
 
 #include <trikKit/robotModel/parts/trikShell.h>
+#include <trikKit/robotModel/parts/trikLineSensor.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
 using namespace trik;
 
 TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
-    : mTwoDRobotModel(model), mDisplay(model)
+	: mTwoDRobotModel(model), mDisplay(model), mKeys(model)
 {
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
 }
 
+TrikBrick::~TrikBrick()
+{
+	qDeleteAll(mMotors);
+	qDeleteAll(mSensors);
+	qDeleteAll(mEncoders);
+	qDeleteAll(mLineSensors);
+}
+
 void TrikBrick::reset()
 {
-	//todo: reset motos/device maps?
+	mKeys.reset();///@todo: reset motos/device maps?
+	mDisplay.reset();
+	for (const auto &m : mMotors) {
+		m->powerOff();
+	}
+	for (const auto &e : mEncoders) {
+		e->reset();
+	}
 }
 
 void TrikBrick::printToShell(const QString &msg)
@@ -32,8 +48,30 @@ void TrikBrick::printToShell(const QString &msg)
 void TrikBrick::init()
 {
 	mDisplay.init();
+	for (const auto &m : mMotors) {
+		m->powerOff();
+	}
+	for (const auto &e : mEncoders) {
+		e->read();
+	}
+	for (const auto &s : mSensors) {
+		s->read();
+	}
 	mMotors.clear(); // needed? reset?
 	mSensors.clear();
+	mEncoders.clear();
+	mKeys.init();
+}
+
+void TrikBrick::stop() {
+	/// @todo: properly implement this?
+	mTwoDRobotModel->stopRobot();
+//	for (const auto &m : mMotors) {
+//		m->powerOff();
+//	}
+//	for (const auto &e : mEncoders) {
+//		e->reset();
+//	}
 }
 
 trikControl::MotorInterface *TrikBrick::motor(const QString &port)
@@ -79,6 +117,70 @@ QStringList TrikBrick::sensorPorts(trikControl::SensorInterface::Type type) cons
 	return mMotors.keys();
 }
 
+QStringList TrikBrick::encoderPorts() const {
+	return mEncoders.keys();
+}
+
+trikControl::VectorSensorInterface *TrikBrick::accelerometer() {
+	using namespace kitBase::robotModel;
+	if (mAccelerometer.isNull()) {
+		auto a = RobotModelUtils::findDevice<robotParts::AccelerometerSensor>(*mTwoDRobotModel
+																			  , "AccelerometerPort");
+		if (a == nullptr) {
+			emit error(tr("No configured accelerometer"));
+			return nullptr;
+		}
+		mAccelerometer.reset(new TrikAccelerometerAdapter(a));
+	}
+	return mAccelerometer.data();
+}
+
+trikControl::VectorSensorInterface *TrikBrick::gyroscope() {
+	using namespace kitBase::robotModel;
+	if (mGyroscope.isNull()) {
+		auto a = RobotModelUtils::findDevice<robotParts::GyroscopeSensor>(*mTwoDRobotModel
+																		  , "GyroscopePort");
+		if (a == nullptr) {
+			emit error(tr("No configured gyroscope"));
+			return nullptr;
+		}
+		mGyroscope.reset(new TrikGyroscopeAdapter(a));
+	}
+	return mGyroscope.data();
+}
+
+trikControl::LineSensorInterface *TrikBrick::lineSensor(const QString &port) {
+	using namespace trik::robotModel::parts;
+	using namespace kitBase::robotModel;
+	if (port == "video0") {
+		return lineSensor("LineSensorPort"); // seems to be the case for 2d model
+	}
+	if (!mLineSensors.contains(port)) {
+		TrikLineSensor * sens =
+				RobotModelUtils::findDevice<TrikLineSensor>(*mTwoDRobotModel, port);
+		if (sens == nullptr) {
+			emit error(tr("No configured LineSensor on port: ") + port);
+			return nullptr;
+		}
+		mLineSensors[port] = new TrikLineSensorAdapter(sens);
+	}
+	return mLineSensors[port];
+}
+
+trikControl::EncoderInterface *TrikBrick::encoder(const QString &port) {
+	using namespace kitBase::robotModel;
+	if (!mEncoders.contains(port)) {
+		robotParts::EncoderSensor * enc =
+		        RobotModelUtils::findDevice<robotParts::EncoderSensor>(*mTwoDRobotModel, port);
+		if (enc == nullptr) {
+			emit error(tr("No configured encoder on port: ") + port);
+			return nullptr;
+		}
+		mEncoders[port] = new TrikEncoderAdapter(enc);
+	}
+	return mEncoders[port];
+}
+
 trikControl::DisplayInterface *TrikBrick::display()
 {
 	//	trik::robotModel::parts::TrikDisplay * const display =
@@ -93,5 +195,19 @@ trikControl::DisplayInterface *TrikBrick::display()
 //	}
 //	return nullptr;
 	return &mDisplay;
+}
+
+trikControl::LedInterface *TrikBrick::led() {
+	using namespace trik::robotModel::parts;
+	using namespace kitBase::robotModel;
+	if (mLed.isNull()) {
+		auto l = RobotModelUtils::findDevice<TrikLed>(*mTwoDRobotModel, "LedPort");
+		if (l == nullptr) {
+			emit error(tr("No configured led"));
+			return nullptr;
+		}
+		mLed.reset(new TrikLedAdapter(l));
+	}
+	return mLed.data();
 }
 

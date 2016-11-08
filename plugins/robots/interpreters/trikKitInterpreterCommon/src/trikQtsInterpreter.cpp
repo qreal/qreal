@@ -15,7 +15,7 @@ QScriptValue printRedirect(QScriptContext * context, QScriptEngine * engine)
 		result.append(context->argument(i).toString());
 	}
 
-	engine->evaluate(QString("brick.log(\"print: %1\");").arg(result));
+	engine->evaluate(QString("brick.log(\"%1\");").arg(result));
 
 	return engine->toScriptValue(result);
 }
@@ -35,6 +35,7 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 //		return QScriptValue();
 //	};
 	mScriptRunner.registerUserFunction("print", printRedirect);
+	connect(&mScriptRunner, SIGNAL(completed(QString,int)), this, SLOT(scriptFinished(QString,int)));
 }
 
 trik::TrikQtsInterpreter::~TrikQtsInterpreter()
@@ -56,7 +57,7 @@ void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 void trik::TrikQtsInterpreter::abort()
 {
 	mScriptRunner.abort();
-	mRunning = false;
+	mRunning = false; // reset brick?
 }
 
 void trik::TrikQtsInterpreter::init()
@@ -88,4 +89,15 @@ void trik::TrikQtsInterpreter::reportLog(const QString &msg)
 void trik::TrikQtsInterpreter::setRunning(bool running)
 {
 	mRunning = running;
+}
+
+void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)
+{
+	Q_UNUSED(scriptId);
+	if (!error.isEmpty()) {
+		reportError(error);
+	}
+	if (mRunning) { /// @todo: figure out better place for this check - it should avoid double aborts
+		emit completed();
+	}
 }

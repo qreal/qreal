@@ -26,7 +26,7 @@ includes(plugins/robots/common/kitBase \
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
-		trikControl-x86 trikScriptRunner-x86 \
+		trikControl-x86 trikScriptRunner-x86 qrgui-text-editor \
 		)
 
 LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
@@ -75,7 +75,12 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikdisplayemu.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/triksensoremu.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikmotoremu.h \
-	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikkeysinterfacestub.h
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikkeysinterfacestub.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/triklinesensoradapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikencoderadapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikledadapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikaccelerometeradapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikgyroscopeadapter.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -118,7 +123,13 @@ SOURCES += \
 	$$PWD/src/trikQtsInterpreter.cpp \
 	$$PWD/src/trikEmulation/triksensoremu.cpp \
 	$$PWD/src/trikEmulation/trikdisplayemu.cpp \
-	$$PWD/src/trikEmulation/trikmotoremu.cpp
+	$$PWD/src/trikEmulation/trikmotoremu.cpp \
+	$$PWD/src/trikEmulation/triklinesensoradapter.cpp \
+	$$PWD/src/trikEmulation/trikkeysinterfacestub.cpp \
+	$$PWD/src/trikEmulation/trikencoderadapter.cpp \
+	$$PWD/src/trikEmulation/trikledadapter.cpp \
+	$$PWD/src/trikEmulation/trikaccelerometeradapter.cpp \
+	$$PWD/src/trikEmulation/trikgyroscopeadapter.cpp
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \
