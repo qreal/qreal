@@ -2,7 +2,13 @@
 
 #include <trikControl/encoderInterface.h>
 
-#include <kitBase/robotModel/robotParts/encoderSensor.h>
+#include <kitBase/robotModel/portInfo.h> // forward?
+
+namespace twoDModel {
+namespace engine {
+class TwoDModelEngineInterface;
+}
+}
 
 namespace trik {
 
@@ -11,7 +17,7 @@ class TrikEncoderAdapter : public trikControl::EncoderInterface
 	Q_OBJECT
 	// DeviceInterface interface
 public:
-	TrikEncoderAdapter(kitBase::robotModel::robotParts::EncoderSensor *encoder);
+	TrikEncoderAdapter(const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface *engine);
 
 	virtual Status status() const override {return Status::ready;}
 	// EncoderInterface interface
@@ -21,7 +27,8 @@ public slots:
 	virtual void reset() override;
 
 private:
-	kitBase::robotModel::robotParts::EncoderSensor *mEncoder;
+	kitBase::robotModel::PortInfo mPort;
+	twoDModel::engine::TwoDModelEngineInterface *mEngine;
 };
 
 }

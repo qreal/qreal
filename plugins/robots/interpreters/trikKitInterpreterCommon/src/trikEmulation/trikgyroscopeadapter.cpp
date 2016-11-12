@@ -1,12 +1,13 @@
 #include <trikKitInterpreterCommon/trikEmulation/trikgyroscopeadapter.h>
 
-TrikGyroscopeAdapter::TrikGyroscopeAdapter(kitBase::robotModel::robotParts::GyroscopeSensor *g)
-	: mGyroscope(g)
+#include <twoDModel/engine/twoDModelEngineInterface.h>
+
+TrikGyroscopeAdapter::TrikGyroscopeAdapter(const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface *engine)
+	: mPort(port), mEngine(engine)
 {
 }
 
 QVector<int> TrikGyroscopeAdapter::read() const
 {
-	QMetaObject::invokeMethod(mGyroscope, "read");
-	return mGyroscope->lastData(); // hopefully the same format as on real brick
+	return mEngine->readGyroscopeSensor(); // replace with QMetaObject::invokeMethod call?
 }
