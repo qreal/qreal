@@ -1,1 +1,1 @@
-{ Enable video streaming in JavaScript for now }
+{ Video streaming is not supported }

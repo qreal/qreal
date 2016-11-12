@@ -1,1 +1,1 @@
-Random(@@UPPER_BOUND@@)
+Random(@@ARGUMENT@@)
