@@ -1,18 +1,21 @@
 #include <trikKitInterpreterCommon/trikEmulation/trikencoderadapter.h>
 
+#include <twoDModel/engine/twoDModelEngineInterface.h>
 
-trik::TrikEncoderAdapter::TrikEncoderAdapter(kitBase::robotModel::robotParts::EncoderSensor *encoder)
-	: mEncoder(encoder)
+#include <QtCore/QEventLoop>
+
+trik::TrikEncoderAdapter::TrikEncoderAdapter(const kitBase::robotModel::PortInfo &port
+											 , twoDModel::engine::TwoDModelEngineInterface *engine)
+	: mPort(port), mEngine(engine)
 {
 }
 
 int trik::TrikEncoderAdapter::read()
 {
-	QMetaObject::invokeMethod(mEncoder, "read");
-	return mEncoder->lastData();
+	return mEngine->readEncoder(mPort); //replace with QObject::invokeMethod later? (for thread safety)
 }
 
 void trik::TrikEncoderAdapter::reset()
 {
-	mEncoder->nullify();
+	mEngine->resetEncoder(mPort);
 }

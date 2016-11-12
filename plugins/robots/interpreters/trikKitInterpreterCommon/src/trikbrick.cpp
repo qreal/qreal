@@ -2,15 +2,30 @@
 
 #include <trikKit/robotModel/parts/trikShell.h>
 #include <trikKit/robotModel/parts/trikLineSensor.h>
+#include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
+#include <kitBase/robotModel/robotParts/encoderSensor.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
+
+#include <QtCore/QTimer>
 using namespace trik;
 
 TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
 	: mTwoDRobotModel(model), mDisplay(model), mKeys(model)
 {
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
+//	QTimer *t = new QTimer(this);
+//	t->setInterval(25);
+//	connect(t, &QTimer::timeout, [this](){
+//		qDebug("here");
+//		for (const auto &e : mEncoders) {
+//			e->read();
+//		}
+//		for (const auto &s : mSensors) {
+//			s->read();
+//		}
+//	});
 }
 
 TrikBrick::~TrikBrick()
@@ -144,7 +159,7 @@ trikControl::VectorSensorInterface *TrikBrick::gyroscope() {
 			emit error(tr("No configured gyroscope"));
 			return nullptr;
 		}
-		mGyroscope.reset(new TrikGyroscopeAdapter(a));
+		mGyroscope.reset(new TrikGyroscopeAdapter(a->port(), mTwoDRobotModel->engine()));
 	}
 	return mGyroscope.data();
 }
@@ -176,7 +191,7 @@ trikControl::EncoderInterface *TrikBrick::encoder(const QString &port) {
 			emit error(tr("No configured encoder on port: ") + port);
 			return nullptr;
 		}
-		mEncoders[port] = new TrikEncoderAdapter(enc);
+		mEncoders[port] = new TrikEncoderAdapter(enc->port(), mTwoDRobotModel->engine());
 	}
 	return mEncoders[port];
 }
