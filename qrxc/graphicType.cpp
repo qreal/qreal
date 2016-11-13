@@ -386,13 +386,13 @@ bool GraphicType::initLabels()
 	return true;
 }
 
-bool GraphicType::addProperty(Property *property, QString roleName)
+bool GraphicType::addProperty(Property *property, const QString &roleName)
 {
-
 	QString propertyName = this->propertyName(property, roleName);
 	if (propertyName.isEmpty()) {
 		propertyName = property->name();
 	}
+
 	if (mProperties.contains(propertyName)) {
 		// This will automaticly dispose property in this branch.
 		QScopedPointer<Property> propertyDisposer(property);
@@ -524,29 +524,6 @@ void GraphicType::generateDescription(OutFile &out) const
 	out() << "\t\t\tsetDescription(QObject::tr(\"" << mDescription << "\"));\n";
 }
 
-QStringList GraphicType::sortProperties(const QList<QString> properties) const
-{
-	QList<QString> result;
-
-	QStringList propertiesWithRoles;
-	QStringList pureProperties;
-
-	for (const QString &property : properties) {
-		if (property.contains("!")) {
-			propertiesWithRoles.append(property);
-		} else {
-			pureProperties.append(property);
-		}
-	}
-
-	propertiesWithRoles.sort();
-	pureProperties.sort();
-	result = propertiesWithRoles + pureProperties;
-
-	return result;
-}
-
-
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
@@ -564,15 +541,7 @@ void GraphicType::generatePropertyData(OutFile &out) const
 			continue;
 		}
 
-
-		QString name = "";
-		if (key == property->name()) {
-			name = property->name();
-		} else {
-			name = key;
-		}
-
-
+		const QString name = key == property->name() ? property->name() : key;
 		const QString stringConstructor = property->type() == "string" ? "QObject::tr" : "QString::fromUtf8";
 		out() << QString("\t\t\taddProperty(\"%1\", \"%2\", %3(\"%4\"), QObject::tr(\"%5\"), "\
 				"QObject::tr(\"%6\"), %7);\n").arg(name, property->type(), stringConstructor

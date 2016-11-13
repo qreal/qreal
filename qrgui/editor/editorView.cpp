@@ -30,11 +30,11 @@ const int zoomAnimationTimes = 4;
 
 EditorView::EditorView(const models::Models &models
 		, Controller &controller
-		, const qReal::gui::editor::SceneCustomizer &customizer
+		, const qReal::gui::editor::SceneCustomizer &sceneCustomizer
 		, const Id &rootId
 		, QWidget *parent)
 	: QGraphicsView(parent)
-	, mScene(models, controller, customizer, rootId, this)
+	, mScene(models, controller, sceneCustomizer, rootId, this)
 	, mMVIface(this, &mScene)
 	, mMouseOldPosition()
 	, mWheelPressed(false)

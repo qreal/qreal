@@ -14,6 +14,8 @@
 
 #include "subprogramBlock.h"
 
+#include <QtXml/QDomDocument>
+
 #include <qrutils/nameNormalizer.h>
 
 using namespace qReal::interpretation::blocks;
@@ -32,6 +34,39 @@ void SubprogramBlock::run()
 	if (validName.isEmpty()) {
 		error(tr("Please enter valid c-style name for subprogram \"") + name + "\"");
 		return;
+	}
+
+	const QString properties = mLogicalModelApi->logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
+	if (!properties.isEmpty()) {
+		QDomDocument dynamicProperties;
+		dynamicProperties.setContent(properties);
+		QHash<QString, QVariant> calculatedValues;
+		for (QDomElement element = dynamicProperties.firstChildElement("properties").firstChildElement("property")
+			; !element.isNull()
+			; element = element.nextSiblingElement("property"))
+		{
+			const QString type = element.attribute("type");
+			const QString value = element.attribute("value");
+			const QString name = element.attribute("text");
+
+			if (type == "bool") {
+				calculatedValues.insert(name, evalCode<bool>(value));
+			} else if (type == "int") {
+				calculatedValues.insert(name, evalCode<int>(value));
+			} else {
+				calculatedValues.insert(name, evalCode<QString>(value));
+			}
+		}
+
+		for (QHash<QString, QVariant>::iterator i = calculatedValues.begin(); i != calculatedValues.end(); ++i) {
+			if (i.value().type() == QVariant::Bool) {
+				setVariableValue<bool>(i.key(), i.value().toBool());
+			} else if (i.value().type() == QVariant::Int) {
+				setVariableValue<int>(i.key(), i.value().toInt());
+			} else {
+				setVariableValue<QString>(i.key(), i.value().toString());
+			}
+		}
 	}
 
 	const Id logicalDiagram = mLogicalModelApi->logicalRepoApi().outgoingExplosion(logicalId);

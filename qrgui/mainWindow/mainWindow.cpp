@@ -1759,6 +1759,8 @@ void MainWindow::initToolPlugins()
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
+	const bool allowExplosionsCustomization = toolManager().customizer()->allowSubprogramPropertiesChanging();
+	mSceneCustomizer->setAllowSubprogramPropertiesChanging(allowExplosionsCustomization);
 	mUi->paletteTree->customizeExplosionTitles(
 			toolManager().customizer()->userPaletteTitle()
 			, toolManager().customizer()->userPaletteDescription());

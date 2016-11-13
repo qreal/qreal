@@ -25,6 +25,7 @@
 
 #include <math.h>
 #include <qrkernel/logging.h>
+#include <qrutils/scalableItem.h>
 
 #include <qrgui/models/models.h>
 #include <qrgui/models/commands/changeParentCommand.h>
@@ -79,7 +80,7 @@ NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models
 
 	const QList<LabelProperties> labelInfos = mType.labels();
 	for (const LabelProperties &labelInfo : labelInfos) {
-		Label * const label = new Label(mGraphicalAssistApi, mId, labelInfo);
+		Label * const label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
 		label->init(mContents);
 		label->setParentItem(this);
 		mLabels.append(label);
@@ -96,6 +97,8 @@ NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models
 	initPortsVisibility();
 
 	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
+
+	mStartingLabelsCount = mLabels.count();
 }
 
 NodeElement::~NodeElement()
@@ -135,6 +138,82 @@ void NodeElement::connectSceneEvents()
 	if (editorView) {
 		connect(editorView, &EditorView::zoomChanged, &mRenderer, &SdfRenderer::setZoom);
 	}
+}
+
+void NodeElement::initExplosionConnections()
+{
+	connect(&mModels.exploser(), &models::Exploser::explosionTargetCouldChangeProperties, this
+			, &NodeElement::updateDynamicProperties);
+}
+
+void NodeElement::updateDynamicProperties(const Id &target)
+{
+	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
+		return;
+	}
+
+	// Update name
+	setName(mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name"), false);
+
+	// Update shape
+	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
+	QDomDocument picture;
+	picture.setContent(shape);
+	mRenderer.load(picture);
+	mModels.exploser().explosionsSetCouldChange();
+
+	// Update labels
+	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
+	QDomDocument dynamicProperties;
+	QDomElement properties = dynamicProperties.createElement("properties");
+	QDomDocument dynamicLabels;
+	dynamicLabels.setContent(labels);
+
+	// ...delete old dynamic labels
+	const int oldCount = mLabels.count() - mStartingLabelsCount;
+	for (int i = 0; i < oldCount; ++i) {
+		delete mLabels.takeLast();
+	}
+
+	int index = mLabels.count() + 1;
+	for (QDomElement element = dynamicLabels.firstChildElement("labels").firstChildElement("label")
+			; !element.isNull()
+			; element = element.nextSiblingElement("label"))
+	{
+		utils::ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), mContents.width());
+		utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), mContents.height());
+		const QString textBinded = element.attribute("textBinded");
+		const QString value = element.attribute("value");
+		const QString type = element.attribute("type");
+		const QString text = element.attribute("text");
+
+		// It is a binded label, text for it will be taken from repository.
+		LabelProperties labelInfo(index, x.value(), y.value(), textBinded, false, 0);
+		labelInfo.setBackground(Qt::white);
+		labelInfo.setScalingX(false);
+		labelInfo.setScalingY(false);
+		labelInfo.setHard(false);
+		labelInfo.setPrefix(text);
+		Label *label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
+		label->init(mContents);
+		label->setParentItem(this);
+		label->setTextInteractionFlags(Qt::NoTextInteraction);
+		label->setTextFromRepo(value);
+		mLabels.append(label);
+
+		// Saving dynamicProperty
+		QDomElement property = dynamicProperties.createElement("property");
+		property.setAttribute("textBinded", textBinded);
+		property.setAttribute("text", text);
+		property.setAttribute("type", type);
+		property.setAttribute("value", value);
+		properties.appendChild(property);
+	}
+
+	// Saving dynamic properties in source.
+	dynamicProperties.appendChild(properties);
+	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties",
+			dynamicProperties.toString(4));
 }
 
 void NodeElement::setGeometry(const QRectF &geom)
@@ -426,17 +505,17 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		case Top: {
 			newContents.setTop(newY);
-			newPos = QPoint(pos().x(), event->scenePos().y() - parentPos.y());
+			newPos = QPointF(pos().x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case TopRight: {
 			newContents.setTopRight(QPoint(newX, event->pos().y() - event->lastPos().y()));
-			newPos = QPoint(newPos.x(), event->scenePos().y() - parentPos.y());
+			newPos = QPointF(newPos.x(), event->scenePos().y() - parentPos.y());
 			break;
 		}
 		case Left: {
 			newContents.setLeft(newX);
-			newPos = QPoint(event->scenePos().x() - parentPos.x(), pos().y());
+			newPos = QPointF(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
 		case Right: {
@@ -445,7 +524,7 @@ void NodeElement::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 		}
 		case BottomLeft: {
 			newContents.setBottomLeft(QPoint(event->pos().x() - event->lastPos().x(), newY));
-			newPos = QPoint(event->scenePos().x() - parentPos.x(), pos().y());
+			newPos = QPointF(event->scenePos().x() - parentPos.x(), pos().y());
 			break;
 		}
 		case Bottom: {
@@ -759,6 +838,7 @@ void NodeElement::updateData()
 	}
 
 	updateLabels();
+	updateDynamicLabels();
 	update();
 }
 
@@ -941,6 +1021,13 @@ void NodeElement::updateLabels()
 {
 	for (Label * const label : mLabels) {
 		label->setParentContents(mContents);
+	}
+}
+
+void NodeElement::updateDynamicLabels()
+{
+	for (Label *label : mLabels) {
+		label->updateDynamicData();
 	}
 }
 
@@ -1253,7 +1340,7 @@ void NodeElement::initRenderedDiagram()
 	const Id diagram = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
 	const Id graphicalDiagram = mGraphicalAssistApi.graphicalIdsByLogicalId(diagram)[0];
 
-	EditorView view(evScene->models(), evScene->controller(), evScene->customizer(), graphicalDiagram);
+	EditorView view(evScene->models(), evScene->controller(), evScene->sceneCustomizer(), graphicalDiagram);
 	view.mutableScene().setNeedDrawGrid(false);
 
 	view.mutableMvIface().configure(mGraphicalAssistApi, mLogicalAssistApi, mModels.exploser());

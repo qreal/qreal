@@ -333,7 +333,7 @@ ElementType &EditorManager::elementType(const Id &id) const
 	return mMetamodels[id.editor()]->elementType(id.diagram(), id.element());
 }
 
-QStringList EditorManager::propertyNames(const Id &id) const
+const QStringList &EditorManager::propertyNames(const Id &id) const
 {
 	Q_ASSERT(id.idSize() == 3); // Applicable only to element types
 	return elementType(id).propertyNames();

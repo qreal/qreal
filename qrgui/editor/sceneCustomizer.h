@@ -35,6 +35,7 @@ public:
 	bool showExpandConnectionAction() const override;
 	QString expandExplosionActionText() const override;
 	QString collapseExplosionActionText() const override;
+	bool allowSubprogramPropertiesChanging() const override;
 
 	void setAddExplosionMenuName(const QString &text) override;
 	void setChangeExplosionMenuName(const QString &text) override;
@@ -43,6 +44,7 @@ public:
 	void setShowExpandConnectionAction(bool show) override;
 	void setExpandExplosionActionText(const QString &text) override;
 	void setCollapseExplosionActionText(const QString &text) override;
+	void setAllowSubprogramPropertiesChanging(bool allow) override;
 
 private:
 	QString mAddExplosionMenuName;
@@ -52,6 +54,7 @@ private:
 	bool mShowExpandConnectionAction;
 	QString mExpandExplosionActionText;
 	QString mCollapseExplosionActionText;
+	bool mAllowSubprogramPropertiesChanging;
 };
 
 }

@@ -33,7 +33,7 @@ public:
 	bool initGraphics() override;
 	bool initRoles() override;
 	bool initRoleProperties() override;
-	QString propertyName(Property *property, QString roleName) override;
+	QString propertyName(Property *property, const QString &roleName) override;
 
 	bool initDividability() override;
 	bool initPortTypes() override;

@@ -317,4 +317,5 @@ void LabelProperties::copyFrom(const LabelProperties &other)
 	this->mIsHard = other.mIsHard;
 	this->mPrefix = other.mPrefix;
 	this->mSuffix = other.mSuffix;
+	this->mReadOnly = other.mReadOnly;
 }

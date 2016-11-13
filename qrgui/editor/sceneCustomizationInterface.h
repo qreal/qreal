@@ -48,6 +48,9 @@ public:
 	/// Returns an explosion collapse action text that will be displayed in element`s context menu.
 	virtual QString collapseExplosionActionText() const = 0;
 
+	/// Tells if we can change subprogram properties from scene context menu.
+	virtual bool allowSubprogramPropertiesChanging() const = 0;
+
 	/// Customizes an explosion addition menu text that will be displayed in element`s context menu.
 	virtual void setAddExplosionMenuName(const QString &text) = 0;
 
@@ -68,6 +71,9 @@ public:
 
 	/// Customizes an explosion collapse action text that will be displayed in element`s context menu.
 	virtual void setCollapseExplosionActionText(const QString &text) = 0;
+
+	/// Sets if we can change subprogram properties from scene context menu.
+	virtual void setAllowSubprogramPropertiesChanging(bool allow) = 0;
 };
 
 }

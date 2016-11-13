@@ -79,7 +79,7 @@ bool PatternType::initRoleProperties()
 	return true;
 }
 
-QString PatternType::propertyName(Property *property, QString roleName)
+QString PatternType::propertyName(Property *property, const QString &roleName)
 {
 	Q_UNUSED(property);
 	Q_UNUSED(roleName);

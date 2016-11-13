@@ -24,8 +24,7 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 {
 	mX = initCoordinate(element.attribute("x"), width);
 	mY = initCoordinate(element.attribute("y"), height);
-	auto elem = element.parentNode();
-	auto check = elem.firstChildElement();
+
 	mCenter = element.attribute("center", "false");
 	mText = element.attribute("text");
 	mTextBinded = element.attribute("textBinded");
@@ -37,8 +36,9 @@ bool Label::init(const QDomElement &element, int index, bool nodeLabel, int widt
 	if (mTextBinded.contains("##")) {
 		mReadOnly = "true";
 	}
+
 	if (mTextBinded.contains('!')) {
-		int cutPosition = mTextBinded.indexOf('!', 0);
+		const int cutPosition = mTextBinded.indexOf('!', 0);
 		mLocation = mTextBinded.mid(0, cutPosition);
 		mNameOfPropertyRole = mTextBinded.mid(cutPosition + 1);
 	}
@@ -73,7 +73,7 @@ Label *Label::clone()
 	return returnLabel;
 }
 
-void Label::setRoleName(const QString roleName)
+void Label::setRoleName(const QString &roleName)
 {
 	mRoleName = roleName;
 }
@@ -97,13 +97,13 @@ void Label::generateCodeForConstructor(OutFile &out) const
 {
 	if (mText.isEmpty()) {
 		if (mRoleName.isEmpty()) {
-		// It is binded label, text for it will be fetched from repo.
-		out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\", %6, %7);\n").arg(labelName()
-						, QString::number(mIndex)
-						, QString::number(mX.value())
-						, QString::number(mY.value())
-						, mTextBinded, mReadOnly
-						, QString::number(mRotation));
+			// It is binded label, text for it will be fetched from repo.
+			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\", %6, %7);\n").arg(labelName()
+					, QString::number(mIndex)
+					, QString::number(mX.value())
+					, QString::number(mY.value())
+					, mTextBinded, mReadOnly
+					, QString::number(mRotation));
 		} else {
 			// It is binded label, with role logic.
 			out() << QString("\t\t\tqReal::LabelProperties %1(%2, %3, %4, \"%5\",\"%6\",\"%7\", %8, %9);\n")
@@ -111,7 +111,7 @@ void Label::generateCodeForConstructor(OutFile &out) const
 					, QString::number(mIndex)
 					, QString::number(mX.value())
 					, QString::number(mY.value())
-					, mLocation, mRoleName //roleName
+					, mLocation, mRoleName
 					, mNameOfPropertyRole
 					, mReadOnly
 					, QString::number(mRotation));

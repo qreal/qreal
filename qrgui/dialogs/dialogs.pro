@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2016 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,9 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-QT += widgets
+QT += xml widgets
 
-links(qrkernel qrutils qrgui-models)
+links(qrkernel qrutils qrgui-models qrgui-plugin-manager)
 includes(qrgui)
 
 DEFINES += QRGUI_DIALOGS_LIBRARY
@@ -46,6 +46,9 @@ HEADERS += \
 	$$PWD/projectManagement/suggestToCreateDiagramDialog.h \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.h \
 	$$PWD/findReplaceDialog.h \
+	$$PWD/subprogram/dynamicPropertiesDialog.h \
+	$$PWD/subprogram/shapePropertyWidget.h \
+	$$PWD/subprogram/shapeWidget.h \
 
 SOURCES += \
 	$$PWD/metamodelingOnFly/propertiesDialog.cpp \
@@ -63,6 +66,9 @@ SOURCES += \
 	$$PWD/projectManagement/suggestToCreateDiagramDialog.cpp \
 	$$PWD/projectManagement/suggestToCreateProjectDialog.cpp \
 	$$PWD/findReplaceDialog.cpp \
+	$$PWD/subprogram/dynamicPropertiesDialog.cpp \
+	$$PWD/subprogram/shapePropertyWidget.cpp \
+	$$PWD/subprogram/shapeWidget.cpp \
 
 FORMS += \
 	$$PWD/metamodelingOnFly/propertiesDialog.ui \
@@ -73,6 +79,7 @@ FORMS += \
 	$$PWD/metamodelingOnFly/restorePropertiesDialog.ui \
 	$$PWD/metamodelingOnFly/restoreElementDialog.ui \
 	$$PWD/findReplaceDialog.ui \
+	$$PWD/subprogram/dynamicPropertiesDialog.ui \
 
 RESOURCES += \
 	arrowIcons.qrc \

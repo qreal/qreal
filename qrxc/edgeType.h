@@ -55,7 +55,7 @@ private:
 	virtual void generateLabels(utils::OutFile &out) const;
 	virtual bool initRoles();
 	virtual bool initRoleProperties();
-	virtual QString propertyName(Property *property, QString roleName);
+	virtual QString propertyName(Property *property, const QString &roleName);
 	virtual bool initGraphics();
 	virtual bool initDividability();
 	virtual bool initPortTypes();

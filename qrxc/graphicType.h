@@ -105,8 +105,9 @@ protected:
 	void copyFields(GraphicType *type) const;
 	QString resourceName(const QString &resourceType) const;
 	virtual bool isResolving() const;
+
 protected:
-	bool addProperty(Property *property, QString roleName);
+	bool addProperty(Property *property, const QString &roleName);
 
 private:
 	class ResolvingHelper {
@@ -136,7 +137,7 @@ private:
 	virtual bool initGraphics() = 0;
 	virtual bool initRoles() = 0;
 	virtual bool initRoleProperties() = 0;
-	virtual QString propertyName(Property *property, QString roleName) = 0;
+	virtual QString propertyName(Property *property, const QString &roleName) = 0;
 
 	virtual bool initDividability() = 0;
 	virtual bool initPortTypes() = 0;

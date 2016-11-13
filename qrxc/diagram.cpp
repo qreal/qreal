@@ -166,9 +166,6 @@ bool Diagram::initNonGraphicTypes(const QDomElement &nonGraphicTypesElement)
 			mTypes[portType->qualifiedName()] = portType;
 		} else if  (element.nodeName() == "role") {
 			Type *roleType = new RoleType();
-
-			qDebug() << roleType->name();
-
 			if (!roleType->init(element, mDiagramName)) {
 				delete roleType;
 				qDebug() << "Can't parse roleType type";

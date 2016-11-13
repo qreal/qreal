@@ -225,9 +225,9 @@ QWidget *StartWidget::createPluginsList()
 
 	QVBoxLayout * const innerLayout = new QVBoxLayout;
 	innerLayout->addStretch();
-	foreach (const Id &editor, mMainWindow->editorManager().editors()) {
+	for (const Id &editor : mMainWindow->editorManager().editors()) {
 		const Id editorTmpId = Id::loadFromString("qrm:/" + editor.editor());
-		foreach (const Id &diagram, mMainWindow->editorManager().diagrams(editorTmpId)) {
+		for (const Id &diagram : mMainWindow->editorManager().diagrams(editorTmpId)) {
 			QWidget * const pluginWidget = createPluginButton(editor, diagram, circleWidget);
 			innerLayout->addWidget(pluginWidget);
 		}
@@ -288,11 +288,9 @@ QWidget *StartWidget::createPluginButton(const Id &editor, const Id &diagram, QW
 
 void StartWidget::openInterpretedDiagram()
 {
-	hide();
 	const QString fileName = mProjectManager->openFileName(tr("Select file with metamodel to open"));
 
 	if (fileName.isEmpty()) {
-		show();
 		return;
 	}
 
@@ -324,18 +322,18 @@ void StartWidget::openInterpretedDiagram()
 		}
 	}
 
-	for (const QString &interpreterIdString : interpreterDiagramsList) {
-		// TODO: ???
-		mMainWindow->models().repoControlApi().exterminate();
-		mMainWindow->models().reinit();
-		mMainWindow->loadEditorPlugins();
-		mMainWindow->createDiagram(interpreterIdString);
+	mMainWindow->models().repoControlApi().exterminate();
+	mMainWindow->models().reinit();
+	mMainWindow->loadEditorPlugins();
+	if (!interpreterDiagramsList.isEmpty()) {
+		mMainWindow->createDiagram(interpreterDiagramsList.first());
 	}
+
+	mMainWindow->closeStartTab();
 }
 
 void StartWidget::createInterpretedDiagram()
 {
-	hide();
 	bool ok = false;
 	QString name;
 	do {
@@ -352,8 +350,7 @@ void StartWidget::createInterpretedDiagram()
 		mMainWindow->models().repoControlApi().exterminate();
 		mMainWindow->models().reinit();
 		mMainWindow->loadEditorPlugins();
-	} else {
-		show();
+		mMainWindow->closeStartTab();
 	}
 }
 

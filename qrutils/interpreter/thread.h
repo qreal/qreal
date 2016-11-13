@@ -22,8 +22,10 @@
 #include <qrkernel/ids.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/graphicalModelAssistInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/logicalModelAssistInterface.h>
 
 #include <qrutils/interpreter/blockInterface.h>
+#include <qrutils/interpreter/stackFrame.h>
 #include <qrutils/interpreter/blocksTableInterface.h>
 #include <qrutils/interpreter/stopReason.h>
 #include <qrutils/utilsDeclSpec.h>
@@ -117,11 +119,12 @@ private:
 	void connectBlock(BlockInterface * const block);
 
 	const qReal::GraphicalModelAssistInterface *mGraphicalModelApi;  // Doesn't have ownership
+	const qReal::LogicalModelAssistInterface *mLogicalModelApi;
 	qReal::gui::MainWindowInterpretersInterface &mInterpretersInterface;
 	const Id mInitialNodeType;
 	BlocksTableInterface &mBlocksTable;
 	BlockInterface *mCurrentBlock;  // Doesn't have ownership
-	QStack<BlockInterface *> mStack;  // Doesn't have ownership
+	QStack<StackFrame> mStack;
 	const qReal::Id mInitialDiagram;
 	int mBlocksSincePreviousEventsProcessing;
 	QTimer *mProcessEventsTimer;  // Has ownership
