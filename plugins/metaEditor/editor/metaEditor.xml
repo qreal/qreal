@@ -32,6 +32,18 @@
 				<value name="debug" displayedName="Debug"/>
 				<value name="release" displayedName="Release"/>
 			</enum>
+ 			<role arrowType="no_arrow" name="NoArrowRole">
+                		<properties/>
+			</role>
+ 			<role arrowType="open_arrow" name="OpenArrowRole">
+                		<properties/>
+			</role>
+			<role arrowType="empty_arrow" name="EmptyArrowRole">
+                		<properties/>
+			</role>
+			<role arrowType="filled_arrow" name="FilledArrowRole">
+                		<properties/>
+			</role>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="PackageDiagram" displayedName="Package Diagram" description="Предназначен для описания связей между метамоделями. Также может быть корневым элементом метамодели">
@@ -581,9 +593,8 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations endType="no_arrow" beginType="empty_arrow">
-						<association beginName="Inheritance1" endName="Inheritance2"/>
-					</associations>
+					<beginRole role="EmptyArrowRole"/>
+					<endRole role="NoArrowRole"/>
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
@@ -597,9 +608,8 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations endType="no_arrow" beginType="open_arrow">
-						<association beginName="Container1" endName="Container2"/>
-					</associations>
+					<beginRole role="OpenArrowRole"/>
+					<endRole role="NoArrowRole"/>
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
@@ -610,9 +620,8 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations endType="no_arrow" beginType="filled_arrow">
-						<association beginName="Explosion1" endName="Explosion2"/>
-					</associations>
+					<beginRole role="FilledArrowRole"/>
+					<endRole role="NoArrowRole"/>
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>

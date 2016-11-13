@@ -87,6 +87,10 @@ private:
 	/** @brief returns index of value in list of possible values for index  */
 	int enumPropertyIndexOf(const QModelIndex &, const QString &);
 	void setPropertyValue(QtVariantProperty *property, const QVariant &value);
+	void setPropertyToRoot(const QModelIndex &index, const QList<QPair<QString, QString> > &values, QtVariantProperty *vItem);
+	void setDescription(QtVariantProperty *vItem, int cellIndex);
+	int getType(const QString &typeName, bool &isButton, const QList<QPair<QString, QString> > &values);
+	void setPropertyFromDataChanged(const QModelIndex &valueIndex, QtVariantProperty *prop, const int descriptionIndex);
 
 	QString propertyDescription(const int cellIndex) const;
 

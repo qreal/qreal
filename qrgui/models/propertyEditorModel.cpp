@@ -58,10 +58,10 @@ QModelIndex PropertyEditorModel::index(int row, int column, const QModelIndex &p
 {
 	Q_UNUSED(parent);
 	Field *childItem = mField->child(row + column);
-		if (childItem)
-			return createIndex(row, column, childItem);
-		else
-			return QModelIndex();
+	if (childItem)
+		return createIndex(row, column, childItem);
+	else
+		return QModelIndex();
 }
 
 
@@ -80,9 +80,7 @@ QModelIndex PropertyEditorModel::parent(const QModelIndex &index) const
 int PropertyEditorModel::countOfChilds(const QModelIndex &index) const
 {
 	Field* temp = mField->child(index.row());
-	int result = mField->numberOfChilds(temp);
-
-	return result;
+	return mField->numberOfChilds(temp);
 }
 
 Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
@@ -318,7 +316,6 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 			++i;
 		}
 
-
 		while (cloneWithPure.size()  > 0) {
 			QString temp = cloneWithPure.takeAt(0);
 			mField->appendChild(new Field(temp, logicalAttribute, role, nullptr));
@@ -445,7 +442,6 @@ QString PropertyEditorModel::propertyName(const QModelIndex &index) const
 
 bool PropertyEditorModel::setData(const Id &id, const QString &propertyName, const QVariant &value)
 {
-	qDebug() << "setData with propName";
 	if (mField->childCount() == 0 || idByIndex(index(0, 0)) != id) {
 		return false;
 	}

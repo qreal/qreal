@@ -80,10 +80,62 @@ void PropertyEditorView::update(const QModelIndex &)
 	QWidget::update();
 }
 
+void PropertyEditorView::setPropertyToRoot(const QModelIndex &index, const QList<QPair<QString, QString>> &values, QtVariantProperty *vItem)
+{
+	QString value = mModel->getValueFromIndex(index);
+	QVariant val(value);
+	vItem->setValue(val);
+	vItem->setToolTip(val.toString());
+	if (!values.isEmpty()) {
+		QStringList friendlyNames;
+		for (QPair<QString, QString> const &pair : values) {
+			friendlyNames << pair.second;
+		}
+
+		vItem->setAttribute("enumNames", friendlyNames);
+		vItem->setAttribute("enumEditable", mModel->enumEditable(index));
+		const int idx = enumPropertyIndexOf(index, val.toString());
+		if (mModel->enumEditable(index)) {
+			vItem->setValue(idx < 0 ? val : values[idx].second);
+		} else {
+			vItem->setValue(idx);
+		}
+
+
+	}
+
+}
+
+int PropertyEditorView::getType(const QString &typeName
+					, bool &isButton, const QList<QPair<QString, QString>> &values)
+{
+	int type = QVariant::String;
+	if (typeName == "int") {
+		type = QVariant::Int;
+	} else if (typeName == "bool") {
+		type = QVariant::Bool;
+	} else if (typeName == "string") {
+		type = QVariant::String;
+	} else if (typeName == "code" || typeName == "directorypath" || typeName == "filepath") {
+		isButton = true;
+	} else if (!values.isEmpty()) {
+		type = QtVariantPropertyManager::enumTypeId();
+	}
+
+	return type;
+}
+
+
+void PropertyEditorView::setDescription(QtVariantProperty *vItem, int cellIndex)
+{
+	QString description = propertyDescription(cellIndex);
+	if (!description.isEmpty()) {
+		vItem->setToolTip(description);
+	}
+}
+
 void PropertyEditorView::setRootIndex(const QModelIndex &index)
 {
-	qDebug () << "setRootIndex" << endl;
-
 	mPropertyEditor->clear();
 
 	mPropertyEditor->unsetFactoryForManager(mButtonManager);
@@ -103,144 +155,56 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 	mPropertyEditor->setFactoryForManager(mVariantManager, mVariantFactory);
 
 	if (mModel->rowCount(index) > 0) {
-		int ololo = 1;
 
 		int i = 0;
 
 		while (i < mModel->rowCount(index)) {
-			QString name1 = mModel->data(mModel->index(i, 0)).toString();
-			if (name1.isEmpty()) {
+			QModelIndex valueIndex = mModel->index(i, 0);
+			QString name = mModel->data(valueIndex).toString();
+			if (name.isEmpty()) {
 				return;
 			}
-			int type = QVariant::String;
-			QString typeName = mModel->typeName(mModel->index(i, 0)).toLower();
 
-			QList<QPair<QString, QString>> const values = mModel->enumValues(mModel->index(i, 0));
+			QString typeName = mModel->typeName(valueIndex).toLower();
+			QList<QPair<QString, QString>> values = mModel->enumValues(valueIndex);
 			bool isButton = false;
-			if (typeName == "int") {
-				type = QVariant::Int;
-			} else if (typeName == "bool") {
-				type = QVariant::Bool;
-			} else if (typeName == "string") {
-				type = QVariant::String;
-			} else if (typeName == "code" || typeName == "directorypath" || typeName == "filepath") {
-				isButton = true;
-			} else if (!values.isEmpty()) {
-				type = QtVariantPropertyManager::enumTypeId();
-			}
-
-			if ((name1 == "shape" && typeName == "string") || mModel->isReference(mModel->index(i, 0), name1)) { // hack
-				isButton = true;
-			}
+			int type = this->getType(typeName, isButton, values);
 
 			QtProperty *item = nullptr;
 			if (isButton) {
-				item = mButtonManager->addProperty(name1);
+				item = mButtonManager->addProperty(name);
 				mPropertyEditor->addProperty(item);
-
 				++i;
+
 			} else {
 				QtGroupPropertyManager *groupManager = new QtGroupPropertyManager;
-				QtVariantProperty *vItem = mVariantManager->addProperty(type, name1);
-
+				QtVariantProperty *vItem = mVariantManager->addProperty(type, name);
 				item = vItem;
-				int count = mModel->countOfChilds(mModel->index(i, 0));
+				int count = mModel->countOfChilds(valueIndex);
 
 				if (count != 0) {
-					item = groupManager->addProperty(name1);
+					item = groupManager->addProperty(name);
 				} else {
-					const QModelIndex &valueIndex = mModel->index(i, 0);
-					QString value = mModel->getValueFromIndex(valueIndex);
-					QVariant val(value);
-					vItem->setValue(val);
-					vItem->setToolTip(val.toString());
-					if (!values.isEmpty()) {
-						QStringList friendlyNames;
-						for (QPair<QString, QString> const &pair : values) {
-							friendlyNames << pair.second;
-						}
-
-						vItem->setAttribute("enumNames", friendlyNames);
-						vItem->setAttribute("enumEditable", mModel->enumEditable(mModel->index(i, 0)));
-						const int idx = enumPropertyIndexOf(mModel->index(i, 0), val.toString());
-						if (mModel->enumEditable(mModel->index(i, 0))) {
-							vItem->setValue(idx < 0 ? val : values[idx].second);
-						} else {
-							vItem->setValue(idx);
-						}
-
-
-					}
-
-					QString description = propertyDescription(i);
-					if (!description.isEmpty()) {
-						vItem->setToolTip(description);
-					}
-
+					this->setPropertyToRoot(valueIndex, values, vItem);
+					this->setDescription(vItem, i);
 				}
 
-
 				QList<QtProperty*> list;
-
 				for (int j = 0; j < count; ++j) {
-					// +1 because offset
-					QString name2 = mModel->data(mModel->index(i, j + 1)).toString();
-					const QModelIndex &valueIndex1 = mModel->index(i, j + 1);
-					QString value1 = mModel->getValueFromIndex(valueIndex1);
-					QVariant val(value1);
-
+					valueIndex = mModel->index(i, j + 1);
+					name = mModel->data(valueIndex).toString();
 					QtProperty *item1 = nullptr;
-					typeName =  mModel->typeName(mModel->index(i, j + 1)).toLower();
-					auto values1 = mModel->enumValues(mModel->index(i, j + 1));
-
+					typeName =  mModel->typeName(valueIndex).toLower();
+					values = mModel->enumValues(valueIndex);
 					isButton = false;
-					if (typeName == "int") {
-						type = QVariant::Int;
-					} else if (typeName == "bool") {
-						type = QVariant::Bool;
-					} else if (typeName == "string") {
-						type = QVariant::String;
-					} else if (typeName == "code" || typeName == "directorypath" || typeName == "filepath") {
-						isButton = true;
-					} else if (!values1.isEmpty()) {
-						type = QtVariantPropertyManager::enumTypeId();
-					} else {
-						if (name2 == "shape" || mModel->isReference(mModel->index(i, j + 1), name2)) { // hack
-							isButton = true;
-						}
-					}
 
-
-					QtVariantProperty *vItem1 = mVariantManager->addProperty(type, name2);
-					vItem1->setValue(val);
-					vItem1->setToolTip(val.toString());
-
-					QString description = propertyDescription(i + j + 1);
-					if (!description.isEmpty()) {
-						vItem1->setToolTip(description);
-					}
-
-					if (!values1.isEmpty()) {
-						QStringList friendlyNames;
-						for (QPair<QString, QString> const &pair : values1) {
-							friendlyNames << pair.second;
-						}
-
-						vItem1->setAttribute("enumNames", friendlyNames);
-						vItem1->setAttribute("enumEditable", mModel->enumEditable(mModel->index(i, j + 1)));
-						const int idx = enumPropertyIndexOf(mModel->index(i, j + 1), val.toString());
-						if (mModel->enumEditable(mModel->index(i, j + 1))) {
-							vItem1->setValue(idx < 0 ? val : values1[idx].second);
-						} else {
-							vItem1->setValue(idx);
-						}
-
-					}
-
+					type = this->getType(typeName, isButton, values);
+					QtVariantProperty *vItem1 = mVariantManager->addProperty(type, name);
+					this->setPropertyToRoot(valueIndex, values, vItem1);
+					this->setDescription(vItem1, i + j + 1);
 
 					item1 = vItem1;
 					list.append(item1);
-
 				}
 
 				while (!list.isEmpty()) {
@@ -253,9 +217,7 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 				} else {
 					++i;
 				}
-
 			}
-
 		}
 
 	}
@@ -269,9 +231,32 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 }
 
+void PropertyEditorView::setPropertyFromDataChanged(const QModelIndex &valueIndex, QtVariantProperty *prop, const int descriptionIndex)
+{
+	QString val = mModel->getValueFromIndex(valueIndex);
+	QVariant value(val);
+
+	if (prop) {
+
+		if (prop->propertyType() == QtVariantPropertyManager::enumTypeId()
+				&& !mModel->enumEditable(valueIndex))
+		{
+			value = enumPropertyIndexOf(valueIndex, value.toString());
+
+		}
+
+		setPropertyValue(prop, value);
+
+		const QString description = propertyDescription(descriptionIndex);
+		const QString tooltip = description.isEmpty() ? value.toString() : description;
+
+		prop->setToolTip(tooltip);
+
+	}
+}
+
 void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 {
-	qDebug () << "dataChanged" << endl;
 	if (mModel->rowCount(QModelIndex()) <= 0) {
 		return;
 	}
@@ -288,58 +273,17 @@ void PropertyEditorView::dataChanged(const QModelIndex &, const QModelIndex &)
 		if (childs.isEmpty()) {
 			if (dynamic_cast<QtVariantProperty*>(temp)) {
 				QtVariantProperty *prop = dynamic_cast<QtVariantProperty*>(temp);
-
 				const QModelIndex &valueIndex = mModel->index(row, 0);
-				QString val = mModel->getValueFromIndex(valueIndex);
-				QVariant value(val);
-
-				if (prop) {
-
-					if (prop->propertyType() == QtVariantPropertyManager::enumTypeId()
-							&& !mModel->enumEditable(valueIndex))
-					{
-						value = enumPropertyIndexOf(valueIndex, value.toString());
-
-					}
-
-					setPropertyValue(prop, value);
-
-					const QString description = propertyDescription(i);
-					const QString tooltip = description.isEmpty() ? value.toString() : description;
-
-					prop->setToolTip(tooltip);
-
-				}
+				this->setPropertyFromDataChanged(valueIndex, prop, i);
 			}
 		}
 
 		for (int j = 0; j < childs.count(); ++j) {
 			QtVariantProperty *child = dynamic_cast<QtVariantProperty*>(childs.at(j));
-
 			const QModelIndex &valueIndex = mModel->index(row, j + 1);
-
-			QString val = mModel->getValueFromIndex(valueIndex);
-			QVariant value(val);
-			if (child) {
-
-				if (child->propertyType() == QtVariantPropertyManager::enumTypeId()
-						&& !mModel->enumEditable(valueIndex))
-				{
-					value = enumPropertyIndexOf(valueIndex, val);
-					qDebug() << "378 " << value << " " <<  endl;
-
-				}
-
-				setPropertyValue(child, value);
-
-				const QString description = propertyDescription(i);
-				const QString tooltip = description.isEmpty() ? value.toString() : description;
-
-				child->setToolTip(tooltip);
-
-			}
-
+			this->setPropertyFromDataChanged(valueIndex, child, i);
 		}
+
 		if (childs.count() != 0) {
 			row += childs.count() + 1;
 		} else {
@@ -390,8 +334,6 @@ void PropertyEditorView::buttonClicked(QtProperty *property)
 
 void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 {
-	qDebug () << "editorValueChanged" << endl;
-	qDebug() << "value " << value << endl;
 	if (mChangingPropertyValue) {
 		return;
 	}
@@ -401,7 +343,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 
 	QList<QtProperty*> list = mPropertyEditor->properties();
 	int row = 0;
-	int column = 0;
 
 	QString firstPart = "";
 	int i = 0;
@@ -409,7 +350,6 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	while (i < list.length()) {
 		QtProperty* temp = list.at(i);
 		QList<QtProperty*> childs = temp->subProperties();
-
 		if (!childs.isEmpty()) {
 			++row;
 
@@ -438,7 +378,7 @@ void PropertyEditorView::editorValueChanged(QtProperty *prop, QVariant value)
 	}
 
 
-	const QModelIndex &index = mModel->index(row, 0); //row
+	const QModelIndex &index = mModel->index(row, 0);
 
 	if (propertyType == QtVariantPropertyManager::enumTypeId()) {
 		QList<QPair<QString, QString>> const values = mModel->enumValues(index);
