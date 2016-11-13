@@ -80,7 +80,8 @@ void PropertyEditorView::update(const QModelIndex &)
 	QWidget::update();
 }
 
-void PropertyEditorView::setPropertyToRoot(const QModelIndex &index, const QList<QPair<QString, QString>> &values, QtVariantProperty *vItem)
+void PropertyEditorView::setPropertyToRoot(const QModelIndex &index, const QList<QPair<QString, QString>> &values
+		, QtVariantProperty *vItem)
 {
 	QString value = mModel->getValueFromIndex(index);
 	QVariant val(value);
@@ -231,7 +232,8 @@ void PropertyEditorView::setRootIndex(const QModelIndex &index)
 
 }
 
-void PropertyEditorView::setPropertyFromDataChanged(const QModelIndex &valueIndex, QtVariantProperty *prop, const int descriptionIndex)
+void PropertyEditorView::setPropertyFromDataChanged(const QModelIndex &valueIndex, QtVariantProperty *prop
+		, const int descriptionIndex)
 {
 	QString val = mModel->getValueFromIndex(valueIndex);
 	QVariant value(val);
