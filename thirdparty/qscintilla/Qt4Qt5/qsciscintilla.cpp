@@ -39,6 +39,12 @@
 
 #include <qmenu.h>
 
+
+/// hotfix to build for XCode8/clang
+/// https://github.com/sqlitebrowser/sqlitebrowser/commit/969e263e5bf71e63df8ee908cb4a2014b9a55c9b
+
+QPointer<QsciLexer> lex;
+
 #include "Qsci/qsciabstractapis.h"
 #include "Qsci/qscicommandset.h"
 #include "Qsci/qscilexer.h"
