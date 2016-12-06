@@ -74,6 +74,7 @@ public:
 signals:
 	void started();
 	void stopped(qReal::interpretation::StopReason reason);
+	void codeInterpretationStarted(const QString &code);
 
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership

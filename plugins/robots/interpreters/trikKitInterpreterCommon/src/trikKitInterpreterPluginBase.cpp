@@ -110,7 +110,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	mStop.setIcon(QIcon(":/trik/qts/images/stop.png"));
 
 	mStop.setVisible(false);
-	mStart.setVisible(false);
+	mStart.setVisible(true); // true?
 
 	connect(&configurer.robotModelManager()
 			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
@@ -154,6 +154,13 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 		mStop.setEnabled(isQtsInt);
 	}
 	);
+
+	QObject::connect(
+				this
+				, &TrikKitInterpreterPluginBase::codeInterpretationStarted
+				, &configurer.eventsForKitPlugin()
+				, &kitBase::EventsForKitPluginInterface::codeInterpretationStarted
+				);
 
 	QObject::connect(
 				&configurer.eventsForKitPlugin()
@@ -273,6 +280,7 @@ void TrikKitInterpreterPluginBase::testStart()
 	auto isJS = [](const QString &ext){ return ext == "js" || ext == "qts"; };
 
 	if (texttab && isJS(texttab->currentLanguage().extension)) {
+		emit codeInterpretationStarted(texttab->text());
 
 		auto model = mTwoDRobotModel;
 		model->stopRobot(); // testStop?
@@ -311,7 +319,18 @@ void TrikKitInterpreterPluginBase::testStop()
 void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 {
 	const bool isCodeTab = info.type() == qReal::TabInfo::TabType::code;
-	/// @todo: hack!
-	mStart.setVisible(mIsModelSelected && isCodeTab);
-	mStop.setVisible(mIsModelSelected && isCodeTab);
+//	/// @todo: hack!
+//	mStart.setVisible(mIsModelSelected && isCodeTab);
+//	mStop.setVisible(mIsModelSelected && isCodeTab);
+	static bool startVisible = mStart.isVisible();
+	mStart.setEnabled(isCodeTab);
+	mStop.setEnabled(isCodeTab);
+	if (isCodeTab) {
+		mStart.setVisible(mIsModelSelected && startVisible);
+		mStop.setVisible(mIsModelSelected && !startVisible);
+	} else {
+		startVisible = mStart.isVisible();
+		mStart.setVisible(false);
+		mStop.setVisible(false);
+	}
 }
