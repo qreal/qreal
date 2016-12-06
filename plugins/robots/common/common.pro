@@ -20,7 +20,6 @@ SUBDIRS = \
 	nxtKit \
 	trikKit \
 	ev3Kit \
-#	testbutton \
 
 twoDModel.depends = kitBase
 nxtKit.depends = twoDModel
