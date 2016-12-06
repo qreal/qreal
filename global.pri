@@ -59,7 +59,7 @@ macx {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
-unix:!macx {
+unix {
 
 	# seems like we want USan always, but are afraid of ....
 	CONFIG(debug, debug | release):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
@@ -79,7 +79,7 @@ unix:!macx {
 		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
 	}
 
-	!CONFIG(sanitize_address) CONFIG += sanitize_leak
+	!CONFIG(sanitize_address):!macx { CONFIG += sanitize_leak }
 
 	CONFIG(sanitize_leak) {
 		#LSan can be used without performance degrade even in release build
