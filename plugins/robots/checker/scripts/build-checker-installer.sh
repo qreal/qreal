@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Copyright 2015 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@ set -o nounset
 set -o errexit
 
 function check_qmake_version {
-        
+
 #	echo Here
 	make -f <(echo -e "-include $1/Makefile\ncheck_qmake_version: FORCE\n\t@echo \${QMAKE}") check_qmake_version
 }
@@ -113,7 +113,7 @@ if $NEED_QT_LIBS ; then
         $qtDirLib/libQt5PrintSupport.so* $qtDirLib/libQt5Script.so* $qtDirLib/libQt5Svg.so* \
         $qtDirLib/libQt5Widgets.so* $qtDirLib/libQt5Xml.so* $qtDirLib/libQt5DBus.so* .
 
-fi 
+fi
 
 # Copying QReal libraries
 cp -fP $qRealDir/bin/release/changelog.txt .
@@ -205,4 +205,3 @@ popd
 
 rm -f trik_checker.tar.xz
 tar cvfJ trik_checker.tar.xz trikStudio-checker
-
