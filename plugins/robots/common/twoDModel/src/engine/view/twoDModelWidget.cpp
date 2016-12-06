@@ -110,7 +110,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 		const QPoint upCoords = mUi->speedUpButton->mapTo(this, mUi->speedUpButton->rect().bottomLeft());
 		const QPoint coords((downCoords.x() + upCoords.x() - mSpeedPopup->width()) / 2, downCoords.y() + 10);
 		mSpeedPopup->move(coords);
-		// Setting value in precents
+		// Setting value in percents
 		mSpeedPopup->setSpeed(100 / speedFactors[defaultSpeedFactorIndex] * value);
 	});
 	setRunStopButtonsVisibility();
@@ -127,6 +127,13 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	mUi->verticalRuler->setScene(mUi->graphicsView);
 	mUi->horizontalRuler->setPixelsInCm(pixelsInCm);
 	mUi->verticalRuler->setPixelsInCm(pixelsInCm);
+
+	/// @todo: make some values editable
+	mUi->detailsTab->setParamsSettings(mUi->physicsParamsFrame);
+	mUi->wheelDiamInCm->setValue(robotWheelDiameterInCm);
+	mUi->robotHeightInCm->setValue(robotHeight / pixelsInCm); // Not sure if correct
+	mUi->robotWidthInCm->setValue(robotWidth / pixelsInCm);
+	mUi->robotMassInGr->setValue(robotMass);
 }
 
 TwoDModelWidget::~TwoDModelWidget()
