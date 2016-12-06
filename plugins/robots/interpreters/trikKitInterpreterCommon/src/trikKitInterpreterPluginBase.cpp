@@ -318,11 +318,14 @@ void TrikKitInterpreterPluginBase::testStop()
 
 void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 {
+	if (info.type() == qReal::TabInfo::TabType::other) {
+		return;
+	}
 	const bool isCodeTab = info.type() == qReal::TabInfo::TabType::code;
 //	/// @todo: hack!
 //	mStart.setVisible(mIsModelSelected && isCodeTab);
 //	mStop.setVisible(mIsModelSelected && isCodeTab);
-	static bool startVisible = mStart.isVisible();
+	static bool startVisible = true;
 	mStart.setEnabled(isCodeTab);
 	mStop.setEnabled(isCodeTab);
 	if (isCodeTab) {

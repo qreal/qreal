@@ -76,6 +76,10 @@ public:
 	/// Returns immutable instance of diagram interpter`s management interface.
 	const kitBase::InterpreterInterface &interpreter() const;
 
+public slots:
+	void saveCode(const QString &code);
+	void openSavedCode();
+
 private:
 	void connectInterpreterToActions();
 
@@ -126,6 +130,10 @@ private:
 	BlocksFactoryManager mBlocksFactoryManager;
 	kitBase::EventsForKitPluginInterface mEventsForKitPlugin;
 	PaletteUpdateManager *mPaletteUpdateManager;  // Has ownership via Qt paren-child system
+
+	qReal::LogicalModelAssistInterface *mLogicalModelApi;
+	qReal::TextManagerInterface *mTextManager;
+	qReal::ProjectManagementInterface *mProjectManager;
 };
 
 }
