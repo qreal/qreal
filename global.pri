@@ -60,7 +60,9 @@ macx {
 }
 
 unix:!macx {
-	CONFIG(debug):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
+
+	# seems like we want USan always, but are afraid of ....
+	CONFIG(debug, debug | release):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
 		# Ubsan is turned on by default into debug build
 		CONFIG += sanitizer sanitize_undefined
 	}
@@ -76,6 +78,21 @@ unix:!macx {
 		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
 		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
 	}
+
+	!CONFIG(sanitize_address) CONFIG += sanitize_leak
+
+	CONFIG(sanitize_leak) {
+		#LSan can be used without performance degrade even in release build
+		QMAKE_CFLAGS += -fsanitize=leak
+		QMAKE_CXXFLAGS += -fsanitize=leak
+		QMAKE_LFLAGS += -fsanitize=leak
+	}
+
+	CONFIG(release, debug | release) {
+		QMAKE_CFLAGS += -fsanitize-recover=all
+		QMAKE_CXXFLAGS += -fsanitize-recover=all
+	}
+
 }
 
 OBJECTS_DIR = .build/$$CONFIGURATION/obj
