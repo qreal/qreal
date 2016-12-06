@@ -71,6 +71,8 @@ private:
 	TrikDisplayEmu mDisplay;
 	TrikKeysInterfaceStub mKeys;
 
+	QTimer mSensorUpdater;
+
 	QHash<QString, TrikMotorEmu *> mMotors;
 	QHash<QString, TrikSensorEmu *> mSensors;
 	QHash<QString, TrikEncoderAdapter *> mEncoders;
