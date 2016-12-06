@@ -62,10 +62,17 @@ macx {
 unix {
 
 	# seems like we want USan always, but are afraid of ....
-	CONFIG(debug, debug | release):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
+	!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
 		# Ubsan is turned on by default into debug build
 		CONFIG += sanitizer sanitize_undefined
+		macx {
+			# sometimes runtime is missing in clang. this hack allows to avoid runtime dependency.
+			QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fsanitize-trap=undefined
+			QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fsanitize-trap=undefined
+			QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fsanitize-trap=undefined
+		}
 	}
+
 
 	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
 		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
