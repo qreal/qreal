@@ -187,6 +187,28 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered
 			, [this] () { mSaveAsTaskManager->save(); });
 
+	mLogicalModelApi = &configurer.logicalModelApi();
+	mTextManager = &configurer.textManager();
+	mProjectManager = &configurer.projectManager();
+	connect(mProjectManager
+	        , &qReal::ProjectManagementInterface::afterOpen
+	        , [&](const QString &path){
+		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
+		QString code = logicalRepo->metaInformation("activeCode").toString();
+		QString name = logicalRepo->metaInformation("activeCodeName").toString();
+		//QString path = mProjectManager->saveFilePath();
+		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
+			return;
+		}
+		QFileInfo codeDir(path);
+		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
+		QFile codeFile(codePath.filePath());
+		codeFile.open(QFile::WriteOnly | QFile::Truncate); // todo: check the resilt bool
+		QTextStream(&codeFile) << code;
+		codeFile.close();
+		mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
+	});
+
 	sync();
 }
 
@@ -238,6 +260,21 @@ kitBase::InterpreterInterface &RobotsPluginFacade::interpreter()
 const kitBase::InterpreterInterface &RobotsPluginFacade::interpreter() const
 {
 	return mProxyInterpreter;
+}
+
+void RobotsPluginFacade::saveCode(const QString &code)
+{
+	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
+	logicalRepo->setMetaInformation("activeCode", code);
+	logicalRepo->setMetaInformation("activeCodeName", "script");// no concise name for now
+	mProjectManager->setUnsavedIndicator(true);
+}
+
+void RobotsPluginFacade::openSavedCode()
+{
+	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
+	QString code = logicalRepo->metaInformation("activeCode").toString();
+	// probablt this method is to be deleted later
 }
 
 void RobotsPluginFacade::connectInterpreterToActions()
@@ -394,6 +431,13 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 		mActionsManager.setEnableRobotActions(isBlockInt);
 	}
 	);
+
+	QObject::connect(
+				&mEventsForKitPlugin
+				, &kitBase::EventsForKitPluginInterface::codeInterpretationStarted
+				, this
+				, &RobotsPluginFacade::saveCode
+				);
 
 	QObject::connect(
 				&mEventsForKitPlugin
