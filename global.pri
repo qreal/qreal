@@ -139,10 +139,10 @@ defineTest(copyToDestdir) {
 
 				FILE ~= s,/$,,g
 
-				FILE ~= s,/,\,g
+				FILE ~= s,/,\\,g
 			}
 			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			win32:DDIR ~= s,/,\,g
+			win32:DDIR ~= s,/,\\,g
 		} else {
 			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
 		}
