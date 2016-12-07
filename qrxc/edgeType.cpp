@@ -49,7 +49,7 @@ Type *EdgeType::clone() const
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
 	for (RoleType * const role : mRoles) {
-		result->mRoles.append(new RoleType(*role));
+		result->mRoles.append(role->clone());
 	}
 	result->mBeginArrowType = mBeginArrowType;
 	result->mBeginRoleName = mBeginRoleName;
