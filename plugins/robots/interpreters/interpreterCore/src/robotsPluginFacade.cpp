@@ -274,7 +274,7 @@ void RobotsPluginFacade::openSavedCode()
 {
 	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
 	QString code = logicalRepo->metaInformation("activeCode").toString();
-	// probablt this method is to be deleted later
+	// probably this method is to be deleted later
 }
 
 void RobotsPluginFacade::connectInterpreterToActions()
