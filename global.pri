@@ -163,7 +163,7 @@ defineTest(copyToDestdir) {
 			}
 
 			macx {
-				system("cp -R $$FILE $$DDIR/$$FILE")
+				system("cp -af $$FILE $$DDIR/")
 			}
 		}
 	}
