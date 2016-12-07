@@ -39,3 +39,6 @@ umlDocumentation/*\~*
 
 # Installers temporary data
 **/ru.qreal.root*/data/*
+.*.swp
+thirdparty/**/lib*.dylib
+.qmake.stash
