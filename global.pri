@@ -73,19 +73,6 @@ unix {
 		}
 	}
 
-
-	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
-		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
-		# That must be disabled. Variables for confguring ubsan are taken from here:
-		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
-		# They can change in some version of Qt, keep track of it.
-		# By the way, simply setting QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS instead of those used below
-		# will not work due to arguments order ("-fsanitize=undefined" must be declared before "-fno-sanitize=vptr").
-		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
-		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
-		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
-	}
-
 	!CONFIG(sanitize_address):!macx { CONFIG += sanitize_leak }
 
 	CONFIG(sanitize_leak) {
@@ -95,9 +82,26 @@ unix {
 		QMAKE_LFLAGS += -fsanitize=leak
 	}
 
-	CONFIG(release, debug | release) {
-		QMAKE_CFLAGS += -fsanitize-recover=all
-		QMAKE_CXXFLAGS += -fsanitize-recover=all
+
+	linux-g++:system( g++ --version | grep -e "\<5.[0-9]" ){
+		CONFIG(sanitize_undefined){
+		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
+		# That must be disabled. Variables for confguring ubsan are taken from here:
+		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
+		# They can change in some version of Qt, keep track of it.
+		# By the way, simply setting QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS instead of those used below
+		# will not work due to arguments order ("-fsanitize=undefined" must be declared before "-fno-sanitize=vptr").
+			QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
+		}
+
+
+	} else {
+		CONFIG(release, debug | release) {
+			QMAKE_CFLAGS += -fsanitize-recover=all
+			QMAKE_CXXFLAGS += -fsanitize-recover=all
+		}
 	}
 
 }
