@@ -102,8 +102,7 @@ bool EdgeType::initRoles()
 		QString name = element->displayedName();
 
 		if (name == mBeginRoleName || name == mEndRoleName) {
-			RoleType *temp =  new RoleType();
-			temp = dynamic_cast<RoleType *> (element->clone());
+			RoleType *temp = dynamic_cast<RoleType *> (element->clone());
 			mRoles.append(temp);
 		}
 	}
