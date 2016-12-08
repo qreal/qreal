@@ -23,7 +23,7 @@ function check_qmake_version {
 }
 
 function show_help {
-	echo "Usage: $(basename $0) [QREAL_DIR [FIELDS_DIR EXAMPLES_DIR TASKS_DIR] ]"
+	echo "Usage: $(basename $0) [QREAL_DIR [FIELDS_DIR EXAMPLES_DIR TASKS_DIR INPUTS_DIR] ]"
 	echo -e "QREAL_DIR\t-\tPath to QReal sources root"
 	echo "                    Defaults to \"../..\""
 	echo -e "FIELDS_DIR\t-\tPath to directory with prepared fields."
@@ -32,7 +32,8 @@ function show_help {
 	echo "                                     Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/solutions\""
 	echo -e "TASKS_DIR\t-\tPath to folder with saves with tasks."
 	echo "                                  Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/tasks\""
-	echo "                                  Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/inputs>.\""
+	echo -e "INPUTS_DIR\t-\tPath to directory with with inputs."
+	echo "                                  Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/inputs>.\""
 	echo "Example: ./$(basename $0) ~/Qt/5.7 ~/stepic-examples"
 	exit 0
 }
@@ -199,6 +200,7 @@ cp -fP $qRealDir/bin/release/checker.sh .
 cp -r $fieldsDir ./fields
 cp -r $examplesDir ./examples
 cp -r $tasksDir ./tasks
+cp -r $inputsDir ./inputs
 
 # Packing
 popd
