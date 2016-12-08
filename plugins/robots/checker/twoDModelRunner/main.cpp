@@ -25,8 +25,6 @@
 
 #include "runner.h"
 
-#include <QDebug>
-
 const int maxLogSize = 10 * 1024 * 1024;  // 10 MB
 
 const QString description = QObject::tr(
@@ -117,9 +115,8 @@ int main(int argc, char *argv[])
 	const QString report = parser.isSet(reportOption) ? parser.value(reportOption) : QString();
 	const QString trajectory = parser.isSet(trajectoryOption) ? parser.value(trajectoryOption) : QString();
 	const QString input = parser.isSet(inputOption) ? parser.value(inputOption) : QString();
-	twoDModel::Runner runner(report, trajectory);
-	qDebug() << input;
-//	twoDModel::Runner runner(report, trajectory, input);
+//	twoDModel::Runner runner(report, trajectory);
+	twoDModel::Runner runner(report, trajectory, input);
 	if (!runner.interpret(qrsFile, backgroundMode)) {
 		return 2;
 	}
