@@ -19,6 +19,16 @@
 #include <twoDModel/engine/view/twoDModelWidget.h>
 #include <twoDModel/engine/model/model.h>
 
+#include <QFile>
+#include <QIODevice>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonValue>
+#include <QStringList>
+
+#include <QDebug>
+
+
 using namespace twoDModel;
 
 Runner::Runner(const QString &report, const QString &trajectory)
@@ -62,7 +72,10 @@ Runner::Runner(const QString &report, const QString &trajectory, const QString &
 			, mQRealFacade.events()
 			, mTextManager)
 	, mReporter(report, trajectory)
+	, mInputsFile(input)
 {
+	QString inputString = initInputs();
+
 	mPluginFacade.init(mConfigurator);
 	for (const QString &defaultSettingsFile : mPluginFacade.defaultSettingsFiles()) {
 		qReal::SettingsManager::loadDefaultSettings(defaultSettingsFile);
@@ -77,6 +90,33 @@ Runner::~Runner()
 {
 	mReporter.onInterpretationEnd();
 	mReporter.reportMessages();
+}
+
+QString Runner::initInputs()
+{
+	QString result("");
+	if (!mInputsFile.isNull()) {
+		QString val;
+		QFile file;
+		file.setFileName(mInputsFile);
+		if (file.open(QIODevice::ReadOnly)) {
+			val = file.readAll();
+			file.close();
+			QJsonDocument document = QJsonDocument::fromJson(val.toUtf8());
+			QJsonObject object = document.object();
+			QStringList names = object.keys();
+			foreach (QString name, names) {
+				QJsonValue value = object[name];
+				QString valueStr = value.toString();
+				QString line("var " + name + " = " + valueStr + "\n");
+				result.append(line);
+			}
+		} else {
+			qDebug() << "Error: File couldn't open!";
+		}
+		qDebug() << result;
+	}
+	return result;
 }
 
 bool Runner::interpret(const QString &saveFile, bool background)
