@@ -83,7 +83,7 @@ unix {
 	}
 
 
-	*-g++*:system($$QMAKE_CXX --version | grep -e "\\<[45]\\.[0-9]" ){
+	!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -e \'\\<5\\.[0-9]\' ){
 		CONFIG(sanitize_undefined){
 		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
 		# That must be disabled. Variables for confguring ubsan are taken from here:
@@ -98,8 +98,8 @@ unix {
 	}
 
 	CONFIG(release, debug | release){
-		!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -e "\\<4\\.[0-9]" ){
-			message("Too old compiler $$QMAKE_CXX")
+		!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -e \'\\<4\\.[0-9]\' ){
+			message("Too old compiler: $$QMAKE_CXX")
 		} else {
 			QMAKE_CFLAGS += -fsanitize-recover=all
 			QMAKE_CXXFLAGS += -fsanitize-recover=all
