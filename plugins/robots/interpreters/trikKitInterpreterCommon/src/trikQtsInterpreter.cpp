@@ -56,7 +56,8 @@ void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 
 void trik::TrikQtsInterpreter::abort()
 {
-	mScriptRunner.abort();
+	//mScriptRunner.abort();
+	QMetaObject::invokeMethod(&mScriptRunner, "abort"); // just a wild test
 	mRunning = false; // reset brick?
 }
 

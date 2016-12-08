@@ -116,7 +116,9 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, [this](kitBase::robotModel::RobotModelInterface &model){
 		mIsModelSelected = robotModels().contains(&model);
-		mStart.setVisible(mIsModelSelected);
+		/// @todo: would probably make sense to make the current opened tab info available globally somewhere
+		bool isCodeTabOpen = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
+		mStart.setVisible(mIsModelSelected && isCodeTabOpen);
 		mStop.setVisible(false); // interpretation should always stop when switching models?
 //		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];
 //		for (const ActionInfo &action : customActions()) {

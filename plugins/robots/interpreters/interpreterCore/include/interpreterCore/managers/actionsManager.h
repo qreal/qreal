@@ -102,6 +102,9 @@ private:
 	/// another @todo
 	bool mEnableRobotActions;
 
+	/// if the run action should be visible
+	bool mIsRunActionVisible = true;
+
 	/// Updates "enabled" status of plugin actions taking into account current tab, selected robot model and so on.
 	void updateEnabledActions();
 
