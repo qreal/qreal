@@ -51,7 +51,8 @@ void TrikBrick::reset()
 	for (const auto &e : mEncoders) {
 		e->reset();
 	}
-	mSensorUpdater.stop(); /// maybe needed in other places too.
+	QMetaObject::invokeMethod(&mSensorUpdater, "stop"); // failproof against timer manipulation in another thread
+	//mSensorUpdater.stop(); /// maybe needed in other places too.
 }
 
 void TrikBrick::printToShell(const QString &msg)
@@ -83,7 +84,8 @@ void TrikBrick::init()
 	mSensors.clear();
 	mEncoders.clear();
 	mKeys.init();
-	mSensorUpdater.start();
+	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
+	//mSensorUpdater.start();
 }
 
 void TrikBrick::stop() {

@@ -134,6 +134,8 @@ private:
 	qReal::LogicalModelAssistInterface *mLogicalModelApi;
 	qReal::TextManagerInterface *mTextManager;
 	qReal::ProjectManagementInterface *mProjectManager;
+
+	qReal::gui::MainWindowInterpretersInterface *mMainWindow;
 };
 
 }

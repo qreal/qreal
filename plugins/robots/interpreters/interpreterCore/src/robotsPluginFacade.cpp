@@ -22,6 +22,8 @@
 #include <twoDModel/engine/twoDModelGuiFacade.h>
 #include <twoDModel/robotModel/twoDRobotModel.h>
 
+#include <qrgui/textEditor/qscintillaTextEdit.h>
+
 #include "interpreterCore/managers/kitAutoSwitcher.h"
 #include "interpreterCore/interpreter/blockInterpreter.h"
 #include "src/coreBlocks/coreBlocksFactory.h"
@@ -68,6 +70,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		/// @todo Correctly handle unselected kit.
 		return;
 	}
+
+	mMainWindow = &configurer.mainWindowInterpretersInterface();
 
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
 			, [this]() { return mProxyInterpreter.timeElapsed(); }));
@@ -146,18 +150,17 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	// Just to capture them, not configurer.
 	qReal::ProjectManagementInterface &projectManager = configurer.projectManager();
-	qReal::gui::MainWindowInterpretersInterface &mainWindow = configurer.mainWindowInterpretersInterface();
 	qReal::GraphicalModelAssistInterface &graphicalModel = configurer.graphicalModelApi();
-	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &mainWindow, &graphicalModel]() {
+	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &graphicalModel, this]() {
 		if (projectManager.somethingOpened()) {
 			for (const qReal::Id &diagram : graphicalModel.children(qReal::Id::rootId())) {
 				if (diagram.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")) {
-					mainWindow.activateItemOrDiagram(diagram);
+					mMainWindow->activateItemOrDiagram(diagram);
 					return;
 				}
 			}
 		} else {
-			mainWindow.openStartTab();
+			mMainWindow->openStartTab();
 		}
 	});
 
@@ -340,9 +343,16 @@ void RobotsPluginFacade::initSensorWidgets()
 		mActionsManager.runAction().setVisible(false);
 		mActionsManager.stopRobotAction().setVisible(mRobotModelManager.model().interpretedModel());
 	});
-	connect(&mProxyInterpreter, &kitBase::InterpreterInterface::stopped, mGraphicsWatcherManager, [=]() {
-		mActionsManager.runAction().setVisible(mRobotModelManager.model().interpretedModel());
-		mActionsManager.stopRobotAction().setVisible(false);
+	connect(&mProxyInterpreter
+			, &kitBase::InterpreterInterface::stopped
+			, mGraphicsWatcherManager
+			, [=] () {
+		if (!dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab())) {
+			// since userStop fires on any tab/model switch even when the code tab is opened
+			// and nothing is running, but this whole visibility mumbo-jumbo has become a mess
+			mActionsManager.runAction().setVisible(mRobotModelManager.model().interpretedModel());
+			mActionsManager.stopRobotAction().setVisible(false);
+		}
 	});
 
 	mUiManager->placeDevicesConfig(mDockDevicesConfigurer.data());
