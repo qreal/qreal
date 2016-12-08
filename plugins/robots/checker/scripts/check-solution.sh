@@ -86,7 +86,9 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	$twoDModel --platform minimal -b "$fileWithPath" \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--input "$inputsFolder/$currentField.json"
+			--input "$inputsFolder/$fileNameWithoutExtension/check-self.json"
+
+	log "$inputsFolder/$fileNameWithoutExtension/check-self.json"
 
 	exitCode=$?
 
@@ -140,7 +142,10 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 		$twoDModel --platform minimal -b "./$solutionCopy" \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
-				--input "$inputsFolder/$currentField.json"
+				--input "$inputsFolder/$fileNameWithoutExtension/$currentField.json"
+
+		log "$inputsFolder/$fileNameWithoutExtension/$currentField.json"
+
 
 		exitCode=$?
 

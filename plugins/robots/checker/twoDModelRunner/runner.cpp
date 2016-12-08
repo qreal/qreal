@@ -47,6 +47,32 @@ Runner::Runner(const QString &report, const QString &trajectory)
 	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded, &mReporter, &Reporter::addError);
 }
 
+Runner::Runner(const QString &report, const QString &trajectory, const QString &input)
+	: mProjectManager(mQRealFacade.models())
+	, mMainWindow(mErrorReporter, mQRealFacade.events()
+			, mProjectManager, mQRealFacade.models().graphicalModelAssistApi())
+	, mConfigurator(mQRealFacade.models().repoControlApi()
+			, mQRealFacade.models().graphicalModelAssistApi()
+			, mQRealFacade.models().logicalModelAssistApi()
+			, mController
+			, mMainWindow
+			, mMainWindow
+			, mProjectManager
+			, mSceneCustomizer
+			, mQRealFacade.events()
+			, mTextManager)
+	, mReporter(report, trajectory)
+{
+	mPluginFacade.init(mConfigurator);
+	for (const QString &defaultSettingsFile : mPluginFacade.defaultSettingsFiles()) {
+		qReal::SettingsManager::loadDefaultSettings(defaultSettingsFile);
+	}
+
+	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::informationAdded, &mReporter, &Reporter::addInformation);
+	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::errorAdded, &mReporter, &Reporter::addError);
+	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded, &mReporter, &Reporter::addError);
+}
+
 Runner::~Runner()
 {
 	mReporter.onInterpretationEnd();
