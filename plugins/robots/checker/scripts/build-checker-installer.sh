@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Copyright 2015 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +16,10 @@
 set -o nounset
 set -o errexit
 
+
 function show_help {
-	echo "Usage: build-checker-installer.sh <path to Qt> [<path to QReal>] [<path to directory with fields>] [<path to directory with examples>] [<path to directory with tasks>]"
-	echo "<path to Qt> --- root of your Qt 5.5 installation"
+	echo "Usage: build-checker-installer.sh [<path to Qt with version>] [<path to QReal>] [<path to directory with fields>] [<path to directory with examples>] [<path to directory with tasks>]"
+	echo "<path to Qt with version> --- root of your Qt installation with version release build of qrealRobots.pro"
 	echo "<path to QReal> --- path to QReal sources root (with completed release build of qrealRobots.pro)."
 	echo "                    Defaults to \"../..\""
 	echo "<path to \"fields\" directory> --- path to directory with prepared fields."
@@ -31,11 +32,29 @@ function show_help {
 	exit 0
 }
 
-[ "$#" -lt 1 ] && show_help || :
+
 
 cd "$(dirname "$0")"
 
-qtDir=$(readlink -f $1)
+QT_ARCH=$(qmake -query QT_HOST_DATA)
+#QT_ARCH=$(qmake -query QT_INSTALL_ARCHDATA)
+if [ "$#" -lt 1 ]; then
+	qtDir=$(readlink -f $QT_ARCH)
+	qtDirForPlugins=$(readlink -f $qtDir/plugins)
+	qtDirForSo=$(readlink -f $qtDir/../)
+else
+	ARG1=$(readlink -f $1)
+	qtDir=$(readlink -f $ARG1)
+	qtDirGcc=$(readlink -f $qtDir/gcc_64)
+	qtDirForPlugins=$(readlink -f $qtDirGcc/plugins)
+	qtDirForSo=$(readlink -f $qtDirGcc/lib)
+fi
+
+
+#qtDir=${ARG1-:$QT_ARCH}
+#echo qtDir=$qtDir
+#[ "x$qtDir" == "x" ] && show_help || :
+
 
 if [ "$#" -gt 1 ]; then
 	qRealDir=$(readlink -f $2)
@@ -65,29 +84,31 @@ mkdir -p trikStudio-checker/bin
 cd trikStudio-checker/bin
 
 # Copying required Qt libraries
-cp -rf $qtDir/5.5/gcc_64/plugins/iconengines .
+cp -rf $qtDirForPlugins/iconengines .
 
-mkdir imageformats
-cp -fP  $qtDir/5.5/gcc_64/plugins/imageformats/libqsvg.so imageformats/
+mkdir -p imageformats
+cp -fP $qtDirForPlugins/imageformats/libqsvg.so imageformats/
 
-mkdir platforms
-cp -fP $qtDir/5.5/gcc_64/plugins/platforms/libqminimal.so platforms/
+mkdir -p platforms
+cp -fP $qtDirForPlugins/platforms/libqminimal.so platforms/
 
-cp -fP $qtDir/5.5/gcc_64/lib/libicudata.so.54* .
-cp -fP $qtDir/5.5/gcc_64/lib/libicui18n.so.54* .
-cp -fP $qtDir/5.5/gcc_64/lib/libicuuc.so.54* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Core.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Gui.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Network.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5PrintSupport.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Script.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Svg.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Widgets.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Xml.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5DBus.so* .
+cp -fP $qtDirForSo/libicudata.so* .
+cp -fP $qtDirForSo/libicui18n.so* .
+cp -fP $qtDirForSo/libicuuc.so* .
+cp -fP $qtDirForSo/libQt5Core.so* .
+cp -fP $qtDirForSo/libQt5Gui.so* .
+cp -fP $qtDirForSo/libQt5Network.so* .
+cp -fP $qtDirForSo/libQt5PrintSupport.so* .
+cp -fP $qtDirForSo/libQt5Script.so* .
+cp -fP $qtDirForSo/libQt5Svg.so* .
+cp -fP $qtDirForSo/libQt5Widgets.so* .
+cp -fP $qtDirForSo/libQt5Xml.so* .
+cp -fP $qtDirForSo/libQt5DBus.so* .
 
 # Copying QReal libraries
 cp -fP $qRealDir/bin/release/changelog.txt .
+cp -fP $qRealDir/bin/release/libqrgraph.so* .
+cp -fP $qRealDir/bin/release/libqrgui-meta-meta-model.so* .
 cp -fP $qRealDir/bin/release/libqrgui-brand-manager.so* .
 cp -fP $qRealDir/bin/release/libqrgui-controller.so* .
 cp -fP $qRealDir/bin/release/libqrgui-dialogs.so* .
@@ -174,3 +195,4 @@ cd ..
 
 tar cvfz trik_checker.tar.gz trikStudio-checker
 rm -rf trikStudio-checker
+
