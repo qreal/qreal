@@ -82,7 +82,7 @@ void GraphicType::copyFields(GraphicType *type) const
 	type->mGraphics = mGraphics;
 	type->mHeight = mHeight;
 	for (Label *label : mLabels) {
-		type->mLabels.append(new Label(*label));
+		type->mLabels.append(label->clone());
 	}
 
 	type->mLogic = mLogic;

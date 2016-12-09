@@ -23,6 +23,8 @@ namespace utils {
 class QRUTILS_EXPORT ScalableItem
 {
 public:
+	ScalableItem(){}
+	ScalableItem(const ScalableItem &) = delete;
 	static ScalableCoordinate initCoordinate(const QString &coordinate, int maxValue);
 protected:
 	virtual ~ScalableItem() {}

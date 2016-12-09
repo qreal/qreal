@@ -54,28 +54,58 @@ equals(TEMPLATE, app) {
 	}
 }
 
-macx {
+macx-clang {
 	QMAKE_CXXFLAGS += -stdlib=libc++
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
-unix:!macx {
-	CONFIG(debug):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
+unix {
+
+	# seems like we want USan always, but are afraid of ....
+	!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
 		# Ubsan is turned on by default into debug build
 		CONFIG += sanitizer sanitize_undefined
+		macx-clang {
+			# sometimes runtime is missing in clang. this hack allows to avoid runtime dependency.
+			QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fsanitize-trap=undefined
+			QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fsanitize-trap=undefined
+			QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fsanitize-trap=undefined
+		}
 	}
 
-	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
+	!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
+
+	CONFIG(sanitize_leak) {
+		#LSan can be used without performance degrade even in release build
+		QMAKE_CFLAGS += -fsanitize=leak
+		QMAKE_CXXFLAGS += -fsanitize=leak
+		QMAKE_LFLAGS += -fsanitize=leak
+	}
+
+
+	!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -e \'\\<5\\.[0-9]\' ){
+		CONFIG(sanitize_undefined){
 		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
 		# That must be disabled. Variables for confguring ubsan are taken from here:
 		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
 		# They can change in some version of Qt, keep track of it.
 		# By the way, simply setting QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS instead of those used below
 		# will not work due to arguments order ("-fsanitize=undefined" must be declared before "-fno-sanitize=vptr").
-		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
-		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
-		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
+		}
 	}
+
+	CONFIG(release, debug | release){
+		!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -e \'\\<4\\.[0-9]\' ){
+			message("Too old compiler: $$QMAKE_CXX")
+		} else {
+			QMAKE_CFLAGS += -fsanitize-recover=all
+			QMAKE_CXXFLAGS += -fsanitize-recover=all
+		}
+	}
+
 }
 
 OBJECTS_DIR = .build/$$CONFIGURATION/obj
@@ -89,7 +119,7 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-CONFIG += c++14
+CONFIG += c++11
 QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
 
 GLOBAL_PWD = $$PWD
@@ -111,10 +141,10 @@ defineTest(copyToDestdir) {
 
 				FILE ~= s,/$,,g
 
-				FILE ~= s,/,\,g
+				FILE ~= s,/,\\,g
 			}
 			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			win32:DDIR ~= s,/,\,g
+			win32:DDIR ~= s,/,\\,g
 		} else {
 			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
 		}
@@ -133,7 +163,7 @@ defineTest(copyToDestdir) {
 			}
 
 			macx {
-				system("cp -R $$FILE $$DDIR/$$FILE")
+				system("cp -af $$FILE $$DDIR/")
 			}
 		}
 	}
