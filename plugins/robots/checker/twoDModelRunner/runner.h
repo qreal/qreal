@@ -66,7 +66,6 @@ private:
 	void onRobotRided(const QPointF &newPosition, const qreal newRotation);
 	void onDeviceStateChanged(const QString &robotId, const kitBase::robotModel::robotParts::Device *device
 			, const QString &property, const QVariant &value);
-	QString initInputs();
 
 	qReal::SystemFacade mQRealFacade;
 	qReal::Controller mController;
@@ -79,6 +78,7 @@ private:
 	interpreterCore::RobotsPluginFacade mPluginFacade;
 	Reporter mReporter;
 	QString mInputsFile;
+	bool mIsJS = false;
 };
 
 }

@@ -94,6 +94,9 @@ protected:
 	qReal::gui::MainWindowInterpretersInterface *mMainWindow;
 
 private:
+	void startJSInterpretation(const QString &code);
+	void startJSInterpretation(const QString &code, const QString &inputs);
+
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;

@@ -38,6 +38,9 @@ signals:
 
 	/// Robot model is changed in settings (or selected in a toolbar).
 	void robotModelChanged(const QString &newModelName);
+
+	/// @todo: temporary hack to propagate intent to qts interpreter
+	void interpretCode(const QString &code, const QString &inputs);
 };
 
 }

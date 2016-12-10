@@ -199,14 +199,13 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
 		QString code = logicalRepo->metaInformation("activeCode").toString();
 		QString name = logicalRepo->metaInformation("activeCodeName").toString();
-		//QString path = mProjectManager->saveFilePath();
 		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
 			return;
 		}
 		QFileInfo codeDir(path);
 		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
 		QFile codeFile(codePath.filePath());
-		codeFile.open(QFile::WriteOnly | QFile::Truncate); // todo: check the resilt bool
+		codeFile.open(QFile::WriteOnly | QFile::Truncate); // todo: check the result bool
 		QTextStream(&codeFile) << code;
 		codeFile.close();
 		mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
@@ -263,6 +262,18 @@ kitBase::InterpreterInterface &RobotsPluginFacade::interpreter()
 const kitBase::InterpreterInterface &RobotsPluginFacade::interpreter() const
 {
 	return mProxyInterpreter;
+}
+
+bool RobotsPluginFacade::interpretCode(const QString &inputs)
+{
+	auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
+	QString code = logicalRepo->metaInformation("activeCode").toString();
+	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
+	if (code.isEmpty() || name.isEmpty()) {
+		return false;
+	}
+	emit mEventsForKitPlugin.interpretCode(code, inputs);
+	return true;
 }
 
 void RobotsPluginFacade::saveCode(const QString &code)
