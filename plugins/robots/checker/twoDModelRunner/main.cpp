@@ -88,8 +88,9 @@ int main(int argc, char *argv[])
 				" written. The writing will not be performed not immediately, each trajectory point will be written"\
 				" just when obtained by checker, so FIFOs are recommended to be targets for this option.")
 			, "path-to-trajectory", "trajectory.fifo");
-	QCommandLineOption inputOption("input", QObject::tr("Inputs for JavaScript solution")
-			, "path-to-input", "input.json");
+	QCommandLineOption inputOption("input", QObject::tr("Inputs for JavaScript solution")// probably others too
+			, "path-to-input", "inputs.json");
+	//QCommandLineOption isJS("js", QObject::tr(""))
 	parser.addOption(backgroundOption);
 	parser.addOption(platformOption);
 	parser.addOption(reportOption);

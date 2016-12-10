@@ -68,6 +68,49 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 	mQtsInterpreter.reset(new TrikQtsInterpreter(mTwoDRobotModel));
 }
 
+void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
+{
+	emit codeInterpretationStarted(code);
+
+	auto model = mTwoDRobotModel;
+	model->stopRobot(); // testStop?
+	const QString modelName = model->robotId();
+
+	for (const kitBase::robotModel::PortInfo &port : model->configurablePorts()) {
+		const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
+		model->configureDevice(port, deviceInfo);
+	}
+
+	model->applyConfiguration();
+
+	qtsInterpreter()->init();
+
+	emit started();
+	qtsInterpreter()->interpretScript(code);
+}
+
+void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, const QString &inputs)
+{
+	// we are in exercise mode (maybe rename it later)
+	emit codeInterpretationStarted(code);
+
+	auto model = mTwoDRobotModel;
+	model->stopRobot(); // testStop?
+	const QString modelName = model->robotId();
+
+	for (const kitBase::robotModel::PortInfo &port : model->configurablePorts()) {
+		const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
+		model->configureDevice(port, deviceInfo);
+	}
+
+	model->applyConfiguration();
+
+	qtsInterpreter()->init();
+
+	emit started();
+	qtsInterpreter()->interpretScriptExercise(code, inputs);
+}
+
 TrikQtsInterpreter * TrikKitInterpreterPluginBase::qtsInterpreter() const
 {
 	return mQtsInterpreter.data();
@@ -112,6 +155,14 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	mStop.setVisible(false);
 	mStart.setVisible(false);
 
+	connect(&configurer.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::interpretCode
+			, [this](const QString &code, const QString &inputs){
+		if (mIsModelSelected) {
+			startJSInterpretation(code, inputs);
+		}
+	});
+
 	connect(&configurer.robotModelManager()
 			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, [this](kitBase::robotModel::RobotModelInterface &model){
@@ -128,6 +179,14 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 //				action.menu()->setVisible(robotModels().contains(&model));
 //			}
 //		}
+	});
+
+	connect(&configurer.interpreterControl()
+			, &kitBase::InterpreterControlInterface::stopAllInterpretation
+			, [this](qReal::interpretation::StopReason) {
+		if (mQtsInterpreter->isRunning()) {
+			testStop();
+		}
 	});
 
 	connect(&mStart, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStart);
@@ -149,10 +208,12 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::EventsForKitPluginInterface::interpretationStopped
 			);
 
-	QObject::connect(
-				&configurer.eventsForKitPlugin()
-				, &kitBase::EventsForKitPluginInterface::interpretationStarted
-				, [this](){ /// @todo
+//	connect(&configurer.qRealConfigurator().systemEvents(),
+//			&kitBase::EventsForKitPluginInterface:)
+
+	connect(&configurer.eventsForKitPlugin()
+			, &kitBase::EventsForKitPluginInterface::interpretationStarted
+			, [this](){ /// @todo
 		const bool isQtsInt = mQtsInterpreter->isRunning();
 		mStart.setEnabled(isQtsInt);
 		mStop.setEnabled(isQtsInt);
@@ -284,24 +345,7 @@ void TrikKitInterpreterPluginBase::testStart()
 	auto isJS = [](const QString &ext){ return ext == "js" || ext == "qts"; };
 
 	if (texttab && isJS(texttab->currentLanguage().extension)) {
-		emit codeInterpretationStarted(texttab->text());
-
-		auto model = mTwoDRobotModel;
-		model->stopRobot(); // testStop?
-		const QString modelName = model->robotId();
-
-		for (const kitBase::robotModel::PortInfo &port : model->configurablePorts()) {
-			const kitBase::robotModel::DeviceInfo deviceInfo = currentConfiguration(modelName, port);
-			model->configureDevice(port, deviceInfo);
-		}
-
-		model->applyConfiguration();
-
-		qtsInterpreter()->init();
-
-		qtsInterpreter()->setRunning(true);
-		emit started();
-		qtsInterpreter()->interpretScript(texttab->text());
+		startJSInterpretation(texttab->text());
 	} else {
 		qDebug("wrong tab selected");
 		mStop.setVisible(false);

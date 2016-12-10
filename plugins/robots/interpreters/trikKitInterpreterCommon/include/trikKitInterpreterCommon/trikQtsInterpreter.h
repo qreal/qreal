@@ -21,6 +21,7 @@ public:
 
 	void interpretCommand(const QString &script);
 	void interpretScript(const QString &script);
+	void interpretScriptExercise(const QString &script, const QString &inputs);
 	void abort();
 
 	void init();
@@ -40,6 +41,8 @@ private slots:
 	void reportLog(const QString &msg);
 
 private:
+	QString initInputs(const QString &inputs) const;
+
 	//QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 	bool mRunning;
 

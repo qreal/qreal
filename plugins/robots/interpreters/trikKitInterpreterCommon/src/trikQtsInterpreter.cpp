@@ -1,6 +1,13 @@
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonArray>
+#include <QtCore/QJsonObject>
+#include <QtCore/QFile>
+
 #include "trikKitInterpreterCommon/trikQtsInterpreter.h"
 
 #include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+
+#include <twoDModel/engine/model/timeline.h>
 
 #include <QDebug>
 
@@ -14,11 +21,15 @@ QScriptValue printRedirect(QScriptContext * context, QScriptEngine * engine)
 
 		result.append(context->argument(i).toString());
 	}
-
+	if (!engine->isEvaluating())
+		qDebug("stoped evaluating!");
+	//bad: could sigsegv if execution aborted before executed.
 	engine->evaluate(QString("brick.log(\"%1\");").arg(result));
 
 	return engine->toScriptValue(result);
 }
+
+const QString overrides = "script.random = brick.random;script.wait = brick.wait;";
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
         const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model
@@ -34,6 +45,8 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 //		eng->globalObject().property("brick").
 //		return QScriptValue();
 //	};
+	//auto &t = dynamic_cast<twoDModel::model::Timeline &>(model->timeline());
+	//t.setImmediateMode(true);
 	mScriptRunner.registerUserFunction("print", printRedirect);
 	connect(&mScriptRunner, SIGNAL(completed(QString,int)), this, SLOT(scriptFinished(QString,int)));
 }
@@ -51,12 +64,21 @@ void trik::TrikQtsInterpreter::interpretCommand(const QString &script)
 void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 {
 	mRunning = true;
-	mScriptRunner.run(script);
+	mScriptRunner.run(overrides + script);
+}
+
+void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, const QString &inputs)
+{
+	mRunning = true;
+	QString newScript = overrides + initInputs(inputs) + script;
+	qDebug() << newScript;
+	mScriptRunner.run(newScript);
 }
 
 void trik::TrikQtsInterpreter::abort()
 {
 	//mScriptRunner.abort();
+	mBrick.stopWaiting();
 	QMetaObject::invokeMethod(&mScriptRunner, "abort"); // just a wild test
 	mRunning = false; // reset brick?
 }
@@ -85,6 +107,49 @@ void trik::TrikQtsInterpreter::reportError(const QString &msg)
 void trik::TrikQtsInterpreter::reportLog(const QString &msg)
 {
 	mErrorReporter->addInformation("log: " + msg);
+}
+
+QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
+{
+	auto jsValToStr = [this](const QJsonValue &val) -> QString {
+		switch (val.type()) {
+		case QJsonValue::Bool:
+			return val.toBool() ? "true" : "false";
+		case QJsonValue::Double:
+			return QString::number(val.Double);//maybe increase precision
+		case QJsonValue::String:
+			return QString("\"%1\"").arg(val.toString());
+		case QJsonValue::Array:
+			return QString(QJsonDocument(val.toArray()).toJson(QJsonDocument::Compact));
+		case QJsonValue::Object:
+			return QString(QJsonDocument(val.toObject()).toJson(QJsonDocument::Compact));
+		default:
+			mErrorReporter->addError(QObject::tr("Bogus input values"));
+			return "";
+		}
+	};
+
+	QString result;
+	if (!inputs.isNull()) {
+		QString val;
+		QFile file;
+		file.setFileName(inputs);
+		if (file.open(QIODevice::ReadOnly)) {
+			val = file.readAll();
+			file.close();
+			QJsonDocument document = QJsonDocument::fromJson(val.toUtf8());
+			QJsonObject object = document.object();
+			for (const QString &name : object.keys()) {
+				QJsonValue value = object[name];
+				QString valueStr = jsValToStr(value);
+				QString line("var " + name + " = " + valueStr + ";\n");
+				result.append(line);
+			}
+		} else {
+			mErrorReporter->addError(QObject::tr("Error: File couldn't open!"));
+		}
+	}
+	return result;
 }
 
 void trik::TrikQtsInterpreter::setRunning(bool running)
