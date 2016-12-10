@@ -1,14 +1,20 @@
+#include <QtCore/QTimer>
+#include <QtCore/QEventLoop>
+
+#include <QtCore/QThread>
+
 #include <trikKitInterpreterCommon/trikbrick.h>
 
+#include <utils/abstractTimer.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 #include <trikKit/robotModel/parts/trikShell.h>
 #include <trikKit/robotModel/parts/trikLineSensor.h>
 #include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
-#include <kitBase/robotModel/robotModelUtils.h>
+#include <kitBase/robotModel/robotParts/random.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
 
-#include <QtCore/QTimer>
 using namespace trik;
 
 static const int updateInterval = 25;
@@ -45,6 +51,7 @@ void TrikBrick::reset()
 {
 	mKeys.reset();///@todo: reset motos/device maps?
 	//mDisplay.reset(); - is actually needed? Crashes app at exit
+	emit stopWaiting();
 	for (const auto &m : mMotors) {
 		m->powerOff();
 	}
@@ -234,5 +241,36 @@ trikControl::LedInterface *TrikBrick::led() {
 		mLed.reset(new TrikLedAdapter(l));
 	}
 	return mLed.data();
+}
+
+int TrikBrick::random(int from, int to)
+{
+	using namespace kitBase::robotModel;
+	auto r = RobotModelUtils::findDevice<robotParts::Random>(*mTwoDRobotModel, "RandomPort");
+	// maybe store it later, like the others
+	if (!r) {
+		emit error(tr("No cofigured random device"));
+		return -1;
+	}
+	return r->random(from, to);
+}
+
+void TrikBrick::wait(int milliseconds)
+{
+	QEventLoop loop;
+	QObject::connect(this, SIGNAL(stopWaiting()), &loop, SLOT(quit())/*, Qt::DirectConnection*/);
+	QScopedPointer<utils::AbstractTimer> t(mTwoDRobotModel->timeline().produceTimer());
+	//t->moveToThread(QThread::currentThread());
+	t->setInterval(milliseconds);
+	t->setRepeatable(true);
+	connect(t.data(), SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
+	t->start(milliseconds);
+	loop.exec();
+//	QEventLoop loop;
+//	QObject::connect(this, SIGNAL(stopWaiting()), &loop, SLOT(quit()), Qt::DirectConnection);
+//	QTimer t;
+//	connect(&t, SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
+//	t.start(milliseconds);
+//	loop.exec();
 }
 

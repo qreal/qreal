@@ -20,7 +20,7 @@
 
 namespace trik {
 
-class TrikBrick : public trikControl::BrickInterface
+class TrikBrick final : public trikControl::BrickInterface
 {
 	Q_OBJECT
 
@@ -60,9 +60,16 @@ public slots:
 	trikControl::LedInterface *led() override;
 	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
 
+	void playTone(int hzFreq, int msDuration) override {}
+	trikControl::EventDeviceInterface *eventDevice(const QString &deviceFile) override {return nullptr;}
+	void stopEventDevice(const QString &deviceFile) override {}
+
+	int random(int from, int to);
+	void wait(int milliseconds);
 signals:
 	void error(const QString &msg);
 	void log(const QString &msg);
+	void stopWaiting();
 
 private:
 
@@ -83,11 +90,6 @@ private:
 
 	void printToShell(const QString &msg);
 
-	// BrickInterface interface
-public slots:
-	virtual void playTone(int hzFreq, int msDuration) override {}
-	virtual trikControl::EventDeviceInterface *eventDevice(const QString &deviceFile) override {return nullptr;}
-	virtual void stopEventDevice(const QString &deviceFile) override {}
 };
 
 }
