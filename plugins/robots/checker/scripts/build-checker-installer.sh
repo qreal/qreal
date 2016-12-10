@@ -16,83 +16,114 @@
 set -o nounset
 set -o errexit
 
+function check_qmake_version {
+        
+#	echo Here
+	make -f <(echo -e "-include $1/Makefile\ncheck_qmake_version: FORCE\n\t@echo \${QMAKE}") check_qmake_version
+}
+
 function show_help {
-	echo "Usage: build-checker-installer.sh <path to Qt> [<path to QReal>] [<path to directory with fields>] [<path to directory with examples>] [<path to directory with tasks>]"
-	echo "<path to Qt> --- root of your Qt 5.5 installation"
-	echo "<path to QReal> --- path to QReal sources root (with completed release build of qrealRobots.pro)."
+	echo "Usage: $(basename $0) [QREAL_DIR [FIELDS_DIR EXAMPLES_DIR TASKS_DIR] ]"
+	echo -e "QREAL_DIR\t-\tPath to QReal sources root"
 	echo "                    Defaults to \"../..\""
-	echo "<path to \"fields\" directory> --- path to directory with prepared fields."
-	echo "                                   Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/fields/fields>.\""
-	echo "<path to \"examples\" directory> --- path to directory with example saves."
-	echo "                                     Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/solutions>.\""
-	echo "<path to \"tasks\" directory> --- path to directory with saves with tasks."
-	echo "                                  Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/tasks>.\""
-	echo "Example: ./build-checker-installer.sh ~/Qt ~/stepic-examples"
+	echo -e "FIELDS_DIR\t-\tPath to directory with prepared fields."
+	echo "                                   Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/fields/fields\""
+	echo -e "EXAMPLES_DIR\t-\tPath to examples dir"
+	echo "                                     Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/solutions\""
+	echo -e "TASKS_DIR\t-\tPath to folder with saves with tasks."
+	echo "                                  Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/tasks\""
+	echo "                                  Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/inputs>.\""
+	echo "Example: ./$(basename $0) ~/Qt/5.7 ~/stepic-examples"
 	exit 0
 }
 
-[ "$#" -lt 1 ] && show_help || :
+[ "$*" == "--help" ] && show_help || :
 
-cd "$(dirname "$0")"
-
-qtDir=$(readlink -f $1)
+pushd "$(dirname "$0")"
 
 if [ "$#" -gt 1 ]; then
-	qRealDir=$(readlink -f $2)
+	qRealDir=$(readlink -f $1)
 else
 	qRealDir=$(readlink -f ../..)
 fi
 
+QMAKE=$(check_qmake_version $qRealDir)
+echo "Using qmake: $QMAKE"
+QT_HOST_DATA=$($QMAKE -query QT_HOST_DATA)
+QT_INSTALL_PLUGINS=$($QMAKE -query QT_INSTALL_PLUGINS)
+QT_INSTALL_LIBS=$($QMAKE -query QT_INSTALL_LIBS)
+QT_HOST_LIBS=$($QMAKE -query QT_HOST_LIBS)
+
+if [ "$#" -lt 1 ]; then
+	qtDir=$(readlink -f $QT_HOST_DATA)
+	qtDirForPlugins=$(readlink -f $QT_INSTALL_PLUGINS)
+	qtDirLib=$(readlink -f $QT_INSTALL_LIBS)
+	hostDirLib=$(readlink -f $QT_HOST_LIBS)
+fi
+
+
+COPY="cp -rfP"
+NEED_QT_LIBS=false
+
 if [ "$#" -gt 2 ]; then
-	fieldsDir=$(readlink -f $3)
+	fieldsDir=$(readlink -f $2)
 else
 	fieldsDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/fields/fields)
 fi
 
 if [ "$#" -gt 3 ]; then
-	examplesDir=$(readlink -f $4)
+	examplesDir=$(readlink -f $3)
 else
 	examplesDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/solutions)
 fi
 
 if [ "$#" -gt 4 ]; then
-	tasksDir=$(readlink -f $5)
+	tasksDir=$(readlink -f $4)
 else
 	tasksDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/tasks)
 fi
 
+if [ "$#" -gt 5 ]; then
+	inputsDir=$(readlink -f $5)
+else
+	inputsDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/inputs)
+fi
+
+rm -rf trikStudio-checker
 mkdir -p trikStudio-checker/bin
-cd trikStudio-checker/bin
+pushd trikStudio-checker/bin
+
+if $NEED_QT_LIBS ; then
+    LIBS=$(ldd ./qreal | grep so | sed -e '/^[^\t]/ d' | sed -e 's/\t//' | sed -e 's/.*=..//' | sed -e 's/ (0.*)//' | sort -u | grep -Ev '^\.|^/lib')
 
 # Copying required Qt libraries
-cp -rf $qtDir/5.5/gcc_64/plugins/iconengines .
+    ${COPY} $qtDirForPlugins/iconengines .
 
-mkdir imageformats
-cp -fP  $qtDir/5.5/gcc_64/plugins/imageformats/libqsvg.so imageformats/
+    mkdir -p imageformats
+    ${COPY} $qtDirForPlugins/imageformats/libqsvg.so imageformats/
 
-mkdir platforms
-cp -fP $qtDir/5.5/gcc_64/plugins/platforms/libqminimal.so platforms/
+    mkdir -p platforms
+    ${COPY} $qtDirForPlugins/platforms/libqminimal.so platforms/
 
-cp -fP $qtDir/5.5/gcc_64/lib/libicudata.so.54* .
-cp -fP $qtDir/5.5/gcc_64/lib/libicui18n.so.54* .
-cp -fP $qtDir/5.5/gcc_64/lib/libicuuc.so.54* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Core.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Gui.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Network.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5PrintSupport.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Script.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Svg.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Widgets.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5Xml.so* .
-cp -fP $qtDir/5.5/gcc_64/lib/libQt5DBus.so* .
+
+    for lib in ${LIBS}; do ${COPY} $lib* .; done
+
+# Seems like this code is obsolete, but ...
+    ${COPY} $qtDirLib/libQt5Core.so* $qtDirLib/libQt5Gui.so* $qtDirLib/libQt5Network.so* \
+        $qtDirLib/libQt5PrintSupport.so* $qtDirLib/libQt5Script.so* $qtDirLib/libQt5Svg.so* \
+        $qtDirLib/libQt5Widgets.so* $qtDirLib/libQt5Xml.so* $qtDirLib/libQt5DBus.so* .
+
+fi 
 
 # Copying QReal libraries
 cp -fP $qRealDir/bin/release/changelog.txt .
+cp -fP $qRealDir/bin/release/libqrgraph.so* .
 cp -fP $qRealDir/bin/release/libqrgui-brand-manager.so* .
 cp -fP $qRealDir/bin/release/libqrgui-controller.so* .
 cp -fP $qRealDir/bin/release/libqrgui-dialogs.so* .
 cp -fP $qRealDir/bin/release/libqrgui-editor.so* .
 cp -fP $qRealDir/bin/release/libqrgui-facade.so* .
+cp -fP $qRealDir/bin/release/libqrgui-meta-meta-model.so* .
 cp -fP $qRealDir/bin/release/libqrgui-models.so* .
 cp -fP $qRealDir/bin/release/libqrgui-mouse-gestures.so* .
 cp -fP $qRealDir/bin/release/libqrgui-plugin-manager.so* .
@@ -170,7 +201,7 @@ cp -r $examplesDir ./examples
 cp -r $tasksDir ./tasks
 
 # Packing
-cd ..
+popd
 
-tar cvfz trik_checker.tar.gz trikStudio-checker
-rm -rf trikStudio-checker
+tar cvfJ trik_checker.tar.xz trikStudio-checker
+
