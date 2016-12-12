@@ -189,6 +189,14 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 		}
 	});
 
+	connect(&configurer.interpreterControl()
+			, &kitBase::InterpreterControlInterface::startJsInterpretation
+			, [this]() {
+		if (mIsModelSelected) {
+			testStart();
+		}
+	});
+
 	connect(&mStart, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStart);
 	connect(&mStop, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStop);
 	connect(mQtsInterpreter.data()
