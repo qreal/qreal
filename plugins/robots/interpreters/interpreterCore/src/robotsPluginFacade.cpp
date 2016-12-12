@@ -205,7 +205,9 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		QFileInfo codeDir(path);
 		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
 		QFile codeFile(codePath.filePath());
-		codeFile.open(QFile::WriteOnly | QFile::Truncate); // todo: check the result bool
+		if (!codeFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			return;
+		} // todo: check the result bool
 		QTextStream(&codeFile) << code;
 		codeFile.close();
 		mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));

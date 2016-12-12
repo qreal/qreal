@@ -46,6 +46,9 @@ signals:
 	/// @todo: temporary hack while js interpreter is separated from regular interpreter logic
 	void stopAllInterpretation(qReal::interpretation::StopReason reason = qReal::interpretation::StopReason::userStop);
 
+	/// same
+	void startJsInterpretation();
+
 public slots:
 	/// Starts interpteration process.
 	virtual void interpret() = 0;
