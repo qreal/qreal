@@ -66,6 +66,7 @@ public slots:
 
 	int random(int from, int to);
 	void wait(int milliseconds);
+	qint64 time() const;
 signals:
 	void error(const QString &msg);
 	void log(const QString &msg);

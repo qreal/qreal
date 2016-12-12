@@ -11,25 +11,28 @@
 
 #include <QDebug>
 
-QScriptValue printRedirect(QScriptContext * context, QScriptEngine * engine)
-{
-	QString result;
-	for (int i = 0; i < context->argumentCount(); ++i) {
-		if (i > 0) {
-			result.append(" ");
-		}
+//QScriptValue printRedirect(QScriptContext * context, QScriptEngine * engine)
+//{
+//	QString result;
+//	for (int i = 0; i < context->argumentCount(); ++i) {
+//		if (i > 0) {
+//			result.append(" ");
+//		}
 
-		result.append(context->argument(i).toString());
-	}
-	if (!engine->isEvaluating())
-		qDebug("stoped evaluating!");
-	//bad: could sigsegv if execution aborted before executed.
-	engine->evaluate(QString("brick.log(\"%1\");").arg(result));
+//		result.append(context->argument(i).toString());
+//	}
+//	if (!engine->isEvaluating())
+//		qDebug("stoped evaluating!");
+//	//bad: could sigsegv if execution aborted before executed.
+//	engine->evaluate(QString("brick.log(\"%1\");").arg(result));
 
-	return engine->toScriptValue(result);
-}
+//	return engine->toScriptValue(result);
+//}
 
-const QString overrides = "script.random = brick.random;script.wait = brick.wait;";
+const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;\n"
+		"print = function() {var res = '';\n"
+		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}\n"
+		"brick.log(res);return res;};";
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
         const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model
@@ -47,7 +50,7 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 //	};
 	//auto &t = dynamic_cast<twoDModel::model::Timeline &>(model->timeline());
 	//t.setImmediateMode(true);
-	mScriptRunner.registerUserFunction("print", printRedirect);
+	//mScriptRunner.registerUserFunction("print", printRedirect);
 	connect(&mScriptRunner, SIGNAL(completed(QString,int)), this, SLOT(scriptFinished(QString,int)));
 }
 

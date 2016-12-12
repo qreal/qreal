@@ -271,6 +271,11 @@ void TrikBrick::wait(int milliseconds)
 //	QTimer t;
 //	connect(&t, SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
 //	t.start(milliseconds);
-//	loop.exec();
+	//	loop.exec();
+}
+
+qint64 TrikBrick::time() const
+{
+	return mTwoDRobotModel->timeline().timestamp();
 }
 
