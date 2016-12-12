@@ -39,7 +39,7 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 		) : mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr, nullptr), mErrorReporter(nullptr)
 {
 	connect(&mBrick, &TrikBrick::error, this, &TrikQtsInterpreter::reportError);
-	mScriptRunner.registerUserFunction("print", printRedirect);
+//	mScriptRunner.registerUserFunction("print", printRedirect);
 //	connect(&mBrick, &TrikBrick::log, [this](const QString &msg){
 //		QMetaObject::invokeMethod(this, "reportLog", Q_ARG(const QString &, msg));
 //	});
@@ -50,7 +50,6 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 //	};
 	//auto &t = dynamic_cast<twoDModel::model::Timeline &>(model->timeline());
 	//t.setImmediateMode(true);
-	//mScriptRunner.registerUserFunction("print", printRedirect);
 	connect(&mScriptRunner, SIGNAL(completed(QString,int)), this, SLOT(scriptFinished(QString,int)));
 }
 
