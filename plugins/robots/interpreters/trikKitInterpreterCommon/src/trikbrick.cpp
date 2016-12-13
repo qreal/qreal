@@ -19,24 +19,15 @@ using namespace trik;
 
 static const int updateInterval = 25;
 TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
-	: mTwoDRobotModel(model), mDisplay(model), mKeys(model)
+	: mTwoDRobotModel(model), mDisplay(model), mKeys(model), mIsWaitingEnabled(true)
 {
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
 	mSensorUpdater.setInterval(updateInterval);
 	connect(&mSensorUpdater, &QTimer::timeout, [model](){
 		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
 	});
-//	QTimer *t = new QTimer(this);
-//	t->setInterval(25);
-//	connect(t, &QTimer::timeout, [this](){
-//		qDebug("here");
-//		for (const auto &e : mEncoders) {
-//			e->read();
-//		}
-//		for (const auto &s : mSensors) {
-//			s->read();
-//		}
-//	});
+
+	connect(this, &TrikBrick::stopWaiting, [this]() { mIsWaitingEnabled = false; });
 }
 
 TrikBrick::~TrikBrick()
@@ -93,6 +84,7 @@ void TrikBrick::init()
 	mKeys.init();
 	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
+	mIsWaitingEnabled = true;
 }
 
 void TrikBrick::stop() {
@@ -257,21 +249,16 @@ int TrikBrick::random(int from, int to)
 
 void TrikBrick::wait(int milliseconds)
 {
+	if (!mIsWaitingEnabled)
+		return;
 	QEventLoop loop;
 	QObject::connect(this, SIGNAL(stopWaiting()), &loop, SLOT(quit())/*, Qt::DirectConnection*/);
 	QScopedPointer<utils::AbstractTimer> t(mTwoDRobotModel->timeline().produceTimer());
 	//t->moveToThread(QThread::currentThread());
-	t->setInterval(milliseconds);
 	t->setRepeatable(true);
 	connect(t.data(), SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
 	t->start(milliseconds);
 	loop.exec();
-//	QEventLoop loop;
-//	QObject::connect(this, SIGNAL(stopWaiting()), &loop, SLOT(quit()), Qt::DirectConnection);
-//	QTimer t;
-//	connect(&t, SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
-//	t.start(milliseconds);
-	//	loop.exec();
 }
 
 qint64 TrikBrick::time() const

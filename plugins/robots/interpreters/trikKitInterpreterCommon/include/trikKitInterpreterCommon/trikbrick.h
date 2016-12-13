@@ -73,11 +73,14 @@ signals:
 	void stopWaiting();
 
 private:
+	void printToShell(const QString &msg);
 
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
 	TrikDisplayEmu mDisplay;
 	TrikKeysInterfaceStub mKeys;
+
+	bool mIsWaitingEnabled;
 
 	QTimer mSensorUpdater;
 
@@ -88,8 +91,6 @@ private:
 	QScopedPointer<TrikLedAdapter> mLed;
 	QScopedPointer<TrikAccelerometerAdapter> mAccelerometer;
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
-
-	void printToShell(const QString &msg);
 
 };
 

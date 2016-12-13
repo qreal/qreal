@@ -87,7 +87,7 @@ void trik::TrikQtsInterpreter::abort()
 
 void trik::TrikQtsInterpreter::init()
 {
-	mBrick.init();
+	mBrick.init(); // very crucial. Maybe move into interpret methods?
 }
 
 void trik::TrikQtsInterpreter::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
