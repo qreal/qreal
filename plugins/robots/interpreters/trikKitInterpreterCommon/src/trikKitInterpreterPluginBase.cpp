@@ -85,8 +85,9 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
 
 	qtsInterpreter()->init();
 
-	qtsInterpreter()->interpretScript(code);
+	qtsInterpreter()->setRunning(true);
 	emit started();
+	qtsInterpreter()->interpretScript(code);
 }
 
 void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, const QString &inputs)
@@ -107,6 +108,7 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, co
 
 	qtsInterpreter()->init();
 
+	qtsInterpreter()->setRunning(true);
 	emit started();
 	qtsInterpreter()->interpretScriptExercise(code, inputs);
 }
