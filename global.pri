@@ -65,12 +65,6 @@ unix:!CONFIG(nosanitizers){
 	!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
 		# Ubsan is turned on by default into debug build
 		CONFIG += sanitizer sanitize_undefined
-		macx-clang {
-			# sometimes runtime is missing in clang. this hack allows to avoid runtime dependency.
-			QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fsanitize-trap=undefined
-			QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fsanitize-trap=undefined
-			QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fsanitize-trap=undefined
-		}
 	}
 
 	!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
@@ -80,6 +74,13 @@ unix:!CONFIG(nosanitizers){
 		QMAKE_CFLAGS += -fsanitize=leak
 		QMAKE_CXXFLAGS += -fsanitize=leak
 		QMAKE_LFLAGS += -fsanitize=leak
+	}
+
+	CONFIG(sanitize_undefined):macx-clang {
+		# sometimes runtime is missing in clang. this hack allows to avoid runtime dependency.
+		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fsanitize-trap=undefined
+		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fsanitize-trap=undefined
+		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fsanitize-trap=undefined
 	}
 
 
