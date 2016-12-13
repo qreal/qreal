@@ -85,8 +85,8 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
 
 	qtsInterpreter()->init();
 
-	emit started();
 	qtsInterpreter()->interpretScript(code);
+	emit started();
 }
 
 void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, const QString &inputs)
@@ -192,7 +192,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	connect(&configurer.interpreterControl()
 			, &kitBase::InterpreterControlInterface::startJsInterpretation
 			, [this]() {
-		if (mIsModelSelected) {
+		if (!mQtsInterpreter->isRunning() && mIsModelSelected) { // temporary
 			testStart();
 		}
 	});

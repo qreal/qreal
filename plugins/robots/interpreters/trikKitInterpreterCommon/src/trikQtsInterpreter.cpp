@@ -166,6 +166,7 @@ void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId
 		reportError(error);
 	}
 	if (mRunning) { /// @todo: figure out better place for this check - it should avoid double aborts
+		mRunning = false;
 		emit completed();
 	}
 }
