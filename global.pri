@@ -59,15 +59,15 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
-unix:!CONFIG(nosanitizers){
+unix {
 
 	# seems like we want USan always, but are afraid of ....
 	!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
-		# Ubsan is turned on by default into debug build
+		# Ubsan is turned on by default
 		CONFIG += sanitizer sanitize_undefined
 	}
 
-	!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
+	CONFIG(debug, debug | release):!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
 
 	CONFIG(sanitize_leak) {
 		#LSan can be used without performance degrade even in release build
