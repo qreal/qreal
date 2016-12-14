@@ -100,7 +100,7 @@ bool Runner::interpret(const QString &saveFile, bool background)
 
 	mReporter.onInterpretationStart();
 	if (mIsJS) {
-		mPluginFacade.interpretCode(mInputsFile);
+		return mPluginFacade.interpretCode(mInputsFile);
 	} else {
 		mPluginFacade.actionsManager().runAction().trigger();
 	}

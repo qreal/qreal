@@ -272,6 +272,7 @@ bool RobotsPluginFacade::interpretCode(const QString &inputs)
 	QString code = logicalRepo->metaInformation("activeCode").toString();
 	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
 	if (code.isEmpty() || name.isEmpty()) {
+		qDebug("No saved js code found in the qrs file");
 		return false;
 	}
 	emit mEventsForKitPlugin.interpretCode(code, inputs);
