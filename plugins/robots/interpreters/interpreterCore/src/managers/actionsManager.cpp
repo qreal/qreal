@@ -166,7 +166,8 @@ void ActionsManager::appendHotKey(const QString &actionId, const QString &label,
 void ActionsManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
 {
 	mConnectToRobotAction->setVisible(model.needsConnection());
-	mRunAction->setVisible(model.interpretedModel() && mIsRunActionVisible);
+	mIsOnInterpretedModel = model.interpretedModel();
+	mRunAction->setVisible(model.interpretedModel() && mIsOnEditorTab);
 	mStopRobotAction->setVisible(false);
 	const QString currentKitId = kitIdOf(model);
 
@@ -195,15 +196,9 @@ void ActionsManager::onActiveTabChanged(const qReal::TabInfo &info)
 	//static bool runActionVisible = mRunAction->isVisible();
 	mRunAction->setEnabled(isDiagramTab);
 	mStopRobotAction->setEnabled(isDiagramTab);
-	mIsRunActionVisible = isDiagramTab;
-	if (isDiagramTab) {
-		mRunAction->setVisible(mIsRunActionVisible);
-		mStopRobotAction->setVisible(!mIsRunActionVisible);
-	} else {
-		//runActionVisible = mRunAction->isVisible();
-		mRunAction->setVisible(false);
-		mStopRobotAction->setVisible(false);
-	}
+	mIsOnEditorTab = isDiagramTab;
+	mRunAction->setVisible(mIsOnEditorTab && mIsOnInterpretedModel);
+	mStopRobotAction->setVisible(false);
 //	mRunAction->setEnabled(isDiagramTab);
 //	mStopRobotAction->setEnabled(isDiagramTab);
 }
