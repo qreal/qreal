@@ -148,7 +148,7 @@ QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
 				result.append(line);
 			}
 		} else {
-			mErrorReporter->addError(QObject::tr("Error: File couldn't open!"));
+			mErrorReporter->addError(QObject::tr("Error: File %1 couldn't be opened!").arg(inputs));
 		}
 	}
 	return result;
