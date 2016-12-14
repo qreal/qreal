@@ -203,5 +203,6 @@ cp -r $tasksDir ./tasks
 # Packing
 popd
 
+rm -f trik_checker.tar.xz
 tar cvfJ trik_checker.tar.xz trikStudio-checker
 
