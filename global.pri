@@ -59,7 +59,7 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
 }
 
-unix {
+unix:!CONFIG(nosanitizers) {
 
 	# seems like we want USan always, but are afraid of ....
 	!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
