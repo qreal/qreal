@@ -133,10 +133,10 @@ defineTest(copyToDestdir) {
 
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
+		AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		isEmpty(QMAKE_SH) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
 			win32 {
-				AFTER_SLASH = $$section(FILE, "/", -1, -1)
 				BASE_NAME = $$section(FILE, "/", -2, -2)
 				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
 
@@ -152,7 +152,7 @@ defineTest(copyToDestdir) {
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE*
+			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE'.'
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {

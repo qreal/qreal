@@ -31,7 +31,7 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 
 LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
 # it's here because it looks like it can't be placed in a subdirs project (where is nothing to link)
-copyToDestdir($$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION)
+copyToDestdir($$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION/)
 
 HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/declSpec.h \
