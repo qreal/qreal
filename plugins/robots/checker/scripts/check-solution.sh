@@ -67,7 +67,7 @@ else
 	patcher=$binFolder/patcher-d
 fi
 
-export LD_LIBRARY_PATH=$binFolder
+export LD_LIBRARY_PATH=$binFolder:$LD_LIBRARY_PATH
 
 rm -rf "$(pwd)/reports/$fileNameWithoutExtension"
 rm -rf "$(pwd)/trajectories/$fileNameWithoutExtension"
