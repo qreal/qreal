@@ -168,6 +168,7 @@ cp -fP $qRealDir/bin/release/librobots-utils.so* .
 
 mkdir -p plugins/editors
 cp -fP   $qRealDir/bin/release/plugins/editors/librobotsMetamodel.so ./plugins/editors/
+cp -fP   $qRealDir/bin/release/plugins/editors/libtrikMetamodel.so ./plugins/editors/
 
 mkdir -p plugins/tools
 cp -fP $qRealDir/bin/release/plugins/tools/librobots-plugin.so ./plugins/tools/
@@ -187,6 +188,10 @@ cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/trikV6KitInterpreter
 cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/trikV62KitInterpreter_ru.qm ./translations/ru/plugins/robots/
 cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/twoDModel_ru.qm ./translations/ru/plugins/robots/
 cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/twoDModelRunner_ru.qm ./translations/ru/plugins/robots/
+
+# Copying TRIKRuntime dependencies
+cp -fP $qRealDir/bin/release/*-x86.so* .
+cp -fP $qRealDir/bin/release/*.js .
 
 # Copying checker itself
 cp -fP $qRealDir/bin/release/2D-model .
