@@ -81,7 +81,7 @@ public:
 
 public slots:
 	void saveCode(const QString &code);
-	void openSavedCode();
+//	void openSavedCode();
 
 private:
 	void connectInterpreterToActions();

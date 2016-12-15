@@ -30,6 +30,7 @@
 //}
 
 const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;\n"
+		"script.readAll = brick.readAll;\n"
 		"print = function() {var res = '';\n"
 		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}\n"
 		"brick.log(res);return res;};";
@@ -132,7 +133,7 @@ QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
 	};
 
 	QString result;
-	if (!inputs.isNull()) {
+	if (!inputs.isEmpty()) {
 		QString val;
 		QFile file;
 		file.setFileName(inputs);
@@ -157,6 +158,11 @@ QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
 void trik::TrikQtsInterpreter::setRunning(bool running)
 {
 	mRunning = running;
+}
+
+void trik::TrikQtsInterpreter::setCurrentDir(const QString &dir)
+{
+	mBrick.setCurrentDir(dir);
 }
 
 void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)

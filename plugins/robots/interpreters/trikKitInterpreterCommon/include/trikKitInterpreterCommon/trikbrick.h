@@ -3,6 +3,7 @@
 #include <QtCore/QHash>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QDir>
 
 #include <trikControl/brickInterface.h>
 
@@ -35,6 +36,8 @@ public:
 	}
 	void init();
 
+	void setCurrentDir(const QString &dir);
+
 public slots:
 	void configure(const QString &portName, const QString &deviceName) override {}
 	void playSound(const QString &soundFileName) override {}
@@ -64,9 +67,11 @@ public slots:
 	trikControl::EventDeviceInterface *eventDevice(const QString &deviceFile) override {return nullptr;}
 	void stopEventDevice(const QString &deviceFile) override {}
 
+	/// some ScriptExecution control replacements. @todo: factor out in the separate class
 	int random(int from, int to);
 	void wait(int milliseconds);
 	qint64 time() const;
+	QStringList readAll(const QString &path);
 signals:
 	void error(const QString &msg);
 	void log(const QString &msg);
@@ -91,6 +96,8 @@ private:
 	QScopedPointer<TrikLedAdapter> mLed;
 	QScopedPointer<TrikAccelerometerAdapter> mAccelerometer;
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
+
+	QDir mCurrentDir;
 
 };
 
