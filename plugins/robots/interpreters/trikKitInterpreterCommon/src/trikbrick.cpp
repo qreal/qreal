@@ -87,6 +87,11 @@ void TrikBrick::init()
 	mIsWaitingEnabled = true;
 }
 
+void TrikBrick::setCurrentDir(const QString &dir)
+{
+	mCurrentDir = QFileInfo(dir).dir(); // maybe can be constructed directly
+}
+
 void TrikBrick::stop() {
 	/// @todo: properly implement this?
 	mTwoDRobotModel->stopRobot();
@@ -264,5 +269,26 @@ void TrikBrick::wait(int milliseconds)
 qint64 TrikBrick::time() const
 {
 	return mTwoDRobotModel->timeline().timestamp();
+}
+
+QStringList TrikBrick::readAll(const QString &path)
+{
+	//if (mCurrentDir) todo: check that the current working dir is a save dir
+	QFileInfo normalizedPath(mCurrentDir.absoluteFilePath(path)); // absoluteDir?
+	QString file = normalizedPath.filePath();
+	QFile in(file);
+	if (!in.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		emit error(tr("Trying to read from file %1 failed").arg(file));
+		return {};
+	}
+
+	QStringList result;
+
+	while (!in.atEnd()) {
+		const auto line = in.readLine();
+		result << QString::fromUtf8(line);
+	}
+
+	return result;
 }
 

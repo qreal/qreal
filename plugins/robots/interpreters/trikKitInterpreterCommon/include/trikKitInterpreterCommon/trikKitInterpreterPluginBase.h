@@ -120,6 +120,7 @@ private:
 	bool mOwnsAdditionalPreferences = true;
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 };
 
