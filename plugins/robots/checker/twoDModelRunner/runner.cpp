@@ -55,12 +55,13 @@ Runner::Runner(const QString &report, const QString &trajectory)
 	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded, &mReporter, &Reporter::addError);
 }
 
-Runner::Runner(const QString &report, const QString &trajectory, const QString &input)
+Runner::Runner(const QString &report, const QString &trajectory, const QString &input, bool js)
 	: Runner(report, trajectory)
 
 {
 	mInputsFile = input;
-	mIsJS = !input.isEmpty();
+//	mIsJS = !input.isEmpty();
+	mIsJS = js;
 }
 
 Runner::~Runner()
