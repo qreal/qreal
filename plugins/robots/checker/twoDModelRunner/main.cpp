@@ -90,12 +90,13 @@ int main(int argc, char *argv[])
 			, "path-to-trajectory", "trajectory.fifo");
 	QCommandLineOption inputOption("input", QObject::tr("Inputs for JavaScript solution")// probably others too
 			, "path-to-input", "inputs.json");
-	//QCommandLineOption isJS("js", QObject::tr(""))
+	QCommandLineOption jsOption("js", QObject::tr("Interpret JavaScript solution"));
 	parser.addOption(backgroundOption);
 	parser.addOption(platformOption);
 	parser.addOption(reportOption);
 	parser.addOption(trajectoryOption);
 	parser.addOption(inputOption);
+	parser.addOption(jsOption);
 
 	qsrand(time(0));
 	initLogging();
@@ -116,8 +117,9 @@ int main(int argc, char *argv[])
 	const QString report = parser.isSet(reportOption) ? parser.value(reportOption) : QString();
 	const QString trajectory = parser.isSet(trajectoryOption) ? parser.value(trajectoryOption) : QString();
 	const QString input = parser.isSet(inputOption) ? parser.value(inputOption) : QString();
+	const bool jsMode = parser.isSet(jsOption);
 //	twoDModel::Runner runner(report, trajectory);
-	twoDModel::Runner runner(report, trajectory, input);
+	twoDModel::Runner runner(report, trajectory, input, jsMode);
 	if (!runner.interpret(qrsFile, backgroundMode)) {
 		return 2;
 	}
