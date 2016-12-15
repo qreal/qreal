@@ -28,7 +28,6 @@ function show_help {
 binFolder="$(dirname "$0")"
 fileFolder=$(dirname "$1")
 fieldsFolder="$fileFolder/fields"
-inputsFolder="$fileFolder/inputs"
 [ ! -d "$fieldsFolder" ] && fieldsFolder=$binFolder/../fields
 
 logFile=$(pwd)/checker-log.txt
@@ -86,9 +85,7 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	$twoDModel --platform minimal -b "$fileWithPath" \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--input "$inputsFolder/$fileNameWithoutExtension/check-self.json"
-
-	log "$inputsFolder/$fileNameWithoutExtension/check-self.json"
+			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt"
 
 	exitCode=$?
 
@@ -142,10 +139,7 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 		$twoDModel --platform minimal -b "./$solutionCopy" \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
-				--input "$inputsFolder/$fileNameWithoutExtension/$currentField.json"
-
-		log "$inputsFolder/$fileNameWithoutExtension/$currentField.json"
-
+				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt"
 
 		exitCode=$?
 
