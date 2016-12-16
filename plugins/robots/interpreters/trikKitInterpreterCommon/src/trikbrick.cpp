@@ -263,6 +263,8 @@ void TrikBrick::wait(int milliseconds)
 	t->setRepeatable(true);
 	connect(t.data(), SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
 	t->start(milliseconds);
+	if (!mIsWaitingEnabled)
+		return; // to be safe;
 	loop.exec();
 }
 

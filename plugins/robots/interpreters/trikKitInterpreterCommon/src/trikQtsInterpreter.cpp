@@ -11,24 +11,6 @@
 
 #include <QDebug>
 
-//QScriptValue printRedirect(QScriptContext * context, QScriptEngine * engine)
-//{
-//	QString result;
-//	for (int i = 0; i < context->argumentCount(); ++i) {
-//		if (i > 0) {
-//			result.append(" ");
-//		}
-
-//		result.append(context->argument(i).toString());
-//	}
-//	if (!engine->isEvaluating())
-//		qDebug("stoped evaluating!");
-//	//bad: could sigsegv if execution aborted before executed.
-//	engine->evaluate(QString("brick.log(\"%1\");").arg(result));
-
-//	return engine->toScriptValue(result);
-//}
-
 const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;\n"
 		"script.readAll = brick.readAll;\n"
 		"print = function() {var res = '';\n"
@@ -73,8 +55,9 @@ void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, const QString &inputs)
 {
 	mRunning = true;
-	QString newScript = overrides + initInputs(inputs) + script;
-	qDebug() << newScript;
+	Q_UNUSED(inputs); // ignore inputs for now
+	QString newScript = overrides /*+ initInputs(inputs)*/ + script;
+	//qDebug() << newScript;
 	mScriptRunner.run(newScript);
 }
 
