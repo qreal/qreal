@@ -86,8 +86,7 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 			--js \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt" \
-			--js
+			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt"
 
 	exitCode=$?
 
@@ -142,8 +141,7 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 				--js \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
-				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt" \
-				--js
+				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt"
 
 		exitCode=$?
 
