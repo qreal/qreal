@@ -42,6 +42,13 @@ reportFile=$(pwd)/report
 trajectoryFile=$(pwd)/trajectory
 failedFieldFile=$(pwd)/failed-field
 
+runmode=$(pwd)/runmode
+MODE="diagram"
+
+if [ -e runmode ]; then
+	MODE="js"
+fi
+
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
 incorrectSaveFileMessage="[ { \"level\": \"error\", \"message\": \"Некорректный или испорченный файл с сохранением\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
@@ -83,10 +90,12 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
-			--js \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt"
+			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt" \
+			--mode "$MODE"
+
+	log "$MODE"
 
 	exitCode=$?
 
@@ -138,10 +147,12 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 		log "Running Checker"
 		currentField="${i%.*}"
 		$twoDModel --platform minimal -b "./$solutionCopy" \
-				--js \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
-				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt"
+				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt" \
+				--mode "$MODE"
+
+		log "$MODE"
 
 		exitCode=$?
 
