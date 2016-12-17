@@ -167,8 +167,7 @@ cp -fP $qRealDir/bin/release/librobots-trik-kit.so* .
 cp -fP $qRealDir/bin/release/librobots-utils.so* .
 
 mkdir -p plugins/editors
-cp -fP   $qRealDir/bin/release/plugins/editors/librobotsMetamodel.so ./plugins/editors/
-cp -fP   $qRealDir/bin/release/plugins/editors/libtrikMetamodel.so ./plugins/editors/
+cp -fP $qRealDir/bin/release/plugins/editors/* ./plugins/editors/
 
 mkdir -p plugins/tools
 cp -fP $qRealDir/bin/release/plugins/tools/librobots-plugin.so ./plugins/tools/
@@ -210,4 +209,4 @@ cp -r $tasksDir ./tasks
 popd
 
 rm -f trik_checker.tar.xz
-tar cvfJ trik_checker.tar.xz trikStudio-checker
+time { tar c trikStudio-checker | xz -z9cv > trik_checker.tar.xz ; }
