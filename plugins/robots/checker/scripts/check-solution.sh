@@ -28,7 +28,6 @@ function show_help {
 binFolder="$(dirname "$0")"
 fileFolder=$(dirname "$1")
 fieldsFolder="$fileFolder/fields"
-mainFolderWithFields="$fieldsFolder/$fileNameWithoutExtension"
 [ ! -d "$fieldsFolder" ] && fieldsFolder=$binFolder/../fields
 
 logFile=$(pwd)/checker-log.txt
@@ -43,13 +42,6 @@ reportFile=$(pwd)/report
 trajectoryFile=$(pwd)/trajectory
 failedFieldFile=$(pwd)/failed-field
 
-runmode=$mainFolderWithFields/runmode
-MODE="diagram"
-
-if [ -e runmode ]; then
-	MODE="js"
-fi
-
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
 incorrectSaveFileMessage="[ { \"level\": \"error\", \"message\": \"Некорректный или испорченный файл с сохранением\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
@@ -60,6 +52,17 @@ solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Ре
 fileWithPath=$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
+
+mainFolderWithFields="$fieldsFolder/$fileNameWithoutExtension"
+
+runmode=$mainFolderWithFields/runmode
+MODE="diagram"
+
+log $runmode
+
+if [ -e $runmode ]; then
+	MODE="js"
+fi
 
 if ! [ -f "$fileWithPath" ]; then
 	echo $internalErrorMessage
@@ -133,7 +136,7 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 	cp -f $fileWithPath ./$solutionCopy
 
 	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
-		if [ "$i" == "no-check-self" ]; then
+		if [ "$i" == "no-check-self" ] || [[ $i != *.xml ]]; then
 			continue
 		fi
 
