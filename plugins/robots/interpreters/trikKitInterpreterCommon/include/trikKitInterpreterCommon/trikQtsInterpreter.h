@@ -32,6 +32,8 @@ public:
 
 	void setRunning(bool running);
 
+	void setCurrentDir(const QString &dir);
+
 signals:
 	void completed();
 

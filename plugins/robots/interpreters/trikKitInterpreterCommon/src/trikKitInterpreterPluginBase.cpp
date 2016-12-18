@@ -85,6 +85,7 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
 
 	qtsInterpreter()->init();
 
+	qtsInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
 	qtsInterpreter()->setRunning(true);
 	emit started();
 	qtsInterpreter()->interpretScript(code);
@@ -108,6 +109,7 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, co
 
 	qtsInterpreter()->init();
 
+	qtsInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
 	qtsInterpreter()->setRunning(true);
 	emit started();
 	qtsInterpreter()->interpretScriptExercise(code, inputs);
@@ -126,6 +128,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	qReal::gui::MainWindowInterpretersInterface &interpretersInterface
 			= configurer.qRealConfigurator().mainWindowInterpretersInterface();
+
+	mProjectManager = &configurer.qRealConfigurator().projectManager();
 
 	mTwoDModel->init(configurer.eventsForKitPlugin()
 			, configurer.qRealConfigurator().systemEvents()
@@ -173,14 +177,6 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 		bool isCodeTabOpen = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
 		mStart.setVisible(mIsModelSelected && isCodeTabOpen);
 		mStop.setVisible(false); // interpretation should always stop when switching models?
-//		kitBase::robotModel::RobotModelInterface * const ourModel = robotModels()[0];
-//		for (const ActionInfo &action : customActions()) {
-//			if (action.isAction()) {
-//				action.action()->setVisible(robotModels().contains(&model));
-//			} else {
-//				action.menu()->setVisible(robotModels().contains(&model));
-//			}
-//		}
 	});
 
 	connect(&configurer.interpreterControl()
