@@ -53,6 +53,17 @@ fileWithPath=$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
+mainFolderWithFields="$fieldsFolder/$fileNameWithoutExtension"
+
+runmode=$mainFolderWithFields/runmode
+MODE="diagram"
+
+log $runmode
+
+if [ -e $runmode ]; then
+	MODE="js"
+fi
+
 if ! [ -f "$fileWithPath" ]; then
 	echo $internalErrorMessage
 	log "File $fileWithPath does not exist, aborting"
@@ -85,7 +96,10 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	$twoDModel --platform minimal -b "$fileWithPath" \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt"
+			--input "$mainFolderWithFields/check-self.txt" \
+			--mode "$MODE"
+
+	log "$MODE"
 
 	exitCode=$?
 
@@ -122,7 +136,7 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 	cp -f $fileWithPath ./$solutionCopy
 
 	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
-		if [ "$i" == "no-check-self" ] then
+		if [ "$i" == "no-check-self" ] || [[ $i != *.xml ]]; then
 			continue
 		fi
 
@@ -139,7 +153,10 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 		$twoDModel --platform minimal -b "./$solutionCopy" \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
-				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt"
+				--input "$mainFolderWithFields/$currentField.txt" \
+				--mode "$MODE"
+
+		log "$MODE"
 
 		exitCode=$?
 

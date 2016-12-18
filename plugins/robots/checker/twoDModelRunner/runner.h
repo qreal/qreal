@@ -48,8 +48,8 @@ public:
 	/// @param report A path to a file where JSON report about the session will be written after it ends.
 	/// @param trajectory A path to a file where robot`s trajectory will be written during the session.
 	/// @param input A path to a file where JSON with inputs for JavaScript.
-	/// @param js JavaScript mode.
-	Runner(const QString &report, const QString &trajectory, const QString &input, bool js);
+	/// @param mode Interpret mode.
+	Runner(const QString &report, const QString &trajectory, const QString &input, const QString &mode);
 
 	~Runner();
 
@@ -79,7 +79,7 @@ private:
 	interpreterCore::RobotsPluginFacade mPluginFacade;
 	Reporter mReporter;
 	QString mInputsFile;
-	bool mIsJS = false;
+	QString mMode;
 };
 
 }

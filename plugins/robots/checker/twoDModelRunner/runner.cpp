@@ -55,13 +55,12 @@ Runner::Runner(const QString &report, const QString &trajectory)
 	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded, &mReporter, &Reporter::addError);
 }
 
-Runner::Runner(const QString &report, const QString &trajectory, const QString &input, bool js)
+Runner::Runner(const QString &report, const QString &trajectory, const QString &input, const QString &mode)
 	: Runner(report, trajectory)
 
 {
 	mInputsFile = input;
-//	mIsJS = !input.isEmpty();
-	mIsJS = js;
+	mMode = mode;
 }
 
 Runner::~Runner()
@@ -100,9 +99,9 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	mReporter.onInterpretationStart();
-	if (mIsJS) {
+	if (mMode == "js") {
 		return mPluginFacade.interpretCode(mInputsFile);
-	} else {
+	} else if (mMode == "diagram") {
 		mPluginFacade.actionsManager().runAction().trigger();
 	}
 
