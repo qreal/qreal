@@ -28,7 +28,6 @@ function show_help {
 binFolder="$(dirname "$0")"
 fileFolder=$(dirname "$1")
 fieldsFolder="$fileFolder/fields"
-mainFolderWithFields="$fieldsFolder/$fileNameWithoutExtension"
 [ ! -d "$fieldsFolder" ] && fieldsFolder=$binFolder/../fields
 
 logFile=$(pwd)/checker-log.txt
@@ -43,13 +42,6 @@ reportFile=$(pwd)/report
 trajectoryFile=$(pwd)/trajectory
 failedFieldFile=$(pwd)/failed-field
 
-runmode=$mainFolderWithFields/runmode
-MODE="diagram"
-
-if [ -e runmode ]; then
-	MODE="js"
-fi
-
 internalErrorMessage="[ { \"level\": \"error\", \"message\": \"Внутренняя ошибка системы проверки, обратитесь к разработчикам\" } ]"
 incorrectSaveFileMessage="[ { \"level\": \"error\", \"message\": \"Некорректный или испорченный файл с сохранением\" } ]"
 solutionFailedOnOwnFieldMessage="[ { \"level\": \"error\", \"message\": \"Решение работает неправильно\" } ]"
@@ -60,6 +52,19 @@ solutionFailedOnOtherFieldMessage="[ { \"level\": \"error\", \"message\": \"Ре
 fileWithPath=$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
+
+mainFolderWithFields="$fieldsFolder/$fileNameWithoutExtension"
+
+runmode=$mainFolderWithFields/runmode
+MODE="diagram"
+
+log $runmode
+
+if [ -e $runmode ]; then
+	MODE="js"
+fi
+
+log "$MODE"
 
 if ! [ -f "$fileWithPath" ]; then
 	echo $internalErrorMessage
@@ -87,7 +92,7 @@ rm -f "$failedFieldFile"
 mkdir -p "$(pwd)/reports/$fileNameWithoutExtension"
 mkdir -p "$(pwd)/trajectories/$fileNameWithoutExtension"
 
-if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
+if [ ! -f "$mainFolderWithFields/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
@@ -95,8 +100,6 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--input "$mainFolderWithFields/check-self.txt" \
 			--mode "$MODE"
-
-	log "$MODE"
 
 	exitCode=$?
 
@@ -126,19 +129,19 @@ fi
 
 log "Looking for prepared testing fields in $fieldsFolder..."
 
-if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
-	log "Found $fieldsFolder/$fileNameWithoutExtension folder"
+if [ -d "$mainFolderWithFields" ]; then
+	log "Found $mainFolderWithFields folder"
 
 	solutionCopy=$fileNameWithoutExtension-copy.qrs
 	cp -f $fileWithPath ./$solutionCopy
 
-	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
-		if [ "$i" == "no-check-self" ] || [[ $i == *.txt ]]; then
+	for i in $( ls "$mainFolderWithFields" ); do
+		if [ "$i" == "no-check-self" ] || [[ $i != *.xml ]]; then
 			continue
 		fi
 
-		log "Field: $i, running $patcher $solutionCopy $fieldsFolder/$fileNameWithoutExtension/$i..."
-		$patcher "$solutionCopy" "$fieldsFolder/$fileNameWithoutExtension/$i"
+		log "Field: $i, running $patcher $solutionCopy $mainFolderWithFields/$i..."
+		$patcher "$solutionCopy" "$mainFolderWithFields/$i"
 		if [ $? -ne 0 ]; then
 			echo $internalErrorMessage
 			log "Patching failed, aborting"
@@ -152,8 +155,6 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
 				--input "$mainFolderWithFields/$currentField.txt" \
 				--mode "$MODE"
-
-		log "$MODE"
 
 		exitCode=$?
 
