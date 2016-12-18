@@ -83,7 +83,6 @@ if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
-			--js \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--input "$fieldsFolder/$fileNameWithoutExtension/check-self.txt"
@@ -123,7 +122,7 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 	cp -f $fileWithPath ./$solutionCopy
 
 	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
-		if [ "$i" == "no-check-self" ] || [[ $i == *.txt ]]; then
+		if [ "$i" == "no-check-self" ] then
 			continue
 		fi
 
@@ -138,7 +137,6 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 		log "Running Checker"
 		currentField="${i%.*}"
 		$twoDModel --platform minimal -b "./$solutionCopy" \
-				--js \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
 				--input "$fieldsFolder/$fileNameWithoutExtension/$currentField.txt"
