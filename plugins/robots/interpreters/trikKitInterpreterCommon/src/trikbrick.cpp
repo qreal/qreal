@@ -93,6 +93,25 @@ void TrikBrick::setCurrentDir(const QString &dir)
 	mCurrentDir = QFileInfo(dir).dir(); // maybe can be constructed directly
 }
 
+void TrikBrick::setCurrentInputs(const QString &f)
+{
+	mIsExcerciseMode = true;
+	QString file(f);
+	QFile in(file);
+	if (!in.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		emit error(tr("Trying to read from file %1 failed").arg(file)); // todo: remove? It's only in exercise.
+	}
+
+	QStringList result;
+
+	while (!in.atEnd()) {
+		const auto line = in.readLine();
+		result << QString::fromUtf8(line);
+	}
+
+	mInputs = result;
+}
+
 void TrikBrick::stop() {
 	/// @todo: properly implement this?
 	mTwoDRobotModel->stopRobot();
@@ -276,6 +295,9 @@ qint64 TrikBrick::time() const
 
 QStringList TrikBrick::readAll(const QString &path)
 {
+	if (mIsExcerciseMode) {
+		return mInputs;
+	}
 	//if (mCurrentDir) todo: check that the current working dir is a save dir
 	QFileInfo normalizedPath(mCurrentDir.absoluteFilePath(path)); // absoluteDir?
 	QString file = normalizedPath.filePath();

@@ -37,6 +37,7 @@ public:
 	void init();
 
 	void setCurrentDir(const QString &dir);
+	void setCurrentInputs(const QString &f);
 
 public slots:
 	void configure(const QString &portName, const QString &deviceName) override {}
@@ -99,6 +100,8 @@ private:
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
 
 	QDir mCurrentDir;
+	bool mIsExcerciseMode = false;
+	QStringList mInputs;
 
 };
 

@@ -55,7 +55,7 @@ void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, const QString &inputs)
 {
 	mRunning = true;
-	Q_UNUSED(inputs); // ignore inputs for now
+	mBrick.setCurrentInputs(inputs);
 	QString newScript = overrides /*+ initInputs(inputs)*/ + script;
 	//qDebug() << newScript;
 	mScriptRunner.run(newScript);
