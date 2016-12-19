@@ -82,6 +82,7 @@ void TrikBrick::init()
 	mSensors.clear();
 	mEncoders.clear();
 	mKeys.init();
+	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
 	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
 	mIsWaitingEnabled = true;
@@ -164,7 +165,7 @@ trikControl::VectorSensorInterface *TrikBrick::accelerometer() {
 	return mAccelerometer.data();
 }
 
-trikControl::VectorSensorInterface *TrikBrick::gyroscope() {
+trikControl::GyroSensorInterface *TrikBrick::gyroscope() {
 	using namespace kitBase::robotModel;
 	if (mGyroscope.isNull()) {
 		auto a = RobotModelUtils::findDevice<robotParts::GyroscopeSensor>(*mTwoDRobotModel
@@ -173,7 +174,7 @@ trikControl::VectorSensorInterface *TrikBrick::gyroscope() {
 			emit error(tr("No configured gyroscope"));
 			return nullptr;
 		}
-		mGyroscope.reset(new TrikGyroscopeAdapter(a->port(), mTwoDRobotModel->engine()));
+		mGyroscope.reset(new TrikGyroscopeAdapter(a, mTwoDRobotModel));
 	}
 	return mGyroscope.data();
 }

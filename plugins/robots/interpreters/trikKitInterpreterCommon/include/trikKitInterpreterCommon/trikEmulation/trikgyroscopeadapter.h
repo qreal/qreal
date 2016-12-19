@@ -1,28 +1,44 @@
 #pragma once
 
-#include <trikControl/vectorSensorInterface.h>
+#include <QtCore/QTimer>
+#include <QQuaternion>
 
-#include <kitBase/robotModel/portInfo.h> // forward?
+#include <trikControl/gyroSensorInterface.h>
+#include <trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h>
 
-namespace twoDModel {
-namespace engine {
-class TwoDModelEngineInterface;
+#include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
+
+namespace kitBase {
+namespace robotModel {
+namespace robotParts {
+class GyroscopeSensor;
 }
 }
+}
 
-class TrikGyroscopeAdapter : public trikControl::VectorSensorInterface {
+class TrikGyroscopeAdapter : public trikControl::GyroSensorInterface {
 
 Q_OBJECT
 
 public:
-	TrikGyroscopeAdapter(const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface *engine);
+	TrikGyroscopeAdapter(kitBase::robotModel::robotParts::GyroscopeSensor *gyro
+		, const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model);//
 
 	virtual Status status() const override { return Status::ready; }
 
 public slots:
 	virtual QVector<int> read() const override;
+	virtual void calibrate(int msec) override;
+	virtual bool isCalibrated() const override;
+	virtual QVector<int> readRawData() const override;
+
+private slots:
+	void countTilt(QVector<int> oldFormat);
 
 private:
-	kitBase::robotModel::PortInfo mPort;
-	twoDModel::engine::TwoDModelEngineInterface *mEngine;
+	kitBase::robotModel::robotParts::GyroscopeSensor *mGyro;
+	QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> mModel;
+	QVector<int> mResult;
+	QQuaternion mQ;
+	int mLastUpdate;
 };

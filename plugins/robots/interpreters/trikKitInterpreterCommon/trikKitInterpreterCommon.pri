@@ -19,6 +19,7 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikKernel \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikNetwork \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
@@ -26,7 +27,7 @@ includes(plugins/robots/common/kitBase \
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
-		trikControl-x86 trikScriptRunner-x86 qrgui-text-editor \
+		trikControl-x86 trikScriptRunner-x86 trikKernel-x86 qrgui-text-editor \
 		)
 
 LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
