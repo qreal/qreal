@@ -19,7 +19,7 @@ const QString overrides = "script.random = brick.random;script.wait = brick.wait
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
         const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model
-		) : mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr, nullptr), mErrorReporter(nullptr)
+		) : mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr), mErrorReporter(nullptr)
 {
 	connect(&mBrick, &TrikBrick::error, this, &TrikQtsInterpreter::reportError);
 //	mScriptRunner.registerUserFunction("print", printRedirect);
@@ -55,7 +55,7 @@ void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, const QString &inputs)
 {
 	mRunning = true;
-	Q_UNUSED(inputs); // ignore inputs for now
+	mBrick.setCurrentInputs(inputs);
 	QString newScript = overrides /*+ initInputs(inputs)*/ + script;
 	//qDebug() << newScript;
 	mScriptRunner.run(newScript);
