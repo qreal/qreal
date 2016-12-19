@@ -90,7 +90,7 @@ rm -f "$failedFieldFile"
 mkdir -p "$(pwd)/reports/$fileNameWithoutExtension"
 mkdir -p "$(pwd)/trajectories/$fileNameWithoutExtension"
 
-if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
+if [ ! -f "$mainFolderWithFields/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
@@ -129,19 +129,19 @@ fi
 
 log "Looking for prepared testing fields in $fieldsFolder..."
 
-if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
-	log "Found $fieldsFolder/$fileNameWithoutExtension folder"
+if [ -d "$mainFolderWithFields" ]; then
+	log "Found $mainFolderWithFields folder"
 
 	solutionCopy=$fileNameWithoutExtension-copy.qrs
 	cp -f $fileWithPath ./$solutionCopy
 
-	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
+	for i in $( ls "$mainFolderWithFields" ); do
 		if [ "$i" == "no-check-self" ] || [[ $i != *.xml ]]; then
 			continue
 		fi
 
-		log "Field: $i, running $patcher $solutionCopy $fieldsFolder/$fileNameWithoutExtension/$i..."
-		$patcher "$solutionCopy" "$fieldsFolder/$fileNameWithoutExtension/$i"
+		log "Field: $i, running $patcher $solutionCopy $mainFolderWithFields/$i..."
+		$patcher "$solutionCopy" "$mainFolderWithFields/$i"
 		if [ $? -ne 0 ]; then
 			echo $internalErrorMessage
 			log "Patching failed, aborting"
