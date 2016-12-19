@@ -19,8 +19,8 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
-		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
 		plugins/robots/interpreters/trikKitInterpreterCommon \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikKernel \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
 		)
