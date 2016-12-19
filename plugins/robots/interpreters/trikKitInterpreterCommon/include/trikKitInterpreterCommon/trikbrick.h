@@ -3,10 +3,11 @@
 #include <QtCore/QHash>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QDir>
 
 #include <trikControl/brickInterface.h>
 
-#include "robotModel/twoD/trikTwoDRobotModel.h"
+#include <trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h>
 
 #include "trikEmulation/trikdisplayemu.h"
 #include "trikEmulation/triksensoremu.h"
@@ -35,6 +36,9 @@ public:
 	}
 	void init();
 
+	void setCurrentDir(const QString &dir);
+	void setCurrentInputs(const QString &f);
+
 public slots:
 	void configure(const QString &portName, const QString &deviceName) override {}
 	void playSound(const QString &soundFileName) override {}
@@ -48,7 +52,7 @@ public slots:
 	QStringList sensorPorts(trikControl::SensorInterface::Type type) const override;
 	QStringList encoderPorts() const override;
 	trikControl::VectorSensorInterface *accelerometer() override;
-	trikControl::VectorSensorInterface *gyroscope() override;
+	trikControl::GyroSensorInterface *gyroscope() override;
 	trikControl::LineSensorInterface *lineSensor(const QString &port) override;
 	trikControl::ColorSensorInterface *colorSensor(const QString &port) override {return nullptr;}
 	trikControl::ObjectSensorInterface *objectSensor(const QString &port) override {return nullptr;}
@@ -58,15 +62,18 @@ public slots:
 	trikControl::KeysInterface *keys() override {return &mKeys;}
 	trikControl::DisplayInterface *display() override;
 	trikControl::LedInterface *led() override;
+	trikControl::GamepadInterface *gamepad() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
 
 	void playTone(int hzFreq, int msDuration) override {}
 	trikControl::EventDeviceInterface *eventDevice(const QString &deviceFile) override {return nullptr;}
 	void stopEventDevice(const QString &deviceFile) override {}
 
+	/// some ScriptExecution control replacements. @todo: factor out in the separate class
 	int random(int from, int to);
 	void wait(int milliseconds);
 	qint64 time() const;
+	QStringList readAll(const QString &path);
 signals:
 	void error(const QString &msg);
 	void log(const QString &msg);
@@ -91,6 +98,10 @@ private:
 	QScopedPointer<TrikLedAdapter> mLed;
 	QScopedPointer<TrikAccelerometerAdapter> mAccelerometer;
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
+
+	QDir mCurrentDir;
+	bool mIsExcerciseMode = false;
+	QStringList mInputs;
 
 };
 

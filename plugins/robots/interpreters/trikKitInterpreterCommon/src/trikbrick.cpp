@@ -82,9 +82,34 @@ void TrikBrick::init()
 	mSensors.clear();
 	mEncoders.clear();
 	mKeys.init();
+	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
 	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
 	mIsWaitingEnabled = true;
+}
+
+void TrikBrick::setCurrentDir(const QString &dir)
+{
+	mCurrentDir = QFileInfo(dir).dir(); // maybe can be constructed directly
+}
+
+void TrikBrick::setCurrentInputs(const QString &f)
+{
+	mIsExcerciseMode = true;
+	QString file(f);
+	QFile in(file);
+	if (!in.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		emit error(tr("Trying to read from file %1 failed").arg(file)); // todo: remove? It's only in exercise.
+	}
+
+	QStringList result;
+
+	while (!in.atEnd()) {
+		const auto line = in.readLine();
+		result << QString::fromUtf8(line);
+	}
+
+	mInputs = result;
 }
 
 void TrikBrick::stop() {
@@ -159,7 +184,7 @@ trikControl::VectorSensorInterface *TrikBrick::accelerometer() {
 	return mAccelerometer.data();
 }
 
-trikControl::VectorSensorInterface *TrikBrick::gyroscope() {
+trikControl::GyroSensorInterface *TrikBrick::gyroscope() {
 	using namespace kitBase::robotModel;
 	if (mGyroscope.isNull()) {
 		auto a = RobotModelUtils::findDevice<robotParts::GyroscopeSensor>(*mTwoDRobotModel
@@ -168,7 +193,7 @@ trikControl::VectorSensorInterface *TrikBrick::gyroscope() {
 			emit error(tr("No configured gyroscope"));
 			return nullptr;
 		}
-		mGyroscope.reset(new TrikGyroscopeAdapter(a->port(), mTwoDRobotModel->engine()));
+		mGyroscope.reset(new TrikGyroscopeAdapter(a, mTwoDRobotModel));
 	}
 	return mGyroscope.data();
 }
@@ -258,11 +283,37 @@ void TrikBrick::wait(int milliseconds)
 	t->setRepeatable(true);
 	connect(t.data(), SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
 	t->start(milliseconds);
+	if (!mIsWaitingEnabled)
+		return; // to be safe;
 	loop.exec();
 }
 
 qint64 TrikBrick::time() const
 {
 	return mTwoDRobotModel->timeline().timestamp();
+}
+
+QStringList TrikBrick::readAll(const QString &path)
+{
+	if (mIsExcerciseMode) {
+		return mInputs;
+	}
+	//if (mCurrentDir) todo: check that the current working dir is a save dir
+	QFileInfo normalizedPath(mCurrentDir.absoluteFilePath(path)); // absoluteDir?
+	QString file = normalizedPath.filePath();
+	QFile in(file);
+	if (!in.open(QIODevice::ReadOnly | QIODevice::Text)) {
+		emit error(tr("Trying to read from file %1 failed").arg(file));
+		return {};
+	}
+
+	QStringList result;
+
+	while (!in.atEnd()) {
+		const auto line = in.readLine();
+		result << QString::fromUtf8(line);
+	}
+
+	return result;
 }
 

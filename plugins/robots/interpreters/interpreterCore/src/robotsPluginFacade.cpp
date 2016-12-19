@@ -272,7 +272,8 @@ bool RobotsPluginFacade::interpretCode(const QString &inputs)
 	QString code = logicalRepo->metaInformation("activeCode").toString();
 	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
 	if (code.isEmpty() || name.isEmpty()) {
-		qDebug("No saved js code found in the qrs file");
+		mMainWindow->errorReporter()->addError(tr("No saved js code found in the qrs file"));
+		//qDebug("No saved js code found in the qrs file");
 		return false;
 	}
 	emit mEventsForKitPlugin.interpretCode(code, inputs);
@@ -287,12 +288,12 @@ void RobotsPluginFacade::saveCode(const QString &code)
 	mProjectManager->setUnsavedIndicator(true);
 }
 
-void RobotsPluginFacade::openSavedCode()
-{
-	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
-	QString code = logicalRepo->metaInformation("activeCode").toString();
-	// probably this method is to be deleted later
-}
+//void RobotsPluginFacade::openSavedCode()
+//{
+//	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
+//	QString code = logicalRepo->metaInformation("activeCode").toString();
+//	// probably this method is to be deleted later
+//}
 
 void RobotsPluginFacade::connectInterpreterToActions()
 {
