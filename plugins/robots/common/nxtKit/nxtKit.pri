@@ -25,6 +25,8 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base qextserialport qslog \
 )
 
+QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+
 win32 {
 	LIBS += -llibusb-1.0
 }
