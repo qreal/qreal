@@ -38,6 +38,8 @@ macx {
 	LIBS += -lusb-1.0
 }
 
+QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+
 HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/ev3RobotModelBase.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Display.h \

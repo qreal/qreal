@@ -16,6 +16,8 @@ TEMPLATE = subdirs
 
 include(../../../../global.pri)
 
+QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+
 win32 {
 	copyToDestdir(MinGW32/dll/libusb-1.0.dll, NOW)
 }

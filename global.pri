@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Iakov Kirilenko, 2007-2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -121,7 +121,10 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 LIBS += -L$$DESTDIR
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
+QMAKE_CXXFLAGS += -fno-elide-constructors -pedantic-errors -Werror=pedantic -ansi -std=c++11
+#I whant -Werror to be turned on, but Qt has problems
+QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor -Woverloaded-virtual -Wuninitialized -Winit-self
+#-Wold-style-cast -Wmissing-declarations 
 
 GLOBAL_PWD = $$PWD
 
