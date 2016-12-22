@@ -85,7 +85,10 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &kitBase::InterpreterInterface::stopped, [&]() {
+//		connect(&mPluginFacade.interpreter(), &kitBase::InterpreterInterface::stopped, [&]() {
+//			QTimer::singleShot(0, this, SLOT(close()));
+//		});
+		connect(&mPluginFacade.eventsForKitPlugins(), &kitBase::EventsForKitPluginInterface::interpretationStopped, [&]() {
 			QTimer::singleShot(0, this, SLOT(close()));
 		});
 	}

@@ -266,6 +266,11 @@ const kitBase::InterpreterInterface &RobotsPluginFacade::interpreter() const
 	return mProxyInterpreter;
 }
 
+const kitBase::EventsForKitPluginInterface &RobotsPluginFacade::eventsForKitPlugins() const
+{
+	return mEventsForKitPlugin;
+}
+
 bool RobotsPluginFacade::interpretCode(const QString &inputs)
 {
 	auto logicalRepo = &mLogicalModelApi->logicalRepoApi();

@@ -76,6 +76,8 @@ public:
 	/// Returns immutable instance of diagram interpter`s management interface.
 	const kitBase::InterpreterInterface &interpreter() const;
 
+	const kitBase::EventsForKitPluginInterface &eventsForKitPlugins() const;
+
 	//tempory solution
 	bool interpretCode(const QString &inputs);
 
