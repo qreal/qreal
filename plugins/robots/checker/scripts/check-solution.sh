@@ -64,6 +64,8 @@ if [ -e $runmode ]; then
 	MODE="js"
 fi
 
+log "$MODE"
+
 if ! [ -f "$fileWithPath" ]; then
 	echo $internalErrorMessage
 	log "File $fileWithPath does not exist, aborting"
@@ -98,8 +100,6 @@ if [ ! -f "$mainFolderWithFields/no-check-self" ]; then
 			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
 			--input "$mainFolderWithFields/check-self.txt" \
 			--mode "$MODE"
-
-	log "$MODE"
 
 	exitCode=$?
 
@@ -155,8 +155,6 @@ if [ -d "$mainFolderWithFields" ]; then
 				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
 				--input "$mainFolderWithFields/$currentField.txt" \
 				--mode "$MODE"
-
-		log "$MODE"
 
 		exitCode=$?
 
