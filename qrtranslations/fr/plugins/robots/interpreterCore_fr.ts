@@ -141,12 +141,12 @@
         <translation>TRIK Studio</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="70"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="75"/>
         <source>Subprograms</source>
         <translation>Sous-programmes</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="75"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/customizer.cpp" line="80"/>
         <source>The list of all declared subprograms in the project</source>
         <translation>La liste de tous les sous-programmes du projet</translation>
     </message>
@@ -220,17 +220,17 @@
         <translation>Fichier TRIK Studio (*.qrs)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="61"/>
         <source>Blocks</source>
         <translation>Blocs</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="101"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="102"/>
         <source>Configure devices</source>
         <translation>Configuration de capteurs</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="115"/>
         <source>Sensors state</source>
         <translation>État des capteurs</translation>
     </message>
@@ -270,12 +270,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="268"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="286"/>
         <source>Real robot</source>
         <translation>Robot réel</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="269"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/actionsManager.cpp" line="287"/>
         <source>2D model</source>
         <translation>Modèle 2D</translation>
     </message>
@@ -291,12 +291,17 @@
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="132"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="146"/>
         <source>Robots</source>
         <translation>Robots</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="294"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="280"/>
+        <source>No saved js code found in the qrs file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="380"/>
         <source>Toggle robot console panel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -304,78 +309,109 @@
 <context>
     <name>interpreterCore::UiManager</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="57"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="58"/>
         <source>Miscellaneous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="58"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="59"/>
         <source>Robot console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="90"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="91"/>
         <source>edit mode</source>
         <translation>mode d&apos;édition</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="91"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="92"/>
         <source>debug mode</source>
         <translation>mode de débogage</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="245"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="246"/>
         <source>Edit mode</source>
         <translation>Mode d&apos;édition</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="248"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="249"/>
         <source>Debug mode</source>
         <translation>Mode de débogage</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="354"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/uiManager.cpp" line="355"/>
         <source>Modes</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
+    <name>interpreterCore::interpreter::BlockInterpreter</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="94"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="168"/>
+        <source>No connection to robot</source>
+        <translation type="unfinished">Pas de connexion au robot</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="99"/>
+        <source>Interpreter is already running</source>
+        <translation type="unfinished">L&apos;interprétateur est deja lancé</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="152"/>
+        <source>Connected successfully</source>
+        <translation type="unfinished">Connexion reussie</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="156"/>
+        <source>Can&apos;t connect to a robot.</source>
+        <translation type="unfinished">La connexion au robot a échoué.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="205"/>
+        <source>Cannot create new thread with already occupied id %1</source>
+        <translation type="unfinished">Impossible de créer un nouveau thread avec un identificateur deja utilisé %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="219"/>
+        <source>Threads limit exceeded. Maximum threads count is %1</source>
+        <translation type="unfinished">Le nombre limite de threads est atteint. La limite est de %1 </translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/blockInterpreter.cpp" line="241"/>
+        <source>Killing non-existent thread %1</source>
+        <translation type="unfinished">Terminaison du thread non existant %1</translation>
+    </message>
+</context>
+<context>
     <name>interpreterCore::interpreter::Interpreter</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="86"/>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="155"/>
         <source>No connection to robot</source>
-        <translation>Pas de connexion au robot</translation>
+        <translation type="vanished">Pas de connexion au robot</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="91"/>
         <source>Interpreter is already running</source>
-        <translation>L&apos;interprétateur est deja lancé</translation>
+        <translation type="vanished">L&apos;interprétateur est deja lancé</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="139"/>
         <source>Connected successfully</source>
-        <translation>Connexion reussie</translation>
+        <translation type="vanished">Connexion reussie</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="143"/>
         <source>Can&apos;t connect to a robot.</source>
-        <translation>La connexion au robot a échoué.</translation>
+        <translation type="vanished">La connexion au robot a échoué.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="192"/>
         <source>Cannot create new thread with already occupied id %1</source>
-        <translation>Impossible de créer un nouveau thread avec un identificateur deja utilisé %1</translation>
+        <translation type="vanished">Impossible de créer un nouveau thread avec un identificateur deja utilisé %1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="206"/>
         <source>Threads limit exceeded. Maximum threads count is %1</source>
-        <translation>Le nombre limite de threads est atteint. La limite est de %1 </translation>
+        <translation type="vanished">Le nombre limite de threads est atteint. La limite est de %1 </translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/interpreter/interpreter.cpp" line="228"/>
         <source>Killing non-existent thread %1</source>
-        <translation>Terminaison du thread non existant %1</translation>
+        <translation type="vanished">Terminaison du thread non existant %1</translation>
     </message>
 </context>
 <context>
