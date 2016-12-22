@@ -25,10 +25,14 @@ static T getYaw(const QQuaternion &q)
 			, 1 - 2 * q.y() * q.y() - 2 * q.z() * q.z());
 }
 
+static int getTimeVal(trik::robotModel::twoD::TrikTwoDRobotModel * const model) {
+	return model->timeline().timestamp() * 1000 / 256;
+}
+
 
 TrikGyroscopeAdapter::TrikGyroscopeAdapter(kitBase::robotModel::robotParts::GyroscopeSensor *gyro
 		, const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
-	: mGyro(gyro), mModel(model), mResult({0, 0, 0, 0, 0, 0, 0})
+	: mGyro(gyro), mModel(model), mResult({0, 0, 0, getTimeVal(model.data()), 0, 0, 0})
 {
 	connect(gyro, SIGNAL(newData(QVector<int>)), this, SLOT(countTilt(QVector<int>)));
 }
@@ -55,7 +59,7 @@ bool TrikGyroscopeAdapter::isCalibrated() const
 QVector<int> TrikGyroscopeAdapter::readRawData() const
 {
 	QVector<int> res = mModel->engine()->readGyroscopeSensor();
-	res.append(mModel->timeline().timestamp() / 256); // 256 because in trikRuntime timeVal granularity is 256 msec
+	res.append(getTimeVal(mModel.data())); // 256 because in trikRuntime timeVal granularity is 256 microsec
 	return res;
 }
 
@@ -65,7 +69,7 @@ void TrikGyroscopeAdapter::countTilt(QVector<int> oldFormat)
 	constexpr auto pi = 3.14159265358979323846;
 	constexpr auto RAD_TO_MDEG = 1000 * 180 / pi;
 	//QVector<int> oldFormat = mModel->engine()->readGyroscopeSensor();
-	int timeStamp = static_cast<int>(mModel->timeline().timestamp() / 256);
+	int timeStamp = static_cast<int>(getTimeVal(mModel.data()));
 	//qDebug() << mModel->timeline().timestamp() << ", " << timeStamp;
 
 	static bool timeInited = false;
@@ -79,7 +83,7 @@ void TrikGyroscopeAdapter::countTilt(QVector<int> oldFormat)
 		mResult[2] = oldFormat[2] * 1000 / gyroConstant;
 		mResult[3] = timeStamp;
 
-		const auto deltaConst = pi / 180 / 1000 / 1000000;
+		constexpr auto deltaConst = pi / 180 / 1000 / 1000000;
 		const auto dt = (timeStamp - mLastUpdate) * deltaConst;
 
 		const auto x = mResult[0] * dt;

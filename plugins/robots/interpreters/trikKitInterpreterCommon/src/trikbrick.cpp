@@ -83,6 +83,7 @@ void TrikBrick::init()
 	mEncoders.clear();
 	mKeys.init();
 	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
+	//gyroscope(); // another hack
 	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
 	mIsWaitingEnabled = true;
@@ -130,7 +131,7 @@ trikControl::MotorInterface *TrikBrick::motor(const QString &port)
 		robotParts::Motor * mot =
 		        RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
 		if (mot == nullptr) {
-			emit error(tr("No configured motor on port: ") + port);
+			emit error(tr("No configured motor on port: %1").arg(port));
 			return nullptr;
 		}
 		mMotors[port] = new TrikMotorEmu(mot);
@@ -146,7 +147,7 @@ trikControl::SensorInterface *TrikBrick::sensor(const QString &port)
 		robotParts::ScalarSensor * sens =
 		        RobotModelUtils::findDevice<robotParts::ScalarSensor>(*mTwoDRobotModel, port);
 		if (sens == nullptr) {
-			emit error(tr("No configured sensor on port: ") + port);
+			emit error(tr("No configured sensor on port: %1").arg(port));
 			return nullptr;
 		}
 		mSensors[port] = new TrikSensorEmu(sens);
@@ -208,7 +209,7 @@ trikControl::LineSensorInterface *TrikBrick::lineSensor(const QString &port) {
 		TrikLineSensor * sens =
 				RobotModelUtils::findDevice<TrikLineSensor>(*mTwoDRobotModel, port);
 		if (sens == nullptr) {
-			emit error(tr("No configured LineSensor on port: ") + port);
+			emit error(tr("No configured LineSensor on port: %1").arg(port));
 			return nullptr;
 		}
 		mLineSensors[port] = new TrikLineSensorAdapter(sens);
@@ -222,7 +223,7 @@ trikControl::EncoderInterface *TrikBrick::encoder(const QString &port) {
 		robotParts::EncoderSensor * enc =
 		        RobotModelUtils::findDevice<robotParts::EncoderSensor>(*mTwoDRobotModel, port);
 		if (enc == nullptr) {
-			emit error(tr("No configured encoder on port: ") + port);
+			emit error(tr("No configured encoder on port: %1").arg(port));
 			return nullptr;
 		}
 		mEncoders[port] = new TrikEncoderAdapter(enc->port(), mTwoDRobotModel->engine());
