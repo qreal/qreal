@@ -53,6 +53,19 @@ fileWithPath=$1
 fileName="${fileWithPath##*/}"
 fileNameWithoutExtension="${fileName%.*}"
 
+mainFolderWithFields="$fieldsFolder/$fileNameWithoutExtension"
+
+runmode=$mainFolderWithFields/runmode
+MODE="diagram"
+
+log $runmode
+
+if [ -e $runmode ]; then
+	MODE="js"
+fi
+
+log "$MODE"
+
 if ! [ -f "$fileWithPath" ]; then
 	echo $internalErrorMessage
 	log "File $fileWithPath does not exist, aborting"
@@ -79,12 +92,14 @@ rm -f "$failedFieldFile"
 mkdir -p "$(pwd)/reports/$fileNameWithoutExtension"
 mkdir -p "$(pwd)/trajectories/$fileNameWithoutExtension"
 
-if [ ! -f "$fieldsFolder/$fileNameWithoutExtension/no-check-self" ]; then
+if [ ! -f "$mainFolderWithFields/no-check-self" ]; then
 	log "Running save with its own field"
 
 	$twoDModel --platform minimal -b "$fileWithPath" \
 			--report "$(pwd)/reports/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
-			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension"
+			--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/_$fileNameWithoutExtension" \
+			--input "$mainFolderWithFields/check-self.txt" \
+			--mode "$MODE"
 
 	exitCode=$?
 
@@ -114,19 +129,19 @@ fi
 
 log "Looking for prepared testing fields in $fieldsFolder..."
 
-if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
-	log "Found $fieldsFolder/$fileNameWithoutExtension folder"
+if [ -d "$mainFolderWithFields" ]; then
+	log "Found $mainFolderWithFields folder"
 
 	solutionCopy=$fileNameWithoutExtension-copy.qrs
 	cp -f $fileWithPath ./$solutionCopy
 
-	for i in $( ls "$fieldsFolder/$fileNameWithoutExtension" ); do
-		if [ "$i" == "no-check-self" ]; then
+	for i in $( ls "$mainFolderWithFields" ); do
+		if [ "$i" == "no-check-self" ] || [[ $i != *.xml ]]; then
 			continue
 		fi
 
-		log "Field: $i, running $patcher $solutionCopy $fieldsFolder/$fileNameWithoutExtension/$i..."
-		$patcher "$solutionCopy" "$fieldsFolder/$fileNameWithoutExtension/$i"
+		log "Field: $i, running $patcher $solutionCopy $mainFolderWithFields/$i..."
+		$patcher "$solutionCopy" "$mainFolderWithFields/$i"
 		if [ $? -ne 0 ]; then
 			echo $internalErrorMessage
 			log "Patching failed, aborting"
@@ -137,7 +152,9 @@ if [ -d "$fieldsFolder/$fileNameWithoutExtension" ]; then
 		currentField="${i%.*}"
 		$twoDModel --platform minimal -b "./$solutionCopy" \
 				--report "$(pwd)/reports/$fileNameWithoutExtension/$currentField" \
-				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField"
+				--trajectory "$(pwd)/trajectories/$fileNameWithoutExtension/$currentField" \
+				--input "$mainFolderWithFields/$currentField.txt" \
+				--mode "$MODE"
 
 		exitCode=$?
 

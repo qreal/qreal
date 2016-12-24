@@ -12,18 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets network
+QT += widgets network script
 
 includes(plugins/robots/common/kitBase \
 		plugins/robots/common/twoDModel \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikKernel \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikNetwork \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
 		)
 
-links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
+links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
+		trikControl-x86 trikScriptRunner-x86 trikKernel-x86 qrgui-text-editor \
 		)
+
+LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
+# it's here because it looks like it can't be placed in a subdirs project (where is nothing to link)
+copyToDestdir($$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION/)
 
 HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/declSpec.h \
@@ -63,6 +72,18 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikAdditionalPreferences.h \
 	$$PWD/include/trikKitInterpreterCommon/trikDisplayWidget.h \
 	$$PWD/include/trikKitInterpreterCommon/trikKitInterpreterPluginBase.h \
+	$$PWD/include/trikKitInterpreterCommon/trikbrick.h \
+	$$PWD/include/trikKitInterpreterCommon/trikQtsInterpreter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/displaywidgetemu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikdisplayemu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/triksensoremu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikmotoremu.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikkeysinterfacestub.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/triklinesensoradapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikencoderadapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikledadapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikaccelerometeradapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikgyroscopeadapter.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -101,6 +122,17 @@ SOURCES += \
 	$$PWD/src/trikAdditionalPreferences.cpp \
 	$$PWD/src/trikDisplayWidget.cpp \
 	$$PWD/src/trikKitInterpreterPluginBase.cpp \
+	$$PWD/src/trikbrick.cpp \
+	$$PWD/src/trikQtsInterpreter.cpp \
+	$$PWD/src/trikEmulation/triksensoremu.cpp \
+	$$PWD/src/trikEmulation/trikdisplayemu.cpp \
+	$$PWD/src/trikEmulation/trikmotoremu.cpp \
+	$$PWD/src/trikEmulation/triklinesensoradapter.cpp \
+	$$PWD/src/trikEmulation/trikkeysinterfacestub.cpp \
+	$$PWD/src/trikEmulation/trikencoderadapter.cpp \
+	$$PWD/src/trikEmulation/trikledadapter.cpp \
+	$$PWD/src/trikEmulation/trikaccelerometeradapter.cpp \
+	$$PWD/src/trikEmulation/trikgyroscopeadapter.cpp
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \

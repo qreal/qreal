@@ -87,6 +87,7 @@ void Timeline::gotoNextFrame()
 	emit nextFrame();
 	mFrameStartTimestamp = QDateTime::currentMSecsSinceEpoch();
 	if (!mTimer.isActive()) {
+		emit tick(); /// hack so that constraints init-on would start immediatly.
 		mTimer.start();
 	}
 }

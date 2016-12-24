@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Iakov Kirilenko, 2007-2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -121,7 +121,10 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 LIBS += -L$$DESTDIR
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
+QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11
+#I whant -Werror to be turned on, but Qt has problems
+QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor -Woverloaded-virtual -Wuninitialized -Winit-self
+#-Wold-style-cast -Wmissing-declarations 
 
 GLOBAL_PWD = $$PWD
 
@@ -133,10 +136,10 @@ defineTest(copyToDestdir) {
 
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
+		AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		isEmpty(QMAKE_SH) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
 			win32 {
-				AFTER_SLASH = $$section(FILE, "/", -1, -1)
 				BASE_NAME = $$section(FILE, "/", -2, -2)
 				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
 
@@ -152,7 +155,7 @@ defineTest(copyToDestdir) {
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE*
+			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE'.'
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {

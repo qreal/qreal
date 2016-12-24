@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 # Copyright 2015 CyberTech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,13 +17,13 @@ set -o nounset
 set -o errexit
 
 function check_qmake_version {
-        
+
 #	echo Here
 	make -f <(echo -e "-include $1/Makefile\ncheck_qmake_version: FORCE\n\t@echo \${QMAKE}") check_qmake_version
 }
 
 function show_help {
-	echo "Usage: $(basename $0) [QREAL_DIR [FIELDS_DIR EXAMPLES_DIR TASKS_DIR] ]"
+	echo "Usage: $(basename $0) [QREAL_DIR [FIELDS_DIR EXAMPLES_DIR TASKS_DIR INPUTS_DIR] ]"
 	echo -e "QREAL_DIR\t-\tPath to QReal sources root"
 	echo "                    Defaults to \"../..\""
 	echo -e "FIELDS_DIR\t-\tPath to directory with prepared fields."
@@ -32,7 +32,8 @@ function show_help {
 	echo "                                     Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/solutions\""
 	echo -e "TASKS_DIR\t-\tPath to folder with saves with tasks."
 	echo "                                  Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/tasks\""
-	echo "                                  Defaults to \"<path to QReal/qrtest/trikStudioSimulatorTests/inputs>.\""
+	echo -e "INPUTS_DIR\t-\tPath to directory with with inputs."
+	echo "                                  Defaults to \"$$QREAL_DIR/qrtest/trikStudioSimulatorTests/inputs>.\""
 	echo "Example: ./$(basename $0) ~/Qt/5.7 ~/stepic-examples"
 	exit 0
 }
@@ -113,7 +114,7 @@ if $NEED_QT_LIBS ; then
         $qtDirLib/libQt5PrintSupport.so* $qtDirLib/libQt5Script.so* $qtDirLib/libQt5Svg.so* \
         $qtDirLib/libQt5Widgets.so* $qtDirLib/libQt5Xml.so* $qtDirLib/libQt5DBus.so* .
 
-fi 
+fi
 
 # Copying QReal libraries
 cp -fP $qRealDir/bin/release/changelog.txt .
@@ -166,7 +167,7 @@ cp -fP $qRealDir/bin/release/librobots-trik-kit.so* .
 cp -fP $qRealDir/bin/release/librobots-utils.so* .
 
 mkdir -p plugins/editors
-cp -fP   $qRealDir/bin/release/plugins/editors/librobotsMetamodel.so ./plugins/editors/
+cp -fP $qRealDir/bin/release/plugins/editors/* ./plugins/editors/
 
 mkdir -p plugins/tools
 cp -fP $qRealDir/bin/release/plugins/tools/librobots-plugin.so ./plugins/tools/
@@ -187,6 +188,10 @@ cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/trikV62KitInterprete
 cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/twoDModel_ru.qm ./translations/ru/plugins/robots/
 cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/twoDModelRunner_ru.qm ./translations/ru/plugins/robots/
 
+# Copying TRIKRuntime dependencies
+cp -fP $qRealDir/bin/release/*-x86.so* .
+cp -fP $qRealDir/bin/release/*.js .
+
 # Copying checker itself
 cp -fP $qRealDir/bin/release/2D-model .
 cp -fP $qRealDir/bin/release/patcher .
@@ -204,5 +209,4 @@ cp -r $tasksDir ./tasks
 popd
 
 rm -f trik_checker.tar.xz
-tar cvfJ trik_checker.tar.xz trikStudio-checker
-
+time { tar c trikStudio-checker | xz -z9cv > trik_checker.tar.xz ; }

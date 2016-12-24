@@ -25,6 +25,8 @@
 #include <interpreterCore/robotsPluginFacade.h>
 #include "reporter.h"
 
+#include <QtCore/QScopedPointer>
+
 namespace twoDModel {
 
 namespace model {
@@ -41,6 +43,14 @@ public:
 	/// @param report A path to a file where JSON report about the session will be written after it ends.
 	/// @param trajectory A path to a file where robot`s trajectory will be written during the session.
 	Runner(const QString &report, const QString &trajectory);
+
+	/// Constructor.
+	/// @param report A path to a file where JSON report about the session will be written after it ends.
+	/// @param trajectory A path to a file where robot`s trajectory will be written during the session.
+	/// @param input A path to a file where JSON with inputs for JavaScript.
+	/// @param mode Interpret mode.
+	Runner(const QString &report, const QString &trajectory, const QString &input, const QString &mode);
+
 	~Runner();
 
 	/// Starts the interpretation process. The given save file will be opened and interpreted in 2D model window.
@@ -68,6 +78,8 @@ private:
 	qReal::PluginConfigurator mConfigurator;
 	interpreterCore::RobotsPluginFacade mPluginFacade;
 	Reporter mReporter;
+	QString mInputsFile;
+	QString mMode;
 };
 
 }

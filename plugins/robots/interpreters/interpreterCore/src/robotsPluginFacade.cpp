@@ -22,8 +22,10 @@
 #include <twoDModel/engine/twoDModelGuiFacade.h>
 #include <twoDModel/robotModel/twoDRobotModel.h>
 
+#include <qrgui/textEditor/qscintillaTextEdit.h>
+
 #include "interpreterCore/managers/kitAutoSwitcher.h"
-#include "interpreterCore/interpreter/interpreter.h"
+#include "interpreterCore/interpreter/blockInterpreter.h"
 #include "src/coreBlocks/coreBlocksFactory.h"
 #include "src/ui/robotsSettingsPage.h"
 #include "src/managers/exerciseExportManager.h"
@@ -69,6 +71,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		return;
 	}
 
+	mMainWindow = &configurer.mainWindowInterpretersInterface();
+
 	mParser.reset(new textLanguage::RobotsBlockParser(mRobotModelManager
 			, [this]() { return mProxyInterpreter.timeElapsed(); }));
 
@@ -89,7 +93,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, mEventsForKitPlugin
 			, mRobotModelManager));
 
-	interpreter::Interpreter *interpreter = new interpreter::Interpreter(
+	interpreter::BlockInterpreter *interpreter = new interpreter::BlockInterpreter(
 			configurer.graphicalModelApi()
 			, configurer.logicalModelApi()
 			, configurer.mainWindowInterpretersInterface()
@@ -146,18 +150,17 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	// Just to capture them, not configurer.
 	qReal::ProjectManagementInterface &projectManager = configurer.projectManager();
-	qReal::gui::MainWindowInterpretersInterface &mainWindow = configurer.mainWindowInterpretersInterface();
 	qReal::GraphicalModelAssistInterface &graphicalModel = configurer.graphicalModelApi();
-	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &mainWindow, &graphicalModel]() {
+	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &graphicalModel, this]() {
 		if (projectManager.somethingOpened()) {
 			for (const qReal::Id &diagram : graphicalModel.children(qReal::Id::rootId())) {
 				if (diagram.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")) {
-					mainWindow.activateItemOrDiagram(diagram);
+					mMainWindow->activateItemOrDiagram(diagram);
 					return;
 				}
 			}
 		} else {
-			mainWindow.openStartTab();
+			mMainWindow->openStartTab();
 		}
 	});
 
@@ -186,6 +189,29 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered
 			, [this] () { mSaveAsTaskManager->save(); });
+
+	mLogicalModelApi = &configurer.logicalModelApi();
+	mTextManager = &configurer.textManager();
+	mProjectManager = &configurer.projectManager();
+	connect(mProjectManager
+	        , &qReal::ProjectManagementInterface::afterOpen
+	        , [&](const QString &path){
+		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
+		QString code = logicalRepo->metaInformation("activeCode").toString();
+		QString name = logicalRepo->metaInformation("activeCodeName").toString();
+		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
+			return;
+		}
+		QFileInfo codeDir(path);
+		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
+		QFile codeFile(codePath.filePath());
+		if (!codeFile.open(QFile::WriteOnly | QFile::Truncate)) {
+			return;
+		} // todo: check the result bool
+		QTextStream(&codeFile) << code;
+		codeFile.close();
+		mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
+	});
 
 	sync();
 }
@@ -239,6 +265,40 @@ const kitBase::InterpreterInterface &RobotsPluginFacade::interpreter() const
 {
 	return mProxyInterpreter;
 }
+
+const kitBase::EventsForKitPluginInterface &RobotsPluginFacade::eventsForKitPlugins() const
+{
+	return mEventsForKitPlugin;
+}
+
+bool RobotsPluginFacade::interpretCode(const QString &inputs)
+{
+	auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
+	QString code = logicalRepo->metaInformation("activeCode").toString();
+	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
+	if (code.isEmpty() || name.isEmpty()) {
+		mMainWindow->errorReporter()->addError(tr("No saved js code found in the qrs file"));
+		//qDebug("No saved js code found in the qrs file");
+		return false;
+	}
+	emit mEventsForKitPlugin.interpretCode(code, inputs);
+	return true;
+}
+
+void RobotsPluginFacade::saveCode(const QString &code)
+{
+	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
+	logicalRepo->setMetaInformation("activeCode", code);
+	logicalRepo->setMetaInformation("activeCodeName", "script");// no concise name for now
+	mProjectManager->setUnsavedIndicator(true);
+}
+
+//void RobotsPluginFacade::openSavedCode()
+//{
+//	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
+//	QString code = logicalRepo->metaInformation("activeCode").toString();
+//	// probably this method is to be deleted later
+//}
 
 void RobotsPluginFacade::connectInterpreterToActions()
 {
@@ -303,9 +363,16 @@ void RobotsPluginFacade::initSensorWidgets()
 		mActionsManager.runAction().setVisible(false);
 		mActionsManager.stopRobotAction().setVisible(mRobotModelManager.model().interpretedModel());
 	});
-	connect(&mProxyInterpreter, &kitBase::InterpreterInterface::stopped, mGraphicsWatcherManager, [=]() {
-		mActionsManager.runAction().setVisible(mRobotModelManager.model().interpretedModel());
-		mActionsManager.stopRobotAction().setVisible(false);
+	connect(&mProxyInterpreter
+			, &kitBase::InterpreterInterface::stopped
+			, mGraphicsWatcherManager
+			, [=] () {
+		if (!dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab())) {
+			// since userStop fires on any tab/model switch even when the code tab is opened
+			// and nothing is running, but this whole visibility mumbo-jumbo has become a mess
+			mActionsManager.runAction().setVisible(mRobotModelManager.model().interpretedModel());
+			mActionsManager.stopRobotAction().setVisible(false);
+		}
 	});
 
 	mUiManager->placeDevicesConfig(mDockDevicesConfigurer.data());
@@ -383,6 +450,35 @@ void RobotsPluginFacade::connectEventsForKitPlugin()
 			, &mEventsForKitPlugin
 			, &kitBase::EventsForKitPluginInterface::interpretationStopped
 			);
+
+	QObject::connect(
+				&mEventsForKitPlugin
+				, &kitBase::EventsForKitPluginInterface::interpretationStarted
+				, [this](){ /// @todo
+		const bool isBlockInt = mProxyInterpreter.isRunning();
+		mActionsManager.runAction().setEnabled(isBlockInt);
+		mActionsManager.stopRobotAction().setEnabled(isBlockInt);
+		mActionsManager.setEnableRobotActions(isBlockInt);
+	}
+	);
+
+	QObject::connect(
+				&mEventsForKitPlugin
+				, &kitBase::EventsForKitPluginInterface::codeInterpretationStarted
+				, this
+				, &RobotsPluginFacade::saveCode
+				);
+
+	QObject::connect(
+				&mEventsForKitPlugin
+				, &kitBase::EventsForKitPluginInterface::interpretationStopped
+				, [this](qReal::interpretation::StopReason reason){ /// @todo
+		Q_UNUSED(reason);
+		mActionsManager.runAction().setEnabled(true);
+		mActionsManager.stopRobotAction().setEnabled(true);
+		mActionsManager.setEnableRobotActions(true);
+	}
+	);
 
 	QObject::connect(
 			&mRobotModelManager

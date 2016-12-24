@@ -20,6 +20,9 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 		plugins/robots/interpreters/trikKitInterpreterCommon \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikKernel \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
 		)
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \

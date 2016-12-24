@@ -33,7 +33,7 @@ public:
 			, const kitBase::robotModel::PortInfo &port
 			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
-
+public slots:
 	void setColor(const QString &color) override;
 
 private:
