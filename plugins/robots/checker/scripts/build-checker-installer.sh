@@ -42,7 +42,7 @@ function show_help {
 
 pushd "$(dirname "$0")"
 
-if [ "$#" -gt 1 ]; then
+if [ "$#" -ge 1 ]; then
 	qRealDir=$(readlink -f $1)
 else
 	qRealDir=$(readlink -f ../..)
@@ -55,36 +55,34 @@ QT_INSTALL_PLUGINS=$($QMAKE -query QT_INSTALL_PLUGINS)
 QT_INSTALL_LIBS=$($QMAKE -query QT_INSTALL_LIBS)
 QT_HOST_LIBS=$($QMAKE -query QT_HOST_LIBS)
 
-if [ "$#" -lt 1 ]; then
-	qtDir=$(readlink -f $QT_HOST_DATA)
-	qtDirForPlugins=$(readlink -f $QT_INSTALL_PLUGINS)
-	qtDirLib=$(readlink -f $QT_INSTALL_LIBS)
-	hostDirLib=$(readlink -f $QT_HOST_LIBS)
-fi
+qtDir=$(readlink -f $QT_HOST_DATA)
+qtDirForPlugins=$(readlink -f $QT_INSTALL_PLUGINS)
+qtDirLib=$(readlink -f $QT_INSTALL_LIBS)
+hostDirLib=$(readlink -f $QT_HOST_LIBS)
 
 
 COPY="cp -rfP"
 NEED_QT_LIBS=false
 
-if [ "$#" -gt 2 ]; then
+if [ "$#" -ge 2 ]; then
 	fieldsDir=$(readlink -f $2)
 else
 	fieldsDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/fields/fields)
 fi
 
-if [ "$#" -gt 3 ]; then
+if [ "$#" -ge 3 ]; then
 	examplesDir=$(readlink -f $3)
 else
 	examplesDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/solutions)
 fi
 
-if [ "$#" -gt 4 ]; then
+if [ "$#" -ge 4 ]; then
 	tasksDir=$(readlink -f $4)
 else
 	tasksDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/tasks)
 fi
 
-if [ "$#" -gt 5 ]; then
+if [ "$#" -ge 5 ]; then
 	inputsDir=$(readlink -f $5)
 else
 	inputsDir=$(readlink -f $qRealDir/qrtest/trikStudioSimulatorTests/inputs)
