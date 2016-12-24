@@ -16,12 +16,14 @@ TEMPLATE = subdirs
 
 include(../../../../global.pri)
 
-QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
-
 win32 {
 	copyToDestdir(MinGW32/dll/libusb-1.0.dll, NOW)
 }
 
 macx {
 	copyToDestdir(libusb-1.0.dylib, NOW)
+}
+
+CONFIG(clang) {
+	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
 }
