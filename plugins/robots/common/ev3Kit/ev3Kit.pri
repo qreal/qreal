@@ -38,7 +38,12 @@ macx {
 	LIBS += -lusb-1.0
 }
 
-QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+# libusb headers contain dirty code
+CONFIG(clang) {
+	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+} else {
+	QMAKE_CXXFLAGS += -Wno-error=vla -Wno-error=pedantic
+}
 
 HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/ev3RobotModelBase.h \
