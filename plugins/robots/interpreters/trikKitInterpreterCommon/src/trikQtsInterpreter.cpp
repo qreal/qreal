@@ -15,7 +15,8 @@ const QString overrides = "script.random = brick.random;script.wait = brick.wait
 		"script.readAll = brick.readAll;\n"
 		"print = function() {var res = '';\n"
 		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}\n"
-		"brick.log(res);return res;};";
+		"brick.log(res);return res;};\n"
+		"script.system = function() {print('system is disabled in the interpreter');};";
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
         const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model
