@@ -192,7 +192,8 @@ void WorldModel::clear()
 
 	while (!mRegions.isEmpty()) {
 		QGraphicsItem * const toRemove = mRegions.last();
-		mRegions.remove(mRegions.lastKey());
+		const QString toRemoveKey = mRegions.lastKey(); // possible fix of the crash in remove
+		mRegions.remove(toRemoveKey);
 		emit itemRemoved(toRemove);
 	}
 
