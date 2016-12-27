@@ -36,6 +36,8 @@ void Timeline::start()
 	if (!mIsStarted) {
 		mIsStarted = true;
 		emit started();
+		emit tick(); /// hack so that constraints init-on would start immediatly
+		/// ideally they should be triggered on started()
 		gotoNextFrame();
 	}
 }
@@ -87,7 +89,6 @@ void Timeline::gotoNextFrame()
 	emit nextFrame();
 	mFrameStartTimestamp = QDateTime::currentMSecsSinceEpoch();
 	if (!mTimer.isActive()) {
-		emit tick(); /// hack so that constraints init-on would start immediatly.
 		mTimer.start();
 	}
 }
