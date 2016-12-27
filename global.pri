@@ -52,11 +52,14 @@ equals(TEMPLATE, app) {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
 		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 	}
+	macx:!CONFIG(no_rpath) {
+		QMAKE_LFLAGS += -rpath .  -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
+	}
 }
 
 macx-clang {
 	QMAKE_CXXFLAGS += -stdlib=libc++
-	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
+	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
 unix:!CONFIG(nosanitizers) {
