@@ -181,6 +181,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(&configurer.interpreterControl()
 			, &kitBase::InterpreterControlInterface::stopAllInterpretation
+			, this
 			, [this](qReal::interpretation::StopReason) {
 		if (mQtsInterpreter->isRunning()) {
 			testStop();
@@ -189,6 +190,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(&configurer.interpreterControl()
 			, &kitBase::InterpreterControlInterface::startJsInterpretation
+			, this
 			, [this]() {
 		if (!mQtsInterpreter->isRunning() && mIsModelSelected) { // temporary
 			testStart();
