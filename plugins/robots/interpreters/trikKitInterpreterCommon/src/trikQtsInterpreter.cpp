@@ -57,7 +57,7 @@ void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, co
 {
 	mRunning = true;
 	mBrick.setCurrentInputs(inputs);
-	QString newScript = overrides /*+ initInputs(inputs)*/ + script;
+	QString newScript = overrides + "script.writeToFile = null;\n" + script;
 	//qDebug() << newScript;
 	mScriptRunner.run(newScript);
 }
