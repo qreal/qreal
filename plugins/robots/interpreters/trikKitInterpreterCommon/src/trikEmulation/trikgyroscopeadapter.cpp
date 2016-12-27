@@ -26,7 +26,7 @@ static T getYaw(const QQuaternion &q)
 }
 
 static int getTimeVal(trik::robotModel::twoD::TrikTwoDRobotModel * const model) {
-	return model->timeline().timestamp() * 1000 / 256;
+	return static_cast<int>(model->timeline().timestamp() * 1000 / 256);
 }
 
 
@@ -69,7 +69,7 @@ void TrikGyroscopeAdapter::countTilt(QVector<int> oldFormat)
 	constexpr auto pi = 3.14159265358979323846;
 	constexpr auto RAD_TO_MDEG = 1000 * 180 / pi;
 	//QVector<int> oldFormat = mModel->engine()->readGyroscopeSensor();
-	int timeStamp = static_cast<int>(getTimeVal(mModel.data()));
+	int timeStamp = getTimeVal(mModel.data());
 	//qDebug() << mModel->timeline().timestamp() << ", " << timeStamp;
 
 	static bool timeInited = false;
@@ -84,7 +84,7 @@ void TrikGyroscopeAdapter::countTilt(QVector<int> oldFormat)
 		mResult[3] = timeStamp;
 
 		constexpr auto deltaConst = pi / 180 / 1000 / 1000000;
-		const auto dt = (timeStamp - mLastUpdate) * deltaConst;
+		const auto dt = (timeStamp - mLastUpdate) * 256 * deltaConst;
 
 		const auto x = mResult[0] * dt;
 		const auto y = mResult[1] * dt;

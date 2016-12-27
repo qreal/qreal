@@ -142,6 +142,7 @@ defineTest(copyToDestdir) {
 			win32 {
 				BASE_NAME = $$section(FILE, "/", -2, -2)
 				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
+				equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, 0)
 
 				FILE ~= s,/$,,g
 
@@ -155,7 +156,7 @@ defineTest(copyToDestdir) {
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE'.'
+			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsisten behaviour
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
