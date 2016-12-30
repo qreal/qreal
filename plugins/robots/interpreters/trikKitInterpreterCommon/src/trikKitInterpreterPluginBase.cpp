@@ -378,8 +378,21 @@ void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 		return;
 	}
 	const bool isCodeTab = info.type() == qReal::TabInfo::TabType::code;
-	mStart.setEnabled(isCodeTab);
-	mStop.setEnabled(isCodeTab);
+
+	if (isCodeTab) {
+		auto texttab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
+		auto isJS = [](const QString &ext){ return ext == "js" || ext == "qts"; };
+		if (texttab && isJS(texttab->currentLanguage().extension)) {
+			mStart.setEnabled(true);
+			mStop.setEnabled(true);
+		} else {
+			mStart.setEnabled(false);
+			mStop.setEnabled(false);
+		}
+	} else {
+		mStart.setEnabled(false); // Should matter
+		mStop.setEnabled(false);
+	}
 	if (mQtsInterpreter->isRunning()) {
 		mStop.trigger(); // Should interpretation should always stops at the change of tabs or not?
 	}
