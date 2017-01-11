@@ -126,7 +126,7 @@ LIBS += -L$$DESTDIR
 CONFIG += c++11
 QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra
 QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
-			-Werror=non-virtual-dtor -Werror=delete-incomplete -Werror=overloaded-virtual -Werror=uninitialized -Werror=init-self
+			-Werror=non-virtual-dtor -Werror=delete-incomplete -Werror=uninitialized -Werror=init-self
 #-Wold-style-cast -Wmissing-declarations 
 
 
