@@ -12,8 +12,7 @@ TrikDisplayEmu::TrikDisplayEmu(const QSharedPointer<robotModel::twoD::TrikTwoDRo
 }
 
 trikControl::DisplayWidgetInterface &TrikDisplayEmu::graphicsWidget() {
-	trikControl::DisplayWidgetInterface temp;
-	return temp; // bad
+	return mDisplayWidgetInterface;
 }
 
 void TrikDisplayEmu::init()

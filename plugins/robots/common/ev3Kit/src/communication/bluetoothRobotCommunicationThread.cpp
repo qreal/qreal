@@ -48,7 +48,7 @@ bool BluetoothRobotCommunicationThread::send(QObject *addressee, const QByteArra
 		return false;
 	}
 
-	const bool result = send(buffer);
+	const bool result = send1(buffer);
 	if (buffer.size() >= 5 && buffer[4] == enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY) {
 		QByteArray const result = receive(responseSize);
 		emit response(addressee, result);
@@ -114,12 +114,12 @@ void BluetoothRobotCommunicationThread::allowLongJobs(bool allow)
 
 bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer)
 {
-	const bool result = send(buffer);
+	const bool result = send1(buffer);
 	outputBuffer = receive(responseSize);
 	return result;
 }
 
-bool BluetoothRobotCommunicationThread::send(const QByteArray &buffer) const
+bool BluetoothRobotCommunicationThread::send1(const QByteArray &buffer) const
 {
 	return mPort && (mPort->write(buffer) > 0);
 }
@@ -151,5 +151,5 @@ void BluetoothRobotCommunicationThread::keepAlive()
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::KEEP_ALIVE, command, index);
 	Ev3DirectCommand::addByteParameter(10, command, index); // 10 - Number of minutes before entering sleep mode.
-	send(command);
+	send1(command);
 }

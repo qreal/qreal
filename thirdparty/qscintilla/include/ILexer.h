@@ -43,6 +43,7 @@ public:
 	virtual bool SCI_METHOD IsDBCSLeadByte(char ch) const = 0;
 	virtual const char * SCI_METHOD BufferPointer() = 0;
 	virtual int SCI_METHOD GetLineIndentation(int line) = 0;
+	virtual ~IDocument() = default;
 };
 
 enum { lvOriginal=0 };
@@ -60,6 +61,7 @@ public:
 	virtual void SCI_METHOD Lex(unsigned int startPos, int lengthDoc, int initStyle, IDocument *pAccess) = 0;
 	virtual void SCI_METHOD Fold(unsigned int startPos, int lengthDoc, int initStyle, IDocument *pAccess) = 0;
 	virtual void * SCI_METHOD PrivateCall(int operation, void *pointer) = 0;
+	virtual ~ILexer() = default;
 };
 
 class ILoader {
@@ -68,6 +70,7 @@ public:
 	// Returns a status code from SC_STATUS_*
 	virtual int SCI_METHOD AddData(char *data, int length) = 0;
 	virtual void * SCI_METHOD ConvertToDocument() = 0;
+	virtual ~ILoader() = default;
 };
 
 #ifdef SCI_NAMESPACE

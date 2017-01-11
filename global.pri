@@ -124,10 +124,14 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 LIBS += -L$$DESTDIR
 
 CONFIG += c++11
-QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11
-#I whant -Werror to be turned on, but Qt has problems
-QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor -Woverloaded-virtual -Wuninitialized -Winit-self
+QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra
+QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
+			-Werror=non-virtual-dtor -Werror=delete-incomplete -Werror=overloaded-virtual -Werror=uninitialized -Werror=init-self
 #-Wold-style-cast -Wmissing-declarations 
+
+
+#I want -Werror to be turned on, but Qt has problems
+#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter 
 
 GLOBAL_PWD = $$PWD
 

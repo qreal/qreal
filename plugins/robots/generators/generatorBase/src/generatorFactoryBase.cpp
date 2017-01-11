@@ -118,7 +118,7 @@ void GeneratorFactoryBase::initialize()
 void GeneratorFactoryBase::setMainDiagramId(const Id &diagramId)
 {
 	mDiagram = diagramId;
-	mSensors->reinit(currentConfiguration());
+	mSensors->reinitDevices(currentConfiguration());
 }
 
 void GeneratorFactoryBase::initVariables()

@@ -70,7 +70,7 @@ QString Ev3RobotCommunicationThread::uploadFile(const QString &sourceFile, const
 
 	commandBegin[index] = 0x00;
 
-	send(commandBegin);
+	send1(commandBegin);
 	QByteArray commandBeginResponse = receive(BEGIN_DOWNLOAD_RESPONSE_SIZE);
 	if (commandBeginResponse.at(4) != SYSTEM_REPLY) {
 		return QString();
@@ -93,7 +93,7 @@ QString Ev3RobotCommunicationThread::uploadFile(const QString &sourceFile, const
 			commandContinue[7 + i] = data.at(sizeSent++);
 		}
 
-		send(commandContinue);
+		send1(commandContinue);
 		QByteArray commandContinueResponse = receive(CONTINUE_DOWNLOAD_RESPONSE_SIZE);
 		if (commandContinueResponse.at(7) != SUCCESS &&
 				(commandContinueResponse.at(7) != END_OF_FILE && sizeSent == data.size())) {
@@ -128,7 +128,7 @@ bool Ev3RobotCommunicationThread::runProgram(const QString &pathOnRobot)
 	command[index++] = 0x60;  // GV0(0), Size of image at Global Var offset 0.
 	command[index++] = 0x64;  // GV0(4), Address of image at Global Var offset 4
 	command[index++] = 0x00;  // LC0(0), Debug mode (0 = normal) encoded as single byte constant
-	send(command);
+	send1(command);
 
 	return true;
 }
@@ -139,5 +139,5 @@ void Ev3RobotCommunicationThread::stopProgram()
 			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
 	command[7] = 0x02;  // opPROGRAM_STOP Opcode
 	command[8] = 0x01;  // LC0(USER_SLOT), User slot = 1 (program slot)
-	send(command);
+	send1(command);
 }
