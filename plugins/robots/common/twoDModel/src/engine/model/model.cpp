@@ -38,6 +38,7 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mErrorReporter = &errorReporter;
+	mWorldModel.init(errorReporter);
 	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
 	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
@@ -137,7 +138,7 @@ void Model::deserialize(const QDomDocument &xml)
 	const bool oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
 			&& mRobotModels.size() == 1;
 
-	while(iterator.hasNext()) {
+	while (iterator.hasNext()) {
 		bool exist = false;
 		RobotModel *robotModel = iterator.next();
 

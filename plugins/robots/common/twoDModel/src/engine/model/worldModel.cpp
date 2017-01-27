@@ -15,6 +15,8 @@
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
 
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
+
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/worldModel.h"
 #include "twoDModel/engine/model/image.h"
@@ -40,7 +42,13 @@ QGraphicsPathItem *debugPath = nullptr;
 
 WorldModel::WorldModel()
 	: mXmlFactory(new QDomDocument)
+    , mErrorReporter(nullptr)
 {
+}
+
+void WorldModel::init(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
 }
 
 int WorldModel::sonarReading(const QPointF &position, qreal direction) const
@@ -122,7 +130,12 @@ const QMap<QString, items::WallItem *> &WorldModel::walls() const
 
 void WorldModel::addWall(items::WallItem *wall)
 {
-	mWalls[wall->id()] = wall;
+	const QString id = wall->id();
+	if (mWalls.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return; // probably better than having no way to delete those duplicate items on the scene
+	}
+	mWalls[id] = wall;
 	emit wallAdded(wall);
 }
 
@@ -154,7 +167,12 @@ const QList<QGraphicsLineItem *> &WorldModel::trace() const
 
 void WorldModel::addColorField(items::ColorFieldItem *colorField)
 {
-	mColorFields[colorField->id()] = colorField;
+	const QString id = colorField->id();
+	if (mColorFields.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return;
+	}
+	mColorFields[id] = colorField;
 	emit colorItemAdded(colorField);
 }
 
@@ -166,7 +184,12 @@ void WorldModel::removeColorField(items::ColorFieldItem *colorField)
 
 void WorldModel::addImage(items::ImageItem *image)
 {
-	mImages[image->id()] = image;
+	const QString id = image->id();
+	if (mImages.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return;
+	}
+	mImages[id] = image;
 	emit imageItemAdded(image);
 }
 
