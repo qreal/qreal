@@ -132,5 +132,5 @@ QString PluginManagerImplementation::fileName(QObject *plugin) const
 
 QObject *PluginManagerImplementation::pluginByName(const QString &pluginName) const
 {
-	return mFileNameAndPlugin[pluginName];
+	return mFileNameAndPlugin.value(pluginName, nullptr);
 }
