@@ -53,12 +53,13 @@ equals(TEMPLATE, app) {
 		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 	}
 	macx:!CONFIG(no_rpath) {
-		QMAKE_LFLAGS += -rpath .  -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
+		QMAKE_LFLAGS += -rpath . -rpath @executable_path/../Lib -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
 	}
 }
 
 macx-clang {
-	QMAKE_CXXFLAGS += -stdlib=libc++
+#	QMAKE_CXXFLAGS += -stdlib=libc++
+        QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
@@ -124,9 +125,10 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 LIBS += -L$$DESTDIR
 
 #CONFIG += c++11
-QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra
+QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra 
 QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
-			-Werror=non-virtual-dtor -Werror=delete-incomplete -Wno-error=overloaded-virtual -Werror=uninitialized -Werror=init-self
+			-Werror=non-virtual-dtor -Werror=delete-incomplete -Wno-error=overloaded-virtual\
+                       -Werror=return-stack-address -Werror=uninitialized -Werror=init-self
 #-Wold-style-cast -Wmissing-declarations
 
 

@@ -5,7 +5,7 @@ set -o errexit
 cd "$(dirname "$0")"
 source $INSTALLER_ROOT/utils/mac_utils.sh
 
-
+rm -rf "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app"
 cp -R $BIN_DIR/qreal.app                                                  "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app"
 cp    $INSTALLER_ROOT/platform/$PRODUCT-mac-platform.config               "$BUNDLE_CONTENTS/MacOS/platform.config"
 mkdir -p "$BUNDLE_CONTENTS/Lib/plugins/tools"

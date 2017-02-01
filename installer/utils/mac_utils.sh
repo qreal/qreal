@@ -18,13 +18,13 @@ function fix_dependencies {
 	cd $OLD_PATH
 
 	# For each lib in $PREFIX replacing path to it with $TARGET
-	otool -L "$OBJECT" | grep -Go "$PREFIX[A-Za-z_0-9/\.-]*" | xargs -I {} bash -c 'install_name_tool -change {} $TARGET/`basename {}` "$OBJECT"' _
+	otool -L "$OBJECT" | grep -Go "$PREFIX[A-Za-z_0-9/\.-]*" | xargs -I {} bash -c 'install_name_tool -change {} "$TARGET/`basename {}`" "$OBJECT"' _
 }
 
 function fix_qreal_dependencies {
-	fix_dependencies "$1" "$QT_DIR" "$LIB_PATH"
+	fix_dependencies "$1" $(readlink -m "$QT_DIR") "$LIB_PATH"
 	fix_dependencies "$1" "@rpath/.*\.framework/Versions/5/" "$LIB_PATH"
-	fix_dependencies "$1" "@executable_path/../../.." "$LIB_PATH"
+	fix_dependencies "$1" "@executable_path/../../../" "$LIB_PATH"
 }
 
 function copy_qt_lib {
