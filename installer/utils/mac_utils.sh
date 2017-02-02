@@ -8,7 +8,7 @@ export LIB_PATH=@executable_path/../Lib
 # Walks through the object`s dependencies and replaces dirname of matching with new prefix.
 function fix_dependencies {
 
-	export OBJECT="$1" # Lib or executable whoose dependencies we fix
+	export OBJECT=$(readlink -m "$1") # Lib or executable whoose dependencies we fix
 	export PREFIX="$2" # A path to match replaced dependencies, for example ~/Qt/5.4/clang_64/lib
 	export TARGET="$3" # A path that will be used to rewrite dependencies, for example @executable_path/../../../ 
 

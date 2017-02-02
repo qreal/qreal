@@ -7,7 +7,7 @@ source $INSTALLER_ROOT/utils/mac_utils.sh
 
 mkdir -p "$BUNDLE_CONTENTS/Lib/"
 
-cp    $BIN_DIR/librobots-trik-python-generator-library.dylib                          "$BUNDLE_CONTENTS/Lib/"
+cp    $BIN_DIR/librobots-trik-python-generator-library*.dylib                          "$BUNDLE_CONTENTS/Lib/"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-python-generator-library.dylib"
 
 mkdir -p "$BUNDLE_CONTENTS/Lib/plugins/tools/kitPlugins"

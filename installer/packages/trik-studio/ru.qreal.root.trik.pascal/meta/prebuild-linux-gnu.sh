@@ -11,6 +11,6 @@ cp    $BIN_DIR/plugins/tools/kitPlugins/robots-trik-v62-pascal-abc-generator.so 
 
 # Cleaning up prebuild-common.sh results...
 mkdir -p $PWD/../data/resources/
-mv $PWD/../data/Trik.Core.dll                   $PWD/../data/resources/
+mv $PWD/../data/trikSharp/Trik.Core.dll         $PWD/../data/resources/
 mv $PWD/../data/trikSharp/FSharp.Core.dll       $PWD/../data/resources/
 mv $PWD/../data/trikSharp/libconWrap.so.1.0.0   $PWD/../data/resources/
