@@ -163,6 +163,11 @@ kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigura
 	return &mTwoDModel->devicesConfigurationProvider();
 }
 
+QString Ev3KitInterpreterPlugin::defaultSettingsFile() const
+{
+	return ":/ev3/interpreter/ev3DefaultSettings.ini";
+}
+
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
 	QWidget * const result = new ui::ComPortPicker("Ev3BluetoothPortName", this);

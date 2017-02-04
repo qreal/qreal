@@ -88,7 +88,7 @@
         <translation>Целичисленное деление на ноль</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="502"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="515"/>
         <source>Remove</source>
         <translation>Удалить</translation>
     </message>
@@ -127,28 +127,28 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="60"/>
         <source>Control flow break detected, stopping</source>
         <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="72"/>
         <source>Too many outgoing links</source>
         <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="71"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="77"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="78"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="84"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
-        <location filename="../../qrutils/interpreter/block.cpp" line="144"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="65"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="150"/>
         <source>Block has disappeared!</source>
         <translation>Блок исчез!</translation>
     </message>
@@ -183,17 +183,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="117"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="122"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="181"/>
         <source>Block has disappeared!</source>
         <translation>Блок исчез!</translation>
     </message>
@@ -331,7 +331,7 @@
 <context>
     <name>qReal::interpretation::blocks::SubprogramBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="33"/>
+        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="35"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
@@ -378,6 +378,24 @@
         <location filename="../../qrutils/interpreter/blocks/unsupportedBlock.cpp" line="21"/>
         <source>Block of a type which is unsupported by an interpreter</source>
         <translation>Блок типа, не поддерживаемого в интерпретаторе</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::ImagePicker</name>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="35"/>
+        <source>Browse...</source>
+        <translation>Обзор...</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="65"/>
+        <source>Select image</source>
+        <translation>Выберите изображение</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="66"/>
+        <source>Images (*.png *.svg *.jpg *.gif *.bmp);;All files (*.*)</source>
+        <translation>Картинки (*.png *.svg *.jpg *.gif *.bmp);;Все файлы (*.*)</translation>
     </message>
 </context>
 <context>

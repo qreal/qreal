@@ -174,8 +174,8 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 	const QString open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
 	const QString close = "@#%1#@";
 	QRegExp re;
-	QStack <QPair<QString, int>> stack;
-	QList <QPair<QString, QPair<int, int>>> results;
+	QStack<QPair<QString, int>> stack;
+	QList<QPair<QString, QPair<int, int>>> results;
 	int lineNumber = 1;
 
 	for (const QString &line : resultCode.split("\n")){
@@ -189,8 +189,7 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 		if (!stack.isEmpty()) {
 			const QString id = stack.top().first;
 			if (line.contains(close.arg(id))) {
-				results.append(QPair<QString, QPair<int, int>>(id
-						, QPair<int, int>(stack.top().second, lineNumber)));
+				results.append(qMakePair(id, qMakePair(stack.top().second, lineNumber)));
 				stack.pop();
 			}
 		}
@@ -213,7 +212,12 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 
 	outputCode(targetPath() + ".dbg", out);
 
-	resultCode = resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
+	cleanUpLinkingInfo(resultCode);
+}
+
+void MasterGeneratorBase::cleanUpLinkingInfo(QString &code)
+{
+	code.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
 }
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()

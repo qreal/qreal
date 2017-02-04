@@ -70,6 +70,7 @@ public:
 
 protected:
 	void generateLinkingInfo(QString &resultCode);
+	void cleanUpLinkingInfo(QString &code);
 	virtual GeneratorCustomizer *createCustomizer() = 0;
 
 	/// Default implementation takes ownership via QObject parentship system.

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2017 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 	, mRealRobotNames(realRobotNames)
 {
 	mUi->setupUi(this);
+	mUi->robotImagePicker->configure("trikRobot2DImage", tr("2D robot image:"));
 }
 
 TrikAdditionalPreferences::~TrikAdditionalPreferences()
@@ -37,12 +38,14 @@ TrikAdditionalPreferences::~TrikAdditionalPreferences()
 void TrikAdditionalPreferences::save()
 {
 	SettingsManager::setValue("TrikTcpServer", mUi->tcpServerLineEdit->text());
+	mUi->robotImagePicker->save();
 	emit settingsChanged();
 }
 
 void TrikAdditionalPreferences::restoreSettings()
 {
 	mUi->tcpServerLineEdit->setText(SettingsManager::value("TrikTcpServer").toString());
+	mUi->robotImagePicker->restore();
 }
 
 void TrikAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)

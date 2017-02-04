@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ includes(plugins/robots/common/kitBase \
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
 		robots-utils robots-kit-base robots-ev3-kit robots-2d-model qextserialport qslog \
 )
+
+copyToDestdir(../images/ev3-robot.png, now, ../../../images/)
 
 win32 {
 	LIBS += -llibusb-1.0

@@ -25,23 +25,23 @@
         <translation type="vanished">Wi-Fi</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="32"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="36"/>
         <source>Bluetooth Settings</source>
         <translation>Paramètres Bluetooth</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="38"/>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="55"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="42"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="59"/>
         <source>COM Port:</source>
         <translation>Port série:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="62"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="66"/>
         <source>No COM ports found. If you have a Bluetooth connection with active virtual COM port, please enter its name. Example: COM3</source>
         <translation>Port série n&apos;est pas détecté. Si vous avez une connexion Bluetooth avec un port série virtuel actif, tapez son nom. Par exemple &quot;COM3&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="75"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.ui" line="79"/>
         <source>Specify COM port manually</source>
         <translation>Spécifier le port série manuellement</translation>
     </message>
@@ -55,9 +55,17 @@
     </message>
 </context>
 <context>
+    <name>ev3::Ev3AdditionalPreferences</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3AdditionalPreferences.cpp" line="29"/>
+        <source>2D robot image:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ev3::Ev3KitInterpreterPlugin</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="100"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/ev3KitInterpreterPlugin.cpp" line="105"/>
         <source>Lego EV3</source>
         <translation>Lego EV3</translation>
     </message>
@@ -65,7 +73,7 @@
 <context>
     <name>ev3::robotModel::real::BluetoothRealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/bluetoothRealRobotModel.cpp" line="33"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/bluetoothRealRobotModel.cpp" line="34"/>
         <source>Interpretation (Bluetooth)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,7 +88,7 @@
 <context>
     <name>ev3::robotModel::real::UsbRealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/usbRealRobotModel.cpp" line="33"/>
+        <location filename="../../../../plugins/robots/interpreters/ev3KitInterpreter/src/robotModel/real/usbRealRobotModel.cpp" line="34"/>
         <source>Interpretation (USB)</source>
         <translation type="unfinished"></translation>
     </message>
