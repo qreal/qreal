@@ -1,1 +1,2 @@
-{ Waiting for sonar is not supported yet }
+while not (model.Sonars[Trik.SonarPort.@@PORT@@].Read() @@SIGN@@ @@DISTANCE@@) do
+    model.Sleep(10);

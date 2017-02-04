@@ -21,7 +21,7 @@ namespace qrgraph {
 class Multigraph;
 class Edge;
 
-/// Base class for multigraph nodes. Different models parts can inherit itself from this class to
+/// Base class for multigraph nodes. Different model parts can inherit themselves from this class to
 /// explicitly mark that they represent entities of some graph.
 class Node
 {
@@ -89,7 +89,13 @@ private:
 	void disconnectEndOf(Edge &edge);
 
 	Multigraph &mParent;
+
+	/// Outgoing edges connected to this node. Does not have direct ownership but may delete edge through call
+	/// to a graph.
 	QMultiHash<uint, Edge *> mOutgoingEdges;
+
+	/// Incoming edges connected to this node. Does not have direct ownership but may delete edge through call
+	/// to a graph.
 	QMultiHash<uint, Edge *> mIncomingEdges;
 
 	friend class qrgraph::Edge;

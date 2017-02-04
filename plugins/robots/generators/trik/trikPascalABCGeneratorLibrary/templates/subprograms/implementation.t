@@ -1,4 +1,4 @@
-procedure @@NAME@@()
+procedure @@NAME@@();
 begin
-	@@BODY@@
+@@BODY@@
 end;

@@ -46,7 +46,7 @@ public:
 	/// Removes a number of edges of all types in multigraph.
 	int edgesCount() const;
 
-	/// Removes a number of edges of all types in multigraph.
+	/// Removes a number of edges of a given type in multigraph.
 	int edgesCount(uint type) const;
 
 	/// Removes all nodes and edges from multigraph, frees their memory.
@@ -67,7 +67,7 @@ public:
 	/// @note This is the only way to produce edges and to add them to graph. Multigraph takes ownership on result.
 	virtual Edge &produceEdge(uint type = 0);
 
-	/// Creates and adds edge into this multigraph instance and connects its begin and end to the given nodes.
+	/// Creates and adds edge into this multigraph instance and connects its begin to the given node.
 	/// @param type The type of the edge. Edges of desired types can be then conveniently filtered out from the whole
 	/// set of edges outgoing or incoming into some node for all operations on this multigraph.
 	/// @note This is the only way to produce edges and to add them to graph. Multigraph takes ownership on result.

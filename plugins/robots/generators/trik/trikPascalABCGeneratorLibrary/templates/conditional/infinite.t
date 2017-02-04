@@ -1,4 +1,4 @@
 while true do
 begin
-    @@BODY@@
+@@BODY@@
 end;

@@ -27,6 +27,7 @@ namespace utils {
 class Type
 {
 public:
+	Type(const Type &) = delete;
 	Type(bool isResolved, Diagram *diagram);
 	virtual ~Type();
 	virtual Type* clone() const = 0;

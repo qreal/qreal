@@ -28,7 +28,7 @@ namespace utils {
 class NodeType : public GraphicType
 {
 public:
-	NodeType(Diagram *diagram);
+	explicit NodeType(Diagram *diagram);
 	virtual Type* clone() const;
 	virtual ~NodeType();
 	void generateCode(utils::OutFile &out) override;

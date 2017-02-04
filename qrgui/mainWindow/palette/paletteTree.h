@@ -14,15 +14,16 @@
 
 #pragma once
 
-#include <QtWidgets/QTreeWidget>
 #include <QtCore/QHash>
+#include <QtCore/QScopedPointer>
 #include <QtCore/QSettings>
-#include <QtWidgets/QWidget>
 #include <QtGui/QIcon>
-#include <QtWidgets/QToolButton>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QToolButton>
+#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
 
 #include <qrkernel/ids.h>
 
@@ -175,6 +176,11 @@ private:
 
 	/// Count of items in a row in icon's representation
 	int mItemsCountInARow;
+
+	/// Spacer layout item used when palette is empty to correctly position remaining palette tree widgets. Removed
+	/// from layout when editor tree is initialized.
+	/// Does not have direct ownership (spacer is owned by mLayout) but can remove spacer from layout and delete it.
+	QSpacerItem *mTemporarySpacer;
 };
 
 }

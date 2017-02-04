@@ -63,6 +63,7 @@ HEADERS = \
 	./Qsci/qscilexer.h \
 	./Qsci/qscilexercustom.h \
 	./Qsci/qscilexerproperties.h \
+        ./Qsci/qscilexerpascal.h \
 	./Qsci/qscilexerpython.h \
 	./Qsci/qscilexercpp.h \
 	./Qsci/qscimacro.h \
@@ -124,6 +125,7 @@ SOURCES = \
 	qscilexer.cpp \
 	qscilexercustom.cpp \
 	qscilexerproperties.cpp \
+        qscilexerpascal.cpp \
 	qscilexerpython.cpp \
 	qscilexercpp.cpp \
 	qscimacro.cpp \
