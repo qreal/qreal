@@ -69,7 +69,7 @@
         <translation>Division entière par zéro</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="502"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="515"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
@@ -108,28 +108,28 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="60"/>
         <source>Control flow break detected, stopping</source>
         <translation>Une pause de flux de contrôle détecté, arrêt en cours</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="72"/>
         <source>Too many outgoing links</source>
         <translation>Trop de liens sortants</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="71"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="77"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Aucun lien sortant, s&apos;il vous plait connectez ce bloc à un autre ou bien utilisez un nœud final pour terminer le programme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="78"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="84"/>
         <source>Outgoing link is not connected</source>
         <translation>Le lien sortant n&apos;est pas connecté</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
-        <location filename="../../qrutils/interpreter/block.cpp" line="144"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="65"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="150"/>
         <source>Block has disappeared!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -160,17 +160,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="117"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Aucun point d&apos;entrée n&apos;est trouvé, ajoutez un nœud initial à un diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="122"/>
         <source>Stack overflow</source>
         <translation>Débordement de pile</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="181"/>
         <source>Block has disappeared!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -292,7 +292,7 @@
 <context>
     <name>qReal::interpretation::blocks::SubprogramBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="33"/>
+        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="35"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Entrez un nom valide (style C) pour le sousprogramme &quot;</translation>
     </message>
@@ -331,6 +331,24 @@
         <location filename="../../qrutils/interpreter/blocks/unsupportedBlock.cpp" line="21"/>
         <source>Block of a type which is unsupported by an interpreter</source>
         <translation>Le bloc de ce type n&apos;est pas supporté par l&apos;intérpréteur</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::ImagePicker</name>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="35"/>
+        <source>Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="65"/>
+        <source>Select image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="66"/>
+        <source>Images (*.png *.svg *.jpg *.gif *.bmp);;All files (*.*)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

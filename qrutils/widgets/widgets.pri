@@ -1,4 +1,4 @@
-# Copyright 2015 QReal Research Group
+# Copyright 2015-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +18,11 @@ HEADERS += \
 	$$PWD/painterInterface.h \
 	$$PWD/searchLineEdit.h \
 	$$PWD/consoleDock.h \
+	$$PWD/imagePicker.h
 
 SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/searchLineEdit.cpp \
 	$$PWD/consoleDock.cpp \
+	$$PWD/imagePicker.cpp

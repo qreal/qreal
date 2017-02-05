@@ -9,14 +9,19 @@
         <translation>Настройки TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="32"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="36"/>
         <source>TCP Settings</source>
         <translation>Настройки TCP</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="42"/>
         <source>Enter robot IP-address here</source>
         <translation>Введите IP-адрес робота</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.cpp" line="30"/>
+        <source>2D robot image:</source>
+        <translation>Картинка робота в 2D</translation>
     </message>
 </context>
 <context>
@@ -40,6 +45,14 @@
     <message>
         <source>enter path to F# compile </source>
         <translation type="vanished">Введите путь к компилятору F#</translation>
+    </message>
+</context>
+<context>
+    <name>TrikKitInterpreterPluginBase</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="157"/>
+        <source>Enter robot`s IP-address here...</source>
+        <translation>Введите IP-адрес робота...</translation>
     </message>
 </context>
 <context>
@@ -75,9 +88,8 @@
 <context>
     <name>trik::TrikKitInterpreterPluginBase</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="155"/>
         <source>Enter robot`s IP-address here...</source>
-        <translation type="unfinished">Введите IP-адрес робота...</translation>
+        <translation type="obsolete">Введите IP-адрес робота...</translation>
     </message>
 </context>
 <context>

@@ -14,6 +14,10 @@
 
 #include "twoDRobotModel.h"
 
+#include <QtCore/QFile>
+
+#include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsManager.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
 #include <kitBase/robotModel/robotParts/motor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
@@ -65,7 +69,14 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/ev3/interpreter/images/ev3-robot.png";
+	const QString key = "ev3Robot2DImage";
+	const QString hackDefaultPath = "./images/ev3-robot.png";
+	if (qReal::SettingsManager::value(key).isNull()) {
+		qReal::SettingsManager::setValue(key, hackDefaultPath);
+	}
+
+	const QString settingsPath = qReal::PlatformInfo::invariantSettingsPath(key);
+	return QFile::exists(settingsPath) ? settingsPath : ":/ev3/interpreter/images/ev3-robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const

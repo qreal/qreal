@@ -26,6 +26,7 @@ Ev3AdditionalPreferences::Ev3AdditionalPreferences(QWidget *parent)
 	, mUi(new Ui::Ev3AdditionalPreferences)
 {
 	mUi->setupUi(this);
+	mUi->robotImagePicker->configure("ev3Robot2DImage", tr("2D robot image:"));
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
 			, this, &Ev3AdditionalPreferences::manualComPortCheckboxChecked);
 }
@@ -39,12 +40,14 @@ void Ev3AdditionalPreferences::save()
 {
 	SettingsManager::setValue("Ev3BluetoothPortName", selectedPortName());
 	SettingsManager::setValue("Ev3ManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
+	mUi->robotImagePicker->save();
 	emit settingsChanged();
 }
 
 void Ev3AdditionalPreferences::restoreSettings()
 {
 	ui::ComPortPicker::populate(*mUi->comPortComboBox, "Ev3BluetoothPortName");
+	mUi->robotImagePicker->restore();
 
 	if (mUi->comPortComboBox->count() == 0) {
 		mUi->comPortComboBox->hide();
