@@ -149,6 +149,11 @@ void trik::TrikQtsInterpreter::setCurrentDir(const QString &dir)
 	mBrick.setCurrentDir(dir);
 }
 
+QStringList trik::TrikQtsInterpreter::supportedRobotModelNames() const
+{
+	return {"TwoDRobotModelForTrikV62RealRobotModel", "TwoDRobotModelForTrikV6RealRobotModel"};
+}
+
 void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)
 {
 	Q_UNUSED(scriptId);

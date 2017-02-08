@@ -42,7 +42,7 @@ QGraphicsPathItem *debugPath = nullptr;
 
 WorldModel::WorldModel()
 	: mXmlFactory(new QDomDocument)
-    , mErrorReporter(nullptr)
+	, mErrorReporter(nullptr)
 {
 }
 

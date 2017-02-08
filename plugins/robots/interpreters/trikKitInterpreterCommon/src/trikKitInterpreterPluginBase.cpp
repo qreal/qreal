@@ -174,8 +174,10 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, [this](kitBase::robotModel::RobotModelInterface &model){
 		mIsModelSelected = robotModels().contains(&model);
 		/// @todo: would probably make sense to make the current opened tab info available globally somewhere
-		bool isCodeTabOpen = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
-		mStart.setVisible(mIsModelSelected && isCodeTabOpen);
+		bool isCodeTabOpen = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab()) != nullptr;
+		/// @todo: bad, relies on the slot order, because of another @todo in actionManager (custom visibility logic)
+		bool isQtsInterp = mQtsInterpreter->supportedRobotModelNames().contains(model.name());
+		mStart.setVisible(mIsModelSelected && isCodeTabOpen && isQtsInterp);
 		mStop.setVisible(false); // interpretation should always stop when switching models?
 	});
 
@@ -378,17 +380,15 @@ void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 		return;
 	}
 	const bool isCodeTab = info.type() == qReal::TabInfo::TabType::code;
+	const bool isQtsInterp = mQtsInterpreter->supportedRobotModelNames().contains(mCurrentlySelectedModelName);
 
 	if (isCodeTab) {
 		auto texttab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
 		auto isJS = [](const QString &ext){ return ext == "js" || ext == "qts"; };
-		if (texttab && isJS(texttab->currentLanguage().extension)) {
-			mStart.setEnabled(true);
-			mStop.setEnabled(true);
-		} else {
-			mStart.setEnabled(false);
-			mStop.setEnabled(false);
-		}
+		bool enable = texttab && isJS(texttab->currentLanguage().extension) && isQtsInterp;
+		mStart.setEnabled(enable);
+		mStop.setEnabled(enable);
+		//mStart.setVisible(enable);
 	} else {
 		mStart.setEnabled(false); // Should matter
 		mStop.setEnabled(false);
@@ -396,11 +396,6 @@ void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 	if (mQtsInterpreter->isRunning()) {
 		mStop.trigger(); // Should interpretation should always stops at the change of tabs or not?
 	}
-	if (isCodeTab) {
-		mStart.setVisible(true);
-		mStop.setVisible(false);
-	} else {
-		mStart.setVisible(false);
-		mStop.setVisible(false);
-	}
+	mStart.setVisible(isCodeTab && isQtsInterp);
+	mStop.setVisible(false);
 }

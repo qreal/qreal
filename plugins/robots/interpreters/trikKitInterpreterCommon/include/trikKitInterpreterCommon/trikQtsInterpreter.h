@@ -25,14 +25,11 @@ public:
 	void abort();
 
 	void init();
-
 	void setErrorReporter(qReal::ErrorReporterInterface &errorReporter);
-
 	bool isRunning() const;
-
 	void setRunning(bool running);
-
 	void setCurrentDir(const QString &dir);
+	QStringList supportedRobotModelNames() const;
 
 signals:
 	void completed();
