@@ -104,12 +104,12 @@ void TabWidget::forceFocus()
 
 int TabWidget::addTab(QWidget *widget, const QString &name)
 {
-	const int result = QTabWidget::addTab(widget, name);
 	if (EditorInterface * const editor = dynamic_cast<EditorInterface *>(widget)) {
 		editor->configure(*mZoomInAction, *mZoomOutAction, *mUndoAction, *mRedoAction
 				, *mCopyAction, *mPasteAction, *mCutAction);
 		connect(&editor->focusAction(), &QAction::triggered, &focusAction(), &QAction::trigger);
 	}
+	const int result = QTabWidget::addTab(widget, name);
 
 	return result;
 }
