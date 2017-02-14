@@ -1,1 +1,5 @@
-else @@BODY@@
+else
+begin
+@@BODY@@
+end;
+end;

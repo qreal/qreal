@@ -9,14 +9,19 @@
         <translation>Préférences TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="32"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="36"/>
         <source>TCP Settings</source>
         <translation>Configuration de TCP</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="42"/>
         <source>Enter robot IP-address here</source>
         <translation>Tapez l&apos;adresse IP du robot ici</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.cpp" line="30"/>
+        <source>2D robot image:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -25,6 +30,14 @@
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikDisplayWidget.ui" line="14"/>
         <source>Trik Display</source>
         <translation>L&apos;écran Trik</translation>
+    </message>
+</context>
+<context>
+    <name>TrikKitInterpreterPluginBase</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="157"/>
+        <source>Enter robot`s IP-address here...</source>
+        <translation type="unfinished">Tapez l&apos;adresse IP du robot ici...</translation>
     </message>
 </context>
 <context>
@@ -41,9 +54,8 @@
 <context>
     <name>trik::TrikKitInterpreterPluginBase</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="155"/>
         <source>Enter robot`s IP-address here...</source>
-        <translation type="unfinished">Tapez l&apos;adresse IP du robot ici...</translation>
+        <translation type="obsolete">Tapez l&apos;adresse IP du robot ici...</translation>
     </message>
 </context>
 <context>

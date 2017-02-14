@@ -45,11 +45,11 @@
 					<groupNode type="InitialNode" name="initialNode" xPosition="50" yPosition="300" parent="diagram"/>
 				</group>
 			</groups>
-  			 <role arrowType="no_arrow" name="NoArrowRole">
-                		<properties/>
+			<role arrowType="no_arrow" name="NoArrowRole">
+			    <properties/>
 			</role>
  			<role arrowType="open_arrow" name="OpenArrowRole">
-                		<properties/>
+			    <properties/>
 			</role>
 		</nonGraphicTypes>
 		<graphicTypes>

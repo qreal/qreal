@@ -1,8 +1,8 @@
 if @@CONDITION@@ then
 begin
-    @@THEN_BODY@@
+@@THEN_BODY@@
 end
 else
 begin
-    @@ELSE_BODY@@
+@@ELSE_BODY@@
 end;

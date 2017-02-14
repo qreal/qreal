@@ -49,7 +49,7 @@ Type *EdgeType::clone() const
 	EdgeType *result = new EdgeType(mDiagram);
 	GraphicType::copyFields(result);
 	for (RoleType * const role : mRoles) {
-		result->mRoles.append(new RoleType(*role));
+		result->mRoles.append(role->clone());
 	}
 	result->mBeginArrowType = mBeginArrowType;
 	result->mBeginRoleName = mBeginRoleName;
@@ -102,8 +102,7 @@ bool EdgeType::initRoles()
 		QString name = element->displayedName();
 
 		if (name == mBeginRoleName || name == mEndRoleName) {
-			RoleType *temp =  new RoleType();
-			temp = dynamic_cast<RoleType *> (element->clone());
+			RoleType *temp = dynamic_cast<RoleType *> (element->clone());
 			mRoles.append(temp);
 		}
 	}

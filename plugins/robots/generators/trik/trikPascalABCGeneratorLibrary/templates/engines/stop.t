@@ -1,1 +1,1 @@
-{ Stop is currently not supported }
+model.Motors[Trik.MotorPort.@@PORT@@].Stop();

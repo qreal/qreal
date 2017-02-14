@@ -275,7 +275,7 @@ QString DynamicPropertiesDialog::tryToSave() const
 	}
 
 	// Return false if some names are the same
-	if (names.count() == rowCount) {
+	if (names.count() < rowCount) {
 		return tr("Duplicate names");
 	}
 
@@ -284,7 +284,7 @@ QString DynamicPropertiesDialog::tryToSave() const
 
 void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type, const QString &value)
 {
-	QPushButton *button = new QPushButton("Delete");
+	QPushButton *button = new QPushButton(tr("Delete"));
 	int rowCount = mUi->labels->rowCount();
 	mUi->labels->setRowCount(rowCount + 1);
 	mUi->labels->setCellWidget(rowCount, 3, button);

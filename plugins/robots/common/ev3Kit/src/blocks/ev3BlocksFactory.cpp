@@ -24,6 +24,7 @@
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <kitBase/blocksBase/common/waitForSoundSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForTouchSensorBlock.h>
+#include <kitBase/blocksBase/common/waitForGyroscopeSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
 
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
@@ -82,6 +83,8 @@ qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(const qReal::Id &el
 		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "Ev3WaitForSound")) {
 		return new WaitForSoundSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "Ev3WaitForGyroscope")) {
+		return new WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "Ev3WaitForButton")) {
 		return new WaitForButtonBlock(mRobotModelManager->model());
@@ -117,6 +120,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3WaitForEncoder")
 		, id("Ev3WaitForButton")
 		, id("Ev3WaitForSound")
+		, id("Ev3WaitForGyroscope")
 
 		, id("Ev3DrawPixel")
 		, id("Ev3DrawLine")
@@ -132,6 +136,7 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 	if (mRobotModelManager->model().name().contains("TwoD")) {
 		result
 				<< id("Ev3WaitForSound")
+				<< id("Ev3WaitForGyroscope")
 				;
 	} else {
 		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {

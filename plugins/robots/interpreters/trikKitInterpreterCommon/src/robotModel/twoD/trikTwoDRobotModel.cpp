@@ -15,8 +15,11 @@
 #include "trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h"
 
 #include <QtGui/QColor>
+#include <QtCore/QFile>
 
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsManager.h>
 
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
@@ -122,7 +125,14 @@ void TrikTwoDRobotModel::onInterpretationStarted()
 
 QString TrikTwoDRobotModel::robotImage() const
 {
-	return ":icons/trikTwoDRobot.svg";
+	const QString key = "trikRobot2DImage";
+	const QString hackDefaultPath = "./images/trik-robot.svg";
+	if (qReal::SettingsManager::value(key).isNull()) {
+		qReal::SettingsManager::setValue(key, hackDefaultPath);
+	}
+
+	const QString settingsPath = qReal::PlatformInfo::invariantSettingsPath(key);
+	return QFile::exists(settingsPath) ? settingsPath : ":icons/trik-robot.svg";
 }
 
 PortInfo TrikTwoDRobotModel::defaultLeftWheelPort() const

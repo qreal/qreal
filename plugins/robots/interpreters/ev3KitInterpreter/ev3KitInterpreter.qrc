@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/ev3/interpreter">
+        <file>ev3DefaultSettings.ini</file>
         <file>images/ev3-robot.png</file>
         <file>images/ev3-touch.png</file>
         <file>images/ev3-sonar.png</file>

@@ -1,1 +1,1 @@
-{ Buttons are currently not supported }
+{Buttuns are not supported}

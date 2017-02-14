@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2014-2016 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ NxtAdditionalPreferences::NxtAdditionalPreferences(const QString &realRobotName,
 	, mBluetoothRobotName(realRobotName)
 {
 	mUi->setupUi(this);
+	mUi->robotImagePicker->configure("nxtRobot2DImage", tr("2D robot image:"));
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
 			, this, &NxtAdditionalPreferences::manualComPortCheckboxChecked);
 }
@@ -40,12 +41,14 @@ void NxtAdditionalPreferences::save()
 {
 	SettingsManager::setValue("NxtBluetoothPortName", selectedPortName());
 	SettingsManager::setValue("NxtManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
+	mUi->robotImagePicker->save();
 	emit settingsChanged();
 }
 
 void NxtAdditionalPreferences::restoreSettings()
 {
 	ui::ComPortPicker::populate(*mUi->comPortComboBox, "NxtBluetoothPortName");
+	mUi->robotImagePicker->restore();
 
 	if (mUi->comPortComboBox->count() == 0) {
 		mUi->comPortComboBox->hide();

@@ -1,1 +1,1 @@
-{ Sonar sensor is not supported yet }
+model.Sonars[Trik.SonarPort.@@PORT@@].Read()

@@ -18,6 +18,7 @@
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpascal.h>
 
 #include "qrgui/textEditor/textEditorDeclSpec.h"
 
@@ -169,7 +170,7 @@ public:
 				, QObject::tr("PascalABC Language Source File")              /* extension description */
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
-				, new QsciLexerCPP()                                         /* lexer */
+				, new QsciLexerPascal()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}

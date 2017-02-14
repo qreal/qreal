@@ -25,6 +25,8 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog \
 		)
 
+copyToDestdir(../images/trik-robot.svg, now, images/)
+
 HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/declSpec.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/real/parts/display.h \

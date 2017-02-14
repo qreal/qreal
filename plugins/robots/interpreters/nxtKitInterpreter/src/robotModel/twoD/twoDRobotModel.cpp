@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2017 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,10 @@
 
 #include "twoDRobotModel.h"
 
+#include <QtCore/QFile>
+
+#include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsManager.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
 #include <kitBase/robotModel/robotParts/motor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
@@ -60,7 +64,14 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/icons/nxt_robot.png";
+	const QString key = "nxtRobot2DImage";
+	const QString hackDefaultPath = "./images/nxt-robot.png";
+	if (qReal::SettingsManager::value(key).isNull()) {
+		qReal::SettingsManager::setValue(key, hackDefaultPath);
+	}
+
+	const QString settingsPath = qReal::PlatformInfo::invariantSettingsPath(key);
+	return QFile::exists(settingsPath) ? settingsPath : ":/icons/nxt-robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const

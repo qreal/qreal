@@ -594,6 +594,11 @@
         <source>Duplicate names</source>
         <translation>Одинаковые имена</translation>
     </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="287"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
 </context>
 <context>
     <name>qReal::gui::EdgePropertiesDialog</name>

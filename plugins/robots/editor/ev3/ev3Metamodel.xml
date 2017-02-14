@@ -404,6 +404,33 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="Ev3WaitForGyroscope" description="Waits till the value returned by the gyroscope on the given port will be greater or less than the given.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Degrees" prefix="Value:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Value" type="string" name="Degrees">
+							<default>90</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Wait for button" name="Ev3WaitForButton" description="Waits for press of a button on a brick.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -593,6 +620,7 @@
 				<element name="Ev3WaitForSonarDistance"/>
 				<element name="Ev3WaitForButton"/>
 				<element name="Ev3WaitForSound"/>
+				<element name="Ev3WaitForGyroscope"/>
 			</group>
 			<group name="Drawing">
 				<element name="Ev3DrawRect"/>
