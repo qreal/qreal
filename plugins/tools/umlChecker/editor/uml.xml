@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/" version="0.0.1">
+    <namespace>UML 2.0</namespace>
+    <diagram name="ClassDiagram" displayedName="Class Diagram" nodeName="ClassDiagramNode">
+        <nonGraphicTypes>
+            <role navigable="" end="" name="noArrowRole" arrowType="no_arrow">
+                <properties>
+                    <property type="string" name="Multiplicity" displayedName="Multiplicity"/>
+                    <property type="string" name="Info" displayedName="Info"/>
+                    <property type="string" name="Constraints" displayedName="Constraints"/>
+		    <property name="Navigability" type="string"/>
+                    <property name="End" type="string"/>
+                </properties>
+            </role>
+            <role navigable="" end="" name="emptyRhombRole" arrowType="empty_rhomb">
+                <properties>
+                    <property type="string" name="Info" displayedName="Info"/>
+                    <property type="string" name="Multiplicity" displayedName="Multiplicity"/>
+                    <property type="string" name="Constraints" displayedName="Constraints"/>
+		    <property name="Navigability" type="string"/>
+                    <property name="End" type="string"/>
+                </properties>
+            </role>
+            <role navigable="" end="" name="filledRhombRole" arrowType="filled_rhomb">
+                <properties>
+                    <property type="string" name="Info" displayedName="Info"/>
+                    <property type="string" name="Multiplicity" displayedName="Multiplicity"/>
+                    <property type="string" name="Constraints" displayedName="Constraints"/>
+		    <property name="Navigability" type="string"/>
+                    <property name="End" type="string"/>
+                </properties>
+            </role>
+            <role navigable="" end="" name="emptyArrowRole" arrowType="empty_arrow">
+                <properties>
+                    <property type="string" name="Multiplicity" displayedName="Multiplicity"/>
+                    <property type="string" name="Info" displayedName="Info"/>
+                    <property type="string" name="Constraints" displayedName="Constraints"/>
+		    <property name="Navigability" type="string"/>
+                    <property name="End" type="string"/>
+                </properties>
+            </role>
+            <role navigable="" end="" name="openedArrowRole" arrowType="open_arrow">
+                <properties>
+                    <property type="string" name="Info" displayedName="Info"/>
+                    <property type="string" name="Multiplicity" displayedName="Multiplicity"/>
+                    <property type="string" name="Constraints" displayedName="Constraints"/>
+		    <property name="Navigability" type="string"/>
+                    <property name="End" type="string"/>
+                </properties>
+            </role>
+        </nonGraphicTypes>
+        <graphicTypes>
+            <node name="UmlClass" displayedName="Class">
+                <graphics>
+                    <picture sizex="200" sizey="130">
+                        <rectangle fill="#ffffff" fill-style="none" y1="0" y2="130" x1="0" x2="200" stroke-style="solid" stroke="#000000" stroke-width="0"/>
+                        <line fill="#ffffff" fill-style="none" y1="30a" y2="30a" x1="0" x2="200" stroke-style="solid" stroke="#000000" stroke-width="0"/>
+                    </picture>
+                    <labels>
+                        <label textBinded="name" x="65" y="2"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="10a" starty="0a"/>
+                            <end endx="190a" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="200a" starty="40a"/>
+                            <end endx="200a" endy="120a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="10a" starty="130a"/>
+                            <end endx="190a" endy="130a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0a" starty="40a"/>
+                            <end endx="0a" endy="120a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node path="90, 0 : 100, 10 : 100, 50 : 0, 50 : 0, 0 : 90, 0 : 90, 10 : 100, 10 : " name="Comment">
+                <graphics>
+                    <picture sizex="200" sizey="100">
+                        <line y1="0" y2="0" x1="0" x2="180"/>
+                        <line y1="0" y2="100" x1="0" x2="0"/>
+                        <line y1="100" y2="100" x1="0" x2="200"/>
+                        <line y1="100" y2="20" x1="200" x2="200"/>
+                        <line y1="0" y2="20" x1="180" x2="200"/>
+                        <line y1="0" y2="20" x1="180" x2="180"/>
+                        <line y1="20" y2="20" x1="200" x2="180"/>
+                    </picture>
+                    <ports>
+                        <linePort>
+                            <start startx="0a" starty="0a"/>
+                            <end endx="180a" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0a" starty="0a"/>
+                            <end endx="0a" endy="100a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0a" starty="100a"/>
+                            <end endx="200a" endy="100a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="200a" starty="100a"/>
+                            <end endx="200a" endy="20a"/>
+                        </linePort>
+                    </ports>
+                    <labels>
+                        <label textBinded="body" x="0a" y="0"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <node path="0, 0 : 75, 0 : 75, 50 : 0, 50 : 0, 0 : " name="Interface">
+                <graphics>
+                    <picture sizex="150" sizey="210">
+                        <rectangle fill="#ffffff" fill-style="solid" y1="0" y2="210" x1="0" x2="150" stroke-style="solid" stroke="#000000" stroke-width="1"/>
+                        <line fill="#000000" fill-style="solid" y1="50a" y2="50a" x1="0" x2="150" stroke-style="solid" stroke="#000000" stroke-width="1"/>
+                        <line fill="#000000" fill-style="solid" y1="100" y2="100" x1="0" x2="150" stroke-style="solid" stroke="#000000" stroke-width="1"/>
+                        <text font-name="MS Shell Dlg 2" font-size="10a" b="0" y1="10a" u="0" font-fill="#000000" x1="40" i="0">&lt;&lt;interface>></text>
+                    </picture>
+                    <labels>
+                        <label textBinded="name" x="40" y="15a"/>
+                    </labels>
+                    <ports>
+                        <linePort>
+                            <start startx="0a" starty="0a"/>
+                            <end endx="150a" endy="0a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150a" starty="0a"/>
+                            <end endx="150a" endy="210a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="150a" starty="210a"/>
+                            <end endx="0a" endy="210a"/>
+                        </linePort>
+                        <linePort>
+                            <start startx="0a" starty="210a"/>
+                            <end endx="0a" endy="0a"/>
+                        </linePort>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+            <edge description="" path="" name="CommentLink" displayedName="Comment Link">
+                <graphics>
+                    <lineType type="dashLine"/>
+                    <shape type="broken"/>
+		    <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <beginRole role="noArrowRole"/>
+                    <endRole role="noArrowRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge description="" path="" name="Association">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="broken"/>
+		    <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <beginRole role="noArrowRole"/>
+                    <endRole role="noArrowRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge description="" path="" name="Aggregation" displayedName="Aggregation">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="broken"/>
+		    <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <beginRole role="noArrowRole"/>
+                    <endRole role="emptyRhombRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge description="" path="" name="Composition" displayedName="Composition">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="broken"/>
+		    <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <beginRole role="noArrowRole"/>
+                    <endRole role="filledRhombRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge description="" path="" name="Generalization">
+                <graphics>
+                    <lineType type="solidLine"/>
+                    <shape type="broken"/>
+		    <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <beginRole role="emptyArrowRole"/>
+                    <endRole role="noArrowRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge description="" path="" name="Realization" displayedName="Realization">
+                <graphics>
+                    <lineType type="dashLine"/>
+                    <shape type="broken"/>
+		     <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>
+                </graphics>
+                <logic>
+                    <beginRole role="emptyArrowRole"/>
+                    <endRole role="noArrowRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <edge description="" path="" name="Dependency">
+                <graphics>
+                    <lineType type="dashLine"/>
+                    <shape type="broken"/>
+		    <labels>
+			<label textBinded="beginRole:Multiplicity" hard="true"/>
+			<label textBinded="beginRole:Info" hard="true"/>
+			<label textBinded="beginRole:Constraints" hard="true"/>
+			<label textBinded="endRole:Multiplicity" hard="true"/>
+			<label textBinded="endRole:Info" hard="true"/>
+			<label textBinded="endRole:Constraints" hard="true"/>
+                    </labels>	
+                </graphics>
+                <logic>
+                    <beginRole role="openedArrowRole"/>
+                    <endRole role="noArrowRole"/>
+                    <fromPorts/>
+                    <toPorts/>
+                    <explodesTo/>
+                </logic>
+            </edge>
+            <node path="10, 0 : 90, 0 : 90, 100 : 10, 100 : 0, 90 : 0, 10 : 100, 10 : 100, 90 : " name="ClassDiagramNode" displayedName="Class Diagram">
+                <graphics>
+                    <picture sizex="200" sizey="200">
+                        <line y1="0" y2="0" x1="20" x2="180"/>
+                        <line y1="200" y2="200" x1="20" x2="180"/>
+                        <line y1="20" y2="180" x1="0" x2="0"/>
+                        <line y1="20" y2="180" x1="200" x2="200"/>
+                        <arc startAngle="1440" y1="0" y2="40" spanAngle="1440" x1="0" x2="40"/>
+                        <arc startAngle="0" y1="0" y2="40" spanAngle="1440" x1="160" x2="200"/>
+                        <arc startAngle="2880" y1="160" y2="200" spanAngle="1440" x1="0" x2="40"/>
+                        <arc startAngle="0" y1="160" y2="200" spanAngle="-1440" x1="160" x2="200"/>
+                    </picture>
+                    <labels>
+                        <label textBinded="name" x="40" y="10"/>
+                    </labels>
+                    <ports>
+                        <pointPort x="0" y="100"/>
+                        <pointPort x="100" y="0"/>
+                        <pointPort x="200" y="100"/>
+                        <pointPort x="100" y="200"/>
+                    </ports>
+                </graphics>
+                <logic>
+                    <container/>
+                    <explodesTo/>
+                </logic>
+            </node>
+ <node displayedName="Class method" name="ClassMethod">
+          <graphics>
+            <picture sizex="100" sizey="20"/>
+            <labels>
+              <label x="3" y="0" textBinded="name"/>
+            </labels>
+            <ports>
+              <linePort>
+                <start startx="0a" starty="0a"/>
+                <end endx="100a" endy="0a"/>
+              </linePort>
+              <linePort>
+                <start startx="100a" starty="0a"/>
+                <end endx="100a" endy="20a"/>
+              </linePort>
+              <linePort>
+                <start startx="100a" starty="20a"/>
+                <end endx="0a" endy="20a"/>
+              </linePort>
+              <linePort>
+                <start startx="0a" starty="20a"/>
+                <end endx="0a" endy="0a"/>
+              </linePort>
+            </ports>
+          </graphics>
+          <logic/>
+        </node>
+	<node displayedName="Class field" name="ClassField">
+          <graphics>
+            <picture sizex="100" sizey="20"/>
+            <labels>
+              <label x="0" y="0" textBinded="name"/>
+            </labels>
+            <ports>
+              <linePort>
+                <start startx="0a" starty="0a"/>
+                <end endx="100a" endy="0a"/>
+              </linePort>
+              <linePort>
+                <start startx="100a" starty="0a"/>
+                <end endx="100a" endy="20a"/>
+              </linePort>
+              <linePort>
+                <start startx="100a" starty="20a"/>
+                <end endx="0a" endy="20a"/>
+              </linePort>
+              <linePort>
+                <start startx="0a" starty="20a"/>
+                <end endx="0a" endy="0a"/>
+              </linePort>
+            </ports>
+          </graphics>
+          <logic/>
+        </node>
+        </graphicTypes>
+    </diagram>
+</metamodel>
