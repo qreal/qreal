@@ -289,7 +289,7 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 			mField->appendChild(new Field(beginPartName, logicalAttribute, -1, nullptr));
 			auto parent = mField->child(i);
 
-			QString endPartName = temp.mid(first + 1);
+			QString endPartName = roleName.mid(first + 1);
 			mField->appendChild(new Field(endPartName, logicalAttribute, role, parent));
 			++i;
 			QString val = mTargetLogicalObject.data(role).toString();
