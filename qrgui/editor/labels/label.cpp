@@ -196,7 +196,6 @@ void Label::updateData(bool withUndoRedo)
 			parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, repoValue, withUndoRedo);
 		}
 
-
 	} else if (mProperties.binding() == "name") {
 		if (value != parent->name()) {
 			parent->setName(value, withUndoRedo);

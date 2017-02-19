@@ -1105,12 +1105,6 @@ void EditorViewScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 		// Double click on a title activates it
 		for (QGraphicsItem * const item : items(event->scenePos())) {
 			if (Label * const label = dynamic_cast<Label*>(item)) {
-					qDebug() << "mouseDoubleClickEvent" << " is ReadOnly " << label->isReadOnly();
-//					qDebug() ;
-					qDebug() << "label->info().binding() "<< label->info().binding();
-					qDebug() << "label->info().nameForRoleProperty() "<<label->info().nameForRoleProperty();
-
-
 				if (!label->hasFocus() && !label->isReadOnly()) {  // Do not activate already activated or readonly item
 					event->accept();
 					label->startTextInteraction();

@@ -42,7 +42,6 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 	return mField->childCount();
 }
 
-
 void PropertyEditorModel::setValueForIndex(const QModelIndex &index, QString value)
 {
 	mField->setValue(index.row() + index.column(), value);
@@ -284,14 +283,14 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		int i = 0;
 		role = roles::customPropertiesBeginRole;
 		while (cloneWithRoles.size() > 0) {
-			QString temp = cloneWithRoles.takeAt(0);
-			int first = temp.indexOf("!");
-			QString begin = temp.mid(0, first);
-			mField->appendChild(new Field(begin, logicalAttribute, -1, nullptr));
-			auto two = mField->child(i);
+			QString roleName = cloneWithRoles.takeAt(0);
+			int first = roleName.indexOf("!");
+			QString beginPartName = roleName.mid(0, first);
+			mField->appendChild(new Field(beginPartName, logicalAttribute, -1, nullptr));
+			auto parent = mField->child(i);
 
-			QString end = temp.mid(first + 1);
-			mField->appendChild(new Field(end, logicalAttribute, role, two));
+			QString endPartName = temp.mid(first + 1);
+			mField->appendChild(new Field(endPartName, logicalAttribute, role, parent));
 			++i;
 			QString val = mTargetLogicalObject.data(role).toString();
 			mField->setValue(i, val);
@@ -299,10 +298,10 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 			int j = 0;
 			while (j < cloneWithRoles.size()) {
-				if (cloneWithRoles.at(j).mid(0, first) == begin) {
-					QString newValue = cloneWithRoles.takeAt(j);
-					newValue = newValue.mid(first + 1);
-					mField->appendChild(new Field(newValue, logicalAttribute, role, two));
+				if (cloneWithRoles.at(j).mid(0, first) == beginPartName) {
+					QString roleName = cloneWithRoles.takeAt(j);
+					roleName = roleName.mid(first + 1);
+					mField->appendChild(new Field(roleName, logicalAttribute, role, parent));
 					++i;
 					QString value = mTargetLogicalObject.data(role).toString();
 					mField->setValue(i, value);
@@ -317,8 +316,8 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		}
 
 		while (cloneWithPure.size()  > 0) {
-			QString temp = cloneWithPure.takeAt(0);
-			mField->appendChild(new Field(temp, logicalAttribute, role, nullptr));
+			QString roleName = cloneWithPure.takeAt(0);
+			mField->appendChild(new Field(roleName, logicalAttribute, role, nullptr));
 			QString val = mTargetLogicalObject.data(role).toString();
 			mField->setValue(i, val);
 			++i;
@@ -408,7 +407,6 @@ QString PropertyEditorModel::typeName(const QModelIndex &index) const
 	}
 
 	const QString propertyName = fullPropertyName(index);
-
 	return mEditorManagerInterface.typeName(id, propertyName);
 }
 

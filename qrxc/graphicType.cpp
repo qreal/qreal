@@ -524,7 +524,7 @@ void GraphicType::generateDescription(OutFile &out) const
 	out() << "\t\t\tsetDescription(QObject::tr(\"" << mDescription << "\"));\n";
 }
 
-QStringList GraphicType::sortProperties(const QList<QString> properties) const
+QStringList GraphicType::sortProperties(const QList<QString> &properties) const
 {
 	QList<QString> result;
 
