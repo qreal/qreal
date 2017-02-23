@@ -1,4 +1,4 @@
-QREAL_XML = umlChecker.xml
+QREAL_XML = umlCheckerEditor.xml
 QREAL_EDITOR_PATH = umlChecker/editor
 ROOT = ../../..
 
