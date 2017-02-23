@@ -14,9 +14,18 @@
 
 include(../../../global.pri)
 
-TEMPLATE = subdirs
-SUBDIRS = \
-	editor/uml.pro \
-	umlSupport \
+TEMPLATE = lib
+CONFIG += plugin
+DESTDIR = $$DESTDIR/plugins/tools/
 
-editor.depends = umlSupport
+INCLUDEPATH += \
+	$$PWD/../../../ \
+	$$PWD/../../../qrgui/ \
+
+QT += widgets
+
+HEADERS = \
+	umlCheckerPlugin.h \
+
+SOURCES = \
+	umlCheckerPlugin.cpp \

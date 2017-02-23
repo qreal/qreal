@@ -22,22 +22,47 @@ class UmlCheckerPlugin : public QObject, public qReal::ToolPluginInterface
 {
 	Q_OBJECT
 	Q_INTERFACES(qReal::ToolPluginInterface)
-	Q_PLUGIN_METADATA(IID "umlCheker.UmlCheckerPlugin")
+	Q_PLUGIN_METADATA(IID "umlCheсker.UmlCheckerPlugin")
 
 public:
 	UmlCheckerPlugin();
 	~UmlCheckerPlugin() override;
 
-	QList<qReal::ActionInfo> actions() override;
-
 	void init(qReal::PluginConfigurator const &configurator) override;
 
+	QList<qReal::ActionInfo> actions() override;
+
 private slots:
+
+	// temporary user api
 	void check();
+
+	void chooseNewTask();
+
+	void saveSolution();
+
+	void verifyCurrentSolution();
+
+	void createNewSetOfTemplates();
+
+
+	void changeExistingSetTemplates();
+
+	void addNewTemplateToCurrentSet();
+	void removeTemplateOfCurrentSet();
+	void changeTemplatesOfCurrentSet();
+
+
+	void distinguishBlock();
+
 
 private:
 	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
-	QAction mAction;
+	QAction *mAction;
+
+	QMenu *mCheckerToolMenu;
+	QList<qReal::ActionInfo> mActionInfos;
+
 
 	/// To syncronize logical and graphical models with repository.
 	/// Doesn`t have ownership.

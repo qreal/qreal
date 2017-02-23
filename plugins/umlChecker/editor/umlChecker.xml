@@ -161,12 +161,12 @@
                     <lineType type="dashLine"/>
                     <shape type="broken"/>
 		    <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -182,12 +182,12 @@
                     <lineType type="solidLine"/>
                     <shape type="broken"/>
 		    <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -203,12 +203,12 @@
                     <lineType type="solidLine"/>
                     <shape type="broken"/>
 		    <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -224,12 +224,12 @@
                     <lineType type="solidLine"/>
                     <shape type="broken"/>
 		    <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -245,12 +245,12 @@
                     <lineType type="solidLine"/>
                     <shape type="broken"/>
 		    <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -266,12 +266,12 @@
                     <lineType type="dashLine"/>
                     <shape type="broken"/>
 		     <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>
                 </graphics>
                 <logic>
@@ -287,12 +287,12 @@
                     <lineType type="dashLine"/>
                     <shape type="broken"/>
 		    <labels>
-			<label textBinded="beginRole:Multiplicity" hard="true"/>
-			<label textBinded="beginRole:Info" hard="true"/>
-			<label textBinded="beginRole:Constraints" hard="true"/>
-			<label textBinded="endRole:Multiplicity" hard="true"/>
-			<label textBinded="endRole:Info" hard="true"/>
-			<label textBinded="endRole:Constraints" hard="true"/>
+			<label textBinded="beginRole!Multiplicity" hard="true"/>
+			<label textBinded="beginRole!Info" hard="true"/>
+			<label textBinded="beginRole!Constraints" hard="true"/>
+			<label textBinded="endRole!Multiplicity" hard="true"/>
+			<label textBinded="endRole!Info" hard="true"/>
+			<label textBinded="endRole!Constraints" hard="true"/>
                     </labels>	
                 </graphics>
                 <logic>

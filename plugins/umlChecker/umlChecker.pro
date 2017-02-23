@@ -12,20 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../../../global.pri)
+include(../../global.pri)
 
-TEMPLATE = lib
-CONFIG += plugin
-DESTDIR = $$DESTDIR/plugins/tools/umlSupport/
-
-INCLUDEPATH += \
-	$$PWD/../../../../ \
-	$$PWD/../../../../qrgui/ \
-
-QT += widgets
-
-HEADERS = \
-	umlCheckerPlugin.h \
-
-SOURCES = \
-	umlCheckerPlugin.cpp \
+TEMPLATE = subdirs
+SUBDIRS = \
+	editor/umlChecker.pro \
+	umlCheckerEditorSupport \
