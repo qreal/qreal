@@ -22,6 +22,9 @@
 #include <qrgui/plugins/toolPluginInterface/pluginConfigurator.h>
 #include <qrgui/mainWindow/errorReporter.h>
 
+#include <qrrepo/repoApi.h>
+
+#include "umlCheckerFinder.h"
 
 
 namespace qReal {
@@ -49,8 +52,7 @@ private slots:
 	/// only if this diagram has refactoring type (RefactoringDiagramNode)
 	/// and picture (.png) with this rule.
 	/// names of .qrs and .png are the same as name on the diagram
-	void saveSolution();
-
+	void parseSolution();
 
 
 
@@ -72,11 +74,13 @@ private:
 	gui::MainWindowInterpretersInterface *mMainWindowIFace;
 
 	QString mQRealSourceFilesPath;
+	QString mPathToExamples;
 
 	QList<qReal::ActionInfo> mActionInfos;
 	QStringList mEditorElementNames;
 
-
+	qrRepo::RepoApi *mUmlCheckerRepoApi;
+	UmlCheckerFinder *mUmlCheckerFinder;
 
 	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
 

@@ -22,6 +22,7 @@ DESTDIR = $$DESTDIR/plugins/tools/
 
 links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
 
+
 INCLUDEPATH += \
 	$$PWD/../../../.. \
 	$$PWD/../../../../qrgui/ \
@@ -31,7 +32,9 @@ QT += widgets
 
 HEADERS = \
 	umlCheckerPlugin.h \
+	umlCheckerFinder.h \
 
 
 SOURCES = \
 	umlCheckerPlugin.cpp \
+	umlCheckerFinder.cpp \

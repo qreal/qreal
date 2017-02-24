@@ -40,6 +40,13 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mLogicalModelApi = &configurator.logicalModelApi();
 	mGraphicalModelApi = &configurator.graphicalModelApi();
+	mUmlCheckerRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/examples", true);
+
+	mUmlCheckerFinder = new UmlCheckerFinder(configurator.logicalModelApi()
+			, configurator.graphicalModelApi()
+			, configurator.mainWindowInterpretersInterface()
+			, mUmlCheckerRepoApi);
+
 
 	mMetamodelGeneratorSupport = new MetamodelGeneratorSupport(
 			configurator.mainWindowInterpretersInterface().errorReporter()
@@ -48,6 +55,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
 	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
+	mPathToExamples = mQRealSourceFilesPath + "/plugins/umlChecker/examples/";
 
 }
 
@@ -61,10 +69,8 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	mUmlCheckerMenu = new QMenu(tr("UmlChecker"));
 	ActionInfo umlCheckerMenuInfo(mUmlCheckerMenu, "tools");
 
-
-
-	mSaveAction = new QAction(tr("Save Perfect Solution"), nullptr);
-	connect(mSaveAction, SIGNAL(triggered()), this, SLOT(saveSolution()));
+	mSaveAction = new QAction(tr("Parse Solution"), nullptr);
+	connect(mSaveAction, SIGNAL(triggered()), this, SLOT(parseSolution()));
 	mUmlCheckerMenu->addAction(mSaveAction);
 
 	mActionInfos << umlCheckerMenuInfo;
@@ -72,25 +78,10 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	return mActionInfos;
 }
 
-
-
-void UmlCheckerPlugin::saveSolution()
+void UmlCheckerPlugin::parseSolution()
 {
-	IdList const childrenIDs = mLogicalModelApi->children(Id::rootId());
-	QHash<QString, IdList> diagramIds;
-	foreach (Id const &childId, childrenIDs) {
-		if (childId.element() == "RefactoringDiagramNode" && childId == mMainWindowIFace->activeDiagram()) {
-			QString elementName = mGraphicalModelApi->name(childId).replace(" ", "")
-					.replace("(", "").replace(")", "");
-			if (!elementName.isEmpty()) {
-				QString fileName = "" + elementName;
-				IdList list;
-				list << childId;
-				diagramIds.insert(fileName + ".qrs", list);
-				mMainWindowIFace->saveDiagramAsAPictureToFile(fileName + ".png");
-			}
-		}
-	}
-	mRepoControlIFace->saveDiagramsById(diagramIds);
-	QMessageBox::information(nullptr, tr("Information"), tr("Saved successfully"), tr("Ok"));
+	QString const umlSolutionsPath = mPathToExamples + "check.qrs";
+	mUmlCheckerRepoApi->open(umlSolutionsPath);
+	auto debug = mUmlCheckerFinder->matches();
+	QMessageBox::information(nullptr, tr("Information"), tr("successfully"), tr("Ok"));
 }
