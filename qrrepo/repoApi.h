@@ -147,8 +147,8 @@ public:
 	qReal::Id logicalId(const qReal::Id &id) const override;
 
 	/// Returns all elements with .element() == type
-	qReal::IdList elementsByType(const QString &type, bool sensitivity = false, bool regExpression = false) const override;
-	int elementsCount() const override;
+	qReal::IdList elementsByType(const QString &type, bool sensitivity = false, bool regExpression = false) const;
+	int elementsCount() const;
 
 	bool exist(const qReal::Id &id) const override;
 
