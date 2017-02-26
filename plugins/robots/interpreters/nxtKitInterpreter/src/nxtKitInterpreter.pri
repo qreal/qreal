@@ -26,7 +26,7 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/interpreters/nxtKitInterpreter/src \
 )
 
-#copyToDestdir(../icons/nxt-robot.png, now, ../../../icons/)
+copyToDestdir(../icons/nxt-robot.png, now, images/)
 
 HEADERS += \
 	$$PWD/nxtAdditionalPreferences.h \

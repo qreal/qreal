@@ -161,6 +161,7 @@ defineTest(copyToDestdir) {
 			win32:DDIR ~= s,/,\\,g
 		} else {
 			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+			system("mkdir -p $$DDIR")
 		}
 
 		isEmpty(NOW) {
