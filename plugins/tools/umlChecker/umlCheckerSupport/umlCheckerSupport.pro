@@ -32,9 +32,9 @@ QT += widgets
 
 HEADERS = \
 	umlCheckerPlugin.h \
-	umlCheckerFinder.h \
+    umlCheckerHandler.h
 
 
 SOURCES = \
 	umlCheckerPlugin.cpp \
-	umlCheckerFinder.cpp \
+    umlCheckerHandler.cpp

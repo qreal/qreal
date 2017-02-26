@@ -24,7 +24,7 @@
 
 #include <qrrepo/repoApi.h>
 
-#include "umlCheckerFinder.h"
+#include "umlCheckerHandler.h"
 
 
 namespace qReal {
@@ -47,46 +47,23 @@ public:
 	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
 
 private slots:
-
-	/// save .qrs file with the refactoring rule on active diagram,
-	/// only if this diagram has refactoring type (RefactoringDiagramNode)
-	/// and picture (.png) with this rule.
-	/// names of .qrs and .png are the same as name on the diagram
 	void parseSolution();
 
-
-
 private:
-
-
-
 	qReal::ErrorReporterInterface *mErrorReporter;
 
 	QMenu *mUmlCheckerMenu;
 	QMenu *mPlaceMenu;
 
-	QAction *mSaveAction;
-
-
-	LogicalModelAssistInterface *mLogicalModelApi;
-	GraphicalModelAssistInterface *mGraphicalModelApi;
-	qrRepo::RepoControlInterface *mRepoControlIFace;
-	gui::MainWindowInterpretersInterface *mMainWindowIFace;
+	QAction *mParseAction;
 
 	QString mQRealSourceFilesPath;
-	QString mPathToExamples;
-
 	QList<qReal::ActionInfo> mActionInfos;
-	QStringList mEditorElementNames;
 
-	qrRepo::RepoApi *mUmlCheckerRepoApi;
-	UmlCheckerFinder *mUmlCheckerFinder;
+	qrRepo::RepoApi *mOrdinaryRepoApi;
+	qrRepo::RepoApi *mPerfectRepoApi;
 
-	utils::MetamodelGeneratorSupport *mMetamodelGeneratorSupport;
-
-	QList<QHash<Id, Id> > mMatches;
-	QHash <Id, Id> mCurrentMatch;
-	IdList mSelectedElementsOnActiveDiagram;
+	UmlCheckerHandler *mHandler;
 };
 }
 }

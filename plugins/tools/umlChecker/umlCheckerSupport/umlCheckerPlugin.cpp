@@ -38,25 +38,12 @@ UmlCheckerPlugin::~UmlCheckerPlugin()
 void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-	mLogicalModelApi = &configurator.logicalModelApi();
-	mGraphicalModelApi = &configurator.graphicalModelApi();
-	mUmlCheckerRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/examples", true);
+	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
 
-	mUmlCheckerFinder = new UmlCheckerFinder(configurator.logicalModelApi()
-			, configurator.graphicalModelApi()
-			, configurator.mainWindowInterpretersInterface()
-			, mUmlCheckerRepoApi);
+	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
+	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
 
-
-	mMetamodelGeneratorSupport = new MetamodelGeneratorSupport(
-			configurator.mainWindowInterpretersInterface().errorReporter()
-			, &configurator.mainWindowInterpretersInterface());
-	mRepoControlIFace = &configurator.repoControlInterface();
-	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
-	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", "").toString();
-	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation").toString();
-	mPathToExamples = mQRealSourceFilesPath + "/plugins/umlChecker/examples/";
-
+	mHandler = new UmlCheckerHandler(mPerfectRepoApi, mOrdinaryRepoApi);
 }
 
 QPair<QString, gui::PreferencesPage *> UmlCheckerPlugin::preferencesPage()
@@ -69,9 +56,9 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	mUmlCheckerMenu = new QMenu(tr("UmlChecker"));
 	ActionInfo umlCheckerMenuInfo(mUmlCheckerMenu, "tools");
 
-	mSaveAction = new QAction(tr("Parse Solution"), nullptr);
-	connect(mSaveAction, SIGNAL(triggered()), this, SLOT(parseSolution()));
-	mUmlCheckerMenu->addAction(mSaveAction);
+	mParseAction = new QAction(tr("Parse Solution"), nullptr);
+	connect(mParseAction, SIGNAL(triggered()), this, SLOT(parseSolution()));
+	mUmlCheckerMenu->addAction(mParseAction);
 
 	mActionInfos << umlCheckerMenuInfo;
 
@@ -80,8 +67,11 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 
 void UmlCheckerPlugin::parseSolution()
 {
-	QString const umlSolutionsPath = mPathToExamples + "check.qrs";
-	mUmlCheckerRepoApi->open(umlSolutionsPath);
-	auto debug = mUmlCheckerFinder->matches();
-	QMessageBox::information(nullptr, tr("Information"), tr("successfully"), tr("Ok"));
+	bool matchingResult = mHandler->matchingResult();
+
+	if (matchingResult) {
+		QMessageBox::information(nullptr, tr("Information"), tr("Successfully"), tr("Ok"));
+	} else {
+		QMessageBox::information(nullptr, tr("Information"), tr("Fail"), tr("Ok"));
+	}
 }
