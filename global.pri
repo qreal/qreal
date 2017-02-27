@@ -171,11 +171,11 @@ defineTest(copyToDestdir) {
 			}
 
 			unix:!macx {
-				system("cp -r -f $$FILE $$DDIR")
+				system("cp -r -f $$FILE $$DDIR/")
 			}
 
 			macx {
-				system("cp -af $$FILE $$DDIR/")
+				system("rsync -avz $$FILE $$DDIR/")
 			}
 		}
 	}
