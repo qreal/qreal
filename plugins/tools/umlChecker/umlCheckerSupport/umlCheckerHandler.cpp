@@ -83,21 +83,37 @@ bool UmlCheckerHandler::matchNodeElement(const Id &id, IdList &ordinaryValues)
 	return false;
 }
 
+IdList UmlCheckerHandler::doShift(const IdList &list)
+{
+	IdList result = IdList();
+	result = list;
+	result.removeFirst();
+	result.append(list.at(0));
+	return result;
+}
+
+
 bool UmlCheckerHandler::checkMatchingNodes(const IdList &perfectValues, const IdList &ordinaryValues)
 {
 	IdList changeablePerfect = perfectValues;
 	IdList changeableOrdinary = ordinaryValues;
 
-	for (const Id &id : changeablePerfect) {
-		bool nodeMatch = matchNodeElement(id, changeableOrdinary);
-		if (!nodeMatch) {
-			return false;
-		}
+	IdList lastShiftIds = changeablePerfect;
 
-		changeablePerfect.removeOne(id);
+	for (int i = 0; i < perfectValues.size(); ++i) {
+		for (const Id &id : changeablePerfect) {
+			bool nodeMatch = matchNodeElement(id, changeableOrdinary);
+			if (!nodeMatch) {
+				changeablePerfect = doShift(lastShiftIds);
+				break;
+			}
+
+			changeablePerfect.removeOne(id);
+		}
 	}
 
-	return changeablePerfect.count() == changeablePerfect.count();
+
+	return changeablePerfect.count() == changeablePerfect.count() && changeablePerfect.count() == 0;
 }
 
 

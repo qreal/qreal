@@ -42,6 +42,8 @@ public:
 private:
 	QMultiHash<QString, Id> getElementsFromApi(qrRepo::RepoApi *repoApi) const;
 
+	IdList doShift(const IdList &list);
+
 	QString mQRealSourceFilesPath;
 	QString mPathToPerfect;
 	QString mPathToOrdinary;
