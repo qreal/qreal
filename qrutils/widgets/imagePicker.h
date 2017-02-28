@@ -16,6 +16,8 @@
 
 #include <QtWidgets/QWidget>
 
+#include <qrutils/utilsDeclSpec.h>
+
 class QLabel;
 class QLineEdit;
 
@@ -23,7 +25,7 @@ namespace qReal {
 namespace ui {
 
 /// Picks some image from disk, saves into settings.
-class ImagePicker : public QWidget
+class QRUTILS_EXPORT ImagePicker : public QWidget
 {
 	Q_OBJECT
 
