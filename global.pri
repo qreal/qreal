@@ -58,8 +58,7 @@ equals(TEMPLATE, app) {
 }
 
 macx-clang {
-#	QMAKE_CXXFLAGS += -stdlib=libc++
-        QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9
+	QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
@@ -124,15 +123,13 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-#CONFIG += c++11
 QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra 
 QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
 			-Werror=non-virtual-dtor -Werror=delete-incomplete -Wno-error=overloaded-virtual \
 			-Werror=uninitialized -Werror=init-self
-#-Wold-style-cast -Wmissing-declarations
 
 
-#I want -Werror to be turned on, but Qt has problems
+# I want -Werror to be turned on, but Qt has problems
 #QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter 
 
 GLOBAL_PWD = $$PWD

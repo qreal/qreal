@@ -14,11 +14,11 @@
 
 #include "projectManagerWrapper.h"
 
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QTreeView>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 
 #include <qrkernel/platformInfo.h>
 #include <qrutils/qRealFileDialog.h>
@@ -107,7 +107,8 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 	return true;
 }
 
-bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo) {
+bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo)
+{
 	QFile qrp(fileInfo.absoluteFilePath());
 	qrp.open(QFile::ReadOnly | QFile::Text);
 	QByteArray qrpData = qrp.readAll();
@@ -115,9 +116,9 @@ bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo) {
 	QJsonParseError er;
 	QJsonDocument proj = QJsonDocument::fromJson(qrpData, &er);
 	if (er.error != QJsonParseError::NoError) {
-		qDebug() << er.errorString();
 		/// @todo: properly handle er
 	}
+
 	QJsonObject projObj = proj.object();
 	QDir projDir(fileInfo.absoluteDir());
 	QString qrs = projDir.absoluteFilePath(projObj["qrs"].toString());
@@ -131,6 +132,7 @@ bool ProjectManagerWrapper::openQRProject(const QFileInfo &fileInfo) {
 	for (const auto &s : sources) {
 		success = open(s) || success; // success || open() ?
 	}
+
 	return success;
 }
 

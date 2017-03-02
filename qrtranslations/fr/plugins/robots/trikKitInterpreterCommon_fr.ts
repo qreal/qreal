@@ -116,8 +116,6 @@
 <context>
     <name>trik::TrikKitInterpreterPluginBase</name>
     <message>
-<<<<<<< HEAD
-=======
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="34"/>
         <source>Start QTS</source>
         <translation type="unfinished"></translation>
@@ -139,7 +137,6 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="324"/>
->>>>>>> update translations
         <source>Enter robot`s IP-address here...</source>
         <translation type="obsolete">Tapez l&apos;adresse IP du robot ici...</translation>
     </message>

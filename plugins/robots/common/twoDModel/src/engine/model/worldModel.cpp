@@ -135,6 +135,7 @@ void WorldModel::addWall(items::WallItem *wall)
 		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
 		return; // probably better than having no way to delete those duplicate items on the scene
 	}
+
 	mWalls[id] = wall;
 	emit wallAdded(wall);
 }
@@ -172,6 +173,7 @@ void WorldModel::addColorField(items::ColorFieldItem *colorField)
 		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
 		return;
 	}
+
 	mColorFields[id] = colorField;
 	emit colorItemAdded(colorField);
 }
@@ -189,6 +191,7 @@ void WorldModel::addImage(items::ImageItem *image)
 		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
 		return;
 	}
+
 	mImages[id] = image;
 	emit imageItemAdded(image);
 }

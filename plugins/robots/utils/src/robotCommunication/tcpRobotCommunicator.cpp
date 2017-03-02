@@ -113,7 +113,6 @@ void TcpRobotCommunicator::runProgram(const QString &programName)
 
 void TcpRobotCommunicator::runDirectCommand(const QString &directCommand, bool asScript)
 {
-	qDebug() << "TcpRobotCommunicator::runDirectCommand" << directCommand;
 	QMetaObject::invokeMethod(mWorker.data(), "runDirectCommand"
 			, Q_ARG(QString, directCommand), Q_ARG(bool, asScript));
 }

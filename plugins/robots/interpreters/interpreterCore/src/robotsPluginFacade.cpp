@@ -194,11 +194,11 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	mTextManager = &configurer.textManager();
 	mProjectManager = &configurer.projectManager();
 	connect(mProjectManager
-	        , &qReal::ProjectManagementInterface::afterOpen
-	        , [&](const QString &path){
+			, &qReal::ProjectManagementInterface::afterOpen
+			, [&](const QString &path){
 		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
-		QString code = logicalRepo->metaInformation("activeCode").toString();
-		QString name = logicalRepo->metaInformation("activeCodeName").toString();
+		const QString code = logicalRepo->metaInformation("activeCode").toString();
+		const QString name = logicalRepo->metaInformation("activeCodeName").toString();
 		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
 			return;
 		}
@@ -278,7 +278,6 @@ bool RobotsPluginFacade::interpretCode(const QString &inputs)
 	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
 	if (code.isEmpty() || name.isEmpty()) {
 		mMainWindow->errorReporter()->addError(tr("No saved js code found in the qrs file"));
-		//qDebug("No saved js code found in the qrs file");
 		return false;
 	}
 	emit mEventsForKitPlugin.interpretCode(code, inputs);
@@ -289,16 +288,9 @@ void RobotsPluginFacade::saveCode(const QString &code)
 {
 	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
 	logicalRepo->setMetaInformation("activeCode", code);
-	logicalRepo->setMetaInformation("activeCodeName", "script");// no concise name for now
+	logicalRepo->setMetaInformation("activeCodeName", "script");  // no concise name for now
 	mProjectManager->setUnsavedIndicator(true);
 }
-
-//void RobotsPluginFacade::openSavedCode()
-//{
-//	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
-//	QString code = logicalRepo->metaInformation("activeCode").toString();
-//	// probably this method is to be deleted later
-//}
 
 void RobotsPluginFacade::connectInterpreterToActions()
 {

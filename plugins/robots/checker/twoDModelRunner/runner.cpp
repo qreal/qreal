@@ -14,18 +14,14 @@
 
 #include "runner.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonValue>
 #include <QtWidgets/QApplication>
 
 #include <twoDModel/engine/view/twoDModelWidget.h>
 #include <twoDModel/engine/model/model.h>
-
-#include <QFile>
-#include <QIODevice>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QStringList>
-
 
 using namespace twoDModel;
 
@@ -85,9 +81,6 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-//		connect(&mPluginFacade.interpreter(), &kitBase::InterpreterInterface::stopped, [&]() {
-//			QTimer::singleShot(0, this, SLOT(close()));
-//		});
 		connect(&mPluginFacade.eventsForKitPlugins(), &kitBase::EventsForKitPluginInterface::interpretationStopped, [&]() {
 			QTimer::singleShot(0, this, SLOT(close()));
 		});

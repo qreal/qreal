@@ -118,7 +118,6 @@ int main(int argc, char *argv[])
 	const QString trajectory = parser.isSet(trajectoryOption) ? parser.value(trajectoryOption) : QString();
 	const QString input = parser.isSet(inputOption) ? parser.value(inputOption) : QString();
 	const QString mode = parser.isSet(modeOption) ? parser.value(modeOption) : QString("diagram");
-//	twoDModel::Runner runner(report, trajectory);
 	twoDModel::Runner runner(report, trajectory, input, mode);
 	if (!runner.interpret(qrsFile, backgroundMode)) {
 		return 2;

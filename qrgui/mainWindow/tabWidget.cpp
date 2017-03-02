@@ -109,9 +109,8 @@ int TabWidget::addTab(QWidget *widget, const QString &name)
 				, *mCopyAction, *mPasteAction, *mCutAction);
 		connect(&editor->focusAction(), &QAction::triggered, &focusAction(), &QAction::trigger);
 	}
-	const int result = QTabWidget::addTab(widget, name);
 
-	return result;
+	return QTabWidget::addTab(widget, name);
 }
 
 void TabWidget::mousePressEvent(QMouseEvent *event)

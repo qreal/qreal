@@ -79,8 +79,6 @@ void RobotModel::reinit()
 	}
 
 	mBeepTime = 0;
-//	mPos = QPointF(0, 0);
-//	mAngle = 0;
 	mAngularSpeed = 0;
 	mAcceleration = QPointF(0, 0);
 }

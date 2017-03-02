@@ -166,10 +166,6 @@
 <context>
     <name>trik::TrikKitInterpreterPluginBase</name>
     <message>
-<<<<<<< HEAD
-        <source>Enter robot`s IP-address here...</source>
-        <translation type="obsolete">Введите IP-адрес робота...</translation>
-=======
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="34"/>
         <source>Start QTS</source>
         <translation>Запустить QTS</translation>
@@ -193,7 +189,6 @@
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="324"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
->>>>>>> update translations
     </message>
 </context>
 <context>

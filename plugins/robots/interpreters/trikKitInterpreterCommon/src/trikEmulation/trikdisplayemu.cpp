@@ -11,7 +11,8 @@ TrikDisplayEmu::TrikDisplayEmu(const QSharedPointer<robotModel::twoD::TrikTwoDRo
 {
 }
 
-trikControl::DisplayWidgetInterface &TrikDisplayEmu::graphicsWidget() {
+trikControl::DisplayWidgetInterface &TrikDisplayEmu::graphicsWidget()
+{
 	return mDisplayWidgetInterface;
 }
 
@@ -22,8 +23,6 @@ void TrikDisplayEmu::init()
 
 void TrikDisplayEmu::showImage(const QString &fileName)
 {
-//		trik::robotModel::parts::TrikDisplay * const display =
-//				kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel, "DisplayPort");
 		const bool smile = fileName.endsWith(QLatin1String("sad.png"));
 		bool res = QMetaObject::invokeMethod(mDisplay,
 		                                     "drawSmile",
