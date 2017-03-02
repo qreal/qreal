@@ -247,14 +247,19 @@ void PaletteTreeWidgets::refreshUserPalette()
 	QMap<QString, QString> descriptions = { { mUserGroupTitle, mUserGroupDescription } };
 	QList<gui::PaletteElement> groupElements;
 
-	QMultiMap<Id, Id> const types = mMainWindow->models().exploser().explosions(mDiagram);
+	const QMultiMap<Id, Id> types = mMainWindow->models().exploser().explosions(mDiagram);
 	for (const Id &source : types.uniqueKeys()) {
 		for (const Id &target : types.values(source)) {
-			QString shape = mMainWindow->models().logicalRepoApi().stringProperty(target, "shape");
-			QDomDocument doc;
-			doc.setContent(shape);
-			SdfIconEngineV2 * const engine = new SdfIconEngineV2(doc);
-			QIcon icon(engine);
+			const QString shape = mMainWindow->models().logicalRepoApi().stringProperty(target, "shape");
+			QIcon icon;
+			if (shape.isEmpty()) {
+				icon = mEditorManager->icon(source);
+			} else {
+				QDomDocument doc;
+				doc.setContent(shape);
+				SdfIconEngineV2 * const engine = new SdfIconEngineV2(doc);
+				icon = QIcon(engine);
+			}
 
 			groupElements << gui::PaletteElement(source
 					, mMainWindow->models().logicalRepoApi().name(target)
