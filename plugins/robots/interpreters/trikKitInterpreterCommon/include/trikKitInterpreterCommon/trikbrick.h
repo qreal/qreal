@@ -40,12 +40,12 @@ public:
 	void setCurrentInputs(const QString &f);
 
 public slots:
-	void configure(const QString &portName, const QString &deviceName) override {}
-	void playSound(const QString &soundFileName) override {}
-	void say(const QString &text) override {}
+	void configure(const QString &, const QString &) override {}
+	void playSound(const QString &) override {}
+	void say(const QString &) override {}
 	void stop() override;
 	trikControl::MotorInterface *motor(const QString &port) override;
-	trikControl::PwmCaptureInterface *pwmCapture(const QString &port) override {return nullptr;}
+	trikControl::PwmCaptureInterface *pwmCapture(const QString &) override {return nullptr;}
 	trikControl::SensorInterface *sensor(const QString &port) override;
 	QStringList motorPorts(trikControl::MotorInterface::Type type) const override;
 	QStringList pwmCapturePorts() const override {return {};}
@@ -54,20 +54,20 @@ public slots:
 	trikControl::VectorSensorInterface *accelerometer() override;
 	trikControl::GyroSensorInterface *gyroscope() override;
 	trikControl::LineSensorInterface *lineSensor(const QString &port) override;
-	trikControl::ColorSensorInterface *colorSensor(const QString &port) override {return nullptr;}
-	trikControl::ObjectSensorInterface *objectSensor(const QString &port) override {return nullptr;}
-	trikControl::SoundSensorInterface *soundSensor(const QString &port) override {return nullptr;}
+	trikControl::ColorSensorInterface *colorSensor(const QString &) override {return nullptr;}
+	trikControl::ObjectSensorInterface *objectSensor(const QString &) override {return nullptr;}
+	trikControl::SoundSensorInterface *soundSensor(const QString &) override {return nullptr;}
 	trikControl::EncoderInterface *encoder(const QString &port) override;
 	trikControl::BatteryInterface *battery() override {return nullptr;}
 	trikControl::KeysInterface *keys() override {return &mKeys;}
 	trikControl::DisplayInterface *display() override;
 	trikControl::LedInterface *led() override;
 	trikControl::GamepadInterface *gamepad() override {return nullptr;}
-	trikControl::FifoInterface *fifo(const QString &port) override {return nullptr;}
+	trikControl::FifoInterface *fifo(const QString &) override {return nullptr;}
 
-	void playTone(int hzFreq, int msDuration) override {}
-	trikControl::EventDeviceInterface *eventDevice(const QString &deviceFile) override {return nullptr;}
-	void stopEventDevice(const QString &deviceFile) override {}
+	void playTone(int, int) override {}
+	trikControl::EventDeviceInterface *eventDevice(const QString &) override {return nullptr;}
+	void stopEventDevice(const QString &) override {}
 
 	/// some ScriptExecution control replacements. @todo: factor out in the separate class
 	int random(int from, int to);

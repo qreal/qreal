@@ -157,12 +157,14 @@ trikControl::SensorInterface *TrikBrick::sensor(const QString &port)
 
 QStringList TrikBrick::motorPorts(trikControl::MotorInterface::Type type) const
 {
+	Q_UNUSED(type)
 //	QLOG_INFO() << "Motor type is ignored";
 	return mMotors.keys();
 }
 
 QStringList TrikBrick::sensorPorts(trikControl::SensorInterface::Type type) const
 {
+	Q_UNUSED(type)
 //	QLOG_INFO() << "Sensor type is ignored";
 	return mMotors.keys();
 }
