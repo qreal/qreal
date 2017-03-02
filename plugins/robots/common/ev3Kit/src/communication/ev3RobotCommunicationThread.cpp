@@ -19,16 +19,16 @@
 #include "ev3Kit/communication/commandConstants.h"
 #include "ev3Kit/communication/ev3DirectCommand.h"
 
-static const int SYSTEM_COMMAND_REPLY =             0x01;    //  System command, reply required
-static const int SYSTEM_COMMAND_NO_REPLY =          0x81;    //  System command, reply not required
-static const int BEGIN_DOWNLOAD =                   0x92;    //  Begin file down load
-static const int CONTINUE_DOWNLOAD =                0x93;    //  Continue file down load
-static const int SYSTEM_REPLY =                     0x03;    //  System command reply
-static const int SYSTEM_REPLY_ERROR =               0x05;    //  System command reply error
-static const int BEGIN_DOWNLOAD_RESPONSE_SIZE =     8;
-static const int CONTINUE_DOWNLOAD_RESPONSE_SIZE =  8;
-static const int SUCCESS =                          0x00;
-static const int END_OF_FILE =                      0x08;
+static const uchar SYSTEM_COMMAND_REPLY =             0x01;    //  System command, reply required
+static const uchar SYSTEM_COMMAND_NO_REPLY =          0x81;    //  System command, reply not required
+static const uchar BEGIN_DOWNLOAD =                   0x92;    //  Begin file down load
+static const uchar CONTINUE_DOWNLOAD =                0x93;    //  Continue file down load
+static const uchar SYSTEM_REPLY =                     0x03;    //  System command reply
+static const uchar SYSTEM_REPLY_ERROR =               0x05;    //  System command reply error
+static const uchar BEGIN_DOWNLOAD_RESPONSE_SIZE =     8;
+static const uchar CONTINUE_DOWNLOAD_RESPONSE_SIZE =  8;
+static const uchar SUCCESS =                          0x00;
+static const uchar END_OF_FILE =                      0x08;
 
 using namespace ev3::communication;
 
@@ -109,12 +109,13 @@ bool Ev3RobotCommunicationThread::runProgram(const QString &pathOnRobot)
 	QByteArray command = Ev3DirectCommand::formCommand(21 + pathOnRobot.size(), 0, 0x08, 0
 			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
 	int index = 7;
-	command[index++] = 0xC0;  // opFILE            Opcode file related
-	command[index++] = 0x08;
-	command[index++] = 0x82;  // LC0(LOAD_IMAGE)   Command encoded as single byte constant
-	command[index++] = 0x01;  // LC2(USER_SLOT)    User slot (1 = program slot) encoded as single constant byte
-	command[index++] = 0x00;
-	command[index++] = 0x84;  // LCS               Encoding: String to follow (zero terminated)
+	#define charOf(x) static_cast<char>(static_cast<uchar>(x))
+	command[index++] = charOf(0xC0);// opFILE            Opcode file related
+	command[index++] = charOf(0x08);
+	command[index++] = charOf(0x82);  // LC0(LOAD_IMAGE)   Command encoded as single byte constant
+	command[index++] = charOf(0x01);  // LC2(USER_SLOT)    User slot (1 = program slot) encoded as single constant byte
+	command[index++] = charOf(0x00);
+	command[index++] = charOf(0x84);  // LCS               Encoding: String to follow (zero terminated)
 
 	for (int i = 0; i < pathOnRobot.size(); ++i) {
 		command[index++] = pathOnRobot.at(i).toLatin1();

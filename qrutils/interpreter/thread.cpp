@@ -189,9 +189,9 @@ void Thread::turnOn(BlockInterface * const block)
 	const blocks::SubprogramBlock * const subprogram = dynamic_cast<blocks::SubprogramBlock *>(mCurrentBlock);
 	if (subprogram) {
 		QList<QPair<QString, QVariant>> properties;
-		const QStringList identifiers = subprogram->identifiers();
-		for (const QString &identifier : identifiers) {
-			properties << qMakePair(identifier, subprogram->value<QVariant>(identifier));
+		const QList<blocks::SubprogramBlock::DynamicParameter> parameters = subprogram->dynamicParameters();
+		for (const blocks::SubprogramBlock::DynamicParameter &param : parameters) {
+			properties << qMakePair(param.name, subprogram->value<QVariant>(param.name));
 		}
 
 		mStack.push(StackFrame(mCurrentBlock, properties));

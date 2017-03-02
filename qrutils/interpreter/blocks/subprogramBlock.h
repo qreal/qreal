@@ -28,10 +28,20 @@ class QRUTILS_EXPORT SubprogramBlock : public Block
 	Q_OBJECT
 
 public:
+	struct DynamicParameter
+	{
+		QString name;
+		QString type;
+		QString code;
+	};
+
 	SubprogramBlock();
 
 	void run() override;
 	void finishedSteppingInto() override;
+
+	/// Returns a list of parameters for this subprogram call.
+	QList<DynamicParameter> dynamicParameters() const;
 };
 
 }
