@@ -67,7 +67,7 @@ function Component()
 Component.prototype.createOperations = function()
 {
 	if (installer.shouldDeinstallPrevious) {
-		component.addOperation("Execute", "@TargetDir@/" + installer.maintenanceName);
+		component.addOperation("Execute", Dir.toNativeSeparator("@TargetDir@/" + installer.maintenanceName));
 		if (installer.value("os") == "win") {
 			var timeoutBatch = "ping 127.0.0.1 -n 4 > nul";
 			component.addOperation("Execute", "cmd", "/c", timeoutBatch);
@@ -97,7 +97,7 @@ Component.prototype.createOperations = function()
 	}
 }
 
-// Utility function like QString QDir::toNativeSeparators(const QString & pathName) [static]
+// Utility function like QString QDir::toNativeSeparators(const QString & pathName)
 var Dir = new function () {
 	this.toNativeSeparator = function (path) {
 		if (installer.value("os") == "win")
@@ -206,7 +206,7 @@ Component.prototype.targetChanged = function (text) {
 		if (text != "") {
 			widget.complete = true;
 			installer.setValue("TargetDir", text);
-			if (installer.fileExists(text + "/" + installer.maintenanceName)) {
+			if (installer.fileExists(Dir.toNativeSeparator(text + "/" + installer.maintenanceName))) {
 				var warning = "<font color='green'>" + overwrite[langIndex()] + "</font>";
 				widget.labelOverwrite.text = warning;
 				installer.shouldDeinstallPrevious = true;

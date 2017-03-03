@@ -8,6 +8,7 @@ mkdir -p $PWD/../data/
 source $INSTALLER_ROOT/utils/common_utils.sh
 
 cp     $INSTALLER_ROOT/licenses/WinScp-license.txt                        $PWD
+cp     $BIN_DIR/system.js                                                 $PWD/../data/
 
 cd $PWD/../data/
 rm -rf trik-runtime-builds
