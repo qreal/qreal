@@ -24,7 +24,7 @@ ConsoleDock::ConsoleDock(const QString &title, QWidget *parent)
 	, mOutput(new QPlainTextEdit(this))
 {
 	setWidget(mOutput);
-	mOutput->setReadOnly(true);
+	mOutput->setReadOnly(false);
 
 	setObjectName("consoleDockContents");
 }
