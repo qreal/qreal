@@ -28,7 +28,10 @@ public:
 	/// Returns QCoreApplication::applicationDirPath on every platform besides Mac OS X
 	/// and path to directory containing application bundle on Mac
 	/// (3 levels up from QCoreApplication::applicationDirPath()) if current executable is bundled.
-	static QString applicationDirPath();
+    static QString applicationDirPath();
+
+    static QString invariantSettingsPath(const QString &settingsKey);
+    static QString invariantPath(const QString &path);
 };
 
 }

@@ -15,6 +15,7 @@
 #include "trikV6RuntimeUploaderPlugin.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 using namespace trik;
 
@@ -87,7 +88,7 @@ TrikV6RuntimeUploaderPlugin::TrikV6RuntimeUploaderPlugin()
 
 void TrikV6RuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
 {
-	mUploaderTool.init(configurator.mainWindowInterpretersInterface());
+    mUploaderTool.init(configurator.mainWindowInterpretersInterface(), qReal::PlatformInfo::invariantSettingsPath("pathToTrikRuntime"));
 }
 
 QList<qReal::ActionInfo> TrikV6RuntimeUploaderPlugin::actions()

@@ -16,6 +16,10 @@
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDir>
+#include <QtCore/QStandardPaths>
+#include <QtCore/QProcessEnvironment>
+
+#include "settingsManager.h"
 
 using namespace qReal;
 
@@ -87,4 +91,30 @@ QString PlatformInfo::applicationDirPath()
 #else
 	return QCoreApplication::applicationDirPath();
 #endif
+}
+
+QString PlatformInfo::invariantPath(const QString &path)
+{
+    QRegExp windowsVariablesRegexp("^%([A-Za-z0-9_]+)%.*");
+    if (path.startsWith("./")) {
+        return qReal::PlatformInfo::applicationDirPath() + path.mid(1);
+    } else if (path.startsWith("@DocumentsPath@")) {
+        const QStringList documentsPaths = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+        const QString documentsPath = documentsPaths.isEmpty() ? applicationDirPath() : documentsPaths.first();
+        return QString(path).replace("@DocumentsPath@", documentsPath);
+    } else if (path.startsWith("@TempLocation@")) {
+        const QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
+        return QString(path).replace("@TempLocation@", tempPath);
+    } else if (windowsVariablesRegexp.exactMatch(path)) {
+        const QString variable = windowsVariablesRegexp.cap(1);
+        const QString value = QProcessEnvironment::systemEnvironment().value(variable);
+        return QString(path).replace("%" + variable + "%", value);
+    }
+
+    return path;
+}
+
+QString PlatformInfo::invariantSettingsPath(const QString &settingsKey)
+{
+    return invariantPath(SettingsManager::value(settingsKey).toString());
 }
