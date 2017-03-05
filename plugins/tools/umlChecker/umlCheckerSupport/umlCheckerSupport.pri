@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,29 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../../../global.pri)
-
-QT += xml
-
-TEMPLATE = lib
-CONFIG += plugin
-DESTDIR = $$DESTDIR/plugins/tools/
-
-links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
-
+QT += widgets
 
 INCLUDEPATH += \
 	$$PWD/../../../.. \
 	$$PWD/../../../../qrgui/ \
 
-QT += widgets
-
+links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
 
 HEADERS = \
-	umlCheckerPlugin.h \
-	umlCheckerHandler.h
+	$$PWD/umlCheckerPlugin.h \
+	$$PWD/umlCheckerHandler.h
 
 
 SOURCES = \
-	umlCheckerPlugin.cpp \
-	umlCheckerHandler.cpp
+	$$PWD/umlCheckerPlugin.cpp \
+	$$PWD/umlCheckerHandler.cpp
