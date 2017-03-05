@@ -15,7 +15,7 @@ static T getPitch(const QQuaternion &q)
 template <typename T>
 static T getRoll(const QQuaternion &q)
 {
-	return std::asin(2 * q.scalar() * q.y() - 2 * q.x() * q.y());
+	return std::asin(2 * q.scalar() * q.y() - 2 * q.x() * q.z());
 }
 
 template <typename T>
@@ -63,14 +63,12 @@ QVector<int> TrikGyroscopeAdapter::readRawData() const
 	return res;
 }
 
-void TrikGyroscopeAdapter::countTilt(QVector<int> oldFormat)
+void TrikGyroscopeAdapter::countTilt(const QVector<int> &oldFormat)
 {
 	constexpr int gyroConstant = -1600 / 100;
 	constexpr auto pi = 3.14159265358979323846;
 	constexpr auto RAD_TO_MDEG = 1000 * 180 / pi;
-	//QVector<int> oldFormat = mModel->engine()->readGyroscopeSensor();
-	int timeStamp = getTimeVal(mModel.data());
-	//qDebug() << mModel->timeline().timestamp() << ", " << timeStamp;
+	const int timeStamp = getTimeVal(mModel.data());
 
 	static bool timeInited = false;
 	if (!timeInited) {
