@@ -16,7 +16,7 @@ TARGET = umlChecker_unittests
 
 include(../../../../common.pri)
 
-links(qrkernel qslog test-utils qrgui-text-editor)
+links(qrkernel qslog test-utils googletest qrgui-text-editor)
 
 include(../../../../../../plugins/tools/umlChecker/umlCheckerSupport/umlCheckerSupport.pri)
 
@@ -26,4 +26,3 @@ HEADERS += \
 
 SOURCES += \
 	umlCheckerHandlerTest.cpp
-

@@ -16,6 +16,7 @@
 
 #include <plugins/tools/umlChecker/umlCheckerSupport/umlCheckerHandler.h>
 #include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
+#include <qrrepo/repoApi.h>
 
 #include <gtest/gtest.h>
 
@@ -28,7 +29,15 @@ protected:
 
 	virtual void TearDown();
 
-	qReal::UmlCheckerHandler *mParser;
+	void openRepositories(const QString &perfect, const QString &ordinary);
+
+	qReal::UmlCheckerHandler *mHandler;
+	qrRepo::RepoApi *mPerfectRepoApi;
+	qrRepo::RepoApi *mOrdinaryRepoApi;
+
+
+	QString mTestFilesPath = "/home/julia/qreal/qreal/qrtest";
+	QString mRepositoriesPath = mTestFilesPath + "/pluginsTests/toolsTests/umlCheckerTests/umlCheckerSupportTests/cases/";
 	ErrorReporterMock mErrorReporter;
 };
 

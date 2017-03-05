@@ -24,15 +24,44 @@ using ::testing::_;
 
 void UmlCheckerHandlerTest::SetUp() {
 
+	mOrdinaryRepoApi = new qrRepo::RepoApi(mRepositoriesPath + "/perfect", true);
+	mPerfectRepoApi = new qrRepo::RepoApi(mRepositoriesPath + "/ordinary", true);
+
+	mHandler = new UmlCheckerHandler(mPerfectRepoApi, mOrdinaryRepoApi);
 }
 
 void UmlCheckerHandlerTest::TearDown() {
+	delete mHandler;
 }
 
 
-TEST_F(UmlCheckerHandlerTest, tryGoogleTest) {
-	ASSERT_EQ("ololo", "ololo");
+void UmlCheckerHandlerTest::openRepositories(const QString &perfect, const QString &ordinary)
+{
+	mPerfectRepoApi->open(mRepositoriesPath + perfect);
+	mOrdinaryRepoApi->open(mRepositoriesPath + ordinary);
+}
 
-	EXPECT_EQ(5, 5);
+TEST_F(UmlCheckerHandlerTest, oneClass) {
+	openRepositories("perfectOneClass.qrs", "ordinaryOneClass.qrs");
 
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_EQ(matchResult, true);
+}
+
+TEST_F(UmlCheckerHandlerTest, twoClassesWithEdge) {
+	openRepositories("perfectTwoClassesWithEdge.qrs", "ordinaryTwoClassesWithEdge.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_EQ(matchResult, true);
+}
+
+
+TEST_F(UmlCheckerHandlerTest, threeClassesWithThreeEdges) {
+	openRepositories("perfect3ClassesWith3Edges.qrs", "ordinary3ClassesWith3Edges.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_EQ(matchResult, true);
 }
