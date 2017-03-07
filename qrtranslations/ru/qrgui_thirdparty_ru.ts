@@ -7,27 +7,27 @@
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="233"/>
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="243"/>
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="268"/>
-        <source>True</source>
-        <translation>Истина</translation>
+        <source>true</source>
+        <translation>истина</translation>
     </message>
     <message>
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="243"/>
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertybrowserutils.cpp" line="268"/>
-        <source>False</source>
-        <translation>Ложь</translation>
+        <source>false</source>
+        <translation>ложь</translation>
     </message>
 </context>
 <context>
     <name>QtBoolPropertyManager</name>
     <message>
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1678"/>
-        <source>True</source>
-        <translation>Истина</translation>
+        <source>true</source>
+        <translation>истина</translation>
     </message>
     <message>
         <location filename="../../qrgui/thirdparty/qtpropertybrowser/src/qtpropertymanager.cpp" line="1679"/>
-        <source>False</source>
-        <translation>Ложь</translation>
+        <source>false</source>
+        <translation>ложь</translation>
     </message>
 </context>
 <context>
