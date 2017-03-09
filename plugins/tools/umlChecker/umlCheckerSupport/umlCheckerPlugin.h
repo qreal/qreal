@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtWidgets/QMenu>
+#include <QInputDialog>
 
 #include <qrkernel/ids.h>
 #include <qrutils/metamodelGeneratorSupport.h>
@@ -48,14 +49,20 @@ public:
 
 private slots:
 	void parseSolution();
+	void addElementsToBlock();
+	void savePerfectSolution();
 
 private:
 	qReal::ErrorReporterInterface *mErrorReporter;
+	gui::MainWindowInterpretersInterface *mMainWindowIFace;
 
 	QMenu *mUmlCheckerMenu;
 	QMenu *mPlaceMenu;
 
+	QAction *mSavePerfectSolution;
 	QAction *mParseAction;
+	QAction *mAddBlockAction;
+
 
 	QString mQRealSourceFilesPath;
 	QList<qReal::ActionInfo> mActionInfos;

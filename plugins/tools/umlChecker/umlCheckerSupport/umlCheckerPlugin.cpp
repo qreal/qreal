@@ -39,6 +39,8 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
 	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
+	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
+
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
 	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
@@ -60,10 +62,36 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	connect(mParseAction, SIGNAL(triggered()), this, SLOT(parseSolution()));
 	mUmlCheckerMenu->addAction(mParseAction);
 
+	mAddBlockAction = new QAction(tr("Add Block"), nullptr);
+	connect(mAddBlockAction, SIGNAL(triggered()), this, SLOT(addElementsToBlock()));
+	mUmlCheckerMenu->addAction(mAddBlockAction);
+
+	mSavePerfectSolution = new QAction(tr("Save Perfect Solution"), nullptr);
+	connect(mSavePerfectSolution, SIGNAL(triggered()), this, SLOT(savePerfectSolution()));
+	mUmlCheckerMenu->addAction(mSavePerfectSolution);
+
+
 	mActionInfos << umlCheckerMenuInfo;
 
 	return mActionInfos;
 }
+
+void UmlCheckerPlugin::addElementsToBlock()
+{
+	const QString blockName = QInputDialog::getText(nullptr, tr("block name"), tr("enter block name"));
+	IdList activeElements = mMainWindowIFace->selectedElementsOnActiveDiagram();
+	for (Id &id : activeElements) {
+		mPerfectRepoApi->setProperty(id, blockName, QVariant(""));
+	}
+
+}
+
+
+void UmlCheckerPlugin::savePerfectSolution()
+{
+	mHandler->saveSolution();
+}
+
 
 void UmlCheckerPlugin::parseSolution()
 {

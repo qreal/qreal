@@ -46,6 +46,17 @@ void UmlCheckerHandler::init()
 	mPerfectRepoApi->open(umlPerfectSolutionPath);
 }
 
+void UmlCheckerHandler::addBlockName(const QString &blockName) {
+	mBlockNames.append(blockName);
+}
+
+
+void UmlCheckerHandler::saveSolution()
+{
+	mPerfectRepoApi->save(mPerfectRepoApi->graphicalElements());
+}
+
+
 bool UmlCheckerHandler::matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks)
 {
 	IdList changeblePerfectLinks = perfectLinks;
@@ -93,7 +104,7 @@ IdList UmlCheckerHandler::doShift(const IdList &list)
 }
 
 
-bool UmlCheckerHandler::checkMatchingNodes(const IdList &perfectValues, const IdList &ordinaryValues)
+bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues)
 {
 	IdList changeablePerfect = perfectValues;
 	IdList changeableOrdinary = ordinaryValues;
@@ -112,30 +123,35 @@ bool UmlCheckerHandler::checkMatchingNodes(const IdList &perfectValues, const Id
 		}
 	}
 
-
-	return changeablePerfect.count() == changeablePerfect.count() && changeablePerfect.count() == 0;
+	ordinaryValues = changeableOrdinary;
+	return ordinaryValues.count() == changeablePerfect.count() && changeablePerfect.count() == 0;
 }
 
 
 bool UmlCheckerHandler::matchingResult()
 {
-	const QMultiHash<QString, Id> perfectElements = getElements("perfect");
-	const QMultiHash<QString, Id> ordinaryElements = getElements("ordinary");
-	const QStringList keys = perfectElements.uniqueKeys();
+	const QHash<QString, QMultiHash<QString, Id>> perfectBlocks = getElementsAsBlocks(mPerfectRepoApi);
+	QMultiHash<QString, Id> ordinaryElements = getElements("ordinary");
+	const QStringList keys = perfectBlocks.keys();
+
 
 	for (const QString &key : keys) {
-		const IdList ordinaryValues = ordinaryElements.values(key);
-		const IdList perfectValues = ordinaryElements.values(key);
+		QMultiHash<QString, Id> perfectElements = perfectBlocks.value(key);
+		const QStringList perfectKeys = perfectElements.uniqueKeys();
+		for (const QString &pKey : perfectKeys) {
+			IdList ordinaryValues = ordinaryElements.values(pKey);
+			IdList perfectValues = perfectElements.values(pKey);
 
-		if (key == "UmlClass") {
-			bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues);
-			if (resOfCheckMatching == false) {
-				return resOfCheckMatching;
+			if (key == "UmlClass") {
+				bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues);
+				if (resOfCheckMatching == false) {
+					return resOfCheckMatching;
+				}
 			}
 		}
 	}
 
-	return perfectElements.size() == ordinaryElements.size();
+	return ordinaryElements.size() == 0;
 }
 
 QMultiHash<QString, Id> UmlCheckerHandler::getElements(const QString &typeSolution) const
@@ -145,6 +161,23 @@ QMultiHash<QString, Id> UmlCheckerHandler::getElements(const QString &typeSoluti
 	}
 
 	return getElementsFromApi(mOrdinaryRepoApi);
+}
+
+QHash<QString, QMultiHash<QString, Id>> UmlCheckerHandler::getElementsAsBlocks(qrRepo::RepoApi *repoApi)
+{
+	QHash<QString, QMultiHash<QString, Id>> result;
+
+	for (const QString &blockName : mBlockNames) {
+		const IdList blockList = repoApi->elementsByProperty(blockName, false, true);
+		QMultiHash<QString, Id> hashElements;
+		for (const Id &id : blockList) {
+			hashElements.insertMulti(id.element(), id);
+		}
+
+		result.insert(blockName, hashElements);
+	}
+
+	return result;
 }
 
 QMultiHash<QString, Id> UmlCheckerHandler::getElementsFromApi(qrRepo::RepoApi *repoApi) const

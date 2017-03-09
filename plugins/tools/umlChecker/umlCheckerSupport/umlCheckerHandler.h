@@ -28,19 +28,25 @@ public:
 
 	virtual ~UmlCheckerHandler();
 
+	void addBlockName(const QString &blockName);
+
 	void init();
 
 	bool matchingResult();
 
-	bool checkMatchingNodes(const IdList &perfectValues, const IdList &ordinaryValues);
+	bool checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues);
 
 	bool matchNodeElement(const Id &id, IdList &ordinaryValues);
 
 	bool matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks);
 
+
+	void saveSolution();
+
 	QMultiHash<QString, Id> getElements(const QString &typeSolution) const;
 private:
 	QMultiHash<QString, Id> getElementsFromApi(qrRepo::RepoApi *repoApi) const;
+	QHash<QString, QMultiHash<QString, Id>> getElementsAsBlocks(qrRepo::RepoApi *repoApi);
 
 	IdList doShift(const IdList &list);
 
@@ -48,6 +54,7 @@ private:
 	QString mPathToPerfect;
 	QString mPathToOrdinary;
 
+	QStringList mBlockNames;
 
 	qrRepo::RepoApi *mPerfectRepoApi;
 	qrRepo::RepoApi *mOrdinaryRepoApi;
