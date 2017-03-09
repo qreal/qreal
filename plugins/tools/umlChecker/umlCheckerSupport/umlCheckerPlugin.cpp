@@ -41,6 +41,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 
+//	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
 	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
@@ -70,6 +71,9 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	connect(mSavePerfectSolution, SIGNAL(triggered()), this, SLOT(savePerfectSolution()));
 	mUmlCheckerMenu->addAction(mSavePerfectSolution);
 
+	mAssignTemplates = new QAction(tr("Assign Templates"), nullptr);
+	connect(mAssignTemplates, SIGNAL(triggered()), this, SLOT(assignTemplatesForBlock()));
+	mUmlCheckerMenu->addAction(mAssignTemplates);
 
 	mActionInfos << umlCheckerMenuInfo;
 
@@ -84,8 +88,14 @@ void UmlCheckerPlugin::addElementsToBlock()
 		mPerfectRepoApi->setProperty(id, blockName, QVariant(""));
 	}
 
+	mHandler->addBlockName(blockName);
 }
 
+
+void UmlCheckerPlugin::assignTemplatesForBlock()
+{
+
+}
 
 void UmlCheckerPlugin::savePerfectSolution()
 {

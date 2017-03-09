@@ -26,6 +26,7 @@
 #include <qrrepo/repoApi.h>
 
 #include "umlCheckerHandler.h"
+#include "umlCheckerTmplWindow.h"
 
 
 namespace qReal {
@@ -51,6 +52,7 @@ private slots:
 	void parseSolution();
 	void addElementsToBlock();
 	void savePerfectSolution();
+	void assignTemplatesForBlock();
 
 private:
 	qReal::ErrorReporterInterface *mErrorReporter;
@@ -62,7 +64,9 @@ private:
 	QAction *mSavePerfectSolution;
 	QAction *mParseAction;
 	QAction *mAddBlockAction;
+	QAction *mAssignTemplates;
 
+	UmlCheckerTmplWindow *mTemplatesWindow;
 
 	QString mQRealSourceFilesPath;
 	QList<qReal::ActionInfo> mActionInfos;
