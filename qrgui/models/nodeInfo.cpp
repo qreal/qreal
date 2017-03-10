@@ -28,7 +28,7 @@ NodeInfo::NodeInfo(const Id &graphicalId
 		, LogicalModelAssistInterface &logicalModel
 		, GraphicalModelAssistInterface &graphicalModel)
 	: NodeInfo(graphicalId, logicalId, logicalModel.parent(logicalId), graphicalModel.parent(graphicalId)
-			, graphicalModel.properties(graphicalId), graphicalModel.properties(logicalId)
+			,graphicalModel.properties(logicalId) , graphicalModel.properties(graphicalId)
 			, logicalModel.logicalRepoApi().outgoingExplosion(logicalId))
 {
 	setGraphicalProperty("links", IdListHelper::toVariant(IdList()));

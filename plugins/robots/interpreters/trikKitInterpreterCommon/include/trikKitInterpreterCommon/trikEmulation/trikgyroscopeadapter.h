@@ -33,7 +33,7 @@ public slots:
 	virtual QVector<int> readRawData() const override;
 
 private slots:
-	void countTilt(QVector<int> oldFormat);
+	void countTilt(const QVector<int> &oldFormat);
 
 private:
 	kitBase::robotModel::robotParts::GyroscopeSensor *mGyro;

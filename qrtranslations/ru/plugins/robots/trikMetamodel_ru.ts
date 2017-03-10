@@ -814,12 +814,12 @@
     <message>
         <location filename="../../../../plugins/robots/editor/trik/generated/elements.h" line="1802"/>
         <source>Wait for Gyroscope</source>
-        <translation>Ждать гироскоп</translation>
+        <translation>Ждать гиродатчик</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/trik/generated/elements.h" line="1804"/>
         <source>Waits till the value returned by the gyroscope on the given port will be greater or less than the given in the &apos;Degrees/sec&apos; parameter value.</source>
-        <translation>Ждать, пока значение, возвращаемое гироскопом на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Градусы/сек&apos;.</translation>
+        <translation>Ждать, пока значение, возвращаемое гиродатчиком на указанном порту, не будет сравнимо с указанным в значении параметра &apos;Градусы/сек&apos;.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/trik/generated/elements.h" line="1811"/>

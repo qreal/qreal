@@ -11,11 +11,11 @@
 
 #include <QDebug>
 
-const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;\n"
-		"script.readAll = brick.readAll;\n"
-		"print = function() {var res = '';\n"
-		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}\n"
-		"brick.log(res);return res;};\n"
+const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;"
+		"script.readAll = brick.readAll;"
+		"print = function() {var res = '';"
+		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}"
+		"brick.log(res);return res;};"
 		"script.system = function() {print('system is disabled in the interpreter');};";
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(
