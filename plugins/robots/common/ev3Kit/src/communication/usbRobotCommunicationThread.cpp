@@ -137,7 +137,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 	command[1] = 0;
 	command[2] = 0;
 	command[3] = 0;
-	command[4] = enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY;
+	command[4] = enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY;
 	command[5] = 0;
 	command[6] = 0;
 	command[7] = enums::opcode::OpcodeEnum::KEEP_ALIVE;
