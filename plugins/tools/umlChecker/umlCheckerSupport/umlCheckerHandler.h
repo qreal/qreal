@@ -32,7 +32,6 @@ public:
 
 	void init();
 
-
 	bool matchingResult();
 
 	bool checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues);
@@ -40,7 +39,6 @@ public:
 	bool matchNodeElement(const Id &id, IdList &ordinaryValues);
 
 	bool matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks);
-
 
 	bool matchingInsideABlock(QMultiHash<QString, Id> perfectElements
 			, QMultiHash<QString, Id> &ordinaryElements);

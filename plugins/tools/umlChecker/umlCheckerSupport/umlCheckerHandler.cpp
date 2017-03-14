@@ -177,28 +177,35 @@ bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElem
 	return true;
 }
 
-
 bool UmlCheckerHandler::matchingResult()
 {
-	for (const QString &fileName : mPerfectFileNames) {
-		mPerfectRepoFromList->open(mPathToPerfectList + fileName);
-		const QHash<QString, QMultiHash<QString, Id>> perfectBlocks = getElementsAsBlocks(mPerfectRepoFromList);
-		QMultiHash<QString, Id> ordinaryElements = getElements("ordinary");
-		const QStringList keys = perfectBlocks.keys();
-		for (const QString &key : keys) {
-			QMultiHash<QString, Id> perfectElements = perfectBlocks.value(key);
-			bool matchingBlock = matchingInsideABlock(perfectElements, ordinaryElements);
-			if (!matchingBlock) {
+	QMultiHash<QString, Id> ordinaryElements = getElementsFromApi(mOrdinaryRepoApi);
+	QMultiHash<QString, Id> intermediateOrdElems = ordinaryElements;
+
+	for (const QString &blockName : mBlockNames) {
+		QStringList blocksList = mPerfectFileNames.filter(blockName);
+		bool matchingBlock = false;
+
+		for (const QString &fileName : blocksList) {
+			mPerfectRepoFromList->open(mPathToPerfectList + fileName);
+			const QMultiHash<QString, Id> perfectElements = getElementsFromApi(mPerfectRepoFromList);
+
+			ordinaryElements = intermediateOrdElems;
+
+			matchingBlock = matchingInsideABlock(perfectElements, ordinaryElements);
+			if (matchingBlock) {
 				break;
 			}
 		}
 
-		if (ordinaryElements.size() == 0) {
-			return true;
+		if (matchingBlock) {
+			intermediateOrdElems = ordinaryElements;
+		} else {
+			return false;
 		}
 	}
 
-	return false;
+	return ordinaryElements.size() == 0;
 }
 
 QMultiHash<QString, Id> UmlCheckerHandler::getElements(const QString &typeSolution) const

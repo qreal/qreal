@@ -22,21 +22,15 @@ UmlCheckerTmplWindow::UmlCheckerTmplWindow(QWidget *parent)
 		: QDialog(parent)
 		, mUi(new Ui::umlCheckerForm)
 {
-//	mUi->setupUi(this);
-//	mUi->saveButton->setEnabled(true);
-////	mUi->canselButton->setEnabled(true);
-
-
-//	connect(mUi->listView, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
-//	connect(mUi->saveButton, SIGNAL(checkClicked()), this, SLOT(checkActivate()));
+	mUi->setupUi(this);
+	mUi->saveButton->setEnabled(true);
+	connect(mUi->saveButton, SIGNAL(checkClicked()), this, SLOT(checkActivate()));
 }
-
 
 UmlCheckerTmplWindow::~UmlCheckerTmplWindow()
 {
 
 }
-
 
 void UmlCheckerTmplWindow::checkActivate()
 {

@@ -45,7 +45,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 
 	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
-//	connect(mTemplatesWindow, SIGNAL(checkClicked()), this, SLOT(ololo()));
+	connect(mTemplatesWindow, SIGNAL(checkClicked()), this, SLOT(ololo()));
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
 	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
@@ -90,7 +90,7 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 
 void UmlCheckerPlugin::ololo()
 {
-
+	QMessageBox::information(nullptr, tr("Information"), tr("Clicked"), tr("Ok"));
 }
 
 void UmlCheckerPlugin::addElementsToBlock()
@@ -112,7 +112,7 @@ void UmlCheckerPlugin::assignTemplatesForBlock()
 
 void UmlCheckerPlugin::openTemplatesWindow()
 {
-//	mTemplatesWindow->show();
+	mTemplatesWindow->show();
 }
 
 void UmlCheckerPlugin::savePerfectSolution()
