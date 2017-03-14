@@ -32,6 +32,7 @@ public:
 
 	void init();
 
+
 	bool matchingResult();
 
 	bool checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues);
@@ -41,20 +42,29 @@ public:
 	bool matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks);
 
 
+	bool matchingInsideABlock(QMultiHash<QString, Id> perfectElements
+			, QMultiHash<QString, Id> &ordinaryElements);
+
 	void saveSolution();
 
 	QMultiHash<QString, Id> getElements(const QString &typeSolution) const;
 private:
 	QMultiHash<QString, Id> getElementsFromApi(qrRepo::RepoApi *repoApi) const;
 	QHash<QString, QMultiHash<QString, Id>> getElementsAsBlocks(qrRepo::RepoApi *repoApi);
+	QStringList initBlockNames();
 
 	IdList doShift(const IdList &list);
 
 	QString mQRealSourceFilesPath;
 	QString mPathToPerfect;
+	QString mPathToPerfectList;
+
 	QString mPathToOrdinary;
 
 	QStringList mBlockNames;
+	QStringList mPerfectFileNames;
+
+	qrRepo::RepoApi *mPerfectRepoFromList;
 
 	qrRepo::RepoApi *mPerfectRepoApi;
 	qrRepo::RepoApi *mOrdinaryRepoApi;

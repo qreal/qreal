@@ -19,6 +19,7 @@
 #include <QEventLoop>
 #include <QSet>
 #include <QtCore/QDebug>
+#include <QDir>
 
 using namespace qReal;
 
@@ -30,7 +31,14 @@ UmlCheckerHandler::UmlCheckerHandler(qrRepo::RepoApi *umlPerfectRepoApi
 	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
 	mPathToPerfect = mQRealSourceFilesPath + "/plugins/tools/umlChecker/perfect/";
 	mPathToOrdinary = mQRealSourceFilesPath + "/plugins/tools/umlChecker/ordinary/";
+	mPathToPerfectList = mPathToPerfect + "list/";
 
+	mPerfectRepoFromList = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect/list", true);
+	QDir dir(mPathToPerfectList);
+	QStringList filters;
+	filters << "*.qrs";
+	dir.setNameFilters(filters);
+	mPerfectFileNames = dir.entryList();
 	init();
 }
 
@@ -40,13 +48,33 @@ UmlCheckerHandler::~UmlCheckerHandler()
 
 void UmlCheckerHandler::init()
 {
-	QString const umlSolutionsPath = mPathToOrdinary + "check.qrs";
-	QString const umlPerfectSolutionPath = mPathToPerfect + "good.qrs";
+	const QString umlSolutionsPath = mPathToOrdinary + "check.qrs";
+	const QString umlPerfectSolutionPath = mPathToPerfect + "good.qrs";
 	mOrdinaryRepoApi->open(umlSolutionsPath);
 	mPerfectRepoApi->open(umlPerfectSolutionPath);
+	initBlockNames();
 }
 
-void UmlCheckerHandler::addBlockName(const QString &blockName) {
+QStringList UmlCheckerHandler::initBlockNames()
+{
+	QStringList result;
+
+	IdList graphicalElements = mPerfectRepoApi->graphicalElements();
+
+	for (const Id &id : graphicalElements) {
+		QMap<QString, QVariant> properties = mPerfectRepoApi->properties(id);
+		for (const QString &key : properties.keys()) {
+			if (key.contains("block") && !mBlockNames.contains(key)) {
+				mBlockNames.append(key);
+			}
+		}
+	}
+
+	return result;
+}
+
+void UmlCheckerHandler::addBlockName(const QString &blockName)
+{
 	mBlockNames.append(blockName);
 }
 
@@ -127,31 +155,50 @@ bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordina
 	return ordinaryValues.count() == changeablePerfect.count() && changeablePerfect.count() == 0;
 }
 
+bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElements
+		, QMultiHash<QString, Id> &ordinaryElements)
+{
+	const QStringList perfectKeys = perfectElements.uniqueKeys();
+
+	for (const QString &pKey : perfectKeys) {
+		IdList ordinaryValues = ordinaryElements.values(pKey);
+		IdList perfectValues = perfectElements.values(pKey);
+
+		if (pKey == "UmlClass") {
+			bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues);
+			if (resOfCheckMatching == false) {
+				return resOfCheckMatching;
+			}
+		}
+
+		ordinaryElements.remove(pKey);
+	}
+
+	return true;
+}
+
 
 bool UmlCheckerHandler::matchingResult()
 {
-	const QHash<QString, QMultiHash<QString, Id>> perfectBlocks = getElementsAsBlocks(mPerfectRepoApi);
-	QMultiHash<QString, Id> ordinaryElements = getElements("ordinary");
-	const QStringList keys = perfectBlocks.keys();
-
-
-	for (const QString &key : keys) {
-		QMultiHash<QString, Id> perfectElements = perfectBlocks.value(key);
-		const QStringList perfectKeys = perfectElements.uniqueKeys();
-		for (const QString &pKey : perfectKeys) {
-			IdList ordinaryValues = ordinaryElements.values(pKey);
-			IdList perfectValues = perfectElements.values(pKey);
-
-			if (key == "UmlClass") {
-				bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues);
-				if (resOfCheckMatching == false) {
-					return resOfCheckMatching;
-				}
+	for (const QString &fileName : mPerfectFileNames) {
+		mPerfectRepoFromList->open(mPathToPerfectList + fileName);
+		const QHash<QString, QMultiHash<QString, Id>> perfectBlocks = getElementsAsBlocks(mPerfectRepoFromList);
+		QMultiHash<QString, Id> ordinaryElements = getElements("ordinary");
+		const QStringList keys = perfectBlocks.keys();
+		for (const QString &key : keys) {
+			QMultiHash<QString, Id> perfectElements = perfectBlocks.value(key);
+			bool matchingBlock = matchingInsideABlock(perfectElements, ordinaryElements);
+			if (!matchingBlock) {
+				break;
 			}
+		}
+
+		if (ordinaryElements.size() == 0) {
+			return true;
 		}
 	}
 
-	return ordinaryElements.size() == 0;
+	return false;
 }
 
 QMultiHash<QString, Id> UmlCheckerHandler::getElements(const QString &typeSolution) const

@@ -27,9 +27,12 @@ using namespace qReal;
 using namespace umlChecker;
 using namespace utils;
 
+
 UmlCheckerPlugin::UmlCheckerPlugin()
+	: mTemplatesWindow(nullptr)
 {
 }
+
 
 UmlCheckerPlugin::~UmlCheckerPlugin()
 {
@@ -41,7 +44,8 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 
-//	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
+	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
+//	connect(mTemplatesWindow, SIGNAL(checkClicked()), this, SLOT(ololo()));
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
 	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
@@ -51,7 +55,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 
 QPair<QString, gui::PreferencesPage *> UmlCheckerPlugin::preferencesPage()
 {
-	return qMakePair(tr(""), nullptr);
+	return qMakePair(tr("UmlChecker"), nullptr);
 }
 
 QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
@@ -71,6 +75,10 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	connect(mSavePerfectSolution, SIGNAL(triggered()), this, SLOT(savePerfectSolution()));
 	mUmlCheckerMenu->addAction(mSavePerfectSolution);
 
+	mOpenTemplatesWindowAction = new QAction(tr("Open Templates Window"), nullptr);
+	connect(mOpenTemplatesWindowAction, SIGNAL(triggered()), this, SLOT(openTemplatesWindow()));
+	mUmlCheckerMenu->addAction(mOpenTemplatesWindowAction);
+
 	mAssignTemplates = new QAction(tr("Assign Templates"), nullptr);
 	connect(mAssignTemplates, SIGNAL(triggered()), this, SLOT(assignTemplatesForBlock()));
 	mUmlCheckerMenu->addAction(mAssignTemplates);
@@ -78,6 +86,11 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	mActionInfos << umlCheckerMenuInfo;
 
 	return mActionInfos;
+}
+
+void UmlCheckerPlugin::ololo()
+{
+
 }
 
 void UmlCheckerPlugin::addElementsToBlock()
@@ -95,6 +108,11 @@ void UmlCheckerPlugin::addElementsToBlock()
 void UmlCheckerPlugin::assignTemplatesForBlock()
 {
 
+}
+
+void UmlCheckerPlugin::openTemplatesWindow()
+{
+//	mTemplatesWindow->show();
 }
 
 void UmlCheckerPlugin::savePerfectSolution()

@@ -28,7 +28,6 @@
 #include "umlCheckerHandler.h"
 #include "umlCheckerTmplWindow.h"
 
-
 namespace qReal {
 namespace umlChecker {
 
@@ -53,6 +52,8 @@ private slots:
 	void addElementsToBlock();
 	void savePerfectSolution();
 	void assignTemplatesForBlock();
+	void openTemplatesWindow();
+	void ololo();
 
 private:
 	qReal::ErrorReporterInterface *mErrorReporter;
@@ -65,6 +66,7 @@ private:
 	QAction *mParseAction;
 	QAction *mAddBlockAction;
 	QAction *mAssignTemplates;
+	QAction *mOpenTemplatesWindowAction;
 
 	UmlCheckerTmplWindow *mTemplatesWindow;
 

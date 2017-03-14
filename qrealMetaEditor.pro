@@ -12,33 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include(../../../../global.pri)
-QT += widgets
+include (qreal.pri)
 
-QT += xml
-
-TEMPLATE = lib
-CONFIG += plugin
-DESTDIR = $$DESTDIR/plugins/tools/
-
-links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
-
-
-INCLUDEPATH += \
-	$$PWD/../../../.. \
-	$$PWD/../../../../qrgui/ \
-
-
-HEADERS = \
-	umlCheckerPlugin.h \
-	umlCheckerHandler.h \
-	umlCheckerTmplWindow.h
-
-
-SOURCES = \
-	umlCheckerPlugin.cpp \
-	umlCheckerHandler.cpp \
-	umlCheckerTmplWindow.cpp
-
-FORMS += \
-	umlCheckerTmplWindow.ui
+plugins.file = plugins/metaEditor/metaEditor.pro

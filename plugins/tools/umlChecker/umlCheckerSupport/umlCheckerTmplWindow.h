@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <QWidget>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListWidgetItem>
 
@@ -29,7 +30,15 @@ class UmlCheckerTmplWindow: public QDialog
 
 public:
 	explicit UmlCheckerTmplWindow(QWidget *parent = 0);
+
 	~UmlCheckerTmplWindow();
+
+
+signals:
+	void checkClicked();
+
+private slots:
+	void checkActivate();
 
 private:
 	Ui::umlCheckerForm *mUi;
