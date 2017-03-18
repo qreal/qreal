@@ -30,6 +30,8 @@ using namespace utils;
 
 UmlCheckerPlugin::UmlCheckerPlugin()
 	: mTemplatesWindow(nullptr)
+	, mPreferencesPage(new UmlCheckerPreferencePage())
+
 {
 }
 
@@ -41,7 +43,8 @@ UmlCheckerPlugin::~UmlCheckerPlugin()
 void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
+	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", ".").toString() + "/../";
+
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 	mRepoControlIFace = &configurator.repoControlInterface();
 
@@ -57,7 +60,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 
 QPair<QString, gui::PreferencesPage *> UmlCheckerPlugin::preferencesPage()
 {
-	return qMakePair(tr("UmlChecker"), nullptr);
+	return qMakePair(tr("UmlChecker"), static_cast<gui::PreferencesPage *>(mPreferencesPage));
 }
 
 QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
@@ -112,7 +115,6 @@ void UmlCheckerPlugin::save()
 		}
 	}
 }
-
 
 void UmlCheckerPlugin::cancel()
 {

@@ -32,13 +32,16 @@ INCLUDEPATH += \
 HEADERS = \
 	umlCheckerPlugin.h \
 	umlCheckerHandler.h \
-	umlCheckerTmplWindow.h
+	umlCheckerTmplWindow.h \
+	umlCheckerPreferencePage.h
 
 
 SOURCES = \
 	umlCheckerPlugin.cpp \
 	umlCheckerHandler.cpp \
-	umlCheckerTmplWindow.cpp
+	umlCheckerTmplWindow.cpp \
+	umlCheckerPreferencePage.cpp
 
 FORMS += \
-	umlCheckerTmplWindow.ui
+	umlCheckerTmplWindow.ui \
+	umlCheckerPreferencePage.ui

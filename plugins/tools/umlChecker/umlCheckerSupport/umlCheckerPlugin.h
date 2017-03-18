@@ -27,6 +27,7 @@
 
 #include "umlCheckerHandler.h"
 #include "umlCheckerTmplWindow.h"
+#include "umlCheckerPreferencePage.h"
 
 namespace qReal {
 namespace umlChecker {
@@ -76,6 +77,7 @@ private:
 	QAction *mOpenTemplatesWindowAction;
 
 	UmlCheckerTmplWindow *mTemplatesWindow;
+	UmlCheckerPreferencePage *mPreferencesPage;
 
 	QString mQRealSourceFilesPath;
 	QList<qReal::ActionInfo> mActionInfos;
