@@ -96,7 +96,23 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 
 void UmlCheckerPlugin::save()
 {
-	qDebug() << "save";
+	QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
+	QString filename= mQRealSourceFilesPath + "/check.txt";
+	QFile file(filename);
+	if (file.open(QIODevice::ReadWrite))
+	{
+		QTextStream stream( &file );
+		stream << elements.first << endl;
+
+		for (QString element : elements.second)
+		{
+			element.chop(4);
+			const QString fileName = element + ".qrs";
+			stream << element << " ";
+		}
+	}
+
+
 }
 
 
@@ -121,7 +137,9 @@ void UmlCheckerPlugin::addElementsToBlock()
 		mPerfectRepoApi->setProperty(id, blockName, QVariant(""));
 	}
 
-	mHandler->addBlockName(blockName);
+
+	mTemplatesWindow->setBlockName(blockName);
+	openTemplatesWindow();
 }
 
 

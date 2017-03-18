@@ -45,6 +45,10 @@ void UmlCheckerTmplWindow::openPicture(QListWidgetItem *item)
 	mUi->label->setPixmap(QPixmap(fileName));
 }
 
+void UmlCheckerTmplWindow::setBlockName(const QString &blockName)
+{
+	mBlockName = blockName;
+}
 
 void UmlCheckerTmplWindow::openTemplatesForBlocks()
 {
@@ -71,12 +75,20 @@ void UmlCheckerTmplWindow::openTemplatesForBlocks()
 
 }
 
+QPair<QString, QStringList> UmlCheckerTmplWindow::getElementForBlock()
+{
+	QPair<QString, QStringList> result = qMakePair(mBlockName, mFiles);
+	mFiles.clear();
+	mBlockName = "";
+	return result;
+}
 
 void UmlCheckerTmplWindow::addToCollection()
 {
 	QList<QListWidgetItem*> items = mUi->blockList->selectedItems();
 	auto item = items.at(0);
 	const QString fileName = item->data(Qt::UserRole).toString();
+	mFiles.append(fileName);
 }
 
 void UmlCheckerTmplWindow::applyButtonActivate()

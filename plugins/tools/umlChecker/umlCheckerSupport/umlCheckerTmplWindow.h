@@ -34,7 +34,8 @@ public:
 	~UmlCheckerTmplWindow();
 
 	void openTemplatesForBlocks();
-
+	void setBlockName(const QString &blockName);
+	QPair<QString, QStringList> getElementForBlock();
 
 signals:
 	void checkClicked();
@@ -49,6 +50,9 @@ private slots:
 
 
 private:
+
+	QString mBlockName = "";
+	QStringList mFiles;
 	Ui::umlCheckerForm *mUi;
 
 };
