@@ -53,11 +53,16 @@ private slots:
 	void savePerfectSolution();
 	void assignTemplatesForBlock();
 	void openTemplatesWindow();
-	void ololo();
+	void save();
+	void cancel();
+
+	void saveTemplate();
 
 private:
 	qReal::ErrorReporterInterface *mErrorReporter;
 	gui::MainWindowInterpretersInterface *mMainWindowIFace;
+	qrRepo::RepoControlInterface *mRepoControlIFace;
+
 
 	QMenu *mUmlCheckerMenu;
 	QMenu *mPlaceMenu;
@@ -66,6 +71,8 @@ private:
 	QAction *mParseAction;
 	QAction *mAddBlockAction;
 	QAction *mAssignTemplates;
+	QAction *mSaveTemplate;
+
 	QAction *mOpenTemplatesWindowAction;
 
 	UmlCheckerTmplWindow *mTemplatesWindow;
@@ -75,6 +82,7 @@ private:
 
 	qrRepo::RepoApi *mOrdinaryRepoApi;
 	qrRepo::RepoApi *mPerfectRepoApi;
+	qrRepo::RepoApi *mRepoApi;
 
 	UmlCheckerHandler *mHandler;
 };

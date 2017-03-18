@@ -33,12 +33,20 @@ public:
 
 	~UmlCheckerTmplWindow();
 
+	void openTemplatesForBlocks();
+
 
 signals:
 	void checkClicked();
+	void applyButtonClicked();
+
 
 private slots:
 	void checkActivate();
+	void applyButtonActivate();
+	void openPicture(QListWidgetItem *item);
+	void addToCollection();
+
 
 private:
 	Ui::umlCheckerForm *mUi;

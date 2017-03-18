@@ -24,7 +24,13 @@ UmlCheckerTmplWindow::UmlCheckerTmplWindow(QWidget *parent)
 {
 	mUi->setupUi(this);
 	mUi->saveButton->setEnabled(true);
-	connect(mUi->saveButton, SIGNAL(checkClicked()), this, SLOT(checkActivate()));
+	mUi->cancelButton->setEnabled(true);
+
+	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
+	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
+	connect(mUi->addToCollection, SIGNAL(clicked()), this, SLOT(addToCollection()));
+	connect(mUi->blockList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
+
 }
 
 UmlCheckerTmplWindow::~UmlCheckerTmplWindow()
@@ -32,7 +38,48 @@ UmlCheckerTmplWindow::~UmlCheckerTmplWindow()
 
 }
 
-void UmlCheckerTmplWindow::checkActivate()
+void UmlCheckerTmplWindow::openPicture(QListWidgetItem *item)
 {
-	emit checkClicked();
+	const QString fileName = item->data(Qt::UserRole).toString();
+	mUi->label->setScaledContents(true);
+	mUi->label->setPixmap(QPixmap(fileName));
+}
+
+
+void UmlCheckerTmplWindow::openTemplatesForBlocks()
+{
+	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
+	QDir currentDir(tempDirPath);
+	QStringList filters;
+	filters << "*.png";
+	const QStringList pngFiles = currentDir.entryList(filters);
+	QListWidget *blockList = mUi->blockList;
+	blockList->clear();
+	for (QString png : pngFiles) {
+		png.chop(4);
+		QListWidgetItem *item = new QListWidgetItem(png);
+		item->setData(Qt::UserRole, tempDirPath + png + ".png");
+		item->setSelected(true);
+		blockList->addItem(item);
+	}
+
+	if (blockList->count() > 0) {
+		QListWidgetItem *firstItem = blockList->item(0);
+		blockList->setCurrentItem(firstItem);
+		openPicture(firstItem);
+	}
+
+}
+
+
+void UmlCheckerTmplWindow::addToCollection()
+{
+	QList<QListWidgetItem*> items = mUi->blockList->selectedItems();
+	auto item = items.at(0);
+	const QString fileName = item->data(Qt::UserRole).toString();
+}
+
+void UmlCheckerTmplWindow::applyButtonActivate()
+{
+	emit applyButtonClicked();
 }
