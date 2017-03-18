@@ -97,7 +97,7 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 void UmlCheckerPlugin::save()
 {
 	QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
-	QString filename= mQRealSourceFilesPath + "/check.txt";
+	QString filename= mQRealSourceFilesPath + "/" + elements.first + ".txt";
 	QFile file(filename);
 	if (file.open(QIODevice::ReadWrite))
 	{
@@ -108,17 +108,14 @@ void UmlCheckerPlugin::save()
 		{
 			element.chop(4);
 			const QString fileName = element + ".qrs";
-			stream << element << " ";
+			stream << fileName << " ";
 		}
 	}
-
-
 }
 
 
 void UmlCheckerPlugin::cancel()
 {
-	qDebug() << "cancel";
 }
 
 void UmlCheckerPlugin::saveTemplate()
