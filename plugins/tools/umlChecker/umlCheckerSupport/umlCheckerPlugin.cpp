@@ -53,6 +53,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(cancel()));
 
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
+	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
 	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
@@ -101,21 +102,8 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 
 void UmlCheckerPlugin::save()
 {
-	QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
-	QString filename= mQRealSourceFilesPath + "/" + elements.first + ".txt";
-	QFile file(filename);
-	if (file.open(QIODevice::ReadWrite))
-	{
-		QTextStream stream( &file );
-		stream << elements.first << endl;
-
-		for (QString element : elements.second)
-		{
-			element.chop(4);
-			const QString fileName = element + ".qrs";
-			stream << fileName << " ";
-		}
-	}
+	const QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
+	mUmlCheckerPerfectSolution->saveOptionsForBlock(elements);
 }
 
 void UmlCheckerPlugin::cancel()
@@ -130,20 +118,12 @@ void UmlCheckerPlugin::saveTemplate()
 void UmlCheckerPlugin::addElementsToBlock()
 {
 	const QString blockName = QInputDialog::getText(nullptr, tr("block name"), tr("enter block name"));
-	IdList activeElements = mMainWindowIFace->selectedElementsOnActiveDiagram();
-	for (Id &id : activeElements) {
-		mPerfectRepoApi->setProperty(id, blockName, QVariant(""));
-	}
 
+	mUmlCheckerPerfectSolution->saveTempSolution();
+	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
 
 	mTemplatesWindow->setBlockName(blockName);
 	openTemplatesWindow();
-}
-
-
-void UmlCheckerPlugin::assignTemplatesForBlock()
-{
-
 }
 
 void UmlCheckerPlugin::openTemplatesWindow()
@@ -154,7 +134,7 @@ void UmlCheckerPlugin::openTemplatesWindow()
 
 void UmlCheckerPlugin::savePerfectSolution()
 {
-	mHandler->saveSolution();
+	mUmlCheckerPerfectSolution->saveAll();
 }
 
 

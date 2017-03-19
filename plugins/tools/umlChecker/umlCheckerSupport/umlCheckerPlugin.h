@@ -29,10 +29,10 @@
 #include "umlCheckerTmplWindow.h"
 #include "umlCheckerPreferencePage.h"
 #include "umlCheckerTemplate.h"
+#include "umlCheckerPerfectSolution.h"
 
 namespace qReal {
 namespace umlChecker {
-
 
 class UmlCheckerPlugin : public QObject, public qReal::ToolPluginInterface
 {
@@ -53,7 +53,6 @@ private slots:
 	void parseSolution();
 	void addElementsToBlock();
 	void savePerfectSolution();
-	void assignTemplatesForBlock();
 	void openTemplatesWindow();
 	void save();
 	void cancel();
@@ -81,6 +80,7 @@ private:
 	UmlCheckerPreferencePage *mPreferencesPage;
 
 	UmlCheckerTemplate *mUmlCheckerTemplate;
+	UmlCheckerPerfectSolution *mUmlCheckerPerfectSolution;
 
 	QString mQRealSourceFilesPath;
 	QList<qReal::ActionInfo> mActionInfos;
