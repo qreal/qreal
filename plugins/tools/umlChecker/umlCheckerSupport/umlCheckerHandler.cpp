@@ -73,12 +73,6 @@ QStringList UmlCheckerHandler::initBlockNames()
 	return result;
 }
 
-void UmlCheckerHandler::addBlockName(const QString &blockName)
-{
-	mBlockNames.append(blockName);
-}
-
-
 void UmlCheckerHandler::saveSolution()
 {
 	mPerfectRepoApi->save(mPerfectRepoApi->graphicalElements());

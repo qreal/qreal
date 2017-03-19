@@ -31,7 +31,7 @@ using namespace utils;
 UmlCheckerPlugin::UmlCheckerPlugin()
 	: mTemplatesWindow(nullptr)
 	, mPreferencesPage(new UmlCheckerPreferencePage())
-
+	, mUmlCheckerTemplate(nullptr)
 {
 }
 
@@ -51,6 +51,8 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
 	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(save()));
 	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(cancel()));
+
+	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
 	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
@@ -122,10 +124,7 @@ void UmlCheckerPlugin::cancel()
 
 void UmlCheckerPlugin::saveTemplate()
 {
-	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
-	mMainWindowIFace->saveDiagramAsAPictureToFile(tempDirPath + "temp.png");
-	mRepoControlIFace->saveTo(tempDirPath + "temp.qrs");
-	QMessageBox::information(nullptr, tr("Information"), tr("Saved successfully"), tr("Ok"));
+	mUmlCheckerTemplate->saveTemplate();
 }
 
 void UmlCheckerPlugin::addElementsToBlock()

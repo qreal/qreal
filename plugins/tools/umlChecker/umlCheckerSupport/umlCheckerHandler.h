@@ -28,8 +28,6 @@ public:
 
 	virtual ~UmlCheckerHandler();
 
-	void addBlockName(const QString &blockName);
-
 	void init();
 
 	bool matchingResult();
