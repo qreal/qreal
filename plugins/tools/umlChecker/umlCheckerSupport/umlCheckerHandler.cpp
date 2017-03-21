@@ -44,7 +44,10 @@ void UmlCheckerHandler::init(const QString &ordinaryPath, const QString &perfect
 	QStringList filters;
 	filters << "*.txt";
 	dir.setNameFilters(filters);
-	mBlockNames = dir.entryList();
+	const QStringList blockNames = dir.entryList();
+	for (const QString &fileName : blockNames) {
+		mBlockNames.append(dir.absoluteFilePath(fileName));
+	}
 
 	mOrdinaryRepoApi->open(ordinaryPath);
 }

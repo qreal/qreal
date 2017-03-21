@@ -133,7 +133,7 @@ void UmlCheckerPlugin::savePerfectSolution()
 
 void UmlCheckerPlugin::parseSolution()
 {
-	const QString ordinaryPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker//ordinary/check.qrs";
+	const QString ordinaryPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/ordinary/check.qrs";
 	const QString perfectSolutionsPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
 	mHandler->init(ordinaryPath, perfectSolutionsPath);
 	bool matchingResult = mHandler->matchingResult();

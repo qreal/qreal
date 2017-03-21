@@ -17,11 +17,11 @@ UmlCheckerTemplate::~UmlCheckerTemplate()
 
 }
 
-
 void UmlCheckerTemplate::saveTemplate()
 {
+	const QString templateName = QInputDialog::getText(nullptr, tr("enter template name"), tr("enter template name"));
 	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
-	mMainWindowIFace->saveDiagramAsAPictureToFile(tempDirPath + "temp.png");
-	mRepoControlIFace->saveTo(tempDirPath + "temp.qrs");
+	mMainWindowIFace->saveDiagramAsAPictureToFile(tempDirPath + templateName + ".png");
+	mRepoControlIFace->saveTo(tempDirPath + templateName + ".qrs");
 	QMessageBox::information(nullptr, tr("Information"), tr("Saved successfully"), tr("Ok"));
 }

@@ -43,13 +43,9 @@ void UmlCheckerPerfectSolution::saveOptionsForBlock(const QPair<QString, QString
 {
 	QString filename= mTempDirPath + elements.first + ".txt";
 	QFile file(filename);
-	if (file.open(QIODevice::ReadWrite))
-	{
+	if (file.open(QIODevice::ReadWrite)) {
 		QTextStream stream(&file);
-		stream << elements.first << endl;
-
-		for (QString element : elements.second)
-		{
+		for (QString element : elements.second) {
 			element.chop(4);
 			const QString fileName = element + ".qrs";
 			stream << fileName << endl;
