@@ -71,7 +71,6 @@ private:
 	QAction *mSavePerfectSolution;
 	QAction *mParseAction;
 	QAction *mAddBlockAction;
-	QAction *mAssignTemplates;
 	QAction *mSaveTemplate;
 
 	QAction *mOpenTemplatesWindowAction;

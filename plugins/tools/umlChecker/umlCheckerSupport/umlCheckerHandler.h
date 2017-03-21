@@ -23,12 +23,11 @@ class UmlCheckerHandler
 {
 
 public:
-	UmlCheckerHandler(qrRepo::RepoApi *umlPerfectRepoApi
-			, qrRepo::RepoApi *umlOrdinaryRepoApi);
+	UmlCheckerHandler();
 
 	virtual ~UmlCheckerHandler();
 
-	void init();
+	void init(const QString &ordinaryPath, const QString &perfectSolutionPath);
 
 	bool matchingResult();
 
@@ -41,20 +40,15 @@ public:
 	bool matchingInsideABlock(QMultiHash<QString, Id> perfectElements
 			, QMultiHash<QString, Id> &ordinaryElements);
 
-	void saveSolution();
-
-	QMultiHash<QString, Id> getElements(const QString &typeSolution) const;
 private:
 	QMultiHash<QString, Id> getElementsFromApi(qrRepo::RepoApi *repoApi) const;
-	QHash<QString, QMultiHash<QString, Id>> getElementsAsBlocks(qrRepo::RepoApi *repoApi);
-	QStringList initBlockNames();
+
+	QStringList getOptionsForBlock(const QString &blockFile);
 
 	IdList doShift(const IdList &list);
 
 	QString mQRealSourceFilesPath;
 	QString mPathToPerfect;
-	QString mPathToPerfectList;
-
 	QString mPathToOrdinary;
 
 	QStringList mBlockNames;
@@ -62,7 +56,6 @@ private:
 
 	qrRepo::RepoApi *mPerfectRepoFromList;
 
-	qrRepo::RepoApi *mPerfectRepoApi;
 	qrRepo::RepoApi *mOrdinaryRepoApi;
 };
 }

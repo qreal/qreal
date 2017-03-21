@@ -45,16 +45,18 @@ void UmlCheckerPerfectSolution::saveOptionsForBlock(const QPair<QString, QString
 	QFile file(filename);
 	if (file.open(QIODevice::ReadWrite))
 	{
-		QTextStream stream( &file );
+		QTextStream stream(&file);
 		stream << elements.first << endl;
 
 		for (QString element : elements.second)
 		{
 			element.chop(4);
 			const QString fileName = element + ".qrs";
-			stream << fileName << " ";
+			stream << fileName << endl;
 		}
 	}
+
+	file.close();
 }
 
 

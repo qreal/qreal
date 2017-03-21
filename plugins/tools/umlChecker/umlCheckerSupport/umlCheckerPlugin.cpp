@@ -55,10 +55,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
 
-	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
-	mPerfectRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect", true);
-
-	mHandler = new UmlCheckerHandler(mPerfectRepoApi, mOrdinaryRepoApi);
+	mHandler = new UmlCheckerHandler(/*mPerfectRepoApi, mOrdinaryRepoApi*/);
 }
 
 QPair<QString, gui::PreferencesPage *> UmlCheckerPlugin::preferencesPage()
@@ -87,10 +84,6 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	connect(mOpenTemplatesWindowAction, SIGNAL(triggered()), this, SLOT(openTemplatesWindow()));
 	mUmlCheckerMenu->addAction(mOpenTemplatesWindowAction);
 
-	mAssignTemplates = new QAction(tr("Assign Templates"), nullptr);
-	connect(mAssignTemplates, SIGNAL(triggered()), this, SLOT(assignTemplatesForBlock()));
-	mUmlCheckerMenu->addAction(mAssignTemplates);
-
 	mSaveTemplate = new QAction(tr("Save Template"), nullptr);
 	connect(mSaveTemplate, SIGNAL(triggered()), this, SLOT(saveTemplate()));
 	mUmlCheckerMenu->addAction(mSaveTemplate);
@@ -117,7 +110,7 @@ void UmlCheckerPlugin::saveTemplate()
 
 void UmlCheckerPlugin::addElementsToBlock()
 {
-	const QString blockName = QInputDialog::getText(nullptr, tr("block name"), tr("enter block name"));
+	const QString blockName = QInputDialog::getText(nullptr, tr("enter block name"), tr("enter block name"));
 
 	mUmlCheckerPerfectSolution->saveTempSolution();
 	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
@@ -140,6 +133,9 @@ void UmlCheckerPlugin::savePerfectSolution()
 
 void UmlCheckerPlugin::parseSolution()
 {
+	const QString ordinaryPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker//ordinary/check.qrs";
+	const QString perfectSolutionsPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
+	mHandler->init(ordinaryPath, perfectSolutionsPath);
 	bool matchingResult = mHandler->matchingResult();
 
 	if (matchingResult) {
