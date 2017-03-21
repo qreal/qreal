@@ -179,7 +179,6 @@ private:
 	void deserializeWheels(const QDomElement &robotElement);
 
 	QPointF averageAcceleration() const;
-	qreal averageAngularSpeed() const;
 
 	/// Simulated robot motors.
 	/// Has ownership.
@@ -196,16 +195,16 @@ private:
 
 	QPointF mPos;
 	qreal mAngle;
-	qreal mAngularSpeed;
+	qreal mDeltaRadiansOfAngle;
 	int mBeepTime;
 	bool mIsOnTheGround;
 	QColor mMarker;
 	QPointF mAcceleration;
 	utils::CircularQueue<QPointF> mPosStamps;
-	utils::CircularQueue<qreal> mAngleStamps;
+	bool mIsFirstAngleStamp;
+	qreal mAngleStampPrevious;
 
 	physics::PhysicsEngineBase *mPhysicsEngine;
-
 	items::StartPosition *mStartPositionMarker;  // Transfers ownership to QGraphicsScene
 };
 
