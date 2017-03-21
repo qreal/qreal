@@ -25,9 +25,8 @@ using ::testing::_;
 void UmlCheckerHandlerTest::SetUp() {
 
 	mOrdinaryRepoApi = new qrRepo::RepoApi(mRepositoriesPath + "/perfect", true);
-	mPerfectRepoApi = new qrRepo::RepoApi(mRepositoriesPath + "/ordinary", true);
 
-	mHandler = new UmlCheckerHandler(mPerfectRepoApi, mOrdinaryRepoApi);
+	mHandler = new UmlCheckerHandler();
 }
 
 void UmlCheckerHandlerTest::TearDown() {
@@ -37,7 +36,6 @@ void UmlCheckerHandlerTest::TearDown() {
 
 void UmlCheckerHandlerTest::openRepositories(const QString &perfect, const QString &ordinary)
 {
-	mPerfectRepoApi->open(mRepositoriesPath + perfect);
 	mOrdinaryRepoApi->open(mRepositoriesPath + ordinary);
 }
 
@@ -56,7 +54,6 @@ TEST_F(UmlCheckerHandlerTest, twoClassesWithEdge) {
 
 	ASSERT_EQ(matchResult, true);
 }
-
 
 TEST_F(UmlCheckerHandlerTest, threeClassesWithThreeEdges) {
 	openRepositories("perfect3ClassesWith3Edges.qrs", "ordinary3ClassesWith3Edges.qrs");

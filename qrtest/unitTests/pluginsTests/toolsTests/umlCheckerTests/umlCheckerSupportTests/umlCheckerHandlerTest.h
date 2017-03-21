@@ -32,7 +32,6 @@ protected:
 	void openRepositories(const QString &perfect, const QString &ordinary);
 
 	qReal::UmlCheckerHandler *mHandler;
-	qrRepo::RepoApi *mPerfectRepoApi;
 	qrRepo::RepoApi *mOrdinaryRepoApi;
 
 
