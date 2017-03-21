@@ -25,6 +25,7 @@ public slots:
 	void setPower(int power, bool constrain) override;
 	int power() const override;
 	void powerOff() override;
+	void forceBreak(int) override;
 
 private:
 	kitBase::robotModel::robotParts::Motor * mMotor;
