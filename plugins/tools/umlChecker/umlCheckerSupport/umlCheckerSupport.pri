@@ -22,9 +22,22 @@ links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
 
 HEADERS = \
 	$$PWD/umlCheckerPlugin.h \
+	$$PWD/umlCheckerTmplWindow.h \
+	$$PWD/umlCheckerPreferencePage.h \
+	$$PWD/umlCheckerTemplate.h \
+	$$PWD/umlCheckerPerfectSolution.h \
 	$$PWD/umlCheckerHandler.h
 
 
 SOURCES = \
 	$$PWD/umlCheckerPlugin.cpp \
+	$$PWD/umlCheckerTmplWindow.cpp \
+	$$PWD/umlCheckerPreferencePage.cpp \
+	$$PWD/umlCheckerTemplate.cpp \
+	$$PWD/umlCheckerPerfectSolution.cpp \
 	$$PWD/umlCheckerHandler.cpp
+
+
+FORMS += \
+	$$PWD/umlCheckerTmplWindow.ui \
+	$$PWD/umlCheckerPreferencePage.ui

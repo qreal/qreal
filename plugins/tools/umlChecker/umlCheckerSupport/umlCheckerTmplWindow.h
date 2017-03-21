@@ -43,7 +43,6 @@ signals:
 
 
 private slots:
-	void checkActivate();
 	void applyButtonActivate();
 	void openPicture(QListWidgetItem *item);
 	void addToCollection();
