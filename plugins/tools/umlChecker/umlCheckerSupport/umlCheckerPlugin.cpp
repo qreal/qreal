@@ -43,7 +43,7 @@ UmlCheckerPlugin::~UmlCheckerPlugin()
 void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", ".").toString() + "/../";
+	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", ".").toString();
 
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 	mRepoControlIFace = &configurator.repoControlInterface();

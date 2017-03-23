@@ -137,7 +137,7 @@ bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordina
 	}
 
 	ordinaryValues = changeableOrdinary;
-	return ordinaryValues.count() == changeablePerfect.count() && changeablePerfect.count() == 0;
+	return changeablePerfect.count() == 0;
 }
 
 bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElements
@@ -154,9 +154,16 @@ bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElem
 			if (resOfCheckMatching == false) {
 				return resOfCheckMatching;
 			}
-		}
 
-		ordinaryElements.remove(pKey);
+			ordinaryElements.remove(pKey);
+
+			for (const Id &ordValue : ordinaryValues) {
+				ordinaryElements.insertMulti(pKey, ordValue);
+			}
+
+		} else {
+			ordinaryElements.remove(pKey);
+		}
 	}
 
 	return true;
