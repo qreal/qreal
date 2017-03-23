@@ -123,6 +123,7 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		return;
 	}
 
+	// dirty hack to forward values. It's is not labels, it's just name for restoring values
 	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
 	const QString selectedShape = mShapeWidget->selectedShape();
 	const QString selectedBackground = mShapeBackgroundWidget->selectedShape();
@@ -153,7 +154,9 @@ void DynamicPropertiesDialog::saveButtonClicked()
 
 	dynamicLabels.appendChild(labels);
 	mLogicalRepoApi.setProperty(mId, "labels", dynamicLabels.toString(4));
-	mExploser.explosionTargetCouldChangeProperties(mId);
+	emit mExploser.explosionTargetCouldChangeProperties(mId);
+
+	this->close();
 }
 
 void DynamicPropertiesDialog::deleteButtonClicked()
@@ -242,7 +245,6 @@ void DynamicPropertiesDialog::init()
 	{
 		const QString type = element.attribute("type");
 		const QString value = element.attribute("value");
-		element = element.nextSiblingElement("label");
 		const QString text = element.attribute("text");
 		addLabel(text, type, value);
 	}
