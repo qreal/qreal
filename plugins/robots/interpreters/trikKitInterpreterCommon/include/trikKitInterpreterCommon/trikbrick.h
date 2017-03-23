@@ -17,7 +17,7 @@
 #include "trikEmulation/triklinesensoradapter.h"
 #include "trikEmulation/trikledadapter.h"
 #include "trikEmulation/trikaccelerometeradapter.h"
-#include "trikEmulation/trikgyroscopeadapter.h" /// @todo: replace with forward refs
+#include "trikEmulation/trikGyroscopeAdapter.h" /// @todo: replace with forward refs
 
 namespace trik {
 

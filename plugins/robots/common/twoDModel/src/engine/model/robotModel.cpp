@@ -15,6 +15,7 @@
 #include "twoDModel/engine/model/robotModel.h"
 
 #include <qmath.h>
+#include <QtCore/QtMath>
 #include <QtGui/QTransform>
 
 #include <qrutils/mathUtils/math.h>
@@ -37,7 +38,6 @@ using namespace kitBase::robotModel;
 using namespace kitBase::robotModel::robotParts;
 
 const int positionStampsCount = 50;
-const int angleStampsCount = 50;
 
 RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, const Settings &settings
@@ -48,13 +48,14 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mSensorsConfiguration(robotModel.robotId())
 	, mPos(QPointF(0, 0))
 	, mAngle(0)
-	, mAngularSpeed(0)
+	, mDeltaRadiansOfAngle(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
 	, mAcceleration(QPointF(0, 0))
 	, mPosStamps(positionStampsCount)
-	, mAngleStamps(angleStampsCount)
+	, mIsFirstAngleStamp(true)
+	, mAngleStampPrevious(0)
 	, mPhysicsEngine(nullptr)
 	, mStartPositionMarker(new items::StartPosition)
 {
@@ -79,7 +80,7 @@ void RobotModel::reinit()
 	}
 
 	mBeepTime = 0;
-	mAngularSpeed = 0;
+	mDeltaRadiansOfAngle = 0;
 	mAcceleration = QPointF(0, 0);
 }
 
@@ -180,7 +181,7 @@ void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
 	mRobotModel.displayWidget()->reset();
-	mAngleStamps.clear();
+	mIsFirstAngleStamp = true;
 	mPosStamps.clear();
 	emit playingSoundChanged(false);
 	for (Motor * const engine : mMotors) {
@@ -201,12 +202,13 @@ void RobotModel::countBeep()
 
 void RobotModel::countSpeedAndAcceleration()
 {
-	if (mAngleStamps.size() >= angleStampsCount) {
-		mAngleStamps.dequeue();
+	if (mIsFirstAngleStamp) {
+		mAngleStampPrevious = mAngle;
+		mIsFirstAngleStamp = false;
+	} else {
+		mDeltaRadiansOfAngle = qDegreesToRadians(mAngle - mAngleStampPrevious);
+		mAngleStampPrevious = mAngle;
 	}
-
-	mAngleStamps.enqueue(mAngle);
-	mAngularSpeed = averageAngularSpeed();
 
 	if (mPosStamps.size() >= positionStampsCount) {
 		mPosStamps.dequeue();
@@ -226,11 +228,6 @@ QPointF RobotModel::averageAcceleration() const
 			? (mPosStamps.tail() - mPosStamps.head()) / mPosStamps.size()
 			: (mPosStamps.tail() - mPosStamps.nthFromTail(1)
 					- mPosStamps.nthFromHead(1) + mPosStamps.head()) / mPosStamps.size());
-}
-
-qreal RobotModel::averageAngularSpeed() const
-{
-	return mAngleStamps.isEmpty() ? 0 : (mAngleStamps.tail() - mAngleStamps.head()) / mAngleStamps.size();
 }
 
 QPointF RobotModel::rotationCenter() const
@@ -300,7 +297,7 @@ QVector<int> RobotModel::accelerometerReading() const
 
 QVector<int> RobotModel::gyroscopeReading() const
 {
-	return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
+	return {0, 0, static_cast<int>(mDeltaRadiansOfAngle * gyroscopeConstant)};
 }
 
 void RobotModel::nextStep()
