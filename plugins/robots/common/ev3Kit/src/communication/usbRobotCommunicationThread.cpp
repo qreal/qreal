@@ -148,6 +148,7 @@ void UsbRobotCommunicationThread::checkForConnection()
 	int success = libusb_bulk_transfer(mHandle, EV3_EP_OUT, command, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT);
 
 	if (success != 0) {
+		mHandle = nullptr;
 		emit disconnected();
 		mKeepAliveTimer->stop();
 	}

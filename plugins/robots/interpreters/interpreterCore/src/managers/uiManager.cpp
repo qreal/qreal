@@ -102,6 +102,7 @@ void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 	QDockWidget * const devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
 	devicesDock->setObjectName("devicesConfigurationDock");
 	connect(this, &QObject::destroyed, [devicesDock](){ devicesDock->setParent(nullptr); });
+	utils::SmartDock::hideCloseButton(devicesDock);
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
 }
 

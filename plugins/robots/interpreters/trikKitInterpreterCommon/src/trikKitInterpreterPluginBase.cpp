@@ -83,6 +83,7 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
 
 	model->applyConfiguration();
 
+	mMainWindow->errorReporter()->clear();
 	qtsInterpreter()->init();
 
 	qtsInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
@@ -107,6 +108,7 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, co
 
 	model->applyConfiguration();
 
+	mMainWindow->errorReporter()->clear();
 	qtsInterpreter()->init();
 
 	qtsInterpreter()->setCurrentDir(mProjectManager->saveFilePath());

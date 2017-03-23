@@ -71,7 +71,7 @@
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="193"/>
         <source>No configured gyroscope</source>
-        <translation>Гироскоп не сконфигурирован</translation>
+        <translation>Гиродатчик не сконфигурирован</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="211"/>

@@ -1,11 +1,10 @@
 #pragma once
 
 #include <QtCore/QTimer>
-#include <QQuaternion>
+#include <QtGui/QQuaternion>
 
 #include <trikControl/gyroSensorInterface.h>
 #include <trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h>
-
 #include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
 
 namespace kitBase {
@@ -18,11 +17,11 @@ class GyroscopeSensor;
 
 class TrikGyroscopeAdapter : public trikControl::GyroSensorInterface {
 
-Q_OBJECT
+	Q_OBJECT
 
 public:
 	TrikGyroscopeAdapter(kitBase::robotModel::robotParts::GyroscopeSensor *gyro
-		, const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model);//
+		, const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model);
 
 	virtual Status status() const override { return Status::ready; }
 
@@ -33,12 +32,15 @@ public slots:
 	virtual QVector<int> readRawData() const override;
 
 private slots:
-	void countTilt(QVector<int> oldFormat);
+	void countTilt(const QVector<int> &oldFormat);
 
 private:
+	qreal degreeToMilidegree(qreal value);
+
 	kitBase::robotModel::robotParts::GyroscopeSensor *mGyro;
 	QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> mModel;
 	QVector<int> mResult;
-	QQuaternion mQ;
-	int mLastUpdate;
+	QQuaternion mQuaternion;
+	quint64 mStartTime;
+	quint64 mLastUpdateTimeStamp;
 };

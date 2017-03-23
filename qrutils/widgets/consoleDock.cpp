@@ -29,7 +29,7 @@ ConsoleDock::ConsoleDock(const QString &title, QWidget *parent)
 	, mOutput(new QPlainTextEdit(this))
 {
 	setWidget(mOutput);
-	mOutput->setReadOnly(true);
+	mOutput->setReadOnly(false);
 	mOutput->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(mOutput, &QPlainTextEdit::customContextMenuRequested, this, [&](const QPoint &pos){
 		QMenu *menu = mOutput->createStandardContextMenu();

@@ -17,7 +17,7 @@
 
 using namespace trik;
 
-static const int updateInterval = 25;
+static const int updateInterval = 10;
 TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
 	: mTwoDRobotModel(model), mDisplay(model), mKeys(model), mIsWaitingEnabled(true)
 {

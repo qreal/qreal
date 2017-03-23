@@ -740,7 +740,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Gyroscope</source>
-        <translation type="vanished">Гироскоп</translation>
+        <translation type="vanished">Гиродатчик</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/managers/exerciseExportManager.cpp" line="65"/>
