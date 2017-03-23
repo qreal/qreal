@@ -18,3 +18,8 @@ void trik::TrikMotorEmu::powerOff()
 {
 	mMotor->off();
 }
+
+void trik::TrikMotorEmu::forceBreak(int)
+{
+	powerOff(); // should be the same for 2D model, since there is no inertia
+}
