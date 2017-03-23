@@ -307,6 +307,9 @@ private:
 
 	/// Used in updateDynamicProperties() for deleting old dynamic labels.
 	int mStartingLabelsCount;
+
+	QString mPreviousLabels;
+	QString mPreviousShape;
 };
 
 }

@@ -309,8 +309,8 @@ QVariant LogicalModel::dynamicPropertyData(const Id &id, int role) const
 			return element.attribute("value");
 		}
 	}
-	return QVariant();
 
+	return QVariant();
 }
 
 bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int role)

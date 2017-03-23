@@ -99,6 +99,12 @@ NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models
 	connect(&mRenderTimer, SIGNAL(timeout()), this, SLOT(initRenderedDiagram()));
 
 	mStartingLabelsCount = mLabels.count();
+
+	initExplosionConnections();
+	const Id explosionTarget = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(mGraphicalAssistApi.logicalId(mId));
+	if (!explosionTarget.isNull()) {
+		updateDynamicProperties(explosionTarget);
+	}
 }
 
 NodeElement::~NodeElement()
@@ -149,71 +155,94 @@ void NodeElement::initExplosionConnections()
 void NodeElement::updateDynamicProperties(const Id &target)
 {
 	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
+		// remove this line if there are language elements which can add explosion
+		disconnect(&mModels.exploser(), &models::Exploser::explosionTargetCouldChangeProperties, this
+				, &NodeElement::updateDynamicProperties);
 		return;
 	}
 
+	bool somethingChanged = false;
+
 	// Update name
-	setName(mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name"), false);
+	const QString name = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name");
+	if (mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(mId, "name") != name) {
+		setName(name, false);
+		somethingChanged = true;
+	}
 
 	// Update shape
 	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
-	QDomDocument picture;
-	picture.setContent(shape);
-	mRenderer.load(picture);
-	mModels.exploser().explosionsSetCouldChange();
+	if (!shape.isEmpty() && mPreviousShape != shape) {
+		mPreviousShape = shape;
+		QDomDocument picture;
+		picture.setContent(shape);
+		mRenderer.load(picture);
+		somethingChanged = true;
+	}
 
-	// Update labels
+	// Get labels
 	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
-	QDomDocument dynamicProperties;
-	QDomElement properties = dynamicProperties.createElement("properties");
-	QDomDocument dynamicLabels;
-	dynamicLabels.setContent(labels);
+	if (labels != mPreviousLabels) {
+		mPreviousLabels = labels;
+		QDomDocument dynamicProperties;
+		QDomElement properties = dynamicProperties.createElement("properties");
+		QDomDocument dynamicLabels;
+		dynamicLabels.setContent(labels);
 
-	// ...delete old dynamic labels
-	const int oldCount = mLabels.count() - mStartingLabelsCount;
-	for (int i = 0; i < oldCount; ++i) {
-		delete mLabels.takeLast();
+		// ...delete old dynamic labels
+		const int oldCount = mLabels.count() - mStartingLabelsCount;
+		for (int i = 0; i < oldCount; ++i) {
+			delete mLabels.takeLast();
+		}
+
+		int index = mLabels.count() + 1;
+		for (QDomElement element = dynamicLabels.firstChildElement("labels").firstChildElement("label")
+				; !element.isNull()
+				; element = element.nextSiblingElement("label"), ++index)
+		{
+			utils::ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x")
+					, mContents.width());
+			utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y")
+					, mContents.height());
+			const QString textBinded = element.attribute("textBinded");
+			const QString value = element.attribute("value");
+			const QString type = element.attribute("type");
+			const QString text = element.attribute("text");
+
+			// It is a binded label, text for it will be taken from repository.
+			LabelProperties labelInfo(index, x.value(), y.value(), textBinded, false, 0);
+			labelInfo.setBackground(Qt::white);
+			labelInfo.setScalingX(false);
+			labelInfo.setScalingY(false);
+			labelInfo.setHard(false);
+			labelInfo.setPrefix(text);
+			labelInfo.setPlainTextMode(true);
+			Label *label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
+			label->init(mContents);
+			label->setParentItem(this);
+			label->setTextInteractionFlags(Qt::NoTextInteraction);
+			label->setPlainText(value);
+			mLabels.append(label);
+
+			// Saving dynamicProperty
+			QDomElement property = dynamicProperties.createElement("property");
+			property.setAttribute("textBinded", textBinded);
+			property.setAttribute("text", text);
+			property.setAttribute("type", type);
+			property.setAttribute("value", value);
+			properties.appendChild(property);
+		}
+
+		// Saving dynamic properties in source.
+		dynamicProperties.appendChild(properties);
+		mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties"
+				, dynamicProperties.toString(4));
+		somethingChanged = true;
 	}
 
-	int index = mLabels.count() + 1;
-	for (QDomElement element = dynamicLabels.firstChildElement("labels").firstChildElement("label")
-			; !element.isNull()
-			; element = element.nextSiblingElement("label"))
-	{
-		utils::ScalableCoordinate x = utils::ScalableItem::initCoordinate(element.attribute("x"), mContents.width());
-		utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y"), mContents.height());
-		const QString textBinded = element.attribute("textBinded");
-		const QString value = element.attribute("value");
-		const QString type = element.attribute("type");
-		const QString text = element.attribute("text");
-
-		// It is a binded label, text for it will be taken from repository.
-		LabelProperties labelInfo(index, x.value(), y.value(), textBinded, false, 0);
-		labelInfo.setBackground(Qt::white);
-		labelInfo.setScalingX(false);
-		labelInfo.setScalingY(false);
-		labelInfo.setHard(false);
-		labelInfo.setPrefix(text);
-		Label *label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
-		label->init(mContents);
-		label->setParentItem(this);
-		label->setTextInteractionFlags(Qt::NoTextInteraction);
-		label->setTextFromRepo(value);
-		mLabels.append(label);
-
-		// Saving dynamicProperty
-		QDomElement property = dynamicProperties.createElement("property");
-		property.setAttribute("textBinded", textBinded);
-		property.setAttribute("text", text);
-		property.setAttribute("type", type);
-		property.setAttribute("value", value);
-		properties.appendChild(property);
+	if (somethingChanged) {
+		emit mModels.exploser().explosionsSetCouldChange();
 	}
-
-	// Saving dynamic properties in source.
-	dynamicProperties.appendChild(properties);
-	mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties",
-			dynamicProperties.toString(4));
 }
 
 void NodeElement::setGeometry(const QRectF &geom)
