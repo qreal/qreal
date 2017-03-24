@@ -165,7 +165,7 @@ void NodeElement::updateDynamicProperties(const Id &target)
 
 	// Update name
 	const QString name = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name");
-	if (mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(mId, "name") != name) {
+	if (mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(logicalId(), "name") != name) {
 		setName(name, false);
 		somethingChanged = true;
 	}
@@ -181,18 +181,36 @@ void NodeElement::updateDynamicProperties(const Id &target)
 	}
 
 	// Get labels
-	const QString labels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
-	if (labels != mPreviousLabels) {
-		mPreviousLabels = labels;
+	const QString dynamiclabels = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "labels");
+	if (mPreviousDynamicLabels.isEmpty() ||
+			(!mPreviousDynamicLabels.isEmpty() && compareDynamicLabels(dynamiclabels, mPreviousDynamicLabels))) {
+		mPreviousDynamicLabels = dynamiclabels;
 		QDomDocument dynamicProperties;
 		QDomElement properties = dynamicProperties.createElement("properties");
 		QDomDocument dynamicLabels;
-		dynamicLabels.setContent(labels);
+		dynamicLabels.setContent(dynamiclabels);
 
 		// ...delete old dynamic labels
 		const int oldCount = mLabels.count() - mStartingLabelsCount;
 		for (int i = 0; i < oldCount; ++i) {
 			delete mLabels.takeLast();
+		}
+
+		// if we restore block from repo, we already have properties all properties Value
+		const QString mCurretDynamicProperties
+				= mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(logicalId(), "dynamicProperties");
+		QMap<QString, QString> valueByPropertyName;
+		if (!mCurretDynamicProperties.isEmpty()) {
+			QDomDocument dynamicProperties;
+			dynamicProperties.setContent(mCurretDynamicProperties);
+
+			for (QDomElement element
+					= dynamicProperties.firstChildElement("properties").firstChildElement("property")
+					; !element.isNull()
+					; element = element.nextSiblingElement("property"))
+			{
+				valueByPropertyName[element.attribute("name")] = element.attribute("dynamicPropertyValue");
+			}
 		}
 
 		int index = mLabels.count() + 1;
@@ -205,11 +223,12 @@ void NodeElement::updateDynamicProperties(const Id &target)
 			utils::ScalableCoordinate y = utils::ScalableItem::initCoordinate(element.attribute("y")
 					, mContents.height());
 			const QString textBinded = element.attribute("textBinded");
-			const QString value = element.attribute("value");
+			const QString value = valueByPropertyName.contains(textBinded)
+					? valueByPropertyName[textBinded]
+					: element.attribute("value");
 			const QString type = element.attribute("type");
 			const QString text = element.attribute("text");
 
-			// It is a binded label, text for it will be taken from repository.
 			LabelProperties labelInfo(index, x.value(), y.value(), textBinded, false, 0);
 			labelInfo.setBackground(Qt::white);
 			labelInfo.setScalingX(false);
@@ -220,16 +239,16 @@ void NodeElement::updateDynamicProperties(const Id &target)
 			Label *label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
 			label->init(mContents);
 			label->setParentItem(this);
-			label->setTextInteractionFlags(Qt::NoTextInteraction);
+			label->setTextInteractionFlags(Qt::TextEditorInteraction);
 			label->setPlainText(value);
 			mLabels.append(label);
 
 			// Saving dynamicProperty
 			QDomElement property = dynamicProperties.createElement("property");
-			property.setAttribute("textBinded", textBinded);
-			property.setAttribute("text", text);
+			property.setAttribute("name", textBinded);
+			property.setAttribute("displayedName", text);
 			property.setAttribute("type", type);
-			property.setAttribute("value", value);
+			property.setAttribute("dynamicPropertyValue", value);
 			properties.appendChild(property);
 		}
 
@@ -1058,6 +1077,30 @@ void NodeElement::updateDynamicLabels()
 	for (Label *label : mLabels) {
 		label->updateDynamicData();
 	}
+}
+
+bool NodeElement::compareDynamicLabels(QString labelsPack1, QString labelsPack2) const
+{
+	QDomDocument dynamicLabels1;
+	dynamicLabels1.setContent(labelsPack1);
+	QDomDocument dynamicLabels2;
+	dynamicLabels2.setContent(labelsPack2);
+	QSet<QString> dynamicLabelsNames1;
+	QSet<QString> dynamicLabelsNames2;
+
+	auto traverse = [&](const QDomDocument &dynamicLabels, QSet<QString> &labelNamesSet) {
+		for (QDomElement element = dynamicLabels.firstChildElement("labels").firstChildElement("label")
+				; !element.isNull()
+				; element = element.nextSiblingElement("label"))
+		{
+			const QString name = element.attribute("textBinded");
+			labelNamesSet.insert(name);
+		}
+	};
+
+	traverse(dynamicLabels1, dynamicLabelsNames1);
+	traverse(dynamicLabels2, dynamicLabelsNames2);
+	return dynamicLabelsNames1 != dynamicLabelsNames2;
 }
 
 void NodeElement::setLinksVisible(bool isVisible)

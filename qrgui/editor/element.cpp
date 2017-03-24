@@ -103,7 +103,27 @@ void Element::setName(const QString &value, bool withUndoRedo)
 
 QString Element::logicalProperty(const QString &roleName) const
 {
-	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
+	const QString logicalProperty = mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
+	if (!logicalProperty.isEmpty()) {
+		return logicalProperty;
+	}
+
+	const QString dynamicProperties =
+			mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(logicalId(), "dynamicProperties");
+	QDomDocument dynamicPropertiesDocument;
+	dynamicPropertiesDocument.setContent(dynamicProperties);
+	QMap<QString, QString> roleNameToPropertyValueMap;
+
+	for (QDomElement element = dynamicPropertiesDocument.firstChildElement("properties").firstChildElement("property")
+			; !element.isNull()
+			; element = element.nextSiblingElement("property"))
+	{
+		const QString roleName = element.attribute("name");
+		const QString value = element.attribute("dynamicPropertyValue");
+		roleNameToPropertyValueMap[roleName] = value;
+	}
+
+	return roleNameToPropertyValueMap.value(roleName, "");
 }
 
 void Element::setLogicalProperty(const QString &roleName, const QString &oldValue

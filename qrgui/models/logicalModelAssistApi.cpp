@@ -116,7 +116,7 @@ void LogicalModelAssistApi::setPropertyByRoleName(const Id &elem, const QVariant
 				; !element.isNull()
 				; element = element.nextSiblingElement("property"))
 		{
-			if (element.attribute("textBinded") == roleName) {
+			if (element.attribute("name") == roleName) {
 				break;
 			}
 
@@ -133,7 +133,7 @@ QVariant LogicalModelAssistApi::propertyByRoleName(const Id &elem, const QString
 {
 	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
-		return "";
+		return QVariant();
 	return mModelsAssistApi.property(elem, roleIndex);
 }
 
