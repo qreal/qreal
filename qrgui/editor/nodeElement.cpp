@@ -172,12 +172,18 @@ void NodeElement::updateDynamicProperties(const Id &target)
 
 	// Update shape
 	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
-	if (!shape.isEmpty() && mPreviousShape != shape) {
+	if (mPreviousShape != shape) {
 		mPreviousShape = shape;
-		QDomDocument picture;
-		picture.setContent(shape);
-		mRenderer.load(picture);
 		somethingChanged = true;
+		if (shape.isEmpty()) {
+			mRenderer.load(mType.sdf().ownerDocument());
+		} else {
+			QDomDocument picture;
+			picture.setContent(shape);
+			mRenderer.load(picture);
+		}
+
+		update();
 	}
 
 	// Get labels

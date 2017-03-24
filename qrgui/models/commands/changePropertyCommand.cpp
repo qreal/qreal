@@ -19,6 +19,7 @@ using namespace qReal::commands;
 ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * const model
 		, const QString &property, const Id &id, const QVariant &newValue)
 	: mLogicalModel(model)
+	, mLogicalRepoApi(nullptr)
 	, mId(id)
 	, mPropertyName(property)
 	, mOldValue(mLogicalModel->propertyByRoleName(mId, mPropertyName))
@@ -26,9 +27,21 @@ ChangePropertyCommand::ChangePropertyCommand(models::LogicalModelAssistApi * con
 {
 }
 
+ChangePropertyCommand::ChangePropertyCommand(qrRepo::LogicalRepoApi * const model
+		, const QString &property, const Id &id, const QVariant &oldValue, const QVariant &newValue)
+	: mLogicalModel(nullptr)
+	, mLogicalRepoApi(model)
+	, mId(id)
+	, mPropertyName(property)
+	, mOldValue(oldValue)
+	, mNewValue(newValue)
+{
+}
+
 ChangePropertyCommand::ChangePropertyCommand(qReal::models::LogicalModelAssistApi * const model
 		, const QString &property, const qReal::Id &id, const QVariant &oldValue, const QVariant &newValue)
 	: mLogicalModel(model)
+	, mLogicalRepoApi(nullptr)
 	, mId(id)
 	, mPropertyName(property)
 	, mOldValue(oldValue)
@@ -48,6 +61,11 @@ bool ChangePropertyCommand::restoreState()
 
 bool ChangePropertyCommand::setProperty(const QVariant &value)
 {
-	mLogicalModel->setPropertyByRoleName(mId, value, mPropertyName);
+	if (mLogicalModel) {
+		mLogicalModel->setPropertyByRoleName(mId, value, mPropertyName);
+	} else if (mLogicalRepoApi) {
+		mLogicalRepoApi->setProperty(mId, mPropertyName, value);
+	}
+
 	return true;
 }

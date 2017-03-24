@@ -103,7 +103,14 @@ void LogicalModelAssistApi::setPropertyByRoleName(const Id &elem, const QVariant
 {
 	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole) {
-		const QString dynamicProperties = logicalRepoApi().stringProperty(elem, "dynamicProperties");
+		const QString dynamicPropertiesKey = "dynamicProperties";
+		const QString shapeKey = "shape";
+		if (roleName == dynamicPropertiesKey) {
+			/// @todo: hack
+			mutableLogicalRepoApi().setProperty(elem, roleName, newValue);
+		}
+
+		const QString dynamicProperties = logicalRepoApi().stringProperty(elem, dynamicPropertiesKey);
 		if (dynamicProperties.isEmpty()) {
 			return;
 		}
