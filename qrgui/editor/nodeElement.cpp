@@ -229,6 +229,23 @@ void NodeElement::updateDynamicProperties(const Id &target)
 			const QString type = element.attribute("type");
 			const QString text = element.attribute("text");
 
+			// Saving dynamicProperty
+			// WARNING property should be saved before label initialization
+			QDomElement property = dynamicProperties.createElement("property");
+			property.setAttribute("name", textBinded);
+			property.setAttribute("displayedName", text);
+			property.setAttribute("type", type);
+			property.setAttribute("dynamicPropertyValue", value);
+			properties.appendChild(property);
+
+			if (dynamicProperties.appendChild(properties).isNull()) {
+				dynamicProperties.replaceChild(properties, properties);
+			}
+
+			mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties"
+					, dynamicProperties.toString(4));
+
+			// Label initialization
 			LabelProperties labelInfo(index, x.value(), y.value(), textBinded, false, 0);
 			labelInfo.setBackground(Qt::white);
 			labelInfo.setScalingX(false);
@@ -242,20 +259,8 @@ void NodeElement::updateDynamicProperties(const Id &target)
 			label->setTextInteractionFlags(Qt::TextEditorInteraction);
 			label->setPlainText(value);
 			mLabels.append(label);
-
-			// Saving dynamicProperty
-			QDomElement property = dynamicProperties.createElement("property");
-			property.setAttribute("name", textBinded);
-			property.setAttribute("displayedName", text);
-			property.setAttribute("type", type);
-			property.setAttribute("dynamicPropertyValue", value);
-			properties.appendChild(property);
 		}
 
-		// Saving dynamic properties in source.
-		dynamicProperties.appendChild(properties);
-		mLogicalAssistApi.mutableLogicalRepoApi().setProperty(logicalId(), "dynamicProperties"
-				, dynamicProperties.toString(4));
 		somethingChanged = true;
 	}
 

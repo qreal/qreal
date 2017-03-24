@@ -131,6 +131,18 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
 
+	QMap<QString, QString> previousLabels;
+	const QString currentDynamicLabelsString = mLogicalRepoApi.stringProperty(mId, "labels");
+	QDomDocument currentDynamicLabels;
+	currentDynamicLabels.setContent(currentDynamicLabelsString);
+	for (QDomElement element = currentDynamicLabels.firstChildElement("labels").firstChildElement("label")
+			; !element.isNull()
+			; element = element.nextSiblingElement("label"))
+	{
+		const QString key = QString("%1 %2").arg(element.attribute("text")).arg(element.attribute("type"));
+		previousLabels[key] = element.attribute("textBinded");
+	}
+
 	int x = 40;
 	int y = 60;
 	for (int i = 0; i < mUi->labels->rowCount(); ++i) {
@@ -143,7 +155,12 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		QDomElement label = dynamicLabels.createElement("label");
 		label.setAttribute("x", x);
 		label.setAttribute("y", y);
-		label.setAttribute("textBinded", QUuid::createUuid().toString());
+		const QString key = QString("%1 %2").arg(name).arg(type);
+		label.setAttribute("textBinded", previousLabels.contains(key)
+				? previousLabels[key]
+				: QUuid::createUuid().toString()
+		);
+
 		label.setAttribute("type", type);
 		label.setAttribute("value", value);
 		label.setAttribute("text", name);
