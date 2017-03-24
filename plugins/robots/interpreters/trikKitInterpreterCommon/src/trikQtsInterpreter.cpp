@@ -5,14 +5,15 @@
 
 #include "trikKitInterpreterCommon/trikQtsInterpreter.h"
 
-#include "qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h"
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include <twoDModel/engine/model/timeline.h>
 
-#include <QDebug>
+
+Q_DECLARE_METATYPE(utils::AbstractTimer*)
 
 const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;"
-		"script.readAll = brick.readAll;"
+		"script.readAll = brick.readAll;script.timer = brick.timer;"
 		"print = function() {var res = '';"
 		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}"
 		"brick.log(res);return res;};"
@@ -23,17 +24,16 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(
 		) : mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr), mErrorReporter(nullptr)
 {
 	connect(&mBrick, &TrikBrick::error, this, &TrikQtsInterpreter::reportError);
-//	mScriptRunner.registerUserFunction("print", printRedirect);
-//	connect(&mBrick, &TrikBrick::log, [this](const QString &msg){
-//		QMetaObject::invokeMethod(this, "reportLog", Q_ARG(const QString &, msg));
-//	});
-//	auto redirectPrint = [](QScriptContext * ctx, QScriptEngine * eng) -> QScriptValue {
-//		const auto txt = ctx->argument(0).toString();
-//		eng->globalObject().property("brick").
-//		return QScriptValue();
-//	};
-	//auto &t = dynamic_cast<twoDModel::model::Timeline &>(model->timeline());
-	//t.setImmediateMode(true);
+
+	auto atimerToScriptValue = [](QScriptEngine *engine, utils::AbstractTimer* const &in){
+		return engine->newQObject(in);
+	};
+	auto atimerFromScriptValue = [](const QScriptValue &object, utils::AbstractTimer* &out){
+		out = qobject_cast<utils::AbstractTimer*>(object.toQObject());
+	};
+	mScriptRunner.addCustomEngineInitStep([&atimerToScriptValue, &atimerFromScriptValue](QScriptEngine *engine){
+		qScriptRegisterMetaType<utils::AbstractTimer*>(engine, atimerToScriptValue, atimerFromScriptValue);
+	});
 	connect(&mScriptRunner, SIGNAL(completed(QString,int)), this, SLOT(scriptFinished(QString,int)));
 }
 

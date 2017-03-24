@@ -30,6 +30,7 @@ public:
 	explicit ModelTimer(const Timeline *timeline /* Doesn`t take ownership */);
 
 	bool isTicking() const override;
+	int interval() const override;
 	void start() override;
 	void start(int ms) override;
 	void stop() override;

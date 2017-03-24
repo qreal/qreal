@@ -36,6 +36,7 @@ TrikBrick::~TrikBrick()
 	qDeleteAll(mSensors);
 	qDeleteAll(mEncoders);
 	qDeleteAll(mLineSensors);
+	qDeleteAll(mTimers);
 }
 
 void TrikBrick::reset()
@@ -49,6 +50,11 @@ void TrikBrick::reset()
 	for (const auto &e : mEncoders) {
 		e->reset();
 	}
+	for (const auto &t : mTimers) {
+		t->stop();
+	}
+	qDeleteAll(mTimers);
+	mTimers.clear();
 	QMetaObject::invokeMethod(&mSensorUpdater, "stop"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.stop(); /// maybe needed in other places too.
 }
@@ -317,6 +323,15 @@ QStringList TrikBrick::readAll(const QString &path)
 		result << QString::fromUtf8(line);
 	}
 
+	return result;
+}
+
+utils::AbstractTimer *TrikBrick::timer(int milliseconds)
+{
+	utils::AbstractTimer *result = mTwoDRobotModel->timeline().produceTimer();
+	mTimers.append(result);
+	result->setRepeatable(true); // seems to be the case
+	result->start(milliseconds);
 	return result;
 }
 
