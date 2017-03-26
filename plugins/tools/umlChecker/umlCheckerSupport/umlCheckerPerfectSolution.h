@@ -30,7 +30,7 @@ private:
 	qrRepo::RepoApi *mPerfectRepoApi;
 
 	//TODO
-	QString mTempDirPath;
+	QString mLocationDirPath;
 };
 
 }

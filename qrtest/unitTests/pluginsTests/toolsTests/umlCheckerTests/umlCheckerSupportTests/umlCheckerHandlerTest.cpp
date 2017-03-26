@@ -36,29 +36,28 @@ void UmlCheckerHandlerTest::TearDown() {
 
 void UmlCheckerHandlerTest::openRepositories(const QString &perfect, const QString &ordinary)
 {
-	mOrdinaryRepoApi->open(mRepositoriesPath + ordinary);
+	mHandler->init(ordinary, perfect);
 }
 
 TEST_F(UmlCheckerHandlerTest, oneClass) {
-	openRepositories("perfectOneClass.qrs", "ordinaryOneClass.qrs");
+	const QString task = "oneClass/";
+
+	openRepositories(mRepositoriesPath + task
+		, mRepositoriesPath + task + "ordinaryOneClass.qrs");
 
 	bool matchResult = mHandler->matchingResult();
 
-	ASSERT_EQ(matchResult, true);
+	ASSERT_TRUE(matchResult);
 }
 
 TEST_F(UmlCheckerHandlerTest, twoClassesWithEdge) {
-	openRepositories("perfectTwoClassesWithEdge.qrs", "ordinaryTwoClassesWithEdge.qrs");
+	const QString task = "twoClassesWithEdge/";
+
+	openRepositories(mRepositoriesPath + task
+			, mRepositoriesPath + task + "ordinaryTwoClassesWithEdge.qrs");
 
 	bool matchResult = mHandler->matchingResult();
 
-	ASSERT_EQ(matchResult, true);
+	ASSERT_TRUE(matchResult);
 }
 
-TEST_F(UmlCheckerHandlerTest, threeClassesWithThreeEdges) {
-	openRepositories("perfect3ClassesWith3Edges.qrs", "ordinary3ClassesWith3Edges.qrs");
-
-	bool matchResult = mHandler->matchingResult();
-
-	ASSERT_EQ(matchResult, true);
-}

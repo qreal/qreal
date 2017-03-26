@@ -1,6 +1,7 @@
 #include "umlCheckerPerfectSolution.h"
 
 #include <QtWidgets/QMessageBox>
+#include <QFileDialog>
 
 using namespace qReal;
 
@@ -9,7 +10,7 @@ UmlCheckerPerfectSolution::UmlCheckerPerfectSolution(gui::MainWindowInterpreters
 		: mMainWindowIFace(mainWindowIFace)
 		, mRepoControlIFace(repoControlIFace)
 {
-	mTempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
+	mLocationDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
 	mPerfectRepoApi = new qrRepo::RepoApi("/home/julia/qreal/qreal/plugins/umlChecker/perfect", true);
 }
 
@@ -21,7 +22,9 @@ UmlCheckerPerfectSolution::~UmlCheckerPerfectSolution()
 
 void UmlCheckerPerfectSolution::saveTempSolution()
 {
-	const QString fileName = mTempDirPath + "temp.qrs";
+	mLocationDirPath = QFileDialog::getExistingDirectory(nullptr, tr("Specify directory:")) + "/";
+
+	const QString fileName = mLocationDirPath + "temp" + ".qrs";
 	mRepoControlIFace->saveTo(fileName);
 
 	mPerfectRepoApi->open(fileName);
@@ -41,7 +44,7 @@ void UmlCheckerPerfectSolution::addElementsToBlock(const QString &blockName)
 
 void UmlCheckerPerfectSolution::saveOptionsForBlock(const QPair<QString, QStringList> &elements)
 {
-	QString filename= mTempDirPath + elements.first + ".txt";
+	QString filename= mLocationDirPath + elements.first + ".txt";
 	QFile file(filename);
 	if (file.open(QIODevice::ReadWrite)) {
 		QTextStream stream(&file);

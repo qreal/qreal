@@ -28,6 +28,9 @@ public:
 	virtual ~UmlCheckerHandler();
 
 	void init(const QString &ordinaryPath, const QString &perfectSolutionPath);
+	void clear();
+
+	void researchEdge(const IdList &values);
 
 	bool matchingResult();
 
@@ -55,7 +58,6 @@ private:
 	QStringList mPerfectFileNames;
 
 	qrRepo::RepoApi *mPerfectRepoFromList;
-
 	qrRepo::RepoApi *mOrdinaryRepoApi;
 };
 }

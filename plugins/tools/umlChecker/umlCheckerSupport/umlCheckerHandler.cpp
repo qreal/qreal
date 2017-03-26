@@ -38,7 +38,6 @@ UmlCheckerHandler::~UmlCheckerHandler()
 void UmlCheckerHandler::init(const QString &ordinaryPath, const QString &perfectSolutionPath)
 {
 	mPathToPerfect = perfectSolutionPath;
-
 	mPerfectRepoFromList = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect/", true);
 	QDir dir(mPathToPerfect);
 	QStringList filters;
@@ -50,6 +49,12 @@ void UmlCheckerHandler::init(const QString &ordinaryPath, const QString &perfect
 	}
 
 	mOrdinaryRepoApi->open(ordinaryPath);
+}
+
+void UmlCheckerHandler::clear()
+{
+	mBlockNames.clear();
+	delete mPerfectRepoFromList;
 }
 
 QStringList UmlCheckerHandler::getOptionsForBlock(const QString &blockFile)
@@ -140,6 +145,20 @@ bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordina
 	return changeablePerfect.count() == 0;
 }
 
+void UmlCheckerHandler::researchEdge(const IdList &values)
+{
+
+	for (const Id &id : values) {
+		auto conf = mOrdinaryRepoApi->configuration(id);
+		auto temp = mOrdinaryRepoApi->properties(id);
+		auto from = mOrdinaryRepoApi->from(id);
+		auto to = mOrdinaryRepoApi->to(id);
+		auto props = mOrdinaryRepoApi->properties(id);
+		int i = 0;
+	}
+}
+
+
 bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElements
 		, QMultiHash<QString, Id> &ordinaryElements)
 {
@@ -162,6 +181,8 @@ bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElem
 			}
 
 		} else {
+
+			researchEdge(ordinaryValues);
 			ordinaryElements.remove(pKey);
 		}
 	}
@@ -203,12 +224,13 @@ bool UmlCheckerHandler::matchingResult()
 QMultiHash<QString, Id> UmlCheckerHandler::getElementsFromApi(qrRepo::RepoApi *repoApi) const
 {
 	QMultiHash<QString, Id> hashElements;
-	IdList const elements = repoApi->graphicalElements();
-
+	const IdList elements = repoApi->graphicalElements();
 	for (const Id &element : elements) {
 		if (element.element() == "ClassDiagramNode") {
 			IdList list = repoApi->children(element);
+
 			for (const Id &id : list) {
+
 				hashElements.insertMulti(id.element(), id);
 			}
 		}

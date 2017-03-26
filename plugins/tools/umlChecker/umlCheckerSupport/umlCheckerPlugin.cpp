@@ -137,6 +137,7 @@ void UmlCheckerPlugin::parseSolution()
 	const QString perfectSolutionsPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
 	mHandler->init(ordinaryPath, perfectSolutionsPath);
 	bool matchingResult = mHandler->matchingResult();
+	mHandler->clear();
 
 	if (matchingResult) {
 		QMessageBox::information(nullptr, tr("Information"), tr("Successfully"), tr("Ok"));

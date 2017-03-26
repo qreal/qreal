@@ -35,7 +35,7 @@ protected:
 	qrRepo::RepoApi *mOrdinaryRepoApi;
 
 
-	QString mTestFilesPath = "/home/julia/qreal/qreal/qrtest";
+	QString mTestFilesPath = "/home/julia/qreal/qreal/qrtest/unitTests";
 	QString mRepositoriesPath = mTestFilesPath + "/pluginsTests/toolsTests/umlCheckerTests/umlCheckerSupportTests/cases/";
 	ErrorReporterMock mErrorReporter;
 };
