@@ -242,9 +242,7 @@ QMultiHash<QString, Id> UmlCheckerHandler::getElementsFromApi(qrRepo::RepoApi *r
 	for (const Id &element : elements) {
 		if (element.element() == "ClassDiagramNode") {
 			IdList list = repoApi->children(element);
-
 			for (const Id &id : list) {
-
 				hashElements.insertMulti(id.element(), id);
 			}
 		}

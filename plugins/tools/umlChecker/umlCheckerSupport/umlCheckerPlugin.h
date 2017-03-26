@@ -53,7 +53,7 @@ private slots:
 	void parseSolution();
 	void addElementsToBlock();
 	void savePerfectSolution();
-	void openTemplatesWindow();
+	void openTemplatesWindow(const QString &name);
 	void save();
 	void cancel();
 

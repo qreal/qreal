@@ -33,7 +33,7 @@ public:
 
 	~UmlCheckerTmplWindow();
 
-	void openTemplatesForBlocks();
+	void openTemplatesForBlocks(const QString &fileName);
 	void setBlockName(const QString &blockName);
 	QPair<QString, QStringList> getElementForBlock();
 

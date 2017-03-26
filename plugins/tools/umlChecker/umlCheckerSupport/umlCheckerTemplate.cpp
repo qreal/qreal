@@ -25,3 +25,12 @@ void UmlCheckerTemplate::saveTemplate()
 	mRepoControlIFace->saveTo(tempDirPath + templateName + ".qrs");
 	QMessageBox::information(nullptr, tr("Information"), tr("Saved successfully"), tr("Ok"));
 }
+
+
+void UmlCheckerTemplate::saveEdgeTemplate()
+{
+	const QString templateName = QInputDialog::getText(nullptr, tr("enter template name"), tr("enter template name"));
+	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/edge/";
+	mMainWindowIFace->saveDiagramAsAPictureToFile(tempDirPath + templateName + ".png");
+	QMessageBox::information(nullptr, tr("Information"), tr("Saved successfully"), tr("Ok"));
+}

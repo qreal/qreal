@@ -17,7 +17,7 @@ public:
 			, qrRepo::RepoControlInterface *repoControlIFace);
 	~UmlCheckerTemplate();
 
-
+	void saveEdgeTemplate();
 	void saveTemplate();
 
 

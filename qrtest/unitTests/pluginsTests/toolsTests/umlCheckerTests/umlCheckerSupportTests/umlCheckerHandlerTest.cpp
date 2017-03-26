@@ -61,3 +61,13 @@ TEST_F(UmlCheckerHandlerTest, twoClassesWithEdge) {
 	ASSERT_TRUE(matchResult);
 }
 
+TEST_F(UmlCheckerHandlerTest, twoBlocksWithoutEdgesBetweenThem) {
+	const QString task = "twoBlockWithout/";
+
+	openRepositories(mRepositoriesPath + task
+			, mRepositoriesPath + task + "twoBlocksWithout.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_TRUE(matchResult);
+}

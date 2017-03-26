@@ -23,6 +23,7 @@ public:
 	void addElementsToBlock(const QString &blockName);
 	void saveAll();
 	void saveOptionsForBlock(const QPair<QString, QStringList> &elements);
+	void saveOptionsForEdge(const QPair<QString, QStringList> &elements);
 
 private:
 	gui::MainWindowInterpretersInterface *mMainWindowIFace;

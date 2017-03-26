@@ -81,7 +81,7 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	mUmlCheckerMenu->addAction(mSavePerfectSolution);
 
 	mOpenTemplatesWindowAction = new QAction(tr("Open Templates Window"), nullptr);
-	connect(mOpenTemplatesWindowAction, SIGNAL(triggered()), this, SLOT(openTemplatesWindow()));
+	connect(mOpenTemplatesWindowAction, SIGNAL(triggered()), this, SLOT(openTemplatesWindow(QString)));
 	mUmlCheckerMenu->addAction(mOpenTemplatesWindowAction);
 
 	mSaveTemplate = new QAction(tr("Save Template"), nullptr);
@@ -116,13 +116,14 @@ void UmlCheckerPlugin::addElementsToBlock()
 	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
 
 	mTemplatesWindow->setBlockName(blockName);
-	openTemplatesWindow();
+	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
+	openTemplatesWindow(tempDirPath);
 }
 
-void UmlCheckerPlugin::openTemplatesWindow()
+void UmlCheckerPlugin::openTemplatesWindow(const QString &name)
 {
 	mTemplatesWindow->show();
-	mTemplatesWindow->openTemplatesForBlocks();
+	mTemplatesWindow->openTemplatesForBlocks(name);
 }
 
 void UmlCheckerPlugin::savePerfectSolution()

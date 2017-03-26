@@ -50,10 +50,9 @@ void UmlCheckerTmplWindow::setBlockName(const QString &blockName)
 	mBlockName = blockName;
 }
 
-void UmlCheckerTmplWindow::openTemplatesForBlocks()
+void UmlCheckerTmplWindow::openTemplatesForBlocks(const QString &fileName)
 {
-	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
-	QDir currentDir(tempDirPath);
+	QDir currentDir(fileName);
 	QStringList filters;
 	filters << "*.png";
 	const QStringList pngFiles = currentDir.entryList(filters);
@@ -62,7 +61,7 @@ void UmlCheckerTmplWindow::openTemplatesForBlocks()
 	for (QString png : pngFiles) {
 		png.chop(4);
 		QListWidgetItem *item = new QListWidgetItem(png);
-		item->setData(Qt::UserRole, tempDirPath + png + ".png");
+		item->setData(Qt::UserRole, fileName + png + ".png");
 		item->setSelected(true);
 		blockList->addItem(item);
 	}
