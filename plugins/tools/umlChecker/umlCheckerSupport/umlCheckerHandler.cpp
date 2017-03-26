@@ -94,7 +94,7 @@ bool UmlCheckerHandler::matchingLinksOfNode(const IdList &perfectLinks, const Id
 }
 
 
-bool UmlCheckerHandler::matchNodeElement(const Id &id, IdList &ordinaryValues)
+bool UmlCheckerHandler::matchNodeElement(const Id &id, IdList &ordinaryValues, const QString &blockName)
 {
 	const IdList incoming = mPerfectRepoFromList->incomingLinks(id);
 	const IdList outgoing = mPerfectRepoFromList->outgoingLinks(id);
@@ -105,6 +105,7 @@ bool UmlCheckerHandler::matchNodeElement(const Id &id, IdList &ordinaryValues)
 		bool incomingMatch = matchingLinksOfNode(incoming, incomingOrdinary);
 		bool outgoingMatch = matchingLinksOfNode(outgoing, outgoingOrdinary);
 		if (incomingMatch && outgoingMatch) {
+			mOrdinaryRepoApi->setProperty(ordinaryId, "blockName", QVariant(blockName));
 			ordinaryValues.removeOne(ordinaryId);
 			return true;
 		}
@@ -122,7 +123,7 @@ IdList UmlCheckerHandler::doShift(const IdList &list)
 	return result;
 }
 
-bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues)
+bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues, const QString &blockName)
 {
 	IdList changeablePerfect = perfectValues;
 	IdList changeableOrdinary = ordinaryValues;
@@ -131,7 +132,7 @@ bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordina
 
 	for (int i = 0; i < perfectValues.size(); ++i) {
 		for (const Id &id : changeablePerfect) {
-			bool nodeMatch = matchNodeElement(id, changeableOrdinary);
+			bool nodeMatch = matchNodeElement(id, changeableOrdinary, blockName);
 			if (!nodeMatch) {
 				changeablePerfect = doShift(lastShiftIds);
 				break;
@@ -145,46 +146,41 @@ bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordina
 	return changeablePerfect.count() == 0;
 }
 
-void UmlCheckerHandler::researchEdge(const IdList &values)
+IdList UmlCheckerHandler::researchEdge(const IdList &values)
 {
-
+	IdList result;
 	for (const Id &id : values) {
-		auto conf = mOrdinaryRepoApi->configuration(id);
-		auto temp = mOrdinaryRepoApi->properties(id);
-		auto from = mOrdinaryRepoApi->from(id);
-		auto to = mOrdinaryRepoApi->to(id);
-		auto props = mOrdinaryRepoApi->properties(id);
-		int i = 0;
+		Id from = mOrdinaryRepoApi->from(id);
+		Id to = mOrdinaryRepoApi->to(id);
+
+		if (mOrdinaryRepoApi->hasProperty(from, "blockName") && mOrdinaryRepoApi->hasProperty(to, "blockName")) {
+			if (mOrdinaryRepoApi->property(from, "blockName") == mOrdinaryRepoApi->property(to, "blockName")) {
+				mOrdinaryRepoApi->setProperty(id, "blockName", QVariant(mOrdinaryRepoApi->property(to, "blockName")));
+			} else {
+				result.append(id);
+			}
+		}
 	}
+
+	return result;
 }
 
 
-bool UmlCheckerHandler::matchingInsideABlock(QMultiHash<QString, Id> perfectElements
-		, QMultiHash<QString, Id> &ordinaryElements)
+bool UmlCheckerHandler::matchingNodesInsideABlock(QMultiHash<QString, Id> perfectElements
+		, QMultiHash<QString, Id> &ordinaryElements, const QString &blockName)
 {
-	const QStringList perfectKeys = perfectElements.uniqueKeys();
+	const QString umlClass = "UmlClass";
+	IdList ordinaryValues = ordinaryElements.values(umlClass);
+	IdList perfectValues = perfectElements.values(umlClass);
+	bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues, blockName);
+	if (resOfCheckMatching == false) {
+		return resOfCheckMatching;
+	}
 
-	for (const QString &pKey : perfectKeys) {
-		IdList ordinaryValues = ordinaryElements.values(pKey);
-		IdList perfectValues = perfectElements.values(pKey);
+	ordinaryElements.remove(umlClass);
 
-		if (pKey == "UmlClass") {
-			bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues);
-			if (resOfCheckMatching == false) {
-				return resOfCheckMatching;
-			}
-
-			ordinaryElements.remove(pKey);
-
-			for (const Id &ordValue : ordinaryValues) {
-				ordinaryElements.insertMulti(pKey, ordValue);
-			}
-
-		} else {
-
-			researchEdge(ordinaryValues);
-			ordinaryElements.remove(pKey);
-		}
+	for (const Id &ordValue : ordinaryValues) {
+		ordinaryElements.insertMulti(umlClass, ordValue);
 	}
 
 	return true;
@@ -204,8 +200,7 @@ bool UmlCheckerHandler::matchingResult()
 			const QMultiHash<QString, Id> perfectElements = getElementsFromApi(mPerfectRepoFromList);
 
 			ordinaryElements = intermediateOrdElems;
-
-			matchingBlock = matchingInsideABlock(perfectElements, ordinaryElements);
+			matchingBlock = matchingNodesInsideABlock(perfectElements, ordinaryElements, blockName);
 			if (matchingBlock) {
 				break;
 			}
@@ -218,7 +213,26 @@ bool UmlCheckerHandler::matchingResult()
 		}
 	}
 
-	return ordinaryElements.size() == 0;
+	QMultiHash<QString, IdList> residue;
+
+	for (const QString &edgeKey : ordinaryElements.uniqueKeys()) {
+		const IdList edgeValues = ordinaryElements.values(edgeKey);
+		IdList residueEdges = researchEdge(edgeValues);
+		if (!residueEdges.isEmpty()) {
+			residue.insertMulti(edgeKey, residueEdges);
+		} else {
+			ordinaryElements.remove(edgeKey);
+		}
+	}
+
+
+	return ordinaryElements.size() == 0 && residue.isEmpty();
+}
+
+
+void UmlCheckerHandler::removeBlockProperties(const QString &blockName)
+{
+
 }
 
 QMultiHash<QString, Id> UmlCheckerHandler::getElementsFromApi(qrRepo::RepoApi *repoApi) const

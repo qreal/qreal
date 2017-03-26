@@ -30,18 +30,20 @@ public:
 	void init(const QString &ordinaryPath, const QString &perfectSolutionPath);
 	void clear();
 
-	void researchEdge(const IdList &values);
+	IdList researchEdge(const IdList &values);
 
 	bool matchingResult();
 
-	bool checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues);
-
-	bool matchNodeElement(const Id &id, IdList &ordinaryValues);
+	void removeBlockProperties(const QString &blockName);
 
 	bool matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks);
 
-	bool matchingInsideABlock(QMultiHash<QString, Id> perfectElements
-			, QMultiHash<QString, Id> &ordinaryElements);
+	bool matchNodeElement(const Id &id, IdList &ordinaryValues, const QString &blockName);
+
+	bool checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues, const QString &blockName);
+
+	bool matchingNodesInsideABlock(QMultiHash<QString, Id> perfectElements
+			, QMultiHash<QString, Id> &ordinaryElements, const QString &blockName);
 
 private:
 	QMultiHash<QString, Id> getElementsFromApi(qrRepo::RepoApi *repoApi) const;

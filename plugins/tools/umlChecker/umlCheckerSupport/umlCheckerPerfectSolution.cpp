@@ -35,7 +35,7 @@ void UmlCheckerPerfectSolution::addElementsToBlock(const QString &blockName)
 {
 	IdList activeElements = mMainWindowIFace->selectedElementsOnActiveDiagram();
 	for (Id &id : activeElements) {
-		mPerfectRepoApi->setProperty(id, blockName, QVariant(""));
+		mPerfectRepoApi->setProperty(id, "blockName", QVariant(blockName));
 	}
 
 
@@ -44,14 +44,14 @@ void UmlCheckerPerfectSolution::addElementsToBlock(const QString &blockName)
 
 void UmlCheckerPerfectSolution::saveOptionsForBlock(const QPair<QString, QStringList> &elements)
 {
-	QString filename= mLocationDirPath + elements.first + ".txt";
-	QFile file(filename);
+	QString fileName = mLocationDirPath + elements.first + ".txt";
+	QFile file(fileName);
 	if (file.open(QIODevice::ReadWrite)) {
 		QTextStream stream(&file);
 		for (QString element : elements.second) {
 			element.chop(4);
-			const QString fileName = element + ".qrs";
-			stream << fileName << endl;
+			const QString fileNameOfBlock = element + ".qrs";
+			stream << fileNameOfBlock << endl;
 		}
 	}
 
