@@ -12,8 +12,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "generatorBase/parts/subprograms.h"
+#include <QtXml/QDomDocument>
 
+#include "generatorBase/parts/subprograms.h"
 #include "src/readableControlFlowGenerator.h"
 
 using namespace generatorBase::parts;
@@ -22,7 +23,8 @@ using namespace qReal;
 Subprograms::Subprograms(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, const QStringList &pathsToTemplates
-		, const simple::Binding::ConverterInterface *nameNormalizer)
+		, const simple::Binding::ConverterInterface *nameNormalizer
+		)
 	: TemplateParametrizedEntity(pathsToTemplates)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
@@ -89,7 +91,7 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 
 		implementations[toGen] = controlFlow->toString(1, indentString);
 
-		const QString forwardDeclaration = readSubprogramTemplate(toGen, "subprograms/forwardDeclaration.t");
+		const QString forwardDeclaration = readSubprogramSignature(toGen, "subprograms/forwardDeclaration.t");
 		declarations[toGen] = forwardDeclaration;
 
 		toGen = firstToGenerate();
@@ -116,7 +118,7 @@ void Subprograms::obtainCode(QMap<Id, QString> const &declarations
 	}
 
 	for (const Id &id : implementations.keys()) {
-		const QString signature = readSubprogramTemplate(id, "subprograms/implementation.t");
+		const QString signature = readSubprogramSignature(id, "subprograms/implementation.t");
 		QString subprogramCode = signature;
 		subprogramCode.replace("@@BODY@@", implementations[id]);
 		mImplementationsCode << subprogramCode;
@@ -130,10 +132,32 @@ QString Subprograms::generateManualDeclarations() const
 	return QStringList(mManualDeclarations.values()).join("\n\n");
 }
 
-QString Subprograms::readSubprogramTemplate(const Id &id, const QString &pathToTemplate)
+QString Subprograms::readSubprogramSignature(const Id &id, const QString &pathToTemplate)
 {
 	const QString rawName = mRepo.name(id);
-	return readTemplate(pathToTemplate).replace("@@NAME@@", mNameNormalizer->convert(rawName));
+	QString signatureWithName = readTemplate(pathToTemplate).replace("@@NAME@@", mNameNormalizer->convert(rawName));
+
+	QList<QString> argumentsList;
+	const QString argumentFormat = readTemplate("subprograms/subprogramArgument.t");
+	const QString currentDynamicLabelsString = mRepo.stringProperty(id, "labels");
+	if (!currentDynamicLabelsString.isEmpty()) {
+		QDomDocument currentDynamicLabels;
+		currentDynamicLabels.setContent(currentDynamicLabelsString);
+
+		for (QDomElement element
+				= currentDynamicLabels.firstChildElement("labels").firstChildElement("label")
+				; !element.isNull()
+				; element = element.nextSiblingElement("label"))
+		{
+			QString argument = argumentFormat;
+			argument.replace("@@TYPE@@", element.attribute("type"));
+			argument.replace("@@NAME@@", mNameNormalizer->convert(element.attribute("text")));
+			argumentsList << argument;
+		}
+	}
+
+	QString arguments = argumentsList.join(readTemplate("luaPrinting/argumentsSeparator.t"));
+	return signatureWithName.replace("@@ARGUMENTS@@", arguments);
 }
 
 Id Subprograms::graphicalId(const Id &logicalId) const

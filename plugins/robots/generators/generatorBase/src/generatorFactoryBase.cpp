@@ -72,6 +72,7 @@
 #include "converters/boolPropertyConverter.h"
 #include "converters/switchConditionsMerger.h"
 #include "converters/stringPropertyConverter.h"
+#include "converters/dynamicPropertiesConverter.h"
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
@@ -394,6 +395,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::reservedVariableNameConverter
 Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() const
 {
 	return new converters::NameNormalizerConverter;
+}
+
+Binding::ConverterInterface *GeneratorFactoryBase::dynamicPropertiesConverter(const qReal::Id &block) const
+{
+	return new converters::DynamicPropertiesConverter(mLuaTranslator, block, pathsToTemplates());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(const qReal::Id &block

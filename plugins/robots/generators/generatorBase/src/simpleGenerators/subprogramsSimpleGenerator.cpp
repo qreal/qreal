@@ -26,6 +26,8 @@ SubprogramsSimpleGenerator::SubprogramsSimpleGenerator(const qrRepo::RepoApi &re
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "subprograms/subprogramCall.t", QList<Binding *>()
 			<< Binding::createConverting("@@NAME@@", "name", customizer.factory()->nameNormalizerConverter())
+			<< Binding::createConverting("@@ARGUMENTS@@", "dynamicProperties"
+						, customizer.factory()->dynamicPropertiesConverter(id))
 			, parent)
 {
 }

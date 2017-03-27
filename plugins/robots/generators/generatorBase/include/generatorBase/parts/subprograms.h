@@ -82,7 +82,7 @@ private:
 
 	qReal::Id firstToGenerate() const;
 
-	QString readSubprogramTemplate(const qReal::Id &id, const QString &pathToTemplate);
+	QString readSubprogramSignature(const qReal::Id &id, const QString &pathToTemplate);
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
