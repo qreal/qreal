@@ -261,7 +261,7 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 					; !element.isNull()
 					; element = element.nextSiblingElement("property"))
 			{
-				mFields << Field(element.attribute("text"), logicalAttribute, role);
+				mFields << Field(element.attribute("displayedName"), logicalAttribute, role);
 				++role;
 			}
 		}
@@ -333,7 +333,7 @@ QString PropertyEditorModel::propertyName(const QModelIndex &index) const
 				element = element.nextSiblingElement("property"))
 		{
 			if (i == index.row() - propertiesCount) {
-				fieldName = element.attribute("textBinded");
+				fieldName = element.attribute("name");
 				break;
 			}
 			++i;

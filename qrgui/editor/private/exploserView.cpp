@@ -236,9 +236,12 @@ void ExploserView::changeDynamicPropertiesActionTriggered()
 	const Id id = action->data().value<Id>();
 	qReal::gui::DynamicPropertiesDialog * const dynamicPropertiesDialog = new qReal::gui::DynamicPropertiesDialog(
 			id
-			, mLogicalApi.mutableLogicalRepoApi()
+			, mLogicalApi
 			, mExploser
-			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]);
+			, mController
+			, QApplication::allWidgets().isEmpty() ? nullptr : QApplication::allWidgets()[0]
+	);
+
 	dynamicPropertiesDialog->setModal(true);
 	dynamicPropertiesDialog->show();
 }

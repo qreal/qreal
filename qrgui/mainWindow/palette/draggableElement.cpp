@@ -146,7 +146,12 @@ void DraggableElement::changeDynamicPropertiesPaletteActionTriggered()
 	const QAction * const action = static_cast<const QAction *>(sender());
 	const Id id = action->data().value<Id>();
 	DynamicPropertiesDialog * const dynamicPropertiesDialog = new DynamicPropertiesDialog(id
-			, mMainWindow.models().mutableLogicalRepoApi(), mMainWindow.models().exploser(), &mMainWindow);
+			, mMainWindow.models().logicalModelAssistApi()
+			, mMainWindow.models().exploser()
+			, *mMainWindow.controller()
+			, &mMainWindow
+	);
+
 	dynamicPropertiesDialog->setModal(true);
 	dynamicPropertiesDialog->show();
 }

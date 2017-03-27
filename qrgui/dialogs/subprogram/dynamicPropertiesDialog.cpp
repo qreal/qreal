@@ -23,15 +23,17 @@
 #include <QtCore/QUuid>
 #include <QtCore/QDir>
 
+#include <models/commands/changePropertyCommand.h>
+
 using namespace qReal;
 using namespace gui;
 
 const bool hideLabels = false;
 
 DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
-		, qrRepo::LogicalRepoApi &logicalRepoApi
+		, models::LogicalModelAssistApi &logicalRepoApi
 		, models::Exploser &exploser
-		, QWidget *parent)
+		, Controller &controller, QWidget *parent)
 	: QDialog(parent)
 	, mUi(new Ui::DynamicPropertiesDialog)
 	, mShapeWidget(new ShapePropertyWidget(this))
@@ -40,12 +42,13 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	, mShapeBackgroundScrollArea(new QScrollArea(this))
 	, mLogicalRepoApi(logicalRepoApi)
 	, mExploser(exploser)
+	, mController(controller)
 	, mId(id)
 {
 	mUi->setupUi(this);
 	setWindowTitle(tr("Properties"));
 	mUi->labels->setColumnCount(4);
-	mUi->labels->setHorizontalHeaderLabels({"Name", "Type", "Value", ""});
+	mUi->labels->setHorizontalHeaderLabels({tr("Name"), tr("Type"), tr("Value"), ""});
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
 	if (hideLabels) {
@@ -66,6 +69,15 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 
 	connect(mUi->addLabel, &QPushButton::clicked, this, &DynamicPropertiesDialog::addLabelButtonClicked);
 	connect(mUi->saveAll, &QPushButton::clicked, this, &DynamicPropertiesDialog::saveButtonClicked);
+	mUi->addLabel->setFocusPolicy(Qt::NoFocus);
+	mUi->saveAll->setFocus();
+	if (mShapeWidget->selectedShape().isEmpty()) {
+		mShapeWidget->selectShape(0);
+	}
+
+	if (mShapeBackgroundWidget->selectedShape().isEmpty()) {
+		mShapeBackgroundWidget->selectShape(0);
+	}
 }
 
 DynamicPropertiesDialog::~DynamicPropertiesDialog()
@@ -123,12 +135,41 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		return;
 	}
 
-	mLogicalRepoApi.setProperty(mId, "name", mUi->subprogramName->text());
+	const QString localStringPropertyName = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "name");
+	auto command = new commands::ChangePropertyCommand(
+			&mLogicalRepoApi.mutableLogicalRepoApi()
+			, "name"
+			, mId
+			, localStringPropertyName
+			, mUi->subprogramName->text()
+	);
+
+	const QString localStringPropertyShape = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "shape");
 	const QString selectedShape = mShapeWidget->selectedShape();
 	const QString selectedBackground = mShapeBackgroundWidget->selectedShape();
-	mLogicalRepoApi.setProperty(mId, "shape", generateShapeXml(selectedShape, selectedBackground));
+	command->addPostAction(new commands::ChangePropertyCommand(
+			&mLogicalRepoApi.mutableLogicalRepoApi()
+			, "shape"
+			, mId
+			, localStringPropertyShape
+			, generateShapeXml(selectedShape, selectedBackground)
+	));
+
+	// dirty hack to forward values. It's is not labels, it's just name for restoring values
 	QDomDocument dynamicLabels;
 	QDomElement labels = dynamicLabels.createElement("labels");
+
+	QMap<QString, QString> previousLabels;
+	const QString currentDynamicLabelsString = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "labels");
+	QDomDocument currentDynamicLabels;
+	currentDynamicLabels.setContent(currentDynamicLabelsString);
+	for (QDomElement element = currentDynamicLabels.firstChildElement("labels").firstChildElement("label")
+			; !element.isNull()
+			; element = element.nextSiblingElement("label"))
+	{
+		const QString key = QString("%1 %2").arg(element.attribute("text")).arg(element.attribute("type"));
+		previousLabels[key] = element.attribute("textBinded");
+	}
 
 	int x = 40;
 	int y = 60;
@@ -142,7 +183,12 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		QDomElement label = dynamicLabels.createElement("label");
 		label.setAttribute("x", x);
 		label.setAttribute("y", y);
-		label.setAttribute("textBinded", QUuid::createUuid().toString());
+		const QString key = QString("%1 %2").arg(name).arg(type);
+		label.setAttribute("textBinded", previousLabels.contains(key)
+				? previousLabels[key]
+				: QUuid::createUuid().toString()
+		);
+
 		label.setAttribute("type", type);
 		label.setAttribute("value", value);
 		label.setAttribute("text", name);
@@ -151,9 +197,26 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		y += 30;
 	}
 
+	const QString localStringPropertyLabels = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "labels");
 	dynamicLabels.appendChild(labels);
-	mLogicalRepoApi.setProperty(mId, "labels", dynamicLabels.toString(4));
-	mExploser.explosionTargetCouldChangeProperties(mId);
+	command->addPostAction(new commands::ChangePropertyCommand(
+			&mLogicalRepoApi.mutableLogicalRepoApi()
+			, "labels"
+			, mId
+			, localStringPropertyLabels
+			, dynamicLabels.toString(4)
+	));
+
+	connect(command, &commands::ChangePropertyCommand::redoComplete, &mExploser, [=](){
+		emit mExploser.explosionTargetCouldChangeProperties(mId);
+	});
+
+	connect(command, &commands::ChangePropertyCommand::undoComplete, &mExploser, [=](){
+		emit mExploser.explosionTargetCouldChangeProperties(mId);
+	});
+
+	mController.execute(command);
+	close();
 }
 
 void DynamicPropertiesDialog::deleteButtonClicked()
@@ -213,7 +276,7 @@ void DynamicPropertiesDialog::init()
 	}
 
 	QDomDocument shape;
-	shape.setContent(mLogicalRepoApi.stringProperty(mId, "shape"));
+	shape.setContent(mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "shape"));
 	QString currentShape;
 	QString currentBackground;
 
@@ -228,8 +291,8 @@ void DynamicPropertiesDialog::init()
 
 	mShapeWidget->initShapes(shapes, currentShape, false);
 	mShapeBackgroundWidget->initShapes(shapesBackgrounds, currentBackground, true);
-	mUi->subprogramName->setText(mLogicalRepoApi.stringProperty(mId, "name"));
-	const QString labels = mLogicalRepoApi.stringProperty(mId, "labels");
+	mUi->subprogramName->setText(mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "name"));
+	const QString labels = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "labels");
 	if (labels.isEmpty()) {
 		return;
 	}
@@ -242,7 +305,6 @@ void DynamicPropertiesDialog::init()
 	{
 		const QString type = element.attribute("type");
 		const QString value = element.attribute("value");
-		element = element.nextSiblingElement("label");
 		const QString text = element.attribute("text");
 		addLabel(text, type, value);
 	}
@@ -266,7 +328,7 @@ QString DynamicPropertiesDialog::tryToSave() const
 				value.toInt(&ok);
 				// Return false if "int" value isn't int
 				if (!ok) {
-					return tr("Value in row %1 is not integer").arg(i);
+					return tr("Value in row %1 is not integer").arg(i + 1);
 				}
 			}
 		}

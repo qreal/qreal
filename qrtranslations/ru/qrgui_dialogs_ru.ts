@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ru_RU">
+<TS version="2.0" language="ru_RU">
 <context>
     <name>AddNodeDialog</name>
     <message>
@@ -423,7 +423,7 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Все обязательные свойства должны быть заполнены!</translation>
+        <translation type="obsolete">Все обязательные свойства должны быть заполнены!</translation>
     </message>
     <message>
         <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="132"/>
@@ -445,11 +445,11 @@
     <name>qReal::ProgressBar</name>
     <message>
         <source>%p% - canceled</source>
-        <translation type="vanished">%p% - отменено</translation>
+        <translation type="obsolete">%p% - отменено</translation>
     </message>
     <message>
         <source>canceled</source>
-        <translation type="vanished">отменено</translation>
+        <translation type="obsolete">отменено</translation>
     </message>
 </context>
 <context>
@@ -564,38 +564,53 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Все обязательные свойства должны быть заполнены!</translation>
+        <translation type="obsolete">Все обязательные свойства должны быть заполнены!</translation>
     </message>
 </context>
 <context>
     <name>qReal::gui::DynamicPropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="46"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="49"/>
         <source>Properties</source>
         <translation>Свойства</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="122"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Name</source>
+        <translation>Имя</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Type</source>
+        <translation>Тип</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Value</source>
+        <translation>Значение</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="134"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="258"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="320"/>
         <source>Name is not filled in row %1</source>
         <translation>Имя параметра %1 не заполнено</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="269"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="331"/>
         <source>Value in row %1 is not integer</source>
         <translation>Значение параметра %1 не целое</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="279"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="341"/>
         <source>Duplicate names</source>
         <translation>Одинаковые имена</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="287"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="349"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
@@ -614,7 +629,7 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Все обязательные свойства должны быть заполнены!</translation>
+        <translation type="obsolete">Все обязательные свойства должны быть заполнены!</translation>
     </message>
 </context>
 <context>

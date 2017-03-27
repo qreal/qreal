@@ -57,6 +57,14 @@ QString ShapePropertyWidget::selectedShape() const
 	return mShapes.isEmpty() || mSelectedShapeIndex == -1 ? QString() : mShapes.at(mSelectedShapeIndex)->shape();
 }
 
+void ShapePropertyWidget::selectShape(int index)
+{
+	if (!mShapes.isEmpty() && mShapes.size() > index) {
+		mShapes.at(index)->addSelection();
+		mSelectedShapeIndex = index;
+	}
+}
+
 void ShapePropertyWidget::paintEvent(QPaintEvent *)
 {
 	mWidthOfGrid = SettingsManager::value("GridWidth").toDouble() / 100;
@@ -84,7 +92,7 @@ void ShapePropertyWidget::addShape(int &index, qreal &x, const QString &shape, c
 		, bool &foundCurrentShape)
 {
 	ShapeWidget *shapeWidget = new ShapeWidget(index, this);
-	shapeWidget->setGeometry(x, 0, 0, 0);
+	shapeWidget->setGeometry(static_cast<int>(x), 0, 0, 0);
 	mShapes << shapeWidget;
 	shapeWidget->setShape(shape);
 

@@ -74,7 +74,10 @@ QList<SubprogramBlock::DynamicParameter> SubprogramBlock::dynamicParameters() co
 		; !element.isNull()
 		; element = element.nextSiblingElement("property"))
 	{
-		result << DynamicParameter {element.attribute("text"), element.attribute("type"), element.attribute("value") };
+		result << DynamicParameter {element.attribute("displayedName")
+				, element.attribute("type")
+				, element.attribute("dynamicPropertyValue")
+		};
 	}
 
 	return result;
