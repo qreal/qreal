@@ -36,6 +36,9 @@ private slots:
 
 private:
 	qreal degreeToMilidegree(qreal value);
+	int convertToTrikRuntimeTime(quint64 time) const;
+
+	bool mTimeInited = false;
 
 	kitBase::robotModel::robotParts::GyroscopeSensor *mGyro;
 	QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> mModel;
