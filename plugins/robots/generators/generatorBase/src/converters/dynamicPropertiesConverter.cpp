@@ -23,11 +23,18 @@ using namespace qReal;
 
 DynamicPropertiesConverter::DynamicPropertiesConverter(lua::LuaProcessor &luaTranslator
 		, const qReal::Id &id
-		, const QStringList &pathsToTemplates)
+		, const QStringList &pathsToTemplates
+		, ConverterInterface *reservedVariablesConverter)
 	: TemplateParametrizedEntity(pathsToTemplates)
 	, mLuaTranslator(luaTranslator)
 	, mId(id)
+	, mReservedVariablesConverter(reservedVariablesConverter)
 {
+}
+
+DynamicPropertiesConverter::~DynamicPropertiesConverter()
+{
+	delete mReservedVariablesConverter;
 }
 
 QString DynamicPropertiesConverter::convert(const QString &properties) const
@@ -42,10 +49,8 @@ QString DynamicPropertiesConverter::convert(const QString &properties) const
 				; !element.isNull()
 				; element = element.nextSiblingElement("property"))
 		{
-			// WARNING: if we use variables in parameters, this statement should be rewritten!
-			// But remember, that LuaPrinter delete pointer to reservedVariableConverter each time.
 			argumentsList << mLuaTranslator.translate(element.attribute("dynamicPropertyValue")
-					, mId, element.attribute("name"), nullptr);
+					, mId, element.attribute("name"), mReservedVariablesConverter);
 		}
 
 		QString result = argumentsList.join(readTemplate("luaPrinting/argumentsSeparator.t"));

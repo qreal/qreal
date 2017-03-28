@@ -29,13 +29,18 @@ class DynamicPropertiesConverter :  public simple::Binding::ConverterInterface, 
 public:
 	DynamicPropertiesConverter(lua::LuaProcessor &luaTranslator
 			, const qReal::Id &id
-			, const QStringList &pathsToTemplates);
+			, const QStringList &pathsToTemplates
+			, simple::Binding::ConverterInterface *reservedVariablesConverter
+	);
+
+	~DynamicPropertiesConverter() override;
 
 	QString convert(const QString &properties) const override;
 private:
 	lua::LuaProcessor &mLuaTranslator;
 	const qReal::Id mId;
 	const QString mPropertyName;
+	simple::Binding::ConverterInterface *mReservedVariablesConverter; // has ownership
 };
 
 }

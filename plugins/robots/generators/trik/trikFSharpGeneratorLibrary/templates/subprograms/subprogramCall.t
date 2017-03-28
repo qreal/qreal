@@ -1,1 +1,1 @@
-@@NAME@@ @@ARGUMENTS@@ ()
+@@NAME@@ (@@ARGUMENTS@@)

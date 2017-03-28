@@ -399,7 +399,8 @@ Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() con
 
 Binding::ConverterInterface *GeneratorFactoryBase::dynamicPropertiesConverter(const qReal::Id &block) const
 {
-	return new converters::DynamicPropertiesConverter(mLuaTranslator, block, pathsToTemplates());
+	return new converters::DynamicPropertiesConverter(mLuaTranslator, block
+			, pathsToTemplates(), reservedVariableNameConverter());
 }
 
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(const qReal::Id &block

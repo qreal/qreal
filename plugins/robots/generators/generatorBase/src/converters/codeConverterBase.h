@@ -39,11 +39,13 @@ public:
 
 	QString convert(const QString &luaCode) const override;
 
+	~CodeConverterBase() override;
+
 protected:
 	lua::LuaProcessor &mLuaTranslator;
 	const qReal::Id mId;
 	const QString mPropertyName;
-	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // LuaProcessor will take ownership;
+	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // takes ownership;
 };
 
 }
