@@ -49,8 +49,8 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mRepoControlIFace = &configurator.repoControlInterface();
 
 	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
-	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(save()));
-	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(saveEdges()));
+	connect(mTemplatesWindow, SIGNAL(blocksButtonClicked()), this, SLOT(save()));
+	connect(mTemplatesWindow, SIGNAL(edgesButtonClicked()), this, SLOT(saveEdges()));
 
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);

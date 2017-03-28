@@ -26,8 +26,8 @@ UmlCheckerTmplWindow::UmlCheckerTmplWindow(QWidget *parent)
 	mUi->saveButton->setEnabled(true);
 	mUi->saveEdgesButton->setEnabled(true);
 
-	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
-	connect(mUi->saveEdgesButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
+	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(blocksButtonActivate()));
+	connect(mUi->saveEdgesButton, SIGNAL(clicked()), this, SLOT(edgesButtonActivate()));
 	connect(mUi->addToCollection, SIGNAL(clicked()), this, SLOT(addToCollection()));
 	connect(mUi->blockList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
 
@@ -90,7 +90,12 @@ void UmlCheckerTmplWindow::addToCollection()
 	mFiles.append(fileName);
 }
 
-void UmlCheckerTmplWindow::applyButtonActivate()
+void UmlCheckerTmplWindow::blocksButtonActivate()
 {
-	emit applyButtonClicked();
+	emit blocksButtonClicked();
+}
+
+void UmlCheckerTmplWindow::edgesButtonActivate()
+{
+	emit edgesButtonClicked();
 }
