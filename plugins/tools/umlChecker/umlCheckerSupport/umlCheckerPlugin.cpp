@@ -80,7 +80,6 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	connect(mAddEdgesAction, SIGNAL(triggered()), this, SLOT(addElementsToEdge()));
 	mUmlCheckerMenu->addAction(mAddEdgesAction);
 
-
 	mSavePerfectSolution = new QAction(tr("Save Perfect Solution"), nullptr);
 	connect(mSavePerfectSolution, SIGNAL(triggered()), this, SLOT(savePerfectSolution()));
 	mUmlCheckerMenu->addAction(mSavePerfectSolution);

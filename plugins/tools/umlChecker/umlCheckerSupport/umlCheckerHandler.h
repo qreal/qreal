@@ -28,9 +28,11 @@ public:
 	virtual ~UmlCheckerHandler();
 
 	void init(const QString &ordinaryPath, const QString &perfectSolutionPath);
+	void initEdgesVariants();
 	void clear();
+	bool matchingExternalEdges(const QMultiHash<QString, Id> &residue);
 
-	IdList researchEdge(const IdList &values);
+	void researchEdge(QMultiHash<QString, Id> &residue, const IdList &values);
 
 	bool matchingResult();
 
@@ -56,8 +58,9 @@ private:
 	QString mPathToPerfect;
 	QString mPathToOrdinary;
 
-	QStringList mBlockNames;
+	QList<QPair<QString, QString>> mBlockNames;
 	QStringList mEdges;
+	QMultiHash<QString, QPair<QString, QStringList>> mEdgesVariants;
 	QStringList mPerfectFileNames;
 
 	qrRepo::RepoApi *mPerfectRepoFromList;
