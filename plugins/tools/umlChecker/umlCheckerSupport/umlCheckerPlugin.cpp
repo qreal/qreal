@@ -50,7 +50,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 
 	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
 	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(save()));
-	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(cancel()));
+	connect(mTemplatesWindow, SIGNAL(applyButtonClicked()), this, SLOT(saveEdges()));
 
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
@@ -76,6 +76,11 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 	connect(mAddBlockAction, SIGNAL(triggered()), this, SLOT(addElementsToBlock()));
 	mUmlCheckerMenu->addAction(mAddBlockAction);
 
+	mAddEdgesAction = new QAction(tr("Add Edges"), nullptr);
+	connect(mAddEdgesAction, SIGNAL(triggered()), this, SLOT(addElementsToEdge()));
+	mUmlCheckerMenu->addAction(mAddEdgesAction);
+
+
 	mSavePerfectSolution = new QAction(tr("Save Perfect Solution"), nullptr);
 	connect(mSavePerfectSolution, SIGNAL(triggered()), this, SLOT(savePerfectSolution()));
 	mUmlCheckerMenu->addAction(mSavePerfectSolution);
@@ -99,8 +104,10 @@ void UmlCheckerPlugin::save()
 	mUmlCheckerPerfectSolution->saveOptionsForBlock(elements);
 }
 
-void UmlCheckerPlugin::cancel()
+void UmlCheckerPlugin::saveEdges()
 {
+	const QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
+	mUmlCheckerPerfectSolution->saveOptionsForEdge(elements);
 }
 
 void UmlCheckerPlugin::saveTemplate()
@@ -118,6 +125,16 @@ void UmlCheckerPlugin::addElementsToBlock()
 	mTemplatesWindow->setBlockName(blockName);
 	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
 	openTemplatesWindow(tempDirPath);
+}
+
+void UmlCheckerPlugin::addElementsToEdge()
+{
+	const QString edgeName = QInputDialog::getText(nullptr, tr("enter edge name"), tr("enter edge name"));
+	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/edge/";
+	mTemplatesWindow->setBlockName(edgeName);
+
+	openTemplatesWindow(tempDirPath);
+
 }
 
 void UmlCheckerPlugin::openTemplatesWindow(const QString &name)

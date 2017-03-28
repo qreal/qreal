@@ -42,15 +42,27 @@ void UmlCheckerPerfectSolution::addElementsToBlock(const QString &blockName)
 	saveAll();
 }
 
-//TODO
 void UmlCheckerPerfectSolution::saveOptionsForEdge(const QPair<QString, QStringList> &elements)
 {
-	IdList activeElements = mMainWindowIFace->selectedElementsOnActiveDiagram();
-	for (Id &id : activeElements) {
-		const Id from = mPerfectRepoApi->from(id);
-		const Id to = mPerfectRepoApi->to(id);
-		const QString blockFrom = mPerfectRepoApi->property(from, "blockName").toString();
-		const QString blockTo = mPerfectRepoApi->property(to, "blockName").toString();
+	QString fileName = mLocationDirPath + "edges/" + elements.first + ".txt";
+	QFile file(fileName);
+	if (file.open(QIODevice::ReadWrite)) {
+		IdList activeElements = mMainWindowIFace->selectedElementsOnActiveDiagram();
+		QTextStream stream(&file);
+
+		for (Id &id : activeElements) {
+			const Id from = mPerfectRepoApi->from(id);
+			const Id to = mPerfectRepoApi->to(id);
+			const QString blockFrom = mPerfectRepoApi->property(from, "blockName").toString();
+			const QString blockTo = mPerfectRepoApi->property(to, "blockName").toString();
+			stream << blockFrom << endl;
+			stream << blockTo << endl;
+			for (QString element : elements.second) {
+				element.chop(4);
+				stream << element << endl;
+			}
+		}
+
 	}
 }
 

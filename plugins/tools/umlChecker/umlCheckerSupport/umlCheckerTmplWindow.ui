@@ -70,7 +70,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QPushButton" name="cancelButton">
+  <widget class="QPushButton" name="saveEdgesButton">
    <property name="geometry">
     <rect>
      <x>490</x>
@@ -80,7 +80,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Cancel</string>
+    <string>Save Edges</string>
    </property>
   </widget>
   <widget class="QPushButton" name="addToCollection">

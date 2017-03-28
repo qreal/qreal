@@ -57,6 +57,7 @@ private:
 	QString mPathToOrdinary;
 
 	QStringList mBlockNames;
+	QStringList mEdges;
 	QStringList mPerfectFileNames;
 
 	qrRepo::RepoApi *mPerfectRepoFromList;

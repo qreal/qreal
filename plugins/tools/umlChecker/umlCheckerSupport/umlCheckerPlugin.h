@@ -52,10 +52,11 @@ public:
 private slots:
 	void parseSolution();
 	void addElementsToBlock();
+	void addElementsToEdge();
 	void savePerfectSolution();
 	void openTemplatesWindow(const QString &name);
 	void save();
-	void cancel();
+	void saveEdges();
 
 	void saveTemplate();
 
@@ -71,6 +72,7 @@ private:
 	QAction *mSavePerfectSolution;
 	QAction *mParseAction;
 	QAction *mAddBlockAction;
+	QAction *mAddEdgesAction;
 	QAction *mSaveTemplate;
 
 	QAction *mOpenTemplatesWindowAction;

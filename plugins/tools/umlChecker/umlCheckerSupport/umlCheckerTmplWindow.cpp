@@ -24,10 +24,10 @@ UmlCheckerTmplWindow::UmlCheckerTmplWindow(QWidget *parent)
 {
 	mUi->setupUi(this);
 	mUi->saveButton->setEnabled(true);
-	mUi->cancelButton->setEnabled(true);
+	mUi->saveEdgesButton->setEnabled(true);
 
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
-	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
+	connect(mUi->saveEdgesButton, SIGNAL(clicked()), this, SLOT(applyButtonActivate()));
 	connect(mUi->addToCollection, SIGNAL(clicked()), this, SLOT(addToCollection()));
 	connect(mUi->blockList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
 
