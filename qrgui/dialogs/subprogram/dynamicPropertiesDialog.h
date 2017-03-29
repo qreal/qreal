@@ -54,6 +54,7 @@ private:
 	void init();
 	QString tryToSave() const;
 	void addLabel(const QString &name, const QString &type, const QString &value);
+	QString defaultLabelValue(const QString &type);
 
 	Ui::DynamicPropertiesDialog *mUi;
 	ShapePropertyWidget *mShapeWidget;

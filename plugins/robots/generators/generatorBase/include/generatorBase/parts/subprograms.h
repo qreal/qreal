@@ -25,6 +25,10 @@
 #include "generatorBase/templateParametrizedEntity.h"
 #include "generatorBase/simpleGenerators/binding.h"
 
+namespace qrtext {
+class LanguageToolboxInterface;
+}
+
 namespace generatorBase {
 
 class ControlFlowGeneratorBase;
@@ -50,7 +54,9 @@ public:
 	Subprograms(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, const QStringList &pathsToTemplates
-			, const simple::Binding::ConverterInterface *nameNormalizer);
+			, qrtext::LanguageToolboxInterface &luaToolbox
+			, const simple::Binding::ConverterInterface *nameNormalizer
+			, const simple::Binding::ConverterInterface *typeConverter);
 
 	~Subprograms() override;
 
@@ -86,7 +92,9 @@ private:
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
+	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	const simple::Binding::ConverterInterface *mNameNormalizer;  // Takes ownership
+	const simple::Binding::ConverterInterface *mTypeConverter;  // Takes ownership
 
 	/// Stores all found by generator diagrams with subprograms implementation.
 	/// Bool value means if key diagram was already processed and generated into
