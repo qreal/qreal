@@ -15,6 +15,8 @@
 #pragma once
 
 #include <QtWidgets/QDockWidget>
+#include <QtCore/QQueue>
+#include <QtCore/QTimer>
 
 #include "qrutils/utilsDeclSpec.h"
 
@@ -43,6 +45,8 @@ public slots:
 
 private:
 	QPlainTextEdit *mOutput;  // Takes ownership
+	QTimer mTimer;
+	QQueue<QString> mMsgQueue;
 };
 
 }

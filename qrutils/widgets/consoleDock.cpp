@@ -16,8 +16,13 @@
 
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QScrollBar>
+#include <QtWidgets/QMenu>
+#include <QtWidgets/QAction>
 
 using namespace qReal::ui;
+
+static const int updateBatchSize = 200;
+static const int defaultUpdateInterval = 50; // ms
 
 ConsoleDock::ConsoleDock(const QString &title, QWidget *parent)
 	: QDockWidget(title, parent)
@@ -25,8 +30,33 @@ ConsoleDock::ConsoleDock(const QString &title, QWidget *parent)
 {
 	setWidget(mOutput);
 	mOutput->setReadOnly(false);
+	mOutput->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(mOutput, &QPlainTextEdit::customContextMenuRequested, this, [&](const QPoint &pos){
+		QMenu *menu = mOutput->createStandardContextMenu();
+		QAction *resetAction = menu->addAction(tr("Reset shell"));
+		connect(resetAction, &QAction::triggered, this, [&](bool){
+			mTimer.stop(); // same as clear() but doesn't hide
+			mMsgQueue.clear();
+			mOutput->clear();
+		});
+		menu->exec(mapToGlobal(pos));
+		delete menu;
+	});
 
 	setObjectName("consoleDockContents");
+	connect(&mTimer, &QTimer::timeout, this, [&](){
+		int i = 0;
+		QString res;
+		while (i++ < updateBatchSize && !mMsgQueue.isEmpty()) {
+			res += mMsgQueue.dequeue() + '\n';
+		}
+		mOutput->appendPlainText(res);
+		mOutput->verticalScrollBar()->setValue(mOutput->verticalScrollBar()->maximum());
+		show();
+		if (mMsgQueue.isEmpty()) {
+			mTimer.stop();
+		}
+	});
 }
 
 bool ConsoleDock::isEmpty() const
@@ -36,13 +66,17 @@ bool ConsoleDock::isEmpty() const
 
 void ConsoleDock::print(const QString &text)
 {
-	mOutput->appendPlainText(text);
-	mOutput->verticalScrollBar()->setValue(mOutput->verticalScrollBar()->maximum());
-	show();
+	mMsgQueue.enqueue(text);
+	if (!mTimer.isActive()) {
+		// Maybe show text here to reduce latency a bit
+		mTimer.start(defaultUpdateInterval);
+	}
 }
 
 void ConsoleDock::clear()
 {
+	mTimer.stop();
+	mMsgQueue.clear();
 	mOutput->clear();
 	hide();
 }
