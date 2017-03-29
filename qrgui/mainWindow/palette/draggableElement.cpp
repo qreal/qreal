@@ -27,6 +27,7 @@
 #include <qrkernel/definitions.h>
 
 #include <qrgui/models/models.h>
+#include <qrgui/models/commands/removeElementsCommand.h>
 
 #include "mainWindow/mainWindow.h"
 #include "mainWindow/palette/paletteTree.h"
@@ -357,6 +358,18 @@ void DraggableElement::mousePressEvent(QMouseEvent *event)
 				connect(changePropertiesAction, &QAction::triggered, this
 						, &DraggableElement::changeDynamicPropertiesPaletteActionTriggered);
 				changePropertiesAction->setData(explosionTarget().toVariant());
+
+				QAction * const deleteElementAction = menu->addAction(tr("Delete"));
+				auto removeElement = [&](){
+					auto localRemoveElementsCommand = new commands::RemoveElementsCommand(mMainWindow.models());
+					mMainWindow.controller()->executeGlobal(localRemoveElementsCommand->withLogicalItemToDelete(
+							mData.explosionTarget()));
+				};
+
+				connect(deleteElementAction, &QAction::triggered
+						, this
+						, removeElement
+						, Qt::QueuedConnection);
 			}
 
 			menu->exec(QCursor::pos());
