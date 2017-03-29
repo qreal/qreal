@@ -208,7 +208,9 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		if (!codeFile.open(QFile::WriteOnly | QFile::Truncate)) {
 			return;
 		} // todo: check the result bool
-		QTextStream(&codeFile) << code;
+		QTextStream outStream(&codeFile);
+		outStream.setCodec("UTF-8");
+		outStream << code;
 		codeFile.close();
 		mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
 	});
