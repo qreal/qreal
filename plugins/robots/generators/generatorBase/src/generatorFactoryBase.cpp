@@ -130,7 +130,7 @@ void GeneratorFactoryBase::initVariables()
 void GeneratorFactoryBase::initSubprograms()
 {
 	mSubprograms = new parts::Subprograms(mRepo, mErrorReporter
-			, pathsToTemplates(), nameNormalizerConverter());
+			, pathsToTemplates(), mLuaTranslator.toolbox(), nameNormalizerConverter(), typeConverter());
 }
 
 void GeneratorFactoryBase::initEngines()

@@ -14,6 +14,8 @@
 
 #include <QtXml/QDomDocument>
 
+#include <qrtext/lua/luaToolbox.h>
+
 #include "generatorBase/parts/subprograms.h"
 #include "src/readableControlFlowGenerator.h"
 
@@ -23,18 +25,23 @@ using namespace qReal;
 Subprograms::Subprograms(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, const QStringList &pathsToTemplates
+		, qrtext::LanguageToolboxInterface &luaToolbox
 		, const simple::Binding::ConverterInterface *nameNormalizer
+		, const simple::Binding::ConverterInterface *typeConverter
 		)
 	: TemplateParametrizedEntity(pathsToTemplates)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
+	, mLuaToolbox(luaToolbox)
 	, mNameNormalizer(nameNormalizer)
+	, mTypeConverter(typeConverter)
 {
 }
 
 Subprograms::~Subprograms()
 {
 	delete mNameNormalizer;
+	delete mTypeConverter;
 }
 
 QString Subprograms::forwardDeclarations() const
@@ -80,6 +87,21 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 		const QString identifier = mNameNormalizer->convert(rawIdentifier);
 		if (!checkIdentifier(identifier, rawIdentifier)) {
 			return GenerationResult::fatalError;
+		}
+
+		const QString currentDynamicLabelsString = mRepo.stringProperty(toGen, "labels");
+		if (!currentDynamicLabelsString.isEmpty()) {
+			QDomDocument currentDynamicLabels;
+			currentDynamicLabels.setContent(currentDynamicLabelsString);
+
+			for (QDomElement element
+					= currentDynamicLabels.firstChildElement("labels").firstChildElement("label")
+					; !element.isNull()
+					; element = element.nextSiblingElement("label"))
+			{
+				mLuaToolbox.interpret(QString("%1=%2")
+						.arg(mNameNormalizer->convert(element.attribute("text"))).arg(element.attribute("value")));
+			}
 		}
 
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
@@ -149,14 +171,21 @@ QString Subprograms::readSubprogramSignature(const Id &id, const QString &pathTo
 				; !element.isNull()
 				; element = element.nextSiblingElement("label"))
 		{
-			QString argument = argumentFormat;
-			argument.replace("@@TYPE@@", element.attribute("type"));
+			const QString type = element.attribute("type");
+			QString argument = readTemplateIfExists(QString("subprograms/%1SubprogramArgument.t").arg(type)
+					, argumentFormat);
+			argument.replace("@@TYPE@@", mTypeConverter->convert(type));
 			argument.replace("@@NAME@@", mNameNormalizer->convert(element.attribute("text")));
 			argumentsList << argument;
 		}
 	}
 
-	QString arguments = argumentsList.join(readTemplate("luaPrinting/argumentsSeparator.t"));
+	const QString fallBackResult = "FileNotExist";
+	QString argumentsSeparator = readTemplateIfExists("subprograms/declarationArgumentsSeparator.t", fallBackResult);
+	argumentsSeparator = argumentsSeparator == fallBackResult
+			? readTemplate("luaPrinting/argumentsSeparator.t")
+			: argumentsSeparator;
+	QString arguments = argumentsList.join(argumentsSeparator);
 	return signatureWithName.replace("@@ARGUMENTS@@", arguments);
 }
 

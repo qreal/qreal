@@ -127,6 +127,23 @@ void DynamicPropertiesDialog::addLabelButtonClicked()
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
 }
 
+QString DynamicPropertiesDialog::defaultLabelValue(const QString &type)
+{
+	if (type == "int") {
+		return "0";
+	}
+
+	if (type == "string") {
+		return "\"\"";
+	}
+
+	if (type == "bool") {
+		return "true";
+	}
+
+	return QString();
+}
+
 void DynamicPropertiesDialog::saveButtonClicked()
 {
 	const QString error = tryToSave();
@@ -190,7 +207,7 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		);
 
 		label.setAttribute("type", type);
-		label.setAttribute("value", value);
+		label.setAttribute("value", value.trimmed().isEmpty() ? defaultLabelValue(type) : value);
 		label.setAttribute("text", name);
 		labels.appendChild(label);
 
