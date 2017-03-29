@@ -17,6 +17,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/platformInfo.h>
 #include <qrutils/widgets/consoleDock.h>
+#include <qrutils/outFile.h>
 #include <kitBase/robotModel/portInfo.h>
 #include <twoDModel/engine/twoDModelEngineInterface.h>
 #include <twoDModel/engine/twoDModelGuiFacade.h>
@@ -204,15 +205,13 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		}
 		QFileInfo codeDir(path);
 		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
-		QFile codeFile(codePath.filePath());
-		if (!codeFile.open(QFile::WriteOnly | QFile::Truncate)) {
-			return;
-		} // todo: check the result bool
-		QTextStream outStream(&codeFile);
-		outStream.setCodec("UTF-8");
-		outStream << code;
-		codeFile.close();
-		mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
+		bool success = false;
+		utils::OutFile out(codePath.filePath(), &success);
+		if (success) {
+			out() << code;
+			out.flush();
+			mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
+		}
 	});
 
 	sync();
