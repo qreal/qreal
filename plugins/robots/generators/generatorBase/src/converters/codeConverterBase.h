@@ -45,7 +45,7 @@ protected:
 	lua::LuaProcessor &mLuaTranslator;
 	const qReal::Id mId;
 	const QString mPropertyName;
-	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // takes ownership;
+	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership;
 };
 
 }

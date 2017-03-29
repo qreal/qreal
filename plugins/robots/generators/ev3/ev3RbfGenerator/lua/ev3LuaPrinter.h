@@ -200,7 +200,7 @@ private:
 	qReal::Id mId;
 	int mTableInitializersCount = -1;
 	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
-	// hasn't takes ownership
+	// Doesn't takes ownership
 	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;
 	generatorBase::lua::ReservedFunctionsConverter mReservedFunctionsConverter;
 };
