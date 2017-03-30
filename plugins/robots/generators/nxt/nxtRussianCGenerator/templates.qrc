@@ -190,5 +190,6 @@
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
         <file>templates/variables/randomInitialization.t</file>
+        <file>templates/subprograms/subprogramArgument.t</file>
     </qresource>
 </RCC>

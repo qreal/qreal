@@ -125,9 +125,9 @@ void Exploser::handleRemoveCommand(const QMap<Id, IdList> &targetAndSourceList, 
 
 		const Id targetType = target.type();
 		const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(target);
-		foreach (const Id &incoming, incomingExplosions) {
+		for (const Id &incoming : incomingExplosions) {
 			const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
-			foreach (const Explosion *explosion, explosions) {
+			for (const Explosion *explosion : explosions) {
 				if (explosion->target().typeId() == targetType && !explosion->requiresImmediateLinkage()) {
 					command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, target, false));
 				}

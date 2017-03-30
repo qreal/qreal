@@ -13,7 +13,7 @@
 # limitations under the License.
 
 TEMPLATE = lib
-
+QT += xml
 TARGET = robots-generator-base
 
 include(../../../../global.pri)

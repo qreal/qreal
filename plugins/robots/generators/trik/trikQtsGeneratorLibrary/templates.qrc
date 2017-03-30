@@ -222,5 +222,6 @@
         <file>templates/buttons/PowerButton.t</file>
         <file>templates/buttons/RightButton.t</file>
         <file>templates/buttons/UpButton.t</file>
+        <file>templates/subprograms/subprogramArgument.t</file>
     </qresource>
 </RCC>

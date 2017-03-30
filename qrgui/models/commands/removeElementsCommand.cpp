@@ -55,6 +55,7 @@ RemoveElementsCommand *RemoveElementsCommand::withLogicalItemToDelete(const qRea
 	appendHangingEdges(nodes, edges);
 
 	// ElementInfos must be given into implementation in reverse order (in order they will be created during undo).
+	mExploser.handleRemoveCommand(handleExplosions(nodes, edges), this);
 	mImpl.setElements(nodes + edges);
 	return this;
 }
@@ -63,19 +64,20 @@ QMap<qReal::Id, qReal::IdList> RemoveElementsCommand::handleExplosions(QList<Ele
 		, QList<ElementInfo> &edges)
 {
 	QMap<qReal::Id, qReal::IdList> idListWithExplosionTarget;
-
-	auto traverse = [&](const QList<ElementInfo> &list){
-		for (const ElementInfo &elementInfo : list) {
-			const Id localOutgoingExplosionTarget =
-					mLogicalApi.logicalRepoApi().outgoingExplosion(elementInfo.logicalId());
-			if (!localOutgoingExplosionTarget.isNull()) {
-				idListWithExplosionTarget[localOutgoingExplosionTarget].append(elementInfo.logicalId());
-			}
+	for (const ElementInfo &elementInfo : nodes) {
+		const IdList incomingExplosions = mLogicalApi.logicalRepoApi().incomingExplosions(elementInfo.logicalId());
+		if (!incomingExplosions.isEmpty()) {
+			idListWithExplosionTarget[elementInfo.logicalId()] = incomingExplosions;
 		}
-	};
+	}
 
-	traverse(nodes);
-	traverse(edges);
+	for (const ElementInfo &elementInfo : edges) {
+		const Id target = mLogicalApi.logicalRepoApi().to(elementInfo.logicalId());
+		if (!mLogicalApi.logicalRepoApi().incomingExplosions(target).isEmpty()) {
+			idListWithExplosionTarget[target] << elementInfo.logicalId();
+		}
+	}
+
 	return idListWithExplosionTarget;
 }
 
@@ -111,9 +113,9 @@ void RemoveElementsCommand::appendLogicalDelete(const Id &id, QList<ElementInfo>
 		appendGraphicalDelete(graphicalId, nodes, edges);
 	}
 
-//	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
-//		appendExplosionsCommands(id, nodes, edges);
-//	}
+	if (graphicalIds.size() != 1) { // else it was done in graphicalDeleteCommand()
+		appendExplosionsCommands(id, nodes, edges);
+	}
 }
 
 void RemoveElementsCommand::appendGraphicalDelete(const Id &id, QList<ElementInfo> &nodes, QList<ElementInfo> &edges)
@@ -135,9 +137,9 @@ void RemoveElementsCommand::appendGraphicalDelete(const Id &id, QList<ElementInf
 		appendGraphicalDelete(child, nodes, edges);
 	}
 
-//	if (mGraphicalApi.graphicalIdsByLogicalId(logicalId).size() == 1) {
-//		appendExplosionsCommands(logicalId, nodes, edges);
-//	}
+	if (mGraphicalApi.graphicalIdsByLogicalId(logicalId).size() == 1) {
+		appendExplosionsCommands(logicalId, nodes, edges);
+	}
 }
 
 const QList<qReal::ElementInfo> &RemoveElementsCommand::results() const

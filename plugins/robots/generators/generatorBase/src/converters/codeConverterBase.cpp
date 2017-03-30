@@ -34,3 +34,8 @@ QString CodeConverterBase::convert(const QString &luaCode) const
 {
 	return mLuaTranslator.translate(luaCode, mId, mPropertyName, mReservedVariablesConverter);
 }
+
+CodeConverterBase::~CodeConverterBase()
+{
+	delete mReservedVariablesConverter;
+}

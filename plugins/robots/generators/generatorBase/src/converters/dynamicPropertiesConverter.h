@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2017 Grigory Zimin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,28 +24,23 @@ class LuaProcessor;
 
 namespace converters {
 
-/// A base class for all converters processing code. Prints the given lua code to the
-/// target language replacing reserved variables with code specified in templates from
-/// "sensors" folder, and function invocations with code specified in templates from
-/// "functions" folder.
-class CodeConverterBase : public simple::Binding::ConverterInterface
+class DynamicPropertiesConverter :  public simple::Binding::ConverterInterface, public TemplateParametrizedEntity
 {
 public:
-	/// Takes ownership on @arg reservedVariablesConverter.
-	CodeConverterBase(lua::LuaProcessor &luaTranslator
+	DynamicPropertiesConverter(lua::LuaProcessor &luaTranslator
 			, const qReal::Id &id
-			, const QString &propertyName
-			, simple::Binding::ConverterInterface *reservedVariablesConverter);
+			, const QStringList &pathsToTemplates
+			, simple::Binding::ConverterInterface *reservedVariablesConverter
+	);
 
-	QString convert(const QString &luaCode) const override;
+	~DynamicPropertiesConverter() override;
 
-	~CodeConverterBase() override;
-
-protected:
+	QString convert(const QString &properties) const override;
+private:
 	lua::LuaProcessor &mLuaTranslator;
 	const qReal::Id mId;
 	const QString mPropertyName;
-	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership;
+	simple::Binding::ConverterInterface *mReservedVariablesConverter; // has ownership
 };
 
 }

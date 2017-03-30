@@ -115,7 +115,7 @@ QString DynamicPropertiesDialog::generateShapeXml(const QString &foreground, con
 
 void DynamicPropertiesDialog::addLabelButtonClicked()
 {
-	QPushButton *button = new QPushButton("Delete", this);
+	QPushButton *button = new QPushButton(tr("Delete"), this);
 	const int rowCount = mUi->labels->rowCount();
 	mUi->labels->setRowCount(rowCount + 1);
 	mUi->labels->setCellWidget(rowCount, 3, button);
@@ -125,6 +125,23 @@ void DynamicPropertiesDialog::addLabelButtonClicked()
 	types->addItems({"int", "bool", "string"});
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
+}
+
+QString DynamicPropertiesDialog::defaultLabelValue(const QString &type) const
+{
+	if (type == "int") {
+		return "0";
+	}
+
+	if (type == "string") {
+		return "\"\"";
+	}
+
+	if (type == "bool") {
+		return "true";
+	}
+
+	return QString();
 }
 
 void DynamicPropertiesDialog::saveButtonClicked()
@@ -190,7 +207,7 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		);
 
 		label.setAttribute("type", type);
-		label.setAttribute("value", value);
+		label.setAttribute("value", value.trimmed().isEmpty() ? defaultLabelValue(type) : value);
 		label.setAttribute("text", name);
 		labels.appendChild(label);
 

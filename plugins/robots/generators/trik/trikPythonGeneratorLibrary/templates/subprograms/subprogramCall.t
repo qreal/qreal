@@ -1,1 +1,1 @@
-self.@@NAME@@()
+self.@@NAME@@(@@ARGUMENTS@@)
