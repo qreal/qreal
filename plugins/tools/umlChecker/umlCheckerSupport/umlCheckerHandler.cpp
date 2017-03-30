@@ -114,19 +114,17 @@ QStringList UmlCheckerHandler::getOptionsForBlock(const QString &blockFile)
 
 bool UmlCheckerHandler::matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks)
 {
-	IdList changeblePerfectLinks = perfectLinks;
-	IdList changebleOrdinaryLinks = ordinaryLinks;
-
-	for (const Id &perfectLink : changeblePerfectLinks) {
-		for (const Id &ordinaryLink : changebleOrdinaryLinks) {
-			if (perfectLink.element() == ordinaryLink.element()) {
-				changeblePerfectLinks.removeOne(perfectLink);
-				changebleOrdinaryLinks.removeOne(ordinaryLink);
+	IdList changeblePerfectLinks;
+	for (const Id &perfectLink : perfectLinks) {
+		for (const Id &ordinaryLink : ordinaryLinks) {
+			if (perfectLink.element() == ordinaryLink.element() && !changeblePerfectLinks.contains(perfectLink)) {
+				changeblePerfectLinks.append(perfectLink);
 			}
 		}
 	}
 
-	return changeblePerfectLinks.count() == 0 && changebleOrdinaryLinks.count() == 0;
+
+	return changeblePerfectLinks.count() == perfectLinks.count();
 }
 
 
