@@ -44,6 +44,11 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
+bool IfNode::isSimple()
+{
+	return mIsSimple;
+}
+
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	if (mIsSimple) {

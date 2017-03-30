@@ -21,6 +21,7 @@
 
 #include "rules/ifRules/ifWithBothUnvisitedRule.h"
 #include "rules/ifRules/ifWithOneVisitedRule.h"
+#include "rules/ifRules/ifWithBothVisitedRule.h"
 
 #include "rules/loopRules/loopWithBothUnvisitedRule.h"
 #include "rules/loopRules/loopWithIterationVisitedRule.h"
@@ -114,8 +115,10 @@ void ReadableControlFlowGenerator::visitConditional(const Id &id
 			, branches.first, branches.second);
 	IfWithOneVisitedRule oneVisitedRule(mSemanticTree, id
 			, branches.first, branches.second);
+	IfWithBothVisitedRule bothVisitedRule(mSemanticTree, id
+			, branches.first, branches.second);
 
-	applyFirstPossible(id, { &oneVisitedRule, &bothUnvisitedRule }, false);
+	applyFirstPossible(id, { &oneVisitedRule, &bothUnvisitedRule, &bothVisitedRule }, false);
 }
 
 void ReadableControlFlowGenerator::visitLoop(const Id &id
