@@ -7,6 +7,8 @@ git:
 language: cpp
 compiler: gcc
 
+cache: ccache
+
 env:
   - CONFIG=debug   PROJECT=qreal           VERA=true  TESTS=true
   - CONFIG=release PROJECT=qreal           VERA=false TESTS=true
