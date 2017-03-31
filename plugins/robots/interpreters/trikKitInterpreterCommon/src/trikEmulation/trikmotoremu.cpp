@@ -33,7 +33,7 @@ void trik::TrikMotorEmu::powerOff()
 	mMotor->off();
 }
 
-void trik::TrikMotorEmu::forceBreak(int)
+void trik::TrikMotorEmu::brake(int)
 {
 	powerOff(); // should be the same for 2D model, since there is no inertia
 }
