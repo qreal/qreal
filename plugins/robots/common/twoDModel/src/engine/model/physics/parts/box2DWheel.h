@@ -28,7 +28,7 @@ class box2DWheel
 {
 public:
 	b2Body* mBody;
-	const float maxLateralImpulse = 2.5f;
+	const float maxLateralImpulse = 1.5f;
 
 	box2DWheel(b2World* world
 			   , const float32 wheelWidth

@@ -231,7 +231,7 @@ void Model::resetPhysics()
 {
 	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
 //    if (mSettings.realisticPhysics()) {
-//        mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel, mRobotModels, mTimeline);
+		//mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel, mRobotModels, mTimeline);
 //    } else {
 //        mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
 //    }

@@ -49,10 +49,16 @@ protected:
 	void itemRemoved(items::SolidItem * const item) override;
 
 private:
-	parts::box2DWheel *wheel(const QPointF &coords) const;
+	parts::box2DWheel *wheel(const QPointF &coords
+							 , twoDModel::model::RobotModel * const robot) const;
 
 	qreal mPixelsInCm;
 	QScopedPointer<b2World> mWorld;
+
+	parts::box2DRobot *robot();
+	parts::box2DWheel *leftWheel();
+	parts::box2DWheel *rightWheel();
+
 	QMap<RobotModel *, parts::box2DRobot *> mRobotBodies;  // Takes ownership on b2Body instances
 	QMap<RobotModel *, parts::box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
