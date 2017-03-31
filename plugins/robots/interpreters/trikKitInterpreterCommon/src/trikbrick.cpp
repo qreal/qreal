@@ -31,13 +31,17 @@
 
 using namespace trik;
 
-static const int updateInterval = 10;
 TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
-	: mTwoDRobotModel(model), mDisplay(model), mKeys(model), mIsWaitingEnabled(true)
+	: mTwoDRobotModel(model)
+	, mDisplay(model)
+	, mKeys(model)
+	, mIsWaitingEnabled(true)
+	, mSensorUpdater(model->timeline().produceTimer())
 {
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
-	mSensorUpdater.setInterval(updateInterval);
-	connect(&mSensorUpdater, &QTimer::timeout, [model](){
+	mSensorUpdater->setRepeatable(true);
+	mSensorUpdater->setInterval(model->updateIntervalForInterpretation()); // seems to be x2 of timeline tick
+	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout, [model](){
 		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
 	});
 
@@ -69,8 +73,7 @@ void TrikBrick::reset()
 	}
 	qDeleteAll(mTimers);
 	mTimers.clear();
-	QMetaObject::invokeMethod(&mSensorUpdater, "stop"); // failproof against timer manipulation in another thread
-	//mSensorUpdater.stop(); /// maybe needed in other places too.
+	QMetaObject::invokeMethod(mSensorUpdater.data(), "stop"); // failproof against timer manipulation in another thread
 }
 
 void TrikBrick::printToShell(const QString &msg)
@@ -102,8 +105,7 @@ void TrikBrick::init()
 	mEncoders.clear();
 	mKeys.init();
 	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
-	//gyroscope(); // another hack
-	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
+	QMetaObject::invokeMethod(mSensorUpdater.data(), "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
 	mIsWaitingEnabled = true;
 }
