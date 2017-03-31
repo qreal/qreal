@@ -33,6 +33,10 @@
 #include "trikEmulation/trikaccelerometeradapter.h"
 #include "trikEmulation/trikGyroscopeAdapter.h" /// @todo: replace with forward refs
 
+namespace utils {
+class AbstractTimer;
+}
+
 namespace trik {
 
 class TrikBrick final : public trikControl::BrickInterface
@@ -88,6 +92,8 @@ public slots:
 	void wait(int milliseconds);
 	qint64 time() const;
 	QStringList readAll(const QString &path);
+	/// In trikRuntime returns QTimer, but we need timer with emulated 2D time. Hopefully this is enough
+	utils::AbstractTimer *timer(int milliseconds);
 signals:
 	void error(const QString &msg);
 	void log(const QString &msg);
@@ -116,7 +122,7 @@ private:
 	QDir mCurrentDir;
 	bool mIsExcerciseMode = false;
 	QStringList mInputs;
-
+	QVector<utils::AbstractTimer *> mTimers;
 };
 
 }
