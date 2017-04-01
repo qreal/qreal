@@ -109,7 +109,7 @@ private:
 
 	bool mIsWaitingEnabled;
 
-	QTimer mSensorUpdater;
+	QScopedPointer<utils::AbstractTimer> mSensorUpdater;
 
 	QHash<QString, TrikMotorEmu *> mMotors;
 	QHash<QString, TrikSensorEmu *> mSensors;
