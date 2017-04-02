@@ -233,7 +233,9 @@ bool UmlCheckerHandler::matchingResult()
 			const QMultiHash<QString, Id> perfectElements = getElementsFromApi(mPerfectRepoFromList);
 
 			ordinaryElements = intermediateOrdElems;
-			blockName.second.chop(4);
+			if (blockName.second.contains(".txt")) {
+				blockName.second.chop(4);
+			}
 			matchingBlock = matchingNodesInsideABlock(perfectElements, ordinaryElements, blockName.second);
 			if (matchingBlock) {
 				break;
