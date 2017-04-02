@@ -101,12 +101,14 @@ void UmlCheckerPlugin::save()
 {
 	const QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
 	mUmlCheckerPerfectSolution->saveOptionsForBlock(elements);
+	mUmlCheckerPerfectSolution->saveAll();
 }
 
 void UmlCheckerPlugin::saveEdges()
 {
 	const QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
 	mUmlCheckerPerfectSolution->saveOptionsForEdge(elements);
+	mUmlCheckerPerfectSolution->saveAll();
 }
 
 void UmlCheckerPlugin::saveTemplate()
@@ -118,7 +120,6 @@ void UmlCheckerPlugin::addElementsToBlock()
 {
 	const QString blockName = QInputDialog::getText(nullptr, tr("enter block name"), tr("enter block name"));
 
-	mUmlCheckerPerfectSolution->saveTempSolution();
 	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
 
 	mTemplatesWindow->setBlockName(blockName);
@@ -144,7 +145,7 @@ void UmlCheckerPlugin::openTemplatesWindow(const QString &name)
 
 void UmlCheckerPlugin::savePerfectSolution()
 {
-	mUmlCheckerPerfectSolution->saveAll();
+	mUmlCheckerPerfectSolution->saveTempSolution();
 }
 
 
