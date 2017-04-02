@@ -58,6 +58,7 @@ void UmlCheckerHandler::init(const QString &ordinaryPath, const QString &perfect
 		mEdges.append(edgesDir.absoluteFilePath(fileName));
 	}
 
+	mPathToOrdinary = ordinaryPath;
 	mOrdinaryRepoApi->open(ordinaryPath);
 	initEdgesVariants();
 }
@@ -190,8 +191,9 @@ void UmlCheckerHandler::researchEdge(QMultiHash<QString, Id> &residue, const IdL
 			if (mOrdinaryRepoApi->property(from, "blockName") == mOrdinaryRepoApi->property(to, "blockName")) {
 				mOrdinaryRepoApi->setProperty(id, "blockName", QVariant(mOrdinaryRepoApi->property(to, "blockName")));
 			} else {
-				const QString key = mOrdinaryRepoApi->property(from, "blockName").toString()
-						+ mOrdinaryRepoApi->property(to, "blockName").toString();
+				const QString fromBlock = mOrdinaryRepoApi->property(from, "blockName").toString();
+				const QString toBlock = mOrdinaryRepoApi->property(to, "blockName").toString();
+				const QString key = fromBlock + toBlock;
 				residue.insertMulti(key, id);
 			}
 		}
@@ -221,10 +223,27 @@ bool UmlCheckerHandler::matchingNodesInsideABlock(QMultiHash<QString, Id> perfec
 
 bool UmlCheckerHandler::matchingResult()
 {
+	QList<QPair<QString, QString>> blockNames = mBlockNames;
+	for (int i = 0; i < blockNames.size(); ++i) {
+		bool matchingRes = matchingStep(blockNames);
+		if (matchingRes) {
+			return true;
+		} else {
+			blockNames.move(0, blockNames.size() - 1);
+			clearAfterMatching();
+		}
+	}
+
+	return false;
+}
+
+bool UmlCheckerHandler::matchingStep(const QList<QPair<QString, QString>> &blockNames)
+{
 	QMultiHash<QString, Id> ordinaryElements = getElementsFromApi(mOrdinaryRepoApi);
 	QMultiHash<QString, Id> intermediateOrdElems = ordinaryElements;
 
-	for (QPair<QString, QString> blockName : mBlockNames) {
+	for (int i = 0; i < blockNames.size(); ++i) {
+		QPair<QString, QString> blockName = blockNames.value(i);
 		QStringList blocksList = getOptionsForBlock(blockName.first);
 		bool matchingBlock = false;
 
@@ -236,6 +255,7 @@ bool UmlCheckerHandler::matchingResult()
 			if (blockName.second.contains(".txt")) {
 				blockName.second.chop(4);
 			}
+
 			matchingBlock = matchingNodesInsideABlock(perfectElements, ordinaryElements, blockName.second);
 			if (matchingBlock) {
 				break;
@@ -259,7 +279,6 @@ bool UmlCheckerHandler::matchingResult()
 
 
 	bool matchExternalEdges = matchingExternalEdges(residue);
-
 	return ordinaryElements.size() == 0 && matchExternalEdges;
 }
 
@@ -274,9 +293,13 @@ bool UmlCheckerHandler::matchingExternalEdges(const QMultiHash<QString, Id> &res
 			const QString idType = id.element();
 			const QList<QPair<QString, QStringList>> edges = mEdgesVariants.values(key);
 			for (const QPair<QString, QStringList> &edgeSet : edges) {
-				if (edgeSet.second.contains(idType)) {
-					residueChangeable.remove(key, id);
+				for (const QString &type : edgeSet.second) {
+					if (type.contains(idType) && residueChangeable.contains(key, id)) {
+						residueChangeable.remove(key, id);
+						break;
+					}
 				}
+
 			}
 		}
 	}
@@ -284,11 +307,9 @@ bool UmlCheckerHandler::matchingExternalEdges(const QMultiHash<QString, Id> &res
 	return residueChangeable.size() == 0;
 }
 
-
-
-void UmlCheckerHandler::removeBlockProperties(const QString &blockName)
+void UmlCheckerHandler::clearAfterMatching()
 {
-
+	mOrdinaryRepoApi->open(mPathToOrdinary);
 }
 
 QMultiHash<QString, Id> UmlCheckerHandler::getElementsFromApi(qrRepo::RepoApi *repoApi) const

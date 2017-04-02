@@ -35,8 +35,9 @@ public:
 	void researchEdge(QMultiHash<QString, Id> &residue, const IdList &values);
 
 	bool matchingResult();
+	bool matchingStep(const QList<QPair<QString, QString> > &blockNames);
 
-	void removeBlockProperties(const QString &blockName);
+	void clearAfterMatching();
 
 	bool matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks);
 
