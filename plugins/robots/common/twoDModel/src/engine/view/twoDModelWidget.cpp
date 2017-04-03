@@ -131,9 +131,13 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	/// @todo: make some values editable
 	mUi->detailsTab->setParamsSettings(mUi->physicsParamsFrame);
 	mUi->wheelDiamInCm->setValue(robotWheelDiameterInCm);
+	mUi->wheelDiamInCm->setButtonSymbols(QAbstractSpinBox::NoButtons);
 	mUi->robotHeightInCm->setValue(robotHeight / pixelsInCm); // Not sure if correct
+	mUi->robotHeightInCm->setButtonSymbols(QAbstractSpinBox::NoButtons);
 	mUi->robotWidthInCm->setValue(robotWidth / pixelsInCm);
+	mUi->robotWidthInCm->setButtonSymbols(QAbstractSpinBox::NoButtons);
 	mUi->robotMassInGr->setValue(robotMass);
+	mUi->robotMassInGr->setButtonSymbols(QAbstractSpinBox::NoButtons);
 }
 
 TwoDModelWidget::~TwoDModelWidget()
