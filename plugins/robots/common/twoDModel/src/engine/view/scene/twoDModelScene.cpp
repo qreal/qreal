@@ -136,7 +136,9 @@ void TwoDModelScene::onRobotAdd(model::RobotModel *robotModel)
 
 	robotItem->setEditable(!mRobotReadOnly);
 
+	robotItem->setZValue(robotZPoint);
 	addItem(robotItem);
+	robotItem->robotModel().startPositionMarker()->setZValue(robotZPoint - lowPrecision);
 	addItem(robotItem->robotModel().startPositionMarker());
 	subscribeItem(static_cast<AbstractItem *>(robotModel->startPositionMarker()));
 
