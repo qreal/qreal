@@ -619,6 +619,7 @@ void TwoDModelWidget::setController(ControllerInterface &controller)
 
 	connect(mRobotItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
 	connect(mColorFieldItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
+	connect(mImageItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
 }
 
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
