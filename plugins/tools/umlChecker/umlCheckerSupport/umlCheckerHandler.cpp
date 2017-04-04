@@ -277,9 +277,10 @@ bool UmlCheckerHandler::matchingStep(const QList<QPair<QString, QString>> &block
 		ordinaryElements.remove(edgeKey);
 	}
 
+	bool externalEquals = residue.size() == mEdgesVariants.size();
 
 	bool matchExternalEdges = matchingExternalEdges(residue);
-	return ordinaryElements.size() == 0 && matchExternalEdges;
+	return ordinaryElements.size() == 0 && matchExternalEdges && externalEquals;
 }
 
 
