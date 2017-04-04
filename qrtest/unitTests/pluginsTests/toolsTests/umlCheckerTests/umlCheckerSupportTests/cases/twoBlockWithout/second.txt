@@ -1,0 +1,3 @@
+/home/julia/qreal/qreal/plugins/tools/umlChecker/test/twoClassesWithAggr.qrs
+/home/julia/qreal/qreal/plugins/tools/umlChecker/test/twoClassesWithAssot.qrs
+/home/julia/qreal/qreal/plugins/tools/umlChecker/test/twoClassesWithComp.qrs

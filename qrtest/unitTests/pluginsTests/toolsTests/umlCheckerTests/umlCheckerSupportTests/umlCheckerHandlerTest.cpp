@@ -106,3 +106,47 @@ TEST_F(UmlCheckerHandlerTest, threeComplexBlocksWithEdges) {
 
 	ASSERT_TRUE(matchResult);
 }
+
+TEST_F(UmlCheckerHandlerTest, hashTableWithHashFunctions1Association) {
+	const QString task = "hashTableWithHashFunctions1/";
+
+	openRepositories(mRepositoriesPath + task
+			, mRepositoriesPath + task + "hashTableWithHashFunctions1.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_TRUE(matchResult);
+}
+
+TEST_F(UmlCheckerHandlerTest, hashTableWithHashFunctions2Aggregation) {
+	const QString task = "hashTableWithHashFunctions2/";
+
+	openRepositories(mRepositoriesPath + task
+			, mRepositoriesPath + task + "hashTableWithHashFunctions2.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_TRUE(matchResult);
+}
+TEST_F(UmlCheckerHandlerTest, hashTableWithHashFunctions3Composition) {
+	const QString task = "hashTableWithHashFunctions3/";
+
+	openRepositories(mRepositoriesPath + task
+			, mRepositoriesPath + task + "hashTableWithHashFunctions3.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_TRUE(matchResult);
+}
+
+
+TEST_F(UmlCheckerHandlerTest, hashTableWithHashFunctions4Generalization) {
+	const QString task = "hashTableWithHashFunctions4/";
+
+	openRepositories(mRepositoriesPath + task
+			, mRepositoriesPath + task + "hashTableWithHashFunctions4.qrs");
+
+	bool matchResult = mHandler->matchingResult();
+
+	ASSERT_FALSE(matchResult);
+}
