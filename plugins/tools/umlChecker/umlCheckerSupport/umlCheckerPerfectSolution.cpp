@@ -44,6 +44,11 @@ void UmlCheckerPerfectSolution::addElementsToBlock(const QString &blockName)
 
 void UmlCheckerPerfectSolution::saveOptionsForEdge(const QPair<QString, QStringList> &elements)
 {
+	bool exists = QDir(mLocationDirPath + "edges/").exists();
+	if (!exists) {
+		QDir().mkdir(mLocationDirPath + "edges/");
+	}
+
 	QString fileName = mLocationDirPath + "edges/" + elements.first + ".txt";
 	QFile file(fileName);
 	if (file.open(QIODevice::ReadWrite)) {
@@ -59,7 +64,9 @@ void UmlCheckerPerfectSolution::saveOptionsForEdge(const QPair<QString, QStringL
 			stream << blockTo << endl;
 			for (QString element : elements.second) {
 				element.chop(4);
-				stream << element << endl;
+				int lastIndex = element.lastIndexOf("/");
+				QString edgeValue = element.right(element.size() - lastIndex - 1);
+				stream << edgeValue << endl;
 			}
 		}
 
