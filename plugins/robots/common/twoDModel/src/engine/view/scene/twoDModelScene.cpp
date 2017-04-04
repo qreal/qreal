@@ -370,6 +370,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		if (createdItem) {
 			forReleaseResize(mouseEvent);
 		}
+
 		break;
 	}
 
@@ -765,13 +766,8 @@ void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath 
 	}
 
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged() && ((mDrawingAction == none) ||
-			(mDrawingAction == TwoDModelScene::wall && mCurrentWall == wall)))
-	{
-		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
-		if (isNeedStop) {
-			wall->setCoordinates(oldPos);
-		}
+	if ((mDrawingAction == none || (mDrawingAction == TwoDModelScene::wall && mCurrentWall == wall)) && isNeedStop) {
+		wall->setCoordinates(oldPos);
 	}
 }
 

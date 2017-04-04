@@ -24,6 +24,8 @@
 
 using namespace graphicsUtils;
 
+const qreal epsilon = 0.0000001;
+
 AbstractItem::AbstractItem(QGraphicsItem* parent)
 	: QGraphicsObject(parent)
 	, mDragState(None)
@@ -321,26 +323,34 @@ qreal AbstractItem::y2() const
 
 void AbstractItem::setX1(qreal x1)
 {
-	mX1 = x1;
-	emit x1Changed(x1);
+	if (qAbs(mX1 - x1) > epsilon) {
+		mX1 = x1;
+		emit x1Changed(x1);
+	}
 }
 
 void AbstractItem::setY1(qreal y1)
 {
-	mY1 = y1;
-	emit y1Changed(y1);
+	if (qAbs(mY1 - y1) > epsilon) {
+		mY1 = y1;
+		emit y1Changed(y1);
+	}
 }
 
 void AbstractItem::setX2(qreal x2)
 {
-	mX2 = x2;
-	emit x2Changed(x2);
+	if (qAbs(mX2 - x2) > epsilon) {
+		mX2 = x2;
+		emit x2Changed(x2);
+	}
 }
 
 void AbstractItem::setY2(qreal y2)
 {
-	mY2 = y2;
-	emit y2Changed(y2);
+	if (qAbs(mY2 - y2) > epsilon) {
+		mY2 = y2;
+		emit y2Changed(y2);
+	}
 }
 
 void AbstractItem::setXandY(QDomElement& dom, const QRectF &rect)
