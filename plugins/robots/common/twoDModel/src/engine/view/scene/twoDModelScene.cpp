@@ -387,26 +387,29 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
-	setDragMode(QGraphicsView::NoDrag);
 	const QList<QGraphicsItem *> itemsUnderCursor = items(mouseEvent->scenePos());
 	const bool isSceneClick = itemsUnderCursor.count() == 1 && itemsUnderCursor.first() == mEmptyRect;
-	if (isSceneClick && mBackgroundRect.contains(mouseEvent->scenePos().toPoint())) {
-		items::ImageItem *item = new items::ImageItem(mBackground, mBackgroundRect);
-		mBackground = model::Image();
-		mBackgroundRect = QRect();
+	if (isSceneClick && mModel.worldModel().backgroundRect().contains(mouseEvent->scenePos().toPoint())) {
+		const QGraphicsView::DragMode previousDragMode = currentDragMode();
+		setDragMode(QGraphicsView::NoDrag);
+		items::ImageItem *item = new items::ImageItem(mModel.worldModel().background()
+				, mModel.worldModel().backgroundRect());
+		mModel.worldModel().background() = model::Image();
+		mModel.worldModel().backgroundRect() = QRect();
 		mModel.worldModel().addImage(item);
 		item->setSelected(true);
-		connect(this, &TwoDModelScene::escapePressed, this, [=]() { item->setSelected(false); });
 		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {
 			if (!selected) {
-				mBackground = item->image();
-				mBackgroundRect.setLeft(item->x1() + item->x());
-				mBackgroundRect.setTop(item->y1() + item->y());
-				mBackgroundRect.setRight(item->x2() + item->x());
-				mBackgroundRect.setBottom(item->y2() + item->y());
+				mModel.worldModel().background() = item->image();
+				mModel.worldModel().backgroundRect().setLeft(item->x1() + item->x());
+				mModel.worldModel().backgroundRect().setTop(item->y1() + item->y());
+				mModel.worldModel().backgroundRect().setRight(item->x2() + item->x());
+				mModel.worldModel().backgroundRect().setBottom(item->y2() + item->y());
 				mModel.worldModel().removeImage(item);
 				update();
 			}
+
+			setDragMode(previousDragMode);
 		});
 	}
 }
@@ -504,8 +507,8 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 
 void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if (mBackground.isValid()) {
-		mBackground.draw(*painter, mBackgroundRect, currentZoom());
+	if (mModel.worldModel().background().isValid()) {
+		mModel.worldModel().background().draw(*painter, mModel.worldModel().backgroundRect(), currentZoom());
 	}
 
 	if (SettingsManager::value("2dShowGrid").toBool()) {
@@ -811,23 +814,10 @@ void TwoDModelScene::centerOnRobot(RobotItem *selectedItem)
 	}
 }
 
-model::Image TwoDModelScene::background() const
-{
-	return mBackground;
-}
-
-QRect TwoDModelScene::backgroundRect() const
-{
-	return mBackgroundRect;
-}
-
 void TwoDModelScene::setBackground(const model::Image &background, const QRect &backgroundRect)
 {
-	if (mBackground != background || mBackgroundRect != backgroundRect) {
-		mBackground = background;
-		mBackgroundRect = backgroundRect;
-		update();
-	}
+	mModel.worldModel().setBackground(background, backgroundRect);
+	update();
 }
 
 void TwoDModelScene::reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port)
