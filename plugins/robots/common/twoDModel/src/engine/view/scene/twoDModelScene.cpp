@@ -387,6 +387,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 
 void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
+	setDragMode(QGraphicsView::NoDrag);
 	const QList<QGraphicsItem *> itemsUnderCursor = items(mouseEvent->scenePos());
 	const bool isSceneClick = itemsUnderCursor.count() == 1 && itemsUnderCursor.first() == mEmptyRect;
 	if (isSceneClick && mBackgroundRect.contains(mouseEvent->scenePos().toPoint())) {
