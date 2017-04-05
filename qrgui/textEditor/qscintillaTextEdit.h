@@ -46,6 +46,9 @@ public:
 	/// Takes ownership on passed language.
 	void setCurrentLanguage(const LanguageInfo &language);
 
+	/// Save font for current editor instance.
+	void setCurrentFont(const QFont &font);
+
 	QString editorId() const override;
 	bool supportsZooming() const override;
 	bool supportsCopying() const override;
@@ -77,6 +80,7 @@ private:
 	const QPersistentModelIndex mIndex;
 	const int mRole;
 	LanguageInfo mLanguage;
+	QFont mFont;
 };
 
 }
