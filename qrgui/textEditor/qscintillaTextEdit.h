@@ -81,6 +81,7 @@ private:
 	const int mRole;
 	LanguageInfo mLanguage;
 	QFont mFont;
+	int mAverageCharWidth;
 };
 
 }

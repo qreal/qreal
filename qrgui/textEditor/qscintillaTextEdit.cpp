@@ -47,6 +47,8 @@ LanguageInfo QScintillaTextEdit::currentLanguage() const
 
 void QScintillaTextEdit::setCurrentFont(const QFont &font) {
 	mFont = font;
+	QFontMetrics metrics(mFont);
+	mAverageCharWidth = metrics.averageCharWidth();
 }
 
 void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
@@ -135,6 +137,8 @@ void QScintillaTextEdit::setDefaultSettings()
 	int id = QFontDatabase::addApplicationFont(BrandManager::fonts()->monospaceFont());
 	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
 	mFont = QFont(family);
+	QFontMetrics metrics(mFont);
+	mAverageCharWidth = metrics.averageCharWidth();
 	setFont(mFont);
 
 	// Current line highlighting
@@ -187,5 +191,6 @@ void QScintillaTextEdit::setDefaultSettings()
 
 void QScintillaTextEdit::emitTextWasModified()
 {
+	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth);
 	emit textWasModified(this);
 }
