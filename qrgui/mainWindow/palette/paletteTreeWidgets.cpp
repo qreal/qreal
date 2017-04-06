@@ -112,7 +112,7 @@ void PaletteTreeWidgets::initUserTree()
 {
 	refreshUserPalette();
 	connect(&mMainWindow->models().exploser(), &models::Exploser::explosionsSetCouldChange
-			, this, &PaletteTreeWidgets::refreshUserPalette);
+			, this, [&](){refreshUserPalette(true);});
 }
 
 void PaletteTreeWidgets::addTopItemType(const PaletteElement &data, QTreeWidget *tree)
@@ -241,7 +241,7 @@ void PaletteTreeWidgets::customizeExplosionTitles(const QString &userGroupTitle,
 	mUserGroupDescription = userGroupDescription;
 }
 
-void PaletteTreeWidgets::refreshUserPalette()
+void PaletteTreeWidgets::refreshUserPalette(bool force)
 {
 	QList<QPair<QString, QList<gui::PaletteElement>>> groups;
 	QMap<QString, QString> descriptions = { { mUserGroupTitle, mUserGroupDescription } };
@@ -274,9 +274,11 @@ void PaletteTreeWidgets::refreshUserPalette()
 	}
 
 	// This condition will filter out most of the cases.
-	if (groupElements.toSet() != mUserTree->elementsSet()) {
+	if (groupElements.toSet() != mUserTree->elementsSet() || force) {
 		mUserTree->addGroups(groups, descriptions, true, mEditorManager->friendlyName(mDiagram), true);
-	} else if (groupElements.isEmpty()) {
+	}
+
+	if (groupElements.isEmpty()) {
 		mUserTree->hide();
 	}
 }

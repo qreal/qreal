@@ -1,3 +1,17 @@
+/* Copyright 2016-2017 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QtMath>
 
 #include <trikKitInterpreterCommon/trikEmulation/trikGyroscopeAdapter.h>
@@ -32,9 +46,11 @@ static quint64 getTimeValue(trik::robotModel::twoD::TrikTwoDRobotModel * const m
 
 TrikGyroscopeAdapter::TrikGyroscopeAdapter(kitBase::robotModel::robotParts::GyroscopeSensor *gyro
 		, const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
-	: mGyro(gyro)
+	: mTimeInited(false)
+	, mGyro(gyro)
 	, mModel(model)
 	, mResult(7, 0)
+	, mQuaternion(1, 0, 0, 0)
 	, mStartTime(getTimeValue(model.data()))
 	, mLastUpdateTimeStamp(getTimeValue(model.data()))
 {
@@ -49,17 +65,18 @@ QVector<int> TrikGyroscopeAdapter::read() const
 void TrikGyroscopeAdapter::calibrate(int msec)
 {
 	Q_UNUSED(msec); // Don't wait for now. 2D model calibrates immedeatly with zero bias (at least I hope so)
+	mTimeInited = false;
 }
 
 bool TrikGyroscopeAdapter::isCalibrated() const
 {
-	return true;
+	return !mTimeInited;
 }
 
 QVector<int> TrikGyroscopeAdapter::readRawData() const
 {
 	QVector<int> result = mModel->engine()->readGyroscopeSensor();
-	result.append(static_cast<int>(getTimeValue(mModel.data()) - mLastUpdateTimeStamp));
+	result.append(convertToTrikRuntimeTime(getTimeValue(mModel.data())));
 	return result;
 }
 
@@ -67,21 +84,21 @@ void TrikGyroscopeAdapter::countTilt(const QVector<int> &oldFormat)
 {
 	const quint64 timeStamp = getTimeValue(mModel.data());
 
-	static bool timeInited = false;
-	if (!timeInited) {
-		timeInited = true;
+	if (!mTimeInited) {
+		mTimeInited = true;
 		mLastUpdateTimeStamp = timeStamp;
 	} else {
 		mResult[0] = oldFormat[0];
 		mResult[1] = oldFormat[1];
 		mResult[2] = oldFormat[2];
-		mResult[3] = static_cast<int>(timeStamp - mLastUpdateTimeStamp);
-		mLastUpdateTimeStamp = timeStamp;
+		mResult[3] = convertToTrikRuntimeTime(timeStamp);
 
-		const qreal scale = static_cast<qreal>(mResult[3]) / twoDModel::timeQuant;
+		const qreal scale = static_cast<qreal>(timeStamp - mLastUpdateTimeStamp) / twoDModel::timeQuant;
 		const qreal x = static_cast<qreal>(mResult[0]) / twoDModel::gyroscopeConstant * scale;
 		const qreal y = static_cast<qreal>(mResult[1]) / twoDModel::gyroscopeConstant * scale;
 		const qreal z = static_cast<qreal>(mResult[2]) / twoDModel::gyroscopeConstant * scale;
+
+		mLastUpdateTimeStamp = timeStamp;
 
 		const float c1 = static_cast<float>(qCos(x / 2));
 		const float s1 = static_cast<float>(qSin(x / 2));
@@ -108,5 +125,10 @@ void TrikGyroscopeAdapter::countTilt(const QVector<int> &oldFormat)
 qreal TrikGyroscopeAdapter::degreeToMilidegree(qreal value)
 {
 	return value * 1000;
+}
+
+int TrikGyroscopeAdapter::convertToTrikRuntimeTime(quint64 time) const
+{
+	return static_cast<int>(time * 1000 / 256);
 }
 

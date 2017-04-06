@@ -159,7 +159,7 @@ private:
 	const qrtext::LanguageToolboxInterface &mTextLanguage;
 	QMap<qrtext::lua::ast::Node *, QString> mGeneratedCode;
 	PrecedenceConverterInterface &mPrecedenceTable;
-	const simple::Binding::ConverterInterface *mReservedVariablesConverter;  // Takes ownership
+	const simple::Binding::ConverterInterface *mReservedVariablesConverter; // Does not have ownership
 	ReservedFunctionsConverter mReservedFunctionsConverter;
 };
 

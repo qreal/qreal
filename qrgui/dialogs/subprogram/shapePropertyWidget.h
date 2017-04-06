@@ -38,6 +38,9 @@ public:
 	/// Returns currently selected by user shape.
 	QString selectedShape() const;
 
+	/// Select shape at index.
+	void selectShape(int index);
+
 private slots:
 	void shapeClicked();
 

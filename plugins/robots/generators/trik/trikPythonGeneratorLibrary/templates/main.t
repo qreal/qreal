@@ -14,7 +14,7 @@ class Program():
   __interpretation_started_timestamp__ = time.time() * 1000
 
   app = QtGui.QApplication(sys.argv)
-  brick = trikControl.trikControl.BrickFactory.create("home/root/trik/", "home/root/trik/media/")
+  brick = trikControl.trikControl.BrickFactory.create("/home/root/trik/", "/home/root/trik/media/")
   script = script()
 
   @@VARIABLES@@

@@ -262,6 +262,8 @@ private:
 
 	void updateDynamicLabels();
 
+	bool compareDynamicLabels(QString labelsPack1, QString labelsPack2) const;
+
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
 	const NodeElementType &mType;
@@ -307,6 +309,9 @@ private:
 
 	/// Used in updateDynamicProperties() for deleting old dynamic labels.
 	int mStartingLabelsCount;
+
+	QString mPreviousDynamicLabels;
+	QString mPreviousShape;
 };
 
 }

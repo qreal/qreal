@@ -193,6 +193,10 @@ public:
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;
 
+	/// Produces converter for transformation a string of dynamic properties into appropriate arguments list
+	/// without taking ownership on it
+	virtual simple::Binding::ConverterInterface *dynamicPropertiesConverter(const qReal::Id &block) const;
+
 	/// Produces converter for transformation function block code into
 	/// generator-dependent code without taking ownership on it
 	virtual simple::Binding::ConverterInterface *functionBlockConverter(const qReal::Id &block

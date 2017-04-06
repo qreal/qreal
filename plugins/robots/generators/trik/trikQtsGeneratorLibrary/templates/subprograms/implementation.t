@@ -1,4 +1,4 @@
-@@NAME@@ = function()
+@@NAME@@ = function(@@ARGUMENTS@@)
 {
 @@BODY@@
 }

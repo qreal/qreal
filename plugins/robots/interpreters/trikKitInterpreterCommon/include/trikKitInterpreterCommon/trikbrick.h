@@ -1,3 +1,17 @@
+/* Copyright 2016-2017 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <QtCore/QHash>
@@ -18,6 +32,10 @@
 #include "trikEmulation/trikledadapter.h"
 #include "trikEmulation/trikaccelerometeradapter.h"
 #include "trikEmulation/trikGyroscopeAdapter.h" /// @todo: replace with forward refs
+
+namespace utils {
+class AbstractTimer;
+}
 
 namespace trik {
 
@@ -74,6 +92,8 @@ public slots:
 	void wait(int milliseconds);
 	qint64 time() const;
 	QStringList readAll(const QString &path);
+	/// In trikRuntime returns QTimer, but we need timer with emulated 2D time. Hopefully this is enough
+	utils::AbstractTimer *timer(int milliseconds);
 signals:
 	void error(const QString &msg);
 	void log(const QString &msg);
@@ -89,7 +109,7 @@ private:
 
 	bool mIsWaitingEnabled;
 
-	QTimer mSensorUpdater;
+	QScopedPointer<utils::AbstractTimer> mSensorUpdater;
 
 	QHash<QString, TrikMotorEmu *> mMotors;
 	QHash<QString, TrikSensorEmu *> mSensors;
@@ -102,7 +122,7 @@ private:
 	QDir mCurrentDir;
 	bool mIsExcerciseMode = false;
 	QStringList mInputs;
-
+	QVector<utils::AbstractTimer *> mTimers;
 };
 
 }

@@ -7,6 +7,8 @@ git:
 language: cpp
 compiler: gcc
 
+cache: ccache
+
 env:
   - CONFIG=debug   PROJECT=qreal           VERA=true  TESTS=true
   - CONFIG=release PROJECT=qreal           VERA=false TESTS=true
@@ -25,8 +27,9 @@ install:
   - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get update -qq; fi
   - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.9 -y; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 50; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 50; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 90; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90; fi
+  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-4.9 90; fi
   - sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 10C56D0DE9977759
   - sudo add-apt-repository "deb http://ppa.launchpad.net/beineri/opt-qt551-trusty/ubuntu trusty main"
   - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
@@ -56,4 +59,4 @@ notifications:
     - qreal-build-reports@googlegroups.com
 
 after_success:
-  - if [ "$TESTS" != "true" ]; then codecov; fi
+  - if [ "$TESTS" != "true" ]; then codecov --gcov-exec ${GCOV} --gcov-args '-o ${PWD}'; fi

@@ -1,3 +1,17 @@
+/* Copyright 2016-2017 CyberTech Labs Ltd.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include <QtCore/QTimer>
 #include <QtCore/QEventLoop>
 
@@ -17,13 +31,17 @@
 
 using namespace trik;
 
-static const int updateInterval = 10;
 TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
-	: mTwoDRobotModel(model), mDisplay(model), mKeys(model), mIsWaitingEnabled(true)
+	: mTwoDRobotModel(model)
+	, mDisplay(model)
+	, mKeys(model)
+	, mIsWaitingEnabled(true)
+	, mSensorUpdater(model->timeline().produceTimer())
 {
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
-	mSensorUpdater.setInterval(updateInterval);
-	connect(&mSensorUpdater, &QTimer::timeout, [model](){
+	mSensorUpdater->setRepeatable(true);
+	mSensorUpdater->setInterval(model->updateIntervalForInterpretation()); // seems to be x2 of timeline tick
+	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout, [model](){
 		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
 	});
 
@@ -36,6 +54,7 @@ TrikBrick::~TrikBrick()
 	qDeleteAll(mSensors);
 	qDeleteAll(mEncoders);
 	qDeleteAll(mLineSensors);
+	qDeleteAll(mTimers);
 }
 
 void TrikBrick::reset()
@@ -49,15 +68,18 @@ void TrikBrick::reset()
 	for (const auto &e : mEncoders) {
 		e->reset();
 	}
-	QMetaObject::invokeMethod(&mSensorUpdater, "stop"); // failproof against timer manipulation in another thread
-	//mSensorUpdater.stop(); /// maybe needed in other places too.
+	for (const auto &t : mTimers) {
+		t->stop();
+	}
+	qDeleteAll(mTimers);
+	mTimers.clear();
+	QMetaObject::invokeMethod(mSensorUpdater.data(), "stop"); // failproof against timer manipulation in another thread
 }
 
 void TrikBrick::printToShell(const QString &msg)
 {
 	using namespace kitBase::robotModel;
-	robotParts::Shell* sh =
-	        RobotModelUtils::findDevice<robotParts::Shell>(*mTwoDRobotModel, "ShellPort");
+	robotParts::Shell* sh = RobotModelUtils::findDevice<robotParts::Shell>(*mTwoDRobotModel, "ShellPort");
 	if (sh == nullptr) {
 		qDebug("Error: 2d model shell part was not found");
 		return;
@@ -83,8 +105,7 @@ void TrikBrick::init()
 	mEncoders.clear();
 	mKeys.init();
 	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
-	//gyroscope(); // another hack
-	QMetaObject::invokeMethod(&mSensorUpdater, "start"); // failproof against timer manipulation in another thread
+	QMetaObject::invokeMethod(mSensorUpdater.data(), "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
 	mIsWaitingEnabled = true;
 }
@@ -145,7 +166,7 @@ trikControl::SensorInterface *TrikBrick::sensor(const QString &port)
 	using namespace kitBase::robotModel;
 	if (!mSensors.contains(port)) {
 		robotParts::ScalarSensor * sens =
-		        RobotModelUtils::findDevice<robotParts::ScalarSensor>(*mTwoDRobotModel, port);
+				RobotModelUtils::findDevice<robotParts::ScalarSensor>(*mTwoDRobotModel, port);
 		if (sens == nullptr) {
 			emit error(tr("No configured sensor on port: %1").arg(port));
 			return nullptr;
@@ -177,13 +198,14 @@ trikControl::VectorSensorInterface *TrikBrick::accelerometer() {
 	using namespace kitBase::robotModel;
 	if (mAccelerometer.isNull()) {
 		auto a = RobotModelUtils::findDevice<robotParts::AccelerometerSensor>(*mTwoDRobotModel
-																			  , "AccelerometerPort");
+				, "AccelerometerPort");
 		if (a == nullptr) {
 			emit error(tr("No configured accelerometer"));
 			return nullptr;
 		}
 		mAccelerometer.reset(new TrikAccelerometerAdapter(a));
 	}
+
 	return mAccelerometer.data();
 }
 
@@ -191,13 +213,14 @@ trikControl::GyroSensorInterface *TrikBrick::gyroscope() {
 	using namespace kitBase::robotModel;
 	if (mGyroscope.isNull()) {
 		auto a = RobotModelUtils::findDevice<robotParts::GyroscopeSensor>(*mTwoDRobotModel
-																		  , "GyroscopePort");
+				, "GyroscopePort");
 		if (a == nullptr) {
 			emit error(tr("No configured gyroscope"));
 			return nullptr;
 		}
 		mGyroscope.reset(new TrikGyroscopeAdapter(a, mTwoDRobotModel));
 	}
+
 	return mGyroscope.data();
 }
 
@@ -207,6 +230,7 @@ trikControl::LineSensorInterface *TrikBrick::lineSensor(const QString &port) {
 	if (port == "video0") {
 		return lineSensor("LineSensorPort"); // seems to be the case for 2d model
 	}
+
 	if (!mLineSensors.contains(port)) {
 		TrikLineSensor * sens =
 				RobotModelUtils::findDevice<TrikLineSensor>(*mTwoDRobotModel, port);
@@ -216,6 +240,7 @@ trikControl::LineSensorInterface *TrikBrick::lineSensor(const QString &port) {
 		}
 		mLineSensors[port] = new TrikLineSensorAdapter(sens);
 	}
+
 	return mLineSensors[port];
 }
 
@@ -223,20 +248,23 @@ trikControl::EncoderInterface *TrikBrick::encoder(const QString &port) {
 	using namespace kitBase::robotModel;
 	if (!mEncoders.contains(port)) {
 		robotParts::EncoderSensor * enc =
-		        RobotModelUtils::findDevice<robotParts::EncoderSensor>(*mTwoDRobotModel, port);
+				RobotModelUtils::findDevice<robotParts::EncoderSensor>(*mTwoDRobotModel, port);
 		if (enc == nullptr) {
 			emit error(tr("No configured encoder on port: %1").arg(port));
 			return nullptr;
 		}
+
 		mEncoders[port] = new TrikEncoderAdapter(enc->port(), mTwoDRobotModel->engine());
 	}
+
 	return mEncoders[port];
 }
 
 trikControl::DisplayInterface *TrikBrick::display()
 {
-	//	trik::robotModel::parts::TrikDisplay * const display =
-//			kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel, "DisplayPort");
+//	trik::robotModel::parts::TrikDisplay * const display =
+//			kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel
+//					, "DisplayPort");
 //	if (display) {
 //		bool res = QMetaObject::invokeMethod(display,
 //		"drawSmile",
@@ -260,6 +288,7 @@ trikControl::LedInterface *TrikBrick::led() {
 		}
 		mLed.reset(new TrikLedAdapter(l));
 	}
+
 	return mLed.data();
 }
 
@@ -272,6 +301,7 @@ int TrikBrick::random(int from, int to)
 		emit error(tr("No cofigured random device"));
 		return -1;
 	}
+
 	return r->random(from, to);
 }
 
@@ -286,8 +316,10 @@ void TrikBrick::wait(int milliseconds)
 	t->setRepeatable(true);
 	connect(t.data(), SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
 	t->start(milliseconds);
-	if (!mIsWaitingEnabled)
+	if (!mIsWaitingEnabled) {
 		return; // to be safe;
+	}
+
 	loop.exec();
 }
 
@@ -317,6 +349,15 @@ QStringList TrikBrick::readAll(const QString &path)
 		result << QString::fromUtf8(line);
 	}
 
+	return result;
+}
+
+utils::AbstractTimer *TrikBrick::timer(int milliseconds)
+{
+	utils::AbstractTimer *result = mTwoDRobotModel->timeline().produceTimer();
+	mTimers.append(result);
+	result->setRepeatable(true); // seems to be the case
+	result->start(milliseconds);
 	return result;
 }
 

@@ -52,12 +52,13 @@ public:
 	/// Appends to \a createCommand child command that creates explosion from \a source to \a target.
 	/// If \a target is null and explosion requires immediate linkage creates new target of specified in
 	/// metamodel type and adds explosion into it.
-	void handleCreationWithExplosion(qReal::commands::AbstractCommand *createCommand
-			, const models::Models &models, const Id &source, const Id &target) const;
+	void handleCreationWithExplosions(qReal::commands::AbstractCommand *createCommand
+			, const models::Models &models, const IdList &sourceList, const Id &target) const;
 
 	/// Appends to given command child commands that clear outgoing explosion and
 	/// all non-hard incoming explosions
-	void handleRemoveCommand(const Id &logicalId, commands::AbstractCommand * const command) const;
+	void handleRemoveCommand(const QMap<Id, IdList> &targetAndSourceList
+			, commands::AbstractCommand * const command) const;
 
 	/// This method checks if explosion must be created immediately for given type
 	/// and if yes returns type with explosion target. Otherwise returns Id().
@@ -94,7 +95,7 @@ signals:
 	void explosionsSetCouldChange();
 
 	/// Emitted when explosion target changes dynamic properties.
-	void explosionTargetCouldChangeProperties(const Id &target);
+	void explosionTargetCouldChangeProperties(const Id &target) const;
 
 private:
 	/// This method takes one of the elements of the diagram and tries
