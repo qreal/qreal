@@ -16,7 +16,6 @@
 #include "ui_trikAdditionalPreferences.h"
 
 #include <qrkernel/settingsManager.h>
-#include <plugins/robots/thirdparty/qextserialport/src/qextserialenumerator.h>
 
 using namespace trik;
 using namespace qReal;

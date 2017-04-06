@@ -26,7 +26,7 @@ includes(plugins/robots/common/kitBase \
 		)
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog robots-trik-kit-interpreter-common \
+		robots-utils robots-kit-base robots-2d-model robots-trik-kit qslog robots-trik-kit-interpreter-common \
 		)
 
 HEADERS += \
