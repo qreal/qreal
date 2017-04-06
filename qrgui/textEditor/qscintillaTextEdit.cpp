@@ -17,7 +17,7 @@
 #include <QtWidgets/QShortcut>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
-#include "brandManager/brandManager.h"
+#include <brandManager/brandManager.h>
 
 using namespace qReal;
 using namespace text;
