@@ -452,23 +452,22 @@ script.wait(2000);</pre>
 			обращение к мотору на порту M1 выглядит так:
 			</p>
 
-			<pre>brick.motor("M1").setPower(100);</pre>
+			<pre>brick.motor(M1).setPower(100);</pre>
 
 			<p>
 			Пример более сложной программы, движение по линии с двумя сенсорами света:
 			</p>
 
-			<pre>
-var k = 0.4;
-var power = 75;
+			<pre>var k = 1.3;
+var power = 50;
 
+var left = brick.sensor("A1").read();
+var right = brick.sensor("A2").read();
 while (true) {
-		var deltaLeft = brick.sensor("A1").read();
-		var deltaRight = brick.sensor("A2").read();
-		var u = k * (deltaLeft - deltaRight);
-		brick.powerMotor("M1").setPower(power + u);
-		brick.powerMotor("M2").setPower(-power + u);
-		script.wait(10);
+	var u = k * (brick.sensor(A1).read() - left - (brick.sensor(A2).read() - right));
+	brick.motor("M3").setPower(power + u);
+	brick.motor("M4").setPower(power - u);
+	script.wait(30);
 }</pre>
 
 			<p>
