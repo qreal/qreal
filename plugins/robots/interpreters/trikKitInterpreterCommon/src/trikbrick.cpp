@@ -150,7 +150,7 @@ trikControl::MotorInterface *TrikBrick::motor(const QString &port)
 	using namespace kitBase::robotModel;
 	if (!mMotors.contains(port)) {
 		robotParts::Motor * mot =
-		        RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
+				RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
 		if (mot == nullptr) {
 			emit error(tr("No configured motor on port: %1").arg(port));
 			return nullptr;

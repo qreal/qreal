@@ -14,24 +14,17 @@
 
 #include "trikKitInterpreterCommon/trikEmulation/trikkeysinterfacestub.h"
 
-#include <trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h>
+#include <kitBase/robotModel/commonRobotModel.h>
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/button.h>
 
 using namespace trik;
+using namespace kitBase::robotModel;
 
-TrikKeysInterfaceStub::TrikKeysInterfaceStub(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model)
-	: mTwoDRobotModel(model)
+TrikKeysInterfaceStub::TrikKeysInterfaceStub(const QSharedPointer<kitBase::robotModel::CommonRobotModel> &model)
+	: mRobotModel(model)
 {
-	mButtonWatchingTimer.reset(model->timeline().produceTimer());
-	connect(mButtonWatchingTimer.data(), &utils::AbstractTimer::timeout, [this](){
-		for (const auto &b : mButtons) {
-			b->read();
-		}
-	});//not best since it doesn't know about not yet registed functions
-	mButtonWatchingTimer->setInterval(20);
-	mButtonWatchingTimer->setRepeatable(true);
-	auto codes = model->buttonCodes();
+	auto codes = mRobotModel->buttonCodes();
 	for (auto it = codes.cbegin(); it != codes.cend(); ++it) {
 		mKeycodeMap[it.value()] = it.key().left(it.key().length() - 6); // remove "Button" from the end
 		mWasPressed[it.value()] = false;
@@ -40,43 +33,42 @@ TrikKeysInterfaceStub::TrikKeysInterfaceStub(const QSharedPointer<robotModel::tw
 
 void TrikKeysInterfaceStub::init()
 {
-	reset();
-	if (mButtonWatchingTimer->isTicking()) {
-		mButtonWatchingTimer->stop(); // ?
+	auto codes = mRobotModel->buttonCodes();
+	for (auto it = codes.cbegin(); it != codes.cend(); ++it) {
+		registerButton(it.value());
 	}
-	mButtonWatchingTimer->start();
+}
+
+void TrikKeysInterfaceStub::start()
+{
+	reset();
 }
 
 void TrikKeysInterfaceStub::stop()
 {
-	reset(); // just to be sure;
-	mButtonWatchingTimer->stop();
+	for (const auto &button : mButtons) {
+		button->read(); // hack to clear lastReadState
+		disconnect(button, &robotParts::Button::newData, this, &TrikKeysInterfaceStub::handleNewData);
+	}
 }
 
 void TrikKeysInterfaceStub::reset() {
-	for (const auto &b : mButtons) {
-		b->read(); // hack to clear lastReadState
-	}
+	stop();
 	mButtons.clear();
 	mWasPressed.clear();
+	init();
 }
 
 bool TrikKeysInterfaceStub::wasPressed(int code)
 {
-	if (registerButton(code) && mWasPressed[code]) {
-		mWasPressed[code] = false;
-		return true;
-	}
-	return false;
+	bool pressed = mWasPressed[code];
+	mWasPressed[code] = false;
+	return pressed;
 }
 
 bool TrikKeysInterfaceStub::isPressed(int code)
 {
-	if (registerButton(code)) {
-		QMetaObject::invokeMethod(mButtons[code], "read");
-		return mButtons[code]->lastData(); // race ?
-	}
-	return false;
+	return mButtons[code]->lastData();
 }
 
 int TrikKeysInterfaceStub::buttonCode(bool wait)
@@ -85,31 +77,36 @@ int TrikKeysInterfaceStub::buttonCode(bool wait)
 	return -1; /// @todo
 }
 
-//void TrikKeysInterfaceStub::buttonChanged(int code)
-//{
-//	int last = mButtons[code]->lastData();
-//	if (last != 0) {
-//		mWasPressed[code] = true;
-//	}
-//}
+void TrikKeysInterfaceStub::handleNewData(int value)
+{
+	robotParts::Button *button = dynamic_cast<robotParts::Button *>(sender());
+	if (button == nullptr) {
+		return;
+	}
+
+	int code = button->code();
+	bool previousValue = mWasPressed[code];
+	mWasPressed[code] = value;
+	if (previousValue != value) {
+		emit buttonPressed(code, value);
+	}
+}
 
 bool TrikKeysInterfaceStub::registerButton(int code)
 {
-	using namespace kitBase::robotModel;
 	if (!mButtons.contains(code)) {
-		robotParts::Button * b =
-				RobotModelUtils::findDevice<robotParts::Button>(*mTwoDRobotModel, mKeycodeMap[code]);
-		if (b == nullptr) {
+		robotParts::Button * button =
+				RobotModelUtils::findDevice<robotParts::Button>(*mRobotModel, mKeycodeMap[code]);
+		if (button == nullptr) {
 			qDebug("error, button not found"); // todo - propogate errors to trikbrick
 			//emit error(tr("No configured sensor on port: ") + port);
 			return false;
 		}
-		mButtons[code] = b;
-		connect(b, &robotParts::Button::newData, [this, code](int value){
-			mWasPressed[code] = value != 0;
-		});
-		//connect(b, &robotParts::Button::newData, this, &TrikKeysInterfaceStub::buttonChanged);
-		/// @todo: disconnect somewhere?
+
+		mButtons[code] = button;
+		connect(button, &robotParts::Button::newData, this, &TrikKeysInterfaceStub::handleNewData
+				, Qt::UniqueConnection);
 	}
+
 	return true;
 }
