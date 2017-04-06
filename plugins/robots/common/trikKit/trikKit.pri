@@ -21,7 +21,7 @@ includes(plugins/robots/common/trikKit \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base qextserialport qslog \
+		robots-utils robots-kit-base qslog \
 )
 
 HEADERS += \
