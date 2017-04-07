@@ -116,46 +116,31 @@ void Exploser::handleCreationWithExplosions(AbstractCommand *createCommand, cons
 	}
 }
 
-void Exploser::handleRemoveCommand(const QMap<Id, IdList> &targetAndSourceList, AbstractCommand * const command) const
+void Exploser::handleRemoveCommand(const IdList &explosionSources, AbstractCommand * const command) const
 {
-	for (const Id &target : targetAndSourceList.keys()) {
-		for (const Id &source : targetAndSourceList[target]) {
-			command->addPreAction(new ExplosionCommand(mApi, nullptr, source, target, false));
+	for (const Id &logicalId : explosionSources) {
+		const Id outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
+		if (!outgoing.isNull()) {
+			command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
 		}
 
-		const Id targetType = target.type();
-		const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(target);
+		const Id targetType = logicalId.type();
+		const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
 		for (const Id &incoming : incomingExplosions) {
 			const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
 			for (const Explosion *explosion : explosions) {
 				if (explosion->target().typeId() == targetType && !explosion->requiresImmediateLinkage()) {
-					command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, target, false));
+					command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
 				}
 			}
 		}
 
-		connect(command, &AbstractCommand::undoComplete, this, [&, target](bool success){
+		connect(command, &AbstractCommand::undoComplete, this, [&, outgoing](bool success){
 			if (success) {
-				emit explosionTargetCouldChangeProperties(target);
+				emit explosionTargetCouldChangeProperties(outgoing);
 			}
 		});
 	}
-
-//	const Id outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
-//	if (!outgoing.isNull()) {
-//		command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
-//	}
-
-//	const Id targetType = logicalId.type();
-//	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
-//	foreach (const Id &incoming, incomingExplosions) {
-//		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
-//		foreach (const Explosion *explosion, explosions) {
-//			if (explosion->target().typeId() == targetType && !explosion->requiresImmediateLinkage()) {
-//				command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
-//			}
-//		}
-//	}
 }
 
 AbstractCommand *Exploser::createElementWithIncomingExplosionCommand(const Id &source
