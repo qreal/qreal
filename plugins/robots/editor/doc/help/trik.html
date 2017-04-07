@@ -522,7 +522,7 @@ script.run();</pre>
 				<li><a href="#textual-programming-qts-script">script</a></li>
 				<li><a href="#textual-programming-qts-mailbox">mailbox</a></li>
 				<li><a href="#textual-programming-qts-gamepad">gamepad</a></li>
-				<li><a href="#textual-programming-qts-Threading">threading</a></li>
+				<li><a href="#textual-programming-qts-Threading">Threading</a></li>
 			</ul>
 			</p>
 
@@ -819,7 +819,7 @@ script.run();</pre>
 				</tr>
 			</table>
 
-			<h5><a name="textual-programming-qts-threading">Объект "threading"</a></h5>
+			<h5><a name="textual-programming-qts-threading">Объект "Threading"</a></h5>
 
 			<p>
 			Предоставляет управление параллельными потоками.
@@ -832,27 +832,31 @@ script.run();</pre>
 					<td><b>Описание</b></td>
 				</tr>
 				<tr>
-					<td>start</td>
-					<td>threading.start(function() { print("New thread"); });</td>
+					<td>startThread</td>
+					<td>Threading.startThread("New thread id", "Function name");</td>
 					<td>Запускает переданную в качестве параметра функцию в отдельном потоке. Обратите внимание, что
 					при этом создаётся новая копия для всех глобальных переменных, так что если в одном потоке значение
 					переменной меняется, в другом потоке оно остаётся старым.</td>
 				</tr>
 				<tr>
-					<td>activeThreadCount</td>
-					<td>threading.activeThreadCount();</td>
-					<td>Возвращает количество активных на данный момент потоков.</td>
+					<td>killThread</td>
+					<td>Threading.killThread("Thread id");</td>
+					<td>Заканчивает исполнение потока с заданным Thread id.</td>
 				</tr>
 				<tr>
-					<td>maxThreadCount</td>
-					<td>threading.maxThreadCount();</td>
-					<td>Возвращает максимально разрешённое количество активных потоков.</td>
+					<td>joinThread</td>
+					<td>Threading.joinThread("Thread id");</td>
+					<td>Ожидает завершения всех потока с заданным Thread id.</td>
 				</tr>
 				<tr>
-					<td>waitForDone</td>
-					<td>threading.waitForDone(1000);</td>
-					<td>Ожидает завершения всех активных потоков переданное количество миллисекунд. Если параметр равен
-					-1, ждёт до тех пор, пока последний активный поток не закончит свою работу.</td>
+					<td>sendMessage</td>
+					<td>Threading.sendMessage("Thread id", "New message");</td>
+					<td>Посылает сообщение потоку с заданным Thread id.</td>
+				</tr>
+				<tr>
+					<td>receiveMessage</td>
+					<td>Threading.receiveMessage(wait);</td>
+					<td>Запрашивает принятое сообщение, если wait равен true, то ожидает пока не придет сообщение.</td>
 				</tr>
 			</table>
 
@@ -1109,6 +1113,11 @@ script.run();</pre>
 					<td>clear</td>
 					<td>brick.display().clear();</td>
 					<td>Очищает окно для рисования.</td>
+				</tr>
+				<tr>
+					<td>redraw</td>
+					<td>brick.display().redraw();</td>
+					<td>Перерисовывает окно для рисования. Изменения в окне произойдут только после вызова этого метода.</td>
 				</tr>
 			</table>
 
