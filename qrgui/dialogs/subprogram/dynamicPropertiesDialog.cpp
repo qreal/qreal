@@ -15,7 +15,7 @@
 #include "dynamicPropertiesDialog.h"
 #include "ui_dynamicPropertiesDialog.h"
 
-#include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QMessageBox>
@@ -273,7 +273,7 @@ void DynamicPropertiesDialog::typeChanged(const QString &newType)
 
 void DynamicPropertiesDialog::init()
 {
-	const QString filePath = SettingsManager::value("pathToImages").toString() + "/subprogramImages";
+	const QString filePath = PlatformInfo::invariantSettingsPath("pathToImages") + "/subprogramImages";
 	QDir dir(filePath);
 	QStringList strList = dir.entryList();
 	QStringList shapes;
