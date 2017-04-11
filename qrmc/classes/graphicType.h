@@ -71,7 +71,7 @@ protected:
 		bool isMaximizingChildren;
 	};
 
-	void copyFields(GraphicType *type) const;
+	void copyFields(Type *type) const;
 	QString resourceName(const QString &resourceType) const;
 	QString targetDirectory() const;
 

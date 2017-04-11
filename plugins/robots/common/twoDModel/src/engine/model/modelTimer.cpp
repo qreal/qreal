@@ -32,6 +32,11 @@ bool ModelTimer::isTicking() const
 	return mListening;
 }
 
+int ModelTimer::interval() const
+{
+	return mInterval;
+}
+
 void ModelTimer::start()
 {
 	start(mInterval);

@@ -1,4 +1,4 @@
-void @@NAME@@()
+void @@NAME@@(@@ARGUMENTS@@)
 {
 @@BODY@@
 }

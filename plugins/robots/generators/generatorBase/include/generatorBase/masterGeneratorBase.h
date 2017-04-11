@@ -92,6 +92,8 @@ protected:
 
 	void outputCode(const QString &path, const QString &code);
 
+	void replaceWithAutoIndent(QString &where, const QString &what, const QString &withWhat);
+
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;

@@ -11,7 +11,15 @@ cp    $BIN_DIR/robots-trik-generator-base.dll                                   
 cp    $BIN_DIR/robots-trik-kit.dll                                                $PWD/../data/
 cp    $BIN_DIR/robots-trik-kit-interpreter-common.dll                             $PWD/../data/
 
+cp    $BIN_DIR/qslog-x86.dll                                                      $PWD/../data/
+cp    $BIN_DIR/trikControl-x86.dll                                                $PWD/../data/
+cp    $BIN_DIR/trikScriptRunner-x86.dll                                           $PWD/../data/
+cp    $BIN_DIR/trikHal-x86.dll                                                    $PWD/../data/
+cp    $BIN_DIR/trikKernel-x86.dll                                                 $PWD/../data/
+cp    $BIN_DIR/trikNetwork-x86.dll                                                $PWD/../data/
+
 cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data/
+cp    $QT_DIR/bin/Qt5Multimedia.dll                                               $PWD/../data/
 
 cd "$(dirname "$0")"/../data
 rm -rf winscp

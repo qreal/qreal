@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015-2016 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ QString ReservedVariablesConverter::convert(const QString &variable) const
 		}
 	}
 
-	return variable;
+	return readTemplateIfExists("luaPrinting/identifier.t", variable).replace("@@IDENTIFIER@@", variable);
 }
 
 QString ReservedVariablesConverter::deviceExpression(const kitBase::robotModel::PortInfo &port) const

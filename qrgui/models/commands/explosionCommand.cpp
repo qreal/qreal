@@ -66,7 +66,7 @@ bool ExplosionCommand::processExplosion(bool add)
 
 void ExplosionCommand::saveTargetShape()
 {
-	if (!mLogicalApi.mutableLogicalRepoApi().stringProperty(mTarget, "shape").isEmpty()) {
+	if (!mLogicalApi.logicalRepoApi().stringProperty(mTarget, "shape").isEmpty()) {
 		return;
 	}
 

@@ -20,7 +20,7 @@ TEMPLATE = lib
 
 QT += xml widgets
 
-links(qrkernel qrutils qrgui-models qrgui-plugin-manager)
+links(qrkernel qrutils qrgui-models qrgui-plugin-manager qrgui-controller)
 includes(qrgui)
 
 DEFINES += QRGUI_DIALOGS_LIBRARY

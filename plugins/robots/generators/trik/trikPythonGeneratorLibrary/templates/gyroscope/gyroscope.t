@@ -1,0 +1,1 @@
+self.brick.gyroscope().read()

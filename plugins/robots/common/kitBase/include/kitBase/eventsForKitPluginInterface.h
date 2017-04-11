@@ -30,12 +30,17 @@ signals:
 	/// Program interpretation started.
 	void interpretationStarted();
 
+	void codeInterpretationStarted(const QString &code); /// @todo: probably not needed if refactored properly
+
 	/// Program interpretation finished or stopped by user.
 	/// @param reason The reason why the interpretation stopped.
 	void interpretationStopped(qReal::interpretation::StopReason reason);
 
 	/// Robot model is changed in settings (or selected in a toolbar).
 	void robotModelChanged(const QString &newModelName);
+
+	/// @todo: temporary hack to propagate intent to qts interpreter
+	void interpretCode(const QString &code, const QString &inputs);
 };
 
 }

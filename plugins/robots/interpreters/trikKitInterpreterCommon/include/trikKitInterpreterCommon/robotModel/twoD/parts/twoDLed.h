@@ -42,6 +42,7 @@ public:
 	/// Sets the \a color of led emulator in 2D model.
 	void setColor(const QColor &color);
 
+public slots:
 	/// Sets the \a color of led emulator in 2D model.
 	/// If "off" passed then led becomes gray.
 	void setColor(const QString &color) override;

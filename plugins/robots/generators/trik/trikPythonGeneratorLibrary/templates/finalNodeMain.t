@@ -1,0 +1,2 @@
+self.brick.stop()
+return

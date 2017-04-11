@@ -34,8 +34,8 @@ Clipboard::Clipboard(Controller &controller, const models::Models &models)
 
 void Clipboard::copy(const IdList &elements)
 {
-	QList<NodeInfo> nodesData = this->nodesData(elements);
-	QList<EdgeInfo> edgesData = this->edgesData(elements);
+	const QList<NodeInfo> nodesData = this->nodesData(elements);
+	const QList<EdgeInfo> edgesData = this->edgesData(elements);
 
 	if (!nodesData.isEmpty() || !edgesData.isEmpty()) {
 		pushDataToClipboard(nodesData, edgesData);

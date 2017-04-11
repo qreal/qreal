@@ -1,1 +1,1 @@
-void @@NAME@@();
+void @@NAME@@(@@ARGUMENTS@@);

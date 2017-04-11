@@ -179,16 +179,17 @@ GraphicType::ResolvingHelper::~ResolvingHelper()
 	mResolvingFlag = false;
 }
 
-void GraphicType::copyFields(GraphicType *type) const
+void GraphicType::copyFields(Type *type) const
 {
 	Type::copyFields(type);
 	/// @todo: Not good, requires non-const fields.
-	type->mParents = mParents;
-	type->mIsVisible = mIsVisible;
-	type->mContainerProperties = mContainerProperties;
-	type->mContains = mContains;
-	type->mShape = mShape;
-	type->mTargetDirectory = mTargetDirectory;
+	auto graphicType = dynamic_cast<GraphicType*>(type);
+	graphicType->mParents = mParents;
+	graphicType->mIsVisible = mIsVisible;
+	graphicType->mContainerProperties = mContainerProperties;
+	graphicType->mContains = mContains;
+	graphicType->mShape = mShape;
+	graphicType->mTargetDirectory = mTargetDirectory;
 }
 
 bool GraphicType::resolve()

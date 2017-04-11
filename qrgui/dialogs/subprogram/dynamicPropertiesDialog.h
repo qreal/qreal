@@ -20,6 +20,7 @@
 #include <qrkernel/ids.h>
 #include <qrgui/models/exploser.h>
 #include <qrrepo/repoApi.h>
+#include <qrgui/controller/controller.h>
 #include "qrgui/dialogs/dialogsDeclSpec.h"
 #include "shapePropertyWidget.h"
 
@@ -36,8 +37,8 @@ class QRGUI_DIALOGS_EXPORT DynamicPropertiesDialog : public QDialog
 	Q_OBJECT
 
 public:
-	DynamicPropertiesDialog(const Id &id, qrRepo::LogicalRepoApi &logicalRepoApi
-			, models::Exploser &exploser, QWidget *parent = 0);
+	DynamicPropertiesDialog(const Id &id, models::LogicalModelAssistApi &logicalRepoApi
+			, models::Exploser &exploser, Controller &controller, QWidget *parent = 0);
 	~DynamicPropertiesDialog();
 
 	/// Creates and returns SDF description using path to background and foreground images.
@@ -53,14 +54,16 @@ private:
 	void init();
 	QString tryToSave() const;
 	void addLabel(const QString &name, const QString &type, const QString &value);
+	QString defaultLabelValue(const QString &type) const;
 
 	Ui::DynamicPropertiesDialog *mUi;
 	ShapePropertyWidget *mShapeWidget;
 	ShapePropertyWidget *mShapeBackgroundWidget;
 	QScrollArea *mShapeScrollArea;
 	QScrollArea *mShapeBackgroundScrollArea;
-	qrRepo::LogicalRepoApi &mLogicalRepoApi;
+	models::LogicalModelAssistApi &mLogicalRepoApi;
 	models::Exploser &mExploser;
+	Controller &mController;
 	const Id mId;
 };
 

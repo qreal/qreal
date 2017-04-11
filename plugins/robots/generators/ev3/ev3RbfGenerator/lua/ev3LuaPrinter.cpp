@@ -102,7 +102,7 @@ Ev3LuaPrinter::~Ev3LuaPrinter()
 
 void Ev3LuaPrinter::configure(const generatorBase::simple::Binding::ConverterInterface *reservedVariablesConverter)
 {
-	mReservedVariablesConverter.reset(reservedVariablesConverter);
+	mReservedVariablesConverter = reservedVariablesConverter;
 }
 
 QStringList Ev3LuaPrinter::addSuffix(const QStringList &list)

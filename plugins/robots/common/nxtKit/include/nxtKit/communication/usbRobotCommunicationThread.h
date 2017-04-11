@@ -20,7 +20,7 @@
 
 #include <utils/robotCommunication/robotCommunicationThreadInterface.h>
 
-class libusb_device_handle;
+struct libusb_device_handle;
 
 namespace nxt {
 namespace communication {

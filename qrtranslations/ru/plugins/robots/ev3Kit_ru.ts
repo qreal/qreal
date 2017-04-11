@@ -32,7 +32,7 @@
     <message>
         <location filename="../../../../plugins/robots/common/ev3Kit/include/ev3Kit/robotModel/parts/ev3Gyroscope.h" line="27"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation>Гиродатчик</translation>
     </message>
 </context>
 <context>

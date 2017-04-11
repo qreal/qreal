@@ -1,1 +1,1 @@
-CALL(@@NAME@@)
+CALL(@@NAME@@, @@ARGUMENTS@@)

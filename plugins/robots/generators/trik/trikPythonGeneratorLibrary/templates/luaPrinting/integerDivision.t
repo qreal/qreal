@@ -1,0 +1,1 @@
+math.floor(@@LEFT@@ / @@RIGHT@@)

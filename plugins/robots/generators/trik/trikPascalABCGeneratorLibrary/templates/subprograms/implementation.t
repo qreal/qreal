@@ -1,4 +1,4 @@
-procedure @@NAME@@();
+procedure @@NAME@@ (@@ARGUMENTS@@);
 begin
 @@BODY@@
 end;

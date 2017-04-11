@@ -1,0 +1,1 @@
+self.script.wait(@@DELAY@@)

@@ -1,0 +1,1 @@
+self.@@NAME@@(@@ARGUMENTS@@)

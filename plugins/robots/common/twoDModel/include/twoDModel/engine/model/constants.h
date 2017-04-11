@@ -26,9 +26,11 @@ const qreal robotHeight = 50;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 const QSize displaySize(200, 300);
 const qreal beepWavesSize = 120;
+const int timeQuant = 10;
+
 
 /// Experimental constant that scales gyroscope output so that it is close to real robot gyroscope readings.
-const qreal gyroscopeConstant = -1600;
+const qreal gyroscopeConstant = 875000;
 
 /// Experimental constant that scales accelerometer output so that it is close to real robot accelerometer readings
 /// with our magic acceleration smoothing formula.

@@ -306,10 +306,11 @@ QVariant LogicalModel::dynamicPropertyData(const Id &id, int role) const
 				continue;
 			}
 
-			return element.attribute("value");
+			return element.attribute("dynamicPropertyValue");
 		}
 	}
 
+	return QVariant();
 }
 
 bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -353,7 +354,7 @@ bool LogicalModel::setData(const QModelIndex &index, const QVariant &value, int 
 							continue;
 						}
 
-						element.setAttribute("value", value.toString());
+						element.setAttribute("dynamicPropertyValue", value.toString());
 						mApi.setProperty(item->id(), "dynamicProperties", dynamProperties.toString(4));
 						break;
 					}

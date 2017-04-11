@@ -41,15 +41,16 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 		, const QString &diagramFriendlyName
 		, bool sort)
 {
+	mPaletteItems.clear();
+	mPaletteElements.clear();
+	mElementsSet.clear();
+	mItemsVisible.clear();
+
 	if (groups.isEmpty() && hideIfEmpty) {
 		hide();
 		return;
 	}
 
-	mPaletteItems.clear();
-	mPaletteElements.clear();
-	mElementsSet.clear();
-	mItemsVisible.clear();
 	clear();
 	show();
 

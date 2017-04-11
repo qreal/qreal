@@ -66,7 +66,7 @@ public:
 	void setEnabledForAllElements(bool enabled);
 
 	/// Rereads user blocks information.
-	void refreshUserPalette();
+	void refreshUserPalette(bool force = false);
 
 	/// Sets user palette header and description.
 	void customizeExplosionTitles(const QString &userGroupTitle

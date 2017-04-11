@@ -1249,7 +1249,7 @@
     </message>
     <message>
         <source>Wait for Gyroscope</source>
-        <translation>Ждать гироскоп</translation>
+        <translation>Ждать гиродатчик</translation>
     </message>
     <message>
         <source>Waits till the value returned by the gyroscope on the given port will be greater or less than the given in the &apos;Degrees/sec&apos; parameter value.</source>

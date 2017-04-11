@@ -27,7 +27,7 @@ links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interfa
 		robots-utils robots-kit-base robots-ev3-kit robots-2d-model qextserialport qslog \
 )
 
-copyToDestdir(../images/ev3-robot.png, now, ../../../images/)
+copyToDestdir(../images/ev3-robot.png, now, images/)
 
 win32 {
 	LIBS += -llibusb-1.0
