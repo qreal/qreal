@@ -91,6 +91,8 @@ void UmlCheckerHandler::initEdgesVariants()
 
 void UmlCheckerHandler::clear()
 {
+	mEdges.clear();
+	mEdgesVariants.clear();
 	mBlockNames.clear();
 	delete mPerfectRepoFromList;
 }
@@ -227,6 +229,7 @@ bool UmlCheckerHandler::matchingResult()
 	for (int i = 0; i < blockNames.size(); ++i) {
 		bool matchingRes = matchingStep(blockNames);
 		if (matchingRes) {
+			clearAfterMatching();
 			return true;
 		} else {
 			blockNames.move(0, blockNames.size() - 1);
