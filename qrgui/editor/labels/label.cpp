@@ -67,9 +67,9 @@ void Label::init()
 			propertyName = mProperties.nameForRoleProperty();
 		}
 
-		QList<QPair<QString, QString>> const values = mGraphicalModelAssistApi
+		const QList<QPair<QString, QString>> values = mGraphicalModelAssistApi
 				.editorManagerInterface().enumValues(mId, propertyName);
-		for (QPair<QString, QString> const &pair : values) {
+		for (const QPair<QString, QString> &pair : values) {
 			mEnumValues[pair.first] = pair.second;
 		}
 	}
@@ -199,7 +199,6 @@ void Label::updateData(bool withUndoRedo)
 					: (withUndoRedo ? enumText(value) : value);
 			parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, repoValue, withUndoRedo);
 		}
-
 	} else if (mProperties.binding() == "name") {
 		if (value != parent->name()) {
 			parent->setName(value, withUndoRedo);
