@@ -23,10 +23,8 @@ UmlCheckerPerfectSolution::~UmlCheckerPerfectSolution()
 void UmlCheckerPerfectSolution::saveTempSolution()
 {
 	mLocationDirPath = QFileDialog::getExistingDirectory(nullptr, tr("Specify directory:")) + "/";
-
-	const QString fileName = mLocationDirPath + "temp" + ".qrs";
+	const QString fileName = mRepoControlIFace->workingFile();
 	mRepoControlIFace->saveTo(fileName);
-
 	mPerfectRepoApi->open(fileName);
 }
 
@@ -77,8 +75,9 @@ void UmlCheckerPerfectSolution::saveOptionsForBlock(const QPair<QString, QString
 {
 	QString fileName = mLocationDirPath + elements.first + ".txt";
 	QFile file(fileName);
-	if (file.open(QIODevice::ReadWrite)) {
+	if (file.open(QIODevice::Append)) {
 		QTextStream stream(&file);
+
 		for (QString element : elements.second) {
 			element.chop(4);
 			const QString fileNameOfBlock = element + ".qrs";
