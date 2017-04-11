@@ -57,6 +57,7 @@ public:
 	/// Returns true if robot draws sad smile at the moment.
 	bool sadSmiles() const;
 
+public slots: // needed for invokeMethod
 	void drawSmile(bool sad) override;
 	void setBackground(const QColor &color) override;
 	void clearScreen() override;

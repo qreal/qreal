@@ -12,8 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "generatorBase/parts/subprograms.h"
+#include <QtXml/QDomDocument>
 
+#include <qrtext/lua/luaToolbox.h>
+
+#include "generatorBase/parts/subprograms.h"
 #include "src/readableControlFlowGenerator.h"
 
 using namespace generatorBase::parts;
@@ -22,17 +25,23 @@ using namespace qReal;
 Subprograms::Subprograms(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
 		, const QStringList &pathsToTemplates
-		, const simple::Binding::ConverterInterface *nameNormalizer)
+		, qrtext::LanguageToolboxInterface &luaToolbox
+		, const simple::Binding::ConverterInterface *nameNormalizer
+		, const simple::Binding::ConverterInterface *typeConverter
+		)
 	: TemplateParametrizedEntity(pathsToTemplates)
 	, mRepo(repo)
 	, mErrorReporter(errorReporter)
+	, mLuaToolbox(luaToolbox)
 	, mNameNormalizer(nameNormalizer)
+	, mTypeConverter(typeConverter)
 {
 }
 
 Subprograms::~Subprograms()
 {
 	delete mNameNormalizer;
+	delete mTypeConverter;
 }
 
 QString Subprograms::forwardDeclarations() const
@@ -80,6 +89,21 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 			return GenerationResult::fatalError;
 		}
 
+		const QString currentDynamicLabelsString = mRepo.stringProperty(toGen, "labels");
+		if (!currentDynamicLabelsString.isEmpty()) {
+			QDomDocument currentDynamicLabels;
+			currentDynamicLabels.setContent(currentDynamicLabelsString);
+
+			for (QDomElement element
+					= currentDynamicLabels.firstChildElement("labels").firstChildElement("label")
+					; !element.isNull()
+					; element = element.nextSiblingElement("label"))
+			{
+				mLuaToolbox.interpret(QString("%1=%2")
+						.arg(mNameNormalizer->convert(element.attribute("text"))).arg(element.attribute("value")));
+			}
+		}
+
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
 		auto readableGenerator = dynamic_cast<ReadableControlFlowGenerator *>(generator);
 		semantics::SemanticTree *controlFlow = generator->generate(Id(), "@@unknown@@");
@@ -89,7 +113,7 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 
 		implementations[toGen] = controlFlow->toString(1, indentString);
 
-		const QString forwardDeclaration = readSubprogramTemplate(toGen, "subprograms/forwardDeclaration.t");
+		const QString forwardDeclaration = readSubprogramSignature(toGen, "subprograms/forwardDeclaration.t");
 		declarations[toGen] = forwardDeclaration;
 
 		toGen = firstToGenerate();
@@ -116,7 +140,7 @@ void Subprograms::obtainCode(QMap<Id, QString> const &declarations
 	}
 
 	for (const Id &id : implementations.keys()) {
-		const QString signature = readSubprogramTemplate(id, "subprograms/implementation.t");
+		const QString signature = readSubprogramSignature(id, "subprograms/implementation.t");
 		QString subprogramCode = signature;
 		subprogramCode.replace("@@BODY@@", implementations[id]);
 		mImplementationsCode << subprogramCode;
@@ -130,10 +154,39 @@ QString Subprograms::generateManualDeclarations() const
 	return QStringList(mManualDeclarations.values()).join("\n\n");
 }
 
-QString Subprograms::readSubprogramTemplate(const Id &id, const QString &pathToTemplate)
+QString Subprograms::readSubprogramSignature(const Id &id, const QString &pathToTemplate)
 {
 	const QString rawName = mRepo.name(id);
-	return readTemplate(pathToTemplate).replace("@@NAME@@", mNameNormalizer->convert(rawName));
+	QString signatureWithName = readTemplate(pathToTemplate).replace("@@NAME@@", mNameNormalizer->convert(rawName));
+
+	QList<QString> argumentsList;
+	const QString argumentFormat = readTemplate("subprograms/subprogramArgument.t");
+	const QString currentDynamicLabelsString = mRepo.stringProperty(id, "labels");
+	if (!currentDynamicLabelsString.isEmpty()) {
+		QDomDocument currentDynamicLabels;
+		currentDynamicLabels.setContent(currentDynamicLabelsString);
+
+		for (QDomElement element
+				= currentDynamicLabels.firstChildElement("labels").firstChildElement("label")
+				; !element.isNull()
+				; element = element.nextSiblingElement("label"))
+		{
+			const QString type = element.attribute("type");
+			QString argument = readTemplateIfExists(QString("subprograms/%1SubprogramArgument.t").arg(type)
+					, argumentFormat);
+			argument.replace("@@TYPE@@", mTypeConverter->convert(type));
+			argument.replace("@@NAME@@", mNameNormalizer->convert(element.attribute("text")));
+			argumentsList << argument;
+		}
+	}
+
+	const QString fallBackResult = "FileNotExist";
+	QString argumentsSeparator = readTemplateIfExists("subprograms/declarationArgumentsSeparator.t", fallBackResult);
+	argumentsSeparator = argumentsSeparator == fallBackResult
+			? readTemplate("luaPrinting/argumentsSeparator.t")
+			: argumentsSeparator;
+	QString arguments = argumentsList.join(argumentsSeparator);
+	return signatureWithName.replace("@@ARGUMENTS@@", arguments);
 }
 
 Id Subprograms::graphicalId(const Id &logicalId) const

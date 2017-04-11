@@ -19,6 +19,7 @@
 #include <qrutils/interpreter/stopReason.h>
 #include <utils/timelineInterface.h>
 
+#include "constants.h"
 #include "twoDModel/twoDModelDeclSpec.h"
 
 namespace twoDModel {
@@ -30,7 +31,7 @@ class TWO_D_MODEL_EXPORT Timeline : public QObject, public utils::TimelineInterf
 	Q_OBJECT
 
 public:
-	static const int timeInterval = 10; // one cycle length
+	static const int timeInterval = timeQuant; // one cycle length
 	static const int fps = 28; // frames per second
 	static const int defaultFrameLength = 1000 / fps;
 

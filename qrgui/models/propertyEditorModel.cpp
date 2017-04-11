@@ -331,7 +331,7 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 					; !element.isNull()
 					; element = element.nextSiblingElement("property"))
 			{
-				mField->appendChild(new Field(element.attribute("text"), logicalAttribute, role, nullptr));
+				mField->appendChild(new Field(element.attribute("displayedName"), logicalAttribute, role, nullptr));
 				++role;
 			}
 		}
@@ -418,22 +418,21 @@ QString PropertyEditorModel::propertyName(const QModelIndex &index) const
 		logicalModelAssistApi().logicalRepoApi().stringProperty(logicalId, "dynamicProperties");
 
 	if (!dynamicProperties.isEmpty()) {
-			int propertiesCount = mEditorManagerInterface.propertyNames(logicalId.type()).count();
-			QDomDocument dynamProperties;
-			dynamProperties.setContent(dynamicProperties);
-			int i = 0;
-			for (QDomElement element
-					= dynamProperties.firstChildElement("properties").firstChildElement("property");
-					!element.isNull();
-					element = element.nextSiblingElement("property"))
-			{
-				if (i == index.row() - propertiesCount) {
-					fieldName = element.attribute("textBinded");
-					break;
-				}
-				++i;
+		int propertiesCount = mEditorManagerInterface.propertyNames(logicalId.type()).count();
+		QDomDocument dynamProperties;
+		dynamProperties.setContent(dynamicProperties);
+		int i = 0;
+		for (QDomElement element
+				= dynamProperties.firstChildElement("properties").firstChildElement("property");
+				!element.isNull();
+				element = element.nextSiblingElement("property"))
+		{
+			if (i == index.row() - propertiesCount) {
+				fieldName = element.attribute("name");
+				break;
 			}
 		}
+	}
 
 	return fieldName;
 }

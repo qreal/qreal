@@ -27,7 +27,7 @@ TrikV6FSharpGeneratorPlugin::TrikV6FSharpGeneratorPlugin()
 					, "trikKitRobot"
 					, "TrikV6FSharpGeneratorRobotModel"
 					, tr("Generation (F#)")
-					, 8 /* After Javascript generator */)
+					, 6 /* After Python generator */)
 			, new blocks::TrikV6BlocksFactory()
 			, {":/trikFSharp/templates"})
 	, mModel(static_cast<robotModel::TrikV6GeneratorRobotModel *>(robotModels().first()))

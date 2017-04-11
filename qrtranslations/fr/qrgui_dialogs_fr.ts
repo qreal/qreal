@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>AddNodeDialog</name>
     <message>
@@ -423,7 +423,7 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Toutes les propriétés indespensables doivent être renseignées !</translation>
+        <translation type="obsolete">Toutes les propriétés indespensables doivent être renseignées !</translation>
     </message>
     <message>
         <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="132"/>
@@ -445,11 +445,11 @@
     <name>qReal::ProgressBar</name>
     <message>
         <source>%p% - canceled</source>
-        <translation type="vanished">%p% - annulé</translation>
+        <translation type="obsolete">%p% - annulé</translation>
     </message>
     <message>
         <source>canceled</source>
-        <translation type="vanished">annulé</translation>
+        <translation type="obsolete">annulé</translation>
     </message>
 </context>
 <context>
@@ -564,38 +564,54 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Toutes les propriétés essentielles doivent être renseignées !</translation>
+        <translation type="obsolete">Toutes les propriétés essentielles doivent être renseignées !</translation>
     </message>
 </context>
 <context>
     <name>qReal::gui::DynamicPropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="46"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="49"/>
         <source>Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="122"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Value</source>
+        <translation type="unfinished">Valeur</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="151"/>
         <source>Error</source>
         <translation type="unfinished">Erreur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="258"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="337"/>
         <source>Name is not filled in row %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="269"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="348"/>
         <source>Value in row %1 is not integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="279"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="358"/>
         <source>Duplicate names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="287"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="118"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="366"/>
         <source>Delete</source>
         <translation type="unfinished">Supprimer</translation>
     </message>
@@ -614,7 +630,7 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Toutes les propriétés essentielles doivent être renseignées !</translation>
+        <translation type="obsolete">Toutes les propriétés essentielles doivent être renseignées !</translation>
     </message>
 </context>
 <context>

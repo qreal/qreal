@@ -117,7 +117,8 @@ void Label::setTextFromRepo(const QString &text)
 			mEnumValues.isEmpty() || textInteractionFlags() & Qt::TextEditorInteraction
 					? text
 					: enumText(text);
-	if (friendlyText != toPlainText()) {
+	QString plainText = toPlainText();
+	if (friendlyText != plainText) {
 		QGraphicsTextItem::setPlainText(friendlyText);
 		setText(toPlainText());
 		updateData();
@@ -164,7 +165,10 @@ void Label::setHtml(const QString &html)
 
 void Label::setPlainText(const QString &text)
 {
-	QGraphicsTextItem::setPlainText(text);
+	QString currentText = toPlainText();
+	if (currentText != text) {
+		QGraphicsTextItem::setPlainText(text);
+	}
 }
 
 void Label::setPrefix(const QString &text)
@@ -212,8 +216,8 @@ void Label::updateData(bool withUndoRedo)
 					; !element.isNull()
 					; element = element.nextSiblingElement("property"))
 			{
-				if (element.attribute("textBinded") == mProperties.binding()) {
-					element.setAttribute("value", value);
+				if (element.attribute("name") == mProperties.binding()) {
+					element.setAttribute("dynamicPropertyValue", value);
 					break;
 				}
 			}

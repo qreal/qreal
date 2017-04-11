@@ -88,10 +88,15 @@ int main(int argc, char *argv[])
 				" written. The writing will not be performed not immediately, each trajectory point will be written"\
 				" just when obtained by checker, so FIFOs are recommended to be targets for this option.")
 			, "path-to-trajectory", "trajectory.fifo");
+	QCommandLineOption inputOption("input", QObject::tr("Inputs for JavaScript solution")// probably others too
+			, "path-to-input", "inputs.txt");
+	QCommandLineOption modeOption("mode", QObject::tr("Interpret mode"), "mode", "diagram");
 	parser.addOption(backgroundOption);
 	parser.addOption(platformOption);
 	parser.addOption(reportOption);
 	parser.addOption(trajectoryOption);
+	parser.addOption(inputOption);
+	parser.addOption(modeOption);
 
 	qsrand(time(0));
 	initLogging();
@@ -111,7 +116,9 @@ int main(int argc, char *argv[])
 	const bool backgroundMode = parser.isSet(backgroundOption);
 	const QString report = parser.isSet(reportOption) ? parser.value(reportOption) : QString();
 	const QString trajectory = parser.isSet(trajectoryOption) ? parser.value(trajectoryOption) : QString();
-	twoDModel::Runner runner(report, trajectory);
+	const QString input = parser.isSet(inputOption) ? parser.value(inputOption) : QString();
+	const QString mode = parser.isSet(modeOption) ? parser.value(modeOption) : QString("diagram");
+	twoDModel::Runner runner(report, trajectory, input, mode);
 	if (!runner.interpret(qrsFile, backgroundMode)) {
 		return 2;
 	}

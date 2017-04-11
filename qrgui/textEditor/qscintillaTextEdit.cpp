@@ -135,7 +135,7 @@ void QScintillaTextEdit::setDefaultSettings()
 	setIndentationWidth(0);
 
 	// Whitespaces visibility
-	setWhitespaceVisibility(QsciScintilla::WsVisible);
+	setWhitespaceVisibility(QsciScintilla::WsInvisible);
 
 	// Show margin with line numbers (up to 1000)
 	setMarginsBackgroundColor(QColor("gainsboro"));

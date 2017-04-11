@@ -29,6 +29,7 @@ public:
 
 	QString kitId() const override;
 	QString friendlyKitName() const override;
+
 };
 
 }

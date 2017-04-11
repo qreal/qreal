@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Iakov Kirilenko, 2007-2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,11 +52,14 @@ equals(TEMPLATE, app) {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
 		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
 	}
+	macx:!CONFIG(no_rpath) {
+		QMAKE_LFLAGS += -rpath . -rpath @executable_path/../Lib -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
+	}
 }
 
 macx-clang {
-	QMAKE_CXXFLAGS += -stdlib=libc++
-	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
+	QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9
+	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
 unix:!CONFIG(nosanitizers) {
@@ -120,8 +123,14 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-CONFIG += c++11
-QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
+QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra 
+QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
+			-Werror=non-virtual-dtor -Werror=delete-incomplete -Wno-error=overloaded-virtual \
+			-Werror=uninitialized -Werror=init-self
+
+
+# I want -Werror to be turned on, but Qt has problems
+#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter 
 
 GLOBAL_PWD = $$PWD
 
@@ -133,12 +142,13 @@ defineTest(copyToDestdir) {
 
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
+		AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		isEmpty(QMAKE_SH) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
 			win32 {
-				AFTER_SLASH = $$section(FILE, "/", -1, -1)
 				BASE_NAME = $$section(FILE, "/", -2, -2)
 				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
+				equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, 0)
 
 				FILE ~= s,/$,,g
 
@@ -148,11 +158,12 @@ defineTest(copyToDestdir) {
 			win32:DDIR ~= s,/,\\,g
 		} else {
 			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+			system("mkdir -p $$DDIR")
 		}
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE*
+			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsisten behaviour
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
@@ -160,11 +171,11 @@ defineTest(copyToDestdir) {
 			}
 
 			unix:!macx {
-				system("cp -r -f $$FILE $$DDIR")
+				system("cp -r -f $$FILE $$DDIR/")
 			}
 
 			macx {
-				system("cp -af $$FILE $$DDIR/")
+				system("rsync -avz $$FILE $$DDIR/")
 			}
 		}
 	}

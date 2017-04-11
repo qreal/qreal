@@ -20,10 +20,13 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 		plugins/robots/interpreters/trikKitInterpreterCommon \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikKernel \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
+		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
 		)
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base robots-2d-model robots-trik-kit qextserialport qslog robots-trik-kit-interpreter-common \
+		robots-utils robots-kit-base robots-2d-model robots-trik-kit qslog robots-trik-kit-interpreter-common \
 		)
 
 HEADERS += \

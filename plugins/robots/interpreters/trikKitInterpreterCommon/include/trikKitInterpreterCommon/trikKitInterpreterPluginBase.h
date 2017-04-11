@@ -15,6 +15,7 @@
 #pragma once
 
 #include <QtCore/QScopedPointer>
+#include <QtCore/QSharedPointer>
 
 #include <kitBase/kitPluginInterface.h>
 #include <twoDModel/robotModel/twoDRobotModel.h>
@@ -26,12 +27,17 @@
 #include "robotModel/twoD/trikTwoDRobotModel.h"
 #include "trikAdditionalPreferences.h"
 
+#include <trikKitInterpreterCommon/trikQtsInterpreter.h>
+
+/// @todo: refactor
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
+
 #include "declSpec.h"
 
 namespace trik {
 
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikKitInterpreterPluginBase
-		: public QObject, public kitBase::KitPluginInterface
+		: public QObject, public kitBase::KitPluginInterface, /*for now*/ public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 	Q_INTERFACES(kitBase::KitPluginInterface)
@@ -63,8 +69,19 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
+	TrikQtsInterpreter * qtsInterpreter() const;
+
+signals:
+	void started();
+	void stopped(qReal::interpretation::StopReason reason);
+	void codeInterpretationStarted(const QString &code);
+
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
+
+	void testStart(); // QtS
+	void testStop();
+	void onTabChanged(const qReal::TabInfo &info);
 
 protected:
 	/// Takes ownership over all supplied pointers.
@@ -74,10 +91,24 @@ protected:
 			, blocks::TrikBlocksFactoryBase * const blocksFactory
 			);
 
+	qReal::gui::MainWindowInterpretersInterface *mMainWindow;
+
 private:
+	void startJSInterpretation(const QString &code);
+	void startJSInterpretation(const QString &code, const QString &inputs);
+
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
-	QScopedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+
+	QScopedPointer<TrikQtsInterpreter> mQtsInterpreter;
+
+	QAction mStart;
+	QAction mStop;
+
+	bool mIsModelSelected = false;
+
+	qReal::SystemEvents *mSystemEvents = nullptr; // Does not have ownership
 
 	/// @todo Use shared pointers instead of this sh~.
 	/// Ownership depends on mOwnsBlocksFactory flag.
@@ -89,6 +120,7 @@ private:
 	bool mOwnsAdditionalPreferences = true;
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
+	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership.
 	QString mCurrentlySelectedModelName;
 };
 

@@ -26,8 +26,8 @@ SUBDIRS += \
 	mouseGestures \
 	hotKeyManager \
 	brandManager \
-	pluginManager \
 	metaMetaModel \
+	pluginManager \
 	toolPluginInterface \
 	thirdparty \
 
@@ -80,4 +80,5 @@ brandManager.depends = \
 	pluginManager \
 
 pluginManager.depends = \
+	metaMetaModel \
 	toolPluginInterface \

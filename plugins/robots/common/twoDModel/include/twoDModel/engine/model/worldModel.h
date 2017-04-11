@@ -27,6 +27,10 @@
 
 class QGraphicsItem;
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace twoDModel {
 
 namespace items {
@@ -44,6 +48,8 @@ class TWO_D_MODEL_EXPORT WorldModel : public QObject
 
 public:
 	WorldModel();
+
+	void init(qReal::ErrorReporterInterface &errorReporter);
 
 	/// Measures the distance between robot and wall
 	int sonarReading(const QPointF &position, qreal direction) const;
@@ -187,6 +193,7 @@ private:
 	Image mBackgroundImage;
 	QRect mBackgroundRect;
 	QScopedPointer<QDomDocument> mXmlFactory;
+	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn`t take ownership.
 };
 
 }

@@ -190,5 +190,6 @@
         <file>templates/accelerometer/accelerometer.t</file>
         <file>templates/gyroscope/gyroscope.t</file>
         <file>templates/variables/randomInitialization.t</file>
+        <file>templates/subprograms/subprogramArgument.t</file>
     </qresource>
 </RCC>

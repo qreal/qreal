@@ -105,8 +105,8 @@ QList<Error> const &LuaToolbox::errors() const
 
 void LuaToolbox::addIntrinsicFunction(const QString &name
 		, core::types::TypeExpression * const returnType
-		, QList<core::types::TypeExpression *> const &parameterTypes
-		, std::function<QVariant(const QList<QVariant> &)> const &semantic)
+		, const QList<core::types::TypeExpression *> &parameterTypes
+		, const std::function<QVariant(const QList<QVariant> &)> &semantic)
 {
 	QList<QSharedPointer<core::types::TypeExpression>> wrappedParameterTypes;
 	for (core::types::TypeExpression * const type : parameterTypes) {

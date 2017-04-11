@@ -61,6 +61,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)
 	{
 		mView->setEnabled(info.type() != qReal::TabInfo::TabType::other);
+		mCurrentTabInfo = info.type();
 	};
 
 	const auto reloadWorld = [this, &logicalModel, &interpretersInterface, &projectManager]()
@@ -94,11 +95,17 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, Qt::UniqueConnection);
 
 		connect(this, &twoDModel::TwoDModelControlInterface::runButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::interpret
-				, Qt::UniqueConnection);
+				, [this, &interpreterControl](){
+			if (mCurrentTabInfo == qReal::TabInfo::TabType::editor) {
+				emit interpreterControl.interpret();
+			} else {
+				emit interpreterControl.startJsInterpretation();
+			}
+		});
 
-		connect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::userStopRobot
+		connect(this, SIGNAL(stopButtonPressed())
+				, &interpreterControl
+				, SIGNAL(stopAllInterpretation())
 				, Qt::UniqueConnection);
 	};
 

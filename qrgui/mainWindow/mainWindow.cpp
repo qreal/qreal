@@ -42,6 +42,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/qRealFileDialog.h>
+#include <qrutils/smartDock.h>
 #include <qrutils/graphicsUtils/animatedEffects.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
@@ -1861,6 +1862,8 @@ void MainWindow::initDocks()
 	mUi->errorListWidget->init(this);
 	mUi->errorDock->setVisible(false);
 	resetToolbarSize(SettingsManager::value("toolbarSize").toInt());
+	utils::SmartDock::hideCloseButton(mUi->paletteDock);
+	utils::SmartDock::hideCloseButton(mUi->propertyDock);
 }
 
 void MainWindow::initGridProperties()

@@ -27,6 +27,11 @@ bool RealTimer::isTicking() const
 	return mTimer.isActive();
 }
 
+int RealTimer::interval() const
+{
+	return mTimer.interval();
+}
+
 void RealTimer::start()
 {
 	start(mTimer.interval());

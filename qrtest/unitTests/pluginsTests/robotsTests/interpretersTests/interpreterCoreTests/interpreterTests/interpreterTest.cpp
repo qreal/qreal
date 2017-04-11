@@ -17,7 +17,7 @@
 #include <QtCore/QCoreApplication>
 
 #include <qrtext/lua/luaToolbox.h>
-#include "interpreterCore/interpreter/interpreter.h"
+#include "interpreterCore/interpreter/blockInterpreter.h"
 
 using namespace qrTest::robotsTests::interpreterCoreTests;
 
@@ -116,7 +116,7 @@ void InterpreterTest::SetUp()
 			);
 	EXPECT_CALL(mBlocksFactoryManager, enabledBlocks(_)).Times(0);
 
-	mInterpreter.reset(new Interpreter(
+	mInterpreter.reset(new BlockInterpreter(
 			mQrguiFacade->graphicalModelAssistInterface()
 			, mQrguiFacade->logicalModelAssistInterface()
 			, mQrguiFacade->mainWindowInterpretersInterface()

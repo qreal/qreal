@@ -52,6 +52,20 @@ bool SmartDock::isCentral() const
 			&& mMainWindow->dockWidgetArea(const_cast<SmartDock *>(this)) == Qt::TopDockWidgetArea;
 }
 
+void SmartDock::hideCloseButton(QDockWidget *dock)
+{
+	static CloseButtonVisibilityFilter filter;
+	const QString buttonName = "qt_dockwidget_closebutton";
+	for (QObject *child : dock->children()) {
+		if (child->objectName() == buttonName) {
+			if (QWidget *button = dynamic_cast<QWidget *>(child)) {
+				button->installEventFilter(&filter);
+				button->hide();
+			}
+		}
+	}
+}
+
 void SmartDock::switchToDocked()
 {
 	if (mCurrentMode == Mode::Docked) {
@@ -241,4 +255,14 @@ void SmartDock::initDialog()
 			mInnerWidget->close();
 		}
 	});
+}
+
+bool SmartDock::CloseButtonVisibilityFilter::eventFilter(QObject *obj, QEvent *event)
+{
+	if (event->type() == QEvent::Show) {
+		dynamic_cast<QWidget *>(obj)->hide();
+		return true;
+	}
+
+	return QObject::eventFilter(obj, event);
 }

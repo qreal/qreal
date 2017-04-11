@@ -38,18 +38,19 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mErrorReporter = &errorReporter;
+	mWorldModel.init(errorReporter);
 	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
 	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
 		// and they need scene to be alive (in checker stopping interpretation means deleting all).
-		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
+		QTimer::singleShot(0, &interpreterControl, SIGNAL(stopAllInterpretation()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, [&](const QString &message) {
 		errorReporter.addError(message);
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
 		// and they need scene to be alive (in checker stopping interpretation means deleting all).
-		QTimer::singleShot(0, &interpreterControl, SLOT(stopRobot()));
+		QTimer::singleShot(0, &interpreterControl, SLOT(stopAllInterpretation()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError
 			, [this, &errorReporter](const QString &message) {
@@ -137,7 +138,7 @@ void Model::deserialize(const QDomDocument &xml)
 	const bool oneRobot = robotsList.at(0).toElement().elementsByTagName("robot").size() == 1
 			&& mRobotModels.size() == 1;
 
-	while(iterator.hasNext()) {
+	while (iterator.hasNext()) {
 		bool exist = false;
 		RobotModel *robotModel = iterator.next();
 

@@ -44,7 +44,7 @@ private slots:
 
 private:
 	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
-	bool send(const QByteArray &buffer) const override;
+	bool send1(const QByteArray &buffer) const override;
 	void keepAlive();
 
 	QByteArray receive(int size) const override;

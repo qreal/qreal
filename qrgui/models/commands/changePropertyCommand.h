@@ -33,6 +33,10 @@ public:
 			, const QString &property, const Id &id, const QVariant &newValue);
 
 	/// Use this overload to modify properties via models api with manual old value specification.
+	ChangePropertyCommand(qrRepo::LogicalRepoApi * const model
+			, const QString &property, const Id &id, const QVariant &oldValue, const QVariant &newValue);
+
+	/// Use this overload to modify properties via models api with manual old value specification.
 	ChangePropertyCommand(models::LogicalModelAssistApi * const model
 			, const QString &property, const Id &id, const QVariant &oldValue, const QVariant &newValue);
 
@@ -44,6 +48,7 @@ private:
 	bool setProperty(const QVariant &value);
 
 	models::LogicalModelAssistApi *mLogicalModel;
+	qrRepo::LogicalRepoApi *mLogicalRepoApi;
 	const Id mId;
 	QString mPropertyName;
 

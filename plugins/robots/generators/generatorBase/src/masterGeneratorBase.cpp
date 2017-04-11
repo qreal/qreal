@@ -17,6 +17,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QPair>
 #include <QtCore/QStack>
+#include <QtCore/QRegularExpression>
 
 #include <qrutils/outFile.h>
 #include <qrutils/fileSystemUtils.h>
@@ -134,24 +135,28 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	}
 
 	QString resultCode = readTemplate("main.t");
-	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
-	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
-	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
-	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations(indentString));
-	resultCode.replace("@@MAIN_CODE@@", mainCode);
-	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
+	replaceWithAutoIndent(resultCode, "@@SUBPROGRAMS_FORWARDING@@"
+			, mCustomizer->factory()->subprograms()->forwardDeclarations());
+	replaceWithAutoIndent(resultCode, "@@SUBPROGRAMS@@"
+			, mCustomizer->factory()->subprograms()->implementations());
+	replaceWithAutoIndent(resultCode, "@@THREADS_FORWARDING@@"
+			, mCustomizer->factory()->threads().generateDeclarations());
+	replaceWithAutoIndent(resultCode, "@@THREADS@@"
+			, mCustomizer->factory()->threads().generateImplementations(indentString));
+	replaceWithAutoIndent(resultCode, "@@MAIN_CODE@@", mainCode);
+	replaceWithAutoIndent(resultCode, "@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1, indentString));
-	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
+	replaceWithAutoIndent(resultCode, "@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->terminateCode(), 1, indentString));
-	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
+	replaceWithAutoIndent(resultCode, "@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
 	const QString constantsString = mCustomizer->factory()->variables()->generateConstantsString();
 	const QString variablesString = mCustomizer->factory()->variables()->generateVariableString();
 	if (resultCode.contains("@@CONSTANTS@@")) {
-		resultCode.replace("@@CONSTANTS@@", constantsString);
-		resultCode.replace("@@VARIABLES@@", variablesString);
+		replaceWithAutoIndent(resultCode, "@@CONSTANTS@@", constantsString);
+		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", variablesString);
 	} else {
-		resultCode.replace("@@VARIABLES@@", constantsString + "\n" + variablesString);
+		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", constantsString + "\n" + variablesString);
 	}
 
 	// This will remove too many empty lines
@@ -253,4 +258,16 @@ void MasterGeneratorBase::outputCode(const QString &path, const QString &code)
 	utils::OutFile out(path);
 	utils::FileSystemUtils::setCreationDateToNow(path);
 	out() << code;
+}
+
+void MasterGeneratorBase::replaceWithAutoIndent(QString &where, const QString &what, const QString &withWhat)
+{
+	const QRegularExpression regexp(QString("^(([ \\t]*)%1)$").arg(what), QRegularExpression::MultilineOption);
+	const QRegularExpressionMatch match = regexp.match(where, 0
+			, QRegularExpression::NormalMatch, QRegularExpression::NoMatchOption);
+	if (match.hasMatch()) {
+		const QString wholeString = match.captured(1);
+		const QString indentString = match.captured(2);
+		where.replace(wholeString, utils::StringUtils::addIndent(withWhat, 1, indentString));
+	}
 }

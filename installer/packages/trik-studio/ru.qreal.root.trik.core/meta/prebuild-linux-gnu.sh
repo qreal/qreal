@@ -11,8 +11,10 @@ cp -pr $BIN_DIR/librobots-trik-qts-generator-library.so*                        
 cp -pr $BIN_DIR/librobots-trik-generator-base.so*                                  $PWD/../data/lib/
 cp -pr $BIN_DIR/librobots-trik-kit.so*                                             $PWD/../data/lib/
 cp -pr $BIN_DIR/librobots-trik-kit-interpreter-common.so*                          $PWD/../data/lib/
+cp -pr $BIN_DIR/*-x86*.so*                                                         $PWD/../data/lib/
 
 cp -pr $QT_DIR/lib/libQt5Network.so*                                               $PWD/../data/lib/
+cp -pr $QT_DIR/lib/libQt5Multimedia.so*                                            $PWD/../data/lib/
 
 cd "$(dirname "$0")"/../data
 rm -rf winscp

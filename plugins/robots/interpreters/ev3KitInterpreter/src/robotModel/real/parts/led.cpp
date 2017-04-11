@@ -33,7 +33,7 @@ Led::Led(const DeviceInfo &info, const PortInfo &port
 void Led::setColor(ev3::robotModel::parts::Ev3LedColor color)
 {
 	QByteArray command = Ev3DirectCommand::formCommand(11, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_WRITE_LED, command, index);
 	Ev3DirectCommand::addByteParameter(colorByte(color), command, index);

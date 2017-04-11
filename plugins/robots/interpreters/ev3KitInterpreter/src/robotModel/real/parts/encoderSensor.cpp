@@ -45,7 +45,7 @@ void EncoderSensor::read()
 void EncoderSensor::nullify()
 {
 	QByteArray command = communication::Ev3DirectCommand::formCommand(12, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	communication::Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::OUTPUT_CLR_COUNT, command, index);
 	communication::Ev3DirectCommand::addByteParameter(enums::daisyChainLayer::DaisyChainLayerEnum::EV3, command, index);

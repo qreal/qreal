@@ -41,10 +41,15 @@ void CreateElementsCommand::setElements(const QList<ElementInfo> &elements)
 
 void CreateElementsCommand::addExplosionCommands(const QList<qReal::ElementInfo> &elements)
 {
+	QMap<Id, IdList> targetOfMultipleSource;
 	for (const ElementInfo &element : elements) {
 		if (element.explosionTarget().isNull() || mGraphicalApi.graphicalRepoApi().exist(element.explosionTarget())) {
-			mExploser.handleCreationWithExplosion(this, mModels, element.id(), element.explosionTarget());
+			targetOfMultipleSource[element.explosionTarget()].append(element.id());
 		}
+	}
+
+	for (const Id &target : targetOfMultipleSource.keys()) {
+		mExploser.handleCreationWithExplosions(this, mModels, targetOfMultipleSource[target], target);
 	}
 }
 

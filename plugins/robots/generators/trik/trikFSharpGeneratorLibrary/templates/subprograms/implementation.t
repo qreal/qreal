@@ -1,3 +1,3 @@
-let @@NAME@@() =
+let @@NAME@@ (@@ARGUMENTS@@) =
 @@BODY@@
 

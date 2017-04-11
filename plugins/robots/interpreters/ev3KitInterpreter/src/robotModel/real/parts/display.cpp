@@ -33,7 +33,7 @@ Display::Display(const DeviceInfo &info, const PortInfo &port, RobotCommunicator
 void Display::drawPixel(int x, int y)
 {
 	QByteArray command = Ev3DirectCommand::formCommand(19, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::UI_DRAW_PIXEL, command, index);
 	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
@@ -47,7 +47,7 @@ void Display::drawPixel(int x, int y)
 void Display::drawLine(int x1, int y1, int x2, int y2)
 {
 	QByteArray command = Ev3DirectCommand::formCommand(25, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_LINE, command, index);
 	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
@@ -64,7 +64,7 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 {
 
 	QByteArray command = Ev3DirectCommand::formCommand(25, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	if (filled) {
 		Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_FILL_RECT, command, index);
@@ -84,7 +84,7 @@ void Display::drawRect(int x, int y, int width, int height, bool filled)
 void Display::drawCircle(int x, int y, int radius, bool filled)
 {
 	QByteArray command = Ev3DirectCommand::formCommand(22, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	if (filled) {
 		Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_FILL_CIRCLE, command, index);
@@ -104,7 +104,7 @@ void Display::drawCircle(int x, int y, int radius, bool filled)
 void Display::printText(int x, int y, const QString &text)
 {
 	QByteArray command = Ev3DirectCommand::formCommand(21 + text.length(), 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_TEXT, command, index);
 	Ev3DirectCommand::addByteParameter(enums::color::ColorEnum::FOREGROUND, command, index);
@@ -119,7 +119,7 @@ void Display::printText(int x, int y, const QString &text)
 void Display::clearScreen()
 {
 	QByteArray command = Ev3DirectCommand::formCommand(11, 0, 0, 0
-			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
+			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_REPLY);
 	int index = 7;
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_CLEAN, command, index);
 	Ev3DirectCommand::addOpcode(enums::opcode::OpcodeEnum::UI_DRAW_UPDATE, command, index);

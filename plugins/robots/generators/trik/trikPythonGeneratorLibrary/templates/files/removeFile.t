@@ -1,0 +1,1 @@
+self.script.removeFile("@@FILE@@");

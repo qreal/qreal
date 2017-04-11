@@ -125,11 +125,10 @@ Editor* Diagram::editor() const
 
 Type* Diagram::findType(const QString &name) const
 {
-	if (mTypes.contains(name)) {
-		return mTypes[name];
-	}
-
-	return mEditor.findType(name);
+	auto res = mTypes.value(name, nullptr);
+	if (!res)
+	       res = mEditor.findType(name);
+	return res;
 }
 
 const QMap<QString, Type *> &Diagram::types() const
