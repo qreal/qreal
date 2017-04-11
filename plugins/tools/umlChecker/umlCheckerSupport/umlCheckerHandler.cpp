@@ -126,7 +126,6 @@ bool UmlCheckerHandler::matchingLinksOfNode(const IdList &perfectLinks, const Id
 		}
 	}
 
-
 	return changeblePerfectLinks.count() == perfectLinks.count();
 }
 
@@ -151,27 +150,17 @@ bool UmlCheckerHandler::matchNodeElement(const Id &id, IdList &ordinaryValues, c
 	return false;
 }
 
-IdList UmlCheckerHandler::doShift(const IdList &list)
-{
-	IdList result = IdList();
-	result = list;
-	result.removeFirst();
-	result.append(list.at(0));
-	return result;
-}
 
 bool UmlCheckerHandler::checkMatchingNodes(IdList &perfectValues, IdList &ordinaryValues, const QString &blockName)
 {
 	IdList changeablePerfect = perfectValues;
 	IdList changeableOrdinary = ordinaryValues;
 
-	IdList lastShiftIds = changeablePerfect;
-
 	for (int i = 0; i < perfectValues.size(); ++i) {
 		for (const Id &id : changeablePerfect) {
 			bool nodeMatch = matchNodeElement(id, changeableOrdinary, blockName);
 			if (!nodeMatch) {
-				changeablePerfect = doShift(lastShiftIds);
+				changeablePerfect.move(0, changeablePerfect.size() - 1);
 				break;
 			}
 
@@ -303,7 +292,6 @@ bool UmlCheckerHandler::matchingExternalEdges(const QMultiHash<QString, Id> &res
 						break;
 					}
 				}
-
 			}
 		}
 	}

@@ -53,8 +53,6 @@ private:
 
 	QStringList getOptionsForBlock(const QString &blockFile);
 
-	IdList doShift(const IdList &list);
-
 	QString mQRealSourceFilesPath;
 	QString mPathToPerfect;
 	QString mPathToOrdinary;
