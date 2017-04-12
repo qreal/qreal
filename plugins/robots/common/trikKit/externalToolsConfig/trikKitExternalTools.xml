@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tools>
 	<platform name="Windows">
-		<tool name="PuTTY">./winscp/PuTTY/putty.exe</tool>
-		<tool name="gamepad">./gamepad.exe</tool>
-		<tool name="WinSCP">./winscp/WinSCP.exe</tool>
+	<!--<tool name="PuTTY" program="./winscp/PuTTY/putty.exe" arguments="-ssh @@TrikTcpServer"/>-->
+		<tool name="PuTTY" program="./winscp/PuTTY/putty.exe" arguments=""/>
+		<tool name="gamepad" program="./gamepad.exe" arguments=""/>
+		<tool name="WinSCP" program="./winscp/WinSCP.exe" arguments=""/>
 	</platform>
 	<platform name="Linux">
-		<tool name="gamepad">./gamepad</tool>
+		<tool name="gamepad" program="./gamepad" arguments=""/>
 	</platform>
 	<platform name="Mac">
 	</platform>

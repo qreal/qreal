@@ -1725,8 +1725,6 @@ void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 void MainWindow::addExternalToolActions()
 {
 	QMenu *externalToolsMenu = new QMenu(tr("External tools"));
-	mUi->menuTools->addMenu(externalToolsMenu);
-
 	const QString pathToConfigs = PlatformInfo::applicationDirPath() + "/externalToolsConfig";
 	const QString osName = PlatformInfo::prettyOsVersion();
 	const QStringList configs = QDir(pathToConfigs).entryList().filter(".xml");
@@ -1746,11 +1744,18 @@ void MainWindow::addExternalToolActions()
 					; tool = tool.nextSiblingElement("tool"))
 			{
 				const QString toolName = tool.attribute("name");
-				const QString program = PlatformInfo::invariantPath(tool.text());
+				const QString program = PlatformInfo::invariantPath(tool.attribute("program"));
+				QStringList arguments = tool.attribute("arguments").split(" ");
+				for (QString &arg : arguments) {
+					if (arg.startsWith("@@")) {
+						arg = SettingsManager::value(arg.remove("@@")).toString();
+					}
+				}
+
 				if (QFile(program).exists()) {
 					QAction *action = new QAction(toolName, externalToolsMenu);
-					connect(action, &QAction::toggle, [=](){
-						QProcess().start(program);
+					connect(action, &QAction::triggered, [=](){
+						QProcess::startDetached(program, arguments);
 					});
 
 					externalToolsMenu->addAction(action);
@@ -1761,8 +1766,10 @@ void MainWindow::addExternalToolActions()
 		}
 	}
 
-	if (externalToolsMenu->actions().isEmpty()) {
-		externalToolsMenu->hide();
+	if (!externalToolsMenu->actions().isEmpty()) {
+		mUi->menuTools->addMenu(externalToolsMenu);
+	} else {
+		delete externalToolsMenu;
 	}
 }
 
