@@ -19,3 +19,5 @@ include(../../../../global.pri)
 TEMPLATE = lib
 
 include(trikKit.pri)
+
+copyToDestdir(externalToolsConfig, now)

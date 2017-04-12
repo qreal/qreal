@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools>
+	<platform name="Windows">
+		<tool name="PuTTY">./winscp/PuTTY/putty.exe</tool>
+		<tool name="gamepad">./gamepad.exe</tool>
+		<tool name="WinSCP">./winscp/WinSCP.exe</tool>
+	</platform>
+	<platform name="Linux">
+		<tool name="gamepad">./gamepad</tool>
+	</platform>
+	<platform name="Mac">
+	</platform>
+</tools>
