@@ -244,9 +244,14 @@ QVariant GraphicalModel::data(const QModelIndex &index, int role) const
 		GraphicalModelItem *item = static_cast<GraphicalModelItem*>(index.internalPointer());
 		Q_ASSERT(item);
 		switch (role) {
-		case Qt::DisplayRole:
-		case Qt::EditRole:
-			return mApi.name(item->id());
+		case Qt::DisplayRole: {
+			QString value = mApi.name(item->id());
+			return value.split(propertiesSeparator).at(0);
+		}
+		case Qt::EditRole: {
+			QString value = mApi.name(item->id());
+			return value.split(propertiesSeparator).at(0);
+		}
 		case Qt::DecorationRole:
 			return mEditorManagerInterface.icon(item->id());
 		case roles::idRole:
