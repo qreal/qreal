@@ -524,10 +524,33 @@ void GraphicType::generateDescription(OutFile &out) const
 	out() << "\t\t\tsetDescription(QObject::tr(\"" << mDescription << "\"));\n";
 }
 
+QStringList GraphicType::sortProperties(const QList<QString> &properties) const
+{
+	QList<QString> result;
+
+	QStringList propertiesWithRoles;
+	QStringList pureProperties;
+
+	for (const QString &property : properties) {
+		if (property.contains("!")) {
+			propertiesWithRoles.append(property);
+		} else {
+			pureProperties.append(property);
+		}
+	}
+
+	propertiesWithRoles.sort();
+	pureProperties.sort();
+	result = propertiesWithRoles + pureProperties;
+
+	return result;
+}
+
 void GraphicType::generatePropertyData(OutFile &out) const
 {
 	out() << "\t\tvoid initProperties()\n\t\t{\n";
-	const auto keys = mProperties.keys();
+	const QStringList keys = sortProperties(mProperties.keys());
+
 	for (const QString &key : keys) {
 		Property *property = mProperties[key];
 

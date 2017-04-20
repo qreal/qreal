@@ -147,6 +147,7 @@ private:
 	bool generateListForElement(utils::OutFile &out, bool isNotFirst, const QStringList &list) const;
 
 	QVector<int> toIntVector(const QString &s, bool * isOk) const;
+	QStringList sortProperties(const QList<QString> &properties) const;
 
 	QString mDescription;
 };
