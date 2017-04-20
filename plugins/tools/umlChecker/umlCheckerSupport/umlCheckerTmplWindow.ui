@@ -6,95 +6,139 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
-    <height>416</height>
+    <width>583</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Template Window</string>
   </property>
-  <widget class="QPushButton" name="saveButton">
+  <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>390</x>
-     <y>380</y>
-     <width>89</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Save</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>30</y>
+     <x>19</x>
+     <y>19</y>
      <width>251</width>
-     <height>341</height>
+     <height>311</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QListWidget" name="blockList"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>300</x>
-     <y>40</y>
-     <width>301</width>
-     <height>301</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QWidget" name="widget" native="true">
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>50</y>
-         <width>251</width>
-         <height>211</height>
-        </rect>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>-1</y>
+      <width>261</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QListWidget" name="blockList">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
        </property>
-       <property name="text">
-        <string/>
+       <property name="lineWidth">
+        <number>1</number>
        </property>
       </widget>
-     </widget>
-    </item>
-   </layout>
+     </item>
+    </layout>
+   </widget>
   </widget>
-  <widget class="QPushButton" name="saveEdgesButton">
+  <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>380</y>
-     <width>89</width>
+     <x>290</x>
+     <y>19</y>
+     <width>291</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>281</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QSplitter" name="splitter">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>340</y>
+     <width>398</width>
      <height>25</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Save Edges</string>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
    </property>
-  </widget>
-  <widget class="QPushButton" name="addToCollection">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>380</y>
-     <width>161</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Add to Collection</string>
-   </property>
+   <widget class="QPushButton" name="addToCollection">
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Add to Collection</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>52</width>
+      <height>444</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="saveButton">
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Save</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="saveEdgesButton">
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Save Edges</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
