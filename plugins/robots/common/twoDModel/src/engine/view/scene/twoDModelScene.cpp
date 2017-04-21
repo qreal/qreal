@@ -394,8 +394,7 @@ void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		setDragMode(QGraphicsView::NoDrag);
 		items::ImageItem *item = new items::ImageItem(mModel.worldModel().background()
 				, mModel.worldModel().backgroundRect());
-		mModel.worldModel().background() = model::Image();
-		mModel.worldModel().backgroundRect() = QRect();
+		mModel.worldModel().setBackground(model::Image(), QRect());
 		mModel.worldModel().addImage(item);
 		item->setSelected(true);
 		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {

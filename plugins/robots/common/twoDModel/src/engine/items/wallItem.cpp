@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/mathUtils/geometry.h>
+#include <twoDModel/engine/model/constants.h>
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -86,7 +87,7 @@ void WallItem::handleReposition(const QPointF &pos)
 {
 	if (((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
 		const QPointF deltaPos = pos - mOldPosition;
-		if (deltaPos == QPointF(0,0)) {
+		if (mathUtils::Geometry::eq(deltaPos, QPointF(0,0), twoDModel::lowPrecision)) {
 			return;
 		}
 

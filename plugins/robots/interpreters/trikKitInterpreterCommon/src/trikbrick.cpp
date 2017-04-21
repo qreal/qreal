@@ -26,6 +26,8 @@
 #include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
 #include <kitBase/robotModel/robotParts/random.h>
+#include <kitBase/robotModel/robotParts/random.h>
+#include <twoDModel/robotModel/parts/marker.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
 
@@ -158,6 +160,21 @@ trikControl::MotorInterface *TrikBrick::motor(const QString &port)
 		mMotors[port] = new TrikMotorEmu(mot);
 	}
 	return mMotors[port];
+}
+
+trikControl::MarkerInterface *TrikBrick::marker()
+{
+	kitBase::robotModel::PortInfo markerPort = kitBase::robotModel::RobotModelUtils::findPort(*mTwoDRobotModel
+			, "MarkerPort"
+			, kitBase::robotModel::Direction::output);
+	if (markerPort.isValid()) {
+		using Marker = twoDModel::robotModel::parts::Marker;
+		Marker* marker = kitBase::robotModel::RobotModelUtils::findDevice<Marker>(*mTwoDRobotModel, markerPort);
+		mTrikProxyMarker.reset(new TrikProxyMarker(marker));
+		return mTrikProxyMarker.data();
+	}
+
+	return nullptr;
 }
 
 trikControl::SensorInterface *TrikBrick::sensor(const QString &port)
