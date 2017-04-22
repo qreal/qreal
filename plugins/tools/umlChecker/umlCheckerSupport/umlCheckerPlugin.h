@@ -30,6 +30,7 @@
 #include "umlCheckerPreferencePage.h"
 #include "umlCheckerTemplate.h"
 #include "umlCheckerPerfectSolution.h"
+#include "umlCheckerCustomizer.h"
 
 namespace qReal {
 namespace umlChecker {
@@ -48,6 +49,7 @@ public:
 	virtual QList<qReal::ActionInfo> actions();
 
 	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
+	Customizer *customizationInterface() override;  // Does not transfer ownership.
 
 private slots:
 	void parseSolution();
@@ -91,6 +93,9 @@ private:
 	qrRepo::RepoApi *mRepoApi;
 
 	UmlCheckerHandler *mHandler;
+
+	UmlCheckerCustomizer mCustomizer;
+
 };
 }
 }

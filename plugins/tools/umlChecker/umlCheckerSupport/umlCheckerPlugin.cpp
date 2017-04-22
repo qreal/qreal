@@ -35,6 +35,11 @@ UmlCheckerPlugin::UmlCheckerPlugin()
 {
 }
 
+Customizer * UmlCheckerPlugin::customizationInterface()
+{
+	return &mCustomizer;
+}
+
 
 UmlCheckerPlugin::~UmlCheckerPlugin()
 {

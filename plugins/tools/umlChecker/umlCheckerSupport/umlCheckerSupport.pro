@@ -35,7 +35,8 @@ HEADERS = \
 	umlCheckerTmplWindow.h \
 	umlCheckerPreferencePage.h \
 	umlCheckerTemplate.h \
-	umlCheckerPerfectSolution.h
+	umlCheckerPerfectSolution.h \
+    umlCheckerCustomizer.h
 
 
 SOURCES = \
@@ -44,7 +45,8 @@ SOURCES = \
 	umlCheckerTmplWindow.cpp \
 	umlCheckerPreferencePage.cpp \
 	umlCheckerTemplate.cpp \
-	umlCheckerPerfectSolution.cpp
+	umlCheckerPerfectSolution.cpp \
+    umlCheckerCustomizer.cpp
 
 FORMS += \
 	umlCheckerTmplWindow.ui \
