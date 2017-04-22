@@ -30,8 +30,7 @@ private:
 	qrRepo::RepoControlInterface *mRepoControlIFace;
 	qrRepo::RepoApi *mPerfectRepoApi;
 
-	//TODO
-	QString mLocationDirPath;
+	QString mLocationDirPath = "";
 };
 
 }

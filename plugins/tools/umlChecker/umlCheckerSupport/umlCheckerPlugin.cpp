@@ -55,7 +55,7 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
 
-	mHandler = new UmlCheckerHandler(/*mPerfectRepoApi, mOrdinaryRepoApi*/);
+	mHandler = new UmlCheckerHandler();
 }
 
 QPair<QString, gui::PreferencesPage *> UmlCheckerPlugin::preferencesPage()
@@ -123,14 +123,14 @@ void UmlCheckerPlugin::addElementsToBlock()
 	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
 
 	mTemplatesWindow->setBlockName(blockName);
-	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/test/";
+	const QString tempDirPath = mQRealSourceFilesPath + "/plugins/tools/umlChecker/test/";
 	openTemplatesWindow(tempDirPath);
 }
 
 void UmlCheckerPlugin::addElementsToEdge()
 {
 	const QString edgeName = QInputDialog::getText(nullptr, tr("enter edge name"), tr("enter edge name"));
-	const QString tempDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/edge/";
+	const QString tempDirPath = mQRealSourceFilesPath + "/plugins/tools/umlChecker/edge/";
 	mTemplatesWindow->setBlockName(edgeName);
 
 	openTemplatesWindow(tempDirPath);
@@ -148,11 +148,10 @@ void UmlCheckerPlugin::savePerfectSolution()
 	mUmlCheckerPerfectSolution->saveTempSolution();
 }
 
-
 void UmlCheckerPlugin::parseSolution()
 {
-	const QString ordinaryPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/ordinary/check.qrs";
-	const QString perfectSolutionsPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
+	const QString ordinaryPath = mRepoControlIFace->workingFile();
+	const QString perfectSolutionsPath = QFileDialog::getExistingDirectory(nullptr, tr("Specify perfect directory:")) + "/";;
 	mHandler->init(ordinaryPath, perfectSolutionsPath);
 	bool matchingResult = mHandler->matchingResult();
 	mHandler->clear();

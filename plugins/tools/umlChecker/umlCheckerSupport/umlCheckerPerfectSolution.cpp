@@ -10,15 +10,13 @@ UmlCheckerPerfectSolution::UmlCheckerPerfectSolution(gui::MainWindowInterpreters
 		: mMainWindowIFace(mainWindowIFace)
 		, mRepoControlIFace(repoControlIFace)
 {
-	mLocationDirPath = "/home/julia/qreal/qreal/plugins/tools/umlChecker/perfect/";
-	mPerfectRepoApi = new qrRepo::RepoApi("/home/julia/qreal/qreal/plugins/umlChecker/perfect", true);
+	mPerfectRepoApi = new qrRepo::RepoApi("", true);
 }
 
 UmlCheckerPerfectSolution::~UmlCheckerPerfectSolution()
 {
 
 }
-
 
 void UmlCheckerPerfectSolution::saveTempSolution()
 {
@@ -28,14 +26,12 @@ void UmlCheckerPerfectSolution::saveTempSolution()
 	mPerfectRepoApi->open(fileName);
 }
 
-
 void UmlCheckerPerfectSolution::addElementsToBlock(const QString &blockName)
 {
 	IdList activeElements = mMainWindowIFace->selectedElementsOnActiveDiagram();
 	for (Id &id : activeElements) {
 		mPerfectRepoApi->setProperty(id, "blockName", QVariant(blockName));
 	}
-
 
 	saveAll();
 }
