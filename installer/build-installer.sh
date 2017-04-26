@@ -36,6 +36,8 @@ find $PWD/packages/$PRODUCT -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
 find $PWD/packages/$PRODUCT -name prebuild-common.sh | bash
 find $PWD/packages/$PRODUCT -name prebuild-$OS.sh | bash
 
+find -type d -empty -delete
+
 echo "Building online installer..."
 $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS_EXT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-$OS_EXT-installer
 
