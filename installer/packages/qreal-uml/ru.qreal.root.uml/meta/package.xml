@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>UML Plugin</DisplayName>
+    <DisplayName xml:lang="ru_ru">Плагин для языка UML</DisplayName>
+    <Description>UML Plugin.</Description>
+    <Description xml:lang="ru_ru">Плагин для языка UML.</Description>
+    <Version>0.0.2</Version>
+    <ReleaseDate>2016-03-07</ReleaseDate>
+    <Licenses/>
+    <SortingPriority>20</SortingPriority>
+    <ForcedInstallation>true</ForcedInstallation>
+</Package>
