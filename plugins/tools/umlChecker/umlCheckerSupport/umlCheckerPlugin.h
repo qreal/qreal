@@ -47,7 +47,6 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 
-//	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
 	Customizer *customizationInterface() override;  // Does not transfer ownership.
 
 private slots:

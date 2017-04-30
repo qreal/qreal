@@ -16,15 +16,12 @@ public:
 	UmlCheckerTemplate(gui::MainWindowInterpretersInterface *mainWindowIFace
 			, qrRepo::RepoControlInterface *repoControlIFace);
 	~UmlCheckerTemplate();
-
 	void saveEdgeTemplate();
 	void saveTemplate();
-
 
 private:
 	gui::MainWindowInterpretersInterface *mMainWindowIFace;
 	qrRepo::RepoControlInterface *mRepoControlIFace;
 
 };
-
 }

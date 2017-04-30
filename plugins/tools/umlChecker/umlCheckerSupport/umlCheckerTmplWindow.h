@@ -45,20 +45,13 @@ signals:
 
 private slots:
 	void blocksButtonActivate();
-
 	void edgesButtonActivate();
 	void openPicture(QListWidgetItem *item);
 	void addToCollection();
 
-
 private:
-
 	QString mBlockName = "";
 	QStringList mFiles;
 	Ui::umlCheckerForm *mUi;
-
 };
-
-
-
 }
