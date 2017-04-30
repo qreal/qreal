@@ -12,7 +12,6 @@
     <Watermark>../images/qreal-watermark.png</Watermark>
 
     <StartMenuDir>QReal UML</StartMenuDir>
-    <UninstallerName>maintenance</UninstallerName>
     <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
