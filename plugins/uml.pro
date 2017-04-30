@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2015 Yurii Litvinov, QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include (qreal.pri)
+TEMPLATE = subdirs
 
-plugins.file = plugins/uml.pro
+include (common.pri)
+
+SUBDIRS += \
+	$$PWD/tools/umlChecker/umlChecker.pro \
+
