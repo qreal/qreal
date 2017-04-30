@@ -36,7 +36,7 @@ HEADERS = \
 	umlCheckerPreferencePage.h \
 	umlCheckerTemplate.h \
 	umlCheckerPerfectSolution.h \
-    umlCheckerCustomizer.h
+	umlCheckerCustomizer.h
 
 
 SOURCES = \
@@ -46,8 +46,16 @@ SOURCES = \
 	umlCheckerPreferencePage.cpp \
 	umlCheckerTemplate.cpp \
 	umlCheckerPerfectSolution.cpp \
-    umlCheckerCustomizer.cpp
+	umlCheckerCustomizer.cpp
 
 FORMS += \
 	umlCheckerTmplWindow.ui \
 	umlCheckerPreferencePage.ui
+
+win32 {
+	system(cmd /C "xcopy test $$DESTDIR\\templates\\ /s /e /y")
+	system(cmd /C "xcopy edge $$DESTDIR\\edge\\ /s /e /y")
+}
+else {
+	system(mkdir -p $$DESTDIR/templates/; mkdir -p $$DESTDIR/edge/; cp test/* $$DESTDIR/templates/; cp edge/* $$DESTDIR/edge/)
+}
