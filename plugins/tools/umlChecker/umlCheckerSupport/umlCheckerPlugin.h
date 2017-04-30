@@ -27,7 +27,6 @@
 
 #include "umlCheckerHandler.h"
 #include "umlCheckerTmplWindow.h"
-#include "umlCheckerPreferencePage.h"
 #include "umlCheckerTemplate.h"
 #include "umlCheckerPerfectSolution.h"
 #include "umlCheckerCustomizer.h"
@@ -48,7 +47,7 @@ public:
 	virtual void init(qReal::PluginConfigurator const &configurator);
 	virtual QList<qReal::ActionInfo> actions();
 
-	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
+//	virtual QPair<QString, gui::PreferencesPage *> preferencesPage();
 	Customizer *customizationInterface() override;  // Does not transfer ownership.
 
 private slots:
@@ -67,7 +66,6 @@ private:
 	gui::MainWindowInterpretersInterface *mMainWindowIFace;
 	qrRepo::RepoControlInterface *mRepoControlIFace;
 
-
 	QMenu *mUmlCheckerMenu;
 	QMenu *mPlaceMenu;
 
@@ -80,12 +78,11 @@ private:
 	QAction *mOpenTemplatesWindowAction;
 
 	UmlCheckerTmplWindow *mTemplatesWindow;
-	UmlCheckerPreferencePage *mPreferencesPage;
 
 	UmlCheckerTemplate *mUmlCheckerTemplate;
 	UmlCheckerPerfectSolution *mUmlCheckerPerfectSolution;
 
-	QString mQRealSourceFilesPath;
+	QString mQRealFilesPath;
 	QList<qReal::ActionInfo> mActionInfos;
 
 	qrRepo::RepoApi *mOrdinaryRepoApi;

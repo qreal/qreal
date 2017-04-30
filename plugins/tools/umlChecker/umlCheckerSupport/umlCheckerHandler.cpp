@@ -25,10 +25,10 @@ using namespace qReal;
 
 UmlCheckerHandler::UmlCheckerHandler()
 {
-	mQRealSourceFilesPath = "/home/julia/qreal/qreal";
-	mPathToOrdinary = mQRealSourceFilesPath + "/plugins/tools/umlChecker/ordinary/";
+	mQRealFilesPath = "";
+	mPathToOrdinary = mQRealFilesPath + "/ordinary/";
 
-	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/ordinary", true);
+	mOrdinaryRepoApi = new qrRepo::RepoApi(mQRealFilesPath + "/plugins/umlChecker/ordinary", true);
 }
 
 UmlCheckerHandler::~UmlCheckerHandler()
@@ -38,7 +38,7 @@ UmlCheckerHandler::~UmlCheckerHandler()
 void UmlCheckerHandler::init(const QString &ordinaryPath, const QString &perfectSolutionPath)
 {
 	mPathToPerfect = perfectSolutionPath;
-	mPerfectRepoFromList = new qrRepo::RepoApi(mQRealSourceFilesPath + "/plugins/umlChecker/perfect/", true);
+	mPerfectRepoFromList = new qrRepo::RepoApi(mQRealFilesPath + "/plugins/umlChecker/perfect/", true);
 	QDir dir(mPathToPerfect);
 	QStringList filters;
 	filters << "*.txt";
@@ -48,7 +48,6 @@ void UmlCheckerHandler::init(const QString &ordinaryPath, const QString &perfect
 		QPair<QString, QString> pair = qMakePair(dir.absoluteFilePath(fileName), fileName);
 		mBlockNames.append(pair);
 	}
-
 
 	QString perfectEdgesPath = perfectSolutionPath + "edges/";
 	QDir edgesDir(perfectEdgesPath);

@@ -30,8 +30,8 @@ using namespace utils;
 
 UmlCheckerPlugin::UmlCheckerPlugin()
 	: mTemplatesWindow(nullptr)
-	, mPreferencesPage(new UmlCheckerPreferencePage())
 	, mUmlCheckerTemplate(nullptr)
+	, mQRealFilesPath("")
 {
 }
 
@@ -48,7 +48,7 @@ UmlCheckerPlugin::~UmlCheckerPlugin()
 void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 {
 	mErrorReporter = configurator.mainWindowInterpretersInterface().errorReporter();
-	mQRealSourceFilesPath = SettingsManager::value("qrealSourcesLocation", ".").toString();
+	mQRealFilesPath = SettingsManager::value("pathToToolPlugins", ".").toString();
 
 	mMainWindowIFace = &configurator.mainWindowInterpretersInterface();
 	mRepoControlIFace = &configurator.repoControlInterface();
@@ -61,11 +61,6 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
 
 	mHandler = new UmlCheckerHandler();
-}
-
-QPair<QString, gui::PreferencesPage *> UmlCheckerPlugin::preferencesPage()
-{
-	return qMakePair(tr("UmlChecker"), static_cast<gui::PreferencesPage *>(mPreferencesPage));
 }
 
 QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
@@ -128,18 +123,17 @@ void UmlCheckerPlugin::addElementsToBlock()
 	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
 
 	mTemplatesWindow->setBlockName(blockName);
-	const QString tempDirPath = mQRealSourceFilesPath + "/plugins/tools/umlChecker/test/";
+	const QString tempDirPath = mQRealFilesPath + "/templates/";
 	openTemplatesWindow(tempDirPath);
 }
 
 void UmlCheckerPlugin::addElementsToEdge()
 {
 	const QString edgeName = QInputDialog::getText(nullptr, tr("enter edge name"), tr("enter edge name"));
-	const QString tempDirPath = mQRealSourceFilesPath + "/plugins/tools/umlChecker/edge/";
+	const QString tempDirPath = mQRealFilesPath + "/edge/";
 	mTemplatesWindow->setBlockName(edgeName);
 
 	openTemplatesWindow(tempDirPath);
-
 }
 
 void UmlCheckerPlugin::openTemplatesWindow(const QString &name)

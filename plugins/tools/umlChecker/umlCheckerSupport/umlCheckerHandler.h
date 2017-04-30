@@ -53,7 +53,7 @@ private:
 
 	QStringList getOptionsForBlock(const QString &blockFile);
 
-	QString mQRealSourceFilesPath;
+	QString mQRealFilesPath;
 	QString mPathToPerfect;
 	QString mPathToOrdinary;
 

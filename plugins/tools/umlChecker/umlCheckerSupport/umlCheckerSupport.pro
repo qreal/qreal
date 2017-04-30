@@ -33,7 +33,6 @@ HEADERS = \
 	umlCheckerPlugin.h \
 	umlCheckerHandler.h \
 	umlCheckerTmplWindow.h \
-	umlCheckerPreferencePage.h \
 	umlCheckerTemplate.h \
 	umlCheckerPerfectSolution.h \
 	umlCheckerCustomizer.h
@@ -43,14 +42,12 @@ SOURCES = \
 	umlCheckerPlugin.cpp \
 	umlCheckerHandler.cpp \
 	umlCheckerTmplWindow.cpp \
-	umlCheckerPreferencePage.cpp \
 	umlCheckerTemplate.cpp \
 	umlCheckerPerfectSolution.cpp \
 	umlCheckerCustomizer.cpp
 
 FORMS += \
-	umlCheckerTmplWindow.ui \
-	umlCheckerPreferencePage.ui
+	umlCheckerTmplWindow.ui
 
 win32 {
 	system(cmd /C "xcopy test $$DESTDIR\\templates\\ /s /e /y")
