@@ -55,4 +55,8 @@ win32 {
 }
 else {
 	system(mkdir -p $$DESTDIR/templates/; mkdir -p $$DESTDIR/edge/; cp test/* $$DESTDIR/templates/; cp edge/* $$DESTDIR/edge/)
+    system(mkdir -p $$DESTDIR/../../translations/; mkdir -p $$DESTDIR/../../translations/fr; mkdir -p $$DESTDIR/../../translations/ru;)
+    system(touch $$DESTDIR/../../changelog.txt; touch $$DESTDIR/../editors/changelog.txt)
+
+
 }
