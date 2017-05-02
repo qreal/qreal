@@ -194,18 +194,23 @@ void UmlCheckerHandler::researchEdge(QMultiHash<QString, Id> &residue, const IdL
 bool UmlCheckerHandler::matchingNodesInsideABlock(QMultiHash<QString, Id> perfectElements
 		, QMultiHash<QString, Id> &ordinaryElements, const QString &blockName)
 {
-	const QString umlClass = "UmlClass";
-	IdList ordinaryValues = ordinaryElements.values(umlClass);
-	IdList perfectValues = perfectElements.values(umlClass);
-	bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues, blockName);
-	if (resOfCheckMatching == false) {
-		return resOfCheckMatching;
-	}
+	QStringList nodes;
+	nodes.append("UmlClass");
+	nodes.append("Interface");
 
-	ordinaryElements.remove(umlClass);
+	for (const QString &node :nodes) {
+		IdList ordinaryValues = ordinaryElements.values(node);
+		IdList perfectValues = perfectElements.values(node);
+		bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues, blockName);
+		if (resOfCheckMatching == false) {
+			return resOfCheckMatching;
+		}
 
-	for (const Id &ordValue : ordinaryValues) {
-		ordinaryElements.insertMulti(umlClass, ordValue);
+		ordinaryElements.remove(node);
+
+		for (const Id &ordValue : ordinaryValues) {
+			ordinaryElements.insertMulti(node, ordValue);
+		}
 	}
 
 	return true;
