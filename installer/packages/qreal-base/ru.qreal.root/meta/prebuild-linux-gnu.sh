@@ -15,6 +15,7 @@ cp     $INSTALLER_ROOT/platform/$PRODUCT                                $PWD/../
 cp     $INSTALLER_ROOT/platform/$PRODUCT-linux-gnu-platform.config      $PWD/../data/bin/platform.config || :
 
 cp -pr $BIN_DIR/libqrgraph.so*                                          $PWD/../data/lib/
+cp -pr $BIN_DIR/libqrkernel.so*                                         $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrrepo.so*                                           $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrutils.so*                                          $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrtext.so*                                           $PWD/../data/lib/
