@@ -24,10 +24,8 @@ UmlCheckerTmplWindow::UmlCheckerTmplWindow(QWidget *parent)
 {
 	mUi->setupUi(this);
 	mUi->saveButton->setEnabled(true);
-	mUi->saveEdgesButton->setEnabled(true);
 
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(blocksButtonActivate()));
-	connect(mUi->saveEdgesButton, SIGNAL(clicked()), this, SLOT(edgesButtonActivate()));
 	connect(mUi->addToCollection, SIGNAL(clicked()), this, SLOT(addToCollection()));
 	connect(mUi->blockList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
 
@@ -48,6 +46,11 @@ void UmlCheckerTmplWindow::openPicture(QListWidgetItem *item)
 void UmlCheckerTmplWindow::setBlockName(const QString &blockName)
 {
 	mBlockName = blockName;
+}
+
+void UmlCheckerTmplWindow::setType(const QString &type)
+{
+	mType = type;
 }
 
 void UmlCheckerTmplWindow::openTemplatesForBlocks(const QString &fileName)
@@ -74,12 +77,12 @@ void UmlCheckerTmplWindow::openTemplatesForBlocks(const QString &fileName)
 
 }
 
-QPair<QString, QStringList> UmlCheckerTmplWindow::getElementForBlock()
+QPair<QString, QPair<QString, QStringList>> UmlCheckerTmplWindow::getElementForBlock()
 {
 	QPair<QString, QStringList> result = qMakePair(mBlockName, mFiles);
 	mFiles.clear();
 	mBlockName = "";
-	return result;
+	return qMakePair(mType, result);
 }
 
 void UmlCheckerTmplWindow::addToCollection()
@@ -93,9 +96,4 @@ void UmlCheckerTmplWindow::addToCollection()
 void UmlCheckerTmplWindow::blocksButtonActivate()
 {
 	emit blocksButtonClicked();
-}
-
-void UmlCheckerTmplWindow::edgesButtonActivate()
-{
-	emit edgesButtonClicked();
 }

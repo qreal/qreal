@@ -55,7 +55,6 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 
 	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
 	connect(mTemplatesWindow, SIGNAL(blocksButtonClicked()), this, SLOT(save()));
-	connect(mTemplatesWindow, SIGNAL(edgesButtonClicked()), this, SLOT(saveEdges()));
 
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
@@ -99,15 +98,13 @@ QList<qReal::ActionInfo> UmlCheckerPlugin::actions()
 
 void UmlCheckerPlugin::save()
 {
-	const QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
-	mUmlCheckerPerfectSolution->saveOptionsForBlock(elements);
-	mUmlCheckerPerfectSolution->saveAll();
-}
+	const QPair<QString, QPair<QString, QStringList>> elements = mTemplatesWindow->getElementForBlock();
+	if (elements.first == "Edge") {
+		mUmlCheckerPerfectSolution->saveOptionsForEdge(elements.second);
+	} else {
+		mUmlCheckerPerfectSolution->saveOptionsForBlock(elements.second);
+	}
 
-void UmlCheckerPlugin::saveEdges()
-{
-	const QPair<QString, QStringList> elements = mTemplatesWindow->getElementForBlock();
-	mUmlCheckerPerfectSolution->saveOptionsForEdge(elements);
 	mUmlCheckerPerfectSolution->saveAll();
 }
 
@@ -123,6 +120,8 @@ void UmlCheckerPlugin::addElementsToBlock()
 	mUmlCheckerPerfectSolution->addElementsToBlock(blockName);
 
 	mTemplatesWindow->setBlockName(blockName);
+	mTemplatesWindow->setType("Block");
+
 	const QString tempDirPath = mQRealFilesPath + "/templates/";
 	openTemplatesWindow(tempDirPath);
 }
@@ -132,6 +131,7 @@ void UmlCheckerPlugin::addElementsToEdge()
 	const QString edgeName = QInputDialog::getText(nullptr, tr("enter edge name"), tr("enter edge name"));
 	const QString tempDirPath = mQRealFilesPath + "/edge/";
 	mTemplatesWindow->setBlockName(edgeName);
+	mTemplatesWindow->setType("Edge");
 
 	openTemplatesWindow(tempDirPath);
 }

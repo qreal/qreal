@@ -35,22 +35,21 @@ public:
 
 	void openTemplatesForBlocks(const QString &fileName);
 	void setBlockName(const QString &blockName);
-	QPair<QString, QStringList> getElementForBlock();
+	void setType(const QString &type);
+	QPair<QString, QPair<QString, QStringList> > getElementForBlock();
 
 signals:
 	void checkClicked();
 	void blocksButtonClicked();
-	void edgesButtonClicked();
-
 
 private slots:
 	void blocksButtonActivate();
-	void edgesButtonActivate();
 	void openPicture(QListWidgetItem *item);
 	void addToCollection();
 
 private:
 	QString mBlockName = "";
+	QString mType = "";
 	QStringList mFiles;
 	Ui::umlCheckerForm *mUi;
 };
