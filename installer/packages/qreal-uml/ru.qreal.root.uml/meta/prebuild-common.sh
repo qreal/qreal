@@ -8,4 +8,4 @@ mkdir -p $PWD/../data/plugins/tools
 mkdir -p $PWD/../data/plugins/editors
 mkdir -p $PWD/../data/help
 
-cp -r  $BIN_DIR/plugins/editors/changelog.txt                 $PWD/../data/
+cp -r  $BIN_DIR/plugins/*                $PWD/../data/plugins
