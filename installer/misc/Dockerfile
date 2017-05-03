@@ -1,6 +1,6 @@
 # (c) 2017, Iakov Kirilenko
 
-FROM ubuntu:16.04
+FROM ubuntu:14.04
 RUN useradd -M -d /sandbox sandbox
 #RUN echo "deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu precise main" > \
     #    /etc/apt/sources.list.d/toolchain-r-test.list
