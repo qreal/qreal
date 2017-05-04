@@ -24,7 +24,7 @@
     </message>
     <message>
         <location filename="../../qrgui/systemFacade/components/autosaver.cpp" line="174"/>
-        <source>It seems like the last application session was terminated in an unusial way. Do you wish to recover unsaved project?</source>
+        <source>It seems like the last application session was terminated in an unusual way. Do you wish to recover unsaved project?</source>
         <translation>Похоже, что предыдущая сессия была некоррекно завершена. Открыть несохраненный проект?</translation>
     </message>
 </context>
