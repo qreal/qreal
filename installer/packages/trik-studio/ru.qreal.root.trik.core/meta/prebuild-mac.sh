@@ -22,6 +22,9 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-kit-interpreter-comm
 copy_qt_lib QtNetwork
 copy_qt_lib QtMultimedia
 
+cp     $BIN_DIR/system.js                                                 "$BUNDLE_CONTENTS/Resources"
+
+
 cd "$(dirname "$0")"/../data
 rm -rf winscp
 mkdir -p "$BUNDLE_CONTENTS/Resources/trikRuntime"

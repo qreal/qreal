@@ -18,4 +18,4 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 
-copyToDestdir($$PWD/trikSharp/, now)
+copyToDestdir($$PWD/trikSharp, now)

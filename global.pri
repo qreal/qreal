@@ -127,13 +127,15 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 LIBS += -L$$DESTDIR
 
 QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra 
-QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
+
+CONFIG(gcc5)|clang{
+	QMAKE_CXXFLAGS +=-Werror=pedantic -Werror=delete-incomplete
+}
+
+QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
 			-Werror=non-virtual-dtor -Wno-error=overloaded-virtual \
 			-Werror=uninitialized -Werror=init-self
 
-CONFIG(gcc5) {
-	QMAKE_CXXFLAGS +=-Werror=pedantic -Werror=delete-incomplete
-}
 
 # I want -Werror to be turned on, but Qt has problems
 #QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter 
