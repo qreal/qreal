@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	  http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -62,6 +62,9 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
+!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<5\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
+!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
+
 unix:!CONFIG(nosanitizers) {
 
 	# seems like we want USan always, but are afraid of ....
@@ -87,7 +90,7 @@ unix:!CONFIG(nosanitizers) {
 	}
 
 
-	!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<5\\.[0-9]\\+\\.\' ){
+	CONFIG(gcc5){
 		CONFIG(sanitize_undefined){
 		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
 		# That must be disabled. Variables for confguring ubsan are taken from here:
@@ -102,7 +105,7 @@ unix:!CONFIG(nosanitizers) {
 	}
 
 	CONFIG(release, debug | release){
-		!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){
+		CONFIG(gcc4) {
 			message("Too old compiler: $$QMAKE_CXX")
 		} else {
 			QMAKE_CFLAGS += -fsanitize-recover=all
@@ -123,9 +126,14 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-QMAKE_CXXFLAGS += -pedantic-errors -Werror=pedantic -ansi -std=c++11 -Wextra 
-QMAKE_CXXFLAGS += -Wextra -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
-			-Werror=non-virtual-dtor -Werror=delete-incomplete -Wno-error=overloaded-virtual \
+QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra 
+
+CONFIG(gcc5)|clang{
+	QMAKE_CXXFLAGS +=-Werror=pedantic -Werror=delete-incomplete
+}
+
+QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
+			-Werror=non-virtual-dtor -Wno-error=overloaded-virtual \
 			-Werror=uninitialized -Werror=init-self
 
 

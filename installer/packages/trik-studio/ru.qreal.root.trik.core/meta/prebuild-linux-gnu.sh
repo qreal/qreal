@@ -13,6 +13,8 @@ cp -pr $BIN_DIR/librobots-trik-kit.so*                                          
 cp -pr $BIN_DIR/librobots-trik-kit-interpreter-common.so*                          $PWD/../data/lib/
 cp -pr $BIN_DIR/*-x86*.so*                                                         $PWD/../data/lib/
 
+cp     $BIN_DIR/system.js                                                		 $PWD/../data/bin/
+
 cp -pr $QT_DIR/lib/libQt5Network.so*                                               $PWD/../data/lib/
 cp -pr $QT_DIR/lib/libQt5Multimedia.so*                                            $PWD/../data/lib/
 
