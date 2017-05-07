@@ -201,9 +201,6 @@ bool UmlCheckerHandler::matchingNodesInsideABlock(QMultiHash<QString, Id> perfec
 	for (const QString &node :nodes) {
 		IdList ordinaryValues = ordinaryElements.values(node);
 		IdList perfectValues = perfectElements.values(node);
-		if (ordinaryValues.size() != perfectValues.size()) {
-			return false;
-		}
 
 		bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues, blockName);
 		if (resOfCheckMatching == false) {
@@ -267,6 +264,10 @@ bool UmlCheckerHandler::matchingStep(const QList<QPair<QString, QString>> &block
 		} else {
 			return false;
 		}
+	}
+
+	if (ordinaryElements.values("UmlClass").size() != 0 || ordinaryElements.values("Interface").size() != 0) {
+		return false;
 	}
 
 	QMultiHash<QString, Id> residue;
