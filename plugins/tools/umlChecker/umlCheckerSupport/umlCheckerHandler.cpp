@@ -201,6 +201,10 @@ bool UmlCheckerHandler::matchingNodesInsideABlock(QMultiHash<QString, Id> perfec
 	for (const QString &node :nodes) {
 		IdList ordinaryValues = ordinaryElements.values(node);
 		IdList perfectValues = perfectElements.values(node);
+		if (ordinaryValues.size() != perfectValues.size()) {
+			return false;
+		}
+
 		bool resOfCheckMatching = checkMatchingNodes(perfectValues, ordinaryValues, blockName);
 		if (resOfCheckMatching == false) {
 			return resOfCheckMatching;
