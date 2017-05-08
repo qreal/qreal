@@ -17,7 +17,7 @@
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
     <!-- TODO: This is directory for Windows installer. Install into home by default in Linux. -->
-    <TargetDir>@HomeDir@QReal-UML</TargetDir>
+    <TargetDir>@HomeDir@/QReal-UML</TargetDir>
     <AdminTargetDir>@RootDir@QReal-UML</AdminTargetDir>
 
 <!-- TODO: Due to some issues in QtIFW if user modifies initial target dir RunProgram is still substitutes here initial value. Uncomment it when fixed -->

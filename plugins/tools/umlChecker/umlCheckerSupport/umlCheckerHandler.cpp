@@ -117,10 +117,14 @@ QStringList UmlCheckerHandler::getOptionsForBlock(const QString &blockFile)
 bool UmlCheckerHandler::matchingLinksOfNode(const IdList &perfectLinks, const IdList &ordinaryLinks)
 {
 	IdList changeblePerfectLinks;
+	IdList changebleOrdinaryLinks;
+
 	for (const Id &perfectLink : perfectLinks) {
 		for (const Id &ordinaryLink : ordinaryLinks) {
-			if (perfectLink.element() == ordinaryLink.element() && !changeblePerfectLinks.contains(perfectLink)) {
+			if (perfectLink.element() == ordinaryLink.element() && !changeblePerfectLinks.contains(perfectLink)
+					&& !changebleOrdinaryLinks.contains(ordinaryLink)) {
 				changeblePerfectLinks.append(perfectLink);
+				changebleOrdinaryLinks.append(ordinaryLink);
 			}
 		}
 	}
@@ -238,6 +242,8 @@ bool UmlCheckerHandler::matchingStep(const QList<QPair<QString, QString>> &block
 {
 	QMultiHash<QString, Id> ordinaryElements = getElementsFromApi(mOrdinaryRepoApi);
 	QMultiHash<QString, Id> intermediateOrdElems = ordinaryElements;
+	QMultiHash<QString, Id> ordinaryElementsForEdges = ordinaryElements;
+	int edgesCount = mEdges.size();
 
 	for (int i = 0; i < blockNames.size(); ++i) {
 		QPair<QString, QString> blockName = blockNames.value(i);
@@ -255,8 +261,10 @@ bool UmlCheckerHandler::matchingStep(const QList<QPair<QString, QString>> &block
 
 			matchingBlock = matchingNodesInsideABlock(perfectElements, ordinaryElements, blockName.second);
 			if (matchingBlock) {
+				edgesCount += perfectElements.size() - perfectElements.values("UmlClass").size() - perfectElements.values("Interface").size();
 				break;
 			}
+
 		}
 
 		if (matchingBlock) {
@@ -267,6 +275,10 @@ bool UmlCheckerHandler::matchingStep(const QList<QPair<QString, QString>> &block
 	}
 
 	if (ordinaryElements.values("UmlClass").size() != 0 || ordinaryElements.values("Interface").size() != 0) {
+		return false;
+	}
+
+	if (ordinaryElements.size() != edgesCount) {
 		return false;
 	}
 
