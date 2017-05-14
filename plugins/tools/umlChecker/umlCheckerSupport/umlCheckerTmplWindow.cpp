@@ -24,8 +24,11 @@ UmlCheckerTmplWindow::UmlCheckerTmplWindow(QWidget *parent)
 {
 	mUi->setupUi(this);
 	mUi->saveButton->setEnabled(true);
+	mUi->cancelButton->setEnabled(true);
 
 	connect(mUi->saveButton, SIGNAL(clicked()), this, SLOT(blocksButtonActivate()));
+	connect(mUi->cancelButton, SIGNAL(clicked()), this, SLOT(cancelButtonActivate()));
+
 	connect(mUi->addToCollection, SIGNAL(clicked()), this, SLOT(addToCollection()));
 	connect(mUi->blockList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(openPicture(QListWidgetItem*)));
 
@@ -97,3 +100,9 @@ void UmlCheckerTmplWindow::blocksButtonActivate()
 {
 	emit blocksButtonClicked();
 }
+
+void UmlCheckerTmplWindow::cancelButtonActivate()
+{
+	emit cancelButtonClicked();
+}
+

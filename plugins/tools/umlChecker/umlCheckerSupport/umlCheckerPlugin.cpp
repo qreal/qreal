@@ -54,7 +54,10 @@ void UmlCheckerPlugin::init(PluginConfigurator const &configurator)
 	mRepoControlIFace = &configurator.repoControlInterface();
 
 	mTemplatesWindow = new UmlCheckerTmplWindow(mMainWindowIFace->windowWidget());
+	connect(mTemplatesWindow, SIGNAL(rejected()), this, SLOT(cancel()));
+
 	connect(mTemplatesWindow, SIGNAL(blocksButtonClicked()), this, SLOT(save()));
+	connect(mTemplatesWindow, SIGNAL(cancelButtonClicked()), this, SLOT(cancel()));
 
 	mUmlCheckerTemplate = new UmlCheckerTemplate(mMainWindowIFace, mRepoControlIFace);
 	mUmlCheckerPerfectSolution = new UmlCheckerPerfectSolution(mMainWindowIFace, mRepoControlIFace);
@@ -106,6 +109,11 @@ void UmlCheckerPlugin::save()
 	}
 
 	mUmlCheckerPerfectSolution->saveAll();
+}
+
+void UmlCheckerPlugin::cancel()
+{
+
 }
 
 void UmlCheckerPlugin::saveTemplate()

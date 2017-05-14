@@ -41,9 +41,13 @@ public:
 signals:
 	void checkClicked();
 	void blocksButtonClicked();
+	void cancelButtonClicked();
+
 
 private slots:
 	void blocksButtonActivate();
+	void cancelButtonActivate();
+
 	void openPicture(QListWidgetItem *item);
 	void addToCollection();
 

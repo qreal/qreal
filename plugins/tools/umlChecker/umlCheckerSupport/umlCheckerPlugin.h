@@ -56,7 +56,7 @@ private slots:
 	void savePerfectSolution();
 	void openTemplatesWindow(const QString &name);
 	void save();
-	void saveEdges();
+	void cancel();
 
 	void saveTemplate();
 
