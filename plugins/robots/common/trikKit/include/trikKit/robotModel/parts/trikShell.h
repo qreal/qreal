@@ -38,7 +38,7 @@ public:
 	virtual void runCode(const QString &code) = 0;
 
 	/// Force trik say the text
-	virtual void say(const QString &text) = 0;
+	Q_INVOKABLE virtual void say(const QString &text) = 0;
 
 	/// Writes the text to a given file
 	virtual void writeToFile(const QString &filePath, const QString &text) = 0;

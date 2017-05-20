@@ -79,7 +79,8 @@ void TrikBrick::reset()
 void TrikBrick::printToShell(const QString &msg)
 {
 	using namespace kitBase::robotModel;
-	robotParts::Shell* sh = RobotModelUtils::findDevice<robotParts::Shell>(*mTwoDRobotModel, "ShellPort");
+	using namespace trik::robotModel;
+	parts::TrikShell* sh = RobotModelUtils::findDevice<parts::TrikShell>(*mTwoDRobotModel, "ShellPort");
 	if (sh == nullptr) {
 		qDebug("Error: 2d model shell part was not found");
 		return;
@@ -132,6 +133,17 @@ void TrikBrick::setCurrentInputs(const QString &f)
 	}
 
 	mInputs = result;
+}
+
+void TrikBrick::say(const QString &msg) {
+	using namespace kitBase::robotModel;
+	using namespace trik::robotModel;
+	parts::TrikShell* sh = RobotModelUtils::findDevice<parts::TrikShell>(*mTwoDRobotModel, "ShellPort");
+	if (sh == nullptr) {
+		qDebug("Error: 2d model shell part was not found");
+		return;
+	}
+	QMetaObject::invokeMethod(sh, "say", Q_ARG(const QString &, msg));
 }
 
 void TrikBrick::stop() {
