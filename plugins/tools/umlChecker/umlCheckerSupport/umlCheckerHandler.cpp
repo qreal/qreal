@@ -224,13 +224,12 @@ bool UmlCheckerHandler::matchingNodesInsideABlock(QMultiHash<QString, Id> perfec
 bool UmlCheckerHandler::matchingResult()
 {
 	QList<QPair<QString, QString>> blockNames = mBlockNames;
-	for (int i = 0; i < blockNames.size(); ++i) {
+	while (std::next_permutation(blockNames.begin(), blockNames.end()) ) {
 		bool matchingRes = matchingStep(blockNames);
 		if (matchingRes) {
 			clearAfterMatching();
 			return true;
 		} else {
-			blockNames.move(0, blockNames.size() - 1);
 			clearAfterMatching();
 		}
 	}
