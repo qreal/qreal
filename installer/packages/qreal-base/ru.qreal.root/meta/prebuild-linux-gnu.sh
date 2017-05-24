@@ -14,6 +14,7 @@ mkdir -p $PWD/../data/lib/plugins/tools/
 cp     $INSTALLER_ROOT/platform/$PRODUCT                                $PWD/../data/
 cp     $INSTALLER_ROOT/platform/$PRODUCT-linux-gnu-platform.config      $PWD/../data/bin/platform.config || :
 
+cp -pr $BIN_DIR/libqrkernel.so*                                         $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrgraph.so*                                          $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrkernel.so*                                         $PWD/../data/lib/
 cp -pr $BIN_DIR/libqrrepo.so*                                           $PWD/../data/lib/
@@ -58,7 +59,10 @@ cp     $QT_DIR/plugins/platforms/libqxcb.so                             $PWD/../
 cp     $QT_DIR/plugins/imageformats/libqsvg.so                          $PWD/../data/bin/imageformats/
 cp     $QT_DIR/plugins/iconengines/libqsvgicon.so                       $PWD/../data/bin/iconengines/
 
-cp -pr /usr/lib/*-linux-gnu/libstdc++.so*                               $PWD/../data/lib/
+rsync -av /usr/lib/$(uname -i)-linux-gnu/libstdc++.so*                               $PWD/../data/lib/
+#rsync -av /lib/$(uname -i)-linux-gnu/libc.so*                               $PWD/../data/lib/
+#rsync -av /lib/$(uname -i)-linux-gnu/libc-2.*.so*                               $PWD/../data/lib/
+
 
 mv     $PWD/../data/acknowledgements.txt                                $PWD/../data/resources/
 mv     $PWD/../data/changelog.txt                                       $PWD/../data/resources/

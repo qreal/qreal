@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Copyright 2007-2015 QReal Research Group
+=======
+# Copyright 2007-2017 Julia Khramyshkina, QReal Research Group
+>>>>>>> 2b44d1b64a5bc07827389300d9ea05a9d000167f
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,5 +22,3 @@ QREAL_EDITOR_PATH = tools/umlChecker/editor
 ROOT = ../../../..
 
 include (../../../editorsSdk/editorsCommon.pri)
-
-

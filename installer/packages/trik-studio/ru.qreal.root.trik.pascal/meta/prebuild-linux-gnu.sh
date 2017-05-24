@@ -5,9 +5,10 @@ set -o errexit
 cd "$(dirname "$0")"
 
 mkdir -p $PWD/../data/lib/
+mkdir -p $PWD/../data/lib/plugins/tools/kitPlugins/
 
 cp    $BIN_DIR/librobots-trik-pascal-abc-generator-library.so                              $PWD/../data/lib/
-cp    $BIN_DIR/plugins/tools/kitPlugins/robots-trik-v62-pascal-abc-generator.so            $PWD/../data/lib/plugins/tools/kitPlugins/
+cp    $BIN_DIR/plugins/tools/kitPlugins/librobots-trik-v62-pascal-abc-generator.so            $PWD/../data/lib/plugins/tools/kitPlugins/
 
 # Cleaning up prebuild-common.sh results...
 mkdir -p $PWD/../data/resources/

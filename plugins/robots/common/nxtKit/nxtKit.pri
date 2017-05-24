@@ -37,7 +37,7 @@ unix {
 CONFIG(clang) {
 	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
 } else {
-	QMAKE_CXXFLAGS += -Wno-error=vla -Wno-error=pedantic
+	QMAKE_CXXFLAGS += -Wno-error=vla
 }
 
 HEADERS += \

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Copyright 2007-2016 QReal Research Group
+=======
+# Copyright 2007-2017 Julia Khramyshkina, QReal Research Group
+>>>>>>> 2b44d1b64a5bc07827389300d9ea05a9d000167f
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 TEMPLATE = subdirs
 
 SUBDIRS = \
 	editor \
 	umlCheckerSupport \
+

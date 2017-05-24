@@ -18,6 +18,6 @@ cp -pr $BIN_DIR/librobots-utils.so*                                     $PWD/../
 
 # Cleaning up prebuild-common.sh results...
 rm -rf $PWD/../data/plugins/
-mv $PWD/../data/help $PWD/../data/resources/
-mv $PWD/../data/images $PWD/../data/resources/
+rsync -a --remove-source-files $PWD/../data/help/ $PWD/../data/resources/help/
+rsync -a --remove-source-files $PWD/../data/images/ $PWD/../data/resources/images/
 mv $PWD/../data/splashscreen.png $PWD/../data/bin/

@@ -42,3 +42,13 @@ umlDocumentation/*\~*
 .*.swp
 thirdparty/**/lib*.dylib
 .qmake.stash
+/installer/trik-studio-online-linux-gnu64-installer
+/installer/trik-studio-offline-linux-gnu64-installer
+/installer/packages/*/ru.qreal.root*/meta/*-license.txt
+/installer/packages/qreal-base/ru.qreal.root/meta/ApacheLicense-v2.0.txt
+/installer/packages/qreal-base/ru.qreal.root/meta/OFL.txt
+/installer/packages/qreal-base/ru.qreal.root/meta/QScintilla-GPL-exception.txt
+/installer/packages/qreal-base/ru.qreal.root/meta/gpl-3.0.txt
+/installer/misc/trik-studio-offline-linux-gnu64-installer
+/installer/trik-studio-offline-mac-installer.app/
+/installer/trik-studio-online-mac-installer.app/

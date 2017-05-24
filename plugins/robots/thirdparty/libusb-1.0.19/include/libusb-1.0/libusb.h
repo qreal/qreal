@@ -24,6 +24,9 @@
 #ifndef LIBUSB_H
 #define LIBUSB_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-pedantic"
+
 #ifdef _MSC_VER
 /* on MS environments, the inline keyword is available in C++ only */
 #if !defined(__cplusplus)
@@ -1994,5 +1997,5 @@ void LIBUSB_CALL libusb_hotplug_deregister_callback(libusb_context *ctx,
 #ifdef __cplusplus
 }
 #endif
-
+#pragma GCC diagnostic pop
 #endif
