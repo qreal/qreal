@@ -96,6 +96,7 @@ public slots:
 	utils::AbstractTimer *timer(int milliseconds);
 signals:
 	void error(const QString &msg);
+	void warning(const QString &msg);
 	void log(const QString &msg);
 	void stopWaiting();
 

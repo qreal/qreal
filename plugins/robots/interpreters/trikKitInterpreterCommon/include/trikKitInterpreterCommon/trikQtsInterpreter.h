@@ -51,6 +51,7 @@ signals:
 private slots:
 	void scriptFinished(const QString &error, int scriptId);
 	void reportError(const QString &msg);
+	void reportWarning(const QString &msg);
 	void reportLog(const QString &msg);
 
 private:
