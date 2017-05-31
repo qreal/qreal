@@ -26,6 +26,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-pedantic"
+#pragma GCC diagnostics ignored "-Wpedantic"
 
 #ifdef _MSC_VER
 /* on MS environments, the inline keyword is available in C++ only */
