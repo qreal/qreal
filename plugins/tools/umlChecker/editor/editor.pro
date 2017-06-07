@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2007-2017 Julia Khramyshkina, QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,22 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+QREAL_XML = umlCheckerEditor.xml
 
-include(../../../../global.pri)
+QREAL_EDITOR_PATH = tools/umlChecker/editor
+ROOT = ../../../..
 
-copyToDestdir(help changelog.txt, now)
-
-OTHER_FILES += \
-	changelog.txt \
-	help/contents.html.js \
-	help/ev3.html \
-	help/footer.html.js \
-	help/header.html.js \
-	help/index.html \
-	help/interface.html \
-	help/nxt.html \
-	help/programming.html \
-	help/style.css \
-	help/trik.html \
-	help/version.js \
+include (../../../editorsSdk/editorsCommon.pri)

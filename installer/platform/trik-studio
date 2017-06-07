@@ -5,6 +5,5 @@
 set -o errexit
 
 cd "$(dirname "$0")"
-export LD_LIBRARY_PATH=$PWD/lib:$LD_LIBRARY_PATH
-cd bin
-./trik-studio $@
+env LD_LIBRARY_PATH="$PWD/lib":$LD_LIBRARY_PATH \
+  bin/trik-studio $@

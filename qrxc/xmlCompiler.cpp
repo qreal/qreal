@@ -428,7 +428,7 @@ void XmlCompiler::generateEnumValues(OutFile &out)
 	out() << "void " << mPluginName << "Plugin::initEnums() \n{\n";
 
 	for (const EnumType * const type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
-		const QString name = NameNormalizer::normalize(type->name());
+		const QString name = type->name();
 		out() << "\tmMetamodel->addEnum(\"" << name << "\", { ";
 		QStringList pairs;
 		const QMap<QString, QString> values = type->values();
