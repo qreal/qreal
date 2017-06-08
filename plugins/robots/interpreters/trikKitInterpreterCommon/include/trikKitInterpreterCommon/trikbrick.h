@@ -82,6 +82,7 @@ public slots:
 	trikControl::LedInterface *led() override;
 	trikControl::GamepadInterface *gamepad() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &) override {return nullptr;}
+	trikControl::MarkerInterface *marker() override {return nullptr;}
 
 	void playTone(int, int) override {}
 	trikControl::EventDeviceInterface *eventDevice(const QString &) override {return nullptr;}
