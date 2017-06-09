@@ -70,7 +70,7 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 	} else if (elementType == "Ev3DrawCircle") {
 		return new DrawCircleGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("EnginesForward") || elementType.contains("EnginesBackward")) {
-		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
+		return randomIdGenerator(new EnginesGenerator(mRepo, customizer, id, elementType, this));
 	} else if (elementType == "Ev3EnginesStop") {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3Led" ) {
