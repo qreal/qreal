@@ -47,12 +47,12 @@ subcall motors_overflow_check_b7f9240db9f33a5fa_util
 	MOVE32_32(100,upperBound)
 
 	JR_LT32(src, 0, lowThenZero)
-	JR_LT32(src, 100, endLabel)
+	JR_LT32(src, upperBound, endLabel)
 	MOVE32_32(upperBound,dst)
 	JR(endLabel)
 
 lowThenZero:
-	JR_GTEQ32(src, -100, endLabel)
+	JR_GTEQ32(src, lowerBound, endLabel)
 	MOVE32_32(lowerBound,dst)
 
 endLabel:
