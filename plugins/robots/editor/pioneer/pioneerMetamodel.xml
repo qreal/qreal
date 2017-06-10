@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<extends>../common/robotsMetamodel.xml</extends>
+	<namespace>UML 2.0</namespace>
+	<diagram name="RobotsDiagram">
+		<graphicTypes>
+			<node displayedName="Takeoff" name="GeoTakeoff">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/takeoffBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Landing" name="GeoLanding">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/landingBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+		</graphicTypes>
+
+		<palette sorted="false">
+			<group name="Actions">
+				<element name="GeoTakeoff"/>
+				<element name="GeoLanding"/>
+			</group>
+			<group name="Wait">
+			</group>
+			<group name="Drawing">
+			</group>
+		</palette>
+	</diagram>
+</metamodel>

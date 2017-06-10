@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2016 Dmitry Mordvinov
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+QREAL_XML = pioneerMetamodel.xml
+QREAL_XML_DEPENDS =  \
+		$$PWD/../common/robotsMetamodel.xml \
 
-SUBDIRS = \
-	interpreterCore \
-	nullKitInterpreter \
-	nxtKitInterpreter \
-	trikKitInterpreterCommon \
-	trikV6KitInterpreter \
-	trikV62KitInterpreter \
-	ev3KitInterpreter \
-	robotsPlugin \
-	pioneerKitInterpreter \
+QREAL_EDITOR_PATH = robots/editor/pioneer
+ROOT = ../../../..
 
-robotsPlugin.depends = interpreterCore
-twoDModelRunner.depends = interpreterCore
-trikV6KitInterpreter.depends = trikKitInterpreterCommon
-trikV62KitInterpreter.depends = trikKitInterpreterCommon
-pioneerKitInterpreter.depends = interpreterCore
+include($$PWD/../../../editorsSdk/editorsCommon.pri)

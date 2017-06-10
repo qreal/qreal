@@ -12,21 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+QT += widgets
 
-SUBDIRS = \
-	interpreterCore \
-	nullKitInterpreter \
-	nxtKitInterpreter \
-	trikKitInterpreterCommon \
-	trikV6KitInterpreter \
-	trikV62KitInterpreter \
-	ev3KitInterpreter \
-	robotsPlugin \
-	pioneerKitInterpreter \
+includes(plugins/robots/common/kitBase plugins/robots/common/pioneerKit plugins/robots/utils qrtext)
+links(robots-kit-base robots-pioneer-kit)
 
-robotsPlugin.depends = interpreterCore
-twoDModelRunner.depends = interpreterCore
-trikV6KitInterpreter.depends = trikKitInterpreterCommon
-trikV62KitInterpreter.depends = trikKitInterpreterCommon
-pioneerKitInterpreter.depends = interpreterCore
+HEADERS += \
+	$$PWD/src/pioneerKitInterpreterPlugin.h \
+	$$PWD/src/pioneerRobotModel.h \
+
+SOURCES += \
+	$$PWD/src/pioneerKitInterpreterPlugin.cpp \
+	$$PWD/src/pioneerRobotModel.cpp \
+
+TRANSLATIONS += \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/pioneerKitInterpreter_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/pioneerKitInterpreter_fr.ts \

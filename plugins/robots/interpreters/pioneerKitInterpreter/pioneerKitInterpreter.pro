@@ -12,21 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+TARGET = robots-pioneer-interpreter
 
-SUBDIRS = \
-	interpreterCore \
-	nullKitInterpreter \
-	nxtKitInterpreter \
-	trikKitInterpreterCommon \
-	trikV6KitInterpreter \
-	trikV62KitInterpreter \
-	ev3KitInterpreter \
-	robotsPlugin \
-	pioneerKitInterpreter \
+include(../../../../global.pri)
 
-robotsPlugin.depends = interpreterCore
-twoDModelRunner.depends = interpreterCore
-trikV6KitInterpreter.depends = trikKitInterpreterCommon
-trikV62KitInterpreter.depends = trikKitInterpreterCommon
-pioneerKitInterpreter.depends = interpreterCore
+TEMPLATE = lib
+CONFIG += plugin
+
+DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
+
+include(pioneerKitInterpreter.pri)

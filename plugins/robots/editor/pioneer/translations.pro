@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,21 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TEMPLATE = subdirs
+HEADERS = $$PWD/generated/pluginInterface.h $$PWD/generated/elements.h
 
-SUBDIRS = \
-	interpreterCore \
-	nullKitInterpreter \
-	nxtKitInterpreter \
-	trikKitInterpreterCommon \
-	trikV6KitInterpreter \
-	trikV62KitInterpreter \
-	ev3KitInterpreter \
-	robotsPlugin \
-	pioneerKitInterpreter \
+SOURCES = $$PWD/generated/pluginInterface.cpp
 
-robotsPlugin.depends = interpreterCore
-twoDModelRunner.depends = interpreterCore
-trikV6KitInterpreter.depends = trikKitInterpreterCommon
-trikV62KitInterpreter.depends = trikKitInterpreterCommon
-pioneerKitInterpreter.depends = interpreterCore
+TRANSLATIONS = \
+	$$PWD/../../../../qrtranslations/ru/plugins/robots/pioneerMetamodel_ru.ts \
+	$$PWD/../../../../qrtranslations/fr/plugins/robots/pioneerMetamodel_fr.ts \
