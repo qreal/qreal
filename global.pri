@@ -62,8 +62,8 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<5\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
-!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
+!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<5\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
+!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
 
 unix:!CONFIG(nosanitizers) {
 
@@ -151,23 +151,20 @@ defineTest(copyToDestdir) {
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
 		AFTER_SLASH = $$section(FILE, "/", -1, -1)
-		isEmpty(QMAKE_SH) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
-			win32 {
-				BASE_NAME = $$section(FILE, "/", -2, -2)
-				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
-				equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, 0)
+		win32 {
+			BASE_NAME = $$section(FILE, "/", -2, -2)
+			equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
+			equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, 0)
 
-				FILE ~= s,/$,,g
+			FILE ~= s,/$,,g
 
-				FILE ~= s,/,\\,g
-			}
-			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			win32:DDIR ~= s,/,\\,g
-		} else {
-			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			system("mkdir -p $$DDIR")
+			FILE ~= s,/,\\,g
 		}
+		
+		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+		win32:DDIR ~= s,/,\\,g
+		mkpath($$DDIR)
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
