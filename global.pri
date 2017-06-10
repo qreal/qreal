@@ -142,6 +142,13 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 
 GLOBAL_PWD = $$PWD
 
+# Simple function that checks if given argument is a file or directory.
+# Returns false if argument 1 is a file or does not exist.
+defineTest(isDir) {
+	exists($$1/*):return(true)
+	return(false)
+}
+
 # Useful function to copy additional files to destination,
 # from http://stackoverflow.com/questions/3984104/qmake-how-to-copy-a-file-to-the-output
 defineTest(copyToDestdir) {
@@ -153,13 +160,12 @@ defineTest(copyToDestdir) {
 		AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
 		win32 {
-			BASE_NAME = $$section(FILE, "/", -2, -2)
-			equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
-			equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, 0)
-
-			FILE ~= s,/$,,g
-
-			FILE ~= s,/,\\,g
+			FILE = $$system_path($$FILE)
+			isDir($$FILE) {
+				ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
+				BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
+				DESTDIR_SUFFIX = /$$BASE_NAME
+			}
 		}
 
 		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
@@ -172,6 +178,8 @@ defineTest(copyToDestdir) {
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
+				# Message here is very useful in diagnostics.
+				message("Executing `cmd /C xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i`")
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
 			}
 
