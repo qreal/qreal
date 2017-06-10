@@ -1,4 +1,4 @@
-# Copyright 2016 Iakov Kirilenko, 2007-2015 QReal Research Group
+# Copyright 2016 Iakov Kirilenko, 2007-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -126,7 +126,7 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra 
+QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra
 
 CONFIG(gcc5)|clang{
 	QMAKE_CXXFLAGS +=-Werror=pedantic -Werror=delete-incomplete
@@ -138,7 +138,7 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 
 
 # I want -Werror to be turned on, but Qt has problems
-#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter 
+#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
 
 GLOBAL_PWD = $$PWD
 
@@ -161,7 +161,7 @@ defineTest(copyToDestdir) {
 
 			FILE ~= s,/,\\,g
 		}
-		
+
 		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
 		win32:DDIR ~= s,/,\\,g
 		mkpath($$DDIR)
