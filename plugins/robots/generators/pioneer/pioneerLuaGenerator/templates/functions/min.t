@@ -1,0 +1,1 @@
+-- min() function is currently not supported

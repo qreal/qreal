@@ -1,0 +1,1 @@
+-- time() function is currently not supported
