@@ -19,6 +19,7 @@
 namespace pioneer {
 namespace lua {
 
+/// Main generator that directs generation process (mainly by configuring its base class that does actual job).
 class PioneerLuaMasterGenerator : public generatorBase::MasterGeneratorBase
 {
 public:
@@ -30,14 +31,13 @@ public:
 			, const qReal::Id &diagramId
 			, const QString &generatorName);
 
-	void initialize() override;
-
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
 
 private:
+	/// Name of the generator, needed to locate templates (used as a prefix in path).
 	const QString mGeneratorName;
 };
 

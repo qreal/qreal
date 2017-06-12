@@ -23,6 +23,7 @@ namespace lua {
 
 class PioneerLuaGeneratorFactory;
 
+/// Customizer for Pioneer generator. Provides factory that can create simple generators for blocks.
 class PioneerLuaGeneratorCustomizer : public generatorBase::GeneratorCustomizer
 {
 public:
@@ -35,6 +36,7 @@ public:
 	generatorBase::GeneratorFactoryBase *factory() override;
 
 private:
+	/// Factory that creates simple generators for Pioneer-specific blocks.
 	QScopedPointer<PioneerLuaGeneratorFactory> mFactory;
 };
 

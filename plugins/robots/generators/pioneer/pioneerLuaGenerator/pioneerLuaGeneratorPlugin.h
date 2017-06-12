@@ -91,7 +91,12 @@ private:
 	/// Robot model for a generator, defines robot name and other unneeded properties.
 	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorRobotModel;
 
-	PioneerAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	/// Additional preferences widget, which allows to set IP of a base station.
+	/// Transfers ownership.
+	PioneerAdditionalPreferences *mAdditionalPreferences = nullptr;
+
+	/// Whether we need to delete mAdditionalPreferences (sometimes plugin gets destroyed before it is able to pass
+	/// an ownership, so it is needed to avoid memleak). Need to use smart pointers instead of this.
 	bool mOwnsAdditionalPreferences = true;
 };
 

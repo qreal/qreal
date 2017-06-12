@@ -19,6 +19,8 @@
 
 namespace pioneerKitInterpreter {
 
+/// Dummy interpreter plugin for Pioneer, required by InterpreterCore to do anything. It just exists and provides
+/// blocks factory for a palette (the same blocks factory as in generator).
 class PioneerKitInterpreterPlugin : public QObject, public kitBase::KitPluginInterface
 {
 	Q_OBJECT

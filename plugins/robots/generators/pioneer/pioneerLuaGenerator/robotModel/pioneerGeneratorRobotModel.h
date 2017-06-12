@@ -19,6 +19,7 @@
 namespace pioneer {
 namespace lua {
 
+/// Provides Pioneer quadcopter model as it is seen by generator.
 class PioneerGeneratorRobotModel : public kitBase::robotModel::CommonRobotModel
 {
 	Q_OBJECT

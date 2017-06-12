@@ -19,6 +19,7 @@
 namespace pioneer {
 namespace lua {
 
+/// Factory that creates simple generators for Pioneer-specific blocks.
 class PioneerLuaGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
 public:
@@ -36,6 +37,7 @@ public:
 	QStringList pathsToTemplates() const override;
 
 private:
+	/// Generator name is used as a prefix to a path to templates in resources.
 	const QString mGeneratorName;
 };
 

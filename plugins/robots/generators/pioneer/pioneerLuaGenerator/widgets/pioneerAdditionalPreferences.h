@@ -23,6 +23,7 @@ class PioneerAdditionalPreferences;
 namespace pioneer {
 namespace lua {
 
+/// Widget for additional preferences for Pioneer quadcopter. Allows to set IP addres of Pioneer base station.
 class PioneerAdditionalPreferences : public kitBase::AdditionalPreferences
 {
 	Q_OBJECT

@@ -43,14 +43,14 @@ PioneerLuaMasterGenerator::PioneerLuaMasterGenerator(const qrRepo::RepoApi &repo
 {
 }
 
-void PioneerLuaMasterGenerator::initialize()
-{
-	MasterGeneratorBase::initialize();
-}
-
 generatorBase::GeneratorCustomizer *PioneerLuaMasterGenerator::createCustomizer()
 {
-	return new PioneerLuaGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+	return new PioneerLuaGeneratorCustomizer(
+			mRepo
+			, mErrorReporter
+			, mRobotModelManager
+			, *createLuaProcessor()
+			, mGeneratorName);
 }
 
 QString PioneerLuaMasterGenerator::targetPath()
