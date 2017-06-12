@@ -1,1 +1,1 @@
-AND32(@@LEFT@@, @@RIGHT@@, @@RESULT)
+AND32(@@LEFT@@, @@RIGHT@@, @@RESULT@@)
