@@ -16,6 +16,9 @@
 
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
+#include "simpleGenerators/geoLandingGenerator.h"
+#include "simpleGenerators/geoTakeoffGenerator.h"
+#include "simpleGenerators/goToPointGenerator.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -37,6 +40,15 @@ PioneerLuaGeneratorFactory::~PioneerLuaGeneratorFactory()
 generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simpleGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {
+	const QString elementType = id.element();
+	if (elementType == "GeoTakeoff") {
+		return new GeoTakeoffGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "GeoLanding") {
+		return new GeoLandingGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "GoToPoint") {
+		return new GoToPointGenerator(mRepo, customizer, id, this);
+	}
+
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 

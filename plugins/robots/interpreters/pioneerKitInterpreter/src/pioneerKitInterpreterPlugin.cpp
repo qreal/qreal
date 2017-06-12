@@ -19,7 +19,6 @@
 using namespace pioneerKitInterpreter;
 
 PioneerKitInterpreterPlugin::PioneerKitInterpreterPlugin()
-	: mRobotModel(kitId())
 {
 }
 
@@ -35,7 +34,7 @@ QString PioneerKitInterpreterPlugin::friendlyKitName() const
 
 QList<kitBase::robotModel::RobotModelInterface *> PioneerKitInterpreterPlugin::robotModels()
 {
-	return QList<kitBase::robotModel::RobotModelInterface *>() << &mRobotModel;
+	return {};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *PioneerKitInterpreterPlugin::blocksFactoryFor(
@@ -47,7 +46,7 @@ kitBase::blocksBase::BlocksFactoryInterface *PioneerKitInterpreterPlugin::blocks
 
 QList<kitBase::AdditionalPreferences *> PioneerKitInterpreterPlugin::settingsWidgets()
 {
-	return {nullptr};
+	return { nullptr };
 }
 
 QList<qReal::ActionInfo> PioneerKitInterpreterPlugin::customActions()

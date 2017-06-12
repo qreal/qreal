@@ -18,6 +18,7 @@
 #include <pioneerKit/blocks/pioneerBlocksFactory.h>
 
 #include "pioneerLuaMasterGenerator.h"
+#include "robotModel/pioneerGeneratorRobotModel.h"
 
 using namespace pioneer::lua;
 using namespace qReal;
@@ -25,9 +26,18 @@ using namespace qReal;
 PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 	: mGenerateCodeAction(new QAction(nullptr))
 	, mBlocksFactory(new blocks::PioneerBlocksFactory)
+	, mGeneratorRobotModel(
+			new PioneerGeneratorRobotModel(
+					kitId()
+					, "PioneerRobot"
+					, "PioneerGeneratorRobotModel"
+					, tr("Pioneer model")
+					, 9
+				)
+		)
 {
 	mGenerateCodeAction->setText(tr("Generate to Pioneer Lua"));
-	mGenerateCodeAction->setIcon(QIcon());
+	mGenerateCodeAction->setIcon(QIcon(":/pioneer/lua/images/generateLuaCode.svg"));
 	connect(mGenerateCodeAction, &QAction::triggered, this, &PioneerLuaGeneratorPlugin::generateCode);
 
 	text::Languages::registerLanguage(text::LanguageInfo{ "lua"
@@ -37,6 +47,11 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 			, nullptr
 			, {}
 	});
+}
+
+PioneerLuaGeneratorPlugin::~PioneerLuaGeneratorPlugin()
+{
+	// Empty destructor to keep QScopedPointer happy.
 }
 
 QList<ActionInfo> PioneerLuaGeneratorPlugin::customActions()
@@ -58,7 +73,7 @@ QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
 QIcon PioneerLuaGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
 {
 	Q_UNUSED(robotModel)
-	return QIcon();
+	return QIcon(":/pioneer/lua/images/switchToPioneerGenerator.svg");
 }
 
 int PioneerLuaGeneratorPlugin::priority() const
@@ -73,7 +88,7 @@ QString PioneerLuaGeneratorPlugin::kitId() const
 
 QList<kitBase::robotModel::RobotModelInterface *> PioneerLuaGeneratorPlugin::robotModels()
 {
-	return {};
+	return { mGeneratorRobotModel.data() };
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *PioneerLuaGeneratorPlugin::blocksFactoryFor(

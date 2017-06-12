@@ -9,22 +9,8 @@
 		<file>templates/goto.t</file>
 		<file>templates/initialNode.t</file>
 		<file>templates/label.t</file>
-		<file>templates/landing.t</file>
 		<file>templates/main.t</file>
 		<file>templates/nativeCode.t</file>
-		<file>templates/takeoff.t</file>
-		<file>templates/signs/equals.t</file>
-		<file>templates/signs/greater.t</file>
-		<file>templates/signs/less.t</file>
-		<file>templates/signs/notGreater.t</file>
-		<file>templates/signs/notLess.t</file>
-		<file>templates/wait/timer.t</file>
-		<file>templates/types/int.t</file>
-		<file>templates/types/float.t</file>
-		<file>templates/types/bool.t</file>
-		<file>templates/types/string.t</file>
-		<file>templates/types/array.t</file>
-		<file>templates/types/cast.t</file>
 		<file>templates/functions/abs.t</file>
 		<file>templates/functions/acos.t</file>
 		<file>templates/functions/asin.t</file>
@@ -44,9 +30,6 @@
 		<file>templates/functions/max.t</file>
 		<file>templates/functions/print.t</file>
 		<file>templates/functions/atan2.t</file>
-		<file>templates/variables/constantDeclaration.t</file>
-		<file>templates/variables/variableDeclaration.t</file>
-		<file>templates/engines/forward.t</file>
 		<file>templates/luaPrinting/addition.t</file>
 		<file>templates/luaPrinting/argumentsSeparator.t</file>
 		<file>templates/luaPrinting/assignment.t</file>
@@ -90,5 +73,22 @@
 		<file>templates/luaPrinting/floatToString.t</file>
 		<file>templates/luaPrinting/boolToString.t</file>
 		<file>templates/luaPrinting/otherToString.t</file>
+		<file>templates/quadcopterCommands/landing.t</file>
+		<file>templates/quadcopterCommands/takeoff.t</file>
+		<file>templates/quadcopterCommands/goToPoint.t</file>
+		<file>templates/signs/equals.t</file>
+		<file>templates/signs/greater.t</file>
+		<file>templates/signs/less.t</file>
+		<file>templates/signs/notGreater.t</file>
+		<file>templates/signs/notLess.t</file>
+		<file>templates/types/int.t</file>
+		<file>templates/types/float.t</file>
+		<file>templates/types/bool.t</file>
+		<file>templates/types/string.t</file>
+		<file>templates/types/array.t</file>
+		<file>templates/types/cast.t</file>
+		<file>templates/variables/constantDeclaration.t</file>
+		<file>templates/variables/variableDeclaration.t</file>
+		<file>templates/wait/timer.t</file>
 	</qresource>
 </RCC>

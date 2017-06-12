@@ -41,12 +41,20 @@ HEADERS += \
 	$$PWD/pioneerLuaGeneratorFactory.h \
 	$$PWD/pioneerLuaGeneratorPlugin.h \
 	$$PWD/pioneerLuaMasterGenerator.h \
+	$$PWD/robotModel/pioneerGeneratorRobotModel.h \
+	$$PWD/simpleGenerators/geoLandingGenerator.h \
+	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
+	$$PWD/simpleGenerators/goToPointGenerator.h \
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
 	$$PWD/pioneerLuaGeneratorFactory.cpp \
 	$$PWD/pioneerLuaGeneratorPlugin.cpp \
 	$$PWD/pioneerLuaMasterGenerator.cpp \
+	$$PWD/robotModel/pioneerGeneratorRobotModel.cpp \
+	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
+	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
+	$$PWD/simpleGenerators/goToPointGenerator.cpp \
 
 RESOURCES += \
 	$$PWD/pioneerLuaGenerator.qrc \

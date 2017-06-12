@@ -14,22 +14,19 @@
 
 #pragma once
 
-#include <kitBase/robotModel/commonRobotModel.h>
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
-namespace pioneerKitInterpreter {
+namespace pioneer {
+namespace lua {
 
-/// Robot model for Pioneer quadcopter.
-class PioneerRobotModel : public kitBase::robotModel::CommonRobotModel
+/// Generates order to land for quadcopter.
+class GeoLandingGenerator : public generatorBase::simple::BindingGenerator
 {
-	Q_OBJECT
-
 public:
-	explicit PioneerRobotModel(const QString &kitId);
-
-	QString name() const override;
-	QString friendlyName() const override;
-	bool needsConnection() const override;
-	int priority() const override;
+	GeoLandingGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent);
 };
-
+}
 }

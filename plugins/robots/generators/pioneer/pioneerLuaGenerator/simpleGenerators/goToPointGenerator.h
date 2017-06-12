@@ -12,31 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "pioneerRobotModel.h"
+#pragma once
 
-using namespace pioneerKitInterpreter;
+#include <generatorBase/simpleGenerators/bindingGenerator.h>
 
-PioneerRobotModel::PioneerRobotModel(const QString &kitId)
-	: kitBase::robotModel::CommonRobotModel(kitId, "")
+namespace pioneer {
+namespace lua {
+
+/// Generates "Go to point" command for quadcopter.
+class GoToPointGenerator : public generatorBase::simple::BindingGenerator
 {
+public:
+	GoToPointGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent);
+};
+
 }
-
-QString PioneerRobotModel::name() const
-{
-	return "PioneerModel";
-}
-
-QString PioneerRobotModel::friendlyName() const
-{
-	return tr("Pioneer model");
-}
-
-bool PioneerRobotModel::needsConnection() const
-{
-	return false;
-}
-
-int PioneerRobotModel::priority() const
-{
-	return 0;
 }

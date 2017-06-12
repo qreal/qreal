@@ -16,7 +16,6 @@
 
 #include <kitBase/kitPluginInterface.h>
 #include <pioneerKit/blocks/pioneerBlocksFactory.h>
-#include "pioneerRobotModel.h"
 
 namespace pioneerKitInterpreter {
 
@@ -48,7 +47,6 @@ public:
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
 private:
-	PioneerRobotModel mRobotModel;
 	pioneer::blocks::PioneerBlocksFactory mBlocksFactory;
 };
 

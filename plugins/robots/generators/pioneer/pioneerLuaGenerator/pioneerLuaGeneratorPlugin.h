@@ -14,6 +14,8 @@
 
 #pragma once
 
+#include <QtCore/QScopedPointer>
+
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
 namespace pioneer {
@@ -24,6 +26,8 @@ class PioneerBlocksFactory;
 
 namespace lua {
 
+class PioneerGeneratorRobotModel;
+
 class PioneerLuaGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
@@ -31,6 +35,7 @@ class PioneerLuaGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBas
 
 public:
 	PioneerLuaGeneratorPlugin();
+	~PioneerLuaGeneratorPlugin() override;
 
 	QList<qReal::ActionInfo> customActions() override;
 
@@ -62,6 +67,7 @@ private:
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	blocks::PioneerBlocksFactory *mBlocksFactory;  // Transfers ownership
+	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorRobotModel;
 };
 
 }

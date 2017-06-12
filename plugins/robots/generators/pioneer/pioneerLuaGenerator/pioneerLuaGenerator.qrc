@@ -1,4 +1,6 @@
 <RCC>
     <qresource prefix="/pioneer/lua/">
+        <file>images/generateLuaCode.svg</file>
+        <file>images/switchToPioneerGenerator.svg</file>
     </qresource>
 </RCC>

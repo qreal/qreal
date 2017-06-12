@@ -19,11 +19,9 @@ links(robots-kit-base robots-pioneer-kit)
 
 HEADERS += \
 	$$PWD/src/pioneerKitInterpreterPlugin.h \
-	$$PWD/src/pioneerRobotModel.h \
 
 SOURCES += \
 	$$PWD/src/pioneerKitInterpreterPlugin.cpp \
-	$$PWD/src/pioneerRobotModel.cpp \
 
 TRANSLATIONS += \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/pioneerKitInterpreter_ru.ts \
