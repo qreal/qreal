@@ -27,7 +27,9 @@ class PioneerBlocksFactory;
 namespace lua {
 
 class PioneerGeneratorRobotModel;
+class PioneerAdditionalPreferences;
 
+/// Main class for Pioneer Lua generator plugin.
 class PioneerLuaGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
 {
 	Q_OBJECT
@@ -55,19 +57,42 @@ public:
 
 	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 
-protected:
+private slots:
+	/// Uploads current program to a quadcopter.
+	void uploadProgram();
+
+	/// Attempts to run current program on a quadcopter. Generates and uploads it first, if needed.
+	void runProgram();
+
+private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
+
 	QString defaultFilePath(const QString &projectName) const override;
+
 	qReal::text::LanguageInfo language() const override;
+
 	QString generatorName() const override;
+
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 
 private:
-	/// Action that launches code generator
+	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
+	/// Action that uploads generated program onto quadcopter.
+	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	/// Action that executes program on a quadcopter.
+	QAction *mRunProgramAction;  // Doesn't have ownership; may be disposed by GUI.
+
+	/// Factory for blocks on a diagram that can be processed by this generator.
 	blocks::PioneerBlocksFactory *mBlocksFactory;  // Transfers ownership
+
+	/// Robot model for a generator, defines robot name and other unneeded properties.
 	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorRobotModel;
+
+	PioneerAdditionalPreferences *mAdditionalPreferences = nullptr;  // Transfers ownership
+	bool mOwnsAdditionalPreferences = true;
 };
 
 }

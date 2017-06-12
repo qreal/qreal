@@ -16,6 +16,9 @@ TARGET = robots-pioneer-lua-generator
 
 include(../../../../../global.pri)
 
+copyToDestdir(scripts/pioneerStart.sh, now)
+copyToDestdir(scripts/pioneerUpload.sh, now)
+
 QT += widgets
 
 TEMPLATE = lib
@@ -31,7 +34,7 @@ includes( \
 		qrtext \
 )
 
-links(qrkernel qslog qrutils qrrepo qscintilla2 qrgui-text-editor qrtext robots-kit-base \
+links(qrkernel qslog qrutils qrrepo qscintilla2 qrgui-text-editor qrgui-preferences-dialog qrtext robots-kit-base \
 		robots-generator-base robots-pioneer-kit robots-utils)
 
 TRANSLATIONS = $$PWD/../../../../../qrtranslations/ru/plugins/robots/pioneerLuaGenerator_ru.ts
@@ -46,6 +49,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
 	$$PWD/simpleGenerators/goToPointGenerator.h \
 	$$PWD/simpleGenerators/initialNodeGenerator.h \
+	$$PWD/widgets/pioneerAdditionalPreferences.h \
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
@@ -57,6 +61,10 @@ SOURCES += \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
 	$$PWD/simpleGenerators/goToPointGenerator.cpp \
 	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
+	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
+
+FORMS += \
+	$$PWD/widgets/pioneerAdditionalPreferences.ui \
 
 RESOURCES += \
 	$$PWD/pioneerLuaGenerator.qrc \

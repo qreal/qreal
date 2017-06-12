@@ -2,5 +2,7 @@
     <qresource prefix="/pioneer/lua/">
         <file>images/generateLuaCode.svg</file>
         <file>images/switchToPioneerGenerator.svg</file>
+        <file>images/upload.svg</file>
+        <file>images/run.svg</file>
     </qresource>
 </RCC>
