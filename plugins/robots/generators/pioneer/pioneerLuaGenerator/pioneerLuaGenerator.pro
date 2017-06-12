@@ -45,6 +45,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/geoLandingGenerator.h \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
 	$$PWD/simpleGenerators/goToPointGenerator.h \
+	$$PWD/simpleGenerators/initialNodeGenerator.h \
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
@@ -55,6 +56,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
 	$$PWD/simpleGenerators/goToPointGenerator.cpp \
+	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
 
 RESOURCES += \
 	$$PWD/pioneerLuaGenerator.qrc \

@@ -19,6 +19,7 @@
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
 #include "simpleGenerators/goToPointGenerator.h"
+#include "simpleGenerators/initialNodeGenerator.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -41,7 +42,9 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		, generatorBase::GeneratorCustomizer &customizer)
 {
 	const QString elementType = id.element();
-	if (elementType == "GeoTakeoff") {
+	if (elementType == "InitialNode") {
+		return new InitialNodeGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "GeoTakeoff") {
 		return new GeoTakeoffGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GeoLanding") {
 		return new GeoLandingGenerator(mRepo, customizer, id, this);

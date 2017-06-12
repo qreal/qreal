@@ -1,1 +1,1 @@
-ap.goToPoint({latitude=@@LATITUDE@@, longitude=@@LONGITUDE@@, altitude=@@ALTITUDE@@})
+		ap.goToPoint({latitude=@@LATITUDE@@, longitude=@@LONGITUDE@@, altitude=@@ALTITUDE@@})
