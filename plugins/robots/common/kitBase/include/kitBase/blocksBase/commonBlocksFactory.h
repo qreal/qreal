@@ -42,9 +42,13 @@ public:
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			) final;
 
-	/// May be overrided to disable some blocks from palette when binded to this factory
+	/// May be overriden to disable some blocks from palette when binded to this factory
 	/// robot model is active. Default implementation disables nothing.
 	qReal::IdList blocksToDisable() const override;
+
+	/// May be overriden to completely hide some blocks in the palette even when they are provided by other
+	/// factories (useful when model can not support CoreBlocksFactory blocks). Default implementation hides nothing.
+	qReal::IdList blocksToHide() const override;
 
 protected:
 	static qReal::Id id(const QString &metatype);

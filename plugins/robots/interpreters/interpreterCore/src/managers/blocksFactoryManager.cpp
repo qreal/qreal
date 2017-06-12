@@ -82,6 +82,10 @@ QSet<qReal::Id> BlocksFactoryManager::visibleBlocks(const RobotModelInterface &r
 		}
 	}
 
+	for (const blocksBase::BlocksFactoryInterface *factory : factoriesFor(robotModel)) {
+		result -= factory->blocksToHide().toSet();
+	}
+
 	return result;
 }
 

@@ -27,10 +27,12 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 	return {
 			id("GeoTakeoff")
 			, id("GeoLanding")
+			, id("GoToPoint")
+			, id("Led")
 	};
 }
 
-qReal::IdList PioneerBlocksFactory::blocksToDisable() const
+qReal::IdList PioneerBlocksFactory::blocksToHide() const
 {
 	return {
 			id("Function")
@@ -52,5 +54,7 @@ qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 
 			, id("PrintText")
 			, id("ClearScreen")
+			, id("MarkerDown")
+			, id("MarkerUp")
 	};
 }
