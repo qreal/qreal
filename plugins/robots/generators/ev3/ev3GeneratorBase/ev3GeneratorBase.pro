@@ -51,6 +51,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.h \
 	$$PWD/src/converters/outputPortNameConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
+	$$PWD/src/simpleGenerators/playToneGenerator.h \
+	$$PWD/src/simpleGenerators/beepGenerator.h \
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \
@@ -68,5 +70,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.cpp \
 	$$PWD/src/converters/outputPortNameConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
+	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
+	$$PWD/src/simpleGenerators/beepGenerator.cpp \
 
 OTHER_FILES +=

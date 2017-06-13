@@ -21,6 +21,8 @@
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
+#include "simpleGenerators/playToneGenerator.h"
+#include "simpleGenerators/beepGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
 
 #include "converters/outputPortNameConverter.h"
@@ -73,10 +75,14 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return randomIdGenerator(new EnginesGenerator(mRepo, customizer, id, elementType, this));
 	} else if (elementType == "Ev3EnginesStop") {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Ev3Led" ) {
+	} else if (elementType == "Ev3Led") {
 		return new LedGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Ev3ClearEncoder" ) {
+	} else if (elementType == "Ev3ClearEncoder") {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3PlayTone") {
+		return randomIdGenerator(new PlayToneGenerator(mRepo, customizer, id, this));
+	} else if (elementType == "Ev3Beep") {
+		return randomIdGenerator(new BeepGenerator(mRepo, customizer, id, this));
 	}
 
 	return randomIdGenerator(GeneratorFactoryBase::simpleGenerator(id, customizer));
