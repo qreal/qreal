@@ -102,6 +102,90 @@
 				</logic>
 			</node>
 
+			<node displayedName="Print" name="Print" description="Prints given string on a console.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerPrintBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="Text" hard="true" background="white" prefix="Text:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Text" type="string" name="PrintText">
+							<default>Enter some text here</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Magnet On" name="MagnetOn" description="Turns on magnet on a quadcopter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerMagnetOnBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties />
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Magnet Off" name="MagnetOff" description="Turns off magnet on a quadcopter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerMagnetOffBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties />
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="System" name="PioneerSystem" description="Executes given Lua script.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/systemBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Command" background="white" prefix="Command:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Command" type="string" name="Command">
+							<default>print('Hello')</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 		</graphicTypes>
 
 		<palette sorted="false">
@@ -110,6 +194,10 @@
 				<element name="GeoLanding"/>
 				<element name="GoToPoint"/>
 				<element name="Led"/>
+				<element name="Print"/>
+				<element name="MagnetOn"/>
+				<element name="MagnetOff"/>
+				<element name="PioneerSystem"/>
 			</group>
 		</palette>
 	</diagram>
