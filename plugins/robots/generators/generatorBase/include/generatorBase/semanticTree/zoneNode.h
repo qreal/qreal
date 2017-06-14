@@ -35,7 +35,7 @@ public:
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 
 	/// Adds given node into the child list after the given otherNode node
-	void insertAfrer(SemanticNode *after, SemanticNode *node);
+	void insertAfter(SemanticNode *after, SemanticNode *node);
 
 	/// Removes given node from children list without deleting the child itself
 	void removeChild(SemanticNode *node);

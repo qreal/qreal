@@ -25,10 +25,16 @@ class NonZoneNode : public SemanticNode
 public:
 	explicit NonZoneNode(const qReal::Id &idBinded, QObject *parent = 0);
 
+	/// Returns zone to which this node belongs to
 	ZoneNode *parentZone() const;
 
+	/// Adds given node into this node's parent zone as a last node
 	void appendSibling(SemanticNode *node);
+
+	/// Adds given nodes into this node's parent zone at the end of a list of nodes
 	void appendSiblings(QLinkedList<SemanticNode *> const &nodes);
+
+	/// Adds given node into this node's parent zone node after this node
 	void insertSiblingAfterThis(SemanticNode *node);
 };
 
