@@ -16,44 +16,6 @@
 
 		<graphicTypes>
 
-			<!-- Initial and final nodes are redefined by this metamodel to change default graphics. Note that it has 
-				unwanted effect of changing the graphics for all other kits, since QReal can not differentiate and 
-				enable/disable metamodel extensions. -->
-			<node displayedName="Initial Node" name="InitialNode" 
-					path="210, 111 : 209, 120 : 208, 130 : 205, 139 : 202, 148 : 198, 157 : 193, 166 : 187, 173 : 181, 181 : 173, 187 : 166, 193 : 157, 198 : 148, 202 : 139, 205 : 130, 208 : 120, 209 : 111, 209 : 102, 209 : 92, 208 : 83, 205 : 74, 202 : 65, 198 : 56, 193 : 49, 187 : 41, 181 : 35, 173 : 29, 166 : 24, 157 : 20, 148 : 17, 139 : 14, 130 : 13, 120 : 13, 111 : 13, 102 : 14, 92 : 17, 83 : 20, 74 : 24, 65 : 29, 56 : 35, 49 : 41, 41 : 49, 35 : 56, 29 : 65, 24 : 74, 20 : 83, 17 : 92, 14 : 102, 13 : 111, 13 : 120, 13 : 130, 14 : 139, 17 : 148, 20 : 157, 24 : 166, 29 : 173, 35 : 181, 41 : 187, 49 : 193, 56 : 198, 65 : 202, 74 : 205, 83 : 208, 92 : 209, 102 : 210, 111 : " 
-					description="The entry point of the program execution. Each diagram should have only one such block, it must not have incoming links and it must have only one outgoing link. The interpretation process starts from exactly this block.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-					  <image y1="0" name="images/pioneerInitialBlock.svg" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels/>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-
-			<node displayedName="Final Node" name="FinalNode" path="13, 200 : 198, 15 :  | 12, 12 : 198, 198 : " 
-					description="The final node of the program. This block can`t have outgoing links.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/pioneerFinalBlock.svg" x1="0" y2="50" x2="50"/>
-					</picture>
-					<labels/>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-
 			<node displayedName="Takeoff" name="GeoTakeoff" description="Orders quadcopter to takeoff.">
 				<graphics>
 					<picture sizex="50" sizey="50">
