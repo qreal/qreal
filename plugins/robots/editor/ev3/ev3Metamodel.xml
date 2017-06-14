@@ -376,6 +376,23 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Touch Sensor" name="Ev3WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Wait for Encoder" name="Ev3WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
