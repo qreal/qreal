@@ -31,12 +31,12 @@ public:
 			, const qReal::Id &diagramId
 			, const QString &generatorName);
 
-protected:
+private:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+	QString generate(const QString &indentString) override;
 
-private:
 	/// Name of the generator, needed to locate templates (used as a prefix in path).
 	const QString mGeneratorName;
 };

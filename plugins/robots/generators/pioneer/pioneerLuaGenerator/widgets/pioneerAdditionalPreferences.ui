@@ -45,7 +45,7 @@
          <string/>
         </property>
         <property name="placeholderText">
-         <string>192.168.0.1</string>
+         <string>127.0.0.1</string>
         </property>
        </widget>
       </item>

@@ -1,3 +1,6 @@
+local ap = require "ap.lua"
+local Ev = require "ev.lua"
+
 @@SUBPROGRAMS_FORWARDING@@
 
 @@THREADS_FORWARDING@@

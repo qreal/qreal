@@ -69,3 +69,7 @@ FORMS += \
 RESOURCES += \
 	$$PWD/pioneerLuaGenerator.qrc \
 	$$PWD/templates.qrc \
+
+OTHER_FILES += \
+	$$PWD/scripts/pioneerStart.sh \
+	$$PWD/scripts/pioneerUpload.sh \

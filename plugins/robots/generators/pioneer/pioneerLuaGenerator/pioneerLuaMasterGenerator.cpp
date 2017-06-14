@@ -62,3 +62,12 @@ bool PioneerLuaMasterGenerator::supportsGotoGeneration() const
 {
 	return true;
 }
+
+QString PioneerLuaMasterGenerator::generate(const QString &indentString)
+{
+	QDir().mkpath(mProjectDir + "/ap/");
+	QDir().mkpath(mProjectDir + "/Ev/");
+	QFile::copy(":/pioneer/lua/templates/testStub/ap/lua.lua", mProjectDir + "/ap/lua.lua");
+	QFile::copy(":/pioneer/lua/templates/testStub/Ev/lua.lua", mProjectDir + "/Ev/lua.lua");
+	return MasterGeneratorBase::generate(indentString);
+}

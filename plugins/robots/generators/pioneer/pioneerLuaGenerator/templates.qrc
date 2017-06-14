@@ -81,6 +81,8 @@
 		<file>templates/signs/less.t</file>
 		<file>templates/signs/notGreater.t</file>
 		<file>templates/signs/notLess.t</file>
+		<file>templates/testStub/ap/lua.lua</file>
+		<file>templates/testStub/Ev/lua.lua</file>
 		<file>templates/types/int.t</file>
 		<file>templates/types/float.t</file>
 		<file>templates/types/bool.t</file>
