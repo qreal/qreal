@@ -1,1 +1,1 @@
-script.wait(@@DELAY@@) 
+		sleep(@@DELAY@@ / 1000.0) 
