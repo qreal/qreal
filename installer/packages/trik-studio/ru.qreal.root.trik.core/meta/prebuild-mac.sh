@@ -22,7 +22,8 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-kit-interpreter-comm
 copy_qt_lib QtNetwork
 copy_qt_lib QtMultimedia
 
-cp     $BIN_DIR/system.js                                                 "$BUNDLE_CONTENTS/MacOS"
+mkdir -p "$BUNDLE_CONTENTS/MacOS"
+rsync -a  $BIN_DIR/system.js                                                 "$BUNDLE_CONTENTS/MacOS/"
 
 
 cd "$(dirname "$0")"/../data
