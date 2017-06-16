@@ -434,6 +434,16 @@ void WorldModel::setBackground(const Image &image, const QRect &rect)
 	}
 }
 
+Image &WorldModel::background()
+{
+	return mBackgroundImage;
+}
+
+QRect &WorldModel::backgroundRect()
+{
+	return mBackgroundRect;
+}
+
 void WorldModel::createElement(const QDomElement &element)
 {
 	if (element.tagName() == "rectangle") {

@@ -122,6 +122,12 @@ public:
 	/// Sets a background image on the scene and its geometry.
 	void setBackground(const Image &image, const QRect &rect);
 
+	/// Returns a path to scene background image.
+	Image &background();
+
+	/// Returns a scene background image size and position.
+	QRect &backgroundRect();
+
 	/// Creates element from serialized XML specification.
 	void createElement(const QDomElement &element);
 

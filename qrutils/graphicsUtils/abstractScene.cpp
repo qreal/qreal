@@ -158,6 +158,11 @@ void AbstractScene::setDragMode(QGraphicsView::DragMode mode)
 	mView->setDragMode(mode);
 }
 
+QGraphicsView::DragMode AbstractScene::currentDragMode() const
+{
+	return mView->dragMode();
+}
+
 void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 {
 	setX1andY1(event);

@@ -103,7 +103,7 @@ NodeElement::NodeElement(const NodeElementType &type, const Id &id, const models
 	initExplosionConnections();
 	const Id explosionTarget = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(mGraphicalAssistApi.logicalId(mId));
 	if (!explosionTarget.isNull()) {
-		updateDynamicProperties(explosionTarget);
+		models.exploser().explosionTargetCouldChangeProperties(explosionTarget);
 	}
 }
 
@@ -154,27 +154,28 @@ void NodeElement::initExplosionConnections()
 
 void NodeElement::updateDynamicProperties(const Id &target)
 {
-	if (mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId()) != target) {
+	const Id outgoingExplosion = mLogicalAssistApi.logicalRepoApi().outgoingExplosion(logicalId());
+	if (outgoingExplosion.isNull()) {
 		// remove this line if there are language elements which can add explosion
 		disconnect(&mModels.exploser(), &models::Exploser::explosionTargetCouldChangeProperties, this
 				, &NodeElement::updateDynamicProperties);
 		return;
 	}
 
-	bool somethingChanged = false;
+	if (outgoingExplosion != target) {
+		return;
+	}
 
 	// Update name
 	const QString name = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "name");
 	if (mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(logicalId(), "name") != name) {
 		setName(name, false);
-		somethingChanged = true;
 	}
 
 	// Update shape
 	const QString shape = mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(target, "shape");
 	if (mPreviousShape != shape) {
 		mPreviousShape = shape;
-		somethingChanged = true;
 		if (shape.isEmpty()) {
 			mRenderer.load(mType.sdf().ownerDocument());
 		} else {
@@ -266,12 +267,6 @@ void NodeElement::updateDynamicProperties(const Id &target)
 			label->setPlainText(value);
 			mLabels.append(label);
 		}
-
-		somethingChanged = true;
-	}
-
-	if (somethingChanged) {
-		emit mModels.exploser().explosionsSetCouldChange();
 	}
 }
 

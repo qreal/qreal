@@ -44,6 +44,7 @@
 #include <qrutils/qRealFileDialog.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/graphicsUtils/animatedEffects.h>
+#include <qrutils/xmlUtils.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciprinter.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 
@@ -1721,6 +1722,57 @@ void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 	}
 }
 
+void MainWindow::addExternalToolActions()
+{
+	QMenu *externalToolsMenu = new QMenu(tr("External tools"));
+	const QString pathToConfigs = PlatformInfo::applicationDirPath() + "/externalToolsConfig";
+	const QString osName = PlatformInfo::prettyOsVersion();
+	const QStringList configs = QDir(pathToConfigs).entryList().filter(".xml");
+	for (const QString &configFile : configs) {
+		QDomDocument xmlConfig = utils::xmlUtils::loadDocument(pathToConfigs + "/" + configFile);
+		for (QDomElement element = xmlConfig.firstChildElement("tools").firstChildElement("platform")
+				; !element.isNull()
+				; element = element.nextSiblingElement("platform"))
+		{
+			const QString name = element.attribute("name");
+			if (!osName.startsWith(name)) {
+				continue;
+			}
+
+			for (QDomElement tool = element.firstChildElement("tool")
+					; !tool.isNull()
+					; tool = tool.nextSiblingElement("tool"))
+			{
+				const QString toolName = tool.attribute("name");
+				const QString program = PlatformInfo::invariantPath(tool.attribute("program"));
+				QStringList arguments = tool.attribute("arguments").split(" ");
+				for (QString &arg : arguments) {
+					if (arg.startsWith("@@")) {
+						arg = SettingsManager::value(arg.remove("@@")).toString();
+					}
+				}
+
+				if (QFile(program).exists()) {
+					QAction *action = new QAction(toolName, externalToolsMenu);
+					connect(action, &QAction::triggered, [=](){
+						QProcess::startDetached(program, arguments);
+					});
+
+					externalToolsMenu->addAction(action);
+				}
+			}
+
+			break;
+		}
+	}
+
+	if (!externalToolsMenu->actions().isEmpty()) {
+		mUi->menuTools->addMenu(externalToolsMenu);
+	} else {
+		delete externalToolsMenu;
+	}
+}
+
 QList<QAction *> MainWindow::optionalMenuActionsForInterpretedPlugins()
 {
 	return mListOfAdditionalActions;
@@ -1741,6 +1793,7 @@ void MainWindow::initToolPlugins()
 
 	QList<ActionInfo> const actions = mToolManager->actions();
 	traverseListOfActions(actions);
+	addExternalToolActions();
 
 	for (const HotKeyActionInfo &actionInfo : mToolManager->hotKeyActions()) {
 		HotKeyManager::setCommand(actionInfo.id(), actionInfo.label(), actionInfo.action());
