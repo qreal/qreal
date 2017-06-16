@@ -14,7 +14,12 @@
 
 #include "pioneerStateMachineGenerator.h"
 
+#include <generatorBase/semanticTree/semanticNode.h>
+#include <generatorBase/semanticTree/simpleNode.h>
+
 using namespace pioneer::lua;
+using namespace generatorBase;
+using namespace generatorBase::semantics;
 
 PioneerStateMachineGenerator::PioneerStateMachineGenerator(
 		const qrRepo::RepoApi &repo
@@ -26,4 +31,21 @@ PioneerStateMachineGenerator::PioneerStateMachineGenerator(
 		, bool isThisDiagramMain)
 	: GotoControlFlowGenerator(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 {
+}
+
+void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList<LinkInfo> &links)
+{
+	ControlFlowGeneratorBase::visitRegular(id, links);
+	SimpleNode * const thisNode = static_cast<SimpleNode *>(mSemanticTree->findNodeFor(id));
+	SemanticNode *nextNode = nullptr;
+	if (mSemanticTree->findNodeFor(links[0].target)) {
+		nextNode = produceGotoNode(links[0].target);
+		thisNode->insertSiblingAfterThis(nextNode);
+	} else {
+		nextNode = mSemanticTree->produceNodeFor(links[0].target);
+		nextNode->addLabel();
+		SemanticNode *gotoNode = produceGotoNode(links[0].target);
+		thisNode->insertSiblingAfterThis(gotoNode);
+		dynamic_cast<NonZoneNode *>(gotoNode)->insertSiblingAfterThis(nextNode);
+	}
 }

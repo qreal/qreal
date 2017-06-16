@@ -25,6 +25,7 @@
 #include <generatorBase/parts/variables.h>
 
 #include "pioneerLuaGeneratorCustomizer.h"
+#include "generators/pioneerStateMachineGenerator.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase;
@@ -41,6 +42,19 @@ PioneerLuaMasterGenerator::PioneerLuaMasterGenerator(const qrRepo::RepoApi &repo
 	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, parserErrorReporter, diagramId)
 	, mGeneratorName(generatorName)
 {
+}
+
+PioneerLuaMasterGenerator::~PioneerLuaMasterGenerator()
+{
+	// Empty destructor to keep QScopedPointer happy.
+}
+
+void PioneerLuaMasterGenerator::initialize()
+{
+	MasterGeneratorBase::initialize();
+	mControlFlowGenerator.reset(
+			new PioneerStateMachineGenerator(mRepo, mErrorReporter, *mCustomizer, *mValidator, mDiagram)
+			);
 }
 
 generatorBase::GeneratorCustomizer *PioneerLuaMasterGenerator::createCustomizer()
@@ -63,11 +77,89 @@ bool PioneerLuaMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
-QString PioneerLuaMasterGenerator::generate(const QString &indentString)
+void PioneerLuaMasterGenerator::beforeGeneration()
 {
 	QDir().mkpath(mProjectDir + "/ap/");
 	QDir().mkpath(mProjectDir + "/Ev/");
 	QFile::copy(":/pioneer/lua/templates/testStub/ap/lua.lua", mProjectDir + "/ap/lua.lua");
 	QFile::copy(":/pioneer/lua/templates/testStub/Ev/lua.lua", mProjectDir + "/Ev/lua.lua");
-	return MasterGeneratorBase::generate(indentString);
+}
+
+QString PioneerLuaMasterGenerator::generate(const QString &indentString)
+{
+	if (mDiagram.isNull()) {
+		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
+		return QString();
+	}
+
+	beforeGeneration();
+
+	if (!QDir(mProjectDir).exists()) {
+		QDir().mkpath(mProjectDir);
+	}
+
+	mTextLanguage.clear();
+	mCustomizer->factory()->setMainDiagramId(mDiagram);
+
+	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
+		generator->reinit();
+	}
+
+	QString mainCode;
+
+	const semantics::SemanticTree *mainControlFlow = mControlFlowGenerator->generate();
+	if (mainControlFlow) {
+		mainCode = mainControlFlow->toString(0, indentString);
+		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()
+				->subprograms()->generate(mControlFlowGenerator.data(), indentString);
+		if (subprogramsResult != parts::Subprograms::GenerationResult::success) {
+			mainCode = QString();
+		}
+	}
+
+	if (mainCode.isEmpty()) {
+		const QString errorMessage = tr("Generation failed. Possible causes are internal error in generator or too "
+				"complex program structure.");
+		mErrorReporter.addError(errorMessage);
+		return QString();
+	}
+
+	QString resultCode = readTemplate("main.t");
+	replaceWithAutoIndent(resultCode, "@@SUBPROGRAMS_FORWARDING@@"
+			, mCustomizer->factory()->subprograms()->forwardDeclarations());
+	replaceWithAutoIndent(resultCode, "@@SUBPROGRAMS@@"
+			, mCustomizer->factory()->subprograms()->implementations());
+	replaceWithAutoIndent(resultCode, "@@THREADS_FORWARDING@@"
+			, mCustomizer->factory()->threads().generateDeclarations());
+	replaceWithAutoIndent(resultCode, "@@THREADS@@"
+			, mCustomizer->factory()->threads().generateImplementations(indentString));
+	replaceWithAutoIndent(resultCode, "@@MAIN_CODE@@", mainCode);
+	replaceWithAutoIndent(resultCode, "@@INITHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->initCode(), 1, indentString));
+	replaceWithAutoIndent(resultCode, "@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->terminateCode(), 1, indentString));
+	replaceWithAutoIndent(resultCode, "@@USERISRHOOKS@@", utils::StringUtils::addIndent(
+			mCustomizer->factory()->isrHooksCode(), 1, indentString));
+	const QString constantsString = mCustomizer->factory()->variables()->generateConstantsString();
+	const QString variablesString = mCustomizer->factory()->variables()->generateVariableString();
+	if (resultCode.contains("@@CONSTANTS@@")) {
+		replaceWithAutoIndent(resultCode, "@@CONSTANTS@@", constantsString);
+		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", variablesString);
+	} else {
+		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", constantsString + "\n" + variablesString);
+	}
+
+	// This will remove too many empty lines
+	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
+
+	processGeneratedCode(resultCode);
+
+	generateLinkingInfo(resultCode);
+
+	const QString pathToOutput = targetPath();
+	outputCode(pathToOutput, resultCode);
+
+	afterGeneration();
+
+	return pathToOutput;
 }

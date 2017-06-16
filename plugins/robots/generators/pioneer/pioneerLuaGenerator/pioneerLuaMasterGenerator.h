@@ -16,8 +16,12 @@
 
 #include <generatorBase/masterGeneratorBase.h>
 
+#include <QtCore/QScopedPointer>
+
 namespace pioneer {
 namespace lua {
+
+class PioneerStateMachineGenerator;
 
 /// Main generator that directs generation process (mainly by configuring its base class that does actual job).
 class PioneerLuaMasterGenerator : public generatorBase::MasterGeneratorBase
@@ -31,14 +35,23 @@ public:
 			, const qReal::Id &diagramId
 			, const QString &generatorName);
 
+	~PioneerLuaMasterGenerator() override;
+
 private:
+	void initialize() override;
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+
+	void beforeGeneration() override;
 	QString generate(const QString &indentString) override;
 
 	/// Name of the generator, needed to locate templates (used as a prefix in path).
 	const QString mGeneratorName;
+
+	/// Control flow generator, defines strategy of traversing nodes and converting them into semantic tree, thus
+	/// defining control flow in an application.
+	QScopedPointer<PioneerStateMachineGenerator> mControlFlowGenerator;
 };
 
 }

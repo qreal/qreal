@@ -39,6 +39,9 @@ public:
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
+
+private:
+	void visitRegular(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
 };
 
 }
