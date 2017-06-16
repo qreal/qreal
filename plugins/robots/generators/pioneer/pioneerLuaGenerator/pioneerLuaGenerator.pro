@@ -16,8 +16,15 @@ TARGET = robots-pioneer-lua-generator
 
 include(../../../../../global.pri)
 
-copyToDestdir(scripts/pioneerStart.sh, now)
 copyToDestdir(scripts/pioneerUpload.sh, now)
+copyToDestdir(scripts/pioneerStart.sh, now)
+copyToDestdir(scripts/controller.py, now)
+
+!win32 {
+	system("chmod +x $$DESTDIR/pioneerUpload.sh")
+	system("chmod +x $$DESTDIR/pioneerStart.sh")
+	system("chmod +x $$DESTDIR/controller.py")
+}
 
 QT += widgets
 
@@ -75,3 +82,4 @@ RESOURCES += \
 OTHER_FILES += \
 	$$PWD/scripts/pioneerStart.sh \
 	$$PWD/scripts/pioneerUpload.sh \
+	$$PWD/scripts/controller.py \

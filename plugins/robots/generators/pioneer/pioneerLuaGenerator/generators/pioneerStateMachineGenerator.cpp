@@ -31,6 +31,7 @@ PioneerStateMachineGenerator::PioneerStateMachineGenerator(
 		, bool isThisDiagramMain)
 	: GotoControlFlowGenerator(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 {
+	mAsynchronousNodes << "GeoTakeoff" << "GeoLanding" << "GoToPoint";
 }
 
 void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList<LinkInfo> &links)
@@ -38,14 +39,19 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 	ControlFlowGeneratorBase::visitRegular(id, links);
 	SimpleNode * const thisNode = static_cast<SimpleNode *>(mSemanticTree->findNodeFor(id));
 	SemanticNode *nextNode = nullptr;
-	if (mSemanticTree->findNodeFor(links[0].target)) {
-		nextNode = produceGotoNode(links[0].target);
-		thisNode->insertSiblingAfterThis(nextNode);
+	if (mAsynchronousNodes.contains(id.element())) {
+		if (mSemanticTree->findNodeFor(links[0].target)) {
+			nextNode = produceGotoNode(links[0].target);
+			thisNode->insertSiblingAfterThis(nextNode);
+		} else {
+			nextNode = mSemanticTree->produceNodeFor(links[0].target);
+			nextNode->addLabel();
+			SemanticNode *gotoNode = produceGotoNode(links[0].target);
+			thisNode->insertSiblingAfterThis(gotoNode);
+			dynamic_cast<NonZoneNode *>(gotoNode)->insertSiblingAfterThis(nextNode);
+		}
 	} else {
 		nextNode = mSemanticTree->produceNodeFor(links[0].target);
-		nextNode->addLabel();
-		SemanticNode *gotoNode = produceGotoNode(links[0].target);
-		thisNode->insertSiblingAfterThis(gotoNode);
-		dynamic_cast<NonZoneNode *>(gotoNode)->insertSiblingAfterThis(nextNode);
+		thisNode->insertSiblingAfterThis(nextNode);
 	}
 }

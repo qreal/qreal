@@ -1,5 +1,6 @@
-local ap = require "ap.lua"
-local Ev = require "Ev.lua"
+-- Uncomment this for execution against debug stub.
+-- local ap = require "ap.lua"
+-- local Ev = require "Ev.lua"
 
 @@SUBPROGRAMS_FORWARDING@@
 

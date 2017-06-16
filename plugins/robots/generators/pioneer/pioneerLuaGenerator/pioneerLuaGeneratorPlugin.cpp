@@ -189,6 +189,11 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 	process.waitForStarted();
 	if (process.state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to execute script"));
+		QStringList errors = QString(process.readAllStandardError()).split("\n", QString::SkipEmptyParts);
+		for (const auto &error : errors) {
+			mMainWindowInterface->errorReporter()->addInformation(error);
+		}
+
 		return;
 	}
 

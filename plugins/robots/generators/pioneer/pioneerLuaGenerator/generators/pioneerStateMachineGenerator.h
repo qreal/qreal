@@ -14,6 +14,9 @@
 
 #pragma once
 
+#include <QtCore/QSet>
+#include <QtCore/QString>
+
 #include <generatorBase/gotoControlFlowGenerator.h>
 
 namespace pioneer {
@@ -42,6 +45,8 @@ public:
 
 private:
 	void visitRegular(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
+
+	QSet<QString> mAsynchronousNodes;
 };
 
 }
