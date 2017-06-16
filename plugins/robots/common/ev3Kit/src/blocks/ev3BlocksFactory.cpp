@@ -111,6 +111,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3EnginesStop")
 		, id("Ev3ClearEncoder")
 		, id("Ev3Led")
+		, id("Ev3SendMail")
 
 		, id("Ev3WaitForTouchSensor")
 		, id("Ev3WaitForSonarDistance")
@@ -121,6 +122,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3WaitForButton")
 		, id("Ev3WaitForSound")
 		, id("Ev3WaitForGyroscope")
+		, id("Ev3WaitForReceivingMail")
 
 		, id("Ev3DrawPixel")
 		, id("Ev3DrawLine")
@@ -137,6 +139,8 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 		result
 				<< id("Ev3WaitForSound")
 				<< id("Ev3WaitForGyroscope")
+				<< id("Ev3SendMail")
+				<< id("Ev3WaitForReceivingMail")
 				;
 	} else {
 		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {

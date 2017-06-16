@@ -24,6 +24,8 @@
 #include "simpleGenerators/playToneGenerator.h"
 #include "simpleGenerators/beepGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
+#include "simpleGenerators/sendMailGenerator.h"
+#include "simpleGenerators/receiveMailGenerator.h"
 
 #include "converters/outputPortNameConverter.h"
 #include "converters/ledColorConverter.h"
@@ -40,11 +42,17 @@ Ev3GeneratorFactory::Ev3GeneratorFactory(const qrRepo::RepoApi &repo
 		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
+	, mMailboxes({":/" + mGeneratorName + "/templates"})
 {
 }
 
 Ev3GeneratorFactory::~Ev3GeneratorFactory()
 {
+}
+
+parts::Mailboxes &Ev3GeneratorFactory::mailboxes()
+{
+	return mMailboxes;
 }
 
 AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
@@ -83,6 +91,10 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return randomIdGenerator(new PlayToneGenerator(mRepo, customizer, id, this));
 	} else if (elementType == "Ev3Beep") {
 		return randomIdGenerator(new BeepGenerator(mRepo, customizer, id, this));
+	} else if (elementType == "Ev3SendMail") {
+		return randomIdGenerator(new SendMailGenerator(mRepo, customizer, id, this));
+	} else if (elementType == "Ev3WaitForReceivingMail") {
+		return randomIdGenerator(new ReceiveMailGenerator(mRepo, customizer, id, this));
 	}
 
 	return randomIdGenerator(GeneratorFactoryBase::simpleGenerator(id, customizer));
@@ -101,4 +113,9 @@ Binding::ConverterInterface *Ev3GeneratorFactory::ledColorConverter() const
 QStringList Ev3GeneratorFactory::pathsToTemplates() const
 {
 	return { ":/" + mGeneratorName + "/templates" };
+}
+
+void Ev3GeneratorFactory::reportError(const QString &errorMessage, const qReal::Id &id)
+{
+	mErrorReporter.addError(errorMessage, id);
 }

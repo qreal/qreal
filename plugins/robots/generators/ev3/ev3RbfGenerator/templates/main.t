@@ -26,8 +26,10 @@ vmthread MAIN
 	DATA8 _temp_sensor_value_8
 	DATAF _temp_sensor_value_f
 
+@@MAILBOXES_OPENING@@
 @@MAIN_CODE@@
 
+@@MAILBOXES_CLOSING@@
 __programEnd:
 }
 

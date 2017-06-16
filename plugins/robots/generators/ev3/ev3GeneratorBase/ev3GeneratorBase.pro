@@ -40,6 +40,7 @@ HEADERS += \
 	$$PWD/include/ev3GeneratorBase/ev3MasterGeneratorBase.h \
 	$$PWD/include/ev3GeneratorBase/ev3GeneratorFactory.h \
 	$$PWD/include/ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h \
+	$$PWD/include/ev3GeneratorBase/parts/ev3Mailboxes.h \
 	$$PWD/src/ev3GeneratorCustomizer.h \
 	$$PWD/src/simpleGenerators/drawLineGenerator.h \
 	$$PWD/src/simpleGenerators/drawPixelGenerator.h \
@@ -53,6 +54,8 @@ HEADERS += \
 	$$PWD/src/converters/ledColorConverter.h \
 	$$PWD/src/simpleGenerators/playToneGenerator.h \
 	$$PWD/src/simpleGenerators/beepGenerator.h \
+	$$PWD/src/simpleGenerators/sendMailGenerator.h \
+	$$PWD/src/simpleGenerators/receiveMailGenerator.h
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \
@@ -60,6 +63,7 @@ SOURCES += \
 	$$PWD/src/ev3GeneratorCustomizer.cpp \
 	$$PWD/src/ev3GeneratorFactory.cpp \
 	$$PWD/src/robotModel/ev3GeneratorRobotModel.cpp \
+	$$PWD/src/parts/ev3Mailboxes.cpp \
 	$$PWD/src/simpleGenerators/drawLineGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawPixelGenerator.cpp \
 	$$PWD/src/simpleGenerators/drawRectGenerator.cpp \
@@ -72,5 +76,7 @@ SOURCES += \
 	$$PWD/src/converters/ledColorConverter.cpp \
 	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
 	$$PWD/src/simpleGenerators/beepGenerator.cpp \
+	$$PWD/src/simpleGenerators/sendMailGenerator.cpp \
+	$$PWD/src/simpleGenerators/receiveMailGenerator.cpp
 
 OTHER_FILES +=
