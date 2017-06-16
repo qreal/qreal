@@ -219,6 +219,8 @@ void PioneerLuaGeneratorPlugin::runProgram()
 		return;
 	}
 
+	uploadProgram();
+
 #ifdef Q_OS_WIN
 	mMainWindowInterface->errorReporter()->addError(tr("Running program is not supported on Windows yet."));
 	return;

@@ -79,7 +79,7 @@
 				</logic>
 			</node>
 
-			<node displayedName="Led" name="Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on a quadcopter.">
+			<node displayedName="Led" name="PioneerLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on a quadcopter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/pioneerLedBlock.svg" x1="0" y2="50" x2="50"/>
@@ -102,7 +102,7 @@
 				</logic>
 			</node>
 
-			<node displayedName="Print" name="Print" description="Prints given string on a console.">
+			<node displayedName="Print" name="PioneerPrint" description="Prints given string on a console.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/pioneerPrintBlock.svg" x1="0" y2="50" x2="50"/>
@@ -193,8 +193,8 @@
 				<element name="GeoTakeoff"/>
 				<element name="GeoLanding"/>
 				<element name="GoToPoint"/>
-				<element name="Led"/>
-				<element name="Print"/>
+				<element name="PioneerLed"/>
+				<element name="PioneerPrint"/>
 				<element name="MagnetOn"/>
 				<element name="MagnetOff"/>
 				<element name="PioneerSystem"/>
