@@ -1,1 +1,1 @@
--- print() function is currently not supported
+		print(@@TEXT@@)

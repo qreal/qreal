@@ -57,6 +57,8 @@ HEADERS += \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
 	$$PWD/simpleGenerators/goToPointGenerator.h \
 	$$PWD/simpleGenerators/initialNodeGenerator.h \
+	$$PWD/simpleGenerators/pioneerPrintGenerator.h \
+	$$PWD/simpleGenerators/pioneerSystemGenerator.h \
 	$$PWD/widgets/pioneerAdditionalPreferences.h \
 
 SOURCES += \
@@ -70,6 +72,8 @@ SOURCES += \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
 	$$PWD/simpleGenerators/goToPointGenerator.cpp \
 	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
+	$$PWD/simpleGenerators/pioneerPrintGenerator.cpp \
+	$$PWD/simpleGenerators/pioneerSystemGenerator.cpp \
 	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
 
 FORMS += \

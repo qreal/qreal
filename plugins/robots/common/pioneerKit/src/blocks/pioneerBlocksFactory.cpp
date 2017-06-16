@@ -28,12 +28,12 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			id("GeoTakeoff")
 			, id("GeoLanding")
 			, id("GoToPoint")
+			, id("PioneerPrint")
+			, id("PioneerSystem")
 
 			, id("PioneerLed")
-			, id("PioneerPrint")
 			, id("MagnetOn")
 			, id("MagnetOff")
-			, id("PioneerSystem")
 	};
 }
 
@@ -41,10 +41,8 @@ qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 {
 	return {
 		id("PioneerLed")
-		, id("PioneerPrint")
 		, id("MagnetOn")
 		, id("MagnetOff")
-		, id("PioneerSystem")
 	};
 }
 

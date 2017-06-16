@@ -12,31 +12,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "goToPointGenerator.h"
+#include "pioneerPrintGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
+#include <qrutils/stringUtils.h>
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
 
-GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
+PioneerPrintGenerator::PioneerPrintGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToPoint.t"
+	: BindingGenerator(repo, customizer, id, "functions/print.t"
 		, {
-			Binding::createConverting(
-					"@@LATITUDE@@"
-					, "Latitude"
-					, customizer.factory()->intPropertyConverter(id, "Latitude"))
-			, Binding::createConverting(
-					"@@LONGITUDE@@"
-					, "Longitude"
-					, customizer.factory()->intPropertyConverter(id, "Longitude"))
-			, Binding::createConverting(
-					"@@ALTITUDE@@"
-					, "Altitude"
-					, customizer.factory()->intPropertyConverter(id, "Altitude"))
+				repo.property(id, "Evaluate").toBool()
+						? Binding::createConverting("@@TEXT@@", "PrintText"
+								, customizer.factory()->stringPropertyConverter(id, "PrintText"))
+						: Binding::createStaticConverting("@@TEXT@@"
+								, utils::StringUtils::wrap(repo.stringProperty(id, "PrintText"))
+								, customizer.factory()->stringPropertyConverter(id, "PrintText"))
 			}
 		, parent)
 {

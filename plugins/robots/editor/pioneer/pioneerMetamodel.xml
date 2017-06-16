@@ -108,7 +108,7 @@
 						<image y1="0" name="images/pioneerPrintBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="35" y="60" textBinded="Text" hard="true" background="white" prefix="Text:"/>
+						<label x="35" y="60" textBinded="PrintText" hard="true" background="white" prefix="Text:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
