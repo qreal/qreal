@@ -55,6 +55,6 @@ ReceiveMailGenerator::ReceiveMailGenerator(const qrRepo::RepoApi &repo
 	addBinding(Binding::createStatic("@@ID@@"
 			, mGeneratorFactory->mailboxes().mailboxNameToId(mailboxName)));
 	addBinding(Binding::createStatic("@@TYPE_LENGHT@@"
-			, mGeneratorFactory->mailboxes().mailboxNameToTypeLength(mailboxName)));
+			, mGeneratorFactory->mailboxes().messageTypeToTypeLength(mailboxName)));
 	addBinding(Binding::createStatic("@@VARIABLE@@", variable));
 }

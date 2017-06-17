@@ -14,8 +14,8 @@
 
 #include "ev3GeneratorBase/parts/ev3Mailboxes.h"
 
-
-using ev3::parts;
+using namespace ev3;
+using namespace ev3::parts;
 
 const QMap<QString, QString> EV3_TYPE_ID = {{"int", "2"}, {"bool", "0"}, {"string", "4"}, {"float", "3"}};
 const QMap<QString, QString> EV3_TYPE_LENGTH = {{"int", "4"}, {"bool", "1"}, {"string", "255"}, {"float", "4"}};
@@ -40,8 +40,8 @@ QString parts::Mailboxes::generateOpening() const
 	while (iterator.hasNext()) {
 		iterator.next();
 		QString tmpTemplate = openTemplate;
-		res += tmpTemplate.replace("MAILBOX_NAME", iterator.key())
-				.replace("@@ID@@", mailboxNameToId[mailboxName])
+		res += tmpTemplate.replace("@@MAILBOX_NAME@@", iterator.key())
+				.replace("@@ID@@", mMailboxNameToId[iterator.key()])
 				.replace("@@TYPE@@", iterator.value());
 		res += "\n";
 	}
@@ -57,7 +57,7 @@ QString parts::Mailboxes::generateClosing() const
 	while (iterator.hasNext()) {
 		iterator.next();
 		QString tmpTemplate = closeTemplate;
-		res += tmpTemplate.replace("@@ID@@", mailboxNameToId[mailboxName]);
+		res += tmpTemplate.replace("@@ID@@", mMailboxNameToId[iterator.key()]);
 		res += "\n";
 	}
 
@@ -83,7 +83,7 @@ bool parts::Mailboxes::tryRegisterReadMailbox(const QString &name, const QString
 {
 	if (!mReadMailboxNameToTypeMap.contains(name)) {
 		mReadMailboxNameToTypeMap[name] = type;
-		mMailboxNameToId[name] = mReadMailboxNameToTypeMap.size();
+		mMailboxNameToId[name] = QString::number(mReadMailboxNameToTypeMap.size());
 		return true;
 	}
 

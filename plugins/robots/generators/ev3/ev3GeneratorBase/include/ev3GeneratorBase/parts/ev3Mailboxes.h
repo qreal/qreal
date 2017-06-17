@@ -61,7 +61,7 @@ public:
 	QString mailboxNameToId(const QString &name) const;
 
 	/// Returns type length of given message type.
-	QString messageTypeToTypeLength(const QString &name, bool readBox = true) const;
+	QString messageTypeToTypeLength(const QString &typeName) const;
 
 	/// Returns ev3 type encoding.
 	QString typeToEv3Type(const QString &typeName) const;
