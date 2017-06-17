@@ -20,7 +20,7 @@ using namespace ev3::simple;
 using namespace generatorBase::simple;
 using namespace qReal;
 
-const QMap<QString, QString> DEFAULT_VALUE =  {{"int", "0"}, {"float", "0.0"}, {"bool", "true"}, {"string", ""}};
+const QMap<QString, QString> DEFAULT_VALUE =  {{"int", "0"}, {"float", "0.0"}, {"bool", "true"}, {"string", "\"\""}};
 
 ReceiveMailGenerator::ReceiveMailGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
@@ -29,12 +29,16 @@ ReceiveMailGenerator::ReceiveMailGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id, "", QList<Binding *>(), parent)
 {
 	auto mGeneratorFactory = dynamic_cast<Ev3GeneratorFactory *>(parent);
-	const QString mailboxName = mRepo.property(mId, "MailBoxName").toString();
+	Binding::ConverterInterface *nameNormalizer = customizer.factory()->nameNormalizerConverter();
+	const QString mailboxName = nameNormalizer->convert(mRepo.property(mId, "MailBoxName").toString());
 	const QString type = mRepo.property(mId, "MsgType").toString();
-	const QString variable = customizer.factory()->nameNormalizerConverter()->convert(mRepo.property(mId
-			 , "Variable").toString());
+	const QString variable = nameNormalizer->convert(mRepo.property(mId, "Variable").toString());
 	if (!mGeneratorFactory->mailboxes().tryRegisterReadMailbox(mailboxName, type)) {
 		mGeneratorFactory->reportError(tr("There is already mailbox with same name, but different msg type") , mId);
+	}
+
+	if (mGeneratorFactory->mailboxes().mailboxesCount() >= 30) {
+		mGeneratorFactory->reportError(tr("There are too many mailboxes, max size is 30") , mId);
 	}
 
 	bool synch = mRepo.property(mId, "Synchronized").toBool();
@@ -52,7 +56,5 @@ ReceiveMailGenerator::ReceiveMailGenerator(const qrRepo::RepoApi &repo
 			, mGeneratorFactory->mailboxes().mailboxNameToId(mailboxName)));
 	addBinding(Binding::createStatic("@@TYPE_LENGHT@@"
 			, mGeneratorFactory->mailboxes().mailboxNameToTypeLength(mailboxName)));
-	addBinding(Binding::createStatic("@@DATA_TYPE@@"
-			, mGeneratorFactory->mailboxes().typePostfixDeclaration(type)));
 	addBinding(Binding::createStatic("@@VARIABLE@@", variable));
 }

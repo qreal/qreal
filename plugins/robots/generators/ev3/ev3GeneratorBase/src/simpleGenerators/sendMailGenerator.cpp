@@ -26,8 +26,9 @@ SendMailGenerator::SendMailGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id, "mailboxes/writeMail.t", QList<Binding *>(), parent)
 {
 	auto mGeneratorFactory = dynamic_cast<Ev3GeneratorFactory *>(parent);
-	const QString receiverName = mRepo.property(mId, "ReceiverName").toString();
-	const QString mailboxName = mRepo.property(mId, "ReceiverMailBoxName").toString();
+	Binding::ConverterInterface *nameNormalizer = customizer.factory()->nameNormalizerConverter();
+	const QString receiverName =mRepo.property(mId, "ReceiverName").toString();
+	const QString mailboxName = nameNormalizer->convert(mRepo.property(mId, "ReceiverMailBoxName").toString());
 	const QString type = mRepo.property(mId, "MsgType").toString();
 	if (!mGeneratorFactory->mailboxes().tryRegisterWriteMailbox(mailboxName, type)) {
 		mGeneratorFactory->reportError(tr("There is already mailbox with same name, but different msg type") , mId);

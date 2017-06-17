@@ -237,7 +237,7 @@
 				</logic>
 			</node>
 
-			<node displayedName="Send Mail" name="Ev3SendMail" description="Sends mail (message) to another robot.">
+			<node displayedName="Send Mail" name="Ev3SendMail" description="Sends mail (message) to another robot. If Receiver name left empty, message will be sent to all connected robots">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
@@ -258,9 +258,7 @@
 						<property displayedName="Message" type="string" name="Message">
 							<default>42</default>
 						</property>
-						<property displayedName="Receiver name" type="string" name="ReceiverName">
-							<default>EV3</default>
-						</property>
+						<property displayedName="Receiver name" type="string" name="ReceiverName"/>
 						<property displayedName="Mailbox name" type="string" name="ReceiverMailBoxName">
 							<default>EV3MailBox</default>
 						</property>
