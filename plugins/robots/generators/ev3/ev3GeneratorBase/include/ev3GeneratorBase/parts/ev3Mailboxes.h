@@ -46,7 +46,7 @@ public:
 	/// Returns a resulting set of write mailboxes with types (map<Name, Type>)
 	QMap<QString, QString> &writeMailboxes();
 
-	/// Returns the count of registered in the moment mailboxes
+	/// Returns the count of registered in the moment read mailboxes
 	int mailboxesCount() const;
 
 	/// Tries add new read mailbox to program.
@@ -57,14 +57,11 @@ public:
 	/// Returns false if mailbox already exists or old and new types are not equal.
 	bool tryRegisterWriteMailbox(const QString &name, const QString &type);
 
-	/// Returns id of given mailbox.
+	/// Returns id of given mailbox (read only mailbox).
 	QString mailboxNameToId(const QString &name) const;
 
-	/// Returns type length of given mailbox.
-	QString mailboxNameToTypeLength(const QString &name, bool readBox = true) const;
-
-	/// Returns type ending for declaration.
-	QString typePostfixDeclaration(const QString &typeName) const;
+	/// Returns type length of given message type.
+	QString messageTypeToTypeLength(const QString &name, bool readBox = true) const;
 
 	/// Returns ev3 type encoding.
 	QString typeToEv3Type(const QString &typeName) const;
