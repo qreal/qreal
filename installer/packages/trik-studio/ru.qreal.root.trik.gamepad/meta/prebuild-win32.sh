@@ -4,6 +4,9 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
+cp    $QT_DIR/bin/Qt5MultimediaWidgets.dll	$PWD/../data
+cp    $QT_DIR/bin/Qt5OpenGL.dll				$PWD/../data
+
 git clone --depth 1 https://github.com/trikset/trik-desktop-gamepad.git gamepad-build
 
 cd gamepad-build

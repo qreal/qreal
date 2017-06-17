@@ -14,6 +14,7 @@ cp     $INSTALLER_ROOT/licenses/QtPropertyBrowser-license*.txt           $PWD
 cp     $INSTALLER_ROOT/licenses/QScintilla-GPL-exception*.txt            $PWD
 cp     $INSTALLER_ROOT/licenses/Scintilla-license*.txt                   $PWD
 cp     $INSTALLER_ROOT/licenses/WindowsModernStyle-license*.txt          $PWD
+cp     $INSTALLER_ROOT/licenses/DejaVu_Fonts_License*.txt                $PWD
 cp     $INSTALLER_ROOT/licenses/acknowledgements.txt                     $PWD/../data
 
 

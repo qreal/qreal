@@ -123,12 +123,6 @@ public slots:
 	/// Focuses all graphics views on the robot if it is not visible.
 	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
-	/// Returns a path to scene background image.
-	model::Image background() const;
-
-	/// Returns a scene background image size and position.
-	QRect backgroundRect() const;
-
 	/// Sets a background image on the scene and its geometry.
 	void setBackground(const model::Image &background, const QRect &backgroundRect);
 
@@ -220,8 +214,6 @@ private:
 	model::Model &mModel;
 	qReal::ControllerInterface *mController = nullptr;
 
-	model::Image mBackground;
-	QRect mBackgroundRect;
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
 

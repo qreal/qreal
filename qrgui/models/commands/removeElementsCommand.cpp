@@ -40,9 +40,9 @@ RemoveElementsCommand *RemoveElementsCommand::withItemsToDelete(const IdList &it
 		}
 	}
 
-	appendHangingEdges(nodes, edges);
-	mExploser.handleRemoveCommand(handleExplosions(nodes, edges), this);
 	// ElementInfos must be given into implementation in reverse order (in order they will be created during undo).
+	appendHangingEdges(nodes, edges);
+	mExploser.handleRemoveCommand(mExplosionSources, this);
 	mImpl.setElements(nodes + edges);
 	return this;
 }
@@ -55,30 +55,9 @@ RemoveElementsCommand *RemoveElementsCommand::withLogicalItemToDelete(const qRea
 	appendHangingEdges(nodes, edges);
 
 	// ElementInfos must be given into implementation in reverse order (in order they will be created during undo).
-	mExploser.handleRemoveCommand(handleExplosions(nodes, edges), this);
+	mExploser.handleRemoveCommand(mExplosionSources, this);
 	mImpl.setElements(nodes + edges);
 	return this;
-}
-
-QMap<qReal::Id, qReal::IdList> RemoveElementsCommand::handleExplosions(QList<ElementInfo> &nodes
-		, QList<ElementInfo> &edges)
-{
-	QMap<qReal::Id, qReal::IdList> idListWithExplosionTarget;
-	for (const ElementInfo &elementInfo : nodes) {
-		const IdList incomingExplosions = mLogicalApi.logicalRepoApi().incomingExplosions(elementInfo.logicalId());
-		if (!incomingExplosions.isEmpty()) {
-			idListWithExplosionTarget[elementInfo.logicalId()] = incomingExplosions;
-		}
-	}
-
-	for (const ElementInfo &elementInfo : edges) {
-		const Id target = mLogicalApi.logicalRepoApi().to(elementInfo.logicalId());
-		if (!mLogicalApi.logicalRepoApi().incomingExplosions(target).isEmpty()) {
-			idListWithExplosionTarget[target] << elementInfo.logicalId();
-		}
-	}
-
-	return idListWithExplosionTarget;
 }
 
 void RemoveElementsCommand::appendInfo(QList<ElementInfo> &nodes
@@ -166,6 +145,8 @@ void RemoveElementsCommand::appendExplosionsCommands(const Id &logicalId
 	for (const Id &logicalChild : toDelete) {
 		appendLogicalDelete(logicalChild, nodes, edges);
 	}
+
+	mExplosionSources << logicalId;
 }
 
 void RemoveElementsCommand::appendHangingEdges(QList<ElementInfo> &nodes, QList<ElementInfo> &edges)

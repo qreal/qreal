@@ -57,6 +57,12 @@ public:
 		return ":/fonts/Pfennig.ttf";
 	}
 
+	/// Returns a path to a monospace font
+	virtual QString monospaceFont() const
+	{
+		return ":/fonts/DejaVuSansMono.ttf";
+	}
+
 private:
 	void initTitlesFont()
 	{
