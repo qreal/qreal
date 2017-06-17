@@ -49,10 +49,12 @@ public:
 	/// Returns the count of registered in the moment mailboxes
 	int mailboxesCount() const;
 
-	/// Tries add new read mailbox to program. Returns false if mailbox already exists or old and new types are not equal.
+	/// Tries add new read mailbox to program.
+	/// Returns false if mailbox already exists or old and new types are not equal.
 	bool tryRegisterReadMailbox(const QString &name, const QString &type);
 
-	/// Tries add new write mailbox to program. Returns false if mailbox already exists or old and new types are not equal.
+	/// Tries add new write mailbox to program.
+	/// Returns false if mailbox already exists or old and new types are not equal.
 	bool tryRegisterWriteMailbox(const QString &name, const QString &type);
 
 	/// Returns id of given mailbox.
