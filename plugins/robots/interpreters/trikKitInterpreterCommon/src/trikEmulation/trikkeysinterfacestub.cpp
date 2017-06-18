@@ -41,7 +41,7 @@ void TrikKeysInterfaceStub::init()
 
 void TrikKeysInterfaceStub::start()
 {
-	reset();
+	init();
 }
 
 void TrikKeysInterfaceStub::stop()
@@ -53,10 +53,9 @@ void TrikKeysInterfaceStub::stop()
 }
 
 void TrikKeysInterfaceStub::reset() {
-	stop();
 	mButtons.clear();
 	mWasPressed.clear();
-	init();
+	stop();
 }
 
 bool TrikKeysInterfaceStub::wasPressed(int code)
