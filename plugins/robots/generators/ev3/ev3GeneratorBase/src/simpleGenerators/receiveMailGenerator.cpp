@@ -1,4 +1,4 @@
-/* Copyright 2017 QReal Research Group
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,6 +55,6 @@ ReceiveMailGenerator::ReceiveMailGenerator(const qrRepo::RepoApi &repo
 	addBinding(Binding::createStatic("@@ID@@"
 			, mGeneratorFactory->mailboxes().mailboxNameToId(mailboxName)));
 	addBinding(Binding::createStatic("@@TYPE_LENGHT@@"
-			, mGeneratorFactory->mailboxes().messageTypeToTypeLength(mailboxName)));
+			, mGeneratorFactory->mailboxes().messageTypeToTypeLength(type)));
 	addBinding(Binding::createStatic("@@VARIABLE@@", variable));
 }

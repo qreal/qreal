@@ -52,8 +52,6 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.h \
 	$$PWD/src/converters/outputPortNameConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
-	$$PWD/src/simpleGenerators/playToneGenerator.h \
-	$$PWD/src/simpleGenerators/beepGenerator.h \
 	$$PWD/src/simpleGenerators/sendMailGenerator.h \
 	$$PWD/src/simpleGenerators/receiveMailGenerator.h
 
@@ -74,8 +72,6 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/nullificationEncoderGenerator.cpp \
 	$$PWD/src/converters/outputPortNameConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
-	$$PWD/src/simpleGenerators/playToneGenerator.cpp \
-	$$PWD/src/simpleGenerators/beepGenerator.cpp \
 	$$PWD/src/simpleGenerators/sendMailGenerator.cpp \
 	$$PWD/src/simpleGenerators/receiveMailGenerator.cpp
 

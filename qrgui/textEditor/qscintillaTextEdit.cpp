@@ -136,7 +136,7 @@ void QScintillaTextEdit::setDefaultSettings()
 	// Default font
 	int id = QFontDatabase::addApplicationFont(BrandManager::fonts()->monospaceFont());
 	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
-	mFont = QFont(family);
+	mFont = QFont(family, 9, 50);
 	QFontMetrics metrics(mFont);
 	mAverageCharWidth = metrics.averageCharWidth();
 	setFont(mFont);
@@ -191,6 +191,6 @@ void QScintillaTextEdit::setDefaultSettings()
 
 void QScintillaTextEdit::emitTextWasModified()
 {
-	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth);
+	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth + 10);
 	emit textWasModified(this);
 }

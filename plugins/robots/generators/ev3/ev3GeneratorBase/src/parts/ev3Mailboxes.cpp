@@ -1,4 +1,4 @@
-/* Copyright 2017 QReal Research Group
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ QString parts::Mailboxes::generateOpening() const
 		QString tmpTemplate = openTemplate;
 		res += tmpTemplate.replace("@@MAILBOX_NAME@@", iterator.key())
 				.replace("@@ID@@", mMailboxNameToId[iterator.key()])
-				.replace("@@TYPE@@", iterator.value());
+				.replace("@@TYPE@@", EV3_TYPE_ID[iterator.value()]);
 		res += "\n";
 	}
 

@@ -37,10 +37,10 @@
 				<value name="Up"/>
 			</enum>
 			<enum name="Ev3MsgType">
-				<value name="int"/>
-				<value name="float"/>
-				<value name="string"/>
-				<value name="bool"/>
+				<value name="int" displayedName="int"/>
+				<value name="float" displayedName="float"/>
+				<value name="string" displayedName="string"/>
+				<value name="bool" displayedName="bool"/>
 			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>

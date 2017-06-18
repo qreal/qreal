@@ -29,6 +29,8 @@ PlayToneGenerator::PlayToneGenerator(const qrRepo::RepoApi &repo
 					, customizer.factory()->intPropertyConverter(id, "Duration"))
 			<< Binding::createConverting("@@VOLUME@@", "Volume"
 					, customizer.factory()->intPropertyConverter(id, "Volume"))
+			<< Binding::createConverting("@@WAIT_FOR_COMPLETION@@", "WaitForCompletion"
+					, customizer.factory()->boolPropertyConverter(id, "WaitForCompletion", false))
 			, parent)
 {
 }

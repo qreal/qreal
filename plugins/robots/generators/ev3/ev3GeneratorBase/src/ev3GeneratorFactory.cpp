@@ -21,8 +21,6 @@
 #include "simpleGenerators/enginesGenerator.h"
 #include "simpleGenerators/enginesStopGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
-#include "simpleGenerators/playToneGenerator.h"
-#include "simpleGenerators/beepGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
 #include "simpleGenerators/sendMailGenerator.h"
 #include "simpleGenerators/receiveMailGenerator.h"
@@ -87,10 +85,6 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new LedGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3ClearEncoder") {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Ev3PlayTone") {
-		return randomIdGenerator(new PlayToneGenerator(mRepo, customizer, id, this));
-	} else if (elementType == "Ev3Beep") {
-		return randomIdGenerator(new BeepGenerator(mRepo, customizer, id, this));
 	} else if (elementType == "Ev3SendMail") {
 		return randomIdGenerator(new SendMailGenerator(mRepo, customizer, id, this));
 	} else if (elementType == "Ev3WaitForReceivingMail") {
