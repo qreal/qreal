@@ -20,8 +20,20 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="48"/>
+        <source>127.0.0.1</source>
+        <translation>127.0.0.1</translation>
+    </message>
+    <message>
         <source>192.168.0.1</source>
-        <translation>192.168.0.1</translation>
+        <translation type="vanished">192.168.0.1</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaMasterGenerator.cpp" line="91"/>
+        <source>There is no opened diagram</source>
+        <translation>Диаграмма не открыта</translation>
     </message>
 </context>
 <context>
@@ -68,7 +80,7 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="175"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="212"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="217"/>
         <source>Pioneer base station IP addres is not set. It can be set in Settings window.</source>
         <translation>IP-адрес базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
@@ -79,14 +91,22 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="191"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="225"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="232"/>
         <source>Unable to execute script</source>
         <translation>Не удалось выполнить скрипт</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="218"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="225"/>
         <source>Running program is not supported on Windows yet.</source>
         <translation>Запуск программы на квадрокоптере пока не поддержан на Windows, попробуйте под Linux.</translation>
+    </message>
+</context>
+<context>
+    <name>pioneer::lua::PioneerLuaMasterGenerator</name>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaMasterGenerator.cpp" line="121"/>
+        <source>Generation failed. Possible causes are internal error in generator or too complex program structure.</source>
+        <translation>Генерация закончилась с ошибкой. Возможные причины: внутренняя ошибка генератора или слишком сложная структура программы. Обратитесь к разработчикам.</translation>
     </message>
 </context>
 </TS>
