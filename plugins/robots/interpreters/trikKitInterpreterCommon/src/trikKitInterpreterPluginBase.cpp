@@ -186,9 +186,9 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	connect(&configurer.interpreterControl()
 			, &kitBase::InterpreterControlInterface::stopAllInterpretation
 			, this
-			, [this](qReal::interpretation::StopReason) {
+			, [this](qReal::interpretation::StopReason reason) {
 		if (mQtsInterpreter->isRunning()) {
-			testStop();
+			testStop(reason);
 		}
 	});
 
@@ -202,11 +202,15 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	});
 
 	connect(&mStart, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStart);
-	connect(&mStop, &QAction::triggered, this, &TrikKitInterpreterPluginBase::testStop);
+	connect(&mStop, &QAction::triggered, this, [this](){
+		this->testStop(qReal::interpretation::StopReason::userStop);
+	});
 	connect(mQtsInterpreter.data()
 			, &TrikQtsInterpreter::completed
 			, this
-			, &TrikKitInterpreterPluginBase::testStop);
+			, [this](){
+		this->testStop(qReal::interpretation::StopReason::finised);
+	});
 	// refactor?
 	connect(this
 			, &TrikKitInterpreterPluginBase::started
@@ -366,14 +370,14 @@ void TrikKitInterpreterPluginBase::testStart()
 	}
 }
 
-void TrikKitInterpreterPluginBase::testStop()
+void TrikKitInterpreterPluginBase::testStop(qReal::interpretation::StopReason reason)
 {
 	mStop.setVisible(false);
 	mStart.setVisible(true);
 
 	qtsInterpreter()->abort();
 	mTwoDRobotModel->stopRobot();
-	emit stopped(qReal::interpretation::StopReason::userStop);
+	emit stopped(reason);
 }
 
 void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)

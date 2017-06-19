@@ -80,7 +80,7 @@ private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
 
 	void testStart(); // QtS
-	void testStop();
+	void testStop(qReal::interpretation::StopReason reason);
 	void onTabChanged(const qReal::TabInfo &info);
 
 protected:

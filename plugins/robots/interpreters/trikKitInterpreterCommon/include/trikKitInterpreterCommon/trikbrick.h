@@ -61,7 +61,7 @@ public:
 public slots:
 	void configure(const QString &, const QString &) override {}
 	void playSound(const QString &) override {}
-	void say(const QString &) override {}
+	void say(const QString &msg) override;
 	void stop() override;
 	trikControl::MotorInterface *motor(const QString &port) override;
 	trikControl::MarkerInterface *marker() override;
@@ -98,6 +98,7 @@ public slots:
 	utils::AbstractTimer *timer(int milliseconds);
 signals:
 	void error(const QString &msg);
+	void warning(const QString &msg);
 	void log(const QString &msg);
 	void stopWaiting();
 
