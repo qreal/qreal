@@ -16,11 +16,13 @@
 
 #include "zoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A base for all semantic nodes except zones
-class NonZoneNode : public SemanticNode
+class ROBOTS_GENERATOR_EXPORT NonZoneNode : public SemanticNode
 {
 public:
 	explicit NonZoneNode(const qReal::Id &idBinded, QObject *parent = 0);

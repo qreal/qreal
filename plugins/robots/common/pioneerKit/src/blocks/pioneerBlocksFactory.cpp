@@ -54,13 +54,10 @@ qReal::IdList PioneerBlocksFactory::blocksToHide() const
 			, id("FiBlock")
 			, id("SwitchBlock")
 			, id("Loop")
-			, id("VariableInit")
 			, id("Subprogram")
 			, id("Fork")
 			, id("Join")
 			, id("KillThread")
-			, id("VariableInit")
-			, id("Randomizer")
 
 			, id("SendMessageThreads")
 

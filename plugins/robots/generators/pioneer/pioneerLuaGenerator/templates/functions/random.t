@@ -1,1 +1,1 @@
--- random() function is currently not supported
+		math.random(@@ARGUMENT@@)

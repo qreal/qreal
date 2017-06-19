@@ -83,6 +83,8 @@
 		<file>templates/signs/notLess.t</file>
 		<file>templates/testStub/ap/lua.lua</file>
 		<file>templates/testStub/Ev/lua.lua</file>
+		<file>templates/threads/forwardDeclaration.t</file>
+		<file>templates/threads/implementation.t</file>
 		<file>templates/types/int.t</file>
 		<file>templates/types/float.t</file>
 		<file>templates/types/bool.t</file>
@@ -90,6 +92,7 @@
 		<file>templates/types/array.t</file>
 		<file>templates/types/cast.t</file>
 		<file>templates/variables/constantDeclaration.t</file>
+		<file>templates/variables/randomInitialization.t</file>
 		<file>templates/variables/variableDeclaration.t</file>
 		<file>templates/wait/timer.t</file>
 	</qresource>

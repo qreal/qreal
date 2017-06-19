@@ -31,5 +31,7 @@ end
 function loop()
 end
 
+math.randomseed(os.time())
+
 ap.push(Ev.ENGINES_ARM)
 action[curr_state]()

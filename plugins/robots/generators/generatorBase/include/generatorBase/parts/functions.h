@@ -24,7 +24,7 @@ namespace parts {
 
 /// Inspects function blocks with initialization marker and generates code
 /// for initialization section.
-class Functions : public InitTerminateCodeGenerator
+class ROBOTS_GENERATOR_EXPORT Functions : public InitTerminateCodeGenerator
 {
 public:
 	explicit Functions(const QStringList &pathsToTemplates);

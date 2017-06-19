@@ -16,11 +16,13 @@
 
 #include "semanticNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// Stores a list of semantic nodes. In fact an analogue of block operator in c++
-class ZoneNode : public SemanticNode
+class ROBOTS_GENERATOR_EXPORT ZoneNode : public SemanticNode
 {
 public:
 	explicit ZoneNode(QObject *parent = 0);
