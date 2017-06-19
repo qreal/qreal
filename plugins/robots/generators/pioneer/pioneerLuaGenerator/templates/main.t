@@ -11,6 +11,7 @@
 @@THREADS@@
 
 @@MAIN_CODE@@
+}
 
 function callback(event)
 	print(event)
