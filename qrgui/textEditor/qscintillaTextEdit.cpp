@@ -17,6 +17,7 @@
 #include <QtWidgets/QShortcut>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
+#include <brandManager/brandManager.h>
 
 using namespace qReal;
 using namespace text;
@@ -44,6 +45,12 @@ LanguageInfo QScintillaTextEdit::currentLanguage() const
 	return mLanguage;
 }
 
+void QScintillaTextEdit::setCurrentFont(const QFont &font) {
+	mFont = font;
+	QFontMetrics metrics(mFont);
+	mAverageCharWidth = metrics.averageCharWidth();
+}
+
 void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 {
 	setLexer(0);
@@ -51,9 +58,12 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 	mLanguage = language;
 	setIndentationsUseTabs(mLanguage.tabIndentation);
 	setTabWidth(mLanguage.tabSize);
+	setFont(mFont);
 	setLexer(mLanguage.lexer);
 
 	if (mLanguage.lexer) {
+		mFont.setPointSize(mLanguage.lexer->defaultFont().pointSize());
+		mLanguage.lexer->setFont(mFont);
 		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer);
 		for (const QString &additionalToken : mLanguage.additionalAutocompletionTokens) {
 			api->add(additionalToken);
@@ -123,6 +133,14 @@ void QScintillaTextEdit::init()
 
 void QScintillaTextEdit::setDefaultSettings()
 {
+	// Default font
+	int id = QFontDatabase::addApplicationFont(BrandManager::fonts()->monospaceFont());
+	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+	mFont = QFont(family, 9, 50);
+	QFontMetrics metrics(mFont);
+	mAverageCharWidth = metrics.averageCharWidth();
+	setFont(mFont);
+
 	// Current line highlighting
 	setCaretLineVisible(true);
 	setCaretLineBackgroundColor(QColor("gainsboro"));
@@ -173,5 +191,6 @@ void QScintillaTextEdit::setDefaultSettings()
 
 void QScintillaTextEdit::emitTextWasModified()
 {
+	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth + 10);
 	emit textWasModified(this);
 }

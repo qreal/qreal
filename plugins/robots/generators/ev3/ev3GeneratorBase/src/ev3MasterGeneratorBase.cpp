@@ -14,6 +14,7 @@
 
 #include "ev3GeneratorBase/ev3MasterGeneratorBase.h"
 #include "ev3GeneratorCustomizer.h"
+#include "ev3GeneratorBase/parts/ev3Mailboxes.h"
 
 using namespace ev3;
 
@@ -32,4 +33,16 @@ Ev3MasterGeneratorBase::Ev3MasterGeneratorBase(const qrRepo::RepoApi &repo
 generatorBase::GeneratorCustomizer *Ev3MasterGeneratorBase::createCustomizer()
 {
 	return new Ev3GeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+}
+
+void Ev3MasterGeneratorBase::beforeGeneration()
+{
+	static_cast<Ev3GeneratorFactory *>(mCustomizer->factory())->mailboxes().reinit();
+}
+
+void Ev3MasterGeneratorBase::processGeneratedCode(QString &code)
+{
+	parts::Mailboxes &localMailboxes = static_cast<Ev3GeneratorFactory *>(mCustomizer->factory())->mailboxes();
+	code.replace("@@MAILBOXES_OPENING@@", localMailboxes.generateOpening());
+	code.replace("@@MAILBOXES_CLOSING@@", localMailboxes.generateClosing());
 }

@@ -40,7 +40,6 @@ public:
 
 	QPointF begin() const;
 	QPointF end() const;
-	bool isDragged() const;
 	qreal width() const;
 
 	/// Draws selection rect around sensorBoundingBox
@@ -50,9 +49,7 @@ public:
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
 	void reshapeRectWithShift() override;
 
-	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
 	QDomElement serialize(QDomElement &element) const override;
 	void deserialize(const QDomElement &element) override;
@@ -75,6 +72,9 @@ signals:
 protected:
 	void setPrivateData();
 
+private slots:
+	void handleReposition(const QPointF &pos);
+
 private:
 	void recalculateBorders();
 
@@ -85,12 +85,14 @@ private:
 
 	graphicsUtils::LineImpl mLineImpl;
 
-	bool mDragged = false;
 	bool mOverlappedWithRobot = false;
 	const QImage mImage;
 
 	qreal mOldX1 = 0;
 	qreal mOldY1 = 0;
+	qreal mOldX2 = 0;
+	qreal mOldY2 = 0;
+	QPointF mOldPosition = QPointF(0, 0);
 	int mCellNumbX1 = 0;
 	int mCellNumbY1 = 0;
 	int mCellNumbX2 = 0;

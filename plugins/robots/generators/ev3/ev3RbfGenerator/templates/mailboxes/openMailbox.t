@@ -1,0 +1,1 @@
+MAILBOX_OPEN(@@ID@@, '@@MAILBOX_NAME@@', @@TYPE@@, 0, 32)

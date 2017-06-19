@@ -69,7 +69,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	mTextLanguage.clear();
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
 
-	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
+	for (generatorBase::parts::InitTerminateCodeGenerator *generator
+			: mCustomizer->factory()->initTerminateGenerators()) {
 		generator->reinit();
 	}
 
@@ -77,9 +78,9 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	const semantics::SemanticTree * const gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 	if (gotoMainControlFlow) {
 		mainCode = gotoMainControlFlow->toString(1, indentString);
-		const parts::Subprograms::GenerationResult gotoSubprogramsResult = mCustomizer->factory()
+		const generatorBase::parts::Subprograms::GenerationResult gotoSubprogramsResult = mCustomizer->factory()
 				->subprograms()->generate(mGotoControlFlowGenerator, indentString);
-		if (gotoSubprogramsResult != parts::Subprograms::GenerationResult::success) {
+		if (gotoSubprogramsResult != generatorBase::parts::Subprograms::GenerationResult::success) {
 			mainCode = QString();
 		}
 	}

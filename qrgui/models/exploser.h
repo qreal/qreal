@@ -57,8 +57,7 @@ public:
 
 	/// Appends to given command child commands that clear outgoing explosion and
 	/// all non-hard incoming explosions
-	void handleRemoveCommand(const QMap<Id, IdList> &targetAndSourceList
-			, commands::AbstractCommand * const command) const;
+	void handleRemoveCommand(const IdList &explosionSources, commands::AbstractCommand * const command) const;
 
 	/// This method checks if explosion must be created immediately for given type
 	/// and if yes returns type with explosion target. Otherwise returns Id().

@@ -32,6 +32,7 @@
 #include "trikEmulation/trikledadapter.h"
 #include "trikEmulation/trikaccelerometeradapter.h"
 #include "trikEmulation/trikGyroscopeAdapter.h" /// @todo: replace with forward refs
+#include "trikEmulation/trikProxyMarker.h"
 
 namespace utils {
 class AbstractTimer;
@@ -63,6 +64,7 @@ public slots:
 	void say(const QString &) override {}
 	void stop() override;
 	trikControl::MotorInterface *motor(const QString &port) override;
+	trikControl::MarkerInterface *marker() override;
 	trikControl::PwmCaptureInterface *pwmCapture(const QString &) override {return nullptr;}
 	trikControl::SensorInterface *sensor(const QString &port) override;
 	QStringList motorPorts(trikControl::MotorInterface::Type type) const override;
@@ -82,7 +84,6 @@ public slots:
 	trikControl::LedInterface *led() override;
 	trikControl::GamepadInterface *gamepad() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &) override {return nullptr;}
-	trikControl::MarkerInterface *marker() override {return nullptr;}
 
 	void playTone(int, int) override {}
 	trikControl::EventDeviceInterface *eventDevice(const QString &) override {return nullptr;}
@@ -119,6 +120,7 @@ private:
 	QScopedPointer<TrikLedAdapter> mLed;
 	QScopedPointer<TrikAccelerometerAdapter> mAccelerometer;
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
+	QScopedPointer<TrikProxyMarker> mTrikProxyMarker;
 
 	QDir mCurrentDir;
 	bool mIsExcerciseMode = false;

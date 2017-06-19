@@ -23,27 +23,24 @@
 
 namespace kitBase {
 namespace robotModel {
+class CommonRobotModel;
 namespace robotParts {
 class Button;
 }
 }
 }
 
-namespace trik {
 
-namespace robotModel {
-namespace twoD {
-class TrikTwoDRobotModel;
-}
-}
+namespace trik {
 
 class TrikKeysInterfaceStub : public trikControl::KeysInterface
 {
 
 public:
-	TrikKeysInterfaceStub(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
+	TrikKeysInterfaceStub(const QSharedPointer<kitBase::robotModel::CommonRobotModel> &model);
 
 	void init();
+	void start();
 	void stop();
 	virtual Status status() const override { return Status::ready; }
 
@@ -53,8 +50,8 @@ public slots:
 	virtual bool isPressed(int code) override;
 	virtual int buttonCode(bool wait) override;
 
-//private slots:
-//	void buttonChanged(int code, int value);
+private slots:
+	void handleNewData(int value);
 
 private:
 	bool registerButton(int code);
@@ -62,7 +59,7 @@ private:
 	QHash<int, QString> mKeycodeMap;
 	QHash<int, bool> mWasPressed;
 	QHash<int, kitBase::robotModel::robotParts::Button *> mButtons;
-	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
+	QSharedPointer<kitBase::robotModel::CommonRobotModel> mRobotModel;
 	QScopedPointer<utils::AbstractTimer> mButtonWatchingTimer;
 };
 

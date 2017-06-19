@@ -42,9 +42,15 @@ QString BindingGenerator::generate()
 	foreach (Binding * const binding, mBindings) {
 		binding->apply(mRepo, mId, input);
 	}
+
 	input.prepend(QString("@~%1~@").arg(mId.toString()));
 	input.append(QString("@#%1#@").arg(mId.toString()));
 	return input;
+}
+
+void BindingGenerator::setPathToTemplate(const QString &pathToTemplate)
+{
+	mPathToTemplate = pathToTemplate;
 }
 
 void BindingGenerator::addBinding(Binding * const binding)

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/fonts">
         <file>Pfennig.ttf</file>
+        <file>DejaVuSansMono.ttf</file>
     </qresource>
 </RCC>

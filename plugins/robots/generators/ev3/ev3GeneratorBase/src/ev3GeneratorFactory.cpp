@@ -22,6 +22,8 @@
 #include "simpleGenerators/enginesStopGenerator.h"
 #include "simpleGenerators/ledGenerator.h"
 #include "simpleGenerators/nullificationEncoderGenerator.h"
+#include "simpleGenerators/sendMailGenerator.h"
+#include "simpleGenerators/receiveMailGenerator.h"
 
 #include "converters/outputPortNameConverter.h"
 #include "converters/ledColorConverter.h"
@@ -38,11 +40,17 @@ Ev3GeneratorFactory::Ev3GeneratorFactory(const qrRepo::RepoApi &repo
 		, const QString &generatorName)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
+	, mMailboxes({":/" + mGeneratorName + "/templates"})
 {
 }
 
 Ev3GeneratorFactory::~Ev3GeneratorFactory()
 {
+}
+
+parts::Mailboxes &Ev3GeneratorFactory::mailboxes()
+{
+	return mMailboxes;
 }
 
 AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
@@ -70,13 +78,17 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 	} else if (elementType == "Ev3DrawCircle") {
 		return new DrawCircleGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("EnginesForward") || elementType.contains("EnginesBackward")) {
-		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
+		return randomIdGenerator(new EnginesGenerator(mRepo, customizer, id, elementType, this));
 	} else if (elementType == "Ev3EnginesStop") {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Ev3Led" ) {
+	} else if (elementType == "Ev3Led") {
 		return new LedGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Ev3ClearEncoder" ) {
+	} else if (elementType == "Ev3ClearEncoder") {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3SendMail") {
+		return randomIdGenerator(new SendMailGenerator(mRepo, customizer, id, this));
+	} else if (elementType == "Ev3WaitForReceivingMail") {
+		return randomIdGenerator(new ReceiveMailGenerator(mRepo, customizer, id, this));
 	}
 
 	return randomIdGenerator(GeneratorFactoryBase::simpleGenerator(id, customizer));
@@ -95,4 +107,9 @@ Binding::ConverterInterface *Ev3GeneratorFactory::ledColorConverter() const
 QStringList Ev3GeneratorFactory::pathsToTemplates() const
 {
 	return { ":/" + mGeneratorName + "/templates" };
+}
+
+void Ev3GeneratorFactory::reportError(const QString &errorMessage, const qReal::Id &id)
+{
+	mErrorReporter.addError(errorMessage, id);
 }

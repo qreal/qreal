@@ -12,6 +12,7 @@
         <License name="Apache License 2.0" file="ApacheLicense-v2.0.txt" />
         <License name="GNU Public License 3.0" file="gpl-3.0.txt" />
         <License name="Open Fonts License" file="OFL.txt" />
+        <License name="DejaVu Fonts License" file="DejaVu_Fonts_License.txt" />
         <License name="Kinetic Scroller Component License" file="QsKineticScroller-license.txt" />
         <License name="QsLog Component License" file="QsLog-license.txt" />
         <License name="QScintilla Component License" file="Scintilla-license.txt" />

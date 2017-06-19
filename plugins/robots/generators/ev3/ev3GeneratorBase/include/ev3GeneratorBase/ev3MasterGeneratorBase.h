@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 namespace ev3 {
 
-/// Master generator base implementation for every generator from TRIK kit
+/// Master generator base implementation for every generator from Ev3 kit
 class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3MasterGeneratorBase : public generatorBase::MasterGeneratorBase
 {
 public:
@@ -34,6 +34,8 @@ public:
 
 protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
+	void beforeGeneration() override;
+	void processGeneratedCode(QString &code) override;
 
 	const QString mGeneratorName;
 };

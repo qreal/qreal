@@ -34,6 +34,8 @@ public:
 
 	void setDragMode(int itemsType);
 	void setDragMode(QGraphicsView::DragMode mode);
+	QGraphicsView::DragMode currentDragMode() const;
+
 	virtual void forPressResize(QGraphicsSceneMouseEvent *event);
 	virtual void forMoveResize(QGraphicsSceneMouseEvent *event);
 	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);
