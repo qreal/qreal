@@ -26,6 +26,8 @@ class PioneerStateMachineGenerator;
 /// Main generator that directs generation process (mainly by configuring its base class that does actual job).
 class PioneerLuaMasterGenerator : public generatorBase::MasterGeneratorBase
 {
+	Q_OBJECT
+
 public:
 	PioneerLuaMasterGenerator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter

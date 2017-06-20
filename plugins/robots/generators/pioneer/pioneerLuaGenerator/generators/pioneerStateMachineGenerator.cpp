@@ -201,8 +201,8 @@ NonZoneNode *PioneerStateMachineGenerator::produceLabeledNode(const qReal::Id bl
 	NonZoneNode *node = dynamic_cast<NonZoneNode *>(mSemanticTree->produceNodeFor(block));
 	if (!node) {
 		/// @todo: Well, actually why not... But for now it is ok, we don't have zone nodes on a diagram.
-		mErrorReporter.addError(tr("Generation internal error, please send bug report to developers."
-				"Additional info: zone node ") + block.id() + tr(" can not be used as labeled node."));
+		mErrorReporter.addError(QString(tr("Generation internal error, please send bug report to developers."
+				"Additional info: zone node %1 can not be used as labeled node.").arg(block.id())));
 		mErrorsOccured = true;
 		return nullptr;
 	}
