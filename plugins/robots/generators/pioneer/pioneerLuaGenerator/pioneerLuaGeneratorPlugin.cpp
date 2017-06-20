@@ -178,13 +178,14 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 	}
 
 #ifdef Q_OS_WIN
-	mMainWindowInterface->errorReporter()->addError(tr("Uploading is not supported on Windows yet."));
-	return;
+	const QString processName = "pioneerUpload.bat";
 #else
+	const QString processName = "./pioneerUpload.sh";
+#endif
 	QProcess process;
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
-	process.start("./pioneerUpload.sh", { fileInfo.absoluteFilePath(), server });
+	process.start(processName, { fileInfo.absoluteFilePath(), server });
 
 	process.waitForStarted();
 	if (process.state() != QProcess::Running) {
@@ -204,9 +205,6 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 	for (const auto &error : errors) {
 		mMainWindowInterface->errorReporter()->addInformation(error);
 	}
-
-	return;
-#endif
 }
 
 void PioneerLuaGeneratorPlugin::runProgram()
@@ -222,11 +220,12 @@ void PioneerLuaGeneratorPlugin::runProgram()
 	uploadProgram();
 
 #ifdef Q_OS_WIN
-	mMainWindowInterface->errorReporter()->addError(tr("Running program is not supported on Windows yet."));
-	return;
+	const QString processName = "pioneerStart.bat";
 #else
+	const QString processName = "./pioneerStart.sh";
+#endif
 	QProcess process;
-	process.start("./pioneerStart.sh", { server });
+	process.start(processName, { server });
 	process.waitForStarted();
 	if (process.state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to execute script"));
@@ -240,7 +239,4 @@ void PioneerLuaGeneratorPlugin::runProgram()
 	for (const auto &error : errors) {
 		mMainWindowInterface->errorReporter()->addInformation(error);
 	}
-
-	return;
-#endif
 }

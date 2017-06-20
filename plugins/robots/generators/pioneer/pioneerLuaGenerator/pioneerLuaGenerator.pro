@@ -16,8 +16,14 @@ TARGET = robots-pioneer-lua-generator
 
 include(../../../../../global.pri)
 
-copyToDestdir(scripts/pioneerUpload.sh, now)
-copyToDestdir(scripts/pioneerStart.sh, now)
+!win32 {
+	copyToDestdir(scripts/pioneerUpload.sh, now)
+	copyToDestdir(scripts/pioneerStart.sh, now)
+} else {
+	copyToDestdir(scripts/pioneerUpload.bat, now)
+	copyToDestdir(scripts/pioneerStart.bat, now)
+}
+
 copyToDestdir(scripts/controller.py, now)
 
 !win32 {
