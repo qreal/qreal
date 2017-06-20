@@ -93,7 +93,6 @@ Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
 	case namePseudoattribute:
 		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 	case graphicalIdPseudoattribute:
-	case logicalIdPseudoattribute:
 	case metatypePseudoattribute:
 	default:
 		return Qt::NoItemFlags;
@@ -336,6 +335,12 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 			}
 		}
 
+		/*
+		 * Uncomment to display block Ids in a property editor
+		 *
+		mField->appendChild(new Field("id", logicalAttribute, roles::idRole, nullptr));
+		mField->setValue(i, logicalId.id());
+		*/
 	}
 
 	beginResetModel();

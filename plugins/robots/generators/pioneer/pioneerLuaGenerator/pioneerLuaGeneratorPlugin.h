@@ -18,6 +18,8 @@
 
 #include <generatorBase/robotsGeneratorPluginBase.h>
 
+class QProcess;
+
 namespace pioneer {
 
 namespace blocks {
@@ -61,8 +63,14 @@ private slots:
 	/// Uploads current program to a quadcopter.
 	void uploadProgram();
 
-	/// Attempts to run current program on a quadcopter. Generates and uploads it first, if needed.
+	/// Attempts to run current program on a quadcopter. Generates and uploads it first.
 	void runProgram();
+
+	/// Called by upload process when it is done.
+	void onUploadCompleted();
+
+	/// Called by program start process when it is done.
+	void onStartCompleted();
 
 private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
@@ -75,7 +83,15 @@ private:
 
 	void regenerateExtraFiles(const QFileInfo &newFileInfo) override;
 
-private:
+	/// Set "enabled" state of "upload" and "run" actions to a given value.
+	void setUploadAndRunActionsEnabled(bool isEnabled);
+
+	/// Initiates asynchronous execution of "start program" script.
+	void doRunProgram();
+
+	/// Helper method that correctly converts given console output into unicode string.
+	QString toUnicode(const QByteArray &str);
+
 	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
@@ -98,6 +114,15 @@ private:
 	/// Whether we need to delete mAdditionalPreferences (sometimes plugin gets destroyed before it is able to pass
 	/// an ownership, so it is needed to avoid memleak). Need to use smart pointers instead of this.
 	bool mOwnsAdditionalPreferences = true;
+
+	/// Process handler for uploading program.
+	QScopedPointer<QProcess> mUploadProcess;
+
+	/// Process handler for starting program.
+	QScopedPointer<QProcess> mStartProcess;
+
+	/// State of an asynchronous operation --- do we need to start a program after uploading or not.
+	bool mIsStartNeeded = false;
 };
 
 }

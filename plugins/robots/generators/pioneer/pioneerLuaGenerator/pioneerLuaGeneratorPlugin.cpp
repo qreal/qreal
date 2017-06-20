@@ -16,6 +16,7 @@
 
 #include <QtCore/QProcess>
 #include <QtCore/QDir>
+#include <QtCore/QTextCodec>
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
@@ -42,6 +43,8 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 					, 9
 				)
 		)
+	, mUploadProcess(new QProcess)
+	, mStartProcess(new QProcess)
 {
 	mAdditionalPreferences = new PioneerAdditionalPreferences;
 
@@ -64,6 +67,16 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 			, nullptr
 			, {}
 	});
+
+	connect(mUploadProcess.data()
+			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
+			, this
+			, &PioneerLuaGeneratorPlugin::onUploadCompleted);
+
+	connect(mStartProcess.data()
+			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
+			, this
+			, &PioneerLuaGeneratorPlugin::onStartCompleted);
 }
 
 PioneerLuaGeneratorPlugin::~PioneerLuaGeneratorPlugin()
@@ -182,32 +195,32 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 #else
 	const QString processName = "./pioneerUpload.sh";
 #endif
-	QProcess process;
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
-	process.start(processName, { fileInfo.absoluteFilePath(), server });
+	mUploadProcess->start(processName, { fileInfo.absoluteFilePath(), server });
+	setUploadAndRunActionsEnabled(false);
 
-	process.waitForStarted();
-	if (process.state() != QProcess::Running) {
+	mUploadProcess->waitForStarted();
+	if (mUploadProcess->state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to execute script"));
-		QStringList errors = QString(process.readAllStandardError()).split("\n", QString::SkipEmptyParts);
+		QStringList errors = QString(mUploadProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
 		for (const auto &error : errors) {
 			mMainWindowInterface->errorReporter()->addInformation(error);
 		}
 
-		return;
-	}
-
-	process.waitForFinished();
-
-	QStringList errors = QString(process.readAllStandardError()).split("\n", QString::SkipEmptyParts);
-	errors << QString(process.readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
-	for (const auto &error : errors) {
-		mMainWindowInterface->errorReporter()->addInformation(error);
+		setUploadAndRunActionsEnabled(true);
+	} else {
+		mMainWindowInterface->errorReporter()->addInformation(tr("Uploading started, please wait..."));
 	}
 }
 
 void PioneerLuaGeneratorPlugin::runProgram()
+{
+	mIsStartNeeded = true;
+	uploadProgram();
+}
+
+void PioneerLuaGeneratorPlugin::doRunProgram()
 {
 	const QString server = qReal::SettingsManager::value("PioneerBaseStationIP").toString();
 	if (server.isEmpty()) {
@@ -217,26 +230,67 @@ void PioneerLuaGeneratorPlugin::runProgram()
 		return;
 	}
 
-	uploadProgram();
-
 #ifdef Q_OS_WIN
 	const QString processName = "pioneerStart.bat";
 #else
 	const QString processName = "./pioneerStart.sh";
 #endif
 	QProcess process;
-	process.start(processName, { server });
-	process.waitForStarted();
+	mStartProcess->start(processName, { server });
+	mStartProcess->waitForStarted();
 	if (process.state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to execute script"));
-		return;
+		setUploadAndRunActionsEnabled(true);
+	} else {
+		mMainWindowInterface->errorReporter()->addInformation(tr("Starting program, please wait..."));
 	}
+}
 
-	process.waitForFinished();
-
-	QStringList errors = QString(process.readAllStandardError()).split("\n", QString::SkipEmptyParts);
-	errors << QString(process.readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
+void PioneerLuaGeneratorPlugin::onUploadCompleted()
+{
+	QStringList errors = toUnicode(mUploadProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
+	errors << toUnicode(mUploadProcess->readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
 	for (const auto &error : errors) {
 		mMainWindowInterface->errorReporter()->addInformation(error);
 	}
+
+	mMainWindowInterface->errorReporter()->addInformation(tr("Uploading finished."));
+
+	if (mIsStartNeeded) {
+		doRunProgram();
+		mIsStartNeeded = false;
+	} else {
+		setUploadAndRunActionsEnabled(true);
+	}
+}
+
+void PioneerLuaGeneratorPlugin::onStartCompleted()
+{
+	QStringList errors = toUnicode(mStartProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
+	errors << toUnicode(mStartProcess->readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
+	for (const auto &error : errors) {
+		mMainWindowInterface->errorReporter()->addInformation(error);
+	}
+
+	if (!mUploadProgramAction->isEnabled()) {
+		mMainWindowInterface->errorReporter()->addInformation(tr("Starting finished."));
+		setUploadAndRunActionsEnabled(true);
+	}
+}
+
+void PioneerLuaGeneratorPlugin::setUploadAndRunActionsEnabled(bool isEnabled)
+{
+	mUploadProgramAction->setEnabled(isEnabled);
+	mRunProgramAction->setEnabled(isEnabled);
+}
+
+QString PioneerLuaGeneratorPlugin::toUnicode(const QByteArray &str)
+{
+#ifdef WIN32
+	QTextCodec *codec = QTextCodec::codecForName("cp866");
+#else
+	QTextCodec *codec = QTextCodec::codecForLocale();
+#endif
+
+	return codec ? codec->toUnicode(str) : QString(str);
 }
