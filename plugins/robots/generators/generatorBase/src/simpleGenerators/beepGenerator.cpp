@@ -24,7 +24,9 @@ BeepGenerator::BeepGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "beep.t"
 			, {Binding::createConverting("@@VOLUME@@", "Volume"
-					, customizer.factory()->intPropertyConverter(id, "Volume"))}
+					, customizer.factory()->intPropertyConverter(id, "Volume"))
+				, Binding::createConverting("@@WAIT_FOR_COMPLETION@@", "WaitForCompletion"
+						, customizer.factory()->boolPropertyConverter(id, "WaitForCompletion", false))}
 			, parent)
 {
 }

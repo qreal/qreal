@@ -36,6 +36,12 @@
 				<value name="Right"/>
 				<value name="Up"/>
 			</enum>
+			<enum name="Ev3MsgType">
+				<value name="int" displayedName="int"/>
+				<value name="float" displayedName="float"/>
+				<value name="string" displayedName="string"/>
+				<value name="bool" displayedName="bool"/>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<!--- Engine movement commands -->
@@ -231,7 +237,72 @@
 				</logic>
 			</node>
 
+			<node displayedName="Send Mail" name="Ev3SendMail" description="Sends mail (message) to another robot. If Receiver name left empty, message will be sent to all connected robots">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="45" y="60" textBinded="MsgType" hard="false" background="white" prefix="Message type:"/>
+						<label x="45" y="90" textBinded="Message" hard="false" prefix="Message:"/>
+						<label x="45" y="120" textBinded="ReceiverName" hard="false" prefix="Receiver name:"/>
+						<label x="45" y="150" textBinded="ReceiverMailBoxName" hard="false" prefix="Mailbox name:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Message type" type="Ev3MsgType" name="MsgType">
+							<default>int</default>
+						</property>
+						<property displayedName="Message" type="string" name="Message">
+							<default>42</default>
+						</property>
+						<property displayedName="Receiver name" type="string" name="ReceiverName"/>
+						<property displayedName="Mailbox name" type="string" name="ReceiverMailBoxName">
+							<default>EV3MailBox</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 			<!-- Waiting for sensors blocks, EV3 -->
+			<node displayedName="Wait for Mail Receiving" name="Ev3WaitForReceivingMail" description="Stores a message from another robot (fom mailbox) into a given variable. When no incoming messages are present at the moment, a robot will wait for incoming message if 'Synchronized' property is true, and doing nothing otherwise.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="45" y="60" textBinded="MsgType" hard="false" background="white" prefix="Message type:"/>
+						<label x="45" y="90" textBinded="MailBoxName" hard="false" prefix="Mailbox name:"/>
+						<label x="45" y="120" textBinded="Variable" hard="false" prefix="Variable:"/>
+						<label x="45" y="150" textBinded="Synchronized" hard="false" prefix="Synchronized:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Message type" type="Ev3MsgType" name="MsgType">
+							<default>int</default>
+						</property>
+						<property displayedName="Mailbox name" type="string" name="MailBoxName">
+							<default>EV3MailBox</default>
+						</property>
+						<property displayedName="Variable" type="string" name="Variable" />
+						<property displayedName="Synchronized" type="bool" name="Synchronized">
+							<default>true</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node name="Ev3SensorBlock">
 				<logic>
 					<container/>
@@ -371,6 +442,23 @@
 							<default>greater</default>
 						</property>
 					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Touch Sensor" name="Ev3WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
 					<generalizations>
 						<parent parentName="Ev3SensorBlock"/>
 					</generalizations>
@@ -600,7 +688,6 @@
 				</logic>
 			</node>
 		</graphicTypes>
-
 		<palette sorted="false">
 			<group name="Actions">
 				<element name="Ev3Beep"/>
@@ -610,6 +697,7 @@
 				<element name="Ev3EnginesStop"/>
 				<element name="Ev3ClearEncoder"/>
 				<element name="Ev3Led"/>
+				<element name="Ev3SendMail"/>
 			</group>
 			<group name="Wait">
 				<element name="Ev3WaitForTouchSensor"/>
@@ -621,6 +709,7 @@
 				<element name="Ev3WaitForButton"/>
 				<element name="Ev3WaitForSound"/>
 				<element name="Ev3WaitForGyroscope"/>
+				<element name="Ev3WaitForReceivingMail"/>
 			</group>
 			<group name="Drawing">
 				<element name="Ev3DrawRect"/>

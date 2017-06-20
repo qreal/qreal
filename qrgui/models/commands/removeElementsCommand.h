@@ -56,8 +56,6 @@ public:
 	/// Returns information about all elements removed by this command.
 	const QList<ElementInfo> &results() const;
 
-	/// Returns all elements which have explosion.
-	QMap<Id, IdList> handleExplosions(QList<ElementInfo> &nodes, QList<ElementInfo> &edges);
 protected:
 	bool execute() override;
 	bool restoreState() override;
@@ -71,6 +69,7 @@ protected:
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	const models::Exploser &mExploser;
 	CreateRemoveCommandImplementation mImpl;
+	IdList mExplosionSources;
 };
 
 }

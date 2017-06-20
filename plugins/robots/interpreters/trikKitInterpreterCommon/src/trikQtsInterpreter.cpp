@@ -37,6 +37,7 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(const QSharedPointer<trik::robotMod
 	: mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr), mErrorReporter(nullptr)
 {
 	connect(&mBrick, &TrikBrick::error, this, &TrikQtsInterpreter::reportError);
+	connect(&mBrick, &TrikBrick::warning, this, &TrikQtsInterpreter::reportWarning);
 
 	auto atimerToScriptValue = [](QScriptEngine *engine, utils::AbstractTimer* const &in){
 		return engine->newQObject(in);
@@ -101,7 +102,12 @@ bool trik::TrikQtsInterpreter::isRunning() const
 void trik::TrikQtsInterpreter::reportError(const QString &msg)
 {
 	mErrorReporter->addError(msg);
-//	mBrick.abort(); what if there are more errors?
+	//	mBrick.abort(); what if there are more errors?
+}
+
+void trik::TrikQtsInterpreter::reportWarning(const QString &msg)
+{
+	mErrorReporter->addWarning(msg);
 }
 
 void trik::TrikQtsInterpreter::reportLog(const QString &msg)

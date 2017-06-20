@@ -26,6 +26,8 @@
 #include <kitBase/robotModel/robotParts/gyroscopeSensor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
 #include <kitBase/robotModel/robotParts/random.h>
+#include <kitBase/robotModel/robotParts/random.h>
+#include <twoDModel/robotModel/parts/marker.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
 
@@ -79,7 +81,8 @@ void TrikBrick::reset()
 void TrikBrick::printToShell(const QString &msg)
 {
 	using namespace kitBase::robotModel;
-	robotParts::Shell* sh = RobotModelUtils::findDevice<robotParts::Shell>(*mTwoDRobotModel, "ShellPort");
+	using namespace trik::robotModel;
+	parts::TrikShell* sh = RobotModelUtils::findDevice<parts::TrikShell>(*mTwoDRobotModel, "ShellPort");
 	if (sh == nullptr) {
 		qDebug("Error: 2d model shell part was not found");
 		return;
@@ -118,10 +121,14 @@ void TrikBrick::setCurrentDir(const QString &dir)
 void TrikBrick::setCurrentInputs(const QString &f)
 {
 	mIsExcerciseMode = true;
+	if (f.isEmpty()) {
+		return; // no inputs has been passed, no need to complain
+	}
 	QString file(f);
 	QFile in(file);
 	if (!in.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		emit error(tr("Trying to read from file %1 failed").arg(file)); // todo: remove? It's only in exercise.
+		emit warning(tr("Trying to read from file %1 failed").arg(file)); // todo: remove? It's only in exercise.
+		//not really an error, usually
 	}
 
 	QStringList result;
@@ -132,6 +139,17 @@ void TrikBrick::setCurrentInputs(const QString &f)
 	}
 
 	mInputs = result;
+}
+
+void TrikBrick::say(const QString &msg) {
+	using namespace kitBase::robotModel;
+	using namespace trik::robotModel;
+	parts::TrikShell* sh = RobotModelUtils::findDevice<parts::TrikShell>(*mTwoDRobotModel, "ShellPort");
+	if (sh == nullptr) {
+		qDebug("Error: 2d model shell part was not found");
+		return;
+	}
+	QMetaObject::invokeMethod(sh, "say", Q_ARG(const QString &, msg));
 }
 
 void TrikBrick::stop() {
@@ -150,7 +168,7 @@ trikControl::MotorInterface *TrikBrick::motor(const QString &port)
 	using namespace kitBase::robotModel;
 	if (!mMotors.contains(port)) {
 		robotParts::Motor * mot =
-		        RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
+				RobotModelUtils::findDevice<robotParts::Motor>(*mTwoDRobotModel, port);
 		if (mot == nullptr) {
 			emit error(tr("No configured motor on port: %1").arg(port));
 			return nullptr;
@@ -158,6 +176,21 @@ trikControl::MotorInterface *TrikBrick::motor(const QString &port)
 		mMotors[port] = new TrikMotorEmu(mot);
 	}
 	return mMotors[port];
+}
+
+trikControl::MarkerInterface *TrikBrick::marker()
+{
+	kitBase::robotModel::PortInfo markerPort = kitBase::robotModel::RobotModelUtils::findPort(*mTwoDRobotModel
+			, "MarkerPort"
+			, kitBase::robotModel::Direction::output);
+	if (markerPort.isValid()) {
+		using Marker = twoDModel::robotModel::parts::Marker;
+		Marker* marker = kitBase::robotModel::RobotModelUtils::findDevice<Marker>(*mTwoDRobotModel, markerPort);
+		mTrikProxyMarker.reset(new TrikProxyMarker(marker));
+		return mTrikProxyMarker.data();
+	}
+
+	return nullptr;
 }
 
 trikControl::SensorInterface *TrikBrick::sensor(const QString &port)

@@ -26,11 +26,39 @@ vmthread MAIN
 	DATA8 _temp_sensor_value_8
 	DATAF _temp_sensor_value_f
 
+@@MAILBOXES_OPENING@@
 @@MAIN_CODE@@
 
+@@MAILBOXES_CLOSING@@
 __programEnd:
 }
 
 @@THREADS@@
+
+// utils functions block start
+subcall motors_overflow_check_b7f9240db9f33a5fa_util
+{
+	IN_32 src
+	OUT_32 dst
+
+	MOVE32_32(src,dst)
+
+	DATA32 lowerBound
+	MOVE32_32(-100,lowerBound)
+	DATA32 upperBound
+	MOVE32_32(100,upperBound)
+
+	JR_LT32(src, 0, lowThenZero)
+	JR_LT32(src, upperBound, endLabel)
+	MOVE32_32(upperBound,dst)
+	JR(endLabel)
+
+lowThenZero:
+	JR_GTEQ32(src, lowerBound, endLabel)
+	MOVE32_32(lowerBound,dst)
+
+endLabel:
+}
+// utils functions block end
 
 @@SUBPROGRAMS@@

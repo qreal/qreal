@@ -281,6 +281,7 @@ bool RobotsPluginFacade::interpretCode(const QString &inputs)
 		mMainWindow->errorReporter()->addError(tr("No saved js code found in the qrs file"));
 		return false;
 	}
+
 	emit mEventsForKitPlugin.interpretCode(code, inputs);
 	return true;
 }

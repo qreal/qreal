@@ -23,6 +23,7 @@ const qreal lowPrecision = 0.00001;
 
 const qreal robotWidth = 50;
 const qreal robotHeight = 50;
+const qreal robotZPoint = 100;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 const QSize displaySize(200, 300);
 const qreal beepWavesSize = 120;

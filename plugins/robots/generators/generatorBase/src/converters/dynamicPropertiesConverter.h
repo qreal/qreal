@@ -24,7 +24,7 @@ class LuaProcessor;
 
 namespace converters {
 
-class DynamicPropertiesConverter :  public simple::Binding::ConverterInterface, public TemplateParametrizedEntity
+class DynamicPropertiesConverter : public simple::Binding::ConverterInterface, public TemplateParametrizedEntity
 {
 public:
 	DynamicPropertiesConverter(lua::LuaProcessor &luaTranslator

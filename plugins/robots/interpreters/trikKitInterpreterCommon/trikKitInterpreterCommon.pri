@@ -84,7 +84,8 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikencoderadapter.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikledadapter.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikaccelerometeradapter.h \
-	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikGyroscopeAdapter.h
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikGyroscopeAdapter.h \
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikProxyMarker.h
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -133,7 +134,8 @@ SOURCES += \
 	$$PWD/src/trikEmulation/trikencoderadapter.cpp \
 	$$PWD/src/trikEmulation/trikledadapter.cpp \
 	$$PWD/src/trikEmulation/trikaccelerometeradapter.cpp \
-	$$PWD/src/trikEmulation/trikGyroscopeAdapter.cpp
+	$$PWD/src/trikEmulation/trikGyroscopeAdapter.cpp \
+	$$PWD/src/trikEmulation/trikProxyMarker.cpp
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \
