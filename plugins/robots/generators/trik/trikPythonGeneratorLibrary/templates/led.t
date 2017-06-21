@@ -1,1 +1,1 @@
-self.brick.led().@@COLOR@@()
+brick.led().@@COLOR@@()
