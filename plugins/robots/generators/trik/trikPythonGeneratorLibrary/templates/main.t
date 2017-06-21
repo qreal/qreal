@@ -1,4 +1,3 @@
-import signal
 import subprocess
 import sys
 import time
@@ -17,11 +16,8 @@ class Program():
   @@THREADS@@
 
   def execMain(self):
-    signal.signal(signal.SIGINT, self.sigint_handler)
 
   @@MAIN_CODE@@
-
-    sys.exit(self.app.exec_())
 
 def main():
   program = Program()
