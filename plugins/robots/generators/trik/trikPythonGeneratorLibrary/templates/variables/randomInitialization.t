@@ -1,1 +1,1 @@
-@@VARIABLE@@ = self.script.random(@@FROM@@, @@TO@@)
+@@VARIABLE@@ = script.random(@@FROM@@, @@TO@@)
