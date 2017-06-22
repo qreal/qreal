@@ -1,1 +1,1 @@
-brick.display.showImage("media/trik_smile_normal.png")
+brick.display().showImage("media/trik_smile_normal.png")
