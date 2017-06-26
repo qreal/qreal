@@ -142,12 +142,15 @@ QString PioneerLuaMasterGenerator::generate(const QString &indentString)
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
 	const QString constantsString = mCustomizer->factory()->variables()->generateConstantsString();
 	const QString variablesString = mCustomizer->factory()->variables()->generateVariableString();
+
 	if (resultCode.contains("@@CONSTANTS@@")) {
 		replaceWithAutoIndent(resultCode, "@@CONSTANTS@@", constantsString);
 		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", variablesString);
 	} else {
 		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", constantsString + "\n" + variablesString);
 	}
+
+	resultCode = resultCode.replace("@@RAND_SEED@@", QString::number(qrand()));
 
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
