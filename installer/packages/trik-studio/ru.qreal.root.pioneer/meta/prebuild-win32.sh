@@ -8,3 +8,6 @@ cp $BIN_DIR/robots-pioneer-kit.dll                                    $PWD/../da
 cp $BIN_DIR/plugins/editors/pioneerMetamodel.dll                      $PWD/../data/plugins/editors/
 cp $BIN_DIR/plugins/tools/kitPlugins/robots-pioneer-interpreter.dll   $PWD/../data/plugins/tools/kitPlugins/
 cp $BIN_DIR/plugins/tools/kitPlugins/robots-pioneer-lua-generator.dll $PWD/../data/plugins/tools/kitPlugins/
+
+cp $BIN_DIR/pioneerStart.bat	$PWD/../data/
+cp $BIN_DIR/pioneerUpload.bat	$PWD/../data/
