@@ -12,6 +12,7 @@ cp $BIN_DIR/plugins/tools/kitPlugins/robots-pioneer-lua-generator.dll $PWD/../da
 cp $BIN_DIR/pioneerStart.bat	$PWD/../data/
 cp $BIN_DIR/pioneerUpload.bat	$PWD/../data/
 cp $BIN_DIR/pioneerCompile.bat	$PWD/../data/
+cp $BIN_DIR/controller.exe	$PWD/../data/
 
 mkdir -p $PWD/../data/luac/real
 

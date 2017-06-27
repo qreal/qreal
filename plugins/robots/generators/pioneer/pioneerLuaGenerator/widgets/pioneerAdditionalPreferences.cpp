@@ -35,13 +35,6 @@ PioneerAdditionalPreferences::PioneerAdditionalPreferences(QWidget *parent)
 	onCheckboxesChanged();
 
 	connect(
-			mUi->pythonPathBrowseButton
-			, &QPushButton::clicked
-			, this
-			, &PioneerAdditionalPreferences::onPythonBrowseClick
-	);
-
-	connect(
 			mUi->useControllerScriptCheckBox
 			, &QCheckBox::stateChanged
 			, this
@@ -65,9 +58,8 @@ void PioneerAdditionalPreferences::save()
 {
 	SettingsManager::setValue(settings::pioneerBaseStationIP, mUi->baseStationIpLineEdit->text());
 	SettingsManager::setValue(settings::pioneerBaseStationPort, mUi->baseStationPortLineEdit->text());
-	SettingsManager::setValue(settings::pioneerPythonPath, mUi->pythonPathLineEdit->text());
 
-	SettingsManager::setValue(settings::pioneerUseControllerScript, mUi->useControllerScriptCheckBox->isChecked());
+	SettingsManager::setValue(settings::pioneerUseController, mUi->useControllerScriptCheckBox->isChecked());
 	SettingsManager::setValue(settings::pioneerUseComPort, mUi->useComPortCheckBox->isChecked());
 	SettingsManager::setValue(settings::pioneerComPort, mUi->comPortLineEdit->text());
 
@@ -78,9 +70,8 @@ void PioneerAdditionalPreferences::restoreSettings()
 {
 	mUi->baseStationIpLineEdit->setText(SettingsManager::value(settings::pioneerBaseStationIP).toString());
 	mUi->baseStationPortLineEdit->setText(SettingsManager::value(settings::pioneerBaseStationPort).toString());
-	mUi->pythonPathLineEdit->setText(SettingsManager::value(settings::pioneerPythonPath).toString());
 	mUi->useControllerScriptCheckBox->setChecked(
-			SettingsManager::value(settings::pioneerUseControllerScript).toBool()
+			SettingsManager::value(settings::pioneerUseController).toBool()
 	);
 
 	mUi->useComPortCheckBox->setChecked(
@@ -97,29 +88,9 @@ void PioneerAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::Robo
 	Q_UNUSED(robotModel);
 }
 
-void PioneerAdditionalPreferences::onPythonBrowseClick()
-{
-#ifdef WIN32
-	const QString filter = tr("Executable files (*.exe)");
-#else
-	const QString filter;
-#endif
-
-	const QString selectedPythonExecutable = QFileDialog::getOpenFileName(
-			this
-			, tr("Select Python 2.7 executable")
-			, ""
-			, filter);
-
-	if (!selectedPythonExecutable.isEmpty()) {
-		mUi->pythonPathLineEdit->setText(selectedPythonExecutable);
-	}
-}
-
 void PioneerAdditionalPreferences::onCheckboxesChanged()
 {
 	const bool useControllerScript = mUi->useControllerScriptCheckBox->isChecked();
-	mUi->pythonSettingsWidget->setVisible(useControllerScript);
 	mUi->useComPortCheckBox->setVisible(useControllerScript);
 	if (!mUi->useComPortCheckBox->isVisible()) {
 		mUi->useComPortCheckBox->setChecked(false);

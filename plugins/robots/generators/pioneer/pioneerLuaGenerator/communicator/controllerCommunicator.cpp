@@ -150,7 +150,6 @@ void ControllerCommunicator::doRunProgram()
 #else
 	const QString processName = QApplication::applicationDirPath() + "/pioneerStart.sh";
 #endif
-	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
 
 	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
 	if (addressList.size() != 2) {
@@ -159,10 +158,7 @@ void ControllerCommunicator::doRunProgram()
 		return;
 	}
 
-	QStringList args = addressList;
-	args.append({ pathToPython, pathToControllerScript });
-
-	mStartProcess->start(processName, args);
+	mStartProcess->start(processName, addressList);
 	mStartProcess->waitForStarted();
 	if (mStartProcess->state() != QProcess::Running) {
 		mErrorReporter.addError(tr("Unable to execute script"));

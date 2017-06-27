@@ -26,14 +26,15 @@ include(../../../../../global.pri)
 	copyToDestdir(scripts/pioneerCompile.bat, now)
 }
 
-copyToDestdir(scripts/controller.py, now)
+copyToDestdir(thirdparty/controller/controller.exe, now)
+copyToDestdir(thirdparty/controller/controller, now)
 copyToDestdir(thirdparty/luac, now)
 
 !win32 {
 	system("chmod +x $$DESTDIR/pioneerUpload.sh")
 	system("chmod +x $$DESTDIR/pioneerStart.sh")
 	system("chmod +x $$DESTDIR/pioneerCompile.sh")
-	system("chmod +x $$DESTDIR/controller.py")
+	system("chmod +x $$DESTDIR/controller")
 }
 
 QT += widgets network
@@ -105,5 +106,4 @@ OTHER_FILES += \
 	$$PWD/scripts/pioneerStart.bat \
 	$$PWD/scripts/pioneerUpload.bat \
 	$$PWD/scripts/pioneerCompile.bat \
-	$$PWD/scripts/controller.py \
 	$$PWD/pioneerLuaDefaultSettings.ini \

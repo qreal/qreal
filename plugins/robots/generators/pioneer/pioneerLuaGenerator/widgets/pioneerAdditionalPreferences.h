@@ -37,10 +37,11 @@ public:
 	void onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel) override;
 
 signals:
+	/// Emitted when some settings are changed.
 	void settingsChanged();
 
 private slots:
-	void onPythonBrowseClick();
+	/// Get called when "use controller" checkbox or "use COM port" checkbox changes state.
 	void onCheckboxesChanged();
 
 private:

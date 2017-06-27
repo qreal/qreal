@@ -238,7 +238,7 @@ void PioneerLuaGeneratorPlugin::setUploadAndRunActionsEnabled(bool isEnabled)
 
 CommunicatorInterface &PioneerLuaGeneratorPlugin::communicator() const
 {
-	if (SettingsManager::value(settings::pioneerUseControllerScript).toBool()) {
+	if (SettingsManager::value(settings::pioneerUseController).toBool()) {
 		return *mControllerCommunicator;
 	} else {
 		return *mHttpCommunicator;

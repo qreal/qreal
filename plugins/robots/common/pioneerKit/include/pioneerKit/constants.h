@@ -42,10 +42,10 @@ const QString pioneerBaseStationPort = "pioneerBaseStationPort";
 /// String parameter. Path to a Python interpreter. Default is empty string, which is treated as "use python from PATH".
 const QString pioneerPythonPath = "pioneerPythonPath";
 
-/// Boolean parameter. True if "controller.py" shall be used to upload or run programs instead of POST requests.
-const QString pioneerUseControllerScript = "pioneerUseControllerScript";
+/// Boolean parameter. True if "controller" shall be used to upload or run programs instead of POST requests.
+const QString pioneerUseController = "pioneerUseController";
 
-/// Boolean parameter. If set, COM port and controller.py are used to upload and run program instead of IP address.
+/// Boolean parameter. If set, COM port and "controller" are used to upload and run program instead of IP address.
 const QString pioneerUseComPort = "pioneerUseComPort";
 
 /// String parameter. Name of a COM port to use to upload or run programs.
