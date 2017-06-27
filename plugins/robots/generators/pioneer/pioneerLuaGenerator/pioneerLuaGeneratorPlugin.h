@@ -30,6 +30,7 @@ namespace lua {
 
 class PioneerGeneratorRobotModel;
 class PioneerAdditionalPreferences;
+class CommunicatorInterface;
 
 /// Main class for Pioneer Lua generator plugin.
 class PioneerLuaGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
@@ -40,6 +41,8 @@ class PioneerLuaGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBas
 public:
 	PioneerLuaGeneratorPlugin();
 	~PioneerLuaGeneratorPlugin() override;
+
+	void init(const kitBase::KitPluginConfigurator &configurator) override;
 
 	QList<qReal::ActionInfo> customActions() override;
 
@@ -68,12 +71,6 @@ private slots:
 	/// Attempts to run current program on a quadcopter. Generates and uploads it first.
 	void runProgram();
 
-	/// Called by upload process when it is done.
-	void onUploadCompleted();
-
-	/// Called by program start process when it is done.
-	void onStartCompleted();
-
 private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 
@@ -87,16 +84,6 @@ private:
 
 	/// Set "enabled" state of "upload" and "run" actions to a given value.
 	void setUploadAndRunActionsEnabled(bool isEnabled);
-
-	/// Initiates asynchronous execution of "start program" script.
-	void doRunProgram();
-
-	/// Helper method that correctly converts given console output into unicode string.
-	QString toUnicode(const QByteArray &str);
-
-	/// Returns address to which requests for uploading or running program shall be sent. Respects COM/IP settings.
-	/// Reports error and returns empty string if settings are incorrect.
-	QString address();
 
 	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
@@ -124,14 +111,8 @@ private:
 	/// an ownership, so it is needed to avoid memleak). Need to use smart pointers instead of this.
 	bool mOwnsAdditionalPreferences = true;
 
-	/// Process handler for uploading program.
-	QScopedPointer<QProcess> mUploadProcess;
-
-	/// Process handler for starting program.
-	QScopedPointer<QProcess> mStartProcess;
-
-	/// State of an asynchronous operation --- do we need to start a program after uploading or not.
-	bool mIsStartNeeded = false;
+	/// Communicator object that communicates with robot using "controller" stand-alone program.
+	QScopedPointer<CommunicatorInterface> mControllerCommunicator;
 };
 
 }
