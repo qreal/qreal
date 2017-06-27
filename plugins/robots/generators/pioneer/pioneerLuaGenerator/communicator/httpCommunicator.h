@@ -52,6 +52,8 @@ public:
 
 	void runProgram(const QFileInfo &program) override;
 
+	void stopProgram() override;
+
 private slots:
 	/// Called when compilation process is finished.
 	void onCompilationDone();
@@ -60,8 +62,19 @@ private slots:
 	void onPostRequestFinished(QNetworkReply *reply);
 
 private:
+	/// Enum with possible actions of communicator.
+	enum class Action {
+		none
+		, uploading
+		, starting
+		, stopping
+	};
+
 	/// Mark current procerss as done, emitting apropriate signal.
 	void done();
+
+	/// Initiates "upload" request.
+	void doUploadProgram(const QFileInfo &program);
 
 	/// Initiates "start" request.
 	void doRunProgram();
@@ -80,8 +93,8 @@ private:
 	/// Provides information about currently selected robot model.
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 
-	/// State of an asynchronous operation --- do we need to start a program after uploading or not.
-	bool mIsStartNeeded = false;
+	/// Current action of a communicator.
+	Action mCurrentAction = Action::none;
 
 	/// Information about current program location. Is set every time when upload or run request begins to execute.
 	QFileInfo mCurrentProgram;

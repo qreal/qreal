@@ -35,6 +35,7 @@ ControllerCommunicator::ControllerCommunicator(
 		)
 	: mUploadProcess(new QProcess)
 	, mStartProcess(new QProcess)
+	, mStopProcess(new QProcess)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
 {
@@ -47,6 +48,11 @@ ControllerCommunicator::ControllerCommunicator(
 			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
 			, this
 			, &ControllerCommunicator::onStartCompleted);
+
+	connect(mStopProcess.data()
+			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
+			, this
+			, &ControllerCommunicator::onStopCompleted);
 }
 
 ControllerCommunicator::~ControllerCommunicator()
@@ -56,11 +62,12 @@ ControllerCommunicator::~ControllerCommunicator()
 
 void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 {
-	QString pathToPython = SettingsManager::value(settings::pioneerPythonPath).toString();
-	if (pathToPython.isEmpty()) {
-		pathToPython = "python";
-	}
+	mCurrentAction = Action::uploading;
+	doUploadProgram(program);
+}
 
+void ControllerCommunicator::doUploadProgram(const QFileInfo &program)
+{
 #ifdef Q_OS_WIN
 	const QString processName = QApplication::applicationDirPath() + "/pioneerUpload.bat";
 #else
@@ -73,8 +80,6 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 					+ SettingsManager::value(settings::pioneerRealCopterLuaPath, "").toString()
 			: SettingsManager::value(settings::pioneerSimulatorLuaPath, "").toString();
 
-	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
-
 	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
 	if (addressList.size() != 2) {
 		// Settings are incorrect and were already reported in address().
@@ -84,18 +89,14 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 
 	QStringList args{ program.absoluteFilePath() };
 	args.append(addressList);
-	args.append({ pathToLuac, pathToPython, pathToControllerScript });
+	args.append(pathToLuac);
 
 	mUploadProcess->start(processName, args);
 
 	mUploadProcess->waitForStarted();
 	if (mUploadProcess->state() != QProcess::Running) {
 		mErrorReporter.addError(tr("Unable to execute upload script"));
-		QStringList errors = QString(mUploadProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
-		for (const auto &error : errors) {
-			mErrorReporter.addInformation(error);
-		}
-
+		reportOutput(*mUploadProcess);
 		done();
 	} else {
 		mErrorReporter.addInformation(tr("Uploading started, please wait..."));
@@ -104,51 +105,18 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 
 void ControllerCommunicator::runProgram(const QFileInfo &program)
 {
-	mIsStartNeeded = true;
-	uploadProgram(program);
+	mCurrentAction = Action::starting;
+	doUploadProgram(program);
 }
 
-void ControllerCommunicator::onUploadCompleted()
+void ControllerCommunicator::stopProgram()
 {
-	QStringList errors = toUnicode(mUploadProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
-	errors << toUnicode(mUploadProcess->readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
-	for (const auto &error : errors) {
-		mErrorReporter.addInformation(error);
-	}
-
-	mErrorReporter.addInformation(tr("Uploading finished."));
-
-	if (mIsStartNeeded) {
-		doRunProgram();
-		mIsStartNeeded = false;
-	} else {
-		done();
-	}
-}
-
-void ControllerCommunicator::onStartCompleted()
-{
-	QStringList errors = toUnicode(mStartProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
-	errors << toUnicode(mStartProcess->readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
-	for (const auto &error : errors) {
-		mErrorReporter.addInformation(error);
-	}
-
-	mErrorReporter.addInformation(tr("Starting finished."));
-	done();
-}
-
-void ControllerCommunicator::doRunProgram()
-{
-	QString pathToPython = SettingsManager::value(settings::pioneerPythonPath).toString();
-	if (pathToPython.isEmpty()) {
-		pathToPython = "python";
-	}
+	mCurrentAction = Action::stopping;
 
 #ifdef Q_OS_WIN
-	const QString processName = QApplication::applicationDirPath() + "/pioneerStart.bat";
+	const QString processName = QApplication::applicationDirPath() + "/pioneerStartStop.bat";
 #else
-	const QString processName = QApplication::applicationDirPath() + "/pioneerStart.sh";
+	const QString processName = QApplication::applicationDirPath() + "/pioneerStartStop.sh";
 #endif
 
 	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
@@ -158,7 +126,65 @@ void ControllerCommunicator::doRunProgram()
 		return;
 	}
 
-	mStartProcess->start(processName, addressList);
+	QStringList args = addressList;
+	args.append("--stopLuaScript");
+
+	mStopProcess->start(processName, args);
+	mStopProcess->waitForStarted();
+	if (mStopProcess->state() != QProcess::Running) {
+		mErrorReporter.addError(tr("Unable to execute script"));
+		done();
+	} else {
+		mErrorReporter.addInformation(tr("Stopping program, please wait..."));
+	}
+}
+
+void ControllerCommunicator::onUploadCompleted()
+{
+	reportOutput(*mUploadProcess);
+
+	mErrorReporter.addInformation(tr("Uploading finished."));
+
+	if (mCurrentAction == Action::starting) {
+		doRunProgram();
+	} else {
+		done();
+	}
+}
+
+void ControllerCommunicator::onStartCompleted()
+{
+	reportOutput(*mStartProcess);
+	mErrorReporter.addInformation(tr("Starting finished."));
+	done();
+}
+
+void ControllerCommunicator::onStopCompleted()
+{
+	reportOutput(*mStopProcess);
+	mErrorReporter.addInformation(tr("Stopping finished."));
+	done();
+}
+
+void ControllerCommunicator::doRunProgram()
+{
+#ifdef Q_OS_WIN
+	const QString processName = QApplication::applicationDirPath() + "/pioneerStartStop.bat";
+#else
+	const QString processName = QApplication::applicationDirPath() + "/pioneerStartStop.sh";
+#endif
+
+	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
+	if (addressList.size() != 2) {
+		// Settings are incorrect and were already reported in address().
+		done();
+		return;
+	}
+
+	QStringList args = addressList;
+	args.append("--runLuaScript");
+
+	mStartProcess->start(processName, args);
 	mStartProcess->waitForStarted();
 	if (mStartProcess->state() != QProcess::Running) {
 		mErrorReporter.addError(tr("Unable to execute script"));
@@ -207,9 +233,27 @@ QString ControllerCommunicator::address()
 
 void ControllerCommunicator::done()
 {
-	if (mIsStartNeeded) {
+	switch (mCurrentAction) {
+	case Action::none:
+		return;
+	case Action::starting:
 		emit runCompleted();
-	} else {
+		break;
+	case Action::stopping:
+		emit stopCompleted();
+		break;
+	case Action::uploading:
 		emit uploadCompleted();
+	}
+
+	mCurrentAction = Action::none;
+}
+
+void ControllerCommunicator::reportOutput(QProcess &process)
+{
+	QStringList errors = toUnicode(process.readAllStandardError()).split("\n", QString::SkipEmptyParts);
+	errors << toUnicode(process.readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
+	for (const auto &error : errors) {
+		mErrorReporter.addInformation(error);
 	}
 }

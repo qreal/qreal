@@ -33,6 +33,7 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 	: mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
+	, mStopProgramAction(new QAction(nullptr))
 	, mBlocksFactory(new blocks::PioneerBlocksFactory)
 	, mGeneratorForRealCopterRobotModel(
 			new PioneerGeneratorRobotModel(
@@ -57,15 +58,43 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 
 	mGenerateCodeAction->setText(tr("Generate to Pioneer Lua"));
 	mGenerateCodeAction->setIcon(QIcon(":/pioneer/lua/images/generateLuaCode.svg"));
-	connect(mGenerateCodeAction, &QAction::triggered, this, &PioneerLuaGeneratorPlugin::generateCode);
+	connect(
+			mGenerateCodeAction
+			, &QAction::triggered
+			, this
+			, &PioneerLuaGeneratorPlugin::generateCode
+			, Qt::UniqueConnection
+	);
 
 	mUploadProgramAction->setText(tr("Upload generated program to Pioneer"));
 	mUploadProgramAction->setIcon(QIcon(":/pioneer/lua/images/upload.svg"));
-	connect(mUploadProgramAction, &QAction::triggered, this, &PioneerLuaGeneratorPlugin::uploadProgram);
+	connect(
+			mUploadProgramAction
+			, &QAction::triggered
+			, this
+			, &PioneerLuaGeneratorPlugin::uploadProgram
+			, Qt::UniqueConnection
+	);
 
 	mRunProgramAction->setText(tr("Run program on a Pioneer"));
 	mRunProgramAction->setIcon(QIcon(":/pioneer/lua/images/run.svg"));
-	connect(mRunProgramAction, &QAction::triggered, this, &PioneerLuaGeneratorPlugin::runProgram);
+	connect(
+			mRunProgramAction
+			, &QAction::triggered
+			, this
+			, &PioneerLuaGeneratorPlugin::runProgram
+			, Qt::UniqueConnection
+	);
+
+	mStopProgramAction->setText(tr("Stop currently executing program"));
+	mStopProgramAction->setIcon(QIcon(":/pioneer/lua/images/stop.svg"));
+	connect(
+			mStopProgramAction
+			, &QAction::triggered
+			, this
+			, &PioneerLuaGeneratorPlugin::stopProgram
+			, Qt::UniqueConnection
+	);
 
 	text::Languages::registerLanguage(text::LanguageInfo{ "lua"
 			, tr("Lua language")
@@ -89,13 +118,19 @@ void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &confi
 		connect(
 				communicator
 				, &CommunicatorInterface::uploadCompleted
-				, [this]() { setUploadAndRunActionsEnabled(true); }
+				, [this]() { setActionsEnabled(true); }
 		);
 
 		connect(
 				communicator
 				, &CommunicatorInterface::runCompleted
-				, [this]() { setUploadAndRunActionsEnabled(true); }
+				, [this]() { setActionsEnabled(true); }
+		);
+
+		connect(
+				communicator
+				, &CommunicatorInterface::stopCompleted
+				, [this]() { setActionsEnabled(true); }
 		);
 	};
 
@@ -110,6 +145,13 @@ void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &confi
 
 	connectCommunicator(mControllerCommunicator.data());
 	connectCommunicator(mHttpCommunicator.data());
+
+	connect(
+			mAdditionalPreferences
+			, &PioneerAdditionalPreferences::settingsChanged
+			, this
+			, PioneerLuaGeneratorPlugin::onSettingsChanged
+	);
 }
 
 QList<ActionInfo> PioneerLuaGeneratorPlugin::customActions()
@@ -117,7 +159,8 @@ QList<ActionInfo> PioneerLuaGeneratorPlugin::customActions()
 	const ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
 	const ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
-	return { generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo };
+	const ActionInfo stopProgramActionInfo(mStopProgramAction, "generators", "tools");
+	return { generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopProgramActionInfo };
 }
 
 QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
@@ -125,6 +168,7 @@ QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
 	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
 	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
 	mRunProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
+	mStopProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
 
 	HotKeyActionInfo generateActionInfo(
 			"Generator.GeneratePioneerLua"
@@ -138,7 +182,9 @@ QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
 
 	HotKeyActionInfo runProgramInfo("Generator.RunPioneerLua", tr("Run Pioneer Program"), mRunProgramAction);
 
-	return { generateActionInfo, uploadProgramInfo, runProgramInfo };
+	HotKeyActionInfo stopProgramInfo("Generator.StopPioneerLua", tr("Stop Pioneer Program"), mStopProgramAction);
+
+	return { generateActionInfo, uploadProgramInfo, runProgramInfo, stopProgramInfo };
 }
 
 QIcon PioneerLuaGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
@@ -185,6 +231,14 @@ QString PioneerLuaGeneratorPlugin::defaultSettingsFile() const
 	return ":/pioneer/lua/pioneerLuaDefaultSettings.ini";
 }
 
+void PioneerLuaGeneratorPlugin::onCurrentDiagramChanged(const qReal::TabInfo &info)
+{
+	generatorBase::RobotsGeneratorPluginBase::onCurrentDiagramChanged(info);
+	if (mStopProgramAction->isEnabled()) {
+		checkAndSetStopProgramAction();
+	}
+}
+
 QString PioneerLuaGeneratorPlugin::defaultFilePath(const QString &projectName) const
 {
 	return QString("pioneer/%1/%1.lua").arg(projectName);
@@ -219,21 +273,41 @@ void PioneerLuaGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInf
 void PioneerLuaGeneratorPlugin::uploadProgram()
 {
 	const QFileInfo program = generateCodeForProcessing();
-	setUploadAndRunActionsEnabled(false);
+	setActionsEnabled(false);
 	communicator().uploadProgram(program);
 }
 
 void PioneerLuaGeneratorPlugin::runProgram()
 {
 	const QFileInfo program = generateCodeForProcessing();
-	setUploadAndRunActionsEnabled(false);
+	setActionsEnabled(false);
 	communicator().runProgram(program);
 }
 
-void PioneerLuaGeneratorPlugin::setUploadAndRunActionsEnabled(bool isEnabled)
+void PioneerLuaGeneratorPlugin::stopProgram()
+{
+	setActionsEnabled(false);
+	communicator().stopProgram();
+}
+
+void PioneerLuaGeneratorPlugin::onSettingsChanged()
+{
+	checkAndSetStopProgramAction();
+}
+
+void PioneerLuaGeneratorPlugin::setActionsEnabled(bool isEnabled)
 {
 	mUploadProgramAction->setEnabled(isEnabled);
 	mRunProgramAction->setEnabled(isEnabled);
+	mStopProgramAction->setEnabled(isEnabled);
+	if (isEnabled) {
+		checkAndSetStopProgramAction();
+	}
+}
+
+void PioneerLuaGeneratorPlugin::checkAndSetStopProgramAction()
+{
+	mStopProgramAction->setEnabled(SettingsManager::value(settings::pioneerUseController).toBool());
 }
 
 CommunicatorInterface &PioneerLuaGeneratorPlugin::communicator() const

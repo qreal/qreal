@@ -48,6 +48,8 @@ public:
 
 	void runProgram(const QFileInfo &program) override;
 
+	void stopProgram() override;
+
 private slots:
 	/// Called by upload process when it is done.
 	void onUploadCompleted();
@@ -55,7 +57,21 @@ private slots:
 	/// Called by program start process when it is done.
 	void onStartCompleted();
 
+	/// Called by program stop process when it is done.
+	void onStopCompleted();
+
 private:
+	/// Enum with possible actions of communicator.
+	enum class Action {
+		none
+		, uploading
+		, starting
+		, stopping
+	};
+
+	/// Initiates asynchronous execution of "upload program" script.
+	void doUploadProgram(const QFileInfo &program);
+
 	/// Initiates asynchronous execution of "start program" script.
 	void doRunProgram();
 
@@ -69,11 +85,17 @@ private:
 	/// Mark current procerss as done, emitting appropriate signal.
 	void done();
 
+	/// Sends process output and process error stream to error reporter.
+	void reportOutput(QProcess &process);
+
 	/// Process handler for uploading program.
 	QScopedPointer<QProcess> mUploadProcess;
 
 	/// Process handler for starting program.
 	QScopedPointer<QProcess> mStartProcess;
+
+	/// Process handler for stopping program.
+	QScopedPointer<QProcess> mStopProcess;
 
 	/// Error reporter that shows messages and errors in TRIK Studio main window.
 	/// Does not have ownership.
@@ -82,8 +104,8 @@ private:
 	/// Provides information about currently selected robot model.
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 
-	/// State of an asynchronous operation --- do we need to start a program after uploading or not.
-	bool mIsStartNeeded = false;
+	/// Current action of a communicator.
+	Action mCurrentAction = Action::none;
 };
 
 }

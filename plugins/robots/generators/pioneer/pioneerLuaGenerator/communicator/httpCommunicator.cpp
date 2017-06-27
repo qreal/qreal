@@ -57,6 +57,12 @@ HttpCommunicator::~HttpCommunicator()
 
 void HttpCommunicator::uploadProgram(const QFileInfo &program)
 {
+	mCurrentAction = Action::uploading;
+	doUploadProgram(program);
+}
+
+void HttpCommunicator::doUploadProgram(const QFileInfo &program)
+{
 	mCurrentProgram = program;
 
 #ifdef Q_OS_WIN
@@ -89,9 +95,16 @@ void HttpCommunicator::uploadProgram(const QFileInfo &program)
 
 void HttpCommunicator::runProgram(const QFileInfo &program)
 {
+	mCurrentAction = Action::starting;
 	mCurrentProgram = program;
-	mIsStartNeeded = true;
 	uploadProgram(program);
+}
+
+void HttpCommunicator::stopProgram()
+{
+	mCurrentAction = Action::stopping;
+	mErrorReporter.addError(tr("Stopping program is not supported for HTTP communication mode."));
+	done();
 }
 
 void HttpCommunicator::onCompilationDone()
@@ -140,9 +153,8 @@ void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
 			return;
 		}
 
-		if (mIsStartNeeded) {
+		if (mCurrentAction == Action::starting) {
 			doRunProgram();
-			mIsStartNeeded = false;
 		} else {
 			done();
 		}
@@ -159,11 +171,20 @@ void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
 
 void HttpCommunicator::done()
 {
-	if (mIsStartNeeded) {
+	switch (mCurrentAction) {
+	case Action::none:
+		return;
+	case Action::starting:
 		emit runCompleted();
-	} else {
+		break;
+	case Action::stopping:
+		emit stopCompleted();
+		break;
+	case Action::uploading:
 		emit uploadCompleted();
 	}
+
+	mCurrentAction = Action::none;
 }
 
 void HttpCommunicator::doRunProgram()

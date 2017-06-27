@@ -40,6 +40,9 @@ public:
 	/// Attempts to run current program on a quadcopter. Generates and uploads it first.
 	virtual void runProgram(const QFileInfo &program) = 0;
 
+	/// Attempts to stop currently executed program.
+	virtual void stopProgram() = 0;
+
 signals:
 	/// Emitted when upload is finished (successfully or with errors). Is not emitted when uploading is a part of
 	/// running the program. uploadCompleted() is guaranteed to be sent after uploadProgram() call.
@@ -49,6 +52,10 @@ signals:
 	/// continues to execute on a quadcopter after this signal is emitted. runCompleted() is guaranteed to be sent
 	/// after runProgram() call.
 	void runCompleted();
+
+	/// Emitted when "stop" command is sent to a quadcopter (successfully or with errors). stopCompleted() is
+	/// guaranteed to be sent after stopProgram() call.
+	void stopCompleted();
 };
 
 }

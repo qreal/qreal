@@ -18,11 +18,11 @@ include(../../../../../global.pri)
 
 !win32 {
 	copyToDestdir(scripts/pioneerUpload.sh, now)
-	copyToDestdir(scripts/pioneerStart.sh, now)
+	copyToDestdir(scripts/pioneerStartStop.sh, now)
 	copyToDestdir(scripts/pioneerCompile.sh, now)
 } else {
 	copyToDestdir(scripts/pioneerUpload.bat, now)
-	copyToDestdir(scripts/pioneerStart.bat, now)
+	copyToDestdir(scripts/pioneerStartStop.bat, now)
 	copyToDestdir(scripts/pioneerCompile.bat, now)
 }
 
@@ -32,7 +32,7 @@ copyToDestdir(thirdparty/luac, now)
 
 !win32 {
 	system("chmod +x $$DESTDIR/pioneerUpload.sh")
-	system("chmod +x $$DESTDIR/pioneerStart.sh")
+	system("chmod +x $$DESTDIR/pioneerStartStop.sh")
 	system("chmod +x $$DESTDIR/pioneerCompile.sh")
 	system("chmod +x $$DESTDIR/controller")
 }
@@ -100,10 +100,10 @@ RESOURCES += \
 	$$PWD/templates.qrc \
 
 OTHER_FILES += \
-	$$PWD/scripts/pioneerStart.sh \
+	$$PWD/scripts/pioneerStartStop.sh \
 	$$PWD/scripts/pioneerUpload.sh \
 	$$PWD/scripts/pioneerCompile.sh \
-	$$PWD/scripts/pioneerStart.bat \
+	$$PWD/scripts/pioneerStartStop.bat \
 	$$PWD/scripts/pioneerUpload.bat \
 	$$PWD/scripts/pioneerCompile.bat \
 	$$PWD/pioneerLuaDefaultSettings.ini \

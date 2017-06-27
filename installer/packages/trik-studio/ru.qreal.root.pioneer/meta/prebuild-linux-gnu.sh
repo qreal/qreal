@@ -12,7 +12,7 @@ cp $BIN_DIR/plugins/editors/libpioneerMetamodel.so			$PWD/../data/lib/plugins/ed
 cp $BIN_DIR/plugins/tools/kitPlugins/librobots-pioneer-interpreter.so	$PWD/../data/lib/plugins/tools/kitPlugins/
 cp $BIN_DIR/plugins/tools/kitPlugins/librobots-pioneer-lua-generator.so	$PWD/../data/lib/plugins/tools/kitPlugins/
 
-cp $BIN_DIR/pioneerStart.sh	$PWD/../data/
+cp $BIN_DIR/pioneerStartStop.sh	$PWD/../data/
 cp $BIN_DIR/pioneerUpload.sh	$PWD/../data/
 cp $BIN_DIR/pioneerCompile.sh	$PWD/../data/
 cp $BIN_DIR/controller		$PWD/../data/
