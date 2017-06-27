@@ -14,3 +14,8 @@ cp $BIN_DIR/plugins/tools/kitPlugins/librobots-pioneer-lua-generator.so	$PWD/../
 
 cp $BIN_DIR/pioneerStart.sh	$PWD/../data/
 cp $BIN_DIR/pioneerUpload.sh	$PWD/../data/
+
+mkdir -p $PWD/../data/luac/real
+
+cp $BIN_DIR/luac/real/luac5.3 $PWD/../data/luac/real/
+chmod +x $PWD/../data/luac/real/

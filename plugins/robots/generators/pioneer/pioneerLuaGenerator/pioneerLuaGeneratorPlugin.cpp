@@ -21,11 +21,13 @@
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
 #include <pioneerKit/blocks/pioneerBlocksFactory.h>
+#include <pioneerKit/constants.h>
 
 #include "pioneerLuaMasterGenerator.h"
 #include "robotModel/pioneerGeneratorRobotModel.h"
 #include "widgets/pioneerAdditionalPreferences.h"
 
+using namespace pioneer;
 using namespace pioneer::lua;
 using namespace qReal;
 
@@ -34,14 +36,23 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 	, mUploadProgramAction(new QAction(nullptr))
 	, mRunProgramAction(new QAction(nullptr))
 	, mBlocksFactory(new blocks::PioneerBlocksFactory)
-	, mGeneratorRobotModel(
+	, mGeneratorForRealCopterRobotModel(
 			new PioneerGeneratorRobotModel(
 					kitId()
-					, "PioneerRobot"
-					, "PioneerGeneratorRobotModel"
-					, tr("Pioneer model")
+					, "Pioneer"
+					, modelNames::realCopter
+					, tr("Pioneer model (real copter)")
 					, 9
 				)
+		)
+	, mGeneratorForSimulatorRobotModel(
+		new PioneerGeneratorRobotModel(
+				kitId()
+				, "Pioneer"
+				, modelNames::simulator
+				, tr("Pioneer model (simulator)")
+				, 10
+			)
 		)
 	, mUploadProcess(new QProcess)
 	, mStartProcess(new QProcess)
@@ -133,7 +144,7 @@ QString PioneerLuaGeneratorPlugin::kitId() const
 
 QList<kitBase::robotModel::RobotModelInterface *> PioneerLuaGeneratorPlugin::robotModels()
 {
-	return { mGeneratorRobotModel.data() };
+	return { mGeneratorForRealCopterRobotModel.data(), mGeneratorForSimulatorRobotModel.data() };
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *PioneerLuaGeneratorPlugin::blocksFactoryFor(
@@ -147,6 +158,11 @@ QList<kitBase::AdditionalPreferences *> PioneerLuaGeneratorPlugin::settingsWidge
 {
 	mOwnsAdditionalPreferences = false;
 	return { mAdditionalPreferences };
+}
+
+QString PioneerLuaGeneratorPlugin::defaultSettingsFile() const
+{
+	return ":/pioneer/lua/pioneerLuaDefaultSettings.ini";
 }
 
 QString PioneerLuaGeneratorPlugin::defaultFilePath(const QString &projectName) const
@@ -182,7 +198,7 @@ void PioneerLuaGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInf
 
 void PioneerLuaGeneratorPlugin::uploadProgram()
 {
-	const QString server = qReal::SettingsManager::value("PioneerBaseStationIP").toString();
+	const QString server = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (server.isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
 				tr("Pioneer base station IP addres is not set. It can be set in Settings window.")
@@ -190,14 +206,33 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 		return;
 	}
 
+	QString pathToPython = SettingsManager::value(settings::pioneerPythonPath).toString();
+	if (pathToPython.isEmpty()) {
+		pathToPython = "python";
+	}
+
 #ifdef Q_OS_WIN
-	const QString processName = "pioneerUpload.bat";
+	const QString processName = QApplication::applicationDirPath() + "/pioneerUpload.bat";
 #else
-	const QString processName = "./pioneerUpload.sh";
+	const QString processName = QApplication::applicationDirPath() + "/pioneerUpload.sh";
 #endif
 	const QFileInfo fileInfo = generateCodeForProcessing();
 
-	mUploadProcess->start(processName, { fileInfo.absoluteFilePath(), server });
+	QString pathToLuac = mRobotModelManager->model().name() == modelNames::realCopter
+			? QApplication::applicationDirPath()
+					+ "/"
+					+ SettingsManager::value(settings::realCopterLuaPath, "").toString()
+			: SettingsManager::value(settings::simulatorLuaPath, "").toString();
+
+	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
+
+	mUploadProcess->start(processName, {
+			fileInfo.absoluteFilePath()
+			, server
+			, pathToLuac
+			, pathToPython
+			, pathToControllerScript });
+
 	setUploadAndRunActionsEnabled(false);
 
 	mUploadProcess->waitForStarted();
@@ -222,7 +257,7 @@ void PioneerLuaGeneratorPlugin::runProgram()
 
 void PioneerLuaGeneratorPlugin::doRunProgram()
 {
-	const QString server = qReal::SettingsManager::value("PioneerBaseStationIP").toString();
+	const QString server = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (server.isEmpty()) {
 		mMainWindowInterface->errorReporter()->addError(
 				tr("Pioneer base station IP addres is not set. It can be set in Settings window.")
@@ -230,15 +265,21 @@ void PioneerLuaGeneratorPlugin::doRunProgram()
 		return;
 	}
 
+	QString pathToPython = SettingsManager::value(settings::pioneerPythonPath).toString();
+	if (pathToPython.isEmpty()) {
+		pathToPython = "python";
+	}
+
 #ifdef Q_OS_WIN
-	const QString processName = "pioneerStart.bat";
+	const QString processName = QApplication::applicationDirPath() + "/pioneerStart.bat";
 #else
-	const QString processName = "./pioneerStart.sh";
+	const QString processName = QApplication::applicationDirPath() + "/pioneerStart.sh";
 #endif
-	QProcess process;
-	mStartProcess->start(processName, { server });
+	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
+
+	mStartProcess->start(processName, { server, pathToPython, pathToControllerScript });
 	mStartProcess->waitForStarted();
-	if (process.state() != QProcess::Running) {
+	if (mStartProcess->state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to execute script"));
 		setUploadAndRunActionsEnabled(true);
 	} else {

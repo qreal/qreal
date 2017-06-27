@@ -9,17 +9,27 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="32"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="23"/>
+        <source>Path to Python 2.7:</source>
+        <translation>Путь до python 2.7:</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="33"/>
+        <source>Browse</source>
+        <translation>Выбрать</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="43"/>
         <source>Base Station Settings</source>
         <translation>Настройки базовой станции</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="38"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="49"/>
         <source>Base station IP:</source>
         <translation>IP-адрес базовой станции:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="48"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="59"/>
         <source>127.0.0.1</source>
         <translation>127.0.0.1</translation>
     </message>
@@ -37,70 +47,92 @@
     </message>
 </context>
 <context>
-    <name>pioneer::lua::PioneerLuaGeneratorPlugin</name>
+    <name>pioneer::lua::PioneerAdditionalPreferences</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="42"/>
-        <source>Pioneer model</source>
-        <translation>Квадрокоптер &quot;Пионер&quot;</translation>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.cpp" line="68"/>
+        <source>Executable files (*.exe)</source>
+        <translation>Исполняемые файлы (*.exe)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="51"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.cpp" line="75"/>
+        <source>Select Python 2.7 executable</source>
+        <translation>Выберите исполняемый файл python 2.7</translation>
+    </message>
+</context>
+<context>
+    <name>pioneer::lua::PioneerLuaGeneratorPlugin</name>
+    <message>
+        <source>Pioneer model</source>
+        <translation type="vanished">Квадрокоптер &quot;Пионер&quot;</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="44"/>
+        <source>Pioneer model (real copter)</source>
+        <translation>Реальный квадрокоптер</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="53"/>
+        <source>Pioneer model (simulator)</source>
+        <translation>Симулятор</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="62"/>
         <source>Generate to Pioneer Lua</source>
         <translation>Генерировать в .lua для Пионера</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="55"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="66"/>
         <source>Upload generated program to Pioneer</source>
         <translation>Загрузить программу на Пионер</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="59"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="70"/>
         <source>Run program on a Pioneer</source>
         <translation>Запустить программу на Пионере</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="64"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="75"/>
         <source>Lua language</source>
         <translation>Язык Lua</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="116"/>
         <source>Generate Lua script for Pioneer Quadcopter</source>
         <translation>Генерировать скрипт на Lua для квадрокоптера &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="110"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="121"/>
         <source>Upload Pioneer program</source>
         <translation>Загрузить программу на квадрокоптер &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="124"/>
         <source>Run Pioneer Program</source>
         <translation>Запустить программу на квадрокоптере &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="188"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="228"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="204"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="263"/>
         <source>Pioneer base station IP addres is not set. It can be set in Settings window.</source>
         <translation>IP-адрес базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="213"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="248"/>
         <source>Uploading started, please wait...</source>
         <translation>Загрузка начата, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="245"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="286"/>
         <source>Starting program, please wait...</source>
         <translation>Программа запускается, подалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="257"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="298"/>
         <source>Uploading finished.</source>
         <translation>Загрузка завершена.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="276"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="317"/>
         <source>Starting finished.</source>
         <translation>Запуск завершён.</translation>
     </message>
@@ -109,8 +141,8 @@
         <translation type="vanished">Загрузка программы на квадрокоптер пока не поддержана для Windows, попробуйте под Linux.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="205"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="242"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="240"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="283"/>
         <source>Unable to execute script</source>
         <translation>Не удалось выполнить скрипт</translation>
     </message>

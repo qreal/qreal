@@ -25,6 +25,7 @@ include(../../../../../global.pri)
 }
 
 copyToDestdir(scripts/controller.py, now)
+copyToDestdir(thirdparty/luac, now)
 
 !win32 {
 	system("chmod +x $$DESTDIR/pioneerUpload.sh")
@@ -93,3 +94,4 @@ OTHER_FILES += \
 	$$PWD/scripts/pioneerStart.sh \
 	$$PWD/scripts/pioneerUpload.sh \
 	$$PWD/scripts/controller.py \
+	$$PWD/pioneerLuaDefaultSettings.ini \

@@ -33,6 +33,8 @@ namespace lua {
 /// execute asynchronously, like "GoToPoint", who continues execution only when quadcopter reaches given point.
 class PioneerStateMachineGenerator : public generatorBase::GotoControlFlowGenerator
 {
+	Q_OBJECT
+
 public:
 	PioneerStateMachineGenerator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter

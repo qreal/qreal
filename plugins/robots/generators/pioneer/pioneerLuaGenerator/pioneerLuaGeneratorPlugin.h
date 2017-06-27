@@ -59,6 +59,8 @@ public:
 
 	QList<kitBase::AdditionalPreferences *> settingsWidgets() override;
 
+	QString defaultSettingsFile() const override;
+
 private slots:
 	/// Uploads current program to a quadcopter.
 	void uploadProgram();
@@ -105,7 +107,10 @@ private:
 	blocks::PioneerBlocksFactory *mBlocksFactory;  // Transfers ownership
 
 	/// Robot model for a generator, defines robot name and other unneeded properties.
-	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorRobotModel;
+	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorForRealCopterRobotModel;
+
+	/// Actially the same model as previous, but provides different settings and slightly different blocks.
+	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorForSimulatorRobotModel;
 
 	/// Additional preferences widget, which allows to set IP of a base station.
 	/// Transfers ownership.

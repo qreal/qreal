@@ -39,6 +39,9 @@ public:
 signals:
 	void settingsChanged();
 
+private slots:
+	void onPythonBrowseClick();
+
 private:
 	Ui::PioneerAdditionalPreferences *mUi;
 };

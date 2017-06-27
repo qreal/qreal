@@ -15,8 +15,12 @@
 #include "pioneerAdditionalPreferences.h"
 #include "ui_pioneerAdditionalPreferences.h"
 
-#include <qrkernel/settingsManager.h>
+#include <QtWidgets/QFileDialog>
 
+#include <qrkernel/settingsManager.h>
+#include <pioneerKit/constants.h>
+
+using namespace pioneer;
 using namespace pioneer::lua;
 using namespace qReal;
 
@@ -25,6 +29,14 @@ PioneerAdditionalPreferences::PioneerAdditionalPreferences(QWidget *parent)
 	, mUi(new Ui::PioneerAdditionalPreferences)
 {
 	mUi->setupUi(this);
+	mUi->baseStationIpLineEdit->setText(SettingsManager::value(settings::pioneerBaseStationIP).toString());
+	mUi->pythonPathLineEdit->setText(SettingsManager::value(settings::pioneerPythonPath).toString());
+
+	connect(
+			mUi->pythonPathBrowseButton
+			, &QPushButton::clicked
+			, this
+			, &PioneerAdditionalPreferences::onPythonBrowseClick);
 }
 
 PioneerAdditionalPreferences::~PioneerAdditionalPreferences()
@@ -34,16 +46,37 @@ PioneerAdditionalPreferences::~PioneerAdditionalPreferences()
 
 void PioneerAdditionalPreferences::save()
 {
-	SettingsManager::setValue("PioneerBaseStationIP", mUi->baseStationIpLineEdit->text());
+	SettingsManager::setValue(settings::pioneerBaseStationIP, mUi->baseStationIpLineEdit->text());
+	SettingsManager::setValue(settings::pioneerPythonPath, mUi->pythonPathLineEdit->text());
 	emit settingsChanged();
 }
 
 void PioneerAdditionalPreferences::restoreSettings()
 {
-	mUi->baseStationIpLineEdit->setText(SettingsManager::value("PioneerBaseStationIP").toString());
+	mUi->baseStationIpLineEdit->setText(SettingsManager::value(settings::pioneerBaseStationIP).toString());
+	mUi->pythonPathLineEdit->setText(SettingsManager::value(settings::pioneerPythonPath).toString());
 }
 
 void PioneerAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
 	Q_UNUSED(robotModel);
+}
+
+void PioneerAdditionalPreferences::onPythonBrowseClick()
+{
+#ifdef WIN32
+	const QString filter = tr("Executable files (*.exe)");
+#else
+	const QString filter;
+#endif
+
+	const QString selectedPythonExecutable = QFileDialog::getOpenFileName(
+			this
+			, tr("Select Python 2.7 executable")
+			, ""
+			, filter);
+
+	if (!selectedPythonExecutable.isEmpty()) {
+		mUi->pythonPathLineEdit->setText(selectedPythonExecutable);
+	}
 }
