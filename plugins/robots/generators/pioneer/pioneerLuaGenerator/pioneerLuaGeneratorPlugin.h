@@ -85,6 +85,9 @@ private:
 	/// Set "enabled" state of "upload" and "run" actions to a given value.
 	void setUploadAndRunActionsEnabled(bool isEnabled);
 
+	/// Returns reference to a currently selected quadcopter communicator.
+	CommunicatorInterface &communicator() const;
+
 	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
@@ -113,6 +116,9 @@ private:
 
 	/// Communicator object that communicates with robot using "controller" stand-alone program.
 	QScopedPointer<CommunicatorInterface> mControllerCommunicator;
+
+	/// Communicator object that communicates with robot using HTTP requests.
+	QScopedPointer<CommunicatorInterface> mHttpCommunicator;
 };
 
 }

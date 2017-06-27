@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Copyright 2017 QReal Research Group. Licensed under the Apache License, Version 2.0
+#
 
 LUA_SRC="$1"
 LUA_BIN="$1"c

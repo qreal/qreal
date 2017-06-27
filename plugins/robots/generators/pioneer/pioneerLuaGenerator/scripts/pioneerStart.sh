@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Copyright 2017 QReal Research Group. Licensed under the Apache License, Version 2.0
+#
 
 $3 $4controller.py $1 $2 --runScript
 

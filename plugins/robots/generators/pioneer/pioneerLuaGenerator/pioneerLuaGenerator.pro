@@ -19,9 +19,11 @@ include(../../../../../global.pri)
 !win32 {
 	copyToDestdir(scripts/pioneerUpload.sh, now)
 	copyToDestdir(scripts/pioneerStart.sh, now)
+	copyToDestdir(scripts/pioneerCompile.sh, now)
 } else {
 	copyToDestdir(scripts/pioneerUpload.bat, now)
 	copyToDestdir(scripts/pioneerStart.bat, now)
+	copyToDestdir(scripts/pioneerCompile.bat, now)
 }
 
 copyToDestdir(scripts/controller.py, now)
@@ -30,10 +32,11 @@ copyToDestdir(thirdparty/luac, now)
 !win32 {
 	system("chmod +x $$DESTDIR/pioneerUpload.sh")
 	system("chmod +x $$DESTDIR/pioneerStart.sh")
+	system("chmod +x $$DESTDIR/pioneerCompile.sh")
 	system("chmod +x $$DESTDIR/controller.py")
 }
 
-QT += widgets
+QT += widgets network
 
 TEMPLATE = lib
 CONFIG += plugin
@@ -98,5 +101,9 @@ RESOURCES += \
 OTHER_FILES += \
 	$$PWD/scripts/pioneerStart.sh \
 	$$PWD/scripts/pioneerUpload.sh \
+	$$PWD/scripts/pioneerCompile.sh \
+	$$PWD/scripts/pioneerStart.bat \
+	$$PWD/scripts/pioneerUpload.bat \
+	$$PWD/scripts/pioneerCompile.bat \
 	$$PWD/scripts/controller.py \
 	$$PWD/pioneerLuaDefaultSettings.ini \

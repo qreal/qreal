@@ -38,8 +38,8 @@ class ControllerCommunicator : public CommunicatorInterface
 
 public:
 	ControllerCommunicator(
-			qReal::ErrorReporterInterface * const errorReporter
-			, const kitBase::robotModel::RobotModelManagerInterface * const robotModelManager
+			qReal::ErrorReporterInterface &errorReporter
+			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 	);
 
 	~ControllerCommunicator() override;
@@ -66,7 +66,7 @@ private:
 	/// Reports error and returns empty string if settings are incorrect.
 	QString address();
 
-	/// Mark current procerss as done, emitting apropriate signal.
+	/// Mark current procerss as done, emitting appropriate signal.
 	void done();
 
 	/// Process handler for uploading program.
@@ -77,10 +77,10 @@ private:
 
 	/// Error reporter that shows messages and errors in TRIK Studio main window.
 	/// Does not have ownership.
-	qReal::ErrorReporterInterface * const mErrorReporter;
+	qReal::ErrorReporterInterface &mErrorReporter;
 
 	/// Provides information about currently selected robot model.
-	const kitBase::robotModel::RobotModelManagerInterface * const mRobotModelManager;
+	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 
 	/// State of an asynchronous operation --- do we need to start a program after uploading or not.
 	bool mIsStartNeeded = false;

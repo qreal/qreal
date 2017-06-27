@@ -21,6 +21,7 @@
 
 #include "pioneerLuaMasterGenerator.h"
 #include "communicator/controllerCommunicator.h"
+#include "communicator/httpCommunicator.h"
 #include "robotModel/pioneerGeneratorRobotModel.h"
 #include "widgets/pioneerAdditionalPreferences.h"
 
@@ -84,24 +85,32 @@ PioneerLuaGeneratorPlugin::~PioneerLuaGeneratorPlugin()
 
 void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
+	auto connectCommunicator = [this](CommunicatorInterface * const communicator) {
+		connect(
+				communicator
+				, &CommunicatorInterface::uploadCompleted
+				, [this]() { setUploadAndRunActionsEnabled(true); }
+		);
+
+		connect(
+				communicator
+				, &CommunicatorInterface::runCompleted
+				, [this]() { setUploadAndRunActionsEnabled(true); }
+		);
+	};
+
 	generatorBase::RobotsGeneratorPluginBase::init(configurator);
 	mControllerCommunicator.reset(
-			new ControllerCommunicator(mMainWindowInterface->errorReporter(), mRobotModelManager)
+			new ControllerCommunicator(*mMainWindowInterface->errorReporter(), *mRobotModelManager)
 	);
 
-	connect(
-			mControllerCommunicator.data()
-			, &CommunicatorInterface::uploadCompleted
-			, [this]() { setUploadAndRunActionsEnabled(true); }
+	mHttpCommunicator.reset(
+			new HttpCommunicator(*mMainWindowInterface->errorReporter(), *mRobotModelManager)
 	);
 
-	connect(
-			mControllerCommunicator.data()
-			, &CommunicatorInterface::runCompleted
-			, [this]() { setUploadAndRunActionsEnabled(true); }
-	);
+	connectCommunicator(mControllerCommunicator.data());
+	connectCommunicator(mHttpCommunicator.data());
 }
-
 
 QList<ActionInfo> PioneerLuaGeneratorPlugin::customActions()
 {
@@ -211,18 +220,27 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 {
 	const QFileInfo program = generateCodeForProcessing();
 	setUploadAndRunActionsEnabled(false);
-	mControllerCommunicator->uploadProgram(program);
+	communicator().uploadProgram(program);
 }
 
 void PioneerLuaGeneratorPlugin::runProgram()
 {
 	const QFileInfo program = generateCodeForProcessing();
 	setUploadAndRunActionsEnabled(false);
-	mControllerCommunicator->runProgram(program);
+	communicator().runProgram(program);
 }
 
 void PioneerLuaGeneratorPlugin::setUploadAndRunActionsEnabled(bool isEnabled)
 {
 	mUploadProgramAction->setEnabled(isEnabled);
 	mRunProgramAction->setEnabled(isEnabled);
+}
+
+CommunicatorInterface &PioneerLuaGeneratorPlugin::communicator() const
+{
+	if (SettingsManager::value(settings::pioneerUseControllerScript).toBool()) {
+		return *mControllerCommunicator;
+	} else {
+		return *mHttpCommunicator;
+	}
 }

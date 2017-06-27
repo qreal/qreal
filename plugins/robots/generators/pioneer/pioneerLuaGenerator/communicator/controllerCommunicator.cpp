@@ -30,8 +30,8 @@ using namespace pioneer::lua;
 using namespace qReal;
 
 ControllerCommunicator::ControllerCommunicator(
-		qReal::ErrorReporterInterface * const errorReporter
-		, const kitBase::robotModel::RobotModelManagerInterface * const robotModelManager
+		qReal::ErrorReporterInterface &errorReporter
+		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		)
 	: mUploadProcess(new QProcess)
 	, mStartProcess(new QProcess)
@@ -67,7 +67,7 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 	const QString processName = QApplication::applicationDirPath() + "/pioneerUpload.sh";
 #endif
 
-	const QString pathToLuac = mRobotModelManager->model().name() == modelNames::realCopter
+	const QString pathToLuac = mRobotModelManager.model().name() == modelNames::realCopter
 			? QApplication::applicationDirPath()
 					+ "/"
 					+ SettingsManager::value(settings::pioneerRealCopterLuaPath, "").toString()
@@ -76,7 +76,13 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
 
 	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
-	QStringList args = QStringList({ program.absoluteFilePath() });
+	if (addressList.size() != 2) {
+		// Settings are incorrect and were already reported in address().
+		done();
+		return;
+	}
+
+	QStringList args{ program.absoluteFilePath() };
 	args.append(addressList);
 	args.append({ pathToLuac, pathToPython, pathToControllerScript });
 
@@ -84,15 +90,15 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 
 	mUploadProcess->waitForStarted();
 	if (mUploadProcess->state() != QProcess::Running) {
-		mErrorReporter->addError(tr("Unable to execute script"));
+		mErrorReporter.addError(tr("Unable to execute upload script"));
 		QStringList errors = QString(mUploadProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
 		for (const auto &error : errors) {
-			mErrorReporter->addInformation(error);
+			mErrorReporter.addInformation(error);
 		}
 
 		done();
 	} else {
-		mErrorReporter->addInformation(tr("Uploading started, please wait..."));
+		mErrorReporter.addInformation(tr("Uploading started, please wait..."));
 	}
 }
 
@@ -107,10 +113,10 @@ void ControllerCommunicator::onUploadCompleted()
 	QStringList errors = toUnicode(mUploadProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
 	errors << toUnicode(mUploadProcess->readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
 	for (const auto &error : errors) {
-		mErrorReporter->addInformation(error);
+		mErrorReporter.addInformation(error);
 	}
 
-	mErrorReporter->addInformation(tr("Uploading finished."));
+	mErrorReporter.addInformation(tr("Uploading finished."));
 
 	if (mIsStartNeeded) {
 		doRunProgram();
@@ -125,10 +131,10 @@ void ControllerCommunicator::onStartCompleted()
 	QStringList errors = toUnicode(mStartProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
 	errors << toUnicode(mStartProcess->readAllStandardOutput()).split("\n", QString::SkipEmptyParts);
 	for (const auto &error : errors) {
-		mErrorReporter->addInformation(error);
+		mErrorReporter.addInformation(error);
 	}
 
-	mErrorReporter->addInformation(tr("Starting finished."));
+	mErrorReporter.addInformation(tr("Starting finished."));
 	done();
 }
 
@@ -147,16 +153,22 @@ void ControllerCommunicator::doRunProgram()
 	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
 
 	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
+	if (addressList.size() != 2) {
+		// Settings are incorrect and were already reported in address().
+		done();
+		return;
+	}
+
 	QStringList args = addressList;
 	args.append({ pathToPython, pathToControllerScript });
 
 	mStartProcess->start(processName, args);
 	mStartProcess->waitForStarted();
 	if (mStartProcess->state() != QProcess::Running) {
-		mErrorReporter->addError(tr("Unable to execute script"));
+		mErrorReporter.addError(tr("Unable to execute script"));
 		done();
 	} else {
-		mErrorReporter->addInformation(tr("Starting program, please wait..."));
+		mErrorReporter.addInformation(tr("Starting program, please wait..."));
 	}
 }
 
@@ -177,20 +189,20 @@ QString ControllerCommunicator::address()
 
 	const QString server = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (!useComPort && server.isEmpty()) {
-		mErrorReporter->addError(tr("Pioneer base station IP address is not set. It can be set in Settings window."));
+		mErrorReporter.addError(tr("Pioneer base station IP address is not set. It can be set in Settings window."));
 		return "";
 	}
 
 	const QString port = SettingsManager::value(settings::pioneerBaseStationPort).toString();
 	if (!useComPort && port.isEmpty()) {
-		mErrorReporter->addError(tr("Pioneer base station port is not set. It can be set in Settings window."));
+		mErrorReporter.addError(tr("Pioneer base station port is not set. It can be set in Settings window."));
 		return "";
 	}
 
 	const QString comPort = SettingsManager::value(settings::pioneerComPort).toString();
 
 	if (useComPort && comPort.isEmpty()) {
-		mErrorReporter->addError(tr("Pioneer COM port is not set. It can be set in Settings window."));
+		mErrorReporter.addError(tr("Pioneer COM port is not set. It can be set in Settings window."));
 		return "";
 	}
 
