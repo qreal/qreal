@@ -1,1 +1,1 @@
-%2 %3controller.py --address %1:8000 --runScript
+%3 %4controller.py %1 %2 --runScript

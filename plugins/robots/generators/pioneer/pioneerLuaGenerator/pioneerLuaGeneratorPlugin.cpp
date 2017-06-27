@@ -144,7 +144,12 @@ QString PioneerLuaGeneratorPlugin::kitId() const
 
 QList<kitBase::robotModel::RobotModelInterface *> PioneerLuaGeneratorPlugin::robotModels()
 {
-	return { mGeneratorForRealCopterRobotModel.data(), mGeneratorForSimulatorRobotModel.data() };
+	return { mGeneratorForRealCopterRobotModel.data()
+#ifndef WIN32
+			// Simulator does not work for Windows.
+			, mGeneratorForSimulatorRobotModel.data()
+#endif
+	};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *PioneerLuaGeneratorPlugin::blocksFactoryFor(
@@ -198,14 +203,6 @@ void PioneerLuaGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInf
 
 void PioneerLuaGeneratorPlugin::uploadProgram()
 {
-	const QString server = SettingsManager::value(settings::pioneerBaseStationIP).toString();
-	if (server.isEmpty()) {
-		mMainWindowInterface->errorReporter()->addError(
-				tr("Pioneer base station IP addres is not set. It can be set in Settings window.")
-		);
-		return;
-	}
-
 	QString pathToPython = SettingsManager::value(settings::pioneerPythonPath).toString();
 	if (pathToPython.isEmpty()) {
 		pathToPython = "python";
@@ -221,17 +218,17 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 	QString pathToLuac = mRobotModelManager->model().name() == modelNames::realCopter
 			? QApplication::applicationDirPath()
 					+ "/"
-					+ SettingsManager::value(settings::realCopterLuaPath, "").toString()
-			: SettingsManager::value(settings::simulatorLuaPath, "").toString();
+					+ SettingsManager::value(settings::pioneerRealCopterLuaPath, "").toString()
+			: SettingsManager::value(settings::pioneerSimulatorLuaPath, "").toString();
 
 	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
 
-	mUploadProcess->start(processName, {
-			fileInfo.absoluteFilePath()
-			, server
-			, pathToLuac
-			, pathToPython
-			, pathToControllerScript });
+	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
+	QStringList args = QStringList({ fileInfo.absoluteFilePath() });
+	args.append(addressList);
+	args.append({ pathToLuac, pathToPython, pathToControllerScript });
+
+	mUploadProcess->start(processName, args);
 
 	setUploadAndRunActionsEnabled(false);
 
@@ -257,14 +254,6 @@ void PioneerLuaGeneratorPlugin::runProgram()
 
 void PioneerLuaGeneratorPlugin::doRunProgram()
 {
-	const QString server = SettingsManager::value(settings::pioneerBaseStationIP).toString();
-	if (server.isEmpty()) {
-		mMainWindowInterface->errorReporter()->addError(
-				tr("Pioneer base station IP addres is not set. It can be set in Settings window.")
-		);
-		return;
-	}
-
 	QString pathToPython = SettingsManager::value(settings::pioneerPythonPath).toString();
 	if (pathToPython.isEmpty()) {
 		pathToPython = "python";
@@ -277,7 +266,11 @@ void PioneerLuaGeneratorPlugin::doRunProgram()
 #endif
 	const QString pathToControllerScript = QApplication::applicationDirPath() + "/";
 
-	mStartProcess->start(processName, { server, pathToPython, pathToControllerScript });
+	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
+	QStringList args = addressList;
+	args.append({ pathToPython, pathToControllerScript });
+
+	mStartProcess->start(processName, args);
 	mStartProcess->waitForStarted();
 	if (mStartProcess->state() != QProcess::Running) {
 		mMainWindowInterface->errorReporter()->addError(tr("Unable to execute script"));
@@ -334,4 +327,39 @@ QString PioneerLuaGeneratorPlugin::toUnicode(const QByteArray &str)
 #endif
 
 	return codec ? codec->toUnicode(str) : QString(str);
+}
+
+QString PioneerLuaGeneratorPlugin::address()
+{
+	const bool useComPort = SettingsManager::value(settings::pioneerUseComPort).toBool();
+
+	const QString server = SettingsManager::value(settings::pioneerBaseStationIP).toString();
+	if (!useComPort && server.isEmpty()) {
+		mMainWindowInterface->errorReporter()->addError(
+				tr("Pioneer base station IP address is not set. It can be set in Settings window.")
+		);
+
+		return "";
+	}
+
+	const QString port = SettingsManager::value(settings::pioneerBaseStationPort).toString();
+	if (!useComPort && port.isEmpty()) {
+		mMainWindowInterface->errorReporter()->addError(
+				tr("Pioneer base station port is not set. It can be set in Settings window.")
+		);
+
+		return "";
+	}
+
+	const QString comPort = SettingsManager::value(settings::pioneerComPort).toString();
+
+	if (useComPort && comPort.isEmpty()) {
+		mMainWindowInterface->errorReporter()->addError(
+				tr("Pioneer COM port is not set. It can be set in Settings window.")
+		);
+
+		return "";
+	}
+
+	return useComPort ? QString("--serial %1").arg(comPort) : QString("--address %1:%2").arg(server).arg(port);
 }

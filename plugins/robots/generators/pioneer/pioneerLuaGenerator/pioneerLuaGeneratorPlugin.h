@@ -94,6 +94,10 @@ private:
 	/// Helper method that correctly converts given console output into unicode string.
 	QString toUnicode(const QByteArray &str);
 
+	/// Returns address to which requests for uploading or running program shall be sent. Respects COM/IP settings.
+	/// Reports error and returns empty string if settings are incorrect.
+	QString address();
+
 	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 

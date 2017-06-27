@@ -41,6 +41,7 @@ signals:
 
 private slots:
 	void onPythonBrowseClick();
+	void onCheckboxesChanged();
 
 private:
 	Ui::PioneerAdditionalPreferences *mUi;

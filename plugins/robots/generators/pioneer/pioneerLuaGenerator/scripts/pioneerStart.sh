@@ -1,5 +1,5 @@
 #!/bin/bash
 
-$2 $3controller.py --address $1:8000 --runScript
+$3 $4controller.py $1 $2 --runScript
 
 # curl -X POST -I http://127.0.0.1:8080/pioneer/v0.1/start
