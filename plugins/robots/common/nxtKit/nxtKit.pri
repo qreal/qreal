@@ -19,6 +19,7 @@ includes(plugins/robots/common/nxtKit \
 		plugins/robots/common/twoDModel \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \

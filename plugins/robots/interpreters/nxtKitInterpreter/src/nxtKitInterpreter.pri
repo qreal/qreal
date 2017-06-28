@@ -24,6 +24,7 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
 		plugins/robots/interpreters/nxtKitInterpreter/src \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 copyToDestdir(../icons/nxt-robot.png, now, images/)

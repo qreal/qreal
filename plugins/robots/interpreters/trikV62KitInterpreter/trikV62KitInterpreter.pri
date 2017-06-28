@@ -23,10 +23,20 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikKernel \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
+		thirdparty/qscintilla/Qt4Qt5 \
 		)
 
-links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \
-		robots-utils robots-kit-base robots-2d-model robots-trik-kit qslog robots-trik-kit-interpreter-common \
+links(qrkernel \
+		qrutils \
+		qrtext \
+		qrgui-preferences-dialog \
+		qrgui-tool-plugin-interface \
+		robots-utils \
+		robots-kit-base \
+		robots-2d-model \
+		robots-trik-kit \
+		qslog \
+		robots-trik-kit-interpreter-common \
 		)
 
 HEADERS += \

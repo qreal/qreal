@@ -24,7 +24,7 @@ links(qrkernel qslog qrutils \
 		qrgui-dialogs \
 )
 
-includes(qrgraph qrgui qrgui/plugins/metaMetaModel)
+includes(qrgraph qrgui qrgui/plugins/metaMetaModel thirdparty/qscintilla/Qt4Qt5)
 
 QT += widgets xml
 

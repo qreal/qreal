@@ -15,7 +15,7 @@
 QT += widgets xml
 
 links(qrkernel qslog qrutils qrtext qrgui-preferences-dialog robots-utils)
-includes(qrtext plugins/robots/utils)
+includes(qrtext plugins/robots/utils thirdparty/qscintilla/Qt4Qt5)
 
 DEFINES += ROBOTS_KIT_BASE_LIBRARY
 

@@ -22,7 +22,7 @@ QT += xml svg
 
 links(qrkernel qslog qrgraph qrutils qrrepo qrgui-tool-plugin-interface qrgui-meta-meta-model)
 
-includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
+includes(qrgui qrgraph qrgui/plugins/metaMetaModel thirdparty/qscintilla/Qt4Qt5)
 
 DEFINES += QRGUI_PLUGINS_MANAGER_LIBRARY
 

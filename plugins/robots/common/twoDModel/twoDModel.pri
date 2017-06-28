@@ -17,8 +17,7 @@ QT += widgets xml svg
 DEFINES += TWO_D_MODEL_LIBRARY
 
 links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base)
-includes(plugins/robots/common/kitBase)
-includes(plugins/robots/utils qrtext)
+includes(plugins/robots/common/kitBase thirdparty/qscintilla/Qt4Qt5 plugins/robots/utils qrtext)
 
 TRANSLATIONS = \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts \

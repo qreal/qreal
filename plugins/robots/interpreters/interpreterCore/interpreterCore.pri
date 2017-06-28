@@ -21,6 +21,7 @@ includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/interpreters/trikKitInterpreterCommon \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION

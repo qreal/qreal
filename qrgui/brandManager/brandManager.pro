@@ -16,6 +16,8 @@ TARGET = qrgui-brand-manager
 
 include(../../global.pri)
 
+includes(thirdparty/qscintilla/Qt4Qt5)
+
 HEADERS += \
 	$$PWD/brandManagerDeclSpec.h \
 	$$PWD/brandManager.h \

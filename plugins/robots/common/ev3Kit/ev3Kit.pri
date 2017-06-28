@@ -24,6 +24,7 @@ includes(plugins/robots/common/ev3Kit \
 		plugins/robots/utils \
 		plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0 \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 win32 {

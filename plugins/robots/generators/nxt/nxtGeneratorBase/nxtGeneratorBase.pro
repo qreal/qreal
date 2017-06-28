@@ -26,6 +26,7 @@ includes(plugins/robots/generators/nxt/nxtGeneratorBase \
 		plugins/robots/common/nxtKit \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-nxt-kit robots-kit-base)

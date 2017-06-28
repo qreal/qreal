@@ -21,6 +21,7 @@ includes(plugins/robots/common/kitBase \
 		qrtext \
 		plugins/robots/interpeters/ev3KitInterpreter/src \
 		plugins/robots/thirdparty/libusb-1.0.19/include/libusb-1.0 \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface \

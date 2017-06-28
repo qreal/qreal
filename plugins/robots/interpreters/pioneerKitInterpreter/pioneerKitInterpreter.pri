@@ -14,7 +14,12 @@
 
 QT += widgets
 
-includes(plugins/robots/common/kitBase plugins/robots/common/pioneerKit plugins/robots/utils qrtext)
+includes(plugins/robots/common/kitBase \
+		plugins/robots/common/pioneerKit \
+		plugins/robots/utils qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
+)
+
 links(robots-kit-base robots-pioneer-kit)
 
 HEADERS += \

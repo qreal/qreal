@@ -27,6 +27,7 @@ includes(plugins/robots/interpreters/interpreterCore \
 		plugins/robots/common/kitBase \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qrgui-tool-plugin-interface robots-interpreter-core)

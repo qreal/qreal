@@ -246,7 +246,7 @@ QString PioneerLuaGeneratorPlugin::defaultFilePath(const QString &projectName) c
 
 text::LanguageInfo PioneerLuaGeneratorPlugin::language() const
 {
-	return text::Languages::pickByExtension("lua");
+	return qReal::text::Languages::lua(QStringList{ "function", "end", "math" });
 }
 
 QString PioneerLuaGeneratorPlugin::generatorName() const

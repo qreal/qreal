@@ -24,13 +24,14 @@ CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools/kitPlugins/
 
 includes( \
-	plugins/robots/generators/trik/trikPascalABCGeneratorLibrary \
-	plugins/robots/generators/trik/trikGeneratorBase \
-	plugins/robots/generators/generatorBase \
-	plugins/robots/common/kitBase \
-	plugins/robots/common/trikKit \
-	plugins/robots/utils \
-	qrtext \
+		plugins/robots/generators/trik/trikPascalABCGeneratorLibrary \
+		plugins/robots/generators/trik/trikGeneratorBase \
+		plugins/robots/generators/generatorBase \
+		plugins/robots/common/kitBase \
+		plugins/robots/common/trikKit \
+		plugins/robots/utils \
+		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(robots-trik-pascal-abc-generator-library robots-trik-generator-base robots-generator-base robots-trik-kit \

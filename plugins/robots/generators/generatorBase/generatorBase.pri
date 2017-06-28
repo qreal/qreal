@@ -18,6 +18,7 @@ includes(plugins/robots/generators/generatorBase \
 		qrutils \
 		qrtext \
 		plugins/robots/common/kitBase \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qslog qrutils qrrepo qrtext qrgui-tool-plugin-interface qrgui-text-editor robots-kit-base)

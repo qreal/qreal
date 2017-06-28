@@ -15,7 +15,7 @@
 QT += widgets
 
 links(qrtext robots-kit-base)
-includes(plugins/robots/common/kitBase plugins/robots/utils qrtext)
+includes(plugins/robots/common/kitBase plugins/robots/utils qrtext thirdparty/qscintilla/Qt4Qt5)
 
 HEADERS += \
 	$$PWD/nullKitInterpreterPlugin.h \
