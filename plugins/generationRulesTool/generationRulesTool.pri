@@ -14,6 +14,8 @@
 
 QT += widgets
 
+includes(thirdparty/qscintilla/Qt4Qt5)
+
 links(qrkernel qslog qrtext)
 
 INCLUDEPATH += \

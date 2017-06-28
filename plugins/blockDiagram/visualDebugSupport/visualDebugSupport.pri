@@ -19,6 +19,8 @@ INCLUDEPATH += \
 	$$PWD/../../../qrgui/ \
 	$$PWD/../../../qrtext/include/ \
 
+includes(thirdparty/qscintilla/Qt4Qt5)
+
 links(qrkernel qrutils qrgui-preferences-dialog qrgui-tool-plugin-interface)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualDebugSupport_ru.ts
