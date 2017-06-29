@@ -34,5 +34,5 @@ end
 
 math.randomseed(@@RAND_SEED@@)
 
-ap.push(Ev.ENGINES_ARM)
+ap.push(Ev.MCE_PREFLIGHT)
 action[curr_state]()
