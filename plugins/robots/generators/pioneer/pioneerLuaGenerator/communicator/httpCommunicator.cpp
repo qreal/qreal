@@ -86,7 +86,7 @@ void HttpCommunicator::doUploadProgram(const QFileInfo &program)
 	}
 
 	QNetworkRequest request(QString("http://%1:%2/pioneer/%3/upload").arg(ip).arg(port).arg(apiLevel));
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
 
 	mNetworkManager->post(request, programData);
 }
@@ -162,7 +162,7 @@ void HttpCommunicator::doRunProgram()
 	}
 
 	QNetworkRequest request(QString("http://%1:%2/pioneer/%3/start").arg(ip).arg(port).arg(apiLevel));
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
 
 	mNetworkManager->post(request, QByteArray());
 }
