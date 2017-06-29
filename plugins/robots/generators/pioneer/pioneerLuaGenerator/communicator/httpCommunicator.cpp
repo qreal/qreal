@@ -37,16 +37,10 @@ HttpCommunicator::HttpCommunicator(
 		qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		)
-	: mCompileProcess(new QProcess)
-	, mNetworkManager(new QNetworkAccessManager)
+	: mNetworkManager(new QNetworkAccessManager)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
 {
-	connect(mCompileProcess.data()
-			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
-			, this
-			, &HttpCommunicator::onCompilationDone);
-
 	connect(mNetworkManager.data(), &QNetworkAccessManager::finished, this, &HttpCommunicator::onPostRequestFinished);
 }
 
@@ -63,52 +57,6 @@ void HttpCommunicator::uploadProgram(const QFileInfo &program)
 
 void HttpCommunicator::doUploadProgram(const QFileInfo &program)
 {
-	mCurrentProgram = program;
-
-#ifdef Q_OS_WIN
-	const QString processName = QApplication::applicationDirPath() + "/pioneerCompile.bat";
-#else
-	const QString processName = QApplication::applicationDirPath() + "/pioneerCompile.sh";
-#endif
-
-	const QString pathToLuac = mRobotModelManager.model().name() == modelNames::realCopter
-			? QApplication::applicationDirPath()
-					+ "/"
-					+ SettingsManager::value(settings::pioneerRealCopterLuaPath, "").toString()
-			: SettingsManager::value(settings::pioneerSimulatorLuaPath, "").toString();
-
-	mCompileProcess->start(processName, { program.absoluteFilePath(), pathToLuac });
-
-	mCompileProcess->waitForStarted();
-	if (mCompileProcess->state() != QProcess::Running) {
-		mErrorReporter.addError(tr("Unable to execute compilation script"));
-		QStringList errors = QString(mCompileProcess->readAllStandardError()).split("\n", QString::SkipEmptyParts);
-		for (const auto &error : errors) {
-			mErrorReporter.addInformation(error);
-		}
-
-		done();
-	} else {
-		mErrorReporter.addInformation(tr("Uploading started, please wait..."));
-	}
-}
-
-void HttpCommunicator::runProgram(const QFileInfo &program)
-{
-	mCurrentAction = Action::starting;
-	mCurrentProgram = program;
-	uploadProgram(program);
-}
-
-void HttpCommunicator::stopProgram()
-{
-	mCurrentAction = Action::stopping;
-	mErrorReporter.addError(tr("Stopping program is not supported for HTTP communication mode."));
-	done();
-}
-
-void HttpCommunicator::onCompilationDone()
-{
 	const QString ip = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (ip.isEmpty()) {
 		mErrorReporter.addError(tr("Pioneer base station IP address is not set. It can be set in Settings window."));
@@ -121,19 +69,18 @@ void HttpCommunicator::onCompilationDone()
 		return;
 	}
 
-	QFileInfo compiledProgram = mCurrentProgram.canonicalPath() + "/" + mCurrentProgram.baseName() + ".luac";
-	QFile programFile(compiledProgram.canonicalFilePath());
+	QFile programFile(program.canonicalFilePath());
 	if (!programFile.open(QIODevice::ReadOnly)) {
-		mErrorReporter.addError(tr("Generation or compilation failed, upload aborted."));
+		mErrorReporter.addError(tr("Generation failed, upload aborted."));
 		done();
 		return;
 	}
 
-	QByteArray program = programFile.readAll();
+	QByteArray programData = programFile.readAll();
 	programFile.close();
 
-	if (program.isEmpty()) {
-		mErrorReporter.addError(tr("Generation or compilation failed, upload aborted."));
+	if (programData.isEmpty()) {
+		mErrorReporter.addError(tr("Generation failed, upload aborted."));
 		done();
 		return;
 	}
@@ -141,7 +88,20 @@ void HttpCommunicator::onCompilationDone()
 	QNetworkRequest request(QString("http://%1:%2/pioneer/%3/upload").arg(ip).arg(port).arg(apiLevel));
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
-	mNetworkManager->post(request, program);
+	mNetworkManager->post(request, programData);
+}
+
+void HttpCommunicator::runProgram(const QFileInfo &program)
+{
+	mCurrentAction = Action::starting;
+	uploadProgram(program);
+}
+
+void HttpCommunicator::stopProgram()
+{
+	mCurrentAction = Action::stopping;
+	mErrorReporter.addError(tr("Stopping program is not supported for HTTP communication mode."));
+	done();
 }
 
 void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)

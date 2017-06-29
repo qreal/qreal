@@ -55,9 +55,6 @@ public:
 	void stopProgram() override;
 
 private slots:
-	/// Called when compilation process is finished.
-	void onCompilationDone();
-
 	/// Called when network POST request is finished.
 	void onPostRequestFinished(QNetworkReply *reply);
 
@@ -79,10 +76,6 @@ private:
 	/// Initiates "start" request.
 	void doRunProgram();
 
-	/// Process handler for compiling program. We use shell script for compilation to make compiler call more
-	/// configurable and to use things like PATH and other shell features.
-	QScopedPointer<QProcess> mCompileProcess;
-
 	/// Manager that is used to communicate with base station over HTTP protocol.
 	QScopedPointer<QNetworkAccessManager> mNetworkManager;
 
@@ -95,9 +88,6 @@ private:
 
 	/// Current action of a communicator.
 	Action mCurrentAction = Action::none;
-
-	/// Information about current program location. Is set every time when upload or run request begins to execute.
-	QFileInfo mCurrentProgram;
 };
 
 }
