@@ -103,8 +103,6 @@ RESOURCES += \
 OTHER_FILES += \
 	$$PWD/scripts/pioneerStartStop.sh \
 	$$PWD/scripts/pioneerUpload.sh \
-	$$PWD/scripts/pioneerCompile.sh \
 	$$PWD/scripts/pioneerStartStop.bat \
 	$$PWD/scripts/pioneerUpload.bat \
-	$$PWD/scripts/pioneerCompile.bat \
 	$$PWD/pioneerLuaDefaultSettings.ini \
