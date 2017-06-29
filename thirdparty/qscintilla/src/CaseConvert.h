@@ -22,6 +22,7 @@ enum CaseConversion {
 
 class ICaseConverter {
 public:
+	virtual ~ICaseConverter() = default;
 	virtual size_t CaseConvertString(char *converted, size_t sizeConverted, const char *mixed, size_t lenMixed) = 0;
 };
 
