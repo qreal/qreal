@@ -150,7 +150,7 @@ void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &confi
 			mAdditionalPreferences
 			, &PioneerAdditionalPreferences::settingsChanged
 			, this
-			, PioneerLuaGeneratorPlugin::onSettingsChanged
+			, &PioneerLuaGeneratorPlugin::onSettingsChanged
 	);
 }
 
