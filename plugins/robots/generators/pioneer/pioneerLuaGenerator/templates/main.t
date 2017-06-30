@@ -2,6 +2,8 @@
 -- local ap = require "ap.lua"
 -- local Ev = require "Ev.lua"
 
+local magnet = GPIO_WHATEVER
+
 @@SUBPROGRAMS_FORWARDING@@
 
 @@THREADS_FORWARDING@@

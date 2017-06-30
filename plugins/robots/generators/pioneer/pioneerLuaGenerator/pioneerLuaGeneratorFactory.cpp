@@ -20,6 +20,7 @@
 #include "simpleGenerators/geoTakeoffGenerator.h"
 #include "simpleGenerators/goToPointGenerator.h"
 #include "simpleGenerators/initialNodeGenerator.h"
+#include "simpleGenerators/pioneerMagnetGenerator.h"
 #include "simpleGenerators/pioneerPrintGenerator.h"
 #include "simpleGenerators/pioneerSystemGenerator.h"
 
@@ -52,6 +53,8 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		return new GeoLandingGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GoToPoint") {
 		return new GoToPointGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Magnet") {
+		return new PioneerMagnetGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerPrint") {
 		return new PioneerPrintGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerSystem") {

@@ -30,10 +30,8 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			, id("GoToPoint")
 			, id("PioneerPrint")
 			, id("PioneerSystem")
-
 			, id("PioneerLed")
-			, id("MagnetOn")
-			, id("MagnetOff")
+			, id("Magnet")
 	};
 }
 
@@ -41,8 +39,6 @@ qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 {
 	return {
 		id("PioneerLed")
-		, id("MagnetOn")
-		, id("MagnetOff")
 	};
 }
 

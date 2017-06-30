@@ -127,32 +127,19 @@
 					</generalizations>
 				</logic>
 			</node>
-
-			<node displayedName="Magnet On" name="MagnetOn" description="Turns on magnet on a quadcopter.">
+				<node displayedName="Magnet" name="Magnet" description="Controls magnet on a quadcopter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/pioneerMagnetOnBlock.svg" x1="0" y2="50" x2="50"/>
+						<image y1="0" name="images/pioneerMagnetBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<nonResizeable/>
 				</graphics>
 				<logic>
-					<properties />
-					<container/>
-					<generalizations>
-						<parent parentName="AbstractNode"/>
-					</generalizations>
-				</logic>
-			</node>
-
-			<node displayedName="Magnet Off" name="MagnetOff" description="Turns off magnet on a quadcopter.">
-				<graphics>
-					<picture sizex="50" sizey="50">
-						<image y1="0" name="images/pioneerMagnetOffBlock.svg" x1="0" y2="50" x2="50"/>
-					</picture>
-					<nonResizeable/>
-				</graphics>
-				<logic>
-					<properties />
+					<properties>
+						<property displayedName="State on" type="bool" name="State">
+							<default>false</default>
+						</property>
+					</properties>
 					<container/>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
@@ -195,8 +182,7 @@
 				<element name="GoToPoint"/>
 				<element name="PioneerLed"/>
 				<element name="PioneerPrint"/>
-				<element name="MagnetOn"/>
-				<element name="MagnetOff"/>
+				<element name="Magnet"/>
 				<element name="PioneerSystem"/>
 			</group>
 		</palette>
