@@ -24,6 +24,7 @@ enum { dvOriginal=0, dvLineEnd=1 };
 
 class IDocument {
 public:
+	virtual ~IDocument() = default;
 	virtual int SCI_METHOD Version() const = 0;
 	virtual void SCI_METHOD SetErrorStatus(int status) = 0;
 	virtual Sci_Position SCI_METHOD Length() const = 0;
@@ -58,6 +59,7 @@ enum { lvOriginal=0, lvSubStyles=1 };
 
 class ILexer {
 public:
+	virtual ~ILexer() = default;
 	virtual int SCI_METHOD Version() const = 0;
 	virtual void SCI_METHOD Release() = 0;
 	virtual const char * SCI_METHOD PropertyNames() = 0;
@@ -87,6 +89,7 @@ public:
 
 class ILoader {
 public:
+	virtual ~ILoader() = default;
 	virtual int SCI_METHOD Release() = 0;
 	// Returns a status code from SC_STATUS_*
 	virtual int SCI_METHOD AddData(char *data, Sci_Position length) = 0;
