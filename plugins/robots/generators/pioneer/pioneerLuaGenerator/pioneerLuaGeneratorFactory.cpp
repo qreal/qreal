@@ -53,7 +53,7 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		return new GeoLandingGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GoToPoint") {
 		return new GoToPointGenerator(mRepo, customizer, id, this);
-	} else if (elementType == "Magnet") {
+	} else if (elementType == "PioneerMagnet") {
 		return new PioneerMagnetGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerPrint") {
 		return new PioneerPrintGenerator(mRepo, customizer, id, this);

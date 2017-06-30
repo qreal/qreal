@@ -127,7 +127,7 @@
 					</generalizations>
 				</logic>
 			</node>
-				<node displayedName="Magnet" name="Magnet" description="Controls magnet on a quadcopter.">
+				<node displayedName="Magnet" name="PioneerMagnet" description="Controls magnet on a quadcopter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/pioneerMagnetBlock.svg" x1="0" y2="50" x2="50"/>
@@ -182,7 +182,7 @@
 				<element name="GoToPoint"/>
 				<element name="PioneerLed"/>
 				<element name="PioneerPrint"/>
-				<element name="Magnet"/>
+				<element name="PioneerMagnet"/>
 				<element name="PioneerSystem"/>
 			</group>
 		</palette>
