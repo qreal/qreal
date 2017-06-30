@@ -70,11 +70,11 @@ HEADERS += \
 	$$PWD/simpleGenerators/geoLandingGenerator.h \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
 	$$PWD/simpleGenerators/goToPointGenerator.h \
+	$$PWD/simpleGenerators/pioneerMagnetGenerator.h \
 	$$PWD/simpleGenerators/initialNodeGenerator.h \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.h \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.h \
 	$$PWD/widgets/pioneerAdditionalPreferences.h \
-    simpleGenerators/pioneerMagnetGenerator.h
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
@@ -88,11 +88,11 @@ SOURCES += \
 	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
 	$$PWD/simpleGenerators/goToPointGenerator.cpp \
+	$$PWD/simpleGenerators/pioneerMagnetGenerator.cpp \
 	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.cpp \
 	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
-    simpleGenerators/pioneerMagnetGenerator.cpp
 
 FORMS += \
 	$$PWD/widgets/pioneerAdditionalPreferences.ui \
