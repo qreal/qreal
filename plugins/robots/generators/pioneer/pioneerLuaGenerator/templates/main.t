@@ -24,6 +24,8 @@ function callback(event)
 	end
 
 	if (event == Ev.COPTER_LANDED) then
+		ap.push(Ev.ENGINES_DISARM)
+		sleep(2)
 		action[curr_state]()
 	end
 
