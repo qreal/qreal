@@ -14,22 +14,16 @@
 
 #pragma once
 
-#include <QtCore/QFileInfo>
-
 #include "communicator/communicatorInterface.h"
 
-class QProcess;
+class QFileInfo;
 class QNetworkAccessManager;
 class QNetworkReply;
+class QProcess;
+class QTimer;
 
 namespace qReal {
 class ErrorReporterInterface;
-}
-
-namespace kitBase {
-namespace robotModel {
-class RobotModelManagerInterface;
-}
 }
 
 namespace pioneer {
@@ -41,16 +35,13 @@ class HttpCommunicator : public CommunicatorInterface
 	Q_OBJECT
 
 public:
-	HttpCommunicator(
-			qReal::ErrorReporterInterface &errorReporter
-			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-	);
+	HttpCommunicator(qReal::ErrorReporterInterface &errorReporter);
 
 	~HttpCommunicator() override;
 
 	void uploadProgram(const QFileInfo &program) override;
 
-	void runProgram(const QFileInfo &program) override;
+	void runProgram() override;
 
 	void stopProgram() override;
 
@@ -58,24 +49,10 @@ private slots:
 	/// Called when network POST request is finished.
 	void onPostRequestFinished(QNetworkReply *reply);
 
+	/// Called when connection is established but there is no response from a quadcopter.
+	void onTimeout();
+
 private:
-	/// Enum with possible actions of communicator.
-	enum class Action {
-		none
-		, uploading
-		, starting
-		, stopping
-	};
-
-	/// Mark current procerss as done, emitting apropriate signal.
-	void done();
-
-	/// Initiates "upload" request.
-	void doUploadProgram(const QFileInfo &program);
-
-	/// Initiates "start" request.
-	void doRunProgram();
-
 	/// Manager that is used to communicate with base station over HTTP protocol.
 	QScopedPointer<QNetworkAccessManager> mNetworkManager;
 
@@ -83,11 +60,12 @@ private:
 	/// Does not have ownership.
 	qReal::ErrorReporterInterface &mErrorReporter;
 
-	/// Provides information about currently selected robot model.
-	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+	/// Provides error report when quadcopter does not respond in time.
+	QScopedPointer<QTimer> mRequestTimeoutTimer;
 
-	/// Current action of a communicator.
-	Action mCurrentAction = Action::none;
+	/// Currently active request (nullptr most of the time). Used to abort request on timeout.
+	/// Does not have ownership.
+	QNetworkReply *mCurrentReply;
 };
 
 }

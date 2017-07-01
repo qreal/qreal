@@ -16,6 +16,7 @@
 
 #include <QtCore/QDir>
 
+#include <qrkernel/logging.h>
 #include <qrtext/languageToolboxInterface.h>
 #include <qrutils/stringUtils.h>
 #include <generatorBase/parts/initTerminateCodeGenerator.h>
@@ -91,6 +92,8 @@ QString PioneerLuaMasterGenerator::generate(const QString &indentString)
 		mErrorReporter.addCritical(QObject::tr("There is no opened diagram"));
 		return QString();
 	}
+
+	QLOG_INFO() << "Starting Pioneer program generation to " << mProjectDir;
 
 	beforeGeneration();
 

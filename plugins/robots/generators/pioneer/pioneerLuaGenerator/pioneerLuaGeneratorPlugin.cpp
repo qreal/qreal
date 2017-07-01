@@ -20,8 +20,7 @@
 #include <pioneerKit/constants.h>
 
 #include "pioneerLuaMasterGenerator.h"
-#include "communicator/controllerCommunicator.h"
-#include "communicator/httpCommunicator.h"
+#include "communicator/communicationManager.h"
 #include "robotModel/pioneerGeneratorRobotModel.h"
 #include "widgets/pioneerAdditionalPreferences.h"
 
@@ -114,37 +113,28 @@ PioneerLuaGeneratorPlugin::~PioneerLuaGeneratorPlugin()
 
 void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
-	auto connectCommunicator = [this](CommunicatorInterface * const communicator) {
-		connect(
-				communicator
-				, &CommunicatorInterface::uploadCompleted
-				, [this]() { setActionsEnabled(true); }
-		);
-
-		connect(
-				communicator
-				, &CommunicatorInterface::runCompleted
-				, [this]() { setActionsEnabled(true); }
-		);
-
-		connect(
-				communicator
-				, &CommunicatorInterface::stopCompleted
-				, [this]() { setActionsEnabled(true); }
-		);
-	};
-
 	generatorBase::RobotsGeneratorPluginBase::init(configurator);
-	mControllerCommunicator.reset(
-			new ControllerCommunicator(*mMainWindowInterface->errorReporter(), *mRobotModelManager)
+	mCommunicationManager.reset(
+			new CommunicationManager(*mMainWindowInterface->errorReporter(), *mRobotModelManager)
 	);
 
-	mHttpCommunicator.reset(
-			new HttpCommunicator(*mMainWindowInterface->errorReporter(), *mRobotModelManager)
+	connect(
+			mCommunicationManager.data()
+			, &CommunicationManager::uploadCompleted
+			, [this]() { setActionsEnabled(true); }
 	);
 
-	connectCommunicator(mControllerCommunicator.data());
-	connectCommunicator(mHttpCommunicator.data());
+	connect(
+			mCommunicationManager.data()
+			, &CommunicationManager::runCompleted
+			, [this]() { setActionsEnabled(true); }
+	);
+
+	connect(
+			mCommunicationManager.data()
+			, &CommunicationManager::stopCompleted
+			, [this]() { setActionsEnabled(true); }
+	);
 
 	connect(
 			mAdditionalPreferences
@@ -274,20 +264,20 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 {
 	const QFileInfo program = generateCodeForProcessing();
 	setActionsEnabled(false);
-	communicator().uploadProgram(program);
+	mCommunicationManager->uploadProgram(program);
 }
 
 void PioneerLuaGeneratorPlugin::runProgram()
 {
 	const QFileInfo program = generateCodeForProcessing();
 	setActionsEnabled(false);
-	communicator().runProgram(program);
+	mCommunicationManager->runProgram(program);
 }
 
 void PioneerLuaGeneratorPlugin::stopProgram()
 {
 	setActionsEnabled(false);
-	communicator().stopProgram();
+	mCommunicationManager->stopProgram();
 }
 
 void PioneerLuaGeneratorPlugin::onSettingsChanged()
@@ -308,13 +298,4 @@ void PioneerLuaGeneratorPlugin::setActionsEnabled(bool isEnabled)
 void PioneerLuaGeneratorPlugin::checkAndSetStopProgramAction()
 {
 	mStopProgramAction->setEnabled(SettingsManager::value(settings::pioneerUseController).toBool());
-}
-
-CommunicatorInterface &PioneerLuaGeneratorPlugin::communicator() const
-{
-	if (SettingsManager::value(settings::pioneerUseController).toBool()) {
-		return *mControllerCommunicator;
-	} else {
-		return *mHttpCommunicator;
-	}
 }
