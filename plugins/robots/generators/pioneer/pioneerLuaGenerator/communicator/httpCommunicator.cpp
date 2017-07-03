@@ -14,34 +14,35 @@
 
 #include "communicator/httpCommunicator.h"
 
-#include <QtCore/QProcess>
-#include <QtCore/QDir>
-#include <QtCore/QTextCodec>
+#include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
-#include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <pioneerKit/constants.h>
-#include <kitBase/robotModel/robotModelManagerInterface.h>
 
 using namespace pioneer;
 using namespace pioneer::lua;
 using namespace qReal;
 
+/// API part in URLs for HTTP requests.
 const QString apiLevel = "v0.1";
 
-HttpCommunicator::HttpCommunicator(
-		qReal::ErrorReporterInterface &errorReporter
-		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
-		)
+/// Timeout for HTTP reply (in milliseconds).
+const int timeout = 3000;
+
+HttpCommunicator::HttpCommunicator(qReal::ErrorReporterInterface &errorReporter)
 	: mNetworkManager(new QNetworkAccessManager)
 	, mErrorReporter(errorReporter)
-	, mRobotModelManager(robotModelManager)
+	, mRequestTimeoutTimer(new QTimer)
 {
 	connect(mNetworkManager.data(), &QNetworkAccessManager::finished, this, &HttpCommunicator::onPostRequestFinished);
+	connect(mRequestTimeoutTimer.data(), &QTimer::timeout, this, &HttpCommunicator::onTimeout);
+	mRequestTimeoutTimer->setInterval(timeout);
+	mRequestTimeoutTimer->setSingleShot(true);
 }
 
 HttpCommunicator::~HttpCommunicator()
@@ -50,12 +51,6 @@ HttpCommunicator::~HttpCommunicator()
 }
 
 void HttpCommunicator::uploadProgram(const QFileInfo &program)
-{
-	mCurrentAction = Action::uploading;
-	doUploadProgram(program);
-}
-
-void HttpCommunicator::doUploadProgram(const QFileInfo &program)
 {
 	const QString ip = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (ip.isEmpty()) {
@@ -72,7 +67,7 @@ void HttpCommunicator::doUploadProgram(const QFileInfo &program)
 	QFile programFile(program.canonicalFilePath());
 	if (!programFile.open(QIODevice::ReadOnly)) {
 		mErrorReporter.addError(tr("Generation failed, upload aborted."));
-		done();
+		emit uploadCompleted(false);
 		return;
 	}
 
@@ -81,73 +76,21 @@ void HttpCommunicator::doUploadProgram(const QFileInfo &program)
 
 	if (programData.isEmpty()) {
 		mErrorReporter.addError(tr("Generation failed, upload aborted."));
-		done();
+		emit uploadCompleted(false);
 		return;
 	}
 
-	QNetworkRequest request(QString("http://%1:%2/pioneer/%3/upload").arg(ip).arg(port).arg(apiLevel));
+	const QString url = QString("http://%1:%2/pioneer/%3/upload").arg(ip).arg(port).arg(apiLevel);
+	mErrorReporter.addInformation(QString(tr("Uploading to: %1, please wait...")).arg(url));
+
+	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
 
-	mNetworkManager->post(request, programData);
+	mCurrentReply= mNetworkManager->post(request, programData);
+	mRequestTimeoutTimer->start();
 }
 
-void HttpCommunicator::runProgram(const QFileInfo &program)
-{
-	mCurrentAction = Action::starting;
-	uploadProgram(program);
-}
-
-void HttpCommunicator::stopProgram()
-{
-	mCurrentAction = Action::stopping;
-	mErrorReporter.addError(tr("Stopping program is not supported for HTTP communication mode."));
-	done();
-}
-
-void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
-{
-	if (reply->url().toString().endsWith("/upload")) {
-		if (reply->error() != QNetworkReply::NoError) {
-			mErrorReporter.addError(reply->errorString());
-			done();
-			return;
-		}
-
-		if (mCurrentAction == Action::starting) {
-			doRunProgram();
-		} else {
-			done();
-		}
-	} else if (reply->url().toString().endsWith("/start")) {
-		if (reply->error() != QNetworkReply::NoError) {
-			mErrorReporter.addError(reply->errorString());
-		}
-
-		done();
-	}
-
-	reply->deleteLater();
-}
-
-void HttpCommunicator::done()
-{
-	switch (mCurrentAction) {
-	case Action::none:
-		return;
-	case Action::starting:
-		emit runCompleted();
-		break;
-	case Action::stopping:
-		emit stopCompleted();
-		break;
-	case Action::uploading:
-		emit uploadCompleted();
-	}
-
-	mCurrentAction = Action::none;
-}
-
-void HttpCommunicator::doRunProgram()
+void HttpCommunicator::runProgram()
 {
 	const QString ip = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (ip.isEmpty()) {
@@ -161,8 +104,49 @@ void HttpCommunicator::doRunProgram()
 		return;
 	}
 
-	QNetworkRequest request(QString("http://%1:%2/pioneer/%3/start").arg(ip).arg(port).arg(apiLevel));
+	const QString url = QString("http://%1:%2/pioneer/%3/start").arg(ip).arg(port).arg(apiLevel);
+	mErrorReporter.addInformation(QString(tr("Starting program. Senging request to: %1, please wait...")).arg(url));
+	QNetworkRequest request(url);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "text/plain");
 
-	mNetworkManager->post(request, QByteArray());
+	mCurrentReply = mNetworkManager->post(request, QByteArray());
+	mRequestTimeoutTimer->start();
+}
+
+void HttpCommunicator::stopProgram()
+{
+	mErrorReporter.addError(tr("Stopping program is not supported for HTTP communication mode."));
+	emit stopCompleted(false);
+}
+
+void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
+{
+	mRequestTimeoutTimer->stop();
+
+	if (reply->url().toString().endsWith("/upload")) {
+		if (reply->error() != QNetworkReply::NoError) {
+			mErrorReporter.addError(reply->errorString());
+			emit uploadCompleted(false);
+		} else {
+			emit uploadCompleted(true);
+		}
+	} else if (reply->url().toString().endsWith("/start")) {
+		if (reply->error() != QNetworkReply::NoError) {
+			mErrorReporter.addError(reply->errorString());
+			emit runCompleted(false);
+		} else {
+			emit runCompleted(true);
+		}
+	}
+
+	reply->deleteLater();
+}
+
+void HttpCommunicator::onTimeout()
+{
+	if (mCurrentReply) {
+		mErrorReporter.addError(tr("Pioneer base station took too long to respond. Request aborted."));
+		mCurrentReply->abort();
+		mCurrentReply = nullptr;
+	}
 }

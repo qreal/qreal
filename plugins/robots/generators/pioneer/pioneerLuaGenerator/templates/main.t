@@ -2,7 +2,7 @@
 -- local ap = require "ap.lua"
 -- local Ev = require "Ev.lua"
 
-local magnet = GPIO_WHATEVER
+local magnet = Gpio.new(Gpio.A, 1, Gpio.OUTPUT)
 
 @@SUBPROGRAMS_FORWARDING@@
 

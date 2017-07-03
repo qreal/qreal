@@ -46,7 +46,7 @@ public:
 
 	void uploadProgram(const QFileInfo &program) override;
 
-	void runProgram(const QFileInfo &program) override;
+	void runProgram() override;
 
 	void stopProgram() override;
 
@@ -61,29 +61,12 @@ private slots:
 	void onStopCompleted();
 
 private:
-	/// Enum with possible actions of communicator.
-	enum class Action {
-		none
-		, uploading
-		, starting
-		, stopping
-	};
-
-	/// Initiates asynchronous execution of "upload program" script.
-	void doUploadProgram(const QFileInfo &program);
-
-	/// Initiates asynchronous execution of "start program" script.
-	void doRunProgram();
-
 	/// Helper method that correctly converts given console output into unicode string.
 	QString toUnicode(const QByteArray &str);
 
 	/// Returns address to which requests for uploading or running program shall be sent. Respects COM/IP settings.
 	/// Reports error and returns empty string if settings are incorrect.
 	QString address();
-
-	/// Mark current procerss as done, emitting appropriate signal.
-	void done();
 
 	/// Sends process output and process error stream to error reporter.
 	void reportOutput(QProcess &process);
@@ -103,9 +86,6 @@ private:
 
 	/// Provides information about currently selected robot model.
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
-
-	/// Current action of a communicator.
-	Action mCurrentAction = Action::none;
 };
 
 }

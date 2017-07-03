@@ -2,7 +2,7 @@
 <metamodel xmlns="http://schema.real.com/schema/">
 	<extends>../common/robotsMetamodel.xml</extends>
 	<namespace>UML 2.0</namespace>
-	
+
 	<diagram name="RobotsDiagram">
 
 		<nonGraphicTypes>
@@ -127,7 +127,8 @@
 					</generalizations>
 				</logic>
 			</node>
-				<node displayedName="Magnet" name="PioneerMagnet" description="Controls magnet on a quadcopter.">
+
+			<node displayedName="Magnet" name="PioneerMagnet" description="Controls magnet on a quadcopter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/pioneerMagnetBlock.svg" x1="0" y2="50" x2="50"/>
