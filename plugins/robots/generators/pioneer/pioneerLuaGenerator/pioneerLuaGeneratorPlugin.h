@@ -30,7 +30,7 @@ namespace lua {
 
 class PioneerGeneratorRobotModel;
 class PioneerAdditionalPreferences;
-class CommunicatorInterface;
+class CommunicationManager;
 
 /// Main class for Pioneer Lua generator plugin.
 class PioneerLuaGeneratorPlugin : public generatorBase::RobotsGeneratorPluginBase
@@ -96,9 +96,6 @@ private:
 	/// Sets "enabled" property of "stop program" action according to settings.
 	void checkAndSetStopProgramAction();
 
-	/// Returns reference to a currently selected quadcopter communicator.
-	CommunicatorInterface &communicator() const;
-
 	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
@@ -128,11 +125,8 @@ private:
 	/// an ownership, so it is needed to avoid memleak). Need to use smart pointers instead of this.
 	bool mOwnsAdditionalPreferences = true;
 
-	/// Communicator object that communicates with robot using "controller" stand-alone program.
-	QScopedPointer<CommunicatorInterface> mControllerCommunicator;
-
-	/// Communicator object that communicates with robot using HTTP requests.
-	QScopedPointer<CommunicatorInterface> mHttpCommunicator;
+	/// Communicator object that communicates with robot using "controller" stand-alone program or direct HTTP queries.
+	QScopedPointer<CommunicationManager> mCommunicationManager;
 };
 
 }
