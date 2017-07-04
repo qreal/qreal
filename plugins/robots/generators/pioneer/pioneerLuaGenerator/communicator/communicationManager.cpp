@@ -41,7 +41,7 @@ CommunicationManager::CommunicationManager(
 
 		connect(
 				&communicator
-				, &CommunicatorInterface::runCompleted
+				, &CommunicatorInterface::startCompleted
 				, this
 				, &CommunicationManager::onStartCompleted
 		);
@@ -86,7 +86,7 @@ void CommunicationManager::onUploadCompleted(bool isSuccessful)
 	if (mCurrentAction == Action::uploading || !isSuccessful) {
 		done();
 	} else {
-		communicator().runProgram();
+		communicator().startProgram();
 	}
 }
 

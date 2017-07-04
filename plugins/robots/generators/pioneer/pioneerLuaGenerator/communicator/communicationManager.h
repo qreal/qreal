@@ -17,7 +17,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QScopedPointer>
 
-class QProcess;
 class QFileInfo;
 
 namespace qReal {

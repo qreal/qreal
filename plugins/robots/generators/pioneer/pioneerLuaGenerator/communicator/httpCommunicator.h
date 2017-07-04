@@ -41,7 +41,7 @@ public:
 
 	void uploadProgram(const QFileInfo &program) override;
 
-	void runProgram() override;
+	void startProgram() override;
 
 	void stopProgram() override;
 
