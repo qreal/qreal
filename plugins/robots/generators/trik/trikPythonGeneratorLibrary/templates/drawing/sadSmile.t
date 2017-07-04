@@ -1,1 +1,1 @@
-self.brick.sadSmile();
+brick.display().showImage("media/trik_smile_sad.png")

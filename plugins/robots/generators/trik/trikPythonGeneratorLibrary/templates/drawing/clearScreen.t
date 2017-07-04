@@ -1,2 +1,2 @@
-self.brick.display().clear();
+brick.display().clear()
 @@REDRAW@@

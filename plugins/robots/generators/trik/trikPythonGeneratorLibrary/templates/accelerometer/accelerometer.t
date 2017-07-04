@@ -1,1 +1,1 @@
-self.brick.accelerometer().read()
+brick.accelerometer().read()
