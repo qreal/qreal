@@ -1,1 +1,1 @@
-self.brick.smile();
+brick.display().showImage("media/trik_smile_normal.png")

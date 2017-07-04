@@ -1,1 +1,1 @@
-self.script.wait(@@DELAY@@)
+script.wait(@@DELAY@@)

@@ -1,1 +1,1 @@
-Threading.joinThread("@@THREAD_ID@@");
+Threading.joinThread("@@THREAD_ID@@")

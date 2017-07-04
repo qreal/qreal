@@ -1,2 +1,2 @@
-self.brick.display().drawEllipse(@@XCoordinateEllipse@@, @@YCoordinateEllipse@@, @@WidthEllipse@@, @@HeightEllipse@@, @@FilledEllipse@@);
+brick.display().drawEllipse(@@XCoordinateEllipse@@, @@YCoordinateEllipse@@, @@WidthEllipse@@, @@HeightEllipse@@, @@FilledEllipse@@)
 @@REDRAW@@

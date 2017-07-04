@@ -1,2 +1,2 @@
-self.brick.display().drawRect(@@XCoordinateRect@@, @@YCoordinateRect@@, @@WidthRect@@, @@HeightRect@@, @@FilledRect@@);
+brick.display().drawRect(@@XCoordinateRect@@, @@YCoordinateRect@@, @@WidthRect@@, @@HeightRect@@, @@FilledRect@@)
 @@REDRAW@@

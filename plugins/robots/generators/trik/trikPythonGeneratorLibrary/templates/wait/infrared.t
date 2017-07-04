@@ -1,2 +1,2 @@
-while not (self.brick.sensor("@@PORT@@").read() @@SIGN@@ @@DISTANCE@@):
-  self.script.wait(10)
+while not (brick.sensor("@@PORT@@").read() @@SIGN@@ @@DISTANCE@@):
+  script.wait(10)
