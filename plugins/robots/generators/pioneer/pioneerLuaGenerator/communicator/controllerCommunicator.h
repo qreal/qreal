@@ -17,6 +17,7 @@
 #include "communicator/communicatorInterface.h"
 
 class QProcess;
+class QTimer;
 
 namespace qReal {
 class ErrorReporterInterface;
@@ -46,7 +47,7 @@ public:
 
 	void uploadProgram(const QFileInfo &program) override;
 
-	void runProgram() override;
+	void startProgram() override;
 
 	void stopProgram() override;
 
@@ -59,6 +60,9 @@ private slots:
 
 	/// Called by program stop process when it is done.
 	void onStopCompleted();
+
+	/// Called when some process took too long to finish.
+	void onTimeout();
 
 private:
 	/// Helper method that correctly converts given console output into unicode string.
@@ -86,6 +90,15 @@ private:
 
 	/// Provides information about currently selected robot model.
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
+
+	/// Keeps Upload operation from taking too long, killing the process if needed.
+	QScopedPointer<QTimer> mUploadTimeoutTimer;
+
+	/// Keeps Start operation from taking too long, killing the process if needed.
+	QScopedPointer<QTimer> mStartTimeoutTimer;
+
+	/// Keeps Stop operation from taking too long, killing the process if needed.
+	QScopedPointer<QTimer> mStopTimeoutTimer;
 };
 
 }

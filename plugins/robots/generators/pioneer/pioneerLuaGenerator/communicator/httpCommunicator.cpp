@@ -90,7 +90,7 @@ void HttpCommunicator::uploadProgram(const QFileInfo &program)
 	mRequestTimeoutTimer->start();
 }
 
-void HttpCommunicator::runProgram()
+void HttpCommunicator::startProgram()
 {
 	const QString ip = SettingsManager::value(settings::pioneerBaseStationIP).toString();
 	if (ip.isEmpty()) {
@@ -133,9 +133,9 @@ void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
 	} else if (reply->url().toString().endsWith("/start")) {
 		if (reply->error() != QNetworkReply::NoError) {
 			mErrorReporter.addError(reply->errorString());
-			emit runCompleted(false);
+			emit startCompleted(false);
 		} else {
-			emit runCompleted(true);
+			emit startCompleted(true);
 		}
 	}
 

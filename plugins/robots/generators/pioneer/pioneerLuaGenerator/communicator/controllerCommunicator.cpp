@@ -21,6 +21,7 @@
 #include <QtCore/QTextCodec>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/exception/exception.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 #include <pioneerKit/constants.h>
 #include <kitBase/robotModel/robotModelManagerInterface.h>
@@ -28,6 +29,9 @@
 using namespace pioneer;
 using namespace pioneer::lua;
 using namespace qReal;
+
+/// Timeout for compilation and uploading processes (it is the same, but applied separately).
+const int timeout = 3000;
 
 ControllerCommunicator::ControllerCommunicator(
 		qReal::ErrorReporterInterface &errorReporter
@@ -38,6 +42,9 @@ ControllerCommunicator::ControllerCommunicator(
 	, mStopProcess(new QProcess)
 	, mErrorReporter(errorReporter)
 	, mRobotModelManager(robotModelManager)
+	, mUploadTimeoutTimer(new QTimer)
+	, mStartTimeoutTimer(new QTimer)
+	, mStopTimeoutTimer(new QTimer)
 {
 	connect(mUploadProcess.data()
 			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
@@ -53,6 +60,18 @@ ControllerCommunicator::ControllerCommunicator(
 			, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
 			, this
 			, &ControllerCommunicator::onStopCompleted);
+
+	connect(mUploadTimeoutTimer.data(), &QTimer::timeout, this, &ControllerCommunicator::onTimeout);
+	mUploadTimeoutTimer->setInterval(timeout);
+	mUploadTimeoutTimer->setSingleShot(true);
+
+	connect(mStartTimeoutTimer.data(), &QTimer::timeout, this, &ControllerCommunicator::onTimeout);
+	mStartTimeoutTimer->setInterval(timeout);
+	mStartTimeoutTimer->setSingleShot(true);
+
+	connect(mStopTimeoutTimer.data(), &QTimer::timeout, this, &ControllerCommunicator::onTimeout);
+	mStopTimeoutTimer->setInterval(timeout);
+	mStopTimeoutTimer->setSingleShot(true);
 }
 
 ControllerCommunicator::~ControllerCommunicator()
@@ -86,18 +105,20 @@ void ControllerCommunicator::uploadProgram(const QFileInfo &program)
 	args.append(pathToLuac);
 
 	mUploadProcess->start(processName, args);
+	mUploadTimeoutTimer->start();
 
-	mUploadProcess->waitForStarted();
+	mUploadProcess->waitForStarted(timeout);
 	if (mUploadProcess->state() != QProcess::Running) {
 		mErrorReporter.addError(tr("Unable to execute upload script"));
 		reportOutput(*mUploadProcess);
+		mUploadTimeoutTimer->stop();
 		emit uploadCompleted(false);
 	} else {
 		mErrorReporter.addInformation(tr("Uploading started, please wait..."));
 	}
 }
 
-void ControllerCommunicator::runProgram()
+void ControllerCommunicator::startProgram()
 {
 #ifdef Q_OS_WIN
 	const QString processName = QApplication::applicationDirPath() + "/pioneerStartStop.bat";
@@ -108,7 +129,7 @@ void ControllerCommunicator::runProgram()
 	const QStringList addressList = address().split(' ', QString::SkipEmptyParts);
 	if (addressList.size() != 2) {
 		// Settings are incorrect and were already reported in address().
-		emit runCompleted(false);
+		emit startCompleted(false);
 		return;
 	}
 
@@ -116,10 +137,14 @@ void ControllerCommunicator::runProgram()
 	args.append("--runLuaScript");
 
 	mStartProcess->start(processName, args);
-	mStartProcess->waitForStarted();
+	mStartProcess->waitForStarted(timeout);
+
+	mStartTimeoutTimer->start();
+
 	if (mStartProcess->state() != QProcess::Running) {
 		mErrorReporter.addError(tr("Unable to execute script"));
-		emit runCompleted(false);
+		mStartTimeoutTimer->stop();
+		emit startCompleted(false);
 	} else {
 		mErrorReporter.addInformation(tr("Starting program, please wait..."));
 	}
@@ -144,9 +169,13 @@ void ControllerCommunicator::stopProgram()
 	args.append("--stopLuaScript");
 
 	mStopProcess->start(processName, args);
-	mStopProcess->waitForStarted();
+	mStopProcess->waitForStarted(timeout);
+
+	mStopTimeoutTimer->start();
+
 	if (mStopProcess->state() != QProcess::Running) {
 		mErrorReporter.addError(tr("Unable to execute script"));
+		mStopTimeoutTimer->stop();
 		emit stopCompleted(false);
 	} else {
 		mErrorReporter.addInformation(tr("Stopping program, please wait..."));
@@ -155,6 +184,7 @@ void ControllerCommunicator::stopProgram()
 
 void ControllerCommunicator::onUploadCompleted()
 {
+	mUploadTimeoutTimer->stop();
 	reportOutput(*mUploadProcess);
 	mErrorReporter.addInformation(tr("Uploading finished."));
 	emit uploadCompleted(true);
@@ -162,16 +192,44 @@ void ControllerCommunicator::onUploadCompleted()
 
 void ControllerCommunicator::onStartCompleted()
 {
+	mStartTimeoutTimer->stop();
 	reportOutput(*mStartProcess);
 	mErrorReporter.addInformation(tr("Starting finished."));
-	emit runCompleted(true);
+	emit startCompleted(true);
 }
 
 void ControllerCommunicator::onStopCompleted()
 {
+	mStopTimeoutTimer->stop();
 	reportOutput(*mStopProcess);
 	mErrorReporter.addInformation(tr("Stopping finished."));
 	emit stopCompleted(true);
+}
+
+void ControllerCommunicator::onTimeout()
+{
+	const QString operation = sender() == mUploadTimeoutTimer.data()
+			? tr("Uploading")
+			: sender() == mStartTimeoutTimer.data()
+					? tr("Starting")
+					: sender() == mStopTimeoutTimer.data()
+							? tr("Stopping")
+							: "";
+
+	mErrorReporter.addError(operation + " " + tr("took too long, aborted."));
+
+	if (sender() == mUploadTimeoutTimer.data()) {
+		mUploadProcess->kill();
+		emit uploadCompleted(false);
+	} else if (sender() == mStartTimeoutTimer.data()) {
+		mStartProcess->kill();
+		emit startCompleted(false);
+	} else if (sender() == mStopTimeoutTimer.data()) {
+		mStopProcess->kill();
+		emit stopCompleted(false);
+	} else {
+		throw qReal::Exception("Unknown sender in ControllerCommunicator::onTimeout()");
+	}
 }
 
 QString ControllerCommunicator::toUnicode(const QByteArray &str)
