@@ -1,1 +1,1 @@
-@@VARIABLE@@ = mailbox.receive(@@WAIT@@);
+@@VARIABLE@@ = mailbox.receive(@@WAIT@@)

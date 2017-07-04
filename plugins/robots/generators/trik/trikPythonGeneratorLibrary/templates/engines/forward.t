@@ -1,1 +1,1 @@
-self.brick.motor("@@PORT@@").setPower(@@POWER@@)
+brick.motor("@@PORT@@").setPower(@@POWER@@)

@@ -1,1 +1,1 @@
-Threading.killThread("@@THREAD_ID@@");
+Threading.killThread("@@THREAD_ID@@")

@@ -1,1 +1,1 @@
-self.script.writeToFile("@@FILE@@", @@TEXT@@);
+script.writeToFile("@@FILE@@", @@TEXT@@)

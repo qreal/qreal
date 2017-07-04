@@ -1,1 +1,1 @@
-self.brick.keys().wasPressed(106)
+brick.keys().wasPressed(106)

@@ -1,1 +1,1 @@
-self.brick.gyroscope().read()
+brick.gyroscope().read()

@@ -1,1 +1,1 @@
-Threading.sendMessage("@@THREAD_ID@@", @@MESSAGE@@);
+Threading.sendMessage("@@THREAD_ID@@", @@MESSAGE@@)

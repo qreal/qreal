@@ -1,1 +1,1 @@
-self.brick.playSound("media/beep.mp3")
+brick.playSound("media/beep.mp3")

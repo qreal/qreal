@@ -1,1 +1,1 @@
-self.brick.display().setPainterWidth(@@Width@@);
+brick.display().setPainterWidth(@@Width@@)
