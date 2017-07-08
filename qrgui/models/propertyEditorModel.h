@@ -202,11 +202,23 @@ public:
 			case namePseudoattribute:
 			case logicalAttribute:
 			case logicalIdPseudoattribute:
-			case metatypePseudoattribute:
-				return mTargetLogicalObject.data(mRole).toString();
+			case metatypePseudoattribute: {
+				const QVariant data = mTargetLogicalObject.data(mRole);
+				if (mRole == qReal::roles::idRole) {
+					return data.value<qReal::Id>().id();
+				} else {
+					return data.toString();
+				}
+			}
 			case graphicalIdPseudoattribute:
-			case graphicalAttribute:
-				return mTargetGraphicalObject.data(mRole).toString();
+			case graphicalAttribute: {
+				const QVariant data = mTargetGraphicalObject.data(mRole);
+				if (mRole == qReal::roles::idRole) {
+					return data.value<qReal::Id>().id();
+				} else {
+					return data.toString();
+				}
+			}
 			}
 
 			throw qReal::Exception("Unknown AttributeClass in PropertyEditorModel::Field::value");
