@@ -362,9 +362,28 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		/*
 		 * Uncomment to display block Ids in a property editor
 		 *
-		mField->appendChild(new Field("id", logicalAttribute, roles::idRole, nullptr));
-		mField->setValue(i, logicalId.id());
-		*/
+		mField->appendChild(
+				new Field(
+						"logicalId"
+						, logicalAttribute
+						, roles::idRole
+						, nullptr
+						, mTargetLogicalObject
+						, mTargetGraphicalObject
+				)
+		);
+
+		mField->appendChild(
+				new Field(
+						"graphicalId"
+						, graphicalAttribute
+						, roles::idRole
+						, nullptr
+						, mTargetLogicalObject
+						, mTargetGraphicalObject
+				)
+		);
+		/**/
 	}
 
 	beginResetModel();

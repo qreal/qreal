@@ -53,11 +53,13 @@ PasteCommand::PasteCommand(const models::Models &models
 	for (const ElementInfo &node : nodesData) {
 		allElements << node;
 	}
+
 	for (EdgeInfo &edge : edgesData) {
 		prepareEdge(edge, offset, copiedIds);
 		const ElementInfo elemInfo = edge.convertToSimpleInfo();
 		allElements << elemInfo;
 	}
+
 	setElements(allElements);
 }
 
