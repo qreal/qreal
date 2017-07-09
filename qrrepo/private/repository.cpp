@@ -256,7 +256,7 @@ void Repository::copyProperties(const Id &dest, const Id &src)
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
-QMap<QString, QVariant> Repository::properties(const Id &id)
+QMap<QString, QVariant> Repository::properties(const Id &id) const
 {
 	return mObjects[id]->properties();
 }

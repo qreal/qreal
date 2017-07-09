@@ -89,7 +89,7 @@ public:
 	void setProperty(const qReal::Id &id, const QString &propertyName, const QVariant &value) override;
 	void removeProperty(const qReal::Id &id, const QString &propertyName) override;
 	void copyProperties(const qReal::Id &dest, const qReal::Id &src) override;
-	QMap<QString, QVariant> properties(const qReal::Id &id) override;
+	QMap<QString, QVariant> properties(const qReal::Id &id) const override;
 	void setProperties(const qReal::Id &id, QMap<QString, QVariant> const &properties) override;
 	bool hasProperty(const qReal::Id &id, const QString &propertyName) const override;
 	QMapIterator<QString, QVariant> propertiesIterator(const qReal::Id &id) const override;
