@@ -173,7 +173,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="106"/>
         <source>body</source>
-        <translation>тело</translation>
+        <translation>тело цикла</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="106"/>
