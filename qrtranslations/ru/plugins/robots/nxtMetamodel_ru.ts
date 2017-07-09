@@ -26,17 +26,17 @@
     <message>
         <location filename="../../../../plugins/robots/editor/nxt/generated/pluginInterface.cpp" line="122"/>
         <source>false</source>
-        <translation>Ложь</translation>
+        <translation>ложь</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/nxt/generated/pluginInterface.cpp" line="122"/>
         <source>body</source>
-        <translation>Тело</translation>
+        <translation>тело цикла</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/nxt/generated/pluginInterface.cpp" line="122"/>
         <source>true</source>
-        <translation>Истина</translation>
+        <translation>истина</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/nxt/generated/pluginInterface.cpp" line="124"/>
