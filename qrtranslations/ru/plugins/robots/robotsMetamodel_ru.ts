@@ -2232,7 +2232,7 @@
     </message>
     <message>
         <source>Concurrent</source>
-        <translation>Параллеьный</translation>
+        <translation>Параллельный</translation>
     </message>
     <message>
         <source>E1</source>
