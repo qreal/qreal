@@ -79,7 +79,7 @@ void TrikBlocksValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo
 {
 	Q_UNUSED(links)
 
-	QSet<QString> blocksWithPossiblyEmptyProperties{
+	const QSet<QString> blocksWithPossiblyEmptyProperties{
 		"CommentBlock"
 	};
 
@@ -90,8 +90,18 @@ void TrikBlocksValidator::visitGeneral(const qReal::Id &id, const QList<LinkInfo
 
 void TrikBlocksValidator::checkStringPropertiesNotEmpty(const qReal::Id &id)
 {
+	// Properties that we don't want to check for some reason. For example, on some old saves function has property
+	// "Init", which is long removed from metamodel but still shows up in saves.
+	const QSet<QString> badProperties{
+		"Init"
+	};
+
 	const auto properties = mRepo.properties(id);
 	for (auto property : properties.keys()) {
+		if (badProperties.contains(property)) {
+			continue;
+		}
+
 		if (properties[property].type() == QVariant::String &&  properties[property].toString().isEmpty()) {
 			error(QObject::tr("Property should not be empty."), id);
 		}
