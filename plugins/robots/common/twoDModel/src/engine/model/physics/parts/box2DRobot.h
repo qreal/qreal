@@ -60,6 +60,7 @@ public:
 
 		mBody = world->CreateBody(&bodyDef);
 
+		//todo: что width и height у робота?
 		b2FixtureDef robotFixture;
 		b2PolygonShape polygonShape;
 		polygonShape.SetAsBox( widthCm / 2.0f, heightCm / 2.0f );
@@ -73,8 +74,10 @@ public:
 
 		qDebug() << "Pre connect wheels";
 
-		connectWheel(*world, leftWheel, -widthCm);
-		connectWheel(*world, rightWheel, widthCm);
+		//robotModel->info().size().width()
+		//-halfWidth + 5, -halfHeight + 5
+		connectWheel(*world, leftWheel, widthCm, heightCm);
+		connectWheel(*world, rightWheel, widthCm, -heightCm);
 	}
 
 	~box2DRobot() {
@@ -86,14 +89,14 @@ public:
 	}
 
 private:
-	void connectWheel(b2World &world, box2DWheel &wheel, float32 widthCm){
+	void connectWheel(b2World &world, box2DWheel &wheel, float32 widthCm, float32 heightCm){
 		b2RevoluteJointDef revDef;
 		revDef.bodyA = wheel.mBody;
 		revDef.bodyB = mBody;
 		revDef.collideConnected = false;
 
 		revDef.localAnchorA = wheel.mBody->GetLocalCenter();
-		revDef.localAnchorB = b2Vec2(0, widthCm / 3 * 2);
+		revDef.localAnchorB = b2Vec2(-widthCm / 4, heightCm / 4);//mBody->GetLocalCenter();
 
 		revDef.referenceAngle = 0;
 		revDef.enableLimit = true;

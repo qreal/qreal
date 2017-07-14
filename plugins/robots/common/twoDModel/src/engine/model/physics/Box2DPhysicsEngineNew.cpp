@@ -83,9 +83,9 @@ void Box2DPhysicsEngineNew::addRobot(twoDModel::model::RobotModel * const robot)
 	/// @todo: correct coordinates!
 	const qreal halfWidth = robot->info().size().width() / 2;
 	const qreal halfHeight = robot->info().size().height() / 2;
-	mLeftWheels[robot] = wheel(robot->position() + QPointF(-halfWidth + 5, -halfHeight + 5), robot);
+	mLeftWheels[robot] = wheel(robot->position() + QPointF(-halfWidth, -halfHeight), robot);
 	wheel1Item = wheelItem;
-	mRightWheels[robot] = wheel(robot->position() + QPointF(-halfWidth + 5, halfHeight - 5), robot);
+	mRightWheels[robot] = wheel(robot->position() + QPointF(-halfWidth, halfHeight), robot);
 	wheel2Item = wheelItem;
 
 	qDebug() << "Wheels created";
@@ -119,6 +119,8 @@ void Box2DPhysicsEngineNew::removeRobot(twoDModel::model::RobotModel * const rob
 	delete mRobotBodies[robot];
 }
 
+bool isStart = true;
+
 void Box2DPhysicsEngineNew::recalculateParameters(qreal timeInterval)
 {
 	const int velocityIterations = 10;
@@ -126,12 +128,18 @@ void Box2DPhysicsEngineNew::recalculateParameters(qreal timeInterval)
 
 	const qreal speed1 = wheelLinearSpeed(*mRobots.first(), mRobots.first()->leftWheel());
 	const qreal speed2 = wheelLinearSpeed(*mRobots.first(), mRobots.first()->rightWheel());
-	leftWheel()->mBody->ApplyForceToCenter(leftWheel()->mBody->GetWorldVector(b2Vec2(speed1, 0)), true);
-	rightWheel()->mBody->ApplyForceToCenter(rightWheel()->mBody->GetWorldVector(b2Vec2(speed2, 0)), true);
+	//leftWheel()->mBody->ApplyForceToCenter(leftWheel()->mBody->GetWorldVector(b2Vec2(speed1, 0)), true);
+	//rightWheel()->mBody->ApplyForceToCenter(rightWheel()->mBody->GetWorldVector(b2Vec2(speed2, 0)), true);
 
+	leftWheel()->keepConstantSpeed(speed1);
+	rightWheel()->keepConstantSpeed(speed2);
 
-	leftWheel()->updateFriction();
-	rightWheel()->updateFriction();
+	if (isStart){
+		robot()->mBody->ApplyForceToCenter(b2Vec2(1, 0), true);
+		isStart = false;
+	}
+	//leftWheel()->mBody->SetLinearVelocity(leftWheel()->mBody->GetWorldVector(b2Vec2(0, speed1)));
+	//rightWheel()->mBody->SetLinearVelocity(rightWheel()->mBody->GetWorldVector(b2Vec2(0, speed2)));
 
 	mWorld->Step(timeInterval, velocityIterations, positionIterations);
 
@@ -142,7 +150,7 @@ void Box2DPhysicsEngineNew::recalculateParameters(qreal timeInterval)
 	wheel2Item->setPos(cmToPx(rightWheel()->mBody->GetPosition()));
 	wheel2Item->setRotation(rightWheel()->mBody->GetAngle() * (180 / pi));
 
-	qDebug() << robotItem->rotation();
+	//qDebug() << robotItem->rotation();
 }
 
 void Box2DPhysicsEngineNew::onPixelsInCmChanged(qreal value)
@@ -201,7 +209,8 @@ box2DWheel *Box2DPhysicsEngineNew::wheel(const QPointF &coords
 		, wheelHeightInCm
 		, wheelFriction
 		, wheelDensity
-		, coordsInCm);
+		, coordsInCm
+		, mRobotBodies[robot]->mBody);
 
 	b2AABB aabb;
 	wheel->mBody->GetFixtureList()->GetShape()->ComputeAABB(&aabb, b2Transform(coordsInCm, b2Rot(0)), 0);

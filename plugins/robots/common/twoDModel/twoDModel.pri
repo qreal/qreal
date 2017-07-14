@@ -60,7 +60,8 @@ HEADERS += \
 	$$PWD/include/twoDModel/robotModel/parts/marker.h \
 	$$PWD/include/twoDModel/blocks/markerDownBlock.h \
 	$$PWD/include/twoDModel/blocks/markerUpBlock.h \
-    $$PWD/src/engine/model/physics/Box2DPhysicsEngineNew.h
+    $$PWD/src/engine/model/physics/Box2DPhysicsEngineNew.h \
+    $$PWD/src/engine/model/physics/box2DEngineNew2.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -176,7 +177,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/marker.cpp \
 	$$PWD/src/blocks/markerDownBlock.cpp \
 	$$PWD/src/blocks/markerUpBlock.cpp \
-    $$PWD/src/engine/model/physics/Box2DPhysicsEngineNew.cpp
+    $$PWD/src/engine/model/physics/Box2DPhysicsEngineNew.cpp \
+    $$PWD/src/engine/model/physics/box2DEngineNew2.cpp
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \

@@ -25,9 +25,9 @@ SUBDIRS = \
 	trikV62FSharpGenerator \
 	trikV6RuntimeUploaderPlugin \
 	trikV62RuntimeUploaderPlugin \
-	nxtGeneratorBase \
-	nxtOsekCGenerator \
-	nxtRussianCGenerator \
+#	nxtGeneratorBase \
+#	nxtOsekCGenerator \
+#	nxtRussianCGenerator \
 
 trikGeneratorBase.subdir = $$PWD/trik/trikGeneratorBase
 trikQtsGeneratorLibrary.subdir = $$PWD/trik/trikQtsGeneratorLibrary
@@ -38,9 +38,9 @@ trikV6FSharpGenerator.subdir = $$PWD/trik/trikV6FSharpGenerator
 trikV62FSharpGenerator.subdir = $$PWD/trik/trikV62FSharpGenerator
 trikV6RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV6RuntimeUploaderPlugin
 trikV62RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV62RuntimeUploaderPlugin
-nxtGeneratorBase.subdir = $$PWD/nxt/nxtGeneratorBase
-nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
-nxtRussianCGenerator.subdir = $$PWD/nxt/nxtRussianCGenerator
+#nxtGeneratorBase.subdir = $$PWD/nxt/nxtGeneratorBase
+#nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
+#nxtRussianCGenerator.subdir = $$PWD/nxt/nxtRussianCGenerator
 
 trikGeneratorBase.depends = generatorBase
 trikQtsGeneratorLibrary.depends = trikGeneratorBase
@@ -49,6 +49,6 @@ trikV62QtsGenerator.depends = trikQtsGeneratorLibrary
 trikFSharpGeneratorLibrary.depends = trikGeneratorBase
 trikV6FSharpGenerator.depends = trikFSharpGeneratorLibrary
 trikV62FSharpGenerator.depends = trikFSharpGeneratorLibrary
-nxtGeneratorBase.depends = generatorBase
-nxtOsekCGenerator.depends = nxtGeneratorBase
-nxtRussianCGenerator.depends = nxtGeneratorBase
+#nxtGeneratorBase.depends = generatorBase
+#nxtOsekCGenerator.depends = nxtGeneratorBase
+#nxtRussianCGenerator.depends = nxtGeneratorBase

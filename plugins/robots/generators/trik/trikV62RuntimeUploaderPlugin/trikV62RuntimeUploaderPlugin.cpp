@@ -77,7 +77,7 @@ TrikV62RuntimeUploaderPlugin::TrikV62RuntimeUploaderPlugin()
 
 void TrikV62RuntimeUploaderPlugin::init(const qReal::PluginConfigurator &configurator)
 {
-	mUploaderTool.init(configurator.mainWindowInterpretersInterface());
+//	mUploaderTool.init(configurator.mainWindowInterpretersInterface());
 }
 
 QList<qReal::ActionInfo> TrikV62RuntimeUploaderPlugin::actions()
