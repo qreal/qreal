@@ -24,8 +24,6 @@
 #include "physics/simplePhysicsEngine.h"
 #include "physics/realisticPhysicsEngine.h"
 #include "physics/box2DPhysicsEngine.h"
-#include "physics/Box2DPhysicsEngineNew.h"
-#include "physics/box2DEngineNew2.h"
 
 using namespace twoDModel::model;
 
@@ -237,7 +235,7 @@ void Model::resetPhysics()
 //        mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
 //    }
 	//mPhysicsEngine = new physics::Box2DPhysicsEngineNew(mWorldModel, mRobotModels);
-	mPhysicsEngine = new physics::box2DEngineNew2(mWorldModel, mRobotModels);
+	mPhysicsEngine = new physics::box2DPhysicsEngine(mWorldModel, mRobotModels);
 
 	connect(&mTimeline, &Timeline::tick, [=]() { mPhysicsEngine->recalculateParameters(Timeline::timeInterval); });
 	connect(this, &model::Model::robotAdded, mPhysicsEngine, &physics::PhysicsEngineBase::addRobot);

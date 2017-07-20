@@ -1,4 +1,4 @@
-/* Copyright 2015 QReal Research Group, Dmitry Mordvinov
+/* Copyright 2017 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,50 +11,74 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-
 #pragma once
 
 #include "physicsEngineBase.h"
 
+#include <Box2D/Common/b2Math.h>
+#include "twoDModel/engine/model/worldModel.h"
+
 class b2World;
 class b2Body;
-class b2Vec2;
 
 namespace twoDModel {
 namespace model {
 namespace physics {
+namespace parts {
+	class box2DRobot;
+	class box2DWheel;
+}
 
-class Box2DPhysicsEngine : public PhysicsEngineBase
+class box2DPhysicsEngine : public PhysicsEngineBase
 {
 public:
-	Box2DPhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots);
-	~Box2DPhysicsEngine();
-
+	box2DPhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots);
+	~box2DPhysicsEngine();
 	QVector2D positionShift(RobotModel &robot) const override;
 	qreal rotation(RobotModel &robot) const override;
 	void addRobot(RobotModel * const robot) override;
 	void removeRobot(RobotModel * const robot) override;
 	void recalculateParameters(qreal timeInterval) override;
 
+	float pxToCm(qreal px) const;
+	b2Vec2 pxToCm(const QPointF posInPx) const;
+	qreal cmToPx(float cm) const;
+	QPointF cmToPx(const b2Vec2 posInCm) const;
+	float32 pxToM(qreal px) const;
+	qreal mToPx(float32 m) const;
+
+	b2Vec2 positionToBox2D(QPointF sceneCoords) const;
+	b2Vec2 positionToBox2D(float32 x, float32 y) const;
+	QPointF positionToScene(b2Vec2 boxCoords) const;
+	QPointF positionToScene(float32 x, float32 y) const;
+	float32 angleToBox2D(qreal sceneAngle) const;
+	qreal angleToScene(float32 boxAngle) const;
+
+	b2World &box2DWorld(){
+		return *mWorld.data();
+	}
+
 protected:
 	void onPixelsInCmChanged(qreal value) override;
 	void itemAdded(items::SolidItem * const item) override;
-	void itemRemoved(items::SolidItem * const item) override;
+	void itemRemoved(QGraphicsItem * const item) override;
 
 private:
-	inline float pxToCm(qreal px) const;
-	inline b2Vec2 pxToCm(const QPointF &posInPx) const;
-	inline qreal cmToPx(float cm) const;
-	inline QPointF cmToPx(const b2Vec2 &posInCm) const;
-
-	b2Body *wheel(const QPointF &coords, b2Body * const robot) const;
-
+	QGraphicsScene *mScene;
 	qreal mPixelsInCm;
 	QScopedPointer<b2World> mWorld;
-	QMap<RobotModel *, b2Body *> mRobotBodies;  // Takes ownership on b2Body instances
-	QMap<RobotModel *, b2Body *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
-	QMap<RobotModel *, b2Body *> mRightWheels;  // Takes ownership on b2WheelJoint instances
+
+	QMap<RobotModel *, parts::box2DRobot *> mBox2DRobots;  // Takes ownership on b2Body instances
+	QMap<RobotModel *, parts::box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
+	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<QGraphicsItem *, b2Body *> mWallBodies;  // Takes ownership on b2Body instances
+
+	b2Vec2 mPrevPosition;
+	float32 mPrevAngle;
+
+	QGraphicsRectItem *robotItem = nullptr;
+	QGraphicsRectItem *wheel1Item = nullptr;
+	QGraphicsRectItem *wheel2Item = nullptr;
 };
 
 }

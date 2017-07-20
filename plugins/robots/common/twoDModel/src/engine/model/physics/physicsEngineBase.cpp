@@ -54,7 +54,7 @@ void PhysicsEngineBase::itemAdded(twoDModel::items::SolidItem * const item)
 	Q_UNUSED(item)
 }
 
-void PhysicsEngineBase::itemRemoved(twoDModel::items::SolidItem * const item)
+void PhysicsEngineBase::itemRemoved(QGraphicsItem * const item)
 {
 	Q_UNUSED(item)
 }

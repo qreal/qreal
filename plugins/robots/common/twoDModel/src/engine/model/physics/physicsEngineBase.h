@@ -58,6 +58,13 @@ public:
 	virtual void recalculateParameters(qreal timeInterval) = 0;
 
 protected:
+	/// A useful method for counting wheel linear speed from interpreter`s speed.
+	qreal wheelLinearSpeed(RobotModel &robot, const RobotModel::Wheel &wheel) const;
+
+	const WorldModel &mWorldModel;
+	QList<RobotModel *> mRobots;
+
+protected slots:
 	/// Processes modification of metrics system.
 	virtual void onPixelsInCmChanged(qreal value);
 
@@ -65,13 +72,7 @@ protected:
 	virtual void itemAdded(items::SolidItem * const item);
 
 	/// Stops tracking item`s position and rotation.
-	virtual void itemRemoved(items::SolidItem * const item);
-
-	/// A useful method for counting wheel linear speed from interpreter`s speed.
-	qreal wheelLinearSpeed(RobotModel &robot, const RobotModel::Wheel &wheel) const;
-
-	const WorldModel &mWorldModel;
-	QList<RobotModel *> mRobots;
+	virtual void itemRemoved(QGraphicsItem * const item);
 };
 
 }

@@ -14,84 +14,34 @@
 
 #pragma once
 
-#include <qrutils/mathUtils/math.h>
-#include <twoDModel/engine/model/robotModel.h>
-
-#include <Box2D/Dynamics/b2Body.h>
-#include <Box2D/Dynamics/b2World.h>
-#include <Box2D/Dynamics/b2Fixture.h>
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
+class b2Body;
+class b2Vec2;
 
 namespace twoDModel {
 namespace model {
 namespace physics {
 namespace parts {
 
+class box2DRobot;
+
 class box2DWheel
 {
 public:
-	b2Body* mBody;
-	const float maxLateralImpulse = 1.5f;
-	float32 prevSpeed = 0;
-	b2Body* robot;
+	b2Body *body;
+	box2DRobot &robot;
+	const float wheelHeightM;
+	const float wheelWidthM;
+	const float wheelFriction = 1.0f;
+	const float wheelDensity = 1.0f;
 
-	box2DWheel(b2World* world
-			   , const float32 wheelWidth
-			   , const float32 wheelHeight
-			   , const float32 wheelFriction
-			   , const float32 wheelDensity
-			   , const b2Vec2 coords
-			   , b2Body *robot)
-	{
-		this->robot = robot;
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position = coords;
-		mBody = world->CreateBody(&bodyDef);
+	box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, box2DRobot &robot);
+	~box2DWheel();
+	b2Vec2 getLateralVelocity() const;
+	b2Vec2 getForwardVelocity() const;
+	void keepConstantSpeed(float speed);
 
-		b2FixtureDef fixtureDef;
-		fixtureDef.friction = wheelFriction;
-		b2PolygonShape polygonShape;
-		polygonShape.SetAsBox( wheelHeight / 2, wheelWidth / 2 );
-		fixtureDef.shape = &polygonShape;
-		fixtureDef.density = wheelDensity;
-
-		mBody->CreateFixture( &fixtureDef );
-
-		mBody->SetUserData( this );
-		prevSpeed = 0;
-	}
-
-	b2Vec2 getLateralVelocity() {
-		  b2Vec2 currentRightNormal = mBody->GetWorldVector( b2Vec2(0, 1) );
-		  return b2Dot( currentRightNormal, mBody->GetLinearVelocity() ) * currentRightNormal;
-	}
-
-	b2Vec2 getForwardVelocity() {
-		b2Vec2 currentForwardNormal = mBody->GetWorldVector( b2Vec2(1, 0) );
-		return b2Dot( currentForwardNormal, mBody->GetLinearVelocity() ) * currentForwardNormal;
-	}
-
-	void keepConstantSpeed(float32 speed) {
-
-		if (!mathUtils::Math::eq(speed, prevSpeed, mathUtils::EPS)){
-			robot->ApplyForceToCenter(mBody->GetWorldVector(b2Vec2(0.01f, 0)), true);
-			prevSpeed = speed;
-		}
-		b2Vec2 impulse = mBody->GetMass() * -getLateralVelocity();
-		mBody->ApplyLinearImpulse( impulse, mBody->GetWorldCenter(), true );
-
-		b2Vec2 currentForwardNormal = getForwardVelocity();
-		float32 currentForwardSpeed = currentForwardNormal.Normalize();
-		float32 speedChange = currentForwardSpeed - speed;
-		b2Vec2 forwardImpulse = speedChange * mBody->GetMass() * -currentForwardNormal;
-		mBody->ApplyLinearImpulse(forwardImpulse, mBody->GetWorldCenter(), true );
-	}
-	~box2DWheel() {
-		mBody->GetWorld()->DestroyBody(mBody);
-	}
-
-//	Box2DWheel(const QPointF &position, b2Body *robotBody);
+protected:
+	float prevSpeed = 0;
 };
 
 }
