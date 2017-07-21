@@ -19,7 +19,6 @@
 #include "twoDModel/engine/model/worldModel.h"
 
 class b2World;
-class b2Body;
 
 namespace twoDModel {
 namespace model {
@@ -27,6 +26,7 @@ namespace physics {
 namespace parts {
 	class box2DRobot;
 	class box2DWheel;
+	class box2DWall;
 }
 
 class box2DPhysicsEngine : public PhysicsEngineBase
@@ -58,6 +58,11 @@ public:
 		return *mWorld.data();
 	}
 
+public slots:
+	void onMouseReleased();
+	void onMousePressed();
+	void onWallDragged(items::WallItem *wall);//, const QPainterPath &shape, const QRectF &oldPos);
+
 protected:
 	void onPixelsInCmChanged(qreal value) override;
 	void itemAdded(items::SolidItem * const item) override;
@@ -71,7 +76,9 @@ private:
 	QMap<RobotModel *, parts::box2DRobot *> mBox2DRobots;  // Takes ownership on b2Body instances
 	QMap<RobotModel *, parts::box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
-	QMap<QGraphicsItem *, b2Body *> mWallBodies;  // Takes ownership on b2Body instances
+	QMap<QGraphicsItem *, parts::box2DWall *> mBox2DWalls;  // Takes ownership on b2Body instances
+	items::WallItem *mCurrentWall; // Doesn't take ownership
+	bool mIsMousePressed;
 
 	b2Vec2 mPrevPosition;
 	float32 mPrevAngle;
@@ -79,6 +86,7 @@ private:
 	QGraphicsRectItem *robotItem = nullptr;
 	QGraphicsRectItem *wheel1Item = nullptr;
 	QGraphicsRectItem *wheel2Item = nullptr;
+	QMap<parts::box2DWall *, QGraphicsRectItem *> mBlackWallsItems;
 };
 
 }

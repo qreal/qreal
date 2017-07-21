@@ -13,14 +13,12 @@
  * limitations under the License. */
 #include "box2DRobot.h"
 
-#include <Box2D/Dynamics/b2Body.h>
-#include <Box2D/Collision/Shapes/b2PolygonShape.h>
-#include <Box2D/Dynamics/b2World.h>
-#include <Box2D/Dynamics/Joints/b2RevoluteJoint.h>
+#include <Box2D/Box2D.h>
 #include <QDebug>
 
 #include "src/engine/model/physics/box2DPhysicsEngine.h"
 #include "twoDModel/engine/model/robotModel.h"
+#include "twoDModel/engine/model/constants.h"
 #include "box2DWheel.h"
 
 using namespace twoDModel::model::physics;

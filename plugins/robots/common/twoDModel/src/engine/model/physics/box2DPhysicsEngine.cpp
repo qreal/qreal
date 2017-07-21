@@ -12,18 +12,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 #include "box2DPhysicsEngine.h"
-#include <QDebug>
-#include <math.h>
 
+#include <QDebug>
 #include <Box2D/Box2D.h>
 
 #include "twoDModel/engine/model/robotModel.h"
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/worldModel.h"
+#include "src/engine/view/scene/twoDModelScene.h"
 #include "src/engine/items/wallItem.h"
 #include "qrutils/mathUtils/math.h"
 #include "parts/box2DWheel.h"
 #include "parts/box2DRobot.h"
+#include "parts/box2DWall.h"
 
 
 using namespace twoDModel::model::physics;
@@ -48,7 +49,7 @@ box2DPhysicsEngine::~box2DPhysicsEngine(){
 	mBox2DRobots.clear();
 	mRightWheels.clear();
 	mLeftWheels.clear();
-	mWallBodies.clear();
+	mBox2DWalls.clear();
 }
 
 QVector2D box2DPhysicsEngine::positionShift(twoDModel::model::RobotModel &robot) const
@@ -106,7 +107,15 @@ void box2DPhysicsEngine::addRobot(twoDModel::model::RobotModel * const robot)
 	wheel2Item->setBrush(QBrush(Qt::blue));
 
 	QTimer::singleShot(10, [=]() {
+
+		//IMPORTANT LINES
 		mScene = robot->startPositionMarker()->scene();
+		connect(dynamic_cast<twoDModel::view::TwoDModelScene *>(mScene)
+				, &twoDModel::view::TwoDModelScene::mouseReleased, this, &onMouseReleased);
+		connect(dynamic_cast<twoDModel::view::TwoDModelScene *>(mScene)
+				, &twoDModel::view::TwoDModelScene::mousePressed, this, &onMousePressed);
+		//
+
 		mScene->addItem(robotItem);
 		mScene->addItem(wheel1Item);
 		mScene->addItem(wheel2Item);
@@ -126,7 +135,7 @@ void box2DPhysicsEngine::removeRobot(twoDModel::model::RobotModel * const robot)
 void box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 {	
 	const int velocityIterations = 4;
-	const int positionIterations = 4;
+	const int positionIterations = 3;
 
 	twoDModel::model::RobotModel * const robot = mRobots.first();
 	b2Body *rBody = mBox2DRobots[robot]->body;
@@ -158,46 +167,61 @@ void box2DPhysicsEngine::onPixelsInCmChanged(qreal value)
 void box2DPhysicsEngine::itemAdded(twoDModel::items::SolidItem * const item)
 {
 	if (dynamic_cast<items::WallItem *>(item)) {
-		items::WallItem *wallItem = dynamic_cast<items::WallItem *>(item);
-		QPointF beg = wallItem->begin();
-		QPointF end = wallItem->end();
-		QVector2D wall = QVector2D(end - beg);
-		float32 length = wall.length();
-		float32 cosWall = QVector2D::dotProduct(wall, QVector2D(1, 0)) / length;
-		float32 wallAngle = Math::eq(length, 0, EPS) ? 0 : acos(cosWall);
-		wallAngle *= end.y() > beg.y() ? -1 : 1;
+		mCurrentWall = dynamic_cast<items::WallItem *>(item);
+		connect(mCurrentWall, &items::WallItem::wallDragged, this, &onWallDragged);
 
-		b2BodyDef wallDef;
-		b2Vec2 pos = positionToBox2D(wallItem->boundingRect().center());
-		wallDef.position = pos;
-		wallDef.angle = wallAngle;
-		wallDef.type = b2_staticBody;
-
-		b2Body *body = mWorld->CreateBody(&wallDef);
-		b2FixtureDef fixture;
-		b2PolygonShape wallShape;
-		QPointF wallSize = QPointF(length + wallItem->width(), wallItem->width());
-
-		wallShape.SetAsBox(pxToM(wallSize.x()) / 2, pxToM(wallSize.y()) / 2);
-		fixture.shape = &wallShape;
-		fixture.density = 1.0f;
-		body->CreateFixture(&fixture);
-		body->SetUserData(wallItem);
-
-		QGraphicsRectItem *wallRect = new QGraphicsRectItem(-wallSize.x() / 2, -wallSize.y() / 2
-				, wallSize.x() + 10, wallSize.y() + 10);
-		wallRect->setBrush(QBrush(Qt::black));
-		mScene->addItem(wallRect);
-		wallRect->setPos(positionToScene(body->GetPosition()));
-		wallRect->setRotation(angleToScene(body->GetAngle()));
+		auto func = [&] {
+			onWallDragged(dynamic_cast<items::WallItem *> (sender()));
+		};
+		connect(mCurrentWall, &items::WallItem::x1Changed, this, func);
+		connect(mCurrentWall, &items::WallItem::x2Changed, this, func);
+		connect(mCurrentWall, &items::WallItem::y1Changed, this, func);
+		connect(mCurrentWall, &items::WallItem::y2Changed, this, func);
+		if (!mIsMousePressed)
+			onMouseReleased();
 	}
+}
+
+void box2DPhysicsEngine::onMousePressed(){
+	mIsMousePressed = true;
+}
+
+void box2DPhysicsEngine::onMouseReleased(){
+	mIsMousePressed = false;
+	if (!mCurrentWall)
+		return;
+	box2DWall *wall = new box2DWall(this, *mCurrentWall);
+	mBox2DWalls[mCurrentWall] = wall;
+
+	//test
+	float32 length = QVector2D(mCurrentWall->end() - mCurrentWall->begin()).length();
+	QPointF wallSize = QPointF(length + mCurrentWall->width(), mCurrentWall->width());
+	QGraphicsRectItem *wallRect = new QGraphicsRectItem(-wallSize.x() / 2, -wallSize.y() / 2
+			, wallSize.x() + 10, wallSize.y() + 10);
+	wallRect->setBrush(QBrush(Qt::black));
+	mScene->addItem(wallRect);
+	wallRect->setPos(positionToScene(wall->body->GetPosition()));
+	wallRect->setRotation(angleToScene(wall->body->GetAngle()));
+	mBlackWallsItems[mBox2DWalls[mCurrentWall]] = wallRect;
+	//
+
+	mCurrentWall = nullptr;
+}
+
+void box2DPhysicsEngine::onWallDragged(twoDModel::items::WallItem *wall){
+	mIsMousePressed = true;
+	itemRemoved(wall);
+	mCurrentWall = wall;
 }
 
 void box2DPhysicsEngine::itemRemoved(QGraphicsItem * const item)
 {
-	if (mWallBodies.contains(item)) {
-		mWorld->DestroyBody(mWallBodies[item]);
-		mWallBodies.remove(item);
+	if (mBox2DWalls.contains(item)) {
+		//test
+		mScene->removeItem(mBlackWallsItems[mBox2DWalls[item]]);
+		//
+		delete mBox2DWalls[item];
+		mBox2DWalls.remove(item);
 	}
 }
 
