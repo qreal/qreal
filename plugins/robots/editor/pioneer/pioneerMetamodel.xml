@@ -5,15 +5,6 @@
 
 	<diagram name="RobotsDiagram">
 
-		<nonGraphicTypes>
-			<enum name="PioneerLedColor">
-				<value name="green" displayedName="green"/>
-				<value name="red" displayedName="red"/>
-				<value name="off" displayedName="off"/>
-				<value name="orange" displayedName="orange"/>
-			</enum>
-		</nonGraphicTypes>
-
 		<graphicTypes>
 
 			<node displayedName="Takeoff" name="GeoTakeoff" description="Orders quadcopter to takeoff.">
@@ -79,20 +70,32 @@
 				</logic>
 			</node>
 
-			<node displayedName="Led" name="PioneerLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on a quadcopter.">
+			<node displayedName="Led" name="PioneerLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the specified LED on a quadcopter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/pioneerLedBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="35" y="-40" textBinded="Color" hard="true" background="white" prefix="Color:"/>
+						<label x="35" y="-40" textBinded="Number" background="white" prefix="Number:"/>
+						<label x="35" y="60" textBinded="Red" background="white" prefix="Red:"/>
+						<label x="35" y="90" textBinded="Green" background="white" prefix="Green:"/>
+						<label x="35" y="120" textBinded="Blue" background="white" prefix="Blue:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<properties>
-						<property displayedName="Color" type="PioneerLedColor" name="Color">
-							<default>red</default>
+						<property displayedName="Number" type="string" name="Number">
+							<default>0</default>
+						</property>
+						<property displayedName="Red" type="string" name="Red">
+							<default>0.0</default>
+						</property>
+						<property displayedName="Green" type="string" name="Green">
+							<default>0.0</default>
+						</property>
+						<property displayedName="Blue" type="string" name="Blue">
+							<default>0.0</default>
 						</property>
 					</properties>
 					<container/>
