@@ -3,6 +3,7 @@
 -- local Ev = require "Ev.lua"
 
 local magnet = Gpio.new(Gpio.A, 1, Gpio.OUTPUT)
+local ledbar = Ledbar.new(30)
 
 @@SUBPROGRAMS_FORWARDING@@
 

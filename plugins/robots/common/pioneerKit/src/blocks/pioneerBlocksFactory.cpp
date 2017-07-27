@@ -38,7 +38,6 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 {
 	return {
-		id("PioneerLed")
 	};
 }
 

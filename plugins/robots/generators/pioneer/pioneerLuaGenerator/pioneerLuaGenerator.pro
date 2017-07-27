@@ -77,6 +77,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.h \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.h \
 	$$PWD/widgets/pioneerAdditionalPreferences.h \
+	$$PWD/simpleGenerators/pioneerLedGenerator.h
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
@@ -96,6 +97,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.cpp \
 	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
+	$$PWD/simpleGenerators/pioneerLedGenerator.cpp
 
 FORMS += \
 	$$PWD/widgets/pioneerAdditionalPreferences.ui \
