@@ -32,6 +32,7 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			, id("PioneerSystem")
 			, id("PioneerLed")
 			, id("PioneerMagnet")
+			, id("PioneerYaw")
 	};
 }
 
