@@ -131,6 +131,29 @@
 				</logic>
 			</node>
 
+			<node displayedName="Yaw" name="PioneerYaw" description="Sets yaw for quadcopter">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerYawBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-40" textBinded="Angle" background="white" prefix="Angle:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Angle" type="string" name="Angle">
+							<default>0.0</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 			<node displayedName="Magnet" name="PioneerMagnet" description="Controls magnet on a quadcopter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -188,6 +211,7 @@
 				<element name="PioneerPrint"/>
 				<element name="PioneerMagnet"/>
 				<element name="PioneerSystem"/>
+				<element name="PioneerYaw"/>
 			</group>
 		</palette>
 	</diagram>
