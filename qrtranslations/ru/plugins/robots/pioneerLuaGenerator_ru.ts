@@ -143,22 +143,22 @@
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="212"/>
         <source>Uploading</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="214"/>
         <source>Starting</source>
-        <translation type="unfinished"></translation>
+        <translation>Запуск</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="216"/>
         <source>Stopping</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановка</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="219"/>
         <source>took too long, aborted.</source>
-        <translation type="unfinished"></translation>
+        <translation>заняла слишком много времени.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="252"/>
@@ -217,12 +217,12 @@
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="84"/>
         <source>Uploading to: %1, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Производится загрузка на %1, пожалуйста, подождите...</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="108"/>
         <source>Starting program. Senging request to: %1, please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт запускается. Запрос запуска к %1, пожалуйста, подождите...</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="118"/>
@@ -232,7 +232,7 @@
     <message>
         <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="150"/>
         <source>Pioneer base station took too long to respond. Request aborted.</source>
-        <translation type="unfinished"></translation>
+        <translation>НСУ Пионер не отвечает.</translation>
     </message>
     <message>
         <source>Generation or compilation failed, upload aborted.</source>
