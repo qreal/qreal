@@ -1,7 +1,3 @@
--- Uncomment this for execution against debug stub.
--- local ap = require "ap.lua"
--- local Ev = require "Ev.lua"
-
 local magnet = Gpio.new(Gpio.A, 1, Gpio.OUTPUT)
 local ledbar = Ledbar.new(30)
 
