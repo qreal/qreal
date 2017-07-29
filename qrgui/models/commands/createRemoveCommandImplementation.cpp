@@ -47,13 +47,13 @@ void CreateRemoveCommandImplementation::create()
 
 			if (element.isEdge()) {
 				const Id srcGraphicalId = element.graphicalProperty("from").value<Id>();
-				if (srcGraphicalId != Id()) {
+				if (srcGraphicalId != Id() && srcGraphicalId != Id::rootId()) {
 					const Id srcLogicalId = mGraphicalApi.logicalId(srcGraphicalId);
 					mLogicalApi.setFrom(logicalId, srcLogicalId);
 				}
 
 				const Id dstGraphicalId = element.graphicalProperty("to").value<Id>();
-				if (dstGraphicalId != Id()) {
+				if (dstGraphicalId != Id() && dstGraphicalId != Id::rootId()) {
 					auto dstLogicalId = mGraphicalApi.logicalId(dstGraphicalId);
 					mLogicalApi.setTo(logicalId, dstLogicalId);
 				}
