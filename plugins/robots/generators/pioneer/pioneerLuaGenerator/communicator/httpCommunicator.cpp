@@ -128,6 +128,7 @@ void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
 			mErrorReporter.addError(reply->errorString());
 			emit uploadCompleted(false);
 		} else {
+			mErrorReporter.addInformation(tr("Uploading finished."));
 			emit uploadCompleted(true);
 		}
 	} else if (reply->url().toString().endsWith("/start")) {
@@ -135,6 +136,7 @@ void HttpCommunicator::onPostRequestFinished(QNetworkReply *reply)
 			mErrorReporter.addError(reply->errorString());
 			emit startCompleted(false);
 		} else {
+			mErrorReporter.addInformation(tr("Start finished."));
 			emit startCompleted(true);
 		}
 	}

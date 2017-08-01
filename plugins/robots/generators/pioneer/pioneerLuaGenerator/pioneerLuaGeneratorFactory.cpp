@@ -23,6 +23,8 @@
 #include "simpleGenerators/pioneerMagnetGenerator.h"
 #include "simpleGenerators/pioneerPrintGenerator.h"
 #include "simpleGenerators/pioneerSystemGenerator.h"
+#include "simpleGenerators/pioneerLedGenerator.h"
+#include "simpleGenerators/pioneerYawGenerator.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -59,6 +61,10 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		return new PioneerPrintGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerSystem") {
 		return new PioneerSystemGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "PioneerLed") {
+		return new PioneerLedGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "PioneerYaw") {
+		return new PioneerYawGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
