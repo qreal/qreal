@@ -32,13 +32,13 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			, id("PioneerSystem")
 			, id("PioneerLed")
 			, id("PioneerMagnet")
+			, id("PioneerYaw")
 	};
 }
 
 qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 {
 	return {
-		id("PioneerLed")
 	};
 }
 

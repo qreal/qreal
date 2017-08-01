@@ -1,8 +1,5 @@
--- Uncomment this for execution against debug stub.
--- local ap = require "ap.lua"
--- local Ev = require "Ev.lua"
-
 local magnet = Gpio.new(Gpio.A, 1, Gpio.OUTPUT)
+local ledbar = Ledbar.new(30)
 
 @@SUBPROGRAMS_FORWARDING@@
 
@@ -38,5 +35,4 @@ end
 
 math.randomseed(@@RAND_SEED@@)
 
-ap.push(Ev.MCE_PREFLIGHT)
 action[curr_state]()

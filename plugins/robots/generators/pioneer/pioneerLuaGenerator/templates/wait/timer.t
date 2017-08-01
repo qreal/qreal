@@ -1,1 +1,1 @@
-		sleep(math.floor(@@DELAY@@ / 1000))
+		sleep(@@DELAY@@ / 1000.0) 
