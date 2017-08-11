@@ -20,6 +20,10 @@
 
 class QProcess;
 
+namespace qReal {
+class EditorManagerInterface;
+}
+
 namespace pioneer {
 
 namespace blocks {
@@ -127,6 +131,10 @@ private:
 
 	/// Communicator object that communicates with robot using "controller" stand-alone program or direct HTTP queries.
 	QScopedPointer<CommunicationManager> mCommunicationManager;
+
+	/// Metamodel object with visual language infomation.
+	/// Does not have ownership.
+	const qReal::EditorManagerInterface *mMetamodel;
 };
 
 }

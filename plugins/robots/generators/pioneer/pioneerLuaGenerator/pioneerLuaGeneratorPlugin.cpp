@@ -114,6 +114,9 @@ PioneerLuaGeneratorPlugin::~PioneerLuaGeneratorPlugin()
 void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	generatorBase::RobotsGeneratorPluginBase::init(configurator);
+
+	mMetamodel = &configurator.qRealConfigurator().logicalModelApi().editorManagerInterface();
+
 	mCommunicationManager.reset(
 			new CommunicationManager(*mMainWindowInterface->errorReporter(), *mRobotModelManager)
 	);
@@ -252,7 +255,8 @@ generatorBase::MasterGeneratorBase *PioneerLuaGeneratorPlugin::masterGenerator()
 			, *mRobotModelManager
 			, *mTextLanguage
 			, mMainWindowInterface->activeDiagram()
-			, generatorName());
+			, generatorName()
+			, *mMetamodel);
 }
 
 void PioneerLuaGeneratorPlugin::regenerateExtraFiles(const QFileInfo &newFileInfo)

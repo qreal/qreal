@@ -77,9 +77,10 @@ protected:
 	/// This method is called when traverser gets into a block with unknown semantics
 	virtual void visitUnknown(const qReal::Id &id, QList<utils::DeepFirstSearcher::LinkInfo> const &links);
 
-private:
+	/// This method is called on every block and it is supposed to call all other visit* methods. Override with caution.
 	virtual void visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links);
 
+private:
 	const qrRepo::RepoApi &mRepo;
 	GeneratorCustomizer &mCustomizer;
 	utils::DeepFirstSearcher mDfser;

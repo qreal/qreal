@@ -16,6 +16,7 @@
 
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
+#include "parts/randomGeneratorPart.h"
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
 #include "simpleGenerators/gotoGenerator.h"
@@ -27,6 +28,7 @@
 #include "simpleGenerators/pioneerSystemGenerator.h"
 #include "simpleGenerators/pioneerLedGenerator.h"
 #include "simpleGenerators/pioneerYawGenerator.h"
+#include "simpleGenerators/randomInitGenerator.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -69,6 +71,8 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		return new PioneerLedGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerYaw") {
 		return new PioneerYawGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Randomizer") {
+		return new RandomInitGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -77,6 +81,17 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 QStringList PioneerLuaGeneratorFactory::pathsToTemplates() const
 {
 	return {":/" + mGeneratorName + "/templates"};
+}
+
+void PioneerLuaGeneratorFactory::initialize()
+{
+	generatorBase::GeneratorFactoryBase::initialize();
+	mRandomGeneratorPart.reset(new RandomGeneratorPart(pathsToTemplates()));
+}
+
+RandomGeneratorPart& PioneerLuaGeneratorFactory::randomGeneratorPart()
+{
+	return *mRandomGeneratorPart;
 }
 
 generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::labelGenerator(const qReal::Id &id
@@ -89,4 +104,11 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::goto
 		, generatorBase::GeneratorCustomizer &customizer)
 {
 	return new GotoGenerator(mRepo, customizer, id, this, mGotoLabelManager);
+}
+
+QList<generatorBase::parts::InitTerminateCodeGenerator *> PioneerLuaGeneratorFactory::initTerminateGenerators()
+{
+	auto result = generatorBase::GeneratorFactoryBase::initTerminateGenerators();
+	result << mRandomGeneratorPart.data();
+	return result;
 }

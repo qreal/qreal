@@ -14,7 +14,9 @@
 
 #pragma once
 
+#include <functional>
 #include <QtCore/QSet>
+#include <QtCore/QList>
 #include <QtCore/QString>
 
 #include <generatorBase/gotoControlFlowGenerator.h>
@@ -44,8 +46,12 @@ public:
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 
+	void registerNodeHook(std::function<void(const qReal::Id)> hook);
+
 private:
 	void visitRegular(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
+
+	void visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links) override;
 
 	/// Copies a linear fragment starting from semantic node with id @p from and pastes it into semantic tree as a
 	/// sibling of @p after node.
@@ -82,6 +88,9 @@ private:
 	/// Actually, a node *after* asynchronous node shall be labeled, to allow to continue execution when asyncronous
 	/// node will do its work.
 	QSet<qReal::Id> mLabeledNodes;
+
+	/// A list of functions that shall be called on visiting each node.
+	QList<std::function<void(const qReal::Id)>> mNodeHooks;
 };
 
 }
