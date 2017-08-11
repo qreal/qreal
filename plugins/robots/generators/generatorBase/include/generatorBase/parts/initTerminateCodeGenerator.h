@@ -25,7 +25,7 @@ class ROBOTS_GENERATOR_EXPORT InitTerminateCodeGenerator : public TemplateParame
 {
 public:
 	explicit InitTerminateCodeGenerator(const QStringList &pathsToTemplates);
-	virtual ~InitTerminateCodeGenerator();
+	~InitTerminateCodeGenerator() override;
 
 	/// Called each time before new generation process.
 	/// Default implementation does nothing.

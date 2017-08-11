@@ -69,6 +69,8 @@ HEADERS += \
 	$$PWD/communicator/httpCommunicator.h \
 	$$PWD/generators/gotoLabelManager.h \
 	$$PWD/generators/pioneerStateMachineGenerator.h \
+	$$PWD/generators/randomFunctionChecker.h \
+	$$PWD/parts/randomGeneratorPart.h \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.h \
 	$$PWD/simpleGenerators/geoLandingGenerator.h \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
@@ -81,6 +83,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.h \
 	$$PWD/simpleGenerators/pioneerLedGenerator.h \
 	$$PWD/simpleGenerators/pioneerYawGenerator.h \
+	$$PWD/simpleGenerators/randomInitGenerator.h \
 	$$PWD/widgets/pioneerAdditionalPreferences.h \
 
 SOURCES += \
@@ -93,6 +96,8 @@ SOURCES += \
 	$$PWD/communicator/httpCommunicator.cpp \
 	$$PWD/generators/gotoLabelManager.cpp \
 	$$PWD/generators/pioneerStateMachineGenerator.cpp \
+	$$PWD/generators/randomFunctionChecker.cpp \
+	$$PWD/parts/randomGeneratorPart.cpp \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.cpp \
 	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
@@ -105,6 +110,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerLedGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerYawGenerator.cpp \
+	$$PWD/simpleGenerators/randomInitGenerator.cpp \
 	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
 
 FORMS += \

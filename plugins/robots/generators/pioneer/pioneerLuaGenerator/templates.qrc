@@ -99,5 +99,6 @@
 		<file>templates/quadcopterCommands/magnetOn.t</file>
 		<file>templates/led.t</file>
 		<file>templates/quadcopterCommands/yaw.t</file>
+		<file>templates/rngInit.t</file>
 	</qresource>
 </RCC>

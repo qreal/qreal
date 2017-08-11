@@ -34,6 +34,11 @@ PioneerStateMachineGenerator::PioneerStateMachineGenerator(
 	mAsynchronousNodes << "GeoTakeoff" << "GeoLanding" << "GoToPoint";
 }
 
+void PioneerStateMachineGenerator::registerNodeHook(std::function<void(const qReal::Id)> hook)
+{
+	mNodeHooks.append(hook);
+}
+
 void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList<LinkInfo> &links)
 {
 	// Base class method checks for subprogram calls, which is irrelevant for now, but does not hurt and hopefully
@@ -88,6 +93,14 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 			// or else we will stall the program waiting for an event that was never initiated.
 			copySynchronousFragment(thisNode, target, false);
 		}
+	}
+}
+
+void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
+{
+	generatorBase::GotoControlFlowGenerator::visit(nodeId, links);
+	for (const auto &hook : mNodeHooks) {
+		hook(nodeId);
 	}
 }
 

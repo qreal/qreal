@@ -5,6 +5,8 @@ local ledbar = Ledbar.new(30)
 
 @@THREADS_FORWARDING@@
 
+@@INITHOOKS@@
+
 @@SUBPROGRAMS@@
 
 @@THREADS@@
@@ -32,7 +34,5 @@ end
 
 function loop()
 end
-
-math.randomseed(@@RAND_SEED@@)
 
 action[curr_state]()

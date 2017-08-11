@@ -17,6 +17,7 @@
 #include <QtCore/QDir>
 
 #include <qrkernel/logging.h>
+#include <qrkernel/exception/exception.h>
 #include <qrtext/languageToolboxInterface.h>
 #include <qrutils/stringUtils.h>
 #include <generatorBase/parts/initTerminateCodeGenerator.h>
@@ -26,8 +27,10 @@
 #include <generatorBase/parts/variables.h>
 
 #include "pioneerLuaGeneratorCustomizer.h"
+#include "pioneerLuaGeneratorFactory.h"
 #include "generators/pioneerStateMachineGenerator.h"
 #include "generators/gotoLabelManager.h"
+#include "generators/randomFunctionChecker.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase;
@@ -40,9 +43,11 @@ PioneerLuaMasterGenerator::PioneerLuaMasterGenerator(const qrRepo::RepoApi &repo
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, qrtext::LanguageToolboxInterface &textLanguage
 		, const qReal::Id &diagramId
-		, const QString &generatorName)
+		, const QString &generatorName
+		, const qReal::EditorManagerInterface &metamodel)
 	: MasterGeneratorBase(repo, errorReporter, robotModelManager, textLanguage, parserErrorReporter, diagramId)
 	, mGeneratorName(generatorName)
+	, mMetamodel(metamodel)
 	, mGotoLabelManager(new GotoLabelManager())
 {
 }
@@ -58,6 +63,16 @@ void PioneerLuaMasterGenerator::initialize()
 	mControlFlowGenerator.reset(
 			new PioneerStateMachineGenerator(mRepo, mErrorReporter, *mCustomizer, *mValidator, mDiagram)
 			);
+
+	auto factory = dynamic_cast<PioneerLuaGeneratorFactory *>(mCustomizer->factory());
+	if (!factory) {
+		throw qReal::Exception("PioneerLuaMasterGenerator shall work only with PioneerLuaGeneratorFactory");
+	}
+
+	mRandomFunctionChecker.reset(
+			new RandomFunctionChecker(mRepo, mMetamodel, mTextLanguage, factory->randomGeneratorPart()));
+
+	mControlFlowGenerator->registerNodeHook([this](const qReal::Id &id){ mRandomFunctionChecker->checkNode(id); });
 }
 
 generatorBase::GeneratorCustomizer *PioneerLuaMasterGenerator::createCustomizer()
@@ -142,8 +157,7 @@ QString PioneerLuaMasterGenerator::generate(const QString &indentString)
 	replaceWithAutoIndent(resultCode, "@@THREADS@@"
 			, mCustomizer->factory()->threads().generateImplementations(indentString));
 	replaceWithAutoIndent(resultCode, "@@MAIN_CODE@@", mainCode);
-	replaceWithAutoIndent(resultCode, "@@INITHOOKS@@", utils::StringUtils::addIndent(
-			mCustomizer->factory()->initCode(), 1, indentString));
+	replaceWithAutoIndent(resultCode, "@@INITHOOKS@@", mCustomizer->factory()->initCode());
 	replaceWithAutoIndent(resultCode, "@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->terminateCode(), 1, indentString));
 	replaceWithAutoIndent(resultCode, "@@USERISRHOOKS@@", utils::StringUtils::addIndent(
@@ -157,8 +171,6 @@ QString PioneerLuaMasterGenerator::generate(const QString &indentString)
 	} else {
 		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", constantsString + "\n" + variablesString);
 	}
-
-	resultCode = resultCode.replace("@@RAND_SEED@@", QString::number(qrand()));
 
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");

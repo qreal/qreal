@@ -18,11 +18,16 @@
 
 #include <QtCore/QScopedPointer>
 
+namespace qReal {
+class EditorManagerInterface;
+}
+
 namespace pioneer {
 namespace lua {
 
 class PioneerStateMachineGenerator;
 class GotoLabelManager;
+class RandomFunctionChecker;
 
 /// Main generator that directs generation process (mainly by configuring its base class that does actual job).
 class PioneerLuaMasterGenerator : public generatorBase::MasterGeneratorBase
@@ -36,7 +41,8 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const qReal::Id &diagramId
-			, const QString &generatorName);
+			, const QString &generatorName
+			, const qReal::EditorManagerInterface &metamodel);
 
 	~PioneerLuaMasterGenerator() override;
 
@@ -56,8 +62,16 @@ private:
 	/// defining control flow in an application.
 	QScopedPointer<PioneerStateMachineGenerator> mControlFlowGenerator;
 
+	/// Metamodel for generated model. Used to query various language-related info, for example, property names
+	/// for a node.
+	const qReal::EditorManagerInterface &mMetamodel;
+
 	/// Storage and generator for human-readable goto labels.
 	QScopedPointer<GotoLabelManager> mGotoLabelManager;
+
+	/// Object that tracks "random()" function usage in Lua code of properties, to be able to properly initialize
+	/// random number generator if needed.
+	QScopedPointer<RandomFunctionChecker> mRandomFunctionChecker;
 };
 
 }

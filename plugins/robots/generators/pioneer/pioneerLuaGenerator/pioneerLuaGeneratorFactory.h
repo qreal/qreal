@@ -20,6 +20,7 @@ namespace pioneer {
 namespace lua {
 
 class GotoLabelManager;
+class RandomGeneratorPart;
 
 /// Factory that creates simple generators for Pioneer-specific blocks.
 class PioneerLuaGeneratorFactory : public generatorBase::GeneratorFactoryBase
@@ -39,6 +40,11 @@ public:
 
 	QStringList pathsToTemplates() const override;
 
+	void initialize() override;
+
+	/// Returns generator part that analyzes RNG usage in a program and initializes it if it is needed.
+	RandomGeneratorPart& randomGeneratorPart();
+
 private:
 	/// Returns goto label generator that can generate human-readable labels based no block types.
 	generatorBase::simple::AbstractSimpleGenerator *labelGenerator(const qReal::Id &id
@@ -48,12 +54,17 @@ private:
 	generatorBase::simple::AbstractSimpleGenerator *gotoSimpleGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;
 
+	/// Adds random number generator initialization part to a list of init-terminate generators of factory base.
+	QList<generatorBase::parts::InitTerminateCodeGenerator *> initTerminateGenerators() override;
+
 	/// Generator name is used as a prefix to a path to templates in resources.
 	const QString mGeneratorName;
 
 	/// Storage and generator for human-readable goto labels. Used in label ganerator and goto generator created by
 	/// this factory.
 	GotoLabelManager &mGotoLabelManager;
+
+	QScopedPointer<RandomGeneratorPart> mRandomGeneratorPart;
 };
 
 }

@@ -1,1 +1,1 @@
-		math.random(@@ARGUMENT@@)
+math.random(@@ARGUMENT@@)
