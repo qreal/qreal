@@ -62,7 +62,12 @@ void RandomFunctionChecker::checkAst(QSharedPointer<qrtext::core::ast::Node> ast
 			auto idNode = qrtext::as<qrtext::lua::ast::Identifier>(call->function());
 			if (idNode->name() == "random") {
 				mRandomGeneratorPart.registerUsage();
+				return;
 			}
 		}
+	}
+
+	for (const auto child : ast->children()) {
+		checkAst(child);
 	}
 }
