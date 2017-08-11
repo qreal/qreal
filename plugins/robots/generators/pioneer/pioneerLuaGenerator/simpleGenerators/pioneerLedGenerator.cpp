@@ -14,8 +14,12 @@
 
 #include "pioneerLedGenerator.h"
 
+#include <qrkernel/exception/exception.h>
 #include <generatorBase/generatorCustomizer.h>
 #include <qrutils/stringUtils.h>
+
+#include "pioneerLuaGeneratorFactory.h"
+#include "parts/ledPart.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -45,4 +49,10 @@ PioneerLedGenerator::PioneerLedGenerator(const qrRepo::RepoApi &repo
 			}
 		, parent)
 {
+	auto factory = dynamic_cast<PioneerLuaGeneratorFactory *>(mCustomizer.factory());
+	if (factory) {
+		factory->ledPart().registerUsage();
+	} else {
+		throw qReal::Exception("Pioneer PioneerLedGenerator will work only with PioneerLuaGeneratorFactory");
+	}
 }

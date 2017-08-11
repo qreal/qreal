@@ -20,6 +20,8 @@ namespace pioneer {
 namespace lua {
 
 class GotoLabelManager;
+class LedPart;
+class MagnetPart;
 class RandomGeneratorPart;
 
 /// Factory that creates simple generators for Pioneer-specific blocks.
@@ -41,6 +43,12 @@ public:
 	QStringList pathsToTemplates() const override;
 
 	void initialize() override;
+
+	/// Returns generator part that analyzes LED usage and initializes it if it is needed.
+	LedPart& ledPart();
+
+	/// Returns generator part that analyzes magnet usage and initializes it if it is needed.
+	MagnetPart& magnetPart();
 
 	/// Returns generator part that analyzes RNG usage in a program and initializes it if it is needed.
 	RandomGeneratorPart& randomGeneratorPart();
@@ -64,6 +72,13 @@ private:
 	/// this factory.
 	GotoLabelManager &mGotoLabelManager;
 
+	/// Generator part that tracks LED usage and initializes it if needed.
+	QScopedPointer<LedPart> mLedPart;
+
+	/// Generator part that tracks magnet usage and initializes it if needed.
+	QScopedPointer<MagnetPart> mMagnetPart;
+
+	/// Generator part that tracks random number generator usage and initializes it if needed.
 	QScopedPointer<RandomGeneratorPart> mRandomGeneratorPart;
 };
 

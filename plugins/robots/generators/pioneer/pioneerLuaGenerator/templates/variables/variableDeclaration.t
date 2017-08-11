@@ -1,1 +1,1 @@
-@@TYPE@@@@NAME@@ = 0
+local @@NAME@@ = 0

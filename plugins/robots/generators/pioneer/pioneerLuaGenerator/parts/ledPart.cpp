@@ -12,40 +12,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "randomGeneratorPart.h"
+#include "ledPart.h"
 
 using namespace pioneer::lua;
 
-RandomGeneratorPart::RandomGeneratorPart(const QStringList &pathsToTemplates)
+LedPart::LedPart(const QStringList &pathsToTemplates)
 	: InitTerminateCodeGenerator(pathsToTemplates)
 {
 }
 
-void RandomGeneratorPart::reinit()
+void LedPart::reinit()
 {
-	mIsRngUsed = false;
+	mIsUsed = false;
 }
 
-QString RandomGeneratorPart::initCode()
+QString LedPart::initCode()
 {
-	if (mIsRngUsed) {
-		return readTemplateIfExists("initialization/rng.t").replace("@@RAND_SEED@@", QString::number(qrand()));
+	if (mIsUsed) {
+		return readTemplateIfExists("initialization/led.t");
 	} else {
 		return "";
 	}
 }
 
-QString RandomGeneratorPart::terminateCode()
+QString LedPart::terminateCode()
 {
 	return "";
 }
 
-void RandomGeneratorPart::registerUsage()
+void LedPart::registerUsage()
 {
-	mIsRngUsed = true;
-}
-
-bool RandomGeneratorPart::isUsed() const
-{
-	return mIsRngUsed;
+	mIsUsed = true;
 }

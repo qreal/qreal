@@ -19,25 +19,22 @@
 namespace pioneer {
 namespace lua {
 
-/// Inspects random variable init usage and initializes random number generator if needed.
-class RandomGeneratorPart : public generatorBase::parts::InitTerminateCodeGenerator
+/// Inspects magnet usage and initializes magnet GPIO if needed.
+class MagnetPart : public generatorBase::parts::InitTerminateCodeGenerator
 {
 public:
-	RandomGeneratorPart(const QStringList &pathsToTemplates);
+	MagnetPart(const QStringList &pathsToTemplates);
 
 	void reinit() override;
 	QString initCode() override;
 	QString terminateCode() override;
 
-	/// Marks random number generator as used so it shall be initialized.
+	/// Marks magnet as used so it shall be initialized.
 	void registerUsage();
 
-	/// Returns current RNG usage status.
-	bool isUsed() const;
-
 private:
-	/// True, if random number generator is used in a program.
-	bool mIsRngUsed = false;
+	/// True, if magnet is used in a program.
+	bool mIsUsed = false;
 };
 
 }

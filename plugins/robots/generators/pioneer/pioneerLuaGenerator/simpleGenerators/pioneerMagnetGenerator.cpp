@@ -14,8 +14,12 @@
 
 #include "pioneerMagnetGenerator.h"
 
+#include <qrkernel/exception/exception.h>
 #include <generatorBase/generatorCustomizer.h>
 #include <qrutils/stringUtils.h>
+
+#include "pioneerLuaGeneratorFactory.h"
+#include "parts/magnetPart.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -30,4 +34,10 @@ PioneerMagnetGenerator::PioneerMagnetGenerator(const qrRepo::RepoApi &repo
 		, {}
 		, parent)
 {
+	auto factory = dynamic_cast<PioneerLuaGeneratorFactory *>(mCustomizer.factory());
+	if (factory) {
+		factory->magnetPart().registerUsage();
+	} else {
+		throw qReal::Exception("Pioneer PioneerMagnetGenerator will work only with PioneerLuaGeneratorFactory");
+	}
 }
