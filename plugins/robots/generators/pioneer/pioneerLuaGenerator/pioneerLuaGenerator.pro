@@ -67,18 +67,21 @@ HEADERS += \
 	$$PWD/communicator/communicationManager.h \
 	$$PWD/communicator/controllerCommunicator.h \
 	$$PWD/communicator/httpCommunicator.h \
+	$$PWD/generators/gotoLabelManager.h \
 	$$PWD/generators/pioneerStateMachineGenerator.h \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.h \
 	$$PWD/simpleGenerators/geoLandingGenerator.h \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
+	$$PWD/simpleGenerators/gotoGenerator.h \
 	$$PWD/simpleGenerators/goToPointGenerator.h \
 	$$PWD/simpleGenerators/pioneerMagnetGenerator.h \
 	$$PWD/simpleGenerators/initialNodeGenerator.h \
+	$$PWD/simpleGenerators/labelGenerator.h \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.h \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.h \
-	$$PWD/widgets/pioneerAdditionalPreferences.h \
 	$$PWD/simpleGenerators/pioneerLedGenerator.h \
 	$$PWD/simpleGenerators/pioneerYawGenerator.h \
+	$$PWD/widgets/pioneerAdditionalPreferences.h \
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
@@ -88,18 +91,21 @@ SOURCES += \
 	$$PWD/communicator/communicationManager.cpp \
 	$$PWD/communicator/controllerCommunicator.cpp \
 	$$PWD/communicator/httpCommunicator.cpp \
+	$$PWD/generators/gotoLabelManager.cpp \
 	$$PWD/generators/pioneerStateMachineGenerator.cpp \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.cpp \
 	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
+	$$PWD/simpleGenerators/gotoGenerator.cpp \
 	$$PWD/simpleGenerators/goToPointGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerMagnetGenerator.cpp \
 	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
+	$$PWD/simpleGenerators/labelGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.cpp \
-	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
 	$$PWD/simpleGenerators/pioneerLedGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerYawGenerator.cpp \
+	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
 
 FORMS += \
 	$$PWD/widgets/pioneerAdditionalPreferences.ui \

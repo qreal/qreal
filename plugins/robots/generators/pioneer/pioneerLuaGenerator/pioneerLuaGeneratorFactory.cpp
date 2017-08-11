@@ -18,8 +18,10 @@
 
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
+#include "simpleGenerators/gotoGenerator.h"
 #include "simpleGenerators/goToPointGenerator.h"
 #include "simpleGenerators/initialNodeGenerator.h"
+#include "simpleGenerators/labelGenerator.h"
 #include "simpleGenerators/pioneerMagnetGenerator.h"
 #include "simpleGenerators/pioneerPrintGenerator.h"
 #include "simpleGenerators/pioneerSystemGenerator.h"
@@ -33,9 +35,11 @@ PioneerLuaGeneratorFactory::PioneerLuaGeneratorFactory(const qrRepo::RepoApi &re
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, const QString &generatorName)
+		, const QString &generatorName
+		, GotoLabelManager &gotoLabelManager)
 	: GeneratorFactoryBase(repo, errorReporter, robotModelManager, luaProcessor)
 	, mGeneratorName(generatorName)
+	, mGotoLabelManager(gotoLabelManager)
 {
 }
 
@@ -73,4 +77,16 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 QStringList PioneerLuaGeneratorFactory::pathsToTemplates() const
 {
 	return {":/" + mGeneratorName + "/templates"};
+}
+
+generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::labelGenerator(const qReal::Id &id
+		, generatorBase::GeneratorCustomizer &customizer)
+{
+	return new LabelGenerator(mRepo, customizer, id, this, mGotoLabelManager);
+}
+
+generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::gotoSimpleGenerator(const qReal::Id &id
+		, generatorBase::GeneratorCustomizer &customizer)
+{
+	return new GotoGenerator(mRepo, customizer, id, this, mGotoLabelManager);
 }

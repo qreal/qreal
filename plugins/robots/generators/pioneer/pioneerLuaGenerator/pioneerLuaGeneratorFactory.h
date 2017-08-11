@@ -19,6 +19,8 @@
 namespace pioneer {
 namespace lua {
 
+class GotoLabelManager;
+
 /// Factory that creates simple generators for Pioneer-specific blocks.
 class PioneerLuaGeneratorFactory : public generatorBase::GeneratorFactoryBase
 {
@@ -27,7 +29,8 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, const QString &generatorName);
+			, const QString &generatorName
+			, GotoLabelManager &gotoLabelManager);
 
 	~PioneerLuaGeneratorFactory() override;
 
@@ -37,8 +40,20 @@ public:
 	QStringList pathsToTemplates() const override;
 
 private:
+	/// Returns goto label generator that can generate human-readable labels based no block types.
+	generatorBase::simple::AbstractSimpleGenerator *labelGenerator(const qReal::Id &id
+			, generatorBase::GeneratorCustomizer &customizer) override;
+
+	/// Returns goto generator that uses labels provided by goto label generator.
+	generatorBase::simple::AbstractSimpleGenerator *gotoSimpleGenerator(const qReal::Id &id
+			, generatorBase::GeneratorCustomizer &customizer) override;
+
 	/// Generator name is used as a prefix to a path to templates in resources.
 	const QString mGeneratorName;
+
+	/// Storage and generator for human-readable goto labels. Used in label ganerator and goto generator created by
+	/// this factory.
+	GotoLabelManager &mGotoLabelManager;
 };
 
 }

@@ -22,6 +22,7 @@ namespace pioneer {
 namespace lua {
 
 class PioneerLuaGeneratorFactory;
+class GotoLabelManager;
 
 /// Customizer for Pioneer generator. Provides factory that can create simple generators for blocks.
 class PioneerLuaGeneratorCustomizer : public generatorBase::GeneratorCustomizer
@@ -31,7 +32,8 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, const QString &generatorName);
+			, const QString &generatorName
+			, GotoLabelManager &gotoLabelManager);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 

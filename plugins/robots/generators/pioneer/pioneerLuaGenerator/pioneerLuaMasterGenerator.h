@@ -22,6 +22,7 @@ namespace pioneer {
 namespace lua {
 
 class PioneerStateMachineGenerator;
+class GotoLabelManager;
 
 /// Main generator that directs generation process (mainly by configuring its base class that does actual job).
 class PioneerLuaMasterGenerator : public generatorBase::MasterGeneratorBase
@@ -54,6 +55,9 @@ private:
 	/// Control flow generator, defines strategy of traversing nodes and converting them into semantic tree, thus
 	/// defining control flow in an application.
 	QScopedPointer<PioneerStateMachineGenerator> mControlFlowGenerator;
+
+	/// Storage and generator for human-readable goto labels.
+	QScopedPointer<GotoLabelManager> mGotoLabelManager;
 };
 
 }
