@@ -22,8 +22,18 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, const QString &generatorName)
-	: mFactory(new PioneerLuaGeneratorFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName))
+		, const QString &generatorName
+		, GotoLabelManager &gotoLabelManager)
+	: mFactory(
+			new PioneerLuaGeneratorFactory(
+					repo
+					, errorReporter
+					, robotModelManager
+					, luaProcessor
+					, generatorName
+					, gotoLabelManager
+			)
+	)
 {
 }
 

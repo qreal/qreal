@@ -1,4 +1,4 @@
-local curr_state = "@@ID@@"
+local curr_state = "START"
 
 action = {
-	["@@ID@@"] = function(x) 
+	["START"] = function(x)
