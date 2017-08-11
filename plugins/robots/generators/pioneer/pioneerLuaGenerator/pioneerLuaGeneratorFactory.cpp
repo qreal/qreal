@@ -16,6 +16,8 @@
 
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
+#include "parts/ledPart.h"
+#include "parts/magnetPart.h"
 #include "parts/randomGeneratorPart.h"
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
@@ -86,7 +88,19 @@ QStringList PioneerLuaGeneratorFactory::pathsToTemplates() const
 void PioneerLuaGeneratorFactory::initialize()
 {
 	generatorBase::GeneratorFactoryBase::initialize();
+	mLedPart.reset(new LedPart(pathsToTemplates()));
+	mMagnetPart.reset(new MagnetPart(pathsToTemplates()));
 	mRandomGeneratorPart.reset(new RandomGeneratorPart(pathsToTemplates()));
+}
+
+LedPart& PioneerLuaGeneratorFactory::ledPart()
+{
+	return *mLedPart;
+}
+
+MagnetPart& PioneerLuaGeneratorFactory::magnetPart()
+{
+	return *mMagnetPart;
 }
 
 RandomGeneratorPart& PioneerLuaGeneratorFactory::randomGeneratorPart()
@@ -109,6 +123,6 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::goto
 QList<generatorBase::parts::InitTerminateCodeGenerator *> PioneerLuaGeneratorFactory::initTerminateGenerators()
 {
 	auto result = generatorBase::GeneratorFactoryBase::initTerminateGenerators();
-	result << mRandomGeneratorPart.data();
+	result << mRandomGeneratorPart.data() << mMagnetPart.data() << mLedPart.data();
 	return result;
 }

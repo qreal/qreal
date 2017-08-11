@@ -19,25 +19,22 @@
 namespace pioneer {
 namespace lua {
 
-/// Inspects random variable init usage and initializes random number generator if needed.
-class RandomGeneratorPart : public generatorBase::parts::InitTerminateCodeGenerator
+/// Inspects LED usage and initializes LED if needed.
+class LedPart : public generatorBase::parts::InitTerminateCodeGenerator
 {
 public:
-	RandomGeneratorPart(const QStringList &pathsToTemplates);
+	LedPart(const QStringList &pathsToTemplates);
 
 	void reinit() override;
 	QString initCode() override;
 	QString terminateCode() override;
 
-	/// Marks random number generator as used so it shall be initialized.
+	/// Marks LED as used so it shall be initialized.
 	void registerUsage();
 
-	/// Returns current RNG usage status.
-	bool isUsed() const;
-
 private:
-	/// True, if random number generator is used in a program.
-	bool mIsRngUsed = false;
+	/// True, if LED is used in a program.
+	bool mIsUsed = false;
 };
 
 }

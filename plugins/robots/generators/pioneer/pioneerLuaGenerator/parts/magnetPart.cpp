@@ -12,40 +12,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "randomGeneratorPart.h"
+#include "magnetPart.h"
 
 using namespace pioneer::lua;
 
-RandomGeneratorPart::RandomGeneratorPart(const QStringList &pathsToTemplates)
+MagnetPart::MagnetPart(const QStringList &pathsToTemplates)
 	: InitTerminateCodeGenerator(pathsToTemplates)
 {
 }
 
-void RandomGeneratorPart::reinit()
+void MagnetPart::reinit()
 {
-	mIsRngUsed = false;
+	mIsUsed = false;
 }
 
-QString RandomGeneratorPart::initCode()
+QString MagnetPart::initCode()
 {
-	if (mIsRngUsed) {
-		return readTemplateIfExists("initialization/rng.t").replace("@@RAND_SEED@@", QString::number(qrand()));
+	if (mIsUsed) {
+		return readTemplateIfExists("initialization/magnet.t");
 	} else {
 		return "";
 	}
 }
 
-QString RandomGeneratorPart::terminateCode()
+QString MagnetPart::terminateCode()
 {
 	return "";
 }
 
-void RandomGeneratorPart::registerUsage()
+void MagnetPart::registerUsage()
 {
-	mIsRngUsed = true;
-}
-
-bool RandomGeneratorPart::isUsed() const
-{
-	return mIsRngUsed;
+	mIsUsed = true;
 }

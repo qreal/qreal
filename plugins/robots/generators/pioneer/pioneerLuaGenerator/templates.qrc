@@ -30,6 +30,9 @@
 		<file>templates/functions/max.t</file>
 		<file>templates/functions/print.t</file>
 		<file>templates/functions/atan2.t</file>
+		<file>templates/initialization/rng.t</file>
+		<file>templates/initialization/led.t</file>
+		<file>templates/initialization/magnet.t</file>
 		<file>templates/luaPrinting/addition.t</file>
 		<file>templates/luaPrinting/argumentsSeparator.t</file>
 		<file>templates/luaPrinting/assignment.t</file>
@@ -99,6 +102,5 @@
 		<file>templates/quadcopterCommands/magnetOn.t</file>
 		<file>templates/led.t</file>
 		<file>templates/quadcopterCommands/yaw.t</file>
-		<file>templates/rngInit.t</file>
 	</qresource>
 </RCC>
