@@ -5,6 +5,8 @@ local ledbar = Ledbar.new(30)
 
 @@THREADS_FORWARDING@@
 
+@@VARIABLES@@
+
 @@INITHOOKS@@
 
 @@SUBPROGRAMS@@
