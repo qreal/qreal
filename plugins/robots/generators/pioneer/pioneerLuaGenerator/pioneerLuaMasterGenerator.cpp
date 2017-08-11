@@ -175,6 +175,9 @@ QString PioneerLuaMasterGenerator::generate(const QString &indentString)
 	// This will remove too many empty lines
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
+	// This will remove leading and trailing whitespaces, line breaks and other unneeded stuff.
+	resultCode = resultCode.trimmed();
+
 	processGeneratedCode(resultCode);
 
 	generateLinkingInfo(resultCode);
