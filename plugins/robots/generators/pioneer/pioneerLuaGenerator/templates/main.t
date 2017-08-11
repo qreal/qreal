@@ -13,6 +13,7 @@
 @@MAIN_CODE@@
 }
 
+-- функция обработки событий, автоматически вызывается автопилотом
 function callback(event)
 	print(event)
 	if (event == Ev.ALTITUDE_REACHED) then
@@ -31,7 +32,9 @@ function callback(event)
 
 end
 
+-- бесконечный цикл, автоматически вызывается автопилотом
 function loop()
 end
 
+-- вызов функции из таблицы состояний, соответствующей первому состоянию
 action[curr_state]()
