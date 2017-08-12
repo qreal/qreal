@@ -43,6 +43,8 @@ void RandomFunctionChecker::checkNode(const qReal::Id &id)
 		return;
 	}
 
+	checkForAdditionalLanguageInfo(id);
+
 	const auto properties = mMetamodel.propertyNames(id.type());
 	for (const auto &property : properties) {
 		const auto ast = mLanguageToolbox.parse(id, property, mRepo.stringProperty(id, property));
@@ -69,5 +71,13 @@ void RandomFunctionChecker::checkAst(QSharedPointer<qrtext::core::ast::Node> ast
 
 	for (const auto child : ast->children()) {
 		checkAst(child);
+	}
+}
+
+void RandomFunctionChecker::checkForAdditionalLanguageInfo(const qReal::Id &id)
+{
+	if (id.element() == "Randomizer") {
+		// Initialize random variable with some integer value to make type inference happy.
+		mLanguageToolbox.parse(id, "Variable", mRepo.stringProperty(id, "Variable") + "= 0");
 	}
 }
