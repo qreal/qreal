@@ -19,6 +19,7 @@
 #include "parts/ledPart.h"
 #include "parts/magnetPart.h"
 #include "parts/randomGeneratorPart.h"
+#include "simpleGenerators/endOfHandlerGenerator.h"
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
 #include "simpleGenerators/gotoGenerator.h"
@@ -55,7 +56,9 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		, generatorBase::GeneratorCustomizer &customizer)
 {
 	const QString elementType = id.element();
-	if (elementType == "InitialNode") {
+	if (elementType == "EndOfHandler") {
+		return new EndOfHandlerGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "InitialNode") {
 		return new InitialNodeGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GeoTakeoff") {
 		return new GeoTakeoffGenerator(mRepo, customizer, id, this);

@@ -51,6 +51,8 @@ public:
 private:
 	void visitRegular(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
 
+	void visitConditional(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
+
 	void visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links) override;
 
 	/// Copies a linear fragment starting from semantic node with id @p from and pastes it into semantic tree as a
@@ -78,6 +80,8 @@ private:
 	/// Returns first non-synthetic right sibling of a given node. Returns nullptr if there is no such sibling.
 	generatorBase::semantics::SemanticNode *findRightSibling(
 			generatorBase::semantics::NonZoneNode * const node) const;
+
+	generatorBase::semantics::SemanticNode *produceEndOfHandlerNode();
 
 	/// Node types that have asynchronous semantics: send a command to autopilot and continue execution when this
 	/// command is completed (e.g. "GoToPoint").

@@ -57,6 +57,8 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 			// operation.
 			nextNode = produceGotoNode(target);
 			thisNode->insertSiblingAfterThis(nextNode);
+			SemanticNode * const endNode = produceEndOfHandlerNode();
+			static_cast<NonZoneNode*>(nextNode)->insertSiblingAfterThis(endNode);
 
 			if (!mLabeledNodes.contains(target)) {
 				//
@@ -81,7 +83,9 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 
 			SemanticNode *gotoNode = produceGotoNode(target);
 			thisNode->insertSiblingAfterThis(gotoNode);
-			dynamic_cast<NonZoneNode *>(gotoNode)->insertSiblingAfterThis(nextNode);
+			SemanticNode * const endNode = produceEndOfHandlerNode();
+			dynamic_cast<NonZoneNode *>(gotoNode)->insertSiblingAfterThis(endNode);
+			dynamic_cast<NonZoneNode *>(endNode)->insertSiblingAfterThis(nextNode);
 		}
 	} else {
 		if (!mSemanticTree->findNodeFor(target)) {
@@ -94,6 +98,25 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 			copySynchronousFragment(thisNode, target, false);
 		}
 	}
+}
+
+void PioneerStateMachineGenerator::visitConditional(const qReal::Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(links)
+
+	const QPair<LinkInfo, LinkInfo> branches(ifBranchesFor(id));
+	const LinkInfo thenLink = branches.first;
+	const LinkInfo elseLink = branches.second;
+
+	IfNode * const thisNode = static_cast<IfNode *>(mSemanticTree->findNodeFor(id));
+	thisNode->thenZone()->appendChild(produceGotoNode(thenLink.target));
+	thisNode->elseZone()->appendChild(produceGotoNode(elseLink.target));
+
+	produceNextNodeIfNeeded(thenLink, thisNode);
+	produceNextNodeIfNeeded(elseLink, thisNode);
+
+	SemanticNode * const endNode = produceEndOfHandlerNode();
+	dynamic_cast<NonZoneNode *>(thisNode)->insertSiblingAfterThis(endNode);
 }
 
 void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
@@ -274,3 +297,11 @@ SemanticNode * PioneerStateMachineGenerator::findAsynchronousSibling(NonZoneNode
 	return nullptr;
 }
 
+SemanticNode *PioneerStateMachineGenerator::produceEndOfHandlerNode()
+{
+	qReal::Id syntheticId = qReal::Id::createElementId("synthetic", "synthetic", "EndOfHandler");
+	SimpleNode * const result = mSemanticTree->produceSimple(syntheticId);
+	// No need for special handling, from the point of view of a generator it is just some simple node.
+	result->bindToSyntheticConstruction(SimpleNode::noSytheticBinding);
+	return result;
+}

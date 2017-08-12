@@ -3,6 +3,7 @@
 		<file>templates/break.t</file>
 		<file>templates/comment.t</file>
 		<file>templates/continue.t</file>
+		<file>templates/endOfHandler.t</file>
 		<file>templates/finalNodeMain.t</file>
 		<file>templates/finalNodeSubprogram.t</file>
 		<file>templates/function.t</file>
@@ -11,6 +12,8 @@
 		<file>templates/label.t</file>
 		<file>templates/main.t</file>
 		<file>templates/nativeCode.t</file>
+		<file>templates/conditional/if.t</file>
+		<file>templates/conditional/ifElse.t</file>
 		<file>templates/functions/abs.t</file>
 		<file>templates/functions/acos.t</file>
 		<file>templates/functions/asin.t</file>
