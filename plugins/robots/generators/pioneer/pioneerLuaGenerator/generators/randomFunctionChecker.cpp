@@ -45,8 +45,6 @@ void RandomFunctionChecker::checkNode(const qReal::Id &id)
 
 	const auto properties = mMetamodel.propertyNames(id.type());
 	for (const auto &property : properties) {
-		qDebug() << "Checking" << mRepo.stringProperty(id, property);
-
 		const auto ast = mLanguageToolbox.parse(id, property, mRepo.stringProperty(id, property));
 		checkAst(ast);
 	}
