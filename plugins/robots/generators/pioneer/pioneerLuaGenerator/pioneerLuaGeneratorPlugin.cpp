@@ -61,7 +61,7 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 			mGenerateCodeAction
 			, &QAction::triggered
 			, this
-			, &PioneerLuaGeneratorPlugin::generateCode
+			, [this](){ PioneerLuaGeneratorPlugin::generateCode(true); }
 			, Qt::UniqueConnection
 	);
 
