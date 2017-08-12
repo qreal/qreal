@@ -57,6 +57,10 @@ private:
 	/// RND initialization is needed.
 	void checkAst(QSharedPointer<qrtext::core::ast::Node> ast);
 
+	/// Adds hints to a text language parser if needed by a node. For example, type inference will not work for random
+	/// initialization node without additional hint that initialized variable is in fact integer.
+	void checkForAdditionalLanguageInfo(const qReal::Id &id);
+
 	/// Repository with a model.
 	const qrRepo::RepoApi &mRepo;
 
