@@ -74,6 +74,7 @@ HEADERS += \
 	$$PWD/parts/magnetPart.h \
 	$$PWD/parts/randomGeneratorPart.h \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.h \
+	$$PWD/simpleGenerators/endOfHandlerGenerator.h \
 	$$PWD/simpleGenerators/geoLandingGenerator.h \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.h \
 	$$PWD/simpleGenerators/gotoGenerator.h \
@@ -103,6 +104,7 @@ SOURCES += \
 	$$PWD/parts/magnetPart.cpp \
 	$$PWD/parts/randomGeneratorPart.cpp \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.cpp \
+	$$PWD/simpleGenerators/endOfHandlerGenerator.cpp \
 	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
 	$$PWD/simpleGenerators/geoTakeoffGenerator.cpp \
 	$$PWD/simpleGenerators/gotoGenerator.cpp \
