@@ -16,7 +16,7 @@ cp -pR $BIN_DIR/librobots-2d-model*.dylib                                  "$BUN
 cp -pR $BIN_DIR/librobots-generator-base*.dylib                            "$BUNDLE_CONTENTS/Lib/"
 cp -pR $BIN_DIR/librobots-kit-base*.dylib                                  "$BUNDLE_CONTENTS/Lib/"
 cp -pR $BIN_DIR/librobots-utils*.dylib                                     "$BUNDLE_CONTENTS/Lib/"
-cp -pR $BIN_DIR/qextserialport*.dylib                                     "$BUNDLE_CONTENTS/Lib/"
+cp -pR $BIN_DIR/libqextserialport*.dylib                                   "$BUNDLE_CONTENTS/Lib/"
 
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/editors/librobotsMetamodel.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/librobots-plugin.dylib"

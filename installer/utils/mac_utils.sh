@@ -14,6 +14,6 @@ function fix_qreal_dependencies {
 }
 
 function copy_qt_lib {
-	cp -R "$QT_DIR/lib/$1.framework/Versions/5/$1" "$BUNDLE_CONTENTS/Lib/$1"
+	rsync  -avR "$QT_DIR/lib/./$1.framework/Versions/5/$1" "$BUNDLE_CONTENTS/Lib"
 	fix_dependencies "$BUNDLE_CONTENTS/Lib/$1" "$QT_DIR/lib" "$LIB_PATH"
 }
