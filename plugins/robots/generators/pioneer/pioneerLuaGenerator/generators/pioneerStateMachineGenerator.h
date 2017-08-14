@@ -72,7 +72,10 @@ private:
 	bool isAsynchronous(const generatorBase::semantics::SemanticNode * const node) const;
 
 	/// Returns true if this node is synthetic, i.e. does not have corresponding block on a diagram.
-	bool isLabel(const generatorBase::semantics::SemanticNode * const node) const;
+	static bool isLabel(const generatorBase::semantics::SemanticNode * const node);
+
+	/// Returns true if given node is a direct child of a root node.
+	static bool isTopLevelNode(const generatorBase::semantics::SemanticNode * const node);
 
 	/// Finds first sibling of a given node that corresponds to asynchronous block. Returns nullptr if there is no
 	/// such node.
@@ -80,13 +83,18 @@ private:
 			generatorBase::semantics::NonZoneNode *node) const;
 
 	/// Returns first non-synthetic right sibling of a given node. Returns nullptr if there is no such sibling.
-	generatorBase::semantics::SemanticNode *findRightSibling(generatorBase::semantics::SemanticNode * const node) const;
+	static generatorBase::semantics::SemanticNode *findRightSibling(
+			generatorBase::semantics::SemanticNode * const node);
+
+	/// Returns parent of a given node.
+	static generatorBase::semantics::NonZoneNode *parent(
+			generatorBase::semantics::SemanticNode * const node);
 
 	/// Creates synthetic node that denotes end of asynchronous handler.
 	generatorBase::semantics::SemanticNode *produceEndOfHandlerNode();
 
 	/// Adds nextNode as a right sibling of thisNode.
-	void addAfter(generatorBase::semantics::SemanticNode * const thisNode
+	static void addAfter(generatorBase::semantics::SemanticNode * const thisNode
 			, generatorBase::semantics::SemanticNode * const nextNode);
 
 	/// Node types that have asynchronous semantics: send a command to autopilot and continue execution when this

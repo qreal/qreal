@@ -87,18 +87,21 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 
 			// Labeled node can not be a part of a zone (i.e. "then" or "else" branch), it shall be generated in top
 			// level zone.
-			if (!thisNode->parentZone()) {
+			if (isTopLevelNode(thisNode)) {
 				SemanticNode * const endNode = produceEndOfHandlerNode();
 				addAfter(gotoNode, endNode);
 				addAfter(endNode, nextNode);
 			} else {
 				// Getting parent node (i.e. If statement to the branch of which our node belongs).
-				SemanticNode * const parent = thisNode->parentZone()->parentNode();
+				NonZoneNode *aParent = parent(thisNode);
+				while (!isTopLevelNode(aParent)) {
+					aParent = parent(aParent);
+				}
 
 				// Skipping "end" that finishes handler with If. Can be made more accurate (find end of handler even
 				// if it is not immediate right sibling), but now If can be only at the end of handler (no pure
 				// synchronous Ifs are supported).
-				SemanticNode * const endOfHandler = findRightSibling(dynamic_cast<NonZoneNode * const>(parent));
+				SemanticNode * const endOfHandler = findRightSibling(aParent);
 				if (!endOfHandler || endOfHandler->id().element() != "EndOfHandler") {
 					mErrorReporter.addError(tr("Can not find end of an If statement, generation internal error or "
 							"too complex algorithmic construction."));
@@ -151,8 +154,10 @@ void PioneerStateMachineGenerator::visitConditional(const qReal::Id &id, const Q
 		return;
 	}
 
-	SemanticNode * const endNode = produceEndOfHandlerNode();
-	dynamic_cast<NonZoneNode *>(thisNode)->insertSiblingAfterThis(endNode);
+	if (isTopLevelNode(thisNode)) {
+		SemanticNode * const endNode = produceEndOfHandlerNode();
+		dynamic_cast<NonZoneNode *>(thisNode)->insertSiblingAfterThis(endNode);
+	}
 }
 
 void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
@@ -188,7 +193,7 @@ void PioneerStateMachineGenerator::copySynchronousFragment(SemanticNode *after, 
 		return;
 	}
 
-	dynamic_cast<NonZoneNode *>(after)->insertSiblingAfterThis(fragmentStartNode);
+	addAfter(after, fragmentStartNode);
 
 	if (isAsynchronous(fragmentStartNode)) {
 		// Synchronous fragment is trivial and its first node is asynchronous. Generating transition from it and we're
@@ -294,12 +299,12 @@ bool PioneerStateMachineGenerator::isAsynchronous(const SemanticNode * const nod
 	return mAsynchronousNodes.contains(node->id().element());
 }
 
-bool PioneerStateMachineGenerator::isLabel(const SemanticNode * const node) const
+bool PioneerStateMachineGenerator::isLabel(const SemanticNode * const node)
 {
 	return node->id().editor().startsWith("label_");
 }
 
-SemanticNode *PioneerStateMachineGenerator::findRightSibling(SemanticNode * const node) const
+SemanticNode *PioneerStateMachineGenerator::findRightSibling(SemanticNode * const node)
 {
 	NonZoneNode * const nonZoneNode = dynamic_cast<NonZoneNode * const>(node);
 	if (!nonZoneNode) {
@@ -321,7 +326,17 @@ SemanticNode *PioneerStateMachineGenerator::findRightSibling(SemanticNode * cons
 	}
 }
 
-SemanticNode * PioneerStateMachineGenerator::findAsynchronousSibling(NonZoneNode *node) const
+NonZoneNode *PioneerStateMachineGenerator::parent(SemanticNode * const node)
+{
+	NonZoneNode * const nonZoneNode = dynamic_cast<NonZoneNode * const>(node);
+	if (!nonZoneNode) {
+		return nullptr;
+	}
+
+	return static_cast<NonZoneNode *>(nonZoneNode->parentZone()->parentNode());
+}
+
+SemanticNode *PioneerStateMachineGenerator::findAsynchronousSibling(NonZoneNode *node) const
 {
 	const auto zone = node->parentZone();
 	if (!zone) {
@@ -351,4 +366,14 @@ SemanticNode *PioneerStateMachineGenerator::produceEndOfHandlerNode()
 void PioneerStateMachineGenerator::addAfter(SemanticNode * const thisNode, SemanticNode * const nextNode)
 {
 	static_cast<NonZoneNode * const>(thisNode)->insertSiblingAfterThis(nextNode);
+}
+
+bool PioneerStateMachineGenerator::isTopLevelNode(const generatorBase::semantics::SemanticNode * const node)
+{
+	if (!static_cast<const NonZoneNode * const>(node)->parentZone()) {
+		return true;
+	}
+
+	const SemanticNode * const parent = static_cast<const NonZoneNode * const>(node)->parentZone()->parentNode();
+	return dynamic_cast<const RootNode * const>(parent) != nullptr;
 }
