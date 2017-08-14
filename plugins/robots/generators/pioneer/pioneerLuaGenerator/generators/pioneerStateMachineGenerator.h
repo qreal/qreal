@@ -46,6 +46,8 @@ public:
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 
+	/// Registers a function that will be called when generator visits a node with given id.
+	/// Allows to collect additional information during generation.
 	void registerNodeHook(std::function<void(const qReal::Id)> hook);
 
 private:
@@ -70,7 +72,7 @@ private:
 	bool isAsynchronous(const generatorBase::semantics::SemanticNode * const node) const;
 
 	/// Returns true if this node is synthetic, i.e. does not have corresponding block on a diagram.
-	bool isSynthetic(const generatorBase::semantics::SemanticNode * const node) const;
+	bool isLabel(const generatorBase::semantics::SemanticNode * const node) const;
 
 	/// Finds first sibling of a given node that corresponds to asynchronous block. Returns nullptr if there is no
 	/// such node.
@@ -78,10 +80,14 @@ private:
 			generatorBase::semantics::NonZoneNode *node) const;
 
 	/// Returns first non-synthetic right sibling of a given node. Returns nullptr if there is no such sibling.
-	generatorBase::semantics::SemanticNode *findRightSibling(
-			generatorBase::semantics::NonZoneNode * const node) const;
+	generatorBase::semantics::SemanticNode *findRightSibling(generatorBase::semantics::SemanticNode * const node) const;
 
+	/// Creates synthetic node that denotes end of asynchronous handler.
 	generatorBase::semantics::SemanticNode *produceEndOfHandlerNode();
+
+	/// Adds nextNode as a right sibling of thisNode.
+	void addAfter(generatorBase::semantics::SemanticNode * const thisNode
+			, generatorBase::semantics::SemanticNode * const nextNode);
 
 	/// Node types that have asynchronous semantics: send a command to autopilot and continue execution when this
 	/// command is completed (e.g. "GoToPoint").

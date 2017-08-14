@@ -21,19 +21,28 @@ using namespace pioneer::lua;
 
 QString GotoLabelManager::labelFor(const qReal::Id &id)
 {
-	if (mLabels.contains(id)) {
-		return mLabels.value(id);
+	qReal::Id actualId = id;
+	if (actualId.editor().startsWith("label_")) {
+		actualId = qReal::Id(
+				actualId.editor().mid(QString("label_").length())
+				, actualId.diagram()
+				, actualId.element()
+				, actualId.id());
 	}
 
-	const auto type = id.type();
+	if (mLabels.contains(actualId)) {
+		return mLabels.value(actualId);
+	}
+
+	const auto type = actualId.type();
 	if (mNodeTypesCount.contains(type)) {
 		++mNodeTypesCount[type];
 	} else {
 		mNodeTypesCount.insert(type, 1);
 	}
 
-	const auto label = beautify(QString("%1_%2").arg(id.element()).arg(mNodeTypesCount.value(type)));
-	mLabels.insert(id, label);
+	const auto label = beautify(QString("%1_%2").arg(actualId.element()).arg(mNodeTypesCount.value(type)));
+	mLabels.insert(actualId, label);
 	return label;
 }
 
