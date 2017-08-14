@@ -21,6 +21,8 @@
 
 #include <generatorBase/gotoControlFlowGenerator.h>
 
+#include "semanticTreeManager.h"
+
 namespace pioneer {
 namespace lua {
 
@@ -51,6 +53,8 @@ public:
 	void registerNodeHook(std::function<void(const qReal::Id)> hook);
 
 private:
+	void performGeneration() override;
+
 	void visitRegular(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
 
 	void visitConditional(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
@@ -61,41 +65,11 @@ private:
 	/// sibling of @p after node.
 	void copySynchronousFragment(generatorBase::semantics::SemanticNode *after, const qReal::Id from, bool withLabel);
 
-	/// Copies right siblings of the @p node until first labeled node, or until end.
-	const QLinkedList<generatorBase::semantics::SemanticNode *> copyRightSiblingsUntilAsynchronous(
-			generatorBase::semantics::NonZoneNode *node);
-
-	/// Creates node with label for a given id. Does not transfer ownership.
-	generatorBase::semantics::NonZoneNode *produceLabeledNode(const qReal::Id block);
-
 	/// Returns true if this node is asynchronous.
 	bool isAsynchronous(const generatorBase::semantics::SemanticNode * const node) const;
 
-	/// Returns true if this node is synthetic, i.e. does not have corresponding block on a diagram.
-	static bool isLabel(const generatorBase::semantics::SemanticNode * const node);
-
-	/// Returns true if given node is a direct child of a root node.
-	static bool isTopLevelNode(const generatorBase::semantics::SemanticNode * const node);
-
-	/// Finds first sibling of a given node that corresponds to asynchronous block. Returns nullptr if there is no
-	/// such node.
-	generatorBase::semantics::SemanticNode * findAsynchronousSibling(
-			generatorBase::semantics::NonZoneNode *node) const;
-
-	/// Returns first non-synthetic right sibling of a given node. Returns nullptr if there is no such sibling.
-	static generatorBase::semantics::SemanticNode *findRightSibling(
-			generatorBase::semantics::SemanticNode * const node);
-
-	/// Returns parent of a given node.
-	static generatorBase::semantics::NonZoneNode *parent(
-			generatorBase::semantics::SemanticNode * const node);
-
 	/// Creates synthetic node that denotes end of asynchronous handler.
 	generatorBase::semantics::SemanticNode *produceEndOfHandlerNode();
-
-	/// Adds nextNode as a right sibling of thisNode.
-	static void addAfter(generatorBase::semantics::SemanticNode * const thisNode
-			, generatorBase::semantics::SemanticNode * const nextNode);
 
 	/// Node types that have asynchronous semantics: send a command to autopilot and continue execution when this
 	/// command is completed (e.g. "GoToPoint").
@@ -109,6 +83,9 @@ private:
 
 	/// A list of functions that shall be called on visiting each node.
 	QList<std::function<void(const qReal::Id)>> mNodeHooks;
+
+	/// Helper object for more convenient work with semantic tree.
+	QScopedPointer<SemanticTreeManager> mSemanticTreeManager;
 };
 
 }

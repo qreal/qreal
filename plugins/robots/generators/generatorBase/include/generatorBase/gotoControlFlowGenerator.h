@@ -51,8 +51,6 @@ public:
 protected:
 	semantics::SemanticNode *produceGotoNode(const qReal::Id &id);
 	void produceNextNodeIfNeeded(const LinkInfo &info, semantics::NonZoneNode * const parent);
-
-private:
 	void performGeneration() override;
 };
 

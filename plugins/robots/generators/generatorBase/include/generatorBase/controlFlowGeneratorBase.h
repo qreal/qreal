@@ -68,7 +68,7 @@ public:
 	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 protected:
-	/// Can be overloaded by ancestors for custom behaviour.
+	/// Can be overloaded by descendants for custom behaviour.
 	virtual void performGeneration();
 
 	bool generateForks();

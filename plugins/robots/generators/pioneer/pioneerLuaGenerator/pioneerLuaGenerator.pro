@@ -69,6 +69,7 @@ HEADERS += \
 	$$PWD/generators/gotoLabelManager.h \
 	$$PWD/generators/pioneerStateMachineGenerator.h \
 	$$PWD/generators/randomFunctionChecker.h \
+	$$PWD/generators/semanticTreeManager.h \
 	$$PWD/parts/ledPart.h \
 	$$PWD/parts/magnetPart.h \
 	$$PWD/parts/randomGeneratorPart.h \
@@ -99,6 +100,7 @@ SOURCES += \
 	$$PWD/generators/gotoLabelManager.cpp \
 	$$PWD/generators/pioneerStateMachineGenerator.cpp \
 	$$PWD/generators/randomFunctionChecker.cpp \
+	$$PWD/generators/semanticTreeManager.cpp \
 	$$PWD/parts/ledPart.cpp \
 	$$PWD/parts/magnetPart.cpp \
 	$$PWD/parts/randomGeneratorPart.cpp \
