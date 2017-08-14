@@ -70,6 +70,7 @@ copy_qt_lib QtWidgets
 copy_qt_lib QtXml
 copy_qt_lib QtScript
 copy_qt_lib QtTest
+copy_qt_lib QtMacExtras
 
 mkdir "$BUNDLE_CONTENTS/MacOS/platforms"
 mkdir "$BUNDLE_CONTENTS/MacOS/imageformats"
