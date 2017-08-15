@@ -279,7 +279,7 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 		fragmentStartNode->appendSibling(gotoNode);
 		return gotoNode;
 	} else {
-		mErrorReporter.addError(tr("Purely synchronous loops are not supported yet."));
+		mErrorReporter.addError(tr("Purely synchronous loops or If branches are not supported yet."));
 		mErrorsOccured = true;
 	}
 
