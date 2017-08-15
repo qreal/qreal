@@ -59,11 +59,17 @@ private:
 
 	void visitConditional(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
 
+	void visitFinal(const qReal::Id &id, const QList<generatorBase::LinkInfo> &links) override;
+
 	void visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links) override;
 
 	/// Copies a linear fragment starting from semantic node with id @p from and pastes it into semantic tree as a
 	/// sibling of @p after node.
-	void copySynchronousFragment(generatorBase::semantics::SemanticNode *after, const qReal::Id from, bool withLabel);
+	/// @returns node that ends copied synchronous fragment (goto node) or nullptr if there was error.
+	generatorBase::semantics::SemanticNode * copySynchronousFragment(
+			generatorBase::semantics::SemanticNode *after
+			, const qReal::Id &from
+			, bool withLabel);
 
 	/// Returns true if this node is asynchronous.
 	bool isAsynchronous(const generatorBase::semantics::SemanticNode * const node) const;

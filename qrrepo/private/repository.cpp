@@ -266,7 +266,7 @@ void Repository::setProperties(const Id &id, QMap<QString, QVariant> const &prop
 	mObjects[id]->setProperties(properties);
 }
 
-QVariant Repository::property( const Id &id, const QString &name ) const
+QVariant Repository::property(const Id &id, const QString &name) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(name);
@@ -275,7 +275,7 @@ QVariant Repository::property( const Id &id, const QString &name ) const
 	}
 }
 
-void Repository::removeProperty( const Id &id, const QString &name )
+void Repository::removeProperty(const Id &id, const QString &name)
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeProperty(name);
