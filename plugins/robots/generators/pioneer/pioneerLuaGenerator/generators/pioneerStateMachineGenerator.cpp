@@ -64,9 +64,6 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 			nextNode = produceGotoNode(target);
 			mSemanticTreeManager->addAfter(thisNode, nextNode);
 
-			SemanticNode * const endNode = produceEndOfHandlerNode();
-			mSemanticTreeManager->addAfter(nextNode, endNode);
-
 			if (!mLabeledNodes.contains(target)) {
 				//
 				// Target node, despite being already visited, does not have a label, it means that it is a part of a
@@ -78,8 +75,11 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 				// It will confuse "findNodeFor(id)" (there will be many semantic nodes for a block with given id), but
 				// we actually do not care which copy will be used later, since they are the same.
 				//
-				copySynchronousFragment(nextNode, target, true);
+				nextNode = copySynchronousFragment(nextNode, target, true);
 			}
+
+			SemanticNode * const endNode = produceEndOfHandlerNode();
+			mSemanticTreeManager->addAfter(nextNode, endNode);
 		} else {
 			// thisNode is asynchronous node that transfers control to a node that has not been visited yet. Generating
 			// transition into a state associated with that node and then a new handler for target node itself.
@@ -154,6 +154,34 @@ void PioneerStateMachineGenerator::visitConditional(const qReal::Id &id, const Q
 	}
 }
 
+void PioneerStateMachineGenerator::visitFinal(const qReal::Id &id, const QList<LinkInfo> &links)
+{
+	generatorBase::GotoControlFlowGenerator::visitFinal(id, links);
+
+	// Here we are going to add finishing end-of-handler node in case it is missing (for example, diagrams like
+	// "Initial Node" -> "Final Node" will not generate it automatically).
+	// It is a kind of hack because asynchronous handler shall be a first-class entity and a zone node.
+
+	SimpleNode * const thisNode = static_cast<SimpleNode *>(mSemanticTree->findNodeFor(id));
+
+	// Getting root node.
+	NonZoneNode *aParent = mSemanticTreeManager->parent(thisNode);
+	while (!mSemanticTreeManager->isTopLevelNode(aParent)) {
+		aParent = mSemanticTreeManager->parent(aParent);
+	}
+
+	// Searching for end-of-handler node.
+	SemanticNode * endOfHandler = mSemanticTreeManager->findSibling(
+			aParent
+			, [](SemanticNode *node){ return node->id().element() == "EndOfHandler"; });
+
+	if (!endOfHandler) {
+		// If not found, create and add one.
+		endOfHandler = produceEndOfHandlerNode();
+		mSemanticTreeManager->addAfter(thisNode, endOfHandler);
+	}
+}
+
 void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
 {
 	generatorBase::GotoControlFlowGenerator::visit(nodeId, links);
@@ -162,14 +190,17 @@ void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::D
 	}
 }
 
-void PioneerStateMachineGenerator::copySynchronousFragment(SemanticNode *after, const qReal::Id from, bool withLabel)
+SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
+		SemanticNode *after
+		, const qReal::Id &from
+		, bool withLabel)
 {
 	NonZoneNode *oldTarget = dynamic_cast<NonZoneNode *>(mSemanticTree->findNodeFor(from));
 	if (!oldTarget) {
 		/// @todo: actually, why not?
 		mErrorReporter.addError(tr("Can not close a loop on algorithmic block."));
 		mErrorsOccured = true;
-		return;
+		return nullptr;
 	}
 
 	NonZoneNode *fragmentStartNode = withLabel
@@ -177,19 +208,22 @@ void PioneerStateMachineGenerator::copySynchronousFragment(SemanticNode *after, 
 			: dynamic_cast<NonZoneNode *>(mSemanticTree->produceNodeFor(from));
 
 	if (!fragmentStartNode) {
-		return;
+		return nullptr;
 	} else {
 		mLabeledNodes << fragmentStartNode->id();
 	}
 
 	if (!dynamic_cast<NonZoneNode *>(after)) {
-		/// @todo: actually, why not?
-		mErrorReporter.addError(tr("Can not close a loop right after algorithmic block."));
+		mErrorReporter.addError(tr("Generation internal error, non-zone node is a start of a fragment."));
 		mErrorsOccured = true;
-		return;
+		return nullptr;
 	}
 
-	mSemanticTreeManager->addAfter(after, fragmentStartNode);
+	// End-of-handler shall go before every labeled node, since label here is actually a start of a new handler.
+	SemanticNode * const endNode = produceEndOfHandlerNode();
+	mSemanticTreeManager->addAfter(after, endNode);
+
+	mSemanticTreeManager->addAfter(endNode, fragmentStartNode);
 
 	if (isAsynchronous(fragmentStartNode)) {
 		// Synchronous fragment is trivial and its first node is asynchronous. Generating transition from it and we're
@@ -201,13 +235,14 @@ void PioneerStateMachineGenerator::copySynchronousFragment(SemanticNode *after, 
 		if (rightSibling) {
 			auto gotoNode = produceGotoNode(rightSibling->id());
 			fragmentStartNode->appendSibling(gotoNode);
+			return gotoNode;
 		} else {
 			mErrorReporter.addError(tr("Generation internal error, asynchronous fragment start node generation " \
 					"failed."));
 			mErrorsOccured = true;
 		}
 
-		return;
+		return nullptr;
 	}
 
 	auto siblings = mSemanticTreeManager->copyRightSiblingsUntil(
@@ -217,7 +252,7 @@ void PioneerStateMachineGenerator::copySynchronousFragment(SemanticNode *after, 
 	if (siblings.isEmpty()) {
 		mErrorReporter.addError(tr("Loop can not be closed on a block that is last in its structural construct."));
 		mErrorsOccured = true;
-		return;
+		return nullptr;
 	}
 
 	if (isAsynchronous(siblings.last())) {
@@ -235,15 +270,18 @@ void PioneerStateMachineGenerator::copySynchronousFragment(SemanticNode *after, 
 		if (!asynchronousNodeTarget) {
 			mErrorReporter.addError(tr("Generation internal error, asynchronous node does not have target node."));
 			mErrorsOccured = true;
-			return;
+			return nullptr;
 		}
 
 		auto gotoNode = produceGotoNode(asynchronousNodeTarget->id());
 		fragmentStartNode->appendSibling(gotoNode);
+		return gotoNode;
 	} else {
 		mErrorReporter.addError(tr("Purely synchronous loops are not supported yet."));
 		mErrorsOccured = true;
 	}
+
+	return nullptr;
 }
 
 bool PioneerStateMachineGenerator::isAsynchronous(const SemanticNode * const node) const
