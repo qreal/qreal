@@ -78,8 +78,10 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 				nextNode = copySynchronousFragment(nextNode, target, true);
 			}
 
-			SemanticNode * const endNode = produceEndOfHandlerNode();
-			mSemanticTreeManager->addAfter(nextNode, endNode);
+			if (mSemanticTreeManager->isTopLevelNode(thisNode)) {
+				SemanticNode * const endNode = produceEndOfHandlerNode();
+				mSemanticTreeManager->addAfter(nextNode, endNode);
+			}
 		} else {
 			// thisNode is asynchronous node that transfers control to a node that has not been visited yet. Generating
 			// transition into a state associated with that node and then a new handler for target node itself.
