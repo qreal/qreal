@@ -221,11 +221,14 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 		return nullptr;
 	}
 
-	// End-of-handler shall go before every labeled node, since label here is actually a start of a new handler.
-	SemanticNode * const endNode = produceEndOfHandlerNode();
-	mSemanticTreeManager->addAfter(after, endNode);
-
-	mSemanticTreeManager->addAfter(endNode, fragmentStartNode);
+	if (withLabel) {
+		// End-of-handler shall go before every labeled node, since label here is actually a start of a new handler.
+		SemanticNode * const endNode = produceEndOfHandlerNode();
+		mSemanticTreeManager->addAfter(after, endNode);
+		mSemanticTreeManager->addAfter(endNode, fragmentStartNode);
+	} else {
+		mSemanticTreeManager->addAfter(after, fragmentStartNode);
+	}
 
 	if (isAsynchronous(fragmentStartNode)) {
 		// Synchronous fragment is trivial and its first node is asynchronous. Generating transition from it and we're
@@ -252,9 +255,14 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 			, [this](SemanticNode * node){ return isAsynchronous(node); });
 
 	if (siblings.isEmpty()) {
-		mErrorReporter.addError(tr("Loop can not be closed on a block that is last in its structural construct."));
-		mErrorsOccured = true;
-		return nullptr;
+		// Fragment is trivial and non-asynchronous --- so it must be FinalNode. Fine, no need to copy it.
+		if (fragmentStartNode->id().element() != "FinalNode") {
+			mErrorReporter.addError(tr("Generation internal error, program ends abruptly."));
+			mErrorsOccured = true;
+			return nullptr;
+		}
+
+		return fragmentStartNode;
 	}
 
 	if (isAsynchronous(siblings.last())) {
