@@ -65,7 +65,7 @@ SemanticNode *SemanticNode::findNodeFor(const Id &id)
 	}
 
 	QLinkedList<SemanticNode *> const children = this->children();
-	foreach (SemanticNode * const child, children) {
+	for (SemanticNode * const child : children) {
 		SemanticNode * const searchResult = child->findNodeFor(id);
 		if (searchResult) {
 			return searchResult;

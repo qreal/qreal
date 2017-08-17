@@ -14,6 +14,8 @@
 
 #include "semanticTreeManager.h"
 
+#include <generatorBase/semanticTree/semanticTree.h>
+
 using namespace pioneer::lua;
 using namespace generatorBase::semantics;
 
@@ -32,7 +34,7 @@ bool SemanticTreeManager::isLabel(const SemanticNode * const node)
 	return node->id().editor().startsWith("label_");
 }
 
-SemanticNode *SemanticTreeManager::findRightSibling(SemanticNode * const node)
+SemanticNode *SemanticTreeManager::rightSibling(SemanticNode * const node)
 {
 	NonZoneNode * const nonZoneNode = dynamic_cast<NonZoneNode * const>(node);
 	if (!nonZoneNode) {
@@ -92,12 +94,22 @@ void SemanticTreeManager::addToZone(generatorBase::semantics::ZoneNode * const z
 
 NonZoneNode *SemanticTreeManager::produceLabeledNode(const qReal::Id &block)
 {
+	auto existingNode = mSemanticTree.findNodeFor(block);
 	NonZoneNode *node = dynamic_cast<NonZoneNode *>(mSemanticTree.produceNodeFor(block));
+
 	if (!node) {
 		mErrorReporter.addError(QString(QObject::tr("Generation internal error, please send bug report to developers."
 				"Additional info: zone node %1 can not be used as labeled node.").arg(block.id())));
 		mErrorsOccured = true;
 		return nullptr;
+	}
+
+	if (existingNode) {
+		if (!mClones.contains(existingNode->id(), dynamic_cast<NonZoneNode *>(existingNode))) {
+			mClones.insert(existingNode->id(), dynamic_cast<NonZoneNode *>(existingNode));
+		}
+
+		mClones.insert(node->id(), node);
 	}
 
 	node->addLabel();
@@ -155,10 +167,67 @@ QLinkedList<SemanticNode *> SemanticTreeManager::copyRightSiblingsUntil(Semantic
 		}
 
 		result << mSemanticTree.produceNodeFor(currentChild->id());
+		if (!mClones.contains(currentChild->id(), dynamic_cast<NonZoneNode *>(currentChild))) {
+			mClones.insert(currentChild->id(), dynamic_cast<NonZoneNode *>(currentChild));
+		}
+
+		mClones.insert(currentChild->id(), dynamic_cast<NonZoneNode *>(result.last()));
+
+		// "If" needs special handling.
+		auto ifNode = dynamic_cast<IfNode *>(currentChild);
+		if (ifNode) {
+			auto newIfNode = dynamic_cast<IfNode *>(result.last());
+			QLinkedList<SemanticNode *> newThenNodes;
+			for (auto node : ifNode->thenZone()->children()) {
+				if (isLabel(node)) {
+					SimpleNode * const gotoNode = mSemanticTree.produceSimple(node->id());
+					gotoNode->bindToSyntheticConstruction(SimpleNode::gotoNode);
+					newThenNodes << gotoNode;
+					continue;
+				}
+
+				newThenNodes << mSemanticTree.produceNodeFor(node->id());
+				if (!mClones.contains(node->id(), dynamic_cast<NonZoneNode *>(node))) {
+					mClones.insert(node->id(), dynamic_cast<NonZoneNode *>(node));
+				}
+
+				mClones.insert(node->id(), dynamic_cast<NonZoneNode *>(newThenNodes.last()));
+			}
+
+			QLinkedList<SemanticNode *> newElseNodes;
+			for (auto node : ifNode->elseZone()->children()) {
+				if (isLabel(node)) {
+					SimpleNode * const gotoNode = mSemanticTree.produceSimple(node->id());
+					gotoNode->bindToSyntheticConstruction(SimpleNode::gotoNode);
+					newElseNodes << gotoNode;
+					continue;
+				}
+
+				newElseNodes << mSemanticTree.produceNodeFor(node->id());
+				if (!mClones.contains(node->id(), dynamic_cast<NonZoneNode *>(node))) {
+					mClones.insert(node->id(), dynamic_cast<NonZoneNode *>(node));
+				}
+
+				mClones.insert(node->id(), dynamic_cast<NonZoneNode *>(newElseNodes.last()));
+			}
+
+			newIfNode->thenZone()->appendChildren(newThenNodes);
+			newIfNode->elseZone()->appendChildren(newElseNodes);
+		}
+
 		if (predicate(currentChild)) {
 			break;
 		}
 	}
 
 	return result;
+}
+
+QList<NonZoneNode *> SemanticTreeManager::nodes(const qReal::Id &id) const
+{
+	if (mClones.contains(id)) {
+		return mClones.values(id);
+	} else {
+		return {mSemanticTree.findNodeFor(id)};
+	}
 }

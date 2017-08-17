@@ -14,7 +14,23 @@
 
 #pragma once
 
-#include <generatorBase/semanticTree/semanticTree.h>
+#include <functional>
+#include <QtCore/QLinkedList>
+#include <QtCore/QMultiHash>
+
+namespace generatorBase {
+namespace semantics {
+class SemanticTree;
+class SemanticNode;
+class NonZoneNode;
+class ZoneNode;
+}
+}
+
+namespace qReal {
+class ErrorReporterInterface;
+class Id;
+}
 
 namespace pioneer {
 namespace lua {
@@ -35,7 +51,7 @@ public:
 	static bool isLabel(const generatorBase::semantics::SemanticNode * const node);
 
 	/// Returns first non-synthetic right sibling of a given node. Returns nullptr if there is no such sibling.
-	static generatorBase::semantics::SemanticNode *findRightSibling(
+	static generatorBase::semantics::SemanticNode *rightSibling(
 			generatorBase::semantics::SemanticNode * const node);
 
 	/// Returns parent of a given node.
@@ -64,6 +80,9 @@ public:
 	/// Produces a node from given block and adds it to a given zone.
 	void addToZone(generatorBase::semantics::ZoneNode * const zone, const qReal::Id &id);
 
+	/// Returns a list of nodes in a semantic tree corresponding to a given Id.
+	QList<generatorBase::semantics::NonZoneNode *> nodes(const qReal::Id &id) const;
+
 private:
 	/// Semantic tree on which we shall work.
 	generatorBase::semantics::SemanticTree &mSemanticTree;
@@ -73,6 +92,13 @@ private:
 
 	/// Reference to a boolean variable which shall be set in case of errors.
 	bool &mErrorsOccured;
+
+	/// For each Id contains a list of nodes that correspond to this id in a semantic tree. Normally there shall be
+	/// only one node in a tree with given id, but excessive copy-pasting done by generation algorithm complicates
+	/// things, so it is needed to keep track of copied nodes.
+	/// This invariant holds: for each Id there is 0 or 1 node in semantic tree corresponding to this Id, or there is
+	/// 2 or more nodes corresponding to this Id in mClones.
+	QMultiHash<qReal::Id, generatorBase::semantics::NonZoneNode *> mClones;
 };
 
 }
