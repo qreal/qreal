@@ -56,8 +56,9 @@ public:
 	/// (i.e. @arg child is not a child of this zone or the last child).
 	SemanticNode *nextChild(SemanticNode *child);
 
-protected:
+	/// Returns a list of children of this zone node.
 	virtual QLinkedList<SemanticNode *> children() const;
+protected:
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 
 private:
