@@ -77,6 +77,18 @@ private:
 	/// Creates synthetic node that denotes end of asynchronous handler.
 	generatorBase::semantics::SemanticNode *produceEndOfHandlerNode();
 
+	/// Logs an error and flags that there were errors.
+	void reportError(const QString &message);
+
+	/// Return true if this is an If node.
+	static bool isIf(const generatorBase::semantics::SemanticNode * const node);
+
+	/// Returns true if this is an end-of-handler node.
+	static bool isEndOfHandler(const generatorBase::semantics::SemanticNode * const node);
+
+	/// Returns nearest right end-of-handler sibling of a given node or nullptr if no such node exists.
+	generatorBase::semantics::NonZoneNode *findEndOfHandler(generatorBase::semantics::SemanticNode * const from) const;
+
 	/// Node types that have asynchronous semantics: send a command to autopilot and continue execution when this
 	/// command is completed (e.g. "GoToPoint").
 	QSet<QString> mAsynchronousNodes;

@@ -48,14 +48,21 @@ public:
 			, bool &errorsOccured);
 
 	/// Returns true if this node is label, i.e. synthetic node that marks other node in a tree.
-	static bool isLabel(const generatorBase::semantics::SemanticNode * const node);
+	static bool isGotoNode(const generatorBase::semantics::SemanticNode * const node);
 
 	/// Returns first non-synthetic right sibling of a given node. Returns nullptr if there is no such sibling.
-	static generatorBase::semantics::SemanticNode *rightSibling(
+	static generatorBase::semantics::SemanticNode *nonSyntheticRightSibling(
+			generatorBase::semantics::SemanticNode * const node);
+
+	/// Returns first sibling of a given node. Returns nullptr if there is no such sibling.
+	static generatorBase::semantics::SemanticNode *anyRightSibling(
 			generatorBase::semantics::SemanticNode * const node);
 
 	/// Returns parent of a given node.
 	static generatorBase::semantics::NonZoneNode *parent(generatorBase::semantics::SemanticNode * const node);
+
+	/// Returns ancestor of a given node that is on a top level (not inside If branch or some other zone).
+	static generatorBase::semantics::NonZoneNode *topLevelParent(generatorBase::semantics::SemanticNode * const node);
 
 	/// Adds nextNode as a right sibling of thisNode.
 	static void addAfter(generatorBase::semantics::SemanticNode * const thisNode
@@ -84,6 +91,19 @@ public:
 	QList<generatorBase::semantics::NonZoneNode *> nodes(const qReal::Id &id) const;
 
 private:
+	/// Returns true if this node is synthetic (has no corresponding block on a diagram).
+	static bool isSynthetic(const generatorBase::semantics::SemanticNode * const node);
+
+	/// Copies children from zone node @p from to zone node @p to.
+	void copyIfBranch(generatorBase::semantics::ZoneNode * const from, generatorBase::semantics::ZoneNode * const to);
+
+	/// Registers one node as a clone of the other node.
+	void registerClone(generatorBase::semantics::SemanticNode * const original
+			, generatorBase::semantics::SemanticNode * const clone);
+
+	/// Logs an error and flags that there were errors.
+	void reportError(const QString &message);
+
 	/// Semantic tree on which we shall work.
 	generatorBase::semantics::SemanticTree &mSemanticTree;
 
