@@ -121,7 +121,7 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 				nextNode = copySynchronousFragment(nextNode, target, true);
 			}
 
-			if (mSemanticTreeManager->isTopLevelNode(thisNode) && !isEndOfHandler(nextNode)) {
+			if (mSemanticTreeManager->isTopLevelNode(thisNode) && !isEndOfHandler(nextNode) && !isEndOfHandler(mSemanticTreeManager->anyRightSibling(nextNode))) {
 				SemanticNode * const endNode = produceEndOfHandlerNode();
 				mSemanticTreeManager->addAfter(nextNode, endNode);
 			}
@@ -248,12 +248,12 @@ void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::D
 		return;
 	}
 
-	mVisitedNodes.insert(nodeId);
-
 	generatorBase::GotoControlFlowGenerator::visit(nodeId, links);
 	for (const auto &hook : mNodeHooks) {
 		hook(nodeId);
 	}
+
+	mVisitedNodes.insert(nodeId);
 }
 
 SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
@@ -357,18 +357,23 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 				oldFragmentStart
 				, [this](SemanticNode * node){ return isAsynchronous(node); });
 
-		// If this node is "If" with asynchronous branches, it will take care of itself, otherwise need go generate
-		// Goto node pointing to a target of asynchronous node.
+		// If this node is "If" with asynchronous branches, it will take care of itself, otherwise need to generate
+		// Goto node pointing to a target of asynchronous node, if we were visited it already. If not, it will generate
+		// Goto by itself.
 		if (!isIf(asynchronousNode)) {
-			auto asynchronousNodeTarget = mSemanticTreeManager->nonSyntheticRightSibling(asynchronousNode);
-			if (!asynchronousNodeTarget) {
-				reportError(tr("Generation internal error, asynchronous node does not have target node."));
-				return nullptr;
-			}
+			if (mVisitedNodes.contains(siblings.last()->id())) {
+				auto asynchronousNodeTarget = mSemanticTreeManager->nonSyntheticRightSibling(asynchronousNode);
+				if (!asynchronousNodeTarget) {
+					reportError(tr("Generation internal error, asynchronous node does not have target node."));
+					return nullptr;
+				}
 
-			auto gotoNode = produceGotoNode(asynchronousNodeTarget->id());
-			fragmentStartNode->appendSibling(gotoNode);
-			return gotoNode;
+				auto gotoNode = produceGotoNode(asynchronousNodeTarget->id());
+				dynamic_cast<NonZoneNode *>(siblings.last())->appendSibling(gotoNode);
+				return gotoNode;
+			} else {
+				return siblings.last();
+			}
 		} else {
 			auto ifNode = dynamic_cast<IfNode *>(siblings.last());
 			// This If node is copied without its end-of-handler node, so we need to check for endNode ourselves.
@@ -426,6 +431,10 @@ bool PioneerStateMachineGenerator::isIf(const SemanticNode * const node)
 
 bool PioneerStateMachineGenerator::isEndOfHandler(const SemanticNode * const node)
 {
+	if (!node) {
+		return false;
+	}
+
 	return node->id().element() == "EndOfHandler";
 }
 
