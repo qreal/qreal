@@ -113,13 +113,7 @@ bool SemanticTreeManager::isTopLevelNode(const generatorBase::semantics::Semanti
 
 void SemanticTreeManager::addToZone(generatorBase::semantics::ZoneNode * const zone, const qReal::Id &id)
 {
-	if (!mSemanticTree.findNodeFor(id)) {
-		SemanticNode * const node = mSemanticTree.produceNodeFor(id);
-		zone->appendChild(node);
-	} else {
-		reportError(QObject::tr("Too complex algorithmic construction, can not generate."));
-		mErrorsOccured = true;
-	}
+	zone->appendChild(produceNode(id));
 }
 
 NonZoneNode *SemanticTreeManager::produceLabeledNode(const qReal::Id &block)

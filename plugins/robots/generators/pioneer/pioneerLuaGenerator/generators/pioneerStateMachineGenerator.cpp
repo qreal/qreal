@@ -153,7 +153,7 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 				// or else we will stall the program waiting for an event that was never initiated.
 				nextNode = copySynchronousFragment(thisNode, target, false);
 
-				if (mSemanticTreeManager->isTopLevelNode(thisNode) && !isEndOfHandler(nextNode)) {
+				if (mSemanticTreeManager->isTopLevelNode(thisNode) && nextNode && !isEndOfHandler(nextNode)) {
 					SemanticNode * const endNode = produceEndOfHandlerNode();
 					mSemanticTreeManager->addAfter(nextNode, endNode);
 				}
