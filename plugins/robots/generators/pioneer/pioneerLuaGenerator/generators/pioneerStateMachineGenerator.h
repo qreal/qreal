@@ -89,6 +89,9 @@ private:
 	/// Returns nearest right end-of-handler sibling of a given node or nullptr if no such node exists.
 	generatorBase::semantics::NonZoneNode *findEndOfHandler(generatorBase::semantics::SemanticNode * const from) const;
 
+	/// Logs given message if trace mode is on.
+	static void trace(const QString &message);
+
 	/// Node types that have asynchronous semantics: send a command to autopilot and continue execution when this
 	/// command is completed (e.g. "GoToPoint").
 	QSet<QString> mAsynchronousNodes;

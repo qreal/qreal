@@ -124,7 +124,6 @@ void SemanticTreeManager::addToZone(generatorBase::semantics::ZoneNode * const z
 
 NonZoneNode *SemanticTreeManager::produceLabeledNode(const qReal::Id &block)
 {
-	auto existingNode = mSemanticTree.findNodeFor(block);
 	NonZoneNode *node = dynamic_cast<NonZoneNode *>(mSemanticTree.produceNodeFor(block));
 
 	if (!node) {
@@ -132,6 +131,8 @@ NonZoneNode *SemanticTreeManager::produceLabeledNode(const qReal::Id &block)
 				"Additional info: zone node %1 can not be used as labeled node.").arg(block.id()));
 		return nullptr;
 	}
+
+	auto existingNode = mSemanticTree.findNodeFor(block);
 
 	if (existingNode) {
 		registerClone(existingNode, node);
@@ -179,27 +180,22 @@ QLinkedList<SemanticNode *> SemanticTreeManager::copyRightSiblingsUntil(Semantic
 		return {};
 	}
 
-	SemanticNode * currentChild = nonZoneNode;
+	NonZoneNode * currentChild = nonZoneNode;
 	QLinkedList<SemanticNode *> result;
 	while (zone->nextChild(currentChild)) {
-		currentChild = zone->nextChild(currentChild);
+		currentChild = dynamic_cast<NonZoneNode *>(zone->nextChild(currentChild));
+
+		if (!currentChild) {
+			reportError(QObject::tr("Generation internal error, zone contains zone node."));
+			return {};
+		}
 
 		if (isGotoNode(currentChild)) {
-			// Label node, we want to simply skip it, as it is not actually a part of a fragment.
+			// Goto node, we want to simply skip it, as it is not actually a part of a fragment.
 			continue;
 		}
 
-		result << mSemanticTree.produceNodeFor(currentChild->id());
-		registerClone(currentChild, result.last());
-
-		// "If" needs special handling, it has complex inner structure that shall be copied.
-		// TODO: Copy If branches recursively.
-		auto ifNode = dynamic_cast<IfNode *>(currentChild);
-		if (ifNode) {
-			auto newIfNode = dynamic_cast<IfNode *>(result.last());
-			copyIfBranch(ifNode->thenZone(), newIfNode->thenZone());
-			copyIfBranch(ifNode->elseZone(), newIfNode->elseZone());
-		}
+		result << copy(currentChild);
 
 		if (predicate(currentChild)) {
 			break;
@@ -218,19 +214,49 @@ QList<NonZoneNode *> SemanticTreeManager::nodes(const qReal::Id &id) const
 	}
 }
 
+NonZoneNode *SemanticTreeManager::produceNode(const qReal::Id &id)
+{
+	auto node = mSemanticTree.findNodeFor(id);
+	if (node) {
+		return copy(node);
+	}
+
+	return static_cast<NonZoneNode *>(mSemanticTree.produceNodeFor(id));
+}
+
+NonZoneNode *SemanticTreeManager::copy(NonZoneNode *node)
+{
+	if (isGotoNode(node)) {
+		SimpleNode * const gotoNode = mSemanticTree.produceSimple(node->id());
+		gotoNode->bindToSyntheticConstruction(SimpleNode::gotoNode);
+		return gotoNode;
+	}
+
+	NonZoneNode * const result = static_cast<NonZoneNode *>(mSemanticTree.produceNodeFor(node->id()));
+	registerClone(node, result);
+
+	// "If" needs special handling, it has complex inner structure that shall be copied.
+	auto ifNode = dynamic_cast<IfNode *>(node);
+	if (ifNode) {
+		auto newIfNode = dynamic_cast<IfNode *>(result);
+		copyIfBranch(ifNode->thenZone(), newIfNode->thenZone());
+		copyIfBranch(ifNode->elseZone(), newIfNode->elseZone());
+	}
+
+	return result;
+}
+
 void SemanticTreeManager::copyIfBranch(ZoneNode * const from, ZoneNode * const to)
 {
 	QLinkedList<SemanticNode *> newNodes;
 	for (auto node : from->children()) {
-		if (isGotoNode(node)) {
-			SimpleNode * const gotoNode = mSemanticTree.produceSimple(node->id());
-			gotoNode->bindToSyntheticConstruction(SimpleNode::gotoNode);
-			newNodes << gotoNode;
-			continue;
+		auto nonZoneNode = dynamic_cast<NonZoneNode *>(node);
+		if (!nonZoneNode) {
+			reportError(QObject::tr("Generation internal error, zone contains zone node."));
+			return;
 		}
 
-		newNodes << mSemanticTree.produceNodeFor(node->id());
-		registerClone(node, newNodes.last());
+		newNodes << copy(nonZoneNode);
 	}
 
 	to->appendChildren(newNodes);
