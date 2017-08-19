@@ -81,6 +81,9 @@ public:
 			generatorBase::semantics::SemanticNode *node
 			, std::function<bool(generatorBase::semantics::SemanticNode *)> predicate);
 
+	/// Creates a new node for a given Id, registers it as clone if node with such Id is already in semantic tree.
+	generatorBase::semantics::NonZoneNode *produceNode(const qReal::Id &id);
+
 	/// Creates node with label for a given id. Does not transfer ownership.
 	generatorBase::semantics::NonZoneNode *produceLabeledNode(const qReal::Id &block);
 
@@ -90,13 +93,19 @@ public:
 	/// Returns a list of nodes in a semantic tree corresponding to a given Id.
 	QList<generatorBase::semantics::NonZoneNode *> nodes(const qReal::Id &id) const;
 
-	/// Creates a new node for a given Id, registers it as clone if node with such Id is already in semantic tree.
-	generatorBase::semantics::NonZoneNode *produceNode(const qReal::Id &id);
+	/// Returns a list of clones for a given semantic node.
+	QList<generatorBase::semantics::NonZoneNode *> clones(generatorBase::semantics::NonZoneNode *node) const;
+
+private:
+	/// Holds information about clones --- cloned node itself and a prototype of this node from which it was cloned.
+	struct CloneInfo {
+		generatorBase::semantics::NonZoneNode *clone;
+		generatorBase::semantics::NonZoneNode *parent;
+	};
 
 	/// Creates a clone of given node. If node is compound statement, copies its children also.
 	generatorBase::semantics::NonZoneNode *copy(generatorBase::semantics::NonZoneNode *node);
 
-private:
 	/// Returns true if this node is synthetic (has no corresponding block on a diagram).
 	static bool isSynthetic(const generatorBase::semantics::SemanticNode * const node);
 
@@ -109,6 +118,9 @@ private:
 
 	/// Logs an error and flags that there were errors.
 	void reportError(const QString &message);
+
+	/// Reeturns true if a given node is a prototype of given clone info (maybe indirect).
+	bool isParent(generatorBase::semantics::NonZoneNode *node, const CloneInfo &cloneInfo) const;
 
 	/// Semantic tree on which we shall work.
 	generatorBase::semantics::SemanticTree &mSemanticTree;
@@ -124,7 +136,7 @@ private:
 	/// things, so it is needed to keep track of copied nodes.
 	/// This invariant holds: for each Id there is 0 or 1 node in semantic tree corresponding to this Id, or there is
 	/// 2 or more nodes corresponding to this Id in mClones.
-	QMultiHash<qReal::Id, generatorBase::semantics::NonZoneNode *> mClones;
+	QMultiHash<qReal::Id, CloneInfo> mClones;
 };
 
 }

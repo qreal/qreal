@@ -89,6 +89,13 @@ private:
 	/// Returns nearest right end-of-handler sibling of a given node or nullptr if no such node exists.
 	generatorBase::semantics::NonZoneNode *findEndOfHandler(generatorBase::semantics::SemanticNode * const from) const;
 
+	/// Processes deferred goto generation requests (if any). Deferred goto generation is caused by trying to generate
+	/// goto for asynchronous node that has not been visited yet, so we had no idea where to transfer control.
+	void doDeferredGotoGeneration(const qReal::Id &nodeId, const qReal::Id &targetId);
+
+	/// Visits parcitular node in a semantic tree.
+	void processNode(generatorBase::semantics::NonZoneNode *thisNode, const qReal::Id &target);
+
 	/// Logs given message if trace mode is on.
 	static void trace(const QString &message);
 
@@ -107,6 +114,14 @@ private:
 
 	/// Helper object for more convenient work with semantic tree.
 	QScopedPointer<SemanticTreeManager> mSemanticTreeManager;
+
+	/// A storage for nodes that are waiting for generation of Goto statements when their target will be known.
+	QMultiHash<qReal::Id, generatorBase::semantics::NonZoneNode *> mDeferredGotoNodes;
+
+	/// Set to keep track of visited nodes by itself, because stock DFSer can visit some nodes twice (when node
+	/// is a target for two non-trivial If branches, for example). Shall fix it in upstream DFS algorithm, but this
+	/// can be  breaking change.
+	QSet<qReal::Id> mVisitedNodes;
 };
 
 }

@@ -55,108 +55,132 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 
 	trace("Visiting " + id.toString());
 
-	const QList<NonZoneNode *> nodesWithThisId = mSemanticTreeManager->nodes(id);
+	const qReal::Id target = links[0].target;
+
+	QList<NonZoneNode *> nodesWithThisId = mSemanticTreeManager->nodes(id);
 	for (auto thisNode : nodesWithThisId) {
-		SemanticNode *nextNode = nullptr;
-		const qReal::Id target = links[0].target;
+		processNode(thisNode, target);
+	}
 
-		if (mAsynchronousNodes.contains(id.element())) {
-			if (mSemanticTree->findNodeFor(target)) {
-				trace("Asynchronous node, target visited.");
+	// Generation of a node may lead to sudden appearance of new copies of a node (for example, if this node was in a
+	// branch of If statement that get copied when generating node, quite common in if-loop programs). So we need to
+	// process new clones as well.
+	auto updatedNodes = mSemanticTreeManager->nodes(id);
+	while (updatedNodes.size() != nodesWithThisId.size()) {
+		for (auto node : updatedNodes) {
+			if (!nodesWithThisId.contains(node)) {
+				processNode(node, target);
+				nodesWithThisId.append(node);
+			}
+		}
 
-				// thisNode is asyncronous node that transfers control to already visited node.
-				// Generated code for thisNode will initiate asynchronous action and all we need to do is to generate
-				// transition to a state which will execute target block when this block finishes its asynchronous
-				// operation.
-				nextNode = produceGotoNode(target);
-				mSemanticTreeManager->addAfter(thisNode, nextNode);
+		updatedNodes = mSemanticTreeManager->nodes(id);
+	}
 
-				if (!mLabeledNodes.contains(target)) {
-					//
-					// Target node, despite being already visited, does not have a label, it means that it is a part of
-					// a synchronous fragment. We copy that fragment from this node to the first asyncronous node and
-					// label a start of the copied fragment. At the end of the fragment we will generate said
-					// asynchronous node, which will initiate asynchronous operation, and then transition to its next
-					// state, which will continue execution when operation is done.
-					//
-					// But first we need to lift copied fragment to a top level, since nextNode may be inside If branch.
-					// Labeling something inside If branch will make generated code uncompilable.
-					// Getting parent node (i.e. If statement to the branch of which our node belongs).
-					//
-					while (!mSemanticTreeManager->isTopLevelNode(nextNode)) {
-						nextNode = mSemanticTreeManager->parent(nextNode);
-					}
+	doDeferredGotoGeneration(id, target);
+}
 
-					// We shall copy nodes from synchronous fragment after end-of-handler node, if it is present.
-					auto sibling = mSemanticTreeManager->anyRightSibling(nextNode);
-					while (sibling != nullptr && isEndOfHandler(sibling)) {
-						nextNode = mSemanticTreeManager->anyRightSibling(nextNode);
-						sibling = mSemanticTreeManager->anyRightSibling(nextNode);
-					}
+void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qReal::Id &target)
+{
+	SemanticNode *nextNode = nullptr;
 
-					nextNode = copySynchronousFragment(nextNode, target, true);
+	if (mAsynchronousNodes.contains(thisNode->id().element())) {
+		if (mSemanticTree->findNodeFor(target)) {
+			trace("Asynchronous node, target visited.");
+
+			// thisNode is asyncronous node that transfers control to already visited node.
+			// Generated code for thisNode will initiate asynchronous action and all we need to do is to generate
+			// transition to a state which will execute target block when this block finishes its asynchronous
+			// operation.
+			nextNode = produceGotoNode(target);
+			mSemanticTreeManager->addAfter(thisNode, nextNode);
+
+			if (!mLabeledNodes.contains(target)) {
+				//
+				// Target node, despite being already visited, does not have a label, it means that it is a part of
+				// a synchronous fragment. We copy that fragment from this node to the first asyncronous node and
+				// label a start of the copied fragment. At the end of the fragment we will generate said
+				// asynchronous node, which will initiate asynchronous operation, and then transition to its next
+				// state, which will continue execution when operation is done.
+				//
+				// But first we need to lift copied fragment to a top level, since nextNode may be inside If branch.
+				// Labeling something inside If branch will make generated code uncompilable.
+				//
+				// Getting parent node (i.e. If statement to the branch of which our node belongs).
+				while (!mSemanticTreeManager->isTopLevelNode(nextNode)) {
+					nextNode = mSemanticTreeManager->parent(nextNode);
 				}
 
-				if (mSemanticTreeManager->isTopLevelNode(thisNode) && !isEndOfHandler(nextNode)) {
-					SemanticNode * const endNode = produceEndOfHandlerNode();
-					mSemanticTreeManager->addAfter(nextNode, endNode);
-				}
-			} else {
-				trace("Asynchronous node, target not visited.");
-
-				// thisNode is asynchronous node that transfers control to a node that has not been visited yet. Generating
-				// transition into a state associated with that node and then a new handler for target node itself.
-				nextNode = mSemanticTreeManager->produceLabeledNode(target);
-				if (!nextNode) {
-					return;
-				} else {
-					mLabeledNodes << nextNode->id();
+				// We shall copy nodes from synchronous fragment after end-of-handler node, if it is present.
+				auto sibling = mSemanticTreeManager->anyRightSibling(nextNode);
+				while (sibling != nullptr && isEndOfHandler(sibling)) {
+					nextNode = mSemanticTreeManager->anyRightSibling(nextNode);
+					sibling = mSemanticTreeManager->anyRightSibling(nextNode);
 				}
 
-				SemanticNode * const gotoNode = produceGotoNode(target);
-				mSemanticTreeManager->addAfter(thisNode, gotoNode);
+				nextNode = copySynchronousFragment(nextNode, target, true);
+			}
 
-				// Labeled node can not be a part of a zone (i.e. "then" or "else" branch), it shall be generated in top
-				// level zone.
-				if (mSemanticTreeManager->isTopLevelNode(thisNode)) {
-					SemanticNode * const endNode = produceEndOfHandlerNode();
-					mSemanticTreeManager->addAfter(gotoNode, endNode);
-					mSemanticTreeManager->addAfter(endNode, nextNode);
-				} else {
-					// Getting parent node (i.e. If statement to the branch of which our node belongs).
-					NonZoneNode *parent = mSemanticTreeManager->topLevelParent(thisNode);
-
-					// Skipping "end" that finishes handler with If.
-					SemanticNode * const endOfHandler = findEndOfHandler(parent);
-
-					if (!endOfHandler) {
-						reportError(tr("Can not find end of an If statement, generation internal error or "
-								"too complex algorithmic construction."));
-						return;
-					}
-
-					// Adding our labeled node denoting new handler after the end of a handler with If node.
-					mSemanticTreeManager->addAfter(endOfHandler, nextNode);
-				}
+			if (mSemanticTreeManager->isTopLevelNode(thisNode) && !isEndOfHandler(nextNode)) {
+				SemanticNode * const endNode = produceEndOfHandlerNode();
+				mSemanticTreeManager->addAfter(nextNode, endNode);
 			}
 		} else {
-			if (!mSemanticTree->findNodeFor(target)) {
-				trace("Synchronous node, target not visited.");
+			trace("Asynchronous node, target not visited.");
 
-				// It is not an asynchronous node, generating as-is.
-				nextNode = mSemanticTreeManager->produceNode(target);
-				mSemanticTreeManager->addAfter(thisNode, nextNode);
+			// thisNode is asynchronous node that transfers control to a node that has not been visited yet. Generating
+			// transition into a state associated with that node and then a new handler for target node itself.
+			nextNode = mSemanticTreeManager->produceLabeledNode(target);
+			if (!nextNode) {
+				reportError(tr("Generation internal error, failed to create a node."));
+				return;
 			} else {
-				trace("Synchronous node, target visited.");
+				mLabeledNodes << nextNode->id();
+			}
 
-				// Synchronous node leading to already visited node. Need some copypasting of synchronous fragments,
-				// or else we will stall the program waiting for an event that was never initiated.
-				nextNode = copySynchronousFragment(thisNode, target, false);
+			SemanticNode * const gotoNode = produceGotoNode(target);
+			mSemanticTreeManager->addAfter(thisNode, gotoNode);
 
-				if (mSemanticTreeManager->isTopLevelNode(thisNode) && nextNode && !isEndOfHandler(nextNode)) {
-					SemanticNode * const endNode = produceEndOfHandlerNode();
-					mSemanticTreeManager->addAfter(nextNode, endNode);
+			// Labeled node can not be a part of a zone (i.e. "then" or "else" branch), it shall be generated in top
+			// level zone.
+			if (mSemanticTreeManager->isTopLevelNode(thisNode)) {
+				SemanticNode * const endNode = produceEndOfHandlerNode();
+				mSemanticTreeManager->addAfter(gotoNode, endNode);
+				mSemanticTreeManager->addAfter(endNode, nextNode);
+			} else {
+				// Getting parent node (i.e. If statement to the branch of which our node belongs).
+				NonZoneNode *parent = mSemanticTreeManager->topLevelParent(thisNode);
+
+				// Skipping "end" that finishes handler with If.
+				SemanticNode * const endOfHandler = findEndOfHandler(parent);
+
+				if (!endOfHandler) {
+					reportError(tr("Can not find end of an If statement, generation internal error or "
+							"too complex algorithmic construction."));
+					return;
 				}
+
+				// Adding our labeled node denoting new handler after the end of a handler with If node.
+				mSemanticTreeManager->addAfter(endOfHandler, nextNode);
+			}
+		}
+	} else {
+		if (!mSemanticTree->findNodeFor(target)) {
+			trace("Synchronous node, target not visited.");
+
+			// It is not an asynchronous node, generating as-is.
+			nextNode = mSemanticTreeManager->produceNode(target);
+			mSemanticTreeManager->addAfter(thisNode, nextNode);
+		} else {
+			trace("Synchronous node, target visited.");
+
+			// Synchronous node leading to already visited node. Need some copypasting of synchronous fragments,
+			// or else we will stall the program waiting for an event that was never initiated.
+			nextNode = copySynchronousFragment(thisNode, target, false);
+
+			if (mSemanticTreeManager->isTopLevelNode(thisNode) && nextNode && !isEndOfHandler(nextNode)) {
+				SemanticNode * const endNode = produceEndOfHandlerNode();
+				mSemanticTreeManager->addAfter(nextNode, endNode);
 			}
 		}
 	}
@@ -220,6 +244,12 @@ void PioneerStateMachineGenerator::visitFinal(const qReal::Id &id, const QList<L
 
 void PioneerStateMachineGenerator::visit(const qReal::Id &nodeId, QList<utils::DeepFirstSearcher::LinkInfo> &links)
 {
+	if (mVisitedNodes.contains(nodeId)) {
+		return;
+	}
+
+	mVisitedNodes.insert(nodeId);
+
 	generatorBase::GotoControlFlowGenerator::visit(nodeId, links);
 	for (const auto &hook : mNodeHooks) {
 		hook(nodeId);
@@ -239,8 +269,8 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 			+ (withLabel ? "true" : "false"));
 
 	// Here "from" may have many corresponding nodes in a semantic tree, but any node will do, so using findNodeFor.
-	NonZoneNode *oldTarget = dynamic_cast<NonZoneNode *>(mSemanticTree->findNodeFor(from));
-	if (!oldTarget) {
+	NonZoneNode *oldFragmentStart = dynamic_cast<NonZoneNode *>(mSemanticTree->findNodeFor(from));
+	if (!oldFragmentStart) {
 		reportError(tr("Generation internal error, zone node corresponds to a block in a diagram."));
 		return nullptr;
 	}
@@ -274,9 +304,9 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 		// Synchronous fragment is trivial and its first node is asynchronous. Generating transition from it and we're
 		// done here.
 		//
-		// Using oldTarget because fragmentStartNode was just added and does not have siblings, but it is a copy
-		// of oldTarget.
-		auto rightSibling = mSemanticTreeManager->nonSyntheticRightSibling(oldTarget);
+		// Using oldFragmentStart because fragmentStartNode was just added and does not have siblings, but it is a copy
+		// of oldFragmentStart.
+		auto rightSibling = mSemanticTreeManager->nonSyntheticRightSibling(oldFragmentStart);
 		if (rightSibling) {
 			if (!isIf(fragmentStartNode)) {
 				const auto gotoNode = produceGotoNode(rightSibling->id());
@@ -293,14 +323,16 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 				return fragmentStartNode;
 			}
 		} else {
-			reportError(tr("Generation internal error, asynchronous fragment start node generation failed."));
+			// Target of fragment start was not visited yet. Here we don't know yet where to generate a goto, so we
+			// need to defer generation --- save Id of a fragment start and a node after which we shall add "goto"
+			// when we will know where it leads.
+			mDeferredGotoNodes.insert(fragmentStartNode->id(), fragmentStartNode);
+			return fragmentStartNode;
 		}
-
-		return nullptr;
 	}
 
 	auto siblings = mSemanticTreeManager->copyRightSiblingsUntil(
-			oldTarget
+			oldFragmentStart
 			, [this](SemanticNode * node){ return isAsynchronous(node); });
 
 	if (siblings.isEmpty()) {
@@ -322,7 +354,7 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 		// shall have one target node. If it is an If statement, If already can take care of transferring control
 		// through asynchronous nodes in its branches.
 		auto asynchronousNode = mSemanticTreeManager->findSibling(
-				oldTarget
+				oldFragmentStart
 				, [this](SemanticNode * node){ return isAsynchronous(node); });
 
 		// If this node is "If" with asynchronous branches, it will take care of itself, otherwise need go generate
@@ -402,6 +434,27 @@ NonZoneNode *PioneerStateMachineGenerator::findEndOfHandler(SemanticNode * const
 	return dynamic_cast<NonZoneNode *>(
 			mSemanticTreeManager->findSibling(from, [this](SemanticNode *node){ return isEndOfHandler(node); })
 			);
+}
+
+void PioneerStateMachineGenerator::doDeferredGotoGeneration(const qReal::Id &nodeId, const qReal::Id &targetId)
+{
+	if (mDeferredGotoNodes.contains(nodeId)) {
+		QList<NonZoneNode *> nodesToCheck;
+		for (auto node : mDeferredGotoNodes.values(nodeId)) {
+			nodesToCheck << node;
+			nodesToCheck << mSemanticTreeManager->clones(node);
+		}
+
+		for (auto node : nodesToCheck) {
+			const auto sibling = mSemanticTreeManager->anyRightSibling(node);
+			if (!sibling || !mSemanticTreeManager->isGotoNode(sibling)) {
+				auto gotoNode = produceGotoNode(targetId);
+				mSemanticTreeManager->addAfter(node, gotoNode);
+			}
+		}
+
+		mDeferredGotoNodes.remove(nodeId);
+	}
 }
 
 void PioneerStateMachineGenerator::trace(const QString &message)

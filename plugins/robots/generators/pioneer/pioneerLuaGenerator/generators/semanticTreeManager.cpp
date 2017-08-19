@@ -118,18 +118,12 @@ void SemanticTreeManager::addToZone(generatorBase::semantics::ZoneNode * const z
 
 NonZoneNode *SemanticTreeManager::produceLabeledNode(const qReal::Id &block)
 {
-	NonZoneNode *node = dynamic_cast<NonZoneNode *>(mSemanticTree.produceNodeFor(block));
+	NonZoneNode *node = produceNode(block);
 
 	if (!node) {
 		reportError(QObject::tr("Generation internal error, please send bug report to developers."
 				"Additional info: zone node %1 can not be used as labeled node.").arg(block.id()));
 		return nullptr;
-	}
-
-	auto existingNode = mSemanticTree.findNodeFor(block);
-
-	if (existingNode) {
-		registerClone(existingNode, node);
 	}
 
 	node->addLabel();
@@ -202,10 +196,52 @@ QLinkedList<SemanticNode *> SemanticTreeManager::copyRightSiblingsUntil(Semantic
 QList<NonZoneNode *> SemanticTreeManager::nodes(const qReal::Id &id) const
 {
 	if (mClones.contains(id)) {
-		return mClones.values(id);
+		QList<NonZoneNode *> result;
+		for (const auto &clone : mClones.values(id)) {
+			result << clone.clone;
+		}
+
+		return result;
 	} else {
 		return { mSemanticTree.findNodeFor(id) };
 	}
+}
+
+QList<NonZoneNode *> SemanticTreeManager::clones(NonZoneNode *node) const
+{
+	if (!node) {
+		return {};
+	}
+
+	if (!mClones.contains(node->id())) {
+		return {};
+	}
+
+	QList<NonZoneNode *> result;
+	for (const CloneInfo &cloneInfo : mClones.values(node->id())) {
+		if (isParent(node, cloneInfo)) {
+			result << cloneInfo.clone;
+		}
+	}
+
+	return result;
+}
+
+bool SemanticTreeManager::isParent(NonZoneNode *node, const SemanticTreeManager::CloneInfo &cloneInfo) const
+{
+	if (node == cloneInfo.parent) {
+		return true;
+	}
+
+	for (const CloneInfo &parent : mClones.values(node->id())) {
+		if (parent.clone == cloneInfo.parent) {
+			if (isParent(node, parent)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 NonZoneNode *SemanticTreeManager::produceNode(const qReal::Id &id)
@@ -220,6 +256,8 @@ NonZoneNode *SemanticTreeManager::produceNode(const qReal::Id &id)
 
 NonZoneNode *SemanticTreeManager::copy(NonZoneNode *node)
 {
+	qDebug() << "Cloning" << node->id();
+
 	if (isGotoNode(node)) {
 		SimpleNode * const gotoNode = mSemanticTree.produceSimple(node->id());
 		gotoNode->bindToSyntheticConstruction(SimpleNode::gotoNode);
@@ -258,11 +296,21 @@ void SemanticTreeManager::copyIfBranch(ZoneNode * const from, ZoneNode * const t
 
 void SemanticTreeManager::registerClone(SemanticNode * const original, SemanticNode * const clone)
 {
-	if (!mClones.contains(original->id(), dynamic_cast<NonZoneNode *>(original))) {
-		mClones.insert(original->id(), dynamic_cast<NonZoneNode *>(original));
+	auto contains = [this](NonZoneNode * const node) {
+		for (auto clone : mClones.values(node->id())) {
+			if (clone.clone == node) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
+	if (!contains(static_cast<NonZoneNode *>(original))) {
+		mClones.insert(original->id(), CloneInfo{static_cast<NonZoneNode *>(original), nullptr});
 	}
 
-	mClones.insert(clone->id(), dynamic_cast<NonZoneNode *>(clone));
+	mClones.insert(clone->id(), CloneInfo{static_cast<NonZoneNode *>(clone), static_cast<NonZoneNode *>(original)});
 }
 
 void SemanticTreeManager::reportError(const QString &message)
