@@ -90,6 +90,12 @@ public:
 	/// Returns a list of nodes in a semantic tree corresponding to a given Id.
 	QList<generatorBase::semantics::NonZoneNode *> nodes(const qReal::Id &id) const;
 
+	/// Creates a new node for a given Id, registers it as clone if node with such Id is already in semantic tree.
+	generatorBase::semantics::NonZoneNode *produceNode(const qReal::Id &id);
+
+	/// Creates a clone of given node. If node is compound statement, copies its children also.
+	generatorBase::semantics::NonZoneNode *copy(generatorBase::semantics::NonZoneNode *node);
+
 private:
 	/// Returns true if this node is synthetic (has no corresponding block on a diagram).
 	static bool isSynthetic(const generatorBase::semantics::SemanticNode * const node);
