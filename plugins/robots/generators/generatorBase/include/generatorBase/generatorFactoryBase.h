@@ -56,7 +56,7 @@ public:
 
 	virtual ~GeneratorFactoryBase();
 
-	void initialize();
+	virtual void initialize();
 
 	/// Sets an id of the root diagram for obtaining sensors configuration.
 	void setMainDiagramId(const qReal::Id &diagramId);

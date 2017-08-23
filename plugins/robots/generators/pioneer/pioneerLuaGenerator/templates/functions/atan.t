@@ -1,0 +1,1 @@
+-- atan() function is currently not supported

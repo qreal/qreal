@@ -25,6 +25,7 @@ includes(plugins/robots/generators/generatorBase \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-kit-base robots-trik-kit)
@@ -36,6 +37,7 @@ TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
+	$$PWD/include/trikGeneratorBase/trikBlocksValidator.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
@@ -79,6 +81,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/removeFileGenerator.h \
 
 SOURCES += \
+	$$PWD/src/trikBlocksValidator.cpp \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
 	$$PWD/src/trikMasterGeneratorBase.cpp \
 	$$PWD/src/trikGeneratorCustomizer.cpp \

@@ -62,7 +62,7 @@ void GotoControlFlowGenerator::visitConditional(const Id &id, const QList<LinkIn
 {
 	Q_UNUSED(links)
 
-	QPair<LinkInfo, LinkInfo> const branches(ifBranchesFor(id));
+	const QPair<LinkInfo, LinkInfo> branches(ifBranchesFor(id));
 	const LinkInfo thenLink = branches.first;
 	const LinkInfo elseLink = branches.second;
 

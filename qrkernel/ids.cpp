@@ -85,6 +85,17 @@ Id::Id(const Id &base, const QString &additional)
 	Q_ASSERT(checkIntegrity());
 }
 
+Id::Id()
+	: Id("")
+{
+}
+
+Id::Id(const Id &other)
+	: Id(other.editor(), other.diagram(), other.element(), other.id())
+{
+}
+
+
 bool Id::isNull() const
 {
 	return mEditor.isEmpty() && mDiagram.isEmpty()

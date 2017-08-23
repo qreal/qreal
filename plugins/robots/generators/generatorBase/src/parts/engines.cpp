@@ -50,7 +50,7 @@ QString Engines::terminateCode()
 QString Engines::readEngineTemplate(const QString &pathToTemplate)
 {
 	QStringList result;
-	foreach (const QString &port, mUsedPorts) {
+	for (const QString &port : mUsedPorts) {
 		result << readTemplateIfExists(pathToTemplate).replace("@@PORT@@", port);
 	}
 

@@ -31,6 +31,7 @@ includes(\
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(robots-trik-f-sharp-generator-library robots-trik-generator-base robots-generator-base robots-trik-kit \

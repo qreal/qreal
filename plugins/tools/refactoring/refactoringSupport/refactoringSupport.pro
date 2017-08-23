@@ -17,14 +17,12 @@ include(../../../../global.pri)
 QT += xml
 
 TEMPLATE = lib
-CONFIG += plugin 
+CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools/
 
-links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
+includes(thirdparty/qscintilla/Qt4Qt5 qrgui)
 
-INCLUDEPATH += \
-	$$PWD/../../../.. \
-	$$PWD/../../../../qrgui/ \
+links(qrkernel qrutils qrrepo qrgui-preferences-dialog)
 
 QT += widgets
 

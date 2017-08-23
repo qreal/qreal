@@ -19,6 +19,8 @@
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpython.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexercpp.h>
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerpascal.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerlua.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexerjavascript.h>
 
 #include "qrgui/textEditor/textEditorDeclSpec.h"
 
@@ -133,7 +135,7 @@ public:
 				, QObject::tr("Java Script Language Source File")            /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, new QsciLexerCPP()                                         /* lexer */
+				, new QsciLexerJavaScript()                                  /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -145,7 +147,7 @@ public:
 				, QObject::tr("QtScript Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
-				, new QsciLexerCPP()                                         /* lexer */
+				, new QsciLexerJavaScript()                                  /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -171,6 +173,18 @@ public:
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
 				, new QsciLexerPascal()                                         /* lexer */
+				, additionalTokens                                           /* additional autocompletion tokens */
+		};
+	}
+
+	/// The information about the Lua language.
+	static LanguageInfo lua(const QStringList &additionalTokens = QStringList())
+	{
+		return LanguageInfo{"lua"                                            /* extension */
+				, QObject::tr("Lua Language Source File")                    /* extension description */
+				, true                                                       /* tabs indentation */
+				, 8                                                          /* tab size */
+				, new QsciLexerLua()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}

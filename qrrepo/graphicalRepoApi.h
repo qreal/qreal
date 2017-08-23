@@ -55,7 +55,7 @@ public:
 	virtual void removeTemporaryRemovedLinks(const qReal::Id &id) = 0;
 
 	virtual void copyProperties(const qReal::Id &dest, const qReal::Id &src) = 0;
-	virtual QMap<QString, QVariant> properties(const qReal::Id &id) = 0;
+	virtual QMap<QString, QVariant> properties(const qReal::Id &id) const = 0;
 	virtual void setProperties(const qReal::Id &id, QMap<QString, QVariant> const &properties) = 0;
 
 	virtual void createGraphicalPart(const qReal::Id &id, int partIndex) = 0;

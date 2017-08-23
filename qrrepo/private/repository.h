@@ -74,7 +74,7 @@ public:
 	void setProperty(const qReal::Id &id, const QString &name, const QVariant &value) const;
 	void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 	QVariant property(const qReal::Id &id, const QString &name) const;
-	QMap<QString, QVariant> properties(const qReal::Id &id);
+	QMap<QString, QVariant> properties(const qReal::Id &id) const;
 	void setProperties(const qReal::Id &id, QMap<QString, QVariant> const &properties);
 	bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false
 			, bool regExpression = false) const;

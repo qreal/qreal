@@ -19,6 +19,8 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/
 
+includes(thirdparty/qscintilla/Qt4Qt5)
+
 links(qrkernel qslog qrgui-preferences-dialog)
 
 INCLUDEPATH += \

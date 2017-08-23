@@ -1,23 +1,18 @@
 // This defines the interface to the QsciLexerCustom class.
 //
-// Copyright (c) 2012 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
-// This file may be used under the terms of the GNU General Public
-// License versions 2.0 or 3.0 as published by the Free Software
-// Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
-// included in the packaging of this file.  Alternatively you may (at
-// your option) use any later version of the GNU General Public
-// License if such license has been publicly approved by Riverbank
-// Computing Limited (or its successors, if any) and the KDE Free Qt
-// Foundation. In addition, as a special exception, Riverbank gives you
-// certain additional rights. These rights are described in the Riverbank
-// GPL Exception version 1.1, which can be found in the file
-// GPL_EXCEPTION.txt in this package.
+// This file may be used under the terms of the GNU General Public License
+// version 3.0 as published by the Free Software Foundation and appearing in
+// the file LICENSE included in the packaging of this file.  Please review the
+// following information to ensure the GNU General Public License version 3.0
+// requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 // 
-// If you are unsure which license is appropriate for your use, please
-// contact the sales department at sales@riverbankcomputing.com.
+// If you do not wish to use this file under the terms of the GPL version 3.0
+// then you may purchase a commercial license.  For more information contact
+// info@riverbankcomputing.com.
 // 
 // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
 // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -25,10 +20,6 @@
 
 #ifndef QSCILEXERCUSTOM_H
 #define QSCILEXERCUSTOM_H
-
-#ifdef __APPLE__
-extern "C++" {
-#endif
 
 #include <Qsci/qsciglobal.h>
 #include <Qsci/qscilexer.h>
@@ -76,11 +67,7 @@ public:
     //! \sa startStyling(), styleText()
     void setStyling(int length, const QsciStyle &style);
 
-    //! The styling position is set to \a start and the mask of style bits that
-    //! can be set is set to \a styleBits.  \a styleBits allows the styling of
-    //! text to be done over several passes by setting different style bits on
-    //! each pass.  If \a styleBits is 0 then all style bits (as returned by
-    //! styleBitsNeeded()) are set.
+    //! The styling position is set to \a start.  \a styleBits is unused.
     //!
     //! \sa setStyling(), styleBitsNeeded(), styleText()
     void startStyling(int pos, int styleBits = 0);
@@ -91,7 +78,8 @@ public:
     //! followed by one or more calls to setStyling().  It must be
     //! re-implemented by a sub-class.
     //!
-    //! \sa setStyling(), startStyling()
+    //! \sa setStyling(), startStyling(), QsciScintilla::bytes(),
+    //! QsciScintilla::text()
     virtual void styleText(int start, int end) = 0;
 
     //! \reimp
@@ -108,9 +96,5 @@ private:
     QsciLexerCustom(const QsciLexerCustom &);
     QsciLexerCustom &operator=(const QsciLexerCustom &);
 };
-
-#ifdef __APPLE__
-}
-#endif
 
 #endif

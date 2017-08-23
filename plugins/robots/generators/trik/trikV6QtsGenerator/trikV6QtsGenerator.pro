@@ -31,6 +31,7 @@ includes( \
 		plugins/robots/common/trikKit \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \

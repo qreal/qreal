@@ -16,11 +16,13 @@
 
 #include "nonZoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A base for all nodes with condition (like ifs and loops)
-class ConditionalNode : public NonZoneNode
+class ROBOTS_GENERATOR_EXPORT ConditionalNode : public NonZoneNode
 {
 public:
 	explicit ConditionalNode(const qReal::Id &idBinded, QObject *parent = 0);

@@ -26,6 +26,7 @@ includes(plugins/robots/generators/ev3/ev3GeneratorBase \
 		plugins/robots/common/ev3Kit \
 		plugins/robots/utils \
 		qrtext \
+		thirdparty/qscintilla/Qt4Qt5 \
 )
 
 links(qrkernel qslog qrutils qrrepo robots-generator-base robots-ev3-kit robots-kit-base)

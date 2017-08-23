@@ -50,7 +50,7 @@ public:
 	/// @param diagram Diagram part of an Id (palette tab name).
 	/// @param element Element part of an Id (element type name).
 	/// @param id Id part of an, mm, Id. Represents identity of a model element.
-	explicit Id(const QString &editor = "", QString  const &diagram = ""
+	explicit Id(const QString &editor, QString  const &diagram = ""
 			, QString  const &element = "", QString  const &id = "");
 
 	/// Convenience constructor, creates Id by given base Id adding new part as
@@ -59,6 +59,12 @@ public:
 	/// @param base Id that will be extended.
 	/// @param additional Part of Id that will be added to base Id.
 	Id(const Id &base, const QString &additional);
+
+	/// Default constructor, as required by QMetaType.
+	Id();
+
+	/// Copy constructor, as required by QMetaType.
+	Id(const Id &other);
 
 	/// Returns true if this id is an empty one (same as == Id())
 	bool isNull() const;

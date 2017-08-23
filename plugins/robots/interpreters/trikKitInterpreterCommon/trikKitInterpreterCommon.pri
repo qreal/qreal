@@ -23,6 +23,7 @@ includes(plugins/robots/common/kitBase \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikControl \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikNetwork \
 		plugins/robots/thirdparty/trikRuntime/trikRuntime/trikScriptRunner \
+		thirdparty/qscintilla/Qt4Qt5 \
 		)
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \

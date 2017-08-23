@@ -1,4 +1,4 @@
-# Copyright 2016 Iakov Kirilenko, 2007-2015 QReal Research Group
+# Copyright 2016 Iakov Kirilenko, 2007-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -62,8 +62,8 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<5\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
-!clang:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
+!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<[5-6]\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
+!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
 
 unix:!CONFIG(nosanitizers) {
 
@@ -126,7 +126,7 @@ INCLUDEPATH += $$_PRO_FILE_PWD_ \
 
 LIBS += -L$$DESTDIR
 
-QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra 
+QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra
 
 CONFIG(gcc5)|clang{
 	QMAKE_CXXFLAGS +=-Werror=pedantic -Werror=delete-incomplete
@@ -138,9 +138,16 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 
 
 # I want -Werror to be turned on, but Qt has problems
-#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter 
+#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
 
 GLOBAL_PWD = $$PWD
+
+# Simple function that checks if given argument is a file or directory.
+# Returns false if argument 1 is a file or does not exist.
+defineTest(isDir) {
+	exists($$1/*):return(true)
+	return(false)
+}
 
 # Useful function to copy additional files to destination,
 # from http://stackoverflow.com/questions/3984104/qmake-how-to-copy-a-file-to-the-output
@@ -151,30 +158,28 @@ defineTest(copyToDestdir) {
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
 		AFTER_SLASH = $$section(FILE, "/", -1, -1)
-		isEmpty(QMAKE_SH) {
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
-			win32 {
-				BASE_NAME = $$section(FILE, "/", -2, -2)
-				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
-				equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, 0)
-
-				FILE ~= s,/$,,g
-
-				FILE ~= s,/,\\,g
+		win32 {
+			FILE = $$system_path($$FILE)
+			isDir($$FILE) {
+				ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
+				BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
+				DESTDIR_SUFFIX = /$$BASE_NAME
 			}
-			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			win32:DDIR ~= s,/,\\,g
-		} else {
-			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			system("mkdir -p $$DDIR")
 		}
+
+		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+		win32:DDIR ~= s,/,\\,g
+		mkpath($$DDIR)
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsisten behaviour
+			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
 			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
+				# Message here is very useful in diagnostics.
+				message("Executing `cmd /C xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i`")
 				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
 			}
 

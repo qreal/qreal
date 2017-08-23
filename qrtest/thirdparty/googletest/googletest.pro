@@ -31,5 +31,5 @@ HEADERS += \
 	$$files(googlemock/include/gmock/internal/*.h) \
 
 SOURCES += \
-	$$files(googletest/src/*.cc) \
-	$$files(googlemock/src/*.cc) \
+	$$PWD/googletest/src/gtest-all.cc \
+	$$PWD/googlemock/src/gmock-all.cc \

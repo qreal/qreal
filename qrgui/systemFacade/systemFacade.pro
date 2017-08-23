@@ -20,6 +20,8 @@ TEMPLATE = lib
 
 QT += widgets
 
+includes(thirdparty/qscintilla/Qt4Qt5)
+
 links(qrkernel qslog qrutils qrgui-models qrgui-plugin-manager qrgui-text-editor qrgui-tool-plugin-interface)
 
 TRANSLATIONS = \
