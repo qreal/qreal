@@ -92,8 +92,13 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 			// Generated code for thisNode will initiate asynchronous action and all we need to do is to generate
 			// transition to a state which will execute target block when this block finishes its asynchronous
 			// operation.
-			nextNode = produceGotoNode(target);
-			mSemanticTreeManager->addAfter(thisNode, nextNode);
+			auto rightSibling = mSemanticTreeManager->anyRightSibling(thisNode);
+			if (!rightSibling || !mSemanticTreeManager->isGotoNode(rightSibling)) {
+				// Goto node may already be produced as a copy from previous instance of this node, so skipping it if
+				// not needed.
+				nextNode = produceGotoNode(target);
+				mSemanticTreeManager->addAfter(thisNode, nextNode);
+			}
 
 			if (!mLabeledNodes.contains(target)) {
 				//
