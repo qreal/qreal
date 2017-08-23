@@ -46,7 +46,6 @@ qReal::IdList PioneerBlocksFactory::blocksToHide() const
 {
 	return {
 			id("Function")
-			, id("FiBlock")
 			, id("SwitchBlock")
 			, id("Loop")
 			, id("Subprogram")
