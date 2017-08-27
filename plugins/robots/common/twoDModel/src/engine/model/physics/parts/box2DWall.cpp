@@ -34,7 +34,7 @@ box2DWall::box2DWall(twoDModel::model::physics::box2DPhysicsEngine *engine
 	QVector2D vect = QVector2D(end - beg);
 	float32 length = vect.length();
 	float32 cosOfAngle = QVector2D::dotProduct(vect, QVector2D(1, 0)) / length;
-	float32 angle = mathUtils::Math::eq(length, 0, mathUtils::EPS) ? 0 : qAcos(cosOfAngle);
+	float32 angle = mathUtils::Math::eq(length, 0) ? 0 : qAcos(cosOfAngle);
 	angle *= end.y() > beg.y() ? -1 : 1;
 
 	b2BodyDef bodyDef;

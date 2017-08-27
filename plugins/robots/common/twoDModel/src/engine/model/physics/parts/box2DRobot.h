@@ -40,7 +40,9 @@ public:
 	b2World &world; // Doesn't take ownership
 
 	box2DRobot(twoDModel::model::physics::box2DPhysicsEngine *engine
-			, twoDModel::model::RobotModel * const robotModel);
+			, twoDModel::model::RobotModel * const robotModel
+			, b2Vec2 pos
+			, float angle);
 	~box2DRobot();
 
 private:

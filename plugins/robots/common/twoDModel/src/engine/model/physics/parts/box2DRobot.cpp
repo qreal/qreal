@@ -24,20 +24,16 @@
 using namespace twoDModel::model::physics;
 using namespace parts;
 
-box2DRobot::box2DRobot(box2DPhysicsEngine *engine
-		, twoDModel::model::RobotModel * const robotModel)
+box2DRobot::box2DRobot(box2DPhysicsEngine *engine, twoDModel::model::RobotModel * const robotModel
+		, b2Vec2 pos, float angle)
 	: model(robotModel), engine(engine), world(engine->box2DWorld())
 {
-//	Q_UNUSED(wheelsPosition);
-//	Q_UNUSED(wheelsRotation);
-
-	b2Vec2 posRobot = engine->positionToBox2D(model->rotationCenter());
 	float32 widthRobotM =  engine->pxToM(model->info().size().width());
 	float32 heightRobotM = engine->pxToM(model->info().size().height());
 
 	b2BodyDef bodyDef;
-	bodyDef.position = posRobot;
-	bodyDef.angle = engine->angleToBox2D(model->rotation());
+	bodyDef.position = pos;
+	bodyDef.angle = angle;
 	bodyDef.type = b2_dynamicBody;
 	body = world.CreateBody(&bodyDef);
 
@@ -62,10 +58,11 @@ box2DRobot::~box2DRobot() {
 }
 
 void box2DRobot::connectWheels() {
-	b2Vec2 posLeftWheel = engine->positionToBox2D(model->position()
-			+ QPointF(twoDModel::robotWheelDiameterInPx / 2, 5));
-	b2Vec2 posRightWheel = engine->positionToBox2D(model->position()
-			+ QPointF(twoDModel::robotWheelDiameterInPx / 2, model->info().size().width() - 5));
+	QPointF leftUpCorner = QPointF(-model->info().size().width() / 2, -model->info().size().height() / 2);
+	b2Vec2 posLeftWheel = body->GetWorldPoint(engine->positionToBox2D(
+			QPointF(twoDModel::robotWheelDiameterInPx / 2, 5) + leftUpCorner));
+	b2Vec2 posRightWheel = body->GetWorldPoint(engine->positionToBox2D(
+			QPointF(twoDModel::robotWheelDiameterInPx / 2, model->info().size().width() - 5) + leftUpCorner));
 
 	box2DWheel *leftWheel = new box2DWheel(posLeftWheel, body->GetAngle(), *this);
 	box2DWheel *rightWheel = new box2DWheel(posRightWheel, body->GetAngle(), *this);

@@ -21,12 +21,16 @@
 class b2World;
 
 namespace twoDModel {
-namespace model {
-namespace physics {
-namespace parts {
-	class box2DRobot;
-	class box2DWheel;
-	class box2DWall;
+	namespace view {
+		class TwoDModelScene;
+		class RobotItem;
+	}
+	namespace model {
+	namespace physics {
+	namespace parts {
+		class box2DRobot;
+		class box2DWheel;
+		class box2DWall;
 }
 
 class box2DPhysicsEngine : public PhysicsEngineBase
@@ -59,9 +63,11 @@ public:
 	}
 
 public slots:
-	void onMouseReleased();
-	void onMousePressed();
-	void onWallDragged(items::WallItem *wall);//, const QPainterPath &shape, const QRectF &oldPos);
+	void onWallResize();
+	void onWallDragged(items::WallItem *wall);
+	void onRobotStartPositionChanged(const QPointF &newPos, twoDModel::model::RobotModel *robot);
+	void onRobotStartAngleChanged(const qreal newAngle, twoDModel::model::RobotModel *robot);
+	void onMouseReleased(QPointF newPos, qreal newAngle);
 
 protected:
 	void onPixelsInCmChanged(qreal value) override;
@@ -69,7 +75,9 @@ protected:
 	void itemRemoved(QGraphicsItem * const item) override;
 
 private:
-	QGraphicsScene *mScene;
+	void drawDebugRobot();
+
+	twoDModel::view::TwoDModelScene *mScene;
 	qreal mPixelsInCm;
 	QScopedPointer<b2World> mWorld;
 
@@ -78,7 +86,8 @@ private:
 	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<QGraphicsItem *, parts::box2DWall *> mBox2DWalls;  // Takes ownership on b2Body instances
 	items::WallItem *mCurrentWall; // Doesn't take ownership
-	bool mIsMousePressed;
+	bool mRobotWasOnGround;
+	bool firstSetPos = true;
 
 	b2Vec2 mPrevPosition;
 	float32 mPrevAngle;

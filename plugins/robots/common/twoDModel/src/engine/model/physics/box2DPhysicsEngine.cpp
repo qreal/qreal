@@ -20,6 +20,7 @@
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/worldModel.h"
 #include "src/engine/view/scene/twoDModelScene.h"
+#include "src/engine/view/scene/robotItem.h"
 #include "src/engine/items/wallItem.h"
 #include "qrutils/mathUtils/math.h"
 #include "parts/box2DWheel.h"
@@ -52,34 +53,45 @@ box2DPhysicsEngine::~box2DPhysicsEngine(){
 	mBox2DWalls.clear();
 }
 
-QVector2D box2DPhysicsEngine::positionShift(twoDModel::model::RobotModel &robot) const
+QVector2D box2DPhysicsEngine::positionShift(model::RobotModel &robot) const
 {
 	if (!mBox2DRobots.contains(&robot))
 		return QVector2D();
 	return QVector2D(positionToScene(mBox2DRobots[&robot]->body->GetPosition() - mPrevPosition));
 }
 
-qreal box2DPhysicsEngine::rotation(twoDModel::model::RobotModel &robot) const
+qreal box2DPhysicsEngine::rotation(model::RobotModel &robot) const
 {
 	if (!mBox2DRobots.contains(&robot))
 		return 0;
 	return angleToScene(mBox2DRobots[&robot]->body->GetAngle() - mPrevAngle);
 }
 
-#include <QDebug>
-void box2DPhysicsEngine::addRobot(twoDModel::model::RobotModel * const robot)
+void box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 {
 	PhysicsEngineBase::addRobot(robot);
-	box2DRobot *b2Robot = new box2DRobot(this, robot);
+	box2DRobot *b2Robot = new box2DRobot(this, robot, positionToBox2D(robot->rotationCenter())
+		, angleToBox2D(robot->rotation()));
 	mBox2DRobots[robot] = b2Robot;
 	mPrevPosition = b2Robot->body->GetPosition();
 	mPrevAngle = b2Robot->body->GetAngle();
+	mRobotWasOnGround = true;
 
 	box2DWheel *lWheel = b2Robot->wheels.at(0);
 	box2DWheel *rWheel = b2Robot->wheels.at(1);
 	mLeftWheels[robot] = lWheel;
 	mRightWheels[robot] = rWheel;
 
+	auto funcPos = [&] (const QPointF &newPos) {
+		onRobotStartPositionChanged(newPos, dynamic_cast<model::RobotModel *>(sender()));
+	};
+
+	auto funcAngle = [&] (const qreal newAngle){
+		onRobotStartAngleChanged(newAngle, dynamic_cast<model::RobotModel *>(sender()));
+	};
+
+	connect(robot, &model::RobotModel::positionChanged, this, funcPos);
+	connect(robot, &model::RobotModel::rotationChanged, this, funcAngle);
 	//test
 	//robot
 	b2AABB aabb;
@@ -89,6 +101,7 @@ void box2DPhysicsEngine::addRobot(twoDModel::model::RobotModel * const robot)
 		, mToPx(aabb.upperBound.x - aabb.lowerBound.x)
 		, mToPx(aabb.upperBound.y - aabb.lowerBound.y));
 	robotItem->setBrush(QBrush(Qt::red));
+
 
 	//leftWheel
 	lWheel->body->GetFixtureList()->GetShape()->ComputeAABB(
@@ -107,23 +120,77 @@ void box2DPhysicsEngine::addRobot(twoDModel::model::RobotModel * const robot)
 	wheel2Item->setBrush(QBrush(Qt::blue));
 
 	QTimer::singleShot(10, [=]() {
-
-		//IMPORTANT LINES
-		mScene = robot->startPositionMarker()->scene();
-		connect(dynamic_cast<twoDModel::view::TwoDModelScene *>(mScene)
-				, &twoDModel::view::TwoDModelScene::mouseReleased, this, &onMouseReleased);
-		connect(dynamic_cast<twoDModel::view::TwoDModelScene *>(mScene)
-				, &twoDModel::view::TwoDModelScene::mousePressed, this, &onMousePressed);
-		//
+		mScene = dynamic_cast<view::TwoDModelScene *>(robot->startPositionMarker()->scene());
+		auto funcRelease = [=] {
+			view::RobotItem *rItem = mScene->robot(*robot);
+			if (rItem != nullptr)
+				onMouseReleased(rItem->pos(), rItem->rotation());
+		};
+		connect(mScene, &view::TwoDModelScene::mouseReleased, this, funcRelease);
+		//connect(mScene, &view::TwoDModelScene::mousePressed, this, &onMousePressed);
+		//connect(mScene->robot(*mBox2DRobots.first()->model), &view::RobotItem::itemChanged, this, &onMouseReleased);
 
 		mScene->addItem(robotItem);
 		mScene->addItem(wheel1Item);
 		mScene->addItem(wheel2Item);
+
+		drawDebugRobot();
 	});
 	//
 }
 
-void box2DPhysicsEngine::removeRobot(twoDModel::model::RobotModel * const robot)
+void box2DPhysicsEngine::onRobotStartPositionChanged(const QPointF &newPos, model::RobotModel *robot)
+{
+	b2Body *rb = mBox2DRobots[robot]->body;
+	const QPointF oldPos = positionToScene(rb->GetPosition());
+	bool oldPosIsZero = firstSetPos;
+	firstSetPos = false;
+	bool newPosIsZero = Math::eq(newPos.x(), 0) && Math::eq(newPos.y(), 0);
+	bool robotOnTheGroundNow = mRobotWasOnGround;
+	if (oldPosIsZero || newPosIsZero || robotOnTheGroundNow){
+		float angle = mBox2DRobots[robot]->body->GetAngle();
+		delete mBox2DRobots[robot];
+		QPointF newPosShift = newPos + QPointF(robot->info().size().width() / 2, robot->info().size().height() / 2);
+		mBox2DRobots[robot] = new box2DRobot(this, robot, positionToBox2D(newPosShift), angle);
+		box2DWheel *lWheel = mBox2DRobots[robot]->wheels.at(0);
+		box2DWheel *rWheel = mBox2DRobots[robot]->wheels.at(1);
+		mLeftWheels[robot] = lWheel;
+		mRightWheels[robot] = rWheel;
+
+		drawDebugRobot();
+	}
+}
+
+void box2DPhysicsEngine::onRobotStartAngleChanged(const qreal newAngle, model::RobotModel *robot)
+{
+	b2Body *rb = mBox2DRobots[robot]->body;
+	const qreal oldAngle = angleToScene(rb->GetAngle());
+	bool oldAngleIsZero = Math::eq(oldAngle, 0);
+	bool newAngleIsZero = Math::eq(newAngle, 0);
+	bool robotOnTheGroundNow = mRobotWasOnGround;
+	if (oldAngleIsZero || newAngleIsZero || robotOnTheGroundNow){
+		b2Vec2 pos = mBox2DRobots[robot]->body->GetPosition();
+		delete mBox2DRobots[robot];
+		mBox2DRobots[robot] = new box2DRobot(this, robot, pos, angleToBox2D(newAngle));
+		box2DWheel *lWheel = mBox2DRobots[robot]->wheels.at(0);
+		box2DWheel *rWheel = mBox2DRobots[robot]->wheels.at(1);
+		mLeftWheels[robot] = lWheel;
+		mRightWheels[robot] = rWheel;
+
+		drawDebugRobot();
+	}
+}
+
+void box2DPhysicsEngine::onMouseReleased(QPointF newPos, qreal newAngle)
+{
+	mRobotWasOnGround = true;
+	box2DRobot *robot = mBox2DRobots.first();
+	onRobotStartAngleChanged(newAngle, robot->model);
+	onRobotStartPositionChanged(newPos, robot->model);
+	mRobotWasOnGround = false;
+}
+
+void box2DPhysicsEngine::removeRobot(model::RobotModel * const robot)
 {
 	PhysicsEngineBase::removeRobot(robot);
 	delete mBox2DRobots[robot];
@@ -137,26 +204,21 @@ void box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 	const int velocityIterations = 4;
 	const int positionIterations = 3;
 
-	twoDModel::model::RobotModel * const robot = mRobots.first();
+	model::RobotModel * const robot = mRobots.first();
 	b2Body *rBody = mBox2DRobots[robot]->body;
 
 	mPrevPosition = rBody->GetPosition();
 	mPrevAngle = rBody->GetAngle();
 
-	const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) * 1000.0f / timeInterval;
-	const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) * 1000.0f / timeInterval;
+	// pixels/milliseconds -> meters/seconds * 10
+	const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) * 1000.0f / timeInterval * 10;
+	const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) * 1000.0f / timeInterval * 10;
 
 	mLeftWheels[robot]->keepConstantSpeed(speed1);
 	mRightWheels[robot]->keepConstantSpeed(speed2);
 
 	mWorld->Step(timeInterval / 1000.0f, velocityIterations, positionIterations);
-
-	robotItem->setPos(positionToScene(rBody->GetPosition()));
-	robotItem->setRotation(angleToScene(rBody->GetAngle()));
-	wheel1Item->setPos(positionToScene(mLeftWheels[robot]->body->GetPosition()));
-	wheel1Item->setRotation(angleToScene(mLeftWheels[robot]->body->GetAngle()));
-	wheel2Item->setPos(positionToScene(mRightWheels[robot]->body->GetPosition()));
-	wheel2Item->setRotation(angleToScene(mRightWheels[robot]->body->GetAngle()));
+	drawDebugRobot();
 }
 
 void box2DPhysicsEngine::onPixelsInCmChanged(qreal value)
@@ -164,11 +226,11 @@ void box2DPhysicsEngine::onPixelsInCmChanged(qreal value)
 	mPixelsInCm = value;
 }
 
-void box2DPhysicsEngine::itemAdded(twoDModel::items::SolidItem * const item)
+void box2DPhysicsEngine::itemAdded(items::SolidItem * const item)
 {
 	if (dynamic_cast<items::WallItem *>(item)) {
 		mCurrentWall = dynamic_cast<items::WallItem *>(item);
-		connect(mCurrentWall, &items::WallItem::wallDragged, this, &onWallDragged);
+		//connect(mCurrentWall, &items::WallItem::wallDragged, this, &onWallDragged);
 
 		auto func = [&] {
 			onWallDragged(dynamic_cast<items::WallItem *> (sender()));
@@ -177,17 +239,11 @@ void box2DPhysicsEngine::itemAdded(twoDModel::items::SolidItem * const item)
 		connect(mCurrentWall, &items::WallItem::x2Changed, this, func);
 		connect(mCurrentWall, &items::WallItem::y1Changed, this, func);
 		connect(mCurrentWall, &items::WallItem::y2Changed, this, func);
-		if (!mIsMousePressed)
-			onMouseReleased();
+		onWallResize();
 	}
 }
 
-void box2DPhysicsEngine::onMousePressed(){
-	mIsMousePressed = true;
-}
-
-void box2DPhysicsEngine::onMouseReleased(){
-	mIsMousePressed = false;
+void box2DPhysicsEngine::onWallResize(){
 	if (!mCurrentWall)
 		return;
 	box2DWall *wall = new box2DWall(this, *mCurrentWall);
@@ -208,10 +264,10 @@ void box2DPhysicsEngine::onMouseReleased(){
 	mCurrentWall = nullptr;
 }
 
-void box2DPhysicsEngine::onWallDragged(twoDModel::items::WallItem *wall){
-	mIsMousePressed = true;
+void box2DPhysicsEngine::onWallDragged(items::WallItem *wall){
 	itemRemoved(wall);
 	mCurrentWall = wall;
+	onWallResize();
 }
 
 void box2DPhysicsEngine::itemRemoved(QGraphicsItem * const item)
@@ -223,6 +279,16 @@ void box2DPhysicsEngine::itemRemoved(QGraphicsItem * const item)
 		delete mBox2DWalls[item];
 		mBox2DWalls.remove(item);
 	}
+}
+
+void box2DPhysicsEngine::drawDebugRobot()
+{
+	robotItem->setPos(positionToScene(mBox2DRobots.first()->body->GetPosition()));
+	robotItem->setRotation(angleToScene(mBox2DRobots.first()->body->GetAngle()));
+	wheel1Item->setPos(positionToScene(mLeftWheels.first()->body->GetPosition()));
+	wheel1Item->setRotation(angleToScene(mLeftWheels.first()->body->GetAngle()));
+	wheel2Item->setPos(positionToScene(mRightWheels.first()->body->GetPosition()));
+	wheel2Item->setRotation(angleToScene(mRightWheels.first()->body->GetAngle()));
 }
 
 float32 box2DPhysicsEngine::pxToCm(qreal px) const
