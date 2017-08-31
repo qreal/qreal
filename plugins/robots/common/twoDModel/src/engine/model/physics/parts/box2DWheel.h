@@ -38,7 +38,7 @@ public:
 	~box2DWheel();
 	b2Vec2 getLateralVelocity() const;
 	b2Vec2 getForwardVelocity() const;
-	void keepConstantSpeed(float speed);
+	void keepConstantSpeed(float speed, float time);
 
 protected:
 	float prevSpeed = 0;

@@ -64,12 +64,12 @@ b2Vec2 box2DWheel::getForwardVelocity() const {
 }
 
 //bool isStart = true;
-void box2DWheel::keepConstantSpeed(float speed) {
+void box2DWheel::keepConstantSpeed(float speed, float time) {
 	if (!mathUtils::Math::eq(speed, prevSpeed)){
 	//if (isStart){
 		robot.body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.01f * mathUtils::Math::sign(speed), 0)), true);
-		isStart = false;
-		//body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.01f * mathUtils::Math::sign(speed), 0)), true);
+		//isStart = false;
+		body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.01f * mathUtils::Math::sign(speed), 0)), true);
 		prevSpeed = speed;
 	//}
 	}

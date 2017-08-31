@@ -41,22 +41,9 @@ public:
 	QVector2D positionShift(RobotModel &robot) const override;
 	qreal rotation(RobotModel &robot) const override;
 	void addRobot(RobotModel * const robot) override;
+	void addRobot(RobotModel * const robot, QPointF pos, qreal angle);
 	void removeRobot(RobotModel * const robot) override;
 	void recalculateParameters(qreal timeInterval) override;
-
-	float pxToCm(qreal px) const;
-	b2Vec2 pxToCm(const QPointF posInPx) const;
-	qreal cmToPx(float cm) const;
-	QPointF cmToPx(const b2Vec2 posInCm) const;
-	float32 pxToM(qreal px) const;
-	qreal mToPx(float32 m) const;
-
-	b2Vec2 positionToBox2D(QPointF sceneCoords) const;
-	b2Vec2 positionToBox2D(float32 x, float32 y) const;
-	QPointF positionToScene(b2Vec2 boxCoords) const;
-	QPointF positionToScene(float32 x, float32 y) const;
-	float32 angleToBox2D(qreal sceneAngle) const;
-	qreal angleToScene(float32 boxAngle) const;
 
 	b2World &box2DWorld(){
 		return *mWorld.data();
@@ -75,7 +62,22 @@ protected:
 	void itemRemoved(QGraphicsItem * const item) override;
 
 private:
-	void drawDebugRobot();
+	void drawDebugRobot(model::RobotModel* const robot);
+	void createDebugRobot(model::RobotModel* const robot);
+
+	float pxToCm(qreal px) const;
+	b2Vec2 pxToCm(const QPointF posInPx) const;
+	qreal cmToPx(float cm) const;
+	QPointF cmToPx(const b2Vec2 posInCm) const;
+	float32 pxToM(qreal px) const;
+	qreal mToPx(float32 m) const;
+
+	b2Vec2 positionToBox2D(QPointF sceneCoords) const;
+	b2Vec2 positionToBox2D(float32 x, float32 y) const;
+	QPointF positionToScene(b2Vec2 boxCoords) const;
+	QPointF positionToScene(float32 x, float32 y) const;
+	float32 angleToBox2D(qreal sceneAngle) const;
+	qreal angleToScene(float32 boxAngle) const;
 
 	twoDModel::view::TwoDModelScene *mScene;
 	qreal mPixelsInCm;
@@ -86,7 +88,7 @@ private:
 	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<QGraphicsItem *, parts::box2DWall *> mBox2DWalls;  // Takes ownership on b2Body instances
 	items::WallItem *mCurrentWall; // Doesn't take ownership
-	bool mRobotWasOnGround;
+	bool mMouseJustReleased = false;
 	bool firstSetPos = true;
 
 	b2Vec2 mPrevPosition;

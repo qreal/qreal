@@ -67,6 +67,7 @@ signals:
 	void mousePressed();
 	void changedPosition(RobotItem *robotItem);
 	void drawTrace(const QPen &pen, const QPointF &from, const QPointF &to);
+	//void itemChanged(RobotItem *robotItem, QPointF pos, qreal angle);
 
 private:
 	class BeepItem : public QGraphicsItem
