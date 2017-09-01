@@ -45,22 +45,22 @@
 						<image y1="0" name="images/pioneerGoToPointBlock.svg" x1="0" y2="50" x2="50"/>
 					</picture>
 					<labels>
-						<label x="35" y="60" textBinded="Latitude" background="white" prefix="Latitude:"/>
-						<label x="35" y="90" textBinded="Longitude" background="white" prefix="Longitude:"/>
-						<label x="35" y="120" textBinded="Altitude" background="white" prefix="Altitude:"/>
+						<label x="35" y="60" textBinded="X" background="white" prefix="X:"/>
+						<label x="35" y="90" textBinded="Y" background="white" prefix="Y:"/>
+						<label x="35" y="120" textBinded="Z" background="white" prefix="Z:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
 				<logic>
 					<container/>
 						<properties>
-							<property displayedName="Latitude" type="string" name="Latitude">
+							<property displayedName="X" type="string" name="X">
 								<default>0</default>
 							</property>
-							<property displayedName="Longitude" type="string" name="Longitude">
+							<property displayedName="Y" type="string" name="Y">
 								<default>0</default>
 							</property>
-							<property displayedName="Altitude" type="string" name="Altitude">
+							<property displayedName="Z" type="string" name="Z">
 								<default>0</default>
 							</property>
 						</properties>
