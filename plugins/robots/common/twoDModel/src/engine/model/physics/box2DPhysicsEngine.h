@@ -45,6 +45,20 @@ public:
 	void removeRobot(RobotModel * const robot) override;
 	void recalculateParameters(qreal timeInterval) override;
 
+	float pxToCm(qreal px) const;
+	b2Vec2 pxToCm(const QPointF posInPx) const;
+	qreal cmToPx(float cm) const;
+	QPointF cmToPx(const b2Vec2 posInCm) const;
+	float32 pxToM(qreal px) const;
+	qreal mToPx(float32 m) const;
+
+	b2Vec2 positionToBox2D(QPointF sceneCoords) const;
+	b2Vec2 positionToBox2D(float32 x, float32 y) const;
+	QPointF positionToScene(b2Vec2 boxCoords) const;
+	QPointF positionToScene(float32 x, float32 y) const;
+	float32 angleToBox2D(qreal sceneAngle) const;
+	qreal angleToScene(float32 boxAngle) const;
+
 	b2World &box2DWorld(){
 		return *mWorld.data();
 	}
@@ -64,20 +78,6 @@ protected:
 private:
 	void drawDebugRobot(model::RobotModel* const robot);
 	void createDebugRobot(model::RobotModel* const robot);
-
-	float pxToCm(qreal px) const;
-	b2Vec2 pxToCm(const QPointF posInPx) const;
-	qreal cmToPx(float cm) const;
-	QPointF cmToPx(const b2Vec2 posInCm) const;
-	float32 pxToM(qreal px) const;
-	qreal mToPx(float32 m) const;
-
-	b2Vec2 positionToBox2D(QPointF sceneCoords) const;
-	b2Vec2 positionToBox2D(float32 x, float32 y) const;
-	QPointF positionToScene(b2Vec2 boxCoords) const;
-	QPointF positionToScene(float32 x, float32 y) const;
-	float32 angleToBox2D(qreal sceneAngle) const;
-	qreal angleToScene(float32 boxAngle) const;
 
 	twoDModel::view::TwoDModelScene *mScene;
 	qreal mPixelsInCm;

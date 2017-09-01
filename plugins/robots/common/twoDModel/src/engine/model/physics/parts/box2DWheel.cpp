@@ -63,22 +63,32 @@ b2Vec2 box2DWheel::getForwardVelocity() const {
 	return b2Dot( currentForwardNormal, body->GetLinearVelocity() ) * currentForwardNormal;
 }
 
-//bool isStart = true;
 void box2DWheel::keepConstantSpeed(float speed, float time) {
-	if (!mathUtils::Math::eq(speed, prevSpeed)){
-	//if (isStart){
-		robot.body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.01f * mathUtils::Math::sign(speed), 0)), true);
-		//isStart = false;
-		body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.01f * mathUtils::Math::sign(speed), 0)), true);
-		prevSpeed = speed;
-	//}
-	}
-	b2Vec2 impulse = body->GetMass() * -getLateralVelocity();
-	body->ApplyLinearImpulse( impulse, body->GetWorldCenter(), true );
 
-	b2Vec2 currentForwardNormal = getForwardVelocity();
-	float currentForwardSpeed = currentForwardNormal.Normalize();
-	float speedChange = currentForwardSpeed - speed;
-	b2Vec2 forwardImpulse = speedChange * body->GetMass() * -currentForwardNormal;
-	body->ApplyLinearImpulse(forwardImpulse, body->GetWorldCenter(), true );
+	if (!mathUtils::Math::eq(prevSpeed, speed)){
+		robot.body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.001f * mathUtils::Math::sign(speed), 0)), true);
+		prevSpeed = speed;
+	}
+
+	b2Vec2 lateralImpulse = body->GetMass() * -getLateralVelocity();
+	body->ApplyLinearImpulse(lateralImpulse, body->GetWorldCenter(), true );
+
+	b2Vec2 forwardNormal = getForwardVelocity();
+	float scalar = b2Dot(forwardNormal, body->GetWorldVector(b2Vec2(1, 0))) < 0 ? -1 : 1;
+	float currentForwardSpeed = forwardNormal.Normalize() * scalar;
+	forwardNormal = body->GetWorldVector(b2Vec2(1, 0));
+
+	float desiredSpeed = currentForwardSpeed;
+	float speedPiece = 0.01f;
+	if (currentForwardSpeed < speed) {
+		desiredSpeed += speedPiece;
+	}
+	else if (currentForwardSpeed > speed) {
+		desiredSpeed -= speedPiece;
+	}
+	else return;
+
+	float speedDiff = desiredSpeed - currentForwardSpeed;
+	b2Vec2 linearImpulse = speedDiff * body->GetMass() * forwardNormal;
+	body->ApplyLinearImpulse(linearImpulse, body->GetWorldCenter(), true);
 }

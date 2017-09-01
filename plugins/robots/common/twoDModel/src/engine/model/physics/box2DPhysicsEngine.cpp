@@ -191,15 +191,15 @@ void box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 
 	mPrevPosition = rBody->GetPosition();
 	mPrevAngle = rBody->GetAngle();
+	float32 secondsInterval = timeInterval / 1000.0f;
 
-	// pixels/milliseconds -> meters/seconds * 10
-	const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / (timeInterval / 1000.0f) * 10;
-	const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / (timeInterval / 1000.0f) * 10;
+	const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * 10;
+	const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * 10;
 
-	mLeftWheels[robot]->keepConstantSpeed(speed1, timeInterval / 1000.0f);
-	mRightWheels[robot]->keepConstantSpeed(speed2, timeInterval / 1000.0f);
+	mLeftWheels[robot]->keepConstantSpeed(speed1, secondsInterval);
+	mRightWheels[robot]->keepConstantSpeed(speed2, secondsInterval);
 
-	mWorld->Step(timeInterval / 1000.0f, velocityIterations, positionIterations);
+	mWorld->Step(secondsInterval, velocityIterations, positionIterations);
 	drawDebugRobot(robot);
 }
 
