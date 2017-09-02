@@ -69,6 +69,7 @@ public slots:
 	void onRobotStartPositionChanged(const QPointF &newPos, twoDModel::model::RobotModel *robot);
 	void onRobotStartAngleChanged(const qreal newAngle, twoDModel::model::RobotModel *robot);
 	void onMouseReleased(QPointF newPos, qreal newAngle);
+	void onRecoverRobotPosition(QPointF pos);
 
 protected:
 	void onPixelsInCmChanged(qreal value) override;

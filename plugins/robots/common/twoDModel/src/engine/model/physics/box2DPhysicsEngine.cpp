@@ -127,6 +127,7 @@ void box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 				onMouseReleased(rItem->pos(), rItem->rotation());
 		};
 		connect(mScene, &view::TwoDModelScene::mouseReleased, this, funcRelease);
+		connect(mScene->robot(*robot), &view::RobotItem::recoverRobotPosition, this, &onRecoverRobotPosition);
 
 		drawDebugRobot(robot);
 	});
@@ -172,6 +173,15 @@ void box2DPhysicsEngine::onMouseReleased(QPointF newPos, qreal newAngle)
 	mMouseJustReleased = false;
 }
 
+void box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
+{
+	mMouseJustReleased = true;
+	box2DRobot *robot = mBox2DRobots.first();
+	onRobotStartAngleChanged(angleToScene(robot->body->GetAngle()), robot->model);
+	onRobotStartPositionChanged(pos, robot->model);
+	mMouseJustReleased = false;
+}
+
 void box2DPhysicsEngine::removeRobot(model::RobotModel * const robot)
 {
 	PhysicsEngineBase::removeRobot(robot);
@@ -212,8 +222,6 @@ void box2DPhysicsEngine::itemAdded(items::SolidItem * const item)
 {
 	if (dynamic_cast<items::WallItem *>(item)) {
 		mCurrentWall = dynamic_cast<items::WallItem *>(item);
-		//connect(mCurrentWall, &items::WallItem::wallDragged, this, &onWallDragged);
-
 		auto func = [&] {
 			onWallDragged(dynamic_cast<items::WallItem *> (sender()));
 		};
