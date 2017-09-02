@@ -129,6 +129,8 @@ void box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 		connect(mScene, &view::TwoDModelScene::mouseReleased, this, funcRelease);
 		connect(mScene->robot(*robot), &view::RobotItem::recoverRobotPosition, this, &onRecoverRobotPosition);
 
+		connect(robot, &model::RobotModel::deserialized, this, &onMouseReleased);
+
 		drawDebugRobot(robot);
 	});
 }
@@ -144,6 +146,8 @@ void box2DPhysicsEngine::addRobot(model::RobotModel * const robot, QPointF pos, 
 
 void box2DPhysicsEngine::onRobotStartPositionChanged(const QPointF &newPos, model::RobotModel *robot)
 {
+	if (!mBox2DRobots.contains(robot))
+		return;
 	bool newPosIsZero = Math::eq(newPos.x(), 0) && Math::eq(newPos.y(), 0);
 	if (newPosIsZero || firstSetPos || mMouseJustReleased){
 		firstSetPos = false;
@@ -156,6 +160,8 @@ void box2DPhysicsEngine::onRobotStartPositionChanged(const QPointF &newPos, mode
 
 void box2DPhysicsEngine::onRobotStartAngleChanged(const qreal newAngle, model::RobotModel *robot)
 {
+	if (!mBox2DRobots.contains(robot))
+		return;
 	const qreal oldAngle = angleToScene(mBox2DRobots[robot]->body->GetAngle());
 	if (Math::eq(oldAngle, 0) || Math::eq(newAngle, 0) || mMouseJustReleased){
 		b2Vec2 pos = mBox2DRobots[robot]->body->GetPosition();

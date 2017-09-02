@@ -146,6 +146,8 @@ signals:
 	void positionChanged(const QPointF &newPosition);
 	void rotationChanged(qreal newRotation);
 
+	void deserialized(QPointF newPosition, qreal newRotation);
+
 	/// Emitted when robot rided himself (moved on motors force, not dragged by user or smth) from one point to other.
 	void robotRided(const QPointF &newPosition, const qreal newRotation);
 
