@@ -110,6 +110,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3EnginesBackward")
 		, id("Ev3EnginesStop")
 		, id("Ev3ClearEncoder")
+		, id("Ev3CalibrateGyroscope")
 		, id("Ev3Led")
 		, id("Ev3SendMail")
 
@@ -141,6 +142,7 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 				<< id("Ev3WaitForGyroscope")
 				<< id("Ev3SendMail")
 				<< id("Ev3WaitForReceivingMail")
+				<< id("Ev3CalibrateGyroscope")
 				;
 	} else {
 		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {

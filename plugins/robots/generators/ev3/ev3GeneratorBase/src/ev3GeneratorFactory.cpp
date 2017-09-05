@@ -24,6 +24,7 @@
 #include "simpleGenerators/nullificationEncoderGenerator.h"
 #include "simpleGenerators/sendMailGenerator.h"
 #include "simpleGenerators/receiveMailGenerator.h"
+#include "simpleGenerators/calibrateGyroscopeGenerator.h"
 
 #include "converters/outputPortNameConverter.h"
 #include "converters/ledColorConverter.h"
@@ -89,6 +90,8 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return randomIdGenerator(new SendMailGenerator(mRepo, customizer, id, this));
 	} else if (elementType == "Ev3WaitForReceivingMail") {
 		return randomIdGenerator(new ReceiveMailGenerator(mRepo, customizer, id, this));
+	} else if (elementType == "Ev3CalibrateGyroscope") {
+		return new CalibrateGyroscopeGenerator(mRepo, customizer, id, this);
 	}
 
 	return randomIdGenerator(GeneratorFactoryBase::simpleGenerator(id, customizer));

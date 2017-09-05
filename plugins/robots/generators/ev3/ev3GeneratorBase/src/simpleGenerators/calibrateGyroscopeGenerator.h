@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2015 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,17 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "kitBase/robotModel/robotParts/gyroscopeSensor.h"
+#pragma once
 
-using namespace kitBase::robotModel;
-using namespace robotParts;
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-GyroscopeSensor::GyroscopeSensor(const DeviceInfo &info, const PortInfo &port)
-	: VectorSensor(info, port)
+namespace ev3 {
+namespace simple {
+
+/// Generator for 'Calibrate Gyroscope' block
+class CalibrateGyroscopeGenerator: public generatorBase::simple::BindingGenerator
 {
+public:
+	CalibrateGyroscopeGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent = 0);
+};
+
 }
-
-void GyroscopeSensor::calibrate()
-{
-	setLastData({0, 0, 0});
 }

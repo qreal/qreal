@@ -53,7 +53,8 @@ HEADERS += \
 	$$PWD/src/converters/outputPortNameConverter.h \
 	$$PWD/src/converters/ledColorConverter.h \
 	$$PWD/src/simpleGenerators/sendMailGenerator.h \
-	$$PWD/src/simpleGenerators/receiveMailGenerator.h
+	$$PWD/src/simpleGenerators/receiveMailGenerator.h \
+	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.h \
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \
@@ -73,6 +74,7 @@ SOURCES += \
 	$$PWD/src/converters/outputPortNameConverter.cpp \
 	$$PWD/src/converters/ledColorConverter.cpp \
 	$$PWD/src/simpleGenerators/sendMailGenerator.cpp \
-	$$PWD/src/simpleGenerators/receiveMailGenerator.cpp
+	$$PWD/src/simpleGenerators/receiveMailGenerator.cpp \
+	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.cpp \
 
 OTHER_FILES +=
