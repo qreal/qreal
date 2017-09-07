@@ -229,7 +229,7 @@ void EditorViewMViface::handleNodeElementsForRowsInserted(
 }
 
 void EditorViewMViface::handleEdgeElementsForRowsInserted(
-		const QList<QPair<EdgeElement *, QPersistentModelIndex> > &edges
+		const QList<QPair<EdgeElement *, QPersistentModelIndex>> &edges
 		, const QModelIndex &parent
 		)
 {

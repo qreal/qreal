@@ -186,6 +186,8 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 		if (localPortTypes.at(qFloor(oldFrom)) == localPortTypes.at(qFloor(newFrom))) {
 			mEdge->setFromPort(newFrom);
 		}
+
+		mGraphicalModel.mutableGraphicalRepoApi().setFrom(mEdge->id(), src->id());
 	}
 
 	if (dst && reconnectDst) {
@@ -196,6 +198,8 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 		if (localPortTypes.at(qFloor(oldTo)) == localPortTypes.at(qFloor(newTo))) {
 			mEdge->setToPort(newTo);
 		}
+
+		mGraphicalModel.mutableGraphicalRepoApi().setTo(mEdge->id(), dst->id());
 	}
 }
 
