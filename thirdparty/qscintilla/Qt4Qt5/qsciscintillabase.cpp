@@ -1,23 +1,18 @@
 // This module implements the "official" low-level API.
 //
-// Copyright (c) 2012 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
-// This file may be used under the terms of the GNU General Public
-// License versions 2.0 or 3.0 as published by the Free Software
-// Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
-// included in the packaging of this file.  Alternatively you may (at
-// your option) use any later version of the GNU General Public
-// License if such license has been publicly approved by Riverbank
-// Computing Limited (or its successors, if any) and the KDE Free Qt
-// Foundation. In addition, as a special exception, Riverbank gives you
-// certain additional rights. These rights are described in the Riverbank
-// GPL Exception version 1.1, which can be found in the file
-// GPL_EXCEPTION.txt in this package.
+// This file may be used under the terms of the GNU General Public License
+// version 3.0 as published by the Free Software Foundation and appearing in
+// the file LICENSE included in the packaging of this file.  Please review the
+// following information to ensure the GNU General Public License version 3.0
+// requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 // 
-// If you are unsure which license is appropriate for your use, please
-// contact the sales department at sales@riverbankcomputing.com.
+// If you do not wish to use this file under the terms of the GPL version 3.0
+// then you may purchase a commercial license.  For more information contact
+// info@riverbankcomputing.com.
 // 
 // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
 // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -25,12 +20,9 @@
 
 #include "Qsci/qsciscintillabase.h"
 
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <qcolor.h>
-#include <qscrollbar.h>
-#include <qtextcodec.h>
-
+#include <QApplication>
+#include <QClipboard>
+#include <QColor>
 #include <QContextMenuEvent>
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
@@ -42,6 +34,9 @@
 #include <QMimeData>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QScrollBar>
+#include <QStyle>
+#include <QTextCodec>
 
 #include "ScintillaQt.h"
 
@@ -82,97 +77,31 @@ static QList<QsciScintillaBase *> poolList;
 static const QLatin1String mimeTextPlain("text/plain");
 static const QLatin1String mimeRectangularWin("MSDEVColumnSelect");
 static const QLatin1String mimeRectangular("text/x-qscintilla-rectangular");
-static const QLatin1String utiRectangularMac("com.scintilla.utf16-plain-text.rectangular");
 
-// FIXME: QMacPasteboardMime isn't in Qt v5 yet.
-#if QT_VERSION >= 0x040200 && defined(Q_OS_MAC) && QT_VERSION < 0x050000
-#include <QMacPasteboardMime>
-
-class RectangularPasteboardMime : public QMacPasteboardMime
-{
-public:
-    RectangularPasteboardMime() : QMacPasteboardMime(MIME_ALL)
-    {
-    }
-
-    bool canConvert(const QString &mime, QString flav)
-    {
-        return mime == mimeRectangular && flav == utiRectangularMac;
-    }
-
-    QList<QByteArray> convertFromMime(const QString &, QVariant data, QString)
-    {
-        QList<QByteArray> converted;
-
-        converted.append(data.toByteArray());
-
-        return converted;
-    }
-
-    QVariant convertToMime(const QString &, QList<QByteArray> data, QString)
-    {
-        QByteArray converted;
-
-        foreach (QByteArray i, data)
-        {
-            converted += i;
-        }
-
-        return QVariant(converted);
-    }
-
-    QString convertorName()
-    {
-        return QString("QScintillaRectangular");
-    }
-
-    QString flavorFor(const QString &mime)
-    {
-        if (mime == mimeRectangular)
-            return QString(utiRectangularMac);
-
-        return QString();
-    }
-
-    QString mimeFor(QString flav)
-    {
-        if (flav == utiRectangularMac)
-            return QString(mimeRectangular);
-
-        return QString();
-    }
-
-    static void initialise()
-    {
-        if (!instance)
-        {
-            instance = new RectangularPasteboardMime();
-
-            qRegisterDraggedTypes(QStringList(utiRectangularMac));
-        }
-    }
-
-private:
-    static RectangularPasteboardMime *instance;
-};
-
-RectangularPasteboardMime *RectangularPasteboardMime::instance;
+#if (QT_VERSION >= 0x040200 && QT_VERSION < 0x050000 && defined(Q_OS_MAC)) || (QT_VERSION >= 0x050200 && defined(Q_OS_OSX))
+extern void initialiseRectangularPasteboardMime();
 #endif
-
 
 // The ctor.
 QsciScintillaBase::QsciScintillaBase(QWidget *parent)
-    : QAbstractScrollArea(parent)
+    : QAbstractScrollArea(parent), preeditPos(-1), preeditNrBytes(0)
+#if QT_VERSION >= 0x050000
+        , clickCausedFocus(false)
+#endif
 {
-    connect(verticalScrollBar(), SIGNAL(valueChanged(int)),
-            SLOT(handleVSb(int)));
-
-    connect(horizontalScrollBar(), SIGNAL(valueChanged(int)),
-            SLOT(handleHSb(int)));
+    connectVerticalScrollBar();
+    connectHorizontalScrollBar();
 
     setAcceptDrops(true);
     setFocusPolicy(Qt::WheelFocus);
     setAttribute(Qt::WA_KeyCompression);
+    setAttribute(Qt::WA_InputMethodEnabled);
+#if QT_VERSION >= 0x050100
+    setInputMethodHints(
+            Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText|Qt::ImhMultiLine);
+#elif QT_VERSION >= 0x040600
+    setInputMethodHints(Qt::ImhNoAutoUppercase|Qt::ImhNoPredictiveText);
+#endif
 
     viewport()->setBackgroundRole(QPalette::Base);
     viewport()->setMouseTracking(true);
@@ -180,9 +109,8 @@ QsciScintillaBase::QsciScintillaBase(QWidget *parent)
 
     triple_click.setSingleShot(true);
 
-// FIXME: QMacPasteboardMime isn't in Qt v5 yet.
-#if QT_VERSION >= 0x040200 && defined(Q_OS_MAC) && QT_VERSION < 0x050000
-    RectangularPasteboardMime::initialise();
+#if (QT_VERSION >= 0x040200 && QT_VERSION < 0x050000 && defined(Q_OS_MAC)) || (QT_VERSION >= 0x050200 && defined(Q_OS_OSX))
+    initialiseRectangularPasteboardMime();
 #endif
 
     sci = new QsciScintillaQt(this);
@@ -209,10 +137,11 @@ QsciScintillaBase::QsciScintillaBase(QWidget *parent)
 // The dtor.
 QsciScintillaBase::~QsciScintillaBase()
 {
+    // The QsciScintillaQt object isn't a child so delete it explicitly.
+    delete sci;
+
     // Remove it from the pool.
     poolList.removeAt(poolList.indexOf(this));
-
-    delete sci;
 }
 
 
@@ -294,7 +223,7 @@ long QsciScintillaBase::SendScintilla(unsigned int msg, int wParam) const
 long QsciScintillaBase::SendScintilla(unsigned int msg, long cpMin, long cpMax,
         char *lpstrText) const
 {
-    QSCI_SCI_NAMESPACE(TextRange) tr;
+    Sci_TextRange tr;
 
     tr.chrg.cpMin = cpMin;
     tr.chrg.cpMax = cpMax;
@@ -328,7 +257,7 @@ long QsciScintillaBase::SendScintilla(unsigned int msg, const QColor &col) const
 long QsciScintillaBase::SendScintilla(unsigned int msg, unsigned long wParam,
         QPainter *hdc, const QRect &rc, long cpMin, long cpMax) const
 {
-    QSCI_SCI_NAMESPACE(RangeToFormat) rf;
+    Sci_RangeToFormat rf;
 
     rf.hdc = rf.hdcTarget = reinterpret_cast<QSCI_SCI_NAMESPACE(SurfaceID)>(hdc);
 
@@ -369,13 +298,6 @@ void *QsciScintillaBase::SendScintillaPtrResult(unsigned int msg) const
 }
 
 
-// Handle the timer on behalf of the QsciScintillaQt instance.
-void QsciScintillaBase::handleTimer()
-{
-    sci->Tick();
-}
-
-
 // Re-implemented to handle the context menu.
 void QsciScintillaBase::contextMenuEvent(QContextMenuEvent *e)
 {
@@ -384,16 +306,39 @@ void QsciScintillaBase::contextMenuEvent(QContextMenuEvent *e)
 
 
 // Re-implemented to tell the widget it has the focus.
-void QsciScintillaBase::focusInEvent(QFocusEvent *)
+void QsciScintillaBase::focusInEvent(QFocusEvent *e)
 {
     sci->SetFocusState(true);
+
+#if QT_VERSION >= 0x050000
+    clickCausedFocus = (e->reason() == Qt::MouseFocusReason);
+#endif
+
+    QAbstractScrollArea::focusInEvent(e);
 }
 
 
 // Re-implemented to tell the widget it has lost the focus.
-void QsciScintillaBase::focusOutEvent(QFocusEvent *)
+void QsciScintillaBase::focusOutEvent(QFocusEvent *e)
 {
-    sci->SetFocusState(false);
+    if (e->reason() == Qt::ActiveWindowFocusReason)
+    {
+        // Only tell Scintilla we have lost focus if the new active window
+        // isn't our auto-completion list.  This is probably only an issue on
+        // Linux and there are still problems because subsequent focus out
+        // events don't always seem to get generated (at least with Qt5).
+
+        QWidget *aw = QApplication::activeWindow();
+
+        if (!aw || aw->parent() != this || !aw->inherits("QsciSciListBox"))
+            sci->SetFocusState(false);
+    }
+    else
+    {
+        sci->SetFocusState(false);
+    }
+
+    QAbstractScrollArea::focusOutEvent(e);
 }
 
 
@@ -418,7 +363,7 @@ void QsciScintillaBase::handleSelection()
 // Handle key presses.
 void QsciScintillaBase::keyPressEvent(QKeyEvent *e)
 {
-    unsigned key, modifiers = 0;
+    int modifiers = 0;
 
     if (e->modifiers() & Qt::ShiftModifier)
         modifiers |= SCMOD_SHIFT;
@@ -432,7 +377,42 @@ void QsciScintillaBase::keyPressEvent(QKeyEvent *e)
     if (e->modifiers() & Qt::MetaModifier)
         modifiers |= SCMOD_META;
 
-    switch (e->key())
+    int key = commandKey(e->key(), modifiers);
+
+    if (key)
+    {
+        bool consumed = false;
+
+        sci->KeyDownWithModifiers(key, modifiers, &consumed);
+
+        if (consumed)
+        {
+            e->accept();
+            return;
+        }
+    }
+
+    QString text = e->text();
+
+    if (!text.isEmpty() && text[0].isPrint())
+    {
+        ScintillaBytes bytes = textAsBytes(text);
+        sci->AddCharUTF(bytes.data(), bytes.length());
+        e->accept();
+    }
+    else
+    {
+        QAbstractScrollArea::keyPressEvent(e);
+    }
+}
+
+
+// Map a Qt key to a valid Scintilla command key, or 0 if none.
+int QsciScintillaBase::commandKey(int qt_key, int &modifiers)
+{
+    int key;
+
+    switch (qt_key)
     {
     case Qt::Key_Down:
         key = SCK_DOWN;
@@ -510,60 +490,31 @@ void QsciScintillaBase::keyPressEvent(QKeyEvent *e)
         break;
 
     default:
-        key = e->key();
+        if ((key = qt_key) > 0x7f)
+            key = 0;
     }
 
-    if (key)
-    {
-        bool consumed = false;
-
-        sci->KeyDownWithModifiers(key, modifiers, &consumed);
-
-        if (consumed)
-        {
-            e->accept();
-            return;
-        }
-    }
-
-    QString text = e->text();
-
-    if (!text.isEmpty() && text[0].isPrint())
-    {
-        QByteArray enc_text;
-
-        if (sci->IsUnicodeMode())
-        {
-            enc_text = text.toUtf8();
-        }
-        else
-        {
-            static QTextCodec *codec = 0;
-
-            if (!codec)
-                codec = QTextCodec::codecForName("ISO 8859-1");
-
-            enc_text = codec->fromUnicode(text);
-        }
-
-        sci->AddCharUTF(enc_text.data(), enc_text.length());
-        e->accept();
-    }
-    else
-    {
-        QAbstractScrollArea::keyPressEvent(e);
-    }
+    return key;
 }
 
 
-// Handle composed characters.  Note that this is the minumum needed to retain
-// the QScintilla v1 functionality.
-void QsciScintillaBase::inputMethodEvent(QInputMethodEvent *e)
+// Encode a QString as bytes.
+QsciScintillaBase::ScintillaBytes QsciScintillaBase::textAsBytes(const QString &text) const
 {
-    QByteArray utf8 = e->commitString().toUtf8();
+    if (sci->IsUnicodeMode())
+        return text.toUtf8();
 
-    sci->AddCharUTF(utf8.data(), utf8.length());
-    e->accept();
+    return text.toLatin1();
+}
+
+
+// Decode bytes as a QString.
+QString QsciScintillaBase::bytesAsText(const char *bytes) const
+{
+    if (sci->IsUnicodeMode())
+        return QString::fromUtf8(bytes);
+
+    return QString::fromLatin1(bytes);
 }
 
 
@@ -658,12 +609,29 @@ void QsciScintillaBase::mousePressEvent(QMouseEvent *e)
 // Handle a mouse button releases.
 void QsciScintillaBase::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (sci->HaveMouseCapture() && e->button() == Qt::LeftButton)
+    if (e->button() != Qt::LeftButton)
+        return;
+
+    QSCI_SCI_NAMESPACE(Point) pt(e->x(), e->y());
+
+    if (sci->HaveMouseCapture())
     {
         bool ctrl = e->modifiers() & Qt::ControlModifier;
 
-        sci->ButtonUp(QSCI_SCI_NAMESPACE(Point)(e->x(), e->y()), 0, ctrl);
+        sci->ButtonUp(pt, 0, ctrl);
     }
+
+#if QT_VERSION >= 0x050000
+    if (!sci->pdoc->IsReadOnly() && !sci->PointInSelMargin(pt) && qApp->autoSipEnabled())
+    {
+        QStyle::RequestSoftwareInputPanel rsip = QStyle::RequestSoftwareInputPanel(style()->styleHint(QStyle::SH_RequestSoftwareInputPanel));
+
+        if (!clickCausedFocus || rsip == QStyle::RSIP_OnMouseClick)
+            qApp->inputMethod()->show();
+    }
+
+    clickCausedFocus = false;
+#endif
 }
 
 
@@ -682,7 +650,8 @@ void QsciScintillaBase::resizeEvent(QResizeEvent *)
 
 
 // Re-implemented to suppress the default behaviour as Scintilla works at a
-// more fundamental level.
+// more fundamental level.  Note that this means that replacing the scrollbars
+// with custom versions does not work.
 void QsciScintillaBase::scrollContentsBy(int, int)
 {
 }
@@ -747,12 +716,11 @@ void QsciScintillaBase::dropEvent(QDropEvent *e)
     len = text.length();
     s = text.data();
 
-    s = QSCI_SCI_NAMESPACE(Document)::TransformLineEnds(&len, s, len,
+    std::string dest = QSCI_SCI_NAMESPACE(Document)::TransformLineEnds(s, len,
                 sci->pdoc->eolMode);
 
-    sci->DropAt(sci->posDrop, s, moving, rectangular);
-
-    delete[] s;
+    sci->DropAt(sci->posDrop, dest.c_str(), dest.length(), moving,
+            rectangular);
 
     sci->Redraw();
 }
@@ -765,7 +733,6 @@ void QsciScintillaBase::acceptAction(QDropEvent *e)
     else
         e->acceptProposedAction();
 }
-
 
 
 // See if a MIME data object can be decoded.
@@ -829,3 +796,34 @@ QMimeData *QsciScintillaBase::toMimeData(const QByteArray &text, bool rectangula
     return mime;
 }
 
+
+// Connect up the vertical scroll bar.
+void QsciScintillaBase::connectVerticalScrollBar()
+{
+    connect(verticalScrollBar(), SIGNAL(valueChanged(int)),
+            SLOT(handleVSb(int)));
+}
+
+
+// Connect up the horizontal scroll bar.
+void QsciScintillaBase::connectHorizontalScrollBar()
+{
+    connect(horizontalScrollBar(), SIGNAL(valueChanged(int)),
+            SLOT(handleHSb(int)));
+}
+
+
+//! Replace the vertical scroll bar.
+void QsciScintillaBase::replaceVerticalScrollBar(QScrollBar *scrollBar)
+{
+    setVerticalScrollBar(scrollBar);
+    connectVerticalScrollBar();
+}
+
+
+// Replace the horizontal scroll bar.
+void QsciScintillaBase::replaceHorizontalScrollBar(QScrollBar *scrollBar)
+{
+    setHorizontalScrollBar(scrollBar);
+    connectHorizontalScrollBar();
+}
