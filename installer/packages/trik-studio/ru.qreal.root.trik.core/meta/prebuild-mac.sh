@@ -19,9 +19,6 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-generator-base.1.0.0
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-kit.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-kit-interpreter-common.1.0.0.dylib"
 
-copy_qt_lib QtNetwork
-copy_qt_lib QtMultimedia
-
 mkdir -p "$BUNDLE_CONTENTS/MacOS"
 rsync -a  $BIN_DIR/system.js                                                 "$BUNDLE_CONTENTS/MacOS/"
 
