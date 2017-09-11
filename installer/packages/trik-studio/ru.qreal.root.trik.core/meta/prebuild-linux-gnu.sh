@@ -15,9 +15,6 @@ cp -pr $BIN_DIR/*-x86*.so*                                                      
 
 cp     $BIN_DIR/system.js                                                		 $PWD/../data/bin/
 
-cp -pr $QT_DIR/lib/libQt5Network.so*                                               $PWD/../data/lib/
-cp -pr $QT_DIR/lib/libQt5Multimedia.so*                                            $PWD/../data/lib/
-
 cd "$(dirname "$0")"/../data
 rm -rf winscp
 mkdir -p resources/trikRuntime
