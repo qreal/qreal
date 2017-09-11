@@ -26,17 +26,17 @@ GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToPoint.t"
 		, {
 			Binding::createConverting(
-					"@@LATITUDE@@"
-					, "Latitude"
-					, customizer.factory()->intPropertyConverter(id, "Latitude"))
+					"@@X@@"
+					, "X"
+					, customizer.factory()->intPropertyConverter(id, "X"))
 			, Binding::createConverting(
-					"@@LONGITUDE@@"
-					, "Longitude"
-					, customizer.factory()->intPropertyConverter(id, "Longitude"))
+					"@@Y@@"
+					, "Y"
+					, customizer.factory()->intPropertyConverter(id, "Y"))
 			, Binding::createConverting(
-					"@@ALTITUDE@@"
-					, "Altitude"
-					, customizer.factory()->intPropertyConverter(id, "Altitude"))
+					"@@Z@@"
+					, "Z"
+					, customizer.factory()->intPropertyConverter(id, "Z"))
 			}
 		, parent)
 {

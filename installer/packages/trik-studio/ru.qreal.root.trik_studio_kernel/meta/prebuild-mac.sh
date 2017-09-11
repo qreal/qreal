@@ -18,6 +18,10 @@ cp -pR $BIN_DIR/librobots-kit-base*.dylib                                  "$BUN
 cp -pR $BIN_DIR/librobots-utils*.dylib                                     "$BUNDLE_CONTENTS/Lib/"
 cp -pR $BIN_DIR/libqextserialport*.dylib                                   "$BUNDLE_CONTENTS/Lib/"
 
+copy_qt_lib QtMultimedia
+copy_qt_lib QtNetwork
+
+
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/editors/librobotsMetamodel.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/librobots-plugin.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-interpreter-core.1.0.0.dylib"
