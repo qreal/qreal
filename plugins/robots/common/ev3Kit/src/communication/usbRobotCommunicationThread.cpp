@@ -165,7 +165,7 @@ bool UsbRobotCommunicationThread::send1(const QByteArray &buffer) const
 {
 	uchar *cmd = reinterpret_cast<uchar *>(const_cast<char *>(buffer.data()));
 	int actualLength = 0;
-	return libusb_bulk_transfer(mHandle, EV3_EP_OUT, cmd, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT) >= 0;
+	return mHandle && libusb_bulk_transfer(mHandle, EV3_EP_OUT, cmd, EV3_PACKET_SIZE, &actualLength, EV3_USB_TIMEOUT) >= 0;
 }
 
 QByteArray UsbRobotCommunicationThread::receive(int size) const
