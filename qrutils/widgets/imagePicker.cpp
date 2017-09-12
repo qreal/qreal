@@ -62,6 +62,11 @@ void ImagePicker::restore()
 
 void ImagePicker::pick()
 {
-	utils::QRealFileDialog::getOpenFileName(mSettingsKey + "LastLocation", this, tr("Select image"), QString()
+	QString openedFileName = utils::QRealFileDialog::getOpenFileName(
+			mSettingsKey + "LastLocation"
+			, this
+			, tr("Select image")
+			, QString()
 			, tr("Images (*.png *.svg *.jpg *.gif *.bmp);;All files (*.*)"));
+	mPathEditor->setText(openedFileName);
 }
