@@ -213,7 +213,7 @@
 					</generalizations>
 				</logic>
 			</node>
-			<node displayedName="Calibrate gyroscope" name="Ev3CalibrateGyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " description="Sets gyroscope's angle to zero in current position.">
+			<node displayedName="Calibrate gyroscope" name="Ev3CalibrateGyroscope" path="" description="Sets gyroscope's angle to zero in current position.">
 					<graphics>
 							<picture sizex="50" sizey="50">
 									<image y1="0" name="images/calibrateGyroscopeBlock.svg" x1="0" y2="50" x2="50"/>
@@ -226,6 +226,46 @@
 					<logic>
 							<container/>
 							<properties>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Start Compass Calibration" name="Ev3StartCompassCalibration" path="" description="Starts compass calibration under program control. To calibrate, robot needs to spin >=540 clockwise and counterclockwise with minimum 20 seconds duration for each direction. Atfer robot rotation add Stop Compass Сalibration block.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/startCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Stop Compass Calibration" name="Ev3StopCompassCalibration" path="" description="Ends compass calibration process.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/stopCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+									<label x="40" y="60" textBinded="Variable" hard="false" prefix="Variable:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+								<property displayedName="Variable" type="string" name="Variable" />
 							</properties>
 							<generalizations>
 									<parent parentName="Ev3SensorBlock"/>
@@ -717,6 +757,8 @@
 				<element name="Ev3Led"/>
 				<element name="Ev3SendMail"/>
 				<element name="Ev3CalibrateGyroscope"/>
+				<element name="Ev3StartCompassCalibration"/>
+				<element name="Ev3StopCompassCalibration"/>
 			</group>
 			<group name="Wait">
 				<element name="Ev3WaitForTouchSensor"/>

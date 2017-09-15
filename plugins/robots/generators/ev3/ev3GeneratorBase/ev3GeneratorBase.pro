@@ -55,6 +55,8 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/sendMailGenerator.h \
 	$$PWD/src/simpleGenerators/receiveMailGenerator.h \
 	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.h \
+	$$PWD/src/simpleGenerators/startCompassCalibrationGenerator.h \
+	$$PWD/src/simpleGenerators/stopCompassCalibrationGenerator.h \
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \
@@ -76,5 +78,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/sendMailGenerator.cpp \
 	$$PWD/src/simpleGenerators/receiveMailGenerator.cpp \
 	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.cpp \
+	$$PWD/src/simpleGenerators/startCompassCalibrationGenerator.cpp \
+	$$PWD/src/simpleGenerators/stopCompassCalibrationGenerator.cpp \
 
 OTHER_FILES +=

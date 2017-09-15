@@ -113,6 +113,8 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3CalibrateGyroscope")
 		, id("Ev3Led")
 		, id("Ev3SendMail")
+		, id("Ev3StartCompassCalibration")
+		, id("Ev3StopCompassCalibration")
 
 		, id("Ev3WaitForTouchSensor")
 		, id("Ev3WaitForSonarDistance")
@@ -139,10 +141,12 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 	if (mRobotModelManager->model().name().contains("TwoD")) {
 		result
 				<< id("Ev3WaitForSound")
-				<< id("Ev3WaitForGyroscope")
 				<< id("Ev3SendMail")
 				<< id("Ev3WaitForReceivingMail")
+				<< id("Ev3WaitForGyroscope")
 				<< id("Ev3CalibrateGyroscope")
+				<< id("Ev3StartCompassCalibration")
+				<< id("Ev3StopCompassCalibration")
 				;
 	} else {
 		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {

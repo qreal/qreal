@@ -14,28 +14,20 @@
 
 #pragma once
 
-#include <trikControl/markerInterface.h>
+#include "generatorBase/simpleGenerators/bindingGenerator.h"
 
-#include <twoDModel/robotModel/parts/marker.h>
+namespace ev3 {
+namespace simple {
 
-namespace trik {
-
-class TrikProxyMarker : public trikControl::MarkerInterface
+/// Generator for 'Stop Compass Calibration' block
+class StopCompassCalibrationGenerator: public generatorBase::simple::BindingGenerator
 {
-	Q_OBJECT
-
 public:
-	TrikProxyMarker(twoDModel::robotModel::parts::Marker *marker);
-
-	Status status() const override {return Status::ready;}
-
-	Q_INVOKABLE virtual void down(const QString &color) override;
-	Q_INVOKABLE virtual void up() override;
-	Q_INVOKABLE virtual bool isDown() const override;
-	Q_INVOKABLE virtual void setDown(bool isDown) override;
-
-private:
-	twoDModel::robotModel::parts::Marker *mMarker; // Doesn't have ownership.
+	StopCompassCalibrationGenerator(const qrRepo::RepoApi &repo
+			, generatorBase::GeneratorCustomizer &customizer
+			, const qReal::Id &id
+			, QObject *parent = 0);
 };
 
+}
 }
