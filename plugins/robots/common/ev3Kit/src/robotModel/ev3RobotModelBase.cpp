@@ -19,6 +19,7 @@
 #include "ev3Kit/robotModel/parts/ev3Display.h"
 #include "ev3Kit/robotModel/parts/ev3Led.h"
 #include "ev3Kit/robotModel/parts/ev3Gyroscope.h"
+#include "ev3Kit/robotModel/parts/ev3Compass.h"
 
 #include <kitBase/robotModel/robotParts/display.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
@@ -49,6 +50,7 @@ Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotI
 			, colorBlueSensorInfo()
 			, colorPassiveSensorInfo()
 			, gyroscopeSensorInfo()
+			, compassSensorInfo()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -89,6 +91,7 @@ QList<DeviceInfo> Ev3RobotModelBase::convertibleBases() const
 			, DeviceInfo::create<robotParts::ColorSensorGreen>()
 			, DeviceInfo::create<robotParts::ColorSensorPassive>()
 			, DeviceInfo::create<ev3::robotModel::parts::Ev3Gyroscope>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3Compass>()
 	};
 }
 
@@ -165,4 +168,9 @@ DeviceInfo Ev3RobotModelBase::colorPassiveSensorInfo() const
 DeviceInfo Ev3RobotModelBase::gyroscopeSensorInfo() const
 {
 	return DeviceInfo::create<ev3::robotModel::parts::Ev3Gyroscope>();
+}
+
+DeviceInfo Ev3RobotModelBase::compassSensorInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3Compass>();
 }

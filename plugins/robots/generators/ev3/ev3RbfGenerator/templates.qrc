@@ -95,6 +95,7 @@
         <file>templates/sensors/sound.t</file>
         <file>templates/sensors/touch.t</file>
         <file>templates/sensors/gyroscope.t</file>
+        <file>templates/sensors/compass.t</file>
         <file>templates/sensors/scalar.t</file>
         <file>templates/sensors/vector.t</file>
         <file>templates/sensors/calibrateGyroscope.t</file>

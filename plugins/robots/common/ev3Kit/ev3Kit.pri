@@ -52,6 +52,7 @@ HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Motor.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Led.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Gyroscope.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3Compass.h \
 	$$PWD/include/ev3Kit/blocks/ev3BlocksFactory.h \
 	$$PWD/include/ev3Kit/communication/commandConstants.h \
 	$$PWD/include/ev3Kit/communication/ev3DirectCommand.h \
@@ -76,6 +77,7 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/ev3Motor.cpp \
 	$$PWD/src/robotModel/parts/ev3Led.cpp \
 	$$PWD/src/robotModel/parts/ev3Gyroscope.cpp \
+	$$PWD/src/robotModel/parts/ev3Compass.cpp \
 	$$PWD/src/blocks/ev3BlocksFactory.cpp \
 	$$PWD/src/blocks/details/speakerBlock.cpp \
 	$$PWD/src/blocks/details/beepBlock.cpp \

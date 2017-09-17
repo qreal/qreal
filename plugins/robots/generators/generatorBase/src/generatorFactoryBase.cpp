@@ -57,7 +57,6 @@
 #include "simpleGenerators/receiveMessageThreadsGenerator.h"
 #include "simpleGenerators/getButtonCodeGenerator.h"
 #include "generatorBase/simpleGenerators/waitForButtonGenerator.h"
-#include "generatorBase/simpleGenerators/randomIdGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -349,11 +348,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(const qReal::I
 		, GeneratorCustomizer &customizer, bool fromMainGenerator)
 {
 	return new FinalNodeGenerator(mRepo, customizer, id, fromMainGenerator, this);
-}
-
-AbstractSimpleGenerator *GeneratorFactoryBase::randomIdGenerator(AbstractSimpleGenerator *other)
-{
-	return new RandomIdGenerator(other);
 }
 
 // Converters can be instantiated without taking ownership because binders do this

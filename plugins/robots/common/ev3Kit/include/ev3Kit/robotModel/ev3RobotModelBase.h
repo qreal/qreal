@@ -44,6 +44,7 @@ protected:
 	virtual kitBase::robotModel::DeviceInfo colorBlueSensorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo colorPassiveSensorInfo() const;
 	virtual kitBase::robotModel::DeviceInfo gyroscopeSensorInfo() const;
+	virtual kitBase::robotModel::DeviceInfo compassSensorInfo() const;
 };
 
 }

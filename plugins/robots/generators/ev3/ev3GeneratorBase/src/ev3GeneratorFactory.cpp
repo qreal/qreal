@@ -59,13 +59,13 @@ parts::Mailboxes &Ev3GeneratorFactory::mailboxes()
 AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting)
 {
-	return randomIdGenerator(GeneratorFactoryBase::ifGenerator(id, customizer, elseIsEmpty, needInverting));
+	return GeneratorFactoryBase::ifGenerator(id, customizer, elseIsEmpty, needInverting);
 }
 
 AbstractSimpleGenerator *Ev3GeneratorFactory::forLoopGenerator(const qReal::Id &id
 		, generatorBase::GeneratorCustomizer &customizer)
 {
-	return randomIdGenerator(GeneratorFactoryBase::forLoopGenerator(id, customizer));
+	return GeneratorFactoryBase::forLoopGenerator(id, customizer);
 }
 
 generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGenerator(const qReal::Id &id
@@ -81,7 +81,7 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 	} else if (elementType == "Ev3DrawCircle") {
 		return new DrawCircleGenerator(mRepo, customizer, id, this);
 	} else if (elementType.contains("EnginesForward") || elementType.contains("EnginesBackward")) {
-		return randomIdGenerator(new EnginesGenerator(mRepo, customizer, id, elementType, this));
+		return new EnginesGenerator(mRepo, customizer, id, elementType, this);
 	} else if (elementType == "Ev3EnginesStop") {
 		return new EnginesStopGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3Led") {
@@ -89,18 +89,18 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 	} else if (elementType == "Ev3ClearEncoder") {
 		return new NullificationEncoderGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3SendMail") {
-		return randomIdGenerator(new SendMailGenerator(mRepo, customizer, id, this));
+		return new SendMailGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3WaitForReceivingMail") {
-		return randomIdGenerator(new ReceiveMailGenerator(mRepo, customizer, id, this));
+		return new ReceiveMailGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3CalibrateGyroscope") {
 		return new CalibrateGyroscopeGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3StartCompassCalibration") {
-		return randomIdGenerator(new StartCompassCalibrationGenerator(mRepo, customizer, id, this));
+		return new StartCompassCalibrationGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3StopCompassCalibration") {
-		return randomIdGenerator(new StopCompassCalibrationGenerator(mRepo, customizer, id, this));
+		return new StopCompassCalibrationGenerator(mRepo, customizer, id, this);
 	}
 
-	return randomIdGenerator(GeneratorFactoryBase::simpleGenerator(id, customizer));
+	return GeneratorFactoryBase::simpleGenerator(id, customizer);
 }
 
 Binding::ConverterInterface *Ev3GeneratorFactory::outputPortNameConverter() const

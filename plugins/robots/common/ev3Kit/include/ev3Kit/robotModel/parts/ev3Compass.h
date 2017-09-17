@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,18 +12,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "generatorBase/simpleGenerators/randomIdGenerator.h"
+#pragma once
 
-using namespace generatorBase::simple;
-using namespace qReal;
+#include <kitBase/robotModel/robotParts/scalarSensor.h>
 
-RandomIdGenerator::RandomIdGenerator(AbstractSimpleGenerator *other)
-	: AbstractSimpleGenerator(other->repo(), other->customizer(), other->id(), other)
-	, mOtherGenerator(*other)
+namespace ev3 {
+namespace robotModel {
+namespace parts {
+
+class Ev3Compass : public kitBase::robotModel::robotParts::ScalarSensor
 {
+	Q_OBJECT
+	Q_CLASSINFO("name", "compass")
+	Q_CLASSINFO("friendlyName", tr("Compass"))
+
+public:
+	Ev3Compass(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
+};
+
 }
-
-QString RandomIdGenerator::generate()
-{
-	return addRandomIds(mOtherGenerator.generate());
+}
 }
