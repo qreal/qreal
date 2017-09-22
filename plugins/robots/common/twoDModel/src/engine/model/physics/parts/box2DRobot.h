@@ -45,9 +45,16 @@ public:
 			, float angle);
 	~box2DRobot();
 
+	void Stop();
+	void StartStopping();
+	void FinishStopping();
+	bool IsStopping();
+
 private:
 	void connectWheels();
 	void connectWheel(box2DWheel &wheel);
+
+	bool isStopping = false;
 };
 
 }

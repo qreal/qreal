@@ -1,4 +1,4 @@
-/* Copyright 2017 QReal Research Group
+/* Copyright 2017 Gleb Zakharov, QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -127,10 +127,11 @@ void box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 				onMouseReleased(rItem->pos(), rItem->rotation());
 		};
 		connect(mScene, &view::TwoDModelScene::mouseReleased, this, funcRelease);
+		connect(mScene, &view::TwoDModelScene::mousePressed, this, &onMousePressed);
 		connect(mScene->robot(*robot), &view::RobotItem::recoverRobotPosition, this, &onRecoverRobotPosition);
 
 		connect(robot, &model::RobotModel::deserialized, this, &onMouseReleased);
-
+		//add connect to stop robot here
 		drawDebugRobot(robot);
 	});
 }
@@ -174,18 +175,23 @@ void box2DPhysicsEngine::onMouseReleased(QPointF newPos, qreal newAngle)
 {
 	mMouseJustReleased = true;
 	box2DRobot *robot = mBox2DRobots.first();
+
+	robot->FinishStopping();
 	onRobotStartAngleChanged(newAngle, robot->model);
 	onRobotStartPositionChanged(newPos, robot->model);
 	mMouseJustReleased = false;
 }
 
+void box2DPhysicsEngine::onMousePressed()
+{
+	for (box2DRobot *robot: mBox2DRobots){
+		robot->StartStopping();
+	}
+}
+
 void box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
 {
-	mMouseJustReleased = true;
-	box2DRobot *robot = mBox2DRobots.first();
-	onRobotStartAngleChanged(angleToScene(robot->body->GetAngle()), robot->model);
-	onRobotStartPositionChanged(pos, robot->model);
-	mMouseJustReleased = false;
+	onMouseReleased(pos, angleToScene(mBox2DRobots.first()->body->GetAngle()));
 }
 
 void box2DPhysicsEngine::removeRobot(model::RobotModel * const robot)
@@ -204,16 +210,21 @@ void box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 
 	model::RobotModel * const robot = mRobots.first();
 	b2Body *rBody = mBox2DRobots[robot]->body;
-
-	mPrevPosition = rBody->GetPosition();
-	mPrevAngle = rBody->GetAngle();
 	float32 secondsInterval = timeInterval / 1000.0f;
 
-	const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * 10;
-	const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * 10;
+	if (mBox2DRobots[robot]->IsStopping()){
+		mBox2DRobots[robot]->Stop();
+	} else {
 
-	mLeftWheels[robot]->keepConstantSpeed(speed1, secondsInterval);
-	mRightWheels[robot]->keepConstantSpeed(speed2, secondsInterval);
+		mPrevPosition = rBody->GetPosition();
+		mPrevAngle = rBody->GetAngle();
+
+		const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * 10;
+		const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * 10;
+
+		mLeftWheels[robot]->keepConstantSpeed(speed1, secondsInterval);
+		mRightWheels[robot]->keepConstantSpeed(speed2, secondsInterval);
+	}
 
 	mWorld->Step(secondsInterval, velocityIterations, positionIterations);
 	drawDebugRobot(robot);

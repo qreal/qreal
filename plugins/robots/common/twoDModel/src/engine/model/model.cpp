@@ -232,7 +232,7 @@ void Model::resetPhysics()
 //    if (mSettings.realisticPhysics()) {
 		//mPhysicsEngine = new physics::RealisticPhysicsEngine(mWorldModel, mRobotModels, mTimeline);
 //    } else {
-//		mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
+	//	mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
 //    }
 	mPhysicsEngine = new physics::box2DPhysicsEngine(mWorldModel, mRobotModels);
 

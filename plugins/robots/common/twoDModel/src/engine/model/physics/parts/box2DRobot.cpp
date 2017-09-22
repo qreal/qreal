@@ -57,12 +57,39 @@ box2DRobot::~box2DRobot() {
 	world.DestroyBody(body);
 }
 
+void box2DRobot::Stop()
+{
+	if (isStopping){
+		body->SetLinearVelocity(b2Vec2(0, 0));
+		body->SetAngularVelocity(0);
+	}
+}
+
+void box2DRobot::StartStopping()
+{
+	isStopping = true;
+}
+
+void box2DRobot::FinishStopping()
+{
+	isStopping = false;
+}
+
+bool box2DRobot::IsStopping()
+{
+	return isStopping;
+}
+
 void box2DRobot::connectWheels() {
+	qreal wheelWidthShift = 5;
 	QPointF leftUpCorner = QPointF(-model->info().size().width() / 2, -model->info().size().height() / 2);
-	b2Vec2 posLeftWheel = body->GetWorldPoint(engine->positionToBox2D(
-			QPointF(twoDModel::robotWheelDiameterInPx / 2, 5) + leftUpCorner));
-	b2Vec2 posRightWheel = body->GetWorldPoint(engine->positionToBox2D(
-			QPointF(twoDModel::robotWheelDiameterInPx / 2, model->info().size().width() - 5) + leftUpCorner));
+
+	QPointF posLeftWheelFromRobot = QPointF(twoDModel::robotWheelDiameterInPx / 2, wheelWidthShift);
+	QPointF posRightWheelFromRobot = QPointF(twoDModel::robotWheelDiameterInPx / 2
+			, model->info().size().width() - wheelWidthShift);
+
+	b2Vec2 posLeftWheel = body->GetWorldPoint(engine->positionToBox2D(posLeftWheelFromRobot + leftUpCorner));
+	b2Vec2 posRightWheel = body->GetWorldPoint(engine->positionToBox2D(posRightWheelFromRobot + leftUpCorner));
 
 	box2DWheel *leftWheel = new box2DWheel(posLeftWheel, body->GetAngle(), *this);
 	box2DWheel *rightWheel = new box2DWheel(posRightWheel, body->GetAngle(), *this);

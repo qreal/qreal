@@ -79,7 +79,7 @@ void box2DWheel::keepConstantSpeed(float speed, float time) {
 	forwardNormal = body->GetWorldVector(b2Vec2(1, 0));
 
 	float desiredSpeed = currentForwardSpeed;
-	float speedPiece = 0.01f;
+	float speedPiece = 0.02f;
 	if (currentForwardSpeed < speed) {
 		desiredSpeed += speedPiece;
 	}
