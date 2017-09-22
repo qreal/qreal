@@ -63,3 +63,4 @@ qrtext.depends = qrkernel
 OTHER_FILES += \
 	$$PWD/.travis.yml \
 	$$PWD/appveyor.yml \
+	$$PWD/global.pri \
