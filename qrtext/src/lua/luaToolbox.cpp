@@ -143,6 +143,12 @@ const QStringList &LuaToolbox::specialConstants() const
 	return mSpecialConstants;
 }
 
+void LuaToolbox::forgetIdentifier(const QString &identifier)
+{
+	mInterpreter->forgetIdentifier(identifier);
+	mAnalyzer->removeReadOnlyVariable(identifier);
+}
+
 void LuaToolbox::markAsSpecialConstant(const QString &identifier)
 {
 	markAsSpecial(identifier);

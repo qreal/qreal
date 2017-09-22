@@ -166,6 +166,11 @@ QStringList LuaInterpreter::identifiers() const
 	return mIdentifierValues.keys();
 }
 
+void LuaInterpreter::forgetIdentifier(const QString &identifier)
+{
+	mIdentifierValues.remove(identifier);
+}
+
 QVariant LuaInterpreter::value(const QString &identifier) const
 {
 	return mIdentifierValues.value(identifier);

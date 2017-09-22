@@ -41,6 +41,9 @@ public:
 	/// Registers variable with given name as read-only (or predefined).
 	void addReadOnlyVariable(const QString &name);
 
+	/// Removes variable from read-only list. Can be used if need changing variable type.
+	void removeReadOnlyVariable(const QString &name);
+
 	/// Override that excludes intrinsic function identifiers.
 	QMap<QString, QSharedPointer<core::types::TypeExpression>> variableTypes() const;
 

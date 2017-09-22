@@ -251,7 +251,7 @@
 							</generalizations>
 					</logic>
 			</node>
-			<node displayedName="Stop Compass Calibration" name="Ev3StopCompassCalibration" path="" description="Ends compass calibration process.">
+			<node displayedName="Stop Compass Calibration" name="Ev3StopCompassCalibration" path="" description="Ends compass calibration process. Stores result of calibration into the given variable. Not zero means success.">
 					<graphics>
 							<picture sizex="50" sizey="50">
 									<image y1="0" name="images/stopCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>

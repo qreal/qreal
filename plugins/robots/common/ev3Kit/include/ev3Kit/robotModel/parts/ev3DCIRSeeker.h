@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,21 @@
 
 #pragma once
 
-#include "colorSensor.h"
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
-#include "kitBase/kitBaseDeclSpec.h"
-
-namespace kitBase {
+namespace ev3 {
 namespace robotModel {
-namespace robotParts {
+namespace parts {
 
-/// Base class for sensor that returns intensity of green color under it.
-class ROBOTS_KIT_BASE_EXPORT ColorSensorGreen : public ColorSensor
+class Ev3DCIRSeeker : public kitBase::robotModel::robotParts::VectorSensor
 {
 	Q_OBJECT
-	Q_CLASSINFO("name", "colorGreen")
-	Q_CLASSINFO("friendlyName", tr("Color sensor (green)"))
-	Q_CLASSINFO("simulated", "true")
+	Q_CLASSINFO("name", "DCIRSeeker")
+	Q_CLASSINFO("friendlyName", tr("NXT IRSeeker V2 (DC)"))
 
 public:
-	/// Constructor, takes device type info and port on which this sensor is configured.
-	ColorSensorGreen(const DeviceInfo &info, const PortInfo &port);
+	Ev3DCIRSeeker(const kitBase::robotModel::DeviceInfo &info
+			, const kitBase::robotModel::PortInfo &port);
 };
 
 }

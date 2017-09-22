@@ -116,7 +116,7 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 		return QRect(-6, -6, 12, 12);
 	}
 	if (deviceType.isA<robotParts::RangeSensor>()) {
-		return QRect(-20, -10, 40, 20);;
+		return QRect(-20, -10, 40, 20);
 	} else {
 		Q_ASSERT(!"Unknown sensor type");
 		return QRect();

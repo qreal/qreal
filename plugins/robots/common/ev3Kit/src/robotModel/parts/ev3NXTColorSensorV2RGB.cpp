@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,25 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#pragma once
+#include "ev3Kit/robotModel/parts/ev3NXTColorSensorV2RGB.h"
 
-#include <kitBase/robotModel/robotParts/rangeSensor.h>
+using namespace ev3::robotModel::parts;
+using namespace kitBase::robotModel;
 
-namespace trik {
-namespace robotModel {
-namespace parts {
-
-class TrikSonarSensor : public kitBase::robotModel::robotParts::RangeSensor
+Ev3NXTColorSensorV2RGB::Ev3NXTColorSensorV2RGB(const DeviceInfo &info, const PortInfo &port)
+	: kitBase::robotModel::robotParts::VectorSensor(info, port)
 {
-	Q_OBJECT
-	Q_CLASSINFO("friendlyName", tr("Sonic Sensor"))
-	Q_CLASSINFO("simulated", "true")
-
-public:
-	TrikSonarSensor(const kitBase::robotModel::DeviceInfo &info
-			, const kitBase::robotModel::PortInfo &port);
-};
-
-}
-}
 }

@@ -61,6 +61,8 @@ protected:
 	QString variableDeclaration(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const;
 
 private:
+	QStringList generateVariablesList() const;
+
 	const kitBase::robotModel::RobotModelInterface &mRobotModel;
 	qrtext::LanguageToolboxInterface &mLuaToolbox;
 	QStringList mManualDeclarations;
