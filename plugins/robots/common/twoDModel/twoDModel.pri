@@ -61,7 +61,8 @@ HEADERS += \
 	$$PWD/include/twoDModel/blocks/markerDownBlock.h \
 	$$PWD/include/twoDModel/blocks/markerUpBlock.h \
     $$PWD/src/engine/model/physics/box2DPhysicsEngine.h \
-    $$PWD/src/engine/model/physics/parts/box2DWall.h
+    $$PWD/src/engine/model/physics/parts/box2DWall.h \
+    $$PWD/src/engine/model/physics/parts/box2DSensor.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -135,7 +136,6 @@ SOURCES += \
 	$$PWD/src/engine/model/timeline.cpp \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
-	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/parts/box2DRobot.cpp \
 	$$PWD/src/engine/model/physics/parts/box2DWheel.cpp \
 	$$PWD/src/engine/items/tool.cpp \
@@ -176,7 +176,8 @@ SOURCES += \
 	$$PWD/src/blocks/markerDownBlock.cpp \
 	$$PWD/src/blocks/markerUpBlock.cpp \
     $$PWD/src/engine/model/physics/box2DPhysicsEngine.cpp \
-    $$PWD/src/engine/model/physics/parts/box2DWall.cpp
+    $$PWD/src/engine/model/physics/parts/box2DWall.cpp \
+    $$PWD/src/engine/model/physics/parts/box2DSensor.cpp
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \

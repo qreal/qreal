@@ -63,7 +63,7 @@ b2Vec2 box2DWheel::getForwardVelocity() const {
 	return b2Dot( currentForwardNormal, body->GetLinearVelocity() ) * currentForwardNormal;
 }
 
-void box2DWheel::keepConstantSpeed(float speed, float time) {
+void box2DWheel::keepConstantSpeed(float speed) {
 
 	if (!mathUtils::Math::eq(prevSpeed, speed)){
 		robot.body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.001f * mathUtils::Math::sign(speed), 0)), true);

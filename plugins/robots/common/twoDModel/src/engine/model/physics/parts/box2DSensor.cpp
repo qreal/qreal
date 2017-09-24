@@ -11,32 +11,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
-#pragma once
+#include "box2DSensor.h"
 
-class b2Body;
+#include <qrutils/mathUtils/math.h>
+#include "twoDModel/engine/model/constants.h"
+#include "box2DRobot.h"
 
-namespace twoDModel{
-namespace items {
-	class WallItem;
-}
-namespace model {
-namespace physics {
-	class box2DPhysicsEngine;
-namespace parts {
+#include <Box2D/Dynamics/b2Body.h>
+#include <Box2D/Dynamics/b2World.h>
+#include <Box2D/Dynamics/b2Fixture.h>
+#include <Box2D/Collision/Shapes/b2PolygonShape.h>
 
-class box2DWall
+using namespace twoDModel::model::physics::parts;
+
+box2DSensor::box2DSensor(box2DRobot &robot)
+	: robot(robot)
 {
-public:
-	b2Body *body; // Take ownership
-	twoDModel::items::WallItem &item; // Doesn't take ownership
-	twoDModel::model::physics::box2DPhysicsEngine &engine; // Doesn't take ownership
+}
 
-	box2DWall(twoDModel::model::physics::box2DPhysicsEngine *engine
-			, twoDModel::items::WallItem &wallItem);
-	~box2DWall();
-};
-
-}
-}
-}
+box2DSensor::~box2DSensor()
+{
 }

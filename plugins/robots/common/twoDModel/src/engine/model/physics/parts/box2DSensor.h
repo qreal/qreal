@@ -1,4 +1,4 @@
-/* Copyright 2017 Gleb Zakharov, QReal Research Group
+/* Copyright 2017 Gleb Zakharov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,26 +24,15 @@ namespace parts {
 
 class box2DRobot;
 
-class box2DWheel
+class box2DSensor
 {
 public:
 	b2Body *body;
 	box2DRobot &robot;
-	const float wheelHeightM;
-	const float wheelWidthM;
-	const float wheelFriction = 1.0f;
-	const float wheelDensity = 1.0f;
 
-	box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, box2DRobot &robot);
-	~box2DWheel();
-	b2Vec2 getLateralVelocity() const;
-	b2Vec2 getForwardVelocity() const;
-	void keepConstantSpeed(float speed);
-
-protected:
-	float prevSpeed = 0;
+	box2DSensor(box2DRobot &robot);
+	~box2DSensor();
 };
-
 }
 }
 }

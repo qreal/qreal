@@ -1,4 +1,4 @@
-/* Copyright 2017 Gleb Zakharov, QReal Research Group
+/* Copyright 2017 Dmitry Mordvinov, Gleb Zakharov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -222,8 +222,8 @@ void box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * 10;
 		const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * 10;
 
-		mLeftWheels[robot]->keepConstantSpeed(speed1, secondsInterval);
-		mRightWheels[robot]->keepConstantSpeed(speed2, secondsInterval);
+		mLeftWheels[robot]->keepConstantSpeed(speed1);
+		mRightWheels[robot]->keepConstantSpeed(speed2);
 	}
 
 	mWorld->Step(secondsInterval, velocityIterations, positionIterations);
