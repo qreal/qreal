@@ -44,13 +44,16 @@ private slots:
 	/// @return Empty string if operation was unsuccessfull or path to uploaded file on the EV3 robot otherwise.
 	QString uploadProgram();
 
-	/// Generates, uploads and starts script on the EV3 robot.
-	void runProgram();
+	/// Generates and uploads script to a EV3 robot. Runs uploaded program basing on run policy.
+	void uploadAndRunProgram();
 
 	/// Stops curretly executing program on the EV3 robot;
 	void stopRobot();
 
 private:
+	/// Generates, uploads and starts script on the EV3 robot.
+	void runProgram();
+
 	/// Function that checks installed JRE or not
 	bool javaInstalled();
 

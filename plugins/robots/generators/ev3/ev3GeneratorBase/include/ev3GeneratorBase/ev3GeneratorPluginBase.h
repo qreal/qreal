@@ -38,6 +38,12 @@ class ROBOTS_EV3_GENERATOR_BASE_EXPORT Ev3GeneratorPluginBase : public generator
 	Q_OBJECT
 
 public:
+	enum class RunPolicy {
+		Ask
+		, AlwaysRun
+		, NeverRun
+	};
+
 	Ev3GeneratorPluginBase(const QString &usbRobotName, const QString &usbRobotFriendlyName, int usbPriority
 			, const QString &bluetoothRobotName, const QString &bluetoothRobotFriendlyName, int bluetoothPriority);
 
