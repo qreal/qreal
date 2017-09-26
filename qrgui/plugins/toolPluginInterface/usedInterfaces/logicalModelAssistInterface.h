@@ -28,7 +28,7 @@ public:
 	virtual const qrRepo::LogicalRepoApi &logicalRepoApi() const = 0;
 
 	/// Returns reference to a mutable logical repository.
-	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi() = 0;
+	virtual qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const = 0;
 
 	virtual Id createElement(const Id &parent, const Id &type) = 0;
 	virtual Id createElement(const Id &parent, const Id &id

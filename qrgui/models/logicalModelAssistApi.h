@@ -39,7 +39,7 @@ public:
 	const EditorManagerInterface &editorManagerInterface() const override;
 
 	const qrRepo::LogicalRepoApi &logicalRepoApi() const override;
-	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() override;
+	qrRepo::LogicalRepoApi &mutableLogicalRepoApi() const override;
 	Id createElement(const Id &parent, const Id &type) override;
 	Id createElement(const Id &parent, const Id &id, bool isFromLogicalModel, const QString &name
 			, const QPointF &position, const Id &preferedLogicalId = Id()) override;
