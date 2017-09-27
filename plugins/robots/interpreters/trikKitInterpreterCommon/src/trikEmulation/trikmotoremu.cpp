@@ -37,3 +37,8 @@ void trik::TrikMotorEmu::brake(int)
 {
 	powerOff(); // should be the same for 2D model, since there is no inertia
 }
+
+void trik::TrikMotorEmu::setPeriod(int uSec)
+{
+	Q_UNUSED(uSec)
+}
