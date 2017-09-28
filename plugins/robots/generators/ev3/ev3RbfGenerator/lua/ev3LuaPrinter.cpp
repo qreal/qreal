@@ -94,6 +94,10 @@ Ev3LuaPrinter::Ev3LuaPrinter(const QStringList &pathsToTemplates
 	, mVariables(variables)
 	, mReservedFunctionsConverter(pathsToTemplates)
 {
+	mArrayDeclarationCount[Ev3RbfType::array8] = 0;
+	mArrayDeclarationCount[Ev3RbfType::array16] = 0;
+	mArrayDeclarationCount[Ev3RbfType::array32] = 0;
+	mArrayDeclarationCount[Ev3RbfType::arrayF] = 0;
 }
 
 Ev3LuaPrinter::~Ev3LuaPrinter()
@@ -194,7 +198,14 @@ QString Ev3LuaPrinter::newRegister(Ev3RbfType type)
 		return QString();
 	}
 
-	const QString result = registerNames[type] + QString::number(++mRegistersCount[mId][type]);
+	QString result = QString();
+	if (isArray(type)) {
+		++mArrayDeclarationCount[type];
+		result = registerNames[type] + QString::number(mArrayDeclarationCount[type]);
+	} else {
+		result = registerNames[type] + QString::number(++mRegistersCount[mId][type]);
+	}
+
 	const QString declarationTemplate = (type == Ev3RbfType::dataS)
 			? "DATA%1 %2 255"
 			: (isArray(type) ? QString("ARRAY%1 %2 255").arg(typeNames[elementType(type)], result) : "DATA%1 %2");
