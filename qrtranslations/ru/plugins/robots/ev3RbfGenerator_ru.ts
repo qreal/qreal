@@ -35,89 +35,99 @@
         <translation type="vanished">Генерация (Байткод)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="30"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="32"/>
         <source>Autonomous mode (USB)</source>
         <translation>Автономный режим (USB)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="31"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="33"/>
         <source>Autonomous mode (Bluetooth)</source>
         <translation>Автономный режим (Bluetooth)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="37"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="39"/>
         <source>Generate to Ev3 Robot Byte Code File</source>
         <translation>Сгенерировать в байткод EV3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="41"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="43"/>
         <source>Upload program</source>
         <translation>Загрузить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="46"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="48"/>
         <source>Run program</source>
         <translation>Запустить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="51"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="53"/>
         <source>Stop robot</source>
         <translation>Остановить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="56"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="58"/>
         <source>EV3 Source Code language</source>
         <translation>Файл с байткодом EV3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="81"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="83"/>
         <source>Generate Ev3 Robot Byte Code File</source>
         <translation>Сгенерировать в байткод EV3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="82"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="84"/>
         <source>Upload EV3 Program</source>
         <translation>Загрузить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="83"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="85"/>
         <source>Run EV3 Program</source>
         <translation>Запустить программу на EV3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="86"/>
         <source>Stop EV3 Program</source>
         <translation>Остановить программу на EV3</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="120"/>
         <source>&lt;a href=&quot;https://java.com/ru/download/&quot;&gt;Java&lt;/a&gt; is not installed. Please download and install it.</source>
         <translation>&lt;a href=&quot;https://java.com/ru/download/&quot;&gt;Java&lt;/a&gt; не установлена. Пожалуйста, скачайте и установите ее.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="129"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="131"/>
         <source>Can&apos;t write source code files to disk!</source>
         <translation>Не могу записать файлы с исходным кодом на диск!</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="135"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="137"/>
         <source>Compilation error occured.</source>
         <translation>Ошибка компиляции.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="142"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="144"/>
         <source>Could not upload file to robot. Connect to a robot via %1.</source>
         <translation>Не могу загрузить файл на робота. Подключите робота по %1.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="143"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="145"/>
         <source>USB</source>
         <translation>USB</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="143"/>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="145"/>
         <source>Bluetooth</source>
         <translation>Bluetooth</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="164"/>
+        <source>The program has been uploaded</source>
+        <translation>Загрузка программы завершена успешно</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/ev3/ev3RbfGenerator/ev3RbfGeneratorPlugin.cpp" line="165"/>
+        <source>Do you want to run it?</source>
+        <translation>Хотите ли Вы запустить эту программу?</translation>
     </message>
     <message>
         <source>Could not upload file to robot. Connect to a robot via Bluetooth.</source>

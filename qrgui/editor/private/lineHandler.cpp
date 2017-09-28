@@ -188,6 +188,7 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 		}
 
 		mGraphicalModel.mutableGraphicalRepoApi().setFrom(mEdge->id(), src->id());
+		mLogicalModel.mutableLogicalRepoApi().setFrom(mEdge->logicalId(), src->logicalId());
 	}
 
 	if (dst && reconnectDst) {
@@ -200,6 +201,7 @@ void LineHandler::reconnect(bool reconnectSrc, bool reconnectDst)
 		}
 
 		mGraphicalModel.mutableGraphicalRepoApi().setTo(mEdge->id(), dst->id());
+		mLogicalModel.mutableLogicalRepoApi().setTo(mEdge->logicalId(), dst->logicalId());
 	}
 }
 

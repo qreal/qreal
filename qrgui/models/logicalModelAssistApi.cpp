@@ -42,7 +42,7 @@ const qrRepo::LogicalRepoApi &LogicalModelAssistApi::logicalRepoApi() const
 	return mLogicalModel.api();
 }
 
-qrRepo::LogicalRepoApi &LogicalModelAssistApi::mutableLogicalRepoApi()
+qrRepo::LogicalRepoApi &LogicalModelAssistApi::mutableLogicalRepoApi() const
 {
 	return mLogicalModel.mutableApi();
 }
