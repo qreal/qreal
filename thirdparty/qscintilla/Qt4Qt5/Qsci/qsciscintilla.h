@@ -1,24 +1,19 @@
 // This module defines the "official" high-level API of the Qt port of
 // Scintilla.
 //
-// Copyright (c) 2012 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
-// This file may be used under the terms of the GNU General Public
-// License versions 2.0 or 3.0 as published by the Free Software
-// Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
-// included in the packaging of this file.  Alternatively you may (at
-// your option) use any later version of the GNU General Public
-// License if such license has been publicly approved by Riverbank
-// Computing Limited (or its successors, if any) and the KDE Free Qt
-// Foundation. In addition, as a special exception, Riverbank gives you
-// certain additional rights. These rights are described in the Riverbank
-// GPL Exception version 1.1, which can be found in the file
-// GPL_EXCEPTION.txt in this package.
+// This file may be used under the terms of the GNU General Public License
+// version 3.0 as published by the Free Software Foundation and appearing in
+// the file LICENSE included in the packaging of this file.  Please review the
+// following information to ensure the GNU General Public License version 3.0
+// requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 // 
-// If you are unsure which license is appropriate for your use, please
-// contact the sales department at sales@riverbankcomputing.com.
+// If you do not wish to use this file under the terms of the GPL version 3.0
+// then you may purchase a commercial license.  For more information contact
+// info@riverbankcomputing.com.
 // 
 // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
 // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -27,17 +22,16 @@
 #ifndef QSCISCINTILLA_H
 #define QSCISCINTILLA_H
 
-#include <qobject.h>
-#include <qstringlist.h>
-
 #include <QByteArray>
 #include <QList>
+#include <QObject>
 #include <QPointer>
+#include <QStringList>
 
-#include "qsciglobal.h"
-#include "qscicommand.h"
-#include "qscidocument.h"
-#include "qsciscintillabase.h"
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciglobal.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscicommand.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscidocument.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciscintillabase.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -94,7 +88,10 @@ public:
         AnnotationStandard = ANNOTATION_STANDARD,
 
         //! Annotations are surrounded by a box.
-        AnnotationBoxed = ANNOTATION_BOXED
+        AnnotationBoxed = ANNOTATION_BOXED,
+
+        //! Annotations are indented to match the text.
+        AnnotationIndented = ANNOTATION_INDENTED,
     };
 
     //! This enum defines the behavior if an auto-completion list contains a
@@ -189,7 +186,11 @@ public:
         //! The background color of characters after the column limit is
         //! changed to the color set by setEdgeColor().  This is recommended
         //! for proportional fonts.
-        EdgeBackground = EDGE_BACKGROUND
+        EdgeBackground = EDGE_BACKGROUND,
+
+        //! Multiple vertical lines are drawn at the columns defined by
+        //! multiple calls to addEdgeColumn().
+        EdgeMultipleLines = EDGE_MULTILINE,
     };
 
     //! This enum defines the different end-of-line modes.
@@ -255,8 +256,15 @@ public:
         RoundBoxIndicator = INDIC_ROUNDBOX,
 
         //! A rectangle around the text with the interior usually more
-        //! transparent than the border.
+        //! transparent than the border.  It does not colour the top pixel of
+        //! the line so that indicators on contiguous lines are visually
+        //! distinct and disconnected.
         StraightBoxIndicator = INDIC_STRAIGHTBOX,
+
+        //! A rectangle around the text with the interior usually more
+        //! transparent than the border.  Unlike StraightBoxIndicator it covers
+        //! the entire character area.
+        FullBoxIndicator = INDIC_FULLBOX,
 
         //! A dashed underline.
         DashesIndicator = INDIC_DASH,
@@ -275,6 +283,25 @@ public:
         //! A version of SquiggleIndicator that uses a pixmap.  This is quicker
         //! but may be of lower quality.
         SquigglePixmapIndicator = INDIC_SQUIGGLEPIXMAP,
+
+        //! A thick underline typically used for the target during Asian
+        //! language input composition.
+        ThickCompositionIndicator = INDIC_COMPOSITIONTHICK,
+
+        //! A thin underline typically used for non-target ranges during Asian
+        //! language input composition.
+        ThinCompositionIndicator = INDIC_COMPOSITIONTHIN,
+
+        //! The color of the text is set to the color of the indicator's
+        //! foreground.
+        TextColorIndicator = INDIC_TEXTFORE,
+
+        //! A triangle below the start of the indicator range.
+        TriangleIndicator = INDIC_POINT,
+
+        //! A triangle below the centre of the first character in the indicator
+        //! range.
+        TriangleCharacterIndicator = INDIC_POINTCHARACTER,
     };
 
     //! This enum defines the different margin options.
@@ -307,7 +334,11 @@ public:
         TextMargin = SC_MARGIN_TEXT,
 
         //! The margin contains right justified styled text.
-        TextMarginRightJustified = SC_MARGIN_RTEXT
+        TextMarginRightJustified = SC_MARGIN_RTEXT,
+
+        //! The margin contains symbols and uses the color set by
+        //! setMarginBackgroundColor() as its background color.
+        SymbolMarginColor = SC_MARGIN_COLOUR,
     };
 
     //! This enum defines the different pre-defined marker symbols.
@@ -402,7 +433,20 @@ public:
 
         //! No symbol is drawn but the line is drawn underlined using the
         //! marker's background color.
-        Underline = SC_MARK_UNDERLINE
+        Underline = SC_MARK_UNDERLINE,
+
+        //! A bookmark.
+        Bookmark = SC_MARK_BOOKMARK,
+    };
+
+    //! This enum defines how tab characters are drawn when whitespace is
+    //! visible.
+    enum TabDrawMode {
+        //! An arrow stretching to the tab stop.
+        TabLongArrow = SCTD_LONGARROW,
+
+        //! A horizontal line stretching to the tab stop.
+        TabStrikeOut = SCTD_STRIKEOUT,
     };
 
     //! This enum defines the different whitespace visibility modes.  When
@@ -416,7 +460,10 @@ public:
         WsVisible = SCWS_VISIBLEALWAYS,
 
         //! Whitespace is visible after the whitespace used for indentation.
-        WsVisibleAfterIndent = SCWS_VISIBLEAFTERINDENT
+        WsVisibleAfterIndent = SCWS_VISIBLEAFTERINDENT,
+
+        //! Whitespace used for indentation is visible.
+        WsVisibleOnlyInIndent = SCWS_VISIBLEONLYININDENT,
     };
 
     //! This enum defines the different line wrap modes.
@@ -428,7 +475,10 @@ public:
         WrapWord = SC_WRAP_WORD,
 
         //! Lines are wrapped at character boundaries.
-        WrapCharacter = SC_WRAP_CHAR
+        WrapCharacter = SC_WRAP_CHAR,
+
+        //! Lines are wrapped at whitespace boundaries.
+        WrapWhitespace = SC_WRAP_WHITESPACE,
     };
 
     //! This enum defines the different line wrap visual flags.
@@ -568,6 +618,12 @@ public:
     //!
     //! \sa setBraceMatching()
     BraceMatch braceMatching() const {return braceMode;}
+
+    //! Returns the encoded text between positions \a start and \a end.  This
+    //! is typically used by QsciLexerCustom::styleText().
+    //!
+    //! \sa text()
+    QByteArray bytes(int start, int end) const;
 
     //! Returns the current call tip position.
     //!
@@ -908,6 +964,11 @@ public:
     //! \sa setLexer()
     QsciLexer *lexer() const;
 
+    //! Returns the background color of margin \a margin.
+    //!
+    //! \sa setMarginBackgroundColor()
+    QColor marginBackgroundColor(int margin) const;
+
     //! Returns true if line numbers are enabled for margin \a margin.
     //!
     //! \sa setMarginLineNumbers(), marginType(), SCI_GETMARGINTYPEN
@@ -937,6 +998,11 @@ public:
     //!
     //! \sa setMarginWidth(), SCI_GETMARGINWIDTHN
     int marginWidth(int margin) const;
+
+    //! Returns the number of margins.
+    //!
+    //! \sa setMargins()
+    int margins() const;
 
     //! Define a type of marker using the symbol \a sym with the marker number
     //! \a markerNumber.  If \a markerNumber is -1 then the marker number is
@@ -1079,6 +1145,16 @@ public:
     //! \sa setFoldMarginColors()
     void resetFoldMarginColors();
 
+    //! Resets the background colour of an active hotspot area to the default.
+    //!
+    //! \sa setHotspotBackgroundColor(), resetHotspotForegroundColor()
+    void resetHotspotBackgroundColor();
+
+    //! Resets the foreground colour of an active hotspot area to the default.
+    //!
+    //! \sa setHotspotForegroundColor(), resetHotspotBackgroundColor()
+    void resetHotspotForegroundColor();
+
     //! The fold margin may be drawn as a one pixel sized checkerboard pattern
     //! of two colours, \a fore and \a back.
     //!
@@ -1158,6 +1234,17 @@ public:
     //! \sa document()
     void setDocument(const QsciDocument &document);
 
+    //! Add \a colnr to the columns which are displayed with a vertical line.
+    //! The edge mode must be set to EdgeMultipleLines.
+    //!
+    //! \sa clearEdgeColumns()
+    void addEdgeColumn(int colnr, const QColor &col);
+
+    //! Remove any columns added by previous calls to addEdgeColumn().
+    //!
+    //! \sa addEdgeColumn()
+    void clearEdgeColumns();
+
     //! Set the color of the marker used to show that a line has exceeded the
     //! length set by setEdgeColumn().
     //!
@@ -1192,10 +1279,25 @@ public:
     //! If \a indicatorNumber is -1 then the colour of all indicators is set.
     void setIndicatorForegroundColor(const QColor &col, int indicatorNumber = -1);
 
+    //! Set the foreground colour of indicator \a indicatorNumber to \a col
+    //! when the mouse is over it or the caret moved into it.  If
+    //! \a indicatorNumber is -1 then the colour of all indicators is set.
+    void setIndicatorHoverForegroundColor(const QColor &col, int indicatorNumber = -1);
+
+    //! Set the style of indicator \a indicatorNumber to \a style when the
+    //! mouse is over it or the caret moved into it.  If \a indicatorNumber is
+    //! -1 then the style of all indicators is set.
+    void setIndicatorHoverStyle(IndicatorStyle style, int indicatorNumber = -1);
+
     //! Set the outline colour of indicator \a indicatorNumber to \a col.
     //! If \a indicatorNumber is -1 then the colour of all indicators is set.
     //! At the moment only the alpha value of the colour has any affect.
     void setIndicatorOutlineColor(const QColor &col, int indicatorNumber = -1);
+
+    //! Sets the background color of margin \a margin to \a col.
+    //!
+    //! \sa marginBackgroundColor()
+    void setMarginBackgroundColor(int margin, const QColor &col);
 
     //! Set the margin options to \a options.
     //!
@@ -1225,6 +1327,11 @@ public:
     //! The margin text on line \a line is removed.  If \a line is negative
     //! then all margin text is removed.
     void clearMarginText(int line = -1);
+
+    //! Set the number of margins to \a margins.
+    //!
+    //! \sa margins()
+    void setMargins(int margins);
 
     //! Set the background colour, including the alpha component, of marker
     //! \a markerNumber to \a col.  If \a markerNumber is -1 then the colour of
@@ -1262,6 +1369,12 @@ public:
     //!
     //! \sa setMatchedBraceIndicator()
     void resetMatchedBraceIndicator();
+
+    //! Sets the mode used to draw tab characters when whitespace is visible to
+    //! \a mode.  The default is to use an arrow.
+    //!
+    //! \sa tabDrawMode()
+    void setTabDrawMode(TabDrawMode mode);
 
     //! Set the background colour used to display unmatched braces to \a col.
     //! It is ignored if an indicator is being used.  The default is white.
@@ -1305,6 +1418,24 @@ public:
     //!
     //! \sa setSelectionToEol()
     bool selectionToEol() const;
+
+    //! Sets the background colour of an active hotspot area to \a col.
+    //!
+    //! \sa resetHotspotBackgroundColor(), setHotspotForegroundColor()
+    void setHotspotBackgroundColor(const QColor &col);
+
+    //! Sets the foreground colour of an active hotspot area to \a col.
+    //!
+    //! \sa resetHotspotForegroundColor(), setHotspotBackgroundColor()
+    void setHotspotForegroundColor(const QColor &col);
+
+    //! Enables or disables, according to \a enable, the underlining of an
+    //! active hotspot area.  The default is false.
+    void setHotspotUnderline(bool enable);
+
+    //! Enables or disables, according to \a enable, the wrapping of a hotspot
+    //! area to following lines.  The default is true.
+    void setHotspotWrap(bool enable);
 
     //! Sets whether or not the selection is drawn up to the right hand border.
     //! \a filled is set if the selection is drawn to the border.
@@ -1362,6 +1493,12 @@ public:
     //! The standard command set is returned.
     QsciCommandSet *standardCommands() const {return stdCmds;}
 
+    //! Returns the mode used to draw tab characters when whitespace is
+    //! visible.
+    //!
+    //! \sa setTabDrawMode()
+    TabDrawMode tabDrawMode() const;
+
     //! Returns true if the tab key indents a line instead of inserting a tab
     //! character.  The default is true.
     //!
@@ -1384,6 +1521,14 @@ public:
     //!
     //! \sa setText()
     QString text(int line) const;
+
+    //! \overload
+    //!
+    //! Returns the text between positions \a start and \a end.  This is
+    //! typically used by QsciLexerCustom::styleText().
+    //!
+    //! \sa bytes(), setText()
+    QString text(int start, int end) const;
 
     //! Returns the height in pixels of the text in line number \a linenr.
     int textHeight(int linenr) const;
@@ -1909,6 +2054,15 @@ signals:
     //! \sa marginSensitivity(), setMarginSensitivity()
     void marginClicked(int margin, int line, Qt::KeyboardModifiers state);
 
+    //! This signal is emitted whenever the user right-clicks on a sensitive
+    //! margin.  \a margin is the margin.  \a line is the number of the line
+    //! where the user clicked.  \a state is the state of the modifier keys
+    //! (Qt::ShiftModifier, Qt::ControlModifier, Qt::AltModifer and
+    //! Qt::MetaModifier) when the user clicked.
+    //!
+    //! \sa marginSensitivity(), setMarginSensitivity()
+    void marginRightClicked(int margin, int line, Qt::KeyboardModifiers state);
+
     //! This signal is emitted whenever the user attempts to modify read-only
     //! text.
     //!
@@ -1941,6 +2095,9 @@ protected:
     virtual bool event(QEvent *e);
 
     //! \reimp
+    virtual void changeEvent(QEvent *e);
+
+    //! \reimp
     virtual void contextMenuEvent(QContextMenuEvent *e);
 
 private slots:
@@ -1949,6 +2106,7 @@ private slots:
     void handleIndicatorClick(int pos, int modifiers);
     void handleIndicatorRelease(int pos, int modifiers);
     void handleMarginClick(int pos, int margin, int modifiers);
+    void handleMarginRightClick(int pos, int margin, int modifiers);
     void handleModified(int pos, int mtype, const char *text, int len,
             int added, int line, int foldNow, int foldPrev, int token,
             int annotationLinesAdded);
@@ -1969,8 +2127,6 @@ private slots:
     void delete_selection();
 
 private:
-    typedef QByteArray ScintillaString;
-
     void detachLexer();
 
     enum IndentState {
@@ -2000,10 +2156,9 @@ private:
     void foldExpand(int &line, bool doExpand, bool force = false,
             int visLevels = 0, int level = -1);
     void setFoldMarker(int marknr, int mark = SC_MARK_EMPTY);
-    QString convertTextS2Q(const char *s) const;
-    ScintillaString convertTextQ2S(const QString &q) const;
     void setLexerStyle(int style);
     void setStylesFont(const QFont &f, int style);
+    void setEnabledColors(int style, QColor &fore, QColor &back);
 
     void braceMatch();
     bool findMatchingBrace(long &brace, long &other, BraceMatch mode);
@@ -2025,7 +2180,7 @@ private:
 
     QString wordAtPosition(int position) const;
 
-    ScintillaString styleText(const QList<QsciStyledText> &styled_text,
+    ScintillaBytes styleText(const QList<QsciStyledText> &styled_text,
             char **styles, int style_offset = 0);
 
     struct FindState
@@ -2071,6 +2226,7 @@ private:
     int ct_cursor;
     QList<int> ct_shifts;
     AutoCompletionUseSingle use_single;
+    QPointer<QsciLexer> lex;
     QsciCommandSet *stdCmds;
     QsciDocument doc;
     QColor nl_text_colour;
