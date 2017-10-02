@@ -68,6 +68,8 @@ public:
 
 	QString defaultSettingsFile() const override;
 
+	void onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model) override;
+
 	void onCurrentDiagramChanged(const qReal::TabInfo &info) override;
 
 private slots:

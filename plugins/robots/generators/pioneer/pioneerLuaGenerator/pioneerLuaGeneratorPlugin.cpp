@@ -224,6 +224,15 @@ QString PioneerLuaGeneratorPlugin::defaultSettingsFile() const
 	return ":/pioneer/lua/pioneerLuaDefaultSettings.ini";
 }
 
+void PioneerLuaGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::RobotModelInterface &model)
+{
+	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
+	mGenerateCodeAction->setVisible(model.kitId() == kitId());
+	mUploadProgramAction->setVisible(model.kitId() == kitId());
+	mRunProgramAction->setVisible(model.kitId() == kitId());
+	mStopProgramAction->setVisible(model.kitId() == kitId());
+}
+
 void PioneerLuaGeneratorPlugin::onCurrentDiagramChanged(const qReal::TabInfo &info)
 {
 	generatorBase::RobotsGeneratorPluginBase::onCurrentDiagramChanged(info);
