@@ -23,8 +23,8 @@
 
 #include <QObject>
 
-#include <Qsci/qsciglobal.h>
-#include <Qsci/qscilexer.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciglobal.h>
+#include <thirdparty/qscintilla/Qt4Qt5/Qsci/qscilexer.h>
 
 
 //! \brief The QsciLexerLua class encapsulates the Scintilla Lua
