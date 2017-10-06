@@ -126,7 +126,9 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 				nextNode = copySynchronousFragment(nextNode, target, true);
 			}
 
-			if (mSemanticTreeManager->isTopLevelNode(thisNode) && !isEndOfHandler(nextNode) && !isEndOfHandler(mSemanticTreeManager->anyRightSibling(nextNode))) {
+			if (mSemanticTreeManager->isTopLevelNode(thisNode)
+						&& !isEndOfHandler(nextNode)
+						&& !isEndOfHandler(mSemanticTreeManager->anyRightSibling(nextNode))) {
 				SemanticNode * const endNode = produceEndOfHandlerNode();
 				mSemanticTreeManager->addAfter(nextNode, endNode);
 			}
