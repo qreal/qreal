@@ -19,12 +19,13 @@
 #include <qrtext/lua/luaToolbox.h>
 
 #include <kitBase/robotModel/robotModelManagerInterface.h>
+#include <kitBase/devicesConfigurationProvider.h>
 
 namespace interpreterCore {
 namespace textLanguage {
 
 /// Parser of textual language that is used within blocks.
-class RobotsBlockParser : public QObject, public qrtext::lua::LuaToolbox
+class RobotsBlockParser : public QObject, public qrtext::lua::LuaToolbox, public kitBase::DevicesConfigurationProvider
 {
 	Q_OBJECT
 
@@ -40,11 +41,18 @@ public:
 
 	void clear() override;
 
+protected:
+	virtual void onDeviceConfigurationChanged(const QString &robotModel
+			, const kitBase::robotModel::PortInfo &port
+			, const kitBase::robotModel::DeviceInfo &device
+			, Reason reason) override;
+
 private slots:
 	void setReservedVariables();
 
 private:
 	void addIntrinsicFuctions();
+	void setVariableDependedOnDeviceType(const QString &variable, const kitBase::robotModel::DeviceInfo &device);
 
 	const kitBase::robotModel::RobotModelManagerInterface &mRobotModelManager;
 	const utils::ComputableNumber::IntComputer mTimeComputer;

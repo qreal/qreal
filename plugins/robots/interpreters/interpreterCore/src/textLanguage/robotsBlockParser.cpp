@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@
 
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/shell.h>
+#include <kitBase/robotModel/robotParts/scalarSensor.h>
+#include <kitBase/robotModel/robotParts/vectorSensor.h>
 
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
@@ -68,10 +70,15 @@ void RobotsBlockParser::setReservedVariables()
 		}
 
 		if (!port.reservedVariable().isEmpty()) {
-			if (port.reservedVariableType() == kitBase::robotModel::PortInfo::ReservedVariableType::scalar) {
-				setVariableValue(port.reservedVariable(), 0);
+			kitBase::robotModel::DeviceInfo device = currentConfiguration(mRobotModelManager.model().robotId(), port);
+			if (device.isNull()) {
+				if (port.reservedVariableType() == kitBase::robotModel::PortInfo::ReservedVariableType::scalar) {
+					setVariableValue(port.reservedVariable(), 0);
+				} else {
+					setVectorVariableValue(port.reservedVariable(), QVector<int>{0});
+				}
 			} else {
-				setVectorVariableValue(port.reservedVariable(), QVector<int>{0});
+				setVariableDependedOnDeviceType(port.reservedVariable(), device);
 			}
 
 			markAsSpecial(port.reservedVariable());
@@ -94,6 +101,19 @@ const QStringList &RobotsBlockParser::hiddenVariables() const
 void RobotsBlockParser::clear()
 {
 	setReservedVariables();
+}
+
+void RobotsBlockParser::onDeviceConfigurationChanged(const QString &robotModel
+		, const kitBase::robotModel::PortInfo &port
+		, const kitBase::robotModel::DeviceInfo &device
+		, kitBase::DevicesConfigurationProvider::Reason reason)
+{
+	Q_UNUSED(reason)
+	if (mRobotModelManager.model().robotId() == robotModel){
+		if (!port.reservedVariable().isEmpty() && !device.isNull()) {
+			setVariableDependedOnDeviceType(port.reservedVariable(), device);
+		}
+	}
 }
 
 void RobotsBlockParser::addIntrinsicFuctions()
@@ -199,4 +219,18 @@ void RobotsBlockParser::addIntrinsicFuctions()
 			, [](const QVariant &a, const QVariant &b) { return qMax(a.toReal(), b.toReal()); });
 	add2aryFunction("atan2", new types::Float(), new types::Float(), new types::Float()
 			, [](const QVariant &y, const QVariant &x) { return qAtan2(y.toReal(), x.toReal()); });
+}
+
+void RobotsBlockParser::setVariableDependedOnDeviceType(const QString &variable
+		, const kitBase::robotModel::DeviceInfo &device)
+{
+	if (device.isA<kitBase::robotModel::robotParts::ScalarSensor>()) {
+		forgetIdentifier(variable);
+		setVariableValue(variable, 0);
+	} else if (device.isA<kitBase::robotModel::robotParts::VectorSensor>()) {
+		forgetIdentifier(variable);
+		setVectorVariableValue(variable, QVector<int>{0});
+	}
+
+	markAsSpecial(variable);
 }

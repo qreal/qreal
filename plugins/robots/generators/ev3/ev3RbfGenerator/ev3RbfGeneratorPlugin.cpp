@@ -17,10 +17,12 @@
 #include <QtWidgets/QApplication>
 #include <QtCore/QDirIterator>
 #include <QtCore/QProcess>
+#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/logging.h>
 #include <ev3Kit/communication/ev3RobotCommunicationThread.h>
 #include <ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h>
+#include <qrkernel/settingsManager.h>
 #include "ev3RbfMasterGenerator.h"
 
 using namespace ev3::rbf;
@@ -40,7 +42,7 @@ Ev3RbfGeneratorPlugin::Ev3RbfGeneratorPlugin()
 
 	mUploadProgramAction->setText(tr("Upload program"));
 	mUploadProgramAction->setIcon(QIcon(":/ev3/rbf/images/uploadProgram.svg"));
-	connect(mUploadProgramAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::uploadProgram);
+	connect(mUploadProgramAction, &QAction::triggered, this, &Ev3RbfGeneratorPlugin::uploadAndRunProgram);
 
 	mRunProgramAction->setObjectName("runEv3RbfProgram");
 	mRunProgramAction->setText(tr("Run program"));
@@ -145,6 +147,31 @@ QString Ev3RbfGeneratorPlugin::uploadProgram()
 	}
 
 	return fileOnRobot;
+}
+
+void Ev3RbfGeneratorPlugin::uploadAndRunProgram()
+{
+	const QString fileOnRobot = uploadProgram();
+	communication::Ev3RobotCommunicationThread * const communicator = currentCommunicator();
+
+	if (fileOnRobot.isEmpty() || !communicator) {
+		return;
+	}
+
+	const RunPolicy runPolicy = static_cast<RunPolicy>(SettingsManager::value("ev3RunPolicy").toInt());
+	switch (runPolicy) {
+	case RunPolicy::Ask:
+		if (QMessageBox::question(mMainWindowInterface->windowWidget(), tr("The program has been uploaded")
+				, tr("Do you want to run it?")) == QMessageBox::Yes) {
+			communicator->runProgram(fileOnRobot);
+		}
+		break;
+	case RunPolicy::AlwaysRun:
+		communicator->runProgram(fileOnRobot);
+		break;
+	case RunPolicy::NeverRun:
+		break;
+	}
 }
 
 void Ev3RbfGeneratorPlugin::runProgram()

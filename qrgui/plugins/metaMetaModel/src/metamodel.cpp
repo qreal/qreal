@@ -91,12 +91,10 @@ QList<QPair<QString, QString>> Metamodel::enumValues(const QString &name) const
 	return mEnumValues[name];
 }
 
-void Metamodel::addEnum(const QString &name, const QList<QPair<QString, QString> > &values)
+void Metamodel::addEnum(const QString &name, const QList<QPair<QString, QString>> &values)
 {
-	for (auto &&value : values) {
-		if (!mEnumValues[name].contains(value)) {
-			mEnumValues[name] << value;
-		}
+	if (!mEnumValues.contains(name)) {
+		mEnumValues[name] = values;
 	}
 }
 

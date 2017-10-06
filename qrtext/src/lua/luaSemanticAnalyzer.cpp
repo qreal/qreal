@@ -92,6 +92,11 @@ void LuaSemanticAnalyzer::addReadOnlyVariable(const QString &name)
 	mReadOnlyVariables.insert(name);
 }
 
+void LuaSemanticAnalyzer::removeReadOnlyVariable(const QString &name)
+{
+	mReadOnlyVariables.remove(name);
+}
+
 void LuaSemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
 {
 	checkReservedIdentifiersUsage(node, {});

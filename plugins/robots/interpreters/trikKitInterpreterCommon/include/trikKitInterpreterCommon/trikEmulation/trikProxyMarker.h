@@ -29,10 +29,10 @@ public:
 
 	Status status() const override {return Status::ready;}
 
-	virtual void down(const QString &color) override;
-	virtual void up() override;
-	virtual bool isDown() const override;
-	virtual void setDown(bool isDown) override;
+	Q_INVOKABLE virtual void down(const QString &color) override;
+	Q_INVOKABLE virtual void up() override;
+	Q_INVOKABLE virtual bool isDown() const override;
+	Q_INVOKABLE virtual void setDown(bool isDown) override;
 
 private:
 	twoDModel::robotModel::parts::Marker *mMarker; // Doesn't have ownership.

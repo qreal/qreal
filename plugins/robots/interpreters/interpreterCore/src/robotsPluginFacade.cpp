@@ -382,6 +382,7 @@ void RobotsPluginFacade::initSensorWidgets()
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mRobotSettingsPage);
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mDockDevicesConfigurer.data());
 	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mGraphicsWatcherManager);
+	mDevicesConfigurationManager->connectDevicesConfigurationProvider(mParser.data());
 }
 
 void RobotsPluginFacade::initKitPlugins(const qReal::PluginConfigurator &configurer)

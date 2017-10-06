@@ -20,9 +20,6 @@ cp    $BIN_DIR/trikNetwork-x86.dll                                              
 
 cp    $BIN_DIR/system.js                                                          $PWD/../data/bin/
 
-cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data/
-cp    $QT_DIR/bin/Qt5Multimedia.dll                                               $PWD/../data/
-
 cd "$(dirname "$0")"/../data
 rm -rf winscp
 mv trik-runtime-builds/winscp $PWD

@@ -52,6 +52,9 @@ public:
 	/// Returns a list of known identifiers
 	QStringList identifiers() const;
 
+	/// Remome identifier from known identifiers
+	void forgetIdentifier(const QString &identifier);
+
 	/// Returns a value of an identifier with given name.
 	QVariant value(const QString &identifier) const;
 

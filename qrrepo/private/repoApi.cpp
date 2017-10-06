@@ -316,6 +316,7 @@ void RepoApi::setFrom(const Id &id, const Id &from)
 		Id prev = mRepository->property(id, "from").value<Id>();
 		removeFromList(prev, "links", id, "from");
 	}
+
 	mRepository->setProperty(id, "from", from.toVariant());
 	addToIdList(from, "links", id, "from");
 }

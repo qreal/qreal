@@ -26,3 +26,8 @@ QVector<int> VectorSensor::lastData() const
 {
 	return mLastValue;
 }
+
+void VectorSensor::setLastData(const QVector<int> &data)
+{
+	emit newData(data);
+}

@@ -1,4 +1,4 @@
-/* Copyright 2015 CyberTech Labs Ltd.
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,18 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "generatorBase/simpleGenerators/randomIdGenerator.h"
+#include "ev3Kit/robotModel/parts/ev3NXTColorSensorV2Color.h"
 
-using namespace generatorBase::simple;
-using namespace qReal;
+using namespace ev3::robotModel::parts;
+using namespace kitBase::robotModel;
 
-RandomIdGenerator::RandomIdGenerator(AbstractSimpleGenerator *other)
-	: AbstractSimpleGenerator(other->repo(), other->customizer(), other->id(), other)
-	, mOtherGenerator(*other)
+Ev3NXTColorSensorV2Color::Ev3NXTColorSensorV2Color(const DeviceInfo &info, const PortInfo &port)
+	: kitBase::robotModel::robotParts::ScalarSensor(info, port)
 {
-}
-
-QString RandomIdGenerator::generate()
-{
-	return addRandomIds(mOtherGenerator.generate());
 }

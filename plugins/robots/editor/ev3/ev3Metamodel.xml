@@ -213,7 +213,65 @@
 					</generalizations>
 				</logic>
 			</node>
-
+			<node displayedName="Calibrate gyroscope" name="Ev3CalibrateGyroscope" path="" description="Sets gyroscope's angle to zero in current position.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/calibrateGyroscopeBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Start Compass Calibration" name="Ev3StartCompassCalibration" path="" description="Starts compass calibration under program control. To calibrate, robot needs to spin >=540 clockwise and counterclockwise with minimum 20 seconds duration for each direction. Atfer robot rotation add Stop Compass Сalibration block.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/startCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Stop Compass Calibration" name="Ev3StopCompassCalibration" path="" description="Ends compass calibration process. Stores result of calibration into the given variable. Not zero means success.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/stopCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+									<label x="40" y="60" textBinded="Variable" hard="false" prefix="Variable:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+								<property displayedName="Variable" type="string" name="Variable" />
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
 			<node displayedName="Led" name="Ev3Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -698,6 +756,9 @@
 				<element name="Ev3ClearEncoder"/>
 				<element name="Ev3Led"/>
 				<element name="Ev3SendMail"/>
+				<element name="Ev3CalibrateGyroscope"/>
+				<element name="Ev3StartCompassCalibration"/>
+				<element name="Ev3StopCompassCalibration"/>
 			</group>
 			<group name="Wait">
 				<element name="Ev3WaitForTouchSensor"/>

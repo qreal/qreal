@@ -48,7 +48,7 @@ QString TemplateParametrizedEntity::readTemplate(const QString &pathFromRoot) co
 				qWarning() << "TemplateParametrizedEntity::readTemplate" << errorMessage;
 			}
 
-			return result;
+			return addRandomIds(result);
 		}
 	}
 
@@ -69,7 +69,7 @@ QString TemplateParametrizedEntity::readTemplateIfExists(const QString &pathFrom
 				QLOG_ERROR() << "Reading from template while generating code failed";
 				qWarning() << "TemplateParametrizedEntity::readTemplate" << errorMessage;
 			} else {
-				return result;
+				return addRandomIds(result);
 			}
 		}
 	}

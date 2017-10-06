@@ -44,8 +44,9 @@ public:
 		const QMetaObject *metaObject = &T::staticMetaObject;
 		const QString name = property(metaObject, "name");
 		const QString friendlyName = property(metaObject, "friendlyName");
+		const bool simulated = property(metaObject, "simulated") == "true";
 		const Direction direction = property(metaObject, "direction").toLower() == "input" ? input : output;
-		DeviceInfo result(metaObject, name, friendlyName, direction);
+		DeviceInfo result(metaObject, name, friendlyName, simulated, direction);
 		mCreatedInfos[QString(metaObject->className())] = result;
 		return result;
 	}
@@ -76,6 +77,9 @@ public:
 	/// Returns a string that can be displayed to a user as the name of the device.
 	QString friendlyName() const;
 
+	/// Returns true if device should be simulated.
+	bool simulated() const;
+
 	/// Returns the direction of communication with devices of this type.
 	Direction direction() const;
 
@@ -100,7 +104,11 @@ private:
 	friend bool operator ==(const DeviceInfo &device1, const DeviceInfo &device2);
 	friend bool operator !=(const DeviceInfo &device1, const DeviceInfo &device2);
 
-	DeviceInfo(const QMetaObject *deviceType, const QString &name, const QString &friendlyName, Direction direction);
+	DeviceInfo(const QMetaObject *deviceType
+			, const QString &name
+			, const QString &friendlyName
+			, bool isSimulated
+			, Direction direction);
 
 	static QString property(const QMetaObject * const metaObject, const QString &name);
 
@@ -109,6 +117,7 @@ private:
 	const QMetaObject *mDeviceType;
 	QString mName;
 	QString mFriendlyName;
+	bool mSimulated;
 	Direction mDirection;
 };
 

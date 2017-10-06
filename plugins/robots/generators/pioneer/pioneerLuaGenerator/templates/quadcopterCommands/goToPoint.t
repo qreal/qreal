@@ -1,1 +1,2 @@
-		ap.goToPoint({latitude=@@LATITUDE@@, longitude=@@LONGITUDE@@, altitude=@@ALTITUDE@@})
+		ap.goToLocalPoint({x=@@X@@, y=@@Y@@, z=@@Z@@})
+

@@ -122,7 +122,11 @@ void RobotsSettingsPage::save()
 	SettingsManager::setValue("sensorUpdateInterval", mUi->sensorUpdateSpinBox->value());
 	SettingsManager::setValue("autoscalingInterval", mUi->autoScalingSpinBox->value());
 	SettingsManager::setValue("textUpdateInterval", mUi->textUpdaterSpinBox->value());
-	SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
+	if (mRobotModelManager.model().kitId().contains("nxt", Qt::CaseInsensitive)) {
+		SettingsManager::setValue("nxtFlashToolRunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
+	} else if (mRobotModelManager.model().kitId().contains("ev3", Qt::CaseInsensitive)) {
+		SettingsManager::setValue("ev3RunPolicy", mUi->runningAfterUploadingComboBox->currentIndex());
+	}
 
 	mUi->devicesConfigurer->save();
 
@@ -161,8 +165,11 @@ void RobotsSettingsPage::restoreSettings()
 	mUi->autoScalingSpinBox->setValue(SettingsManager::value("autoscalingInterval", autoscalingDefault).toInt());
 	mUi->textUpdaterSpinBox->setValue(SettingsManager::value("textUpdateInterval", textUpdateDefault).toInt());
 
-	mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
-
+	if (mRobotModelManager.model().kitId().contains("nxt", Qt::CaseInsensitive)) {
+		mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("nxtFlashToolRunPolicy").toInt());
+	} else if (mRobotModelManager.model().kitId().contains("ev3", Qt::CaseInsensitive)) {
+		mUi->runningAfterUploadingComboBox->setCurrentIndex(SettingsManager::value("ev3RunPolicy").toInt());
+	}
 	mUi->devicesConfigurer->refresh();
 
 	for (const QString &kitId : mKitPluginManager.kitIds()) {

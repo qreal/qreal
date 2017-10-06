@@ -154,9 +154,6 @@ public:
 	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
 
-	/// Returns a pointer to a code generator that replaces all @@RANDOM_ID@@ occurences to random c++ identifier string
-	virtual simple::AbstractSimpleGenerator *randomIdGenerator(simple::AbstractSimpleGenerator *other);
-
 	/// Implementation must return a list of paths to folders containing templates for
 	/// customizing concrete generator. List must be sorted by folder priority --- generator looks for template
 	/// in a first folder, then, if there is no template with such name, it looks in a next folder and so on.

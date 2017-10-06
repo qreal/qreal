@@ -248,7 +248,7 @@ QPainterPath RobotModel::robotBoundingPath() const
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
 
 	for (const PortInfo &port : mRobotModel.configurablePorts()){
-		if (!mSensorsConfiguration.type(port).isNull()) {
+		if (!mSensorsConfiguration.type(port).isNull() && mSensorsConfiguration.type(port).simulated()) {
 			const QPointF sensorPos = mSensorsConfiguration.position(port);
 			QPainterPath tempSensorPath;
 			tempSensorPath.addRect(sensorRect(port, sensorPos));

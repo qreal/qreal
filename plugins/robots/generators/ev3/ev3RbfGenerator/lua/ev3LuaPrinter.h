@@ -199,6 +199,7 @@ private:
 	QMap<qrtext::lua::ast::Node *, QStringList> mAdditionalCode;
 	qReal::Id mId;
 	int mTableInitializersCount = -1;
+	QMap<Ev3RbfType, int> mArrayDeclarationCount;
 	QMap<qReal::Id, QMap<Ev3RbfType, int>> mRegistersCount;
 	// Doesn't takes ownership
 	const generatorBase::simple::Binding::ConverterInterface *mReservedVariablesConverter;

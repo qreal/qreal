@@ -825,15 +825,7 @@ void TwoDModelScene::reinitSensor(RobotItem *robotItem, const kitBase::robotMode
 	model::RobotModel &robotModel = robotItem->robotModel();
 
 	const kitBase::robotModel::DeviceInfo &device = robotModel.configuration().type(port);
-	if (device.isNull() || (
-			/// @todo: Add supported by 2D model sensors here
-			!device.isA<kitBase::robotModel::robotParts::TouchSensor>()
-			&& !device.isA<kitBase::robotModel::robotParts::ColorSensor>()
-			&& !device.isA<kitBase::robotModel::robotParts::LightSensor>()
-			&& !device.isA<kitBase::robotModel::robotParts::RangeSensor>()
-			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
-			&& !device.isA<kitBase::robotModel::robotParts::VectorSensor>()
-			))
+	if (device.isNull() || !device.simulated())
 	{
 		return;
 	}

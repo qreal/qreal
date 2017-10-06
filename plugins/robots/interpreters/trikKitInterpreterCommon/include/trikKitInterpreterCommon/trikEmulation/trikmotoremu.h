@@ -40,6 +40,7 @@ public slots:
 	int power() const override;
 	void powerOff() override;
 	void brake(int) override;
+	void setPeriod(int uSec = 20000) override;
 
 private:
 	kitBase::robotModel::robotParts::Motor * mMotor;
