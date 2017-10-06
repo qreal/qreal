@@ -17,6 +17,7 @@
 #include <QtCore/QAbstractTableModel>
 #include <QtCore/QStringList>
 
+#include <qrkernel/exception/exception.h>
 #include <qrrepo/logicalRepoApi.h>
 
 #include "models/modelsDeclSpec.h"
@@ -33,7 +34,6 @@ public:
 
 	QModelIndex parent(const QModelIndex &index) const;
 
-	void setValueForIndex(const QModelIndex &index, QString value);
 	QString getValueFromIndex(const QModelIndex &index);
 
 	int rowCount(const QModelIndex &index) const;
@@ -96,16 +96,36 @@ public:
 	class Field {
 
 	public:
-		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_, Field *parent)
-			: mFieldName(fieldName_), mAttributeClass(attributeClass_), mRole(role_)
+		Field(
+				const QString &fieldName
+				, AttributeClassEnum attributeClass
+				, int role
+				, Field *parent
+				, QPersistentModelIndex targetLogicalObject
+				, QPersistentModelIndex targetGraphicalObject
+				)
+			: mFieldName(fieldName)
+			, mAttributeClass(attributeClass)
+			, mRole(role)
+			, mParentItem(parent)
+			, mTargetLogicalObject(targetLogicalObject)
+			, mTargetGraphicalObject(targetGraphicalObject)
 		{
-			mParentItem = parent;
 		}
 
-		Field(QString fieldName_, AttributeClassEnum attributeClass_, Field *parent)
-			: mFieldName(fieldName_), mAttributeClass(attributeClass_), mRole(-1)
+		Field(const QString &name)
+			: Field(name, logicalAttribute, -1, nullptr, QPersistentModelIndex(), QPersistentModelIndex())
 		{
-			mParentItem = parent;
+		}
+
+		Field()
+			: Field("root")
+		{
+		}
+
+		~Field()
+		{
+			qDeleteAll(mChildItems);
 		}
 
 		void appendChild(Field *item)
@@ -113,7 +133,7 @@ public:
 			mChildItems.append(item);
 		}
 
-		Field* child(int row)
+		Field* child(int row) const
 		{
 			return mChildItems.value(row);
 		}
@@ -123,12 +143,12 @@ public:
 			return mChildItems.count();
 		}
 
-		Field* parentItem()
+		Field *parentItem() const
 		{
 			return mParentItem;
 		}
 
-		QList<Field*> getChilds(Field* parent)
+		QList<Field*> children(Field* parent) const
 		{
 			QList<Field*> result;
 			for (int i = 0; i < mChildItems.count(); ++i) {
@@ -140,7 +160,7 @@ public:
 			return result;
 		}
 
-		int numberOfChilds(Field* parent)
+		int numberOfChildren(Field* parent) const
 		{
 			int result = 0;
 			for (int i = 0; i < mChildItems.count(); ++i) {
@@ -154,58 +174,87 @@ public:
 
 		int row() const
 		{
-			if (mParentItem)
+			if (mParentItem) {
 				return mParentItem->mChildItems.indexOf(const_cast<Field*>(this));
+			}
+
 			return 0;
 		}
 
-		AttributeClassEnum attributeClass()
+		AttributeClassEnum attributeClass() const
 		{
 			return mAttributeClass;
 		}
 
-		QString fieldName()
+		QString fieldName() const
 		{
 			return mFieldName;
 		}
 
-		int role()
+		int role() const
 		{
 			return mRole;
 		}
 
-		void setValue(int row, QString value)
+		QString value() const
 		{
-			Field *child = mChildItems.at(row);
-			child->mValue = value;
-		}
+			switch (mAttributeClass) {
+			case namePseudoattribute:
+			case logicalAttribute:
+			case logicalIdPseudoattribute:
+			case metatypePseudoattribute: {
+				const QVariant data = mTargetLogicalObject.data(mRole);
+				if (mRole == qReal::roles::idRole) {
+					return data.value<qReal::Id>().id();
+				} else {
+					return data.toString();
+				}
+			}
+			case graphicalIdPseudoattribute:
+			case graphicalAttribute: {
+				const QVariant data = mTargetGraphicalObject.data(mRole);
+				if (mRole == qReal::roles::idRole) {
+					return data.value<qReal::Id>().id();
+				} else {
+					return data.toString();
+				}
+			}
+			}
 
-		QString value()
-		{
-			return mValue;
+			throw qReal::Exception("Unknown AttributeClass in PropertyEditorModel::Field::value");
 		}
 
 	private:
+		const QString mFieldName;
+
+		const AttributeClassEnum mAttributeClass;
+
+		const int mRole;
+
+		/// Has ownership over contained items.
 		QList<Field*> mChildItems;
-		Field *mParentItem;
 
-		QString mFieldName;
-		AttributeClassEnum mAttributeClass;
-		int mRole;
-		QString mValue;
+		/// Does not have ownership.
+		Field * const mParentItem;
 
+		const QPersistentModelIndex mTargetLogicalObject;
+		const QPersistentModelIndex mTargetGraphicalObject;
 	};
 
 private slots:
 	void rereadData(const QModelIndex &, const QModelIndex &);
 
 private:
+	/// Does not have ownership.
 	QAbstractItemModel *mTargetLogicalModel;
+
+	/// Does not have ownership.
 	QAbstractItemModel *mTargetGraphicalModel;
+
 	QPersistentModelIndex mTargetLogicalObject;
 	QPersistentModelIndex mTargetGraphicalObject;
 
-	Field* mField;
+	QScopedPointer<Field> mField;
 
 	const qReal::EditorManagerInterface &mEditorManagerInterface;
 

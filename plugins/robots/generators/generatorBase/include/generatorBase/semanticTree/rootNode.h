@@ -16,11 +16,13 @@
 
 #include "zoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A root node for all semantic tree
-class RootNode : public SemanticNode
+class ROBOTS_GENERATOR_EXPORT RootNode : public SemanticNode
 {
 public:
 	explicit RootNode(SemanticNode * const initialBlock, QObject *parent = 0);

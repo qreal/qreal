@@ -1,23 +1,18 @@
 // This module defines various things common to all of the Scintilla Qt port.
 //
-// Copyright (c) 2012 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
-// This file may be used under the terms of the GNU General Public
-// License versions 2.0 or 3.0 as published by the Free Software
-// Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
-// included in the packaging of this file.  Alternatively you may (at
-// your option) use any later version of the GNU General Public
-// License if such license has been publicly approved by Riverbank
-// Computing Limited (or its successors, if any) and the KDE Free Qt
-// Foundation. In addition, as a special exception, Riverbank gives you
-// certain additional rights. These rights are described in the Riverbank
-// GPL Exception version 1.1, which can be found in the file
-// GPL_EXCEPTION.txt in this package.
+// This file may be used under the terms of the GNU General Public License
+// version 3.0 as published by the Free Software Foundation and appearing in
+// the file LICENSE included in the packaging of this file.  Please review the
+// following information to ensure the GNU General Public License version 3.0
+// requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 // 
-// If you are unsure which license is appropriate for your use, please
-// contact the sales department at sales@riverbankcomputing.com.
+// If you do not wish to use this file under the terms of the GPL version 3.0
+// then you may purchase a commercial license.  For more information contact
+// info@riverbankcomputing.com.
 // 
 // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
 // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -26,31 +21,21 @@
 #ifndef QSCIGLOBAL_H
 #define QSCIGLOBAL_H
 
-#ifdef __APPLE__
-extern "C++" {
-#endif
-
 #include <qglobal.h>
 
 
-#define QSCINTILLA_VERSION      0x020702
-#define QSCINTILLA_VERSION_STR  "2.7.2"
+#define QSCINTILLA_VERSION      0x020a00
+#define QSCINTILLA_VERSION_STR  "2.10"
 
 
-// Under Windows, define QSCINTILLA_MAKE_DLL to create a Scintilla DLL, or
-// define QSCINTILLA_DLL to link against a Scintilla DLL, or define neither
-// to either build or link against a static Scintilla library.
-#if defined(Q_OS_WIN)
-
+// Define QSCINTILLA_MAKE_DLL to create a QScintilla shared library, or
+// define QSCINTILLA_DLL to link against a QScintilla shared library, or define
+// neither to either build or link against a static QScintilla library.
 #if defined(QSCINTILLA_DLL)
-#define QSCINTILLA_EXPORT       __declspec(dllimport)
+#define QSCINTILLA_EXPORT       Q_DECL_IMPORT
 #elif defined(QSCINTILLA_MAKE_DLL)
-#define QSCINTILLA_EXPORT       __declspec(dllexport)
-#endif
-
-#endif
-
-#if !defined(QSCINTILLA_EXPORT)
+#define QSCINTILLA_EXPORT       Q_DECL_EXPORT
+#else
 #define QSCINTILLA_EXPORT
 #endif
 
@@ -58,10 +43,6 @@ extern "C++" {
 #if !defined(QT_BEGIN_NAMESPACE)
 #define QT_BEGIN_NAMESPACE
 #define QT_END_NAMESPACE
-#endif
-
-#ifdef __APPLE__
-}
 #endif
 
 #endif

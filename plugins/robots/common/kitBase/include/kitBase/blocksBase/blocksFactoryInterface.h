@@ -44,6 +44,10 @@ public:
 	/// is selected.
 	virtual qReal::IdList blocksToDisable() const = 0;
 
+	/// Returns a list of blocks that will be completely hidden in palette even when they are provided by other
+	/// factories (useful when model can not support CoreBlocksFactory blocks).
+	virtual qReal::IdList blocksToHide() const = 0;
+
 	/// Initializes this factory with external compoments. Those components are used for correct blocks initialization.
 	virtual void configure(const qReal::GraphicalModelAssistInterface &graphicalModelApi
 			, const qReal::LogicalModelAssistInterface &logicalModelApi

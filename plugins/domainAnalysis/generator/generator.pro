@@ -20,12 +20,9 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools
 
-INCLUDEPATH += \
-	$$PWD/../../.. \
-	$$PWD/../../../qrgui/ \
+includes(qrgui)
 
 links(qrkernel qrutils qrmc qrrepo)
-
 
 HEADERS += \
 	generator.h \

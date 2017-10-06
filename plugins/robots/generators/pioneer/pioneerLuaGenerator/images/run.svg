@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW X6 -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="150px" height="150px" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 15000 15000"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str1 {stroke:#9CAFD6;stroke-width:35.56}
+    .str0 {stroke:#666666;stroke-width:127}
+    .fil2 {fill:url(#id0)}
+    .fil4 {fill:url(#id1)}
+    .fil0 {fill:url(#id2)}
+    .fil1 {fill:url(#id3)}
+    .fil3 {fill:url(#id4)}
+   ]]>
+  </style>
+  <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="2737.98" y1="1286.61" x2="12263" y2="1286.61">
+   <stop offset="0" style="stop-color:#6699FF"/>
+   <stop offset="1" style="stop-color:#6666CC"/>
+  </linearGradient>
+  <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="5505.18" y1="12127.6" x2="5505.18" y2="2330.36">
+   <stop offset="0" style="stop-color:black"/>
+   <stop offset="1" style="stop-color:#1A1A1A"/>
+  </linearGradient>
+  <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="7489.56" y1="13975.2" x2="7489.56" y2="640.185">
+   <stop offset="0" style="stop-color:#E6E6E6"/>
+   <stop offset="1" style="stop-color:white"/>
+  </linearGradient>
+  <linearGradient id="id3" gradientUnits="userSpaceOnUse" x1="11970.7" y1="13958.4" x2="10302.5" y2="11576">
+   <stop offset="0" style="stop-color:#B3B3B3"/>
+   <stop offset="0.568627" style="stop-color:#E6E6E6"/>
+   <stop offset="1" style="stop-color:#E6E6E6"/>
+  </linearGradient>
+  <radialGradient id="id4" gradientUnits="objectBoundingBox" cx="34%" cy="36%" r="50%" fx="34%" fy="36%">
+   <stop offset="0" style="stop-color:#FEFEFE"/>
+   <stop offset="1" style="stop-color:#6699FF"/>
+  </radialGradient>
+ </defs>
+ <g id="Layer_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <polygon class="fil0 str0" points="2462,640 12517,640 12517,11554 11100,12326 9802,13945 9686,13975 2462,13975 "/>
+  <path class="fil1 str0" d="M9753 13964c998,-173 2410,-1536 2767,-2393 0,0 -2662,3 -2702,30 -40,26 -64,2363 -64,2363z"/>
+  <rect class="fil2" x="2738" y="784" width="9525" height="1005"/>
+  <circle class="fil3 str1" cx="7409" cy="7233" r="3281"/>
+  <path class="fil4" d="M6503 5462c-3,-428 -63,-394 364,-83 697,510 1393,1020 2090,1530 515,377 529,257 25,630 -706,524 -1406,1047 -2115,1571 -418,308 -340,272 -343,-146l-21 -3501z"/>
+ </g>
+</svg>

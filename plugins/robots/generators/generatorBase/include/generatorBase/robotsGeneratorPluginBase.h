@@ -64,10 +64,16 @@ protected:
 	/// developped plugin. Caller takes ownership so override may forget about it.
 	virtual MasterGeneratorBase *masterGenerator() = 0;
 
+	/// Override shall provide a means to generate additional files (not explicitly generated but needed for generated
+	/// code). If there are no such files, shall do nothing.
 	virtual void regenerateExtraFiles(const QFileInfo &newFileInfo) = 0;
+
 	QFileInfo srcPath();
+
 	virtual QString defaultFilePath(const QString &project) const;
+
 	QFileInfo generateCodeForProcessing();
+
 	virtual QString generatorName() const;
 
 	/// Returns an information about the language code on which will be generated;

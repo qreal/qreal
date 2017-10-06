@@ -42,7 +42,7 @@ void ZoneNode::appendChildren(QLinkedList<SemanticNode *> const &nodes)
 	}
 }
 
-void ZoneNode::insertAfrer(SemanticNode *after, SemanticNode *node)
+void ZoneNode::insertAfter(SemanticNode *after, SemanticNode *node)
 {
 	mChildren.insert(qFind(mChildren.begin(), mChildren.end(), after) + 1, node);
 	node->setParentNode(this);

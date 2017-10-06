@@ -21,11 +21,11 @@ namespace parts {
 
 /// A base for entity that inspects some robot part usage and generates code
 /// for its correct initialization, deinitialization and work
-class InitTerminateCodeGenerator : public TemplateParametrizedEntity
+class ROBOTS_GENERATOR_EXPORT InitTerminateCodeGenerator : public TemplateParametrizedEntity
 {
 public:
 	explicit InitTerminateCodeGenerator(const QStringList &pathsToTemplates);
-	virtual ~InitTerminateCodeGenerator();
+	~InitTerminateCodeGenerator() override;
 
 	/// Called each time before new generation process.
 	/// Default implementation does nothing.

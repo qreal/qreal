@@ -1,0 +1,1 @@
+-- ln() function is currently not supported

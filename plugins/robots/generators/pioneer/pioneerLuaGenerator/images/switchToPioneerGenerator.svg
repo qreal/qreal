@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: CorelDRAW X6 -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xml:space="preserve"
+   width="150px"
+   height="150px"
+   version="1.1"
+   style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+   viewBox="0 0 15000 15000"
+   id="svg41"
+   sodipodi:docname="switchToPioneerGenerator.svg"
+   inkscape:version="0.92.1 r15371"><metadata
+     id="metadata45"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1597"
+     inkscape:window-height="1070"
+     id="namedview43"
+     showgrid="false"
+     inkscape:zoom="4.4500587"
+     inkscape:cx="132.53516"
+     inkscape:cy="84.052995"
+     inkscape:window-x="1275"
+     inkscape:window-y="592"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_x0020_1" /><defs
+     id="defs21"><style
+       type="text/css"
+       id="style2"><![CDATA[
+    .str2 {stroke:#333333;stroke-width:39.69}
+    .str1 {stroke:#333333;stroke-width:79.375}
+    .str0 {stroke:#666666;stroke-width:127}
+    .fil3 {fill:gray}
+    .fil4 {fill:#98F10B}
+    .fil5 {fill:white}
+    .fil2 {fill:url(#id0)}
+    .fil0 {fill:url(#id1)}
+    .fil1 {fill:url(#id2)}
+   ]]></style><linearGradient
+       id="id0"
+       gradientUnits="userSpaceOnUse"
+       x1="2737.98"
+       y1="1286.61"
+       x2="12263"
+       y2="1286.61"><stop
+         offset="0"
+         style="stop-color:#6699FF"
+         id="stop4" /><stop
+         offset="1"
+         style="stop-color:#6666CC"
+         id="stop6" /></linearGradient><linearGradient
+       id="id1"
+       gradientUnits="userSpaceOnUse"
+       x1="7489.56"
+       y1="13975.2"
+       x2="7489.56"
+       y2="640.185"><stop
+         offset="0"
+         style="stop-color:#E6E6E6"
+         id="stop9" /><stop
+         offset="1"
+         style="stop-color:white"
+         id="stop11" /></linearGradient><linearGradient
+       id="id2"
+       gradientUnits="userSpaceOnUse"
+       x1="11970.7"
+       y1="13958.4"
+       x2="10302.5"
+       y2="11576"><stop
+         offset="0"
+         style="stop-color:#B3B3B3"
+         id="stop14" /><stop
+         offset="0.568627"
+         style="stop-color:#E6E6E6"
+         id="stop16" /><stop
+         offset="1"
+         style="stop-color:#E6E6E6"
+         id="stop18" /></linearGradient></defs><g
+     id="Layer_x0020_1"
+     transform="matrix(1.0487331,0,0,0.99974471,-118.64625,1.8655438)"><metadata
+       id="CorelCorpID_0Corel-Layer" /><polygon
+       class="fil0 str0"
+       points="12517,640 12517,11554 11100,12326 9802,13945 9686,13975 2462,13975 2462,640 "
+       id="polygon24"
+       style="fill:url(#id1);stroke:#666666;stroke-width:127" /><path
+       class="fil1 str0"
+       d="m 9753,13964 c 998,-173 2410,-1536 2767,-2393 0,0 -2662,3 -2702,30 -40,26 -64,2363 -64,2363 z"
+       id="path26"
+       style="fill:url(#id2);stroke:#666666;stroke-width:127"
+       inkscape:connector-curvature="0" /><rect
+       class="fil2"
+       x="2738"
+       y="784"
+       width="9525"
+       height="1005"
+       id="rect28"
+       style="fill:url(#id0)" /><path
+       class="fil3 str1"
+       d="m 7584,10082.102 c 1422,-85.9998 2548,-1265.9998 2548,-2708.9998 0,-1499 -1111,-1573 -2662,-1867 -1551,-294 -2766,368 -2766,1867 0,1257 854,2314 2014,2623 108,28.9998 -183,353.9998 -70,368.9998 l 608,163 302,-80 25,-366 z"
+       id="path30"
+       inkscape:connector-curvature="0"
+       style="fill:#808080;stroke:#333333;stroke-width:79.375" /><polygon
+       class="fil3 str2"
+       points="7829,4782 8084,3831 8520,3866 8438,4760 "
+       id="polygon32"
+       style="fill:#808080;stroke:#333333;stroke-width:39.68999863"
+       transform="translate(0,800.20428)" /><path
+       class="fil4 str1"
+       d="m 6043,5544.1533 c 390,-203 540,-315 1106,-398 l 17,-778 1141,104 -104,761 c 454,249 748,420 1115,786 l 709,-259 398,1106 -640,147 c -48,79 193,798 -406,1867 l 579,536 -691,708.9997 -579,-526.9997 c -438,197 -956,350 -1417,363 l -61,760.9997 -1132,-199 121,-898.9997 c -416,-345 -595,-454 -977,-1063 l -899,251 -225,-959 907,-225 c 28,-533 98,-1008 380,-1426 l -640,-519 605,-657 691,519 z"
+       id="path34"
+       inkscape:connector-curvature="0"
+       style="fill:#98f10b;stroke:#333333;stroke-width:79.375" /><circle
+       class="fil3 str1"
+       cx="7332"
+       cy="6994"
+       r="951"
+       id="circle36"
+       style="fill:#808080;stroke:#333333;stroke-width:79.375" /><path
+       class="fil5 str1"
+       d="m 7332,7945 c 525,0 951,-426 951,-951 0,-205 -426,-562 -951,-562 -525,0 -951,305 -951,562 0,525 426,951 951,951 z"
+       id="path38"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff;stroke:#333333;stroke-width:79.375" /></g><text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:2666.66674805px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:100"
+     x="2615.2539"
+     y="3886.4399"
+     id="text49"><tspan
+       sodipodi:role="line"
+       id="tspan47"
+       x="2615.2539"
+       y="3886.4399"
+       style="font-size:2666.66674805px;stroke-width:100">Pioneer</tspan></text>
+</svg>

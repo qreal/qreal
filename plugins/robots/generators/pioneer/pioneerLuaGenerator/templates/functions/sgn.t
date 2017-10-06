@@ -1,0 +1,1 @@
+-- sgn() function is currently not supported

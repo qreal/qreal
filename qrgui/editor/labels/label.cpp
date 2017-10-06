@@ -231,6 +231,12 @@ void Label::updateData(bool withUndoRedo)
 				? mEnumValues.key(value)
 				: (withUndoRedo ? enumText(value) : value);
 		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
+		disconnect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
+		if (repoValue == mOldText) {
+			setText(repoValue);
+		}
+
+		connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());

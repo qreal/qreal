@@ -61,7 +61,7 @@ public:
 	void initialize();
 
 	/// Implementation must return a pointer to a concrete factory for a
-	/// concrete generator
+	/// concrete generator. Shall not transfer ownership.
 	virtual GeneratorFactoryBase *factory() = 0;
 
 protected:
