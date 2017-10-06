@@ -1,3 +1,4 @@
+
 # Copyright 2007-2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +14,6 @@
 # limitations under the License.
 
 QT += widgets
-
-includes(thirdparty/qscintilla/Qt4Qt5)
 
 links(qrkernel qslog qrtext)
 

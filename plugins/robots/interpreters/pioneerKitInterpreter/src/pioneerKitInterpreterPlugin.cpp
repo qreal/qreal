@@ -19,6 +19,7 @@
 using namespace pioneerKitInterpreter;
 
 PioneerKitInterpreterPlugin::PioneerKitInterpreterPlugin()
+	: mBlocksFactory(new pioneer::blocks::PioneerBlocksFactory)
 {
 }
 
@@ -41,7 +42,7 @@ kitBase::blocksBase::BlocksFactoryInterface *PioneerKitInterpreterPlugin::blocks
 		const kitBase::robotModel::RobotModelInterface *model)
 {
 	Q_UNUSED(model)
-	return &mBlocksFactory;
+	return mBlocksFactory;
 }
 
 QList<kitBase::AdditionalPreferences *> PioneerKitInterpreterPlugin::settingsWidgets()

@@ -21,8 +21,6 @@ CONFIG += plugin
 
 QT += widgets
 
-includes(thirdparty/qscintilla/Qt4Qt5)
-
 links(qrkernel qrutils)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/ains_ru.ts

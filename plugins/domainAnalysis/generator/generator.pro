@@ -20,7 +20,7 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools
 
-includes(qrgui thirdparty/qscintilla/Qt4Qt5)
+includes(qrgui)
 
 links(qrkernel qrutils qrmc qrrepo)
 

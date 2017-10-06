@@ -49,7 +49,8 @@ public:
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 
 private:
-	pioneer::blocks::PioneerBlocksFactory mBlocksFactory;
+	/// @todo Use shared pointers instead of this sh~.
+	pioneer::blocks::PioneerBlocksFactory *mBlocksFactory = nullptr;  // Transfers ownership
 };
 
 }
