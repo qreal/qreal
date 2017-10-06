@@ -16,12 +16,14 @@
 
 #include "generatorBase/controlFlowGeneratorBase.h"
 
+#include "robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 
 /// Generates semantic tree in goto-style: control flow consists of goto
 /// instructions modeling links transitions in model. The code is not readable,
 /// but it works always, so it can be used for uploading into robot.
-class GotoControlFlowGenerator : public ControlFlowGeneratorBase
+class ROBOTS_GENERATOR_EXPORT GotoControlFlowGenerator : public ControlFlowGeneratorBase
 {
 public:
 	GotoControlFlowGenerator(const qrRepo::RepoApi &repo
@@ -31,7 +33,6 @@ public:
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
-
 
 	/// Implementation of clone operation for goto generator
 	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
@@ -47,11 +48,10 @@ public:
 	/// traversal stages.
 	void afterSearch() override;
 
-private:
-	void performGeneration() override;
-
+protected:
 	semantics::SemanticNode *produceGotoNode(const qReal::Id &id);
 	void produceNextNodeIfNeeded(const LinkInfo &info, semantics::NonZoneNode * const parent);
+	void performGeneration() override;
 };
 
 }

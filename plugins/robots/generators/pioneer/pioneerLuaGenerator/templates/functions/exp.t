@@ -1,0 +1,1 @@
+-- exp() function is currently not supported

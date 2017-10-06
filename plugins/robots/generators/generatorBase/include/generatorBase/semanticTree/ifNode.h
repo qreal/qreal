@@ -16,11 +16,13 @@
 
 #include "conditionalNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with if semantics
-class IfNode : public ConditionalNode
+class ROBOTS_GENERATOR_EXPORT IfNode : public ConditionalNode
 {
 public:
 	explicit IfNode(const qReal::Id &idBinded, QObject *parent = 0);

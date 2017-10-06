@@ -1,0 +1,1 @@
+-- asin() function is currently not supported

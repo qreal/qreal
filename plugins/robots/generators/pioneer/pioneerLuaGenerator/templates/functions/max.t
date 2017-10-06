@@ -1,0 +1,1 @@
+-- max() function is currently not supported

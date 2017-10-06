@@ -39,7 +39,7 @@ BindingGenerator::~BindingGenerator()
 QString BindingGenerator::generate()
 {
 	QString input = readTemplate(mPathToTemplate);
-	foreach (Binding * const binding, mBindings) {
+	for (Binding * const binding : mBindings) {
 		binding->apply(mRepo, mId, input);
 	}
 

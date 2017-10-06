@@ -24,6 +24,8 @@
 #include <qrtext/lua/types/integer.h>
 #include <qrtext/lua/types/float.h>
 #include <qrtext/lua/types/string.h>
+#include <qrtext/lua/types/nil.h>
+#include <qrtext/core/types/any.h>
 
 using namespace qReal;
 using namespace interpreterCore::textLanguage;
@@ -187,7 +189,7 @@ void RobotsBlockParser::addIntrinsicFuctions()
 		return interpret<int>("sensor" + port.toString());
 	});
 
-	add1aryFunction("print", new types::String(), new types::String, [this](const QVariant &text) {
+	add1aryFunction("print", new types::Nil, new qrtext::core::types::Any, [this](const QVariant &text) {
 		kitBase::robotModel::robotParts::Shell *shell = kitBase::robotModel::RobotModelUtils::findDevice
 				<kitBase::robotModel::robotParts::Shell>(mRobotModelManager.model(), "ShellPort");
 		if (shell) {

@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/pioneer/lua/">
+        <file>pioneerLuaDefaultSettings.ini</file>
+        <file>images/generateLuaCode.svg</file>
+        <file>images/switchToPioneerGenerator.svg</file>
+        <file>images/upload.svg</file>
+        <file>images/run.svg</file>
+        <file>images/stop.svg</file>
+    </qresource>
+</RCC>

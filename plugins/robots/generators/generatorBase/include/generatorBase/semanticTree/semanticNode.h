@@ -20,11 +20,13 @@
 #include <qrkernel/ids.h>
 #include "generatorBase/generatorCustomizer.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A base for all semantic nodes
-class SemanticNode : public QObject
+class ROBOTS_GENERATOR_EXPORT SemanticNode : public QObject
 {
 public:
 	/// Returns an id of the binded to this semantic node block

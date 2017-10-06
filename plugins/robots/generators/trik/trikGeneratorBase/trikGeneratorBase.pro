@@ -36,6 +36,7 @@ TRANSLATIONS = \
 	$$PWD/../../../../../qrtranslations/fr/plugins/robots/trikGeneratorBase_fr.ts \
 
 HEADERS += \
+	$$PWD/include/trikGeneratorBase/trikBlocksValidator.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorBaseDeclSpec.h \
 	$$PWD/include/trikGeneratorBase/trikGeneratorPluginBase.h \
 	$$PWD/include/trikGeneratorBase/trikMasterGeneratorBase.h \
@@ -79,6 +80,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/removeFileGenerator.h \
 
 SOURCES += \
+	$$PWD/src/trikBlocksValidator.cpp \
 	$$PWD/src/trikGeneratorPluginBase.cpp \
 	$$PWD/src/trikMasterGeneratorBase.cpp \
 	$$PWD/src/trikGeneratorCustomizer.cpp \

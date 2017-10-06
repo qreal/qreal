@@ -35,4 +35,3 @@ RandomInitGenerator::RandomInitGenerator(const qrRepo::RepoApi &repo
 			, parent)
 {
 }
-

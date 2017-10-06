@@ -29,7 +29,7 @@ PropertyEditorModel::PropertyEditorModel(
 	, mTargetGraphicalModel(nullptr)
 	, mEditorManagerInterface(editorManagerInterface)
 {
-	mField = new Field("start", logicalAttribute, 265, nullptr);
+	mField.reset(new Field());
 }
 
 int PropertyEditorModel::rowCount(const QModelIndex&) const
@@ -42,11 +42,6 @@ int PropertyEditorModel::columnCount(const QModelIndex&) const
 	return mField->childCount();
 }
 
-void PropertyEditorModel::setValueForIndex(const QModelIndex &index, QString value)
-{
-	mField->setValue(index.row() + index.column(), value);
-}
-
 QString PropertyEditorModel::getValueFromIndex(const QModelIndex &index)
 {
 	Field *childItem = mField->child(index.row() + index.column());
@@ -57,10 +52,11 @@ QModelIndex PropertyEditorModel::index(int row, int column, const QModelIndex &p
 {
 	Q_UNUSED(parent);
 	Field *childItem = mField->child(row + column);
-	if (childItem)
+	if (childItem) {
 		return createIndex(row, column, childItem);
-	else
+	} else {
 		return QModelIndex();
+	}
 }
 
 
@@ -69,8 +65,9 @@ QModelIndex PropertyEditorModel::parent(const QModelIndex &index) const
 	Field *childItem = static_cast<Field*>(index.internalPointer());
 	Field *parentItem = childItem->parentItem();
 
-	if (parentItem == mField->parentItem())
+	if (parentItem == mField->parentItem()) {
 		return QModelIndex();
+	}
 
 	return createIndex(parentItem->row(), 0, parentItem);
 }
@@ -79,13 +76,14 @@ QModelIndex PropertyEditorModel::parent(const QModelIndex &index) const
 int PropertyEditorModel::countOfChilds(const QModelIndex &index) const
 {
 	Field* temp = mField->child(index.row());
-	return mField->numberOfChilds(temp);
+	return mField->numberOfChildren(temp);
 }
 
 Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
 {
-	if (index.column() == 0)
+	if (index.column() == 0) {
 		return Qt::ItemIsEnabled;
+	}
 
 	switch (mField->child(index.row())->attributeClass()) {
 	case logicalAttribute:
@@ -93,7 +91,6 @@ Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
 	case namePseudoattribute:
 		return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 	case graphicalIdPseudoattribute:
-	case logicalIdPseudoattribute:
 	case metatypePseudoattribute:
 	default:
 		return Qt::NoItemFlags;
@@ -102,10 +99,11 @@ Qt::ItemFlags PropertyEditorModel::flags(const QModelIndex &index) const
 
 QVariant PropertyEditorModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (role == Qt::DisplayRole && orientation == Qt::Horizontal)
+	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
 		return QString(section == 1 ? "value" : "name");
-	else
+	} else {
 		return QVariant();
+	}
 }
 
 QVariant PropertyEditorModel::data(const QModelIndex &index, int role) const
@@ -232,12 +230,12 @@ void PropertyEditorModel::setSourceModels(QAbstractItemModel * const sourceLogic
 	mTargetGraphicalModel = sourceGraphicalModel;
 
 	beginResetModel();
-	mField = new Field("start", logicalAttribute, -1, nullptr);
+	mField.reset(new Field());
 	endResetModel();
 
-	if (mTargetLogicalModel)
-		connect(mTargetLogicalModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &))
-				, this, SLOT(rereadData(const QModelIndex &, const QModelIndex &)));
+	if (mTargetLogicalModel) {
+		connect(mTargetLogicalModel, &QAbstractItemModel::dataChanged, this, &PropertyEditorModel::rereadData);
+	}
 
 	// At the moment property editor does not show graphical properties at all.
 	// If this should happen then dataChanged() signal of graphical model should be connected here too.
@@ -251,7 +249,7 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		, const QModelIndex &graphicalModelIndex)
 {
 	beginResetModel();
-	mField = new Field("start", logicalAttribute, -1, nullptr);
+	mField.reset(new Field());
 	endResetModel();
 
 	mTargetLogicalObject = logicalModelIndex;
@@ -283,17 +281,23 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 		int i = 0;
 		role = roles::customPropertiesBeginRole;
 		while (cloneWithRoles.size() > 0) {
-			QString roleName = cloneWithRoles.takeAt(0);
-			int first = roleName.indexOf("!");
-			QString beginPartName = roleName.mid(0, first);
-			mField->appendChild(new Field(beginPartName, logicalAttribute, -1, nullptr));
+			const QString roleName = cloneWithRoles.takeAt(0);
+			const int first = roleName.indexOf("!");
+			const QString beginPartName = roleName.mid(0, first);
+			mField->appendChild(new Field(beginPartName));
 			auto parent = mField->child(i);
 
 			QString endPartName = roleName.mid(first + 1);
-			mField->appendChild(new Field(endPartName, logicalAttribute, role, parent));
+			mField->appendChild(
+					new Field(
+							endPartName
+							, logicalAttribute
+							, role
+							, parent
+							, mTargetLogicalObject
+							, mTargetGraphicalObject)
+						);
 			++i;
-			QString val = mTargetLogicalObject.data(role).toString();
-			mField->setValue(i, val);
 			++role;
 
 			int j = 0;
@@ -301,10 +305,16 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 				if (cloneWithRoles.at(j).mid(0, first) == beginPartName) {
 					QString roleName = cloneWithRoles.takeAt(j);
 					roleName = roleName.mid(first + 1);
-					mField->appendChild(new Field(roleName, logicalAttribute, role, parent));
+					mField->appendChild(
+							new Field(
+									roleName
+									, logicalAttribute
+									, role
+									, parent
+									, mTargetLogicalObject
+									, mTargetGraphicalObject)
+								);
 					++i;
-					QString value = mTargetLogicalObject.data(role).toString();
-					mField->setValue(i, value);
 					++role;
 					j = 0;
 				} else {
@@ -317,9 +327,15 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 
 		while (cloneWithPure.size()  > 0) {
 			QString roleName = cloneWithPure.takeAt(0);
-			mField->appendChild(new Field(roleName, logicalAttribute, role, nullptr));
-			QString val = mTargetLogicalObject.data(role).toString();
-			mField->setValue(i, val);
+			mField->appendChild(
+					new Field(
+							roleName
+							, logicalAttribute
+							, role
+							, nullptr
+							, mTargetLogicalObject
+							, mTargetGraphicalObject)
+						);
 			++i;
 			++role;
 		}
@@ -331,11 +347,43 @@ void PropertyEditorModel::setModelIndexes(const QModelIndex &logicalModelIndex
 					; !element.isNull()
 					; element = element.nextSiblingElement("property"))
 			{
-				mField->appendChild(new Field(element.attribute("displayedName"), logicalAttribute, role, nullptr));
+				mField->appendChild(
+						new Field(
+								element.attribute("displayedName")
+								, logicalAttribute
+								, role
+								, nullptr
+								, mTargetLogicalObject
+								, mTargetGraphicalObject));
 				++role;
 			}
 		}
 
+		/*
+		 * Uncomment to display block Ids in a property editor
+		 *
+		mField->appendChild(
+				new Field(
+						"logicalId"
+						, logicalAttribute
+						, roles::idRole
+						, nullptr
+						, mTargetLogicalObject
+						, mTargetGraphicalObject
+				)
+		);
+
+		mField->appendChild(
+				new Field(
+						"graphicalId"
+						, graphicalAttribute
+						, roles::idRole
+						, nullptr
+						, mTargetLogicalObject
+						, mTargetGraphicalObject
+				)
+		);
+		/**/
 	}
 
 	beginResetModel();

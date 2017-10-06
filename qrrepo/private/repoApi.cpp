@@ -279,7 +279,7 @@ void RepoApi::copyProperties(const Id &dest, const Id &src)
 	mRepository->copyProperties(dest, src);
 }
 
-QMap<QString, QVariant> RepoApi::properties(const Id &id)
+QMap<QString, QVariant> RepoApi::properties(const Id &id) const
 {
 	return mRepository->properties(id);
 }
