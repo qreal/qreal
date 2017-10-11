@@ -62,6 +62,11 @@ bool TabWidget::supportsCutting() const
 	return currentEditor() ? currentEditor()->supportsCutting() : false;
 }
 
+bool TabWidget::supportsSearching() const
+{
+	return currentEditor() ? currentEditor()->supportsSearching() : false;
+}
+
 void TabWidget::zoomIn()
 {
 	if (EditorInterface *editor = currentEditor()) {
@@ -97,6 +102,13 @@ void TabWidget::cut()
 	}
 }
 
+void TabWidget::find()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->find();
+	}
+}
+
 void TabWidget::forceFocus()
 {
 	onTabChanged();
@@ -106,7 +118,7 @@ int TabWidget::addTab(QWidget *widget, const QString &name)
 {
 	if (EditorInterface * const editor = dynamic_cast<EditorInterface *>(widget)) {
 		editor->configure(*mZoomInAction, *mZoomOutAction, *mUndoAction, *mRedoAction
-				, *mCopyAction, *mPasteAction, *mCutAction);
+				, *mCopyAction, *mPasteAction, *mCutAction, *mFindAction);
 		connect(&editor->focusAction(), &QAction::triggered, &focusAction(), &QAction::trigger);
 	}
 

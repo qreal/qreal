@@ -18,6 +18,7 @@
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
 #include <brandManager/brandManager.h>
+#include <qrutils/widgets/searchLinePanel.h>
 
 using namespace qReal;
 using namespace text;
@@ -98,6 +99,11 @@ bool QScintillaTextEdit::supportsCutting() const
 	return true;
 }
 
+bool QScintillaTextEdit::supportsSearching() const
+{
+	return true;
+}
+
 void QScintillaTextEdit::zoomIn()
 {
 	QsciScintilla::zoomIn();
@@ -123,12 +129,34 @@ void QScintillaTextEdit::cut()
 	QsciScintilla::cut();
 }
 
+void QScintillaTextEdit::find()
+{
+	mSearchLinePanel->attachTo(this);
+}
+
 void QScintillaTextEdit::init()
 {
 	// For some reason c++11-style connections do not work here!
 	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
 	setDefaultSettings();
 	setCurrentLanguage(Languages::textFileInfo("*.txt"));
+	mSearchLinePanel = new ui::SearchLinePanel(this);
+	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this](){
+		findNext();
+	});
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::textChanged, [this](const QRegExp &textToSearch){
+		if (textToSearch.isEmpty()) {
+			return;
+		}
+
+		bool cs = textToSearch.caseSensitivity() == Qt::CaseSensitive;
+		if (findFirst(textToSearch.pattern(), true, cs, true, true, true, 0, 0)) {
+			mSearchLinePanel->setBackgroundColor("white");
+		} else {
+			mSearchLinePanel->setBackgroundColor("red");
+		}
+	});
 }
 
 void QScintillaTextEdit::setDefaultSettings()

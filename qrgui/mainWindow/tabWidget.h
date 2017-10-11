@@ -39,6 +39,7 @@ public:
 	bool supportsCopying() const override;
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
+	bool supportsSearching() const override;
 
 	void zoomIn() override;
 	void zoomOut() override;
@@ -46,6 +47,7 @@ public:
 	void copy() override;
 	void paste() override;
 	void cut() override;
+	void find() override;
 
 	void forceFocus() override;
 

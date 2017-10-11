@@ -31,6 +31,7 @@ public:
 		, mCopyAction(nullptr)
 		, mPasteAction(nullptr)
 		, mCutAction(nullptr)
+		, mFindAction(nullptr)
 		, mFocusAction(nullptr)
 	{
 	}
@@ -66,6 +67,12 @@ public:
 		return false;
 	}
 
+	/// Can be reimplemented to enable search actions in main menu when this editor is active.
+	virtual bool supportsSearching() const
+	{
+		return false;
+	}
+
 	/// Can be reimplemented to zoom the picture shown in editor in. Implementation has sense only when
 	/// supportsZooming() returns true.
 	virtual void zoomIn() {}
@@ -86,6 +93,10 @@ public:
 	/// supportsCopyPaste() returns true.
 	virtual void cut() {}
 
+	/// Can be to find items in editors space. Implementation has sense only when
+	/// supportsFinding() returns true.
+	virtual void find() {}
+
 	/// Can be reimplemented to force focus capturing when system requires that. By default simply triggers focusAction.
 	virtual void forceFocus()
 	{
@@ -94,7 +105,7 @@ public:
 
 	/// Configures editor with the given set of editor actions.
 	virtual void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
 	{
 		mZoomInAction = &zoomIn;
 		mZoomOutAction = &zoomOut;
@@ -103,6 +114,7 @@ public:
 		mCopyAction = &copy;
 		mPasteAction = &paste;
 		mCutAction = &cut;
+		mFindAction = &find;
 	}
 
 	/// Returns action that is triggered when editor is focused. Conceptually this is a simple signal, but
@@ -130,6 +142,7 @@ protected:
 	QAction *mCopyAction;  // Does not have ownership.
 	QAction *mPasteAction;  // Does not have ownership.
 	QAction *mCutAction;  // Does not have ownership.
+	QAction *mFindAction;  // Does not have ownership.
 
 private:
 	QAction mFocusAction;

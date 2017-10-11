@@ -41,11 +41,14 @@ public:
 		, RegularExpression
 	};
 
-	explicit SearchLineEdit(QWidget *parent = nullptr);
+	explicit SearchLineEdit(QWidget *parent = nullptr, bool borderEnabled = true);
+
+	void setBorderEnabled(bool enabled);
+	void focusMe();
 
 signals:
 	/// Emitted when the text in the text field is modified.
-	/// @param text A ready for matching reglar expression.
+	/// @param text A ready for matching regular expression.
 	void textChanged(const QRegExp &text);
 
 private:

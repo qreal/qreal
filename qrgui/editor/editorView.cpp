@@ -277,9 +277,9 @@ bool EditorView::supportsCutting() const
 }
 
 void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
 {
-	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut);
+	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find);
 }
 
 void EditorView::zoomInTime()
