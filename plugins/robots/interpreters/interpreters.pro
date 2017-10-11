@@ -17,11 +17,11 @@ TEMPLATE = subdirs
 SUBDIRS = \
 	interpreterCore \
 	nullKitInterpreter \
-	nxtKitInterpreter \
+#	nxtKitInterpreter \
 	trikKitInterpreterCommon \
 	trikV6KitInterpreter \
 	trikV62KitInterpreter \
-	ev3KitInterpreter \
+#	ev3KitInterpreter \
 	robotsPlugin \
 	pioneerKitInterpreter \
 

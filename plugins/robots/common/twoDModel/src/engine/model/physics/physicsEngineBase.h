@@ -17,7 +17,14 @@
 #include <QtGui/QVector2D>
 #include <QtGui/QPainterPath>
 
+#include "twoDModel/engine/model/robotModel.h"
+
 namespace twoDModel {
+
+namespace items {
+class SolidItem;
+}
+
 namespace model {
 
 class WorldModel;
@@ -27,34 +34,45 @@ namespace physics {
 /// An interface for 2D model physical engine strategy. Calling recalculateParams() method
 /// counts position shift and angle modification for the given time interval that can be get
 /// with shift() and rotation() methods correspondingly.
-class PhysicsEngineBase
+class PhysicsEngineBase : public QObject
 {
+	Q_OBJECT
+
 public:
-	explicit PhysicsEngineBase(const WorldModel &worldModel);
+	explicit PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> robots);
 	virtual ~PhysicsEngineBase();
 
-	/// Returns robot transition vector for the time interval given in the last recalculateParams() call
-	QVector2D shift() const;
+	/// Returns item`s position delta after last recalculation.
+	virtual QVector2D positionShift(RobotModel &robot) const = 0;
 
-	/// Returns robot angle modification for the time interval given in the last recalculateParams() call
-	qreal rotation() const;
+	/// Returns item`s angle delta after last recalculation.
+	virtual qreal rotation(RobotModel &robot) const = 0;
 
-	/// A hacky method to understand when robot in simple physics mode got stuck in the wall.
-	/// @todo: This is needed for more realistic encoders behaviour. In future physical engine must
-	/// recalculate encoders itself.
-	bool isRobotStuck() const;
+	/// Adds new robot model for its position and rotation tracking.
+	virtual void addRobot(RobotModel * const robot);
 
-	/// Counts robot`s parameters modifications for the given time interval
-	virtual void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
-			, bool engine1Break, bool engine2Break
-			, const QPointF &rotationCenter, qreal robotAngle
-			, const QPainterPath &robotBoundingPath) = 0;
+	/// Stops tracking robot`s position and rotation.
+	virtual void removeRobot(RobotModel * const robot);
+
+	/// Recalculates all solid items positions and angles. The result may be obtained using
+	virtual void recalculateParameters(qreal timeInterval) = 0;
 
 protected:
+	/// A useful method for counting wheel linear speed from interpreter`s speed.
+	qreal wheelLinearSpeed(RobotModel &robot, const RobotModel::Wheel &wheel) const;
+
 	const WorldModel &mWorldModel;
-	QVector2D mPositionShift;
-	qreal mRotation;
-	bool mStuck;
+	QList<RobotModel *> mRobots;
+
+protected slots:
+	/// Processes modification of metrics system.
+	virtual void onPixelsInCmChanged(qreal value);
+
+	/// Starts tracking item`s position and rotation.
+	virtual void itemAdded(items::SolidItem * const item);
+
+	/// Stops tracking item`s position and rotation.
+	virtual void itemRemoved(QGraphicsItem * const item);
 };
 
 }

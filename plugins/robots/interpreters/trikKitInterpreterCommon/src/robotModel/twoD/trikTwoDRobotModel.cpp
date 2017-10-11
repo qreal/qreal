@@ -203,6 +203,21 @@ QPair<QPoint, qreal> TrikTwoDRobotModel::specialDeviceConfiguration(const PortIn
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }
 
+qreal TrikTwoDRobotModel::mass() const
+{
+	return 1.05;
+}
+
+qreal TrikTwoDRobotModel::friction() const
+{
+	return 0.3;  /// @todo measure it
+}
+
+qreal TrikTwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.0055;
+}
+
 QHash<QString, int> TrikTwoDRobotModel::buttonCodes() const
 {
 	QHash<QString, int> result;

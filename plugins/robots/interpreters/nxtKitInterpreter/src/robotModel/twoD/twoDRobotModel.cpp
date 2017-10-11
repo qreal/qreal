@@ -107,3 +107,18 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 
 	return QRect();
 }
+
+qreal TwoDRobotModel::mass() const
+{
+	return 0.5;  /// @todo: measure it
+}
+
+qreal TwoDRobotModel::friction() const
+{
+	return 0.3;  /// @todo measure it
+}
+
+qreal TwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.0055;
+}

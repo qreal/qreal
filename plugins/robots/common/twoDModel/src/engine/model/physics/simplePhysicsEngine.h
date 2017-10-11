@@ -24,12 +24,17 @@ namespace physics {
 class SimplePhysicsEngine : public PhysicsEngineBase
 {
 public:
-	explicit SimplePhysicsEngine(const WorldModel &worldModel);
+	explicit SimplePhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots);
 
-	void recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
-			, bool engine1Break, bool engine2Break
-			, const QPointF &rotationCenter, qreal robotAngle
-			, const QPainterPath &robotBoundingPath) override;
+	QVector2D positionShift(RobotModel &robot) const override;
+	qreal rotation(RobotModel &robot) const override;
+	void recalculateParameters(qreal timeInterval) override;
+
+private:
+	void recalculateParameters(qreal timeInterval, RobotModel &robot);
+
+	QMap<RobotModel *, QVector2D> mPositionShift;
+	QMap<RobotModel *, qreal> mRotation;
 };
 
 }

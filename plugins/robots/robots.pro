@@ -18,11 +18,12 @@ SUBDIRS = \
 	editor \
 	examples \
 	common \
-	interpreters \
+    interpreters \
 	generators \
 	utils \
 	checker \
 	thirdparty \
+
 
 utils.depends = thirdparty
 common.depends = thirdparty utils

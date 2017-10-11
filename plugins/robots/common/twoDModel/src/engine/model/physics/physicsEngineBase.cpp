@@ -14,31 +14,52 @@
 
 #include "physicsEngineBase.h"
 
+#include <qrutils/mathUtils/math.h>
+
 #include "twoDModel/engine/model/worldModel.h"
 
 using namespace twoDModel::model::physics;
 
-PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel)
+PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> robots)
 	: mWorldModel(worldModel)
-	, mStuck(false)
 {
+	for (RobotModel * const robot : robots) {
+		addRobot(robot);
+	}
 }
 
 PhysicsEngineBase::~PhysicsEngineBase()
 {
 }
 
-QVector2D PhysicsEngineBase::shift() const
+void PhysicsEngineBase::addRobot(twoDModel::model::RobotModel * const robot)
 {
-	return mPositionShift;
+	if (!mRobots.contains(robot)) {
+		mRobots.append(robot);
+	}
 }
 
-qreal PhysicsEngineBase::rotation() const
+void PhysicsEngineBase::removeRobot(twoDModel::model::RobotModel * const robot)
 {
-	return mRotation;
+	mRobots.removeAll(robot);
 }
 
-bool PhysicsEngineBase::isRobotStuck() const
+void PhysicsEngineBase::onPixelsInCmChanged(qreal value)
 {
-	return mStuck;
+	Q_UNUSED(value)
+}
+
+void PhysicsEngineBase::itemAdded(twoDModel::items::SolidItem * const item)
+{
+	Q_UNUSED(item)
+}
+
+void PhysicsEngineBase::itemRemoved(QGraphicsItem * const item)
+{
+	Q_UNUSED(item)
+}
+
+qreal PhysicsEngineBase::wheelLinearSpeed(RobotModel &robot, const RobotModel::Wheel &wheel) const
+{
+	return wheel.spoiledSpeed * 2 * mathUtils::pi * wheel.radius * robot.info().onePercentAngularVelocity() / 360;
 }

@@ -21,13 +21,19 @@
 #include "src/engine/constraints/constraintsChecker.h"
 #include "src/robotModel/nullTwoDRobotModel.h"
 
+#include "physics/simplePhysicsEngine.h"
+#include "physics/box2DPhysicsEngine.h"
+
 using namespace twoDModel::model;
 
 Model::Model(QObject *parent)
 	: QObject(parent)
 	, mChecker(nullptr)
 	, mErrorReporter(nullptr)
+	, mPhysicsEngine(nullptr)
 {
+	connect(&mSettings, &Settings::physicsChanged, this, &Model::resetPhysics);
+	resetPhysics();
 }
 
 Model::~Model()
@@ -185,9 +191,7 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF 
 	connect(&mTimeline, &Timeline::tick, robot, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, robot, &RobotModel::nextFragment);
 
-	auto resetPhysics = [this, robot]() { robot->resetPhysics(mWorldModel, mTimeline); };
-	connect(&mSettings, &Settings::physicsChanged, resetPhysics);
-	resetPhysics();
+	robot->setPhysicalEngine(*mPhysicsEngine);
 
 	mRobotModels.append(robot);
 
@@ -230,6 +234,25 @@ bool Model::hasConstraints() const
 void Model::setConstraintsEnabled(bool enabled)
 {
 	mChecker->setEnabled(enabled);
+}
+
+void Model::resetPhysics()
+{
+	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
+	if (mSettings.realisticPhysics()) {
+		mPhysicsEngine = new physics::box2DPhysicsEngine(mWorldModel, mRobotModels);
+	} else {
+		mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
+	}
+
+	connect(&mTimeline, &Timeline::tick, [=]() { mPhysicsEngine->recalculateParameters(Timeline::timeInterval); });
+	connect(this, &model::Model::robotAdded, mPhysicsEngine, &physics::PhysicsEngineBase::addRobot);
+	connect(this, &model::Model::robotRemoved, mPhysicsEngine, &physics::PhysicsEngineBase::removeRobot);
+	for (RobotModel * const robot : mRobotModels) {
+		robot->setPhysicalEngine(*mPhysicsEngine);
+	}
+
+	delete oldEngine;
 }
 
 int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)

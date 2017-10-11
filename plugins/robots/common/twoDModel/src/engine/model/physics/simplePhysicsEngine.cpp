@@ -19,6 +19,7 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
+#include "twoDModel/engine/model/robotModel.h"
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/worldModel.h"
 
@@ -26,36 +27,46 @@ using namespace twoDModel::model;
 using namespace physics;
 using namespace mathUtils;
 
-SimplePhysicsEngine::SimplePhysicsEngine(const WorldModel &worldModel)
-	: PhysicsEngineBase(worldModel)
+SimplePhysicsEngine::SimplePhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots)
+	: PhysicsEngineBase(worldModel, robots)
 {
 }
 
-void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qreal speed2
-		, bool engine1Break, bool engine2Break
-		, const QPointF &rotationCenter, qreal robotAngle
-		, const QPainterPath &robotBoundingPath)
+QVector2D SimplePhysicsEngine::positionShift(RobotModel &robot) const
 {
-	Q_UNUSED(engine1Break)
-	Q_UNUSED(engine2Break)
-	Q_UNUSED(rotationCenter)
+	return mPositionShift[&robot];
+}
 
-	if (mWorldModel.checkCollision(robotBoundingPath)) {
-		mPositionShift = -mPositionShift;
-		mRotation = -mRotation;
-		mStuck = true;
+qreal SimplePhysicsEngine::rotation(RobotModel &robot) const
+{
+	return mRotation[&robot];
+}
+
+void SimplePhysicsEngine::recalculateParameters(qreal timeInterval)
+{
+	for (RobotModel * const robot : mRobots) {
+		recalculateParameters(timeInterval, *robot);
+	}
+}
+
+void SimplePhysicsEngine::recalculateParameters(qreal timeInterval, RobotModel &robot)
+{
+	if (mWorldModel.checkCollision(robot.robotBoundingPath())) {
+		mPositionShift[&robot] = -mPositionShift[&robot];
+		mRotation[&robot] = -mRotation[&robot];
 		return;
 	}
 
-	mPositionShift = QVector2D();
-	mRotation = 0.0;
-	mStuck = false;
+	mPositionShift[&robot] = QVector2D();
+	mRotation[&robot] = 0.0;
 
+	const qreal speed1 = wheelLinearSpeed(robot, robot.leftWheel());
+	const qreal speed2 = wheelLinearSpeed(robot, robot.rightWheel());
 	const qreal averageSpeed = (speed1 + speed2) / 2;
 
 	if (!Math::eq(speed1, speed2)) {
-		const qreal radius = speed1 * robotHeight / (speed1 - speed2);
-		const qreal averageRadius = radius - robotHeight / 2;
+		const qreal radius = speed1 * robot.info().size().height() / (speed1 - speed2);
+		const qreal averageRadius = radius - robot.info().size().height() / 2;
 		qreal angularSpeed = 0;
 		qreal actualRadius = 0;
 		if (Math::eq(speed1, -speed2)) {
@@ -69,16 +80,16 @@ void SimplePhysicsEngine::recalculateParams(qreal timeInterval, qreal speed1, qr
 		const qreal gammaDegrees = gammaRadians * 180 / pi;
 
 		QTransform map;
-		map.rotate(robotAngle);
+		map.rotate(robot.rotation());
 		/// @todo robotWidth / 2 shall actually be a distance between robot center and
 		/// centers of the wheels by x axis.
-		map.translate(-robotWidth / 2, actualRadius);
+		map.translate(-robot.info().size().width() / 2, actualRadius);
 		map.rotate(gammaDegrees);
-		map.translate(robotWidth / 2, -actualRadius);
+		map.translate(robot.info().size().width() / 2, -actualRadius);
 
-		mPositionShift = QVector2D(map.map(QPointF(0, 0)));
-		mRotation = gammaDegrees;
+		mPositionShift[&robot] = QVector2D(map.map(QPointF(0, 0)));
+		mRotation[&robot] = gammaDegrees;
 	} else {
-		mPositionShift = averageSpeed * timeInterval * Geometry::directionVector(robotAngle);
+		mPositionShift[&robot] = averageSpeed * timeInterval * Geometry::directionVector(robot.rotation());
 	}
 }

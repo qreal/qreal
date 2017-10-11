@@ -116,6 +116,16 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 	mEngine = &engine;
 }
 
+QSizeF TwoDRobotModel::size() const
+{
+	return QSizeF(50, 50);
+}
+
+QPointF TwoDRobotModel::rotationCenter() const
+{
+	return QRectF(QPointF(), size()).center();
+}
+
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)
 {
 	if (deviceInfo.isA<robotParts::Button>()) {

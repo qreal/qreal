@@ -1,4 +1,4 @@
-# Copyright 2007-2015 QReal Research Group
+`# Copyright 2007-2015 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,11 @@ QT += widgets xml svg
 
 DEFINES += TWO_D_MODEL_LIBRARY
 
-links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base)
+links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base Box2D)
+
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
+includes(plugins/robots/thirdparty/)
 
 TRANSLATIONS = \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts \
@@ -59,6 +61,9 @@ HEADERS += \
 	$$PWD/include/twoDModel/robotModel/parts/marker.h \
 	$$PWD/include/twoDModel/blocks/markerDownBlock.h \
 	$$PWD/include/twoDModel/blocks/markerUpBlock.h \
+	$$PWD/src/engine/model/physics/box2DPhysicsEngine.h \
+	$$PWD/src/engine/model/physics/parts/box2DWall.h \
+	$$PWD/src/engine/model/physics/parts/box2DSensor.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -87,7 +92,8 @@ HEADERS += \
 	$$PWD/src/engine/model/modelTimer.h \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
-	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
+	$$PWD/src/engine/model/physics/parts/box2DRobot.h \
+	$$PWD/src/engine/model/physics/parts/box2DWheel.h \
 	$$PWD/src/engine/items/solidItem.h \
 	$$PWD/src/engine/items/wallItem.h \
 	$$PWD/src/engine/items/stylusItem.h \
@@ -144,7 +150,8 @@ SOURCES += \
 	$$PWD/src/engine/model/image.cpp \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
-	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DRobot.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DWheel.cpp \
 	$$PWD/src/engine/items/solidItem.cpp \
 	$$PWD/src/engine/items/wallItem.cpp \
 	$$PWD/src/engine/items/stylusItem.cpp \
@@ -193,6 +200,9 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/marker.cpp \
 	$$PWD/src/blocks/markerDownBlock.cpp \
 	$$PWD/src/blocks/markerUpBlock.cpp \
+	$$PWD/src/engine/model/physics/box2DPhysicsEngine.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DWall.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DSensor.cpp
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \

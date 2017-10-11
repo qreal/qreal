@@ -53,13 +53,13 @@ const uint yellow  = 0xFFFFFF00;
 const uint cyan    = 0xFF00FFFF;
 const uint magenta = 0xFFFF00FF;
 
+const qreal robotMass = 800;
 const qreal spoilColorDispersion = 2.0;
 const qreal spoilLightDispersion = 1.0;
 const qreal spoilSonarDispersion = 1.5;
 const qreal varySpeedDispersion = 0.0125;
 const qreal percentSaltPepperNoise = 20.0;
 
-const qreal robotMass = 800;
 const qreal robotInertialMoment = 20;
 const qreal reactionForceStabilizationCoefficient = 20;
 const qreal floorFrictionCoefficient = 0.2;
