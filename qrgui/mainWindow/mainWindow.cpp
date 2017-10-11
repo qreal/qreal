@@ -232,6 +232,12 @@ void MainWindow::connectActions()
 		}
 	});
 
+	connect(mUi->actionFind, &QAction::triggered, [=]() {
+		if (mCurrentEditor && mCurrentEditor->supportsSearching()) {
+			mCurrentEditor->find();
+		}
+	});
+
 	connect(mUi->actionUndo, &QAction::triggered, mController, &Controller::undo);
 	connect(mUi->actionRedo, &QAction::triggered, mController, &Controller::redo);
 
@@ -264,8 +270,6 @@ void MainWindow::connectActions()
 			separatorBefore->setVisible(mUi->actionFullscreen->isVisible());
 		}
 	});
-
-	connect(mUi->actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
 	connect(mFindReplaceDialog, SIGNAL(replaceClicked(QStringList&))
 			, mFindHelper, SLOT(handleReplaceDialog(QStringList&)));
@@ -719,18 +723,20 @@ void MainWindow::changeWindowTitle()
 void MainWindow::registerEditor(EditorInterface &editor)
 {
 	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
-			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut);
+			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind);
 	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
 		mCurrentEditor = &editor;
 		const bool zoomingEnabled = editor.supportsZooming();
 		const bool copyEnabled = editor.supportsCopying();
 		const bool pasteEnabled = editor.supportsPasting();
 		const bool cutEnabled = editor.supportsCutting();
+		const bool findEnabled = editor.supportsSearching();
 		mUi->actionZoom_In->setEnabled(zoomingEnabled);
 		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
 		mUi->actionCopy->setEnabled(copyEnabled);
 		mUi->actionPaste->setEnabled(pasteEnabled);
 		mUi->actionCut->setEnabled(cutEnabled);
+		mUi->actionFind->setEnabled(findEnabled);
 		mController->setActiveModule(editor.editorId());
 	});
 }
@@ -1129,12 +1135,13 @@ void MainWindow::setDefaultShortcuts()
 			<< QKeySequence(Qt::CTRL + Qt::Key_Plus));
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
+	mUi->actionFind->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
 	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
 	HotKeyManager::setCommand("File.NewDiagram", tr("New diagram"), mUi->actionNew_Diagram);
 
 	// TODO: bind Ctrl+P to print when it will be repaired
-	// TODO: bind Ctrl+F to find dialog when it will be repaired
 
 	HotKeyManager::setCommand("File.Open", tr("Open project"), mUi->actionOpen);
 	HotKeyManager::setCommand("File.Save", tr("Save project"), mUi->actionSave);

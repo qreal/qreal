@@ -50,7 +50,7 @@ public:
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
 	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut) override;
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find) override;
 
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
