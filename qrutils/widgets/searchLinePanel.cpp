@@ -16,6 +16,7 @@
 
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QAbstractScrollArea>
 #include <QtWidgets/QStyle>
 #include <QtCore/QEvent>
 #include <QtGui/QResizeEvent>
@@ -70,9 +71,9 @@ void SearchLinePanel::attachTo(QWidget *parent)
 	detach();
 	setParent(parent);
 	parent->installEventFilter(this);
-
 	show();
-	move(parent->width() - width(), 0);
+	moveAndAlign();
+
 	mSearchLineEdit->focusMe();
 }
 
@@ -84,8 +85,12 @@ void SearchLinePanel::detach()
 bool SearchLinePanel::eventFilter(QObject *obj, QEvent *event)
 {
 	if (event->type() == QEvent::Resize) {
-		QResizeEvent *resizeEvent = static_cast<QResizeEvent *>(event);
+		auto resizeEvent = static_cast<QResizeEvent *>(event);
 		move(resizeEvent->size().width() - width(), 0);
+	}
+
+	if (event->type() == QEvent::LayoutRequest) {
+		moveAndAlign();
 	}
 
 	return QObject::eventFilter(obj, event);
@@ -101,5 +106,17 @@ void SearchLinePanel::keyPressEvent(QKeyEvent *event)
 		event->accept();
 	} else {
 		QFrame::keyPressEvent(event);
+	}
+}
+
+void SearchLinePanel::moveAndAlign()
+{
+	if (QWidget *parent = parentWidget()) {
+		auto scrollArea = dynamic_cast<QAbstractScrollArea *>(parent);
+		if (scrollArea) {
+			move(scrollArea->viewport()->width() - width(), 0);
+		} else {
+			move(parentWidget()->width() - width(), 0);
+		}
 	}
 }

@@ -48,6 +48,8 @@ protected:
 	void keyPressEvent(QKeyEvent *event) override;
 
 private:
+	void moveAndAlign();
+
 	SearchLineEdit *mSearchLineEdit;
 	QPushButton *mNextButton;
 	QPushButton *mCloseButton;
