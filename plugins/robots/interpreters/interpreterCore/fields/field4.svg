@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<svg width="118110" height="98425" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str2 {stroke:#373435;stroke-width:2.98425}
+    .str5 {stroke:#0098DA;stroke-width:3}
+    .str0 {stroke:#373435;stroke-width:3}
+    .str3 {stroke:#ED3237;stroke-width:3}
+    .str4 {stroke:black;stroke-width:13}
+    .str1 {stroke:#FFF212;stroke-width:78.7402}
+    .fil1 {fill:none}
+    .fil5 {fill:#0098DA}
+    .fil3 {fill:#323737}
+    .fil0 {fill:#373435}
+    .fil2 {fill:#FEFEFE}
+    .fil4 {fill:#ED3237}
+    .fil6 {fill:white}
+   ]]>
+  </style>
+  <clipPath id="id0">
+   <path id="svg_1" d="m114757,93454c-141,464 -367,882 -657,1241c172,459 254,957 230,1465c680,195 1275,637 1656,1246c348,-313 1762,-598 1265,-662l-111,-14c-313,-40 84,-132 103,-163l-321,-207c-545,-254 -571,-829 -800,-1795l-13,-53c-543,-206 -1018,-573 -1353,-1058l1,0z"/>
+  </clipPath>
+  <clipPath id="id1">
+   <path id="svg_2" d="m3070,4971c141,-464 367,-882 657,-1241c-172,-459 -254,-957 -230,-1465c-680,-195 -1275,-637 -1656,-1246c-348,313 -1762,598 -1265,662l111,14c313,40 -84,132 -103,163l321,207c545,254 571,829 800,1795l13,53c543,206 1018,573 1353,1058l-1,0z"/>
+  </clipPath>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="&#1057;&#1083;&#1086;&#1081;_x0020_1">
+   <metadata id="CorelCorpID_0Corel-Layer"/>
+   <g id="_257927488">
+    <g id="svg_3">
+     <path id="svg_4" d="m30511,50197c-7609,0 -13780,-6171 -13780,-13780c0,-7609 6171,-13780 13780,-13780l0,1969c-6522,0 -11811,5289 -11811,11811c0,6522 5289,11811 11811,11811l0,1969z" class="fil0 str0"/>
+     <rect id="svg_5" height="1969" width="70866" y="22638" x="30511" class="fil0 str0"/>
+     <path id="svg_6" d="m87598,48228c7609,0 13780,6171 13780,13780c0,7609 -6171,13780 -13780,13780l0,-1969c6522,0 11811,-5289 11811,-11811c0,-6522 -5289,-11811 -11811,-11811l0,-1969z" class="fil0 str0"/>
+     <rect id="svg_7" height="1969" width="57087" y="48228" x="30511" class="fil0 str0"/>
+     <rect id="svg_8" height="1969" width="70866" y="73819" x="16732" class="fil0 str0"/>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>
