@@ -61,6 +61,10 @@ void LineSensor::read()
 {
 	const QImage image = mEngine.areaUnderSensor(port(), 2.0);
 
+	if (image.isNull()) {
+		return;
+	}
+
 	const int height = image.height();
 	const int width = image.width();
 
