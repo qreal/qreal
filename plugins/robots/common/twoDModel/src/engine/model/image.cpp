@@ -71,7 +71,7 @@ Image Image::deserialize(const QDomElement &element)
 	const QString path = element.attribute("path");
 	Image image(path, !external);
 	if (!external) {
-		if (image.mIsSvg) {
+		if (element.text().contains("svg", Qt::CaseInsensitive)) {
 			image.mSvgBytes = element.text().toLatin1();
 			image.mSvgRenderer.reset(new QSvgRenderer(image.mSvgBytes));
 		} else {

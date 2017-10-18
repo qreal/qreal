@@ -808,11 +808,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsScene::mousePressEvent(event);
 
 	QGraphicsItem * item = itemAt(event->scenePos(), QTransform());
+	Label * const label = dynamic_cast<Label *>(item);
 
 	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
 		mLeftButtonPressed = true;
 
-		Label * const label = dynamic_cast<Label *>(item);
 		if (label) {
 			item = item->parentItem();
 		}
@@ -820,7 +820,11 @@ void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		if (item) {
 			event->accept();
 		}
-	} else if (event->button() == Qt::RightButton && !(event->buttons() & Qt::LeftButton) && mMouseGesturesEnabled) {
+	} else if (!label
+			&& event->button() == Qt::RightButton
+			&& !(event->buttons() & Qt::LeftButton)
+			&& mMouseGesturesEnabled
+	) {
 		mTimer->stop();
 
 		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());

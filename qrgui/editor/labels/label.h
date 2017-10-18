@@ -64,7 +64,6 @@ public:
 	bool isHard() const;
 	QString location() const;
 
-	void setParentSelected(bool isSelected);
 	void setParentContents(const QRectF &contents);
 
 	void setShouldCenter(bool shouldCenter);
