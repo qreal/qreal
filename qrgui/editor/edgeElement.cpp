@@ -39,6 +39,8 @@ const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
 const int maxReductCoeff = 16;
+const QPointF dummyStart = QPointF(0, 0);
+const QPointF dummyEnd = QPointF(200, 60);
 
 /** @brief indicator of edges' movement */
 
@@ -71,8 +73,6 @@ EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models
 	setFlag(ItemClipsToShape, false);
 	setFlag(ItemClipsChildrenToShape, false);
 
-	mLine << QPointF(0, 0) << QPointF(200, 60);
-
 	setAcceptHoverEvents(true);
 
 	const QList<LabelProperties> labelsInfos = mType.labels();
@@ -83,6 +83,9 @@ EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models
 		label->setShouldCenter(false);
 		mLabels.append(label);
 	}
+
+	QPolygon configuration = mGraphicalAssistApi.configuration(id);
+	mLine = configuration.isEmpty() ? QPolygonF(QVector<QPointF>{dummyStart, dummyEnd}) : configuration;
 
 	mShapeType = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 	initLineHandler();
@@ -548,7 +551,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mousePressEvent(event);
 
-	if ((mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
+	if (isSelected() && ((mSrc && mSrc->isSelected()) || (mDst && mDst->isSelected()))) {
 		mDragType = wholeEdge;
 		if (mSrc && mSrc->isSelected()) {
 			mSrc->startResize();
@@ -983,6 +986,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 					prepareGeometryChange();
 					mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 				}
+
 				if (mDst && !mDst->isSelected()) {
 					prepareGeometryChange();
 					mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));
