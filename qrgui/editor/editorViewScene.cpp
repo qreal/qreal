@@ -144,6 +144,7 @@ Element *EditorViewScene::getElem(const Id &id) const
 			}
 		}
 	}
+
 	return nullptr;
 }
 
@@ -803,42 +804,6 @@ void EditorViewScene::moveEdges()
 	}
 }
 
-void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	QGraphicsScene::mousePressEvent(event);
-
-	QGraphicsItem * item = itemAt(event->scenePos(), QTransform());
-	Label * const label = dynamic_cast<Label *>(item);
-
-	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
-		mLeftButtonPressed = true;
-
-		if (label) {
-			item = item->parentItem();
-		}
-
-		if (item) {
-			event->accept();
-		}
-	} else if (!label
-			&& event->button() == Qt::RightButton
-			&& !(event->buttons() & Qt::LeftButton)
-			&& mMouseGesturesEnabled
-	) {
-		mTimer->stop();
-
-		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
-		QLOG_TRACE() << "Started mouse gesture at " << pos;
-
-		mMouseMovementManager->mousePress(event->scenePos());
-		mRightButtonPressed = true;
-	}
-
-	invalidate();
-
-	mShouldReparentItems = (selectedItems().size() > 0);
-}
-
 void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 {
 	if (mContextMenu.isVisible()) {
@@ -1008,12 +973,49 @@ void EditorViewScene::createEdge(const Id &typeId)
 		edge->dst()->arrangeLinks();
 		edge->dst()->adjustLinks();
 	}
+
 	ReshapeEdgeCommand *reshapeEdgeCommand = new ReshapeEdgeCommand(this, edgeId);
 	reshapeEdgeCommand->startTracking();
 	edge->layOut();
 	reshapeEdgeCommand->stopTracking();
 	reshapeEdgeCommand->setUndoEnabled(false);
 	createCommand->addPostAction(reshapeEdgeCommand);
+}
+
+void EditorViewScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	QGraphicsScene::mousePressEvent(event);
+
+	QGraphicsItem * item = itemAt(event->scenePos(), QTransform());
+	Label * const label = dynamic_cast<Label *>(item);
+
+	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
+		mLeftButtonPressed = true;
+
+		if (label) {
+			item = item->parentItem();
+		}
+
+		if (item) {
+			event->accept();
+		}
+	} else if (!label
+			&& event->button() == Qt::RightButton
+			&& !(event->buttons() & Qt::LeftButton)
+			&& mMouseGesturesEnabled
+	) {
+		mTimer->stop();
+
+		const QPoint pos = views()[0]->window()->mapFromGlobal(event->screenPos());
+		QLOG_TRACE() << "Started mouse gesture at " << pos;
+
+		mMouseMovementManager->mousePress(event->scenePos());
+		mRightButtonPressed = true;
+	}
+
+	invalidate();
+
+	mShouldReparentItems = (selectedItems().size() > 0);
 }
 
 void EditorViewScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
