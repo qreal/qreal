@@ -4,8 +4,8 @@
     <diagram nodeName="Diagram" name="KernelDiagram" displayedName="Kernel Diagram">
       <nonGraphicTypes>
         <enum name="bool" displayedName="bool">
-          <value name="false" displayedName="False"/>
-          <value name="true" displayedName="True"/>
+          <value name="false" displayedName="false"/>
+          <value name="true" displayedName="true"/>
         </enum>
         <enum name="AggregationKind" displayedName="Aggregation Kind">
           <value name="none" displayedName="None"/>

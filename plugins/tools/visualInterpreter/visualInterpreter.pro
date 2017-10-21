@@ -21,12 +21,9 @@ CONFIG += plugin
 
 DESTDIR = $$DESTDIR/plugins/tools/
 
-links(qrkernel qrutils qrgui-preferences-dialog)
+includes(thirdparty/qscintilla/Qt4Qt5 qrgui qrtext)
 
-INCLUDEPATH += \
-	$$PWD/../../.. \
-	$$PWD/../../../qrgui/ \
-	$$PWD/../../../qrtext/include/ \
+links(qrkernel qrutils qrgui-preferences-dialog)
 
 TRANSLATIONS = $$PWD/../../../qrtranslations/ru/plugins/visualInterpreter_ru.ts
 

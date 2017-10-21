@@ -231,6 +231,12 @@ void Label::updateData(bool withUndoRedo)
 				? mEnumValues.key(value)
 				: (withUndoRedo ? enumText(value) : value);
 		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
+		disconnect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
+		if (repoValue == mOldText) {
+			setText(repoValue);
+		}
+
+		connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());
@@ -346,15 +352,15 @@ bool Label::isReadOnly() const
 
 void Label::focusOutEvent(QFocusEvent *event)
 {
-	QGraphicsTextItem::focusOutEvent(event);
-	setTextInteractionFlags(Qt::NoTextInteraction);
-
-	// Clear selection
-	QTextCursor cursor = textCursor();
-	cursor.clearSelection();
-	setTextCursor(cursor);
-
-	unsetCursor();
+	if (event->reason() != Qt::PopupFocusReason) {
+		// Clear selection and focus
+		QGraphicsTextItem::focusOutEvent(event);
+		setTextInteractionFlags(Qt::NoTextInteraction);
+		QTextCursor cursor = textCursor();
+		cursor.clearSelection();
+		setTextCursor(cursor);
+		unsetCursor();
+	}
 
 	if (isReadOnly()) {
 		return;
@@ -363,6 +369,7 @@ void Label::focusOutEvent(QFocusEvent *event)
 	if (mOldText != toPlainText()) {
 		updateData(true);
 	}
+
 }
 
 void Label::keyPressEvent(QKeyEvent *event)

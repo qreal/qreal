@@ -108,6 +108,10 @@ private:
 	/// Recursive implementation of traverse(Action).
 	void traverse(QTreeWidgetItem * const item, const Action &action) const;
 
+	/// Shows/hides palette group if all items in a group to which belongs given item are invisible or it has visible
+	/// elements.
+	void updateGroupVisibility(const QTreeWidgetItem * const item);
+
 	/// Made static to be used inside idLessThan()
 	static const EditorManagerInterface *mEditorManager;  // Does not take ownership
 	MainWindow &mMainWindow;

@@ -18,11 +18,13 @@ HEADERS += \
 	$$PWD/painterInterface.h \
 	$$PWD/searchLineEdit.h \
 	$$PWD/consoleDock.h \
-	$$PWD/imagePicker.h
+	$$PWD/imagePicker.h \
+	$$PWD/searchLinePanel.h \
 
 SOURCES += \
 	$$PWD/colorListEditor.cpp \
 	$$PWD/paintWidget.cpp \
 	$$PWD/searchLineEdit.cpp \
 	$$PWD/consoleDock.cpp \
-	$$PWD/imagePicker.cpp
+	$$PWD/imagePicker.cpp \
+	$$PWD/searchLinePanel.cpp \

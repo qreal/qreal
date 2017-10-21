@@ -222,6 +222,7 @@ void PaletteTreeWidget::setElementVisible(const Id &metatype, bool visible)
 	if (mPaletteItems.contains(metatype)) {
 		mItemsVisible[mPaletteItems[metatype]] = visible;
 		mPaletteItems[metatype]->setHidden(!visible);
+		updateGroupVisibility(mPaletteItems[metatype]);
 	}
 }
 
@@ -284,4 +285,17 @@ void PaletteTreeWidget::traverse(QTreeWidgetItem * const item, const PaletteTree
 	for (int i = 0; i < item->childCount(); ++i) {
 		traverse(item->child(i), action);
 	}
+}
+
+void PaletteTreeWidget::updateGroupVisibility(const QTreeWidgetItem * const item)
+{
+	const auto parent = item->parent();
+	bool hasVisible = false;
+	for (int i = 0; i < parent->childCount(); ++i) {
+		if (mItemsVisible.contains(parent->child(i)) && mItemsVisible[parent->child(i)]) {
+			hasVisible = true;
+		}
+	}
+
+	parent->setHidden(!hasVisible);
 }

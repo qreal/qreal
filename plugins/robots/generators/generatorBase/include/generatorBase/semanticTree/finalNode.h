@@ -16,11 +16,13 @@
 
 #include "nonZoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with final semantics
-class FinalNode : public NonZoneNode
+class ROBOTS_GENERATOR_EXPORT FinalNode : public NonZoneNode
 {
 public:
 	/// @param inMainDiagram Is corresponding final node placed on the main diagram.

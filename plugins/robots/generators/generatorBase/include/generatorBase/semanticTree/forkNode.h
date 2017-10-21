@@ -16,6 +16,8 @@
 
 #include "nonZoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
@@ -23,7 +25,7 @@ class SemanticTree;
 
 /// A semantic node for the block with fork semantics. One of the threads stays in current one,
 /// other represented as separate semantic trees whitch will be generated as separate task.
-class ForkNode : public NonZoneNode
+class ROBOTS_GENERATOR_EXPORT ForkNode : public NonZoneNode
 {
 public:
 	explicit ForkNode(const qReal::Id &idBinded, QObject *parent = 0);

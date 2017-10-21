@@ -4,8 +4,10 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-cp -pr $QT_DIR/lib/Qt5MultimediaWidgets.so*		$PWD/../data/lib/
-cp -pr $QT_DIR/lib/Qt5OpenGL.so*				$PWD/../data/lib/
+mkdir -p $PWD/../data/lib/
+
+cp -pr $QT_DIR/lib/libQt5MultimediaWidgets.so*		$PWD/../data/lib/
+cp -pr $QT_DIR/lib/libQt5OpenGL.so*			$PWD/../data/lib/
 
 git clone --depth 1 https://github.com/trikset/trik-desktop-gamepad.git gamepad-build
 

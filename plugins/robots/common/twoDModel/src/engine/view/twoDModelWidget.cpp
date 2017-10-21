@@ -96,6 +96,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
 	connect(&mModel.worldModel(), &WorldModel::backgroundChanged, mScene, &TwoDModelScene::setBackground);
+	connect(&mModel.worldModel(), &WorldModel::itemRemoved, this, [this](){ saveToRepo(); });
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();
@@ -685,9 +686,9 @@ bool TwoDModelWidget::supportsZooming() const
 }
 
 void TwoDModelWidget::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
 {
-	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut);
+	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find);
 	addActions({ mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction });
 }
 

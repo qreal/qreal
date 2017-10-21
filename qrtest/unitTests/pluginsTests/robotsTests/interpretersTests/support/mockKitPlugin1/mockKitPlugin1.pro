@@ -20,14 +20,9 @@ DESTDIR = $$DESTDIR/plugins/unittests/
 
 QT += widgets
 
-links(robots-kit-base)
+includes(thirdparty/qscintilla/Qt4Qt5 plugins/robots/common/kitBase plugins/robots/utils qrgui qrtext)
 
-INCLUDEPATH += \
-	../../../../../../../plugins/robots/common/kitBase/include/ \
-	../../../../../../../plugins/robots/utils/include/ \
-	../../../../../../../qrgui/ \
-	../../../../../../../ \
-	../../../../../../../qrtext/include \
+links(robots-kit-base)
 
 HEADERS += \
 	mockKitPlugin1Interface.h \

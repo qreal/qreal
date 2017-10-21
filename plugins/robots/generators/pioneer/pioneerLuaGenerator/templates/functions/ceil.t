@@ -1,0 +1,1 @@
+-- ceil() function is currently not supported

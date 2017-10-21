@@ -16,11 +16,13 @@
 
 #include "nonZoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for a block of join semantics.
-class JoinNode : public NonZoneNode
+class ROBOTS_GENERATOR_EXPORT JoinNode : public NonZoneNode
 {
 public:
 	explicit JoinNode(const qReal::Id &idBinded, QObject *parent = 0);

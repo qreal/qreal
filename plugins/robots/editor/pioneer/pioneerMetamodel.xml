@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metamodel xmlns="http://schema.real.com/schema/">
+	<extends>../common/robotsMetamodel.xml</extends>
+	<namespace>UML 2.0</namespace>
+
+	<diagram name="RobotsDiagram">
+
+		<graphicTypes>
+
+			<node displayedName="Takeoff" name="GeoTakeoff" description="Orders quadcopter to takeoff.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerTakeoffBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Landing" name="GeoLanding" description="Orders quadcopter to land.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerLandingBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Go to point" name="GoToPoint" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Orders quadcopter to fly to given coordinates.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerGoToPointBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="X" background="white" prefix="X:"/>
+						<label x="35" y="90" textBinded="Y" background="white" prefix="Y:"/>
+						<label x="35" y="120" textBinded="Z" background="white" prefix="Z:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+						<properties>
+							<property displayedName="X" type="string" name="X">
+								<default>0</default>
+							</property>
+							<property displayedName="Y" type="string" name="Y">
+								<default>0</default>
+							</property>
+							<property displayedName="Z" type="string" name="Z">
+								<default>0</default>
+							</property>
+						</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Led" name="PioneerLed" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the specified LED on a quadcopter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerLedBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-40" textBinded="Number" background="white" prefix="Number:"/>
+						<label x="35" y="60" textBinded="Red" background="white" prefix="Red:"/>
+						<label x="35" y="90" textBinded="Green" background="white" prefix="Green:"/>
+						<label x="35" y="120" textBinded="Blue" background="white" prefix="Blue:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Number" type="string" name="Number">
+							<default>0</default>
+						</property>
+						<property displayedName="Red" type="string" name="Red">
+							<default>0.0</default>
+						</property>
+						<property displayedName="Green" type="string" name="Green">
+							<default>0.0</default>
+						</property>
+						<property displayedName="Blue" type="string" name="Blue">
+							<default>0.0</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Print" name="PioneerPrint" description="Prints given string on a console.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerPrintBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="PrintText" hard="true" background="white" prefix="Text:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Text" type="string" name="PrintText">
+							<default>Enter some text here</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Yaw" name="PioneerYaw" description="Sets yaw for quadcopter">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerYawBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="-40" textBinded="Angle" background="white" prefix="Angle:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Angle" type="string" name="Angle">
+							<default>0.0</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Magnet" name="PioneerMagnet" description="Controls magnet on a quadcopter.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerMagnetBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="State on" type="bool" name="State">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="System" name="PioneerSystem" description="Executes given Lua script.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/systemBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Command" background="white" prefix="Command:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Command" type="string" name="Command">
+							<default>print('Hello')</default>
+						</property>
+						<property displayedName="Evaluate" type="bool" name="Evaluate">
+							<default>false</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+		</graphicTypes>
+
+		<palette sorted="false">
+			<group name="Actions">
+				<element name="GeoTakeoff"/>
+				<element name="GeoLanding"/>
+				<element name="GoToPoint"/>
+				<element name="PioneerLed"/>
+				<element name="PioneerPrint"/>
+				<element name="PioneerMagnet"/>
+				<element name="PioneerSystem"/>
+				<element name="PioneerYaw"/>
+			</group>
+		</palette>
+	</diagram>
+</metamodel>

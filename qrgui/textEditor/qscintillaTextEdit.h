@@ -23,6 +23,10 @@
 #include "qrgui/textEditor/languageInfo.h"
 
 namespace qReal {
+namespace ui {
+class SearchLinePanel;
+}
+
 namespace text {
 
 /// QScintillaTextEdit is text editor widget based on QsciScintilla (Qt version of Scintilla project) which
@@ -54,6 +58,7 @@ public:
 	bool supportsCopying() const override;
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
+	bool supportsSearching() const override;
 
 public slots:
 	void zoomIn() override;
@@ -62,6 +67,7 @@ public slots:
 	void copy() override;
 	void paste() override;
 	void cut() override;
+	void find() override;
 
 signals:
 	/// Emitted in destructor to save written text to according model element
@@ -82,6 +88,7 @@ private:
 	LanguageInfo mLanguage;
 	QFont mFont;
 	int mAverageCharWidth;
+	ui::SearchLinePanel *mSearchLinePanel;
 };
 
 }

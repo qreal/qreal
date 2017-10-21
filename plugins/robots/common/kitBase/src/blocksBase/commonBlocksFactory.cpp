@@ -66,6 +66,11 @@ qReal::IdList CommonBlocksFactory::blocksToDisable() const
 	return {};
 }
 
+qReal::IdList CommonBlocksFactory::blocksToHide() const
+{
+	return {};
+}
+
 qReal::Id CommonBlocksFactory::id(const QString &metatype)
 {
 	return qReal::Id("RobotsMetamodel", "RobotsDiagram", metatype);

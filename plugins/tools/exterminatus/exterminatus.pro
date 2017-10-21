@@ -18,9 +18,7 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools/
 
-INCLUDEPATH += \
-	$$PWD/../../../ \
-	$$PWD/../../../qrgui/ \
+includes(qrgui thirdparty/qscintilla/Qt4Qt5)
 
 QT += widgets
 

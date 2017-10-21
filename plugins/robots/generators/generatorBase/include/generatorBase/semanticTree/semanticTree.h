@@ -26,6 +26,8 @@
 #include "switchNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 

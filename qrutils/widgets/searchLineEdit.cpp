@@ -25,7 +25,7 @@
 
 using namespace qReal::ui;
 
-SearchLineEdit::SearchLineEdit(QWidget *parent)
+SearchLineEdit::SearchLineEdit(QWidget *parent, bool borderEnabled)
 	: QFrame(parent)
 	, mOptionsButton(initButton(QIcon(":/widgets/icons/find.svg"), QString()))
 	, mClearButton(initButton(style()->standardIcon(QStyle::SP_LineEditClearButton), tr("Clear text")))
@@ -56,7 +56,21 @@ SearchLineEdit::SearchLineEdit(QWidget *parent)
 	layout->addWidget(mLineEdit);
 	layout->addWidget(mClearButton);
 
-	setStyleSheet("QFrame { background: white; border: 1px solid black; border-radius: 2px; }");
+	setBorderEnabled(borderEnabled);
+}
+
+void SearchLineEdit::setBorderEnabled(bool enabled)
+{
+	if (enabled) {
+		setStyleSheet("QFrame { background: white; border: 1px solid black; border-radius: 2px; }");
+	} else {
+		setStyleSheet("QFrame { background: white; }");
+	}
+}
+
+void SearchLineEdit::focusMe()
+{
+	mLineEdit->setFocus(Qt::ShortcutFocusReason);
 }
 
 QToolButton *SearchLineEdit::initButton(const QIcon &icon, const QString &toolTip)

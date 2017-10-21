@@ -18,10 +18,7 @@ cp    $BIN_DIR/trikHal-x86.dll                                                  
 cp    $BIN_DIR/trikKernel-x86.dll                                                 $PWD/../data/
 cp    $BIN_DIR/trikNetwork-x86.dll                                                $PWD/../data/
 
-cp     $BIN_DIR/system.js                                                 $PWD/../data/bin/
-
-cp    $QT_DIR/bin/Qt5Network.dll                                                  $PWD/../data/
-cp    $QT_DIR/bin/Qt5Multimedia.dll                                               $PWD/../data/
+cp    $BIN_DIR/system.js                                                          $PWD/../data/bin/
 
 cd "$(dirname "$0")"/../data
 rm -rf winscp
@@ -30,3 +27,5 @@ mkdir -p trikRuntime
 cd trikRuntime
 tar xfvz ../trik-runtime-builds/trikRuntime.tar.gz
 rm -rf ../trik-runtime-builds
+cd "$(dirname "$0")"/../data/trik-runtime-builds
+rm -rf .git

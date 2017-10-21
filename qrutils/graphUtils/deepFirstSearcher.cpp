@@ -24,12 +24,12 @@ DeepFirstSearcher::DeepFirstSearcher(const qrRepo::LogicalRepoApi &repo)
 
 void DeepFirstSearcher::startSearch(const Id &firstId, VisitorInterface *visitor)
 {
-	startSearch(firstId, QList<VisitorInterface *>() << visitor);
+	startSearch(firstId, QList<VisitorInterface *>{ visitor });
 }
 
-void DeepFirstSearcher::startSearch(const Id &firstId, QList<VisitorInterface *> const &visitors)
+void DeepFirstSearcher::startSearch(const Id &firstId, const QList<VisitorInterface *> &visitors)
 {
-	foreach (VisitorInterface * const visitor, visitors) {
+	for (VisitorInterface * const visitor : visitors) {
 		visitor->beforeSearch();
 	}
 
@@ -37,7 +37,7 @@ void DeepFirstSearcher::startSearch(const Id &firstId, QList<VisitorInterface *>
 	mVisitedNodes.clear();
 	dfs(firstId, visitors);
 
-	foreach (VisitorInterface * const visitor, visitors) {
+	for (VisitorInterface * const visitor : visitors) {
 		visitor->afterSearch();
 	}
 }
@@ -47,7 +47,7 @@ void DeepFirstSearcher::terminateSearch()
 	mSearchTerminated = true;
 }
 
-void DeepFirstSearcher::dfs(const Id &id, QList<VisitorInterface *> const &visitors)
+void DeepFirstSearcher::dfs(const Id &id, const QList<VisitorInterface *> &visitors)
 {
 	mVisitedNodes << id;
 

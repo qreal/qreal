@@ -58,6 +58,8 @@ HEADERS = \
 	./Qsci/qscilexercpp.h \
 	./Qsci/qscilexerpascal.h \
 	./Qsci/qscilexerpython.h \
+	./Qsci/qscilexermatlab.h \
+	./Qsci/qscilexerlua.h \
 	./Qsci/qscimacro.h \
 	./Qsci/qsciprinter.h \
 	./Qsci/qscistyle.h \
@@ -131,6 +133,8 @@ SOURCES = \
 	qscilexercpp.cpp \
 	qscilexerpascal.cpp \
 	qscilexerpython.cpp \
+	qscilexermatlab.cpp \
+	qscilexerlua.cpp \
 	qscimacro.cpp \
 	qsciprinter.cpp \
 	qscistyle.cpp \
@@ -144,6 +148,8 @@ SOURCES = \
 	../lexers/LexCPP.cpp \
 	../lexers/LexPascal.cpp \
 	../lexers/LexPython.cpp \
+	../lexers/LexMatlab.cpp \
+	../lexers/LexLua.cpp \
 	../lexlib/Accessor.cpp \
 	../lexlib/CharacterCategory.cpp \
 	../lexlib/CharacterSet.cpp \
