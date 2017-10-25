@@ -87,11 +87,11 @@ private:
 	/// If default path - true.
 	QMap<QString, bool> mPathType;
 
-	/// Contains names of generator, which generate each сщfile
+	/// Contains names of generator, which generate each file
 	QMap<QString, QString> mGeneratorName;
 
 	/// First - was modified once and more (with save), second - was modified recently and not saved
-	QMap<QString, QPair<bool, bool> > mModified;
+	QMap<QString, QPair<bool, bool>> mModified;
 
 	/// mCodeTabManager - Map that keeps pairs of opened tabs and their code areas.
 	QMultiHash<Id, QString> mDiagramCodeManager;

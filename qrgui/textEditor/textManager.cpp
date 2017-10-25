@@ -15,6 +15,7 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QTextCodec>
 #include <QtCore/QFile>
+#include <QtWidgets/QMessageBox>
 
 #include <qrutils/outFile.h>
 #include <qrutils/qRealFileDialog.h>
@@ -64,7 +65,7 @@ bool TextManager::openFile(const QString &filePath, const QString &generatorName
 	return false;
 }
 
-bool TextManager::bindCode(const Id &diagram,  const QString &filePath)
+bool TextManager::bindCode(const Id &diagram, const QString &filePath)
 {
 	if (mText.contains(filePath)) {
 		mDiagramCodeManager.insert(diagram, filePath);
@@ -80,6 +81,14 @@ bool TextManager::unbindCode(const QString &filePath)
 
 bool TextManager::unbindCode(text::QScintillaTextEdit *code)
 {
+	if (mModified[mPath.value(code)].second
+			&& QMessageBox::question(
+				mMainWindow.currentTab()
+				, tr("Confirmation")
+				, tr("Close without saving?")) == QMessageBox::No) {
+			saveText(false);
+	}
+
 	return unbindCode(mPath.value(code));
 }
 
