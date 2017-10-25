@@ -227,7 +227,7 @@ void TextManager::showInTextEditor(const QFileInfo &fileInfo, const text::Langua
 
 	area->show();
 
-	mMainWindow.openTab(area,  fileInfo.fileName());
+	mMainWindow.openTab(area, fileInfo.fileName());
 }
 
 bool TextManager::saveText(bool saveAs)

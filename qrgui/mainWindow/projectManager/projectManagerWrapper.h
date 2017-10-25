@@ -17,6 +17,7 @@
 #include <QtCore/QFileInfo>
 
 #include <qrgui/systemFacade/components/projectManager.h>
+
 #include "textEditor/textManagerInterface.h"
 #include "versionsConverterManager.h"
 

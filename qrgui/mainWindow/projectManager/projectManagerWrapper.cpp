@@ -95,11 +95,11 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
+
 		return openProject(dequotedFileName);
 	} else if (fileInfo.suffix() == "qrp") {
 		return openQRProject(fileInfo);
-	}
-	else if (fileInfo.exists()) {
+	} else if (fileInfo.exists()) {
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
 	}
