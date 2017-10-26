@@ -15,10 +15,10 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QTextCodec>
 #include <QtCore/QFile>
-#include <QtWidgets/QMessageBox>
 
 #include <qrutils/outFile.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include <plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
@@ -82,7 +82,7 @@ bool TextManager::unbindCode(const QString &filePath)
 bool TextManager::unbindCode(text::QScintillaTextEdit *code)
 {
 	if (mModified[mPath.value(code)].second
-			&& QMessageBox::question(
+			&& utils::QRealMessageBox::question(
 				mMainWindow.currentTab()
 				, tr("Confirmation")
 				, tr("Close without saving?")) == QMessageBox::No) {

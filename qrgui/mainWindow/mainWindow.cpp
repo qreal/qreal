@@ -41,7 +41,7 @@
 #include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/graphicsUtils/animatedEffects.h>
 #include <qrutils/xmlUtils.h>

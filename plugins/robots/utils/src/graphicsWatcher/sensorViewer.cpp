@@ -16,7 +16,7 @@
 
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/logging.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrutils/outFile.h>
 
 #include "utils/timelineInterface.h"

@@ -19,8 +19,8 @@
 #include <QtCore/QFuture>
 #include <QtCore/QDirIterator>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QMessageBox>
 
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrkernel/logging.h>
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
@@ -202,7 +202,7 @@ void NxtFlashTool::error(const QString &message)
 
 bool NxtFlashTool::askToRun(QWidget *parent)
 {
-	return QMessageBox::question(parent, tr("The program has been uploaded")
+	return utils::QRealMessageBox::question(parent, tr("The program has been uploaded")
 			, tr("Do you want to run it?")) == QMessageBox::Yes;
 }
 

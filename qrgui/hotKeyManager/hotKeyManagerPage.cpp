@@ -18,9 +18,10 @@
 #include <QtCore/QString>
 #include <QtCore/QHash>
 #include <QtWidgets/QAction>
-#include <QtWidgets/QMessageBox>
 #include <QtGui/QKeySequence>
 #include <QtGui/QWheelEvent>
+
+#include <qrutils/widgets/qRealMessageBox.h>
 
 #include "hotKeyManager/hotKeyManager.h"
 
@@ -95,7 +96,7 @@ void PreferencesHotKeyManagerPage::resetShortcuts()
 
 void PreferencesHotKeyManagerPage::resetAllShortcuts()
 {
-	if (QMessageBox::question(this, tr("Question"), tr("This will clear all "\
+	if (utils::QRealMessageBox::question(this, tr("Question"), tr("This will clear all "\
 			"current shortcuts. Are you sure?")) == QMessageBox::Yes) {
 		mCurrentItem = nullptr;
 		mCurrentId = "";

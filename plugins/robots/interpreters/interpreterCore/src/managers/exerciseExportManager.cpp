@@ -20,7 +20,7 @@
 #include <qrgui/models/logicalModelAssistApi.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrrepo/repoControlInterface.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include "src/ui/exerciseExportDialog.h"
 

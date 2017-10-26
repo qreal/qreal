@@ -14,7 +14,6 @@
 
 #include "sdftocpp.h"
 
-#include <QtWidgets/QMessageBox>
 #include <QtGui/QFont>
 #include <QtGui/QIcon>
 #include <QtCore/QLineF>
