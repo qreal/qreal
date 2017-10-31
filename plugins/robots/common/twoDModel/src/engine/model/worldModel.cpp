@@ -322,7 +322,7 @@ QDomElement WorldModel::serialize(QDomElement &parent) const
 	QDomElement images = parent.ownerDocument().createElement("images");
 	result.appendChild(images);
 	for (items::ImageItem * const image : mImages) {
-		image->serialize(parent);
+		image->serialize(images);
 	}
 
 	QDomElement regions = parent.ownerDocument().createElement("regions");

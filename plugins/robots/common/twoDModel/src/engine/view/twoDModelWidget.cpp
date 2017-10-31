@@ -96,6 +96,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
 	connect(&mModel.worldModel(), &WorldModel::backgroundChanged, mScene, &TwoDModelScene::setBackground);
+	connect(&mModel.worldModel(), &WorldModel::itemRemoved, this, [this](){ saveToRepo(); });
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();

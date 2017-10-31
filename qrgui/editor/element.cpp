@@ -178,7 +178,7 @@ void Element::updateEnabledState()
 void Element::setHideNonHardLabels(bool hide)
 {
 	for (Label * const label : mLabels) {
-		label->setVisible(label->isHard() || !hide || label->isSelected());
+		label->setVisible(label->isHard() || !hide || (label->isSelected() && label->hasCursor()));
 	}
 }
 
