@@ -66,6 +66,16 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel->name() });
 
 	mQtsInterpreter.reset(new TrikQtsInterpreter(mTwoDRobotModel));
+
+	text::LanguageInfo javascriptForTrik = text::LanguageInfo {
+			"js"
+			, QObject::tr("Javascript")
+			, true
+			, 8
+			, new QsciLexerCPP()
+			, mQtsInterpreter.data()->knownMethodNames()
+	};
+	text::Languages::registerLanguage(javascriptForTrik);
 }
 
 void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)

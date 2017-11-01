@@ -44,6 +44,7 @@ public:
 	void setRunning(bool running);
 	void setCurrentDir(const QString &dir);
 	QStringList supportedRobotModelNames() const;
+	QStringList knownMethodNames() const;
 
 signals:
 	void completed();

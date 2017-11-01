@@ -219,6 +219,7 @@ void QScintillaTextEdit::setDefaultSettings()
 
 void QScintillaTextEdit::emitTextWasModified()
 {
+	cancelList();
 	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth + 10);
 	emit textWasModified(this);
 }
