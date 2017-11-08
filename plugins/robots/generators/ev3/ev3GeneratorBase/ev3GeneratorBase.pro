@@ -57,6 +57,14 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.h \
 	$$PWD/src/simpleGenerators/startCompassCalibrationGenerator.h \
 	$$PWD/src/simpleGenerators/stopCompassCalibrationGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/calibrateBlackGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/calibratePIDGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/calibrateWhiteGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/readAverageGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/readSensorArrayGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/readSteeringGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/sleepGenerator.h \
+	$$PWD/src/simpleGenerators/lineLeader/wakeUpGenerator.h \
 
 SOURCES += \
 	$$PWD/src/ev3GeneratorPluginBase.cpp \
@@ -80,5 +88,13 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.cpp \
 	$$PWD/src/simpleGenerators/startCompassCalibrationGenerator.cpp \
 	$$PWD/src/simpleGenerators/stopCompassCalibrationGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/calibrateBlackGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/calibratePIDGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/calibrateWhiteGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/readAverageGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/readSensorArrayGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/readSteeringGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/sleepGenerator.cpp \
+	$$PWD/src/simpleGenerators/lineLeader/wakeUpGenerator.cpp \
 
 OTHER_FILES +=

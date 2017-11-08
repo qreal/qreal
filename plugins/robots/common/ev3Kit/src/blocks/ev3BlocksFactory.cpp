@@ -127,6 +127,17 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3WaitForGyroscope")
 		, id("Ev3WaitForReceivingMail")
 
+		, id("Ev3CalibrateWhiteLL")
+		, id("Ev3CalibrateBlackLL")
+		, id("Ev3CalibratePIDLL")
+		, id("Ev3SleepLL")
+		, id("Ev3WakeUpLL")
+		, id("Ev3ReadAvrLL")
+		, id("Ev3ReadAllLL")
+		, id("Ev3ReadSteeringLL")
+		, id("Ev3WaitForGyroscope")
+		, id("Ev3WaitForReceivingMail")
+
 		, id("Ev3DrawPixel")
 		, id("Ev3DrawLine")
 		, id("Ev3DrawCircle")
@@ -147,6 +158,16 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 				<< id("Ev3CalibrateGyroscope")
 				<< id("Ev3StartCompassCalibration")
 				<< id("Ev3StopCompassCalibration")
+				<< id("Ev3CalibrateWhiteLL")
+				<< id("Ev3CalibrateBlackLL")
+				<< id("Ev3CalibratePIDLL")
+				<< id("Ev3SleepLL")
+				<< id("Ev3WakeUpLL")
+				<< id("Ev3ReadAvrLL")
+				<< id("Ev3ReadAllLL")
+				<< id("Ev3ReadSteeringLL")
+				<< id("Ev3WaitForGyroscope")
+				<< id("Ev3WaitForReceivingMail")
 				;
 	} else {
 		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {
