@@ -17,7 +17,7 @@
 
 #include <QtWidgets/QMessageBox>
 
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include "preferencesPages/behaviourPage.h"
 #include "preferencesPages/editorPage.h"

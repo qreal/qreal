@@ -21,7 +21,7 @@
 #include <QtWidgets/QTreeView>
 
 #include <qrkernel/platformInfo.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include "mainWindow/mainWindow.h"
 
@@ -95,11 +95,11 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 		if (!dequotedFileName.isEmpty() && !saveFileExists(dequotedFileName)) {
 			return false;
 		}
+
 		return openProject(dequotedFileName);
 	} else if (fileInfo.suffix() == "qrp") {
 		return openQRProject(fileInfo);
-	}
-	else if (fileInfo.exists()) {
+	} else if (fileInfo.exists()) {
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
 	}

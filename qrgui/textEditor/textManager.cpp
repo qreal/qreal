@@ -17,7 +17,8 @@
 #include <QtCore/QFile>
 
 #include <qrutils/outFile.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include <plugins/toolPluginInterface/systemEvents.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
@@ -64,7 +65,7 @@ bool TextManager::openFile(const QString &filePath, const QString &generatorName
 	return false;
 }
 
-bool TextManager::bindCode(const Id &diagram,  const QString &filePath)
+bool TextManager::bindCode(const Id &diagram, const QString &filePath)
 {
 	if (mText.contains(filePath)) {
 		mDiagramCodeManager.insert(diagram, filePath);
@@ -80,6 +81,14 @@ bool TextManager::unbindCode(const QString &filePath)
 
 bool TextManager::unbindCode(text::QScintillaTextEdit *code)
 {
+	if (mModified[mPath.value(code)].second
+			&& utils::QRealMessageBox::question(
+				mMainWindow.currentTab()
+				, tr("Confirmation")
+				, tr("Close without saving?")) == QMessageBox::No) {
+			saveText(false);
+	}
+
 	return unbindCode(mPath.value(code));
 }
 
@@ -227,7 +236,7 @@ void TextManager::showInTextEditor(const QFileInfo &fileInfo, const text::Langua
 
 	area->show();
 
-	mMainWindow.openTab(area,  fileInfo.fileName());
+	mMainWindow.openTab(area, fileInfo.fileName());
 }
 
 bool TextManager::saveText(bool saveAs)

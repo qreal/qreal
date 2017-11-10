@@ -18,7 +18,6 @@
 #include <QtCore/QtMath>
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QStyleOptionGraphicsItem>
-#include <QtWidgets/QMessageBox>
 #include <QtGui/QTextCursor>
 #include <QtWidgets/QToolTip>
 #include <QtWidgets/QGraphicsDropShadowEffect>

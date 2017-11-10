@@ -8,6 +8,10 @@
         <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
+        <source>Block has disappeared!</source>
+        <translation type="vanished">Блок исчез!</translation>
+    </message>
+    <message>
         <source>Too many outgoing links</source>
         <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
@@ -88,9 +92,85 @@
         <translation>Целичисленное деление на ноль</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="515"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="525"/>
         <source>Remove</source>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="vanished">Да</translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="vanished">Открыть</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">Сохранить</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отмена</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="vanished">Закрыть</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation type="vanished">Отменить</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="vanished">Применить</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="vanished">Сбросить</translation>
+    </message>
+    <message>
+        <source>Restore Defaults</source>
+        <translation type="vanished">Восстановить по умолчанию</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="vanished">Помощь</translation>
+    </message>
+    <message>
+        <source>Save All</source>
+        <translation type="vanished">Сохранить все</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="vanished">Да</translation>
+    </message>
+    <message>
+        <source>Yes To All</source>
+        <translation type="vanished">Да для всех</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="vanished">Нет</translation>
+    </message>
+    <message>
+        <source>No To All</source>
+        <translation type="vanished">Нет для всех</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="vanished">Остановить</translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation type="vanished">Повторить</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="vanished">Игнорировать</translation>
+    </message>
+    <message>
+        <source>NoButton</source>
+        <translation type="vanished">Не кнопка</translation>
     </message>
 </context>
 <context>
@@ -381,6 +461,14 @@
     </message>
 </context>
 <context>
+    <name>qReal::ui::ConsoleDock</name>
+    <message>
+        <location filename="../../qrutils/widgets/consoleDock.cpp" line="36"/>
+        <source>Reset shell</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>qReal::ui::ImagePicker</name>
     <message>
         <location filename="../../qrutils/widgets/imagePicker.cpp" line="35"/>
@@ -388,12 +476,12 @@
         <translation>Обзор...</translation>
     </message>
     <message>
-        <location filename="../../qrutils/widgets/imagePicker.cpp" line="65"/>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="68"/>
         <source>Select image</source>
         <translation>Выберите изображение</translation>
     </message>
     <message>
-        <location filename="../../qrutils/widgets/imagePicker.cpp" line="66"/>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="70"/>
         <source>Images (*.png *.svg *.jpg *.gif *.bmp);;All files (*.*)</source>
         <translation>Картинки (*.png *.svg *.jpg *.gif *.bmp);;Все файлы (*.*)</translation>
     </message>
@@ -447,6 +535,108 @@
         <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="121"/>
         <source>Cannot build new editor</source>
         <translation>Не могу скомпилировать новый редактор. Проверьте имена элементов</translation>
+    </message>
+</context>
+<context>
+    <name>utils::QRealMessageBox</name>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="30"/>
+        <source>Ok</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="31"/>
+        <source>Open</source>
+        <translation>Открыть</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="32"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="33"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="34"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="35"/>
+        <source>Discard</source>
+        <translation>Отменить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="36"/>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="37"/>
+        <source>Reset</source>
+        <translation>Сбросить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="38"/>
+        <source>Help</source>
+        <translation>Помощь</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="39"/>
+        <source>Save All</source>
+        <translation>Сохранить все</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="40"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="41"/>
+        <source>Yes To All</source>
+        <translation>Да для всех</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="42"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="43"/>
+        <source>No To All</source>
+        <translation>Нет для всех</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="44"/>
+        <source>Abort</source>
+        <translation>Остановить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="45"/>
+        <source>Retry</source>
+        <translation>Повторить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="46"/>
+        <source>Ignore</source>
+        <translation>Игнорировать</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="47"/>
+        <source>NoButton</source>
+        <translation>Не кнопка</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="49"/>
+        <source>Restore Defaults</source>
+        <translation>Восстановить по умолчанию</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation type="vanished">Да</translation>
     </message>
 </context>
 <context>

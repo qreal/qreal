@@ -14,7 +14,6 @@
 
 #include <QtCore/QStringListModel>
 #include <QtWidgets/QInputDialog>
-#include <QtWidgets/QMessageBox>
 
 #include <qrrepo/logicalRepoApi.h>
 

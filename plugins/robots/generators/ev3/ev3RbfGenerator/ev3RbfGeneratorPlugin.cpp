@@ -17,8 +17,8 @@
 #include <QtWidgets/QApplication>
 #include <QtCore/QDirIterator>
 #include <QtCore/QProcess>
-#include <QtWidgets/QMessageBox>
 
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrkernel/logging.h>
 #include <ev3Kit/communication/ev3RobotCommunicationThread.h>
 #include <ev3GeneratorBase/robotModel/ev3GeneratorRobotModel.h>
@@ -161,7 +161,7 @@ void Ev3RbfGeneratorPlugin::uploadAndRunProgram()
 	const RunPolicy runPolicy = static_cast<RunPolicy>(SettingsManager::value("ev3RunPolicy").toInt());
 	switch (runPolicy) {
 	case RunPolicy::Ask:
-		if (QMessageBox::question(mMainWindowInterface->windowWidget(), tr("The program has been uploaded")
+		if (utils::QRealMessageBox::question(mMainWindowInterface->windowWidget(), tr("The program has been uploaded")
 				, tr("Do you want to run it?")) == QMessageBox::Yes) {
 			communicator->runProgram(fileOnRobot);
 		}

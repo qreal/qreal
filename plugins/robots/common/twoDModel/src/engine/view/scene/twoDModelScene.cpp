@@ -20,7 +20,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrgui/controller/controllerInterface.h>
 
 #include <kitBase/robotModel/robotParts/touchSensor.h>

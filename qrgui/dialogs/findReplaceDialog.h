@@ -20,7 +20,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtCore/QSignalMapper>
 
-#include <qrutils/qRealDialog.h>
+#include <qrutils/widgets/qRealDialog.h>
 #include <qrgui/models/logicalModelAssistApi.h>
 
 #include "qrgui/dialogs/dialogsDeclSpec.h"

@@ -45,6 +45,10 @@ private:
 	QList<robotModel::robotParts::EncoderSensor *> parsePorts();
 
 	robotModel::RobotModelInterface &mRobotModel;
+
+private slots:
+	void doneNextBlock();
+
 };
 
 }

@@ -23,7 +23,7 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
 
-#include <qrutils/qRealDialog.h>
+#include <qrutils/widgets/qRealDialog.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 using namespace utils;
