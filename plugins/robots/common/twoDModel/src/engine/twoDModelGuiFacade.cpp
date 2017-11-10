@@ -16,7 +16,7 @@
 #include <QtWidgets/QComboBox>
 
 #include <qrutils/widgetFinder.h>
-#include <qrutils/qRealDialog.h>
+#include <qrutils/widgets/qRealDialog.h>
 
 #include "twoDModel/engine/twoDModelGuiFacade.h"
 #include "twoDModel/engine/view/twoDModelWidget.h"

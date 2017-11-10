@@ -20,6 +20,9 @@ HEADERS += \
 	$$PWD/consoleDock.h \
 	$$PWD/imagePicker.h \
 	$$PWD/searchLinePanel.h \
+	$$PWD/qRealDialog.h \
+	$$PWD/qRealFileDialog.h \
+	$$PWD/qRealMessageBox.h
 
 SOURCES += \
 	$$PWD/colorListEditor.cpp \
@@ -28,3 +31,6 @@ SOURCES += \
 	$$PWD/consoleDock.cpp \
 	$$PWD/imagePicker.cpp \
 	$$PWD/searchLinePanel.cpp \
+	$$PWD/qRealDialog.cpp \
+	$$PWD/qRealFileDialog.cpp \
+	$$PWD/qRealMessageBox.cpp

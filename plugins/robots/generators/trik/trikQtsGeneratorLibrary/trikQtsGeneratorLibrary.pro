@@ -29,7 +29,7 @@ includes(plugins/robots/generators/trik/trikGeneratorBase \
 )
 
 links(qrkernel qslog qrutils qrrepo qscintilla2 robots-generator-base robots-trik-generator-base \
-		robots-kit-base robots-trik-kit robots-utils \
+		robots-kit-base robots-trik-kit robots-utils qrgui-text-editor \
 )
 
 TRANSLATIONS = \
