@@ -129,7 +129,7 @@ QString Element::logicalProperty(const QString &roleName) const
 void Element::setLogicalProperty(const QString &roleName, const QString &oldValue
 		, const QString &newValue, bool withUndoRedo)
 {
-	if (oldValue == newValue) {
+	if ((oldValue == newValue) && withUndoRedo){
 		return;
 	}
 

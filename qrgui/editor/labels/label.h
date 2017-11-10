@@ -105,7 +105,7 @@ private:
 	QMap<QString, QString> mEnumValues;
 	QRectF mContents;
 	QRectF mParentContents;
-	QString mOldText;
+	QString mTextBeforeTextInteraction;
 	bool mIsStretched;
 	bool mWasMoved;
 	bool mShouldMove;
