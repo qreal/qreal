@@ -39,8 +39,8 @@ const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
 const int maxReductCoeff = 16;
-const QPointF dummyStart = QPointF(0, 0);
-const QPointF dummyEnd = QPointF(200, 60);
+const QPointF dummyStart(0, 0);
+const QPointF dummyEnd(200, 60);
 
 /** @brief indicator of edges' movement */
 
