@@ -28,6 +28,16 @@
 #include "simpleGenerators/startCompassCalibrationGenerator.h"
 #include "simpleGenerators/stopCompassCalibrationGenerator.h"
 
+#include "simpleGenerators/lineLeader/calibrateBlackGenerator.h"
+#include "simpleGenerators/lineLeader/calibratePIDGenerator.h"
+#include "simpleGenerators/lineLeader/calibrateWhiteGenerator.h"
+#include "simpleGenerators/lineLeader/readAverageGenerator.h"
+#include "simpleGenerators/lineLeader/readSensorArrayGenerator.h"
+#include "simpleGenerators/lineLeader/readSteeringGenerator.h"
+#include "simpleGenerators/lineLeader/sleepGenerator.h"
+#include "simpleGenerators/lineLeader/wakeUpGenerator.h"
+
+
 #include "converters/outputPortNameConverter.h"
 #include "converters/ledColorConverter.h"
 
@@ -98,6 +108,24 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new StartCompassCalibrationGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3StopCompassCalibration") {
 		return new StopCompassCalibrationGenerator(mRepo, customizer, id, this);
+	}
+
+	else if (elementType == "Ev3CalibrateWhiteLL") {
+		return new lineLeader::CalibrateWhiteGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3CalibrateBlackLL") {
+		return new lineLeader::CalibrateBlackGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3CalibratePIDLL") {
+		return new lineLeader::CalibratePIDGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3SleepLL") {
+		return new lineLeader::SleepGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3WakeUpLL") {
+		return new lineLeader::WakeUpGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3ReadAvrLL") {
+		return new lineLeader::ReadAverageGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3ReadAllLL") {
+		return new lineLeader::ReadSensorArrayGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3ReadSteeringLL") {
+		return new lineLeader::ReadSteeringGenerator(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
