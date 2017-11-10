@@ -18,7 +18,7 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-links(qrgui-preferences-dialog)
+links(qrgui-preferences-dialog qrutils)
 includes(qrgui)
 
 QT += widgets

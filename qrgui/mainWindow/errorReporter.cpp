@@ -14,7 +14,6 @@
 
 #include "errorReporter.h"
 
-#include <QtWidgets/QMessageBox>
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QLabel>
 

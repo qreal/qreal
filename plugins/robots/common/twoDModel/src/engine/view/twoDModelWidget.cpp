@@ -16,13 +16,13 @@
 #include "ui_twoDModelWidget.h"
 
 #include <QtCore/qmath.h>
-#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrgui/controller/controllerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
@@ -252,13 +252,12 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 
 	connect(&mActions->deleteAllAction(), &QAction::triggered, [this](){
-		QMessageBox confirmation;
-		confirmation.setWindowTitle(tr("Warning"));
-		confirmation.setText(tr("Do you really want to clear scene?"));
-		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
-		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
-		if (QMessageBox::Yes == confirmation.exec()) {
+		if (QMessageBox::Yes
+				== utils::QRealMessageBox::question(nullptr
+						, tr("Warning")
+						, tr("Do you really want to clear scene?")
+						, QMessageBox::Yes | QMessageBox::Cancel)
+		) {
 			mScene->clearScene(false, Reason::userAction);
 		}
 	});

@@ -41,7 +41,7 @@
 #include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/graphicsUtils/animatedEffects.h>
 #include <qrutils/xmlUtils.h>
@@ -1003,13 +1003,14 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	}
 
 	int tabNumber = -1;
-	for (int i = 0; i < mUi->tabs->count(); i++) {
+	for (int i = 0; i < mUi->tabs->count(); ++i) {
 		EditorView *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr && tab->mvIface().rootIndex() == index) {
 			tabNumber = i;
 			break;
 		}
 	}
+
 	if (tabNumber != -1) {
 		mUi->tabs->setCurrentIndex(tabNumber);
 	} else {
@@ -1030,7 +1031,7 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 	// changing of palette active editor
 	if (SettingsManager::value("PaletteTabSwitching").toBool()) {
 		int i = 0;
-		foreach (const QString &name, mUi->paletteTree->editorsNames()) {
+		for (const QString &name : mUi->paletteTree->editorsNames()) {
 			const Id id = models().graphicalModelAssistApi().idByIndex(index);
 			const Id diagramId = Id(id.editor(), id.diagram());
 			const QString diagramName = editorManager().friendlyName(diagramId);
@@ -1038,7 +1039,8 @@ void MainWindow::openNewTab(const QModelIndex &arg)
 				mUi->paletteTree->setComboBoxIndex(i);
 				break;
 			}
-			i++;
+
+			++i;
 		}
 	}
 }

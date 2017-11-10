@@ -18,7 +18,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QCheckBox>
 
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/abstractScene.h>
 
 #include "src/engine/items/imageItem.h"
