@@ -135,8 +135,6 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3ReadAvrLL")
 		, id("Ev3ReadAllLL")
 		, id("Ev3ReadSteeringLL")
-		, id("Ev3WaitForGyroscope")
-		, id("Ev3WaitForReceivingMail")
 
 		, id("Ev3DrawPixel")
 		, id("Ev3DrawLine")

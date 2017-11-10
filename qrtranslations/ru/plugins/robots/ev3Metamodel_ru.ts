@@ -785,7 +785,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="972"/>
         <source>Read the values from the Line Leader.  Amount of light or dark each sensor sees.  Typically between 0-20.  0=black, 100=white.</source>
-        <translation>Считать значения с сенсора (восемь значений). Значения от 0 до 100.</translation>
+        <translation>Считать значения с сенсора (восемь значений). Значения от 0 до 100. 0 - черный, 100 - белый.</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="987"/>
@@ -810,7 +810,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="1025"/>
         <source>Read the Weighted Average value from the sensor.  This value is calculated internally by the sensor where each of the eight sensors is either triggered or not and multiplied by a factor to help determine if the line is left, right or on center of the line (according to the set point). EXPECTED VALUES: 0-80 (-1=ERROR)</source>
-        <translation>Считывает среедне-взвешенное значение в переменную. Значение высчитывается внутри сенсора, где каждый из восьми сенсоров берется с коэффициентом и вычисляется срееднее. Ожидается значение от 0 до 80 (-1 = ошибка)</translation>
+        <translation>Считывает среедне-взвешенное значение в переменную. Значение высчитывается внутри сенсора, где каждый из восьми сенсоров берется с коэффициентом, и вычисляется срееднее. Ожидается значение от 0 до 80 (-1 = ошибка)</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="1065"/>
@@ -847,12 +847,12 @@
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="1994"/>
         <source>Wake Up Line Leader</source>
-        <translation>Разбудить датчик линии</translation>
+        <translation>Пробуждает датчик линии</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="1996"/>
         <source>Wakes the line leader to prepare for use.</source>
-        <translation>Будит датчик линии для работы</translation>
+        <translation>Включает датчик линии для работы</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/ev3/generated/elements.h" line="193"/>
