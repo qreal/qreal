@@ -5,7 +5,7 @@
     <Description>Install it for working with Pioneer quadcopter in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для программирования квадрокоптера "Пионер"</Description>
     <Version>3.2.0-4</Version>
-    <ReleaseDate>2017-06-11</ReleaseDate>
+    <ReleaseDate>2017-11-14</ReleaseDate>
     <SortingPriority>17</SortingPriority>
     <Default>false</Default>
     <ForcedInstallation>false</ForcedInstallation>
