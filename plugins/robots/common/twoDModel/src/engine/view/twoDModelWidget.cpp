@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/widgets/qRealFileDialog.h>
@@ -445,8 +446,11 @@ void TwoDModelWidget::loadWorldModel()
 void TwoDModelWidget::setBackground()
 {
 	// Loads world and robot models simultaneously.
-	const QString loadFileName = QRealFileDialog::getOpenFileName("2DSelectBackground", this
-			, tr("Select background image"), "./fields", tr("Graphics (*.*)"));
+	const QString loadFileName = QRealFileDialog::getOpenFileName("2DSelectBackground"
+			, this
+			, tr("Select background image")
+			, qReal::PlatformInfo::invariantSettingsPath("pathToImages") + "/../fields"
+			, tr("Graphics (*.*)"));
 	if (loadFileName.isEmpty()) {
 		return;
 	}

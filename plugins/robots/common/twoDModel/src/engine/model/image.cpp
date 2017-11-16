@@ -58,7 +58,7 @@ Image::Image(const Image &other)
 	mPath = other.mPath;
 	mImage.reset(other.mImage.data() && !mIsSvg ? new QImage(*other.mImage) : nullptr);
 	mSvgBytes = other.mSvgBytes;
-	mSvgRenderer.reset(mIsSvg ? new QSvgRenderer(mPath) : nullptr);
+	mSvgRenderer.reset(mIsSvg ? new QSvgRenderer(mSvgBytes) : nullptr);
 }
 
 Image::~Image()

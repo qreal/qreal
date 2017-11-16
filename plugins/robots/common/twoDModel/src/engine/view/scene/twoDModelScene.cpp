@@ -18,6 +18,7 @@
 #include <QtGui/QPainter>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
 #include <qrutils/widgets/qRealFileDialog.h>
@@ -554,7 +555,9 @@ void TwoDModelScene::addImage()
 {
 	// Loads world and robot models simultaneously.
 	const QString loadFileName = utils::QRealFileDialog::getOpenFileName("2DSelectImage", views().first()
-			, tr("Select image"), "./fields", tr("Graphics (*.*)"));
+			, tr("Select image")
+			, qReal::PlatformInfo::invariantSettingsPath("pathToImages") + "/../fields"
+			, tr("Graphics (*.*)"));
 	if (loadFileName.isEmpty()) {
 		return;
 	}
