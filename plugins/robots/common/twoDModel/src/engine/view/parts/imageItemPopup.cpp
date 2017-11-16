@@ -21,6 +21,8 @@
 #include <qrutils/widgets/qRealFileDialog.h>
 #include <qrutils/graphicsUtils/abstractScene.h>
 
+#include <qrkernel/platformInfo.h>
+
 #include "src/engine/items/imageItem.h"
 
 using namespace twoDModel::view;
@@ -119,7 +121,9 @@ QWidget *ImageItemPopup::initPathPicker()
 	connect(button, &QPushButton::clicked, this, [=]() {
 		// Loads world and robot models simultaneously.
 		const QString loadFileName = utils::QRealFileDialog::getOpenFileName("2DSelectImage", mScene.views().first()
-				, tr("Select image"), "./fields", tr("Graphics (*.*)"));
+				, tr("Select image")
+				, qReal::PlatformInfo::invariantSettingsPath("pathToImages") + "/../fields"
+				, tr("Graphics (*.*)"));
 		if (loadFileName.isEmpty()) {
 			return;
 		}

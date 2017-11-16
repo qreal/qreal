@@ -168,7 +168,7 @@ defineTest(copyToDestdir) {
 			}
 		}
 
-		DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
+		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
 		win32:DDIR ~= s,/,\\,g
 		mkpath($$DDIR)
 

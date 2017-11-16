@@ -54,6 +54,9 @@ TwoDModelEngineApi::TwoDModelEngineApi(model::Model &model, view::TwoDModelWidge
 	, mFakeScene(new view::FakeScene(mModel.worldModel()))
 	, mGuiFacade(new engine::TwoDModelGuiFacade(mView))
 {
+#ifdef BACKGROUND_SCENE_DEBUGGING
+	enableBackgroundSceneDebugging();
+#endif
 }
 
 TwoDModelEngineApi::~TwoDModelEngineApi()
@@ -196,6 +199,11 @@ QImage TwoDModelEngineApi::areaUnderSensor(const PortInfo &port, qreal widthFact
 	QPainter painter(&result);
 	painter.drawImage(QRect(QPoint(), result.size()), rotated, realImage);
 	painter.end();
+
+#ifdef BACKGROUND_SCENE_DEBUGGING
+	mView.scene()->addItem(new QGraphicsPixmapItem(QPixmap::fromImage(result)));
+#endif
+
 	return result;
 }
 

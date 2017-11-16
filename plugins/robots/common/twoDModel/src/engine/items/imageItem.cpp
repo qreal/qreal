@@ -38,7 +38,7 @@ ImageItem::ImageItem(const model::Image &image, const QRect &geometry)
 
 AbstractItem *ImageItem::clone() const
 {
-	const auto cloned = new ImageItem(mImage, QRect(x1(), y1(), x2() - x1(), y2() - y1()));
+	const auto cloned = new ImageItem(model::Image(mImage), QRect(x1(), y1(), x2() - x1(), y2() - y1()));
 	AbstractItem::copyTo(cloned);
 	return cloned;
 }
