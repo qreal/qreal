@@ -39,6 +39,7 @@ DEFINES += SCINTILLA_QT SCI_LEXER
 greaterThan(QT_MAJOR_VERSION, 4) {
 	QT += widgets
 	QT += printsupport
+	macx:QT += macextras
 }
 
 # Comment this in if you want the internal Scintilla classes to be placed in a
