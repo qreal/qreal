@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Package>
-    <DisplayName>Pyhon generator</DisplayName>
+    <DisplayName>Python generator</DisplayName>
     <DisplayName xml:lang="ru_ru">Генератор в Питон(Python)</DisplayName>
     <Description>Install it for Python support in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором ТРИК на языке Питон(Python)</Description>
