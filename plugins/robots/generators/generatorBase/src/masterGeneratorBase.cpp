@@ -24,6 +24,7 @@
 #include <qrutils/stringUtils.h>
 #include <qrtext/languageToolboxInterface.h>
 
+#include "structuralControlFlowGenerator.h"
 #include "readableControlFlowGenerator.h"
 #include "generatorBase/gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
@@ -69,6 +70,8 @@ void MasterGeneratorBase::initialize()
 			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 	mGotoControlFlowGenerator = new GotoControlFlowGenerator(mRepo
 			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
+	mStructuralControlFlowGenerator = new StructuralControlFlowGenerator(mRepo
+			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 }
 
 QString MasterGeneratorBase::generate(const QString &indentString)
@@ -89,6 +92,8 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
 		generator->reinit();
 	}
+
+	mStructuralControlFlowGenerator->generate();
 
 	QString mainCode;
 	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();

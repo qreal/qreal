@@ -64,7 +64,8 @@ HEADERS += \
 	$$PWD/include/generatorBase/lua/precedenceConverter.h \
 	$$PWD/include/generatorBase/lua/reservedFunctionsConverter.h \
 	$$PWD/include/generatorBase/gotoControlFlowGenerator.h \
-	$$PWD/src/converters/dynamicPropertiesConverter.h
+	$$PWD/src/converters/dynamicPropertiesConverter.h \
+	$$PWD/src/structuralControlFlowGenerator.h
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
@@ -137,7 +138,8 @@ SOURCES += \
 	$$PWD/src/rules/switchRules/switchInitializationRule.cpp \
 	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.cpp \
 	$$PWD/src/gotoControlFlowGenerator.cpp \
-	$$PWD/src/converters/dynamicPropertiesConverter.cpp
+	$$PWD/src/converters/dynamicPropertiesConverter.cpp \
+	$$PWD/src/structuralControlFlowGenerator.cpp
 
 # Simple element generators & converters
 

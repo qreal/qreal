@@ -43,6 +43,7 @@ class LuaProcessor;
 
 class ReadableControlFlowGenerator;
 class GotoControlFlowGenerator;
+class StructuralControlFlowGenerator;
 
 /// The main class for every code generator. Produces nessesary components and
 /// controls their work. Must be reimplemented in each concrete generator.
@@ -103,6 +104,7 @@ protected:
 	PrimaryControlFlowValidator *mValidator;
 	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
+	StructuralControlFlowGenerator *mStructuralControlFlowGenerator; // Takes ownership
 	QString mProjectName;
 	QString mProjectDir;
 	int mCurInitialNodeNumber;
