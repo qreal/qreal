@@ -66,12 +66,17 @@ private:
 	void performGeneration() override;
 
 	void buildGraph(const qReal::Id &id, const QList<utils::DeepFirstSearcher::LinkInfo> &links);
+	void calculatePredecessors();
 
+	// naive approach for finding dominators
+	void findDominators();
 
 	int mNumberOfVerteces;
 	QMap<qReal::Id, int> mNumbersOfElements;
 	static const int maxNumberOfVerteces = 150;
 	QVector<int> mGraph[maxNumberOfVerteces];
+	QVector<int> mPredecessors[maxNumberOfVerteces];
+	QVector<int> mDominators[maxNumberOfVerteces];
 };
 
 }

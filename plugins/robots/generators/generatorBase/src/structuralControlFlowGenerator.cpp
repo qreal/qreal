@@ -89,6 +89,11 @@ void StructuralControlFlowGenerator::afterSearch()
 void StructuralControlFlowGenerator::performGeneration()
 {
 	ControlFlowGeneratorBase::performGeneration();
+	// to check whether diagram was right
+
+	calculatePredecessors();
+	findDominators();
+
 }
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
@@ -107,11 +112,61 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 		if (mNumbersOfElements.contains(link.target)) {
 			targetNumber = mNumbersOfElements[link.target];
 		} else {
-			int targetNumber = mNumberOfVerteces;
+			targetNumber = mNumberOfVerteces;
 			mNumberOfVerteces++;
 			mNumbersOfElements[link.target] = targetNumber;
 		}
 		mGraph[numberOfCurrentVertex].push_back(targetNumber);
+	}
+}
+
+void StructuralControlFlowGenerator::calculatePredecessors()
+{
+	const int root = 0;
+	mPredecessors[root].clear();
+
+	for (int i = 0; i < mNumberOfVerteces; i++) {
+		for (size_t t = 0; t < mGraph[i].size(); t++) {
+			int destination = mGraph[i].at(t);
+			mPredecessors[destination].push_back(i);
+		}
+	}
+}
+
+void StructuralControlFlowGenerator::findDominators()
+{
+	const int root = 0;
+	int masks[maxNumberOfVerteces] = {0};
+
+	masks[root] = 1;
+
+	for (int i = 1; i < mNumberOfVerteces; i++) {
+		masks[i] = (1 << mNumberOfVerteces) - 1;
+	}
+
+	//mDominators[root].push_back(root);
+
+	bool somethingChanged = true;
+	while (somethingChanged) {
+		somethingChanged = false;
+		for (int i = 1; i < mNumberOfVerteces; i++) {
+			int newMask = masks[i];
+			for (size_t t = 0; t < mPredecessors[i].size(); t++) {
+				int predecessor = mPredecessors[i].at(t);
+				newMask = newMask & masks[predecessor];
+			}
+			// adding the current number, because reflexivity of dominance relation
+			newMask = newMask | (1 << i);
+			if (newMask != masks[i]) {
+				somethingChanged = true;
+				masks[i] = newMask;
+			}
+		}
+	}
+
+	// for debugging
+	for (int i = 0; i < mNumberOfVerteces; i++) {
+		qDebug() << i << " : " << masks[i] << endl;
 	}
 }
 
