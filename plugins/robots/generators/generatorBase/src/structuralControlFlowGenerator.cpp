@@ -136,37 +136,39 @@ void StructuralControlFlowGenerator::calculatePredecessors()
 void StructuralControlFlowGenerator::findDominators()
 {
 	const int root = 0;
-	int masks[maxNumberOfVerteces] = {0};
+	QSet<int> allVerteces;
 
-	masks[root] = 1;
-
-	for (int i = 1; i < mNumberOfVerteces; i++) {
-		masks[i] = (1 << mNumberOfVerteces) - 1;
+	for (int i = 0; i < mNumberOfVerteces; i++) {
+		allVerteces.insert(i);
 	}
 
-	//mDominators[root].push_back(root);
+	mDominators[root].insert(root);
+
+	for (int i = 1; i < mNumberOfVerteces; i++) {
+		mDominators[i] = allVerteces;
+	}
 
 	bool somethingChanged = true;
 	while (somethingChanged) {
 		somethingChanged = false;
+		QSet<int> newDominators = allVerteces;
 		for (int i = 1; i < mNumberOfVerteces; i++) {
-			int newMask = masks[i];
 			for (size_t t = 0; t < mPredecessors[i].size(); t++) {
 				int predecessor = mPredecessors[i].at(t);
-				newMask = newMask & masks[predecessor];
+				newDominators.intersect(mDominators[predecessor]);
 			}
 			// adding the current number, because reflexivity of dominance relation
-			newMask = newMask | (1 << i);
-			if (newMask != masks[i]) {
+			newDominators.insert(i);
+			if (newDominators != mDominators[i]) {
 				somethingChanged = true;
-				masks[i] = newMask;
+				mDominators[i] = newDominators;
 			}
 		}
 	}
 
 	// for debugging
 	for (int i = 0; i < mNumberOfVerteces; i++) {
-		qDebug() << i << " : " << masks[i] << endl;
+		qDebug() << i << " : " << mDominators[i] << endl;
 	}
 }
 

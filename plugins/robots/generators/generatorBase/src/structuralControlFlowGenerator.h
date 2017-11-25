@@ -76,7 +76,7 @@ private:
 	static const int maxNumberOfVerteces = 150;
 	QVector<int> mGraph[maxNumberOfVerteces];
 	QVector<int> mPredecessors[maxNumberOfVerteces];
-	QVector<int> mDominators[maxNumberOfVerteces];
+	QSet<int> mDominators[maxNumberOfVerteces];
 };
 
 }
