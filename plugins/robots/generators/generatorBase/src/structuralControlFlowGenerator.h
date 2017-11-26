@@ -60,6 +60,32 @@ public:
 
 
 private:
+
+	enum RegionType {
+		Block = 0
+		, IfThen
+		, IfThenElse
+		, Case
+		, Proper
+		, SelfLoop
+		, WhileLoop
+		, NaturalLoop
+		, Improper
+	};
+
+	class Node {
+	public:
+		Node();
+
+		static void appendNode(Node *newNode);
+
+	private:
+		static QVector<Node *> allNodes;
+		RegionType mRegionType;
+		int mNumberOf;
+		QVector<Node> mChildren;
+	};
+
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times
 	/// to build dominators tree and then perform structural analysis
@@ -67,9 +93,10 @@ private:
 
 	void buildGraph(const qReal::Id &id, const QList<utils::DeepFirstSearcher::LinkInfo> &links);
 	void calculatePredecessors();
-
+	void performAnalysis();
 	// naive approach for finding dominators
 	void findDominators();
+	void dfs(int v, int &postOrderLabel);
 
 	int mNumberOfVerteces;
 	QMap<qReal::Id, int> mNumbersOfElements;
@@ -77,6 +104,8 @@ private:
 	QVector<int> mGraph[maxNumberOfVerteces];
 	QVector<int> mPredecessors[maxNumberOfVerteces];
 	QSet<int> mDominators[maxNumberOfVerteces];
+	int mPostOrder[maxNumberOfVerteces];
+	bool mUsed[maxNumberOfVerteces];
 };
 
 }

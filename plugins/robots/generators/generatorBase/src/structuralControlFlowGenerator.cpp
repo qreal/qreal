@@ -94,6 +94,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	calculatePredecessors();
 	findDominators();
 
+	performAnalysis();
 }
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
@@ -131,6 +132,16 @@ void StructuralControlFlowGenerator::calculatePredecessors()
 			mPredecessors[destination].push_back(i);
 		}
 	}
+}
+
+void StructuralControlFlowGenerator::performAnalysis()
+{
+	for (int i = 0; i < mNumberOfVerteces; i++) {
+		mUsed[i] = false;
+		mPostOrder[i] = -1;
+	}
+	int time = 0;
+	dfs(0, time);
 }
 
 void StructuralControlFlowGenerator::findDominators()
@@ -172,7 +183,21 @@ void StructuralControlFlowGenerator::findDominators()
 	}
 }
 
+void StructuralControlFlowGenerator::dfs(int u, int &postOrderLabel)
+{
+	mUsed[u] = true;
+	for (size_t t = 0; t < mGraph[u].size(); t++) {
+		int v = mGraph[u].at(t);
+		if (!mUsed[v]) {
+			dfs(v, postOrderLabel);
+		}
+	}
+	mPostOrder[u] = postOrderLabel;
+	postOrderLabel++;
+}
 
 
-
-
+void StructuralControlFlowGenerator::Node::appendNode(Node *newNode)
+{
+	allNodes.append(newNode);
+}
