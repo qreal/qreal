@@ -94,7 +94,12 @@ void StructuralControlFlowGenerator::performGeneration()
 	calculatePredecessors();
 	findDominators();
 
-	performAnalysis();
+	QSet<int> currentNodesInGraph;
+	for (int i = 0; i < mNumberOfVerteces; ++i) {
+		currentNodesInGraph.insert(i);
+	}
+
+	performAnalysis(currentNodesInGraph);
 }
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
@@ -134,7 +139,10 @@ void StructuralControlFlowGenerator::calculatePredecessors()
 	}
 }
 
-void StructuralControlFlowGenerator::performAnalysis()
+// to do
+// to save invariant that mGraph only has valid nodes and edges,
+// so it would be possible not to pass setOfNodes
+void StructuralControlFlowGenerator::performAnalysis(QSet<int> &restNodes)
 {
 	for (int i = 0; i < mNumberOfVerteces; i++) {
 		mUsed[i] = false;
@@ -142,6 +150,23 @@ void StructuralControlFlowGenerator::performAnalysis()
 	}
 	int time = 0;
 	dfs(0, time);
+
+	int currentTime = 0;
+	int maxTime = time;
+	while (restNodes.size() > 1 && currentTime < maxTime) {
+		int currentNode = -1;
+
+		// dummy cycle for finding node number that
+		// has postOrder equal to currentTime
+		for (int i = 0; i < maxNumberOfVerteces; ++i) {
+			if (mPostOrder[i] == currentTime) {
+				currentNode = i;
+				break;
+			}
+		}
+
+
+	}
 }
 
 void StructuralControlFlowGenerator::findDominators()
@@ -194,6 +219,65 @@ void StructuralControlFlowGenerator::dfs(int u, int &postOrderLabel)
 	}
 	mPostOrder[u] = postOrderLabel;
 	postOrderLabel++;
+}
+
+StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acyclicRegionType(QSet<int> restNodes, int &nodeNumber, QSet<int> &nodesThatComposeRegion)
+{
+	nodesThatComposeRegion.clear();
+
+	int currentNodeNumber = nodeNumber;
+	bool hasOnlyOneIncomingEdge = true;
+	bool hasOnlyOneOutcomingEdge = mGraph[currentNodeNumber].size() == 1;
+
+	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
+		nodesThatComposeRegion.insert(currentNodeNumber);
+		currentNodeNumber = mGraph[currentNodeNumber].at(0);
+		hasOnlyOneIncomingEdge = mPredecessors[currentNodeNumber].size() == 1;
+		hasOnlyOneOutcomingEdge = mGraph[currentNodeNumber].size() == 1;
+	}
+
+	if (hasOnlyOneIncomingEdge) {
+		nodesThatComposeRegion.insert(currentNodeNumber);
+	}
+
+	currentNodeNumber = nodeNumber;
+	hasOnlyOneIncomingEdge = mPredecessors[currentNodeNumber].size() == 1;
+	hasOnlyOneOutcomingEdge = true;
+
+	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
+		nodesThatComposeRegion.insert(currentNodeNumber);
+		currentNodeNumber = mPredecessors[currentNodeNumber].at(0);
+		hasOnlyOneIncomingEdge = mPredecessors[currentNodeNumber].size() == 1;
+		hasOnlyOneOutcomingEdge = mGraph[currentNodeNumber].size() == 1;
+	}
+
+	if (hasOnlyOneOutcomingEdge) {
+		nodesThatComposeRegion.insert(currentNodeNumber);
+	}
+
+	nodeNumber = currentNodeNumber;
+
+	if (nodesThatComposeRegion.size() == 2) {
+		return Block;
+	}
+
+	// checking for IfThenElse
+	if (mGraph[nodeNumber].size() == 2) {
+		int m = mGraph[nodeNumber].at(0);
+		int n = mGraph[nodeNumber].at(1);
+
+		if (mGraph[m].size() == 1 && mGraph[n].size() == 1
+				&& mGraph[m].at(0) == mGraph[n].at(0)
+				&& mPredecessors[m].size() == 1 && mPredecessors[n].size() == 1) {
+			nodesThatComposeRegion.clear();
+			nodesThatComposeRegion.insert(nodeNumber);
+			nodesThatComposeRegion.insert(m);
+			nodesThatComposeRegion.insert(n);
+			return IfThenElse;
+		}
+
+	}
+
 }
 
 

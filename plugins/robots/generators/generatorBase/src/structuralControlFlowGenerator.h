@@ -101,10 +101,12 @@ private:
 
 	void buildGraph(const qReal::Id &id, const QList<utils::DeepFirstSearcher::LinkInfo> &links);
 	void calculatePredecessors();
-	void performAnalysis();
+	void performAnalysis(QSet<int> &restNodes);
 	// naive approach for finding dominators
 	void findDominators();
 	void dfs(int v, int &postOrderLabel);
+
+	RegionType acyclicRegionType(QSet<int> restNodes, int &nodeNumber, QSet<int> &nodesThatComposeRegion);
 
 	int mNumberOfVerteces;
 	QMap<qReal::Id, int> mNumbersOfElements;
