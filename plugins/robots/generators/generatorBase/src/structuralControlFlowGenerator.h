@@ -71,20 +71,28 @@ private:
 		, WhileLoop
 		, NaturalLoop
 		, Improper
+		, nil
 	};
 
 	class Node {
 	public:
-		Node();
+		Node(RegionType type, int number);
 
-		static void appendNode(Node *newNode);
+		void appendChild(Node *child);
+		void appendChildren(const QVector<Node *> &children);
+
+		Node *structOf() const;
+		void setParent(Node *parent);
+		RegionType structType() const;
+		QVector<Node *> structNodes() const;
 
 	private:
-		static QVector<Node *> allNodes;
 		RegionType mRegionType;
-		int mNumberOf;
-		QVector<Node> mChildren;
+		int mNumber;
+		Node *mParent;
+		QVector<Node *> mChildren;
 	};
+	QVector<Node *> allNodes;
 
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times

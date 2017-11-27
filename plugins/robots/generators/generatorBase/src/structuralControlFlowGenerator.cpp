@@ -197,7 +197,42 @@ void StructuralControlFlowGenerator::dfs(int u, int &postOrderLabel)
 }
 
 
-void StructuralControlFlowGenerator::Node::appendNode(Node *newNode)
+StructuralControlFlowGenerator::Node::Node(StructuralControlFlowGenerator::RegionType type, int number)
+	: mRegionType(type)
+	, mNumber(number)
+	, mParent(nullptr)
 {
-	allNodes.append(newNode);
 }
+
+void StructuralControlFlowGenerator::Node::appendChild(StructuralControlFlowGenerator::Node *child)
+{
+	mChildren.append(child);
+}
+
+void StructuralControlFlowGenerator::Node::appendChildren(const QVector<StructuralControlFlowGenerator::Node *> &children)
+{
+	for (StructuralControlFlowGenerator::Node *child : children) {
+		mChildren.append(child);
+	}
+}
+
+StructuralControlFlowGenerator::Node *StructuralControlFlowGenerator::Node::structOf() const
+{
+	return mParent;
+}
+
+void StructuralControlFlowGenerator::Node::setParent(StructuralControlFlowGenerator::Node *parent)
+{
+	mParent = parent;
+}
+
+StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::Node::structType() const
+{
+	return mRegionType;
+}
+
+QVector<StructuralControlFlowGenerator::Node *> StructuralControlFlowGenerator::Node::structNodes() const
+{
+	return mChildren;
+}
+
