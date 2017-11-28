@@ -99,23 +99,23 @@ void StructuralControlFlowGenerator::performGeneration()
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
 {
 	int numberOfCurrentVertex = -1;
-	if (initialVerteces.contains(id)) {
-		numberOfCurrentVertex = initialVerteces[id];
+	if (mInitialVerteces.contains(id)) {
+		numberOfCurrentVertex = mInitialVerteces[id];
 	} else {
 		numberOfCurrentVertex = mNumberOfVerteces;
 		mNumberOfVerteces++;
-		initialVerteces[id] = numberOfCurrentVertex;
+		mInitialVerteces[id] = numberOfCurrentVertex;
 		mVerteces.push_back(numberOfCurrentVertex);
 	}
 
 	for (const LinkInfo link : links) {
 		int targetNumber = -1;
-		if (initialVerteces.contains(link.target)) {
-			targetNumber = initialVerteces[link.target];
+		if (mInitialVerteces.contains(link.target)) {
+			targetNumber = mInitialVerteces[link.target];
 		} else {
 			targetNumber = mNumberOfVerteces;
 			mNumberOfVerteces++;
-			initialVerteces[link.target] = targetNumber;
+			mInitialVerteces[link.target] = targetNumber;
 			mVerteces.push_back(targetNumber);
 		}
 		mFollowers[numberOfCurrentVertex].push_back(targetNumber);
@@ -128,12 +128,12 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 // so it would be possible not to pass setOfNodes
 void StructuralControlFlowGenerator::performAnalysis()
 {
-	for (VertexIterator it = initialVerteces.values().begin(); it != initialVerteces.values().end(); ++it) {
+	for (VertexIterator it = mInitialVerteces.values().begin(); it != mInitialVerteces.values().end(); ++it) {
 		mUsed[*it] = false;
 		mPostOrder[*it] = -1;
 	}
 	int time = 0;
-	const GraphLabel root = 0;
+	const VertexLabel root = 0;
 	dfs(root, time);
 
 	int currentTime = 0;
@@ -149,7 +149,7 @@ void StructuralControlFlowGenerator::performAnalysis()
 		// has postOrder equal to currentTime
 
 		for (VertexIterator it = mPostOrder.keys().begin(); it != mPostOrder.keys().end(); ++it) {
-			GraphLabel number = *(it);
+			VertexLabel number = *(it);
 			if (mPostOrder[number] == currentTime) {
 				currentNode = number;
 				break;
@@ -165,7 +165,7 @@ void StructuralControlFlowGenerator::findDominators()
 		mDominators[i] = mVerteces.toSet();
 	}
 
-	const GraphLabel root = 0;
+	const VertexLabel root = 0;
 	mDominators[root] = { root };
 
 
@@ -175,11 +175,11 @@ void StructuralControlFlowGenerator::findDominators()
 
 		// excluding root
 		for (VertexIterator it = mVerteces.begin(); it != mVerteces.end(); it++) {
-			GraphLabel vertex = *it;
+			VertexLabel vertex = *it;
 			if (vertex) {
-				QSet<GraphLabel> newDominators = mVerteces.toSet();
+				QSet<VertexLabel> newDominators = mVerteces.toSet();
 				for (int t = 0; t < mPredecessors[vertex].size(); t++) {
-					GraphLabel predecessor = mPredecessors[vertex].at(t);
+					VertexLabel predecessor = mPredecessors[vertex].at(t);
 					newDominators.intersect(mDominators[predecessor]);
 				}
 				// adding the current number, because reflexivity of dominance relation
@@ -193,7 +193,7 @@ void StructuralControlFlowGenerator::findDominators()
 	}
 }
 
-void StructuralControlFlowGenerator::dfs(GraphLabel u, int &postOrderLabel)
+void StructuralControlFlowGenerator::dfs(VertexLabel u, int &postOrderLabel)
 {
 	mUsed[u] = true;
 	for (int t = 0; t < mFollowers[u].size(); t++) {
@@ -206,7 +206,7 @@ void StructuralControlFlowGenerator::dfs(GraphLabel u, int &postOrderLabel)
 	postOrderLabel++;
 }
 
-StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acyclicRegionType(QSet<int> restNodes, int &nodeNumber, QSet<int> &nodesThatComposeRegion)
+StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acyclicRegionType(int &nodeNumber, QSet<int> &nodesThatComposeRegion)
 {
 	nodesThatComposeRegion.clear();
 
