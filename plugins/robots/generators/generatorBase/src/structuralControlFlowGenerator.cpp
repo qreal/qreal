@@ -132,7 +132,7 @@ void StructuralControlFlowGenerator::calculatePredecessors()
 	mPredecessors[root].clear();
 
 	for (int i = 0; i < mNumberOfVerteces; i++) {
-		for (size_t t = 0; t < mGraph[i].size(); t++) {
+		for (int t = 0; t < mGraph[i].size(); t++) {
 			int destination = mGraph[i].at(t);
 			mPredecessors[destination].push_back(i);
 		}
@@ -189,7 +189,7 @@ void StructuralControlFlowGenerator::findDominators()
 		somethingChanged = false;
 		QSet<int> newDominators = allVerteces;
 		for (int i = 1; i < mNumberOfVerteces; i++) {
-			for (size_t t = 0; t < mPredecessors[i].size(); t++) {
+			for (int t = 0; t < mPredecessors[i].size(); t++) {
 				int predecessor = mPredecessors[i].at(t);
 				newDominators.intersect(mDominators[predecessor]);
 			}
@@ -211,7 +211,7 @@ void StructuralControlFlowGenerator::findDominators()
 void StructuralControlFlowGenerator::dfs(int u, int &postOrderLabel)
 {
 	mUsed[u] = true;
-	for (size_t t = 0; t < mGraph[u].size(); t++) {
+	for (int t = 0; t < mGraph[u].size(); t++) {
 		int v = mGraph[u].at(t);
 		if (!mUsed[v]) {
 			dfs(v, postOrderLabel);
