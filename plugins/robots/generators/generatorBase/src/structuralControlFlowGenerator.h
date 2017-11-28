@@ -57,7 +57,8 @@ public:
 	/// control flow generators (non-fatal errors occured).
 	//bool cantBeGeneratedIntoStructuredCode() const;
 
-
+	typedef int GraphLabel;
+	typedef QList<GraphLabel>::iterator VertexIterator;
 
 private:
 
@@ -88,7 +89,7 @@ private:
 
 	private:
 		RegionType mRegionType;
-		int mNumber;
+		GraphLabel mNumber;
 		Node *mParent;
 		QVector<Node *> mChildren;
 	};
@@ -100,22 +101,21 @@ private:
 	void performGeneration() override;
 
 	void buildGraph(const qReal::Id &id, const QList<utils::DeepFirstSearcher::LinkInfo> &links);
-	void calculatePredecessors();
-	void performAnalysis(QSet<int> &restNodes);
+	void performAnalysis();
 	// naive approach for finding dominators
 	void findDominators();
-	void dfs(int v, int &postOrderLabel);
+	void dfs(GraphLabel v, int &postOrderLabel);
 
 	RegionType acyclicRegionType(QSet<int> restNodes, int &nodeNumber, QSet<int> &nodesThatComposeRegion);
 
 	int mNumberOfVerteces;
-	QMap<qReal::Id, int> mNumbersOfElements;
-	static const int maxNumberOfVerteces = 150;
-	QVector<int> mGraph[maxNumberOfVerteces];
-	QVector<int> mPredecessors[maxNumberOfVerteces];
-	QSet<int> mDominators[maxNumberOfVerteces];
-	int mPostOrder[maxNumberOfVerteces];
-	bool mUsed[maxNumberOfVerteces];
+	QList<GraphLabel> mVerteces;
+	QMap<qReal::Id, GraphLabel> initialVerteces;
+	QMap<GraphLabel, QVector<GraphLabel>> mFollowers;
+	QMap<GraphLabel, QVector<GraphLabel>> mPredecessors;
+	QMap<GraphLabel, QSet<GraphLabel>> mDominators;
+	QMap<GraphLabel, int> mPostOrder;
+	QMap<GraphLabel, bool> mUsed;
 };
 
 }
