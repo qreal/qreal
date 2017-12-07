@@ -88,8 +88,9 @@ void StructuralControlFlowGenerator::afterSearch()
 
 void StructuralControlFlowGenerator::performGeneration()
 {
+	// to bypass diagram and build graph
 	ControlFlowGeneratorBase::performGeneration();
-	// to check whether diagram was right
+	// to-do check whether diagram was right, maybe ControlFlowGeneratorBase is checking it
 
 	findDominators();
 
