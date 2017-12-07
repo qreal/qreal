@@ -246,6 +246,8 @@ StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acycl
 		return Block;
 	}
 
+	nodesThatComposeRegion.clear();
+
 	// checking for IfThenElse
 	if (mFollowers[nodeNumber].size() == 2) {
 		int m = mFollowers[nodeNumber].at(0);
@@ -254,13 +256,33 @@ StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acycl
 		if (mFollowers[m].size() == 1 && mFollowers[n].size() == 1
 				&& mFollowers[m].at(0) == mFollowers[n].at(0)
 				&& mPredecessors[m].size() == 1 && mPredecessors[n].size() == 1) {
-			nodesThatComposeRegion.clear();
+
 			nodesThatComposeRegion.insert(nodeNumber);
 			nodesThatComposeRegion.insert(m);
 			nodesThatComposeRegion.insert(n);
 			return IfThenElse;
 		}
 
+	}
+
+	// checking IfThen
+	if (mFollowers[nodeNumber].size() == 2) {
+		int m = mFollowers[nodeNumber].at(0);
+		int n = mFollowers[nodeNumber].at(1);
+
+		int thenNodeNumber = -1;
+		if (mFollowers[m].size() == 1 && mFollowers[m].at(0) == n && mPredecessors[m].size() == 1) {
+			thenNodeNumber = m;
+		} else if (mFollowers[n].size() == 1 && mFollowers[n].at(0) == m && mPredecessors[n].size() == 1) {
+			thenNodeNumber = n;
+		}
+
+		if (thenNodeNumber != -1) {
+			nodesThatComposeRegion.insert(nodeNumber);
+			nodesThatComposeRegion.insert(m);
+			nodesThatComposeRegion.insert(n);
+			return IfThen;
+		}
 	}
 
 }
