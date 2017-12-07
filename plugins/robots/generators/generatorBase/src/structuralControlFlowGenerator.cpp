@@ -206,7 +206,7 @@ void StructuralControlFlowGenerator::dfs(VertexLabel u, int &postOrderLabel)
 	postOrderLabel++;
 }
 
-StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acyclicRegionType(int &nodeNumber, QSet<int> &nodesThatComposeRegion)
+RegionType StructuralControlFlowGenerator::acyclicRegionType(int &nodeNumber, QSet<int> &nodesThatComposeRegion)
 {
 	nodesThatComposeRegion.clear();
 
@@ -243,7 +243,7 @@ StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acycl
 	nodeNumber = currentNodeNumber;
 
 	if (nodesThatComposeRegion.size() == 2) {
-		return Block;
+		return RegionType::Block;
 	}
 
 	nodesThatComposeRegion.clear();
@@ -260,7 +260,7 @@ StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acycl
 			nodesThatComposeRegion.insert(nodeNumber);
 			nodesThatComposeRegion.insert(m);
 			nodesThatComposeRegion.insert(n);
-			return IfThenElse;
+			return RegionType::IfThenElse;
 		}
 
 	}
@@ -281,49 +281,12 @@ StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::acycl
 			nodesThatComposeRegion.insert(nodeNumber);
 			nodesThatComposeRegion.insert(m);
 			nodesThatComposeRegion.insert(n);
-			return IfThen;
+			return RegionType::IfThen;
 		}
 	}
 
 }
 
 
-StructuralControlFlowGenerator::Node::Node(StructuralControlFlowGenerator::RegionType type, int number)
-	: mRegionType(type)
-	, mNumber(number)
-	, mParent(nullptr)
-{
-}
 
-void StructuralControlFlowGenerator::Node::appendChild(StructuralControlFlowGenerator::Node *child)
-{
-	mChildren.append(child);
-}
-
-void StructuralControlFlowGenerator::Node::appendChildren(const QVector<StructuralControlFlowGenerator::Node *> &children)
-{
-	for (StructuralControlFlowGenerator::Node *child : children) {
-		mChildren.append(child);
-	}
-}
-
-StructuralControlFlowGenerator::Node *StructuralControlFlowGenerator::Node::structOf() const
-{
-	return mParent;
-}
-
-void StructuralControlFlowGenerator::Node::setParent(StructuralControlFlowGenerator::Node *parent)
-{
-	mParent = parent;
-}
-
-StructuralControlFlowGenerator::RegionType StructuralControlFlowGenerator::Node::structType() const
-{
-	return mRegionType;
-}
-
-QVector<StructuralControlFlowGenerator::Node *> StructuralControlFlowGenerator::Node::structNodes() const
-{
-	return mChildren;
-}
 

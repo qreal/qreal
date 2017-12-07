@@ -19,6 +19,13 @@
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "rules/semanticTransformationRule.h"
 
+#include "generatorBase/node.h"
+
+using graphUtils::Node;
+using graphUtils::RegionType;
+using graphUtils::VertexIterator;
+using graphUtils::VertexLabel;
+
 namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT StructuralControlFlowGenerator : public ControlFlowGeneratorBase
@@ -57,42 +64,8 @@ public:
 	/// control flow generators (non-fatal errors occured).
 	//bool cantBeGeneratedIntoStructuredCode() const;
 
-	typedef int VertexLabel;
-	typedef QList<VertexLabel>::iterator VertexIterator;
-
 private:
 
-	enum RegionType {
-		Block = 0
-		, IfThen
-		, IfThenElse
-		, Case
-		, Proper
-		, SelfLoop
-		, WhileLoop
-		, NaturalLoop
-		, Improper
-		, nil
-	};
-
-	class Node {
-	public:
-		Node(RegionType type, int number);
-
-		void appendChild(Node *child);
-		void appendChildren(const QVector<Node *> &children);
-
-		Node *structOf() const;
-		void setParent(Node *parent);
-		RegionType structType() const;
-		QVector<Node *> structNodes() const;
-
-	private:
-		RegionType mRegionType;
-		VertexLabel mNumber;
-		Node *mParent;
-		QVector<Node *> mChildren;
-	};
 	QVector<Node *> allNodes;
 
 	/// Implementation of generation process for structural generator.
