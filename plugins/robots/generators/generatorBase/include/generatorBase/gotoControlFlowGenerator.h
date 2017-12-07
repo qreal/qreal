@@ -37,7 +37,7 @@ public:
 	/// Implementation of clone operation for goto generator
 	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
 
-	void beforeSearch();
+	void beforeSearch() override;
 
 	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;

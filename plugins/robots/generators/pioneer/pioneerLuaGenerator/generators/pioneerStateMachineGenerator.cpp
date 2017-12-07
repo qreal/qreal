@@ -56,10 +56,13 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 	trace("Visiting " + id.toString());
 
 	const qReal::Id target = links[0].target;
-
 	QList<NonZoneNode *> nodesWithThisId = mSemanticTreeManager->nodes(id);
 	for (auto thisNode : nodesWithThisId) {
 		processNode(thisNode, target);
+	}
+
+	if (mErrorsOccured) {
+		return;
 	}
 
 	// Generation of a node may lead to sudden appearance of new copies of a node (for example, if this node was in a

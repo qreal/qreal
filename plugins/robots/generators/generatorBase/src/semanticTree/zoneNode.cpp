@@ -37,7 +37,7 @@ void ZoneNode::appendChild(SemanticNode *node)
 
 void ZoneNode::appendChildren(QLinkedList<SemanticNode *> const &nodes)
 {
-	foreach (SemanticNode * const node, nodes) {
+	for (SemanticNode * const node : nodes) {
 		appendChild(node);
 	}
 }
