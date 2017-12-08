@@ -21,6 +21,7 @@
 vmthread MAIN
 {
 @@CONSTANTS_INITIALIZATION@@
+@@ARRAYS_INITIALIZATION@@
 
 	DATA32 timer
 	DATA8 _temp_sensor_value_8
@@ -36,7 +37,7 @@ __programEnd:
 @@THREADS@@
 
 // utils functions block start
-subcall motors_overflow_check_b7f9240db9f33a5fa_util
+subcall motors_overflow_check_EV3_KERNEL_util
 {
 	IN_32 src
 	OUT_32 dst
@@ -59,6 +60,72 @@ lowThenZero:
 
 endLabel:
 }
+
+subcall clp2_EV3_KERNEL_util
+{
+	IN_32 src
+	OUT_32 dst
+
+	MOVE32_32(1, dst)
+	JR_LTEQ32(src, 1, endLabel)
+
+	DATA32 tmp
+	DATA32 xRotated
+	MOVE32_32(src, tmp)
+	SUB32(tmp, 1, tmp)
+	MOVE32_32(tmp, xRotated)
+	DIV32(xRotated, 2, xRotated)
+	OR32(tmp, xRotated, tmp)
+	MOVE32_32(tmp, xRotated)
+	DIV32(xRotated, 4, xRotated)
+	OR32(tmp, xRotated, tmp)
+	MOVE32_32(tmp, xRotated)
+	DIV32(xRotated, 16, xRotated)
+	OR32(tmp, xRotated, tmp)
+	MOVE32_32(tmp, xRotated)
+	DIV32(xRotated, 256, xRotated)
+	OR32(tmp, xRotated, tmp)
+	MOVE32_32(tmp, xRotated)
+	DIV32(xRotated, 65536, xRotated)
+	OR32(tmp, xRotated, tmp)
+
+	ADD32(tmp, 1, dst)
+endLabel:
+}
+
+subcall write32Array_EV3_KERNEL_util
+{
+	IN_32  array
+	IN_32  pos
+	IN_32  value
+
+	DATA32 size
+	ARRAY(SIZE, array, size)
+	JR_LT32(pos, size, writing_label)
+	DATA32 newSize
+	CALL(clp2_EV3_KERNEL_util, size, newSize)
+	ARRAY(RESIZE, array, newSize)
+
+	writing_label:
+	ARRAY_WRITE(array, pos, value)
+}
+
+subcall assign32Array_EV3_KERNEL_util
+{
+	IN_32 srcArray
+	IN_32 dstArray
+
+	DATA32 sizeSrc
+	DATA32 sizeDst
+	ARRAY(SIZE, srcArray, sizeSrc)
+	ARRAY(SIZE, dstArray, sizeDst)
+	JR_LTEQ32(sizeSrc, sizeDst, copy_label)
+	ARRAY(RESIZE, dstArray, sizeSrc)
+
+	copy_label:
+	ARRAY(COPY, srcArray, dstArray)
+}
+
 // utils functions block end
 
 @@SUBPROGRAMS@@

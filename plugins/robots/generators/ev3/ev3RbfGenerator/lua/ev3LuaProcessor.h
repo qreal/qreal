@@ -66,6 +66,8 @@ public:
 	/// Returns code that initializes all known constants.
 	QString constantsValuation() const;
 
+	/// Returns code that initializes all known arrays.
+	QString arraysInitialization() const;
 private:
 	void preparePrinter();
 
