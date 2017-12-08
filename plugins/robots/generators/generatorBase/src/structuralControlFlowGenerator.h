@@ -79,13 +79,17 @@ private:
 	void findDominators();
 	void dfs(graphUtils::Node *v, int &postOrderLabel);
 
-	RegionType determineAcyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
-	RegionType determineCyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
+	RegionType determineAcyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &nodesThatComposeRegion);
+	RegionType determineCyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &nodesThatComposeRegion);
 
-
+	Node * reduce(RegionType type, QVector<Node *> &nodesThatComposeRegion);
+	void replace(Node *node, QVector<Node *> &nodesThatComposeRegion);
+	void compact(Node *node, QVector<Node *> &nodesThatComposeRegion);
 
 
 	int mNumberOfVerteces;
+	int mCurrentTime;
+	int mMaxTime;
 	Node *mEntry;
 	QList<Node *> mVerteces;
 	QMap<qReal::Id, Node *> mInitialVerteces;

@@ -142,13 +142,13 @@ void StructuralControlFlowGenerator::performAnalysis()
 	Node * entry = mEntry;
 	dfs(entry, time);
 
-	int currentTime = 0;
-	int maxTime = time;
+	mCurrentTime = 0;
+	mMaxTime = time - 1;
 
 	// it is supposed that mFollowers.size() == mPredecessors.size() == actual number of
 	// verteces in current flowgraph
 
-	while (mFollowers.keys().size() > 1 && currentTime < maxTime) {
+	while (mFollowers.keys().size() > 1 && mCurrentTime <= mMaxTime) {
 		Node * currentNode = nullptr;
 
 		// dummy cycle for finding node number that
@@ -156,13 +156,13 @@ void StructuralControlFlowGenerator::performAnalysis()
 
 		for (auto it = mPostOrder.keys().begin(); it != mPostOrder.keys().end(); ++it) {
 			Node * vertex = *(it);
-			if (mPostOrder[vertex] == currentTime) {
+			if (mPostOrder[vertex] == mCurrentTime) {
 				currentNode = vertex;
 				break;
 			}
 		}
 
-		QSet<graphUtils::Node *> nodesThatComposeRegion;
+		QVector<graphUtils::Node *> nodesThatComposeRegion;
 		nodesThatComposeRegion.clear();
 		RegionType type = determineAcyclicRegionType(currentNode, nodesThatComposeRegion);
 
@@ -223,7 +223,7 @@ void StructuralControlFlowGenerator::dfs(Node * u, int &postOrderLabel)
 	postOrderLabel++;
 }
 
-RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
+RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QVector<graphUtils::Node *> &nodesThatComposeRegion)
 {
 	nodesThatComposeRegion.clear();
 
@@ -232,14 +232,14 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &nod
 	bool hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 
 	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.insert(currentNode);
+		nodesThatComposeRegion.push_back(currentNode);
 		currentNode = mFollowers[currentNode].at(0);
 		hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
 		hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 	}
 
 	if (hasOnlyOneIncomingEdge) {
-		nodesThatComposeRegion.insert(currentNode);
+		nodesThatComposeRegion.push_back(currentNode);
 	}
 
 	currentNode = node;
@@ -247,19 +247,21 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &nod
 	hasOnlyOneOutcomingEdge = true;
 
 	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.insert(currentNode);
+		if (!nodesThatComposeRegion.contains(currentNode)) {
+			nodesThatComposeRegion.push_front(currentNode);
+		}
 		currentNode = mPredecessors[currentNode].at(0);
 		hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
 		hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 	}
 
-	if (hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.insert(currentNode);
+	if (hasOnlyOneOutcomingEdge && !nodesThatComposeRegion.contains(currentNode)) {
+		nodesThatComposeRegion.push_front(currentNode);
 	}
 
 	node = currentNode;
 
-	if (nodesThatComposeRegion.size() == 2) {
+	if (nodesThatComposeRegion.size() >= 2) {
 		return RegionType::Block;
 	}
 
@@ -274,9 +276,9 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &nod
 				&& mFollowers[m].at(0) == mFollowers[n].at(0)
 				&& mPredecessors[m].size() == 1 && mPredecessors[n].size() == 1) {
 
-			nodesThatComposeRegion.insert(node);
-			nodesThatComposeRegion.insert(m);
-			nodesThatComposeRegion.insert(n);
+			nodesThatComposeRegion.push_back(node);
+			nodesThatComposeRegion.push_back(m);
+			nodesThatComposeRegion.push_back(n);
 			return RegionType::IfThenElse;
 		}
 
@@ -295,8 +297,8 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &nod
 		}
 
 		if (thenNode) {
-			nodesThatComposeRegion.insert(node);
-			nodesThatComposeRegion.insert(thenNode);
+			nodesThatComposeRegion.push_back(node);
+			nodesThatComposeRegion.push_back(thenNode);
 			return RegionType::IfThen;
 		}
 	}
@@ -304,11 +306,91 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &nod
 	return RegionType::nil;
 }
 
-RegionType StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
+RegionType StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QVector<graphUtils::Node *> &nodesThatComposeRegion)
 {
 
 }
 
+graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType type, QVector<graphUtils::Node *> &nodesThatComposeRegion)
+{
+	bool hasBackEdgeForBlock = false;
+	if (type == RegionType::Block) {
+		Node *lastNode = nodesThatComposeRegion.last();
+		Node *firstNode = nodesThatComposeRegion.first();
+		hasBackEdgeForBlock = mFollowers[lastNode].contains(firstNode);
+	}
 
+	Node *abstractNode = new Node(type);
+	replace(abstractNode, nodesThatComposeRegion);
 
+	allNodes.append(abstractNode);
+	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
+		Node *currentNode = *it;
+		currentNode->setParent(abstractNode);
+	}
+
+	abstractNode->appendChildren(nodesThatComposeRegion);
+}
+
+void StructuralControlFlowGenerator::replace(graphUtils::Node *node, QVector<graphUtils::Node *> &nodesThatComposeRegion)
+{
+	compact(node, nodesThatComposeRegion);
+
+	// set of edges is determined by mFollowers or mPredecessors
+	for (auto vertexIt = mFollowers.keys().begin(); vertexIt != mFollowers.keys().end(); ++vertexIt) {
+		Node *currentVertex = *vertexIt;
+
+		for (auto nextVertexIt = mFollowers[currentVertex].begin(); nextVertexIt != mFollowers[currentVertex].end(); nextVertexIt++) {
+			Node *nextVertex = *nextVertexIt;
+
+			if (nodesThatComposeRegion.contains(nextVertex) || nodesThatComposeRegion.contains(currentVertex)) {
+				mFollowers[currentVertex].removeOne(nextVertex);
+				mPredecessors[nextVertex].removeOne(currentVertex);
+				if (mVerteces.contains(currentVertex) && currentVertex != node) {
+					mFollowers[currentVertex].push_back(node);
+					mPredecessors[node].push_back(currentVertex);
+				} else if (mVerteces.contains(nextVertex)) {
+					mFollowers[node].push_back(nextVertex);
+					mPredecessors[nextVertex].push_back(node);
+				}
+
+			}
+
+		}
+	}
+
+	// deal with Tree
+	//node->appendChildren(nodesThatComposeRegion);
+}
+
+void StructuralControlFlowGenerator::compact(graphUtils::Node *node, QVector<graphUtils::Node *> &nodesThatComposeRegion)
+{
+	mVerteces.append(node);
+	int maxPostOrderNumber = -1;
+
+	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
+		if (mPostOrder[*it] > maxPostOrderNumber) {
+			maxPostOrderNumber = mPostOrder[*it];
+		}
+	}
+
+	mPostOrder[node] = maxPostOrderNumber;
+
+	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
+		mVerteces.removeOne(*it);
+		mPostOrder.remove(*it);
+	}
+
+	int appropriateTime = 0;
+	for (int i = 0; i < mMaxTime; i++) {
+		Node *nodeWithTimeI = mPostOrder.key(i);
+		if (nodeWithTimeI) {
+			mPostOrder[nodeWithTimeI] = appropriateTime;
+			appropriateTime++;
+		}
+	}
+
+	mCurrentTime = mPostOrder[node];
+	mMaxTime = appropriateTime - 1;
+}
 
