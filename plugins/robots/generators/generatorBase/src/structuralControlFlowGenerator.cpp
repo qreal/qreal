@@ -427,7 +427,7 @@ void StructuralControlFlowGenerator::compact(graphUtils::Node *node, QVector<gra
 	}
 
 	int appropriateTime = 0;
-	for (int i = 0; i < mMaxTime; i++) {
+	for (int i = 0; i <= mMaxTime; i++) {
 		Node *nodeWithTimeI = mPostOrder.key(i);
 		if (nodeWithTimeI) {
 			mPostOrder[nodeWithTimeI] = appropriateTime;
