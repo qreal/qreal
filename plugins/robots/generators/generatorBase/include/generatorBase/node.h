@@ -56,14 +56,14 @@ protected:
 	QVector<Node *> mChildren;
 };
 
-class Id;
+class qReal::Id;
 
 class IdNode : public Node {
 public:
-	IdNode(const Id* id);
+	IdNode(const qReal::Id* id);
 
 private:
-	const Id* mId;
+	const qReal::Id* mId;
 };
 
 
@@ -78,6 +78,17 @@ private:
 class IfThenElseNode : public Node {
 public:
 	IfThenElseNode(Node* ifNode, Node* thenNode, Node* elseNode);
+
+private:
+	Node* mIfNode;
+	Node *mThenNode;
+	Node *mElseNode;
+};
+
+
+class IfThenNode : public Node {
+public:
+	IfThenNode(Node* ifNode, Node* thenNode);
 
 private:
 	Node* mIfNode;

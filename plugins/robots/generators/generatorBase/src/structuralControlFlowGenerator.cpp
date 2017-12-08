@@ -27,6 +27,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mNumberOfVerteces(0)
+	, mRoot(nullptr)
 {
 }
 
@@ -99,28 +100,32 @@ void StructuralControlFlowGenerator::performGeneration()
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
 {
-	int numberOfCurrentVertex = -1;
+	graphUtils::IdNode *currentVertex = nullptr;
 	if (mInitialVerteces.contains(id)) {
-		numberOfCurrentVertex = mInitialVerteces[id];
+		currentVertex = mInitialVerteces[id];
 	} else {
-		numberOfCurrentVertex = mNumberOfVerteces;
+		currentVertex = new graphUtils::IdNode(&id);
 		mNumberOfVerteces++;
-		mInitialVerteces[id] = numberOfCurrentVertex;
-		mVerteces.push_back(numberOfCurrentVertex);
+		mInitialVerteces[id] = currentVertex;
+		mVerteces.push_back(currentVertex);
+	}
+
+	if (!mRoot) {
+		mRoot = currentVertex;
 	}
 
 	for (const LinkInfo link : links) {
-		int targetNumber = -1;
+		graphUtils::IdNode * targetVertex = nullptr;
 		if (mInitialVerteces.contains(link.target)) {
-			targetNumber = mInitialVerteces[link.target];
+			targetVertex = mInitialVerteces[link.target];
 		} else {
-			targetNumber = mNumberOfVerteces;
+			targetVertex = new graphUtils::IdNode(&link.target);
 			mNumberOfVerteces++;
-			mInitialVerteces[link.target] = targetNumber;
-			mVerteces.push_back(targetNumber);
+			mInitialVerteces[link.target] = targetVertex;
+			mVerteces.push_back(targetVertex);
 		}
-		mFollowers[numberOfCurrentVertex].push_back(targetNumber);
-		mPredecessors[targetNumber].push_back(numberOfCurrentVertex);
+		mFollowers[currentVertex].push_back(targetVertex);
+		mPredecessors[targetVertex].push_back(currentVertex);
 	}
 }
 
@@ -129,12 +134,12 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 // so it would be possible not to pass setOfNodes
 void StructuralControlFlowGenerator::performAnalysis()
 {
-	for (VertexIterator it = mInitialVerteces.values().begin(); it != mInitialVerteces.values().end(); ++it) {
+	for (auto it = mInitialVerteces.values().begin(); it != mInitialVerteces.values().end(); ++it) {
 		mUsed[*it] = false;
 		mPostOrder[*it] = -1;
 	}
 	int time = 0;
-	const VertexLabel root = 0;
+	Node * root = mRoot;
 	dfs(root, time);
 
 	int currentTime = 0;
@@ -144,29 +149,38 @@ void StructuralControlFlowGenerator::performAnalysis()
 	// verteces in current flowgraph
 
 	while (mFollowers.keys().size() > 1 && currentTime < maxTime) {
-		int currentNode = -1;
+		Node * currentNode = nullptr;
 
 		// dummy cycle for finding node number that
 		// has postOrder equal to currentTime
 
-		for (VertexIterator it = mPostOrder.keys().begin(); it != mPostOrder.keys().end(); ++it) {
-			VertexLabel number = *(it);
-			if (mPostOrder[number] == currentTime) {
-				currentNode = number;
+		for (auto it = mPostOrder.keys().begin(); it != mPostOrder.keys().end(); ++it) {
+			Node * vertex = *(it);
+			if (mPostOrder[vertex] == currentTime) {
+				currentNode = vertex;
 				break;
 			}
 		}
+
+		QSet<graphUtils::Node *> nodesThatComposeRegion;
+		nodesThatComposeRegion.clear();
+		RegionType type = acyclicRegionType(currentNode, nodesThatComposeRegion);
+
+		if (type != RegionType::nil) {
+
+		}
+
 	}
 }
 
 void StructuralControlFlowGenerator::findDominators()
 {
 
-	for (int i = 1; i < mVerteces.size(); i++) {
-		mDominators[i] = mVerteces.toSet();
+	for (auto it = mVerteces.begin(); it != mVerteces.end(); it++) {
+		mDominators[*it] = mVerteces.toSet();
 	}
 
-	const VertexLabel root = 0;
+	Node * root = mRoot;
 	mDominators[root] = { root };
 
 
@@ -175,30 +189,32 @@ void StructuralControlFlowGenerator::findDominators()
 		somethingChanged = false;
 
 		// excluding root
-		for (VertexIterator it = mVerteces.begin(); it != mVerteces.end(); it++) {
-			VertexLabel vertex = *it;
-			if (vertex) {
-				QSet<VertexLabel> newDominators = mVerteces.toSet();
-				for (int t = 0; t < mPredecessors[vertex].size(); t++) {
-					VertexLabel predecessor = mPredecessors[vertex].at(t);
-					newDominators.intersect(mDominators[predecessor]);
-				}
-				// adding the current number, because reflexivity of dominance relation
-				newDominators.insert(vertex);
-				if (newDominators != mDominators[vertex]) {
-					somethingChanged = true;
-					mDominators[vertex] = newDominators;
+		for (auto it = mVerteces.begin(); it != mVerteces.end(); it++) {
+			Node * vertex = *it;
+			if (vertex != mRoot) {
+				if (vertex) {
+					QSet<Node *> newDominators = mVerteces.toSet();
+					for (auto it = mPredecessors[vertex].begin(); it != mPredecessors[vertex].end(); it++) {
+						Node * predecessor = *it;
+						newDominators.intersect(mDominators[predecessor]);
+					}
+					// adding the current number, because reflexivity of dominance relation
+					newDominators.insert(vertex);
+					if (newDominators != mDominators[vertex]) {
+						somethingChanged = true;
+						mDominators[vertex] = newDominators;
+					}
 				}
 			}
 		}
 	}
 }
 
-void StructuralControlFlowGenerator::dfs(VertexLabel u, int &postOrderLabel)
+void StructuralControlFlowGenerator::dfs(Node * u, int &postOrderLabel)
 {
 	mUsed[u] = true;
-	for (int t = 0; t < mFollowers[u].size(); t++) {
-		int v = mFollowers[u].at(t);
+	for (auto it = mFollowers[u].begin(); it != mFollowers[u].end(); it++) {
+		Node * v = *it;
 		if (!mUsed[v]) {
 			dfs(v, postOrderLabel);
 		}
@@ -207,41 +223,41 @@ void StructuralControlFlowGenerator::dfs(VertexLabel u, int &postOrderLabel)
 	postOrderLabel++;
 }
 
-RegionType StructuralControlFlowGenerator::acyclicRegionType(int &nodeNumber, QSet<int> &nodesThatComposeRegion)
+Node* StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
 {
 	nodesThatComposeRegion.clear();
 
-	int currentNodeNumber = nodeNumber;
+	Node * currentNode = node;
 	bool hasOnlyOneIncomingEdge = true;
-	bool hasOnlyOneOutcomingEdge = mFollowers[currentNodeNumber].size() == 1;
+	bool hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 
 	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.insert(currentNodeNumber);
-		currentNodeNumber = mFollowers[currentNodeNumber].at(0);
-		hasOnlyOneIncomingEdge = mPredecessors[currentNodeNumber].size() == 1;
-		hasOnlyOneOutcomingEdge = mFollowers[currentNodeNumber].size() == 1;
+		nodesThatComposeRegion.insert(currentNode);
+		currentNode = mFollowers[currentNode].at(0);
+		hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
+		hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 	}
 
 	if (hasOnlyOneIncomingEdge) {
-		nodesThatComposeRegion.insert(currentNodeNumber);
+		nodesThatComposeRegion.insert(currentNode);
 	}
 
-	currentNodeNumber = nodeNumber;
-	hasOnlyOneIncomingEdge = mPredecessors[currentNodeNumber].size() == 1;
+	currentNode = node;
+	hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
 	hasOnlyOneOutcomingEdge = true;
 
 	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.insert(currentNodeNumber);
-		currentNodeNumber = mPredecessors[currentNodeNumber].at(0);
-		hasOnlyOneIncomingEdge = mPredecessors[currentNodeNumber].size() == 1;
-		hasOnlyOneOutcomingEdge = mFollowers[currentNodeNumber].size() == 1;
+		nodesThatComposeRegion.insert(currentNode);
+		currentNode = mPredecessors[currentNode].at(0);
+		hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
+		hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 	}
 
 	if (hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.insert(currentNodeNumber);
+		nodesThatComposeRegion.insert(currentNode);
 	}
 
-	nodeNumber = currentNodeNumber;
+	node = currentNode;
 
 	if (nodesThatComposeRegion.size() == 2) {
 		return RegionType::Block;
@@ -250,41 +266,49 @@ RegionType StructuralControlFlowGenerator::acyclicRegionType(int &nodeNumber, QS
 	nodesThatComposeRegion.clear();
 
 	// checking for IfThenElse
-	if (mFollowers[nodeNumber].size() == 2) {
-		int m = mFollowers[nodeNumber].at(0);
-		int n = mFollowers[nodeNumber].at(1);
+	if (mFollowers[node].size() == 2) {
+		Node * m = mFollowers[node].at(0);
+		Node * n = mFollowers[node].at(1);
 
 		if (mFollowers[m].size() == 1 && mFollowers[n].size() == 1
 				&& mFollowers[m].at(0) == mFollowers[n].at(0)
 				&& mPredecessors[m].size() == 1 && mPredecessors[n].size() == 1) {
 
-			nodesThatComposeRegion.insert(nodeNumber);
+			nodesThatComposeRegion.insert(node);
 			nodesThatComposeRegion.insert(m);
 			nodesThatComposeRegion.insert(n);
-			return RegionType::IfThenElse;
+
+			// why is m a ThenNode ?
+			return new graphUtils::IfThenElseNode(node, m, n);
 		}
 
 	}
 
 	// checking IfThen
-	if (mFollowers[nodeNumber].size() == 2) {
-		int m = mFollowers[nodeNumber].at(0);
-		int n = mFollowers[nodeNumber].at(1);
+	if (mFollowers[node].size() == 2) {
+		Node * m = mFollowers[node].at(0);
+		Node * n = mFollowers[node].at(1);
 
-		int thenNodeNumber = -1;
+		Node * thenNode = nullptr;
 		if (mFollowers[m].size() == 1 && mFollowers[m].at(0) == n && mPredecessors[m].size() == 1) {
-			thenNodeNumber = m;
+			thenNode = m;
 		} else if (mFollowers[n].size() == 1 && mFollowers[n].at(0) == m && mPredecessors[n].size() == 1) {
-			thenNodeNumber = n;
+			thenNode = n;
 		}
 
-		if (thenNodeNumber != -1) {
-			nodesThatComposeRegion.insert(nodeNumber);
+		if (thenNode) {
+			nodesThatComposeRegion.insert(node);
 			nodesThatComposeRegion.insert(m);
 			nodesThatComposeRegion.insert(n);
 			return RegionType::IfThen;
 		}
 	}
+
+	return nullptr;
+}
+
+Node* StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
+{
 
 }
 

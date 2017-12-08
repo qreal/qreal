@@ -74,3 +74,10 @@ IfThenElseNode::IfThenElseNode(Node *ifNode, Node *thenNode, Node *elseNode)
 	, mElseNode(elseNode)
 {
 }
+
+IfThenNode::IfThenNode(Node *ifNode, Node *thenNode)
+	: Node(IfThen)
+	, mIfNode(ifNode)
+	, mThenNode(thenNode)
+{
+}

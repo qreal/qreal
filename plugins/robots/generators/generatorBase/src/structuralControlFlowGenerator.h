@@ -77,18 +77,20 @@ private:
 	void performAnalysis();
 	// naive approach for finding dominators
 	void findDominators();
-	void dfs(VertexLabel v, int &postOrderLabel);
+	void dfs(graphUtils::Node *v, int &postOrderLabel);
 
-	RegionType acyclicRegionType(int &nodeNumber, QSet<int> &nodesThatComposeRegion);
+	Node * determineAcyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
+	Node * determineCyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
 
 	int mNumberOfVerteces;
-	QList<VertexLabel> mVerteces;
-	QMap<qReal::Id, VertexLabel> mInitialVerteces;
-	QMap<VertexLabel, QVector<VertexLabel>> mFollowers;
-	QMap<VertexLabel, QVector<VertexLabel>> mPredecessors;
-	QMap<VertexLabel, QSet<VertexLabel>> mDominators;
-	QMap<VertexLabel, int> mPostOrder;
-	QMap<VertexLabel, bool> mUsed;
+	Node *mRoot;
+	QList<Node *> mVerteces;
+	QMap<qReal::Id, graphUtils::IdNode *> mInitialVerteces;
+	QMap<Node *, QVector<Node *> > mFollowers;
+	QMap<Node *, QVector<Node *> > mPredecessors;
+	QMap<Node *, QSet<Node *>> mDominators;
+	QMap<Node *, int> mPostOrder;
+	QMap<Node *, bool> mUsed;
 };
 
 }
