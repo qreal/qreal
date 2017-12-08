@@ -80,7 +80,7 @@ private:
 	void dfs(graphUtils::Node *v, int &postOrderLabel);
 
 	RegionType determineAcyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &nodesThatComposeRegion);
-	RegionType determineCyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &nodesThatComposeRegion);
+	RegionType determineCyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &reachUnder);
 
 	Node * reduce(RegionType type, QVector<Node *> &nodesThatComposeRegion);
 	void replace(Node *node, QVector<Node *> &nodesThatComposeRegion);

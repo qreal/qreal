@@ -175,6 +175,16 @@ void StructuralControlFlowGenerator::performAnalysis()
 			}
 		} else {
 			QVector<Node *> reachUnder = countReachUnder(currentNode);
+
+			type = determineCyclicRegionType(currentNode, reachUnder);
+			if (type != RegionType::nil) {
+				Node *newNode = reduce(type, reachUnder);
+				if (reachUnder.contains(mEntry)) {
+					mEntry = newNode;
+				}
+			} else {
+				mCurrentTime++;
+			}
 		}
 
 	}
@@ -313,9 +323,30 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &nod
 	return RegionType::nil;
 }
 
-RegionType StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QVector<graphUtils::Node *> &nodesThatComposeRegion)
+RegionType StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QVector<graphUtils::Node *> &reachUnder)
 {
+	if (reachUnder.size() == 1) {
+		Node* node = reachUnder.first();
+		if (mFollowers[node].contains(node)) {
+			return RegionType::SelfLoop;
+		} else {
+			return RegionType::nil;
+		}
+	}
 
+	// check for improper
+
+	Node *lastNode = reachUnder.last();
+	if (lastNode == node) {
+		lastNode = reachUnder.first();
+	}
+
+	if (mFollowers[node].size() == 2 && mFollowers[lastNode].size() == 1
+				&& mPredecessors[node].size() == 2 && mPredecessors[lastNode].size() == 1) {
+		return RegionType::WhileLoop;
+	} else {
+		return RegionType::NaturalLoop;
+	}
 }
 
 graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType type, QVector<graphUtils::Node *> &nodesThatComposeRegion)
