@@ -13,6 +13,8 @@
  * limitations under the License. */
 #include "structuralControlFlowGenerator.h"
 
+#include <QtCore/QQueue>
+
 using namespace qReal;
 using namespace generatorBase;
 using namespace semantics;
@@ -167,7 +169,12 @@ void StructuralControlFlowGenerator::performAnalysis()
 		RegionType type = determineAcyclicRegionType(currentNode, nodesThatComposeRegion);
 
 		if (type != RegionType::nil) {
-
+			Node *newNode = reduce(type, nodesThatComposeRegion);
+			if (nodesThatComposeRegion.contains(mEntry)) {
+				mEntry = newNode;
+			}
+		} else {
+			QVector<Node *> reachUnder = countReachUnder(currentNode);
 		}
 
 	}
@@ -329,6 +336,11 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 		currentNode->setParent(abstractNode);
 	}
 
+	if (hasBackEdgeForBlock) {
+		mFollowers[abstractNode].push_back(abstractNode);
+		mPredecessors[abstractNode].push_back(abstractNode);
+	}
+
 	abstractNode->appendChildren(nodesThatComposeRegion);
 }
 
@@ -392,5 +404,37 @@ void StructuralControlFlowGenerator::compact(graphUtils::Node *node, QVector<gra
 
 	mCurrentTime = mPostOrder[node];
 	mMaxTime = appropriateTime - 1;
+}
+
+QVector<graphUtils::Node *> StructuralControlFlowGenerator::countReachUnder(graphUtils::Node *currentNode)
+{
+	QVector<Node *> reachUnder = {currentNode};
+
+	QMap<Node *, bool> used;
+
+	QQueue<Node *> nodesThatHavePathAndBackEdgeToCurrentNode;
+	// only nodes that are dominated by currentNode can be presented in reachUnder
+	for (auto it = mVerteces.begin(); it != mVerteces.end(); ++it) {
+		Node *node = *it;
+		used[node] = false;
+		if (mDominators[node].contains(currentNode) && mFollowers[node].contains(currentNode)) {
+			nodesThatHavePathAndBackEdgeToCurrentNode.enqueue(node);
+		}
+	}
+
+	used[currentNode] = true;
+
+	while (!nodesThatHavePathAndBackEdgeToCurrentNode.isEmpty()) {
+		Node *node = nodesThatHavePathAndBackEdgeToCurrentNode.dequeue();
+		reachUnder.push_back(node);
+		used[node] = true;
+		for (auto it = mPredecessors[node].begin(); it != mPredecessors[node].end(); ++it) {
+			if (!used[*it]) {
+				nodesThatHavePathAndBackEdgeToCurrentNode.enqueue(*it);
+			}
+		}
+	}
+
+	return reachUnder;
 }
 

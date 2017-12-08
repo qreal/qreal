@@ -86,6 +86,7 @@ private:
 	void replace(Node *node, QVector<Node *> &nodesThatComposeRegion);
 	void compact(Node *node, QVector<Node *> &nodesThatComposeRegion);
 
+	QVector<Node *> countReachUnder(Node *currentNode);
 
 	int mNumberOfVerteces;
 	int mCurrentTime;
