@@ -342,6 +342,8 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 	}
 
 	abstractNode->appendChildren(nodesThatComposeRegion);
+
+	return abstractNode;
 }
 
 void StructuralControlFlowGenerator::replace(graphUtils::Node *node, QVector<graphUtils::Node *> &nodesThatComposeRegion)
