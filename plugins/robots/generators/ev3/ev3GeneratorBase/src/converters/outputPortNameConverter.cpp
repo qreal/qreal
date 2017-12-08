@@ -16,18 +16,30 @@
 
 using namespace ev3::converters;
 
-OutputPortNameConverter::OutputPortNameConverter(const QStringList &pathsToTemplates)
+OutputPortNameConverter::OutputPortNameConverter(const QStringList &pathsToTemplates
+		, const QList<kitBase::robotModel::PortInfo> &ports)
 	: TemplateParametrizedConverter(pathsToTemplates)
+	, mPorts(ports)
 {
 }
 
 QString OutputPortNameConverter::convert(const QString &portNameOrAlias) const
 {
 	QString result;
-	const QStringList ports = {"A", "B", "C", "D"};
-	for (const QString &port : ports) {
-		if (portNameOrAlias.contains(port)) {
-			result += port;
+	for (const kitBase::robotModel::PortInfo &port : mPorts) {
+		if (port.direction() != kitBase::robotModel::output) {
+			continue;
+		}
+
+		if (portNameOrAlias.contains(port.name())) {
+			result += port.name();
+		} else {
+			for (const QString &alias : port.nameAliases()) {
+				if (portNameOrAlias.contains(alias)) {
+					result += port.name();
+					break;
+				}
+			}
 		}
 	}
 

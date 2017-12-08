@@ -133,7 +133,8 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 
 Binding::ConverterInterface *Ev3GeneratorFactory::outputPortNameConverter() const
 {
-	return new OutputPortNameConverter(pathsToTemplates());
+	return new OutputPortNameConverter(pathsToTemplates()
+			, mRobotModelManager.model().availablePorts());
 }
 
 Binding::ConverterInterface *Ev3GeneratorFactory::ledColorConverter() const

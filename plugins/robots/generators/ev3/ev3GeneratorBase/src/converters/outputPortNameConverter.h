@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <kitBase/robotModel/portInfo.h>
 #include <generatorBase/converters/templateParametrizedConverter.h>
 
 namespace ev3 {
@@ -28,9 +29,13 @@ namespace converters {
 class OutputPortNameConverter : public generatorBase::converters::TemplateParametrizedConverter
 {
 public:
-	explicit OutputPortNameConverter(const QStringList &pathsToTemplates);
+	OutputPortNameConverter(const QStringList &pathsToTemplates
+			, const QList<kitBase::robotModel::PortInfo> &ports);
 
 	QString convert(const QString &portNameOrAlias) const override;
+
+private:
+	const QList<kitBase::robotModel::PortInfo> mPorts;
 };
 
 }
