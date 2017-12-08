@@ -30,6 +30,7 @@ enum RegionType {
 	, NaturalLoop
 	, Improper
 	, nil
+	, simpleNode
 };
 
 typedef int VertexLabel;
@@ -37,7 +38,7 @@ typedef QList<VertexLabel>::iterator VertexIterator;
 
 class Node {
 public:
-	Node(RegionType type, int number);
+	Node(RegionType type);
 
 	void appendChild(Node *child);
 	void appendChildren(const QVector<Node *> &children);
@@ -49,11 +50,41 @@ public:
 
 
 
-private:
+protected:
 	RegionType mRegionType;
-	VertexLabel mNumber;
 	Node *mParent;
 	QVector<Node *> mChildren;
 };
+
+class Id;
+
+class IdNode : public Node {
+public:
+	IdNode(const Id* id);
+
+private:
+	const Id* mId;
+};
+
+
+class BlockNode : public Node {
+public:
+	BlockNode(const QVector<Node *> &elements);
+
+private:
+	const QVector<Node *> mElements;
+};
+
+class IfThenElseNode : public Node {
+public:
+	IfThenElseNode(Node* ifNode, Node* thenNode, Node* elseNode);
+
+private:
+	Node* mIfNode;
+	Node *mThenNode;
+	Node *mElseNode;
+};
+
+
 
 }

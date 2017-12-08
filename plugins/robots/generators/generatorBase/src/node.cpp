@@ -16,9 +16,8 @@
 
 using namespace graphUtils;
 
-Node::Node(RegionType type, int number)
+Node::Node(RegionType type)
 	: mRegionType(type)
-	, mNumber(number)
 	, mParent(nullptr)
 {
 }
@@ -55,3 +54,23 @@ QVector<Node *> Node::structNodes() const
 	return mChildren;
 }
 
+
+IdNode::IdNode(const Id *id)
+	: Node(simpleNode)
+	, mId(id)
+{
+}
+
+BlockNode::BlockNode(const QVector<Node *> &elements)
+	: Node(Block)
+	, mElements(elements)
+{
+}
+
+IfThenElseNode::IfThenElseNode(Node *ifNode, Node *thenNode, Node *elseNode)
+	: Node(IfThenElse)
+	, mIfNode(ifNode)
+	, mThenNode(thenNode)
+	, mElseNode(elseNode)
+{
+}
