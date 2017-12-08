@@ -82,8 +82,11 @@ private:
 	RegionType determineAcyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
 	RegionType determineCyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
 
+
+
+
 	int mNumberOfVerteces;
-	Node *mRoot;
+	Node *mEntry;
 	QList<Node *> mVerteces;
 	QMap<qReal::Id, Node *> mInitialVerteces;
 	QMap<Node *, QVector<Node *> > mFollowers;

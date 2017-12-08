@@ -27,7 +27,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mNumberOfVerteces(0)
-	, mRoot(nullptr)
+	, mEntry(nullptr)
 {
 }
 
@@ -110,8 +110,8 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 		mVerteces.push_back(currentVertex);
 	}
 
-	if (!mRoot) {
-		mRoot = currentVertex;
+	if (!mEntry) {
+		mEntry = currentVertex;
 	}
 
 	for (const LinkInfo link : links) {
@@ -139,8 +139,8 @@ void StructuralControlFlowGenerator::performAnalysis()
 		mPostOrder[*it] = -1;
 	}
 	int time = 0;
-	Node * root = mRoot;
-	dfs(root, time);
+	Node * entry = mEntry;
+	dfs(entry, time);
 
 	int currentTime = 0;
 	int maxTime = time;
@@ -180,8 +180,8 @@ void StructuralControlFlowGenerator::findDominators()
 		mDominators[*it] = mVerteces.toSet();
 	}
 
-	Node * root = mRoot;
-	mDominators[root] = { root };
+	Node * entry = mEntry;
+	mDominators[entry] = { entry };
 
 
 	bool somethingChanged = true;
@@ -191,7 +191,7 @@ void StructuralControlFlowGenerator::findDominators()
 		// excluding root
 		for (auto it = mVerteces.begin(); it != mVerteces.end(); it++) {
 			Node * vertex = *it;
-			if (vertex != mRoot) {
+			if (vertex != mEntry) {
 				if (vertex) {
 					QSet<Node *> newDominators = mVerteces.toSet();
 					for (auto it = mPredecessors[vertex].begin(); it != mPredecessors[vertex].end(); it++) {
