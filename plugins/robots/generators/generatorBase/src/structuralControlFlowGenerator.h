@@ -79,13 +79,13 @@ private:
 	void findDominators();
 	void dfs(graphUtils::Node *v, int &postOrderLabel);
 
-	Node * determineAcyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
-	Node * determineCyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
+	RegionType determineAcyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
+	RegionType determineCyclicRegionType(graphUtils::Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion);
 
 	int mNumberOfVerteces;
 	Node *mRoot;
 	QList<Node *> mVerteces;
-	QMap<qReal::Id, graphUtils::IdNode *> mInitialVerteces;
+	QMap<qReal::Id, Node *> mInitialVerteces;
 	QMap<Node *, QVector<Node *> > mFollowers;
 	QMap<Node *, QVector<Node *> > mPredecessors;
 	QMap<Node *, QSet<Node *>> mDominators;

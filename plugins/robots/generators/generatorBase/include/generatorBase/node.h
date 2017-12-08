@@ -15,7 +15,6 @@
 
 #include <QVector>
 
-
 namespace graphUtils
 {
 
@@ -48,54 +47,10 @@ public:
 	RegionType structType() const;
 	QVector<Node *> structNodes() const;
 
-
-
 protected:
 	RegionType mRegionType;
 	Node *mParent;
 	QVector<Node *> mChildren;
 };
-
-class qReal::Id;
-
-class IdNode : public Node {
-public:
-	IdNode(const qReal::Id* id);
-
-private:
-	const qReal::Id* mId;
-};
-
-
-class BlockNode : public Node {
-public:
-	BlockNode(const QVector<Node *> &elements);
-
-private:
-	const QVector<Node *> mElements;
-};
-
-class IfThenElseNode : public Node {
-public:
-	IfThenElseNode(Node* ifNode, Node* thenNode, Node* elseNode);
-
-private:
-	Node* mIfNode;
-	Node *mThenNode;
-	Node *mElseNode;
-};
-
-
-class IfThenNode : public Node {
-public:
-	IfThenNode(Node* ifNode, Node* thenNode);
-
-private:
-	Node* mIfNode;
-	Node *mThenNode;
-	Node *mElseNode;
-};
-
-
 
 }

@@ -100,11 +100,11 @@ void StructuralControlFlowGenerator::performGeneration()
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
 {
-	graphUtils::IdNode *currentVertex = nullptr;
+	Node *currentVertex = nullptr;
 	if (mInitialVerteces.contains(id)) {
 		currentVertex = mInitialVerteces[id];
 	} else {
-		currentVertex = new graphUtils::IdNode(&id);
+		currentVertex = new Node(RegionType::simpleNode);
 		mNumberOfVerteces++;
 		mInitialVerteces[id] = currentVertex;
 		mVerteces.push_back(currentVertex);
@@ -115,11 +115,11 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 	}
 
 	for (const LinkInfo link : links) {
-		graphUtils::IdNode * targetVertex = nullptr;
+		Node * targetVertex = nullptr;
 		if (mInitialVerteces.contains(link.target)) {
 			targetVertex = mInitialVerteces[link.target];
 		} else {
-			targetVertex = new graphUtils::IdNode(&link.target);
+			targetVertex = new Node(RegionType::simpleNode);
 			mNumberOfVerteces++;
 			mInitialVerteces[link.target] = targetVertex;
 			mVerteces.push_back(targetVertex);
@@ -164,7 +164,7 @@ void StructuralControlFlowGenerator::performAnalysis()
 
 		QSet<graphUtils::Node *> nodesThatComposeRegion;
 		nodesThatComposeRegion.clear();
-		RegionType type = acyclicRegionType(currentNode, nodesThatComposeRegion);
+		RegionType type = determineAcyclicRegionType(currentNode, nodesThatComposeRegion);
 
 		if (type != RegionType::nil) {
 
@@ -223,7 +223,7 @@ void StructuralControlFlowGenerator::dfs(Node * u, int &postOrderLabel)
 	postOrderLabel++;
 }
 
-Node* StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
+RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
 {
 	nodesThatComposeRegion.clear();
 
@@ -277,9 +277,7 @@ Node* StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QS
 			nodesThatComposeRegion.insert(node);
 			nodesThatComposeRegion.insert(m);
 			nodesThatComposeRegion.insert(n);
-
-			// why is m a ThenNode ?
-			return new graphUtils::IfThenElseNode(node, m, n);
+			return RegionType::IfThenElse;
 		}
 
 	}
@@ -298,16 +296,15 @@ Node* StructuralControlFlowGenerator::determineAcyclicRegionType(Node* &node, QS
 
 		if (thenNode) {
 			nodesThatComposeRegion.insert(node);
-			nodesThatComposeRegion.insert(m);
-			nodesThatComposeRegion.insert(n);
+			nodesThatComposeRegion.insert(thenNode);
 			return RegionType::IfThen;
 		}
 	}
 
-	return nullptr;
+	return RegionType::nil;
 }
 
-Node* StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
+RegionType StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::Node *&node, QSet<graphUtils::Node *> &nodesThatComposeRegion)
 {
 
 }
