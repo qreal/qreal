@@ -30,11 +30,14 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mNumberOfVerteces(0)
 	, mEntry(nullptr)
+	, mCounter(0)
 {
 }
 
 ControlFlowGeneratorBase *StructuralControlFlowGenerator::cloneFor(const Id &diagramId, bool cloneForNewDiagram)
 {
+	Q_UNUSED(diagramId)
+	Q_UNUSED(cloneForNewDiagram)
 	// to do
 	return nullptr;
 }
@@ -106,7 +109,7 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 	if (mInitialVerteces.contains(id)) {
 		currentVertex = mInitialVerteces[id];
 	} else {
-		currentVertex = new Node(RegionType::simpleNode);
+		currentVertex = new Node(mCounter++, RegionType::simpleNode);
 		mNumberOfVerteces++;
 		mInitialVerteces[id] = currentVertex;
 		mVerteces.push_back(currentVertex);
@@ -121,7 +124,7 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 		if (mInitialVerteces.contains(link.target)) {
 			targetVertex = mInitialVerteces[link.target];
 		} else {
-			targetVertex = new Node(RegionType::simpleNode);
+			targetVertex = new Node(mCounter++, RegionType::simpleNode);
 			mNumberOfVerteces++;
 			mInitialVerteces[link.target] = targetVertex;
 			mVerteces.push_back(targetVertex);
@@ -358,7 +361,7 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 		hasBackEdgeForBlock = mFollowers[lastNode].contains(firstNode);
 	}
 
-	Node *abstractNode = new Node(type);
+	Node *abstractNode = new Node(mCounter++, type);
 	replace(abstractNode, nodesThatComposeRegion);
 
 	allNodes.append(abstractNode);

@@ -32,12 +32,12 @@ enum RegionType {
 	, simpleNode
 };
 
-typedef int VertexLabel;
-typedef QList<VertexLabel>::iterator VertexIterator;
+//typedef int VertexLabel;
+//typedef QList<VertexLabel>::iterator VertexIterator;
 
 class Node {
 public:
-	Node(RegionType type);
+	Node(int id, RegionType type);
 
 	void appendChild(Node *child);
 	void appendChildren(const QVector<Node *> &children);
@@ -48,6 +48,7 @@ public:
 	QVector<Node *> structNodes() const;
 
 protected:
+	int mId;
 	RegionType mRegionType;
 	Node *mParent;
 	QVector<Node *> mChildren;

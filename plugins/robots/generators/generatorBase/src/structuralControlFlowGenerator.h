@@ -23,8 +23,8 @@
 
 using graphUtils::Node;
 using graphUtils::RegionType;
-using graphUtils::VertexIterator;
-using graphUtils::VertexLabel;
+//using graphUtils::VertexIterator;
+//using graphUtils::VertexLabel;
 
 namespace generatorBase {
 
@@ -99,6 +99,8 @@ private:
 	QMap<Node *, QSet<Node *>> mDominators;
 	QMap<Node *, int> mPostOrder;
 	QMap<Node *, bool> mUsed;
+
+	int mCounter;
 };
 
 }

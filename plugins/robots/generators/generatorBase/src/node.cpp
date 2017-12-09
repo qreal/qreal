@@ -16,8 +16,9 @@
 
 using namespace graphUtils;
 
-Node::Node(RegionType type)
-	: mRegionType(type)
+Node::Node(int id, RegionType type)
+	: mId(id)
+	, mRegionType(type)
 	, mParent(nullptr)
 {
 }
