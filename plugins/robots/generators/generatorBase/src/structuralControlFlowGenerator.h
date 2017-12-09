@@ -24,7 +24,7 @@
 using graphUtils::Node;
 using graphUtils::RegionType;
 //using graphUtils::VertexIterator;
-//using graphUtils::VertexLabel;
+using graphUtils::VertexLabel;
 
 namespace generatorBase {
 
@@ -77,28 +77,28 @@ private:
 	void performAnalysis();
 	// naive approach for finding dominators
 	void findDominators();
-	void dfs(graphUtils::Node *v, int &postOrderLabel);
+	void dfs(VertexLabel v, int &postOrderLabel);
 
-	RegionType determineAcyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &nodesThatComposeRegion);
-	RegionType determineCyclicRegionType(graphUtils::Node* &node, QVector<graphUtils::Node *> &reachUnder);
+	RegionType determineAcyclicRegionType(VertexLabel node, QVector<VertexLabel> &nodesThatComposeRegion);
+	RegionType determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
 
-	Node * reduce(RegionType type, QVector<Node *> &nodesThatComposeRegion);
-	void replace(Node *node, QVector<Node *> &nodesThatComposeRegion);
-	void compact(Node *node, QVector<Node *> &nodesThatComposeRegion);
+	Node * reduce(RegionType type, QVector<VertexLabel> &nodesThatComposeRegion);
+	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
+	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 
-	QVector<Node *> countReachUnder(Node *currentNode);
+	QVector<VertexLabel> countReachUnder(graphUtils::VertexLabel currentNode);
 
 	int mNumberOfVerteces;
 	int mCurrentTime;
 	int mMaxTime;
-	Node *mEntry;
-	QList<Node *> mVerteces;
+	VertexLabel mEntry;
+	QList<VertexLabel> mVerteces;
 	QMap<qReal::Id, Node *> mInitialVerteces;
-	QMap<Node, QVector<Node *> > mFollowers;
-	QMap<Node, QVector<Node *> > mPredecessors;
-	QMap<Node, QSet<Node *>> mDominators;
-	QMap<Node, int> mPostOrder;
-	QMap<Node, bool> mUsed;
+	QMap<VertexLabel, QVector<VertexLabel> > mFollowers;
+	QMap<VertexLabel, QVector<VertexLabel> > mPredecessors;
+	QMap<VertexLabel, QSet<VertexLabel>> mDominators;
+	QMap<VertexLabel, int> mPostOrder;
+	QMap<VertexLabel, bool> mUsed;
 
 	int mCounter;
 };

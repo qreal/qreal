@@ -21,35 +21,35 @@ const int MAXID = 1e7;
 Node::Node()
 	: mId(MAXID)
 	, mRegionType(nil)
-	, mParent(nullptr)
+	, mParent(-1)
 {
 }
 
 Node::Node(int id, RegionType type)
 	: mId(id)
 	, mRegionType(type)
-	, mParent(nullptr)
+	, mParent(-1)
 {
 }
 
-void Node::appendChild(Node *child)
+void Node::appendChild(VertexLabel child)
 {
 	mChildren.append(child);
 }
 
-void Node::appendChildren(const QVector<Node *> &children)
+void Node::appendChildren(const QVector<VertexLabel> &children)
 {
-	for (Node *child : children) {
+	for (VertexLabel child : children) {
 		mChildren.append(child);
 	}
 }
 
-Node *Node::structOf() const
+VertexLabel Node::structOf() const
 {
 	return mParent;
 }
 
-void Node::setParent(Node *parent)
+void Node::setParent(VertexLabel parent)
 {
 	mParent = parent;
 }
@@ -59,7 +59,7 @@ RegionType Node::structType() const
 	return mRegionType;
 }
 
-QVector<Node *> Node::structNodes() const
+QVector<VertexLabel> Node::structNodes() const
 {
 	return mChildren;
 }

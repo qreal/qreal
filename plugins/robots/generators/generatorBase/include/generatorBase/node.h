@@ -32,7 +32,7 @@ enum RegionType {
 	, simpleNode
 };
 
-//typedef int VertexLabel;
+typedef int VertexLabel;
 //typedef QList<VertexLabel>::iterator VertexIterator;
 
 class Node {
@@ -40,13 +40,13 @@ public:
 	Node();
 	Node(int id, RegionType type);
 
-	void appendChild(Node *child);
-	void appendChildren(const QVector<Node *> &children);
+	void appendChild(VertexLabel child);
+	void appendChildren(const QVector<VertexLabel> &children);
 
-	Node *structOf() const;
-	void setParent(Node *parent);
+	VertexLabel structOf() const;
+	void setParent(VertexLabel parent);
 	RegionType structType() const;
-	QVector<Node *> structNodes() const;
+	QVector<VertexLabel> structNodes() const;
 
 	bool operator <(const Node& other) const;
 
@@ -55,8 +55,8 @@ public:
 protected:
 	int mId;
 	RegionType mRegionType;
-	Node *mParent;
-	QVector<Node *> mChildren;
+	VertexLabel mParent;
+	QVector<VertexLabel> mChildren;
 };
 
 }
