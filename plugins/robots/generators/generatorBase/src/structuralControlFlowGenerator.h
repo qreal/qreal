@@ -94,11 +94,11 @@ private:
 	Node *mEntry;
 	QList<Node *> mVerteces;
 	QMap<qReal::Id, Node *> mInitialVerteces;
-	QMap<Node *, QVector<Node *> > mFollowers;
-	QMap<Node *, QVector<Node *> > mPredecessors;
-	QMap<Node *, QSet<Node *>> mDominators;
-	QMap<Node *, int> mPostOrder;
-	QMap<Node *, bool> mUsed;
+	QMap<Node, QVector<Node *> > mFollowers;
+	QMap<Node, QVector<Node *> > mPredecessors;
+	QMap<Node, QSet<Node *>> mDominators;
+	QMap<Node, int> mPostOrder;
+	QMap<Node, bool> mUsed;
 
 	int mCounter;
 };

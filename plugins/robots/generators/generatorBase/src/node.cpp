@@ -16,6 +16,15 @@
 
 using namespace graphUtils;
 
+const int MAXID = 1e7;
+
+Node::Node()
+	: mId(MAXID)
+	, mRegionType(nil)
+	, mParent(nullptr)
+{
+}
+
 Node::Node(int id, RegionType type)
 	: mId(id)
 	, mRegionType(type)
@@ -53,5 +62,15 @@ RegionType Node::structType() const
 QVector<Node *> Node::structNodes() const
 {
 	return mChildren;
+}
+
+bool Node::operator <(const Node &other) const
+{
+	return mId < other.id();
+}
+
+int Node::id() const
+{
+	return mId;
 }
 

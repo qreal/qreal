@@ -37,6 +37,7 @@ enum RegionType {
 
 class Node {
 public:
+	Node();
 	Node(int id, RegionType type);
 
 	void appendChild(Node *child);
@@ -46,6 +47,10 @@ public:
 	void setParent(Node *parent);
 	RegionType structType() const;
 	QVector<Node *> structNodes() const;
+
+	bool operator <(const Node& other) const;
+
+	int id() const;
 
 protected:
 	int mId;
