@@ -368,6 +368,10 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
 		Node *currentNode = *it;
 		currentNode->setParent(abstractNode);
+
+		// saving graph invariant
+		mFollowers.remove(currentNode);
+		mPredecessors.remove(currentNode);
 	}
 
 	if (hasBackEdgeForBlock) {
@@ -384,22 +388,28 @@ void StructuralControlFlowGenerator::replace(graphUtils::Node *node, QVector<gra
 {
 	compact(node, nodesThatComposeRegion);
 
+	auto followers = mFollowers;
+
 	// set of edges is determined by mFollowers or mPredecessors
-	for (auto vertexIt = mFollowers.keys().begin(); vertexIt != mFollowers.keys().end(); ++vertexIt) {
+	for (auto vertexIt = followers.keys().begin(); vertexIt != followers.keys().end(); ++vertexIt) {
 		Node *currentVertex = *vertexIt;
 
-		for (auto nextVertexIt = mFollowers[currentVertex].begin(); nextVertexIt != mFollowers[currentVertex].end(); nextVertexIt++) {
+		for (auto nextVertexIt = followers[currentVertex].begin(); nextVertexIt != followers[currentVertex].end(); nextVertexIt++) {
 			Node *nextVertex = *nextVertexIt;
 
 			if (nodesThatComposeRegion.contains(nextVertex) || nodesThatComposeRegion.contains(currentVertex)) {
 				mFollowers[currentVertex].removeOne(nextVertex);
 				mPredecessors[nextVertex].removeOne(currentVertex);
 				if (mVerteces.contains(currentVertex) && currentVertex != node) {
-					mFollowers[currentVertex].push_back(node);
-					mPredecessors[node].push_back(currentVertex);
+					if (!mFollowers[currentVertex].contains(node)) {
+						mFollowers[currentVertex].push_back(node);
+						mPredecessors[node].push_back(currentVertex);
+					}
 				} else if (mVerteces.contains(nextVertex)) {
-					mFollowers[node].push_back(nextVertex);
-					mPredecessors[nextVertex].push_back(node);
+					if (!mFollowers[node].contains(nextVertex)) {
+						mFollowers[node].push_back(nextVertex);
+						mPredecessors[nextVertex].push_back(node);
+					}
 				}
 
 			}
