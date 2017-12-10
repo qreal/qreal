@@ -30,7 +30,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mNumberOfVerteces(0)
 	, mEntry(0)
-	, mCounter(0)
+	, mCounter(1)
 {
 }
 
