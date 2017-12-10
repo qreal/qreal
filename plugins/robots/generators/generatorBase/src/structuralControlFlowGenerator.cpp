@@ -15,6 +15,8 @@
 
 #include <QtCore/QQueue>
 
+#include <QtCore/QDebug>
+
 using namespace qReal;
 using namespace generatorBase;
 using namespace semantics;
@@ -31,6 +33,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	, mNumberOfVerteces(0)
 	, mEntry(0)
 	, mCounter(1)
+	, mVerteces(QList<VertexLabel>())
 {
 }
 
@@ -192,6 +195,8 @@ void StructuralControlFlowGenerator::performAnalysis()
 		}
 
 	}
+
+	qDebug() << "Success\n";
 }
 
 void StructuralControlFlowGenerator::findDominators()
@@ -380,11 +385,45 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 		mPredecessors.remove(currentLabel);
 	}
 
+	VertexLabel newLabel = abstractNode->id();
 	if (hasBackEdgeForBlock) {
-		mFollowers[abstractNode->id()].push_back(abstractNode->id());
-		mPredecessors[abstractNode->id()].push_back(abstractNode->id());
+		mFollowers[newLabel].push_back(newLabel);
+		mPredecessors[newLabel].push_back(newLabel);
 	}
 
+	// updating dominators
+	QSet<VertexLabel> setForNewNode = {newLabel};
+	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
+		setForNewNode = setForNewNode.unite(mDominators[*it]);
+	}
+	setForNewNode = setForNewNode.intersect(mVerteces.toSet());
+	mDominators.insert(abstractNode->id(), setForNewNode);
+
+	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
+		mDominators.remove(*it);
+	}
+
+	for (auto it = mDominators.begin(); it != mDominators.end(); ++it) {
+		VertexLabel label = it.key();
+		QSet<VertexLabel> set = it.value();
+		bool isNeededNewLabel = false;
+
+		auto vertexIt = set.begin();
+		while (vertexIt != set.end()) {
+			if (nodesThatComposeRegion.contains(*vertexIt)) {
+				isNeededNewLabel = true;
+				vertexIt = set.erase(vertexIt);
+			} else {
+				vertexIt++;
+			}
+		}
+
+		if (isNeededNewLabel) {
+			set.insert(newLabel);
+		}
+
+		mDominators.insert(label, set);
+	}
 
 	abstractNode->appendChildren(nodesThatComposeRegion);
 
@@ -395,34 +434,50 @@ void StructuralControlFlowGenerator::replace(VertexLabel node, QVector<graphUtil
 {
 	compact(node, nodesThatComposeRegion);
 
-	auto followers = mFollowers;
+	QMap<VertexLabel, QVector<VertexLabel> > followers;
+	followers.clear();
 
 	// set of edges is determined by mFollowers or mPredecessors
-	for (auto vertexIt = followers.keys().begin(); vertexIt != followers.keys().end(); ++vertexIt) {
-		VertexLabel currentLabel = *vertexIt;
+	for (auto it = mFollowers.begin(); it != mFollowers.end(); ++it) {
+		VertexLabel currentLabel = it.key();
+		QVector<VertexLabel> labels = it.value();
 
-		for (auto nextVertexIt = followers[currentLabel].begin(); nextVertexIt != followers[currentLabel].end(); nextVertexIt++) {
+		for (auto nextVertexIt = labels.begin(); nextVertexIt != labels.end(); nextVertexIt++) {
 			VertexLabel nextLabel = *nextVertexIt;
 
 			if (nodesThatComposeRegion.contains(nextLabel) || nodesThatComposeRegion.contains(currentLabel)) {
-				mFollowers[currentLabel].removeOne(nextLabel);
-				mPredecessors[nextLabel].removeOne(currentLabel);
+				removeFrom(mPredecessors, nextLabel, currentLabel);
+
 				if (mVerteces.contains(currentLabel) && currentLabel != node) {
-					if (!mFollowers[currentLabel].contains(node)) {
-						mFollowers[currentLabel].push_back(node);
-						mPredecessors[node].push_back(currentLabel);
+					if (followers.contains(currentLabel)) {
+						if (!followers[currentLabel].contains(node)) {
+							addTo(followers, currentLabel, node);
+							addTo(mPredecessors, node, currentLabel);
+						}
+					} else {
+						addTo(followers, currentLabel, node);
+						addTo(mPredecessors, node, currentLabel);
 					}
 				} else if (mVerteces.contains(nextLabel) && currentLabel != node) {
-					if (!mFollowers[node].contains(nextLabel)) {
-						mFollowers[node].push_back(nextLabel);
-						mPredecessors[nextLabel].push_back(node);
+					if (followers.contains(node)) {
+						if (!followers[node].contains(nextLabel)) {
+							addTo(followers, node, nextLabel);
+							addTo(mPredecessors, nextLabel, node);
+						}
+					} else {
+						addTo(followers, node, nextLabel);
+						addTo(mPredecessors, nextLabel, node);
 					}
 				}
 
+			} else {
+				addTo(followers, currentLabel, nextLabel);
 			}
 
 		}
 	}
+
+	mFollowers = followers;
 
 	// deal with Tree
 	//node->appendChildren(nodesThatComposeRegion);
@@ -458,6 +513,24 @@ void StructuralControlFlowGenerator::compact(VertexLabel node, QVector<VertexLab
 
 	mCurrentTime = mPostOrder[node];
 	mMaxTime = appropriateTime - 1;
+}
+
+void StructuralControlFlowGenerator::removeFrom(QMap<graphUtils::VertexLabel, QVector<graphUtils::VertexLabel> > &map, graphUtils::VertexLabel element, graphUtils::VertexLabel elementToRemove)
+{
+	auto labels = map.value(element);
+	if (!labels.isEmpty()) {
+		labels.removeOne(elementToRemove);
+		map.insert(element, labels);
+	}
+}
+
+void StructuralControlFlowGenerator::addTo(QMap<graphUtils::VertexLabel, QVector<graphUtils::VertexLabel> > &map, graphUtils::VertexLabel element, graphUtils::VertexLabel elementToAdd)
+{
+	auto labels = map.value(element);
+	if (!labels.contains(elementToAdd)) {
+		labels.push_back(elementToAdd);
+		map.insert(element, labels);
+	}
 }
 
 QVector<graphUtils::VertexLabel> StructuralControlFlowGenerator::countReachUnder(VertexLabel currentNode)

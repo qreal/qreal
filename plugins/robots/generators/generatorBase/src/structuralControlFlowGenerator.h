@@ -86,6 +86,9 @@ private:
 	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 
+
+	void removeFrom(QMap<VertexLabel, QVector<VertexLabel> > &map, VertexLabel element, VertexLabel elementToRemove);
+	void addTo(QMap<VertexLabel, QVector<VertexLabel> > &map, VertexLabel element, VertexLabel elementToAdd);
 	QVector<VertexLabel> countReachUnder(graphUtils::VertexLabel currentNode);
 
 	int mNumberOfVerteces;
