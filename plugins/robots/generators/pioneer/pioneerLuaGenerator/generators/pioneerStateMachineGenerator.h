@@ -120,7 +120,7 @@ private:
 
 	/// Set to keep track of visited nodes by itself, because stock DFSer can visit some nodes twice (when node
 	/// is a target for two non-trivial If branches, for example). Shall fix it in upstream DFS algorithm, but this
-	/// can be  breaking change.
+	/// can be breaking change.
 	QSet<qReal::Id> mVisitedNodes;
 };
 
