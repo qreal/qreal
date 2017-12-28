@@ -37,7 +37,7 @@ public:
 			, const kitBase::robotModel::PortInfo &port, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void init() override;
-	void detectLine() override;
+	void detect() override;
 	void read() override;
 
 private:

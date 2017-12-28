@@ -13,16 +13,42 @@
  * limitations under the License. */
 
 #include "detectLineBlock.h"
+#include "trikKit/robotModel/parts/trikObjectSensor.h"
+#include "trikKit/robotModel/parts/trikLineSensor.h"
+#include "trikKit/robotModel/parts/trikColorSensor.h"
+#include "kitBase/robotModel/robotModelInterface.h"
+#include "kitBase/robotModel/robotModelUtils.h"
 
 using namespace trik::blocks::details;
+using namespace trik::robotModel::parts;
 
 DetectLineBlock::DetectLineBlock(kitBase::robotModel::RobotModelInterface &robotModel)
-	: kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikLineSensor>(robotModel)
+	: kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikVideoSensor>(robotModel)
 {
 }
 
-void DetectLineBlock::doJob(trik::robotModel::parts::TrikLineSensor &camera)
+bool DetectLineBlock::runSpecific()
 {
-	camera.detectLine();
+	const QString portVP1 = "VP1";
+	const QString portVP2 = "VP2";
+
+	TrikVideoSensor * const deviceVP1 =
+			kitBase::robotModel::RobotModelUtils::findDevice<TrikVideoSensor>(getModel(), portVP1);
+	if (deviceVP1) {
+		doJob(*deviceVP1);
+	}
+
+	TrikVideoSensor * const deviceVP2 =
+			kitBase::robotModel::RobotModelUtils::findDevice<TrikVideoSensor>(getModel(), portVP2);
+	if (deviceVP2) {
+		doJob(*deviceVP2);
+	}
+
+	return true;
+}
+
+void DetectLineBlock::doJob(trik::robotModel::parts::TrikVideoSensor &camera)
+{
+	camera.detect();
 	emit done(mNextBlockId);
 }

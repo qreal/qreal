@@ -42,13 +42,23 @@ public:
 		if (device) {
 			doJob(*device);
 		} else {
-			error(QObject::tr("%1 is not configured.").arg(deviceInfo.friendlyName()));
+			if (!runSpecific())
+				error(QObject::tr("%1 is not configured.").arg(deviceInfo.friendlyName()));
 		}
 	}
 
 protected:
 	/// Implementation may consider that the device is configured and ready to work.
 	virtual void doJob(Device &display) = 0;
+	virtual bool runSpecific()
+	{
+		return false;
+	}
+
+	kitBase::robotModel::RobotModelInterface &getModel()
+	{
+		return mRobotModel;
+	}
 
 private:
 	kitBase::robotModel::RobotModelInterface &mRobotModel;

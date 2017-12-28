@@ -27,7 +27,7 @@ void LineSensor::init()
 {
 }
 
-void LineSensor::detectLine()
+void LineSensor::detect()
 {
 }
 

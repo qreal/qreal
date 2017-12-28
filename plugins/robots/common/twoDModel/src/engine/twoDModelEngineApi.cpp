@@ -333,6 +333,17 @@ engine::TwoDModelGuiFacade &TwoDModelEngineApi::guiFacade() const
 	return *mGuiFacade;
 }
 
+QList<QPair<QPointF, QPointF>> TwoDModelEngineApi::walls() const
+{
+	QList<QPair<QPointF, QPointF>> walls;
+	foreach(items::WallItem *wall, mModel.worldModel().walls()){
+		walls.push_back(QPair<QPointF, QPointF>(wall->begin(), wall->end()));
+	}
+
+	return walls;
+}
+
+
 uint TwoDModelEngineApi::spoilLight(const uint color) const
 {
 	const qreal noise = mathUtils::Math::gaussianNoise(spoilLightDispersion);

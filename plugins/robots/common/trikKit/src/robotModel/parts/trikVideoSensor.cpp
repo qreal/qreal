@@ -12,14 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "trikKit/robotModel/parts/trikObjectSensor.h"
+#include "trikKit/robotModel/parts/TrikVideoSensor.h"
 
 using namespace trik::robotModel::parts;
 using namespace kitBase::robotModel;
 
-TrikObjectSensor::TrikObjectSensor(const DeviceInfo &info, const PortInfo &port)
-	: trik::robotModel::parts::TrikVideoSensor(info, port)
+TrikVideoSensor::TrikVideoSensor(const DeviceInfo &info, const PortInfo &port)
+	: kitBase::robotModel::robotParts::VectorSensor(info, port)
 {
-}
-void TrikObjectSensor::init(){
 }

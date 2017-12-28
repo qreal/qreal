@@ -18,6 +18,7 @@
 
 #include <utils/timelineInterface.h>
 #include <kitBase/robotModel/portInfo.h>
+#include "src/engine/items/wallItem.h"
 
 namespace twoDModel {
 namespace engine {
@@ -90,6 +91,11 @@ public:
 
 	/// Returns an object for convenient searching and managing widgets of 2D model GUI.
 	virtual engine::TwoDModelGuiFacade &guiFacade() const = 0;
+
+	/// Returns walls as pair list begin end point
+	virtual QList<QPair<QPointF, QPointF>> walls() const = 0;
+
+	virtual QPair<QPointF, qreal> countPositionAndDirection(const kitBase::robotModel::PortInfo &port) const = 0;
 
 };
 

@@ -15,20 +15,21 @@
 #pragma once
 
 #include <kitBase/blocksBase/common/deviceBlock.h>
-#include <trikKit/robotModel/parts/trikLineSensor.h>
+#include "trikKit/robotModel/parts/trikVideoSensor.h"
 
 namespace trik {
 namespace blocks {
 namespace details {
 
 /// Interpreter implementation for "Initialize Videocamera" block.
-class InitCameraBlock : public kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikLineSensor>
+class InitCameraBlock : public kitBase::blocksBase::common::DeviceBlock<trik::robotModel::parts::TrikVideoSensor>
 {
 public:
 	InitCameraBlock(kitBase::robotModel::RobotModelInterface &robotModel);
 
 protected:
-	virtual void doJob(robotModel::parts::TrikLineSensor &camera);
+	virtual void doJob(trik::robotModel::parts::TrikVideoSensor &camera);
+	bool runSpecific() override;
 };
 
 }

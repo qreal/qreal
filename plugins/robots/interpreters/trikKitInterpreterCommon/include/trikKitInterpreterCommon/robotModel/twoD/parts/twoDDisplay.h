@@ -27,6 +27,12 @@ namespace trik {
 namespace robotModel {
 namespace twoD {
 namespace parts {
+struct Trap{
+	int x1;
+	int y1;
+	int x2;
+	int y2;
+};
 
 class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT Display : public robotModel::parts::TrikDisplay, public utils::Canvas
 {
@@ -72,6 +78,7 @@ public slots: // needed for invokeMethod
 	void paint(QPainter *painter, const QRect &outputRect) override;
 	void reset() override;
 	void redraw() override;
+	void drawObjectView(QList<Trap> &TrapList);
 
 signals:
 	/// Emitted when bacground color has changed.

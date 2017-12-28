@@ -35,7 +35,7 @@ public:
 			, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator);
 
 	void init() override;
-	void detectLine() override;
+	void detect() override;
 	void read() override;
 
 private:
