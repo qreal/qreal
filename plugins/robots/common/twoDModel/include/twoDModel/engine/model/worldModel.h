@@ -195,6 +195,7 @@ private:
 	QMap<QString, items::ColorFieldItem *> mColorFields;
 	QMap<QString, items::ImageItem *> mImages;
 	QMap<QString, items::RegionItem *> mRegions;
+	QMap<QString, int> mOrder;
 	QList<QGraphicsLineItem *> mRobotTrace;
 	Image mBackgroundImage;
 	QRect mBackgroundRect;
