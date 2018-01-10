@@ -56,19 +56,19 @@ protected:
 
 	/// Shall be called by descendants when device configuration is changed. Change is propagated automatically
 	/// through entire graph of connected providers.
-	/// @param robotModel - robot model name to which configuration change is applied.
+	/// @param robotId - robot id to which configuration change is applied.
 	/// @param port - input port on which device has changed.
 	/// @param device - new type of a device on a given port.
 	/// @param reason - reason for configuration change. It allows different reactions to, for example, changes during
 	///        save loading and to changes made by user or autoconfigurer.
-	void deviceConfigurationChanged(const QString &robotModel
+	void deviceConfigurationChanged(const QString &robotId
 			, const robotModel::PortInfo &port
 			, const robotModel::DeviceInfo &device
 			, Reason reason);
 
 	/// Must be implemented in descendants to react to device configuration changes and refresh their internal data.
 	/// Symmetric to deviceConfigurationChanged. Default implementation does nothing.
-	virtual void onDeviceConfigurationChanged(const QString &robotModel
+	virtual void onDeviceConfigurationChanged(const QString &robotId
 			, const robotModel::PortInfo &port
 			, const robotModel::DeviceInfo &device
 			, Reason reason);
@@ -93,7 +93,7 @@ private:
 
 	/// Redundant current devices configuration.
 	/// If configuration is not changed by incoming message, it is not broadcasted.
-	/// Hash structure is robotModel -> port -> device.
+	/// Hash structure is robotId -> port -> device.
 	QMap<QString, QMap<robotModel::PortInfo, robotModel::DeviceInfo>> mCurrentConfiguration;
 
 	/// Name of the provider, which can be used in debug output.

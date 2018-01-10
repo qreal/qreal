@@ -132,7 +132,7 @@ protected:
 
 	void focusInEvent(QFocusEvent *event) override;
 
-	void onDeviceConfigurationChanged(const QString &robotModel
+	void onDeviceConfigurationChanged(const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
 			, Reason reason) override;

@@ -42,7 +42,7 @@ public:
 	void clear() override;
 
 protected:
-	virtual void onDeviceConfigurationChanged(const QString &robotModel
+	virtual void onDeviceConfigurationChanged(const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
 			, Reason reason) override;

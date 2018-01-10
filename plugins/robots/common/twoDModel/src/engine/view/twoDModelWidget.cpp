@@ -824,7 +824,7 @@ void TwoDModelWidget::syncCursorButtons()
 	}
 }
 
-void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
+void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	Q_UNUSED(port)
@@ -832,7 +832,7 @@ void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 	Q_UNUSED(reason)
 
 	/// @todo Convert configuration between models or something?
-	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info().robotId()) {
+	if (mSelectedRobotItem && robotId == mSelectedRobotItem->robotModel().info().robotId()) {
 		updateWheelComboBoxes();
 	}
 }

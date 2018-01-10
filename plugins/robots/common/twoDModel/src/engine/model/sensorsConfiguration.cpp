@@ -24,14 +24,14 @@ using namespace twoDModel::model;
 using namespace kitBase::robotModel;
 
 SensorsConfiguration::SensorsConfiguration(const QString &robotModelName)
-	: mRobotModelName(robotModelName)
+	: mRobotId(robotModelName)
 {
 }
 
-void SensorsConfiguration::onDeviceConfigurationChanged(const QString &robotModel
+void SensorsConfiguration::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
-	if (robotModel != mRobotModelName) {
+	if (robotId != mRobotId) {
 		// Ignoring external events
 		return;
 	}
@@ -83,7 +83,7 @@ void SensorsConfiguration::setDirection(const PortInfo &port, qreal direction)
 
 DeviceInfo SensorsConfiguration::type(const PortInfo &port) const
 {
-	return currentConfiguration(mRobotModelName, port);
+	return currentConfiguration(mRobotId, port);
 }
 
 void SensorsConfiguration::serialize(QDomElement &robot) const
@@ -92,7 +92,7 @@ void SensorsConfiguration::serialize(QDomElement &robot) const
 	robot.appendChild(sensorsElem);
 
 	for (const PortInfo &port: mSensorsInfo.keys()) {
-		const DeviceInfo device = currentConfiguration(mRobotModelName, port);
+		const DeviceInfo device = currentConfiguration(mRobotId, port);
 		const SensorInfo sensor = mSensorsInfo.value(port);
 		QDomElement sensorElem = robot.ownerDocument().createElement("sensor");
 		sensorsElem.appendChild(sensorElem);
@@ -131,8 +131,8 @@ void SensorsConfiguration::deserialize(const QDomElement &element)
 
 		const qreal direction = sensorNode.attribute("direction", "0").toDouble();
 
-		deviceConfigurationChanged(mRobotModelName, port, DeviceInfo(), Reason::loading);
-		deviceConfigurationChanged(mRobotModelName, port, type, Reason::loading);
+		deviceConfigurationChanged(mRobotId, port, DeviceInfo(), Reason::loading);
+		deviceConfigurationChanged(mRobotId, port, type, Reason::loading);
 		setPosition(port, position);
 		setDirection(port, direction);
 	}

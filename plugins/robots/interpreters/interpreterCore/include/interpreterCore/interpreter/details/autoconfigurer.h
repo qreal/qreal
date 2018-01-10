@@ -42,7 +42,7 @@ public:
 	/// Performs extended validation of devices correspondence to the user-defined configuration.
 	/// May display errors or automaticly modify sensors configuration.
 	/// @returns false if two configurations have conflicts and true if everything is ok.
-	bool configure(QList<qReal::Id> const &diagrams, const QString &robotModelName);
+	bool configure(QList<qReal::Id> const &diagrams, const QString &robotId);
 
 private:
 	const qReal::GraphicalModelAssistInterface &mGraphicalModelApi;

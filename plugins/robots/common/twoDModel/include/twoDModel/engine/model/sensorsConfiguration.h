@@ -71,14 +71,14 @@ private:
 		bool isNull;
 	};
 
-	void onDeviceConfigurationChanged(const QString &robotModel
+	void onDeviceConfigurationChanged(const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
 			, Reason reason) override;
 
 	QPointF defaultPosition() const;
 
-	QString mRobotModelName;
+	QString mRobotId;
 	QHash<kitBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;
 };
 
