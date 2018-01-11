@@ -61,9 +61,6 @@ HEADERS += \
 	$$PWD/include/twoDModel/robotModel/parts/marker.h \
 	$$PWD/include/twoDModel/blocks/markerDownBlock.h \
 	$$PWD/include/twoDModel/blocks/markerUpBlock.h \
-	$$PWD/src/engine/model/physics/box2DPhysicsEngine.h \
-	$$PWD/src/engine/model/physics/parts/box2DWall.h \
-	$$PWD/src/engine/model/physics/parts/box2DSensor.h
 
 HEADERS += \
 	$$PWD/src/engine/twoDModelEngineApi.h \
@@ -118,6 +115,12 @@ HEADERS += \
 	$$PWD/src/engine/commands/changePropertyCommand.h \
 	$$PWD/src/engine/commands/reshapeCommand.h \
 	$$PWD/src/robotModel/nullTwoDRobotModel.h \
+	$$PWD/src/engine/model/physics/box2DPhysicsEngine.h \
+	$$PWD/src/engine/model/physics/parts/box2DWall.h \
+	$$PWD/src/engine/model/physics/parts/box2DSensor.h \
+	$$PWD/src/engine/items/skittleItem.h \
+	$$PWD/src/engine/model/physics/parts/box2DSkittle.h \
+	$$PWD/src/engine/model/physics/contactListener.h \
 
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
@@ -202,7 +205,10 @@ SOURCES += \
 	$$PWD/src/blocks/markerUpBlock.cpp \
 	$$PWD/src/engine/model/physics/box2DPhysicsEngine.cpp \
 	$$PWD/src/engine/model/physics/parts/box2DWall.cpp \
-	$$PWD/src/engine/model/physics/parts/box2DSensor.cpp
+	$$PWD/src/engine/model/physics/parts/box2DSensor.cpp \
+	$$PWD/src/engine/items/skittleItem.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DSkittle.cpp \
+	$$PWD/src/engine/model/physics/contactListener.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \

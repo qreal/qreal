@@ -39,6 +39,7 @@
 #include "scene/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
@@ -210,6 +211,7 @@ void TwoDModelWidget::initWidget()
 void TwoDModelWidget::initPalette()
 {
 	QAction * const wallTool = items::WallItem::wallTool();
+	QAction * const skittleTool = items::SkittleItem::skittleTool();
 	QAction * const lineTool = items::LineItem::lineTool();
 	QAction * const bezierTool = items::CurveItem::curveTool();
 	QAction * const rectangleTool = items::RectangleItem::rectangleTool();
@@ -218,6 +220,7 @@ void TwoDModelWidget::initPalette()
 	QAction * const imageTool = items::ImageItem::imageTool();
 
 	mUi->palette->registerTool(wallTool);
+	mUi->palette->registerTool(skittleTool);
 	mUi->palette->registerTool(lineTool);
 	mUi->palette->registerTool(bezierTool);
 	mUi->palette->registerTool(rectangleTool);
@@ -226,6 +229,7 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(imageTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
+	connect(skittleTool, &QAction::triggered, mScene, &TwoDModelScene::addSkittle);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
 	connect(bezierTool, &QAction::triggered, mScene, &TwoDModelScene::addBezier);
 	connect(rectangleTool, &QAction::triggered, mScene, &TwoDModelScene::addRectangle);
@@ -235,6 +239,7 @@ void TwoDModelWidget::initPalette()
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
 
 	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
+	connect(skittleTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawSkittle); });
 	connect(lineTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawLine); });
 	connect(ellipseTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawEllipse); });
 	connect(stylusTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawStylus); });
@@ -757,6 +762,7 @@ QGraphicsView::DragMode TwoDModelWidget::cursorTypeToDragType(CursorType type) c
 	case drawLine:
 	case drawStylus:
 	case drawWall:
+	case drawSkittle:
 		return QGraphicsView::NoDrag;
 	case hand:
 		return QGraphicsView::ScrollHandDrag;
@@ -780,6 +786,8 @@ QCursor TwoDModelWidget::cursorTypeToCursor(CursorType type) const
 		return QCursor(QPixmap(":/icons/2d_drawLineCursor.png"), 0, 0);
 	case drawWall:
 		return QCursor(QPixmap(":/icons/2d_drawWallCursor.png"), 0, 0);
+	case drawSkittle:
+		return QCursor(QPixmap(":/icons/2d_drawSkittleCursor.png"), 0, 0);
 	case drawEllipse:
 		return QCursor(QPixmap(":/icons/2d_drawEllipseCursor.png"), 0, 0);
 	case drawStylus:

@@ -35,6 +35,7 @@ namespace twoDModel {
 
 namespace items {
 class WallItem;
+class SkittleItem;
 class ColorFieldItem;
 class ImageItem;
 class RegionItem;
@@ -73,6 +74,9 @@ public:
 	/// Returns a set of walls in the world model. Result is mapping of wall ids to walls themselves.
 	const QMap<QString, items::WallItem *> &walls() const;
 
+	/// Returns a set of skittles in the world model. Result is mapping of wall ids to walls themselves.
+	const QMap<QString, items::SkittleItem *> &skittles() const;
+
 	/// Returns a set of color field items in the world model. Result is mapping of field ids to fields themselves.
 	const QMap<QString, items::ColorFieldItem *> &colorFields() const;
 
@@ -90,6 +94,12 @@ public:
 
 	/// Removes \a wall from the world model.
 	void removeWall(items::WallItem *wall);
+
+	/// Appends \a skittle into world model.
+	void addSkittle(items::SkittleItem *skittle);
+
+	/// Removes \a skittle from the world model.
+	void removeSkittle(items::SkittleItem *skittle);
 
 	/// Appends colored item \a colorField into the world model.
 	void addColorField(items::ColorFieldItem *colorField);
@@ -172,6 +182,9 @@ signals:
 	/// Emitted each time when model is appended with some new wall.
 	void wallAdded(items::WallItem *item);
 
+	/// Emitted each time when model is appended with some new skittle.
+	void skittleAdded(items::SkittleItem *item);
+
 	/// Emitted each time when model is appended with some new color field item.
 	void colorItemAdded(items::ColorFieldItem *item);
 
@@ -202,6 +215,7 @@ private:
 	void deserializeBackground(const QDomElement &backgroundElement);
 
 	QMap<QString, items::WallItem *> mWalls;
+	QMap<QString, items::SkittleItem *> mSkittles;
 	QMap<QString, items::ColorFieldItem *> mColorFields;
 	QMap<QString, items::ImageItem *> mImages;
 	QMap<QString, items::RegionItem *> mRegions;

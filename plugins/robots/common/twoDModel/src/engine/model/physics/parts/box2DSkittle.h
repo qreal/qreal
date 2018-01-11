@@ -1,4 +1,4 @@
-/* Copyright 2017 Gleb Zakharov
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ class b2Body;
 
 namespace twoDModel{
 namespace items {
-	class WallItem;
+	class SkittleItem;
 }
 
 namespace model {
@@ -26,16 +26,17 @@ namespace physics {
 
 namespace parts {
 
-class box2DWall
+class box2DSkittle
 {
 public:
 	b2Body *body; // Take ownership
-	twoDModel::items::WallItem &item; // Doesn't take ownership
+	twoDModel::items::SkittleItem &item; // Doesn't take ownership
 	twoDModel::model::physics::box2DPhysicsEngine &engine; // Doesn't take ownership
 
-	box2DWall(twoDModel::model::physics::box2DPhysicsEngine *engine
-			, twoDModel::items::WallItem &wallItem);
-	~box2DWall();
+	box2DSkittle(twoDModel::model::physics::box2DPhysicsEngine *engine
+			, twoDModel::items::SkittleItem &skittleItem);
+
+	~box2DSkittle();
 };
 
 }

@@ -170,6 +170,7 @@ private:
 		, hand
 		, multiselection
 		, drawWall
+		, drawSkittle
 		, drawLine
 		, drawStylus
 		, drawEllipse

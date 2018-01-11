@@ -21,6 +21,8 @@ namespace twoDModel {
 
 const qreal lowPrecision = 0.00001;
 
+const qreal robotMass = 800;
+const QSize skittleSize(30, 30);
 const qreal robotWidth = 50;
 const qreal robotHeight = 50;
 const qreal robotZPoint = 100;
@@ -53,7 +55,6 @@ const uint yellow  = 0xFFFFFF00;
 const uint cyan    = 0xFF00FFFF;
 const uint magenta = 0xFFFF00FF;
 
-const qreal robotMass = 800;
 const qreal spoilColorDispersion = 2.0;
 const qreal spoilLightDispersion = 1.0;
 const qreal spoilSonarDispersion = 1.5;

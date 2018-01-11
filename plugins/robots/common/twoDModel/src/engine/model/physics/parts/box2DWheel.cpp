@@ -45,7 +45,7 @@ box2DWheel::box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, b
 
 	body->CreateFixture( &fixtureDef );
 
-	body->SetUserData( this );
+	body->SetUserData(this);
 	prevSpeed = 0;
 }
 

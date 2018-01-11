@@ -44,7 +44,7 @@ box2DRobot::box2DRobot(box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 	robotFixture.density = 0.01f;
 	robotFixture.friction = model->info().friction();
 	body->CreateFixture(&robotFixture);
-	body->SetUserData( this );
+	body->SetUserData(this);
 
 	connectWheels();
 }

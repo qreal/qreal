@@ -22,6 +22,7 @@
 #include "twoDModel/engine/model/image.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
 #include "src/engine/items/colorFieldItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/rectangleItem.h"
@@ -133,6 +134,11 @@ const QMap<QString, items::WallItem *> &WorldModel::walls() const
 	return mWalls;
 }
 
+const QMap<QString, items::SkittleItem *> &WorldModel::skittles() const
+{
+	return mSkittles;
+}
+
 void WorldModel::addWall(items::WallItem *wall)
 {
 	const QString id = wall->id();
@@ -149,6 +155,24 @@ void WorldModel::removeWall(items::WallItem *wall)
 {
 	mWalls.remove(wall->id());
 	emit itemRemoved(wall);
+}
+
+void WorldModel::addSkittle(items::SkittleItem *skittle)
+{
+	const QString id = skittle->id();
+	if (mWalls.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return; // probably better than having no way to delete those duplicate items on the scene
+	}
+
+	mSkittles[id] = skittle;
+	emit skittleAdded(skittle);
+}
+
+void WorldModel::removeSkittle(items::SkittleItem *skittle)
+{
+	mSkittles.remove(skittle->id());
+	emit itemRemoved(skittle);
 }
 
 const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
@@ -211,6 +235,10 @@ void WorldModel::clear()
 {
 	while (!mWalls.isEmpty()) {
 		removeWall(mWalls.last());
+	}
+
+	while (!mSkittles.isEmpty()) {
+		removeSkittle(mSkittles.last());
 	}
 
 	while (!mColorFields.isEmpty()) {
@@ -549,11 +577,13 @@ void WorldModel::createRegion(const QDomElement &element)
 void WorldModel::removeItem(const QString &id)
 {
 	QGraphicsObject *item = findId(id);
-	if (items::WallItem *wall = dynamic_cast<items::WallItem *>(item)) {
+	if (auto wall = dynamic_cast<items::WallItem *>(item)) {
 		removeWall(wall);
-	} else if (items::ColorFieldItem *colorItem = dynamic_cast<items::ColorFieldItem *>(item)) {
+	} else if (auto colorItem = dynamic_cast<items::ColorFieldItem *>(item)) {
 		removeColorField(colorItem);
-	} else if (items::ImageItem *image = dynamic_cast<items::ImageItem *>(item)) {
+	} else if (auto image = dynamic_cast<items::ImageItem *>(item)) {
 		removeImage(image);
+	} else if (auto skittleItem = dynamic_cast<items::SkittleItem *>(item)) {
+		removeSkittle(skittleItem);
 	}
 }

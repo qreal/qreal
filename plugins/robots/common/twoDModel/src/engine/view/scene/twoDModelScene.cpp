@@ -36,6 +36,7 @@
 #include "src/engine/view/scene/sensorItem.h"
 #include "src/engine/view/scene/sonarSensorItem.h"
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/rectangleItem.h"
@@ -69,6 +70,7 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 	setEmptyPenBrushItems();
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::skittleAdded, this, &TwoDModelScene::onColorItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::imageItemAdded, this, &TwoDModelScene::onImageItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
@@ -248,6 +250,11 @@ void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				initItem(mCurrentWall);
 				mModel.worldModel().addWall(mCurrentWall);
 				break;
+			case skittle:
+				mCurrentSkittle = new items::SkittleItem(position);
+				initItem(mCurrentSkittle);
+				mModel.worldModel().addSkittle(mCurrentSkittle);
+				break;
 			case line:
 				mCurrentLine = new items::LineItem(position, position);
 				initColorField(mCurrentLine);
@@ -422,6 +429,7 @@ void TwoDModelScene::deleteSelectedItems()
 		items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
 		items::ColorFieldItem * const colorField = dynamic_cast<items::ColorFieldItem *>(item);
 		items::ImageItem * const image = dynamic_cast<items::ImageItem *>(item);
+		items::SkittleItem * const skittle = dynamic_cast<items::SkittleItem *>(item);
 
 		if (sensor && !mSensorsReadOnly) {
 			for (RobotItem * const robotItem : mRobots.values()) {
@@ -442,6 +450,8 @@ void TwoDModelScene::deleteSelectedItems()
 			mCurrentCurve = nullptr;
 		} else if (image && !mWorldReadOnly) {
 			mModel.worldModel().removeImage(image);
+		} else if (skittle && !mWorldReadOnly) {
+			mModel.worldModel().removeSkittle(skittle);
 		}
 	}
 
@@ -525,6 +535,11 @@ void TwoDModelScene::addWall()
 	mDrawingAction = wall;
 }
 
+void TwoDModelScene::addSkittle()
+{
+	mDrawingAction = skittle;
+}
+
 void TwoDModelScene::addLine()
 {
 	mDrawingAction = line;
@@ -583,9 +598,15 @@ void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 		for (const items::WallItem *wall : mModel.worldModel().walls()) {
 			worldItemsToDelete << wall->id();
 		}
+
+		for (const items::SkittleItem *skittle : mModel.worldModel().skittles()) {
+			worldItemsToDelete << skittle->id();
+		}
+
 		for (const items::ColorFieldItem *colorField : mModel.worldModel().colorFields()) {
 			worldItemsToDelete << colorField->id();
 		}
+
 		for (const items::RegionItem *region : mModel.worldModel().regions()) {
 			worldItemsToDelete << region->id();
 		}

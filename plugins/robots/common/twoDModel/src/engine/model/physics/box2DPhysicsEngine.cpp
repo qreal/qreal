@@ -22,10 +22,14 @@
 #include "src/engine/view/scene/twoDModelScene.h"
 #include "src/engine/view/scene/robotItem.h"
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
 #include "qrutils/mathUtils/math.h"
 #include "parts/box2DWheel.h"
 #include "parts/box2DRobot.h"
 #include "parts/box2DWall.h"
+#include "parts/box2DSkittle.h"
+#include "contactListener.h"
+
 
 
 using namespace twoDModel::model::physics;
@@ -36,17 +40,25 @@ box2DPhysicsEngine::box2DPhysicsEngine (const WorldModel &worldModel
 		, const QList<RobotModel *> robots)
 	: PhysicsEngineBase(worldModel, robots)
 	, mPixelsInCm(worldModel.pixelsInCm())
+	, mContactListener(new ContactListener())
 	, mWorld(new b2World(b2Vec2(0, 0)))
 	, mPrevPosition(b2Vec2(0, 0))
 	, mPrevAngle(0)
 {
+	mWorld->SetContactListener(mContactListener.data());
 	connect(&worldModel, &model::WorldModel::wallAdded, this, &box2DPhysicsEngine::itemAdded);
+	connect(&worldModel, &model::WorldModel::skittleAdded, this, &box2DPhysicsEngine::itemAdded);
 	connect(&worldModel, &model::WorldModel::itemRemoved, this, &box2DPhysicsEngine::itemRemoved);
+
+	connect(mContactListener.data(), &ContactListener::bodyPositionChanged
+			, this, &box2DPhysicsEngine::onBodyPositionChanged);
 }
 
 box2DPhysicsEngine::~box2DPhysicsEngine(){
-	for (box2DRobot *robot : mBox2DRobots.values())
+	for (box2DRobot *robot : mBox2DRobots.values()) {
 		delete robot;
+	}
+
 	mBox2DRobots.clear();
 	mRightWheels.clear();
 	mLeftWheels.clear();
@@ -62,8 +74,10 @@ QVector2D box2DPhysicsEngine::positionShift(model::RobotModel &robot) const
 
 qreal box2DPhysicsEngine::rotation(model::RobotModel &robot) const
 {
-	if (!mBox2DRobots.contains(&robot))
+	if (!mBox2DRobots.contains(&robot)) {
 		return 0;
+	}
+
 	return angleToScene(mBox2DRobots[&robot]->body->GetAngle() - mPrevAngle);
 }
 
@@ -195,6 +209,26 @@ void box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
 	onMouseReleased(pos, angleToScene(mBox2DRobots.first()->body->GetAngle()));
 }
 
+void box2DPhysicsEngine::onBodyPositionChanged(b2Body *body, b2Vec2 position, float32 angle)
+{
+	if (auto skittle = reinterpret_cast<box2DSkittle *>(body->GetUserData())) {
+		if (auto rect = mYellowSkittlesItems[skittle]) {
+			qreal localAngleToScene = angleToScene(angle);
+			QPointF localPositionToScene = positionToScene(position);
+
+			skittle->item.setPos(localPositionToScene);
+
+//			auto skittleRect = skittle->item.boundingRect();
+
+//			rect->setX(skittleRect.x());
+//			rect->setY(skittleRect.y());
+//			rect->setRect(skittle->item.x(), skittle->item.y(), skittleRect.width(), skittleRect.height());
+			skittle->item.setRotation(localAngleToScene);
+//			rect->setRotation(localAngleToScene);
+		}
+	}
+}
+
 void box2DPhysicsEngine::removeRobot(model::RobotModel * const robot)
 {
 	PhysicsEngineBase::removeRobot(robot);
@@ -243,17 +277,24 @@ void box2DPhysicsEngine::itemAdded(items::SolidItem * const item)
 		auto func = [&] {
 			onWallDragged(dynamic_cast<items::WallItem *> (sender()));
 		};
+
 		connect(mCurrentWall, &items::WallItem::x1Changed, this, func);
 		connect(mCurrentWall, &items::WallItem::x2Changed, this, func);
 		connect(mCurrentWall, &items::WallItem::y1Changed, this, func);
 		connect(mCurrentWall, &items::WallItem::y2Changed, this, func);
 		onWallResize();
+	} else if (dynamic_cast<items::SkittleItem *>(item)) {
+		mCurrentSkittle = dynamic_cast<items::SkittleItem *>(item);
+		onSkittleAdded();
 	}
 }
 
-void box2DPhysicsEngine::onWallResize(){
-	if (!mCurrentWall)
+void box2DPhysicsEngine::onWallResize()
+{
+	if (!mCurrentWall) {
 		return;
+	}
+
 	box2DWall *wall = new box2DWall(this, *mCurrentWall);
 	mBox2DWalls[mCurrentWall] = wall;
 
@@ -266,26 +307,48 @@ void box2DPhysicsEngine::onWallResize(){
 	mScene->addItem(wallRect);
 	wallRect->setPos(positionToScene(wall->body->GetPosition()));
 	wallRect->setRotation(angleToScene(wall->body->GetAngle()));
-	mBlackWallsItems[mBox2DWalls[mCurrentWall]] = wallRect;
+	mBlackWallsItems[wall] = wallRect;
 	//
 
 	mCurrentWall = nullptr;
 }
 
-void box2DPhysicsEngine::onWallDragged(items::WallItem *wall){
+void box2DPhysicsEngine::onWallDragged(items::WallItem *wall)
+{
 	itemRemoved(wall);
 	mCurrentWall = wall;
 	onWallResize();
 }
 
+void box2DPhysicsEngine::onSkittleAdded()
+{
+	box2DSkittle *boxSkittle = new box2DSkittle(this, *mCurrentSkittle);
+	mBox2DSkittles[mCurrentSkittle] = boxSkittle;
+
+	//test
+	QRectF localBoundingRect = mCurrentSkittle->boundingRect();
+	auto skittleRect = new QGraphicsRectItem(mCurrentSkittle->x(), mCurrentSkittle->y()
+			, localBoundingRect.height(), localBoundingRect.width());
+	skittleRect->setBrush(QBrush(Qt::yellow));
+	mScene->addItem(skittleRect);
+	skittleRect->setRotation(angleToScene(boxSkittle->body->GetAngle()));
+	mYellowSkittlesItems[boxSkittle] = skittleRect;
+
+	mCurrentSkittle = nullptr;
+}
+
 void box2DPhysicsEngine::itemRemoved(QGraphicsItem * const item)
 {
 	if (mBox2DWalls.contains(item)) {
-		//test
 		mScene->removeItem(mBlackWallsItems[mBox2DWalls[item]]);
-		//
 		delete mBox2DWalls[item];
 		mBox2DWalls.remove(item);
+	}
+
+	if (mBox2DSkittles.contains(item)) {
+		mScene->removeItem(mYellowSkittlesItems[mBox2DSkittles[item]]);
+		delete mBox2DSkittles[item];
+		mBox2DSkittles.remove(item);
 	}
 }
 

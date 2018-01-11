@@ -40,6 +40,7 @@ namespace twoDModel {
 
 namespace items {
 class WallItem;
+class SkittleItem;
 class LineItem;
 class CurveItem;
 class StylusItem;
@@ -85,6 +86,9 @@ public:
 public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
 	void addWall();
+
+	/// Sets a flag that next user mouse actions should draw a skittle on the scene.
+	void addSkittle();
 
 	/// Sets a flag that next user mouse actions should draw a colored line on the scene.
 	void addLine();
@@ -175,6 +179,7 @@ private:
 	{
 		none = 0
 		, wall
+		, skittle
 		, line
 		, bezier
 		, stylus
@@ -224,6 +229,7 @@ private:
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
 	items::WallItem *mCurrentWall = nullptr;
+	items::SkittleItem *mCurrentSkittle = nullptr;
 	items::LineItem *mCurrentLine = nullptr;
 	items::CurveItem *mCurrentCurve = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;

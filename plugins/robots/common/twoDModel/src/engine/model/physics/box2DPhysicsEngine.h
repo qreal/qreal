@@ -19,19 +19,23 @@
 #include "twoDModel/engine/model/worldModel.h"
 
 class b2World;
+class ContactListener;
+class b2Body;
 
 namespace twoDModel {
 	namespace view {
 		class TwoDModelScene;
 		class RobotItem;
 	}
+
 	namespace model {
 	namespace physics {
 	namespace parts {
 		class box2DRobot;
 		class box2DWheel;
 		class box2DWall;
-}
+		class box2DSkittle;
+	}
 
 class box2DPhysicsEngine : public PhysicsEngineBase
 {
@@ -66,11 +70,13 @@ public:
 public slots:
 	void onWallResize();
 	void onWallDragged(items::WallItem *wall);
+	void onSkittleAdded();
 	void onRobotStartPositionChanged(const QPointF &newPos, twoDModel::model::RobotModel *robot);
 	void onRobotStartAngleChanged(const qreal newAngle, twoDModel::model::RobotModel *robot);
 	void onMouseReleased(QPointF newPos, qreal newAngle);
 	void onMousePressed();
 	void onRecoverRobotPosition(QPointF pos);
+	void onBodyPositionChanged(b2Body * body, b2Vec2 position, float32 angle);
 
 protected:
 	void onPixelsInCmChanged(qreal value) override;
@@ -83,13 +89,17 @@ private:
 
 	twoDModel::view::TwoDModelScene *mScene;
 	qreal mPixelsInCm;
+	QScopedPointer<ContactListener> mContactListener;
 	QScopedPointer<b2World> mWorld;
 
 	QMap<RobotModel *, parts::box2DRobot *> mBox2DRobots;  // Takes ownership on b2Body instances
 	QMap<RobotModel *, parts::box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<QGraphicsItem *, parts::box2DWall *> mBox2DWalls;  // Takes ownership on b2Body instances
+	QMap<QGraphicsItem *, parts::box2DSkittle *> mBox2DSkittles;  // Takes ownership on b2Body instances
+
 	items::WallItem *mCurrentWall; // Doesn't take ownership
+	items::SkittleItem *mCurrentSkittle; // Doesn't take ownership
 	bool mMouseJustReleased = false;
 	bool firstSetPos = true;
 
@@ -100,6 +110,7 @@ private:
 	QGraphicsRectItem *wheel1Item = nullptr;
 	QGraphicsRectItem *wheel2Item = nullptr;
 	QMap<parts::box2DWall *, QGraphicsRectItem *> mBlackWallsItems;
+	QMap<parts::box2DSkittle *, QGraphicsRectItem *> mYellowSkittlesItems;
 };
 
 }

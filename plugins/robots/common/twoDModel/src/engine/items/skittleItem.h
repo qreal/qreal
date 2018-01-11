@@ -1,4 +1,4 @@
-/* Copyright 2017 Gleb Zakharov
+/* Copyright 2017 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,34 +11,27 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
 #pragma once
 
-class b2Body;
+#include "solidItem.h"
 
-namespace twoDModel{
+namespace twoDModel {
 namespace items {
-	class WallItem;
-}
 
-namespace model {
-namespace physics {
-	class box2DPhysicsEngine;
-
-namespace parts {
-
-class box2DWall
+class SkittleItem : public SolidItem
 {
 public:
-	b2Body *body; // Take ownership
-	twoDModel::items::WallItem &item; // Doesn't take ownership
-	twoDModel::model::physics::box2DPhysicsEngine &engine; // Doesn't take ownership
+	explicit SkittleItem(QPointF position);
 
-	box2DWall(twoDModel::model::physics::box2DPhysicsEngine *engine
-			, twoDModel::items::WallItem &wallItem);
-	~box2DWall();
+	/// Creates and returns skittle item for 2D model palette.
+	/// Transfers ownership.
+	static QAction *skittleTool();
+
+	QRectF boundingRect() const override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
 };
 
-}
-}
 }
 }
