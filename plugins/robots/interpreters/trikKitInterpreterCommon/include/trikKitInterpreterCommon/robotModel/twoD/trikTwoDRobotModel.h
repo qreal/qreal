@@ -54,6 +54,7 @@ public:
 
 	QPair<QPoint, qreal> specialDeviceConfiguration(const kitBase::robotModel::PortInfo &port) const override;
 
+	QPolygonF collidingPolygon() const override;
 	qreal mass() const override;
 	qreal friction() const override;
 	qreal onePercentAngularVelocity() const override;

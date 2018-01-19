@@ -191,6 +191,7 @@ void RobotItem::addSensor(const kitBase::robotModel::PortInfo &port, SensorItem 
 
 	sensor->setPos(mRobotModel.configuration().position(port));
 	sensor->setRotation(mRobotModel.configuration().direction(port));
+	emit sensorAdded(sensor);
 }
 
 void RobotItem::removeSensor(const kitBase::robotModel::PortInfo &port)
@@ -201,6 +202,7 @@ void RobotItem::removeSensor(const kitBase::robotModel::PortInfo &port)
 
 	scene()->removeItem(mSensors[port]);
 	delete mSensors[port];
+	emit sensorRemoved(mSensors[port]);
 	mSensors[port] = nullptr;
 }
 
@@ -208,6 +210,7 @@ void RobotItem::updateSensorPosition(const kitBase::robotModel::PortInfo &port)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setPos(mRobotModel.configuration().position(port));
+		emit sensorUpdated(mSensors[port]);
 	}
 }
 
@@ -215,6 +218,7 @@ void RobotItem::updateSensorRotation(const kitBase::robotModel::PortInfo &port)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setRotation(mRobotModel.configuration().direction(port));
+		emit sensorUpdated(mSensors[port]);
 	}
 }
 
@@ -262,6 +266,26 @@ void RobotItem::returnToStartPosition()
 	const QPointF markerPos = mRobotModel.startPositionMarker()->scenePos();
 	const QPointF shiftToCenter = mapToScene(QPointF()) - mapToScene(boundingRect().center() - shiftFromPicture);
 	mRobotModel.setPosition(markerPos + shiftToCenter);
+}
+
+QPolygonF RobotItem::collidingPolygon() const
+{
+	return mRobotModel.info().collidingPolygon();
+}
+
+qreal RobotItem::mass() const
+{
+	return mRobotModel.info().mass();
+}
+
+qreal RobotItem::friction() const
+{
+	return mRobotModel.info().friction();
+}
+
+twoDModel::items::SolidItem::BodyType RobotItem::bodyType() const
+{
+	return BodyType::DYNAMIC;
 }
 
 void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option

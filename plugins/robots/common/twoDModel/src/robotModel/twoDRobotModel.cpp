@@ -116,6 +116,11 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 	mEngine = &engine;
 }
 
+QPolygonF TwoDRobotModel::collidingPolygon() const
+{
+	return QPolygonF(QRectF(QPointF(), size()));
+}
+
 QSizeF TwoDRobotModel::size() const
 {
 	return QSizeF(50, 50);

@@ -1,4 +1,4 @@
-/* Copyright 2017 Gleb Zakharov
+/* Copyright 2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,12 +12,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 #pragma once
+class QPolygonF;
 
 class b2Body;
+class b2Vec2;
 
 namespace twoDModel{
 namespace items {
-	class WallItem;
+	class SolidItem;
 }
 
 namespace model {
@@ -26,16 +28,31 @@ namespace physics {
 
 namespace parts {
 
-class box2DWall
+
+class Box2DItem
 {
 public:
-	b2Body *body; // Take ownership
-	twoDModel::items::WallItem &item; // Doesn't take ownership
-	twoDModel::model::physics::box2DPhysicsEngine &engine; // Doesn't take ownership
+	Box2DItem(twoDModel::model::physics::box2DPhysicsEngine *mEngine
+			, twoDModel::items::SolidItem &mItem, const b2Vec2 &pos, float angle);
 
-	box2DWall(twoDModel::model::physics::box2DPhysicsEngine *engine
-			, twoDModel::items::WallItem &wallItem);
-	~box2DWall();
+	~Box2DItem();
+
+	void moveToPosition(const b2Vec2 &pos);
+	void setRotation(float angle);
+
+	const b2Vec2 &getPosition() const;
+	float getRotation() const;
+
+	b2Body *getBody() const;
+
+private:
+	b2Body *mBody; // Takes ownership
+	b2Vec2 *mPolygon; // Takes ownership
+
+	bool mIsCircle;
+
+	twoDModel::items::SolidItem &mItem; // Doesn't take ownership
+	twoDModel::model::physics::box2DPhysicsEngine &mEngine; // Doesn't take ownership
 };
 
 }

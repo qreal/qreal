@@ -65,6 +65,9 @@ public:
 	/// Returns a pointer to a widget with display emulator for current robot model.
 	virtual engine::TwoDModelDisplayWidget *displayWidget() const = 0;
 
+	/// Returns robot`s polygon. By default returns polygon constructed as rectangle using size.
+	virtual QPolygonF collidingPolygon() const;
+
 	/// Returns robot`s mass in kilograms. Mass will be used by physical engine to process collisions correctly.
 	virtual qreal mass() const = 0;
 

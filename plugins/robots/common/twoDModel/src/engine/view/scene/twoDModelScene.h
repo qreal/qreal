@@ -39,6 +39,7 @@ class AbstractItem;
 namespace twoDModel {
 
 namespace items {
+class SolidItem;
 class WallItem;
 class SkittleItem;
 class LineItem;
@@ -162,6 +163,9 @@ private slots:
 
 	/// Called after new wall is added to a world model.
 	void onWallAdded(items::WallItem *wall);
+
+	/// Called after new skittle is added to a world model.
+	void onSkittleAdded(items::SkittleItem *skittle);
 
 	/// Called after new color field item is added to a world model.
 	void onColorItemAdded(graphicsUtils::AbstractItem *item);

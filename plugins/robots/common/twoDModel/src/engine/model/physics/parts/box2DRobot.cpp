@@ -17,9 +17,11 @@
 #include <QDebug>
 
 #include "src/engine/model/physics/box2DPhysicsEngine.h"
+#include "src/engine/view/scene/sonarSensorItem.h"
 #include "twoDModel/engine/model/robotModel.h"
 #include "twoDModel/engine/model/constants.h"
 #include "box2DWheel.h"
+#include "box2DItem.h"
 
 using namespace twoDModel::model::physics;
 using namespace parts;
@@ -28,9 +30,6 @@ box2DRobot::box2DRobot(box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 		, b2Vec2 pos, float angle)
 	: model(robotModel), engine(engine), world(engine->box2DWorld())
 {
-	float32 widthRobotM =  engine->pxToM(model->info().size().width());
-	float32 heightRobotM = engine->pxToM(model->info().size().height());
-
 	b2BodyDef bodyDef;
 	bodyDef.position = pos;
 	bodyDef.angle = angle;
@@ -39,49 +38,100 @@ box2DRobot::box2DRobot(box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 
 	b2FixtureDef robotFixture;
 	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox( widthRobotM / 2, heightRobotM / 2 );
+	QPolygonF collidingPolygon = model->info().collidingPolygon();
+	QPointF localCenter = collidingPolygon.boundingRect().center();
+	mPolygon = new b2Vec2[collidingPolygon.size()];
+	for (int i = 0; i < collidingPolygon.size(); ++i) {
+		mPolygon[i] = engine->positionToBox2D(collidingPolygon.at(i) - localCenter);
+	}
+
+	polygonShape.Set(mPolygon, collidingPolygon.size());
 	robotFixture.shape = &polygonShape;
-	robotFixture.density = 0.01f;
+	robotFixture.density = engine->computeDensity(collidingPolygon, model->info().mass());
 	robotFixture.friction = model->info().friction();
 	body->CreateFixture(&robotFixture);
 	body->SetUserData(this);
-
 	connectWheels();
 }
 
 box2DRobot::~box2DRobot() {
-	for (auto i = joints.begin(); i != joints.end(); i++)
-		world.DestroyJoint(*i);
-	for (auto i = wheels.begin(); i != wheels.end(); i++)
-		delete *i;
+	for (auto i = body->GetJointList(); i; i = i->next) {
+		world.DestroyJoint(i->joint);
+	}
+
+	for (auto wheel : wheels) {
+		delete wheel;
+	}
+
+	for (auto sensor : mSensors) {
+		delete sensor;
+	}
+
 	world.DestroyBody(body);
+	delete[] mPolygon;
 }
 
-void box2DRobot::Stop()
+void box2DRobot::stop()
 {
-	if (isStopping){
+	if (mIsStopping){
 		body->SetLinearVelocity(b2Vec2(0, 0));
 		body->SetAngularVelocity(0);
 	}
 }
 
-void box2DRobot::StartStopping()
+void box2DRobot::startStopping()
 {
-	isStopping = true;
+	mIsStopping = true;
 }
 
-void box2DRobot::FinishStopping()
+void box2DRobot::finishStopping()
 {
-	isStopping = false;
+	mIsStopping = false;
 }
 
-bool box2DRobot::IsStopping()
+bool box2DRobot::isStopping()
 {
-	return isStopping;
+	return mIsStopping;
+}
+
+void box2DRobot::addSensor(twoDModel::view::SensorItem *sensor)
+{
+	QPolygonF collidingPolygon = sensor->collidingPolygon();
+	QPointF localCenter = collidingPolygon.boundingRect().center();
+	b2Vec2 pos = engine->positionToBox2D(sensor->scenePos() - localCenter);
+	float32 angle = engine->angleToBox2D(sensor->rotation());
+	mSensors[sensor] = new Box2DItem(engine, *sensor, pos, angle);
+	reinit();
+}
+
+void box2DRobot::removeSensor(twoDModel::view::SensorItem *sensor)
+{
+	delete mSensors[sensor];
+	mSensors.remove(sensor);
+	reinit();
+}
+
+void box2DRobot::reinit()
+{
+	joints.clear();
+	for (auto i = body->GetJointList(); i; i = i->next) {
+		world.DestroyJoint(i->joint);
+	}
+
+	for (auto wheel : wheels) {
+		connectWheel(*wheel);
+	}
+
+	for (twoDModel::view::SensorItem *sensor : mSensors.keys()) {
+		const b2Vec2 pos = engine->positionToBox2D(
+				sensor->scenePos() - sensor->collidingPolygon().boundingRect().center());
+		mSensors[sensor]->moveToPosition(pos);
+		connectSensor(*mSensors[sensor]);
+	}
 }
 
 void box2DRobot::connectWheels() {
-	qreal wheelWidthShift = 5;
+	qreal wheelWidthShift = 2;
 	QPointF leftUpCorner = QPointF(-model->info().size().width() / 2, -model->info().size().height() / 2);
 
 	QPointF posLeftWheelFromRobot = QPointF(twoDModel::robotWheelDiameterInPx / 2, wheelWidthShift);
@@ -115,4 +165,17 @@ void box2DRobot::connectWheel(box2DWheel &wheel){
 
 	b2Joint *joint = world.CreateJoint(&revDef);
 	joints.push_back(joint);
+}
+
+void box2DRobot::connectSensor(const Box2DItem &sensor)
+{
+	b2WeldJointDef jointDef;
+	jointDef.bodyA = body;
+	jointDef.bodyB = sensor.getBody();
+
+	jointDef.localAnchorA = body->GetLocalCenter();
+	jointDef.localAnchorB = sensor.getBody()->GetLocalPoint(body->GetWorldCenter());
+
+	auto joint = world.CreateJoint(&jointDef);
+	joints.append(joint);
 }

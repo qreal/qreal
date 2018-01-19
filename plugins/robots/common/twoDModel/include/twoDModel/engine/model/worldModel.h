@@ -74,7 +74,7 @@ public:
 	/// Returns a set of walls in the world model. Result is mapping of wall ids to walls themselves.
 	const QMap<QString, items::WallItem *> &walls() const;
 
-	/// Returns a set of skittles in the world model. Result is mapping of wall ids to walls themselves.
+	/// Returns a set of skittles in the world model. Result is mapping of skittle ids to slittles themselves.
 	const QMap<QString, items::SkittleItem *> &skittles() const;
 
 	/// Returns a set of color field items in the world model. Result is mapping of field ids to fields themselves.
@@ -150,6 +150,9 @@ public:
 
 	/// Creates wall item described by \a element in the world model.
 	void createWall(const QDomElement &element);
+
+	/// Creates skittle item described by \a element in the world model.
+	void createSkittle(const QDomElement &element);
 
 	/// Creates line colored item described by \a element in the world model.
 	void createLine(const QDomElement &element);

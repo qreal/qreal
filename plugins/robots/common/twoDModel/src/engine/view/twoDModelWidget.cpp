@@ -339,6 +339,9 @@ void TwoDModelWidget::returnToStartMarker()
 	mModel.worldModel().clearRobotTrace();
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
+		for (items::SkittleItem *skittle : mModel.worldModel().skittles()) {
+			skittle->returnToStartPosition();
+		}
 	}
 }
 
@@ -787,7 +790,7 @@ QCursor TwoDModelWidget::cursorTypeToCursor(CursorType type) const
 	case drawWall:
 		return QCursor(QPixmap(":/icons/2d_drawWallCursor.png"), 0, 0);
 	case drawSkittle:
-		return QCursor(QPixmap(":/icons/2d_drawSkittleCursor.png"), 0, 0);
+		return QCursor(QPixmap(":/icons/2d_drawCanCursor.png"), 0, 0);
 	case drawEllipse:
 		return QCursor(QPixmap(":/icons/2d_drawEllipseCursor.png"), 0, 0);
 	case drawStylus:

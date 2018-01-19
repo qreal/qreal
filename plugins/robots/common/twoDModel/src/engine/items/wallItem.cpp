@@ -28,7 +28,7 @@ using namespace graphicsUtils;
 const int wallWidth = 10;
 
 WallItem::WallItem(const QPointF &begin, const QPointF &end)
-	: SolidItem()
+	: AbstractItem()
 	, mImage(":/icons/2d_wall.png")
 {
 	setX1(begin.x());
@@ -181,7 +181,7 @@ QVariant WallItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QV
 
 QDomElement WallItem::serialize(QDomElement &parent) const
 {
-	QDomElement wallNode = SolidItem::serialize(parent);
+	QDomElement wallNode = AbstractItem::serialize(parent);
 	wallNode.setTagName("wall");
 	mLineImpl.serialize(wallNode, x1() + scenePos().x(), y1() + scenePos().y()
 			, x2() + scenePos().x(), y2() + scenePos().y());
@@ -240,7 +240,7 @@ void WallItem::resizeItem(QGraphicsSceneMouseEvent *event)
 			resizeWithGrid(event, SettingsManager::value("2dGridCellSize").toInt());
 		} else {
 			if (dragState() == TopLeft || dragState() == BottomRight) {
-				SolidItem::resizeItem(event);
+				AbstractItem::resizeItem(event);
 			} else {
 				setFlag(QGraphicsItem::ItemIsMovable, true);
 			}
@@ -340,6 +340,26 @@ void WallItem::alignTheWall(int indexGrid)
 	countCellNumbCoordinates(indexGrid);
 	setBeginCoordinatesWithGrid(indexGrid);
 	setEndCoordinatesWithGrid(indexGrid);
+}
+
+QPolygonF WallItem::collidingPolygon() const
+{
+	return mPath.toFillPolygon();
+}
+
+qreal WallItem::mass() const
+{
+	return 0.0;
+}
+
+qreal WallItem::friction() const
+{
+	return 1.0;
+}
+
+SolidItem::BodyType WallItem::bodyType() const
+{
+	return BodyType::STATIC;
 }
 
 void WallItem::countCellNumbCoordinates(int indexGrid)

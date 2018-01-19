@@ -203,6 +203,14 @@ QPair<QPoint, qreal> TrikTwoDRobotModel::specialDeviceConfiguration(const PortIn
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
 }
 
+QPolygonF TrikTwoDRobotModel::collidingPolygon() const
+{
+	QPolygonF res;
+	res << QPointF(1, 10) << QPointF(47, 10) << QPointF(49, 20)
+			<< QPointF(49, 30) << QPointF(47, 40) << QPointF(1, 40);
+	return res;
+}
+
 qreal TrikTwoDRobotModel::mass() const
 {
 	return 1.05;

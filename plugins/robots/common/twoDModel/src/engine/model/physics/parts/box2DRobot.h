@@ -23,18 +23,24 @@ class b2Joint;
 class b2Body;
 
 namespace twoDModel {
+namespace view {
+	class SensorItem;
+}
+
 namespace model {
 	class RobotModel;
 namespace physics {
 namespace parts {
 
 class box2DWheel;
+class Box2DItem;
 
 class box2DRobot{
 public:
 	b2Body *body; // Take ownership
 	QList<box2DWheel *> wheels; // Take ownership
 	QList<b2Joint *> joints; // Take ownership
+	QMap<twoDModel::view::SensorItem *, parts::Box2DItem *> mSensors;  // Takes ownership on b2Sensor instances
 	twoDModel::model::RobotModel * const model; // Doesn't take ownership
 	twoDModel::model::physics::box2DPhysicsEngine *engine; // Doesn't take ownership
 	b2World &world; // Doesn't take ownership
@@ -45,16 +51,23 @@ public:
 			, float angle);
 	~box2DRobot();
 
-	void Stop();
-	void StartStopping();
-	void FinishStopping();
-	bool IsStopping();
+	void stop();
+	void startStopping();
+	void finishStopping();
+	bool isStopping();
+
+	void addSensor(twoDModel::view::SensorItem *sensor);
+	void removeSensor(twoDModel::view::SensorItem *sensor);
+	void reinit();
 
 private:
 	void connectWheels();
 	void connectWheel(box2DWheel &wheel);
+	void connectSensor(const Box2DItem &sensor);
 
-	bool isStopping = false;
+	b2Vec2 *mPolygon;
+
+	bool mIsStopping = false;
 };
 
 }

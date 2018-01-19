@@ -69,7 +69,7 @@ protected slots:
 	virtual void onPixelsInCmChanged(qreal value);
 
 	/// Starts tracking item`s position and rotation.
-	virtual void itemAdded(items::SolidItem * const item);
+	virtual void itemAdded(QGraphicsItem * const item);
 
 	/// Stops tracking item`s position and rotation.
 	virtual void itemRemoved(QGraphicsItem * const item);

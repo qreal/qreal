@@ -41,7 +41,9 @@ box2DWheel::box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, b
 	b2PolygonShape polygonShape;
 	polygonShape.SetAsBox( wheelWidthM / 2, wheelHeightM / 2 );
 	fixtureDef.shape = &polygonShape;
-	fixtureDef.density = wheelDensity;
+	fixtureDef.density = robot.engine->computeDensity(
+			QPolygonF(QRectF(0, 0, twoDModel::robotWheelDiameterInPx / 2, twoDModel::robotWheelDiameterInPx))
+			, wheelMass);
 
 	body->CreateFixture( &fixtureDef );
 
@@ -64,9 +66,8 @@ b2Vec2 box2DWheel::getForwardVelocity() const {
 }
 
 void box2DWheel::keepConstantSpeed(float speed) {
-
 	if (!mathUtils::Math::eq(prevSpeed, speed)){
-		robot.body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.001f * mathUtils::Math::sign(speed), 0)), true);
+		robot.body->ApplyForceToCenter(body->GetWorldVector(b2Vec2(0.1f * mathUtils::Math::sign(speed), 0)), true);
 		prevSpeed = speed;
 	}
 
@@ -79,14 +80,14 @@ void box2DWheel::keepConstantSpeed(float speed) {
 	forwardNormal = body->GetWorldVector(b2Vec2(1, 0));
 
 	float desiredSpeed = currentForwardSpeed;
-	float speedPiece = 0.02f;
+	float speedPiece = abs(speed) / 20;
 	if (currentForwardSpeed < speed) {
 		desiredSpeed += speedPiece;
-	}
-	else if (currentForwardSpeed > speed) {
+	} else if (currentForwardSpeed > speed) {
 		desiredSpeed -= speedPiece;
+	} else {
+		return;
 	}
-	else return;
 
 	float speedDiff = desiredSpeed - currentForwardSpeed;
 	b2Vec2 linearImpulse = speedDiff * body->GetMass() * forwardNormal;

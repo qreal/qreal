@@ -32,7 +32,7 @@ public:
 	const float wheelHeightM;
 	const float wheelWidthM;
 	const float wheelFriction = 1.0f;
-	const float wheelDensity = 1.0f;
+	const float wheelMass = 0.1f;
 
 	box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, box2DRobot &robot);
 	~box2DWheel();

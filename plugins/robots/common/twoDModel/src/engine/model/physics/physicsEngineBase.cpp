@@ -49,7 +49,7 @@ void PhysicsEngineBase::onPixelsInCmChanged(qreal value)
 	Q_UNUSED(value)
 }
 
-void PhysicsEngineBase::itemAdded(twoDModel::items::SolidItem * const item)
+void PhysicsEngineBase::itemAdded(QGraphicsItem * const item)
 {
 	Q_UNUSED(item)
 }

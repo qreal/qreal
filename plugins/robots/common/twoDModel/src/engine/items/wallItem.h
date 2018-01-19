@@ -15,13 +15,14 @@
 #pragma once
 
 #include <qrutils/graphicsUtils/lineImpl.h>
+#include <qrutils/graphicsUtils/abstractItem.h>
 
-#include "solidItem.h"
+#include "src/engine/items/solidItem.h"
 
 namespace twoDModel {
 namespace items {
 
-class WallItem : public SolidItem
+class WallItem : public graphicsUtils::AbstractItem, public SolidItem
 {
 	Q_OBJECT
 
@@ -65,6 +66,12 @@ public:
 	void reshapeBeginWithGrid(int indexGrid);
 	void setDraggedEnd(qreal x, qreal y);
 	void alignTheWall(int indexGrid);
+
+
+	QPolygonF collidingPolygon() const override;
+	qreal mass() const override;
+	qreal friction() const override;
+	BodyType bodyType() const override;
 
 signals:
 	void wallDragged(WallItem *item, const QPainterPath &shape, const QRectF &oldPos);

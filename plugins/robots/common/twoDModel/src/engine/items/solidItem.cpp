@@ -16,7 +16,17 @@
 
 using namespace twoDModel::items;
 
-SolidItem::SolidItem(QGraphicsItem *parent)
-	: graphicsUtils::AbstractItem(parent)
+bool SolidItem::isCircle() const
 {
+	return false;
+}
+
+qreal SolidItem::angularDamping() const
+{
+	return 0.0;
+}
+
+qreal SolidItem::linearDamping() const
+{
+	return 0.0;
 }

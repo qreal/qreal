@@ -14,15 +14,21 @@
 
 #pragma once
 
-#include "solidItem.h"
+#include "src/engine/items/solidItem.h"
+#include <qrutils/graphicsUtils/abstractItem.h>
+
+class QSvgRenderer;
 
 namespace twoDModel {
 namespace items {
 
-class SkittleItem : public SolidItem
+class SkittleItem : public graphicsUtils::AbstractItem, public SolidItem
 {
+	Q_OBJECT
+
 public:
-	explicit SkittleItem(QPointF position);
+	explicit SkittleItem(const QPointF &position);
+	~SkittleItem();
 
 	/// Creates and returns skittle item for 2D model palette.
 	/// Transfers ownership.
@@ -31,6 +37,29 @@ public:
 	QRectF boundingRect() const override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
+	void drawFieldForResizeItem(QPainter* painter) override { Q_UNUSED(painter) }
+	void resizeItem(QGraphicsSceneMouseEvent *event) override { Q_UNUSED(event) }
+
+	QDomElement serialize(QDomElement &element) const override;
+	void deserialize(const QDomElement &element) override;
+
+	void saveStartPosition();
+	void returnToStartPosition();
+
+	bool isCircle() const override;
+	qreal mass() const override;
+	BodyType bodyType() const override;
+	qreal friction() const override;
+	QPolygonF collidingPolygon() const override;
+	qreal angularDamping() const override;
+	qreal linearDamping() const override;
+
+
+private:
+	QPointF mStartPosition;
+	qreal mStartRotation;
+
+	QSvgRenderer *mSvgRenderer;
 };
 
 }

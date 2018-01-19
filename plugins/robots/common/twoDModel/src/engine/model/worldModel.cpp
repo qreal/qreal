@@ -160,7 +160,7 @@ void WorldModel::removeWall(items::WallItem *wall)
 void WorldModel::addSkittle(items::SkittleItem *skittle)
 {
 	const QString id = skittle->id();
-	if (mWalls.contains(id)) {
+	if (mSkittles.contains(id)) {
 		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
 		return; // probably better than having no way to delete those duplicate items on the scene
 	}
@@ -341,6 +341,12 @@ QDomElement WorldModel::serialize(QDomElement &parent) const
 		wall->serialize(walls);
 	}
 
+	QDomElement skittles = parent.ownerDocument().createElement("skittles");
+	result.appendChild(skittles);
+	for (items::SkittleItem * const skittle : mSkittles) {
+		skittle->serialize(skittles);
+	}
+
 	QDomElement colorFields = parent.ownerDocument().createElement("colorFields");
 	result.appendChild(colorFields);
 	for (const items::ColorFieldItem *colorField : mColorFields) {
@@ -409,6 +415,14 @@ void WorldModel::deserialize(const QDomElement &element)
 		}
 	}
 
+	for (QDomElement skittlesNode = element.firstChildElement("skittles"); !skittlesNode.isNull()
+			; skittlesNode = skittlesNode.nextSiblingElement("skittles")) {
+		for (QDomElement skittleNode = skittlesNode.firstChildElement("skittle"); !skittleNode.isNull()
+				; skittleNode = skittleNode.nextSiblingElement("skittle")) {
+			createSkittle(skittleNode);
+		}
+	}
+
 	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull()
 			; colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
 		for (QDomElement elementNode = colorFieldsNode.firstChildElement(); !elementNode.isNull()
@@ -441,6 +455,10 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 
 	if (mWalls.contains(id)) {
 		return mWalls[id];
+	}
+
+	if (mSkittles.contains(id)) {
+		return mSkittles[id];
 	}
 
 	if (mColorFields.contains(id)) {
@@ -493,6 +511,8 @@ void WorldModel::createElement(const QDomElement &element)
 		createImage(element);
 	} else if (element.tagName() == "wall") {
 		createWall(element);
+	} else if (element.tagName() == "skittle") {
+		createSkittle(element);
 	} else if (element.tagName() == "region") {
 		createRegion(element);
 	} else if (element.tagName() == "background") {
@@ -505,6 +525,13 @@ void WorldModel::createWall(const QDomElement &element)
 	items::WallItem *wall = new items::WallItem(QPointF(), QPointF());
 	wall->deserialize(element);
 	addWall(wall);
+}
+
+void WorldModel::createSkittle(const QDomElement &element)
+{
+	items::SkittleItem *skittle = new items::SkittleItem(QPointF());
+	skittle->deserialize(element);
+	addSkittle(skittle);
 }
 
 void WorldModel::createLine(const QDomElement &element)

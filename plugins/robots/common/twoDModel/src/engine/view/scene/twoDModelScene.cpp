@@ -70,7 +70,7 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 	setEmptyPenBrushItems();
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
-	connect(&mModel.worldModel(), &model::WorldModel::skittleAdded, this, &TwoDModelScene::onColorItemAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::skittleAdded, this, &TwoDModelScene::onSkittleAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::imageItemAdded, this, &TwoDModelScene::onImageItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
@@ -165,9 +165,24 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
 	subscribeItem(wall);
-	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
 	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
+	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
+}
+
+void TwoDModelScene::onSkittleAdded(items::SkittleItem *skittle)
+{
+	addItem(skittle);
+	subscribeItem(skittle);
+	connect(skittle, &items::SkittleItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	skittle->setEditable(!mWorldReadOnly);
+	connect(skittle, &items::SkittleItem::mouseInteractionStopped, this, [&](){
+		for (QGraphicsItem *item : selectedItems()) {
+			if (auto skittle = dynamic_cast<items::SkittleItem *>(item)) {
+				skittle->saveStartPosition();
+			}
+		}
+	});
 }
 
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
@@ -343,6 +358,11 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentWall = nullptr;
 		break;
 	}
+	case skittle: {
+		createdItem = mCurrentSkittle;
+		mCurrentSkittle = nullptr;
+		break;
+	}
 	case line: {
 		reshapeLine(mouseEvent);
 		createdItem = mCurrentLine;
@@ -441,6 +461,9 @@ void TwoDModelScene::deleteSelectedItems()
 		} else if (wall && !mWorldReadOnly) {
 			worldItemsToDelete << wall->id();
 			mCurrentWall = nullptr;
+		} else if (skittle && !mWorldReadOnly) {
+			worldItemsToDelete << skittle->id();
+			mCurrentSkittle = nullptr;
 		} else if (colorField && !mWorldReadOnly) {
 			worldItemsToDelete << colorField->id();
 			mCurrentLine = nullptr;
@@ -450,8 +473,6 @@ void TwoDModelScene::deleteSelectedItems()
 			mCurrentCurve = nullptr;
 		} else if (image && !mWorldReadOnly) {
 			mModel.worldModel().removeImage(image);
-		} else if (skittle && !mWorldReadOnly) {
-			mModel.worldModel().removeSkittle(skittle);
 		}
 	}
 

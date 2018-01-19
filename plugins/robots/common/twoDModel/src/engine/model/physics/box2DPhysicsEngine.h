@@ -16,16 +16,23 @@
 #include "physicsEngineBase.h"
 
 #include <Box2D/Common/b2Math.h>
+#include <qrutils/mathUtils/geometry.h>
+
 #include "twoDModel/engine/model/worldModel.h"
 
 class b2World;
 class ContactListener;
 class b2Body;
 
+namespace graphicsUtils {
+	class AbstractItem;
+}
+
 namespace twoDModel {
 	namespace view {
 		class TwoDModelScene;
 		class RobotItem;
+		class SensorItem;
 	}
 
 	namespace model {
@@ -33,8 +40,8 @@ namespace twoDModel {
 	namespace parts {
 		class box2DRobot;
 		class box2DWheel;
-		class box2DWall;
-		class box2DSkittle;
+		class box2DSensor;
+		class Box2DItem;
 	}
 
 class box2DPhysicsEngine : public PhysicsEngineBase
@@ -62,25 +69,24 @@ public:
 	QPointF positionToScene(float32 x, float32 y) const;
 	float32 angleToBox2D(qreal sceneAngle) const;
 	qreal angleToScene(float32 boxAngle) const;
+	qreal computeDensity(const QPolygonF &shape, qreal mass);
+	qreal computeDensity(qreal radius, qreal mass);
 
 	b2World &box2DWorld(){
 		return *mWorld.data();
 	}
 
 public slots:
-	void onWallResize();
-	void onWallDragged(items::WallItem *wall);
-	void onSkittleAdded();
+	void onItemDragged(graphicsUtils::AbstractItem *item);
 	void onRobotStartPositionChanged(const QPointF &newPos, twoDModel::model::RobotModel *robot);
 	void onRobotStartAngleChanged(const qreal newAngle, twoDModel::model::RobotModel *robot);
 	void onMouseReleased(QPointF newPos, qreal newAngle);
 	void onMousePressed();
 	void onRecoverRobotPosition(QPointF pos);
-	void onBodyPositionChanged(b2Body * body, b2Vec2 position, float32 angle);
 
 protected:
 	void onPixelsInCmChanged(qreal value) override;
-	void itemAdded(items::SolidItem * const item) override;
+	void itemAdded(QGraphicsItem * const item) override;
 	void itemRemoved(QGraphicsItem * const item) override;
 
 private:
@@ -89,28 +95,21 @@ private:
 
 	twoDModel::view::TwoDModelScene *mScene;
 	qreal mPixelsInCm;
-	QScopedPointer<ContactListener> mContactListener;
 	QScopedPointer<b2World> mWorld;
 
 	QMap<RobotModel *, parts::box2DRobot *> mBox2DRobots;  // Takes ownership on b2Body instances
 	QMap<RobotModel *, parts::box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
-	QMap<QGraphicsItem *, parts::box2DWall *> mBox2DWalls;  // Takes ownership on b2Body instances
-	QMap<QGraphicsItem *, parts::box2DSkittle *> mBox2DSkittles;  // Takes ownership on b2Body instances
-
-	items::WallItem *mCurrentWall; // Doesn't take ownership
-	items::SkittleItem *mCurrentSkittle; // Doesn't take ownership
-	bool mMouseJustReleased = false;
-	bool firstSetPos = true;
+	QMap<QGraphicsItem *, parts::Box2DItem *> mBox2DResizableItems;  // Takes ownership on b2Body instances
+	QMap<QGraphicsItem *, parts::Box2DItem *> mBox2DDynamicItems;  // Takes ownership on b2Body instances
+	QMap<RobotModel *, QSet<twoDModel::view::SensorItem *>> mRobotSensors; // Doesn't take ownership
 
 	b2Vec2 mPrevPosition;
 	float32 mPrevAngle;
 
-	QGraphicsRectItem *robotItem = nullptr;
-	QGraphicsRectItem *wheel1Item = nullptr;
-	QGraphicsRectItem *wheel2Item = nullptr;
-	QMap<parts::box2DWall *, QGraphicsRectItem *> mBlackWallsItems;
-	QMap<parts::box2DSkittle *, QGraphicsRectItem *> mYellowSkittlesItems;
+	QGraphicsRectItem *mDebugRobotItem;
+	QGraphicsRectItem *mDebugWheel1Item;
+	QGraphicsRectItem *myDebugWheel2Item;
 };
 
 }
