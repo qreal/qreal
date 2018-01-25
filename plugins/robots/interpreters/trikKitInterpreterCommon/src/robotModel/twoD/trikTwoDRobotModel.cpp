@@ -226,6 +226,11 @@ qreal TrikTwoDRobotModel::onePercentAngularVelocity() const
 	return 0.0055;
 }
 
+QList<QPointF> TrikTwoDRobotModel::wheelsPosition() const
+{
+	return {QPointF(10, 3), QPointF(10, 47)};
+}
+
 QHash<QString, int> TrikTwoDRobotModel::buttonCodes() const
 {
 	QHash<QString, int> result;

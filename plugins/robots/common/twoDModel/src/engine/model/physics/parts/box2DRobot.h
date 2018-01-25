@@ -60,6 +60,8 @@ public:
 	void removeSensor(twoDModel::view::SensorItem *sensor);
 	void reinit();
 
+	QPolygonF mPoly;
+
 private:
 	void connectWheels();
 	void connectWheel(box2DWheel &wheel);

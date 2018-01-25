@@ -30,14 +30,18 @@ Model::Model(QObject *parent)
 	: QObject(parent)
 	, mChecker(nullptr)
 	, mErrorReporter(nullptr)
-	, mPhysicsEngine(nullptr)
+	, mRealisticPhysicsEngine(nullptr)
+	, mSimplePhysicsEngine(nullptr)
 {
+	initPhysics();
 	connect(&mSettings, &Settings::physicsChanged, this, &Model::resetPhysics);
 	resetPhysics();
 }
 
 Model::~Model()
 {
+	delete mRealisticPhysicsEngine;
+	delete mSimplePhysicsEngine;
 }
 
 void Model::init(qReal::ErrorReporterInterface &errorReporter
@@ -191,7 +195,7 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF 
 	connect(&mTimeline, &Timeline::tick, robot, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, robot, &RobotModel::nextFragment);
 
-	robot->setPhysicalEngine(*mPhysicsEngine);
+	robot->setPhysicalEngine(mSettings.realisticPhysics() ? *mRealisticPhysicsEngine : *mSimplePhysicsEngine);
 
 	mRobotModels.append(robot);
 
@@ -238,21 +242,19 @@ void Model::setConstraintsEnabled(bool enabled)
 
 void Model::resetPhysics()
 {
-	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
 	if (mSettings.realisticPhysics()) {
-		mPhysicsEngine = new physics::box2DPhysicsEngine(mWorldModel, mRobotModels);
-	} else {
-		mPhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
-	}
+		for (RobotModel * const robot : mRobotModels) {
+			robot->setPhysicalEngine(*mRealisticPhysicsEngine);
+		}
 
-	connect(&mTimeline, &Timeline::tick, [=]() { mPhysicsEngine->recalculateParameters(Timeline::timeInterval); });
-	connect(this, &model::Model::robotAdded, mPhysicsEngine, &physics::PhysicsEngineBase::addRobot);
-	connect(this, &model::Model::robotRemoved, mPhysicsEngine, &physics::PhysicsEngineBase::removeRobot);
-	for (RobotModel * const robot : mRobotModels) {
-		robot->setPhysicalEngine(*mPhysicsEngine);
-	}
+		mRealisticPhysicsEngine->wakeUp();
+	} else if (!mSettings.realisticPhysics()) {
+		for (RobotModel * const robot : mRobotModels) {
+			robot->setPhysicalEngine(*mSimplePhysicsEngine);
+		}
 
-	delete oldEngine;
+		mSimplePhysicsEngine->wakeUp();
+	}
 }
 
 int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
@@ -264,4 +266,25 @@ int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 	}
 
 	return -1;
+}
+
+void Model::initPhysics()
+{
+	mRealisticPhysicsEngine = new physics::box2DPhysicsEngine(mWorldModel, mRobotModels);
+	mSimplePhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
+	connect(this, &model::Model::robotAdded, mRealisticPhysicsEngine, &physics::PhysicsEngineBase::addRobot);
+	connect(this, &model::Model::robotRemoved, mRealisticPhysicsEngine, &physics::PhysicsEngineBase::removeRobot);
+	connect(this, &model::Model::robotAdded, mSimplePhysicsEngine, &physics::PhysicsEngineBase::addRobot);
+	connect(this, &model::Model::robotRemoved, mSimplePhysicsEngine, &physics::PhysicsEngineBase::removeRobot);
+
+	connect(&mTimeline, &Timeline::tick, this, &Model::recalculatePhysicsParams);
+}
+
+void Model::recalculatePhysicsParams()
+{
+	if (mSettings.realisticPhysics()) {
+		mRealisticPhysicsEngine->recalculateParameters(Timeline::timeInterval);
+	} else {
+		mSimplePhysicsEngine->recalculateParameters(Timeline::timeInterval);
+	}
 }

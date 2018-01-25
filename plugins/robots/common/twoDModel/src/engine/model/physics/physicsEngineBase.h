@@ -54,8 +54,11 @@ public:
 	/// Stops tracking robot`s position and rotation.
 	virtual void removeRobot(RobotModel * const robot);
 
-	/// Recalculates all solid items positions and angles. The result may be obtained using
+	/// Recalculates all solid items positions and angles.
 	virtual void recalculateParameters(qreal timeInterval) = 0;
+
+	/// Recalculates all solid items positions and angles correspond to world model changes.
+	virtual void wakeUp();
 
 protected:
 	/// A useful method for counting wheel linear speed from interpreter`s speed.

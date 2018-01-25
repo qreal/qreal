@@ -52,6 +52,13 @@ box2DRobot::box2DRobot(box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 	body->CreateFixture(&robotFixture);
 	body->SetUserData(this);
 	connectWheels();
+
+	for (int i = 0; i < polygonShape.GetVertexCount(); ++i) {
+		mPoly.append(engine->positionToScene(polygonShape.GetVertex(i) + body->GetPosition()));
+	}
+	if (!mPoly.isEmpty() & !mPoly.isClosed()) {
+		mPoly.append(mPoly.first());
+	}
 }
 
 box2DRobot::~box2DRobot() {
@@ -131,12 +138,11 @@ void box2DRobot::reinit()
 }
 
 void box2DRobot::connectWheels() {
-	qreal wheelWidthShift = 2;
 	QPointF leftUpCorner = QPointF(-model->info().size().width() / 2, -model->info().size().height() / 2);
 
-	QPointF posLeftWheelFromRobot = QPointF(twoDModel::robotWheelDiameterInPx / 2, wheelWidthShift);
-	QPointF posRightWheelFromRobot = QPointF(twoDModel::robotWheelDiameterInPx / 2
-			, model->info().size().width() - wheelWidthShift);
+	///@todo: adapt it for more than 2 wheels
+	QPointF posLeftWheelFromRobot = model->info().wheelsPosition().first();
+	QPointF posRightWheelFromRobot = model->info().wheelsPosition().last();
 
 	b2Vec2 posLeftWheel = body->GetWorldPoint(engine->positionToBox2D(posLeftWheelFromRobot + leftUpCorner));
 	b2Vec2 posRightWheel = body->GetWorldPoint(engine->positionToBox2D(posRightWheelFromRobot + leftUpCorner));

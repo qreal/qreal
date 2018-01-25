@@ -44,6 +44,10 @@ void PhysicsEngineBase::removeRobot(twoDModel::model::RobotModel * const robot)
 	mRobots.removeAll(robot);
 }
 
+void PhysicsEngineBase::wakeUp()
+{
+}
+
 void PhysicsEngineBase::onPixelsInCmChanged(qreal value)
 {
 	Q_UNUSED(value)

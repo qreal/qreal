@@ -103,9 +103,11 @@ signals:
 
 private slots:
 	void resetPhysics();
+	void recalculatePhysicsParams();
 
 private:
 	int findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel);
+	void initPhysics();
 
 	Settings mSettings;
 	WorldModel mWorldModel;
@@ -113,7 +115,8 @@ private:
 	QScopedPointer<constraints::ConstraintsChecker> mChecker;
 	QList<RobotModel *> mRobotModels;
 	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn`t take ownership.
-	physics::PhysicsEngineBase *mPhysicsEngine;  // Takes ownership.
+	physics::PhysicsEngineBase *mRealisticPhysicsEngine;  // Takes ownership.
+	physics::PhysicsEngineBase *mSimplePhysicsEngine;  // Takes ownership.
 };
 
 }

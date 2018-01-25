@@ -74,3 +74,8 @@ qreal NullTwoDRobotModel::onePercentAngularVelocity() const
 {
 	return 0.005;
 }
+
+QList<QPointF> NullTwoDRobotModel::wheelsPosition() const
+{
+	return {};
+}

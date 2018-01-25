@@ -49,6 +49,13 @@ box2DWheel::box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, b
 
 	body->SetUserData(this);
 	prevSpeed = 0;
+
+	for (int i = 0; i < polygonShape.GetVertexCount(); ++i) {
+		mPoly.append(robot.engine->positionToScene(polygonShape.GetVertex(i) + body->GetPosition()));
+	}
+	if (!mPoly.isEmpty() & !mPoly.isClosed()) {
+		mPoly.append(mPoly.first());
+	}
 }
 
 box2DWheel::~box2DWheel() {
