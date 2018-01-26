@@ -63,15 +63,15 @@ int WorldModel::sonarReading(const QPointF &position, qreal direction) const
 	int minSonarRangeCms = 0;
 	int currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2;
 
-	const QPainterPath wallPath = buildWallPath();
-	if (!checkSonarDistance(maxSonarRangeCms, position, direction, wallPath)) {
+	const QPainterPath path = buildSolidItemsPath();
+	if (!checkSonarDistance(maxSonarRangeCms, position, direction, path)) {
 		return maxSonarRangeCms;
 	}
 
 	for ( ; minSonarRangeCms < maxSonarRangeCms;
 			currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2)
 	{
-		if (checkSonarDistance(currentRangeInCm, position, direction, wallPath)) {
+		if (checkSonarDistance(currentRangeInCm, position, direction, path)) {
 			maxSonarRangeCms = currentRangeInCm;
 		} else {
 			minSonarRangeCms = currentRangeInCm + 1;
@@ -126,7 +126,7 @@ bool WorldModel::checkCollision(const QPainterPath &path) const
 	}
 #endif
 
-	return buildWallPath().intersects(path);
+	return buildSolidItemsPath().intersects(path);
 }
 
 const QMap<QString, items::WallItem *> &WorldModel::walls() const
@@ -288,16 +288,20 @@ void WorldModel::clearRobotTrace()
 	emit robotTraceAppearedOrDisappeared(false);
 }
 
-QPainterPath WorldModel::buildWallPath() const
+QPainterPath WorldModel::buildSolidItemsPath() const
 {
 	/// @todo Maintain a cache for this.
-	QPainterPath wallPath;
+	QPainterPath path;
 
 	for (items::WallItem *wall : mWalls) {
-		wallPath.addPath(wall->path());
+		path.addPath(wall->path());
 	}
 
-	return wallPath;
+	for (items::SkittleItem *skittle: mSkittles) {
+		path.addPath(skittle->path());
+	}
+
+	return path;
 }
 
 QRect WorldModel::deserializeRect(const QString &string) const

@@ -221,15 +221,16 @@ void box2DPhysicsEngine::onMousePressed()
 	for (box2DRobot *robot: mBox2DRobots){
 		robot->startStopping();
 
-		QPainterPath p;
-		p.addPolygon(robot->mPoly);
-		mScene->addPath(p);
-		QPainterPath p1;
-		p1.addPolygon(robot->wheels[0]->mPoly);
-		mScene->addPath(p1);
-		QPainterPath p2;
-		p2.addPolygon(robot->wheels[1]->mPoly);
-		mScene->addPath(p2);
+// uncomment it for debug drawing
+//		QPainterPath p;
+//		p.addPolygon(robot->mPoly);
+//		mScene->addPath(p);
+//		QPainterPath p1;
+//		p1.addPolygon(robot->wheels[0]->mPoly);
+//		mScene->addPath(p1);
+//		QPainterPath p2;
+//		p2.addPolygon(robot->wheels[1]->mPoly);
+//		mScene->addPath(p2);
 	}
 }
 

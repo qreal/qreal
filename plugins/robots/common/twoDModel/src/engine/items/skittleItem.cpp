@@ -120,6 +120,13 @@ qreal SkittleItem::linearDamping() const
 	return 6.0f;
 }
 
+QPainterPath SkittleItem::path() const
+{
+	QPainterPath path;
+	path.addEllipse(collidingPolygon().boundingRect());
+	return path;
+}
+
 bool SkittleItem::isCircle() const
 {
 	return true;

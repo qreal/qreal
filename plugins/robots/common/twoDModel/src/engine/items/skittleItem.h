@@ -54,6 +54,7 @@ public:
 	qreal angularDamping() const override;
 	qreal linearDamping() const override;
 
+	QPainterPath path() const;
 
 private:
 	QPointF mStartPosition;

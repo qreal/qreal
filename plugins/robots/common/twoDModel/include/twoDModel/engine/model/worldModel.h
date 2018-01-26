@@ -213,7 +213,7 @@ private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(const int distance, const QPointF &position
 			, const qreal direction, const QPainterPath &wallPath) const;
-	QPainterPath buildWallPath() const;
+	QPainterPath buildSolidItemsPath() const;
 	QRect deserializeRect(const QString &string) const;
 	void deserializeBackground(const QDomElement &backgroundElement);
 
