@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <QList>
-
 #include "src/engine/model/physics/box2DPhysicsEngine.h"
 
 class b2World;
@@ -32,24 +30,17 @@ namespace model {
 namespace physics {
 namespace parts {
 
-class box2DWheel;
+class Box2DWheel;
 class Box2DItem;
 
-class box2DRobot{
-public:
-	b2Body *body; // Take ownership
-	QList<box2DWheel *> wheels; // Take ownership
-	QList<b2Joint *> joints; // Take ownership
-	QMap<twoDModel::view::SensorItem *, parts::Box2DItem *> mSensors;  // Takes ownership on b2Sensor instances
-	twoDModel::model::RobotModel * const model; // Doesn't take ownership
-	twoDModel::model::physics::box2DPhysicsEngine *engine; // Doesn't take ownership
-	b2World &world; // Doesn't take ownership
 
-	box2DRobot(twoDModel::model::physics::box2DPhysicsEngine *engine
+class Box2DRobot{
+public:
+	Box2DRobot(twoDModel::model::physics::Box2DPhysicsEngine *mEngine
 			, twoDModel::model::RobotModel * const robotModel
 			, b2Vec2 pos
 			, float angle);
-	~box2DRobot();
+	~Box2DRobot();
 
 	void stop();
 	void startStopping();
@@ -60,14 +51,28 @@ public:
 	void removeSensor(twoDModel::view::SensorItem *sensor);
 	void reinit();
 
-	QPolygonF mPoly;
+	void applyForceToCenter(const b2Vec2 &force, bool wake);
+
+	b2Body *getBody();
+	twoDModel::model::RobotModel *getRobotModel() const;
+	Box2DWheel *getWheelAt(int i) const;
+
+	QPolygonF mDebuggingDrawPolygon;
 
 private:
 	void connectWheels();
-	void connectWheel(box2DWheel &wheel);
+	void connectWheel(Box2DWheel &wheel);
 	void connectSensor(const Box2DItem &sensor);
 
-	b2Vec2 *mPolygon;
+	b2Body *mBody; // Takes ownership
+	QList<Box2DWheel *> mWheels; // Takes ownership
+	QList<b2Joint *> mJoints; // Takes ownership
+	QMap<twoDModel::view::SensorItem *, parts::Box2DItem *> mSensors;  // Takes ownership on b2Sensor instances
+	twoDModel::model::RobotModel * const mModel; // Doesn't take ownership
+	twoDModel::model::physics::Box2DPhysicsEngine *mEngine; // Doesn't take ownership
+	b2World &mWorld; // Doesn't take ownership
+
+	b2Vec2 *mPolygon; // Takes ownership
 
 	bool mIsStopping = false;
 };

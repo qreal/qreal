@@ -21,7 +21,6 @@
 #include "twoDModel/engine/model/worldModel.h"
 
 class b2World;
-class ContactListener;
 class b2Body;
 
 namespace graphicsUtils {
@@ -38,17 +37,16 @@ namespace twoDModel {
 	namespace model {
 	namespace physics {
 	namespace parts {
-		class box2DRobot;
-		class box2DWheel;
-		class box2DSensor;
+		class Box2DRobot;
+		class Box2DWheel;
 		class Box2DItem;
 	}
 
-class box2DPhysicsEngine : public PhysicsEngineBase
+class Box2DPhysicsEngine : public PhysicsEngineBase
 {
 public:
-	box2DPhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots);
-	~box2DPhysicsEngine();
+	Box2DPhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots);
+	~Box2DPhysicsEngine();
 	QVector2D positionShift(RobotModel &robot) const override;
 	qreal rotation(RobotModel &robot) const override;
 	void addRobot(RobotModel * const robot) override;
@@ -73,9 +71,7 @@ public:
 	qreal computeDensity(const QPolygonF &shape, qreal mass);
 	qreal computeDensity(qreal radius, qreal mass);
 
-	b2World &box2DWorld(){
-		return *mWorld.data();
-	}
+	b2World &box2DWorld();
 
 public slots:
 	void onItemDragged(graphicsUtils::AbstractItem *item);
@@ -98,9 +94,9 @@ private:
 	qreal mPixelsInCm;
 	QScopedPointer<b2World> mWorld;
 
-	QMap<RobotModel *, parts::box2DRobot *> mBox2DRobots;  // Takes ownership on b2Body instances
-	QMap<RobotModel *, parts::box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
-	QMap<RobotModel *, parts::box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
+	QMap<RobotModel *, parts::Box2DRobot *> mBox2DRobots;  // Takes ownership on b2Body instances
+	QMap<RobotModel *, parts::Box2DWheel *> mLeftWheels;  // Takes ownership on b2WheelJoint instances
+	QMap<RobotModel *, parts::Box2DWheel *> mRightWheels;  // Takes ownership on b2WheelJoint instances
 	QMap<QGraphicsItem *, parts::Box2DItem *> mBox2DResizableItems;  // Takes ownership on b2Body instances
 	QMap<QGraphicsItem *, parts::Box2DItem *> mBox2DDynamicItems;  // Takes ownership on b2Body instances
 	QMap<RobotModel *, QSet<twoDModel::view::SensorItem *>> mRobotSensors; // Doesn't take ownership

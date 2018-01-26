@@ -270,7 +270,7 @@ int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)
 
 void Model::initPhysics()
 {
-	mRealisticPhysicsEngine = new physics::box2DPhysicsEngine(mWorldModel, mRobotModels);
+	mRealisticPhysicsEngine = new physics::Box2DPhysicsEngine(mWorldModel, mRobotModels);
 	mSimplePhysicsEngine = new physics::SimplePhysicsEngine(mWorldModel, mRobotModels);
 	connect(this, &model::Model::robotAdded, mRealisticPhysicsEngine, &physics::PhysicsEngineBase::addRobot);
 	connect(this, &model::Model::robotRemoved, mRealisticPhysicsEngine, &physics::PhysicsEngineBase::removeRobot);

@@ -24,7 +24,7 @@ namespace items {
 
 namespace model {
 namespace physics {
-	class box2DPhysicsEngine;
+	class Box2DPhysicsEngine;
 
 namespace parts {
 
@@ -32,7 +32,7 @@ namespace parts {
 class Box2DItem
 {
 public:
-	Box2DItem(twoDModel::model::physics::box2DPhysicsEngine *mEngine
+	Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *mEngine
 			, twoDModel::items::SolidItem &mItem, const b2Vec2 &pos, float angle);
 
 	~Box2DItem();
@@ -52,7 +52,7 @@ private:
 	bool mIsCircle;
 
 	twoDModel::items::SolidItem &mItem; // Doesn't take ownership
-	twoDModel::model::physics::box2DPhysicsEngine &mEngine; // Doesn't take ownership
+	twoDModel::model::physics::Box2DPhysicsEngine &mEngine; // Doesn't take ownership
 };
 
 }

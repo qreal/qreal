@@ -16,6 +16,8 @@
 
 #include <QtGui/QPolygonF>
 
+#include "src/engine/model/physics/box2DPhysicsEngine.h"
+
 class b2Body;
 class b2Vec2;
 
@@ -24,28 +26,36 @@ namespace model {
 namespace physics {
 namespace parts {
 
-class box2DRobot;
+class Box2DRobot;
 
-class box2DWheel
+class Box2DWheel
 {
 public:
-	b2Body *body;
-	box2DRobot &robot;
+	Box2DWheel(twoDModel::model::physics::Box2DPhysicsEngine *engine,
+			const b2Vec2 &positionBox2D
+			, const float rotationBox2D
+			, Box2DRobot &mRobot);
+	~Box2DWheel();
+
+	b2Vec2 getLateralVelocity() const;
+	b2Vec2 getForwardVelocity() const;
+	void keepConstantSpeed(float speed);
+	b2Body *getBody();
+
+	QPolygonF mDebuggingDrawPolygon;
+
+protected:
+	float prevSpeed = 0;
+
+private:
+	b2Body *mBody;
+	Box2DRobot &mRobot;
+	twoDModel::model::physics::Box2DPhysicsEngine *mEngine; // Doesn't take ownership
 	const float wheelHeightM;
 	const float wheelWidthM;
 	const float wheelFriction = 1.0f;
 	const float wheelMass = 0.1f;
 
-	QPolygonF mPoly;
-
-	box2DWheel(const b2Vec2 &positionBox2D, const float rotationBox2D, box2DRobot &robot);
-	~box2DWheel();
-	b2Vec2 getLateralVelocity() const;
-	b2Vec2 getForwardVelocity() const;
-	void keepConstantSpeed(float speed);
-
-protected:
-	float prevSpeed = 0;
 };
 
 }
