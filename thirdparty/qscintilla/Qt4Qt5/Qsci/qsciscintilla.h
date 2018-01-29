@@ -528,7 +528,7 @@ public:
     //! and \a last_word_start will contain the position in the document of the
     //! start of the last word of the context.
     virtual QStringList apiContext(int pos, int &context_start,
-            int &last_word_start);
+            int &last_word_start, bool is_needed_single_word = false);
 
     //! Annotate the line \a line with the text \a text using the style number
     //! \a style.

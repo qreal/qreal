@@ -192,12 +192,20 @@ void Label::updateData(bool withUndoRedo)
 	Element * const parent = dynamic_cast<Element *>(parentItem());
 	if (!mProperties.nameForRoleProperty().isEmpty()) {
 		if (mEnumValues.isEmpty()) {
-			parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, value, withUndoRedo);
+			parent->setLogicalProperty(mProperties.nameForRoleProperty()
+					, mTextBeforeTextInteraction
+					, value
+					, withUndoRedo
+			);
 		} else {
 			const QString repoValue = mEnumValues.values().contains(value)
 					? mEnumValues.key(value)
 					: (withUndoRedo ? enumText(value) : value);
-			parent->setLogicalProperty(mProperties.nameForRoleProperty(), mOldText, repoValue, withUndoRedo);
+			parent->setLogicalProperty(mProperties.nameForRoleProperty()
+					, mTextBeforeTextInteraction
+					, repoValue
+					, withUndoRedo
+			);
 		}
 	} else if (mProperties.binding() == "name") {
 		if (value != parent->name()) {
@@ -225,18 +233,18 @@ void Label::updateData(bool withUndoRedo)
 					"dynamicProperties", dynamicProperties.toString(4));
 		}
 
-		parent->setLogicalProperty(mProperties.binding(), mOldText, value, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), mTextBeforeTextInteraction, value, withUndoRedo);
 	} else {
 		const QString repoValue = mEnumValues.values().contains(value)
 				? mEnumValues.key(value)
 				: (withUndoRedo ? enumText(value) : value);
-		parent->setLogicalProperty(mProperties.binding(), mOldText, repoValue, withUndoRedo);
+		parent->setLogicalProperty(mProperties.binding(), mTextBeforeTextInteraction, repoValue, withUndoRedo);
 		disconnect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
-		if (repoValue == mOldText) {
+		if (repoValue == mTextBeforeTextInteraction) {
 			setText(repoValue);
 		}
 
-		connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
+		connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo, Qt::UniqueConnection);
 	}
 
 	mGraphicalModelAssistApi.setLabelPosition(mId, mProperties.index(), pos());
@@ -366,7 +374,7 @@ void Label::focusOutEvent(QFocusEvent *event)
 		return;
 	}
 
-	if (mOldText != toPlainText()) {
+	if (mTextBeforeTextInteraction != toPlainText()) {
 		updateData(true);
 	}
 
@@ -377,7 +385,7 @@ void Label::keyPressEvent(QKeyEvent *event)
 	const int keyEvent = event->key();
 	if (keyEvent == Qt::Key_Escape) {
 		// Restore previous text and loose focus
-		setText(mOldText);
+		setText(mTextBeforeTextInteraction);
 		clearFocus();
 		return;
 	}
@@ -411,7 +419,7 @@ void Label::startTextInteraction()
 		return;
 	}
 
-	mOldText = toPlainText();
+	mTextBeforeTextInteraction = toPlainText();
 
 	setTextInteractionFlags(isReadOnly() ? Qt::TextBrowserInteraction : Qt::TextEditorInteraction);
 	setFocus(Qt::OtherFocusReason);
@@ -531,5 +539,5 @@ QString Label::enumText(const QString &enumValue) const
 {
 	return mGraphicalModelAssistApi.editorManagerInterface().isEnumEditable(mId, mProperties.binding())
 			? enumValue
-			: mOldText;
+			: mTextBeforeTextInteraction;
 }

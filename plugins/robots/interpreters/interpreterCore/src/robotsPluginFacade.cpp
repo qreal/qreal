@@ -203,6 +203,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
 			return;
 		}
+
 		QFileInfo codeDir(path);
 		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
 		bool success = false;
@@ -210,7 +211,12 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 		if (success) {
 			out() << code;
 			out.flush();
+			const qReal::Id activeDiagram = mMainWindow->activeDiagram();
 			mTextManager->showInTextEditor(codePath, qReal::text::Languages::pickByExtension(codePath.suffix()));
+			if (!activeDiagram.isNull()
+					&& mRobotModelManager.model().friendlyName().contains("2d", Qt::CaseInsensitive)) {
+				mMainWindow->activateItemOrDiagram(activeDiagram);
+			}
 		}
 	});
 

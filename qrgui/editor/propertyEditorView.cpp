@@ -17,7 +17,7 @@
 #include <QtWidgets/QApplication>
 
 #include <qrkernel/platformInfo.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include "models/commands/changePropertyCommand.h"
 

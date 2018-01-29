@@ -173,12 +173,18 @@ QStringList trik::TrikQtsInterpreter::supportedRobotModelNames() const
 	return {"TwoDRobotModelForTrikV62RealRobotModel", "TwoDRobotModelForTrikV6RealRobotModel"};
 }
 
+QStringList trik::TrikQtsInterpreter::knownMethodNames() const
+{
+	return mScriptRunner.knownMethodNames();
+}
+
 void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)
 {
 	Q_UNUSED(scriptId);
 	if (!error.isEmpty()) {
 		reportError(error);
 	}
+
 	if (mRunning) { /// @todo: figure out better place for this check - it should avoid double aborts
 		mRunning = false;
 		emit completed();

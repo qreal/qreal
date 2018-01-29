@@ -19,7 +19,7 @@
 #include <QtCore/QSettings>
 
 #include <qrkernel/settingsManager.h>
-#include <qrutils/qRealDialog.h>
+#include <qrutils/widgets/qRealDialog.h>
 
 #include "preferencesPage.h"
 #include "preferencesDialogDeclSpec.h"

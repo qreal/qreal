@@ -21,7 +21,7 @@
 #include <QtWidgets/QStyle>
 
 #include <qrkernel/settingsManager.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 using namespace qReal::ui;
 

@@ -17,7 +17,7 @@
 #include <qrkernel/logging.h>
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrgui/models/models.h>
 #include <qrrepo/exceptions/qrrepoException.h>
 

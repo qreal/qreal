@@ -22,6 +22,8 @@
 #include <qrkernel/platformInfo.h>
 #include <qrkernel/settingsManager.h>
 
+#include <qrutils/widgets/qRealMessageBox.h>
+
 using namespace nxt::communication;
 
 const QString bossaDriverDescription = "Arduino Srl \\(www\\.arduino\\.org\\)";
@@ -111,7 +113,7 @@ bool NxtUsbDriverInstaller::promptDriverInstallation() const
 			"communicate with NXT. Do you want to do it?");
 	const QString warning = tr("TRIK Studio drivers are not officially registered, so two red warning messages will "\
 			"be shown by Windows. Confirm them to proceed installation.");
-	if (QMessageBox::question(QApplication::focusWidget(), title, question) == QMessageBox::Yes) {
+	if (utils::QRealMessageBox::question(QApplication::focusWidget(), title, question) == QMessageBox::Yes) {
 		QMessageBox::information(QApplication::focusWidget(), title, warning);
 		return true;
 	}

@@ -34,7 +34,8 @@ class Box2DWheel;
 class Box2DItem;
 
 
-class Box2DRobot{
+class Box2DRobot
+{
 public:
 	Box2DRobot(twoDModel::model::physics::Box2DPhysicsEngine *mEngine
 			, twoDModel::model::RobotModel * const robotModel

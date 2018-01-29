@@ -25,8 +25,6 @@ HEADERS += \
 	$$PWD/fileSystemUtils.h \
 	$$PWD/functionTraits.h \
 	$$PWD/stringUtils.h \
-	$$PWD/qRealDialog.h \
-	$$PWD/qRealFileDialog.h \
 	$$PWD/smartDock.h \
 	$$PWD/textElider.h\
 	$$PWD/virtualKeyboard.h \
@@ -48,8 +46,6 @@ SOURCES += \
 	$$PWD/nameNormalizer.cpp \
 	$$PWD/fileSystemUtils.cpp \
 	$$PWD/stringUtils.cpp \
-	$$PWD/qRealDialog.cpp \
-	$$PWD/qRealFileDialog.cpp \
 	$$PWD/smartDock.cpp \
 	$$PWD/textElider.cpp \
 	$$PWD/virtualKeyboard.cpp \
