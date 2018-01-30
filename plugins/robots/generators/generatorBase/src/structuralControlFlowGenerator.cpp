@@ -101,7 +101,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 	// to-do check whether diagram was right, maybe ControlFlowGeneratorBase is checking it
 
-	buildInitialForest();
+
 
 	performAnalysis();
 }
@@ -164,8 +164,9 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 
 void StructuralControlFlowGenerator::buildInitialForest()
 {
-	for (auto it = mInitialVerteces.keys().begin(); it != mInitialVerteces.keys().end(); ++it) {
-		qReal::Id id = *it;
+	auto p = mInitialVerteces.values();
+	for (auto it = p.begin(); it != p.end(); ++it) {
+		const qReal::Id id = mInitialVerteces.key(*it);
 		VertexLabel label = mInitialVerteces[id]->id();
 		mNodesForest.insert(label, mSemanticTree->produceNodeFor(id));
 	}
@@ -211,7 +212,11 @@ void StructuralControlFlowGenerator::performAnalysis()
 {
 	findDominators();
 
-	for (auto it = mInitialVerteces.values().begin(); it != mInitialVerteces.values().end(); ++it) {
+	buildInitialForest();
+
+	auto values = mInitialVerteces.values();
+
+	for (auto it = values.begin(); it != values.end(); ++it) {
 		mUsed[(*it)->id()] = false;
 		mPostOrder[(*it)->id()] = -1;
 	}
