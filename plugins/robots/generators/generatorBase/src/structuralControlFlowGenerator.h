@@ -73,6 +73,8 @@ private:
 	/// to build dominators tree and then perform structural analysis
 	void performGeneration() override;
 
+	void updateForest(RegionType type, VertexLabel newId, QVector<VertexLabel> &nodesThatComposeRegion);
+	void buildInitialForest();
 	void buildGraph(const qReal::Id &id, const QList<utils::DeepFirstSearcher::LinkInfo> &links);
 	void performAnalysis();
 	// naive approach for finding dominators
@@ -104,6 +106,8 @@ private:
 	QMap<VertexLabel, bool> mUsed;
 
 	int mCounter;
+
+	QMap<VertexLabel, semantics::SemanticNode *> mNodesForest;
 };
 
 }

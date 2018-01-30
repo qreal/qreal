@@ -101,7 +101,74 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 	// to-do check whether diagram was right, maybe ControlFlowGeneratorBase is checking it
 
+	buildInitialForest();
+
 	performAnalysis();
+}
+
+void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, graphUtils::VertexLabel newId, QVector<graphUtils::VertexLabel> &nodesThatComposeRegion)
+{
+	switch (type) {
+	case RegionType::Block:
+	{
+		semantics::ZoneNode *newNode = new semantics::ZoneNode();
+		for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
+			auto label = *it;
+			newNode->appendChild(mNodesForest[label]);
+			mNodesForest[label]->setParent(newNode);
+			mNodesForest.remove(label);
+		}
+		mNodesForest.insert(newId, newNode);
+		break;
+	}
+
+	case RegionType::IfThen:
+	{
+		// 0 is hardcoded to be condition
+		VertexLabel ifNodeLabel = nodesThatComposeRegion.at(0);
+		semantics::IfNode *newNode = new semantics::IfNode(mNodesForest[ifNodeLabel]->id());
+		VertexLabel thenNodeLabel = nodesThatComposeRegion.at(1);
+		mNodesForest[thenNodeLabel]->setParent(newNode);
+
+		newNode->thenZone()->appendChild(mNodesForest[thenNodeLabel]);
+		mNodesForest.insert(ifNodeLabel, newNode);
+
+		mNodesForest.remove(thenNodeLabel);
+		break;
+	}
+
+	case RegionType::IfThenElse:
+	{
+		// 0 is hardcoded to be condition
+		VertexLabel ifNodeLabel = nodesThatComposeRegion.at(0);
+		semantics::IfNode *newNode = new semantics::IfNode(mNodesForest[ifNodeLabel]->id());
+
+		VertexLabel thenNodeLabel = nodesThatComposeRegion.at(1);
+		VertexLabel elseNodeLabel = nodesThatComposeRegion.at(2);
+		mNodesForest[thenNodeLabel]->setParent(newNode);
+		mNodesForest[elseNodeLabel]->setParent(newNode);
+
+		newNode->thenZone()->appendChild(mNodesForest[thenNodeLabel]);
+		newNode->elseZone()->appendChild(mNodesForest[elseNodeLabel]);
+
+		mNodesForest.insert(ifNodeLabel, newNode);
+
+		mNodesForest.remove(thenNodeLabel);
+		mNodesForest.remove(elseNodeLabel);
+		break;
+	}
+
+
+	}
+}
+
+void StructuralControlFlowGenerator::buildInitialForest()
+{
+	for (auto it = mInitialVerteces.keys().begin(); it != mInitialVerteces.keys().end(); ++it) {
+		qReal::Id id = *it;
+		VertexLabel label = mInitialVerteces[id]->id();
+		mNodesForest.insert(label, mSemanticTree->produceNodeFor(id));
+	}
 }
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
@@ -366,6 +433,8 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 	}
 
 	Node *abstractNode = new Node(mCounter++, type);
+
+	updateForest(type, abstractNode->id(), nodesThatComposeRegion);
 	replace(abstractNode->id(), nodesThatComposeRegion);
 
 	allNodes.append(abstractNode);
