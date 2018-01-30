@@ -107,8 +107,6 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 	// to-do check whether diagram was right, maybe ControlFlowGeneratorBase is checking it
 
-
-
 	performAnalysis();
 }
 
@@ -161,8 +159,6 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 		newNode->thenZone()->appendChild(mNodesForest[thenNodeLabel]);
 		newNode->elseZone()->appendChild(mNodesForest[elseNodeLabel]);
 
-
-
 		mNodesForest.remove(thenNodeLabel);
 		mNodesForest.remove(elseNodeLabel);
 		mNodesForest.remove(ifNodeLabel);
@@ -177,9 +173,7 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 
 void StructuralControlFlowGenerator::buildInitialForest()
 {
-	auto p = mInitialVerteces.values();
-	for (auto it = p.begin(); it != p.end(); ++it) {
-		const qReal::Id id = mInitialVerteces.key(*it);
+	for (qReal::Id id : mInitialVerteces.keys()) {
 		VertexLabel label = mInitialVerteces[id]->id();
 		mNodesForest.insert(label, mSemanticTree->produceNodeFor(id));
 	}
