@@ -101,8 +101,6 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 	// to-do check whether diagram was right, maybe ControlFlowGeneratorBase is checking it
 
-	findDominators();
-
 	performAnalysis();
 }
 
@@ -144,6 +142,8 @@ void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkIn
 // so it would be possible not to pass setOfNodes
 void StructuralControlFlowGenerator::performAnalysis()
 {
+	findDominators();
+
 	for (auto it = mInitialVerteces.values().begin(); it != mInitialVerteces.values().end(); ++it) {
 		mUsed[(*it)->id()] = false;
 		mPostOrder[(*it)->id()] = -1;
