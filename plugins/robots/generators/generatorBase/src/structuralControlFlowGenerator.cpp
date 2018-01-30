@@ -167,6 +167,38 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 		break;
 	}
 
+	case RegionType::SelfLoop:
+	{
+		// 0 is hardcoded to be condition
+		VertexLabel selfLoopLabel = nodesThatComposeRegion.at(0);
+		semantics::LoopNode *newNode = new semantics::LoopNode(qReal::Id());
+
+		mNodesForest[selfLoopLabel]->setParent(newNode);
+		newNode->bodyZone()->appendChild(mNodesForest[selfLoopLabel]);
+
+		mNodesForest.remove(selfLoopLabel);
+		mNodesForest.insert(newId, newNode);
+		break;
+	}
+
+	case RegionType::WhileLoop:
+	{
+		// 0 is hardcoded to be condition
+		VertexLabel conditionLabel = nodesThatComposeRegion.at(0);
+		semantics::LoopNode *newNode = new semantics::LoopNode(mNodesForest[conditionLabel]->id());
+		VertexLabel bodyLabel = nodesThatComposeRegion.at(1);
+
+		mNodesForest[conditionLabel]->setParent(newNode);
+		mNodesForest[bodyLabel]->setParent(newNode);
+
+		newNode->bodyZone()->appendChild(mNodesForest[bodyLabel]);
+
+		mNodesForest.remove(conditionLabel);
+		mNodesForest.remove(bodyLabel);
+		mNodesForest.insert(newId, newNode);
+		break;
+	}
+
 
 	}
 }
