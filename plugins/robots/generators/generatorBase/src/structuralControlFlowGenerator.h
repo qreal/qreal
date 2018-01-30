@@ -64,6 +64,8 @@ public:
 	/// control flow generators (non-fatal errors occured).
 	//bool cantBeGeneratedIntoStructuredCode() const;
 
+	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
+
 private:
 
 	QVector<Node *> allNodes;

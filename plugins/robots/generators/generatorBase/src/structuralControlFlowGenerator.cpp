@@ -95,6 +95,12 @@ void StructuralControlFlowGenerator::afterSearch()
 	// to do
 }
 
+SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, const QString &threadId)
+{
+	ControlFlowGeneratorBase::generate(initialNode, threadId);
+	mSemanticTree->setRoot(new RootNode(mNodesForest.first()));
+}
+
 void StructuralControlFlowGenerator::performGeneration()
 {
 	// to bypass diagram and build graph
@@ -128,12 +134,16 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 		VertexLabel ifNodeLabel = nodesThatComposeRegion.at(0);
 		semantics::IfNode *newNode = new semantics::IfNode(mNodesForest[ifNodeLabel]->id());
 		VertexLabel thenNodeLabel = nodesThatComposeRegion.at(1);
-		mNodesForest[thenNodeLabel]->setParent(newNode);
+
+		mNodesForest[ifNodeLabel]->setParent(newNode);
 
 		newNode->thenZone()->appendChild(mNodesForest[thenNodeLabel]);
-		mNodesForest.insert(ifNodeLabel, newNode);
+		mNodesForest[thenNodeLabel]->setParent(newNode->thenZone());
 
+		mNodesForest.remove(ifNodeLabel);
 		mNodesForest.remove(thenNodeLabel);
+
+		mNodesForest.insert(newId, newNode);
 		break;
 	}
 
@@ -145,16 +155,19 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 
 		VertexLabel thenNodeLabel = nodesThatComposeRegion.at(1);
 		VertexLabel elseNodeLabel = nodesThatComposeRegion.at(2);
-		mNodesForest[thenNodeLabel]->setParent(newNode);
-		mNodesForest[elseNodeLabel]->setParent(newNode);
+		mNodesForest[thenNodeLabel]->setParent(newNode->thenZone());
+		mNodesForest[elseNodeLabel]->setParent(newNode->elseZone());
 
 		newNode->thenZone()->appendChild(mNodesForest[thenNodeLabel]);
 		newNode->elseZone()->appendChild(mNodesForest[elseNodeLabel]);
 
-		mNodesForest.insert(ifNodeLabel, newNode);
+
 
 		mNodesForest.remove(thenNodeLabel);
 		mNodesForest.remove(elseNodeLabel);
+		mNodesForest.remove(ifNodeLabel);
+
+		mNodesForest.insert(newId, newNode);
 		break;
 	}
 
