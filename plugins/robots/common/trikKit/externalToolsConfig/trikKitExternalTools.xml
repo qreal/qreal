@@ -4,7 +4,7 @@
 	<!--<tool name="PuTTY" program="./winscp/PuTTY/putty.exe" arguments="-ssh @@TrikTcpServer"/>-->
 		<tool name="PuTTY" program="./winscp/PuTTY/putty.exe" arguments=""/>
 		<tool name="gamepad" program="./gamepad.exe" arguments="@@TrikTcpServer"/>
-		<tool name="WinSCP" program="./winscp/WinSCP.exe" arguments=""/>
+		<tool name="WinSCP" program="./winscp/WinSCP.exe" arguments="@@TrikTcpServer"/>
 	</platform>
 	<platform name="Linux">
 		<tool name="gamepad" program="./gamepad" arguments="@@TrikTcpServer"/>

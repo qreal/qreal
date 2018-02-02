@@ -1755,16 +1755,22 @@ void MainWindow::addExternalToolActions()
 				const QString toolName = tool.attribute("name");
 				const QString program = PlatformInfo::invariantPath(tool.attribute("program"));
 				QStringList arguments = tool.attribute("arguments").split(" ");
-				for (QString &arg : arguments) {
-					if (arg.startsWith("@@")) {
-						arg = SettingsManager::value(arg.remove("@@")).toString();
-					}
-				}
 
 				if (QFile(program).exists()) {
 					QAction *action = new QAction(toolName, externalToolsMenu);
 					connect(action, &QAction::triggered, [=](){
-						QProcess::startDetached(program, arguments);
+						if (arguments.isEmpty()) {
+							QProcess::startDetached(program);
+						} else {
+							QStringList processedArguments = arguments;
+							for (QString &arg : processedArguments) {
+								if (arg.startsWith("@@")) {
+									arg = SettingsManager::value(arg.remove("@@")).toString();
+								}
+							}
+
+							QProcess::startDetached(program, processedArguments);
+						}
 					});
 
 					externalToolsMenu->addAction(action);
