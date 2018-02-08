@@ -107,6 +107,7 @@
         <file>templates/sensors/calibrateGyroscope.t</file>
         <file>templates/sensors/stopCompassCalibration.t</file>
         <file>templates/sensors/startCompassCalibration.t</file>
+        <file>templates/sensors/readRGBIntoVariables.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>

@@ -272,6 +272,31 @@
 							</generalizations>
 					</logic>
 			</node>
+			<node displayedName="Read RGB into Variables" name="Ev3ReadRGB" path="" description="Reads R, G, B channels values into given variables">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/readRGBBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+									<label x="40" y="60" textBinded="RVariable" hard="false" prefix="R Variable:"/>
+									<label x="40" y="90" textBinded="GVariable" hard="false" prefix="G Variable:"/>
+									<label x="40" y="120" textBinded="BVariable" hard="false" prefix="B Variable:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+								<property displayedName="R Variable" type="string" name="RVariable" />
+								<property displayedName="G Variable" type="string" name="GVariable" />
+								<property displayedName="B Variable" type="string" name="BVariable" />
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
 			<node displayedName="Led" name="Ev3Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -952,6 +977,7 @@
 				<element name="Ev3CalibrateGyroscope"/>
 				<element name="Ev3StartCompassCalibration"/>
 				<element name="Ev3StopCompassCalibration"/>
+				<element name="Ev3ReadRGB"/>
 			</group>
 			<group name="Line Leader">
 				<element name="Ev3CalibrateWhiteLL"/>

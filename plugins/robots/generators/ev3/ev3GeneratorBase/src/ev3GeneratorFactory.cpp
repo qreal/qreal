@@ -27,6 +27,7 @@
 #include "simpleGenerators/calibrateGyroscopeGenerator.h"
 #include "simpleGenerators/startCompassCalibrationGenerator.h"
 #include "simpleGenerators/stopCompassCalibrationGenerator.h"
+#include "simpleGenerators/readRGBGenerator.h"
 
 #include "simpleGenerators/lineLeader/calibrateBlackGenerator.h"
 #include "simpleGenerators/lineLeader/calibratePIDGenerator.h"
@@ -108,6 +109,8 @@ generatorBase::simple::AbstractSimpleGenerator *Ev3GeneratorFactory::simpleGener
 		return new StartCompassCalibrationGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Ev3StopCompassCalibration") {
 		return new StopCompassCalibrationGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "Ev3ReadRGB") {
+		return new ReadRGBGenerator(mRepo, customizer, id, this);
 	}
 
 	else if (elementType == "Ev3CalibrateWhiteLL") {

@@ -126,6 +126,20 @@ subcall assign32Array_EV3_KERNEL_util
 	ARRAY(COPY, srcArray, dstArray)
 }
 
+subcall B2U32_EV3_KERNEL_util
+{
+	IN_8 src
+	OUT_32 dst
+
+	DATA8 tmp8
+	MOVE8_8(src, tmp8)
+	AND8(tmp8, 127, tmp8)
+	MOVE8_32(tmp8, dst)
+	JR_GTEQ8(src, 0, end_label)
+	OR32(dst, 128, dst)
+	end_label:
+}
+
 // utils functions block end
 
 @@SUBPROGRAMS@@
