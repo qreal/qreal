@@ -398,7 +398,7 @@
 						</picture>
 						<labels>
 							<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
-							<label x="45" y="60" textBinded="SetPoint" hard="false" prefix="Message type:"/>
+							<label x="45" y="60" textBinded="SetPoint" hard="false" prefix="Set point:"/>
 							<label x="45" y="90" textBinded="P" hard="false" prefix="P:"/>
 							<label x="45" y="120" textBinded="PFactor" hard="false" prefix="P factor:"/>
 							<label x="45" y="150" textBinded="I" hard="false" prefix="I:"/>
