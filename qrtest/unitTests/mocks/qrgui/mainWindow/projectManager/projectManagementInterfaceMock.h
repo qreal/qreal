@@ -33,7 +33,7 @@ public:
 	MOCK_METHOD1(suggestToCreateDiagram, void(bool isClosable));
 	MOCK_METHOD0(suggestToImport, bool());
 	MOCK_METHOD0(close, void());
-	MOCK_METHOD0(save, void());
+	MOCK_METHOD0(save, bool());
 	MOCK_METHOD1(saveAs, bool (QString const &fileName));
 	MOCK_METHOD0(suggestToSaveAs, bool());
 	MOCK_METHOD0(saveOrSuggestToSaveAs, bool());

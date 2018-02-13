@@ -243,10 +243,10 @@ void ProjectManagerWrapper::close()
 	ProjectManager::close();
 }
 
-void ProjectManagerWrapper::save()
+bool ProjectManagerWrapper::save()
 {
 	mMainWindow->editorManager().saveMetamodel("");
-	ProjectManager::save();
+	return ProjectManager::save();
 }
 
 bool ProjectManagerWrapper::saveOrSuggestToSaveAs()
@@ -280,6 +280,7 @@ bool ProjectManagerWrapper::suggestToSaveAs()
 		if (newMetamodelFileName.isEmpty()) {
 			return false;
 		}
+
 		mMainWindow->editorManager().saveMetamodel(newMetamodelFileName);
 	}
 

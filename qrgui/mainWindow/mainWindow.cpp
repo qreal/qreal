@@ -191,7 +191,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, SIGNAL(triggered()), mProjectManager, SLOT(suggestToOpenExisting()));
-	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
+	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(tryToSave()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
@@ -372,8 +372,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
+		mErrorReporter->addWarning(tr("Could not save file, try to save it to another place"));
 		return;
 	}
+
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
@@ -549,7 +551,14 @@ void MainWindow::openRecentProjectsMenu()
 	}
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &))
-			, mProjectManager, SLOT(openExisting(const QString &)));
+					 , mProjectManager, SLOT(openExisting(const QString &)));
+}
+
+void MainWindow::tryToSave()
+{
+	if(!mProjectManager->saveOrSuggestToSaveAs()) {
+		mErrorReporter->addWarning(tr("Could not save file, try to save it to another place"));
+	}
 }
 
 void MainWindow::closeAllTabs()
