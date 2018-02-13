@@ -344,7 +344,38 @@ void WallItem::alignTheWall(int indexGrid)
 
 QPolygonF WallItem::collidingPolygon() const
 {
-	return mPath.toFillPolygon();
+	QPolygonF polygon = mPath.toFillPolygon();
+	if (polygon.isEmpty()) {
+		return polygon;
+	}
+
+	QRectF abcdBoundingRect = polygon.boundingRect();
+	QLineF ab(abcdBoundingRect.topLeft(), abcdBoundingRect.topRight());
+	QLineF bc(abcdBoundingRect.topRight(), abcdBoundingRect.bottomRight());
+	QLineF dc(abcdBoundingRect.bottomLeft(), abcdBoundingRect.bottomRight());
+	QLineF ad(abcdBoundingRect.topLeft(), abcdBoundingRect.bottomLeft());
+
+	QList<QPointF> abIntersection = mathUtils::Geometry::intersection(ab, mPath);
+	QList<QPointF> bcIntersection = mathUtils::Geometry::intersection(bc, mPath);
+	QList<QPointF> dcIntersection = mathUtils::Geometry::intersection(dc, mPath);
+	QList<QPointF> adIntersection = mathUtils::Geometry::intersection(ad, mPath);
+
+	Q_ASSERT(abIntersection.length() == 2);
+	Q_ASSERT(bcIntersection.length() == 2);
+	Q_ASSERT(dcIntersection.length() == 2);
+	Q_ASSERT(adIntersection.length() == 2);
+
+	// it is rotated rect
+	if (abIntersection.first() == abIntersection.last()
+			|| bcIntersection.first() == bcIntersection.last()
+			|| dcIntersection.first() == dcIntersection.last()
+			|| adIntersection.first() == adIntersection.last()) {
+		return QPolygonF() << abIntersection.first() << bcIntersection.first()
+				<< dcIntersection.first() << adIntersection.first();
+	}
+
+	//else we have the same polygon as abcdBoundingRect
+	return abcdBoundingRect;
 }
 
 qreal WallItem::mass() const
