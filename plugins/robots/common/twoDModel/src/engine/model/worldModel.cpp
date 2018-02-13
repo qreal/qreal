@@ -23,6 +23,7 @@
 
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/skittleItem.h"
+#include "src/engine/items/ballItem.h"
 #include "src/engine/items/colorFieldItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/rectangleItem.h"
@@ -139,6 +140,11 @@ const QMap<QString, items::SkittleItem *> &WorldModel::skittles() const
 	return mSkittles;
 }
 
+const QMap<QString, items::BallItem *> &WorldModel::balls() const
+{
+	return mBalls;
+}
+
 void WorldModel::addWall(items::WallItem *wall)
 {
 	const QString id = wall->id();
@@ -173,6 +179,24 @@ void WorldModel::removeSkittle(items::SkittleItem *skittle)
 {
 	mSkittles.remove(skittle->id());
 	emit itemRemoved(skittle);
+}
+
+void WorldModel::addBall(items::BallItem *ball)
+{
+	const QString id = ball->id();
+	if (mBalls.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return; // probably better than having no way to delete those duplicate items on the scene
+	}
+
+	mBalls[id] = ball;
+	emit ballAdded(ball);
+}
+
+void WorldModel::removeBall(items::BallItem *ball)
+{
+	mBalls.remove(ball->id());
+	emit itemRemoved(ball);
 }
 
 const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
@@ -241,6 +265,10 @@ void WorldModel::clear()
 		removeSkittle(mSkittles.last());
 	}
 
+	while (!mBalls.isEmpty()) {
+		removeBall(mBalls.last());
+	}
+
 	while (!mColorFields.isEmpty()) {
 		removeColorField(mColorFields.last());
 	}
@@ -301,6 +329,10 @@ QPainterPath WorldModel::buildSolidItemsPath() const
 		path.addPath(skittle->path());
 	}
 
+	for (items::BallItem *ball: mBalls) {
+		path.addPath(ball->path());
+	}
+
 	return path;
 }
 
@@ -349,6 +381,12 @@ QDomElement WorldModel::serialize(QDomElement &parent) const
 	result.appendChild(skittles);
 	for (items::SkittleItem * const skittle : mSkittles) {
 		skittle->serialize(skittles);
+	}
+
+	QDomElement balls = parent.ownerDocument().createElement("balls");
+	result.appendChild(balls);
+	for (items::BallItem * const ball : mBalls) {
+		ball->serialize(balls);
 	}
 
 	QDomElement colorFields = parent.ownerDocument().createElement("colorFields");
@@ -424,6 +462,14 @@ void WorldModel::deserialize(const QDomElement &element)
 		for (QDomElement skittleNode = skittlesNode.firstChildElement("skittle"); !skittleNode.isNull()
 				; skittleNode = skittleNode.nextSiblingElement("skittle")) {
 			createSkittle(skittleNode);
+		}
+	}
+
+	for (QDomElement ballsNode = element.firstChildElement("balls"); !ballsNode.isNull()
+			; ballsNode = ballsNode.nextSiblingElement("balls")) {
+		for (QDomElement ballNode = ballsNode.firstChildElement("ball"); !ballNode.isNull()
+				; ballNode = ballNode.nextSiblingElement("ball")) {
+			createBall(ballNode);
 		}
 	}
 
@@ -537,6 +583,14 @@ void WorldModel::createSkittle(const QDomElement &element)
 	skittle->deserialize(element);
 	addSkittle(skittle);
 }
+
+void WorldModel::createBall(const QDomElement &element)
+{
+	items::BallItem *ball = new items::BallItem(QPointF());
+	ball->deserialize(element);
+	addBall(ball);
+}
+
 
 void WorldModel::createLine(const QDomElement &element)
 {

@@ -38,6 +38,7 @@
 #include "src/engine/view/scene/sonarSensorItem.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/skittleItem.h"
+#include "src/engine/items/ballItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/rectangleItem.h"
@@ -72,6 +73,7 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::skittleAdded, this, &TwoDModelScene::onSkittleAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::ballAdded, this, &TwoDModelScene::onBallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::imageItemAdded, this, &TwoDModelScene::onImageItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
@@ -186,6 +188,21 @@ void TwoDModelScene::onSkittleAdded(items::SkittleItem *skittle)
 	});
 }
 
+void TwoDModelScene::onBallAdded(items::BallItem *ball)
+{
+	addItem(ball);
+	subscribeItem(ball);
+	connect(ball, &items::SkittleItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	ball->setEditable(!mWorldReadOnly);
+	connect(ball, &items::BallItem::mouseInteractionStopped, this, [&](){
+		for (QGraphicsItem *item : selectedItems()) {
+			if (auto ball = dynamic_cast<items::BallItem *>(item)) {
+				ball->saveStartPosition();
+			}
+		}
+	});
+}
+
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
 	addItem(item);
@@ -270,6 +287,11 @@ void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				mCurrentSkittle = new items::SkittleItem(position);
 				initItem(mCurrentSkittle);
 				mModel.worldModel().addSkittle(mCurrentSkittle);
+				break;
+			case ball:
+				mCurrentBall = new items::BallItem(position);
+				initItem(mCurrentBall);
+				mModel.worldModel().addBall(mCurrentBall);
 				break;
 			case line:
 				mCurrentLine = new items::LineItem(position, position);
@@ -364,6 +386,11 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentSkittle = nullptr;
 		break;
 	}
+	case ball: {
+		createdItem = mCurrentBall;
+		mCurrentBall = nullptr;
+		break;
+	}
 	case line: {
 		reshapeLine(mouseEvent);
 		createdItem = mCurrentLine;
@@ -451,6 +478,7 @@ void TwoDModelScene::deleteSelectedItems()
 		items::ColorFieldItem * const colorField = dynamic_cast<items::ColorFieldItem *>(item);
 		items::ImageItem * const image = dynamic_cast<items::ImageItem *>(item);
 		items::SkittleItem * const skittle = dynamic_cast<items::SkittleItem *>(item);
+		items::BallItem * const ball = dynamic_cast<items::BallItem *>(item);
 
 		if (sensor && !mSensorsReadOnly) {
 			for (RobotItem * const robotItem : mRobots.values()) {
@@ -465,6 +493,9 @@ void TwoDModelScene::deleteSelectedItems()
 		} else if (skittle && !mWorldReadOnly) {
 			worldItemsToDelete << skittle->id();
 			mCurrentSkittle = nullptr;
+		} else if (ball && !mWorldReadOnly) {
+			worldItemsToDelete << ball->id();
+			mCurrentBall = nullptr;
 		} else if (colorField && !mWorldReadOnly) {
 			worldItemsToDelete << colorField->id();
 			mCurrentLine = nullptr;
@@ -562,6 +593,11 @@ void TwoDModelScene::addSkittle()
 	mDrawingAction = skittle;
 }
 
+void TwoDModelScene::addBall()
+{
+	mDrawingAction = ball;
+}
+
 void TwoDModelScene::addLine()
 {
 	mDrawingAction = line;
@@ -625,6 +661,10 @@ void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 
 		for (const items::SkittleItem *skittle : mModel.worldModel().skittles()) {
 			worldItemsToDelete << skittle->id();
+		}
+
+		for (const items::BallItem *ball : mModel.worldModel().balls()) {
+			worldItemsToDelete << ball->id();
 		}
 
 		for (const items::ColorFieldItem *colorField : mModel.worldModel().colorFields()) {

@@ -26,6 +26,7 @@
 #include "src/engine/view/scene/sensorItem.h"
 #include "src/engine/items/wallItem.h"
 #include "src/engine/items/skittleItem.h"
+#include "src/engine/items/ballItem.h"
 #include "qrutils/mathUtils/math.h"
 #include "parts/box2DWheel.h"
 #include "parts/box2DRobot.h"
@@ -48,6 +49,7 @@ Box2DPhysicsEngine::Box2DPhysicsEngine (const WorldModel &worldModel
 {
 	connect(&worldModel, &model::WorldModel::wallAdded, this, &Box2DPhysicsEngine::itemAdded);
 	connect(&worldModel, &model::WorldModel::skittleAdded, this, &Box2DPhysicsEngine::itemAdded);
+	connect(&worldModel, &model::WorldModel::ballAdded, this, &Box2DPhysicsEngine::itemAdded);
 	connect(&worldModel, &model::WorldModel::itemRemoved, this, &Box2DPhysicsEngine::itemRemoved);
 }
 

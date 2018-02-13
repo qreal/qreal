@@ -42,6 +42,7 @@ namespace items {
 class SolidItem;
 class WallItem;
 class SkittleItem;
+class BallItem;
 class LineItem;
 class CurveItem;
 class StylusItem;
@@ -90,6 +91,9 @@ public slots:
 
 	/// Sets a flag that next user mouse actions should draw a skittle on the scene.
 	void addSkittle();
+
+	/// Sets a flag that next user mouse actions should draw a ball on the scene.
+	void addBall();
 
 	/// Sets a flag that next user mouse actions should draw a colored line on the scene.
 	void addLine();
@@ -167,6 +171,9 @@ private slots:
 	/// Called after new skittle is added to a world model.
 	void onSkittleAdded(items::SkittleItem *skittle);
 
+	/// Called after new ball is added to a world model.
+	void onBallAdded(items::BallItem *ball);
+
 	/// Called after new color field item is added to a world model.
 	void onColorItemAdded(graphicsUtils::AbstractItem *item);
 
@@ -184,6 +191,7 @@ private:
 		none = 0
 		, wall
 		, skittle
+		, ball
 		, line
 		, bezier
 		, stylus
@@ -234,6 +242,7 @@ private:
 	/// Temporary wall that's being created. When it's complete, it's added to world model
 	items::WallItem *mCurrentWall = nullptr;
 	items::SkittleItem *mCurrentSkittle = nullptr;
+	items::BallItem *mCurrentBall = nullptr;
 	items::LineItem *mCurrentLine = nullptr;
 	items::CurveItem *mCurrentCurve = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;

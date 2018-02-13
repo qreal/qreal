@@ -36,6 +36,7 @@ namespace twoDModel {
 namespace items {
 class WallItem;
 class SkittleItem;
+class BallItem;
 class ColorFieldItem;
 class ImageItem;
 class RegionItem;
@@ -77,6 +78,9 @@ public:
 	/// Returns a set of skittles in the world model. Result is mapping of skittle ids to slittles themselves.
 	const QMap<QString, items::SkittleItem *> &skittles() const;
 
+	/// Returns a set of balls in the world model. Result is mapping of ball ids to balls themselves.
+	const QMap<QString, items::BallItem *> &balls() const;
+
 	/// Returns a set of color field items in the world model. Result is mapping of field ids to fields themselves.
 	const QMap<QString, items::ColorFieldItem *> &colorFields() const;
 
@@ -100,6 +104,12 @@ public:
 
 	/// Removes \a skittle from the world model.
 	void removeSkittle(items::SkittleItem *skittle);
+
+	/// Appends \a ball into world model.
+	void addBall(items::BallItem *ball);
+
+	/// Removes \a ball from the world model.
+	void removeBall(items::BallItem *ball);
 
 	/// Appends colored item \a colorField into the world model.
 	void addColorField(items::ColorFieldItem *colorField);
@@ -154,6 +164,9 @@ public:
 	/// Creates skittle item described by \a element in the world model.
 	void createSkittle(const QDomElement &element);
 
+	/// Creates ball item described by \a element in the world model.
+	void createBall(const QDomElement &element);
+
 	/// Creates line colored item described by \a element in the world model.
 	void createLine(const QDomElement &element);
 
@@ -188,6 +201,9 @@ signals:
 	/// Emitted each time when model is appended with some new skittle.
 	void skittleAdded(items::SkittleItem *item);
 
+	/// Emitted each time when model is appended with some new skittle.
+	void ballAdded(items::BallItem *item);
+
 	/// Emitted each time when model is appended with some new color field item.
 	void colorItemAdded(items::ColorFieldItem *item);
 
@@ -219,6 +235,7 @@ private:
 
 	QMap<QString, items::WallItem *> mWalls;
 	QMap<QString, items::SkittleItem *> mSkittles;
+	QMap<QString, items::BallItem *> mBalls;
 	QMap<QString, items::ColorFieldItem *> mColorFields;
 	QMap<QString, items::ImageItem *> mImages;
 	QMap<QString, items::RegionItem *> mRegions;

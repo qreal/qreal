@@ -171,6 +171,7 @@ private:
 		, multiselection
 		, drawWall
 		, drawSkittle
+		, drawBall
 		, drawLine
 		, drawStylus
 		, drawEllipse
