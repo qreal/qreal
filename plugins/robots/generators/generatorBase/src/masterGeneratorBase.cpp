@@ -93,10 +93,10 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 		generator->reinit();
 	}
 
-	mStructuralControlFlowGenerator->generate();
+
 
 	QString mainCode;
-	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
+	const semantics::SemanticTree *mainControlFlow = mStructuralControlFlowGenerator->generate();
 	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
 		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()->subprograms()->generate(

@@ -97,8 +97,10 @@ void StructuralControlFlowGenerator::afterSearch()
 
 SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, const QString &threadId)
 {
+
 	ControlFlowGeneratorBase::generate(initialNode, threadId);
 	mSemanticTree->setRoot(new RootNode(mNodesForest.first()));
+	return mSemanticTree;
 }
 
 void StructuralControlFlowGenerator::performGeneration()
