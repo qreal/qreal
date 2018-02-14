@@ -255,12 +255,11 @@ void StructuralControlFlowGenerator::performAnalysis()
 
 	buildInitialForest();
 
-	auto values = mInitialVerteces.values();
-
-	for (auto it = values.begin(); it != values.end(); ++it) {
-		mUsed[(*it)->id()] = false;
-		mPostOrder[(*it)->id()] = -1;
+	for (Node *node : mInitialVerteces.values()) {
+		mUsed[node->id()] = false;
+		mPostOrder[node->id()] = -1;
 	}
+
 	int time = 0;
 	VertexLabel entry = mEntry;
 	dfs(entry, time);
@@ -272,17 +271,7 @@ void StructuralControlFlowGenerator::performAnalysis()
 	// verteces in current flowgraph
 
 	while (mFollowers.keys().size() > 1 && mCurrentTime <= mMaxTime) {
-		VertexLabel currentNode = -1;
-
-		// dummy cycle for finding node number that
-		// has postOrder equal to currentTime
-
-		for (auto it = mPostOrder.keys().begin(); it != mPostOrder.keys().end(); ++it) {
-			if (mPostOrder[*it] == mCurrentTime) {
-				currentNode = *it;
-				break;
-			}
-		}
+		const VertexLabel currentNode = mPostOrder.key(mCurrentTime);
 
 		QVector<VertexLabel> nodesThatComposeRegion;
 		nodesThatComposeRegion.clear();
@@ -306,7 +295,6 @@ void StructuralControlFlowGenerator::performAnalysis()
 				mCurrentTime++;
 			}
 		}
-
 	}
 
 	qDebug() << "Success\n";
@@ -603,17 +591,17 @@ void StructuralControlFlowGenerator::compact(VertexLabel node, QVector<VertexLab
 	mVerteces.append(node);
 	int maxPostOrderNumber = -1;
 
-	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
-		if (mPostOrder[*it] > maxPostOrderNumber) {
-			maxPostOrderNumber = mPostOrder[*it];
+	for (VertexLabel label : nodesThatComposeRegion) {
+		if (mPostOrder[label] > maxPostOrderNumber) {
+			maxPostOrderNumber = mPostOrder[label];
 		}
 	}
 
 	mPostOrder[node] = maxPostOrderNumber;
 
-	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
-		mVerteces.removeOne(*it);
-		mPostOrder.remove(*it);
+	for (VertexLabel label : nodesThatComposeRegion) {
+		mVerteces.removeOne(label);
+		mPostOrder.remove(label);
 	}
 
 	int appropriateTime = 0;
