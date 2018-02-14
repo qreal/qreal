@@ -53,6 +53,8 @@ Box2DRobot::Box2DRobot(Box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 	robotFixture.friction = mModel->info().friction();
 	mBody->CreateFixture(&robotFixture);
 	mBody->SetUserData(this);
+	mBody->SetAngularDamping(1.0f);
+	mBody->SetLinearDamping(1.0f);
 	connectWheels();
 
 	for (int i = 0; i < polygonShape.GetVertexCount(); ++i) {
@@ -200,6 +202,7 @@ void Box2DRobot::connectSensor(const Box2DItem &sensor)
 	b2WeldJointDef jointDef;
 	jointDef.bodyA = mBody;
 	jointDef.bodyB = sensor.getBody();
+	jointDef.referenceAngle = sensor.getBody()->GetAngle() - mBody->GetAngle();
 
 	jointDef.localAnchorA = mBody->GetLocalCenter();
 	jointDef.localAnchorB = sensor.getBody()->GetLocalPoint(mBody->GetWorldCenter());

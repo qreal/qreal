@@ -192,7 +192,7 @@ void TwoDModelScene::onBallAdded(items::BallItem *ball)
 {
 	addItem(ball);
 	subscribeItem(ball);
-	connect(ball, &items::SkittleItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
+	connect(ball, &items::BallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	ball->setEditable(!mWorldReadOnly);
 	connect(ball, &items::BallItem::mouseInteractionStopped, this, [&](){
 		for (QGraphicsItem *item : selectedItems()) {

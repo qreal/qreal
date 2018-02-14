@@ -511,6 +511,10 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 		return mSkittles[id];
 	}
 
+	if (mBalls.contains(id)) {
+		return mBalls[id];
+	}
+
 	if (mColorFields.contains(id)) {
 		return mColorFields[id];
 	}
@@ -563,6 +567,8 @@ void WorldModel::createElement(const QDomElement &element)
 		createWall(element);
 	} else if (element.tagName() == "skittle") {
 		createSkittle(element);
+	} else if (element.tagName() == "ball") {
+		createBall(element);
 	} else if (element.tagName() == "region") {
 		createRegion(element);
 	} else if (element.tagName() == "background") {
@@ -670,5 +676,7 @@ void WorldModel::removeItem(const QString &id)
 		removeImage(image);
 	} else if (auto skittleItem = dynamic_cast<items::SkittleItem *>(item)) {
 		removeSkittle(skittleItem);
+	} else if (auto ballItem = dynamic_cast<items::BallItem *>(item)) {
+		removeBall(ballItem);
 	}
 }

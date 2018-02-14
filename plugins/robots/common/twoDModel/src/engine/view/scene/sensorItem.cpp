@@ -134,7 +134,7 @@ void SensorItem::deserialize(const QDomElement &element)
 QPolygonF SensorItem::collidingPolygon() const
 {
 	/// @todo: returning different polygons based on sensor type
-	return QPolygonF(QRectF(-5, -5, 15, 15));
+	return QPolygonF(QRectF(-7, -7, 15, 15));
 }
 
 qreal SensorItem::friction() const
