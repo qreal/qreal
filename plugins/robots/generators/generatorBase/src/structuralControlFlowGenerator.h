@@ -23,7 +23,6 @@
 
 using graphUtils::Node;
 using graphUtils::RegionType;
-//using graphUtils::VertexIterator;
 using graphUtils::VertexLabel;
 
 namespace generatorBase {

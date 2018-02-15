@@ -33,7 +33,6 @@ enum RegionType {
 };
 
 typedef int VertexLabel;
-//typedef QList<VertexLabel>::iterator VertexIterator;
 
 class Node {
 public:

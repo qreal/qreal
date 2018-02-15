@@ -275,7 +275,6 @@ void StructuralControlFlowGenerator::performAnalysis()
 		const VertexLabel currentNode = mPostOrder.key(mCurrentTime);
 
 		QVector<VertexLabel> nodesThatComposeRegion;
-		nodesThatComposeRegion.clear();
 		RegionType type = determineAcyclicRegionType(currentNode, nodesThatComposeRegion);
 
 		if (type != RegionType::nil) {
@@ -303,9 +302,8 @@ void StructuralControlFlowGenerator::performAnalysis()
 
 void StructuralControlFlowGenerator::findDominators()
 {
-
-	for (auto it = mVerteces.begin(); it != mVerteces.end(); it++) {
-		mDominators[*it] = mVerteces.toSet();
+	for (VertexLabel vertexLabel : mVerteces) {
+		mDominators[vertexLabel] = mVerteces.toSet();
 	}
 
 	VertexLabel entry = mEntry;
@@ -317,19 +315,17 @@ void StructuralControlFlowGenerator::findDominators()
 		somethingChanged = false;
 
 		// excluding root
-		for (auto it = mVerteces.begin(); it != mVerteces.end(); it++) {
-			VertexLabel vertex = *it;
-			if (vertex != mEntry) {
+		for (VertexLabel vertexLabel : mVerteces) {
+			if (vertexLabel != mEntry) {
 				QSet<VertexLabel> newDominators = mVerteces.toSet();
-				for (auto it = mPredecessors[vertex].begin(); it != mPredecessors[vertex].end(); it++) {
-					VertexLabel predecessor = *it;
+				for (VertexLabel predecessor : mPredecessors[vertexLabel]) {
 					newDominators.intersect(mDominators[predecessor]);
 				}
 				// adding the current number, because reflexivity of dominance relation
-				newDominators.insert(vertex);
-				if (newDominators != mDominators[vertex]) {
+				newDominators.insert(vertexLabel);
+				if (newDominators != mDominators[vertexLabel]) {
 					somethingChanged = true;
-					mDominators[vertex] = newDominators;
+					mDominators[vertexLabel] = newDominators;
 				}
 			}
 		}
@@ -339,10 +335,9 @@ void StructuralControlFlowGenerator::findDominators()
 void StructuralControlFlowGenerator::dfs(graphUtils::VertexLabel u, int &postOrderLabel)
 {
 	mUsed[u] = true;
-	for (auto it = mFollowers[u].begin(); it != mFollowers[u].end(); it++) {
-		VertexLabel v = *it;
-		if (!mUsed[v]) {
-			dfs(v, postOrderLabel);
+	for (VertexLabel vertexLabel : mFollowers[u]) {
+		if (!mUsed[vertexLabel]) {
+			dfs(vertexLabel, postOrderLabel);
 		}
 	}
 	mPostOrder[u] = postOrderLabel;
@@ -351,8 +346,6 @@ void StructuralControlFlowGenerator::dfs(graphUtils::VertexLabel u, int &postOrd
 
 RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils::VertexLabel node, QVector<graphUtils::VertexLabel> &nodesThatComposeRegion)
 {
-	nodesThatComposeRegion.clear();
-
 	VertexLabel currentNode = node;
 	bool hasOnlyOneIncomingEdge = true;
 	bool hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
@@ -473,12 +466,10 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 	replace(abstractNode->id(), nodesThatComposeRegion);
 
 	allNodes.append(abstractNode);
-	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
-		VertexLabel currentLabel = *it;
+	for (VertexLabel currentLabel : nodesThatComposeRegion) {
 
 		// place for optimization
-		for (auto it1 = allNodes.begin(); it1 != allNodes.end(); ++it1) {
-			Node *current = *it1;
+		for (Node *current : allNodes) {
 			if (current->id() == currentLabel) {
 				current->setParent(abstractNode->id());
 			}
@@ -496,37 +487,36 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType 
 	}
 
 	// updating dominators
+	// new function?
 	QSet<VertexLabel> setForNewNode = {newLabel};
-	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
-		setForNewNode = setForNewNode.unite(mDominators[*it]);
+	for (VertexLabel vertexLabel : nodesThatComposeRegion) {
+		setForNewNode = setForNewNode.unite(mDominators[vertexLabel]);
 	}
 	setForNewNode = setForNewNode.intersect(mVerteces.toSet());
 	mDominators.insert(abstractNode->id(), setForNewNode);
 
-	for (auto it = nodesThatComposeRegion.begin(); it != nodesThatComposeRegion.end(); ++it) {
-		mDominators.remove(*it);
+	for (VertexLabel vertexLabel : nodesThatComposeRegion) {
+		mDominators.remove(vertexLabel);
 	}
 
 	for (auto it = mDominators.begin(); it != mDominators.end(); ++it) {
-		VertexLabel label = it.key();
-		QSet<VertexLabel> set = it.value();
+		VertexLabel currentVertex = it.key();
+		QSet<VertexLabel> oldSet, newSet = it.value();
+		oldSet = newSet;
 		bool isNeededNewLabel = false;
 
-		auto vertexIt = set.begin();
-		while (vertexIt != set.end()) {
-			if (nodesThatComposeRegion.contains(*vertexIt)) {
+		for (VertexLabel v : oldSet) {
+			if (nodesThatComposeRegion.contains(v)) {
 				isNeededNewLabel = true;
-				vertexIt = set.erase(vertexIt);
-			} else {
-				vertexIt++;
+				newSet.remove(v);
 			}
 		}
 
 		if (isNeededNewLabel) {
-			set.insert(newLabel);
+			newSet.insert(currentVertex);
 		}
 
-		mDominators.insert(label, set);
+		mDominators.insert(currentVertex, newSet);
 	}
 
 	abstractNode->appendChildren(nodesThatComposeRegion);
@@ -539,16 +529,13 @@ void StructuralControlFlowGenerator::replace(VertexLabel node, QVector<graphUtil
 	compact(node, nodesThatComposeRegion);
 
 	QMap<VertexLabel, QVector<VertexLabel> > followers;
-	followers.clear();
 
 	// set of edges is determined by mFollowers or mPredecessors
+
 	for (auto it = mFollowers.begin(); it != mFollowers.end(); ++it) {
 		VertexLabel currentLabel = it.key();
-		QVector<VertexLabel> labels = it.value();
 
-		for (auto nextVertexIt = labels.begin(); nextVertexIt != labels.end(); nextVertexIt++) {
-			VertexLabel nextLabel = *nextVertexIt;
-
+		for (VertexLabel nextLabel : it.value()) {
 			if (nodesThatComposeRegion.contains(nextLabel) || nodesThatComposeRegion.contains(currentLabel)) {
 				removeFrom(mPredecessors, nextLabel, currentLabel);
 
@@ -645,8 +632,7 @@ QVector<graphUtils::VertexLabel> StructuralControlFlowGenerator::countReachUnder
 
 	QQueue<VertexLabel> nodesThatHavePathAndBackEdgeToCurrentNode;
 	// only nodes that are dominated by currentNode can be presented in reachUnder
-	for (auto it = mVerteces.begin(); it != mVerteces.end(); ++it) {
-		VertexLabel node = *it;
+	for (VertexLabel node : mVerteces) {
 		used[node] = false;
 		if (mDominators[node].contains(currentNode) && mFollowers[node].contains(currentNode)) {
 			nodesThatHavePathAndBackEdgeToCurrentNode.enqueue(node);
