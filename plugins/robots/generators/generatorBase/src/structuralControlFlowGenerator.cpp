@@ -99,6 +99,7 @@ SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, co
 {
 
 	ControlFlowGeneratorBase::generate(initialNode, threadId);
+	delete mSemanticTree;
 	mSemanticTree->setRoot(new RootNode(mNodesForest.first()));
 	return mSemanticTree;
 }
