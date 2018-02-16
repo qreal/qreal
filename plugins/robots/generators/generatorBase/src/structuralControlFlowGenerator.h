@@ -21,7 +21,6 @@
 
 #include "generatorBase/node.h"
 
-using graphUtils::Node;
 using graphUtils::RegionType;
 using graphUtils::VertexLabel;
 using graphUtils::Region;
@@ -67,8 +66,6 @@ public:
 	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
 private:
-	QVector<Node *> allNodes;
-
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times
 	/// to build dominators tree and then perform structural analysis
@@ -85,7 +82,7 @@ private:
 	Region *determineAcyclicRegionType(VertexLabel node);
 	Region *determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
 
-	Node *reduce(Region *region);
+	VertexLabel reduce(Region *region);
 	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 
@@ -99,7 +96,7 @@ private:
 	int mMaxTime;
 	VertexLabel mEntry;
 	QList<VertexLabel> mVerteces;
-	QMap<qReal::Id, Node *> mInitialVerteces;
+	QMap<qReal::Id, VertexLabel> mInitialVerteces;
 	QMap<VertexLabel, QVector<VertexLabel> > mFollowers;
 	QMap<VertexLabel, QVector<VertexLabel> > mPredecessors;
 	QMap<VertexLabel, QSet<VertexLabel>> mDominators;

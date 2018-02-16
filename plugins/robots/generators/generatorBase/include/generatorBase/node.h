@@ -24,14 +24,10 @@ enum RegionType {
 	Block = 0
 	, IfThen
 	, IfThenElse
-	, Case
-	, Proper
+	, Switch
 	, SelfLoop
 	, WhileLoop
-	, NaturalLoop
-	, Improper
 	, nil
-	, simpleNode
 };
 
 
@@ -123,31 +119,6 @@ private:
 class NilRegion : public Region {
 public:
 	NilRegion();
-};
-
-
-class Node {
-public:
-	Node();
-	Node(int id, RegionType type);
-
-	void appendChild(VertexLabel child);
-	void appendChildren(const QVector<VertexLabel> &children);
-
-	VertexLabel structOf() const;
-	void setParent(VertexLabel parent);
-	RegionType structType() const;
-	QVector<VertexLabel> structNodes() const;
-
-	bool operator <(const Node& other) const;
-
-	int id() const;
-
-protected:
-	int mId;
-	RegionType mRegionType;
-	VertexLabel mParent;
-	QVector<VertexLabel> mChildren;
 };
 
 }

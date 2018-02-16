@@ -209,41 +209,38 @@ void StructuralControlFlowGenerator::updateForest(graphUtils::RegionType type, g
 void StructuralControlFlowGenerator::buildInitialForest()
 {
 	for (qReal::Id id : mInitialVerteces.keys()) {
-		VertexLabel label = mInitialVerteces[id]->id();
-		mNodesForest.insert(label, mSemanticTree->produceNodeFor(id));
+		mNodesForest.insert(mInitialVerteces[id], mSemanticTree->produceNodeFor(id));
 	}
 }
 
 void StructuralControlFlowGenerator::buildGraph(const Id &id, const QList<LinkInfo> &links)
 {
-	Node *currentVertex = nullptr;
+	VertexLabel currentVertex = -1;
 	if (mInitialVerteces.contains(id)) {
 		currentVertex = mInitialVerteces[id];
 	} else {
-		currentVertex = new Node(mCounter++, RegionType::simpleNode);
-		allNodes.append(currentVertex);
+		currentVertex = mCounter++;
 		mNumberOfVerteces++;
 		mInitialVerteces[id] = currentVertex;
-		mVerteces.push_back(currentVertex->id());
+		mVerteces.push_back(currentVertex);
 	}
 
 	if (!mEntry) {
-		mEntry = currentVertex->id();
+		mEntry = currentVertex;
 	}
 
 	for (const LinkInfo link : links) {
-		Node * targetVertex = nullptr;
+		VertexLabel vertexLabel = -1;
 		if (mInitialVerteces.contains(link.target)) {
-			targetVertex = mInitialVerteces[link.target];
+			vertexLabel = mInitialVerteces[link.target];
 		} else {
-			targetVertex = new Node(mCounter++, RegionType::simpleNode);
-			allNodes.append(currentVertex);
+			vertexLabel = mCounter++;
 			mNumberOfVerteces++;
-			mInitialVerteces[link.target] = targetVertex;
-			mVerteces.push_back(targetVertex->id());
+			mInitialVerteces[link.target] = vertexLabel;
+			mVerteces.push_back(vertexLabel);
 		}
-		mFollowers[currentVertex->id()].push_back(targetVertex->id());
-		mPredecessors[targetVertex->id()].push_back(currentVertex->id());
+		mFollowers[currentVertex].push_back(vertexLabel);
+		mPredecessors[vertexLabel].push_back(currentVertex);
 	}
 }
 
@@ -256,9 +253,9 @@ void StructuralControlFlowGenerator::performAnalysis()
 
 	buildInitialForest();
 
-	for (Node *node : mInitialVerteces.values()) {
-		mUsed[node->id()] = false;
-		mPostOrder[node->id()] = -1;
+	for (VertexLabel label : mInitialVerteces.values()) {
+		mUsed[label] = false;
+		mPostOrder[label] = -1;
 	}
 
 	int time = 0;
@@ -274,21 +271,21 @@ void StructuralControlFlowGenerator::performAnalysis()
 	while (mFollowers.keys().size() > 1 && mCurrentTime <= mMaxTime) {
 		const VertexLabel currentNode = mPostOrder.key(mCurrentTime);
 
-		graphUtils::Region * region = determineAcyclicRegionType(currentNode);
+		graphUtils::Region *region = determineAcyclicRegionType(currentNode);
 
 		if (region->type() != RegionType::nil) {
-			Node *newNode = reduce(region);
+			VertexLabel newNode = reduce(region);
 			if (region->nodes().contains(mEntry)) {
-				mEntry = newNode->id();
+				mEntry = newNode;
 			}
 		} else {
 			QVector<VertexLabel> reachUnder = countReachUnder(currentNode);
 			delete region;
 			region = determineCyclicRegionType(currentNode, reachUnder);
 			if (region->type() != RegionType::nil) {
-				Node *newNode = reduce(region);
+				VertexLabel newNode = reduce(region);
 				if (reachUnder.contains(mEntry)) {
-					mEntry = newNode->id();
+					mEntry = newNode;
 				}
 			} else {
 				mCurrentTime++;
@@ -448,7 +445,7 @@ Region * StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::V
 	return new graphUtils::NilRegion();
 }
 
-graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::Region *region)
+graphUtils::VertexLabel StructuralControlFlowGenerator::reduce(graphUtils::Region *region)
 {
 	bool hasBackEdgeForBlock = false;
 	QVector<VertexLabel> nodesThatComposeRegion = region->nodes();
@@ -459,40 +456,30 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::Region *reg
 		hasBackEdgeForBlock = mFollowers[lastNode].contains(firstNode);
 	}
 
-	Node *abstractNode = new Node(mCounter++, region->type());
+	VertexLabel newVertexLabel = mCounter++;
 
-	updateForest(region->type(), abstractNode->id(), nodesThatComposeRegion);
-	replace(abstractNode->id(), nodesThatComposeRegion);
+	updateForest(region->type(), newVertexLabel, nodesThatComposeRegion);
+	replace(newVertexLabel, nodesThatComposeRegion);
 
-	allNodes.append(abstractNode);
 	for (VertexLabel currentLabel : nodesThatComposeRegion) {
-
-		// place for optimization
-		for (Node *current : allNodes) {
-			if (current->id() == currentLabel) {
-				current->setParent(abstractNode->id());
-			}
-		}
-
 		// saving graph invariant
 		mFollowers.remove(currentLabel);
 		mPredecessors.remove(currentLabel);
 	}
 
-	VertexLabel newLabel = abstractNode->id();
 	if (hasBackEdgeForBlock) {
-		mFollowers[newLabel].push_back(newLabel);
-		mPredecessors[newLabel].push_back(newLabel);
+		mFollowers[newVertexLabel].push_back(newVertexLabel);
+		mPredecessors[newVertexLabel].push_back(newVertexLabel);
 	}
 
 	// updating dominators
 	// new function?
-	QSet<VertexLabel> setForNewNode = {newLabel};
+	QSet<VertexLabel> setForNewNode = {newVertexLabel};
 	for (VertexLabel vertexLabel : nodesThatComposeRegion) {
 		setForNewNode = setForNewNode.unite(mDominators[vertexLabel]);
 	}
 	setForNewNode = setForNewNode.intersect(mVerteces.toSet());
-	mDominators.insert(abstractNode->id(), setForNewNode);
+	mDominators.insert(newVertexLabel, setForNewNode);
 
 	for (VertexLabel vertexLabel : nodesThatComposeRegion) {
 		mDominators.remove(vertexLabel);
@@ -518,9 +505,7 @@ graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::Region *reg
 		mDominators.insert(currentVertex, newSet);
 	}
 
-	abstractNode->appendChildren(nodesThatComposeRegion);
-
-	return abstractNode;
+	return newVertexLabel;
 }
 
 void StructuralControlFlowGenerator::replace(VertexLabel node, QVector<graphUtils::VertexLabel> &nodesThatComposeRegion)
