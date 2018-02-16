@@ -436,16 +436,16 @@ Region * StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::V
 			return new graphUtils::SelfLoopRegion(node);
 		}
 	}
-	else if (reachUnder.size() == 2) {
+
+	if (reachUnder.size() == 2) {
 		VertexLabel lastNode = reachUnder.last() == node ? reachUnder.first() : reachUnder.last();
 		if (mFollowers[node].size() == 2 && mFollowers[lastNode].size() == 1
 				&& mPredecessors[lastNode].size() == 1) {
 			return new graphUtils::WhileLoopRegion(node, lastNode);
 		}
 	}
-	else {
-		return new graphUtils::NilRegion();
-	}
+
+	return new graphUtils::NilRegion();
 }
 
 graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::Region *region)
