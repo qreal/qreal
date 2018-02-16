@@ -24,6 +24,7 @@
 using graphUtils::Node;
 using graphUtils::RegionType;
 using graphUtils::VertexLabel;
+using graphUtils::Region;
 
 namespace generatorBase {
 
@@ -82,10 +83,10 @@ private:
 	void findDominators();
 	void dfs(VertexLabel v, int &postOrderLabel);
 
-	RegionType determineAcyclicRegionType(VertexLabel node, QVector<VertexLabel> &nodesThatComposeRegion);
-	RegionType determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
+	Region * determineAcyclicRegionType(VertexLabel node);
+	Region * determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
 
-	Node * reduce(RegionType type, QVector<VertexLabel> &nodesThatComposeRegion);
+	Node * reduce(Region *region);
 	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 

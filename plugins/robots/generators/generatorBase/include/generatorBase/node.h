@@ -18,6 +18,8 @@
 namespace graphUtils
 {
 
+typedef int VertexLabel;
+
 enum RegionType {
 	Block = 0
 	, IfThen
@@ -32,7 +34,94 @@ enum RegionType {
 	, simpleNode
 };
 
-typedef int VertexLabel;
+
+class Region {
+public:
+	Region(RegionType type);
+	virtual ~Region() {}
+	RegionType type() const;
+	virtual QVector<VertexLabel> nodes() const;
+
+protected:
+	RegionType mType;
+};
+
+class BlockRegion : public Region {
+public:
+	BlockRegion(QVector<VertexLabel> &nodes);
+
+	void addVertex(VertexLabel vertexLabel);
+	QVector<VertexLabel> nodes() const;
+
+private:
+	QVector<VertexLabel> mNodes;
+};
+
+
+class IfThenElseRegion : public Region {
+public:
+	IfThenElseRegion();
+
+	QVector<VertexLabel> nodes() const;
+
+	void addCondition(VertexLabel conditionLabel);
+	void addThen(VertexLabel thenLabel);
+	void addElse(VertexLabel elseLabel);
+	VertexLabel getCondition() const;
+	VertexLabel getThen() const;
+	VertexLabel getElse() const;
+
+private:
+	VertexLabel mCondition;
+	VertexLabel mThen;
+	VertexLabel mElse;
+};
+
+class IfThenRegion : public Region {
+public:
+	IfThenRegion();
+
+	void addCondition(VertexLabel conditionLabel);
+	void addThen(VertexLabel thenLabel);
+	VertexLabel getCondition() const;
+	VertexLabel getThen() const;
+
+private:
+	VertexLabel mCondition;
+	VertexLabel mThen;
+};
+
+class SelfLoopRegion : public Region {
+public:
+	SelfLoopRegion(VertexLabel body);
+
+	void addBody(VertexLabel body);
+	VertexLabel body() const;
+
+private:
+	VertexLabel mBody;
+};
+
+class WhileLoopRegion : public Region {
+public:
+	WhileLoopRegion(VertexLabel condition, VertexLabel body);
+
+	void addCondition(VertexLabel condition);
+	void addBody(VertexLabel body);
+	VertexLabel body() const;
+	VertexLabel condition() const;
+
+private:
+	VertexLabel mCondition;
+	VertexLabel mBody;
+};
+
+
+class NilRegion : public Region {
+public:
+	NilRegion();
+};
+
 
 class Node {
 public:

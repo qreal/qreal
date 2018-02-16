@@ -32,8 +32,8 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mNumberOfVerteces(0)
 	, mEntry(0)
-	, mCounter(1)
 	, mVerteces(QList<VertexLabel>())
+	, mCounter(1)
 {
 }
 
@@ -274,20 +274,19 @@ void StructuralControlFlowGenerator::performAnalysis()
 	while (mFollowers.keys().size() > 1 && mCurrentTime <= mMaxTime) {
 		const VertexLabel currentNode = mPostOrder.key(mCurrentTime);
 
-		QVector<VertexLabel> nodesThatComposeRegion;
-		RegionType type = determineAcyclicRegionType(currentNode, nodesThatComposeRegion);
+		graphUtils::Region * region = determineAcyclicRegionType(currentNode);
 
-		if (type != RegionType::nil) {
-			Node *newNode = reduce(type, nodesThatComposeRegion);
-			if (nodesThatComposeRegion.contains(mEntry)) {
+		if (region->type() != RegionType::nil) {
+			Node *newNode = reduce(region);
+			if (region->nodes().contains(mEntry)) {
 				mEntry = newNode->id();
 			}
 		} else {
 			QVector<VertexLabel> reachUnder = countReachUnder(currentNode);
-
-			type = determineCyclicRegionType(currentNode, reachUnder);
-			if (type != RegionType::nil) {
-				Node *newNode = reduce(type, reachUnder);
+			delete region;
+			region = determineCyclicRegionType(currentNode, reachUnder);
+			if (region->type() != RegionType::nil) {
+				Node *newNode = reduce(region);
 				if (reachUnder.contains(mEntry)) {
 					mEntry = newNode->id();
 				}
@@ -344,21 +343,23 @@ void StructuralControlFlowGenerator::dfs(graphUtils::VertexLabel u, int &postOrd
 	postOrderLabel++;
 }
 
-RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils::VertexLabel node, QVector<graphUtils::VertexLabel> &nodesThatComposeRegion)
+Region * StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils::VertexLabel node)
 {
+	QVector<VertexLabel> blockNodes;
 	VertexLabel currentNode = node;
+
 	bool hasOnlyOneIncomingEdge = true;
 	bool hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 
 	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
-		nodesThatComposeRegion.push_back(currentNode);
+		blockNodes.push_back(currentNode);
 		currentNode = mFollowers[currentNode].at(0);
 		hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
 		hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 	}
 
 	if (hasOnlyOneIncomingEdge) {
-		nodesThatComposeRegion.push_back(currentNode);
+		blockNodes.push_back(currentNode);
 	}
 
 	currentNode = node;
@@ -366,25 +367,24 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils
 	hasOnlyOneOutcomingEdge = true;
 
 	while (hasOnlyOneIncomingEdge && hasOnlyOneOutcomingEdge) {
-		if (!nodesThatComposeRegion.contains(currentNode)) {
-			nodesThatComposeRegion.push_front(currentNode);
+		if (!blockNodes.contains(currentNode)) {
+			blockNodes.push_front(currentNode);
 		}
 		currentNode = mPredecessors[currentNode].at(0);
 		hasOnlyOneIncomingEdge = mPredecessors[currentNode].size() == 1;
 		hasOnlyOneOutcomingEdge = mFollowers[currentNode].size() == 1;
 	}
 
-	if (hasOnlyOneOutcomingEdge && !nodesThatComposeRegion.contains(currentNode)) {
-		nodesThatComposeRegion.push_front(currentNode);
+	if (hasOnlyOneOutcomingEdge && !blockNodes.contains(currentNode)) {
+		blockNodes.push_front(currentNode);
 	}
 
 	node = currentNode;
 
-	if (nodesThatComposeRegion.size() >= 2) {
-		return RegionType::Block;
+	if (blockNodes.size() >= 2) {
+		return new graphUtils::BlockRegion(blockNodes);
 	}
 
-	nodesThatComposeRegion.clear();
 
 	// checking for IfThenElse
 	if (mFollowers[node].size() == 2) {
@@ -395,10 +395,12 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils
 				&& mFollowers[m].at(0) == mFollowers[n].at(0)
 				&& mPredecessors[m].size() == 1 && mPredecessors[n].size() == 1) {
 
-			nodesThatComposeRegion.push_back(node);
-			nodesThatComposeRegion.push_back(m);
-			nodesThatComposeRegion.push_back(n);
-			return RegionType::IfThenElse;
+			graphUtils::IfThenElseRegion *ifThenElseRegion = new graphUtils::IfThenElseRegion();
+			ifThenElseRegion->addCondition(node);
+			ifThenElseRegion->addThen(m);
+			ifThenElseRegion->addElse(n);
+
+			return ifThenElseRegion;
 		}
 
 	}
@@ -416,53 +418,50 @@ RegionType StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils
 		}
 
 		if (thenNode >= 0) {
-			nodesThatComposeRegion.push_back(node);
-			nodesThatComposeRegion.push_back(thenNode);
-			return RegionType::IfThen;
+			graphUtils::IfThenRegion *ifThenRegion = new graphUtils::IfThenRegion();
+			ifThenRegion->addCondition(node);
+			ifThenRegion->addThen(thenNode);
+			return ifThenRegion;
 		}
 	}
 
-	return RegionType::nil;
+	return new graphUtils::NilRegion();
 }
 
-RegionType StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::VertexLabel node, QVector<graphUtils::VertexLabel> &reachUnder)
+Region * StructuralControlFlowGenerator::determineCyclicRegionType(graphUtils::VertexLabel node, QVector<graphUtils::VertexLabel> &reachUnder)
 {
 	if (reachUnder.size() == 1) {
 		VertexLabel node = reachUnder.first();
 		if (mFollowers[node].contains(node)) {
-			return RegionType::SelfLoop;
-		} else {
-			return RegionType::nil;
+			return new graphUtils::SelfLoopRegion(node);
 		}
 	}
-
-	// check for improper
-
-	VertexLabel lastNode = reachUnder.last();
-	if (lastNode == node) {
-		lastNode = reachUnder.first();
+	else if (reachUnder.size() == 2) {
+		VertexLabel lastNode = reachUnder.last() == node ? reachUnder.first() : reachUnder.last();
+		if (mFollowers[node].size() == 2 && mFollowers[lastNode].size() == 1
+				&& mPredecessors[lastNode].size() == 1) {
+			return new graphUtils::WhileLoopRegion(node, lastNode);
+		}
 	}
-
-	if (mFollowers[node].size() == 2 && mFollowers[lastNode].size() == 1
-				&& mPredecessors[node].size() == 2 && mPredecessors[lastNode].size() == 1) {
-		return RegionType::WhileLoop;
-	} else {
-		return RegionType::NaturalLoop;
+	else {
+		return new graphUtils::NilRegion();
 	}
 }
 
-graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::RegionType type, QVector<VertexLabel> &nodesThatComposeRegion)
+graphUtils::Node *StructuralControlFlowGenerator::reduce(graphUtils::Region *region)
 {
 	bool hasBackEdgeForBlock = false;
-	if (type == RegionType::Block) {
+	QVector<VertexLabel> nodesThatComposeRegion = region->nodes();
+
+	if (region->type() == RegionType::Block) {
 		VertexLabel lastNode = nodesThatComposeRegion.last();
 		VertexLabel firstNode = nodesThatComposeRegion.first();
 		hasBackEdgeForBlock = mFollowers[lastNode].contains(firstNode);
 	}
 
-	Node *abstractNode = new Node(mCounter++, type);
+	Node *abstractNode = new Node(mCounter++, region->type());
 
-	updateForest(type, abstractNode->id(), nodesThatComposeRegion);
+	updateForest(region->type(), abstractNode->id(), nodesThatComposeRegion);
 	replace(abstractNode->id(), nodesThatComposeRegion);
 
 	allNodes.append(abstractNode);
@@ -629,7 +628,6 @@ QVector<graphUtils::VertexLabel> StructuralControlFlowGenerator::countReachUnder
 	QVector<VertexLabel> reachUnder = {currentNode};
 
 	QMap<VertexLabel, bool> used;
-
 	QQueue<VertexLabel> nodesThatHavePathAndBackEdgeToCurrentNode;
 	// only nodes that are dominated by currentNode can be presented in reachUnder
 	for (VertexLabel node : mVerteces) {
@@ -640,14 +638,13 @@ QVector<graphUtils::VertexLabel> StructuralControlFlowGenerator::countReachUnder
 	}
 
 	used[currentNode] = true;
-
 	while (!nodesThatHavePathAndBackEdgeToCurrentNode.isEmpty()) {
 		VertexLabel node = nodesThatHavePathAndBackEdgeToCurrentNode.dequeue();
 		reachUnder.push_back(node);
 		used[node] = true;
-		for (auto it = mPredecessors[node].begin(); it != mPredecessors[node].end(); ++it) {
-			if (!used[*it]) {
-				nodesThatHavePathAndBackEdgeToCurrentNode.enqueue(*it);
+		for (VertexLabel predecessor : mPredecessors[node]) {
+			if (!used[predecessor]) {
+				nodesThatHavePathAndBackEdgeToCurrentNode.enqueue(predecessor);
 			}
 		}
 	}

@@ -74,3 +74,140 @@ int Node::id() const
 	return mId;
 }
 
+
+Region::Region(RegionType type)
+	: mType(type)
+{}
+
+RegionType Region::type() const
+{
+	return mType;
+}
+
+QVector<VertexLabel> Region::nodes() const
+{
+	return QVector<VertexLabel>();
+}
+
+BlockRegion::BlockRegion(QVector<VertexLabel> &nodes)
+	: Region(Block)
+	, mNodes(nodes)
+{}
+
+void BlockRegion::addVertex(VertexLabel vertexLabel)
+{
+	mNodes.push_back(vertexLabel);
+}
+
+QVector<VertexLabel> BlockRegion::nodes() const
+{
+	return mNodes;
+}
+
+IfThenElseRegion::IfThenElseRegion()
+	: Region(IfThenElse)
+{}
+
+QVector<VertexLabel> IfThenElseRegion::nodes() const
+{
+	return {mCondition, mThen, mElse};
+}
+
+void IfThenElseRegion::addCondition(VertexLabel conditionLabel)
+{
+	mCondition = conditionLabel;
+}
+
+void IfThenElseRegion::addThen(VertexLabel thenLabel)
+{
+	mThen = thenLabel;
+}
+
+void IfThenElseRegion::addElse(VertexLabel elseLabel)
+{
+	mElse = elseLabel;
+}
+
+VertexLabel IfThenElseRegion::getCondition() const
+{
+	return mCondition;
+}
+
+VertexLabel IfThenElseRegion::getThen() const
+{
+	return mThen;
+}
+
+VertexLabel IfThenElseRegion::getElse() const
+{
+	return mElse;
+}
+
+IfThenRegion::IfThenRegion()
+	: Region(IfThen)
+{}
+
+void IfThenRegion::addCondition(VertexLabel conditionLabel)
+{
+	mCondition = conditionLabel;
+}
+
+void IfThenRegion::addThen(VertexLabel thenLabel)
+{
+	mThen = thenLabel;
+}
+
+VertexLabel IfThenRegion::getCondition() const
+{
+	return mCondition;
+}
+
+VertexLabel IfThenRegion::getThen() const
+{
+	return mThen;
+}
+
+NilRegion::NilRegion()
+	: Region(nil)
+{}
+
+SelfLoopRegion::SelfLoopRegion(VertexLabel body)
+	: Region(SelfLoop)
+	, mBody(body)
+{}
+
+void SelfLoopRegion::addBody(VertexLabel body)
+{
+	mBody = body;
+}
+
+VertexLabel SelfLoopRegion::body() const
+{
+	return mBody;
+}
+
+WhileLoopRegion::WhileLoopRegion(VertexLabel condition, VertexLabel body)
+	: Region(WhileLoop)
+	, mCondition(condition)
+	, mBody(body)
+{}
+
+void WhileLoopRegion::addBody(VertexLabel body)
+{
+	mBody = body;
+}
+
+void WhileLoopRegion::addCondition(VertexLabel condition)
+{
+	mCondition = condition;
+}
+
+VertexLabel WhileLoopRegion::body() const
+{
+	return mBody;
+}
+
+VertexLabel WhileLoopRegion::condition() const
+{
+	return mCondition;
+}
