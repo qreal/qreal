@@ -67,7 +67,6 @@ public:
 	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
 private:
-
 	QVector<Node *> allNodes;
 
 	/// Implementation of generation process for structural generator.
@@ -83,10 +82,10 @@ private:
 	void findDominators();
 	void dfs(VertexLabel v, int &postOrderLabel);
 
-	Region * determineAcyclicRegionType(VertexLabel node);
-	Region * determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
+	Region *determineAcyclicRegionType(VertexLabel node);
+	Region *determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
 
-	Node * reduce(Region *region);
+	Node *reduce(Region *region);
 	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 
