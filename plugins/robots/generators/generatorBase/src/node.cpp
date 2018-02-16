@@ -147,6 +147,11 @@ IfThenRegion::IfThenRegion()
 	: Region(IfThen)
 {}
 
+QVector<VertexLabel> IfThenRegion::nodes() const
+{
+	return {mCondition, mThen};
+}
+
 void IfThenRegion::addCondition(VertexLabel conditionLabel)
 {
 	mCondition = conditionLabel;
@@ -176,6 +181,11 @@ SelfLoopRegion::SelfLoopRegion(VertexLabel body)
 	, mBody(body)
 {}
 
+QVector<VertexLabel> SelfLoopRegion::nodes() const
+{
+	return {mBody};
+}
+
 void SelfLoopRegion::addBody(VertexLabel body)
 {
 	mBody = body;
@@ -191,6 +201,11 @@ WhileLoopRegion::WhileLoopRegion(VertexLabel condition, VertexLabel body)
 	, mCondition(condition)
 	, mBody(body)
 {}
+
+QVector<VertexLabel> WhileLoopRegion::nodes() const
+{
+	return {mCondition, mBody};
+}
 
 void WhileLoopRegion::addBody(VertexLabel body)
 {

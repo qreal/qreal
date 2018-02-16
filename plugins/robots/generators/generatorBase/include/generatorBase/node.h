@@ -81,6 +81,7 @@ class IfThenRegion : public Region {
 public:
 	IfThenRegion();
 
+	QVector<VertexLabel> nodes() const;
 	void addCondition(VertexLabel conditionLabel);
 	void addThen(VertexLabel thenLabel);
 	VertexLabel getCondition() const;
@@ -94,6 +95,7 @@ private:
 class SelfLoopRegion : public Region {
 public:
 	SelfLoopRegion(VertexLabel body);
+	QVector<VertexLabel> nodes() const;
 
 	void addBody(VertexLabel body);
 	VertexLabel body() const;
@@ -106,6 +108,7 @@ class WhileLoopRegion : public Region {
 public:
 	WhileLoopRegion(VertexLabel condition, VertexLabel body);
 
+	QVector<VertexLabel> nodes() const;
 	void addCondition(VertexLabel condition);
 	void addBody(VertexLabel body);
 	VertexLabel body() const;
