@@ -393,7 +393,18 @@ Region * StructuralControlFlowGenerator::determineAcyclicRegionType(graphUtils::
 				&& mPredecessors[m].size() == 1 && mPredecessors[n].size() == 1) {
 
 			graphUtils::IfThenElseRegion *ifThenElseRegion = new graphUtils::IfThenElseRegion();
+
 			ifThenElseRegion->addCondition(node);
+			qReal::Id idNode = mInitialVerteces.key(node);
+			QPair<LinkInfo, LinkInfo> ifs = ifBranchesFor(idNode);
+			VertexLabel firstVertex = mInitialVerteces[ifs.first.target];
+			//VertexLabel secondVertex = mInitialVerteces(ifs.first.target);
+			if (hasGivenVertex(n, firstVertex)) {
+				VertexLabel temp = n;
+				n = m;
+				m = temp;
+			}
+
 			ifThenElseRegion->addThen(m);
 			ifThenElseRegion->addElse(n);
 
@@ -458,6 +469,7 @@ graphUtils::VertexLabel StructuralControlFlowGenerator::reduce(graphUtils::Regio
 
 	VertexLabel newVertexLabel = mCounter++;
 
+	mTree.insert(newVertexLabel, nodesThatComposeRegion);
 	updateForest(region->type(), newVertexLabel, nodesThatComposeRegion);
 	replace(newVertexLabel, nodesThatComposeRegion);
 
@@ -588,6 +600,24 @@ void StructuralControlFlowGenerator::compact(VertexLabel node, QVector<VertexLab
 
 	mCurrentTime = mPostOrder[node];
 	mMaxTime = appropriateTime - 1;
+}
+
+bool StructuralControlFlowGenerator::hasGivenVertex(graphUtils::VertexLabel current, graphUtils::VertexLabel vertexToFind)
+{
+	if (current == vertexToFind) {
+		return true;
+	}
+
+	if (mTree.contains(current)) {
+		bool wasFound = false;
+		for (VertexLabel v : mTree[current]) {
+			wasFound = hasGivenVertex(v, vertexToFind);
+			if (wasFound) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void StructuralControlFlowGenerator::removeFrom(QMap<graphUtils::VertexLabel, QVector<graphUtils::VertexLabel> > &map, graphUtils::VertexLabel element, graphUtils::VertexLabel elementToRemove)

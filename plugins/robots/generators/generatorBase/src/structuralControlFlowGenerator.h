@@ -86,6 +86,7 @@ private:
 	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
 
+	bool hasGivenVertex(VertexLabel current, VertexLabel vertexToFind);
 
 	void removeFrom(QMap<VertexLabel, QVector<VertexLabel> > &map, VertexLabel element, VertexLabel elementToRemove);
 	void addTo(QMap<VertexLabel, QVector<VertexLabel> > &map, VertexLabel element, VertexLabel elementToAdd);
@@ -102,6 +103,8 @@ private:
 	QMap<VertexLabel, QSet<VertexLabel>> mDominators;
 	QMap<VertexLabel, int> mPostOrder;
 	QMap<VertexLabel, bool> mUsed;
+
+	QMap<VertexLabel, QVector<VertexLabel> > mTree;
 
 	int mCounter;
 
