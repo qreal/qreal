@@ -70,8 +70,8 @@ public:
 	/// it will be performed only after current node will be processed by all visitors
 	void terminateSearch();
 
-private:
-	void dfs(const qReal::Id &id, QList<VisitorInterface *> const &visitors);
+protected:
+	virtual void dfs(const qReal::Id &id, QList<VisitorInterface *> const &visitors);
 
 	const qrRepo::LogicalRepoApi &mRepo;
 	QSet<qReal::Id> mVisitedNodes;
