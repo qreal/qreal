@@ -22,6 +22,10 @@ DeepFirstSearcher::DeepFirstSearcher(const qrRepo::LogicalRepoApi &repo)
 {
 }
 
+DeepFirstSearcher::~DeepFirstSearcher()
+{
+}
+
 void DeepFirstSearcher::startSearch(const Id &firstId, VisitorInterface *visitor)
 {
 	startSearch(firstId, QList<VisitorInterface *>{ visitor });

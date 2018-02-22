@@ -16,7 +16,7 @@
 
 #include <qrrepo/repoApi.h>
 #include <qrutils/graphUtils/deepFirstSearcher.h>
-
+#include <qrutils/graphUtils/postOrderDeepFirstSearcher.h>
 #include "generatorBase/generatorCustomizer.h"
 
 #include "robotsGeneratorDeclSpec.h"
@@ -83,7 +83,7 @@ protected:
 private:
 	const qrRepo::RepoApi &mRepo;
 	GeneratorCustomizer &mCustomizer;
-	utils::DeepFirstSearcher mDfser;
+	utils::PostOrderDeepFirstSearcher mDfser;
 };
 
 }

@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "postOrderIterator.h"
+#include "postOrderDeepFirstSearcher.h"
 
 using namespace qReal;
 using namespace utils;

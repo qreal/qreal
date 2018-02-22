@@ -16,10 +16,10 @@ HEADERS += \
 	$$PWD/baseGraphTransformationUnit.h \
 	$$PWD/tree.h \
 	$$PWD/deepFirstSearcher.h \
-    $$PWD/postOrderIterator.h
+    $$PWD/postOrderDeepFirstSearcher.h
 
 SOURCES += \
 	$$PWD/baseGraphTransformationUnit.cpp \
 	$$PWD/tree.cpp \
 	$$PWD/deepFirstSearcher.cpp \
-    $$PWD/postOrderIterator.cpp
+    $$PWD/postOrderDeepFirstSearcher.cpp
