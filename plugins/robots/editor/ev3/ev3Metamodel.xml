@@ -49,9 +49,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+						<!--TODO: mode is not supported for forward and backward movement commands-->
+						<!--<property displayedName="Mode" type="BreakEngineMode" name="Mode">
 							<default>break</default>
-						</property>
+						</property>-->
 						<property displayedName="Ports" type="string" name="Ports" >
 							<default>B, C</default>
 						</property>
@@ -113,6 +114,12 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="float" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="break" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
@@ -125,6 +132,9 @@
 						<parent parentName="EngineCommand"/>
 					</generalizations>
 					<properties>
+						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+							<default>break</default>
+						</property>
 						<property displayedName="Ports" type="string" name="Ports">
 							<default>A, B, C, D</default>
 						</property>

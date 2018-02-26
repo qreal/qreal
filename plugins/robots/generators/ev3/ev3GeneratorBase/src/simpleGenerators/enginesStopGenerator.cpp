@@ -27,6 +27,7 @@ EnginesStopGenerator::EnginesStopGenerator(const qrRepo::RepoApi &repo
 	: BindingGenerator(repo, customizer, id, "engines/stop.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Ports"
 					, static_cast<Ev3GeneratorFactory *>(customizer.factory())->outputPortNameConverter())
+			<< Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
 			, parent)
 {
 }
