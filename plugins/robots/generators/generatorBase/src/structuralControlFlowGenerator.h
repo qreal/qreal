@@ -46,9 +46,7 @@ public:
 
 	void beforeSearch() override;
 
-	void visitFinal(const qReal::Id &id, const QList<LinkInfo> &links) override;
-	void visitFork(const qReal::Id &id, QList<LinkInfo> &links) override;
-	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
+	void visit(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
@@ -71,44 +69,27 @@ private:
 	/// to build dominators tree and then perform structural analysis
 	void performGeneration() override;
 
-	void updateForest(RegionType type, VertexLabel newId, QVector<VertexLabel> &nodesThatComposeRegion);
-	void buildInitialForest();
-	void buildGraph(const qReal::Id &id, const QList<utils::DeepFirstSearcher::LinkInfo> &links);
-	void performAnalysis();
-	// naive approach for finding dominators
-	void findDominators();
-	void dfs(VertexLabel v, int &postOrderLabel);
 
-	Region *determineAcyclicRegionType(VertexLabel node);
-	Region *determineCyclicRegionType(VertexLabel node, QVector<VertexLabel> &reachUnder);
 
-	VertexLabel reduce(Region *region);
-	void replace(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
-	void compact(VertexLabel, QVector<VertexLabel> &nodesThatComposeRegion);
+	bool isBlock(const qReal::Id &id);
+	bool isIfThen(const qReal::Id &id);
 
-	bool hasGivenVertex(VertexLabel current, VertexLabel vertexToFind);
+	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
+	void dummyReduceFunction(int vertexLabel);
+	void buildGraph();
 
-	void removeFrom(QMap<VertexLabel, QVector<VertexLabel> > &map, VertexLabel element, VertexLabel elementToRemove);
-	void addTo(QMap<VertexLabel, QVector<VertexLabel> > &map, VertexLabel element, VertexLabel elementToAdd);
-	QVector<VertexLabel> countReachUnder(graphUtils::VertexLabel currentNode);
 
-	int mNumberOfVerteces;
-	int mCurrentTime;
-	int mMaxTime;
-	VertexLabel mEntry;
-	QList<VertexLabel> mVerteces;
-	QMap<qReal::Id, VertexLabel> mInitialVerteces;
-	QMap<VertexLabel, QVector<VertexLabel> > mFollowers;
-	QMap<VertexLabel, QVector<VertexLabel> > mPredecessors;
-	QMap<VertexLabel, QSet<VertexLabel>> mDominators;
-	QMap<VertexLabel, int> mPostOrder;
-	QMap<VertexLabel, bool> mUsed;
 
-	QMap<VertexLabel, QVector<VertexLabel> > mTree;
+	int mVerteces;
+	bool isPerformingGeneration;
+	QMap<qReal::Id, int> mMapIdToVertexLabel;
+	QMap<int, qReal::Id> mMapVertexLabelToId;
 
-	int mCounter;
+	QMap<int, QVector<int> > mFollowers;
+	QMap<int, QVector<int> > mPredecessor;
 
-	QMap<VertexLabel, semantics::SemanticNode *> mNodesForest;
+	QMap<int, semantics::SemanticNode *> mTrees;
+	//QMap<VertexLabel, semantics::SemanticNode *> mFollowers;
 };
 
 }
