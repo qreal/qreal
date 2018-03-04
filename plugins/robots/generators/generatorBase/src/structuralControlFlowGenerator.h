@@ -46,7 +46,7 @@ public:
 
 	void beforeSearch() override;
 
-	void visit(const qReal::Id &id, const QList<LinkInfo> &links) override;
+	void visit(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
@@ -79,10 +79,16 @@ private:
 	bool isWhileLoop(const qReal::Id &id, QVector<int> &region);
 
 	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
-	void dummyReduceFunction(int vertexLabel);
+	void dummyReduceFunction(const qReal::Id &id);
 	void buildGraph();
+	void replace(int newNodeNumber, QVector<int> &region, bool isBlock);
 
 
+	void reduceBlock(const qReal::Id &id, QVector<int> &region);
+	void reduceIfThen(const qReal::Id &id, QVector<int> &region);
+	void reduceIfThenElse(const qReal::Id &id, QVector<int> &region);
+	void reduceSelfLoop(const qReal::Id &id, QVector<int> &region);
+	void reduceWhileLoop(const qReal::Id &id, QVector<int> &region);
 
 	int mVerteces;
 	bool isPerformingGeneration;
