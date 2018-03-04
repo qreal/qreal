@@ -71,8 +71,12 @@ private:
 
 
 
-	bool isBlock(const qReal::Id &id);
-	bool isIfThen(const qReal::Id &id);
+	bool isBlock(const qReal::Id &id, QVector<int> &region);
+	bool isIfThen(const qReal::Id &id, QVector<int> &region);
+	bool isIfThenElse(const qReal::Id &id, QVector<int> &region);
+	bool isSwitch(const qReal::Id &id, QVector<int> &region);
+	bool isSelfLoop(const qReal::Id &id, QVector<int> &region);
+	bool isWhileLoop(const qReal::Id &id, QVector<int> &region);
 
 	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
 	void dummyReduceFunction(int vertexLabel);
