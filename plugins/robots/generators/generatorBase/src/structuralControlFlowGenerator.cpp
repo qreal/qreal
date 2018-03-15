@@ -30,7 +30,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, QObject *parent
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
-	, mVerteces(0)
+	, mVerteces(1)
 	, isPerformingGeneration(false)
 {
 }
@@ -119,6 +119,8 @@ SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, co
 
 void StructuralControlFlowGenerator::performGeneration()
 {
+	// вызывать 2 раза perform Generation -- плохо, потому что
+	// некоторые вершины будут помечены посещенными во время сжимающего обхода.
 	isPerformingGeneration = false;
 	ControlFlowGeneratorBase::performGeneration();
 	buildGraph();
@@ -238,10 +240,12 @@ void StructuralControlFlowGenerator::updateVerteces(const Id &id, const QList<Li
 {
 	Q_UNUSED(links)
 
-	mMapIdToVertexLabel[id] = mVerteces;
-	mMapVertexLabelToId[mVerteces] = id;
-	mTrees[mVerteces] = mSemanticTree->produceNodeFor(id);
-	mVerteces++;
+	if (!mMapIdToVertexLabel.contains(id)) {
+		mMapIdToVertexLabel[id] = mVerteces;
+		mMapVertexLabelToId[mVerteces] = id;
+		mTrees[mVerteces] = mSemanticTree->produceNodeFor(id);
+		mVerteces++;
+	}
 }
 
 void StructuralControlFlowGenerator::dummyReduceFunction(const qReal::Id &id)
@@ -278,11 +282,13 @@ void StructuralControlFlowGenerator::buildGraph()
 	for (int vertex : mMapVertexLabelToId.keys()) {
 		const qReal::Id id = mMapVertexLabelToId[vertex];
 
-		for (const qReal::Id u : mRepo.outgoingLinks(id)) {
+		for (const qReal::Id link : mRepo.outgoingLinks(id)) {
+			const qReal::Id u = mRepo.otherEntityFromLink(link, id);
 			mFollowers[vertex].push_back(mMapIdToVertexLabel[u]);
 		}
 
-		for (const qReal::Id u : mRepo.incomingLinks(id)) {
+		for (const qReal::Id link : mRepo.incomingLinks(id)) {
+			const qReal::Id u = mRepo.otherEntityFromLink(link, id);
 			mPredecessor[vertex].push_back(mMapIdToVertexLabel[u]);
 		}
 	}

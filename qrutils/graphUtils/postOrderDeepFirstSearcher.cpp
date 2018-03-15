@@ -41,7 +41,8 @@ void PostOrderDeepFirstSearcher::dfs(const Id &id, const QList<DeepFirstSearcher
 	}
 
 	for (const LinkInfo &link : linkInfos) {
-		if (!link.targetVisited && link.connected && !mSearchTerminated) {
+		if (!link.targetVisited && link.connected
+					&& !mSearchTerminated && !mVisitedNodes.contains(link.target)) {
 			dfs(link.target, visitors);
 		}
 	}
