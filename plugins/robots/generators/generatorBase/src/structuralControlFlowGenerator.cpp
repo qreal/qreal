@@ -94,10 +94,20 @@ void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInf
 
 void StructuralControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(links)
+	QVector<int> region;
+	if (isSwitch(id, region)) {
+		QMap<QString, int> guards;
 
-	//dummyReduceFunction(id);
+		for (const LinkInfo &branch : links) {
+			const QString value = mRepo.property(branch.linkId, "Guard").toString();
+			const int targetNumber = mMapIdToVertexLabel[branch.target];
+			guards[value] = targetNumber;
+		}
+
+		reduceSwitch(id, region, guards);
+	}
+
+	dummyReduceFunction(id);
 }
 
 void StructuralControlFlowGenerator::visitUnknown(const Id &id, const QList<LinkInfo> &links)
@@ -205,12 +215,32 @@ bool StructuralControlFlowGenerator::isIfThenElse(const Id &id, QVector<int> &re
 	return false;
 }
 
-bool StructuralControlFlowGenerator::isSwitch(const Id &id, QVector<int> &region)
+bool StructuralControlFlowGenerator::isSwitch(const qReal::Id &id, QVector<int> &region)
 {
-	Q_UNUSED(id)
-	Q_UNUSED(region)
+	bool wasTargetSet = false;
+	int targetNode = -1;
+	int node = mMapIdToVertexLabel[id];
+	region.push_back(node);
+	bool isSwitch = true;
+	for (const int u : mFollowers[node]) {
+		region.push_back(u);
+		if (mFollowers[u].size() > 1 || mPredecessors[u].size() != 1) {
+			isSwitch = false;
+		} else if (mFollowers[node].size() == 1) {
+			if (!wasTargetSet) {
+				wasTargetSet = true;
+				targetNode = mFollowers[node].first();
+			} else if (mFollowers[node].first() != targetNode) {
+				isSwitch = false;
+			}
+		}
+	}
 
-	return false;
+	if (!isSwitch) {
+		region.clear();
+	}
+
+	return isSwitch;
 }
 
 bool StructuralControlFlowGenerator::isSelfLoop(const Id &id, QVector<int> &region)
@@ -468,6 +498,40 @@ void StructuralControlFlowGenerator::reduceWhileLoop(const Id &id, QVector<int> 
 
 	mTrees.remove(loopConditionNumber);
 	mTrees.remove(loopBodyNumber);
+
+	replace(newNodeNumber, region, false);
+}
+
+void StructuralControlFlowGenerator::reduceSwitch(const Id &id, QVector<int> &region, QMap<QString, int> &guards)
+{
+	QMap<int, bool> visitedBranches;
+	for (const int v : region) {
+		visitedBranches[v] = false;
+	}
+
+	int node = mMapIdToVertexLabel[id];
+	SwitchNode * const switchNode = static_cast<SwitchNode *>(mTrees[node]);
+
+	for (const QString &value : guards.keys()) {
+		int v = guards[value];
+		if (visitedBranches[v]) {
+			NonZoneNode * const target = static_cast<NonZoneNode *>(mTrees[v]);
+			switchNode->mergeBranch(value, target);
+		} else {
+			switchNode->addBranch(value, mTrees[v]);
+			visitedBranches[v] = true;
+		}
+	}
+
+	int newNodeNumber = mVerteces++;
+	mMapVertexLabelToId[newNodeNumber] = id;
+	mMapIdToVertexLabel[id] = newNodeNumber;
+	mTrees[newNodeNumber] = switchNode;
+
+	for (const int u : region) {
+		mTrees.remove(u);
+		mMapVertexLabelToId.remove(u);
+	}
 
 	replace(newNodeNumber, region, false);
 }

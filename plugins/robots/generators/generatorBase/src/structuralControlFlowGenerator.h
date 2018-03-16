@@ -84,11 +84,13 @@ private:
 	void replace(int newNodeNumber, QVector<int> &region, bool isBlock);
 
 
+	// QVector -> QSet
 	void reduceBlock(const qReal::Id &id, QVector<int> &region);
 	void reduceIfThen(const qReal::Id &id, QVector<int> &region);
 	void reduceIfThenElse(const qReal::Id &id, QVector<int> &region);
 	void reduceSelfLoop(const qReal::Id &id, QVector<int> &region);
 	void reduceWhileLoop(const qReal::Id &id, QVector<int> &region);
+	void reduceSwitch(const qReal::Id &id, QVector<int> &region, QMap<QString, int> &guards);
 
 	int mVerteces;
 	bool isPerformingGeneration;
