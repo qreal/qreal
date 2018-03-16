@@ -316,12 +316,24 @@ void StructuralControlFlowGenerator::replace(int newNodeNumber, QVector<int> &re
 		for (const int v : oldFollowers[u]) {
 			if (region.contains(u) && !region.contains(v)) {
 				mPredecessors[v].removeOne(u);
-				mPredecessors[v].append(newNodeNumber);
-				mFollowers[newNodeNumber].append(v);
+
+				if (!mPredecessors[v].contains(newNodeNumber)) {
+					mPredecessors[v].append(newNodeNumber);
+				}
+
+				if (!mFollowers[newNodeNumber].contains(v)) {
+					mFollowers[newNodeNumber].append(v);
+				}
 			} else if (!region.contains(u) && region.contains(v)) {
 				mFollowers[u].removeOne(v);
-				mFollowers[u].append(newNodeNumber);
-				mPredecessors[newNodeNumber].append(u);
+
+				if (!mFollowers[u].contains(newNodeNumber)) {
+					mFollowers[u].append(newNodeNumber);
+				}
+
+				if (!mPredecessors[newNodeNumber].contains(u)) {
+					mPredecessors[newNodeNumber].append(u);
+				}
 			}
 		}
 	}
