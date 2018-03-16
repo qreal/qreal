@@ -96,7 +96,7 @@ private:
 	QMap<int, qReal::Id> mMapVertexLabelToId;
 
 	QMap<int, QVector<int> > mFollowers;
-	QMap<int, QVector<int> > mPredecessor;
+	QMap<int, QVector<int> > mPredecessors;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	//QMap<VertexLabel, semantics::SemanticNode *> mFollowers;

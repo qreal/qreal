@@ -137,7 +137,7 @@ bool StructuralControlFlowGenerator::isBlock(const Id &id, QVector<int> &region)
 	QVector<int> outgoingList = mFollowers[node];
 	if (outgoingList.size() == 1) {
 		int next = outgoingList.first();
-		if (mPredecessor[next].size() == 1) {
+		if (mPredecessors[next].size() == 1) {
 			region.push_back(node);
 			region.push_back(next);
 			return true;
@@ -157,14 +157,14 @@ bool StructuralControlFlowGenerator::isIfThen(const Id &id, QVector<int> &region
 	int thenNodeNumber = mMapIdToVertexLabel[thenNode];
 	int elseNodeNumber = mMapIdToVertexLabel[elseNode];
 
-	if (mFollowers[thenNodeNumber].size() == 1 && mPredecessor[thenNodeNumber].size() == 1) {
+	if (mFollowers[thenNodeNumber].size() == 1 && mPredecessors[thenNodeNumber].size() == 1) {
 		int v = mFollowers[thenNodeNumber].first();
 		if (v == elseNodeNumber) {
 			region.push_back(mMapIdToVertexLabel[id]);
 			region.push_back(thenNodeNumber);
 			return true;
 		}
-		}
+	}
 
 	return false;
 }
@@ -179,8 +179,8 @@ bool StructuralControlFlowGenerator::isIfThenElse(const Id &id, QVector<int> &re
 	int thenNodeNumber = mMapIdToVertexLabel[thenNode];
 	int elseNodeNumber = mMapIdToVertexLabel[elseNode];
 
-	if (mFollowers[thenNodeNumber].size() == 1 && mPredecessor[thenNodeNumber].size() == 1 &&
-				mFollowers[elseNodeNumber].size() == 1 && mPredecessor[elseNodeNumber].size() == 1) {
+	if (mFollowers[thenNodeNumber].size() == 1 && mPredecessors[thenNodeNumber].size() == 1 &&
+				mFollowers[elseNodeNumber].size() == 1 && mPredecessors[elseNodeNumber].size() == 1) {
 
 		int v = mFollowers[thenNodeNumber].first();
 		int u = mFollowers[elseNodeNumber].first();
@@ -224,12 +224,12 @@ bool StructuralControlFlowGenerator::isWhileLoop(const Id &id, QVector<int> &reg
 		int v = mFollowers[node].at(0);
 		int u = mFollowers[node].at(1);
 
-		if (mFollowers[v].size() == 1 && mPredecessor[v].size() == 1
+		if (mFollowers[v].size() == 1 && mPredecessors[v].size() == 1
 					&& mFollowers[v].first() == node) {
 			region.push_back(node);
 			region.push_back(v);
 			return true;
-		} else if (mFollowers[u].size() == 1 && mPredecessor[u].size() == 1
+		} else if (mFollowers[u].size() == 1 && mPredecessors[u].size() == 1
 						&& mFollowers[u].first() == node) {
 			region.push_back(node);
 			region.push_back(u);
@@ -293,7 +293,7 @@ void StructuralControlFlowGenerator::buildGraph()
 
 		for (const qReal::Id link : mRepo.incomingLinks(id)) {
 			const qReal::Id u = mRepo.otherEntityFromLink(link, id);
-			mPredecessor[vertex].push_back(mMapIdToVertexLabel[u]);
+			mPredecessors[vertex].push_back(mMapIdToVertexLabel[u]);
 		}
 	}
 }
@@ -309,26 +309,31 @@ void StructuralControlFlowGenerator::replace(int newNodeNumber, QVector<int> &re
 		}
 	}
 
-	for (const int u : mFollowers.keys()) {
-		for (const int v : mFollowers[u]) {
+	//QMap<int, QVector<int> > oldPredecessors = mPredecessors;
+	QMap<int, QVector<int> > oldFollowers = mFollowers;
+
+	for (const int u : oldFollowers.keys()) {
+		for (const int v : oldFollowers[u]) {
 			if (region.contains(u) && !region.contains(v)) {
-				mPredecessor[v].remove(u);
-				mPredecessor[v].append(newNodeNumber);
+				mPredecessors[v].removeOne(u);
+				mPredecessors[v].append(newNodeNumber);
+				mFollowers[newNodeNumber].append(v);
 			} else if (!region.contains(u) && region.contains(v)) {
-				mFollowers[u].remove(v);
+				mFollowers[u].removeOne(v);
 				mFollowers[u].append(newNodeNumber);
+				mPredecessors[newNodeNumber].append(u);
 			}
 		}
 	}
 
 	for (const int u : region) {
 		mFollowers.remove(u);
-		mPredecessor.remove(u);
+		mPredecessors.remove(u);
 	}
 
 	if (addEdgeToYourself) {
 		mFollowers[newNodeNumber].push_back(newNodeNumber);
-		mPredecessor[newNodeNumber].push_back(newNodeNumber);
+		mPredecessors[newNodeNumber].push_back(newNodeNumber);
 	}
 }
 
