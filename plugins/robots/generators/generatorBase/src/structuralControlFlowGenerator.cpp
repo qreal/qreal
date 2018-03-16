@@ -199,6 +199,8 @@ bool StructuralControlFlowGenerator::isSwitch(const Id &id, QVector<int> &region
 {
 	Q_UNUSED(id)
 	Q_UNUSED(region)
+
+	return false;
 }
 
 bool StructuralControlFlowGenerator::isSelfLoop(const Id &id, QVector<int> &region)
@@ -211,6 +213,8 @@ bool StructuralControlFlowGenerator::isSelfLoop(const Id &id, QVector<int> &regi
 			return true;
 		}
 	}
+
+	return false;
 }
 
 bool StructuralControlFlowGenerator::isWhileLoop(const Id &id, QVector<int> &region)
