@@ -129,6 +129,16 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 
 	isPerformingGeneration = false;
+
+	//qDebug() << "Success = " << (mTrees.keys().size() == 1);
+
+	if (mTrees.keys().size() == 1) {
+		qDebug() << "Success!";
+		mSemanticTree->setRoot(new RootNode(mTrees[mTrees.keys().first()]));
+	} else {
+		mSemanticTree = nullptr;
+	}
+
 }
 
 bool StructuralControlFlowGenerator::isBlock(const Id &id, QVector<int> &region)
