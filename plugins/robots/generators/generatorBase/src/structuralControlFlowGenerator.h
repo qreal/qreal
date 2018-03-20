@@ -41,7 +41,7 @@ public:
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true);
 
-	/// Implementation of clone operation for readable generator
+	/// Implementation of clone operation for structural generator
 	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
 
 	void beforeSearch() override;
@@ -59,7 +59,7 @@ public:
 
 	/// Returns true if some generation errors occured but the generation process may be proceeded with other
 	/// control flow generators (non-fatal errors occured).
-	//bool cantBeGeneratedIntoStructuredCode() const;
+	bool cantBeGeneratedIntoStructuredCode() const;
 
 	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
@@ -69,8 +69,7 @@ private:
 	/// to build dominators tree and then perform structural analysis
 	void performGeneration() override;
 
-
-
+	/// methods to identify patterns for structural analysis
 	bool isBlock(const qReal::Id &id, QVector<int> &region);
 	bool isIfThen(const qReal::Id &id, QVector<int> &region);
 	bool isIfThenElse(const qReal::Id &id, QVector<int> &region);
@@ -78,13 +77,19 @@ private:
 	bool isSelfLoop(const qReal::Id &id, QVector<int> &region);
 	bool isWhileLoop(const qReal::Id &id, QVector<int> &region);
 
+	/// Creation of a new abstract node and maping it with a corresponding Id
 	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
-	void dummyReduceFunction(const qReal::Id &id);
+
+	/// method that tries consequentially identify patterns and reduce them for a given id
+	void identifyPatterns(const qReal::Id &id);
+
+	/// Building abstract graph view for further analysis
 	void buildGraph();
+
+	/// Replacing some verteces with a new one and proper maintenance of edges
 	void replace(int newNodeNumber, QVector<int> &region, bool isBlock);
 
-
-	// QVector -> QSet
+	/// methods for creating a valid Semantic nodes for particular pattern
 	void reduceBlock(const qReal::Id &id, QVector<int> &region);
 	void reduceIfThen(const qReal::Id &id, QVector<int> &region);
 	void reduceIfThenElse(const qReal::Id &id, QVector<int> &region);
@@ -101,7 +106,7 @@ private:
 	QMap<int, QVector<int> > mPredecessors;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
-	//QMap<VertexLabel, semantics::SemanticNode *> mFollowers;
+	bool mCantBeGeneratedIntoStructuredCode;
 };
 
 }

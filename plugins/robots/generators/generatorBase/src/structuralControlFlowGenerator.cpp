@@ -37,15 +37,15 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 
 ControlFlowGeneratorBase *StructuralControlFlowGenerator::cloneFor(const Id &diagramId, bool cloneForNewDiagram)
 {
-	Q_UNUSED(diagramId)
-	Q_UNUSED(cloneForNewDiagram)
-	// to do
-	return nullptr;
+	StructuralControlFlowGenerator * const copy = new StructuralControlFlowGenerator(mRepo
+			, mErrorReporter, mCustomizer, (cloneForNewDiagram ? *mValidator.clone() : mValidator)
+			, diagramId, parent(), false);
+
+	return copy;
 }
 
 void StructuralControlFlowGenerator::beforeSearch()
 {
-	// to do
 }
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
@@ -61,7 +61,7 @@ void StructuralControlFlowGenerator::visitRegular(const Id &id, const QList<Link
 {
 	Q_UNUSED(links)
 
-	dummyReduceFunction(id);
+	identifyPatterns(id);
 }
 
 void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
@@ -75,7 +75,7 @@ void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<
 		reduceIfThenElse(id, region);
 	}
 
-	dummyReduceFunction(id);
+	identifyPatterns(id);
 }
 
 void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &links)
@@ -89,7 +89,7 @@ void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInf
 		reduceWhileLoop(id, region);
 	}
 
-	dummyReduceFunction(id);
+	identifyPatterns(id);
 }
 
 void StructuralControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
@@ -107,18 +107,23 @@ void StructuralControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkI
 		reduceSwitch(id, region, guards);
 	}
 
-	dummyReduceFunction(id);
+	identifyPatterns(id);
 }
 
 void StructuralControlFlowGenerator::visitUnknown(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
-	dummyReduceFunction(id);
+	identifyPatterns(id);
 }
 
 void StructuralControlFlowGenerator::afterSearch()
 {
+}
+
+bool StructuralControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
+{
+	return mCantBeGeneratedIntoStructuredCode;
 }
 
 SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, const QString &threadId)
@@ -132,6 +137,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	// вызывать 2 раза perform Generation -- плохо, потому что
 	// некоторые вершины будут помечены посещенными во время сжимающего обхода.
 	isPerformingGeneration = false;
+	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
 	buildGraph();
 
@@ -140,12 +146,11 @@ void StructuralControlFlowGenerator::performGeneration()
 
 	isPerformingGeneration = false;
 
-	//qDebug() << "Success = " << (mTrees.keys().size() == 1);
-
 	if (mTrees.keys().size() == 1) {
 		qDebug() << "Success!";
 		mSemanticTree->setRoot(new RootNode(mTrees[mTrees.keys().first()]));
 	} else {
+		mCantBeGeneratedIntoStructuredCode = true;
 		mSemanticTree = nullptr;
 	}
 
@@ -292,7 +297,7 @@ void StructuralControlFlowGenerator::updateVerteces(const Id &id, const QList<Li
 	}
 }
 
-void StructuralControlFlowGenerator::dummyReduceFunction(const qReal::Id &id)
+void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 {
 	bool ok = true;
 	while (ok) {
