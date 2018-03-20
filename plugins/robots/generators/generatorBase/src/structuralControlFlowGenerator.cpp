@@ -134,8 +134,6 @@ SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, co
 
 void StructuralControlFlowGenerator::performGeneration()
 {
-	// вызывать 2 раза perform Generation -- плохо, потому что
-	// некоторые вершины будут помечены посещенными во время сжимающего обхода.
 	isPerformingGeneration = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
@@ -174,7 +172,6 @@ bool StructuralControlFlowGenerator::isBlock(const Id &id, QVector<int> &region)
 
 bool StructuralControlFlowGenerator::isIfThen(const Id &id, QVector<int> &region)
 {
-	// it is assumed that semantics of id is If
 	QPair<LinkInfo, LinkInfo> branches(ifBranchesFor(id));
 	qReal::Id thenNode = branches.first.target;
 	qReal::Id elseNode = branches.second.target;

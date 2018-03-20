@@ -19,12 +19,6 @@
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "rules/semanticTransformationRule.h"
 
-#include "generatorBase/node.h"
-
-using graphUtils::RegionType;
-using graphUtils::VertexLabel;
-using graphUtils::Region;
-
 namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT StructuralControlFlowGenerator : public ControlFlowGeneratorBase
