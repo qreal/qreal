@@ -17,6 +17,11 @@
 
 #include <QtCore/QScopedPointer>
 
+#include <testUtils/qrguiFacade.h>
+
+namespace generatorBase {
+class ReadableControlFlowGenerator;
+}
 
 namespace qrTest {
 
@@ -34,7 +39,8 @@ protected:
 	void SetUp() override;
 
 private:
-
+	QScopedPointer<QrguiFacade> mQrguiFacade;
+	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
 };
 
 }

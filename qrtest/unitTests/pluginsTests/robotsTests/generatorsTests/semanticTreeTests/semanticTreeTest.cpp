@@ -11,9 +11,30 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
+#include <gmock/gmock.h>
+
 #include "semanticTreeTest.h"
+#include "src/readableControlFlowGenerator.h"
+
+using namespace qrTest::robotsTests::SemanticTreeTests;
+using namespace qrTest;
+using namespace ::testing;
+
 
 void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
+	mQrguiFacade.reset(new QrguiFacade("diagrams/oneTest.qrs"));
+}
+
+TEST_F(SemanticTreeTest, dummyTest) {
+
+	EXPECT_TRUE(true);
+}
+
+
+TEST_F(SemanticTreeTest, smallDiagramTest) {
+
 
 }
+
