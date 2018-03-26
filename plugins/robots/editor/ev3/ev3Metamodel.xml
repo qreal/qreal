@@ -298,9 +298,15 @@
 					<logic>
 							<container/>
 							<properties>
-								<property displayedName="R Variable" type="string" name="RVariable" />
-								<property displayedName="G Variable" type="string" name="GVariable" />
-								<property displayedName="B Variable" type="string" name="BVariable" />
+								<property displayedName="R Variable" type="string" name="RVariable">
+									<default>r</default>
+								</property>
+								<property displayedName="G Variable" type="string" name="GVariable">
+									<default>g</default>
+								</property>
+								<property displayedName="B Variable" type="string" name="BVariable">
+									<default>b</default>
+								</property>
 							</properties>
 							<generalizations>
 									<parent parentName="Ev3SensorBlock"/>

@@ -38,4 +38,7 @@ ReadRGBGenerator::ReadRGBGenerator(const qrRepo::RepoApi &repo
 	addBinding(Binding::createStatic("@@G_VARIABLE@@", gVariable));
 	const QString bVariable = nameNormalizer->convert(mRepo.property(mId, "BVariable").toString());
 	addBinding(Binding::createStatic("@@B_VARIABLE@@", bVariable));
+
+	customizer.factory()->functionBlockConverter(id, "")->convert(
+			QString("%1 = 0;%2 = 0;%3 = 0;").arg(rVariable).arg(gVariable).arg(bVariable));
 }

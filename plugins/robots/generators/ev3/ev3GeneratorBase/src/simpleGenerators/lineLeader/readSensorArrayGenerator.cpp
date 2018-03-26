@@ -34,4 +34,5 @@ ReadSensorArrayGenerator::ReadSensorArrayGenerator(const qrRepo::RepoApi &repo
 	Binding::ConverterInterface *nameNormalizer = customizer.factory()->nameNormalizerConverter();
 	const QString variable = nameNormalizer->convert(mRepo.property(mId, "Variable").toString());
 	addBinding(Binding::createStatic("@@VARIABLE@@", variable));
+	customizer.factory()->functionBlockConverter(id, "Variable")->convert(QString("%1 = {0}").arg(variable));
 }
