@@ -24,7 +24,13 @@ using namespace ::testing;
 
 void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
-	mQrguiFacade.reset(new QrguiFacade("diagrams/oneTest.qrs"));
+	const QString workingFile = "diagrams/oneTest.qrs";
+	qrRepo::RepoApi repoApi(workingFile);
+
+	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator());
+	//mQrguiFacade.reset(new QrguiFacade(workingFile));
+	//mQrguiFacade->setActiveTab(qReal::Id::loadFromString(""));
+
 }
 
 TEST_F(SemanticTreeTest, dummyTest) {

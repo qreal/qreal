@@ -18,6 +18,7 @@
 #include <QtCore/QScopedPointer>
 
 #include <testUtils/qrguiFacade.h>
+#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 
 namespace generatorBase {
 class ReadableControlFlowGenerator;
@@ -41,6 +42,8 @@ protected:
 private:
 	QScopedPointer<QrguiFacade> mQrguiFacade;
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
+
+	QScopedPointer<ErrorReporterMock> mErrorReporterMock;
 };
 
 }
