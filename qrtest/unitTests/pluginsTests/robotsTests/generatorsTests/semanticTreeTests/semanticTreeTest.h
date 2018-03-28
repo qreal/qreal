@@ -19,6 +19,13 @@
 
 #include <testUtils/qrguiFacade.h>
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
+#include <qrgui/mainWindow/errorReporter.h>
+
+#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
+#include <generatorBase/generatorCustomizer.h>
+#include <generatorBase/primaryControlFlowValidator.h>
+#include "src/readableControlFlowGenerator.h"
+#include <qrrepo/repoApi.h>
 
 namespace generatorBase {
 class ReadableControlFlowGenerator;
@@ -40,10 +47,12 @@ protected:
 	void SetUp() override;
 
 private:
-	QScopedPointer<QrguiFacade> mQrguiFacade;
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
 
-	QScopedPointer<ErrorReporterMock> mErrorReporterMock;
+	QScopedPointer<qrRepo::RepoApi> mRepoApi;
+	QScopedPointer<qReal::gui::ErrorReporter> mErrorReporter;
+	QScopedPointer<generatorBase::GeneratorCustomizer> mGeneratorCustomizer;
+	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };
 
 }

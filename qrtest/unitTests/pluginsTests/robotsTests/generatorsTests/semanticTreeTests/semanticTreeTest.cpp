@@ -15,7 +15,6 @@
 #include <gmock/gmock.h>
 
 #include "semanticTreeTest.h"
-#include "src/readableControlFlowGenerator.h"
 
 using namespace qrTest::robotsTests::SemanticTreeTests;
 using namespace qrTest;
@@ -25,7 +24,10 @@ using namespace ::testing;
 void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString workingFile = "diagrams/oneTest.qrs";
-	qrRepo::RepoApi repoApi(workingFile);
+	mRepoApi.reset(new qrRepo::RepoApi(workingFile));
+	mErrorReporter.reset(new qReal::gui::ErrorReporter());
+	mGeneratorCustomizer.reset(generatorBase::GeneratorCustomizer());
+
 
 	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator());
 	//mQrguiFacade.reset(new QrguiFacade(workingFile));
