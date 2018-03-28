@@ -27,8 +27,8 @@ class GeneratorCustomizerMock : public QObject, public generatorBase::GeneratorC
 {
 	Q_OBJECT
 
-//public:
-//	MOCK_METHOD0(factory, generatorBase::GeneratorFactoryBase *());
+public:
+	MOCK_METHOD0(factory, generatorBase::GeneratorFactoryBase *());
 };
 
 }

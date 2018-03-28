@@ -16,6 +16,10 @@ TARGET = test-utils
 
 include($$PWD/../common.pri)
 
+includes(plugins/robots/generators/generatorBase)
+
+includes(plugins/robots/common/kitBase)
+
 DEFINES += TEST_UTILS_LIBRARY
 
 TEMPLATE = lib

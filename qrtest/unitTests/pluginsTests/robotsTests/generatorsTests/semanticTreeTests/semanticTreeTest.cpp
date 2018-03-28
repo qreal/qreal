@@ -25,11 +25,11 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString workingFile = "diagrams/oneTest.qrs";
 	mRepoApi.reset(new qrRepo::RepoApi(workingFile));
-	mErrorReporter.reset(new qReal::gui::ErrorReporter());
-	mGeneratorCustomizer.reset(generatorBase::GeneratorCustomizer());
+	//mErrorReporter.reset(new qReal::gui::ErrorReporter());
+	//mGeneratorCustomizer.reset(generatorBase::GeneratorCustomizer());
 
 
-	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator());
+	//mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator());
 	//mQrguiFacade.reset(new QrguiFacade(workingFile));
 	//mQrguiFacade->setActiveTab(qReal::Id::loadFromString(""));
 
