@@ -21,6 +21,7 @@
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 #include <qrgui/mainWindow/errorReporter.h>
 
+#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h>
 //#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
 //#include <generatorBase/generatorCustomizer.h>
 #include <generatorBase/primaryControlFlowValidator.h>
@@ -51,7 +52,7 @@ private:
 
 	QScopedPointer<qrRepo::RepoApi> mRepoApi;
 	QScopedPointer<qReal::gui::ErrorReporter> mErrorReporter;
-	//QScopedPointer<generatorBase::Generator> mGeneratorCustomizer;
+	GeneratorCustomizerMock mGeneratorCustomizerMock;
 	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };
 

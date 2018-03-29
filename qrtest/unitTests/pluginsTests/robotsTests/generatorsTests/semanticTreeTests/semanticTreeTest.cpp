@@ -23,13 +23,37 @@ using namespace ::testing;
 
 void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
+	ON_CALL(mGeneratorCustomizerMock, factory()).WillByDefault(
+			Return(nullptr)
+			);
+
 	const QString workingFile = "diagrams/oneTest.qrs";
+	//qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingFile);
 	mRepoApi.reset(new qrRepo::RepoApi(workingFile));
+	mRepoApi->printDebug();
+	const QString mainIdName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
+	const qReal::Id diagramId = qReal::Id::loadFromString(mainIdName);
+	if (mRepoApi->exist(diagramId)) {
+		qDebug() << diagramId;
+		qDebug() << "Id = " << diagramId.id();
+		qDebug() << "Editor = " << diagramId.editor();
+		qDebug() << "Diagram = " << diagramId.diagram();
+		qDebug() << "Element = " << diagramId.element();
+	}
+
+	mErrorReporter.reset(new qReal::gui::ErrorReporter());
+
+	//mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
+	//									*mRepoApi.data()
+	//									, *mErrorReporter.data()
+	//									, mGeneratorCustomizerMock
+	//									));
 	//mErrorReporter.reset(new qReal::gui::ErrorReporter());
-	//mGeneratorCustomizer.reset(generatorBase::GeneratorCustomizer());
 
 
-	//mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator());
+
+	//mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
+	//										));
 	//mQrguiFacade.reset(new QrguiFacade(workingFile));
 	//mQrguiFacade->setActiveTab(qReal::Id::loadFromString(""));
 
