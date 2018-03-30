@@ -19,7 +19,6 @@
 
 #include <testUtils/qrguiFacade.h>
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
-#include <qrgui/mainWindow/errorReporter.h>
 
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h>
 //#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
@@ -47,11 +46,11 @@ class SemanticTreeTest : public testing::Test
 protected:
 	void SetUp() override;
 
-private:
+public:
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
 
 	QScopedPointer<qrRepo::RepoApi> mRepoApi;
-	QScopedPointer<qReal::gui::ErrorReporter> mErrorReporter;
+	ErrorReporterMock mErrorReporterMock;
 	GeneratorCustomizerMock mGeneratorCustomizerMock;
 	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };

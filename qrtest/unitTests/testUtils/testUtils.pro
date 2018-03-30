@@ -16,10 +16,6 @@ TARGET = test-utils
 
 include($$PWD/../common.pri)
 
-includes(plugins/robots/generators/generatorBase)
-
-includes(plugins/robots/common/kitBase)
-
 DEFINES += TEST_UTILS_LIBRARY
 
 TEMPLATE = lib
@@ -50,4 +46,7 @@ HEADERS += \
 	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h \
 	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h \
 
-links(qrgui-tool-plugin-interface qrgui-models qrgui-text-editor qrkernel qrgui-plugin-manager qrgui-controller)
+links(qrgui-tool-plugin-interface qrgui-models qrgui-text-editor qrkernel qrgui-plugin-manager qrgui-controller \
+		robots-generator-base robots-kit-base)
+
+includes(plugins/robots/generators/generatorBase plugins/robots/common/kitBase)

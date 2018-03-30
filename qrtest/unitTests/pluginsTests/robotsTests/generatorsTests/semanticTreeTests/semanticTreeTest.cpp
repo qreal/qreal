@@ -31,31 +31,24 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 	//qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingFile);
 	mRepoApi.reset(new qrRepo::RepoApi(workingFile));
 	mRepoApi->printDebug();
-	const QString mainIdName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
+	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
 	const qReal::Id diagramId = qReal::Id::loadFromString(mainIdName);
-	if (mRepoApi->exist(diagramId)) {
-		qDebug() << diagramId;
-		qDebug() << "Id = " << diagramId.id();
-		qDebug() << "Editor = " << diagramId.editor();
-		qDebug() << "Diagram = " << diagramId.diagram();
-		qDebug() << "Element = " << diagramId.element();
-	}
 
-	mErrorReporter.reset(new qReal::gui::ErrorReporter());
-
-	//mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
-	//									*mRepoApi.data()
-	//									, *mErrorReporter.data()
-	//									, mGeneratorCustomizerMock
-	//									));
-	//mErrorReporter.reset(new qReal::gui::ErrorReporter());
+	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
+										*mRepoApi.data()
+										, mErrorReporterMock
+										, mGeneratorCustomizerMock
+										));
 
 
 
-	//mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
-	//										));
-	//mQrguiFacade.reset(new QrguiFacade(workingFile));
-	//mQrguiFacade->setActiveTab(qReal::Id::loadFromString(""));
+	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
+												*mRepoApi.data()
+												, mErrorReporterMock
+												, mGeneratorCustomizerMock
+												, *mPrimaryControlFlowValidator.data()
+												, diagramId
+											));
 
 }
 
@@ -67,6 +60,7 @@ TEST_F(SemanticTreeTest, dummyTest) {
 
 TEST_F(SemanticTreeTest, smallDiagramTest) {
 
-
+	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
+	qDebug() << tree->toString(0, "");
 }
 

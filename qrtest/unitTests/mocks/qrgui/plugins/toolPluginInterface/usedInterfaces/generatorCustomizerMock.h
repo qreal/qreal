@@ -28,6 +28,15 @@ class GeneratorCustomizerMock : public QObject, public generatorBase::GeneratorC
 	Q_OBJECT
 
 public:
+	MOCK_METHOD1(isInitialNode, bool(const qReal::Id &block));
+	MOCK_METHOD1(isFinalNode, bool(const qReal::Id &block));
+	MOCK_METHOD1(isSubprogramCall, bool(const qReal::Id &block));
+	MOCK_METHOD1(isConditional, bool(const qReal::Id &block));
+	MOCK_METHOD1(isLoop, bool(const qReal::Id &block));
+	MOCK_METHOD1(isSwitch, bool(const qReal::Id &block));
+	MOCK_METHOD1(isFork, bool(const qReal::Id &block));
+	MOCK_METHOD1(isJoin, bool(const qReal::Id &block));
+
 	MOCK_METHOD0(factory, generatorBase::GeneratorFactoryBase *());
 };
 
