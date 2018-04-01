@@ -23,25 +23,33 @@ using namespace ::testing;
 
 void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
-	ON_CALL(mGeneratorCustomizerMock, factory()).WillByDefault(
-			Return(nullptr)
+	//mGeneratorFactoryBaseMock = GeneratorFactoryBaseMock(*mRepoApi.data()
+	//		, mErrorReporterMock
+	//		, mRobotModelManagerInterfaceMock)
+/*
+	ON_CALL(mGeneratorFactoryBaseMock, pathsToTemplates()).WillByDefault(
+				Return(QStringList())
 			);
-
+	ON_CALL(mGeneratorCustomizerMock, factory()).WillByDefault(
+				Return(&mGeneratorFactoryBaseMock)
+			);
+*/
 	const QString workingFile = "diagrams/oneTest.qrs";
 	//qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingFile);
 	mRepoApi.reset(new qrRepo::RepoApi(workingFile));
-	mRepoApi->printDebug();
+	//mRepoApi->printDebug();
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
 	const qReal::Id diagramId = qReal::Id::loadFromString(mainIdName);
 
+/*
 	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
-										*mRepoApi.data()
-										, mErrorReporterMock
-										, mGeneratorCustomizerMock
-										));
+			mRepoApi.data()
+			, mErrorReporterMock
+			, mGeneratorCustomizerMock
+			));
+*/
 
-
-
+/*
 	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
 												*mRepoApi.data()
 												, mErrorReporterMock
@@ -49,7 +57,7 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 												, *mPrimaryControlFlowValidator.data()
 												, diagramId
 											));
-
+*/
 }
 
 TEST_F(SemanticTreeTest, dummyTest) {
@@ -60,7 +68,7 @@ TEST_F(SemanticTreeTest, dummyTest) {
 
 TEST_F(SemanticTreeTest, smallDiagramTest) {
 
-	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	qDebug() << tree->toString(0, "");
+	//generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
+	//qDebug() << tree->toString(0, "");
 }
 

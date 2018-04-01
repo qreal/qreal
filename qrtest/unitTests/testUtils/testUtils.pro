@@ -45,8 +45,10 @@ HEADERS += \
 	$$PWD/../mocks/qrgui/textEditor/textManagerInterfaceMock.h \
 	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h \
 	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h \
+	$$PWD/../mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorFactoryBaseMock.h \
+#	$$PWD/../mocks/qrtext/languageToolboxInterfaceMock.h
 
 links(qrgui-tool-plugin-interface qrgui-models qrgui-text-editor qrkernel qrgui-plugin-manager qrgui-controller \
-		robots-generator-base robots-kit-base)
+		robots-generator-base robots-kit-base qslog)
 
-includes(plugins/robots/generators/generatorBase plugins/robots/common/kitBase)
+includes(plugins/robots/generators/generatorBase plugins/robots/common/kitBase qrkernel thirdparty/qslog)

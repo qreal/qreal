@@ -31,4 +31,7 @@ HEADERS += \
 SOURCES += \
 	$$PWD/semanticTreeTest.cpp \
 
+HEADERS += \
+	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
+
 copyToDestdir($$PWD/diagrams, NOW)

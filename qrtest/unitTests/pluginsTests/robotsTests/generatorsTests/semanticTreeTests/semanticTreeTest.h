@@ -17,10 +17,12 @@
 
 #include <QtCore/QScopedPointer>
 
-#include <testUtils/qrguiFacade.h>
 #include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 
-#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorFactoryBaseMock.h>
+#include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h>
+
 //#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
 //#include <generatorBase/generatorCustomizer.h>
 #include <generatorBase/primaryControlFlowValidator.h>
@@ -52,6 +54,9 @@ public:
 	QScopedPointer<qrRepo::RepoApi> mRepoApi;
 	ErrorReporterMock mErrorReporterMock;
 	GeneratorCustomizerMock mGeneratorCustomizerMock;
+	//GeneratorFactoryBaseMock mGeneratorFactoryBaseMock;
+	//LanguageToolboxInterfaceMock mLanguageToolboxInterfaceMock;
+	RobotModelManagerInterfaceMock mRobotModelManagerInterfaceMock;
 	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };
 
