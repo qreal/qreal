@@ -13,8 +13,6 @@
  * limitations under the License. */
 #pragma once
 
-#include <QtCore/QFuture>
-
 #include "plugins/robots/generators/generatorBase/include/generatorBase/generatorCustomizer.h"
 //#include "plugins/robots/generators/generatorBase/include/generatorBase/generatorFactoryBase.h"
 //#include <plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterface.h>

@@ -13,10 +13,7 @@
  * limitations under the License. */
 #pragma once
 
-#include <QtCore/QFuture>
-
 #include <qrtext/include/qrtext/languageToolboxInterface.h>
-#include "qrtext/include/qrtext/debuggerInterface.h"
 
 #include <gmock/gmock.h>
 
