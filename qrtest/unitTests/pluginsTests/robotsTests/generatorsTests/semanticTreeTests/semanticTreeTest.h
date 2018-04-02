@@ -17,14 +17,19 @@
 
 #include <QtCore/QScopedPointer>
 
-#include <qrtest/unitTests/mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
-
-#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorCustomizerMock.h>
-#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/generatorFactoryBaseMock.h>
+#include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 #include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h>
+//#include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h>
+#include <qrtext/lua/luaToolbox.h>
 
 //#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
 //#include <generatorBase/generatorCustomizer.h>
+#include <plugins/robots/generators/trik/trikGeneratorBase/src/trikGeneratorCustomizer.h>
+
+#include <qrutils/parserErrorReporter.h>
+#include <qrgui/plugins/pluginManager/editorManager.h>
+#include <generatorBase/lua/luaProcessor.h>
+
 #include <generatorBase/primaryControlFlowValidator.h>
 #include "src/readableControlFlowGenerator.h"
 #include <qrrepo/repoApi.h>
@@ -34,10 +39,6 @@ class ReadableControlFlowGenerator;
 }
 
 namespace qrTest {
-
-class QrguiFacade;
-class TestRegistry;
-class TestRobotModel;
 
 namespace robotsTests {
 namespace SemanticTreeTests {
@@ -51,12 +52,7 @@ protected:
 public:
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
 
-	QScopedPointer<qrRepo::RepoApi> mRepoApi;
-	ErrorReporterMock mErrorReporterMock;
-	GeneratorCustomizerMock mGeneratorCustomizerMock;
-	//GeneratorFactoryBaseMock mGeneratorFactoryBaseMock;
-	//LanguageToolboxInterfaceMock mLanguageToolboxInterfaceMock;
-	RobotModelManagerInterfaceMock mRobotModelManagerInterfaceMock;
+
 	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };
 

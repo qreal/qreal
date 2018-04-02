@@ -14,13 +14,16 @@
 
 TARGET = semantic-tree-tests
 
-CONFIG += Abcd
-
 include($$PWD/../../../../common.pri)
 include($$PWD/../../../../../../plugins/robots/generators/generatorBase/generatorBase.pri)
 
-links(test-utils qrgui-tool-plugin-interface qrgui-models qrgui-plugin-manager qrgui-text-editor qrtext \
-				qrgui-controller tcp-robot-simulator)
+links(qrgui-plugin-manager test-utils robots-trik-generator-base robots-utils)
+
+includes(plugins/robots/interpreters \
+	plugins/robots/interpreters/interpreterCore \
+	plugins/robots/common/kitBase \
+	qrtest/unitTests/mocks/plugins/robots/common/kitBase \
+	qrtest/unitTests/mocks/plugins/robots/interpreters)
 
 QT += xml
 
@@ -33,5 +36,7 @@ SOURCES += \
 
 HEADERS += \
 	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
+#	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h \
+#	$$PWD/../../../../../../plugins/robots/utils/include/utils/timelineInterface/h
 
 copyToDestdir($$PWD/diagrams, NOW)
