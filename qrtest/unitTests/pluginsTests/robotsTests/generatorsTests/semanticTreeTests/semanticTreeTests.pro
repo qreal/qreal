@@ -16,6 +16,7 @@ TARGET = semantic-tree-tests
 
 include($$PWD/../../../../common.pri)
 include($$PWD/../../../../../../plugins/robots/generators/generatorBase/generatorBase.pri)
+include($$PWD/../../interpretersTests/interpreterCoreTests/mocks.pri)
 
 links(qrgui-plugin-manager test-utils robots-trik-generator-base robots-utils)
 
