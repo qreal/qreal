@@ -19,7 +19,7 @@
 
 #include <mocks/qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterMock.h>
 #include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h>
-//#include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h>
+#include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h>
 #include <qrtext/lua/luaToolbox.h>
 
 //#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
@@ -51,8 +51,9 @@ protected:
 
 public:
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
-
-
+	RobotModelManagerInterfaceMock mModelManager;
+	RobotModelInterfaceMock mModel;
+	ErrorReporterMock mErrorReporterMock;
 	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };
 

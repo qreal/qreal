@@ -26,65 +26,37 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 	const QString empty = "";
 	const QStringList pathsToTemplates = {};
 	const QString workingFile = "diagrams/oneTest.qrs";
-	ErrorReporterMock errorReporterMock;
+
 	const qrRepo::RepoApi repoApi(workingFile);
 	qrtext::lua::LuaToolbox languageToolbox;
-	RobotModelManagerInterfaceMock robotModelManager;
-	//RobotModelInterfaceMock robotModel;
-	//ON_CALL(robotModelManager, model()).WillByDefault(
-	//			Return(robotModel)
-	//		);
+
+	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 
 	const qReal::EditorManager editorManager(empty);
-	const utils::ParserErrorReporter parserErrorReporter(languageToolbox, errorReporterMock, editorManager);
+	const utils::ParserErrorReporter parserErrorReporter(languageToolbox, mErrorReporterMock, editorManager);
 
-	generatorBase::lua::LuaProcessor luaProcessor(errorReporterMock, languageToolbox, parserErrorReporter);
-	trik::TrikGeneratorCustomizer trikGeneratorCustomizer(repoApi, errorReporterMock,
-			robotModelManager, luaProcessor, pathsToTemplates);
+	generatorBase::lua::LuaProcessor luaProcessor(mErrorReporterMock, languageToolbox, parserErrorReporter);
+	trik::TrikGeneratorCustomizer trikGeneratorCustomizer(repoApi, mErrorReporterMock,
+			mModelManager, luaProcessor, pathsToTemplates);
 	trikGeneratorCustomizer.factory()->initialize();
 
-/*
-	mTrikGeneratorCustomizer = trik::TrikGeneratorCustomizer(*mRepoApi
-			, mErrorReporterMock
-			, mRobotModelManagerInterfaceMock
-			, mLanguageToolbox
-			, pathToTemplates);
-*/
-	//mGeneratorFactoryBaseMock = GeneratorFactoryBaseMock(*mRepoApi.data()
-	//		, mErrorReporterMock
-	//		, mRobotModelManagerInterfaceMock)
-/*
-	ON_CALL(mGeneratorFactoryBaseMock, pathsToTemplates()).WillByDefault(
-				Return(QStringList())
-			);
-	ON_CALL(mGeneratorCustomizerMock, factory()).WillByDefault(
-				Return(&mGeneratorFactoryBaseMock)
-			);
-*/
-
-	//qrRepo::RepoApi *repoApi = new qrRepo::RepoApi(workingFile);
-
-	//mRepoApi->printDebug();
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
 	const qReal::Id diagramId = qReal::Id::loadFromString(mainIdName);
 
-/*
-	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
-			mRepoApi.data()
-			, mErrorReporterMock
-			, mGeneratorCustomizerMock
-			));
-*/
 
-/*
+	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
+			repoApi
+			, mErrorReporterMock
+			, trikGeneratorCustomizer
+	));
+
 	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
-												*mRepoApi.data()
-												, mErrorReporterMock
-												, mGeneratorCustomizerMock
-												, *mPrimaryControlFlowValidator.data()
-												, diagramId
-											));
-*/
+			repoApi
+			, mErrorReporterMock
+			, trikGeneratorCustomizer
+			, *mPrimaryControlFlowValidator.data()
+			, diagramId
+	));
 }
 
 TEST_F(SemanticTreeTest, dummyTest) {

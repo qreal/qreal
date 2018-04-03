@@ -16,11 +16,11 @@ TARGET = semantic-tree-tests
 
 include($$PWD/../../../../common.pri)
 include($$PWD/../../../../../../plugins/robots/generators/generatorBase/generatorBase.pri)
-include($$PWD/../../interpretersTests/interpreterCoreTests/mocks.pri)
 
 links(qrgui-plugin-manager test-utils robots-trik-generator-base robots-utils)
 
 includes(plugins/robots/interpreters \
+	plugins/robots/utils \
 	plugins/robots/interpreters/interpreterCore \
 	plugins/robots/common/kitBase \
 	qrtest/unitTests/mocks/plugins/robots/common/kitBase \
@@ -31,13 +31,11 @@ QT += xml
 HEADERS += \
 	$$PWD/semanticTreeTest.h \
 
-
 SOURCES += \
 	$$PWD/semanticTreeTest.cpp \
 
 HEADERS += \
-	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
-#	$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h \
-#	$$PWD/../../../../../../plugins/robots/utils/include/utils/timelineInterface/h
+		$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelManagerInterfaceMock.h \
+		$$PWD/../../../../mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h \
 
 copyToDestdir($$PWD/diagrams, NOW)
