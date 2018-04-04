@@ -27,33 +27,46 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 	const QStringList pathsToTemplates = {};
 	const QString workingFile = "diagrams/oneTest.qrs";
 
-	const qrRepo::RepoApi repoApi(workingFile);
-	qrtext::lua::LuaToolbox languageToolbox;
+	mRepo.reset(new qrRepo::RepoApi(workingFile));
+	qDebug() << mRepo->workingFile();
+	mToolbox.reset(new qrtext::lua::LuaToolbox());
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 
-	const qReal::EditorManager editorManager(empty);
-	const utils::ParserErrorReporter parserErrorReporter(languageToolbox, mErrorReporterMock, editorManager);
+	mEditor.reset(new qReal::EditorManager(empty));
 
-	generatorBase::lua::LuaProcessor luaProcessor(mErrorReporterMock, languageToolbox, parserErrorReporter);
-	trik::TrikGeneratorCustomizer trikGeneratorCustomizer(repoApi, mErrorReporterMock,
-			mModelManager, luaProcessor, pathsToTemplates);
-	trikGeneratorCustomizer.factory()->initialize();
+
+	mParserErrorReporter.reset(new utils::ParserErrorReporter(*mToolbox
+			, mErrorReporterMock
+			, *mEditor
+	));
+
+	mProcessor.reset(new generatorBase::lua::LuaProcessor(mErrorReporterMock
+			, *mToolbox
+			, *mParserErrorReporter));
+
+	mCustomizer.reset(new trik::TrikGeneratorCustomizer(*mRepo
+			, mErrorReporterMock
+			, mModelManager
+			, *mProcessor
+			, pathsToTemplates));
+
+	mCustomizer->factory()->initialize();
 
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
 	const qReal::Id diagramId = qReal::Id::loadFromString(mainIdName);
 
-
-	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(
-			repoApi
+	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(*mRepo
 			, mErrorReporterMock
-			, trikGeneratorCustomizer
+			, *mCustomizer
 	));
 
+	//qDebug() << mPrimaryControlFlowValidator->initialNode();
+
 	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
-			repoApi
+			*mRepo
 			, mErrorReporterMock
-			, trikGeneratorCustomizer
+			, *mCustomizer
 			, *mPrimaryControlFlowValidator.data()
 			, diagramId
 	));
@@ -66,8 +79,7 @@ TEST_F(SemanticTreeTest, dummyTest) {
 
 
 TEST_F(SemanticTreeTest, smallDiagramTest) {
-
-	//generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
+	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
 	//qDebug() << tree->toString(0, "");
 }
 

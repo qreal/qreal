@@ -50,10 +50,16 @@ protected:
 	void SetUp() override;
 
 public:
+	QScopedPointer<qrRepo::RepoApi> mRepo;
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
 	RobotModelManagerInterfaceMock mModelManager;
 	RobotModelInterfaceMock mModel;
 	ErrorReporterMock mErrorReporterMock;
+	QScopedPointer<qrtext::lua::LuaToolbox> mToolbox;
+	QScopedPointer<qReal::EditorManager> mEditor;
+	QScopedPointer<const utils::ParserErrorReporter> mParserErrorReporter;
+	QScopedPointer<generatorBase::lua::LuaProcessor> mProcessor;
+	QScopedPointer<trik::TrikGeneratorCustomizer> mCustomizer;
 	QScopedPointer<generatorBase::PrimaryControlFlowValidator> mPrimaryControlFlowValidator;
 };
 
