@@ -58,6 +58,8 @@ public:
 
 	/// Returns a list of children of this zone node.
 	virtual QLinkedList<SemanticNode *> children() const;
+
+	QString scheme() const;
 protected:
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 

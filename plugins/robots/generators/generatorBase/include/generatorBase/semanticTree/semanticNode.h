@@ -48,6 +48,7 @@ public:
 	/// a node with specified id binded if such was found or nullptr otherwise.
 	SemanticNode *findNodeFor(const qReal::Id &id);
 
+	virtual QString scheme() const = 0;
 protected:
 	explicit SemanticNode(const qReal::Id &idBinded = qReal::Id(), QObject *parent = 0);
 

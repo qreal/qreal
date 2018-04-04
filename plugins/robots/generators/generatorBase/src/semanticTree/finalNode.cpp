@@ -25,6 +25,11 @@ FinalNode::FinalNode(const Id &idBinded, bool inMainDigram, QObject *parent)
 {
 }
 
+QString FinalNode::scheme() const
+{
+	return "final";
+}
+
 QString FinalNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	return utils::StringUtils::addIndent(customizer.factory()->finalNodeGenerator(mId

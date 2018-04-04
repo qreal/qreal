@@ -28,6 +28,12 @@ void ForkNode::appendThread(const qReal::Id &thread, const QString &threadId)
 	mThreads[thread] = threadId;
 }
 
+QString ForkNode::scheme() const
+{
+	// to do
+	return "fork";
+}
+
 QLinkedList<SemanticNode *> ForkNode::children() const
 {
 	return {};

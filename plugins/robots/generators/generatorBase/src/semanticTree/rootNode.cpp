@@ -33,6 +33,11 @@ Id RootNode::initialBlock() const
 	return mInitialBlock;
 }
 
+QString RootNode::scheme() const
+{
+	return "root@" + mZone->scheme();
+}
+
 QString RootNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	return mZone->toString(customizer, indent, indentString);

@@ -33,6 +33,7 @@ public:
 	/// Adds one more thread to this fork block.
 	void appendThread(const qReal::Id &thread, const QString &threadId);
 
+	QString scheme() const;
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;

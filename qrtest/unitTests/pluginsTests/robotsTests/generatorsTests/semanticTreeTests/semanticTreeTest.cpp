@@ -61,8 +61,6 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 			, *mCustomizer
 	));
 
-	//qDebug() << mPrimaryControlFlowValidator->initialNode();
-
 	mReadableControlFlowGenerator.reset(new generatorBase::ReadableControlFlowGenerator(
 			*mRepo
 			, mErrorReporterMock
@@ -80,6 +78,10 @@ TEST_F(SemanticTreeTest, dummyTest) {
 
 TEST_F(SemanticTreeTest, smallDiagramTest) {
 	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	//qDebug() << tree->toString(0, "");
+	const QString scheme = tree->treeScheme();
+	qDebug() << scheme;
+
+	EXPECT_TRUE(scheme == "root@simple;simple;final");
+	delete tree;
 }
 

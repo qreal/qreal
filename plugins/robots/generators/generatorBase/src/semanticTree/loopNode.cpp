@@ -65,6 +65,11 @@ ZoneNode *LoopNode::bodyZone()
 	return mBodyZone;
 }
 
+QString LoopNode::scheme() const
+{
+	return "loop[" + mBodyZone->scheme() + "]";
+}
+
 QLinkedList<SemanticNode *> LoopNode::children() const
 {
 	return QLinkedList<SemanticNode *>() << mBodyZone;

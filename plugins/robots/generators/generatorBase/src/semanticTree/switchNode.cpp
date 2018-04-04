@@ -52,6 +52,23 @@ void SwitchNode::setBranchesMergedFlag()
 	mBranchesMerged = true;
 }
 
+QString SwitchNode::scheme() const
+{
+	const char parallelDelimiter = '|';
+	bool isFirst = true;
+	QString res = "switch@";
+	for (const ZoneNode *zone : mBranches.values()) {
+		if (isFirst) {
+			isFirst = false;
+		} else {
+			res.push_back(parallelDelimiter);
+			res += zone->scheme();
+		}
+	}
+
+	return res;
+}
+
 QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	QString result;

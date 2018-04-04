@@ -109,3 +109,20 @@ QLinkedList<SemanticNode *> ZoneNode::children() const
 {
 	return mChildren;
 }
+
+QString ZoneNode::scheme() const
+{
+	const char sequenceDelimiter = ';';
+	QString res = "";
+	bool isFirst = true;
+	for (const SemanticNode *node : mChildren) {
+		if (isFirst) {
+			isFirst = false;
+		} else {
+			res.push_back(sequenceDelimiter);
+		}
+		res += node->scheme();
+	}
+
+	return res;
+}

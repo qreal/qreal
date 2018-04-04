@@ -40,6 +40,7 @@ public:
 	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);
 
+	QString scheme() const;
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 
