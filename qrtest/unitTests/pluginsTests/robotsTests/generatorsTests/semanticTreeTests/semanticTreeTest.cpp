@@ -25,7 +25,7 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString empty = "";
 	const QStringList pathsToTemplates = {};
-	const QString workingFile = "diagrams/oneTest1.qrs";
+	const QString workingFile = "diagrams/oneTest2.qrs";
 	const QString mainRepositoryName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
 	mRepo.reset(new qrRepo::RepoApi(workingFile));
@@ -120,5 +120,17 @@ TEST_F(SemanticTreeTest, forSimpleTest) {
 	const QString scheme = tree->treeScheme();
 
 	EXPECT_TRUE(scheme == "root@simple;simple;loop[simple];final");
+	delete tree;
+}
+
+
+TEST_F(SemanticTreeTest, switchSimpleTest) {
+	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{52582016-18f3-415e-ad5b-c91deef8e42c}";
+	loadDiagram(mainIdName);
+
+	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
+	const QString scheme = tree->treeScheme();
+
+	EXPECT_TRUE(scheme == "root@simple;simple;switch[simple|simple|simple];final");
 	delete tree;
 }
