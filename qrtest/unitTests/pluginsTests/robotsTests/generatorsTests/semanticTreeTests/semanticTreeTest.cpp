@@ -83,12 +83,6 @@ void SemanticTreeTest::loadDiagram(const QString &mainIdName)
 
 }
 
-TEST_F(SemanticTreeTest, dummyTest) {
-
-	EXPECT_TRUE(true);
-}
-
-
 TEST_F(SemanticTreeTest, smallSequenceTest) {
 
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
