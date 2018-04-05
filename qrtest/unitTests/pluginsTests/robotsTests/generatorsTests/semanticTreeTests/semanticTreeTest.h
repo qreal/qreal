@@ -50,6 +50,8 @@ protected:
 	void SetUp() override;
 
 public:
+	void loadDiagram(const QString &mainIdName);
+
 	QScopedPointer<qrRepo::RepoApi> mRepo;
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;
 	RobotModelManagerInterfaceMock mModelManager;

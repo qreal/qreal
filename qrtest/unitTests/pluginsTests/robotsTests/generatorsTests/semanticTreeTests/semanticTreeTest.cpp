@@ -25,10 +25,20 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString empty = "";
 	const QStringList pathsToTemplates = {};
-	const QString workingFile = "diagrams/oneTest.qrs";
+	const QString workingFile = "diagrams/oneTest1.qrs";
+	const QString mainRepositoryName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
 	mRepo.reset(new qrRepo::RepoApi(workingFile));
-	qDebug() << mRepo->workingFile();
+	const qReal::Id repoId = qReal::Id::loadFromString(mainRepositoryName);
+	qReal::IdList elements = mRepo->children(repoId);
+
+	for (const qReal::Id element : elements) {
+		if (element.element() == "RobotsDiagramNode") {
+			qDebug() << element;
+		}
+	}
+	//mRepo->printDebug();
+	//qDebug() << mRepo->workingFile();
 	mToolbox.reset(new qrtext::lua::LuaToolbox());
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
@@ -52,8 +62,10 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 			, pathsToTemplates));
 
 	mCustomizer->factory()->initialize();
+}
 
-	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
+void SemanticTreeTest::loadDiagram(const QString &mainIdName)
+{
 	const qReal::Id diagramId = qReal::Id::loadFromString(mainIdName);
 
 	mPrimaryControlFlowValidator.reset(new generatorBase::PrimaryControlFlowValidator(*mRepo
@@ -68,6 +80,7 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 			, *mPrimaryControlFlowValidator.data()
 			, diagramId
 	));
+
 }
 
 TEST_F(SemanticTreeTest, dummyTest) {
