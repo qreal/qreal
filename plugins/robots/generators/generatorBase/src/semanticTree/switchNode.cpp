@@ -56,15 +56,22 @@ QString SwitchNode::scheme() const
 {
 	const char parallelDelimiter = '|';
 	bool isFirst = true;
-	QString res = "switch@";
+	QString res = "switch[";
 	for (const ZoneNode *zone : mBranches.values()) {
 		if (isFirst) {
 			isFirst = false;
 		} else {
 			res.push_back(parallelDelimiter);
-			res += zone->scheme();
 		}
+		res += zone->scheme();
 	}
+
+	if (!isFirst) {
+		res.push_back(parallelDelimiter);
+	}
+
+	res += mDefaultBranch->scheme();
+	res += "]";
 
 	return res;
 }
