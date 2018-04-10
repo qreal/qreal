@@ -51,6 +51,7 @@ protected:
 
 public:
 	void loadDiagram(const QString &mainIdName);
+	const QString scheme(const QString &mainIdName);
 
 	QScopedPointer<qrRepo::RepoApi> mRepo;
 	QScopedPointer<generatorBase::ReadableControlFlowGenerator> mReadableControlFlowGenerator;

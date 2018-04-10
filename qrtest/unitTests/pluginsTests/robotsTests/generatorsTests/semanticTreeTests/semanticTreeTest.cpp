@@ -25,7 +25,7 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString empty = "";
 	const QStringList pathsToTemplates = {};
-	const QString workingFile = "diagrams/oneTest2.qrs";
+	const QString workingFile = "diagrams/oneTest5.qrs";
 	const QString mainRepositoryName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
 	mRepo.reset(new qrRepo::RepoApi(workingFile));
@@ -83,48 +83,45 @@ void SemanticTreeTest::loadDiagram(const QString &mainIdName)
 
 }
 
+const QString SemanticTreeTest::scheme(const QString &mainIdName)
+{
+	loadDiagram(mainIdName);
+	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
+	const QString scheme = tree->treeScheme();
+	//qDebug() << scheme;
+	delete tree;
+	return scheme;
+}
+
 TEST_F(SemanticTreeTest, smallSequenceTest) {
 
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
-	loadDiagram(mainIdName);
 
-	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	const QString scheme = tree->treeScheme();
-
-	EXPECT_TRUE(scheme == "root@simple;simple;final");
-	delete tree;
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;final");
 }
 
 TEST_F(SemanticTreeTest, ifTest) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{8d5dc72e-c563-409a-9280-a2fc750b3407}";
-	loadDiagram(mainIdName);
 
-	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	const QString scheme = tree->treeScheme();
-
-	EXPECT_TRUE(scheme == "root@simple;if[simple|simple];final");
-	delete tree;
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;if[simple|simple];final");
 }
 
 TEST_F(SemanticTreeTest, forSimpleTest) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{a0f7bba3-ca84-4b3b-bbf5-d7d906083dfb}" ;
-	loadDiagram(mainIdName);
 
-	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	const QString scheme = tree->treeScheme();
-
-	EXPECT_TRUE(scheme == "root@simple;simple;loop[simple];final");
-	delete tree;
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;loop[simple];final");
 }
 
 
 TEST_F(SemanticTreeTest, switchSimpleTest) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{52582016-18f3-415e-ad5b-c91deef8e42c}";
-	loadDiagram(mainIdName);
 
-	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	const QString scheme = tree->treeScheme();
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;switch[simple|simple|simple];final");
+}
 
-	EXPECT_TRUE(scheme == "root@simple;simple;switch[simple|simple|simple];final");
-	delete tree;
+TEST_F(SemanticTreeTest, subprogramSimpleTest) {
+	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{faeb1b79-2add-48e5-871e-e56da452b8a5}";
+
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;switch[simple;simple;simple;simple"
+				"|simple;simple;simple|simple;if[simple];final];final""");
 }

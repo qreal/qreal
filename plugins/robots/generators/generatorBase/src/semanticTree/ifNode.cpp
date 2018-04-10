@@ -47,10 +47,13 @@ void IfNode::transformToSimple()
 QString IfNode::scheme() const
 {
 	//QString res = "if";
-	//QString thenString = mThenZone->scheme();
-	//QString elseString = mElseZone->scheme();
+	QString thenString = mThenZone->scheme();
+	QString elseString = mElseZone->scheme();
+	if (elseString.isEmpty()) {
+		return "if[" + thenString + "]";
+	}
 
-	return "if[" + mThenZone->scheme() + "|" + mElseZone->scheme() + "]";
+	return "if[" + thenString + "|" + elseString + "]";
 }
 
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
