@@ -25,7 +25,7 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString empty = "";
 	const QStringList pathsToTemplates = {};
-	const QString workingFile = "diagrams/oneTest5.qrs";
+	const QString workingFile = "diagrams/oneTest6.qrs";
 	const QString mainRepositoryName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
 	mRepo.reset(new qrRepo::RepoApi(workingFile));
@@ -119,9 +119,15 @@ TEST_F(SemanticTreeTest, switchSimpleTest) {
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;switch[simple|simple|simple];final");
 }
 
-TEST_F(SemanticTreeTest, subprogramSimpleTest) {
+TEST_F(SemanticTreeTest, switchWithOneTerminatingBranch) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{faeb1b79-2add-48e5-871e-e56da452b8a5}";
 
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;switch[simple;simple;simple;simple"
-				"|simple;simple;simple|simple;if[simple];final];final""");
+				"|simple;simple;simple|simple;if[simple];final];final");
+}
+
+TEST_F(SemanticTreeTest, ifWithoutElseBranch) {
+	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{73f9f970-f1a4-4383-bd29-3cee40dd28bd}";
+
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;if[simple];final");
 }
