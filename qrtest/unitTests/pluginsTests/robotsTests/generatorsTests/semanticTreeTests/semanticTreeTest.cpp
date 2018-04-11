@@ -88,52 +88,53 @@ const QString SemanticTreeTest::scheme(const QString &mainIdName)
 	loadDiagram(mainIdName);
 	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
 	const QString scheme = tree->treeScheme();
-	//qDebug() << scheme;
-	delete tree;
+
 	return scheme;
 }
 
 TEST_F(SemanticTreeTest, smallSequenceTest) {
-
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{47bae389-f76d-4510-999b-c8160d1dfc33}";
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;final");
 }
 
 TEST_F(SemanticTreeTest, ifTest) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{8d5dc72e-c563-409a-9280-a2fc750b3407}";
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;if[simple|simple];final");
 }
 
 TEST_F(SemanticTreeTest, forSimpleTest) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{a0f7bba3-ca84-4b3b-bbf5-d7d906083dfb}" ;
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;loop[simple];final");
 }
 
 
 TEST_F(SemanticTreeTest, switchSimpleTest) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{52582016-18f3-415e-ad5b-c91deef8e42c}";
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;switch[simple|simple|simple];final");
 }
 
 TEST_F(SemanticTreeTest, switchWithOneTerminatingBranch) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{faeb1b79-2add-48e5-871e-e56da452b8a5}";
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;switch[simple;simple;simple;simple"
 				"|simple;simple;simple|simple;if[simple];final];final");
 }
 
 TEST_F(SemanticTreeTest, ifWithoutElseBranch) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{73f9f970-f1a4-4383-bd29-3cee40dd28bd}";
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;if[simple];final");
 }
 
 TEST_F(SemanticTreeTest, ifWithoutThenBranch) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{786837b8-d937-4585-91c3-67927c6f56b6}";
-
 	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;if[|simple];final");
+}
+
+TEST_F(SemanticTreeTest, simpleWhile) {
+	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{bb84359d-36c3-41d4-b894-131bbef6fd49}";
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;loop[if[simple];simple];final");
+}
+
+TEST_F(SemanticTreeTest, While) {
+	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{b1a034fe-6f63-4728-869a-f7cb6f042d49}";
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;loop[simple];final");
 }
