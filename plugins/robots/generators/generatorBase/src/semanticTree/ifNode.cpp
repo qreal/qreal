@@ -46,7 +46,6 @@ void IfNode::transformToSimple()
 
 QString IfNode::scheme() const
 {
-	//QString res = "if";
 	QString thenString = mThenZone->scheme();
 	QString elseString = mElseZone->scheme();
 	if (elseString.isEmpty()) {

@@ -76,6 +76,7 @@ public:
 	/// a node with specified id binded if such was found or nullptr otherwise.
 	NonZoneNode *findNodeFor(const qReal::Id &id);
 
+	/// Generates the frame of semantic tree. Used for testing.
 	QString treeScheme() const;
 private:
 	GeneratorCustomizer &mCustomizer;

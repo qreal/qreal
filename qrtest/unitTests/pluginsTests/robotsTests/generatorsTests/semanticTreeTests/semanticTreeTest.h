@@ -22,8 +22,6 @@
 #include <mocks/plugins/robots/common/kitBase/include/kitBase/robotModel/robotModelInterfaceMock.h>
 #include <qrtext/lua/luaToolbox.h>
 
-//#include "../trik/trikGeneratorBase/src/trikGeneratorCustomizer.h"
-//#include <generatorBase/generatorCustomizer.h>
 #include <plugins/robots/generators/trik/trikGeneratorBase/src/trikGeneratorCustomizer.h>
 
 #include <qrutils/parserErrorReporter.h>
@@ -31,7 +29,7 @@
 #include <generatorBase/lua/luaProcessor.h>
 
 #include <generatorBase/primaryControlFlowValidator.h>
-#include "src/readableControlFlowGenerator.h"
+#include <src/readableControlFlowGenerator.h>
 #include <qrrepo/repoApi.h>
 
 namespace generatorBase {

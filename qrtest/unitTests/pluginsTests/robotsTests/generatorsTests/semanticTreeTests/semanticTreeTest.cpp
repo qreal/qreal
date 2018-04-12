@@ -23,7 +23,6 @@ using namespace ::testing;
 
 void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
-	const QString empty = "";
 	const QStringList pathsToTemplates = {};
 	const QString workingFile = "diagrams/tests.qrs";
 	const QString mainRepositoryName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
@@ -32,18 +31,17 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 	const qReal::Id repoId = qReal::Id::loadFromString(mainRepositoryName);
 	qReal::IdList elements = mRepo->children(repoId);
 
+	// for finding id of new diagrams
 	for (const qReal::Id element : elements) {
 		if (element.element() == "RobotsDiagramNode") {
 			qDebug() << element;
 		}
 	}
-	//mRepo->printDebug();
-	//qDebug() << mRepo->workingFile();
 	mToolbox.reset(new qrtext::lua::LuaToolbox());
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 
-	mEditor.reset(new qReal::EditorManager(empty));
+	mEditor.reset(new qReal::EditorManager(""));
 
 
 	mParserErrorReporter.reset(new utils::ParserErrorReporter(*mToolbox
@@ -87,9 +85,7 @@ const QString SemanticTreeTest::scheme(const QString &mainIdName)
 {
 	loadDiagram(mainIdName);
 	generatorBase::semantics::SemanticTree *tree = mReadableControlFlowGenerator->generate();
-	const QString scheme = tree->treeScheme();
-
-	return scheme;
+	return tree->treeScheme();
 }
 
 TEST_F(SemanticTreeTest, smallSequenceTest) {
