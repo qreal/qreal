@@ -25,7 +25,7 @@ void qrTest::robotsTests::SemanticTreeTests::SemanticTreeTest::SetUp()
 {
 	const QString empty = "";
 	const QStringList pathsToTemplates = {};
-	const QString workingFile = "diagrams/oneTest7.qrs";
+	const QString workingFile = "diagrams/tests.qrs";
 	const QString mainRepositoryName = "qrm:/ROOT_ID/ROOT_ID/ROOT_ID/ROOT_ID";
 
 	mRepo.reset(new qrRepo::RepoApi(workingFile));
