@@ -137,10 +137,10 @@ TEST_F(SemanticTreeTest, While) {
 
 TEST_F(SemanticTreeTest, Fork) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{0098bcdf-6747-4b0a-9183-c510646b5019}";
-	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;simple;fork[second];simple;join;final");
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;simple;simple;fork[second];simple;join[main];final");
 }
 
 TEST_F(SemanticTreeTest, ForkWith5Threads) {
 	const QString mainIdName = "qrm:/RobotsMetamodel/RobotsDiagram/RobotsDiagramNode/{c9f85a45-5919-4f73-a85a-b389bf64132d}";
-	EXPECT_TRUE(scheme(mainIdName) == "root@simple;fork[five|four|three|two];simple;join");
+	EXPECT_TRUE(scheme(mainIdName) == "root@simple;fork[five|four|three|two];simple;join[main];simple;final");
 }
