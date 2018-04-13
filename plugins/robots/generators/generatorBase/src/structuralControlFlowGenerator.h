@@ -57,6 +57,8 @@ public:
 
 	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
 
+	typedef QMap<QString, int> Region;
+
 private:
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times
@@ -64,12 +66,12 @@ private:
 	void performGeneration() override;
 
 	/// methods to identify patterns for structural analysis
-	bool isBlock(const qReal::Id &id, QVector<int> &region);
-	bool isIfThen(const qReal::Id &id, QVector<int> &region);
-	bool isIfThenElse(const qReal::Id &id, QVector<int> &region);
-	bool isSwitch(const qReal::Id &id, QVector<int> &region);
-	bool isSelfLoop(const qReal::Id &id, QVector<int> &region);
-	bool isWhileLoop(const qReal::Id &id, QVector<int> &region);
+	bool isBlock(const qReal::Id &id, Region &region);
+	bool isIfThenElse(const qReal::Id &id, Region &region);
+	bool isSwitch(const qReal::Id &id, Region &region);
+	bool isSelfLoop(const qReal::Id &id, Region &region);
+	bool isWhileLoop(const qReal::Id &id, Region &region);
+	bool isDoWhileLoop(const qReal::Id &id, Region &region);
 
 	/// Creation of a new abstract node and maping it with a corresponding Id
 	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
@@ -81,15 +83,15 @@ private:
 	void buildGraph();
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, QVector<int> &region, bool isBlock);
+	void replace(int newNodeNumber, Region &region, bool isBlock);
 
 	/// methods for creating a valid Semantic nodes for particular pattern
-	void reduceBlock(const qReal::Id &id, QVector<int> &region);
-	void reduceIfThen(const qReal::Id &id, QVector<int> &region);
-	void reduceIfThenElse(const qReal::Id &id, QVector<int> &region);
-	void reduceSelfLoop(const qReal::Id &id, QVector<int> &region);
-	void reduceWhileLoop(const qReal::Id &id, QVector<int> &region);
-	void reduceSwitch(const qReal::Id &id, QVector<int> &region, QMap<QString, int> &guards);
+	void reduceBlock(const qReal::Id &id, Region &region);
+	void reduceIfThenElse(const qReal::Id &id, Region &region);
+	void reduceSelfLoop(const qReal::Id &id, Region &region);
+	void reduceWhileLoop(const qReal::Id &id, Region &region);
+	void reduceDoWhileLoop(const qReal::Id &id, Region &region);
+	void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
 	int mVerteces;
 	bool isPerformingGeneration;
