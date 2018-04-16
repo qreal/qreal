@@ -135,6 +135,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
 	buildGraph();
+	findDominators();
 
 	isPerformingGeneration = true;
 	ControlFlowGeneratorBase::performGeneration();
@@ -356,8 +357,45 @@ void StructuralControlFlowGenerator::buildGraph()
 	}
 }
 
+void StructuralControlFlowGenerator::findDominators()
+{
+	int entry = -1;
+	QSet<int> verteces = mMapVertexLabelToId.keys().toSet();
+	for (const int v : verteces) {
+		mDominators[v] = verteces;
+		if (mPredecessors[v].empty()) {
+			entry = v;
+		}
+	}
+
+	mDominators[entry] = { entry };
+	bool somethingChanged = true;
+	while (somethingChanged) {
+		somethingChanged = false;
+		for (const int v : verteces) {
+			QSet<int> doms = mDominators[v];
+			for (const int u : mPredecessors[v]) {
+				doms = doms.intersect(mDominators[u]);
+			}
+			doms.insert(v);
+			if (doms != mDominators[v]) {
+				mDominators[v] = doms;
+				somethingChanged = true;
+			}
+		}
+	}
+}
+
 void StructuralControlFlowGenerator::replace(int newNodeNumber, Region &region, bool isBlock)
 {
+	// updating dominators
+	QSet<int> verteces = mMapVertexLabelToId.keys().toSet();
+	for (const int v : region.values().toSet()) {
+		verteces = verteces.intersect(mDominators[v]);
+	}
+	verteces.insert(newNodeNumber);
+	mDominators[newNodeNumber] = verteces;
+
 	bool addEdgeToYourself = false;
 	if (isBlock) {
 		int firstNode = region["head"];
@@ -396,9 +434,10 @@ void StructuralControlFlowGenerator::replace(int newNodeNumber, Region &region, 
 		}
 	}
 
-	for (const int u : region) {
+	for (const int u : region.values()) {
 		mFollowers.remove(u);
 		mPredecessors.remove(u);
+		mDominators.remove(u);
 	}
 
 	if (addEdgeToYourself) {

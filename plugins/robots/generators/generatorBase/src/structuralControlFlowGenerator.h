@@ -81,6 +81,7 @@ private:
 
 	/// Building abstract graph view for further analysis
 	void buildGraph();
+	void findDominators();
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
 	void replace(int newNodeNumber, Region &region, bool isBlock);
@@ -95,6 +96,8 @@ private:
 
 	int mVerteces;
 	bool isPerformingGeneration;
+	QMap<int, QSet<int>> mDominators;
+
 	QMap<qReal::Id, int> mMapIdToVertexLabel;
 	QMap<int, qReal::Id> mMapVertexLabelToId;
 
