@@ -326,17 +326,70 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 			reduceIfThenElse(id, region);
 			ok = true;
 		}
-		else if (isSelfLoop(id, region)) {
-			reduceSelfLoop(id, region);
+		else {
+			int head = mMapIdToVertexLabel[id];
+			bool hasCycle = false;
+			QSet<int> reachUnder = {head};
+
+			// the highest node with back edge to head
+			int vertexWithBackEdge = -1;
+			for (const int u : mPredecessors[head]) {
+				if (mDominators[u].contains(head)) {
+					hasCycle = true;
+					if (vertexWithBackEdge != -1 || mDominators[vertexWithBackEdge].contains(u)) {
+						vertexWithBackEdge = u;
+					}
+				}
+			}
+
+			if (!hasCycle) {
+				break;
+			}
+
+			QQueue<int> q;
+			q.push_back(vertexWithBackEdge);
+			reachUnder.insert(vertexWithBackEdge);
+			while (!q.empty()) {
+				int vertex = q.front();
+				q.pop_front();
+				for (const int u : mPredecessors[vertex]) {
+					if (!reachUnder.contains(u) && mDominators[u].contains(head)) {
+						reachUnder.insert(u);
+						q.push_back(u);
+					}
+				}
+			}
+
 			ok = true;
+			int breakVertex = -1;
+			for (const int u : reachUnder) {
+				for (const int z : mFollowers[u]) {
+					if (!reachUnder.contains(z) && breakVertex == -1) {
+						breakVertex = z;
+					} else if (!reachUnder.contains(z)) {
+						ok = false;
+					}
+				}
+			}
+
+			if (!ok) {
+				break;
+			}
+
+			if (breakVertex != -1) {
+				for (const int u : reachUnder) {
+					for (const int z : mFollowers[u]) {
+						if (!reachUnder.contains(z)) {
+							SemanticNode *node = mTrees[u];
+							SemanticNode *externalNode = mTrees[z];
+						}
+					}
+				}
+			}
+
+
 		}
-		else if (isWhileLoop(id, region)) {
-			reduceWhileLoop(id, region);
-			ok = true;
-		} else if (isDoWhileLoop(id, region)) {
-			reduceDoWhileLoop(id, region);
-			ok = true;
-		}
+
 	}
 }
 
