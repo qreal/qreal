@@ -346,7 +346,7 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 			for (const int u : mPredecessors[head]) {
 				if (mDominators[u].contains(head)) {
 					hasCycle = true;
-					if (vertexWithBackEdge != -1 || mDominators[vertexWithBackEdge].contains(u)) {
+					if (vertexWithBackEdge == -1 || mDominators[vertexWithBackEdge].contains(u)) {
 						vertexWithBackEdge = u;
 					}
 				}
@@ -376,7 +376,7 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 				for (const int z : mFollowers[u]) {
 					if (!reachUnder.contains(z) && breakVertex == -1) {
 						breakVertex = z;
-					} else if (!reachUnder.contains(z)) {
+					} else if (!reachUnder.contains(z) && breakVertex != z) {
 						ok = false;
 					}
 				}
