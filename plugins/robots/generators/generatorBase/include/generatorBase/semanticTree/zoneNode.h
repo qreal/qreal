@@ -58,6 +58,10 @@ public:
 
 	/// Returns a list of children of this zone node.
 	virtual QLinkedList<SemanticNode *> children() const;
+
+	qReal::Id lastIfId() const;
+	qReal::Id firstId() const;
+	void makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode);
 protected:
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
 

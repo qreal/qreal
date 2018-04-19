@@ -326,7 +326,17 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 			reduceIfThenElse(id, region);
 			ok = true;
 		}
-		else {
+		else if (isSelfLoop(id, region)) {
+			reduceIfThenElse(id, region);
+			ok = true;
+		} else if (isWhileLoop(id, region)) {
+			reduceWhileLoop(id, region);
+			ok = true;
+		}
+		else if (isDoWhileLoop(id, region)) {
+			reduceDoWhileLoop(id, region);
+			ok = true;
+		} else {
 			int head = mMapIdToVertexLabel[id];
 			bool hasCycle = false;
 			QSet<int> reachUnder = {head};
@@ -376,13 +386,37 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 				break;
 			}
 
-			if (breakVertex != -1) {
-				for (const int u : reachUnder) {
-					for (const int z : mFollowers[u]) {
-						if (!reachUnder.contains(z)) {
-							SemanticNode *node = mTrees[u];
-							SemanticNode *externalNode = mTrees[z];
+			if (breakVertex == -1) {
+				break;
+			}
+
+			for (const int u : reachUnder) {
+				for (const int z : mFollowers[u]) {
+					if (!reachUnder.contains(z)) {
+						SemanticNode *node = mTrees[u];
+						SemanticNode *externalNode = mTrees[z];
+						qReal::Id ifId = node->lastIfId();
+						qReal::Id externalId = externalNode->firstId();
+						QPair<LinkInfo, LinkInfo> p = ifBranchesFor(ifId);
+						SimpleNode *breakNode = new SimpleNode(qReal::Id(), node);
+						breakNode->bindToSyntheticConstruction(SimpleNode::SyntheticBlockType::breakNode);
+						if (p.first.target == externalId) {
+							node->makeBreakForLastIf(true, breakNode);
+						} else {
+							node->makeBreakForLastIf(false, breakNode);
 						}
+
+					}
+				}
+			}
+
+			// we can safely remove excess edges
+			QMap<int, QVector<int> > oldFollowers = mFollowers;
+			for (const int u : reachUnder) {
+				for (const int z : oldFollowers[u]) {
+					if (!reachUnder.contains(z)) {
+						mFollowers[u].removeAll(z);
+						mPredecessors[z].removeAll(u);
 					}
 				}
 			}

@@ -44,6 +44,20 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
+Id IfNode::lastIfId() const
+{
+	return mId;
+}
+
+void IfNode::makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode)
+{
+	if (!isConditionTrue) {
+		invertCondition();
+	}
+	mThenZone->appendChild(breakNode);
+	//mElseZone = nullptr;
+}
+
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	if (mIsSimple) {

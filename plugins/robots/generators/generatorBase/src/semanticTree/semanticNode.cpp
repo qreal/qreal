@@ -27,6 +27,17 @@ SemanticNode::SemanticNode(const Id &idBinded, QObject *parent)
 {
 }
 
+Id SemanticNode::firstId() const
+{
+	return mId;
+}
+
+void SemanticNode::makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode)
+{
+	Q_UNUSED(isConditionTrue)
+	Q_UNUSED(breakNode)
+}
+
 Id SemanticNode::id() const
 {
 	return mId;
