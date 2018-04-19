@@ -327,7 +327,7 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 			ok = true;
 		}
 		else if (isSelfLoop(id, region)) {
-			reduceIfThenElse(id, region);
+			reduceSelfLoop(id, region);
 			ok = true;
 		} else if (isWhileLoop(id, region)) {
 			reduceWhileLoop(id, region);
@@ -370,19 +370,22 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 				}
 			}
 
+			int cnt = 0;
 			ok = true;
 			int breakVertex = -1;
 			for (const int u : reachUnder) {
 				for (const int z : mFollowers[u]) {
 					if (!reachUnder.contains(z) && breakVertex == -1) {
 						breakVertex = z;
+						cnt++;
 					} else if (!reachUnder.contains(z) && breakVertex != z) {
 						ok = false;
+						cnt++;
 					}
 				}
 			}
 
-			if (!ok) {
+			if (!ok || cnt == 1) {
 				break;
 			}
 
@@ -421,7 +424,9 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 				}
 			}
 
-
+			// adding edge from head
+			mFollowers[head].push_back(breakVertex);
+			mPredecessors[breakVertex].push_back(head);
 		}
 
 	}
