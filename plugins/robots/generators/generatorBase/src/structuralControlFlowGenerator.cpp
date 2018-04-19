@@ -477,6 +477,16 @@ void StructuralControlFlowGenerator::replace(int newNodeNumber, Region &region, 
 {
 	// updating dominators
 	QSet<int> verteces = mMapVertexLabelToId.keys().toSet();
+	QSet<int> vertecesToRemove = region.values().toSet();
+	for (const int v : verteces) {
+		if (mDominators[v].intersects(vertecesToRemove)) {
+			mDominators[v].insert(newNodeNumber);
+			for (const int u : vertecesToRemove) {
+				mDominators[v].remove(u);
+			}
+		}
+	}
+
 	for (const int v : region.values().toSet()) {
 		verteces = verteces.intersect(mDominators[v]);
 	}
