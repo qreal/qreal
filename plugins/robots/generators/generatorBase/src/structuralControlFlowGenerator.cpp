@@ -337,17 +337,17 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 			reduceDoWhileLoop(id, region);
 			ok = true;
 		} else {
-			int head = mMapIdToVertexLabel[id];
+			int vertexWithBackEdge = mMapIdToVertexLabel[id];
 			bool hasCycle = false;
-			QSet<int> reachUnder = {head};
+
 
 			// the highest node with back edge to head
-			int vertexWithBackEdge = -1;
-			for (const int u : mPredecessors[head]) {
-				if (mDominators[u].contains(head)) {
+			int head = -1;
+			for (const int u : mFollowers[vertexWithBackEdge]) {
+				if (mDominators[vertexWithBackEdge].contains(u)) {
 					hasCycle = true;
-					if (vertexWithBackEdge == -1 || mDominators[vertexWithBackEdge].contains(u)) {
-						vertexWithBackEdge = u;
+					if (head == -1 || mDominators[u].contains(head)) {
+						head = u;
 					}
 				}
 			}
@@ -356,9 +356,9 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 				break;
 			}
 
+			QSet<int> reachUnder = {vertexWithBackEdge, head};
 			QQueue<int> q;
 			q.push_back(vertexWithBackEdge);
-			reachUnder.insert(vertexWithBackEdge);
 			while (!q.empty()) {
 				int vertex = q.front();
 				q.pop_front();
@@ -380,6 +380,7 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 						cnt++;
 					} else if (!reachUnder.contains(z) && breakVertex != z) {
 						ok = false;
+					} else if (!reachUnder.contains(z)) {
 						cnt++;
 					}
 				}
