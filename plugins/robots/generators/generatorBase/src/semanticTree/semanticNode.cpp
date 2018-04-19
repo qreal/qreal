@@ -85,3 +85,8 @@ SemanticNode *SemanticNode::findNodeFor(const Id &id)
 
 	return nullptr;
 }
+
+Id SemanticNode::lastIfId() const
+{
+	return mId;
+}
