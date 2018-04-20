@@ -409,7 +409,7 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 						} else {
 							node->makeBreakForLastIf(false, breakNode);
 						}
-
+						node->setHasBreakInside(true);
 					}
 				}
 			}
@@ -428,6 +428,7 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 			// adding edge from head
 			mFollowers[head].push_back(breakVertex);
 			mPredecessors[breakVertex].push_back(head);
+			mTrees[head]->setHasBreakInside(true);
 		}
 
 	}
@@ -621,7 +622,24 @@ void StructuralControlFlowGenerator::reduceWhileLoop(const Id &id, Region &regio
 	int loopConditionNumber = region["condition"];
 	int loopBodyNumber = region["body"];
 
-	semantics::LoopNode *whileLoop = new semantics::LoopNode(id, mTrees[loopConditionNumber]->parent());
+	semantics::LoopNode *whileLoop = new semantics::LoopNode(qReal::Id(), mTrees[loopConditionNumber]->parent());
+	if (!mTrees[loopConditionNumber]->hasBreakInside()) {
+		SemanticNode *node = mTrees[loopConditionNumber];
+		SemanticNode *thenNode = mTrees[loopBodyNumber];
+		qReal::Id ifId = node->lastIfId();
+		qReal::Id thenId = thenNode->firstId();
+		QPair<LinkInfo, LinkInfo> p = ifBranchesFor(ifId);
+		SimpleNode *breakNode = new SimpleNode(qReal::Id(), node);
+		breakNode->bindToSyntheticConstruction(SimpleNode::SyntheticBlockType::breakNode);
+		if (p.first.target == thenId) {
+			node->makeBreakForLastIf(false, breakNode);
+		} else {
+			node->makeBreakForLastIf(true, breakNode);
+		}
+		node->setHasBreakInside(true);
+	}
+
+	whileLoop->bodyZone()->appendChild(mTrees[loopConditionNumber]);
 	whileLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
 
 	int newNodeNumber = mVerteces++;

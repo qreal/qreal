@@ -41,6 +41,9 @@ public:
 	/// Places goto label near this node
 	void addLabel();
 
+	void setHasBreakInside(bool hasBreakInside);
+	bool hasBreakInside() const;
+
 	/// Generates code for this semantic node
 	QString toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const;
 
@@ -59,6 +62,8 @@ protected:
 
 	virtual QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const = 0;
 
+
+	bool mHasBreakInside;
 	qReal::Id mId;
 	SemanticNode *mParentNode;
 	bool mLabeled;

@@ -24,6 +24,7 @@ SemanticNode::SemanticNode(const Id &idBinded, QObject *parent)
 	, mId(idBinded)
 	, mParentNode(nullptr)
 	, mLabeled(false)
+	, mHasBreakInside(false)
 {
 }
 
@@ -56,6 +57,16 @@ void SemanticNode::setParentNode(SemanticNode * const parent)
 void SemanticNode::addLabel()
 {
 	mLabeled = true;
+}
+
+void SemanticNode::setHasBreakInside(bool hasBreakInside)
+{
+	mHasBreakInside = hasBreakInside;
+}
+
+bool SemanticNode::hasBreakInside() const
+{
+	return mHasBreakInside;
 }
 
 QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
