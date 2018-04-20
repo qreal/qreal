@@ -356,6 +356,11 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 				break;
 			}
 
+			LoopNode *loopNode = dynamic_cast<LoopNode *>(mTrees[head]);
+			if (loopNode) {
+				break;
+			}
+
 			QSet<int> reachUnder = {vertexWithBackEdge, head};
 			QQueue<int> q;
 			q.push_back(vertexWithBackEdge);
@@ -622,8 +627,8 @@ void StructuralControlFlowGenerator::reduceWhileLoop(const Id &id, Region &regio
 	int loopConditionNumber = region["condition"];
 	int loopBodyNumber = region["body"];
 
-	semantics::LoopNode *whileLoop = new semantics::LoopNode(qReal::Id(), mTrees[loopConditionNumber]->parent());
-	if (!mTrees[loopConditionNumber]->hasBreakInside()) {
+	semantics::LoopNode *whileLoop;
+	if (!mTrees[loopConditionNumber]->hasBreakInside() && semanticsOf(id) != enums::semantics::loopBlock) {
 		SemanticNode *node = mTrees[loopConditionNumber];
 		SemanticNode *thenNode = mTrees[loopBodyNumber];
 		qReal::Id ifId = node->lastIfId();
@@ -639,8 +644,14 @@ void StructuralControlFlowGenerator::reduceWhileLoop(const Id &id, Region &regio
 		node->setHasBreakInside(true);
 	}
 
-	whileLoop->bodyZone()->appendChild(mTrees[loopConditionNumber]);
-	whileLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
+	if (semanticsOf(id) != enums::semantics::loopBlock) {
+		whileLoop = new semantics::LoopNode(qReal::Id(), mTrees[loopConditionNumber]->parent());
+		whileLoop->bodyZone()->appendChild(mTrees[loopConditionNumber]);
+		whileLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
+	} else {
+		whileLoop = new semantics::LoopNode(id, mTrees[loopConditionNumber]->parent());
+		whileLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
+	}
 
 	int newNodeNumber = mVerteces++;
 	mMapVertexLabelToId[newNodeNumber] = id;
