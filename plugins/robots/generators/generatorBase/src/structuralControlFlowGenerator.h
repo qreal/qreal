@@ -60,9 +60,12 @@ public:
 	typedef QMap<QString, int> Region;
 
 	struct Link {
-		QString linkName;
-		bool fromSwitch;
-		bool fromIf;
+	public:
+		Link();
+		Link(const QString &text);
+		QString mLinkName;
+		bool mFromSwitch;
+		bool mFromIf;
 	};
 
 private:
@@ -72,47 +75,56 @@ private:
 	void performGeneration() override;
 
 	/// methods to identify patterns for structural analysis
-	bool isBlock(const qReal::Id &id, Region &region);
-	bool isIfThenElse(const qReal::Id &id, Region &region);
-	bool isSwitch(const qReal::Id &id, Region &region);
-	bool isSelfLoop(const qReal::Id &id, Region &region);
-	bool isWhileLoop(const qReal::Id &id, Region &region);
-	bool isDoWhileLoop(const qReal::Id &id, Region &region);
+//	bool isBlock(const qReal::Id &id, Region &region);
+//	bool isIfThenElse(const qReal::Id &id, Region &region);
+//	bool isSwitch(const qReal::Id &id, Region &region);
+//	bool isSelfLoop(const qReal::Id &id, Region &region);
+//	bool isWhileLoop(const qReal::Id &id, Region &region);
+//	bool isDoWhileLoop(const qReal::Id &id, Region &region);
 
 	/// Creation of a new abstract node and maping it with a corresponding Id
 	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
 
 	/// method that tries consequentially identify patterns and reduce them for a given id
-	void identifyPatterns(const qReal::Id &id);
+	//void identifyPatterns(const qReal::Id &id);
 
 	/// Building abstract graph view for further analysis
 	void buildGraph();
 	void findDominators();
+	void findStartVertex();
+	void dfs(int v, int &currentTime);
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, Region &region, bool isBlock);
+	//void replace(int newNodeNumber, Region &region, bool isBlock);
 
 	/// methods for creating a valid Semantic nodes for particular pattern
-	void reduceBlock(const qReal::Id &id, Region &region);
-	void reduceIfThenElse(const qReal::Id &id, Region &region);
-	void reduceSelfLoop(const qReal::Id &id, Region &region);
-	void reduceWhileLoop(const qReal::Id &id, Region &region);
-	void reduceDoWhileLoop(const qReal::Id &id, Region &region);
-	void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
+	//void reduceBlock(const qReal::Id &id, Region &region);
+	//void reduceIfThenElse(const qReal::Id &id, Region &region);
+	//void reduceSelfLoop(const qReal::Id &id, Region &region);
+	//void reduceWhileLoop(const qReal::Id &id, Region &region);
+	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
+	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
-	int mStart;
-	QMap<int, QMap<int, Link>> mFollowers2;
-	QMap<int, QMap<int, Link>> mPredecessors2;
+	QString getCondition(const qReal::Id &id, const qReal::Id &link);
 
-	int mVerteces;
+	QMap<int, bool> mUsed;
+	bool mSomethingChanged;
+	int mStartVertex;
+	int mMaxPostOrderTime;
+	QMap<int, int> mPostOrder;
+
+	QMap<int, Link> mEdges;
+	QSet<int> mVerteces;
+	QMap<int, QMap<int, QVector<int>>> mFollowers2;
+	QMap<int, QMap<int, QVector<int>>> mPredecessors2;
+
+	int mVertecesNumber;
+	int mEdgesNumber;
 	bool isPerformingGeneration;
 	QMap<int, QSet<int>> mDominators;
 
-	QMap<qReal::Id, int> mMapIdToVertexLabel;
-	QMap<int, qReal::Id> mMapVertexLabelToId;
-
-	QMap<int, QVector<int> > mFollowers;
-	QMap<int, QVector<int> > mPredecessors;
+	QMap<qReal::Id, int> mMapVertexLabel;
+	QMap<int, qReal::Id> mMapId;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;

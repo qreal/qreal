@@ -30,8 +30,9 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, QObject *parent
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
-	, mVerteces(1)
+	, mVertecesNumber(1)
 	, isPerformingGeneration(false)
+	, mEdgesNumber(1)
 {
 }
 
@@ -50,13 +51,10 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	if (isPerformingGeneration) {
-		ControlFlowGeneratorBase::visit(id, links);
-	} else {
-		updateVerteces(id, links);
-	}
+	updateVerteces(id, links);
 }
 
+/*
 void StructuralControlFlowGenerator::visitRegular(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
@@ -113,6 +111,7 @@ void StructuralControlFlowGenerator::visitUnknown(const Id &id, const QList<Link
 
 	identifyPatterns(id);
 }
+*/
 
 void StructuralControlFlowGenerator::afterSearch()
 {
@@ -131,16 +130,39 @@ SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, co
 
 void StructuralControlFlowGenerator::performGeneration()
 {
-	isPerformingGeneration = false;
+	//isPerformingGeneration = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
 	buildGraph();
+	findStartVertex();
 	findDominators();
+	int currentTime = 0;
 
-	isPerformingGeneration = true;
-	ControlFlowGeneratorBase::performGeneration();
+	mUsed.clear();
+	for (const int v : mVerteces) {
+		mUsed[v] = false;
+	}
 
-	isPerformingGeneration = false;
+	dfs(mStartVertex, currentTime);
+	mMaxPostOrderTime = currentTime - 1;
+
+	mSomethingChanged = true;
+	while (mSomethingChanged) {
+		mSomethingChanged = false;
+		for (int i = 0; i <= mMaxPostOrderTime; ++i) {
+			int v = mPostOrder[i];
+			QSet<int> edgesToRemove = {};
+			if (isBlock(v)) {
+
+			}
+
+		}
+	}
+
+	//isPerformingGeneration = true;
+	//ControlFlowGeneratorBase::performGeneration();
+
+	//isPerformingGeneration = false;
 
 	if (mTrees.keys().size() == 1) {
 		qDebug() << "Success!";
@@ -152,6 +174,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 }
 
+/*
 bool StructuralControlFlowGenerator::isBlock(const Id &id, Region &region)
 {
 	int node = mMapIdToVertexLabel[id];
@@ -299,19 +322,22 @@ bool StructuralControlFlowGenerator::isDoWhileLoop(const Id &id, StructuralContr
 
 	return false;
 }
+*/
 
 void StructuralControlFlowGenerator::updateVerteces(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
-	if (!mMapIdToVertexLabel.contains(id)) {
-		mMapIdToVertexLabel[id] = mVerteces;
-		mMapVertexLabelToId[mVerteces] = id;
-		mTrees[mVerteces] = mSemanticTree->produceNodeFor(id);
-		mVerteces++;
+	if (!mMapVertexLabel.contains(id)) {
+		mMapVertexLabel[id] = mVertecesNumber;
+		mMapId[mVertecesNumber] = id;
+		//mTrees[mVerteces] = mSemanticTree->produceNodeFor(id);
+		mVerteces.insert(mVertecesNumber);
+		mVertecesNumber++;
 	}
 }
 
+/*
 void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 {
 	bool ok = true;
@@ -438,42 +464,61 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 
 	}
 }
+*/
 
 void StructuralControlFlowGenerator::buildGraph()
 {
-	for (int vertex : mMapVertexLabelToId.keys()) {
-		const qReal::Id id = mMapVertexLabelToId[vertex];
+	for (int v : mVerteces) {
+		const qReal::Id vId = mMapId[v];
 
-		for (const qReal::Id link : mRepo.outgoingLinks(id)) {
-			const qReal::Id u = mRepo.otherEntityFromLink(link, id);
-			mFollowers[vertex].push_back(mMapIdToVertexLabel[u]);
+		for (const qReal::Id link : mRepo.outgoingLinks(vId)) {
+			const QString text = mRepo.property(link, "Guard").toString();
+			Link edge(text);
+
+			if (mCustomizer.semanticsOf(vId) == enums::semantics::conditionalBlock) {
+				edge.mFromIf = true;
+			} else if (mCustomizer.semanticsOf(vId) == enums::semantics::switchBlock) {
+				edge.mFromSwitch = true;
+			}
+
+			const int u = mMapVertexLabel[mRepo.otherEntityFromLink(link, vId)];
+
+			mFollowers2[v][u].push_back(mEdgesNumber);
+			mEdges[mEdgesNumber] = edge;
+			mEdgesNumber++;
 		}
 
-		for (const qReal::Id link : mRepo.incomingLinks(id)) {
-			const qReal::Id u = mRepo.otherEntityFromLink(link, id);
-			mPredecessors[vertex].push_back(mMapIdToVertexLabel[u]);
+		for (const qReal::Id link : mRepo.incomingLinks(vId)) {
+			const QString text = mRepo.property(link, "Guard").toString();
+			Link edge(text);
+			const qReal::Id uId = mRepo.otherEntityFromLink(link, vId);
+			if (mCustomizer.semanticsOf(uId) == enums::semantics::switchBlock) {
+				edge.mFromSwitch = true;
+			} else if (mCustomizer.semanticsOf(uId) == enums::semantics::conditionalBlock) {
+				edge.mFromIf = true;
+			}
+
+			const int u = mMapVertexLabel[uId];
+			mPredecessors2[v][u].push_back(mEdgesNumber);
+			mEdges[mEdgesNumber] = edge;
+			mEdgesNumber++;
 		}
 	}
 }
 
 void StructuralControlFlowGenerator::findDominators()
 {
-	int entry = -1;
-	QSet<int> verteces = mMapVertexLabelToId.keys().toSet();
-	for (const int v : verteces) {
-		mDominators[v] = verteces;
-		if (mPredecessors[v].empty()) {
-			entry = v;
-		}
-	}
-
-	mDominators[entry] = { entry };
+	mDominators[mStartVertex] = { mStartVertex };
 	bool somethingChanged = true;
+
 	while (somethingChanged) {
 		somethingChanged = false;
-		for (const int v : verteces) {
+
+		for (const int v : mVerteces) {
 			QSet<int> doms = mDominators[v];
-			for (const int u : mPredecessors[v]) {
+			QList<int> predecessors = mPredecessors2[v].keys();
+
+			for (const int u : predecessors) {
 				doms = doms.intersect(mDominators[u]);
 			}
 			doms.insert(v);
@@ -485,6 +530,46 @@ void StructuralControlFlowGenerator::findDominators()
 	}
 }
 
+void StructuralControlFlowGenerator::findStartVertex()
+{
+	for (int v : mFollowers2.keys()) {
+		if (!mPredecessors2[v].size()) {
+			mStartVertex = v;
+			break;
+		}
+	}
+}
+
+void StructuralControlFlowGenerator::dfs(int v, int &currentTime)
+{
+	mUsed[v] = true;
+	for (const int u : mFollowers2[v].keys().toSet()) {
+		if (!mUsed[u]) {
+			dfs(u, currentTime);
+		}
+	}
+	mPostOrder[currentTime++] = v;
+}
+
+QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString &edgeText)
+{
+	if (semanticsOf(id) == enums::semantics::conditionalBlock) {
+		QString condition = mRepo.property(id, "Condition");
+		if (edgeText == "false") {
+			condition = "!(" + condition + ")";
+		}
+		return condition;
+	}
+
+	if (semanticsOf(id) == enums::semantics::switchBlock) {
+		QString expression = mRepo.property(id, "Expression");
+		return expression + " == " + edgeText;
+	}
+
+	return "";
+}
+
+/*
 void StructuralControlFlowGenerator::replace(int newNodeNumber, Region &region, bool isBlock)
 {
 	// updating dominators
@@ -565,7 +650,7 @@ void StructuralControlFlowGenerator::reduceBlock(const Id &id, Region &region)
 	mTrees.remove(region["head"]);
 	mTrees.remove(region["tail"]);
 
-	int newNodeNumber = mVerteces++;
+	int newNodeNumber = mVertecesNumber++;
 	mMapVertexLabelToId[newNodeNumber] = id;
 	mMapIdToVertexLabel[id] = newNodeNumber;
 	mTrees[newNodeNumber] = newNode;
@@ -597,7 +682,7 @@ void StructuralControlFlowGenerator::reduceIfThenElse(const Id &id, Region &regi
 	}
 
 	mTrees.remove(conditionNumber);
-	int newNodeNumber = mVerteces++;
+	int newNodeNumber = mVertecesNumber++;
 	mMapVertexLabelToId[newNodeNumber] = id;
 	mMapIdToVertexLabel[id] = newNodeNumber;
 	mTrees[newNodeNumber] = ifNode;
@@ -613,7 +698,7 @@ void StructuralControlFlowGenerator::reduceSelfLoop(const Id &id, Region &region
 	int loopBodyNumber = region["selfloop"];
 	selfLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
 
-	int newNodeNumber = mVerteces++;
+	int newNodeNumber = mVertecesNumber++;
 	mMapVertexLabelToId[newNodeNumber] = id;
 	mMapIdToVertexLabel[id] = newNodeNumber;
 	mTrees[newNodeNumber] = selfLoop;
@@ -653,7 +738,7 @@ void StructuralControlFlowGenerator::reduceWhileLoop(const Id &id, Region &regio
 		whileLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
 	}
 
-	int newNodeNumber = mVerteces++;
+	int newNodeNumber = mVertecesNumber++;
 	mMapVertexLabelToId[newNodeNumber] = id;
 	mMapIdToVertexLabel[id] = newNodeNumber;
 	mTrees[newNodeNumber] = whileLoop;
@@ -673,7 +758,7 @@ void StructuralControlFlowGenerator::reduceDoWhileLoop(const Id &id, StructuralC
 	whileLoop->bodyZone()->appendChild(mTrees[loopBodyNumber]);
 	whileLoop->setForm(true);
 
-	int newNodeNumber = mVerteces++;
+	int newNodeNumber = mVertecesNumber++;
 	mMapVertexLabelToId[newNodeNumber] = id;
 	mMapIdToVertexLabel[id] = newNodeNumber;
 	mTrees[newNodeNumber] = whileLoop;
@@ -705,7 +790,7 @@ void StructuralControlFlowGenerator::reduceSwitch(const Id &id, Region &region, 
 		}
 	}
 
-	int newNodeNumber = mVerteces++;
+	int newNodeNumber = mVertecesNumber++;
 	mMapVertexLabelToId[newNodeNumber] = id;
 	mMapIdToVertexLabel[id] = newNodeNumber;
 	mTrees[newNodeNumber] = switchNode;
@@ -716,4 +801,18 @@ void StructuralControlFlowGenerator::reduceSwitch(const Id &id, Region &region, 
 	}
 
 	replace(newNodeNumber, region, false);
+}
+*/
+
+StructuralControlFlowGenerator::Link::Link()
+	: mLinkName("")
+	, mFromSwitch(false)
+	, mFromIf(false)
+{
+}
+
+StructuralControlFlowGenerator::Link::Link(const QString &text)
+	: Link()
+{
+	mLinkName = text;
 }
