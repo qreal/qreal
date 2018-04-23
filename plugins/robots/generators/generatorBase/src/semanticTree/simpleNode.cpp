@@ -26,6 +26,12 @@ SimpleNode::SimpleNode(const Id &idBinded, QObject *parent)
 {
 }
 
+SimpleNode::SimpleNode(const QString &body, QObject *parent)
+	: SimpleNode(qReal::Id(), parent)
+{
+	mText = body;
+}
+
 QString SimpleNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	switch (mSyntheticBinding) {

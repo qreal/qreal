@@ -36,6 +36,7 @@ public:
 	};
 
 	explicit SimpleNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit SimpleNode(const QString &body, QObject *parent = 0);
 
 	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);

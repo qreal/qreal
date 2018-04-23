@@ -29,6 +29,12 @@ IfNode::IfNode(const Id &idBinded, QObject *parent)
 	mElseZone->setParentNode(this);
 }
 
+IfNode::IfNode(const QString &condition, QObject *parent)
+	: IfNode(qReal::Id(), parent)
+{
+	mText = condition;
+}
+
 ZoneNode *IfNode::thenZone()
 {
 	return mThenZone;

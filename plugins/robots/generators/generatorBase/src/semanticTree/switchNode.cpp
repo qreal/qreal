@@ -26,6 +26,12 @@ SwitchNode::SwitchNode(const Id &idBinded, QObject *parent)
 {
 }
 
+SwitchNode::SwitchNode(const QString &expression, QObject *parent)
+	: SwitchNode(qReal::Id(), parent)
+{
+	mText = expression;
+}
+
 void SwitchNode::addBranch(const QString &value, SemanticNode * const node)
 {
 	ZoneNode * const zone = new ZoneNode(this);

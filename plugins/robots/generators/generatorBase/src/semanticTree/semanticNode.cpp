@@ -28,6 +28,16 @@ SemanticNode::SemanticNode(const Id &idBinded, QObject *parent)
 {
 }
 
+SemanticNode::SemanticNode(const QString &text, QObject *parent)
+	: QObject(parent)
+	, mId(qReal::Id())
+	, mParentNode(nullptr)
+	, mLabeled(false)
+	, mHasBreakInside(false)
+	, mText(text)
+{
+}
+
 Id SemanticNode::firstId() const
 {
 	return mId;

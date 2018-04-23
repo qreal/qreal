@@ -26,6 +26,7 @@ class ROBOTS_GENERATOR_EXPORT IfNode : public ConditionalNode
 {
 public:
 	explicit IfNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit IfNode(const QString &condition, QObject *parent = 0);
 
 	ZoneNode *thenZone();
 	ZoneNode *elseZone();

@@ -59,6 +59,12 @@ public:
 
 	typedef QMap<QString, int> Region;
 
+	struct Link {
+		QString linkName;
+		bool fromSwitch;
+		bool fromIf;
+	};
+
 private:
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times
@@ -93,6 +99,10 @@ private:
 	void reduceWhileLoop(const qReal::Id &id, Region &region);
 	void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
+
+	int mStart;
+	QMap<int, QMap<int, Link>> mFollowers2;
+	QMap<int, QMap<int, Link>> mPredecessors2;
 
 	int mVerteces;
 	bool isPerformingGeneration;
