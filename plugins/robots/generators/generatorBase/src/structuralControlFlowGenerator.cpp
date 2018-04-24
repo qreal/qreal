@@ -214,10 +214,11 @@ bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QM
 
 	QMap<int, QVector<int>> outgoingEdges = mFollowers2[v];
 	int u = outgoingEdges.keys().first();
-	if (numberOfOutgoingEdges(u) <= 1) {
+	if (numberOfOutgoingEdges(u) <= 1 && numberOfIncomingEdges(u) == 1) {
 		vertecesRoles["block1"] = v;
 		vertecesRoles["block2"] = u;
 		edgesToRemove += { mFollowers2[v][u].first() };
+		return true;
 	}
 
 	return false;
@@ -564,7 +565,10 @@ void StructuralControlFlowGenerator::findDominators()
 		somethingChanged = false;
 
 		for (const int v : mVerteces) {
-			QSet<int> doms = mDominators[v];
+			if (v == mStartVertex)
+				continue;
+
+			QSet<int> doms = mVerteces;
 			QList<int> predecessors = mPredecessors2[v].keys();
 
 			for (const int u : predecessors) {
@@ -619,6 +623,16 @@ int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
 	return ans;
 }
 
+int StructuralControlFlowGenerator::numberOfIncomingEdges(int v)
+{
+	int ans = 0;
+	for (int u : mPredecessors2[v].keys()) {
+		ans += mPredecessors2[v][u].size();
+	}
+
+	return ans;
+}
+
 void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
 {
 	updateEdges(newNodeNumber, edgesToRemove, verteces);
@@ -665,6 +679,17 @@ void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &e
 	for (int v : verteces) {
 		mFollowers2.remove(v);
 		mPredecessors2.remove(v);
+	}
+
+	// removing information from actual verteces to old ones
+	for (int v : mVerteces) {
+		if (verteces.contains(v))
+			continue;
+
+		for (int u : verteces) {
+			mFollowers2[v].remove(u);
+			mPredecessors2[v].remove(u);
+		}
 	}
 }
 
