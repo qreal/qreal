@@ -130,9 +130,11 @@ void StructuralControlFlowGenerator::performGeneration()
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 				reduceBlock(edgesToRemove, vertecesRoles);
+				t -= (vertecesRoles.size() - 1);
 				mSomethingChanged = true;
 			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
 				reduceIfThenElse(edgesToRemove, vertecesRoles);
+				t -= (vertecesRoles.size() - 1);
 				mSomethingChanged = true;
 			}
 			else {
@@ -175,27 +177,45 @@ bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QM
 
 bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
-	if (numberOfOutgoingEdges(v) == 2) {
-		if (!mFollowers2.contains(v)) {
+	if (numberOfOutgoingEdges(v) != 2) {
+		return false;
+	}
+
+	if (!mFollowers2.contains(v)) {
+		return false;
+	}
+
+	QList<int> followers = mFollowers2[v].keys();
+	int u1 = followers.first();
+	int u2 = followers.last();
+	if (numberOfIncomingEdges(u1) != 1 || numberOfIncomingEdges(u2) != 1) {
+		return false;
+	}
+
+	if (numberOfOutgoingEdges(u1) == 0 && numberOfOutgoingEdges(u2) == 0) {
+		vertecesRoles["condition"] = v;
+		vertecesRoles["a"] = u1;
+		vertecesRoles["b"] = u2;
+		edgesToRemove += {mFollowers2[v][u2].first(), mFollowers2[v][u1].first()};
+		return true;
+	}
+
+	if (numberOfOutgoingEdges(u1) == 1 && numberOfOutgoingEdges(u2) == 1) {
+		int w1 = mFollowers2[u1].keys().first();
+		int w2 = mFollowers2[u2].keys().first();
+		if (w1 != w2) {
 			return false;
 		}
 
-		QList<int> followers = mFollowers2[v].keys();
-		int u1 = followers.first();
-		int u2 = followers.last();
-		if (numberOfIncomingEdges(u1) != 1 || numberOfIncomingEdges(u2) != 1) {
+		if (numberOfOutgoingEdges(w1) >= 2) {
 			return false;
 		}
 
-		if (numberOfOutgoingEdges(u1) == 0 && numberOfOutgoingEdges(u2) == 0) {
-			vertecesRoles["condition"] = v;
-			vertecesRoles["a"] = u1;
-			vertecesRoles["b"] = u2;
-			edgesToRemove += {mFollowers2[v][u2].first(), mFollowers2[v][u1].first()};
-
-			return true;
-		}
-
+		vertecesRoles["condition"] = v;
+		vertecesRoles["a"] = u1;
+		vertecesRoles["b"] = u2;
+		edgesToRemove += {mFollowers2[v][u2].first(), mFollowers2[v][u1].first(), mFollowers2[u1][w1].first()};
+		return true;
 	}
 
 	return false;
@@ -470,10 +490,8 @@ void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &e
 				}
 
 				if (newU == newNodeNumber || newV == newNodeNumber) {
-					if (!(newU == newV && mFollowers2[newU][newV].size())) {
-						mFollowers2[newV][newU].push_back(edge);
-						mPredecessors2[newU][newV].push_back(edge);
-					}
+					mFollowers2[newV][newU].push_back(edge);
+					mPredecessors2[newU][newV].push_back(edge);
 				}
 
 			}
