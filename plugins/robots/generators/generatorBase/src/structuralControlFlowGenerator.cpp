@@ -190,7 +190,10 @@ void StructuralControlFlowGenerator::performGeneration()
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 				reduceBlock(edgesToRemove, vertecesRoles);
 				mSomethingChanged = true;
-			} else {
+			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
+
+			}
+			else {
 				t++;
 			}
 		}
@@ -223,6 +226,42 @@ bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QM
 		vertecesRoles["block2"] = u;
 		edgesToRemove += { mFollowers2[v][u].first() };
 		return true;
+	}
+
+	return false;
+}
+
+bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (numberOfOutgoingEdges(v) == 2) {
+		QList<int> followers = mFollowers2[v].keys();
+		int u1 = followers.first();
+		int u2 = followers.last();
+		if (numberOfIncomingEdges(u1) != 1 || numberOfIncomingEdges(u2) != 1) {
+			return false;
+		}
+
+		if (numberOfOutgoingEdges(u1) == 0 && numberOfOutgoingEdges(u2) == 0) {
+			int trueEdgeNumber = getTrueLink(v);
+			QString condition = getCondition(mMapId[v], mEdges[trueEdgeNumber].mLinkName);
+			IfNode *ifNode = new IfNode(condition);
+			if (mFollowers2[v][u1].first() == trueEdgeNumber) {
+				int temp = u1;
+				u1 = u2;
+				u2 = temp;
+			}
+
+			ifNode->thenZone()->appendChild(mTrees[u2]);
+			ifNode->elseZone()->appendChild(mTrees[u1]);
+
+			vertecesRoles["condition"] = v;
+			vertecesRoles["then"] = u2;
+			vertecesRoles["else"] = u1;
+			edgesToRemove += {mFollowers2[v][u2].first(), mFollowers2[v][u1].first()};
+
+			return true;
+		}
+
 	}
 
 	return false;
@@ -806,6 +845,17 @@ QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString
 	}
 
 	return "";
+}
+
+int StructuralControlFlowGenerator::getTrueLink(int v)
+{
+	for (int u : mFollowers2[v].keys()) {
+		for (int edge : mFollowers2[v][u]) {
+			if (mEdges[edge].mLinkName == "true" || mEdges[edge].mLinkName != "false") {
+				return edge;
+			}
+		}
+	}
 }
 
 /*

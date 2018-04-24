@@ -76,6 +76,7 @@ private:
 
 	/// methods to identify patterns for structural analysis
 	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 //	bool isIfThenElse(const qReal::Id &id, Region &region);
 //	bool isSwitch(const qReal::Id &id, Region &region);
 //	bool isSelfLoop(const qReal::Id &id, Region &region);
@@ -114,6 +115,7 @@ private:
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
 	QString getCondition(const qReal::Id &id, const QString &edgeText);
+	int getTrueLink(int v);
 
 	QMap<int, bool> mUsed;
 	bool mSomethingChanged;
