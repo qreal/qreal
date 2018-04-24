@@ -24,15 +24,11 @@ IfNode::IfNode(const Id &idBinded, QObject *parent)
 	, mThenZone(new ZoneNode(this))
 	, mElseZone(new ZoneNode(this))
 	, mIsSimple(false)
+	, mFromSwitchCase(false)
+	, mLinks()
 {
 	mThenZone->setParentNode(this);
 	mElseZone->setParentNode(this);
-}
-
-IfNode::IfNode(const QString &condition, QObject *parent)
-	: IfNode(qReal::Id(), parent)
-{
-	mText = condition;
 }
 
 ZoneNode *IfNode::thenZone()
@@ -50,18 +46,23 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
-Id IfNode::lastIfId() const
+void IfNode::setFromSwitchCase(bool fromSwitchCase)
 {
-	return mId;
+	mFromSwitchCase = fromSwitchCase;
 }
 
-void IfNode::makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode)
+void IfNode::setLinks(const QList<Id> &links)
 {
-	if (!isConditionTrue) {
-		invertCondition();
-	}
-	mThenZone->appendChild(breakNode);
-	//mElseZone = nullptr;
+	mLinks = links;
+}
+
+IfNode *IfNode::fromSwitchCase(const Id &idBinded, const QList<Id> &thenLinks, QObject *parent)
+{
+	IfNode *ifNode = new IfNode(idBinded, parent);
+	ifNode->setFromSwitchCase(true);
+	ifNode->setLinks(thenLinks);
+
+	return ifNode;
 }
 
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const

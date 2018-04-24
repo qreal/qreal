@@ -184,17 +184,9 @@ bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemov
 		}
 
 		if (numberOfOutgoingEdges(u1) == 0 && numberOfOutgoingEdges(u2) == 0) {
-			int trueEdgeNumber = getTrueLink(v);
-
-			if (mFollowers2[v][u1].first() == trueEdgeNumber) {
-				int temp = u1;
-				u1 = u2;
-				u2 = temp;
-			}
-
 			vertecesRoles["condition"] = v;
-			vertecesRoles["then"] = u2;
-			vertecesRoles["else"] = u1;
+			vertecesRoles["a"] = u1;
+			vertecesRoles["b"] = u2;
 			edgesToRemove += {mFollowers2[v][u2].first(), mFollowers2[v][u1].first()};
 
 			return true;
@@ -211,7 +203,6 @@ void StructuralControlFlowGenerator::initVerteces(const Id &id, const QList<Link
 
 	if (!mMapVertexLabel.contains(id)) {
 		mMapVertexLabel[id] = mVertecesNumber;
-		mMapId[mVertecesNumber] = id;
 		//mTrees[mVerteces] = mSemanticTree->produceNodeFor(id);
 		mVerteces.insert(mVertecesNumber);
 		mVertecesNumber++;
@@ -350,39 +341,17 @@ void StructuralControlFlowGenerator::identifyPatterns(const qReal::Id &id)
 void StructuralControlFlowGenerator::buildGraph()
 {
 	for (int v : mVerteces) {
-		const qReal::Id vId = mMapId[v];
+		const qReal::Id vId = mMapVertexLabel.key(v);
 
 		for (const qReal::Id link : mRepo.outgoingLinks(vId)) {
-			const QString text = mRepo.property(link, "Guard").toString();
-			Link edge(text);
-
-			if (mCustomizer.semanticsOf(vId) == enums::semantics::conditionalBlock) {
-				edge.mFromIf = true;
-			} else if (mCustomizer.semanticsOf(vId) == enums::semantics::switchBlock) {
-				edge.mFromSwitch = true;
-			}
-
 			const int u = mMapVertexLabel[mRepo.otherEntityFromLink(link, vId)];
-
-			mFollowers2[v][u].push_back(mEdgesNumber);
-			mEdges[mEdgesNumber] = edge;
-			mEdgesNumber++;
+			addEdge(mFollowers2, v, u, link);
 		}
 
 		for (const qReal::Id link : mRepo.incomingLinks(vId)) {
-			const QString text = mRepo.property(link, "Guard").toString();
-			Link edge(text);
 			const qReal::Id uId = mRepo.otherEntityFromLink(link, vId);
-			if (mCustomizer.semanticsOf(uId) == enums::semantics::switchBlock) {
-				edge.mFromSwitch = true;
-			} else if (mCustomizer.semanticsOf(uId) == enums::semantics::conditionalBlock) {
-				edge.mFromIf = true;
-			}
-
 			const int u = mMapVertexLabel[uId];
-			mPredecessors2[v][u].push_back(mEdgesNumber);
-			mEdges[mEdgesNumber] = edge;
-			mEdgesNumber++;
+			addEdge(mPredecessors2, v, u, link);
 		}
 	}
 }
@@ -418,7 +387,7 @@ void StructuralControlFlowGenerator::createInitialSemanticNodes()
 {
 	for (const int u : mVerteces) {
 		if (numberOfOutgoingEdges(u) <= 1) {
-			mTrees[u] = mSemanticTree->produceNodeFor(mMapId[u]);
+			mTrees[u] = mSemanticTree->produceNodeFor(mMapVertexLabel.key(u));
 		}
 	}
 }
@@ -496,7 +465,7 @@ void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &e
 				}
 
 				if (newU == newNodeNumber || newV == newNodeNumber) {
-					if (!mEdges[edge].mLinkName.isEmpty() || !containsEdgeWithoutGuard(newV, newU)) {
+					if (!(newU == newV && mFollowers2[newU][newV].size())) {
 						mFollowers2[newV][newU].push_back(edge);
 						mPredecessors2[newU][newV].push_back(edge);
 					}
@@ -596,15 +565,11 @@ void StructuralControlFlowGenerator::appendVertex(SemanticNode *node, QSet<int> 
 	mVertecesNumber++;
 }
 
-bool StructuralControlFlowGenerator::containsEdgeWithoutGuard(int v, int u)
+void StructuralControlFlowGenerator::addEdge(QMap<int, QMap<int, QVector<int> > > &graph, int u, int v, const Id &edge)
 {
-	for (int edge : mFollowers2[v][u]) {
-		if (mEdges[edge].mLinkName.isEmpty()) {
-			return true;
-		}
-	}
-
-	return false;
+	graph[v][u].push_back(mEdgesNumber);
+	mEdges[mEdgesNumber] = edge;
+	mEdgesNumber++;
 }
 
 void StructuralControlFlowGenerator::reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
@@ -624,60 +589,25 @@ void StructuralControlFlowGenerator::reduceBlock(QSet<int> &edgesToRemove, QMap<
 
 void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
+	// ASSERT that there's no SemanticNode with key v in mTrees ?
 	int v = vertecesRoles["condition"];
-	int u1 = vertecesRoles["then"];
-	int u2 = vertecesRoles["else"];
+	int u1 = vertecesRoles["a"];
+	int u2 = vertecesRoles["b"];
+
+	qReal::Id vId = mMapVertexLabel.key(v);
+	IfNode *ifNode = new IfNode(vId);
+	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(vId);
+	if (mMapVertexLabel[branches.first.target] == u2) {
+		int temp = u1;
+		u1 = u2;
+		u2 = temp;
+	}
+
 	SemanticNode *thenNode = mTrees[u1];
 	SemanticNode *elseNode = mTrees[u2];
-
-	int trueEdgeNumber = getTrueLink(v);
-	QString condition = getCondition(mMapId[v], mEdges[trueEdgeNumber].mLinkName);
-
-	IfNode *ifNode = new IfNode(condition);
 	ifNode->thenZone()->appendChild(thenNode);
 	ifNode->elseZone()->appendChild(elseNode);
 
+
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
-}
-
-QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString &edgeText)
-{
-	if (semanticsOf(id) == enums::semantics::conditionalBlock) {
-		QString condition = mRepo.property(id, "Condition").toString();
-		if (edgeText == "false") {
-			condition = "!(" + condition + ")";
-		}
-		return condition;
-	}
-
-	if (semanticsOf(id) == enums::semantics::switchBlock) {
-		QString expression = mRepo.property(id, "Expression").toString();
-		return expression + " == " + edgeText;
-	}
-
-	return "";
-}
-
-int StructuralControlFlowGenerator::getTrueLink(int v)
-{
-	for (int u : mFollowers2[v].keys()) {
-		for (int edge : mFollowers2[v][u]) {
-			if (mEdges[edge].mLinkName == "true" || mEdges[edge].mLinkName != "false") {
-				return edge;
-			}
-		}
-	}
-}
-
-StructuralControlFlowGenerator::Link::Link()
-	: mLinkName("")
-	, mFromSwitch(false)
-	, mFromIf(false)
-{
-}
-
-StructuralControlFlowGenerator::Link::Link(const QString &text)
-	: Link()
-{
-	mLinkName = text;
 }

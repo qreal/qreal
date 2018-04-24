@@ -26,7 +26,6 @@ class ROBOTS_GENERATOR_EXPORT SwitchNode : public NonZoneNode
 {
 public:
 	explicit SwitchNode(const qReal::Id &idBinded, QObject *parent = 0);
-	explicit SwitchNode(const QString &expression, QObject *parent = 0);
 
 	/// Adds new branch for the switch value (i.e. branch zone will be created for the given value).
 	void addBranch(const QString &value, SemanticNode * const node);

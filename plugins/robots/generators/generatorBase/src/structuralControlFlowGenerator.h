@@ -59,15 +59,6 @@ public:
 
 	typedef QMap<QString, int> Region;
 
-	struct Link {
-	public:
-		Link();
-		Link(const QString &text);
-		QString mLinkName;
-		bool mFromSwitch;
-		bool mFromIf;
-	};
-
 private:
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times
@@ -106,7 +97,7 @@ private:
 	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
 
 	void appendVertex(semantics::SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-
+	void addEdge(QMap<int, QMap<int, QVector<int>>> &graph, int u, int v, const qReal::Id &edge);
 	bool containsEdgeWithoutGuard(int v, int u);
 	/// methods for creating a valid Semantic nodes for particular pattern
 	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
@@ -116,16 +107,13 @@ private:
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
-	QString getCondition(const qReal::Id &id, const QString &edgeText);
-	int getTrueLink(int v);
-
 	QMap<int, bool> mUsed;
 	bool mSomethingChanged;
 	int mStartVertex;
 	int mMaxPostOrderTime;
 	QMap<int, int> mPostOrder;
 
-	QMap<int, Link> mEdges;
+	QMap<int, qReal::Id> mEdges;
 	QSet<int> mVerteces;
 	QMap<int, QMap<int, QVector<int>>> mFollowers2;
 	QMap<int, QMap<int, QVector<int>>> mPredecessors2;
@@ -136,7 +124,6 @@ private:
 	QMap<int, QSet<int>> mDominators;
 
 	QMap<qReal::Id, int> mMapVertexLabel;
-	QMap<int, qReal::Id> mMapId;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;
