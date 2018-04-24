@@ -163,6 +163,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	//isPerformingGeneration = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
+
 	buildGraph();
 	findStartVertex();
 	findDominators();
@@ -180,15 +181,18 @@ void StructuralControlFlowGenerator::performGeneration()
 	mSomethingChanged = true;
 	while (mSomethingChanged) {
 		mSomethingChanged = false;
-		for (int i = 0; i <= mMaxPostOrderTime; ++i) {
-			int v = mPostOrder[i];
+
+		int t = 0;
+		while (t <= mMaxPostOrderTime) {
+			int v = mPostOrder.key(t);
 			QSet<int> edgesToRemove = {};
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 				reduceBlock(edgesToRemove, vertecesRoles);
 				mSomethingChanged = true;
+			} else {
+				t++;
 			}
-
 		}
 	}
 
@@ -197,7 +201,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 	//isPerformingGeneration = false;
 
-	if (mFollowers2.keys().isEmpty()) {
+	if (mVerteces.size() == 1) {
 		qDebug() << "Success!";
 		mSemanticTree->setRoot(new RootNode(mTrees[mStartVertex]));
 	} else {
@@ -610,7 +614,7 @@ void StructuralControlFlowGenerator::dfs(int v, int &currentTime)
 			dfs(u, currentTime);
 		}
 	}
-	mPostOrder[currentTime++] = v;
+	mPostOrder[v] = currentTime++;
 }
 
 int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
@@ -708,13 +712,14 @@ void StructuralControlFlowGenerator::updatePostOrder(int newNodeNumber, QSet<int
 		mPostOrder.remove(v);
 	}
 
+	int offset = verteces.size() - 1;
 	for (int v : mPostOrder.keys()) {
 		if (mPostOrder[v] > minimum) {
-			mPostOrder[v] -= (verteces.size() - 1);
+			mPostOrder[v] -= offset;
 		}
 	}
 
-	mMaxPostOrderTime -= (verteces.size() - 1);
+	mMaxPostOrderTime -= offset;
 }
 
 void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<int> &verteces)
