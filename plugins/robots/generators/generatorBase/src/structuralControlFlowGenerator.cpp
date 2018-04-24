@@ -176,6 +176,10 @@ bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QM
 bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 	if (numberOfOutgoingEdges(v) == 2) {
+		if (!mFollowers2.contains(v)) {
+			return false;
+		}
+
 		QList<int> followers = mFollowers2[v].keys();
 		int u1 = followers.first();
 		int u2 = followers.last();
@@ -574,7 +578,7 @@ void StructuralControlFlowGenerator::appendVertex(SemanticNode *node, QSet<int> 
 	mVertecesNumber++;
 }
 
-void StructuralControlFlowGenerator::addEdge(QMap<int, QMap<int, QVector<int> > > &graph, int u, int v, const Id &edge)
+void StructuralControlFlowGenerator::addEdge(QMap<int, QMap<int, QVector<int> > > &graph, int v, int u, const Id &edge)
 {
 	graph[v][u].push_back(mEdgesNumber);
 	mEdges[mEdgesNumber] = edge;

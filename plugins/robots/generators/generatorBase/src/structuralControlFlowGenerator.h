@@ -98,7 +98,7 @@ private:
 	void updateIds(int newNodeNumber, QSet<int> &verteces);
 
 	void appendVertex(semantics::SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void addEdge(QMap<int, QMap<int, QVector<int>>> &graph, int u, int v, const qReal::Id &edge);
+	void addEdge(QMap<int, QMap<int, QVector<int>>> &graph, int v, int u, const qReal::Id &edge);
 	bool containsEdgeWithoutGuard(int v, int u);
 	/// methods for creating a valid Semantic nodes for particular pattern
 	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
