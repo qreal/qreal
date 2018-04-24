@@ -438,6 +438,7 @@ void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edges
 	updateEdges(newNodeNumber, edgesToRemove, verteces);
 	updatePostOrder(newNodeNumber, verteces);
 	updateDominators(newNodeNumber, verteces);
+	updateIds(newNodeNumber, verteces);
 	updateVerteces(newNodeNumber, verteces);
 }
 
@@ -553,6 +554,14 @@ void StructuralControlFlowGenerator::updateVerteces(int newNodeNumber, QSet<int>
 	}
 
 	mVerteces.insert(newNodeNumber);
+}
+
+void StructuralControlFlowGenerator::updateIds(int newNodeNumber, QSet<int> &verteces)
+{
+	for (int v : verteces) {
+		qReal::Id id = mMapVertexLabel.key(v);
+		mMapVertexLabel[id] = newNodeNumber;
+	}
 }
 
 void StructuralControlFlowGenerator::appendVertex(SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)

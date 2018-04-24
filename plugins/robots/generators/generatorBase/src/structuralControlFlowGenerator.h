@@ -95,6 +95,7 @@ private:
 	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
 	void updateDominators(int newNodeNumber, QSet<int> &verteces);
 	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
+	void updateIds(int newNodeNumber, QSet<int> &verteces);
 
 	void appendVertex(semantics::SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void addEdge(QMap<int, QMap<int, QVector<int>>> &graph, int u, int v, const qReal::Id &edge);
