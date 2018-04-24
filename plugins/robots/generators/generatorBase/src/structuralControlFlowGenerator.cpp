@@ -31,8 +31,8 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mVertecesNumber(1)
-	, isPerformingGeneration(false)
 	, mEdgesNumber(1)
+	, isPerformingGeneration(false)
 {
 }
 
@@ -51,7 +51,7 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	updateVerteces(id, links);
+	initVerteces(id, links);
 }
 
 /*
@@ -342,7 +342,7 @@ bool StructuralControlFlowGenerator::isDoWhileLoop(const Id &id, StructuralContr
 }
 */
 
-void StructuralControlFlowGenerator::updateVerteces(const Id &id, const QList<LinkInfo> &links)
+void StructuralControlFlowGenerator::initVerteces(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 
@@ -588,23 +588,16 @@ int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
 	return ans;
 }
 
-void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
 {
-	updateEdges(newNodeNumber, edgesToRemove, vertecesRoles);
-	updatePostOrder(newNodeNumber, vertecesRoles.values().toSet());
-	updateDominators(newNodeNumber, vertecesRoles.values().toSet());
-
-	// mVerteces
-	for (int u : vertecesToRemove) {
-		mVerteces.remove(u);
-	}
-
-	mVerteces.insert(newNodeNumber);
+	updateEdges(newNodeNumber, edgesToRemove, verteces);
+	updatePostOrder(newNodeNumber, verteces);
+	updateDominators(newNodeNumber, verteces);
+	updateVerteces(newNodeNumber, verteces);
 }
 
-void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
 {
-	QSet<int> vertecesToRemove = vertecesRoles.values().toSet();
 	QMap<int, QMap<int, QVector<int>>> followers = mFollowers2;
 
 	for (int v : mVerteces) {
@@ -618,11 +611,11 @@ void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &e
 				int newV = v;
 				int newU = u;
 
-				if (vertecesRoles.contains(v)) {
+				if (verteces.contains(v)) {
 					newV = newNodeNumber;
 				}
 
-				if (vertecesRoles.contains(u)) {
+				if (verteces.contains(u)) {
 					newU = newNodeNumber;
 				}
 
@@ -637,10 +630,8 @@ void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &e
 		}
 	}
 
-
-
 	// removing old information
-	for (int v : vertecesToRemove) {
+	for (int v : verteces) {
 		mFollowers2.remove(v);
 		mPredecessors2.remove(v);
 	}
@@ -692,8 +683,13 @@ void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<in
 	}
 }
 
-void StructuralControlFlowGenerator::add(int v, int u, int edge)
+void StructuralControlFlowGenerator::updateVerteces(int newNodeNumber, QSet<int> &verteces)
 {
+	for (int u : verteces) {
+		mVerteces.remove(u);
+	}
+
+	mVerteces.insert(newNodeNumber);
 }
 
 bool StructuralControlFlowGenerator::containsEdgeWithoutGuard(int v, int u)
@@ -707,7 +703,7 @@ bool StructuralControlFlowGenerator::containsEdgeWithoutGuard(int v, int u)
 	return false;
 }
 
-void StructuralControlFlowGenerator::reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void StructuralControlFlowGenerator::reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 	// it is supposed that v, u are Actions
 	int v = vertecesRoles["block1"];
@@ -722,14 +718,15 @@ void StructuralControlFlowGenerator::reduceBlock(int v, QSet<int> &edgesToRemove
 	mTrees[mVertecesNumber] = block;
 	mVerteces.insert(mVertecesNumber);
 
-	replace(mVertecesNumber, edgesToRemove, vertecesRoles);
+	QSet<int> verteces = vertecesRoles.values().toSet();
+	replace(mVertecesNumber, edgesToRemove, verteces);
 	mVertecesNumber++;
 }
 
 QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString &edgeText)
 {
 	if (semanticsOf(id) == enums::semantics::conditionalBlock) {
-		QString condition = mRepo.property(id, "Condition");
+		QString condition = mRepo.property(id, "Condition").toString();
 		if (edgeText == "false") {
 			condition = "!(" + condition + ")";
 		}
@@ -737,7 +734,7 @@ QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString
 	}
 
 	if (semanticsOf(id) == enums::semantics::switchBlock) {
-		QString expression = mRepo.property(id, "Expression");
+		QString expression = mRepo.property(id, "Expression").toString();
 		return expression + " == " + edgeText;
 	}
 

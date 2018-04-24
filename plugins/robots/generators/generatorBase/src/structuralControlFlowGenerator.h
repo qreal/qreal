@@ -83,7 +83,7 @@ private:
 //	bool isDoWhileLoop(const qReal::Id &id, Region &region);
 
 	/// Creation of a new abstract node and maping it with a corresponding Id
-	void updateVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
+	void initVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
 
 	/// method that tries consequentially identify patterns and reduce them for a given id
 	//void identifyPatterns(const qReal::Id &id);
@@ -97,15 +97,15 @@ private:
 
 	int numberOfOutgoingEdges(int v);
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &vertecesRoles);
+	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
 	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
 	void updateDominators(int newNodeNumber, QSet<int> &verteces);
+	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
 
-	void add(int v, int u, int edge);
 	bool containsEdgeWithoutGuard(int v, int u);
 	/// methods for creating a valid Semantic nodes for particular pattern
-	void reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceIfThenElse(const qReal::Id &id, Region &region);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	//void reduceWhileLoop(const qReal::Id &id, Region &region);
