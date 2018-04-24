@@ -136,6 +136,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	buildGraph();
 	findStartVertex();
 	findDominators();
+	createInitialSemanticNodes();
 	int currentTime = 0;
 
 	mUsed.clear();
@@ -152,7 +153,8 @@ void StructuralControlFlowGenerator::performGeneration()
 		for (int i = 0; i <= mMaxPostOrderTime; ++i) {
 			int v = mPostOrder[i];
 			QSet<int> edgesToRemove = {};
-			if (isBlock(v)) {
+			QMap<QString, int> vertecesRoles;
+			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 
 			}
 
@@ -172,6 +174,22 @@ void StructuralControlFlowGenerator::performGeneration()
 		mSemanticTree = nullptr;
 	}
 
+}
+
+bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (numberOfOutgoingEdges(v) != 1)
+		return false;
+
+	QMap<int, QVector<int>> outgoingEdges = mFollowers2[v];
+	int u = outgoingEdges.keys().first();
+	if (numberOfOutgoingEdges(u) <= 1) {
+		vertecesRoles["block1"] = v;
+		vertecesRoles["block2"] = u;
+		edgesToRemove += { mFollowers2[v][u].first() };
+	}
+
+	return false;
 }
 
 /*
@@ -530,6 +548,15 @@ void StructuralControlFlowGenerator::findDominators()
 	}
 }
 
+void StructuralControlFlowGenerator::createInitialSemanticNodes()
+{
+	for (const int u : mVerteces) {
+		if (numberOfOutgoingEdges(u) <= 1) {
+			mTrees[u] = mSemanticTree->produceNodeFor(mMapId[u]);
+		}
+	}
+}
+
 void StructuralControlFlowGenerator::findStartVertex()
 {
 	for (int v : mFollowers2.keys()) {
@@ -549,6 +576,154 @@ void StructuralControlFlowGenerator::dfs(int v, int &currentTime)
 		}
 	}
 	mPostOrder[currentTime++] = v;
+}
+
+int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
+{
+	int ans = 0;
+	for (int u : mFollowers2[v].keys()) {
+		ans += mFollowers2[v][u].size();
+	}
+
+	return ans;
+}
+
+void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	updateEdges(newNodeNumber, edgesToRemove, vertecesRoles);
+	updatePostOrder(newNodeNumber, vertecesRoles.values().toSet());
+	updateDominators(newNodeNumber, vertecesRoles.values().toSet());
+
+	// mVerteces
+	for (int u : vertecesToRemove) {
+		mVerteces.remove(u);
+	}
+
+	mVerteces.insert(newNodeNumber);
+}
+
+void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	QSet<int> vertecesToRemove = vertecesRoles.values().toSet();
+	QMap<int, QMap<int, QVector<int>>> followers = mFollowers2;
+
+	for (int v : mVerteces) {
+		for (int u : followers[v].keys()) {
+			for (int edge : followers[v][u]) {
+				if (edgesToRemove.contains(edge)) {
+					//mFollowers2[v][u].remove(edge);
+					//mPredecessors2[u][v].remove(edge);
+					continue;
+				}
+				int newV = v;
+				int newU = u;
+
+				if (vertecesRoles.contains(v)) {
+					newV = newNodeNumber;
+				}
+
+				if (vertecesRoles.contains(u)) {
+					newU = newNodeNumber;
+				}
+
+				if (newU == newNodeNumber || newV == newNodeNumber) {
+					if (!mEdges[edge].mLinkName.isEmpty() || !containsEdgeWithoutGuard(newV, newU)) {
+						mFollowers2[newV][newU].push_back(edge);
+						mPredecessors2[newU][newV].push_back(edge);
+					}
+				}
+
+			}
+		}
+	}
+
+
+
+	// removing old information
+	for (int v : vertecesToRemove) {
+		mFollowers2.remove(v);
+		mPredecessors2.remove(v);
+	}
+}
+
+void StructuralControlFlowGenerator::updatePostOrder(int newNodeNumber, QSet<int> &verteces)
+{
+	int minimum = -1;
+	for (int v : verteces) {
+		if (minimum == -1 || minimum > mPostOrder[v]) {
+			minimum = mPostOrder[v];
+		}
+	}
+
+	mPostOrder[newNodeNumber] = minimum;
+
+	for (int v : verteces) {
+		mPostOrder.remove(v);
+	}
+
+	for (int v : mPostOrder.keys()) {
+		if (mPostOrder[v] > minimum) {
+			mPostOrder[v] -= (verteces.size() - 1);
+		}
+	}
+}
+
+void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<int> &verteces)
+{
+	// others
+	for (int v : mPostOrder.keys()) {
+		if (mDominators[v].intersects(verteces)) {
+			mDominators[v].subtract(verteces);
+			mDominators[v].insert(newNodeNumber);
+		}
+	}
+
+	// new
+	QSet<int> doms = mVerteces;
+	for (int v : verteces) {
+		doms.intersect(mDominators[v]);
+	}
+
+	mDominators[newNodeNumber] = doms;
+
+	// old
+	for (int v : verteces) {
+		mDominators.remove(v);
+	}
+}
+
+void StructuralControlFlowGenerator::add(int v, int u, int edge)
+{
+}
+
+bool StructuralControlFlowGenerator::containsEdgeWithoutGuard(int v, int u)
+{
+	for (int edge : mFollowers2[v][u]) {
+		if (mEdges[edge].mLinkName.isEmpty()) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void StructuralControlFlowGenerator::reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	// it is supposed that v, u are Actions
+	int v = vertecesRoles["block1"];
+	int u = vertecesRoles["block2"];
+	SemanticNode *block1 = mTrees[v];
+	SemanticNode *block2 = mTrees[u];
+
+	ZoneNode *block = new ZoneNode(block1->parent());
+	block->appendChild(block1);
+	block->appendChild(block2);
+
+	mTrees[mVertecesNumber] = block;
+	mVerteces.insert(mVertecesNumber);
+
+	replace(mVertecesNumber, edgesToRemove, vertecesRoles);
+	mVertecesNumber++;
 }
 
 QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString &edgeText)

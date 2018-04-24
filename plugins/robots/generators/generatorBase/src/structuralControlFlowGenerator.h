@@ -75,7 +75,7 @@ private:
 	void performGeneration() override;
 
 	/// methods to identify patterns for structural analysis
-//	bool isBlock(const qReal::Id &id, Region &region);
+	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 //	bool isIfThenElse(const qReal::Id &id, Region &region);
 //	bool isSwitch(const qReal::Id &id, Region &region);
 //	bool isSelfLoop(const qReal::Id &id, Region &region);
@@ -91,21 +91,28 @@ private:
 	/// Building abstract graph view for further analysis
 	void buildGraph();
 	void findDominators();
+	void createInitialSemanticNodes();
 	void findStartVertex();
 	void dfs(int v, int &currentTime);
 
+	int numberOfOutgoingEdges(int v);
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	//void replace(int newNodeNumber, Region &region, bool isBlock);
+	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
+	void updateDominators(int newNodeNumber, QSet<int> &verteces);
 
+	void add(int v, int u, int edge);
+	bool containsEdgeWithoutGuard(int v, int u);
 	/// methods for creating a valid Semantic nodes for particular pattern
-	//void reduceBlock(const qReal::Id &id, Region &region);
+	void reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceIfThenElse(const qReal::Id &id, Region &region);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	//void reduceWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
-	QString getCondition(const qReal::Id &id, const qReal::Id &link);
+	QString getCondition(const qReal::Id &id, const QString &edgeText);
 
 	QMap<int, bool> mUsed;
 	bool mSomethingChanged;
