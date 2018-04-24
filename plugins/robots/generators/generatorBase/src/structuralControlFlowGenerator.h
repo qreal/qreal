@@ -105,10 +105,12 @@ private:
 	void updateDominators(int newNodeNumber, QSet<int> &verteces);
 	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
 
+	void appendVertex(semantics::SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+
 	bool containsEdgeWithoutGuard(int v, int u);
 	/// methods for creating a valid Semantic nodes for particular pattern
 	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	//void reduceIfThenElse(const qReal::Id &id, Region &region);
+	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	//void reduceWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);

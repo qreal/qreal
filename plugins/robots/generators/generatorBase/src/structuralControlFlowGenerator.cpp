@@ -132,7 +132,8 @@ void StructuralControlFlowGenerator::performGeneration()
 				reduceBlock(edgesToRemove, vertecesRoles);
 				mSomethingChanged = true;
 			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
-
+				reduceIfThenElse(edgesToRemove, vertecesRoles);
+				mSomethingChanged = true;
 			}
 			else {
 				t++;
@@ -184,16 +185,12 @@ bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemov
 
 		if (numberOfOutgoingEdges(u1) == 0 && numberOfOutgoingEdges(u2) == 0) {
 			int trueEdgeNumber = getTrueLink(v);
-			QString condition = getCondition(mMapId[v], mEdges[trueEdgeNumber].mLinkName);
-			IfNode *ifNode = new IfNode(condition);
+
 			if (mFollowers2[v][u1].first() == trueEdgeNumber) {
 				int temp = u1;
 				u1 = u2;
 				u2 = temp;
 			}
-
-			ifNode->thenZone()->appendChild(mTrees[u2]);
-			ifNode->elseZone()->appendChild(mTrees[u1]);
 
 			vertecesRoles["condition"] = v;
 			vertecesRoles["then"] = u2;
@@ -739,6 +736,16 @@ void StructuralControlFlowGenerator::updateVerteces(int newNodeNumber, QSet<int>
 	mVerteces.insert(newNodeNumber);
 }
 
+void StructuralControlFlowGenerator::appendVertex(SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	mTrees[mVertecesNumber] = node;
+	mVerteces.insert(mVertecesNumber);
+
+	QSet<int> verteces = vertecesRoles.values().toSet();
+	replace(mVertecesNumber, edgesToRemove, verteces);
+	mVertecesNumber++;
+}
+
 bool StructuralControlFlowGenerator::containsEdgeWithoutGuard(int v, int u)
 {
 	for (int edge : mFollowers2[v][u]) {
@@ -762,12 +769,25 @@ void StructuralControlFlowGenerator::reduceBlock(QSet<int> &edgesToRemove, QMap<
 	block->appendChild(block1);
 	block->appendChild(block2);
 
-	mTrees[mVertecesNumber] = block;
-	mVerteces.insert(mVertecesNumber);
+	appendVertex(block, edgesToRemove, vertecesRoles);
+}
 
-	QSet<int> verteces = vertecesRoles.values().toSet();
-	replace(mVertecesNumber, edgesToRemove, verteces);
-	mVertecesNumber++;
+void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	int v = vertecesRoles["condition"];
+	int u1 = vertecesRoles["then"];
+	int u2 = vertecesRoles["else"];
+	SemanticNode *thenNode = mTrees[u1];
+	SemanticNode *elseNode = mTrees[u2];
+
+	int trueEdgeNumber = getTrueLink(v);
+	QString condition = getCondition(mMapId[v], mEdges[trueEdgeNumber].mLinkName);
+
+	IfNode *ifNode = new IfNode(condition);
+	ifNode->thenZone()->appendChild(thenNode);
+	ifNode->elseZone()->appendChild(elseNode);
+
+	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
 QString StructuralControlFlowGenerator::getCondition(const Id &id, const QString &edgeText)
