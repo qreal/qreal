@@ -657,6 +657,8 @@ void StructuralControlFlowGenerator::updatePostOrder(int newNodeNumber, QSet<int
 			mPostOrder[v] -= (verteces.size() - 1);
 		}
 	}
+
+	mMaxPostOrderTime -= (verteces.size() - 1);
 }
 
 void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<int> &verteces)
