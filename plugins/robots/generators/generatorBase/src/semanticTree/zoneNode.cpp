@@ -109,18 +109,3 @@ QLinkedList<SemanticNode *> ZoneNode::children() const
 {
 	return mChildren;
 }
-
-Id ZoneNode::lastIfId() const
-{
-	return mChildren.last()->lastIfId();
-}
-
-Id ZoneNode::firstId() const
-{
-	return mChildren.first()->firstId();
-}
-
-void ZoneNode::makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode)
-{
-	mChildren.last()->makeBreakForLastIf(isConditionTrue, breakNode);
-}

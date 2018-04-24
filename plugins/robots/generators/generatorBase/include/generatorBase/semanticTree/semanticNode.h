@@ -41,9 +41,6 @@ public:
 	/// Places goto label near this node
 	void addLabel();
 
-	void setHasBreakInside(bool hasBreakInside);
-	bool hasBreakInside() const;
-
 	/// Generates code for this semantic node
 	QString toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const;
 
@@ -51,10 +48,6 @@ public:
 	/// a node with specified id binded if such was found or nullptr otherwise.
 	SemanticNode *findNodeFor(const qReal::Id &id);
 
-	virtual qReal::Id lastIfId() const;
-	virtual qReal::Id firstId() const;
-
-	virtual void makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode);
 protected:
 	explicit SemanticNode(const qReal::Id &idBinded = qReal::Id(), QObject *parent = 0);
 	explicit SemanticNode(const QString &text, QObject *parent = 0);

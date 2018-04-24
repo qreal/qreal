@@ -54,6 +54,36 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 	initVerteces(id, links);
 }
 
+void StructuralControlFlowGenerator::visitRegular(const Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
+void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
+void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
+void StructuralControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
+void StructuralControlFlowGenerator::visitUnknown(const Id &id, const QList<LinkInfo> &links)
+{
+	Q_UNUSED(id)
+	Q_UNUSED(links)
+}
+
 /*
 void StructuralControlFlowGenerator::visitRegular(const Id &id, const QList<LinkInfo> &links)
 {
@@ -155,7 +185,8 @@ void StructuralControlFlowGenerator::performGeneration()
 			QSet<int> edgesToRemove = {};
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
-
+				reduceBlock(edgesToRemove, vertecesRoles);
+				mSomethingChanged = true;
 			}
 
 		}
@@ -166,9 +197,9 @@ void StructuralControlFlowGenerator::performGeneration()
 
 	//isPerformingGeneration = false;
 
-	if (mTrees.keys().size() == 1) {
+	if (mFollowers2.keys().isEmpty()) {
 		qDebug() << "Success!";
-		mSemanticTree->setRoot(new RootNode(mTrees[mTrees.keys().first()]));
+		mSemanticTree->setRoot(new RootNode(mTrees[mStartVertex]));
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
 		mSemanticTree = nullptr;
@@ -687,6 +718,10 @@ void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<in
 
 void StructuralControlFlowGenerator::updateVerteces(int newNodeNumber, QSet<int> &verteces)
 {
+	if (mVerteces.contains(mStartVertex)) {
+		mStartVertex = newNodeNumber;
+	}
+
 	for (int u : verteces) {
 		mVerteces.remove(u);
 	}

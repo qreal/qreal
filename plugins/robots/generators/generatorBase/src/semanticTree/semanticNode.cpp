@@ -38,17 +38,6 @@ SemanticNode::SemanticNode(const QString &text, QObject *parent)
 {
 }
 
-Id SemanticNode::firstId() const
-{
-	return mId;
-}
-
-void SemanticNode::makeBreakForLastIf(bool isConditionTrue, SemanticNode *breakNode)
-{
-	Q_UNUSED(isConditionTrue)
-	Q_UNUSED(breakNode)
-}
-
 Id SemanticNode::id() const
 {
 	return mId;
@@ -67,16 +56,6 @@ void SemanticNode::setParentNode(SemanticNode * const parent)
 void SemanticNode::addLabel()
 {
 	mLabeled = true;
-}
-
-void SemanticNode::setHasBreakInside(bool hasBreakInside)
-{
-	mHasBreakInside = hasBreakInside;
-}
-
-bool SemanticNode::hasBreakInside() const
-{
-	return mHasBreakInside;
 }
 
 QString SemanticNode::toString(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
@@ -105,9 +84,4 @@ SemanticNode *SemanticNode::findNodeFor(const Id &id)
 	}
 
 	return nullptr;
-}
-
-Id SemanticNode::lastIfId() const
-{
-	return mId;
 }
