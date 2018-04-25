@@ -918,14 +918,9 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 	const int bodyNumber = vertecesRoles["body"];
 	LoopNode *loopNode;
 	if (mTrees.contains(v)) {
-		loopNode = dynamic_cast<LoopNode *>(mTrees[v]);
-		if (loopNode) {
-			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
-		} else {
-			loopNode = new LoopNode(qReal::Id(), mSemanticTree);
-			loopNode->bodyZone()->appendChild(mTrees[v]);
-			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
-		}
+		loopNode = new LoopNode(qReal::Id(), mSemanticTree);
+		loopNode->bodyZone()->appendChild(mTrees[v]);
+		loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
 	} else {
 		qReal::Id vId = mMapVertexLabel.key(v);
 		if (semanticsOf(vId) == enums::semantics::conditionalBlock
