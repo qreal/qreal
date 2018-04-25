@@ -130,20 +130,16 @@ void StructuralControlFlowGenerator::performGeneration()
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 				reduceBlock(edgesToRemove, vertecesRoles);
-				t -= (vertecesRoles.size() - 1);
-				mSomethingChanged = true;
-			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
-				reduceIfThenElse(edgesToRemove, vertecesRoles);
-				t -= (vertecesRoles.size() - 1);
-				mSomethingChanged = true;
 			} else if (isSwitch(v, edgesToRemove, vertecesRoles)) {
 				reduceSwitch(edgesToRemove, vertecesRoles);
-				t -= (vertecesRoles.size() - 1);
-				mSomethingChanged = true;
-			}
-			else {
+			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
+				reduceIfThenElse(edgesToRemove, vertecesRoles);
+			} else {
 				t++;
+				continue;
 			}
+			t -= (vertecesRoles.size() - 1);
+			mSomethingChanged = true;
 		}
 	}
 
