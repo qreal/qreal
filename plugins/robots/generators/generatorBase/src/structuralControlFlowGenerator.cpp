@@ -140,6 +140,8 @@ void StructuralControlFlowGenerator::performStructurization()
 				reduceIfThenElse(edgesToRemove, vertecesRoles);
 			} else if (isIfThen(v, edgesToRemove, vertecesRoles)) {
 				reduceIfThen(edgesToRemove, vertecesRoles);
+			} else if (isInfiniteLoop(v, edgesToRemove, vertecesRoles)) {
+				reduceInfiniteLoop(edgesToRemove, vertecesRoles);
 			} else {
 				t++;
 				continue;
@@ -308,6 +310,22 @@ bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, Q
 		}
 	}
 
+	return true;
+}
+
+bool StructuralControlFlowGenerator::isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (numberOfOutgoingEdges(v) != 1) {
+		return false;
+	}
+
+	int u = mFollowers2[v].keys().first();
+	if (u != v) {
+		return false;
+	}
+
+	edgesToRemove.insert(mFollowers2[v][v].first());
+	vertecesRoles["body"] = v;
 	return true;
 }
 
@@ -785,4 +803,15 @@ void StructuralControlFlowGenerator::reduceSwitch(QSet<int> &edgesToRemove, QMap
 	}
 
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);
+}
+
+void StructuralControlFlowGenerator::reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	int v = vertecesRoles["body"];
+
+	LoopNode *loopNode = new LoopNode(qReal::Id());
+	SemanticNode *body = mTrees[v];
+	loopNode->bodyZone()->appendChild(body);
+
+	appendVertex(loopNode, edgesToRemove, vertecesRoles);
 }

@@ -72,6 +72,7 @@ private:
 	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
 
@@ -113,6 +114,7 @@ private:
 	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	//void reduceWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
