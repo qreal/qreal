@@ -162,7 +162,7 @@ void StructuralControlFlowGenerator::performStructurization()
 
 	if (mVerteces.size() == 1) {
 		qDebug() << "Success!";
-		mSemanticTree->setRoot(new RootNode(mTrees[mStartVertex]));
+		mSemanticTree->setRoot(new RootNode(mTrees[mStartVertex], mSemanticTree));
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
 		mSemanticTree = nullptr;
@@ -809,7 +809,7 @@ void StructuralControlFlowGenerator::reduceBlock(QSet<int> &edgesToRemove, QMap<
 	SemanticNode *block1 = mTrees[v];
 	SemanticNode *block2 = mTrees[u];
 
-	ZoneNode *block = new ZoneNode(block1->parent());
+	ZoneNode *block = new ZoneNode(mSemanticTree);
 	block->appendChild(block1);
 	block->appendChild(block2);
 
@@ -824,7 +824,7 @@ void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, 
 	int u2 = vertecesRoles["b"];
 
 	qReal::Id vId = mMapVertexLabel.key(v);
-	IfNode *ifNode = new IfNode(vId);
+	IfNode *ifNode = new IfNode(vId, mSemanticTree);
 	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(vId);
 	if (mMapVertexLabel[branches.first.target] == u2) {
 		int temp = u1;
@@ -848,7 +848,7 @@ void StructuralControlFlowGenerator::reduceIfThen(QSet<int> &edgesToRemove, QMap
 	int elseNumber = vertecesRoles["else"];
 
 	qReal::Id vId = mMapVertexLabel.key(v);
-	IfNode *ifNode = new IfNode(vId);
+	IfNode *ifNode = new IfNode(vId, mSemanticTree);
 	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(vId);
 
 	if (mMapVertexLabel[branches.first.target] == elseNumber) {
@@ -866,7 +866,7 @@ void StructuralControlFlowGenerator::reduceSwitch(QSet<int> &edgesToRemove, QMap
 {
 	int v = vertecesRoles["head"];
 	qReal::Id switchId = mMapVertexLabel.key(v);
-	SwitchNode *switchNode = new SwitchNode(switchId);
+	SwitchNode *switchNode = new SwitchNode(switchId, mSemanticTree);
 
 	QSet<int> verteces = vertecesRoles.values().toSet();
 	QMap<int, bool> used;
@@ -894,7 +894,7 @@ void StructuralControlFlowGenerator::reduceDummySwitch(QSet<int> &edgesToRemove,
 {
 	int v = vertecesRoles["head"];
 	qReal::Id vId = mMapVertexLabel.key(v);
-	SwitchNode *switchNode = new SwitchNode(vId);
+	SwitchNode *switchNode = new SwitchNode(vId, mSemanticTree);
 
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);
 }
@@ -903,7 +903,7 @@ void StructuralControlFlowGenerator::reduceInfiniteLoop(QSet<int> &edgesToRemove
 {
 	int v = vertecesRoles["body"];
 
-	LoopNode *loopNode = new LoopNode(qReal::Id());
+	LoopNode *loopNode = new LoopNode(qReal::Id(), mSemanticTree);
 	SemanticNode *body = mTrees[v];
 	loopNode->bodyZone()->appendChild(body);
 
@@ -920,7 +920,7 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 		if (loopNode) {
 			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
 		} else {
-			loopNode = new LoopNode(qReal::Id());
+			loopNode = new LoopNode(qReal::Id(), mSemanticTree);
 			loopNode->bodyZone()->appendChild(mTrees[v]);
 			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
 		}
@@ -928,7 +928,7 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 		qReal::Id vId = mMapVertexLabel.key(v);
 		if (semanticsOf(vId) == enums::semantics::conditionalBlock
 				|| semanticsOf(vId) == enums::semantics::loopBlock) {
-			loopNode = new LoopNode(vId);
+			loopNode = new LoopNode(vId, mSemanticTree);
 			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
 		} else if (semanticsOf(vId) == enums::semantics::switchBlock) {
 
