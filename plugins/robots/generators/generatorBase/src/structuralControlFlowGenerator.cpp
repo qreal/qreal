@@ -138,6 +138,8 @@ void StructuralControlFlowGenerator::performStructurization()
 				reduceSwitch(edgesToRemove, vertecesRoles);
 			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
 				reduceIfThenElse(edgesToRemove, vertecesRoles);
+			} else if (isIfThen(v, edgesToRemove, vertecesRoles)) {
+				reduceIfThen(edgesToRemove, vertecesRoles);
 			} else {
 				t++;
 				continue;
@@ -224,6 +226,40 @@ bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemov
 	return false;
 }
 
+bool StructuralControlFlowGenerator::isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (numberOfOutgoingEdges(v) != 2) {
+		return false;
+	}
+
+	QList<int> followers = mFollowers2[v].keys();
+	int u1 = followers.first();
+	int u2 = followers.last();
+
+	int thenNumber = -1;
+	int elseNumber = -1;
+	if (checkIfThenHelper(u1, u2)) {
+		thenNumber = u1;
+		elseNumber = u2;
+	} else if (checkIfThenHelper(u2, u1)) {
+		thenNumber = u2;
+		elseNumber = u1;
+	}
+
+	if (thenNumber == -1) {
+		return false;
+	}
+
+	vertecesRoles["condition"] = v;
+	vertecesRoles["then"] = thenNumber;
+	vertecesRoles["else"] = elseNumber;
+
+	edgesToRemove.insert(mFollowers2[v][u1].first());
+	edgesToRemove.insert(mFollowers2[v][u2].first());
+
+	return true;
+}
+
 bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 	const qReal::Id id = mMapVertexLabel.key(v);
@@ -273,6 +309,17 @@ bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, Q
 	}
 
 	return true;
+}
+
+bool StructuralControlFlowGenerator::checkIfThenHelper(int thenNumber, int elseNumber)
+{
+	if (numberOfIncomingEdges(thenNumber) == 1 && numberOfOutgoingEdges(thenNumber) == 1) {
+		if (mFollowers2[thenNumber].keys().contains(elseNumber)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void StructuralControlFlowGenerator::initVerteces(const Id &id, const QList<LinkInfo> &links)
@@ -493,7 +540,8 @@ void StructuralControlFlowGenerator::dfs(int v, int &currentTime)
 
 void StructuralControlFlowGenerator::obtainReachUnder(int v, QSet<int> &reachUnder)
 {
-
+	Q_UNUSED(v)
+	Q_UNUSED(reachUnder)
 }
 
 int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
@@ -699,6 +747,27 @@ void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, 
 	ifNode->elseZone()->appendChild(elseNode);
 
 
+	appendVertex(ifNode, edgesToRemove, vertecesRoles);
+}
+
+void StructuralControlFlowGenerator::reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	int v = vertecesRoles["condition"];
+	int thenNumber = vertecesRoles["then"];
+	int elseNumber = vertecesRoles["else"];
+
+	qReal::Id vId = mMapVertexLabel.key(v);
+	IfNode *ifNode = new IfNode(vId);
+	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(vId);
+
+	if (mMapVertexLabel[branches.first.target] == elseNumber) {
+		ifNode->invertCondition();
+	}
+
+	SemanticNode *thenNode = mTrees[thenNumber];
+	ifNode->thenZone()->appendChild(thenNode);
+
+	vertecesRoles.remove("else");
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
