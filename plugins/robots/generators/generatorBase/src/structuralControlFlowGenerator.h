@@ -121,7 +121,7 @@ private:
 	void reduceDummySwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
-	//void reduceWhileLoop(const qReal::Id &id, Region &region);
+	void reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
