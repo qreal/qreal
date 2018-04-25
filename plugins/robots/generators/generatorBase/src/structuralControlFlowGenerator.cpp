@@ -104,7 +104,11 @@ void StructuralControlFlowGenerator::performGeneration()
 	//isPerformingGeneration = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
+	performStructurization();
+}
 
+void StructuralControlFlowGenerator::performStructurization()
+{
 	buildGraph();
 	findStartVertex();
 	findDominators();
@@ -155,7 +159,6 @@ void StructuralControlFlowGenerator::performGeneration()
 		mCantBeGeneratedIntoStructuredCode = true;
 		mSemanticTree = nullptr;
 	}
-
 }
 
 bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)

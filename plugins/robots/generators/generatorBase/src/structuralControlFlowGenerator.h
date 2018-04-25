@@ -65,6 +65,8 @@ private:
 	/// to build dominators tree and then perform structural analysis
 	void performGeneration() override;
 
+	void performStructurization();
+
 	/// methods to identify patterns for structural analysis
 	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
