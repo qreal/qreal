@@ -491,6 +491,11 @@ void StructuralControlFlowGenerator::dfs(int v, int &currentTime)
 	mPostOrder[v] = currentTime++;
 }
 
+void StructuralControlFlowGenerator::obtainReachUnder(int v, QSet<int> &reachUnder)
+{
+
+}
+
 int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
 {
 	int ans = 0;

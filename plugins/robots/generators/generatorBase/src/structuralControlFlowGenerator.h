@@ -71,6 +71,7 @@ private:
 	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+
 //	bool isIfThenElse(const qReal::Id &id, Region &region);
 //	bool isSwitch(const qReal::Id &id, Region &region);
 //	bool isSelfLoop(const qReal::Id &id, Region &region);
@@ -89,6 +90,7 @@ private:
 	void createInitialSemanticNodes();
 	void findStartVertex();
 	void dfs(int v, int &currentTime);
+	void obtainReachUnder(int v, QSet<int> &reachUnder);
 
 	int numberOfOutgoingEdges(int v);
 	int numberOfIncomingEdges(int v);
