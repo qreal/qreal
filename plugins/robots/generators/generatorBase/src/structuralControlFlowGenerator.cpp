@@ -134,6 +134,8 @@ void StructuralControlFlowGenerator::performStructurization()
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 				reduceBlock(edgesToRemove, vertecesRoles);
+			} else if (isDummySwitch(v, edgesToRemove, vertecesRoles)) {
+				reduceDummySwitch(edgesToRemove, vertecesRoles);
 			} else if (isSwitch(v, edgesToRemove, vertecesRoles)) {
 				reduceSwitch(edgesToRemove, vertecesRoles);
 			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
@@ -308,6 +310,32 @@ bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, Q
 					int w = mFollowers2[u].keys().first();
 					edgesToRemove.insert(mFollowers2[u][w].first());
 				}
+			}
+		}
+	}
+
+	return true;
+}
+
+bool StructuralControlFlowGenerator::isDummySwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	const qReal::Id id = mMapVertexLabel.key(v);
+	if (semanticsOf(id) != enums::semantics::switchBlock) {
+		return false;
+	}
+
+	if (numberOfUniqueOutgoingEdges(v) != 1) {
+		return false;
+	}
+
+	vertecesRoles["head"] = v;
+	bool wasOneEdgeSaved = false;
+	for (int u : mFollowers2[v].keys()) {
+		for (int edge : mFollowers2[v][u]) {
+			if (wasOneEdgeSaved) {
+				edgesToRemove.insert(edge);
+			} else {
+				wasOneEdgeSaved = true;
 			}
 		}
 	}
@@ -617,7 +645,12 @@ int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
 
 int StructuralControlFlowGenerator::numberOfUniqueIncomingEdges(int v)
 {
-	return mPredecessors2[v].keys().size();
+	return mPredecessors2[v].keys().toSet().size();
+}
+
+int StructuralControlFlowGenerator::numberOfUniqueOutgoingEdges(int v)
+{
+	return mFollowers2[v].keys().toSet().size();
 }
 
 void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
@@ -851,6 +884,15 @@ void StructuralControlFlowGenerator::reduceSwitch(QSet<int> &edgesToRemove, QMap
 			switchNode->addBranch(label, mTrees[u]);
 		}
 	}
+
+	appendVertex(switchNode, edgesToRemove, vertecesRoles);
+}
+
+void StructuralControlFlowGenerator::reduceDummySwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	int v = vertecesRoles["head"];
+	qReal::Id vId = mMapVertexLabel.key(v);
+	SwitchNode *switchNode = new SwitchNode(vId);
 
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);
 }

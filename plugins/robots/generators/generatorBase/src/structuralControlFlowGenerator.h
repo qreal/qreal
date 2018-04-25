@@ -72,6 +72,7 @@ private:
 	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isDummySwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
@@ -100,6 +101,7 @@ private:
 
 	int numberOfOutgoingEdges(int v);
 	int numberOfUniqueIncomingEdges(int v);
+	int numberOfUniqueOutgoingEdges(int v);
 	/// Replacing some verteces with a new one and proper maintenance of edges
 	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &vertecesRoles);
 	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
@@ -116,6 +118,7 @@ private:
 	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceDummySwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	//void reduceWhileLoop(const qReal::Id &id, Region &region);
