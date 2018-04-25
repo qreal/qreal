@@ -836,7 +836,9 @@ void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, 
 	SemanticNode *elseNode = mTrees[u2];
 	ifNode->thenZone()->appendChild(thenNode);
 	ifNode->elseZone()->appendChild(elseNode);
-
+	if (u1 == u2) {
+		ifNode->transformToSimple();
+	}
 
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
