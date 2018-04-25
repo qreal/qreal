@@ -172,7 +172,7 @@ bool StructuralControlFlowGenerator::isBlock(int v, QSet<int> &edgesToRemove, QM
 
 	QMap<int, QVector<int>> outgoingEdges = mFollowers2[v];
 	int u = outgoingEdges.keys().first();
-	if (numberOfOutgoingEdges(u) <= 1 && numberOfIncomingEdges(u) == 1) {
+	if (numberOfOutgoingEdges(u) <= 1 && numberOfUniqueIncomingEdges(u) == 1) {
 		vertecesRoles["block1"] = v;
 		vertecesRoles["block2"] = u;
 		edgesToRemove += { mFollowers2[v][u].first() };
@@ -195,7 +195,7 @@ bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemov
 	QList<int> followers = mFollowers2[v].keys();
 	int u1 = followers.first();
 	int u2 = followers.last();
-	if (numberOfIncomingEdges(u1) != 1 || numberOfIncomingEdges(u2) != 1) {
+	if (numberOfUniqueIncomingEdges(u1) != 1 || numberOfUniqueIncomingEdges(u2) != 1) {
 		return false;
 	}
 
@@ -272,7 +272,7 @@ bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, Q
 	int exit = -1;
 	QSet<int> verteces = {};
 	for (const int u : mFollowers2[v].keys()) {
-		if (numberOfIncomingEdges(u) != 1 || numberOfOutgoingEdges(u) >= 2) {
+		if (numberOfUniqueIncomingEdges(u) != 1 || numberOfOutgoingEdges(u) >= 2) {
 			return false;
 		}
 
@@ -289,11 +289,13 @@ bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, Q
 	}
 
 	vertecesRoles["head"] = v;
+
 	for (int u : verteces) {
-		int edgeNumber = mFollowers2[v][u].first();
-		edgesToRemove.insert(edgeNumber);
-		const QString label = mRepo.property(mEdges[edgeNumber], "Guard").toString();
-		vertecesRoles[label] = u;
+		for (const int edgeNumber : mFollowers2[v][u]) {
+			edgesToRemove.insert(edgeNumber);
+			const QString label = mRepo.property(mEdges[edgeNumber], "Guard").toString();
+			vertecesRoles[label] = u;
+		}
 	}
 
 	bool wasOneEdgeSaved = false;
@@ -339,13 +341,10 @@ bool StructuralControlFlowGenerator::isWhileLoop(int v, QSet<int> &edgesToRemove
 	int u2 = mFollowers2[v].keys().last();
 
 	int bodyNumber = -1;
-	int thenCodeNumber = -1;
 	if (checkWhileLoopHelper(v, u1)) {
 		bodyNumber = u1;
-		thenCodeNumber = u2;
 	} else if (checkWhileLoopHelper(v, u2)) {
 		bodyNumber = u2;
-		thenCodeNumber = u1;
 	}
 
 	if (bodyNumber == -1) {
@@ -354,11 +353,16 @@ bool StructuralControlFlowGenerator::isWhileLoop(int v, QSet<int> &edgesToRemove
 
 	edgesToRemove.insert(mFollowers2[v][bodyNumber].first());
 	edgesToRemove.insert(mFollowers2[bodyNumber][v].first());
+
+	vertecesRoles["head"] = v;
+	vertecesRoles["body"] = bodyNumber;
+
+	return true;
 }
 
 bool StructuralControlFlowGenerator::checkIfThenHelper(int thenNumber, int elseNumber)
 {
-	if (numberOfIncomingEdges(thenNumber) == 1 && numberOfOutgoingEdges(thenNumber) == 1) {
+	if (numberOfUniqueIncomingEdges(thenNumber) == 1 && numberOfOutgoingEdges(thenNumber) == 1) {
 		if (mFollowers2[thenNumber].keys().contains(elseNumber)) {
 			return true;
 		}
@@ -369,7 +373,7 @@ bool StructuralControlFlowGenerator::checkIfThenHelper(int thenNumber, int elseN
 
 bool StructuralControlFlowGenerator::checkWhileLoopHelper(int head, int body)
 {
-	if (numberOfIncomingEdges(body) == 1 && numberOfOutgoingEdges(body) == 1) {
+	if (numberOfUniqueIncomingEdges(body) == 1 && numberOfOutgoingEdges(body) == 1) {
 		int w = mFollowers2[body].keys().first();
 		if (w == head) {
 			return true;
@@ -611,14 +615,9 @@ int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
 	return ans;
 }
 
-int StructuralControlFlowGenerator::numberOfIncomingEdges(int v)
+int StructuralControlFlowGenerator::numberOfUniqueIncomingEdges(int v)
 {
-	int ans = 0;
-	for (int u : mPredecessors2[v].keys()) {
-		ans += mPredecessors2[v][u].size();
-	}
-
-	return ans;
+	return mPredecessors2[v].keys().size();
 }
 
 void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
@@ -834,11 +833,23 @@ void StructuralControlFlowGenerator::reduceSwitch(QSet<int> &edgesToRemove, QMap
 	qReal::Id switchId = mMapVertexLabel.key(v);
 	SwitchNode *switchNode = new SwitchNode(switchId);
 
+	QSet<int> verteces = vertecesRoles.values().toSet();
+	QMap<int, bool> used;
+	for (int u : verteces) {
+		used[u] = false;
+	}
+
 	for (const QString &label : vertecesRoles.keys()) {
 		if (label == "head")
 			continue;
 
-		switchNode->addBranch(label, mTrees[vertecesRoles[label]]);
+		int u = vertecesRoles[label];
+		if (!used[u]) {
+			switchNode->addBranch(label, mTrees[u]);
+			used[u] = true;
+		} else {
+			switchNode->addBranch(label, mTrees[u]);
+		}
 	}
 
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);

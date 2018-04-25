@@ -99,7 +99,7 @@ private:
 	void obtainReachUnder(int v, QSet<int> &reachUnder);
 
 	int numberOfOutgoingEdges(int v);
-	int numberOfIncomingEdges(int v);
+	int numberOfUniqueIncomingEdges(int v);
 	/// Replacing some verteces with a new one and proper maintenance of edges
 	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &vertecesRoles);
 	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
