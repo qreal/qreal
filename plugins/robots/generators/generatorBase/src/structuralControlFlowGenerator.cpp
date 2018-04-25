@@ -268,6 +268,10 @@ bool StructuralControlFlowGenerator::isIfThen(int v, QSet<int> &edgesToRemove, Q
 
 bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
+	if (mTrees.contains(v)) {
+		return false;
+	}
+
 	const qReal::Id id = mMapVertexLabel.key(v);
 	if (semanticsOf(id) != enums::semantics::switchBlock) {
 		return false;
@@ -321,6 +325,10 @@ bool StructuralControlFlowGenerator::isSwitch(int v, QSet<int> &edgesToRemove, Q
 
 bool StructuralControlFlowGenerator::isDummySwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
+	if (mTrees.contains(v)) {
+		return false;
+	}
+
 	const qReal::Id id = mMapVertexLabel.key(v);
 	if (semanticsOf(id) != enums::semantics::switchBlock) {
 		return false;
@@ -897,6 +905,7 @@ void StructuralControlFlowGenerator::reduceDummySwitch(QSet<int> &edgesToRemove,
 	int v = vertecesRoles["head"];
 	qReal::Id vId = mMapVertexLabel.key(v);
 	SwitchNode *switchNode = new SwitchNode(vId, mSemanticTree);
+	switchNode->transformToSimple();
 
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);
 }
