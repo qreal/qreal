@@ -68,6 +68,7 @@ private:
 	/// methods to identify patterns for structural analysis
 	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 //	bool isIfThenElse(const qReal::Id &id, Region &region);
 //	bool isSwitch(const qReal::Id &id, Region &region);
 //	bool isSelfLoop(const qReal::Id &id, Region &region);
@@ -103,6 +104,7 @@ private:
 	/// methods for creating a valid Semantic nodes for particular pattern
 	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	//void reduceWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
