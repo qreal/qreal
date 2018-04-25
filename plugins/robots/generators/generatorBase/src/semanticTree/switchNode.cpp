@@ -23,6 +23,7 @@ SwitchNode::SwitchNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mDefaultBranch(nullptr)
 	, mBranchesMerged(false)
+	, mIsSimple(false)
 {
 }
 
@@ -52,8 +53,17 @@ void SwitchNode::setBranchesMergedFlag()
 	mBranchesMerged = true;
 }
 
+void SwitchNode::transformToSimple()
+{
+	mIsSimple = true;
+}
+
 QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
+	if (mIsSimple) {
+		return "";
+	}
+
 	QString result;
 	bool isHead = true;
 	for (ZoneNode * const zone : mBranches.values().toSet()) {
