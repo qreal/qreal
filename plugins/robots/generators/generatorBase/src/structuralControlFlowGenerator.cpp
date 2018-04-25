@@ -329,10 +329,49 @@ bool StructuralControlFlowGenerator::isInfiniteLoop(int v, QSet<int> &edgesToRem
 	return true;
 }
 
+bool StructuralControlFlowGenerator::isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (numberOfOutgoingEdges(v) != 2) {
+		return false;
+	}
+
+	int u1 = mFollowers2[v].keys().first();
+	int u2 = mFollowers2[v].keys().last();
+
+	int bodyNumber = -1;
+	int thenCodeNumber = -1;
+	if (checkWhileLoopHelper(v, u1)) {
+		bodyNumber = u1;
+		thenCodeNumber = u2;
+	} else if (checkWhileLoopHelper(v, u2)) {
+		bodyNumber = u2;
+		thenCodeNumber = u1;
+	}
+
+	if (bodyNumber == -1) {
+		return false;
+	}
+
+	edgesToRemove.insert(mFollowers2[v][bodyNumber].first());
+	edgesToRemove.insert(mFollowers2[bodyNumber][v].first());
+}
+
 bool StructuralControlFlowGenerator::checkIfThenHelper(int thenNumber, int elseNumber)
 {
 	if (numberOfIncomingEdges(thenNumber) == 1 && numberOfOutgoingEdges(thenNumber) == 1) {
 		if (mFollowers2[thenNumber].keys().contains(elseNumber)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool StructuralControlFlowGenerator::checkWhileLoopHelper(int head, int body)
+{
+	if (numberOfIncomingEdges(body) == 1 && numberOfOutgoingEdges(body) == 1) {
+		int w = mFollowers2[body].keys().first();
+		if (w == head) {
 			return true;
 		}
 	}

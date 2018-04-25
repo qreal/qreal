@@ -73,8 +73,10 @@ private:
 	bool isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
+	bool checkWhileLoopHelper(int head, int body);
 
 //	bool isIfThenElse(const qReal::Id &id, Region &region);
 //	bool isSwitch(const qReal::Id &id, Region &region);
