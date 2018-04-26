@@ -132,22 +132,34 @@ void StructuralControlFlowGenerator::performStructurization()
 		int t = 0;
 		while (t <= mMaxPostOrderTime && mVerteces.size() > 1) {
 			int v = mPostOrder.key(t);
+			if (!v) {
+				qDebug() << "Problem! time = " << t;
+			}
+
 			QSet<int> edgesToRemove = {};
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
 				reduceBlock(edgesToRemove, vertecesRoles);
+				qDebug() << "Block";
 			} else if (isDummySwitch(v, edgesToRemove, vertecesRoles)) {
 				reduceDummySwitch(edgesToRemove, vertecesRoles);
+				qDebug() << "Dummy switch";
 			} else if (isSwitch(v, edgesToRemove, vertecesRoles)) {
 				reduceSwitch(edgesToRemove, vertecesRoles);
+				qDebug() << "Switch";
 			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
 				reduceIfThenElse(edgesToRemove, vertecesRoles);
+				qDebug() << "If then else";
 			} else if (isIfThen(v, edgesToRemove, vertecesRoles)) {
 				reduceIfThen(edgesToRemove, vertecesRoles);
+				qDebug() << "If then";
 			} else if (isInfiniteLoop(v, edgesToRemove, vertecesRoles)) {
 				reduceInfiniteLoop(edgesToRemove, vertecesRoles);
+				qDebug() << "Infinite loop";
 			} else if (isWhileLoop(v, edgesToRemove, vertecesRoles)) {
 				reduceWhileLoop(edgesToRemove, vertecesRoles);
+				qDebug() << "While loop";
+
 			} else {
 				t++;
 				continue;
@@ -166,6 +178,25 @@ void StructuralControlFlowGenerator::performStructurization()
 		qDebug() << "Success!";
 		mSemanticTree->setRoot(new RootNode(mTrees[mStartVertex], mSemanticTree));
 	} else {
+		for (int v : mFollowers2.keys()) {
+			if (mFollowers2[v].size()) {
+				qDebug() << "vertex " << v << " : ";
+				for (const int u : mFollowers2[v].keys()) {
+					//qDebug() << u << " ";
+					int numberOfEdges = mFollowers2[v][u].size();
+					qDebug() << "u = " << u << ", number of edges = " << numberOfEdges;
+				}
+			}
+		}
+
+		for (int v : mPredecessors2.keys()) {
+			if (mPredecessors2[v].size()) {
+				qDebug() << "vertex " << v << " : ";
+				for (const int u : mPredecessors2[v].keys()) {
+					qDebug() << u << " ";
+				}
+			}
+		}
 		mCantBeGeneratedIntoStructuredCode = true;
 		mSemanticTree = nullptr;
 	}
