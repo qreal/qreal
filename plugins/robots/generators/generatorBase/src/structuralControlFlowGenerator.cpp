@@ -400,7 +400,7 @@ bool StructuralControlFlowGenerator::isInfiniteLoop(int v, QSet<int> &edgesToRem
 
 bool StructuralControlFlowGenerator::isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
-	if (numberOfOutgoingEdges(v) != 2) {
+	if (numberOfUniqueOutgoingEdges(v) != 2) {
 		return false;
 	}
 
@@ -418,7 +418,9 @@ bool StructuralControlFlowGenerator::isWhileLoop(int v, QSet<int> &edgesToRemove
 		return false;
 	}
 
-	edgesToRemove.insert(mFollowers2[v][bodyNumber].first());
+	for (int edge : mFollowers2[v][bodyNumber]) {
+		edgesToRemove.insert(edge);
+	}
 	edgesToRemove.insert(mFollowers2[bodyNumber][v].first());
 
 	vertecesRoles["head"] = v;
