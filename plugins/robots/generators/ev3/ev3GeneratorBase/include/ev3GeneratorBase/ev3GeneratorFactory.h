@@ -36,7 +36,7 @@ public:
 	parts::Mailboxes &mailboxes();
 
 	generatorBase::simple::AbstractSimpleGenerator *ifGenerator(const qReal::Id &id
-			, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting) override;
+			, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting, bool fromSwitch, const QString &conditionFromSwitch) override;
 
 	generatorBase::simple::AbstractSimpleGenerator *forLoopGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer) override;

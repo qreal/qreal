@@ -201,9 +201,11 @@ parts::DeviceVariables *GeneratorFactoryBase::deviceVariables() const
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(const Id &id
 		, GeneratorCustomizer &customizer
 		, bool elseIsEmpty
-		, bool needInverting)
+		, bool needInverting
+		, bool fromSwitch
+		, const QString &conditionFromSwitch)
 {
-	return new IfElementGenerator(mRepo, customizer, id, elseIsEmpty, needInverting, this);
+	return new IfElementGenerator(mRepo, customizer, id, elseIsEmpty, needInverting, fromSwitch, conditionFromSwitch, this);
 }
 
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::infiniteLoopGenerator(const Id &id

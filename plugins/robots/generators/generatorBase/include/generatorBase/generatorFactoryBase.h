@@ -94,7 +94,9 @@ public:
 	virtual simple::AbstractSimpleGenerator *ifGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer
 			, bool elseIsEmpty
-			, bool needInverting);
+			, bool needInverting
+			, bool fromSwitch
+			, const QString &conditionFromSwitch);
 
 	/// Returns a pointer to a code generator for infinite loops
 	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(const qReal::Id &id

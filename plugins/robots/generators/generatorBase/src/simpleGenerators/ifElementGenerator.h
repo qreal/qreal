@@ -28,6 +28,8 @@ public:
 		, const qReal::Id &id
 		, bool elseIsEmpty
 		, bool needInverting
+		, bool fromSwitch
+		, const QString &condition
 		, QObject *parent = 0);
 };
 
