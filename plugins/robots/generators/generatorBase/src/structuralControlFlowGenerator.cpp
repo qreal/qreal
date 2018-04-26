@@ -163,15 +163,14 @@ void StructuralControlFlowGenerator::performStructurization()
 			} else {
 				QSet<int> reachUnder;
 				obtainReachUnder(v, reachUnder);
-				if (reachUnder.empty()) {
+				if (reachUnder.isEmpty() || !dealWithReachUnder(v, reachUnder)) {
 					t++;
 					continue;
 				}
-
-				dealWithReachUnder(v, reachUnder);
-
 			}
-			t -= (vertecesRoles.size() - 1);
+			if (vertecesRoles.size()) {
+				t -= (vertecesRoles.size() - 1);
+			}
 			mSomethingChanged = true;
 		}
 	}
@@ -996,39 +995,8 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 			}
 		} else if (semanticsOf(vId) == enums::semantics::switchBlock) {
 
-			bool needInverting = true;
-			QList<qReal::Id> links;
-			bool hasDefaultBranch = false;
-			for (const int edge : mFollowers2[v][bodyNumber]) {
-				links.append(mEdges[edge]);
-				if (mRepo.property(mEdges[edge], "Guard").toString().isEmpty()) {
-					hasDefaultBranch = true;
-				}
-			}
-
-			if (hasDefaultBranch) {
-				needInverting = false;
-				links.clear();
-				for (const int u : mFollowers2[v].keys()) {
-					if (u == bodyNumber) {
-						continue;
-					}
-
-					for (const int edge : mFollowers2[v][u]) {
-						links.append(mEdges[edge]);
-					}
-				}
-			}
-
-			IfNode *ifNode = IfNode::fromSwitchCase(vId, links);
-			SimpleNode *breakNode = SimpleNode::createBreakNode(mSemanticTree);
-			ifNode->thenZone()->appendChild(breakNode);
-
-			if (needInverting) {
-				ifNode->invertCondition();
-			}
-
-			ifNode->setCondition(constructConditionFromSwitch(vId, links));
+			IfNode *ifNode = createIfFromSwitch(v, bodyNumber);
+			ifNode->thenZone()->appendChild(SimpleNode::createBreakNode(mSemanticTree));
 
 			loopNode = new LoopNode(qReal::Id(), mSemanticTree);
 			loopNode->bodyZone()->appendChild(ifNode);
@@ -1037,6 +1005,34 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 	}
 
 	appendVertex(loopNode, edgesToRemove, vertecesRoles);
+}
+
+void StructuralControlFlowGenerator::reduceConditionAndAddBreak(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	int v = vertecesRoles["condition"];
+	int u = vertecesRoles["then"];
+	int w = vertecesRoles["exit"];
+
+	qReal::Id vId = mMapVertexLabel.key(v);
+	IfNode *ifNode = nullptr;
+	if (semanticsOf(vId) == enums::semantics::conditionalBlock) {
+		ifNode = new IfNode(vId, mSemanticTree);
+		if (thenBranchNumber(vId) != u) {
+			ifNode->invertCondition();
+		}
+	} else if (semanticsOf(vId) == enums::semantics::switchBlock) {
+		ifNode = createIfFromSwitch(v, u);
+	} else {
+		qDebug() << "Problem";
+	}
+
+	if (u != w) {
+		ifNode->thenZone()->appendChild(mTrees[u]);
+	}
+
+	ifNode->thenZone()->appendChild(SimpleNode::createBreakNode(mSemanticTree));
+
+	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
 bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachUnder)
@@ -1070,6 +1066,31 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 		}
 	}
 
+	for (const int u : nodesWithExits.keys()) {
+		QSet<int> edgesToRemove;
+
+		int u1 = nodesWithExits[u];
+		for (int edge : mFollowers2[u][u1]) {
+			edgesToRemove.insert(edge);
+		}
+
+		if (nodesWithExits[u] != commonChild) {
+			for (int edge : mFollowers2[u1][commonChild]) {
+				edgesToRemove.insert(edge);
+			}
+		}
+
+		QMap<QString, int> vertecesRoles;
+		vertecesRoles["condition"] = u;
+		vertecesRoles["then"] = nodesWithExits[u];
+		vertecesRoles["exit"] = commonChild;
+		reduceConditionAndAddBreak(edgesToRemove, vertecesRoles);
+	}
+
+	int dirtyNumber = 100500;
+	mFollowers2[v][commonChild].push_back(dirtyNumber);
+	mPredecessors2[commonChild][v].push_back(dirtyNumber);
+
 	return true;
 }
 
@@ -1077,6 +1098,44 @@ int StructuralControlFlowGenerator::thenBranchNumber(const Id &id) const
 {
 	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(id);
 	return mMapVertexLabel[branches.first.target];
+}
+
+IfNode *StructuralControlFlowGenerator::createIfFromSwitch(int v, int bodyNumber)
+{
+	qReal::Id vId = mMapVertexLabel.key(v);
+	bool needInverting = true;
+	QList<qReal::Id> links;
+	bool hasDefaultBranch = false;
+	for (const int edge : mFollowers2[v][bodyNumber]) {
+		links.append(mEdges[edge]);
+		if (mRepo.property(mEdges[edge], "Guard").toString().isEmpty()) {
+			hasDefaultBranch = true;
+		}
+	}
+
+	if (hasDefaultBranch) {
+		needInverting = false;
+		links.clear();
+		for (const int u : mFollowers2[v].keys()) {
+			if (u == bodyNumber) {
+				continue;
+			}
+
+			for (const int edge : mFollowers2[v][u]) {
+				links.append(mEdges[edge]);
+			}
+		}
+	}
+
+	IfNode *ifNode = IfNode::fromSwitchCase(vId, links);
+
+	if (needInverting) {
+		ifNode->invertCondition();
+	}
+
+	ifNode->setCondition(constructConditionFromSwitch(vId, links));
+
+	return ifNode;
 }
 
 QString StructuralControlFlowGenerator::constructConditionFromSwitch(const Id &id, const QList<Id> &links) const

@@ -122,6 +122,7 @@ private:
 	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceSelfLoop(const qReal::Id &id, Region &region);
 	void reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceConditionAndAddBreak(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
@@ -129,6 +130,7 @@ private:
 
 	int thenBranchNumber(const qReal::Id &id) const;
 
+	generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
 
 	QMap<int, bool> mUsed;
