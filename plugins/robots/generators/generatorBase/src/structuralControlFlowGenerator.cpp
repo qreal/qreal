@@ -966,14 +966,25 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 		loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
 	} else {
 		qReal::Id vId = mMapVertexLabel.key(v);
-		if (semanticsOf(vId) == enums::semantics::conditionalBlock
-				|| semanticsOf(vId) == enums::semantics::loopBlock) {
+		if (semanticsOf(vId) == enums::semantics::loopBlock) {
 			loopNode = new LoopNode(vId, mSemanticTree);
 			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
+		} else if (semanticsOf(vId) == enums::semantics::conditionalBlock) {
+			loopNode = new LoopNode(vId, mSemanticTree);
+			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
+			if (thenBranchNumber(vId) != bodyNumber) {
+				loopNode->invertCondition();
+			}
 		} else if (semanticsOf(vId) == enums::semantics::switchBlock) {
 
 		}
 	}
 
 	appendVertex(loopNode, edgesToRemove, vertecesRoles);
+}
+
+int StructuralControlFlowGenerator::thenBranchNumber(const Id &id) const
+{
+	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(id);
+	return mMapVertexLabel[branches.first.target];
 }

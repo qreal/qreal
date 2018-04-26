@@ -125,6 +125,8 @@ private:
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
+	int thenBranchNumber(const qReal::Id &id) const;
+
 	QMap<int, bool> mUsed;
 	bool mSomethingChanged;
 	int mStartVertex;
