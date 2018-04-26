@@ -867,8 +867,7 @@ void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, 
 
 	qReal::Id vId = mMapVertexLabel.key(v);
 	IfNode *ifNode = new IfNode(vId, mSemanticTree);
-	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(vId);
-	if (mMapVertexLabel[branches.first.target] == u2) {
+	if (thenBranchNumber(vId) == u2) {
 		int temp = u1;
 		u1 = u2;
 		u2 = temp;
@@ -893,9 +892,8 @@ void StructuralControlFlowGenerator::reduceIfThen(QSet<int> &edgesToRemove, QMap
 
 	qReal::Id vId = mMapVertexLabel.key(v);
 	IfNode *ifNode = new IfNode(vId, mSemanticTree);
-	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(vId);
 
-	if (mMapVertexLabel[branches.first.target] == elseNumber) {
+	if (thenBranchNumber(vId) == elseNumber) {
 		ifNode->invertCondition();
 	}
 
