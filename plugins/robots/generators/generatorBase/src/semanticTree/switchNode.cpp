@@ -61,7 +61,7 @@ void SwitchNode::transformToSimple()
 QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	if (mIsSimple) {
-		return "";
+		return QString();
 	}
 
 	QString result;

@@ -974,7 +974,18 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 				loopNode->invertCondition();
 			}
 		} else if (semanticsOf(vId) == enums::semantics::switchBlock) {
+			QList<qReal::Id> links;
+			for (const int edge : mFollowers2[v][bodyNumber]) {
+				links.append(mEdges[edge]);
+			}
 
+			IfNode *ifNode = IfNode::fromSwitchCase(vId, links);
+			SimpleNode *breakNode = SimpleNode::createBreakNode(mSemanticTree);
+			ifNode->elseZone()->appendChild(breakNode);
+
+			loopNode = new LoopNode(qReal::Id(), mSemanticTree);
+			loopNode->bodyZone()->appendChild(ifNode);
+			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);
 		}
 	}
 

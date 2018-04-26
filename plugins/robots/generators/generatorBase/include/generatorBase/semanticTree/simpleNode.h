@@ -42,6 +42,8 @@ public:
 	void bindToSyntheticConstruction(SyntheticBlockType type);
 
 	qReal::Id lastId() const;
+
+	static SimpleNode *createBreakNode(QObject *parent);
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 
