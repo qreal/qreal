@@ -127,6 +127,8 @@ private:
 
 	int thenBranchNumber(const qReal::Id &id) const;
 
+	QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
+
 	QMap<int, bool> mUsed;
 	bool mSomethingChanged;
 	int mStartVertex;

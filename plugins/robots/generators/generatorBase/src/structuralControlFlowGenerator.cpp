@@ -1003,13 +1003,7 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 				ifNode->invertCondition();
 			}
 
-			const QString expression = mRepo.property(vId, "Expression").toString();
-			QString condition = "";
-			for (const qReal::Id &link : links) {
-				condition += "(" + expression + " == " + mRepo.property(link, "Guard").toString() + ") || ";
-			}
-			condition.chop(4);
-			ifNode->setCondition(condition);
+			ifNode->setCondition(constructConditionFromSwitch(vId, links));
 
 			loopNode = new LoopNode(qReal::Id(), mSemanticTree);
 			loopNode->bodyZone()->appendChild(ifNode);
@@ -1024,4 +1018,15 @@ int StructuralControlFlowGenerator::thenBranchNumber(const Id &id) const
 {
 	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(id);
 	return mMapVertexLabel[branches.first.target];
+}
+
+QString StructuralControlFlowGenerator::constructConditionFromSwitch(const Id &id, const QList<Id> &links) const
+{
+	const QString expression = mRepo.property(id, "Expression").toString();
+	QString condition = "";
+	for (const qReal::Id &link : links) {
+		condition += "(" + expression + " == " + mRepo.property(link, "Guard").toString() + ") || ";
+	}
+	condition.chop(4);
+	return condition;
 }
