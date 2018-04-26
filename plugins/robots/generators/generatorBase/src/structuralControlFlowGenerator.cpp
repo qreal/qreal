@@ -17,6 +17,8 @@
 
 #include <QtCore/QDebug>
 
+#include <algorithm>
+
 using namespace qReal;
 using namespace generatorBase;
 using namespace semantics;
@@ -737,14 +739,15 @@ void StructuralControlFlowGenerator::updatePostOrder(int newNodeNumber, QSet<int
 		mPostOrder.remove(v);
 	}
 
-	int offset = verteces.size() - 1;
-	for (int v : mPostOrder.keys()) {
-		if (mPostOrder[v] > minimum) {
-			mPostOrder[v] -= offset;
-		}
-	}
+	mMaxPostOrderTime = mMaxPostOrderTime - verteces.size() + 1;
 
-	mMaxPostOrderTime -= offset;
+	QVector<int> times = mPostOrder.values().toVector();
+	std::sort(times.begin(), times.end());
+
+	for (int i = 0; i <= mMaxPostOrderTime; i++) {
+		int v = mPostOrder.key(times[i]);
+		mPostOrder[v] = i;
+	}
 }
 
 void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<int> &verteces)
