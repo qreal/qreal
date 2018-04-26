@@ -130,7 +130,7 @@ void StructuralControlFlowGenerator::performStructurization()
 		mSomethingChanged = false;
 
 		int t = 0;
-		while (t <= mMaxPostOrderTime) {
+		while (t <= mMaxPostOrderTime && mVerteces.size() > 1) {
 			int v = mPostOrder.key(t);
 			QSet<int> edgesToRemove = {};
 			QMap<QString, int> vertecesRoles;
