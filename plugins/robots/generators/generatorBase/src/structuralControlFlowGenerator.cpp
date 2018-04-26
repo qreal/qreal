@@ -1007,6 +1007,14 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 				ifNode->invertCondition();
 			}
 
+			const QString expression = mRepo.property(vId, "Expression").toString();
+			QString condition = "";
+			for (const qReal::Id &link : links) {
+				condition += "(" + expression + " == " + mRepo.property(link, "Guard").toString() + ") || ";
+			}
+			condition.chop(4);
+			ifNode->setCondition(condition);
+
 			loopNode = new LoopNode(qReal::Id(), mSemanticTree);
 			loopNode->bodyZone()->appendChild(ifNode);
 			loopNode->bodyZone()->appendChild(mTrees[bodyNumber]);

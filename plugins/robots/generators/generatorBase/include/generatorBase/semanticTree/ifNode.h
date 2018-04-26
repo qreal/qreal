@@ -35,6 +35,7 @@ public:
 
 	void setFromSwitchCase(bool fromSwitchCase);
 	void setLinks(const QList<qReal::Id> &links);
+	void setCondition(const QString &condition);
 
 	/// Sometimes it is needed to obtain IfNode from switchSemantics
 	static IfNode *fromSwitchCase(const qReal::Id &idBinded, const QList<qReal::Id> &thenLinks, QObject *parent = 0);
@@ -47,6 +48,7 @@ private:
 	ZoneNode *mElseZone;  // Takes ownership
 	bool mIsSimple;
 	bool mFromSwitchCase;
+	QString mCondition;
 	QList<qReal::Id> mLinks;
 };
 

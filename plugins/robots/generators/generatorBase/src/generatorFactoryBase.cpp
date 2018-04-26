@@ -208,6 +208,13 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::ifGenerator(const Id &id
 	return new IfElementGenerator(mRepo, customizer, id, elseIsEmpty, needInverting, fromSwitch, conditionFromSwitch, this);
 }
 
+/*
+AbstractSimpleGenerator *GeneratorFactoryBase::switchConditionGenerator(const Id &id, GeneratorCustomizer &customizer, const QList<Id> thenLinks)
+{
+	return new SwitchConditionGenerator(mRepo, customizer, id, thenLinks);
+}
+*/
+
 simple::AbstractSimpleGenerator *GeneratorFactoryBase::infiniteLoopGenerator(const Id &id
 		, GeneratorCustomizer &customizer)
 {

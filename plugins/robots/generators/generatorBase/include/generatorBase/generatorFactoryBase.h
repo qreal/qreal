@@ -98,6 +98,13 @@ public:
 			, bool fromSwitch
 			, const QString &conditionFromSwitch);
 
+	/*
+	/// Returns a pointer to a code generator for blocks with switch semantics
+	virtual simple::AbstractSimpleGenerator *switchConditionGenerator(const qReal::Id &id
+			, GeneratorCustomizer &customizer
+			, const QList<qReal::Id> thenLinks);
+	*/
+
 	/// Returns a pointer to a code generator for infinite loops
 	virtual simple::AbstractSimpleGenerator *infiniteLoopGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer);
