@@ -28,7 +28,8 @@ IfElementGenerator::IfElementGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, elseIsEmpty ? "conditional/if.t" : "conditional/ifElse.t"
-			, fromSwitch ? QList<Binding *>() << Binding::createStatic("@@CONDITION@@", conditionFromSwitch)
+			, fromSwitch ? QList<Binding *>() << Binding::createStaticConverting("@@CONDITION@@", conditionFromSwitch
+									, customizer.factory()->boolPropertyConverter(id, "Condition", needInverting))
 				: QList<Binding *>() << Binding::createConverting("@@CONDITION@@", "Condition"
 					, customizer.factory()->boolPropertyConverter(id, "Condition", needInverting))
 			, parent)
