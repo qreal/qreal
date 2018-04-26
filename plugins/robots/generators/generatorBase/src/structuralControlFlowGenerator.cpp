@@ -161,8 +161,15 @@ void StructuralControlFlowGenerator::performStructurization()
 				qDebug() << "While loop";
 
 			} else {
-				t++;
-				continue;
+				QSet<int> reachUnder;
+				obtainReachUnder(v, reachUnder);
+				if (reachUnder.empty()) {
+					t++;
+					continue;
+				}
+
+				dealWithReachUnder(v, reachUnder);
+
 			}
 			t -= (vertecesRoles.size() - 1);
 			mSomethingChanged = true;
@@ -670,8 +677,24 @@ void StructuralControlFlowGenerator::dfs(int v, int &currentTime)
 
 void StructuralControlFlowGenerator::obtainReachUnder(int v, QSet<int> &reachUnder)
 {
-	Q_UNUSED(v)
-	Q_UNUSED(reachUnder)
+	QQueue<int> queueForReachUnder;
+
+	for (const int u : mPredecessors2[v].keys()) {
+		if (mDominators[u].contains(v)) {
+			queueForReachUnder.push_back(u);
+		}
+	}
+
+	while (!queueForReachUnder.empty()) {
+		int u = queueForReachUnder.front();
+		queueForReachUnder.pop_front();
+		reachUnder.insert(u);
+		for (const int w : mPredecessors2[u].keys()) {
+			if (mDominators[w].contains(v) && !reachUnder.contains(w)) {
+				queueForReachUnder.push_back(w);
+			}
+		}
+	}
 }
 
 int StructuralControlFlowGenerator::numberOfOutgoingEdges(int v)
@@ -1014,6 +1037,40 @@ void StructuralControlFlowGenerator::reduceWhileLoop(QSet<int> &edgesToRemove, Q
 	}
 
 	appendVertex(loopNode, edgesToRemove, vertecesRoles);
+}
+
+bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachUnder)
+{
+	int commonChild = -1;
+	QSet<int> exits;
+	QMap<int, int> nodesWithExits;
+
+	for (const int u : reachUnder) {
+		for (const int w : mFollowers2[u].keys()) {
+			if (!reachUnder.contains(w)) {
+				if (exits.contains(w)) {
+					if (commonChild != -1 && commonChild != w) {
+						return false;
+					}
+					commonChild = w;
+				}
+				exits.insert(w);
+				nodesWithExits[u] = w;
+			}
+		}
+	}
+
+	for (const int w : nodesWithExits.values()) {
+		if (w == commonChild) {
+			continue;
+		}
+
+		if (numberOfOutgoingEdges(w) >= 2) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 int StructuralControlFlowGenerator::thenBranchNumber(const Id &id) const

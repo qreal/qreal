@@ -125,6 +125,8 @@ private:
 	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
 	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
 
+	bool dealWithReachUnder(int v, QSet<int> &reachUnder);
+
 	int thenBranchNumber(const qReal::Id &id) const;
 
 	QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
