@@ -251,10 +251,6 @@ bool StructuralControlFlowGenerator::isIfThenElse(int v, QSet<int> &edgesToRemov
 			return false;
 		}
 
-		if (numberOfOutgoingEdges(w1) >= 2) {
-			return false;
-		}
-
 		vertecesRoles["condition"] = v;
 		vertecesRoles["a"] = u1;
 		vertecesRoles["b"] = u2;
