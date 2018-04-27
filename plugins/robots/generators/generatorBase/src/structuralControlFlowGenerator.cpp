@@ -941,53 +941,54 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 		}
 	}
 
-	QSet<int> regionToFindCommonChild;
-	for (const int exitNumber : exits) {
-		if (numberOfOutgoingEdges(exitNumber) == 1) {
-			regionToFindCommonChild.insert(exitNumber);
-		} else if (numberOfOutgoingEdges(exitNumber) > 1) {
-			if (commonChild == -1) {
-				// we have found post-cycle execution point
-				commonChild = exitNumber;
-			} else if (commonChild != exitNumber) {
-				// each cycle can have at most 1 point to transfer execution
-				return false;
-			}
-		}
-	}
-
-
-	// assume that one exit point is commonChild
-	if (regionToFindCommonChild.size() == 1) {
-		commonChild = regionToFindCommonChild.toList().first();
-	}
-
-	if (regionToFindCommonChild.size() > 1) {
-		// maybe there's a common child between exits
-
-		for (const int exit : regionToFindCommonChild) {
-			if (numberOfUniqueIncomingEdges(exit) > 1) {
+	if (commonChild == -1) {
+		QSet<int> regionToFindCommonChild;
+		for (const int exitNumber : exits) {
+			if (numberOfOutgoingEdges(exitNumber) == 1) {
+				regionToFindCommonChild.insert(exitNumber);
+			} else if (numberOfOutgoingEdges(exitNumber) > 1) {
 				if (commonChild == -1) {
-					commonChild = exit;
-				} else if (commonChild != exit) {
+					// we have found post-cycle execution point
+					commonChild = exitNumber;
+				} else if (commonChild != exitNumber) {
+					// each cycle can have at most 1 point to transfer execution
 					return false;
 				}
 			}
 		}
 
-		if (commonChild == -1) {
-			for (const int exitNumber : regionToFindCommonChild) {
-				for (const int u2 : mFollowers2[exitNumber].keys()) {
+
+		// assume that one exit point is commonChild
+		if (regionToFindCommonChild.size() == 1) {
+			commonChild = regionToFindCommonChild.toList().first();
+		}
+
+		if (regionToFindCommonChild.size() > 1) {
+			// maybe there's a common child between exits
+
+			for (const int exit : regionToFindCommonChild) {
+				if (numberOfUniqueIncomingEdges(exit) > 1) {
 					if (commonChild == -1) {
-						commonChild = u2;
-					} else if (commonChild != u2) {
+						commonChild = exit;
+					} else if (commonChild != exit) {
 						return false;
+					}
+				}
+			}
+
+			if (commonChild == -1) {
+				for (const int exitNumber : regionToFindCommonChild) {
+					for (const int u2 : mFollowers2[exitNumber].keys()) {
+						if (commonChild == -1) {
+							commonChild = u2;
+						} else if (commonChild != u2) {
+							return false;
+						}
 					}
 				}
 			}
 		}
 	}
-
 
 	for (const int w : nodesWithExits.values()) {
 		if (w == commonChild) {
@@ -1005,25 +1006,28 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 
 		int u1 = nodesWithExits[u];
 		for (int edge : mFollowers2[u][u1]) {
+			if (oneSavedEdge == -1) {
+				oneSavedEdge = edge;
+			}
 			edgesToRemove.insert(edge);
 		}
 
 
 		if (u1 != commonChild) {
 			for (int edge : mFollowers2[u1][commonChild]) {
-				if (oneSavedEdge == -1) {
-					oneSavedEdge = edge;
-				}
-
 				edgesToRemove.insert(edge);
 			}
 		}
 
+		bool needToUpdateHead = u == v;
 		QMap<QString, int> vertecesRoles;
 		vertecesRoles["condition"] = u;
 		vertecesRoles["then"] = nodesWithExits[u];
 		vertecesRoles["exit"] = commonChild;
 		reduceConditionAndAddBreak(edgesToRemove, vertecesRoles);
+		if (needToUpdateHead) {
+			v = mVertecesNumber - 1;
+		}
 	}
 
 	if (commonChild != -1) {
