@@ -498,6 +498,12 @@ void StructuralControlFlowGenerator::findDominators()
 	mDominators[mStartVertex] = { mStartVertex };
 	bool somethingChanged = true;
 
+	for (const int u : mVerteces) {
+		if (u != mStartVertex) {
+			mDominators[u] = mVerteces;
+		}
+	}
+
 	while (somethingChanged) {
 		somethingChanged = false;
 
@@ -505,10 +511,6 @@ void StructuralControlFlowGenerator::findDominators()
 			if (v == mStartVertex)
 				continue;
 
-
-			if (v == 12) {
-				int loop = 90;
-			}
 			QSet<int> doms = mVerteces;
 			QList<int> predecessors = mPredecessors2[v].keys();
 
@@ -522,7 +524,6 @@ void StructuralControlFlowGenerator::findDominators()
 			}
 		}
 	}
-	int finish = 90;
 }
 
 void StructuralControlFlowGenerator::createInitialSemanticNodes()
