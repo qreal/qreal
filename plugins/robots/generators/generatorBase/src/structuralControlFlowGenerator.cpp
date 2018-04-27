@@ -163,11 +163,17 @@ void StructuralControlFlowGenerator::performStructurization()
 			} else {
 				QSet<int> reachUnder;
 				obtainReachUnder(v, reachUnder);
-				if (reachUnder.isEmpty() || !dealWithReachUnder(v, reachUnder)) {
+				bool ok = dealWithReachUnder(v, reachUnder);
+				if (ok) {
+					t = 0;
+					mSomethingChanged = true;
+				} else {
 					t++;
-					continue;
 				}
+
+				continue;
 			}
+
 			if (vertecesRoles.size()) {
 				t -= (vertecesRoles.size() - 1);
 			}
@@ -1032,12 +1038,20 @@ void StructuralControlFlowGenerator::reduceConditionAndAddBreak(QSet<int> &edges
 
 	ifNode->thenZone()->appendChild(SimpleNode::createBreakNode(mSemanticTree));
 
+	if (u == w) {
+		vertecesRoles.remove("then");
+	}
 	vertecesRoles.remove("exit");
+
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
 bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachUnder)
 {
+	if (reachUnder.isEmpty()) {
+		return false;
+	}
+
 	int commonChild = -1;
 	QSet<int> exits;
 	QMap<int, int> nodesWithExits;
@@ -1076,15 +1090,14 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 			edgesToRemove.insert(edge);
 		}
 
-		if (commonChild != -1) {
-			if (nodesWithExits[u] != commonChild) {
-				for (int edge : mFollowers2[u1][commonChild]) {
-					if (oneSavedEdge > -1) {
-						edgesToRemove.insert(edge);
-					} else {
-						oneSavedEdge = edge;
-					}
+
+		if (u1 != commonChild) {
+			for (int edge : mFollowers2[u1][commonChild]) {
+				if (oneSavedEdge == -1) {
+					oneSavedEdge = edge;
 				}
+
+				edgesToRemove.insert(edge);
 			}
 		}
 
