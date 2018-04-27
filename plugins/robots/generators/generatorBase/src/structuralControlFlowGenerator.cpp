@@ -699,6 +699,9 @@ void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<in
 		doms.intersect(mDominators[v]);
 	}
 
+	doms.subtract(verteces);
+	doms.insert(newNodeNumber);
+
 	mDominators[newNodeNumber] = doms;
 
 	// old
