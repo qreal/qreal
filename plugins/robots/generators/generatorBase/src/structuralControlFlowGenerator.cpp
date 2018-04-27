@@ -1032,6 +1032,7 @@ void StructuralControlFlowGenerator::reduceConditionAndAddBreak(QSet<int> &edges
 
 	ifNode->thenZone()->appendChild(SimpleNode::createBreakNode(mSemanticTree));
 
+	vertecesRoles.remove("exit");
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
@@ -1072,16 +1073,18 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 
 		int u1 = nodesWithExits[u];
 		for (int edge : mFollowers2[u][u1]) {
-			if (oneSavedEdge > -1) {
-				edgesToRemove.insert(edge);
-			} else {
-				oneSavedEdge = edge;
-			}
+			edgesToRemove.insert(edge);
 		}
 
-		if (nodesWithExits[u] != commonChild) {
-			for (int edge : mFollowers2[u1][commonChild]) {
-				edgesToRemove.insert(edge);
+		if (commonChild != -1) {
+			if (nodesWithExits[u] != commonChild) {
+				for (int edge : mFollowers2[u1][commonChild]) {
+					if (oneSavedEdge > -1) {
+						edgesToRemove.insert(edge);
+					} else {
+						oneSavedEdge = edge;
+					}
+				}
 			}
 		}
 
@@ -1092,8 +1095,10 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 		reduceConditionAndAddBreak(edgesToRemove, vertecesRoles);
 	}
 
-	mFollowers2[v][commonChild].push_back(oneSavedEdge);
-	mPredecessors2[commonChild][v].push_back(oneSavedEdge);
+	if (commonChild != -1) {
+		mFollowers2[v][commonChild].push_back(oneSavedEdge);
+		mPredecessors2[commonChild][v].push_back(oneSavedEdge);
+	}
 
 	return true;
 }
