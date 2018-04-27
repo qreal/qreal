@@ -1071,6 +1071,11 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 		}
 	}
 
+	// assume that one exit point is commonChild
+	if (exits.size() == 1) {
+		commonChild = nodesWithExits.values().first();
+	}
+
 	for (const int w : nodesWithExits.values()) {
 		if (w == commonChild) {
 			continue;
