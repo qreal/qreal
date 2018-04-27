@@ -1066,12 +1066,17 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 		}
 	}
 
+	int oneSavedEdge = -1;
 	for (const int u : nodesWithExits.keys()) {
 		QSet<int> edgesToRemove;
 
 		int u1 = nodesWithExits[u];
 		for (int edge : mFollowers2[u][u1]) {
-			edgesToRemove.insert(edge);
+			if (oneSavedEdge > -1) {
+				edgesToRemove.insert(edge);
+			} else {
+				oneSavedEdge = edge;
+			}
 		}
 
 		if (nodesWithExits[u] != commonChild) {
@@ -1087,9 +1092,8 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 		reduceConditionAndAddBreak(edgesToRemove, vertecesRoles);
 	}
 
-	int dirtyNumber = 100500;
-	mFollowers2[v][commonChild].push_back(dirtyNumber);
-	mPredecessors2[commonChild][v].push_back(dirtyNumber);
+	mFollowers2[v][commonChild].push_back(oneSavedEdge);
+	mPredecessors2[commonChild][v].push_back(oneSavedEdge);
 
 	return true;
 }
