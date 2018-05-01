@@ -131,6 +131,11 @@ void StructuralControlFlowGenerator::performStructurization()
 
 		int t = 0;
 		while (t <= mMaxPostOrderTime && mVerteces.size() > 1) {
+
+			if (!checkAllStructures()) {
+				bool flag = checkAllStructures();
+			}
+			Q_ASSERT(checkAllStructures());
 			int v = mPostOrder.key(t);
 			if (!v) {
 				qDebug() << "Problem! time = " << t;
@@ -1051,6 +1056,46 @@ int StructuralControlFlowGenerator::thenBranchNumber(const Id &id) const
 {
 	QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(id);
 	return mMapVertexLabel[branches.first.target];
+}
+
+bool StructuralControlFlowGenerator::checkAllStructures()
+{
+	return checkDominators() && checkFollowers() && checkPostorder();
+}
+
+bool StructuralControlFlowGenerator::checkDominators()
+{
+	for (const int u : mDominators.keys()) {
+		QSet<int> testSet = mDominators[u];
+		testSet.subtract(mVerteces);
+		if (!testSet.isEmpty()) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool StructuralControlFlowGenerator::checkPostorder()
+{
+	QSet<int> testSet = mPostOrder.keys().toSet();
+	testSet.subtract(mVerteces);
+	return testSet.isEmpty();
+}
+
+bool StructuralControlFlowGenerator::checkFollowers()
+{
+	for (const int u : mFollowers2.keys()) {
+		QSet<int> testSet = mFollowers2[u].keys().toSet();
+		if (!mVerteces.contains(u) && !testSet.isEmpty()) {
+			return false;
+		}
+
+		if (!testSet.subtract(mVerteces).isEmpty()) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 IfNode *StructuralControlFlowGenerator::createIfFromSwitch(int v, int bodyNumber)

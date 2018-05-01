@@ -130,6 +130,11 @@ private:
 
 	int thenBranchNumber(const qReal::Id &id) const;
 
+	bool checkAllStructures();
+	bool checkDominators();
+	bool checkPostorder();
+	bool checkFollowers();
+
 	generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
 
