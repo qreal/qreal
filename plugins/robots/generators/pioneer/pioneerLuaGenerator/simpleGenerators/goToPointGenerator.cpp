@@ -23,7 +23,7 @@ GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToPoint.t"
+	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToLocalPoint.t"
 		, {
 			Binding::createConverting(
 					"@@X@@"
