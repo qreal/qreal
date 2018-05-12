@@ -142,13 +142,14 @@ private:
 	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
+	bool checkWhileLoopHelper(int head, int body);
 
-	void reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
 	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);

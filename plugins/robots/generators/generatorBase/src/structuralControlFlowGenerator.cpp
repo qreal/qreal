@@ -612,109 +612,6 @@ void StructuralControlFlowGenerator::replace(int newNodeNumber, QSet<int> &edges
 	updateVerteces(newNodeNumber, verteces);
 }
 
-void StructuralControlFlowGenerator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
-{
-	QMap<int, QMap<int, QVector<int>>> followers = mFollowers2;
-
-	for (int v : mVerteces) {
-		for (int u : followers[v].keys()) {
-			for (int edge : followers[v][u]) {
-				if (edgesToRemove.contains(edge)) {
-					//mFollowers2[v][u].remove(edge);
-					//mPredecessors2[u][v].remove(edge);
-					continue;
-				}
-				int newV = v;
-				int newU = u;
-
-				if (verteces.contains(v)) {
-					newV = newNodeNumber;
-				}
-
-				if (verteces.contains(u)) {
-					newU = newNodeNumber;
-				}
-
-				if (newU == newNodeNumber || newV == newNodeNumber) {
-					mFollowers2[newV][newU].push_back(edge);
-					mPredecessors2[newU][newV].push_back(edge);
-				}
-
-			}
-		}
-	}
-
-	// removing old information
-	for (int v : verteces) {
-		mFollowers2.remove(v);
-		mPredecessors2.remove(v);
-	}
-
-	// removing information from actual verteces to old ones
-	for (int v : mVerteces) {
-		if (verteces.contains(v))
-			continue;
-
-		for (int u : verteces) {
-			mFollowers2[v].remove(u);
-			mPredecessors2[v].remove(u);
-		}
-	}
-}
-
-void StructuralControlFlowGenerator::updatePostOrder(int newNodeNumber, QSet<int> &verteces)
-{
-	int minimum = -1;
-	for (int v : verteces) {
-		if (minimum == -1 || minimum > mPostOrder[v]) {
-			minimum = mPostOrder[v];
-		}
-	}
-
-	mPostOrder[newNodeNumber] = minimum;
-
-	for (int v : verteces) {
-		mPostOrder.remove(v);
-	}
-
-	mMaxPostOrderTime = mMaxPostOrderTime - verteces.size() + 1;
-
-	QVector<int> times = mPostOrder.values().toVector();
-	std::sort(times.begin(), times.end());
-
-	for (int i = 0; i <= mMaxPostOrderTime; i++) {
-		int v = mPostOrder.key(times[i]);
-		mPostOrder[v] = i;
-	}
-}
-
-void StructuralControlFlowGenerator::updateDominators(int newNodeNumber, QSet<int> &verteces)
-{
-	// others
-	for (int v : mPostOrder.keys()) {
-		if (mDominators[v].intersects(verteces)) {
-			mDominators[v].subtract(verteces);
-			mDominators[v].insert(newNodeNumber);
-		}
-	}
-
-	// new
-	QSet<int> doms = mVerteces;
-	for (int v : verteces) {
-		doms.intersect(mDominators[v]);
-	}
-
-	doms.subtract(verteces);
-	doms.insert(newNodeNumber);
-
-	mDominators[newNodeNumber] = doms;
-
-	// old
-	for (int v : verteces) {
-		mDominators.remove(v);
-	}
-}
-
 void StructuralControlFlowGenerator::updateVerteces(int newNodeNumber, QSet<int> &verteces)
 {
 	if (mVerteces.contains(mStartVertex)) {
@@ -751,21 +648,6 @@ void StructuralControlFlowGenerator::addEdge(QMap<int, QMap<int, QVector<int> > 
 	graph[v][u].push_back(mEdgesNumber);
 	mEdges[mEdgesNumber] = edge;
 	mEdgesNumber++;
-}
-
-void StructuralControlFlowGenerator::reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
-{
-	// it is supposed that v, u are Actions
-	int v = vertecesRoles["block1"];
-	int u = vertecesRoles["block2"];
-	SemanticNode *block1 = mTrees[v];
-	SemanticNode *block2 = mTrees[u];
-
-	ZoneNode *block = new ZoneNode(mSemanticTree);
-	block->appendChild(block1);
-	block->appendChild(block2);
-
-	appendVertex(block, edgesToRemove, vertecesRoles);
 }
 
 void StructuralControlFlowGenerator::reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)

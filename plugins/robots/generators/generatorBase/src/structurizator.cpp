@@ -165,22 +165,22 @@ utils::Node *Structurizator::performStructurization()
 			QSet<int> edgesToRemove = {};
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
-				reduceBlock(v, edgesToRemove, vertecesRoles);
+				reduceBlock(edgesToRemove, vertecesRoles);
 				qDebug() << "Block";
 			} else if (isSwitch(v, edgesToRemove, vertecesRoles)) {
-				reduceSwitch(v, edgesToRemove, vertecesRoles);
+				reduceSwitch(edgesToRemove, vertecesRoles);
 				qDebug() << "Switch";
 			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
-				reduceIfThenElse(v, edgesToRemove, vertecesRoles);
+				reduceIfThenElse(edgesToRemove, vertecesRoles);
 				qDebug() << "If then else";
 			} else if (isIfThen(v, edgesToRemove, vertecesRoles)) {
-				reduceIfThen(v, edgesToRemove, vertecesRoles);
+				reduceIfThen(edgesToRemove, vertecesRoles);
 				qDebug() << "If then";
 			} else if (isInfiniteLoop(v, edgesToRemove, vertecesRoles)) {
-				reduceInfiniteLoop(v, edgesToRemove, vertecesRoles);
+				reduceInfiniteLoop(edgesToRemove, vertecesRoles);
 				qDebug() << "Infinite loop";
 			} else if (isWhileLoop(v, edgesToRemove, vertecesRoles)) {
-				reduceWhileLoop(v, edgesToRemove, vertecesRoles);
+				reduceWhileLoop(edgesToRemove, vertecesRoles);
 				qDebug() << "While loop";
 
 			} else {
@@ -194,7 +194,7 @@ utils::Node *Structurizator::performStructurization()
 //					t++;
 //				}
 
-//				continue;
+				continue;
 			}
 
 			if (vertecesRoles.size()) {
@@ -204,6 +204,11 @@ utils::Node *Structurizator::performStructurization()
 		}
 	}
 
+	if (mTrees.size() == 1) {
+		return mTrees[mStartVertex];
+	}
+
+	return nullptr;
 }
 
 bool Structurizator::isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
@@ -234,9 +239,10 @@ bool Structurizator::isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString,
 		return false;
 	}
 
-	if (outgoingEdgesNumber(u1) == 0 && outgoingEdgesNumber(u2) == 0 ||
-				outgoingEdgesNumber(u1) == 1 && outgoingEdgesNumber(u2) == 1 &&
-				mFollowers[u1].first() == mFollowers[u2].first()) {
+	if ((outgoingEdgesNumber(u1) == 0 && outgoingEdgesNumber(u2) == 0) ||
+				(outgoingEdgesNumber(u1) == 1 && outgoingEdgesNumber(u2) == 1 &&
+				mFollowers[u1].first() == mFollowers[u2].first())) {
+
 		vertecesRoles["condition"] = v;
 		vertecesRoles["then"] = u1;
 		vertecesRoles["else"] = u2;
@@ -321,6 +327,51 @@ bool Structurizator::isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int
 	return true;
 }
 
+bool Structurizator::isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (outgoingEdgesNumber(v) != 1) {
+		return false;
+	}
+
+	int u = mFollowers[v].first();
+	if (u != v) {
+		return false;
+	}
+
+	vertecesRoles["body"] = v;
+	edgesToRemove.insert(mMapEdgeNumberToVerteces[QPair<int, int>(v, v)]);
+	return true;
+}
+
+bool Structurizator::isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (outgoingEdgesNumber(v) != 2) {
+		return false;
+	}
+
+	int u1 = mFollowers[v].first();
+	int u2 = mFollowers[v].last();
+
+	int bodyNumber = -1;
+	if (checkWhileLoopHelper(v, u1)) {
+		bodyNumber = u1;
+	} else if (checkWhileLoopHelper(v, u2)) {
+		bodyNumber = u2;
+	}
+
+	if (bodyNumber == -1) {
+		return false;
+	}
+
+	edgesToRemove = { mMapEdgeNumberToVerteces[QPair<int, int>(v, bodyNumber)],
+							mMapEdgeNumberToVerteces[QPair<int, int>(bodyNumber, v)] };
+
+	vertecesRoles["head"] = v;
+	vertecesRoles["body"] = bodyNumber;
+
+	return true;
+}
+
 bool Structurizator::checkIfThenHelper(int thenNumber, int exitNumber)
 {
 	if (incomingEdgesNumber(thenNumber) == 1 && outgoingEdgesNumber(thenNumber) == 1) {
@@ -332,29 +383,42 @@ bool Structurizator::checkIfThenHelper(int thenNumber, int exitNumber)
 	return false;
 }
 
-void Structurizator::reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+bool Structurizator::checkWhileLoopHelper(int head, int body)
+{
+	if (incomingEdgesNumber(body) == 1 && outgoingEdgesNumber(body) == 1) {
+		int w = mFollowers[body].first();
+		if (w == head) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Structurizator::reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 	BlockNode *block = new BlockNode(mTrees[vertecesRoles["block1"]], mTrees[vertecesRoles["block2"]], this);
 
 	appendVertex(block, edgesToRemove, vertecesRoles);
 }
 
-void Structurizator::reduceIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void Structurizator::reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
-	utils::IfNode *ifNode = new IfNode(mTrees[v], mTrees[vertecesRoles["then"]], mTrees[vertecesRoles["else"]], this);
+	utils::IfNode *ifNode = new IfNode(mTrees[vertecesRoles["condition"]], mTrees[vertecesRoles["then"]], mTrees[vertecesRoles["else"]], this);
 
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
-void Structurizator::reduceIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void Structurizator::reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
-	utils::IfNode *ifNode = new IfNode(mTrees[v], mTrees[vertecesRoles["then"]], nullptr, this);
+	utils::IfNode *ifNode = new IfNode(mTrees[vertecesRoles["condition"]], mTrees[vertecesRoles["then"]], nullptr, this);
 
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
-void Structurizator::reduceSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void Structurizator::reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
+	int v = vertecesRoles["head"];
 	QSet<int> otherVerteces = vertecesRoles.values().toSet();
 	otherVerteces.remove(v);
 
@@ -365,19 +429,21 @@ void Structurizator::reduceSwitch(int v, QSet<int> &edgesToRemove, QMap<QString,
 
 	utils::SwitchNode *switchNode = new SwitchNode(mTrees[v], branches);
 
-
-
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);
 }
 
-void Structurizator::reduceInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void Structurizator::reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
+	SelfLoopNode *loopNode = new SelfLoopNode(mTrees[vertecesRoles["body"]], this);
 
+	appendVertex(loopNode, edgesToRemove, vertecesRoles);
 }
 
-void Structurizator::reduceWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+void Structurizator::reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
+	WhileNode *whileNode = new WhileNode(mTrees[vertecesRoles["head"]], mTrees[vertecesRoles["body"]], this);
 
+	appendVertex(whileNode, edgesToRemove, vertecesRoles);
 }
 
 void Structurizator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
