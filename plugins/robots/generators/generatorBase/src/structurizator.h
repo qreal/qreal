@@ -144,6 +144,13 @@ private:
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
 	bool checkWhileLoopHelper(int head, int body);
 
+	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit);
+	bool isHeadOfCycle(int v, QSet<int> &reachUnder);
+
+
+	bool findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit);
+	bool checkCommonExit(int commonExit, const QMap<int, int> &nodesWithExits);
+
 	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);

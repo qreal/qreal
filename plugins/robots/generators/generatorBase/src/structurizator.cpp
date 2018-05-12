@@ -1,5 +1,7 @@
 #include "structurizator.h"
 
+#include <QQueue>
+
 using namespace generatorBase;
 using namespace utils;
 
@@ -162,6 +164,7 @@ utils::Node *Structurizator::performStructurization()
 				qDebug() << "Problem! time = " << t;
 			}
 
+			QSet<int> reachUnder;
 			QSet<int> edgesToRemove = {};
 			QMap<QString, int> vertecesRoles;
 			if (isBlock(v, edgesToRemove, vertecesRoles)) {
@@ -183,9 +186,12 @@ utils::Node *Structurizator::performStructurization()
 				reduceWhileLoop(edgesToRemove, vertecesRoles);
 				qDebug() << "While loop";
 
-			} else {
-//				QSet<int> reachUnder;
-//				obtainReachUnder(v, reachUnder);
+			} else if (isHeadOfCycle(v, reachUnder)) {
+
+				QMap<int, int> nodesWithExits;
+				int commonExit = -1;
+				bool isCycle = isCycleWithBreaks(v, reachUnder, nodesWithExits, commonExit);
+
 //				bool ok = dealWithReachUnder(v, reachUnder);
 //				if (ok) {
 //					t = 0;
@@ -395,6 +401,178 @@ bool Structurizator::checkWhileLoopHelper(int head, int body)
 	return false;
 }
 
+bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit)
+{
+	bool result = findCommonExit(reachUnder, nodesWithExits, commonExit);
+	if (!result) {
+		return false;
+	}
+
+	if (!checkCommonExit(commonExit, nodesWithExits)) {
+		return false;
+	}
+
+
+
+
+	return true;
+
+	/*
+	for (const int w : nodesWithExits.values()) {
+		if (w == commonExit) {
+			continue;
+		}
+
+		if (numberOfOutgoingEdges(w) >= 2) {
+			return false;
+		}
+	}
+
+	int oneSavedEdge = -1;
+	for (const int u : nodesWithExits.keys()) {
+		QSet<int> edgesToRemove;
+
+		int u1 = nodesWithExits[u];
+		for (int edge : mFollowers2[u][u1]) {
+			if (oneSavedEdge == -1) {
+				oneSavedEdge = edge;
+			}
+			edgesToRemove.insert(edge);
+		}
+
+
+		if (u1 != commonExit) {
+			for (int edge : mFollowers2[u1][commonExit]) {
+				edgesToRemove.insert(edge);
+			}
+		}
+
+		bool needToUpdateHead = u == v;
+		QMap<QString, int> vertecesRoles;
+		vertecesRoles["condition"] = u;
+		vertecesRoles["then"] = nodesWithExits[u];
+		vertecesRoles["exit"] = commonExit;
+		reduceConditionAndAddBreak(edgesToRemove, vertecesRoles);
+		if (needToUpdateHead) {
+			v = mVertecesNumber - 1;
+		}
+	}
+
+	if (commonExit != -1) {
+		mFollowers2[v][commonExit].push_back(oneSavedEdge);
+		mPredecessors2[commonExit][v].push_back(oneSavedEdge);
+	}
+
+	return true;
+	*/
+
+}
+
+bool Structurizator::isHeadOfCycle(int v, QSet<int> &reachUnder)
+{
+	QQueue<int> queueForReachUnder;
+
+	for (const int u : mPredecessors[v]) {
+		if (mDominators[u].contains(v)) {
+			queueForReachUnder.push_back(u);
+		}
+	}
+
+	while (!queueForReachUnder.empty()) {
+		int u = queueForReachUnder.front();
+		queueForReachUnder.pop_front();
+		reachUnder.insert(u);
+		for (const int w : mPredecessors[u]) {
+			if (mDominators[w].contains(v) && !reachUnder.contains(w)) {
+				queueForReachUnder.push_back(w);
+			}
+		}
+	}
+
+	return !reachUnder.isEmpty();
+}
+
+bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit)
+{
+	commonExit = -1;
+	QSet<int> exits;
+
+	for (const int u : reachUnder) {
+		for (const int w : mFollowers[u]) {
+			if (!reachUnder.contains(w)) {
+				if (exits.contains(w)) {
+					if (commonExit != -1 && commonExit != w) {
+						return false;
+					}
+					commonExit = w;
+				}
+				exits.insert(w);
+				nodesWithExits[u] = w;
+			}
+		}
+	}
+
+	if (commonExit != -1) {
+		return true;
+	}
+
+	QList<int> regionToFindCommonChild;
+	for (const int exitNumber : exits) {
+		if (outgoingEdgesNumber(exitNumber) == 1) {
+			regionToFindCommonChild.append(exitNumber);
+		} else if (outgoingEdgesNumber(exitNumber) > 1) {
+			if (commonExit == -1) {
+				// we have found post-cycle execution point
+				commonExit = exitNumber;
+			} else if (commonExit != exitNumber) {
+				// each cycle can have at most 1 point to transfer execution
+				return false;
+			}
+		}
+	}
+
+	if (commonExit != -1) {
+		return true;
+	}
+
+	// assume that one exit point is commonChild
+	if (regionToFindCommonChild.size() == 1) {
+		commonExit = regionToFindCommonChild.first();
+		return true;
+	}
+
+	for (const int exitNumber : regionToFindCommonChild) {
+		for (const int postExit : mFollowers[exitNumber]) {
+			if (commonExit == -1) {
+				commonExit = postExit;
+			} else if (commonExit != postExit) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Structurizator::checkCommonExit(int commonExit, const QMap<int, int> &nodesWithExits)
+{
+	for (const int exit : nodesWithExits.values()) {
+		if (commonExit == exit) {
+			continue;
+		}
+
+		if (incomingEdgesNumber(exit) != 1 || outgoingEdgesNumber(exit) >= 2) {
+			return false;
+		}
+
+		if (outgoingEdgesNumber(exit) == 1 && commonExit != mFollowers[exit].first()) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void Structurizator::reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 	BlockNode *block = new BlockNode(mTrees[vertecesRoles["block1"]], mTrees[vertecesRoles["block2"]], this);
@@ -470,16 +648,8 @@ void Structurizator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QS
 				continue;
 			}
 
-			int newV = v;
-			int newU = u;
-
-			if (verteces.contains(v)) {
-				newV = newNodeNumber;
-			}
-
-			if (verteces.contains(u)) {
-				newU = newNodeNumber;
-			}
+			int newV = verteces.contains(v) ? newNodeNumber : v;
+			int newU = verteces.contains(u) ? newNodeNumber : u;
 
 			if (newU == newNodeNumber || newV == newNodeNumber) {
 				// removing old information
@@ -498,7 +668,6 @@ void Structurizator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QS
 				// removing old edge
 				mMapEdgeNumberToVerteces.remove(p);
 			}
-
 		}
 	}
 
