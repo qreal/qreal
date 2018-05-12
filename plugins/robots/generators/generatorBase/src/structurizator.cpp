@@ -1,6 +1,7 @@
 #include "structurizator.h"
 
 using namespace generatorBase;
+using namespace utils;
 
 utils::SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
 	: Node(parent)
@@ -162,27 +163,24 @@ utils::Node *Structurizator::performStructurization()
 			}
 
 			QSet<int> edgesToRemove = {};
-			QSet<int> verteces;
-			if (isBlock(v, edgesToRemove, verteces)) {
-				reduceBlock(v, edgesToRemove, verteces);
+			QMap<QString, int> vertecesRoles;
+			if (isBlock(v, edgesToRemove, vertecesRoles)) {
+				reduceBlock(v, edgesToRemove, vertecesRoles);
 				qDebug() << "Block";
-			} else if (isDummySwitch(v, edgesToRemove, verteces)) {
-				reduceDummySwitch(v, edgesToRemove, verteces);
-				qDebug() << "Dummy switch";
-			} else if (isSwitch(v, edgesToRemove, verteces)) {
-				reduceSwitch(v, edgesToRemove, verteces);
+			} else if (isSwitch(v, edgesToRemove, vertecesRoles)) {
+				reduceSwitch(v, edgesToRemove, vertecesRoles);
 				qDebug() << "Switch";
-			} else if (isIfThenElse(v, edgesToRemove, verteces)) {
-				reduceIfThenElse(v, edgesToRemove, verteces);
+			} else if (isIfThenElse(v, edgesToRemove, vertecesRoles)) {
+				reduceIfThenElse(v, edgesToRemove, vertecesRoles);
 				qDebug() << "If then else";
-			} else if (isIfThen(v, edgesToRemove, verteces)) {
-				reduceIfThen(v, edgesToRemove, verteces);
+			} else if (isIfThen(v, edgesToRemove, vertecesRoles)) {
+				reduceIfThen(v, edgesToRemove, vertecesRoles);
 				qDebug() << "If then";
-			} else if (isInfiniteLoop(v, edgesToRemove, verteces)) {
-				reduceInfiniteLoop(v, edgesToRemove, verteces);
+			} else if (isInfiniteLoop(v, edgesToRemove, vertecesRoles)) {
+				reduceInfiniteLoop(v, edgesToRemove, vertecesRoles);
 				qDebug() << "Infinite loop";
-			} else if (isWhileLoop(v, edgesToRemove, verteces)) {
-				reduceWhileLoop(v, edgesToRemove, verteces);
+			} else if (isWhileLoop(v, edgesToRemove, vertecesRoles)) {
+				reduceWhileLoop(v, edgesToRemove, vertecesRoles);
 				qDebug() << "While loop";
 
 			} else {
@@ -199,8 +197,8 @@ utils::Node *Structurizator::performStructurization()
 //				continue;
 			}
 
-			if (verteces.size()) {
-				t -= (verteces.size() - 1);
+			if (vertecesRoles.size()) {
+				t -= (vertecesRoles.size() - 1);
 			}
 			somethingChanged = true;
 		}
@@ -208,39 +206,301 @@ utils::Node *Structurizator::performStructurization()
 
 }
 
-void Structurizator::reduceBlock(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+bool Structurizator::isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (outgoingEdgesNumber(v) != 1) {
+		return false;
+	}
+
+	int u = mFollowers[v].first();
+	if (outgoingEdgesNumber(u) <= 1 && incomingEdgesNumber(u) == 1) {
+		vertecesRoles["block1"] = v;
+		vertecesRoles["block2"] = u;
+
+		edgesToRemove = { mMapEdgeNumberToVerteces[QPair<int, int>(v, u)] };
+		return true;
+	}
+}
+
+bool Structurizator::isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (outgoingEdgesNumber(v) != 2) {
+		return false;
+	}
+
+	int u1 = mFollowers[v].first();
+	int u2 = mFollowers[v].last();
+	if (incomingEdgesNumber(u1) != 1 || incomingEdgesNumber(u2) != 1) {
+		return false;
+	}
+
+	if (outgoingEdgesNumber(u1) == 0 && outgoingEdgesNumber(u2) == 0 ||
+				outgoingEdgesNumber(u1) == 1 && outgoingEdgesNumber(u2) == 1 &&
+				mFollowers[u1].first() == mFollowers[u2].first()) {
+		vertecesRoles["condition"] = v;
+		vertecesRoles["then"] = u1;
+		vertecesRoles["else"] = u2;
+		QPair<int, int> p1 = QPair<int, int>(v, u1);
+		QPair<int, int> p2 = QPair<int, int>(v, u2);
+		edgesToRemove += {mMapEdgeNumberToVerteces[p1], mMapEdgeNumberToVerteces[p2]};
+		return true;
+	}
+
+	return false;
+}
+
+bool Structurizator::isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (outgoingEdgesNumber(v) != 2) {
+		return false;
+	}
+
+	int u1 = mFollowers[v].first();
+	int u2 = mFollowers[v].last();
+
+	int thenNumber = -1;
+	int elseNumber = -1;
+	if (checkIfThenHelper(u1, u2)) {
+		thenNumber = u1;
+		elseNumber = u2;
+	} else if (checkIfThenHelper(u2, u1)) {
+		thenNumber = u2;
+		elseNumber = u1;
+	}
+
+	if (thenNumber == -1) {
+		return false;
+	}
+
+	vertecesRoles["condition"] = v;
+	vertecesRoles["then"] = thenNumber;
+	vertecesRoles["else"] = elseNumber;
+
+	edgesToRemove = {mMapEdgeNumberToVerteces[QPair<int, int>(v, u1)],
+					 mMapEdgeNumberToVerteces[QPair<int, int>(v, u2)]};
+
+	return true;
+}
+
+bool Structurizator::isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	if (mFollowers[v].size() < 2) {
+		return false;
+	}
+
+	int exit = -1;
+	QSet<int> verteces = {};
+	QSet<int> edges = {};
+	for (const int u : mFollowers[v]) {
+		if (incomingEdgesNumber(u) != 1 || outgoingEdgesNumber(u) >= 2) {
+			return false;
+		}
+
+		if (outgoingEdgesNumber(u) == 1) {
+			int m = mFollowers[u].first();
+			if (exit == -1) {
+				exit = m;
+			} else if (m != exit) {
+				return false;
+			}
+		}
+
+		verteces.insert(u);
+		edges.insert(mMapEdgeNumberToVerteces[QPair<int, int>(v, u)]);
+	}
+
+	vertecesRoles["head"] = v;
+	edgesToRemove = edges;
+
+	int cnt = 1;
+	for (int u : verteces) {
+		vertecesRoles[QString::number(cnt)] = u;
+		cnt++;
+	}
+
+	return true;
+}
+
+bool Structurizator::checkIfThenHelper(int thenNumber, int exitNumber)
+{
+	if (incomingEdgesNumber(thenNumber) == 1 && outgoingEdgesNumber(thenNumber) == 1) {
+		if (mFollowers[thenNumber].contains(exitNumber)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Structurizator::reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	BlockNode *block = new BlockNode(mTrees[vertecesRoles["block1"]], mTrees[vertecesRoles["block2"]], this);
+
+	appendVertex(block, edgesToRemove, vertecesRoles);
+}
+
+void Structurizator::reduceIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	utils::IfNode *ifNode = new IfNode(mTrees[v], mTrees[vertecesRoles["then"]], mTrees[vertecesRoles["else"]], this);
+
+	appendVertex(ifNode, edgesToRemove, vertecesRoles);
+}
+
+void Structurizator::reduceIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	utils::IfNode *ifNode = new IfNode(mTrees[v], mTrees[vertecesRoles["then"]], nullptr, this);
+
+	appendVertex(ifNode, edgesToRemove, vertecesRoles);
+}
+
+void Structurizator::reduceSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	QSet<int> otherVerteces = vertecesRoles.values().toSet();
+	otherVerteces.remove(v);
+
+	QList<Node *> branches;
+	for (const int u : otherVerteces) {
+		branches.append(mTrees[u]);
+	}
+
+	utils::SwitchNode *switchNode = new SwitchNode(mTrees[v], branches);
+
+
+
+	appendVertex(switchNode, edgesToRemove, vertecesRoles);
+}
+
+void Structurizator::reduceInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 
 }
 
-void Structurizator::reduceIfThenElse(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+void Structurizator::reduceWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
 
 }
 
-void Structurizator::reduceIfThen(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+void Structurizator::replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
 {
-
+	updateEdges(newNodeNumber, edgesToRemove, verteces);
+	updatePostOrder(newNodeNumber, verteces);
+	updateDominators(newNodeNumber, verteces);
+	updateVerteces(newNodeNumber, verteces);
 }
 
-void Structurizator::reduceSwitch(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+void Structurizator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces)
 {
+	QMap<int, QVector<int> > followers = mFollowers;
 
+	for (int v : mVerteces) {
+		for (int u : followers[v]) {
+
+			QPair<int, int> p = QPair<int, int>(v, u);
+			int edgeNumber = mMapEdgeNumberToVerteces[p];
+
+			if (edgesToRemove.contains(edgeNumber)) {
+				mEdges.remove(mMapEdgeNumberToVerteces[p]);
+				mMapEdgeNumberToVerteces.remove(p);
+				continue;
+			}
+
+			int newV = v;
+			int newU = u;
+
+			if (verteces.contains(v)) {
+				newV = newNodeNumber;
+			}
+
+			if (verteces.contains(u)) {
+				newU = newNodeNumber;
+			}
+
+			if (newU == newNodeNumber || newV == newNodeNumber) {
+				// removing old information
+				mFollowers[v].remove(u);
+				mPredecessors[u].remove(v);
+
+				// inserting new information
+				if (!mFollowers[newV].contains(newU)) {
+					mFollowers[newV].push_back(newU);
+					mPredecessors[newU].push_back(newV);
+
+					// inserting edge
+					mMapEdgeNumberToVerteces[QPair<int, int>(newV, newU)] = mMapEdgeNumberToVerteces[p];
+				}
+
+				// removing old edge
+				mMapEdgeNumberToVerteces.remove(p);
+			}
+
+		}
+	}
+
+	// removing old information
+	for (int v : verteces) {
+		mFollowers.remove(v);
+		mPredecessors.remove(v);
+	}
 }
 
-void Structurizator::reduceDummySwitch(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+void Structurizator::updatePostOrder(int newNodeNumber, QSet<int> &verteces)
 {
+	int minimum = -1;
+	for (int v : verteces) {
+		if (minimum == -1 || minimum > mPostOrder[v]) {
+			minimum = mPostOrder[v];
+		}
+	}
 
+	mPostOrder[newNodeNumber] = minimum;
+
+	for (int v : verteces) {
+		mPostOrder.remove(v);
+	}
+
+	mMaxPostOrderTime = mMaxPostOrderTime - verteces.size() + 1;
+
+	QVector<int> times = mPostOrder.values().toVector();
+	std::sort(times.begin(), times.end());
+
+	for (int i = 0; i <= mMaxPostOrderTime; i++) {
+		int v = mPostOrder.key(times[i]);
+		mPostOrder[v] = i;
+	}
 }
 
-void Structurizator::reduceInfiniteLoop(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+void Structurizator::updateDominators(int newNodeNumber, QSet<int> &verteces)
 {
+	// others
+	for (int v : mPostOrder.keys()) {
+		if (mDominators[v].intersects(verteces)) {
+			mDominators[v].subtract(verteces);
+			mDominators[v].insert(newNodeNumber);
+		}
+	}
 
+	// new
+	QSet<int> doms = mVerteces;
+	for (int v : verteces) {
+		doms.intersect(mDominators[v]);
+	}
+
+	doms.subtract(verteces);
+	doms.insert(newNodeNumber);
+
+	mDominators[newNodeNumber] = doms;
+
+	// old
+	for (int v : verteces) {
+		mDominators.remove(v);
+	}
 }
 
-void Structurizator::reduceWhileLoop(int v, QSet<int> &edgesToRemove, QSet<int> &verteces)
+void Structurizator::updateVerteces(int newNodeNumber, QSet<int> &verteces)
 {
-
+	mStartVertex = mVerteces.contains(mStartVertex) ? newNodeNumber : mStartVertex;
+	mVerteces.subtract(verteces);
+	mVerteces.insert(newNodeNumber);
 }
 
 void Structurizator::createGraph()
@@ -251,11 +511,11 @@ void Structurizator::createGraph()
 			int u = mMapIdToInt[mRepo.otherEntityFromLink(link, vertex)];
 
 			if (!mFollowers[v].contains(u)) {
-				mFollowers[v].insert(u);
-				mPredecessors[u].insert(v);
+				mFollowers[v].push_back(u);
+				mPredecessors[u].push_back(v);
 
 				mEdges.insert(mEdgesNumber);
-				mMapEdgeNumberToVerteces[mEdgesNumber] = QPair<int, int>(v, u);
+				mMapEdgeNumberToVerteces[QPair<int, int>(v, u)] = mEdgesNumber;
 				mEdgesNumber++;
 			}
 		}
@@ -335,4 +595,24 @@ void Structurizator::dfs(int v, int currentTime, QMap<int, bool> &used)
 
 	mPostOrder[v] = currentTime;
 	currentTime++;
+}
+
+void Structurizator::appendVertex(Node *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
+{
+	mTrees[mVertecesNumber] = node;
+	mVerteces.insert(mVertecesNumber);
+
+	QSet<int> verteces = vertecesRoles.values().toSet();
+	replace(mVertecesNumber, edgesToRemove, verteces);
+	mVertecesNumber++;
+}
+
+int Structurizator::outgoingEdgesNumber(int v) const
+{
+	return mFollowers[v].size();
+}
+
+int Structurizator::incomingEdgesNumber(int v) const
+{
+	return mPredecessors[v].size();
 }

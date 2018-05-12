@@ -133,25 +133,31 @@ public:
 
 private:
 
-
 	/// methods to identify patterns for structural analysis
-	bool isBlock(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	bool isIfThen(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	bool isSwitch(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	bool isDummySwitch(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
-	void reduceBlock(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void reduceIfThenElse(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void reduceIfThen(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void reduceSwitch(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void reduceDummySwitch(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void reduceInfiniteLoop(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void reduceWhileLoop(int v, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	bool checkIfThenHelper(int thenNumber, int elseNumber);
 
+	void reduceBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 
+	/// Replacing some verteces with a new one and proper maintenance of edges
+	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
+	void updateDominators(int newNodeNumber, QSet<int> &verteces);
+	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
+
+	/// methods used before structurization process
 	void createGraph();
 	void calculateDominators();
 	void findStartVertex();
@@ -159,15 +165,19 @@ private:
 	void createInitialNodesForIds();
 	void dfs(int v, int currentTime, QMap<int, bool> &used);
 
+	void appendVertex(utils::Node *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+
+	int outgoingEdgesNumber(int v) const;
+	int incomingEdgesNumber(int v) const;
 
 	QMap<qReal::Id, int> mMapIdToInt;
 
-	QMap<int, QPair<int, int> > mMapEdgeNumberToVerteces;
+	QMap<QPair<int, int>, int> mMapEdgeNumberToVerteces;
 	QSet<int> mEdges;
 
 	QSet<int> mVerteces;
-	QMap<int, QSet<int> > mFollowers;
-	QMap<int, QSet<int> > mPredecessors;
+	QMap<int, QVector<int> > mFollowers;
+	QMap<int, QVector<int> > mPredecessors;
 	QMap<int, QSet<int> > mDominators;
 	QMap<int, int> mPostOrder;
 
