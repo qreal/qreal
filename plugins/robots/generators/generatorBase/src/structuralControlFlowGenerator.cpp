@@ -983,8 +983,6 @@ bool StructuralControlFlowGenerator::dealWithReachUnder(int v, QSet<int> &reachU
 			for (const int exit : regionToFindCommonChild) {
 				if (numberOfUniqueIncomingEdges(exit) > 1) {
 					if (commonChild == -1) {
-						commonChild = exit;
-					} else if (commonChild != exit) {
 						return false;
 					}
 				}
