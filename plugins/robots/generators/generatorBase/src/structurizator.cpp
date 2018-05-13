@@ -3,23 +3,23 @@
 #include <QQueue>
 
 using namespace generatorBase;
-using namespace utils;
+using namespace myUtils;
 
-utils::SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
+SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
 	: Node(parent)
 	, mId(id)
 {
 	mIdsInvolved = { id };
 }
 
-qReal::Id generatorBase::utils::SimpleNode::id() const
+qReal::Id SimpleNode::id() const
 {
 	return mId;
 }
 
-utils::IfNode::IfNode(utils::Node *condition
-							, generatorBase::utils::Node *thenBranch
-							, generatorBase::utils::Node *elseBranch
+IfNode::IfNode(Node *condition
+							, Node *thenBranch
+							, Node *elseBranch
 							, QObject *parent)
 	: Node(parent)
 	, mCondition(condition)
@@ -34,60 +34,60 @@ utils::IfNode::IfNode(utils::Node *condition
 	}
 }
 
-utils::Node *utils::IfNode::condition() const
+Node *IfNode::condition() const
 {
 	return mCondition;
 }
 
-utils::Node *utils::IfNode::thenBranch() const
+Node *IfNode::thenBranch() const
 {
 	return mThenBranch;
 }
 
-utils::Node *utils::IfNode::elseBranch() const
+Node *IfNode::elseBranch() const
 {
 	return mElseBranch;
 }
 
-utils::Node::Node(QObject *parent)
+Node::Node(QObject *parent)
 	: QObject(parent)
 	, mIdsInvolved(QSet<qReal::Id>())
 {
 }
 
-utils::Node::Node(QSet<qReal::Id> &ids, QObject *parent)
+Node::Node(QSet<qReal::Id> &ids, QObject *parent)
 	: QObject(parent)
 	, mIdsInvolved(ids)
 {
 }
 
-QSet<qReal::Id> utils::Node::ids() const
+QSet<qReal::Id> Node::ids() const
 {
 	return mIdsInvolved;
 }
 
-utils::SwitchNode::SwitchNode(utils::Node *condition, const QList<Node *> &branches, QObject *parent)
+SwitchNode::SwitchNode(Node *condition, const QList<Node *> &branches, QObject *parent)
 	: Node(parent)
 	, mCondition(condition)
 	, mBranches(QList<Node *>(branches))
 {
 	mIdsInvolved = {};
-	for (const utils::Node * node : branches) {
+	for (const Node * node : branches) {
 		mIdsInvolved.unite(node->ids());
 	}
 }
 
-utils::Node *utils::SwitchNode::condition() const
+Node *SwitchNode::condition() const
 {
 	return mCondition;
 }
 
-QList<utils::Node *> utils::SwitchNode::branches() const
+QList<Node *> SwitchNode::branches() const
 {
 	return mBranches;
 }
 
-utils::BlockNode::BlockNode(utils::Node *firstNode, utils::Node *secondNode, QObject *parent)
+BlockNode::BlockNode(Node *firstNode, Node *secondNode, QObject *parent)
 	: Node(parent)
 	, mFirstNode(firstNode)
 	, mSecondNode(secondNode)
@@ -95,17 +95,17 @@ utils::BlockNode::BlockNode(utils::Node *firstNode, utils::Node *secondNode, QOb
 	mIdsInvolved = firstNode->ids() + secondNode->ids();
 }
 
-utils::Node *utils::BlockNode::firstNode() const
+Node *BlockNode::firstNode() const
 {
 	return mFirstNode;
 }
 
-utils::Node *utils::BlockNode::secondNode() const
+Node *BlockNode::secondNode() const
 {
 	return mSecondNode;
 }
 
-utils::WhileNode::WhileNode(utils::Node *headNode, utils::Node *bodyNode, QObject *parent)
+WhileNode::WhileNode(Node *headNode, Node *bodyNode, QObject *parent)
 	: Node(parent)
 	, mHeadNode(headNode)
 	, mBodyNode(bodyNode)
@@ -113,7 +113,7 @@ utils::WhileNode::WhileNode(utils::Node *headNode, utils::Node *bodyNode, QObjec
 	mIdsInvolved = mHeadNode->ids() + mBodyNode->ids();
 }
 
-utils::SelfLoopNode::SelfLoopNode(utils::Node *bodyNode, QObject *parent)
+SelfLoopNode::SelfLoopNode(Node *bodyNode, QObject *parent)
 	: Node(parent)
 	, mBodyNode(bodyNode)
 {
@@ -141,7 +141,7 @@ Node *IfWithBreakNode::actionsBeforeBreak() const
 	return mActionsBeforeBreak;
 }
 
-Structurizator::Structurizator(const qrRepo::RepoApi &repo, const qReal::IdList &vertecesIds, QObject *parent)
+Structurizator::Structurizator(const qrRepo::RepoApi &repo, QSet<qReal::Id> &vertecesIds, QObject *parent)
 	: QObject(parent)
 	, mRepo(repo)
 	, initialIds(vertecesIds)
@@ -170,7 +170,7 @@ Structurizator::Structurizator(const qrRepo::RepoApi &repo, const qReal::IdList 
 	createInitialNodesForIds();
 }
 
-utils::Node *Structurizator::performStructurization()
+Node *Structurizator::performStructurization()
 {
 
 	bool somethingChanged = true;
@@ -594,14 +594,14 @@ void Structurizator::reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &v
 
 void Structurizator::reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
-	utils::IfNode *ifNode = new IfNode(mTrees[vertecesRoles["condition"]], mTrees[vertecesRoles["then"]], mTrees[vertecesRoles["else"]], this);
+	IfNode *ifNode = new IfNode(mTrees[vertecesRoles["condition"]], mTrees[vertecesRoles["then"]], mTrees[vertecesRoles["else"]], this);
 
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
 
 void Structurizator::reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles)
 {
-	utils::IfNode *ifNode = new IfNode(mTrees[vertecesRoles["condition"]], mTrees[vertecesRoles["then"]], nullptr, this);
+	IfNode *ifNode = new IfNode(mTrees[vertecesRoles["condition"]], mTrees[vertecesRoles["then"]], nullptr, this);
 
 	appendVertex(ifNode, edgesToRemove, vertecesRoles);
 }
@@ -617,7 +617,7 @@ void Structurizator::reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &
 		branches.append(mTrees[u]);
 	}
 
-	utils::SwitchNode *switchNode = new SwitchNode(mTrees[v], branches);
+	SwitchNode *switchNode = new SwitchNode(mTrees[v], branches);
 
 	appendVertex(switchNode, edgesToRemove, vertecesRoles);
 }
@@ -870,7 +870,7 @@ void Structurizator::calculatePostOrder()
 void Structurizator::createInitialNodesForIds()
 {
 	for (const int v : mVerteces) {
-		mTrees[v] = new utils::SimpleNode(mMapIdToInt.key(v), this);
+		mTrees[v] = new SimpleNode(mMapIdToInt.key(v), this);
 	}
 }
 

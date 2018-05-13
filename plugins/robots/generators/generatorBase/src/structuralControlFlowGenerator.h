@@ -19,6 +19,8 @@
 #include "generatorBase/semanticTree/semanticTree.h"
 #include "rules/semanticTransformationRule.h"
 
+#include "structurizator.h"
+
 namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT StructuralControlFlowGenerator : public ControlFlowGeneratorBase
@@ -66,98 +68,15 @@ private:
 	void performGeneration() override;
 
 	void performStructurization();
+	void obtainSemanticTree(myUtils::Node *root);
 
-	/// methods to identify patterns for structural analysis
-	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isDummySwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-
-	bool checkIfThenHelper(int thenNumber, int elseNumber);
-	bool checkWhileLoopHelper(int head, int body);
-
-//	bool isIfThenElse(const qReal::Id &id, Region &region);
-//	bool isSwitch(const qReal::Id &id, Region &region);
-//	bool isSelfLoop(const qReal::Id &id, Region &region);
-//	bool isWhileLoop(const qReal::Id &id, Region &region);
-//	bool isDoWhileLoop(const qReal::Id &id, Region &region);
-
-	/// Creation of a new abstract node and maping it with a corresponding Id
-	void initVerteces(const qReal::Id &id, const QList<LinkInfo> &links);
-
-	/// method that tries consequentially identify patterns and reduce them for a given id
-	//void identifyPatterns(const qReal::Id &id);
-
-	/// Building abstract graph view for further analysis
-	void buildGraph();
-	void findDominators();
-	void createInitialSemanticNodes();
-	void findStartVertex();
-	void dfs(int v, int &currentTime);
-	void obtainReachUnder(int v, QSet<int> &reachUnder);
-
-	int numberOfOutgoingEdges(int v);
-	int numberOfUniqueIncomingEdges(int v);
-	int numberOfUniqueOutgoingEdges(int v);
-	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &vertecesRoles);
-	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
-	void updateDominators(int newNodeNumber, QSet<int> &verteces);
-	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
-	void updateIds(int newNodeNumber, QSet<int> &verteces);
-
-	void appendVertex(semantics::SemanticNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void addEdge(QMap<int, QMap<int, QVector<int>>> &graph, int v, int u, const qReal::Id &edge);
-	bool containsEdgeWithoutGuard(int v, int u);
-	/// methods for creating a valid Semantic nodes for particular pattern
-	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceDummySwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	//void reduceSelfLoop(const qReal::Id &id, Region &region);
-	void reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceConditionAndAddBreak(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	//void reduceDoWhileLoop(const qReal::Id &id, Region &region);
-	//void reduceSwitch(const qReal::Id &id, Region &region, Region &guards);
-
-	bool dealWithReachUnder(int v, QSet<int> &reachUnder);
-
-	int thenBranchNumber(const qReal::Id &id) const;
-
-	bool checkAllStructures();
-	bool checkDominators();
-	bool checkPostorder();
-	bool checkFollowers();
-
-	generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
-	QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
-
-	QMap<int, bool> mUsed;
-	bool mSomethingChanged;
-	int mStartVertex;
-	int mMaxPostOrderTime;
-	QMap<int, int> mPostOrder;
-
-	QMap<int, qReal::Id> mEdges;
-	QSet<int> mVerteces;
-	QMap<int, QMap<int, QVector<int>>> mFollowers2;
-	QMap<int, QMap<int, QVector<int>>> mPredecessors2;
-
-	int mVertecesNumber;
-	int mEdgesNumber;
-	bool isPerformingGeneration;
-	QMap<int, QSet<int>> mDominators;
-
-	QMap<qReal::Id, int> mMapVertexLabel;
+	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
+	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;
+	Structurizator *mStructurizator;
+	QSet<qReal::Id> mIds;
 };
 
 }

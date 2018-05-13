@@ -9,7 +9,7 @@
 
 namespace generatorBase {
 
-namespace utils {
+namespace myUtils {
 
 class Node : public QObject {
 
@@ -141,10 +141,10 @@ class Structurizator : public QObject
 
 public:
 	Structurizator(const qrRepo::RepoApi &repo
-						, const qReal::IdList &vertecesIds
+						, QSet<qReal::Id> &vertecesIds
 						, QObject *parent = 0);
 
-	utils::Node *performStructurization();
+	myUtils::Node *performStructurization();
 
 
 private:
@@ -192,8 +192,8 @@ private:
 	void createInitialNodesForIds();
 	void dfs(int v, int currentTime, QMap<int, bool> &used);
 
-	void appendVertex(utils::Node *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void appendVertex(utils::Node *node, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	void appendVertex(myUtils::Node *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void appendVertex(myUtils::Node *node, QSet<int> &edgesToRemove, QSet<int> &verteces);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
@@ -209,10 +209,10 @@ private:
 	QMap<int, QSet<int> > mDominators;
 	QMap<int, int> mPostOrder;
 
-	QMap<int, utils::Node *> mTrees;
+	QMap<int, myUtils::Node *> mTrees;
 
 	const qrRepo::RepoApi &mRepo;
-	qReal::IdList initialIds;
+	QSet<qReal::Id> initialIds;
 	int mVertecesNumber;
 	int mEdgesNumber;
 	int mStartVertex;
