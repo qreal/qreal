@@ -117,6 +117,22 @@ private:
 	Node *mBodyNode;
 };
 
+
+class IfWithBreakNode : public Node {
+
+	Q_OBJECT
+
+public:
+	IfWithBreakNode(Node *condition, Node *actionsBeforeBreak, QObject *parent = nullptr);
+
+	Node *condition() const;
+	Node *actionsBeforeBreak() const;
+
+private:
+	Node *mCondition;
+	Node *mActionsBeforeBreak;
+};
+
 }
 
 class Structurizator : public QObject
@@ -157,6 +173,9 @@ private:
 	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWithExits, int commonExit);
+	void reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex);
+	void addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
 	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
@@ -174,6 +193,7 @@ private:
 	void dfs(int v, int currentTime, QMap<int, bool> &used);
 
 	void appendVertex(utils::Node *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void appendVertex(utils::Node *node, QSet<int> &edgesToRemove, QSet<int> &verteces);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
