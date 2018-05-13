@@ -418,15 +418,7 @@ bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, int> &no
 	return true;
 
 	/*
-	for (const int w : nodesWithExits.values()) {
-		if (w == commonExit) {
-			continue;
-		}
 
-		if (numberOfOutgoingEdges(w) >= 2) {
-			return false;
-		}
-	}
 
 	int oneSavedEdge = -1;
 	for (const int u : nodesWithExits.keys()) {
