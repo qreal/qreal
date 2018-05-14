@@ -70,7 +70,9 @@ void RandomFunctionChecker::checkAst(QSharedPointer<qrtext::core::ast::Node> ast
 	}
 
 	for (const auto child : ast->children()) {
-		checkAst(child);
+		if (child) {
+			checkAst(child);
+		}
 	}
 }
 
