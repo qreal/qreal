@@ -106,3 +106,5 @@ RESOURCES += \
 	$$PWD/pioneerLuaGenerator.qrc \
 	$$PWD/templates.qrc \
 
+OTHER_FILES += \
+	$$PWD/pioneerLuaDefaultSettings.ini \
