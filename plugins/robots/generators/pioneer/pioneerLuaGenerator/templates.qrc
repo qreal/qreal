@@ -82,6 +82,7 @@
         <file>templates/quadcopterCommands/landing.t</file>
         <file>templates/quadcopterCommands/takeoff.t</file>
         <file>templates/quadcopterCommands/goToLocalPoint.t</file>
+        <file>templates/quadcopterCommands/goToPoint.t</file>
         <file>templates/signs/equals.t</file>
         <file>templates/signs/greater.t</file>
         <file>templates/signs/less.t</file>

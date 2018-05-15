@@ -31,22 +31,6 @@ PioneerAdditionalPreferences::PioneerAdditionalPreferences(QWidget *parent)
 	mUi->setupUi(this);
 
 	restoreSettings();
-
-	onCheckboxesChanged();
-
-	connect(
-			mUi->useControllerScriptCheckBox
-			, &QCheckBox::stateChanged
-			, this
-			, &PioneerAdditionalPreferences::onCheckboxesChanged
-	);
-
-	connect(
-			mUi->useComPortCheckBox
-			, &QCheckBox::stateChanged
-			, this
-			, &PioneerAdditionalPreferences::onCheckboxesChanged
-	);
 }
 
 PioneerAdditionalPreferences::~PioneerAdditionalPreferences()
@@ -59,10 +43,6 @@ void PioneerAdditionalPreferences::save()
 	SettingsManager::setValue(settings::pioneerBaseStationIP, mUi->baseStationIpLineEdit->text());
 	SettingsManager::setValue(settings::pioneerBaseStationPort, mUi->baseStationPortLineEdit->text());
 
-	SettingsManager::setValue(settings::pioneerUseController, mUi->useControllerScriptCheckBox->isChecked());
-	SettingsManager::setValue(settings::pioneerUseComPort, mUi->useComPortCheckBox->isChecked());
-	SettingsManager::setValue(settings::pioneerComPort, mUi->comPortLineEdit->text());
-
 	emit settingsChanged();
 }
 
@@ -70,39 +50,9 @@ void PioneerAdditionalPreferences::restoreSettings()
 {
 	mUi->baseStationIpLineEdit->setText(SettingsManager::value(settings::pioneerBaseStationIP).toString());
 	mUi->baseStationPortLineEdit->setText(SettingsManager::value(settings::pioneerBaseStationPort).toString());
-	mUi->useControllerScriptCheckBox->setChecked(
-			SettingsManager::value(settings::pioneerUseController).toBool()
-	);
-
-	mUi->useComPortCheckBox->setChecked(
-			SettingsManager::value(settings::pioneerUseComPort).toBool()
-	);
-
-	mUi->comPortLineEdit->setText(
-			SettingsManager::value(settings::pioneerComPort).toString()
-	);
 }
 
 void PioneerAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)
 {
 	Q_UNUSED(robotModel);
-}
-
-void PioneerAdditionalPreferences::onCheckboxesChanged()
-{
-	const bool useControllerScript = mUi->useControllerScriptCheckBox->isChecked();
-	mUi->useComPortCheckBox->setVisible(useControllerScript);
-	if (!mUi->useComPortCheckBox->isVisible()) {
-		mUi->useComPortCheckBox->setChecked(false);
-	}
-
-	const bool useComPort = mUi->useComPortCheckBox->isChecked();
-
-	mUi->baseStationIpLabel->setVisible(!useComPort);
-	mUi->baseStationIpLineEdit->setVisible(!useComPort);
-	mUi->baseStationPortLabel->setVisible(!useComPort);
-	mUi->baseStationPortLineEdit->setVisible(!useComPort);
-
-	mUi->comPortLabel->setVisible(useComPort);
-	mUi->comPortLineEdit->setVisible(useComPort);
 }

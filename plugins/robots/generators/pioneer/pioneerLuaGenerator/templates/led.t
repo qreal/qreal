@@ -1,1 +1,1 @@
-        ledbar:set(@@NUMBER@@, @@RED@@, @@GREEN@@, @@BLUE@@)
+		ledbar:set(@@NUMBER@@, @@RED@@, @@GREEN@@, @@BLUE@@)

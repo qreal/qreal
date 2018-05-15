@@ -1,4 +1,4 @@
-/* Copyright 2017 QReal Research Group
+/* Copyright 2018 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,42 +12,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "goToPointGenerator.h"
+#include "goToGPSPointGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
 
-GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
+GoToGPSPointGenerator::GoToGPSPointGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToLocalPoint.t"
+	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToPoint.t"
 		, {
 			Binding::createConverting(
-					"@@X@@"
-					, "X"
+					"@@LATITUDE@@"
+					, "Latitude"
 					, customizer.factory()->intPropertyConverter(id, "X"))
 			, Binding::createConverting(
-					"@@Y@@"
-					, "Y"
+					"@@LONGITUDE@@"
+					, "Longitude"
 					, customizer.factory()->intPropertyConverter(id, "Y"))
 			, Binding::createConverting(
-					"@@Z@@"
-					, "Z"
+					"@@ALTITUDE@@"
+					, "Altitude"
 					, customizer.factory()->intPropertyConverter(id, "Z"))
 			}
 		, parent)
 {
-	const QString timeValue = mRepo.property(mId, "Time").toString();
-	if (timeValue.isEmpty()) {
-		addBinding(Binding::createStatic("@@VAR_ARG_SEPARATOR@@", QString()));
-		addBinding(Binding::createStatic("@@Time@@", QString()));
-	} else {
-		Binding::ConverterInterface *intConverter = customizer.factory()->intPropertyConverter(id, "Time");
-		const QString time = intConverter->convert(timeValue);
-		addBinding(Binding::createStatic("@@VAR_ARG_SEPARATOR@@", readTemplate("luaPrinting/argumentsSeparator.t")));
-		addBinding(Binding::createStatic("@@Time@@", time));
-	}
 }

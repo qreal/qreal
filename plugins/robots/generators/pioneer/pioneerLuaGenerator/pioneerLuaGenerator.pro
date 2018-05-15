@@ -67,6 +67,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/pioneerYawGenerator.h \
 	$$PWD/simpleGenerators/randomInitGenerator.h \
 	$$PWD/widgets/pioneerAdditionalPreferences.h \
+    simpleGenerators/goToGPSPointGenerator.h
 
 SOURCES += \
 	$$PWD/pioneerLuaGeneratorCustomizer.cpp \
@@ -98,6 +99,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/pioneerYawGenerator.cpp \
 	$$PWD/simpleGenerators/randomInitGenerator.cpp \
 	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
+    simpleGenerators/goToGPSPointGenerator.cpp
 
 FORMS += \
 	$$PWD/widgets/pioneerAdditionalPreferences.ui \

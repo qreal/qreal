@@ -153,7 +153,7 @@ QList<ActionInfo> PioneerLuaGeneratorPlugin::customActions()
 	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
 	const ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
 	const ActionInfo stopProgramActionInfo(mStopProgramAction, "generators", "tools");
-	return { generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopProgramActionInfo };
+	return { generateCodeActionInfo, uploadProgramActionInfo, /*runProgramActionInfo, stopProgramActionInfo*/ };
 }
 
 QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
@@ -177,7 +177,7 @@ QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
 
 	HotKeyActionInfo stopProgramInfo("Generator.StopPioneerLua", tr("Stop Pioneer Program"), mStopProgramAction);
 
-	return { generateActionInfo, uploadProgramInfo, runProgramInfo, stopProgramInfo };
+	return { generateActionInfo, uploadProgramInfo/*, runProgramInfo, stopProgramInfo */};
 }
 
 QIcon PioneerLuaGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
@@ -229,8 +229,8 @@ void PioneerLuaGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::
 	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
 	mGenerateCodeAction->setVisible(model.kitId() == kitId());
 	mUploadProgramAction->setVisible(model.kitId() == kitId());
-	mRunProgramAction->setVisible(model.kitId() == kitId());
-	mStopProgramAction->setVisible(model.kitId() == kitId());
+//	mRunProgramAction->setVisible(model.kitId() == kitId());
+//	mStopProgramAction->setVisible(model.kitId() == kitId());
 }
 
 void PioneerLuaGeneratorPlugin::onCurrentDiagramChanged(const qReal::TabInfo &info)

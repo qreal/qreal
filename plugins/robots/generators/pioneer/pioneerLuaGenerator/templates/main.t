@@ -33,13 +33,10 @@ function callback(event)
 	end
 
 	while ((not wait_ap) and curr_state ~= "NONE") do
+		local old_state = curr_state
 		curr_state = "NONE"
-		action[curr_state]()
+		action[old_state]()
 	end
-end
-
--- бесконечный цикл, автоматически вызывается автопилотом
-function loop()
 end
 
 -- вызов функции из таблицы состояний, соответствующей первому состоянию
