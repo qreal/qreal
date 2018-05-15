@@ -7,6 +7,6 @@
     <Version>3.2.0-4</Version>
     <ReleaseDate>2017-11-14</ReleaseDate>
     <SortingPriority>8</SortingPriority>
-    <Default>true</Default>
+    <Default>false</Default>
     <ForcedInstallation>false</ForcedInstallation>
 </Package>
