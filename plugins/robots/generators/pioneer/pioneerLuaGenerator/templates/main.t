@@ -15,7 +15,6 @@
 
 -- функция обработки событий, автоматически вызывается автопилотом
 function callback(event)
-	print(event)
 	if (event == Ev.ALTITUDE_REACHED) then
 		action[curr_state]()
 	end
