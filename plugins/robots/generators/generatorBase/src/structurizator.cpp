@@ -157,10 +157,10 @@ Structurizator::Structurizator(const qrRepo::RepoApi &repo, QSet<qReal::Id> &ver
 		mVertecesNumber++;
 	}
 
-	findStartVertex();
-
 	// constructing graph
 	createGraph();
+
+	findStartVertex();
 
 	// post order
 	calculatePostOrder();
@@ -227,8 +227,10 @@ Node *Structurizator::performStructurization()
 
 			if (vertecesRoles.size()) {
 				t -= (vertecesRoles.size() - 1);
+				somethingChanged = true;
+			} else {
+				t++;
 			}
-			somethingChanged = true;
 		}
 	}
 
@@ -708,8 +710,8 @@ void Structurizator::updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QS
 
 			if (newU == newNodeNumber || newV == newNodeNumber) {
 				// removing old information
-				mFollowers[v].remove(u);
-				mPredecessors[u].remove(v);
+				mFollowers[v].removeAll(u);
+				mPredecessors[u].removeAll(v);
 
 				// inserting new information
 				if (!mFollowers[newV].contains(newU)) {
@@ -818,7 +820,7 @@ void Structurizator::calculateDominators()
 		mDominators[u] = mVerteces;
 	}
 
-	mStartVertex = { mStartVertex };
+	mDominators[mStartVertex] = { mStartVertex };
 
 	bool somethingChanged = true;
 	while (somethingChanged) {
@@ -850,6 +852,7 @@ void Structurizator::findStartVertex()
 	for (const int u : mVerteces) {
 		if (mPredecessors[u].isEmpty()) {
 			mStartVertex = u;
+			return;
 		}
 	}
 }
@@ -874,10 +877,10 @@ void Structurizator::createInitialNodesForIds()
 	}
 }
 
-void Structurizator::dfs(int v, int currentTime, QMap<int, bool> &used)
+void Structurizator::dfs(int v, int &currentTime, QMap<int, bool> &used)
 {
 	used[v] = true;
-	for (const int u : mPredecessors[v]) {
+	for (const int u : mFollowers[v]) {
 		if (!used[u]) {
 			dfs(u, currentTime, used);
 		}

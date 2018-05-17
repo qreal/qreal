@@ -190,7 +190,7 @@ private:
 	void findStartVertex();
 	void calculatePostOrder();
 	void createInitialNodesForIds();
-	void dfs(int v, int currentTime, QMap<int, bool> &used);
+	void dfs(int v, int &currentTime, QMap<int, bool> &used);
 
 	void appendVertex(myUtils::Node *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	void appendVertex(myUtils::Node *node, QSet<int> &edgesToRemove, QSet<int> &verteces);
