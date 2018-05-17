@@ -70,6 +70,8 @@ private:
 	void performStructurization();
 	void obtainSemanticTree(myUtils::Node *root);
 
+	semantics::SemanticNode *transformNode(myUtils::Node *node);
+
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
 

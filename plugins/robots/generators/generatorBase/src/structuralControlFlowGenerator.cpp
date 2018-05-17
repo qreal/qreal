@@ -116,6 +116,32 @@ void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::Node *root)
 	Q_UNUSED(root)
 }
 
+
+// maybe use strategy to recursively handle this situation?
+SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Node *node)
+{
+	switch (node->type()) {
+	case myUtils::Node::Type::simple: {
+		myUtils::SimpleNode *simpleNode = dynamic_cast<myUtils::SimpleNode *>(node);
+		qReal::Id id = simpleNode->id();
+		return mSemanticTree->produceNodeFor(id);
+	}
+	case myUtils::Node::Type::block: {
+		myUtils::BlockNode *blockNode = dynamic_cast<myUtils::BlockNode *>(node);
+		semantics::ZoneNode *zone = new semantics::ZoneNode(mSemanticTree);
+		zone->appendChildren({transformNode(blockNode->firstNode()), transformNode(blockNode->secondNode())});
+		return zone;
+	}
+	case myUtils::Node::Type::ifThenElseCondition: {
+		myUtils::BlockNode *blockNode = dynamic_cast<myUtils::BlockNode *>(node);
+		semantics::ZoneNode *zone = new semantics::ZoneNode(mSemanticTree);
+		zone->appendChildren({transformNode(blockNode->firstNode()), transformNode(blockNode->secondNode())});
+		return zone;
+	}
+
+	}
+}
+
 /*
 
 IfNode *StructuralControlFlowGenerator::createIfFromSwitch(int v, int bodyNumber)

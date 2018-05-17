@@ -16,8 +16,22 @@ class Node : public QObject {
 	Q_OBJECT
 
 public:
+
+	enum Type {
+		simple
+		, block
+		, ifThenCondition
+		, ifThenElseCondition
+		, ifWithBreakCondition
+		, switchCondition
+		, infiniteloop
+		, whileloop
+	};
+
 	Node(QObject *parent = nullptr);
 	Node(QSet<qReal::Id> &ids, QObject *parent = nullptr);
+
+	virtual Type type() const = 0;
 
 	QSet<qReal::Id> ids() const;
 protected:
@@ -30,6 +44,8 @@ class SimpleNode : public Node {
 
 public:
 	SimpleNode(const qReal::Id &id, QObject *parent = nullptr);
+
+	Type type() const;
 
 	qReal::Id id() const;
 private:
@@ -47,6 +63,7 @@ public:
 	Node *thenBranch() const;
 	Node *elseBranch() const;
 
+	Type type() const;
 private:
 	Node *mCondition;
 	Node *mThenBranch;
@@ -65,6 +82,7 @@ public:
 	Node *condition() const;
 	QList<Node *> branches() const;
 
+	Type type() const;
 private:
 	Node *mCondition;
 	const QList<Node *> mBranches;
@@ -81,12 +99,11 @@ public:
 	Node *firstNode() const;
 	Node *secondNode() const;
 
+	Type type() const;
 private:
 	Node *mFirstNode;
 	Node *mSecondNode;
 };
-
-
 
 class WhileNode : public Node {
 
@@ -98,6 +115,7 @@ public:
 	Node *headNode() const;
 	Node *bodyNode() const;
 
+	Type type() const;
 private:
 	Node *mHeadNode;
 	Node *mBodyNode;
@@ -113,6 +131,7 @@ public:
 
 	Node *bodyNode() const;
 
+	Type type() const;
 private:
 	Node *mBodyNode;
 };

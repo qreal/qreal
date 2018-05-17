@@ -12,6 +12,11 @@ SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
 	mIdsInvolved = { id };
 }
 
+Node::Type SimpleNode::type() const
+{
+	return Type::simple;
+}
+
 qReal::Id SimpleNode::id() const
 {
 	return mId;
@@ -47,6 +52,11 @@ Node *IfNode::thenBranch() const
 Node *IfNode::elseBranch() const
 {
 	return mElseBranch;
+}
+
+Node::Type IfNode::type() const
+{
+	return Type::ifThenElseCondition;
 }
 
 Node::Node(QObject *parent)
@@ -87,6 +97,11 @@ QList<Node *> SwitchNode::branches() const
 	return mBranches;
 }
 
+Node::Type SwitchNode::type() const
+{
+	return Type::switchCondition;
+}
+
 BlockNode::BlockNode(Node *firstNode, Node *secondNode, QObject *parent)
 	: Node(parent)
 	, mFirstNode(firstNode)
@@ -105,6 +120,11 @@ Node *BlockNode::secondNode() const
 	return mSecondNode;
 }
 
+Node::Type BlockNode::type() const
+{
+	return Type::block;
+}
+
 WhileNode::WhileNode(Node *headNode, Node *bodyNode, QObject *parent)
 	: Node(parent)
 	, mHeadNode(headNode)
@@ -113,11 +133,21 @@ WhileNode::WhileNode(Node *headNode, Node *bodyNode, QObject *parent)
 	mIdsInvolved = mHeadNode->ids() + mBodyNode->ids();
 }
 
+Node::Type WhileNode::type() const
+{
+	return Type::whileloop;
+}
+
 SelfLoopNode::SelfLoopNode(Node *bodyNode, QObject *parent)
 	: Node(parent)
 	, mBodyNode(bodyNode)
 {
 	mIdsInvolved = bodyNode->ids();
+}
+
+Node::Type SelfLoopNode::type() const
+{
+	return Type::infiniteloop;
 }
 
 IfWithBreakNode::IfWithBreakNode(Node *condition, Node *actionsBeforeBreak, QObject *parent)
