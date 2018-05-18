@@ -159,13 +159,16 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 	int u2 = mFollowers[v].last();
 
 	int thenNumber = -1;
+	int elseNumber = -1;
 	if (checkIfThenHelper(u1, u2)) {
 		thenNumber = u1;
+		elseNumber = u2;
 	} else if (checkIfThenHelper(u2, u1)) {
 		thenNumber = u2;
+		elseNumber = u1;
 	}
 
-	if (thenNumber == -1) {
+	if (thenNumber == -1 || elseNumber == v) {
 		return false;
 	}
 
@@ -179,7 +182,7 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 
 bool Structurizator::isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	if (mFollowers[v].size() < 2) {
+	if (mFollowers[v].size() < 3) {
 		return false;
 	}
 
@@ -195,6 +198,9 @@ bool Structurizator::isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 			int m = mFollowers[u].first();
 			if (exit == -1) {
 				exit = m;
+				if (exit == v) {
+					return false;
+				}
 			} else if (m != exit) {
 				return false;
 			}
