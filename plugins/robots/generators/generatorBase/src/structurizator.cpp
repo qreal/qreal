@@ -84,7 +84,7 @@ IntermediateNode *Structurizator::performStructurization()
 					continue;
 				}
 
-
+				qDebug() << "Cycle with breaks";
 				reduceConditionsWithBreaks(v, nodesWithExits, commonExit);
 			}
 
