@@ -25,6 +25,10 @@ public:
 
 private:
 
+	typedef int Time;
+	typedef int VertexNumber;
+
+
 	/// methods to identify patterns for structural analysis
 	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
 	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
@@ -79,11 +83,17 @@ private:
 	QMap<QPair<int, int>, int> mMapEdgeNumberToVerteces;
 	QSet<int> mEdges;
 
-	QSet<int> mVerteces;
-	QMap<int, QVector<int> > mFollowers;
-	QMap<int, QVector<int> > mPredecessors;
-	QMap<int, QSet<int> > mDominators;
-	QMap<int, int> mPostOrder;
+
+	bool checkAllStructures();
+	bool checkFollowers();
+	bool checkDominators();
+	bool checkPostOrder();
+
+	QSet<VertexNumber> mVerteces;
+	QMap<VertexNumber, QVector<VertexNumber> > mFollowers;
+	QMap<VertexNumber, QVector<VertexNumber> > mPredecessors;
+	QMap<VertexNumber, QSet<VertexNumber> > mDominators;
+	QMap<VertexNumber, Time> mPostOrder;
 
 	QMap<int, myUtils::IntermediateNode *> mTrees;
 

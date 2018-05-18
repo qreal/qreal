@@ -44,10 +44,10 @@ IntermediateNode *Structurizator::performStructurization()
 		int t = 0;
 		while (t <= mMaxPostOrderTime && mVerteces.size() > 1) {
 
-//			if (!checkAllStructures()) {
-//				bool flag = checkAllStructures();
-//			}
-//			Q_ASSERT(checkAllStructures());
+			if (!checkAllStructures()) {
+				bool flag = checkAllStructures();
+			}
+			Q_ASSERT(checkAllStructures());
 			int v = mPostOrder.key(t);
 			if (!v) {
 				qDebug() << "Problem! time = " << t;
@@ -780,4 +780,85 @@ int Structurizator::outgoingEdgesNumber(int v) const
 int Structurizator::incomingEdgesNumber(int v) const
 {
 	return mPredecessors[v].size();
+}
+
+bool Structurizator::checkAllStructures()
+{
+	return checkFollowers() && checkPostOrder() && checkDominators();
+}
+
+bool Structurizator::checkFollowers()
+{
+	QSet<int> followersKeys = mFollowers.keys().toSet();
+	followersKeys = followersKeys.subtract(mVerteces);
+	if (!followersKeys.isEmpty()) {
+		return false;
+	}
+
+	QSet<int> predecessorsKeys = mPredecessors.keys().toSet();
+	predecessorsKeys = predecessorsKeys.subtract(mVerteces);
+	if (!predecessorsKeys.isEmpty()) {
+		return false;
+	}
+
+	for (const int v : mVerteces) {
+		for (const int u : mFollowers[v]) {
+			if (!mVerteces.contains(u)) {
+				return false;
+			}
+		}
+	}
+
+	for (const int v : mVerteces) {
+		for (const int u : mPredecessors[v]) {
+			if (!mVerteces.contains(u)) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool Structurizator::checkDominators()
+{
+	QSet<int> dominators = mDominators.keys().toSet();
+	dominators = dominators.subtract(mVerteces);
+	if (!dominators.isEmpty()) {
+		return false;
+	}
+
+	QSet<int> verteces = mVerteces;
+	verteces = verteces.subtract(mDominators.keys().toSet());
+	if (!verteces.isEmpty()) {
+		return false;
+	}
+
+	for (const int v : mVerteces) {
+		for (const int u : mDominators[v]) {
+			if (!mVerteces.contains(u)) {
+				return false;
+			}
+		}
+	}
+}
+
+bool Structurizator::checkPostOrder()
+{
+	QVector<bool> times(mMaxPostOrderTime + 1);
+	for (Time i = 0; i <= mMaxPostOrderTime; i++) {
+		times[i] = false;
+	}
+
+	for (const int u : mVerteces) {
+		times[mPostOrder[u]] = true;
+	}
+
+	for (Time i = 0; i <= mMaxPostOrderTime; i++) {
+		if (!times[i]) {
+			return false;
+		}
+	}
+
+	return true;
 }
