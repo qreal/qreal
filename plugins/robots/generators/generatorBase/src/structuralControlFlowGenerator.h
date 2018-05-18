@@ -68,9 +68,9 @@ private:
 	void performGeneration() override;
 
 	void performStructurization();
-	void obtainSemanticTree(myUtils::Node *root);
+	void obtainSemanticTree(myUtils::IntermediateNode *root);
 
-	semantics::SemanticNode *transformNode(myUtils::Node *node);
+	semantics::SemanticNode *transformNode(myUtils::IntermediateNode *node);
 
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;

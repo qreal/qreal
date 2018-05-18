@@ -67,7 +67,8 @@ HEADERS += \
 	$$PWD/src/converters/dynamicPropertiesConverter.h \
 	$$PWD/src/structuralControlFlowGenerator.h \
     $$PWD/src/simpleGenerators/switchConditionGenerator.h \
-    $$PWD/src/structurizator.h
+    $$PWD/src/structurizator.h \
+    $$PWD/src/intermediateNode.h
 
 HEADERS += \
 	$$PWD/src/readableControlFlowGenerator.h \
@@ -143,7 +144,8 @@ SOURCES += \
 	$$PWD/src/converters/dynamicPropertiesConverter.cpp \
 	$$PWD/src/structuralControlFlowGenerator.cpp \
     $$PWD/src/simpleGenerators/switchConditionGenerator.cpp \
-    $$PWD/src/structurizator.cpp
+    $$PWD/src/structurizator.cpp \
+    $$PWD/src/intermediateNode.cpp
 
 # Simple element generators & converters
 

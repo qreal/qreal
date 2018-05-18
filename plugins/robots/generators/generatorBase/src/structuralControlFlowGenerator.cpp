@@ -107,32 +107,32 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 
 	mStructurizator = new Structurizator(mRepo, mIds, this);
-	myUtils::Node *tree = mStructurizator->performStructurization();
+	myUtils::IntermediateNode *tree = mStructurizator->performStructurization();
 	obtainSemanticTree(tree);
 }
 
-void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::Node *root)
+void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
 {
 	Q_UNUSED(root)
 }
 
 
 // maybe use strategy to recursively handle this situation?
-SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Node *node)
+SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::IntermediateNode *node)
 {
 	switch (node->type()) {
-	case myUtils::Node::Type::simple: {
+	case myUtils::IntermediateNode::Type::simple: {
 		myUtils::SimpleNode *simpleNode = dynamic_cast<myUtils::SimpleNode *>(node);
 		qReal::Id id = simpleNode->id();
 		return mSemanticTree->produceNodeFor(id);
 	}
-	case myUtils::Node::Type::block: {
+	case myUtils::IntermediateNode::Type::block: {
 		myUtils::BlockNode *blockNode = dynamic_cast<myUtils::BlockNode *>(node);
 		semantics::ZoneNode *zone = new semantics::ZoneNode(mSemanticTree);
 		zone->appendChildren({transformNode(blockNode->firstNode()), transformNode(blockNode->secondNode())});
 		return zone;
 	}
-	case myUtils::Node::Type::ifThenElseCondition: {
+	case myUtils::IntermediateNode::Type::ifThenElseCondition: {
 		myUtils::BlockNode *blockNode = dynamic_cast<myUtils::BlockNode *>(node);
 		semantics::ZoneNode *zone = new semantics::ZoneNode(mSemanticTree);
 		zone->appendChildren({transformNode(blockNode->firstNode()), transformNode(blockNode->secondNode())});
