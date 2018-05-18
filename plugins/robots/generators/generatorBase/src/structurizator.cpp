@@ -174,7 +174,6 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 
 	verticesRoles["condition"] = v;
 	verticesRoles["then"] = thenNumber;
-	verticesRoles["else"] = elseNumber;
 
 	edgesToRemove = { makePair(v, u1), makePair(v, u2) };
 
