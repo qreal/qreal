@@ -98,6 +98,7 @@ IntermediateNode *Structurizator::performStructurization()
 	}
 
 	if (mVertices.size() == 1) {
+		qDebug() << "Structured!";
 		return mTrees[mStartVertex];
 	}
 
