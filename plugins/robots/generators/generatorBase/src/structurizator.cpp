@@ -507,8 +507,6 @@ void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap
 
 void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWithExits, int commonExit)
 {
-	Q_UNUSED(v)
-
 	for (const int u : nodesWithExits.keys()) {
 		int exit = nodesWithExits[u];
 		if (outgoingEdgesNumber(u) > 2) {
@@ -518,6 +516,17 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWith
 			// here we deal with if or switch with 2 outgoing branches
 			reduceSimpleIfWithBreak(u, exit, commonExit);
 		}
+
+		// update cycle head
+		if (u == v) {
+			v = mVertecesNumber - 1;
+		}
+	}
+
+	// adding edge from head to common exit
+	if (commonExit != -1 && !mFollowers[v].contains(commonExit)) {
+		mFollowers[v].push_back(commonExit);
+		mPredecessors[commonExit].push_back(v);
 	}
 }
 
