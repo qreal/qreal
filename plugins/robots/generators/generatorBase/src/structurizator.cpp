@@ -545,12 +545,12 @@ void Structurizator::addAdditionalConditionWithBreak(int conditionVertex, int th
 	Q_UNUSED(exitVertex)
 }
 
-void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces)
+void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
 {
-	updateEdges(newNodeNumber, edgesToRemove, verteces);
-	updatePostOrder(newNodeNumber, verteces);
-	updateDominators(newNodeNumber, verteces);
-	updateVerteces(newNodeNumber, verteces);
+	updateEdges(newNodeNumber, edgesToRemove, vertices);
+	updatePostOrder(newNodeNumber, vertices);
+	updateDominators(newNodeNumber, vertices);
+	updateVerteces(newNodeNumber, vertices);
 }
 
 void Structurizator::updateEdges(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
@@ -741,16 +741,16 @@ void Structurizator::dfs(int v, int &currentTime, QMap<int, bool> &used)
 
 void Structurizator::appendVertex(IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	QSet<int> verteces = verticesRoles.values().toSet();
-	appendVertex(node, edgesToRemove, verteces);
+	QSet<int> vertices = verticesRoles.values().toSet();
+	appendVertex(node, edgesToRemove, vertices);
 }
 
-void Structurizator::appendVertex(IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces)
+void Structurizator::appendVertex(IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
 {
 	mTrees[mVertecesNumber] = node;
 	mVertices.insert(mVertecesNumber);
 
-	replace(mVertecesNumber, edgesToRemove, verteces);
+	replace(mVertecesNumber, edgesToRemove, vertices);
 	mVertecesNumber++;
 }
 
