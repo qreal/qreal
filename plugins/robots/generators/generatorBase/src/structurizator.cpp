@@ -159,13 +159,10 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 	int u2 = mFollowers[v].last();
 
 	int thenNumber = -1;
-	int elseNumber = -1;
 	if (checkIfThenHelper(u1, u2)) {
 		thenNumber = u1;
-		elseNumber = u2;
 	} else if (checkIfThenHelper(u2, u1)) {
 		thenNumber = u2;
-		elseNumber = u1;
 	}
 
 	if (thenNumber == -1) {
