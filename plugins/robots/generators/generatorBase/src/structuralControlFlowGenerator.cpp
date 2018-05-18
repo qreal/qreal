@@ -138,7 +138,8 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Intermediat
 		zone->appendChildren({transformNode(blockNode->firstNode()), transformNode(blockNode->secondNode())});
 		return zone;
 	}
-
+	default:
+		return nullptr;
 	}
 }
 

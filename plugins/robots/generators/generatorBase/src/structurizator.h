@@ -30,12 +30,12 @@ private:
 
 
 	/// methods to identify patterns for structural analysis
-	bool isBlock(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isIfThenElse(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isIfThen(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isSwitch(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isInfiniteLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	bool isWhileLoop(int v, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	bool isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isIfThenElse(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isInfiniteLoop(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isWhileLoop(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
 	bool checkWhileLoopHelper(int head, int body);
@@ -47,19 +47,19 @@ private:
 	bool findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit);
 	bool checkCommonExit(int commonExit, const QMap<int, int> &nodesWithExits);
 
-	void reduceBlock(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceIfThenElse(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceIfThen(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceSwitch(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceInfiniteLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void reduceWhileLoop(QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
+	void reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceIfThenElse(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceIfThen(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceInfiniteLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	void reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWithExits, int commonExit);
 	void reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 	void addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
-	void updateEdges(int newNodeNumber, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	void replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces);
+	void updateEdges(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces);
 	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
 	void updateDominators(int newNodeNumber, QSet<int> &verteces);
 	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
@@ -72,24 +72,22 @@ private:
 	void createInitialNodesForIds();
 	void dfs(int v, int &currentTime, QMap<int, bool> &used);
 
-	void appendVertex(myUtils::IntermediateNode *node, QSet<int> &edgesToRemove, QMap<QString, int> &vertecesRoles);
-	void appendVertex(myUtils::IntermediateNode *node, QSet<int> &edgesToRemove, QSet<int> &verteces);
+	void appendVertex(myUtils::IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void appendVertex(myUtils::IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
 
 	QMap<qReal::Id, int> mMapIdToInt;
 
-	QMap<QPair<int, int>, int> mMapEdgeNumberToVerteces;
-	QSet<int> mEdges;
-
+	QPair<int, int> makePair(int a, int b);
 
 	bool checkAllStructures();
 	bool checkFollowers();
 	bool checkDominators();
 	bool checkPostOrder();
 
-	QSet<VertexNumber> mVerteces;
+	QSet<VertexNumber> mVertices;
 	QMap<VertexNumber, QVector<VertexNumber> > mFollowers;
 	QMap<VertexNumber, QVector<VertexNumber> > mPredecessors;
 	QMap<VertexNumber, QSet<VertexNumber> > mDominators;
@@ -100,7 +98,6 @@ private:
 	const qrRepo::RepoApi &mRepo;
 	QSet<qReal::Id> initialIds;
 	int mVertecesNumber;
-	int mEdgesNumber;
 	int mStartVertex;
 	int mMaxPostOrderTime;
 };
