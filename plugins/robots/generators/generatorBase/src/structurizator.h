@@ -58,11 +58,12 @@ private:
 	void addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces);
-	void updateEdges(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces);
-	void updatePostOrder(int newNodeNumber, QSet<int> &verteces);
-	void updateDominators(int newNodeNumber, QSet<int> &verteces);
-	void updateVerteces(int newNodeNumber, QSet<int> &verteces);
+	void replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices);
+	void replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void updateEdges(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices);
+	void updatePostOrder(int newNodeNumber, QSet<int> &vertices);
+	void updateDominators(int newNodeNumber, QSet<int> &vertices);
+	void updateVertices(int newNodeNumber, QSet<int> &vertices);
 
 	/// methods used before structurization process
 	void createGraph();
@@ -72,8 +73,7 @@ private:
 	void createInitialNodesForIds();
 	void dfs(int v, int &currentTime, QMap<int, bool> &used);
 
-	void appendVertex(myUtils::IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void appendVertex(myUtils::IntermediateNode *node, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &verteces);
+	int appendVertex(myUtils::IntermediateNode *node);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
