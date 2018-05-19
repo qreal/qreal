@@ -479,11 +479,13 @@ void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap
 
 void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWithExits, int commonExit)
 {
+	bool switchCase = false;
 	for (const int u : nodesWithExits.keys()) {
 		int exit = nodesWithExits[u];
 		if (outgoingEdgesNumber(u) > 2) {
 			// here we deal with switch
 			addAdditionalConditionWithBreak(u, exit, commonExit);
+			switchCase = true;
 		} else {
 			// here we deal with if or switch with 2 outgoing branches
 			reduceSimpleIfWithBreak(u, exit, commonExit);
@@ -500,11 +502,17 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWith
 		mFollowers[v].push_back(commonExit);
 		mPredecessors[commonExit].push_back(v);
 	}
+
+	if (switchCase) {
+		calculatePostOrder();
+		calculateDominators();
+	}
 }
 
 void Structurizator::reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex)
 {
 	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[conditionVertex]);
+
 	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition
 																, thenVertex == exitVertex ? nullptr : mTrees[thenVertex]
 																, this);
@@ -533,7 +541,12 @@ void Structurizator::addAdditionalConditionWithBreak(int conditionVertex, int th
 
 	int newNodeNumber = appendVertex(ifWithBreakNode);
 	addNewNodeNumberBeforeVertex(newNodeNumber, conditionVertex);
-	removeVertex(thenVertex);
+	if (thenVertex != exitVertex) {
+		removeVertex(thenVertex);
+	} else {
+		mFollowers[conditionVertex].removeAll(thenVertex);
+		mPredecessors[thenVertex].removeAll(conditionVertex);
+	}
 }
 
 void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
@@ -667,19 +680,16 @@ void Structurizator::addNewNodeNumberBeforeVertex(int newNodeNumber, int vertex)
 			mDominators[u].insert(newNodeNumber);
 		}
 	}
-
-	// postorder
-	calculatePostOrder();
 }
 
 void Structurizator::removeVertex(int vertex)
 {
 	for (const int u : mFollowers[vertex]) {
-		mPredecessors[u].remove(vertex);
+		mPredecessors[u].removeAll(vertex);
 	}
 
 	for (const int u : mPredecessors[vertex]) {
-		mFollowers[u].remove(vertex);
+		mFollowers[u].removeAll(vertex);
 	}
 
 	mPredecessors.remove(vertex);
@@ -687,14 +697,6 @@ void Structurizator::removeVertex(int vertex)
 
 	mDominators.remove(vertex);
 	mVertices.remove(vertex);
-
-	for (const int u : mVertices) {
-		mDominators[u].remove(vertex);
-	}
-
-	mDominators.remove(vertex);
-
-	calculatePostOrder();
 }
 
 void Structurizator::createGraph()
