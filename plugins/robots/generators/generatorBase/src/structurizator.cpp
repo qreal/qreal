@@ -76,6 +76,13 @@ IntermediateNode *Structurizator::performStructurization()
 
 			} else if (isHeadOfCycle(v, reachUnder)) {
 
+				int minTime = -1;
+				for (const int vertex : reachUnder) {
+					if (minTime == -1 || minTime > mPostOrder[vertex]) {
+						minTime = mPostOrder[vertex];
+					}
+				}
+
 				QMap<int, int> nodesWithExits;
 				int commonExit = -1;
 				bool isCycle = isCycleWithBreaks(reachUnder, nodesWithExits, commonExit);
@@ -86,10 +93,16 @@ IntermediateNode *Structurizator::performStructurization()
 
 				qDebug() << "Cycle with breaks";
 				reduceConditionsWithBreaks(v, nodesWithExits, commonExit);
+				t = minTime;
+				somethingChanged = true;
+				continue;
 			}
 
 			if (verticesRoles.size()) {
 				t -= (verticesRoles.size() - 1);
+				if (t < 0) {
+					t = 0;
+				}
 				somethingChanged = true;
 			} else {
 				t++;
@@ -602,14 +615,14 @@ void Structurizator::updateEdges(int newNodeNumber, QSet<QPair<int, int> > &edge
 
 void Structurizator::updatePostOrder(int newNodeNumber, QSet<int> &verteces)
 {
-	int minimum = -1;
+	int maximum = -1;
 	for (int v : verteces) {
-		if (minimum == -1 || minimum > mPostOrder[v]) {
-			minimum = mPostOrder[v];
+		if (maximum == -1 || maximum < mPostOrder[v]) {
+			maximum = mPostOrder[v];
 		}
 	}
 
-	mPostOrder[newNodeNumber] = minimum;
+	mPostOrder[newNodeNumber] = maximum;
 
 	for (int v : verteces) {
 		mPostOrder.remove(v);
