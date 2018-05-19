@@ -524,9 +524,16 @@ void Structurizator::reduceSimpleIfWithBreak(int conditionVertex, int thenVertex
 
 void Structurizator::addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex)
 {
-	Q_UNUSED(conditionVertex)
-	Q_UNUSED(thenVertex)
-	Q_UNUSED(exitVertex)
+	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[conditionVertex]);
+
+	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition
+																, thenVertex == exitVertex ? nullptr : mTrees[thenVertex]
+																, this);
+
+
+	int newNodeNumber = appendVertex(ifWithBreakNode);
+	addNewNodeNumberBeforeVertex(newNodeNumber, conditionVertex);
+	removeVertex(thenVertex);
 }
 
 void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
@@ -638,6 +645,58 @@ void Structurizator::updateVertices(int newNodeNumber, QSet<int> &vertices)
 	mVertices.insert(newNodeNumber);
 }
 
+void Structurizator::addNewNodeNumberBeforeVertex(int newNodeNumber, int vertex)
+{
+	QMap<VertexNumber, QVector<VertexNumber> > predecessors = mPredecessors;
+	for (const int u : predecessors[vertex]) {
+		mFollowers[u].removeAll(vertex);
+		mPredecessors[vertex].removeAll(u);
+
+		mFollowers[u].push_back(newNodeNumber);
+		mPredecessors[newNodeNumber].push_back(u);
+	}
+
+	mFollowers[newNodeNumber].push_back(vertex);
+	mPredecessors[vertex].push_back(newNodeNumber);
+
+
+	// dominators
+	mDominators[newNodeNumber] = mDominators[vertex];
+	for (const int u : mVertices) {
+		if (mDominators[u].contains(vertex)) {
+			mDominators[u].insert(newNodeNumber);
+		}
+	}
+
+	// postorder
+	calculatePostOrder();
+}
+
+void Structurizator::removeVertex(int vertex)
+{
+	for (const int u : mFollowers[vertex]) {
+		mPredecessors[u].remove(vertex);
+	}
+
+	for (const int u : mPredecessors[vertex]) {
+		mFollowers[u].remove(vertex);
+	}
+
+	mPredecessors.remove(vertex);
+	mFollowers.remove(vertex);
+
+	mDominators.remove(vertex);
+	mVertices.remove(vertex);
+
+	for (const int u : mVertices) {
+		mDominators[u].remove(vertex);
+	}
+
+	mDominators.remove(vertex);
+
+	calculatePostOrder();
+}
+
 void Structurizator::createGraph()
 {
 	for (const qReal::Id &vertex : initialIds) {
@@ -698,6 +757,8 @@ void Structurizator::findStartVertex()
 
 void Structurizator::calculatePostOrder()
 {
+	mPostOrder.clear();
+
 	QMap<int, bool> used;
 	for (const int v : mVertices) {
 		used[v] = false;

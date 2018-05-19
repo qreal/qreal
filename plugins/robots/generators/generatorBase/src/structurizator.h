@@ -65,6 +65,9 @@ private:
 	void updateDominators(int newNodeNumber, QSet<int> &vertices);
 	void updateVertices(int newNodeNumber, QSet<int> &vertices);
 
+	void addNewNodeNumberBeforeVertex(int newNodeNumber, int vertex);
+	void removeVertex(int vertex);
+
 	/// methods used before structurization process
 	void createGraph();
 	void calculateDominators();
