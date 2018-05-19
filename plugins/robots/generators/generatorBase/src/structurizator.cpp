@@ -112,6 +112,7 @@ IntermediateNode *Structurizator::performStructurization()
 
 	if (mVertices.size() == 1) {
 		qDebug() << "Structured!";
+		qDebug() << " ";
 		return mTrees[mStartVertex];
 	}
 
@@ -310,48 +311,6 @@ bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, int> &no
 	}
 
 	return checkCommonExit(commonExit, nodesWithExits);
-
-	/*
-
-
-	int oneSavedEdge = -1;
-	for (const int u : nodesWithExits.keys()) {
-		QSet<int> edgesToRemove;
-
-		int u1 = nodesWithExits[u];
-		for (int edge : mFollowers2[u][u1]) {
-			if (oneSavedEdge == -1) {
-				oneSavedEdge = edge;
-			}
-			edgesToRemove.insert(edge);
-		}
-
-
-		if (u1 != commonExit) {
-			for (int edge : mFollowers2[u1][commonExit]) {
-				edgesToRemove.insert(edge);
-			}
-		}
-
-		bool needToUpdateHead = u == v;
-		QMap<QString, int> verticesRoles;
-		verticesRoles["condition"] = u;
-		verticesRoles["then"] = nodesWithExits[u];
-		verticesRoles["exit"] = commonExit;
-		reduceConditionAndAddBreak(edgesToRemove, verticesRoles);
-		if (needToUpdateHead) {
-			v = mVertecesNumber - 1;
-		}
-	}
-
-	if (commonExit != -1) {
-		mFollowers2[v][commonExit].push_back(oneSavedEdge);
-		mPredecessors2[commonExit][v].push_back(oneSavedEdge);
-	}
-
-	return true;
-	*/
-
 }
 
 bool Structurizator::isHeadOfCycle(int v, QSet<int> &reachUnder)
