@@ -640,7 +640,7 @@ void Structurizator::updateDominators(int newNodeNumber, QSet<int> &verteces)
 
 void Structurizator::updateVertices(int newNodeNumber, QSet<int> &vertices)
 {
-	mStartVertex = mVertices.contains(mStartVertex) ? newNodeNumber : mStartVertex;
+	mStartVertex = vertices.contains(mStartVertex) ? newNodeNumber : mStartVertex;
 	mVertices.subtract(vertices);
 	mVertices.insert(newNodeNumber);
 }
