@@ -113,9 +113,9 @@ void StructuralControlFlowGenerator::performGeneration()
 
 void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
 {
-	Q_UNUSED(root)
+	SemanticNode * semanticNode = transformNode(root);
+	mSemanticTree->setRoot(new RootNode(semanticNode, mSemanticTree));
 }
-
 
 // maybe use strategy to recursively handle this situation?
 SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::IntermediateNode *node)
@@ -130,7 +130,22 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::Inter
 	case myUtils::IntermediateNode::Type::ifThenElseCondition:
 		return transformIfThenElse(node);
 
+	case myUtils::IntermediateNode::Type::ifWithBreakCondition:
+		return transformIfWithBreak(node);
+
+	case myUtils::IntermediateNode::Type::switchCondition:
+		return transformSwitch(node);
+
+	case myUtils::IntermediateNode::Type::infiniteloop:
+		return transformSelfLoop(node);
+
+	case myUtils::IntermediateNode::Type::whileloop:
+		return transformWhileLoop(node);
+
 	default:
+		qDebug() << "Undefined type of Intermediate node!";
+		mCantBeGeneratedIntoStructuredCode = true;
+
 		return nullptr;
 	}
 }
