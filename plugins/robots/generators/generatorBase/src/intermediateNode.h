@@ -57,7 +57,7 @@ public:
 
 	qReal::Id id() const;
 private:
-	const qReal::Id &mId;
+	const qReal::Id mId;
 };
 
 class IfNode : public IntermediateNode {
