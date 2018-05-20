@@ -4,6 +4,7 @@
 #include <qrkernel/ids.h>
 
 #include <generatorBase/semanticTree/semanticNode.h>
+#include <generatorBase/semanticTree/semanticTree.h>
 
 namespace generatorBase {
 namespace myUtils {
@@ -28,12 +29,19 @@ public:
 	IntermediateNode(QObject *parent = nullptr);
 	IntermediateNode(QSet<qReal::Id> &ids, QObject *parent = nullptr);
 
+
 	virtual Type type() const = 0;
+	virtual qReal::Id firstId() const = 0;
+	bool hasBreakInside() const;
+	//virtual semantics::SemanticNode *semanticNode(semantics::SemanticTree *tree, ) = 0;
 
 
 	QSet<qReal::Id> ids() const;
 protected:
 	QSet<qReal::Id> mIdsInvolved;
+	bool mIsInsideCycle;
+	bool mIsInsideSwitch;
+	bool mHasBreakInside;
 };
 
 class SimpleNode : public IntermediateNode {
@@ -44,6 +52,8 @@ public:
 	SimpleNode(const qReal::Id &id, QObject *parent = nullptr);
 
 	Type type() const;
+	qReal::Id firstId() const;
+	//semantics::SemanticNode *semanticNode(semantics::SemanticTree *tree);
 
 	qReal::Id id() const;
 private:
@@ -62,6 +72,8 @@ public:
 	IntermediateNode *elseBranch() const;
 
 	Type type() const;
+	qReal::Id firstId() const;
+	//semantics::SemanticNode *semanticNode(semantics::SemanticTree *tree);
 private:
 	SimpleNode *mCondition;
 	IntermediateNode *mThenBranch;
@@ -81,6 +93,7 @@ public:
 	QList<IntermediateNode *> branches() const;
 
 	Type type() const;
+	qReal::Id firstId() const;
 private:
 	SimpleNode *mCondition;
 	const QList<IntermediateNode *> mBranches;
@@ -98,6 +111,7 @@ public:
 	IntermediateNode *secondNode() const;
 
 	Type type() const;
+	qReal::Id firstId() const;
 private:
 	IntermediateNode *mFirstNode;
 	IntermediateNode *mSecondNode;
@@ -114,6 +128,7 @@ public:
 	IntermediateNode *bodyNode() const;
 
 	Type type() const;
+	qReal::Id firstId() const;
 private:
 	IntermediateNode *mHeadNode;
 	IntermediateNode *mBodyNode;
@@ -130,6 +145,7 @@ public:
 	IntermediateNode *bodyNode() const;
 
 	Type type() const;
+	qReal::Id firstId() const;
 private:
 	IntermediateNode *mBodyNode;
 };
@@ -140,15 +156,19 @@ class IfWithBreakNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	IfWithBreakNode(SimpleNode *condition, IntermediateNode *actionsBeforeBreak, QObject *parent = nullptr);
+	IfWithBreakNode(SimpleNode *condition, IntermediateNode *actionsBeforeBreak,
+							IntermediateNode *nodeThatIsConnectedWithCondition, QObject *parent = nullptr);
 
 	SimpleNode *condition() const;
 	IntermediateNode *actionsBeforeBreak() const;
+	IntermediateNode *nodeThatIsConnectedWithCondition() const;
 
 	Type type() const;
+	qReal::Id firstId() const;
 private:
 	SimpleNode *mCondition;
 	IntermediateNode *mActionsBeforeBreak;
+	IntermediateNode *mNodeThatIsConnectedWithCondition;
 };
 
 }

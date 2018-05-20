@@ -42,6 +42,7 @@ public:
 	void setBranchesMergedFlag();
 
 	void transformToSimple();
+	void generateIfs();
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;
@@ -59,6 +60,7 @@ private:
 	ZoneNode *mDefaultBranch;
 	bool mBranchesMerged;
 	bool mIsSimple;
+	bool mGenerateIfs;
 };
 
 }

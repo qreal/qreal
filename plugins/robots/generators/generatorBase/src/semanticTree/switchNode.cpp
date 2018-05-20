@@ -24,6 +24,7 @@ SwitchNode::SwitchNode(const Id &idBinded, QObject *parent)
 	, mDefaultBranch(nullptr)
 	, mBranchesMerged(false)
 	, mIsSimple(false)
+	, mGenerateIfs(false)
 {
 }
 
@@ -56,6 +57,11 @@ void SwitchNode::setBranchesMergedFlag()
 void SwitchNode::transformToSimple()
 {
 	mIsSimple = true;
+}
+
+void SwitchNode::generateIfs()
+{
+	mGenerateIfs = true;
 }
 
 QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const

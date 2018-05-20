@@ -70,7 +70,14 @@ private:
 	void performStructurization();
 	void obtainSemanticTree(myUtils::IntermediateNode *root);
 
-	semantics::SemanticNode *transformNode(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformNode(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSimple(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformBlock(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformIfThenElse(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSelfLoop(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformWhileLoop(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSwitch(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformIfWithBreak(const myUtils::IntermediateNode *node);
 
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
