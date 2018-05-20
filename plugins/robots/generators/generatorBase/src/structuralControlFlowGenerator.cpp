@@ -173,7 +173,7 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::Inte
 		}
 
 	} else {
-		zone->appendChild(transformBlock(blockNode->firstNode()));
+		zone->appendChild(transformNode(blockNode->firstNode()));
 	}
 
 	zone->appendChild(transformNode(blockNode->secondNode()));
