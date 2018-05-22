@@ -5,20 +5,18 @@
 using namespace generatorBase;
 using namespace myUtils;
 
-Structurizator::Structurizator(const qrRepo::RepoApi &repo, QSet<qReal::Id> &vertecesIds, QObject *parent)
+Structurizator::Structurizator(QObject *parent)
 	: QObject(parent)
-	, mRepo(repo)
-	, initialIds(vertecesIds)
 	, mVertecesNumber(1)
 	, mStartVertex(-1)
 	, mMaxPostOrderTime(-1)
 {
-	// remembering ids and verteces
-	for (const qReal::Id &id : vertecesIds) {
-		mMapIdToInt[id] = mVertecesNumber;
-		mVertices.insert(mVertecesNumber);
-		mVertecesNumber++;
-	}
+}
+
+IntermediateNode *Structurizator::performStructurization(const qrRepo::RepoApi *repo, const QSet<qReal::Id> &vertecesIds)
+{
+	setRepo(repo);
+	setVerteces(vertecesIds);
 
 	// constructing graph
 	createGraph();
@@ -31,10 +29,6 @@ Structurizator::Structurizator(const qrRepo::RepoApi &repo, QSet<qReal::Id> &ver
 	calculateDominators();
 
 	createInitialNodesForIds();
-}
-
-IntermediateNode *Structurizator::performStructurization()
-{
 
 	bool somethingChanged = true;
 	while (somethingChanged) {
@@ -117,6 +111,26 @@ IntermediateNode *Structurizator::performStructurization()
 	}
 
 	return nullptr;
+}
+
+void Structurizator::setRepo(const qrRepo::RepoApi *repo)
+{
+	mRepo = repo;
+}
+
+void Structurizator::setVerteces(const QSet<qReal::Id> &vertecesIds)
+{
+	mVertices.clear();
+	mMapIdToInt.clear();
+	mVertecesNumber = 1;
+	mInitialIds.clear();
+
+	for (const qReal::Id &id : vertecesIds) {
+		mInitialIds.insert(id);
+		mMapIdToInt[id] = mVertecesNumber;
+		mVertices.insert(mVertecesNumber);
+		mVertecesNumber++;
+	}
 }
 
 bool Structurizator::isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
@@ -513,9 +527,8 @@ void Structurizator::reduceSimpleIfWithBreak(int conditionVertex, int thenVertex
 {
 	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[conditionVertex]);
 
-	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition
-																, thenVertex == exitVertex ? nullptr : mTrees[thenVertex]
-																, this);
+	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition, thenVertex == exitVertex ? nullptr : mTrees[thenVertex],
+																mTrees[thenVertex], this);
 
 	QSet<QPair<int, int> > edgesToRemove = { makePair(conditionVertex, thenVertex) };
 	QSet<int> vertices = {conditionVertex};
@@ -536,6 +549,7 @@ void Structurizator::addAdditionalConditionWithBreak(int conditionVertex, int th
 
 	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition
 																, thenVertex == exitVertex ? nullptr : mTrees[thenVertex]
+																, mTrees[thenVertex]
 																, this);
 
 
@@ -701,10 +715,10 @@ void Structurizator::removeVertex(int vertex)
 
 void Structurizator::createGraph()
 {
-	for (const qReal::Id &vertex : initialIds) {
-		for (const qReal::Id &link : mRepo.outgoingLinks(vertex)) {
+	for (const qReal::Id &vertex : mInitialIds) {
+		for (const qReal::Id &link : mRepo->outgoingLinks(vertex)) {
 			int v = mMapIdToInt[vertex];
-			int u = mMapIdToInt[mRepo.otherEntityFromLink(link, vertex)];
+			int u = mMapIdToInt[mRepo->otherEntityFromLink(link, vertex)];
 
 			if (!mFollowers[v].contains(u)) {
 				mFollowers[v].push_back(u);

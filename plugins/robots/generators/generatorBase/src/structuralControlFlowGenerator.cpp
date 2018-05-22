@@ -32,7 +32,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, QObject *parent
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
-	, mStructurizator(nullptr)
+	, mStructurizator(new Structurizator(this))
 {
 }
 
@@ -106,8 +106,7 @@ void StructuralControlFlowGenerator::performGeneration()
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
 
-	mStructurizator = new Structurizator(mRepo, mIds, this);
-	myUtils::IntermediateNode *tree = mStructurizator->performStructurization();
+	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(&mRepo, mIds);
 	obtainSemanticTree(tree);
 }
 

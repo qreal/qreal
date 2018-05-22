@@ -16,12 +16,12 @@ class Structurizator : public QObject
 	Q_OBJECT
 
 public:
-	Structurizator(const qrRepo::RepoApi &repo
-						, QSet<qReal::Id> &vertecesIds
-						, QObject *parent = 0);
+	Structurizator(QObject *parent = 0);
 
-	myUtils::IntermediateNode *performStructurization();
+	myUtils::IntermediateNode *performStructurization(const qrRepo::RepoApi *repo, const QSet<qReal::Id> &vertecesIds);
 
+	void setRepo(const qrRepo::RepoApi *repo);
+	void setVerteces(const QSet<qReal::Id> &vertecesIds);
 
 private:
 
@@ -98,8 +98,8 @@ private:
 
 	QMap<int, myUtils::IntermediateNode *> mTrees;
 
-	const qrRepo::RepoApi &mRepo;
-	QSet<qReal::Id> initialIds;
+	const qrRepo::RepoApi *mRepo;
+	QSet<qReal::Id> mInitialIds;
 	int mVertecesNumber;
 	int mStartVertex;
 	int mMaxPostOrderTime;
