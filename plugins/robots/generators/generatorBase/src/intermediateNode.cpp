@@ -182,6 +182,16 @@ WhileNode::WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, QOb
 	mIdsInvolved = mHeadNode->ids() + mBodyNode->ids();
 }
 
+IntermediateNode *WhileNode::headNode() const
+{
+	return mHeadNode;
+}
+
+IntermediateNode *WhileNode::bodyNode() const
+{
+	return mBodyNode;
+}
+
 IntermediateNode::Type WhileNode::type() const
 {
 	return Type::whileloop;
@@ -197,6 +207,11 @@ SelfLoopNode::SelfLoopNode(IntermediateNode *bodyNode, QObject *parent)
 	, mBodyNode(bodyNode)
 {
 	mIdsInvolved = bodyNode->ids();
+}
+
+IntermediateNode *SelfLoopNode::bodyNode() const
+{
+	return mBodyNode;
 }
 
 IntermediateNode::Type SelfLoopNode::type() const

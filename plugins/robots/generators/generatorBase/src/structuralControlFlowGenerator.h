@@ -70,6 +70,7 @@ private:
 	void performStructurization();
 	void obtainSemanticTree(myUtils::IntermediateNode *root);
 
+	void checkAndAppendBlock(semantics::ZoneNode *zone, myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformNode(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformSimple(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformBlock(const myUtils::IntermediateNode *node);

@@ -107,13 +107,35 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 
 	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(&mRepo, mIds);
-	obtainSemanticTree(tree);
+	if (tree) {
+		obtainSemanticTree(tree);
+	} else {
+		mCantBeGeneratedIntoStructuredCode = true;
+	}
 }
 
 void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
 {
 	SemanticNode * semanticNode = transformNode(root);
 	mSemanticTree->setRoot(new RootNode(semanticNode, mSemanticTree));
+}
+
+void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, myUtils::IntermediateNode *node)
+{
+	if (node->type() == myUtils::IntermediateNode::simple) {
+		const myUtils::SimpleNode *simpleNode = dynamic_cast<const myUtils::SimpleNode *>(node);
+
+		switch (semanticsOf(simpleNode->id())) {
+		case enums::semantics::conditionalBlock:
+		case enums::semantics::switchBlock:
+			break;
+		default:
+			zone->appendChild(transformSimple(simpleNode));
+		}
+
+	} else {
+		zone->appendChild(transformNode(node));
+	}
 }
 
 // maybe use strategy to recursively handle this situation?
@@ -160,22 +182,9 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::Inte
 	const myUtils::BlockNode *blockNode = dynamic_cast<const myUtils::BlockNode *>(node);
 	ZoneNode *zone = new ZoneNode(mSemanticTree);
 
-	if (blockNode->firstNode()->type() == myUtils::IntermediateNode::simple) {
-		const myUtils::SimpleNode *simpleNode = dynamic_cast<const myUtils::SimpleNode *>(blockNode->firstNode());
+	checkAndAppendBlock(zone, blockNode->firstNode());
+	checkAndAppendBlock(zone, blockNode->secondNode());
 
-		switch (semanticsOf(simpleNode->id())) {
-		case enums::semantics::conditionalBlock:
-		case enums::semantics::switchBlock:
-			break;
-		default:
-			zone->appendChild(transformSimple(simpleNode));
-		}
-
-	} else {
-		zone->appendChild(transformNode(blockNode->firstNode()));
-	}
-
-	zone->appendChild(transformNode(blockNode->secondNode()));
 	return zone;
 }
 
@@ -271,7 +280,8 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(const myUtils::
 	const myUtils::WhileNode *whileNode = dynamic_cast<const myUtils::WhileNode *>(node);
 	LoopNode *semanticLoop= nullptr;
 	if (whileNode->headNode()->type() == myUtils::IntermediateNode::Type::simple
-			&& semanticsOf(whileNode->headNode()->firstId()) == enums::semantics::conditionalBlock) {
+			&& (semanticsOf(whileNode->headNode()->firstId()) == enums::semantics::conditionalBlock ||
+				semanticsOf(whileNode->headNode()->firstId()) == enums::semantics::loopBlock)) {
 		semanticLoop = new LoopNode(whileNode->headNode()->firstId(), mSemanticTree);
 	} else {
 		semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
@@ -297,7 +307,7 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(const myUtils::Int
 			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
 
 			for (const myUtils::IntermediateNode *branchNode : branches) {
-				if (node->firstId() == otherVertex) {
+				if (branchNode->firstId() == otherVertex) {
 					semanticSwitch->addBranch(expression, transformNode(branchNode));
 					break;
 				}
