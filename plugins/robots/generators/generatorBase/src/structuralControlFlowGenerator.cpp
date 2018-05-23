@@ -229,7 +229,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(const myUtils:
 			}
 
 			if (ifNode->hasBreakInside()) {
-				semanticSwitch->generateIfs();
+				semanticSwitch->setGenerateIfs();
 			}
 
 			return semanticSwitch;
@@ -315,7 +315,7 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(const myUtils::Int
 		}
 
 		if (switchNode->hasBreakInside()) {
-			semanticSwitch->generateIfs();
+			semanticSwitch->setGenerateIfs();
 		}
 
 		return semanticSwitch;

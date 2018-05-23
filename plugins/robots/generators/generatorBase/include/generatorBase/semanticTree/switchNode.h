@@ -42,7 +42,7 @@ public:
 	void setBranchesMergedFlag();
 
 	void transformToSimple();
-	void generateIfs();
+	void setGenerateIfs();
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;

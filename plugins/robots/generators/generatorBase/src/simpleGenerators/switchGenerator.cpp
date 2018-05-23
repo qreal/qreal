@@ -23,8 +23,11 @@ SwitchGenerator::SwitchGenerator(const qrRepo::RepoApi &repo
 		, const qReal::Id &id
 		, const QString &part
 		, const QStringList &values
+		, bool generateIfs
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, QString("switch/%1.t").arg(part), {
+	: BindingGenerator(repo, customizer, id
+			, generateIfs ? QString("switch/%1_if.t").arg(part) : QString("switch/%1.t").arg(part)
+			, {
 			Binding::createConverting("@@EXPRESSION@@", "Expression"
 					, customizer.factory()->floatPropertyConverter(id, "Expression"))
 			, Binding::createConverting("@@CONDITION@@", "Expression"

@@ -121,15 +121,15 @@ public:
 
 	/// Returns a pointer to a code generator for switch first enumeration block.
 	virtual simple::AbstractSimpleGenerator *switchHeadGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer, const QStringList &values);
+			, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs);
 
 	/// Returns a pointer to a code generator for switch enumeration block somewhere in the middle.
 	virtual simple::AbstractSimpleGenerator *switchMiddleGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer, const QStringList &values);
+			, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs);
 
 	/// Returns a pointer to a code generator for switch enumeration block in the end (default case).
 	virtual simple::AbstractSimpleGenerator *switchDefaultGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer);
+			, GeneratorCustomizer &customizer, bool generateIfs);
 
 	/// Returns a pointer to a threads instantiation generator
 	virtual simple::AbstractSimpleGenerator *forkCallGenerator(const qReal::Id &id

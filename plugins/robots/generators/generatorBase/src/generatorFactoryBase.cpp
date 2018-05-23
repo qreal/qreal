@@ -236,21 +236,21 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(const Id
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchHeadGenerator(const Id &id
-		, GeneratorCustomizer &customizer, const QStringList &values)
+		, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs)
 {
-	return new SwitchGenerator(mRepo, customizer, id, "head", values, this);
+	return new SwitchGenerator(mRepo, customizer, id, "head", values, generateIfs, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchMiddleGenerator(const Id &id
-		, GeneratorCustomizer &customizer, const QStringList &values)
+		, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs)
 {
-	return new SwitchGenerator(mRepo, customizer, id, "middle", values, this);
+	return new SwitchGenerator(mRepo, customizer, id, "middle", values, generateIfs, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(const Id &id
-		, GeneratorCustomizer &customizer)
+		, GeneratorCustomizer &customizer, bool generateIfs)
 {
-	return new SwitchGenerator(mRepo, customizer, id, "default", {}, this);
+	return new SwitchGenerator(mRepo, customizer, id, "default", {}, generateIfs, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(const Id &id
