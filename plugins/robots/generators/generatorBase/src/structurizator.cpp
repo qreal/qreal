@@ -359,7 +359,7 @@ bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodes
 	for (const int u : reachUnder) {
 		for (const int w : mFollowers[u]) {
 			if (!reachUnder.contains(w)) {
-				if (exits.contains(w)) {
+				if (exits.contains(w) || incomingEdgesNumber(w) > 1) {
 					if (commonExit != -1 && commonExit != w) {
 						return false;
 					}
