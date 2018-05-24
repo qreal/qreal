@@ -32,8 +32,8 @@ public:
 
 	virtual Type type() const = 0;
 	virtual qReal::Id firstId() const = 0;
+	virtual bool analyzeBreak() = 0;
 	bool hasBreakInside() const;
-	//virtual semantics::SemanticNode *semanticNode(semantics::SemanticTree *tree, ) = 0;
 
 
 	QSet<qReal::Id> ids() const;
@@ -42,6 +42,7 @@ protected:
 	bool mIsInsideCycle;
 	bool mIsInsideSwitch;
 	bool mHasBreakInside;
+	bool mBreakWasAnalyzed;
 };
 
 class SimpleNode : public IntermediateNode {
@@ -53,7 +54,7 @@ public:
 
 	Type type() const;
 	qReal::Id firstId() const;
-	//semantics::SemanticNode *semanticNode(semantics::SemanticTree *tree);
+	bool analyzeBreak();
 
 	qReal::Id id() const;
 private:
@@ -71,9 +72,9 @@ public:
 	IntermediateNode *thenBranch() const;
 	IntermediateNode *elseBranch() const;
 
+	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
-	//semantics::SemanticNode *semanticNode(semantics::SemanticTree *tree);
 private:
 	SimpleNode *mCondition;
 	IntermediateNode *mThenBranch;
@@ -92,6 +93,7 @@ public:
 	SimpleNode *condition() const;
 	QList<IntermediateNode *> branches() const;
 
+	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -110,6 +112,7 @@ public:
 	IntermediateNode *firstNode() const;
 	IntermediateNode *secondNode() const;
 
+	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -127,6 +130,7 @@ public:
 	IntermediateNode *headNode() const;
 	IntermediateNode *bodyNode() const;
 
+	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -144,6 +148,7 @@ public:
 
 	IntermediateNode *bodyNode() const;
 
+	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -163,6 +168,7 @@ public:
 	IntermediateNode *actionsBeforeBreak() const;
 	IntermediateNode *nodeThatIsConnectedWithCondition() const;
 
+	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:

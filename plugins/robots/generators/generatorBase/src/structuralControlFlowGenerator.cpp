@@ -116,6 +116,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
 {
+	bool hasBreak = root->analyzeBreak();
 	SemanticNode * semanticNode = transformNode(root);
 	mSemanticTree->setRoot(new RootNode(semanticNode, mSemanticTree));
 }
@@ -364,6 +365,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfWithBreak(const myUtils
 	} else if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
 		SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
 
+		qDebug() << "There's no construction of if from switch semantics yet";
 		// deal with semanticSwitch
 		return semanticSwitch;
 	}

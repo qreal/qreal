@@ -22,10 +22,11 @@ qReal::Id SimpleNode::firstId() const
 	return mId;
 }
 
-//semantics::SemanticNode *SimpleNode::semanticNode(semantics::SemanticTree *tree)
-//{
-//	return tree->produceNodeFor(mId);
-//}
+bool SimpleNode::analyzeBreak()
+{
+	mHasBreakInside = false;
+	return mHasBreakInside;
+}
 
 qReal::Id SimpleNode::id() const
 {
@@ -64,6 +65,12 @@ IntermediateNode *IfNode::elseBranch() const
 	return mElseBranch;
 }
 
+bool IfNode::analyzeBreak()
+{
+	mHasBreakInside = mThenBranch->analyzeBreak() || mElseBranch->analyzeBreak();
+	return mHasBreakInside;
+}
+
 IntermediateNode::Type IfNode::type() const
 {
 	return Type::ifThenElseCondition;
@@ -74,25 +81,13 @@ qReal::Id IfNode::firstId() const
 	return mCondition->firstId();
 }
 
-//semantics::SemanticNode *IfNode::semanticNode(semantics::SemanticTree *tree)
-//{
-//	//const qReal::Id &conditionId = condition()->id();
-
-//	switch (semantics:condition()->id()) {
-//	case value:
-
-//		break;
-//	default:
-//		break;
-//	}
-//}
-
 IntermediateNode::IntermediateNode(QObject *parent)
 	: QObject(parent)
 	, mIdsInvolved(QSet<qReal::Id>())
 	, mIsInsideCycle(false)
 	, mIsInsideSwitch(false)
 	, mHasBreakInside(false)
+	, mBreakWasAnalyzed(false)
 {
 }
 
@@ -104,6 +99,16 @@ IntermediateNode::IntermediateNode(QSet<qReal::Id> &ids, QObject *parent)
 	, mHasBreakInside(false)
 {
 }
+
+//bool IntermediateNode::analyzeBreak()
+//{
+//	if (mBreakWasAnalyzed) {
+//		return mHasBreakInside;
+//	}
+
+//	mBreakWasAnalyzed = true;
+//	return analyzeBreak();
+//}
 
 bool IntermediateNode::hasBreakInside() const
 {
@@ -136,6 +141,21 @@ QList<IntermediateNode *> SwitchNode::branches() const
 	return mBranches;
 }
 
+bool SwitchNode::analyzeBreak()
+{
+	if (mBreakWasAnalyzed) {
+		return mHasBreakInside;
+	}
+
+	mHasBreakInside = false;
+	for (IntermediateNode *node : mBranches) {
+		mHasBreakInside |= node->analyzeBreak();
+	}
+	mBreakWasAnalyzed = true;
+
+	return mHasBreakInside;
+}
+
 IntermediateNode::Type SwitchNode::type() const
 {
 	return Type::switchCondition;
@@ -162,6 +182,17 @@ IntermediateNode *BlockNode::firstNode() const
 IntermediateNode *BlockNode::secondNode() const
 {
 	return mSecondNode;
+}
+
+bool BlockNode::analyzeBreak()
+{
+	if (mBreakWasAnalyzed) {
+		return mHasBreakInside;
+	}
+
+	mHasBreakInside = mFirstNode->analyzeBreak() || mSecondNode->analyzeBreak();
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
 }
 
 IntermediateNode::Type BlockNode::type() const
@@ -192,6 +223,17 @@ IntermediateNode *WhileNode::bodyNode() const
 	return mBodyNode;
 }
 
+bool WhileNode::analyzeBreak()
+{
+	if (mBreakWasAnalyzed) {
+		return mHasBreakInside;
+	}
+
+	mHasBreakInside = mHeadNode->analyzeBreak() || mBodyNode->analyzeBreak();
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
+}
+
 IntermediateNode::Type WhileNode::type() const
 {
 	return Type::whileloop;
@@ -212,6 +254,17 @@ SelfLoopNode::SelfLoopNode(IntermediateNode *bodyNode, QObject *parent)
 IntermediateNode *SelfLoopNode::bodyNode() const
 {
 	return mBodyNode;
+}
+
+bool SelfLoopNode::analyzeBreak()
+{
+	if (mBreakWasAnalyzed) {
+		return mHasBreakInside;
+	}
+
+	mHasBreakInside = mBodyNode->analyzeBreak();
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
 }
 
 IntermediateNode::Type SelfLoopNode::type() const
@@ -250,6 +303,13 @@ IntermediateNode *IfWithBreakNode::actionsBeforeBreak() const
 IntermediateNode *IfWithBreakNode::nodeThatIsConnectedWithCondition() const
 {
 	return mNodeThatIsConnectedWithCondition;
+}
+
+bool IfWithBreakNode::analyzeBreak()
+{
+	mHasBreakInside = true;
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
 }
 
 IntermediateNode::Type IfWithBreakNode::type() const
