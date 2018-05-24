@@ -67,7 +67,12 @@ IntermediateNode *IfNode::elseBranch() const
 
 bool IfNode::analyzeBreak()
 {
-	mHasBreakInside = mThenBranch->analyzeBreak() || mElseBranch->analyzeBreak();
+	mHasBreakInside = mThenBranch->analyzeBreak();
+
+	if (mElseBranch) {
+		mHasBreakInside |= mElseBranch->analyzeBreak();
+	}
+
 	return mHasBreakInside;
 }
 
