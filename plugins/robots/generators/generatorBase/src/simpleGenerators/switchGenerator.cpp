@@ -31,7 +31,7 @@ SwitchGenerator::SwitchGenerator(const qrRepo::RepoApi &repo
 			Binding::createConverting("@@EXPRESSION@@", "Expression"
 					, customizer.factory()->floatPropertyConverter(id, "Expression"))
 			, Binding::createConverting("@@CONDITION@@", "Expression"
-					, customizer.factory()->switchConditionsMerger(values))
+					, customizer.factory()->switchConditionsMerger(values, generateIfs))
 			}, parent)
 {
 }

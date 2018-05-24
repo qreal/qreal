@@ -18,10 +18,11 @@ using namespace generatorBase::converters;
 
 SwitchConditionsMerger::SwitchConditionsMerger(const QStringList &pathsToTemplates
 		, const ConverterInterface * const systemVariablesConverter
-		, const QStringList &values)
+		, const QStringList &values, bool generateIf)
 	: TemplateParametrizedConverter(pathsToTemplates)
 	, mSystemVariablesConverter(systemVariablesConverter)
 	, mValues(values)
+	, mGenerateIf(generateIf)
 {
 }
 
@@ -33,8 +34,12 @@ SwitchConditionsMerger::~SwitchConditionsMerger()
 QString SwitchConditionsMerger::convert(const QString &expression) const
 {
 	const QString convertedExpression = mSystemVariablesConverter->convert(expression);
-	const QString oneCondition = readTemplate("switch/oneCase.t");
-	const QString conditionsSeparator = readTemplate("switch/conditionsSeparator.t");
+	const QString oneCaseFile = mGenerateIf ? "switch/oneCase_if.t" : "switch/oneCase.t";
+	const QString conditionsSeparatorFile = mGenerateIf ? "switch/conditionsSeparator_if.t"
+													: "switch/conditionsSeparator.t";
+
+	const QString oneCondition = readTemplate(oneCaseFile);
+	const QString conditionsSeparator = readTemplate(conditionsSeparatorFile);
 
 	QStringList conditions;
 	for (const QString &value : mValues) {
