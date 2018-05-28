@@ -37,6 +37,8 @@
 using namespace twoDModel;
 using namespace model;
 
+//#define D2_MODEL_FRAMES_DEBUG
+
 #ifdef D2_MODEL_FRAMES_DEBUG
 #include <QtWidgets/QGraphicsPathItem>
 QGraphicsPathItem *debugPath = nullptr;
@@ -111,7 +113,7 @@ bool WorldModel::checkCollision(const QPainterPath &path) const
 {
 #ifdef D2_MODEL_FRAMES_DEBUG
 	delete debugPath;
-	QPainterPath commonPath = buildWallPath();
+	QPainterPath commonPath = buildSolidItemsPath();
 	commonPath.addPath(path);
 	debugPath = new QGraphicsPathItem(commonPath);
 	debugPath->setBrush(Qt::red);
@@ -119,8 +121,9 @@ bool WorldModel::checkCollision(const QPainterPath &path) const
 	debugPath->setZValue(100);
 
 	QGraphicsScene * const scene = mWalls.isEmpty()
-			? (mColorFields.isEmpty() ? nullptr : mColorFields[0]->scene())
-			: mWalls[0]->scene();
+			? (mColorFields.isEmpty() ? nullptr : mColorFields.first()->scene())
+			: mWalls.first()->scene();
+
 	if (scene) {
 		scene->addItem(debugPath);
 		scene->update();
