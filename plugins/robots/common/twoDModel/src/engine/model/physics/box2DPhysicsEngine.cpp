@@ -36,7 +36,7 @@
 //#define BOX2D_DEBUG_PATH
 
 #ifdef BOX2D_DEBUG_PATH
-QGraphicsPathItem *debugPath = nullptr;
+QGraphicsPathItem *debugPathBox2D = nullptr;
 #endif
 
 
@@ -289,7 +289,7 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		}
 
 #ifdef BOX2D_DEBUG_PATH
-		delete debugPath;
+		delete debugPathBox2D;
 		QPainterPath path;
 
 		for(QGraphicsItem *item : mBox2DDynamicItems.keys()) {
@@ -311,11 +311,11 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 			}
 		}
 
-		debugPath = new QGraphicsPathItem(path);
-		debugPath->setBrush(Qt::blue);
-		debugPath->setPen(QPen(QColor(Qt::red)));
-		debugPath->setZValue(101);
-		mScene->addItem(debugPath);
+		debugPathBox2D = new QGraphicsPathItem(path);
+		debugPathBox2D->setBrush(Qt::blue);
+		debugPathBox2D->setPen(QPen(QColor(Qt::red)));
+		debugPathBox2D->setZValue(101);
+		mScene->addItem(debugPathBox2D);
 		mScene->update();
 
 #endif

@@ -123,7 +123,17 @@ qreal BallItem::linearDamping() const
 QPainterPath BallItem::path() const
 {
 	QPainterPath path;
-	path.addEllipse(collidingPolygon().boundingRect());
+	QPolygonF collidingPlgn = collidingPolygon();
+	QMatrix m;
+	m.rotate(rotation());
+
+	QPointF firstP = collidingPlgn.at(0);
+	collidingPlgn.translate(-firstP.x(), -firstP.y());
+
+	path.addEllipse(collidingPlgn.boundingRect());
+	path = m.map(path);
+	path.translate(firstP.x(), firstP.y());
+
 	return path;
 }
 
