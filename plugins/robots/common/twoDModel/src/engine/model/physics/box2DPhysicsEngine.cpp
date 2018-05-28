@@ -33,6 +33,13 @@
 #include "parts/box2DItem.h"
 
 
+//#define BOX2D_DEBUG_PATH
+
+#ifdef BOX2D_DEBUG_PATH
+QGraphicsPathItem *debugPath = nullptr;
+#endif
+
+
 using namespace twoDModel::model::physics;
 using namespace parts;
 using namespace mathUtils;
@@ -228,10 +235,10 @@ void Box2DPhysicsEngine::onMousePressed()
 //		p.addPolygon(robot->mDebuggingDrawPolygon);
 //		mScene->addPath(p);
 //		QPainterPath p1;
-//		p1.addPolygon(robot->wheels[0]->mDebuggingDrawPolygon);
+//		p1.addPolygon(robot->getWheelAt(0)->mDebuggingDrawPolygon);
 //		mScene->addPath(p1);
 //		QPainterPath p2;
-//		p2.addPolygon(robot->wheels[1]->mDebuggingDrawPolygon);
+//		p2.addPolygon(robot->getWheelAt(1)->mDebuggingDrawPolygon);
 //		mScene->addPath(p2);
 	}
 }
@@ -280,6 +287,38 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 			item->moveBy(-item->boundingRect().center().x(), -item->boundingRect().center().y());
 			item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
 		}
+
+#ifdef BOX2D_DEBUG_PATH
+		delete debugPath;
+		QPainterPath path;
+
+		for(QGraphicsItem *item : mBox2DDynamicItems.keys()) {
+			if (auto solidItem = dynamic_cast<items::SolidItem *>(item)) {
+				QPolygonF localCollidingPolygon = solidItem->collidingPolygon();
+				qreal lsceneAngle = angleToScene(mBox2DDynamicItems[item]->getRotation());
+				QMatrix m;
+				m.rotate(lsceneAngle);
+
+				QPointF firstP = localCollidingPolygon.at(0);
+				localCollidingPolygon.translate(-firstP.x(), -firstP.y());
+
+				QPainterPath lpath;
+				lpath.addPolygon(localCollidingPolygon);
+				QPainterPath lpathTR = m.map(lpath);
+				lpathTR.translate(firstP.x(), firstP.y());
+
+				path.addPath(lpathTR);
+			}
+		}
+
+		debugPath = new QGraphicsPathItem(path);
+		debugPath->setBrush(Qt::blue);
+		debugPath->setPen(QPen(QColor(Qt::red)));
+		debugPath->setZValue(101);
+		mScene->addItem(debugPath);
+		mScene->update();
+
+#endif
 	}
 }
 
