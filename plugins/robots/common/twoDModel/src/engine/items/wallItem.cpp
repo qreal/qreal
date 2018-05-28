@@ -345,8 +345,10 @@ void WallItem::alignTheWall(int indexGrid)
 QPolygonF WallItem::collidingPolygon() const
 {
 	QPolygonF polygon = mPath.toFillPolygon();
+	// here we have "one point" wall
 	if (polygon.isEmpty()) {
-		return polygon;
+		auto offset = QPointF(wallWidth, wallWidth);
+		return QRectF(begin() - offset, begin() + offset);
 	}
 
 	QRectF abcdBoundingRect = polygon.boundingRect();
