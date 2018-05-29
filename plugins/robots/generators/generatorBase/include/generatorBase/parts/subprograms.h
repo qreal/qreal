@@ -100,6 +100,8 @@ private:
 	/// Bool value means if key diagram was already processed and generated into
 	/// the code.
 	QMap<qReal::Id, bool> mDiscoveredSubprograms;
+	/// Stores information about subprograms usage order.
+	mutable QList<qReal::Id> mDiscoveredSubprogramsOrder;
 
 	QStringList mImplementationsCode;
 	QStringList mForwardDeclarationsCode;
