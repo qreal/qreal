@@ -30,6 +30,7 @@ public:
 	/// Sets a main thread for this join (the one which will continue execution after join).
 	void setThreadId(const QString &threadId);
 
+	QString scheme() const;
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;

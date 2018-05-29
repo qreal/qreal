@@ -33,6 +33,7 @@ public:
 	/// Will be called when both branches link to same block, making thus if statement unnesesary.
 	void transformToSimple();
 
+	QString scheme() const;
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;

@@ -16,6 +16,8 @@
 
 #include <qrutils/stringUtils.h>
 
+#include <QtAlgorithms>
+
 using namespace generatorBase::semantics;
 
 ForkNode::ForkNode(const qReal::Id &idBinded, QObject *parent)
@@ -26,6 +28,21 @@ ForkNode::ForkNode(const qReal::Id &idBinded, QObject *parent)
 void ForkNode::appendThread(const qReal::Id &thread, const QString &threadId)
 {
 	mThreads[thread] = threadId;
+}
+
+QString ForkNode::scheme() const
+{
+	QString result = "fork[";
+
+	QStringList values = mThreads.values();
+	qStableSort(values);
+	for (const QString &threadName : values) {
+		result += threadName + "|";
+	}
+	result.chop(1);
+	result += "]";
+
+	return result;
 }
 
 QLinkedList<SemanticNode *> ForkNode::children() const

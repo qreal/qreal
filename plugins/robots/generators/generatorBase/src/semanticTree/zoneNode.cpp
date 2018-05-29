@@ -109,3 +109,14 @@ QLinkedList<SemanticNode *> ZoneNode::children() const
 {
 	return mChildren;
 }
+
+QString ZoneNode::scheme() const
+{
+	QString res = "";
+	for (const SemanticNode *node : mChildren) {
+		res += node->scheme() + ";";
+	}
+	res.chop(1);
+
+	return res;
+}

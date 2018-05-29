@@ -29,6 +29,11 @@ void JoinNode::setThreadId(const QString &threadId)
 	mThreadId = threadId;
 }
 
+QString JoinNode::scheme() const
+{
+	return "join[" + mThreadId + "]";
+}
+
 QLinkedList<SemanticNode *> JoinNode::children() const
 {
 	return {};

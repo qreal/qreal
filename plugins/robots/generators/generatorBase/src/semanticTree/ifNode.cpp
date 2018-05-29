@@ -44,6 +44,17 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
+QString IfNode::scheme() const
+{
+	QString thenString = mThenZone->scheme();
+	QString elseString = mElseZone->scheme();
+	if (elseString.isEmpty()) {
+		return "if[" + thenString + "]";
+	}
+
+	return "if[" + thenString + "|" + elseString + "]";
+}
+
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	if (mIsSimple) {

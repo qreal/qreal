@@ -16,3 +16,5 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	trikV62QtsGeneratorTests \
+	semanticTreeTests \
+
