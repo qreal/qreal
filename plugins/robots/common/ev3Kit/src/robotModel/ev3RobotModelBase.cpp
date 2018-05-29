@@ -77,15 +77,15 @@ Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotI
 	addAllowedConnection(PortInfo("Left", input, {}, "buttonLeft"), { buttonInfo() });
 	addAllowedConnection(PortInfo("Back", input, {}, "buttonBack"), { buttonInfo() });
 
-	addAllowedConnection(PortInfo("A", output), { motorInfo() });
-	addAllowedConnection(PortInfo("B", output), { motorInfo() });
-	addAllowedConnection(PortInfo("C", output), { motorInfo() });
+	addAllowedConnection(PortInfo("A", output, { QString::fromUtf8("А") }), { motorInfo() });
+	addAllowedConnection(PortInfo("B", output, { QString::fromUtf8("В") }), { motorInfo() });
+	addAllowedConnection(PortInfo("C", output, { QString::fromUtf8("С") }), { motorInfo() });
 	addAllowedConnection(PortInfo("D", output), { motorInfo() });
 
 	addAllowedConnection(PortInfo("A", input, { QString::fromUtf8("А") }, "encoderA"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B", input, { QString::fromUtf8("В") }, "encoderB"), { encoderInfo() });
 	addAllowedConnection(PortInfo("C", input, { QString::fromUtf8("С") }, "encoderC"), { encoderInfo() });
-	addAllowedConnection(PortInfo("D", input, { QString::fromUtf8("D") }, "encoderD"), { encoderInfo() });
+	addAllowedConnection(PortInfo("D", input, {}, "encoderD"), { encoderInfo() });
 
 	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
 	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);

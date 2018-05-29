@@ -82,6 +82,9 @@ public:
 	/// Returns code that initializes all known constants.
 	QString constantsEvaluation() const;
 
+	/// Returns code that initializes all known arrays.
+	QString arraysEvaluation();
+
 private:
 	void visit(const QSharedPointer<qrtext::lua::ast::Number> &node
 			, const QSharedPointer<qrtext::core::ast::Node> &parent) override;

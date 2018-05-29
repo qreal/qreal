@@ -88,3 +88,8 @@ QString Ev3LuaProcessor::constantsValuation() const
 {
 	return mPrinter->constantsEvaluation();
 }
+
+QString Ev3LuaProcessor::arraysInitialization() const
+{
+	return mPrinter->arraysEvaluation();
+}
