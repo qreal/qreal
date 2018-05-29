@@ -24,6 +24,7 @@ EnginesStopGenerator::EnginesStopGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id, "engines/stop.t", QList<Binding *>()
 			<< Binding::createMultiTarget("@@PORT@@", "Ports", customizer.factory()->enginesConverter())
+			<< Binding::createConverting("@@BREAK_MODE@@", "Mode", customizer.factory()->breakModeConverter())
 			, parent)
 {
 }

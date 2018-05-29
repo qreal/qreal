@@ -49,9 +49,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+						<!--TODO: mode is not supported for forward and backward movement commands-->
+						<!--<property displayedName="Mode" type="BreakEngineMode" name="Mode">
 							<default>break</default>
-						</property>
+						</property>-->
 						<property displayedName="Ports" type="string" name="Ports" >
 							<default>B, C</default>
 						</property>
@@ -113,6 +114,12 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="float" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="break" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
@@ -125,6 +132,9 @@
 						<parent parentName="EngineCommand"/>
 					</generalizations>
 					<properties>
+						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+							<default>break</default>
+						</property>
 						<property displayedName="Ports" type="string" name="Ports">
 							<default>A, B, C, D</default>
 						</property>
@@ -272,6 +282,37 @@
 							</generalizations>
 					</logic>
 			</node>
+			<node displayedName="Read RGB into Variables" name="Ev3ReadRGB" path="" description="Reads R, G, B channels values into given variables">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/readRGBBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+									<label x="40" y="60" textBinded="RVariable" hard="false" prefix="R Variable:"/>
+									<label x="40" y="90" textBinded="GVariable" hard="false" prefix="G Variable:"/>
+									<label x="40" y="120" textBinded="BVariable" hard="false" prefix="B Variable:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+								<property displayedName="R Variable" type="string" name="RVariable">
+									<default>r</default>
+								</property>
+								<property displayedName="G Variable" type="string" name="GVariable">
+									<default>g</default>
+								</property>
+								<property displayedName="B Variable" type="string" name="BVariable">
+									<default>b</default>
+								</property>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
 			<node displayedName="Led" name="Ev3Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -373,7 +414,7 @@
 						</picture>
 						<labels>
 							<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
-							<label x="45" y="60" textBinded="SetPoint" hard="false" prefix="Message type:"/>
+							<label x="45" y="60" textBinded="SetPoint" hard="false" prefix="Set point:"/>
 							<label x="45" y="90" textBinded="P" hard="false" prefix="P:"/>
 							<label x="45" y="120" textBinded="PFactor" hard="false" prefix="P factor:"/>
 							<label x="45" y="150" textBinded="I" hard="false" prefix="I:"/>
@@ -952,6 +993,7 @@
 				<element name="Ev3CalibrateGyroscope"/>
 				<element name="Ev3StartCompassCalibration"/>
 				<element name="Ev3StopCompassCalibration"/>
+				<element name="Ev3ReadRGB"/>
 			</group>
 			<group name="Line Leader">
 				<element name="Ev3CalibrateWhiteLL"/>
