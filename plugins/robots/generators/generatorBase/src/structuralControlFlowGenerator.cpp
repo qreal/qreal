@@ -202,7 +202,16 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::Inte
 	ZoneNode *zone = new ZoneNode(mSemanticTree);
 
 	checkAndAppendBlock(zone, blockNode->firstNode());
-	checkAndAppendBlock(zone, blockNode->secondNode());
+
+
+	if (blockNode->secondNode()->type() == myUtils::IntermediateNode::Type::nodeWithBreaks) {
+		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(blockNode->secondNode());
+		QList<myUtils::IntermediateNode *> restNodes = {};
+
+		zone->appendChild(createConditionWithBreaks(nodeWithBreaks, restNodes));
+	} else {
+		checkAndAppendBlock(zone, blockNode->secondNode());
+	}
 
 	return zone;
 }
@@ -437,7 +446,12 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 		semanticIf->thenZone()->appendChild(transformNode(exitBranches.first()));
 
 		ZoneNode *zone = new ZoneNode(mSemanticTree);
-		zone->appendChildren({ semanticIf, transformNode(restNodes.first()) });
+		zone->appendChild(semanticIf);
+
+		if (!restNodes.isEmpty()) {
+			zone->appendChildren({ semanticIf, transformNode(restNodes.first()) });
+		}
+
 		return zone;
 	}
 
