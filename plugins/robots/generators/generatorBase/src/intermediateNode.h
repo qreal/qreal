@@ -91,6 +91,9 @@ public:
 	Type type() const;
 	qReal::Id firstId() const;
 	bool analyzeBreak();
+
+private:
+	const qReal::Id mId;
 };
 
 class IfNode : public IntermediateNode {

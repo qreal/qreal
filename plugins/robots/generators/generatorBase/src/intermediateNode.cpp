@@ -327,8 +327,9 @@ qReal::Id IfWithBreakNode::firstId() const
 	return mCondition->firstId();
 }
 
-BreakNode::BreakNode(QObject *parent)
+BreakNode::BreakNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)
+	, mId(id)
 {
 }
 
@@ -339,7 +340,7 @@ IntermediateNode::Type BreakNode::type() const
 
 qReal::Id BreakNode::firstId() const
 {
-	return qReal::Id();
+	return mId;
 }
 
 bool BreakNode::analyzeBreak()
