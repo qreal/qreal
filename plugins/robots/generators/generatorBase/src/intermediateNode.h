@@ -24,6 +24,9 @@ public:
 		, switchCondition
 		, infiniteloop
 		, whileloop
+		, breakNode
+		, fakeCycleHead
+		, nodeWithBreaks
 	};
 
 	IntermediateNode(QObject *parent = nullptr);
@@ -61,6 +64,32 @@ private:
 	const qReal::Id mId;
 };
 
+
+class FakeCycleHeadNode : public IntermediateNode {
+
+	Q_OBJECT
+
+public:
+	FakeCycleHeadNode(QObject *parent = nullptr);
+
+	Type type() const;
+	qReal::Id firstId() const;
+	bool analyzeBreak();
+};
+
+
+class BreakNode : public IntermediateNode {
+
+	Q_OBJECT
+
+public:
+	BreakNode(QObject *parent = nullptr);
+
+	Type type() const;
+	qReal::Id firstId() const;
+	bool analyzeBreak();
+};
+
 class IfNode : public IntermediateNode {
 
 	Q_OBJECT
@@ -82,6 +111,24 @@ private:
 	bool mIsIfThenForm;
 };
 
+
+class NodeWithBreaks : public IntermediateNode {
+
+	Q_OBJECT
+
+public:
+	NodeWithBreaks(SimpleNode *condition, QMap<IntermediateNode *, qReal::Id> &exitBranches, QObject *parent = nullptr);
+
+	SimpleNode *condition() const;
+	QMap<IntermediateNode *, qReal::Id> exitBranches() const;
+
+	bool analyzeBreak();
+	Type type() const;
+	qReal::Id firstId() const;
+private:
+	SimpleNode *mCondition;
+	QMap<IntermediateNode *, qReal::Id> mExitBranches;
+};
 
 class SwitchNode : public IntermediateNode {
 

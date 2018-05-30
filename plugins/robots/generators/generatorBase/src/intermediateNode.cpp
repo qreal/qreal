@@ -326,3 +326,84 @@ qReal::Id IfWithBreakNode::firstId() const
 {
 	return mCondition->firstId();
 }
+
+BreakNode::BreakNode(QObject *parent)
+	: IntermediateNode(parent)
+{
+}
+
+IntermediateNode::Type BreakNode::type() const
+{
+	return breakNode;
+}
+
+qReal::Id BreakNode::firstId() const
+{
+	return qReal::Id();
+}
+
+bool BreakNode::analyzeBreak()
+{
+	mHasBreakInside = true;
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
+}
+
+FakeCycleHeadNode::FakeCycleHeadNode(QObject *parent)
+	: IntermediateNode(parent)
+{
+}
+
+IntermediateNode::Type FakeCycleHeadNode::type() const
+{
+	return fakeCycleHead;
+}
+
+qReal::Id FakeCycleHeadNode::firstId() const
+{
+	return qReal::Id();
+}
+
+bool FakeCycleHeadNode::analyzeBreak()
+{
+	mHasBreakInside = false;
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
+}
+
+NodeWithBreaks::NodeWithBreaks(SimpleNode *condition, QMap<IntermediateNode *, qReal::Id> &exitBranches, QObject *parent)
+	: IntermediateNode(parent)
+	, mCondition(condition)
+{
+	for (IntermediateNode *node : exitBranches.keys()) {
+		BlockNode *b = new BlockNode(node, new BreakNode(parent), parent);
+		mExitBranches[b] = exitBranches[node];
+	}
+}
+
+SimpleNode *NodeWithBreaks::condition() const
+{
+	return mCondition;
+}
+
+QMap<IntermediateNode *, qReal::Id> NodeWithBreaks::exitBranches() const
+{
+	return mExitBranches;
+}
+
+bool NodeWithBreaks::analyzeBreak()
+{
+	mHasBreakInside = true;
+	mBreakWasAnalyzed = true;
+	return mHasBreakInside;
+}
+
+IntermediateNode::Type NodeWithBreaks::type() const
+{
+	return nodeWithBreaks;
+}
+
+qReal::Id NodeWithBreaks::firstId() const
+{
+	return mCondition->firstId();
+}
