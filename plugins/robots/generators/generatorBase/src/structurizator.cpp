@@ -444,16 +444,14 @@ void Structurizator::reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QSt
 
 void Structurizator::reduceIfThenElse(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[verticesRoles["condition"]]);
-	IfNode *ifNode = new IfNode(condition, mTrees[verticesRoles["then"]], mTrees[verticesRoles["else"]], this);
+	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]], mTrees[verticesRoles["else"]], this);
 
 	replace(appendVertex(ifNode), edgesToRemove, verticesRoles);
 }
 
 void Structurizator::reduceIfThen(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[verticesRoles["condition"]]);
-	IfNode *ifNode = new IfNode(condition, mTrees[verticesRoles["then"]], nullptr, this);
+	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]], nullptr, this);
 
 	replace(appendVertex(ifNode), edgesToRemove, verticesRoles);
 }
@@ -469,8 +467,7 @@ void Structurizator::reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QS
 		branches.append(mTrees[u]);
 	}
 
-	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[v]);
-	SwitchNode *switchNode = new SwitchNode(condition, branches);
+	SwitchNode *switchNode = new SwitchNode(mTrees[v], branches);
 
 	replace(appendVertex(switchNode), edgesToRemove, verticesRoles);
 }
@@ -521,13 +518,7 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &no
 			exitBranches.append(node);
 		}
 
-		SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[u]);
-		if (!condition) {
-			qDebug() << "broken invariant for NodeWithBreaks";
-			return;
-		}
-
-		NodeWithBreaks *nodeWithBreaks = new NodeWithBreaks(condition, exitBranches, this);
+		NodeWithBreaks *nodeWithBreaks = new NodeWithBreaks(mTrees[u], exitBranches, this);
 		replace(appendVertex(nodeWithBreaks), edgesToRemove, vertices);
 	}
 
@@ -538,6 +529,7 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &no
 	}
 }
 
+/*
 void Structurizator::reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex)
 {
 	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[conditionVertex]);
@@ -577,6 +569,7 @@ void Structurizator::addAdditionalConditionWithBreak(int conditionVertex, int th
 		mPredecessors[thenVertex].removeAll(conditionVertex);
 	}
 }
+*/
 
 void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
 {
