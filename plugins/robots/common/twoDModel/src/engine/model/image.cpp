@@ -70,12 +70,13 @@ Image Image::deserialize(const QDomElement &element)
 	const bool external = element.attribute("external") == "true";
 	const QString path = element.attribute("path");
 	Image image(path, !external);
+	QString text = element.text();
 	if (!external) {
-		if (element.text().contains("svg", Qt::CaseInsensitive)) {
-			image.mSvgBytes = element.text().toLatin1();
+		if (path.endsWith("svg", Qt::CaseInsensitive)) {
+			image.mSvgBytes = text.toLatin1();
 			image.mSvgRenderer.reset(new QSvgRenderer(image.mSvgBytes));
 		} else {
-			QByteArray bytes = QByteArray::fromBase64(element.text().toLatin1());
+			QByteArray bytes = QByteArray::fromBase64(text.toLatin1());
 			QBuffer buffer(&bytes);
 			QImage tempImage;
 			if (!tempImage.load(&buffer, "PNG")) {

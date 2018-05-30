@@ -335,7 +335,7 @@ QDomElement WorldModel::serialize(QDomElement &parent) const
 
 	QDomElement regions = parent.ownerDocument().createElement("regions");
 	result.appendChild(regions);
-	QList<QString> regionIds = mImages.keys();
+	QList<QString> regionIds = mRegions.keys();
 	qSort(regionIds.begin(), regionIds.end(), comparator);
 	for (const QString &region : regionIds) {
 		QDomElement regionElement = parent.ownerDocument().createElement("region");
