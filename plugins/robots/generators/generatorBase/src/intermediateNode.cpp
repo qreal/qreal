@@ -349,8 +349,9 @@ bool BreakNode::analyzeBreak()
 	return mHasBreakInside;
 }
 
-FakeCycleHeadNode::FakeCycleHeadNode(QObject *parent)
+FakeCycleHeadNode::FakeCycleHeadNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)
+	, mId(id)
 {
 }
 
@@ -361,7 +362,7 @@ IntermediateNode::Type FakeCycleHeadNode::type() const
 
 qReal::Id FakeCycleHeadNode::firstId() const
 {
-	return qReal::Id();
+	return mId;
 }
 
 bool FakeCycleHeadNode::analyzeBreak()

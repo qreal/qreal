@@ -70,11 +70,14 @@ class FakeCycleHeadNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	FakeCycleHeadNode(QObject *parent = nullptr);
+	FakeCycleHeadNode(const qReal::Id &id, QObject *parent = nullptr);
 
 	Type type() const;
 	qReal::Id firstId() const;
 	bool analyzeBreak();
+
+private:
+	const qReal::Id mId;
 };
 
 
