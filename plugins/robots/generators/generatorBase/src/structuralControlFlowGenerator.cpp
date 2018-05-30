@@ -152,9 +152,6 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::Inter
 	case myUtils::IntermediateNode::Type::ifThenElseCondition:
 		return transformIfThenElse(node);
 
-	case myUtils::IntermediateNode::Type::ifWithBreakCondition:
-		return transformIfWithBreak(node);
-
 	case myUtils::IntermediateNode::Type::switchCondition:
 		return transformSwitch(node);
 
@@ -378,44 +375,6 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(const myUtils::Int
 	return nullptr;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformIfWithBreak(const myUtils::IntermediateNode *node)
-{
-	const myUtils::IfWithBreakNode *ifWithBreakNode = dynamic_cast<const myUtils::IfWithBreakNode *>(node);
-	const qReal::Id conditionId = ifWithBreakNode->condition()->firstId();
-
-	if (semanticsOf(conditionId) == enums::semantics::conditionalBlock) {
-		IfNode *semanticIf= new IfNode(conditionId, mSemanticTree);
-
-		QPair<LinkInfo, LinkInfo> branches = ifBranchesFor(conditionId);
-
-		if (ifWithBreakNode->actionsBeforeBreak()) {
-			semanticIf->thenZone()->appendChild(transformNode(ifWithBreakNode->actionsBeforeBreak()));
-		}
-
-		// check inverting condition
-		if (branches.first.target != ifWithBreakNode->nodeThatIsConnectedWithCondition()->firstId()) {
-			semanticIf->invertCondition();
-		}
-
-		semanticIf->thenZone()->appendChild(semantics::SimpleNode::createBreakNode(mSemanticTree));
-
-		return semanticIf;
-
-	} else if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
-		SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
-
-		qDebug() << "There's no construction of if from switch semantics yet";
-		// deal with semanticSwitch
-		return semanticSwitch;
-	}
-
-
-	qDebug() << "Problem: couldn't identify semantics id for If with break";
-	mCantBeGeneratedIntoStructuredCode = true;
-
-	return nullptr;
-}
-
 SemanticNode *StructuralControlFlowGenerator::transformBreakNode()
 {
 	return semantics::SimpleNode::createBreakNode(mSemanticTree);
@@ -485,55 +444,3 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 	}
 
 }
-
-
-/*
-IfNode *StructuralControlFlowGenerator::createIfFromSwitch(int v, int bodyNumber)
-{
-	qReal::Id vId = mMapVertexLabel.key(v);
-	bool needInverting = true;
-	QList<qReal::Id> links;
-	bool hasDefaultBranch = false;
-	for (const int edge : mFollowers2[v][bodyNumber]) {
-		links.append(mEdges[edge]);
-		if (mRepo.property(mEdges[edge], "Guard").toString().isEmpty()) {
-			hasDefaultBranch = true;
-		}
-	}
-
-	if (hasDefaultBranch) {
-		needInverting = false;
-		links.clear();
-		for (const int u : mFollowers2[v].keys()) {
-			if (u == bodyNumber) {
-				continue;
-			}
-
-			for (const int edge : mFollowers2[v][u]) {
-				links.append(mEdges[edge]);
-			}
-		}
-	}
-
-	IfNode *ifNode = IfNode::fromSwitchCase(vId, links);
-
-	if (needInverting) {
-		ifNode->invertCondition();
-	}
-
-	ifNode->setCondition(constructConditionFromSwitch(vId, links));
-
-	return ifNode;
-}
-
-QString StructuralControlFlowGenerator::constructConditionFromSwitch(const Id &id, const QList<Id> &links) const
-{
-	const QString expression = mRepo.property(id, "Expression").toString();
-	QString condition = "";
-	for (const qReal::Id &link : links) {
-		condition += "(" + expression + " == " + mRepo.property(link, "Guard").toString() + ") || ";
-	}
-	condition.chop(4);
-	return condition;
-}
-*/

@@ -282,51 +282,6 @@ qReal::Id SelfLoopNode::firstId() const
 	return mBodyNode->firstId();
 }
 
-IfWithBreakNode::IfWithBreakNode(SimpleNode *condition, IntermediateNode *actionsBeforeBreak,
-										IntermediateNode *nodeThatIsConnectedWithCondition, QObject *parent)
-	: IntermediateNode(parent)
-	, mCondition(condition)
-	, mActionsBeforeBreak(actionsBeforeBreak)
-	, mNodeThatIsConnectedWithCondition(nodeThatIsConnectedWithCondition)
-{
-	mIdsInvolved = mCondition->ids();
-	if (mActionsBeforeBreak) {
-		mIdsInvolved += mActionsBeforeBreak->ids();
-	}
-}
-
-SimpleNode *IfWithBreakNode::condition() const
-{
-	return mCondition;
-}
-
-IntermediateNode *IfWithBreakNode::actionsBeforeBreak() const
-{
-	return mActionsBeforeBreak;
-}
-
-IntermediateNode *IfWithBreakNode::nodeThatIsConnectedWithCondition() const
-{
-	return mNodeThatIsConnectedWithCondition;
-}
-
-bool IfWithBreakNode::analyzeBreak()
-{
-	mHasBreakInside = true;
-	mBreakWasAnalyzed = true;
-	return mHasBreakInside;
-}
-
-IntermediateNode::Type IfWithBreakNode::type() const
-{
-	return Type::ifWithBreakCondition;
-}
-
-qReal::Id IfWithBreakNode::firstId() const
-{
-	return mCondition->firstId();
-}
-
 BreakNode::BreakNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)
 	, mId(id)

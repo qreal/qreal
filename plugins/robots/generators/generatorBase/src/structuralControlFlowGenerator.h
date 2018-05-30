@@ -78,7 +78,6 @@ private:
 	semantics::SemanticNode *transformSelfLoop(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformWhileLoop(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformSwitch(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformIfWithBreak(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformBreakNode();
 	semantics::SemanticNode *transformFakeCycleHead();
 

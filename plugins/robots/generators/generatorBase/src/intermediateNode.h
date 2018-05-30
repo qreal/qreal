@@ -20,7 +20,6 @@ public:
 		, block
 		, ifThenCondition
 		, ifThenElseCondition
-		, ifWithBreakCondition
 		, switchCondition
 		, infiniteloop
 		, whileloop
@@ -206,28 +205,6 @@ public:
 	qReal::Id firstId() const;
 private:
 	IntermediateNode *mBodyNode;
-};
-
-
-class IfWithBreakNode : public IntermediateNode {
-
-	Q_OBJECT
-
-public:
-	IfWithBreakNode(SimpleNode *condition, IntermediateNode *actionsBeforeBreak,
-							IntermediateNode *nodeThatIsConnectedWithCondition, QObject *parent = nullptr);
-
-	SimpleNode *condition() const;
-	IntermediateNode *actionsBeforeBreak() const;
-	IntermediateNode *nodeThatIsConnectedWithCondition() const;
-
-	bool analyzeBreak();
-	Type type() const;
-	qReal::Id firstId() const;
-private:
-	SimpleNode *mCondition;
-	IntermediateNode *mActionsBeforeBreak;
-	IntermediateNode *mNodeThatIsConnectedWithCondition;
 };
 
 }

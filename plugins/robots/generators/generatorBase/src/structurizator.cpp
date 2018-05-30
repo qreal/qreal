@@ -529,48 +529,6 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &no
 	}
 }
 
-/*
-void Structurizator::reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex)
-{
-	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[conditionVertex]);
-
-	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition, thenVertex == exitVertex ? nullptr : mTrees[thenVertex],
-																mTrees[thenVertex], this);
-
-	QSet<QPair<int, int> > edgesToRemove = { makePair(conditionVertex, thenVertex) };
-	QSet<int> vertices = {conditionVertex};
-
-	if (thenVertex != exitVertex) {
-		vertices.insert(thenVertex);
-		if (mFollowers[thenVertex].contains(exitVertex)) {
-			edgesToRemove.insert(makePair(thenVertex, exitVertex));
-		}
-	}
-
-	replace(appendVertex(ifWithBreakNode), edgesToRemove, vertices);
-}
-
-void Structurizator::addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex)
-{
-	SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[conditionVertex]);
-
-	IfWithBreakNode *ifWithBreakNode = new IfWithBreakNode(condition
-																, thenVertex == exitVertex ? nullptr : mTrees[thenVertex]
-																, mTrees[thenVertex]
-																, this);
-
-
-	int newNodeNumber = appendVertex(ifWithBreakNode);
-	addNewNodeNumberBeforeVertex(newNodeNumber, conditionVertex);
-	if (thenVertex != exitVertex) {
-		removeVertex(thenVertex);
-	} else {
-		mFollowers[conditionVertex].removeAll(thenVertex);
-		mPredecessors[thenVertex].removeAll(conditionVertex);
-	}
-}
-*/
-
 void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices)
 {
 	updateEdges(newNodeNumber, edgesToRemove, vertices);
