@@ -86,7 +86,7 @@ class BreakNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	BreakNode(QObject *parent = nullptr);
+	BreakNode(const qReal::Id &id, QObject *parent = nullptr);
 
 	Type type() const;
 	qReal::Id firstId() const;
@@ -123,17 +123,17 @@ class NodeWithBreaks : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	NodeWithBreaks(SimpleNode *condition, QMap<IntermediateNode *, qReal::Id> &exitBranches, QObject *parent = nullptr);
+	NodeWithBreaks(SimpleNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent = nullptr);
 
 	SimpleNode *condition() const;
-	QMap<IntermediateNode *, qReal::Id> exitBranches() const;
+	QList<IntermediateNode *> exitBranches() const;
 
 	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
 	SimpleNode *mCondition;
-	QMap<IntermediateNode *, qReal::Id> mExitBranches;
+	QList<IntermediateNode *> mExitBranches;
 };
 
 class SwitchNode : public IntermediateNode {

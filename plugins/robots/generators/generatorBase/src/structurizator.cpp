@@ -498,24 +498,38 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &no
 		v = newNodeNumber;
 	}
 
+	for (const int u : nodesWithExits.keys()) {
+		QList<IntermediateNode *> exitBranches;
+		QSet<QPair<int, int> > edgesToRemove;
+		QSet<int> vertices = {u};
 
-//	bool switchCase = false;
-//	for (const int u : nodesWithExits.keys()) {
-//		int exit = nodesWithExits[u];
-//		if (outgoingEdgesNumber(u) > 2) {
-//			// here we deal with switch
-//			addAdditionalConditionWithBreak(u, exit, commonExit);
-//			switchCase = true;
-//		} else {
-//			// here we deal with if or switch with 2 outgoing branches
-//			reduceSimpleIfWithBreak(u, exit, commonExit);
-//		}
+		for (const int exit : nodesWithExits[u]) {
+			qReal::Id id = mTrees[exit]->firstId();
+			IntermediateNode *node;
+			if (exit == commonExit) {
+				node = new BreakNode(id, this);
+			} else {
+				node = new BlockNode(mTrees[exit], new BreakNode(id, this), this);
 
-//		// update cycle head
-//		if (u == v) {
-//			v = mVertecesNumber - 1;
-//		}
-//	}
+				vertices.insert(exit);
+
+				if (mFollowers[exit].contains(commonExit)) {
+					edgesToRemove.insert(makePair(exit, commonExit));
+				}
+			}
+			edgesToRemove.insert(makePair(u, exit));
+			exitBranches.append(node);
+		}
+
+		SimpleNode *condition = dynamic_cast<SimpleNode *>(mTrees[u]);
+		if (!condition) {
+			qDebug() << "broken invariant for NodeWithBreaks";
+			return;
+		}
+
+		NodeWithBreaks *nodeWithBreaks = new NodeWithBreaks(condition, exitBranches, this);
+		replace(appendVertex(nodeWithBreaks), edgesToRemove, vertices);
+	}
 
 	// adding edge from head to common exit
 	if (commonExit != -1 && !mFollowers[v].contains(commonExit)) {
