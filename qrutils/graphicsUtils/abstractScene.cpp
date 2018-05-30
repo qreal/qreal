@@ -44,6 +44,7 @@ graphicsUtils::AbstractView* AbstractScene::mainView()
 void AbstractScene::setEmptyRect(int x, int y, int w, int h)
 {
 	mEmptyRect = addRect(x, y, w, h, QPen(Qt::white));
+	mEmptyRect->setVisible(false);
 }
 
 QRect AbstractScene::realItemsBoundingRect() const
