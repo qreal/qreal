@@ -375,11 +375,8 @@ bool FakeCycleHeadNode::analyzeBreak()
 NodeWithBreaks::NodeWithBreaks(SimpleNode *condition, QMap<IntermediateNode *, qReal::Id> &exitBranches, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
+	, mExitBranches(exitBranches)
 {
-	for (IntermediateNode *node : exitBranches.keys()) {
-		BlockNode *b = new BlockNode(node, new BreakNode(parent), parent);
-		mExitBranches[b] = exitBranches[node];
-	}
 }
 
 SimpleNode *NodeWithBreaks::condition() const
