@@ -101,9 +101,9 @@ class IfNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	IfNode(SimpleNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, QObject *parent = nullptr);
+	IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, QObject *parent = nullptr);
 
-	SimpleNode *condition() const;
+	IntermediateNode *condition() const;
 	IntermediateNode *thenBranch() const;
 	IntermediateNode *elseBranch() const;
 
@@ -111,7 +111,7 @@ public:
 	Type type() const;
 	qReal::Id firstId() const;
 private:
-	SimpleNode *mCondition;
+	IntermediateNode *mCondition;
 	IntermediateNode *mThenBranch;
 	IntermediateNode *mElseBranch;
 	bool mIsIfThenForm;
@@ -123,16 +123,16 @@ class NodeWithBreaks : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	NodeWithBreaks(SimpleNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent = nullptr);
+	NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent = nullptr);
 
-	SimpleNode *condition() const;
+	IntermediateNode *condition() const;
 	QList<IntermediateNode *> exitBranches() const;
 
 	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
-	SimpleNode *mCondition;
+	IntermediateNode *mCondition;
 	QList<IntermediateNode *> mExitBranches;
 };
 
@@ -141,16 +141,16 @@ class SwitchNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	SwitchNode(SimpleNode *condition, const QList<IntermediateNode *> &branches, QObject *parent = nullptr);
+	SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent = nullptr);
 
-	SimpleNode *condition() const;
+	IntermediateNode *condition() const;
 	QList<IntermediateNode *> branches() const;
 
 	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
-	SimpleNode *mCondition;
+	IntermediateNode *mCondition;
 	const QList<IntermediateNode *> mBranches;
 };
 

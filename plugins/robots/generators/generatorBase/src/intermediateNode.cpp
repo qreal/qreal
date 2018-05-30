@@ -33,7 +33,7 @@ qReal::Id SimpleNode::id() const
 	return mId;
 }
 
-IfNode::IfNode(SimpleNode *condition
+IfNode::IfNode(IntermediateNode *condition
 							, IntermediateNode *thenBranch
 							, IntermediateNode *elseBranch
 							, QObject *parent)
@@ -50,7 +50,7 @@ IfNode::IfNode(SimpleNode *condition
 	}
 }
 
-SimpleNode *IfNode::condition() const
+IntermediateNode *IfNode::condition() const
 {
 	return mCondition;
 }
@@ -125,7 +125,7 @@ QSet<qReal::Id> IntermediateNode::ids() const
 	return mIdsInvolved;
 }
 
-SwitchNode::SwitchNode(SimpleNode *condition, const QList<IntermediateNode *> &branches, QObject *parent)
+SwitchNode::SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mBranches(QList<IntermediateNode *>(branches))
@@ -136,7 +136,7 @@ SwitchNode::SwitchNode(SimpleNode *condition, const QList<IntermediateNode *> &b
 	}
 }
 
-SimpleNode *SwitchNode::condition() const
+IntermediateNode *SwitchNode::condition() const
 {
 	return mCondition;
 }
@@ -373,14 +373,14 @@ bool FakeCycleHeadNode::analyzeBreak()
 	return mHasBreakInside;
 }
 
-NodeWithBreaks::NodeWithBreaks(SimpleNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent)
+NodeWithBreaks::NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mExitBranches(exitBranches)
 {
 }
 
-SimpleNode *NodeWithBreaks::condition() const
+IntermediateNode *NodeWithBreaks::condition() const
 {
 	return mCondition;
 }

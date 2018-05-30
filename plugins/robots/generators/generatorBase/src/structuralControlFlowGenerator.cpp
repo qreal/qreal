@@ -164,6 +164,17 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::Inter
 	case myUtils::IntermediateNode::Type::whileloop:
 		return transformWhileLoop(node);
 
+	case myUtils::IntermediateNode::Type::breakNode:
+		return transformBreakNode();
+
+	case myUtils::IntermediateNode::Type::fakeCycleHead:
+		return transformFakeCycleHead();
+
+	case myUtils::IntermediateNode::Type::nodeWithBreaks:
+		qDebug() << "Node with breaks must be handled in block or switch or if-then-else";
+		mCantBeGeneratedIntoStructuredCode = true;
+		return nullptr;
+
 	default:
 		qDebug() << "Undefined type of Intermediate node!";
 		mCantBeGeneratedIntoStructuredCode = true;
@@ -181,6 +192,13 @@ SemanticNode *StructuralControlFlowGenerator::transformSimple(const myUtils::Int
 SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::IntermediateNode *node)
 {
 	const myUtils::BlockNode *blockNode = dynamic_cast<const myUtils::BlockNode *>(node);
+
+	if (blockNode->firstNode()->type() == myUtils::IntermediateNode::Type::nodeWithBreaks) {
+		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(blockNode->firstNode());
+		QList<myUtils::IntermediateNode *> restNodes = {blockNode->secondNode()};
+		return createConditionWithBreaks(nodeWithBreaks, restNodes);
+	}
+
 	ZoneNode *zone = new ZoneNode(mSemanticTree);
 
 	checkAndAppendBlock(zone, blockNode->firstNode());
@@ -192,7 +210,14 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::Inte
 SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(const myUtils::IntermediateNode *node)
 {
 	const myUtils::IfNode *ifNode = dynamic_cast<const myUtils::IfNode *>(node);
-	const qReal::Id conditionId = ifNode->condition()->id();
+
+	if (ifNode->condition()->type() == myUtils::IntermediateNode::nodeWithBreaks) {
+		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(ifNode->condition());
+		QList<myUtils::IntermediateNode *> restBranches = {ifNode->thenBranch(), ifNode->elseBranch()};
+		return createConditionWithBreaks(nodeWithBreaks, restBranches);
+	}
+
+	const qReal::Id conditionId = ifNode->condition()->firstId();
 	const qReal::Id thenId = ifNode->thenBranch()->firstId();
 
 	switch (semanticsOf(conditionId)) {
@@ -300,6 +325,11 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(const myUtils::Int
 	const qReal::Id &conditionId = switchNode->condition()->firstId();
 	QList<myUtils::IntermediateNode *> branches = switchNode->branches();
 
+	if (switchNode->condition()->type() == myUtils::IntermediateNode::switchCondition) {
+		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(switchNode->condition());
+		return createConditionWithBreaks(nodeWithBreaks, branches);
+	}
+
 	if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
 		SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
 
@@ -375,6 +405,71 @@ SemanticNode *StructuralControlFlowGenerator::transformIfWithBreak(const myUtils
 	mCantBeGeneratedIntoStructuredCode = true;
 
 	return nullptr;
+}
+
+SemanticNode *StructuralControlFlowGenerator::transformBreakNode()
+{
+	return semantics::SimpleNode::createBreakNode(mSemanticTree);
+}
+
+SemanticNode *StructuralControlFlowGenerator::transformFakeCycleHead()
+{
+	return new SimpleNode(qReal::Id(), mSemanticTree);
+}
+
+SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks, QList<myUtils::IntermediateNode *> &restNodes)
+{
+	const qReal::Id conditionId = nodeWithBreaks->firstId();
+
+	QList<myUtils::IntermediateNode *> exitBranches = nodeWithBreaks->exitBranches();
+
+	switch(semanticsOf(conditionId)) {
+	case enums::semantics::conditionalBlock: {
+		IfNode *semanticIf = new IfNode(conditionId, mSemanticTree);
+
+		const qReal::Id thenId = exitBranches.first()->firstId();
+		QPair<LinkInfo, LinkInfo> branchesForIf = ifBranchesFor(conditionId);
+
+		if (branchesForIf.first.target != thenId) {
+			semanticIf->invertCondition();
+		}
+
+		semanticIf->thenZone()->appendChild(transformNode(exitBranches.first()));
+
+		ZoneNode *zone = new ZoneNode(mSemanticTree);
+		zone->appendChildren({ semanticIf, transformNode(restNodes.first()) });
+		return zone;
+	}
+
+	case enums::semantics::switchBlock: {
+		SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
+		QList<myUtils::IntermediateNode *> allBranches = restNodes + exitBranches;
+
+
+		for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
+			const QString expression = mRepo.property(link, "Guard").toString();
+			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
+
+			for (const myUtils::IntermediateNode *branchNode : allBranches) {
+				if (branchNode->firstId() == otherVertex) {
+					semanticSwitch->addBranch(expression, transformNode(branchNode));
+					break;
+				}
+			}
+		}
+
+
+		semanticSwitch->setGenerateIfs();
+
+		return semanticSwitch;
+	}
+
+	default:
+		qDebug() << "Problem in createConditionWithBreaks";
+		mCantBeGeneratedIntoStructuredCode = false;
+		return nullptr;
+	}
+
 }
 
 

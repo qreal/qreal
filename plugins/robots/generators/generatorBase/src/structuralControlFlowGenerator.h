@@ -79,6 +79,10 @@ private:
 	semantics::SemanticNode *transformWhileLoop(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformSwitch(const myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformIfWithBreak(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformBreakNode();
+	semantics::SemanticNode *transformFakeCycleHead();
+
+	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks, QList<myUtils::IntermediateNode*> &restNodes);
 
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
