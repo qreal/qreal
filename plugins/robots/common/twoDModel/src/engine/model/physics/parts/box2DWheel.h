@@ -55,6 +55,7 @@ private:
 	const float wheelWidthM;
 	const float wheelFriction = 1.0f;
 	const float wheelMass = 0.1f;
+	b2Vec2 *mPolygon; // Takes ownership
 
 };
 

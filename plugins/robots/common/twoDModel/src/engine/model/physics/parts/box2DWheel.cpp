@@ -27,10 +27,12 @@ using namespace twoDModel::model::physics::parts;
 
 Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 		, const b2Vec2 &positionBox2D, const float rotationBox2D, Box2DRobot &robot)
-	: mRobot(robot)
+	: prevSpeed(0.0)
+	, mRobot(robot)
 	, mEngine(engine)
 	, wheelHeightM(engine->pxToM(twoDModel::robotWheelDiameterInPx / 2))
 	, wheelWidthM(engine->pxToM(twoDModel::robotWheelDiameterInPx))
+	, mPolygon(new b2Vec2[8])
 {
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -42,7 +44,18 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 	fixtureDef.restitution = 0.5;
 	fixtureDef.friction = wheelFriction;
 	b2PolygonShape polygonShape;
-	polygonShape.SetAsBox( wheelWidthM / 2, wheelHeightM / 2 );
+
+	b2Vec2 center = b2Vec2(0.5 * wheelWidthM, 0.5 * wheelHeightM);
+	mPolygon[0] = b2Vec2(0.2 * wheelWidthM, wheelHeightM) - center;
+	mPolygon[1] = b2Vec2(0.8 * wheelWidthM, wheelHeightM) - center;
+	mPolygon[2] = b2Vec2(wheelWidthM, 0.6 * wheelHeightM) - center;
+	mPolygon[3] = b2Vec2(wheelWidthM, 0.4 * wheelHeightM) - center;
+	mPolygon[4] = b2Vec2(0.8 * wheelWidthM, 0.0) - center;
+	mPolygon[5] = b2Vec2(0.2 * wheelWidthM, 0.0) - center;
+	mPolygon[6] = b2Vec2(0.0, 0.4 * wheelHeightM) - center;
+	mPolygon[7] = b2Vec2(0.0, 0.6 * wheelHeightM) - center;
+
+	polygonShape.Set(mPolygon, 8);
 	fixtureDef.shape = &polygonShape;
 	fixtureDef.density = engine->computeDensity(
 			QPolygonF(QRectF(0, 0, twoDModel::robotWheelDiameterInPx / 2, twoDModel::robotWheelDiameterInPx))
@@ -51,11 +64,11 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 	mBody->CreateFixture( &fixtureDef );
 
 	mBody->SetUserData(this);
-	prevSpeed = 0;
 
 	for (int i = 0; i < polygonShape.GetVertexCount(); ++i) {
 		mDebuggingDrawPolygon.append(mEngine->positionToScene(polygonShape.GetVertex(i) + mBody->GetPosition()));
 	}
+
 	if (!mDebuggingDrawPolygon.isEmpty() & !mDebuggingDrawPolygon.isClosed()) {
 		mDebuggingDrawPolygon.append(mDebuggingDrawPolygon.first());
 	}
@@ -63,6 +76,7 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 
 Box2DWheel::~Box2DWheel() {
 	mBody->GetWorld()->DestroyBody(mBody);
+	delete[] mPolygon;
 }
 
 b2Vec2 Box2DWheel::getLateralVelocity() const {

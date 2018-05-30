@@ -62,6 +62,7 @@ Box2DRobot::Box2DRobot(Box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 	for (int i = 0; i < polygonShape.GetVertexCount(); ++i) {
 		mDebuggingDrawPolygon.append(engine->positionToScene(polygonShape.GetVertex(i) + mBody->GetPosition()));
 	}
+
 	if (!mDebuggingDrawPolygon.isEmpty() & !mDebuggingDrawPolygon.isClosed()) {
 		mDebuggingDrawPolygon.append(mDebuggingDrawPolygon.first());
 	}
