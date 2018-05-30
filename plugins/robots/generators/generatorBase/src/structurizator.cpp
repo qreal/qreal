@@ -77,7 +77,7 @@ IntermediateNode *Structurizator::performStructurization(const qrRepo::RepoApi *
 					}
 				}
 
-				QMap<int, int> nodesWithExits;
+				QMap<int, QSet<int> > nodesWithExits;
 				int commonExit = -1;
 				bool isCycle = isCycleWithBreaks(reachUnder, nodesWithExits, commonExit);
 				if (!isCycle) {
@@ -317,14 +317,14 @@ bool Structurizator::checkWhileLoopHelper(int head, int body)
 	return false;
 }
 
-bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit)
+bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
 {
 	bool result = findCommonExit(reachUnder, nodesWithExits, commonExit);
 	if (!result) {
 		return false;
 	}
 
-	return checkCommonExit(commonExit, nodesWithExits);
+	return checkCommonExitUniqueness(commonExit, nodesWithExits);
 }
 
 bool Structurizator::isHeadOfCycle(int v, QSet<int> &reachUnder)
@@ -351,7 +351,7 @@ bool Structurizator::isHeadOfCycle(int v, QSet<int> &reachUnder)
 	return !reachUnder.isEmpty();
 }
 
-bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit)
+bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
 {
 	commonExit = -1;
 	QSet<int> exits;
@@ -367,7 +367,7 @@ bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodes
 				}
 
 				exits.insert(w);
-				nodesWithExits[u] = w;
+				nodesWithExits[u].insert(w);
 			}
 		}
 	}
@@ -414,19 +414,21 @@ bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodes
 	return true;
 }
 
-bool Structurizator::checkCommonExit(int commonExit, const QMap<int, int> &nodesWithExits)
+bool Structurizator::checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int> > &nodesWithExits)
 {
-	for (const int exit : nodesWithExits.values()) {
-		if (commonExit == exit) {
-			continue;
-		}
+	for (const int vertexFromCycle : nodesWithExits.keys()) {
+		for (const int exit : nodesWithExits[vertexFromCycle]) {
+			if (commonExit == exit) {
+				continue;
+			}
 
-		if (incomingEdgesNumber(exit) != 1 || outgoingEdgesNumber(exit) >= 2) {
-			return false;
-		}
+			if (incomingEdgesNumber(exit) != 1 || outgoingEdgesNumber(exit) >= 2) {
+				return false;
+			}
 
-		if (outgoingEdgesNumber(exit) == 1 && commonExit != mFollowers[exit].first()) {
-			return false;
+			if (outgoingEdgesNumber(exit) == 1 && commonExit != mFollowers[exit].first()) {
+				return false;
+			}
 		}
 	}
 
@@ -487,35 +489,38 @@ void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap
 	replace(appendVertex(whileNode), edgesToRemove, verticesRoles);
 }
 
-void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWithExits, int commonExit)
+void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &nodesWithExits, int commonExit)
 {
-	bool switchCase = false;
-	for (const int u : nodesWithExits.keys()) {
-		int exit = nodesWithExits[u];
-		if (outgoingEdgesNumber(u) > 2) {
-			// here we deal with switch
-			addAdditionalConditionWithBreak(u, exit, commonExit);
-			switchCase = true;
-		} else {
-			// here we deal with if or switch with 2 outgoing branches
-			reduceSimpleIfWithBreak(u, exit, commonExit);
-		}
-
-		// update cycle head
-		if (u == v) {
-			v = mVertecesNumber - 1;
-		}
+	if (nodesWithExits.contains(v)) {
+		FakeCycleHeadNode *fakeCycleHeadNode = new FakeCycleHeadNode(mTrees[v]->firstId(), this);
+		int newNodeNumber = appendVertex(fakeCycleHeadNode);
+		addNewNodeNumberBeforeVertex(newNodeNumber, v);
+		v = newNodeNumber;
 	}
+
+
+//	bool switchCase = false;
+//	for (const int u : nodesWithExits.keys()) {
+//		int exit = nodesWithExits[u];
+//		if (outgoingEdgesNumber(u) > 2) {
+//			// here we deal with switch
+//			addAdditionalConditionWithBreak(u, exit, commonExit);
+//			switchCase = true;
+//		} else {
+//			// here we deal with if or switch with 2 outgoing branches
+//			reduceSimpleIfWithBreak(u, exit, commonExit);
+//		}
+
+//		// update cycle head
+//		if (u == v) {
+//			v = mVertecesNumber - 1;
+//		}
+//	}
 
 	// adding edge from head to common exit
 	if (commonExit != -1 && !mFollowers[v].contains(commonExit)) {
 		mFollowers[v].push_back(commonExit);
 		mPredecessors[commonExit].push_back(v);
-	}
-
-	if (switchCase) {
-		calculatePostOrder();
-		calculateDominators();
 	}
 }
 
@@ -690,6 +695,8 @@ void Structurizator::addNewNodeNumberBeforeVertex(int newNodeNumber, int vertex)
 			mDominators[u].insert(newNodeNumber);
 		}
 	}
+
+	calculatePostOrder();
 }
 
 void Structurizator::removeVertex(int vertex)

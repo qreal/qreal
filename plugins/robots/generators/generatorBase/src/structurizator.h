@@ -40,12 +40,12 @@ private:
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
 	bool checkWhileLoopHelper(int head, int body);
 
-	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit);
+	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
 	bool isHeadOfCycle(int v, QSet<int> &reachUnder);
 
 
-	bool findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodesWithExits, int &commonExit);
-	bool checkCommonExit(int commonExit, const QMap<int, int> &nodesWithExits);
+	bool findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int> > &nodesWithExits);
 
 	void reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	void reduceIfThenElse(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
@@ -53,7 +53,8 @@ private:
 	void reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	void reduceInfiniteLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	void reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceConditionsWithBreaks(int v, QMap<int, int> &nodesWithExits, int commonExit);
+
+	void reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &nodesWithExits, int commonExit);
 	void reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 	void addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 
