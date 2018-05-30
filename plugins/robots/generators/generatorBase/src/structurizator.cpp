@@ -366,10 +366,6 @@ bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, int> &nodes
 					commonExit = w;
 				}
 
-				if (nodesWithExits.contains(u)) {
-					return false;
-				}
-
 				exits.insert(w);
 				nodesWithExits[u] = w;
 			}
