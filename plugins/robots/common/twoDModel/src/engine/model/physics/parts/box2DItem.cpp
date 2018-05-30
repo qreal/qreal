@@ -45,6 +45,7 @@ Box2DItem::Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *engine
 	mBody->SetLinearDamping(item.linearDamping());
 
 	b2FixtureDef fixture;
+	fixture.restitution = 0.5;
 	b2CircleShape circleShape;
 	b2PolygonShape polygonShape;
 	QPolygonF collidingPolygon = item.collidingPolygon();

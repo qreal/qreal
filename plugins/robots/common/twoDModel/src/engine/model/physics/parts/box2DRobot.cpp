@@ -51,6 +51,8 @@ Box2DRobot::Box2DRobot(Box2DPhysicsEngine *engine, twoDModel::model::RobotModel 
 	robotFixture.shape = &polygonShape;
 	robotFixture.density = engine->computeDensity(collidingPolygon, mModel->info().mass());
 	robotFixture.friction = mModel->info().friction();
+	robotFixture.restitution = 0.6;
+
 	mBody->CreateFixture(&robotFixture);
 	mBody->SetUserData(this);
 	mBody->SetAngularDamping(1.0f);

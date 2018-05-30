@@ -112,12 +112,12 @@ QPolygonF BallItem::collidingPolygon() const
 
 qreal BallItem::angularDamping() const
 {
-	return 0.1f;
+	return 0.08f;
 }
 
 qreal BallItem::linearDamping() const
 {
-	return 0.1f;
+	return 0.08f;
 }
 
 QPainterPath BallItem::path() const
@@ -144,7 +144,7 @@ bool BallItem::isCircle() const
 
 qreal BallItem::mass() const
 {
-	return 0.15f;
+	return 0.35f;
 }
 
 qreal BallItem::friction() const

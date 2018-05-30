@@ -39,6 +39,7 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 	mBody = engine->box2DWorld().CreateBody( &bodyDef );
 
 	b2FixtureDef fixtureDef;
+	fixtureDef.restitution = 0.5;
 	fixtureDef.friction = wheelFriction;
 	b2PolygonShape polygonShape;
 	polygonShape.SetAsBox( wheelWidthM / 2, wheelHeightM / 2 );
@@ -75,6 +76,8 @@ b2Vec2 Box2DWheel::getForwardVelocity() const {
 }
 
 void Box2DWheel::keepConstantSpeed(float speed) {
+	const int acceleration = 20;
+
 	if (!mathUtils::Math::eq(prevSpeed, speed)){
 		mRobot.applyForceToCenter(mBody->GetWorldVector(b2Vec2(0.1f * mathUtils::Math::sign(speed), 0)), true);
 		prevSpeed = speed;
@@ -89,7 +92,7 @@ void Box2DWheel::keepConstantSpeed(float speed) {
 	forwardNormal = mBody->GetWorldVector(b2Vec2(1, 0));
 
 	float desiredSpeed = currentForwardSpeed;
-	float speedPiece = abs(speed) / 20;
+	float speedPiece = fabs(speed) / acceleration;
 	if (currentForwardSpeed < speed) {
 		desiredSpeed += speedPiece;
 	} else if (currentForwardSpeed > speed) {
