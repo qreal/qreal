@@ -126,13 +126,16 @@ public:
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> exitBranches() const;
+	QList<IntermediateNode *> restBranches() const;
 
+	void setRestBranches(const QList<IntermediateNode *> &restBranches);
 	bool analyzeBreak();
 	Type type() const;
 	qReal::Id firstId() const;
 private:
 	IntermediateNode *mCondition;
 	QList<IntermediateNode *> mExitBranches;
+	QList<IntermediateNode *> mRestBranches;
 };
 
 class SwitchNode : public IntermediateNode {

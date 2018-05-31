@@ -345,6 +345,16 @@ QList<IntermediateNode *> NodeWithBreaks::exitBranches() const
 	return mExitBranches;
 }
 
+QList<IntermediateNode *> NodeWithBreaks::restBranches() const
+{
+	return mRestBranches;
+}
+
+void NodeWithBreaks::setRestBranches(const QList<IntermediateNode *> &restBranches)
+{
+	mRestBranches = restBranches;
+}
+
 bool NodeWithBreaks::analyzeBreak()
 {
 	mHasBreakInside = true;
