@@ -112,6 +112,10 @@ void StructuralControlFlowGenerator::performGeneration()
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
 	}
+
+	if (mCantBeGeneratedIntoStructuredCode) {
+		mSemanticTree = nullptr;
+	}
 }
 
 void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
@@ -188,24 +192,9 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::Inte
 {
 	const myUtils::BlockNode *blockNode = dynamic_cast<const myUtils::BlockNode *>(node);
 
-	if (blockNode->firstNode()->type() == myUtils::IntermediateNode::Type::nodeWithBreaks) {
-		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(blockNode->firstNode());
-		nodeWithBreaks->setRestBranches({blockNode->secondNode()});
-		return createConditionWithBreaks(nodeWithBreaks);
-	}
-
 	ZoneNode *zone = new ZoneNode(mSemanticTree);
-
 	checkAndAppendBlock(zone, blockNode->firstNode());
-
-
-	if (blockNode->secondNode()->type() == myUtils::IntermediateNode::Type::nodeWithBreaks) {
-		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(blockNode->secondNode());
-
-		zone->appendChild(createConditionWithBreaks(nodeWithBreaks));
-	} else {
-		checkAndAppendBlock(zone, blockNode->secondNode());
-	}
+	checkAndAppendBlock(zone, blockNode->secondNode());
 
 	return zone;
 }
