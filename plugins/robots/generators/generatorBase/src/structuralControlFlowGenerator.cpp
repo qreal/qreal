@@ -408,7 +408,7 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 		zone->appendChild(semanticIf);
 
 		if (!restNodes.isEmpty()) {
-			zone->appendChildren({ semanticIf, transformNode(restNodes.first()) });
+			zone->appendChildren({transformNode(restNodes.first()) });
 		}
 
 		return zone;

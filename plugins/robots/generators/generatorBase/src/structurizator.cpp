@@ -655,6 +655,7 @@ void Structurizator::addNewNodeNumberBeforeVertex(int newNodeNumber, int vertex)
 
 	// dominators
 	mDominators[newNodeNumber] = mDominators[vertex];
+	mDominators[newNodeNumber].subtract({vertex});
 	for (const int u : mVertices) {
 		if (mDominators[u].contains(vertex)) {
 			mDominators[u].insert(newNodeNumber);
