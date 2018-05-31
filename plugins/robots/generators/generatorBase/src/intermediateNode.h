@@ -180,10 +180,11 @@ class WhileNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, QObject *parent = nullptr);
+	WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent = nullptr);
 
 	IntermediateNode *headNode() const;
 	IntermediateNode *bodyNode() const;
+	IntermediateNode *exitNode() const;
 
 	bool analyzeBreak();
 	Type type() const;
@@ -191,6 +192,7 @@ public:
 private:
 	IntermediateNode *mHeadNode;
 	IntermediateNode *mBodyNode;
+	IntermediateNode *mExitNode;
 };
 
 

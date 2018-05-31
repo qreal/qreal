@@ -210,10 +210,11 @@ qReal::Id BlockNode::firstId() const
 	return firstNode()->firstId();
 }
 
-WhileNode::WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, QObject *parent)
+WhileNode::WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent)
 	: IntermediateNode(parent)
 	, mHeadNode(headNode)
 	, mBodyNode(bodyNode)
+	, mExitNode(exitNode)
 {
 	mIdsInvolved = mHeadNode->ids() + mBodyNode->ids();
 }
@@ -226,6 +227,11 @@ IntermediateNode *WhileNode::headNode() const
 IntermediateNode *WhileNode::bodyNode() const
 {
 	return mBodyNode;
+}
+
+IntermediateNode *WhileNode::exitNode() const
+{
+	return mExitNode;
 }
 
 bool WhileNode::analyzeBreak()

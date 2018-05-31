@@ -296,11 +296,20 @@ SemanticNode *StructuralControlFlowGenerator::transformSelfLoop(const myUtils::I
 SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(const myUtils::IntermediateNode *node)
 {
 	const myUtils::WhileNode *whileNode = dynamic_cast<const myUtils::WhileNode *>(node);
-	LoopNode *semanticLoop= nullptr;
+	LoopNode *semanticLoop = nullptr;
+	const qReal::Id conditionId = whileNode->firstId();
 	if (whileNode->headNode()->type() == myUtils::IntermediateNode::Type::simple
-			&& (semanticsOf(whileNode->headNode()->firstId()) == enums::semantics::conditionalBlock ||
-				semanticsOf(whileNode->headNode()->firstId()) == enums::semantics::loopBlock)) {
-		semanticLoop = new LoopNode(whileNode->headNode()->firstId(), mSemanticTree);
+			&& (semanticsOf(conditionId) == enums::semantics::conditionalBlock ||
+				semanticsOf(conditionId) == enums::semantics::loopBlock)) {
+		semanticLoop = new LoopNode(conditionId, mSemanticTree);
+	} else if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
+		QList<myUtils::IntermediateNode *> exitBranches;
+		exitBranches.append(new myUtils::BreakNode(whileNode->exitNode()->firstId(), mStructurizator));
+		myUtils::NodeWithBreaks *nodeWithBreaks = new myUtils::NodeWithBreaks(whileNode->headNode(), exitBranches, mStructurizator);
+		nodeWithBreaks->setRestBranches( {whileNode->bodyNode() } );
+		semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
+		semanticLoop->bodyZone()->appendChild(createConditionWithBreaks(nodeWithBreaks));
+		return semanticLoop;
 	} else {
 		semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
 		semanticLoop->bodyZone()->appendChild(transformNode(whileNode->headNode()));

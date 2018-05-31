@@ -276,10 +276,13 @@ bool Structurizator::isWhileLoop(int v, QSet<QPair<int, int> > &edgesToRemove, Q
 	int u2 = mFollowers[v].last();
 
 	int bodyNumber = -1;
+	int exitNumber = -1;
 	if (checkWhileLoopHelper(v, u1)) {
 		bodyNumber = u1;
+		exitNumber = u2;
 	} else if (checkWhileLoopHelper(v, u2)) {
 		bodyNumber = u2;
+		exitNumber = u1;
 	}
 
 	if (bodyNumber == -1) {
@@ -290,6 +293,7 @@ bool Structurizator::isWhileLoop(int v, QSet<QPair<int, int> > &edgesToRemove, Q
 
 	verticesRoles["head"] = v;
 	verticesRoles["body"] = bodyNumber;
+	verticesRoles["exit"] = exitNumber;
 
 	return true;
 }
@@ -481,8 +485,9 @@ void Structurizator::reduceInfiniteLoop(QSet<QPair<int, int> > &edgesToRemove, Q
 
 void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	WhileNode *whileNode = new WhileNode(mTrees[verticesRoles["head"]], mTrees[verticesRoles["body"]], this);
+	WhileNode *whileNode = new WhileNode(mTrees[verticesRoles["head"]], mTrees[verticesRoles["body"]], mTrees[verticesRoles["exit"]], this);
 
+	verticesRoles.remove("exit");
 	replace(appendVertex(whileNode), edgesToRemove, verticesRoles);
 }
 
