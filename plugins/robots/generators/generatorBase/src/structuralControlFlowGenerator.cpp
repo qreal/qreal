@@ -239,7 +239,6 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 	}
 
 	case enums::semantics::forkBlock: {
-		ForkNode *semanticFork = new ForkNode(conditionId, mSemanticTree);
 
 		if (!ifNode->elseBranch()) {
 			qDebug() << "Fork should have all branches";
@@ -247,17 +246,8 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 			return nullptr;
 		}
 
-		for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
-			const QString expression = mRepo.property(link, "Guard").toString();
-			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
-			if (otherVertex == thenId) {
-				semanticFork->appendThread(ifNode->thenBranch()->firstId(), expression);
-			} else {
-				semanticFork->appendThread(ifNode->elseBranch()->firstId(), expression);
-			}
-		}
-
-		return semanticFork;
+		QList<myUtils::IntermediateNode *> branches = { ifNode->thenBranch(), ifNode->elseBranch() };
+		return createSemanticForkNode(conditionId, branches);
 	}
 
 	default:
@@ -310,7 +300,6 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(myUtils::WhileN
 		default:
 			break;
 		}
-
 	}
 
 	semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
@@ -333,15 +322,7 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::SwitchNod
 	if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
 		return createSemanticSwitchNode(conditionId, branches, switchNode->hasBreakInside());
 	} else if (semanticsOf(conditionId) == enums::semantics::forkBlock) {
-		ForkNode *semanticFork = new ForkNode(conditionId, mSemanticTree);
-
-		for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
-			const QString expression = mRepo.property(link, "Expression").toString();
-			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
-			semanticFork->appendThread(otherVertex, expression);
-		}
-
-		return semanticFork;
+		return createSemanticForkNode(conditionId, branches);
 	}
 
 	qDebug() << "Problem: couldn't identidy semantics id for switchNode";
@@ -407,14 +388,13 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id 
 {
 	SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
 
-	QSet<qReal::Id> usedIds;
 	QMap<qReal::Id, SemanticNode *> visitedBranch;
 
 	for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
 		const QString expression = mRepo.property(link, "Guard").toString();
 		const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
 
-		if (usedIds.contains(otherVertex)) {
+		if (visitedBranch.contains(otherVertex)) {
 			NonZoneNode * const target = static_cast<NonZoneNode *>(visitedBranch[otherVertex]);
 			semanticSwitch->mergeBranch(expression, target);
 		} else {
@@ -434,7 +414,6 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id 
 
 			semanticSwitch->addBranch(expression, semanticNodeForBranch);
 			visitedBranch[otherVertex] = semanticNodeForBranch;
-			usedIds.insert(otherVertex);
 		}
 	}
 
@@ -443,4 +422,19 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id 
 	}
 
 	return semanticSwitch;
+}
+
+SemanticNode *StructuralControlFlowGenerator::createSemanticForkNode(const Id &conditionId, const QList<myUtils::IntermediateNode *> &branches)
+{
+	Q_UNUSED(branches)
+
+	ForkNode *semanticFork = new ForkNode(conditionId, mSemanticTree);
+
+	for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
+		const QString expression = mRepo.property(link, "Expression").toString();
+		const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
+		semanticFork->appendThread(otherVertex, expression);
+	}
+
+	return semanticFork;
 }
