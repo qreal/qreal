@@ -69,7 +69,7 @@ class FakeCycleHeadNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	FakeCycleHeadNode(const qReal::Id &id, QObject *parent = nullptr);
+	FakeCycleHeadNode(const qReal::Id &id, QObject *parent);
 
 	Type type() const;
 	qReal::Id firstId() const;
@@ -85,7 +85,7 @@ class BreakNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	BreakNode(const qReal::Id &id, QObject *parent = nullptr);
+	BreakNode(const qReal::Id &id, QObject *parent);
 
 	Type type() const;
 	qReal::Id firstId() const;
@@ -100,7 +100,7 @@ class IfNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, QObject *parent = nullptr);
+	IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, QObject *parent);
 
 	IntermediateNode *condition() const;
 	IntermediateNode *thenBranch() const;
@@ -122,7 +122,7 @@ class NodeWithBreaks : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent = nullptr);
+	NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> exitBranches() const;
@@ -143,7 +143,7 @@ class SwitchNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent = nullptr);
+	SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> branches() const;
@@ -162,7 +162,7 @@ class BlockNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	BlockNode(IntermediateNode *firstNode, IntermediateNode *secondNode, QObject *parent = nullptr);
+	BlockNode(IntermediateNode *firstNode, IntermediateNode *secondNode, QObject *parent);
 
 	IntermediateNode *firstNode() const;
 	IntermediateNode *secondNode() const;
@@ -180,7 +180,7 @@ class WhileNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent = nullptr);
+	WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent);
 
 	IntermediateNode *headNode() const;
 	IntermediateNode *bodyNode() const;
