@@ -471,7 +471,7 @@ void Structurizator::reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QS
 		branches.append(mTrees[u]);
 	}
 
-	SwitchNode *switchNode = new SwitchNode(mTrees[v], branches);
+	SwitchNode *switchNode = new SwitchNode(mTrees[v], branches, this);
 
 	replace(appendVertex(switchNode), edgesToRemove, verticesRoles);
 }

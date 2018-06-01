@@ -304,28 +304,36 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(myUtils::WhileN
 	LoopNode *semanticLoop = nullptr;
 	const qReal::Id conditionId = headNode->firstId();
 
-	if (headNode->type() == myUtils::IntermediateNode::Type::simple
-			&& (semanticsOf(conditionId) == enums::semantics::conditionalBlock ||
-				semanticsOf(conditionId) == enums::semantics::loopBlock)) {
-		semanticLoop = new LoopNode(conditionId, mSemanticTree);
-	} else if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
+	if (headNode->type() == myUtils::IntermediateNode::Type::simple) {
+		switch(semanticsOf(conditionId)) {
+		case enums::semantics::conditionalBlock:
+		case enums::semantics::loopBlock: {
+			semanticLoop = new LoopNode(conditionId, mSemanticTree);
+			semanticLoop->bodyZone()->appendChild(transformNode(bodyNode));
+			return semanticLoop;
+		}
 
-		QList<myUtils::IntermediateNode *> exitBranches;
-		exitBranches.append(new myUtils::BreakNode(exitNode->firstId(), mStructurizator));
+		case enums::semantics::switchBlock: {
+			QList<myUtils::IntermediateNode *> exitBranches;
+			exitBranches.append(new myUtils::BreakNode(exitNode->firstId(), mStructurizator));
 
-		myUtils::NodeWithBreaks *nodeWithBreaks = new myUtils::NodeWithBreaks(headNode, exitBranches, mStructurizator);
-		nodeWithBreaks->setRestBranches( {whileNode->bodyNode() } );
+			myUtils::NodeWithBreaks *nodeWithBreaks = new myUtils::NodeWithBreaks(headNode, exitBranches, mStructurizator);
+			nodeWithBreaks->setRestBranches( { bodyNode } );
 
-		semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
-		semanticLoop->bodyZone()->appendChild(createConditionWithBreaks(nodeWithBreaks));
-		return semanticLoop;
-	} else {
-		semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
-		semanticLoop->bodyZone()->appendChild(transformNode(whileNode->headNode()));
+			semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
+			semanticLoop->bodyZone()->appendChild(createConditionWithBreaks(nodeWithBreaks));
+			return semanticLoop;
+		}
+
+		default:
+			break;
+		}
+
 	}
 
-	semanticLoop->bodyZone()->appendChild(transformNode(whileNode->bodyNode()));
-
+	semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
+	semanticLoop->bodyZone()->appendChild(transformNode(headNode));
+	semanticLoop->bodyZone()->appendChild(transformNode(bodyNode));
 	return semanticLoop;
 }
 
