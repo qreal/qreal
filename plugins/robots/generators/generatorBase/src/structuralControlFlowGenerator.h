@@ -72,16 +72,18 @@ private:
 
 	void checkAndAppendBlock(semantics::ZoneNode *zone, myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformNode(myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformSimple(myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformBlock(myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformIfThenElse(myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformSelfLoop(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSimple(myUtils::SimpleNode *simpleNode);
+	semantics::SemanticNode *transformBlock(myUtils::BlockNode *blockNode);
+	semantics::SemanticNode *transformIfThenElse(myUtils::IfNode *ifNode);
+	semantics::SemanticNode *transformSelfLoop(myUtils::SelfLoopNode *selfLoopNode);
 	semantics::SemanticNode *transformWhileLoop(myUtils::WhileNode *whileNode);
-	semantics::SemanticNode *transformSwitch(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSwitch(myUtils::SwitchNode *switchNode);
 	semantics::SemanticNode *transformBreakNode();
 	semantics::SemanticNode *transformFakeCycleHead();
 
 	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks);
+	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode);
+	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, bool generateIfs);
 
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
