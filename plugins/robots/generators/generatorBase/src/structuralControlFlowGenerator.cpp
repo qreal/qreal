@@ -120,7 +120,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
 {
-	bool hasBreak = root->analyzeBreak();
+	root->analyzeBreak();
 	SemanticNode * semanticNode = transformNode(root);
 	mSemanticTree->setRoot(new RootNode(semanticNode, mSemanticTree));
 }
@@ -220,7 +220,6 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 	}
 
 	const qReal::Id conditionId = ifNode->condition()->firstId();
-	const qReal::Id thenId = ifNode->thenBranch()->firstId();
 
 	switch (semanticsOf(conditionId)) {
 
