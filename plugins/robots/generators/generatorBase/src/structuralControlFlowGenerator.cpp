@@ -128,7 +128,7 @@ void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNod
 void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, myUtils::IntermediateNode *node)
 {
 	if (node->type() == myUtils::IntermediateNode::simple) {
-		const myUtils::SimpleNode *simpleNode = dynamic_cast<const myUtils::SimpleNode *>(node);
+		myUtils::SimpleNode *simpleNode = dynamic_cast<myUtils::SimpleNode *>(node);
 
 		switch (semanticsOf(simpleNode->id())) {
 		case enums::semantics::conditionalBlock:
@@ -144,7 +144,7 @@ void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, myUtils
 }
 
 // maybe use strategy to recursively handle this situation?
-SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::IntermediateNode *node)
 {
 	switch (node->type()) {
 	case myUtils::IntermediateNode::Type::simple:
@@ -162,8 +162,10 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::Inter
 	case myUtils::IntermediateNode::Type::infiniteloop:
 		return transformSelfLoop(node);
 
-	case myUtils::IntermediateNode::Type::whileloop:
-		return transformWhileLoop(node);
+	case myUtils::IntermediateNode::Type::whileloop: {
+		myUtils::WhileNode *whileNode = dynamic_cast<myUtils::WhileNode *>(node);
+		return transformWhileLoop(whileNode);
+	}
 
 	case myUtils::IntermediateNode::Type::breakNode:
 		return transformBreakNode();
@@ -172,7 +174,7 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::Inter
 		return transformFakeCycleHead();
 
 	case myUtils::IntermediateNode::Type::nodeWithBreaks:
-		return createConditionWithBreaks(dynamic_cast<const myUtils::NodeWithBreaks *>(node));
+		return createConditionWithBreaks(dynamic_cast<myUtils::NodeWithBreaks *>(node));
 
 	default:
 		qDebug() << "Undefined type of Intermediate node!";
@@ -182,15 +184,15 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(const myUtils::Inter
 	}
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformSimple(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformSimple(myUtils::IntermediateNode *node)
 {
-	const myUtils::SimpleNode *simpleNode = dynamic_cast<const myUtils::SimpleNode *>(node);
+	myUtils::SimpleNode *simpleNode = dynamic_cast<myUtils::SimpleNode *>(node);
 	return mSemanticTree->produceNodeFor(simpleNode->id());
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformBlock(myUtils::IntermediateNode *node)
 {
-	const myUtils::BlockNode *blockNode = dynamic_cast<const myUtils::BlockNode *>(node);
+	myUtils::BlockNode *blockNode = dynamic_cast<myUtils::BlockNode *>(node);
 
 	ZoneNode *zone = new ZoneNode(mSemanticTree);
 	checkAndAppendBlock(zone, blockNode->firstNode());
@@ -199,9 +201,9 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(const myUtils::Inte
 	return zone;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IntermediateNode *node)
 {
-	const myUtils::IfNode *ifNode = dynamic_cast<const myUtils::IfNode *>(node);
+	myUtils::IfNode *ifNode = dynamic_cast<myUtils::IfNode *>(node);
 
 	if (ifNode->condition()->type() == myUtils::IntermediateNode::nodeWithBreaks) {
 		myUtils::NodeWithBreaks *nodeWithBreaks = dynamic_cast<myUtils::NodeWithBreaks *>(ifNode->condition());
@@ -285,28 +287,35 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(const myUtils:
 	return nullptr;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformSelfLoop(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformSelfLoop(myUtils::IntermediateNode *node)
 {
-	const myUtils::SelfLoopNode *selfLoopNode = dynamic_cast<const myUtils::SelfLoopNode *>(node);
+	myUtils::SelfLoopNode *selfLoopNode = dynamic_cast<myUtils::SelfLoopNode *>(node);
 	LoopNode *semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
 	semanticLoop->bodyZone()->appendChild(transformNode(selfLoopNode->bodyNode()));
 	return semanticLoop;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(myUtils::WhileNode *whileNode)
 {
-	const myUtils::WhileNode *whileNode = dynamic_cast<const myUtils::WhileNode *>(node);
+	myUtils::IntermediateNode *headNode = whileNode->headNode();
+	myUtils::IntermediateNode *bodyNode = whileNode->bodyNode();
+	myUtils::IntermediateNode *exitNode = whileNode->exitNode();
+
 	LoopNode *semanticLoop = nullptr;
-	const qReal::Id conditionId = whileNode->firstId();
-	if (whileNode->headNode()->type() == myUtils::IntermediateNode::Type::simple
+	const qReal::Id conditionId = headNode->firstId();
+
+	if (headNode->type() == myUtils::IntermediateNode::Type::simple
 			&& (semanticsOf(conditionId) == enums::semantics::conditionalBlock ||
 				semanticsOf(conditionId) == enums::semantics::loopBlock)) {
 		semanticLoop = new LoopNode(conditionId, mSemanticTree);
 	} else if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
+
 		QList<myUtils::IntermediateNode *> exitBranches;
-		exitBranches.append(new myUtils::BreakNode(whileNode->exitNode()->firstId(), mStructurizator));
-		myUtils::NodeWithBreaks *nodeWithBreaks = new myUtils::NodeWithBreaks(whileNode->headNode(), exitBranches, mStructurizator);
+		exitBranches.append(new myUtils::BreakNode(exitNode->firstId(), mStructurizator));
+
+		myUtils::NodeWithBreaks *nodeWithBreaks = new myUtils::NodeWithBreaks(headNode, exitBranches, mStructurizator);
 		nodeWithBreaks->setRestBranches( {whileNode->bodyNode() } );
+
 		semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
 		semanticLoop->bodyZone()->appendChild(createConditionWithBreaks(nodeWithBreaks));
 		return semanticLoop;
@@ -320,9 +329,9 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(const myUtils::
 	return semanticLoop;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformSwitch(const myUtils::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::IntermediateNode *node)
 {
-	const myUtils::SwitchNode *switchNode = dynamic_cast<const myUtils::SwitchNode *>(node);
+	myUtils::SwitchNode *switchNode = dynamic_cast<myUtils::SwitchNode *>(node);
 	const qReal::Id &conditionId = switchNode->condition()->firstId();
 	QList<myUtils::IntermediateNode *> branches = switchNode->branches();
 
@@ -339,7 +348,7 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(const myUtils::Int
 			const QString expression = mRepo.property(link, "Guard").toString();
 			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
 
-			for (const myUtils::IntermediateNode *branchNode : branches) {
+			for (myUtils::IntermediateNode *branchNode : branches) {
 				if (branchNode->firstId() == otherVertex) {
 					semanticSwitch->addBranch(expression, transformNode(branchNode));
 					break;
@@ -381,7 +390,7 @@ SemanticNode *StructuralControlFlowGenerator::transformFakeCycleHead()
 	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
 
-SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(const myUtils::NodeWithBreaks *nodeWithBreaks)
+SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks)
 {
 	const qReal::Id conditionId = nodeWithBreaks->firstId();
 
@@ -421,7 +430,7 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(const my
 			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
 
 			bool branchNodeWasFound = false;
-			for (const myUtils::IntermediateNode *branchNode : allBranches) {
+			for (myUtils::IntermediateNode *branchNode : allBranches) {
 				if (branchNode->firstId() == otherVertex) {
 					semanticSwitch->addBranch(expression, transformNode(branchNode));
 					branchNodeWasFound = true;

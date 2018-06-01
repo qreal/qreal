@@ -71,17 +71,17 @@ private:
 	void obtainSemanticTree(myUtils::IntermediateNode *root);
 
 	void checkAndAppendBlock(semantics::ZoneNode *zone, myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformNode(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformSimple(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformBlock(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformIfThenElse(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformSelfLoop(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformWhileLoop(const myUtils::IntermediateNode *node);
-	semantics::SemanticNode *transformSwitch(const myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformNode(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSimple(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformBlock(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformIfThenElse(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformSelfLoop(myUtils::IntermediateNode *node);
+	semantics::SemanticNode *transformWhileLoop(myUtils::WhileNode *whileNode);
+	semantics::SemanticNode *transformSwitch(myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformBreakNode();
 	semantics::SemanticNode *transformFakeCycleHead();
 
-	semantics::SemanticNode *createConditionWithBreaks(const myUtils::NodeWithBreaks *nodeWithBreaks);
+	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks);
 
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
