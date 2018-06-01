@@ -369,54 +369,12 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 
 	switch(semanticsOf(conditionId)) {
 	case enums::semantics::conditionalBlock: {
-		IfNode *semanticIf = new IfNode(conditionId, mSemanticTree);
-
-		const qReal::Id thenId = exitBranches.first()->firstId();
-		QPair<LinkInfo, LinkInfo> branchesForIf = ifBranchesFor(conditionId);
-
-		if (branchesForIf.first.target != thenId) {
-			semanticIf->invertCondition();
-		}
-
-		semanticIf->thenZone()->appendChild(transformNode(exitBranches.first()));
-
-		ZoneNode *zone = new ZoneNode(mSemanticTree);
-		zone->appendChild(semanticIf);
-
-		if (!restBranches.isEmpty()) {
-			zone->appendChildren({transformNode(restBranches.first()) });
-		}
-
-		return zone;
+		return createSemanticIfNode(conditionId, exitBranches.first(), nullptr);
 	}
 
 	case enums::semantics::switchBlock: {
-		SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
 		QList<myUtils::IntermediateNode *> allBranches = restBranches + exitBranches;
-
-
-		for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
-			const QString expression = mRepo.property(link, "Guard").toString();
-			const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
-
-			bool branchNodeWasFound = false;
-			for (myUtils::IntermediateNode *branchNode : allBranches) {
-				if (branchNode->firstId() == otherVertex) {
-					semanticSwitch->addBranch(expression, transformNode(branchNode));
-					branchNodeWasFound = true;
-					break;
-				}
-			}
-
-			if (!branchNodeWasFound) {
-				semanticSwitch->addBranch(expression, new SimpleNode(qReal::Id(), this));
-			}
-		}
-
-
-		semanticSwitch->setGenerateIfs();
-
-		return semanticSwitch;
+		return createSemanticSwitchNode(conditionId, allBranches, true);
 	}
 
 	default:
