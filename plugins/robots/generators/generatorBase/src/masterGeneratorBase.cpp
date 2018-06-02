@@ -97,10 +97,10 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 
 	QString mainCode;
 	const semantics::SemanticTree *mainControlFlow = mStructuralControlFlowGenerator->generate();
-	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
+	if (mainControlFlow && !mStructuralControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
 		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()->subprograms()->generate(
-				mReadableControlFlowGenerator, indentString);
+				mStructuralControlFlowGenerator, indentString);
 		switch (subprogramsResult) {
 		case parts::Subprograms::GenerationResult::success:
 			break;
@@ -111,7 +111,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 			return QString();
 		}
 	} else {
-		if (mReadableControlFlowGenerator->errorsOccured()) {
+		if (mStructuralControlFlowGenerator->errorsOccured()) {
 			return QString();
 		}
 	}
