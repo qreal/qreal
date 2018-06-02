@@ -19,6 +19,9 @@
 
 #include <algorithm>
 
+
+#include "generatorBase/parts/subprograms.h"
+
 using namespace qReal;
 using namespace generatorBase;
 using namespace semantics;
@@ -53,6 +56,11 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
 	mIds.insert(id);
+
+	if (mCustomizer.isSubprogramCall(id)) {
+		mCustomizer.factory()->subprograms()->usageFound(id);
+	}
+
 }
 
 void StructuralControlFlowGenerator::visitRegular(const Id &id, const QList<LinkInfo> &links)
