@@ -28,8 +28,7 @@ public:
 		, nodeWithBreaks
 	};
 
-	IntermediateNode(QObject *parent = nullptr);
-	IntermediateNode(QSet<qReal::Id> &ids, QObject *parent = nullptr);
+	IntermediateNode(QObject *parent);
 
 
 	virtual Type type() const = 0;
@@ -40,9 +39,6 @@ public:
 
 	QSet<qReal::Id> ids() const;
 protected:
-	QSet<qReal::Id> mIdsInvolved;
-	bool mIsInsideCycle;
-	bool mIsInsideSwitch;
 	bool mHasBreakInside;
 	bool mBreakWasAnalyzed;
 };

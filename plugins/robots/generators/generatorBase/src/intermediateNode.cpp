@@ -9,7 +9,6 @@ SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)
 	, mId(id)
 {
-	mIdsInvolved = { id };
 }
 
 IntermediateNode::Type SimpleNode::type() const
@@ -43,11 +42,6 @@ IfNode::IfNode(IntermediateNode *condition
 	, mElseBranch(elseBranch)
 	, mIsIfThenForm(elseBranch == nullptr)
 {
-	mIdsInvolved = mCondition->ids() + mThenBranch->ids();
-
-	if (mElseBranch) {
-		mIdsInvolved += mElseBranch->ids();
-	}
 }
 
 IntermediateNode *IfNode::condition() const
@@ -88,20 +82,8 @@ qReal::Id IfNode::firstId() const
 
 IntermediateNode::IntermediateNode(QObject *parent)
 	: QObject(parent)
-	, mIdsInvolved(QSet<qReal::Id>())
-	, mIsInsideCycle(false)
-	, mIsInsideSwitch(false)
 	, mHasBreakInside(false)
 	, mBreakWasAnalyzed(false)
-{
-}
-
-IntermediateNode::IntermediateNode(QSet<qReal::Id> &ids, QObject *parent)
-	: QObject(parent)
-	, mIdsInvolved(ids)
-	, mIsInsideCycle(false)
-	, mIsInsideSwitch(false)
-	, mHasBreakInside(false)
 {
 }
 
@@ -120,20 +102,11 @@ bool IntermediateNode::hasBreakInside() const
 	return mHasBreakInside;
 }
 
-QSet<qReal::Id> IntermediateNode::ids() const
-{
-	return mIdsInvolved;
-}
-
 SwitchNode::SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mBranches(QList<IntermediateNode *>(branches))
 {
-	mIdsInvolved = {};
-	for (const IntermediateNode * node : branches) {
-		mIdsInvolved.unite(node->ids());
-	}
 }
 
 IntermediateNode *SwitchNode::condition() const
@@ -176,7 +149,6 @@ BlockNode::BlockNode(IntermediateNode *firstNode, IntermediateNode *secondNode, 
 	, mFirstNode(firstNode)
 	, mSecondNode(secondNode)
 {
-	mIdsInvolved = firstNode->ids() + secondNode->ids();
 }
 
 IntermediateNode *BlockNode::firstNode() const
@@ -216,7 +188,6 @@ WhileNode::WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, Int
 	, mBodyNode(bodyNode)
 	, mExitNode(exitNode)
 {
-	mIdsInvolved = mHeadNode->ids() + mBodyNode->ids();
 }
 
 IntermediateNode *WhileNode::headNode() const
@@ -259,7 +230,6 @@ SelfLoopNode::SelfLoopNode(IntermediateNode *bodyNode, QObject *parent)
 	: IntermediateNode(parent)
 	, mBodyNode(bodyNode)
 {
-	mIdsInvolved = bodyNode->ids();
 }
 
 IntermediateNode *SelfLoopNode::bodyNode() const
