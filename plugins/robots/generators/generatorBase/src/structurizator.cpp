@@ -465,6 +465,9 @@ void Structurizator::reduceIfThen(QSet<QPair<int, int> > &edgesToRemove, QMap<QS
 void Structurizator::reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
 	int v = verticesRoles["head"];
+	int exitNodeNumber = verticesRoles["exit"];
+	verticesRoles.remove("exit");
+
 	QSet<int> otherVerteces = verticesRoles.values().toSet();
 	otherVerteces.remove(v);
 
@@ -473,10 +476,9 @@ void Structurizator::reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QS
 		branches.append(mTrees[u]);
 	}
 
-	IntermediateNode *exitNode = verticesRoles["exit"] == -1 ? nullptr : mTrees[verticesRoles["exit"]];
+	IntermediateNode *exitNode = exitNodeNumber == -1 ? nullptr : mTrees[exitNodeNumber];
 	SwitchNode *switchNode = new SwitchNode(mTrees[v], branches, exitNode, this);
 
-	verticesRoles.remove("exit");
 	replace(appendVertex(switchNode), edgesToRemove, verticesRoles);
 }
 
