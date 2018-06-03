@@ -102,11 +102,12 @@ class IfNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, QObject *parent);
+	IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, IntermediateNode *exit, QObject *parent);
 
 	IntermediateNode *condition() const;
 	IntermediateNode *thenBranch() const;
 	IntermediateNode *elseBranch() const;
+	IntermediateNode *exit() const;
 
 	bool analyzeBreak();
 	QList<IntermediateNode *> childrenNodes() const override;
@@ -116,6 +117,7 @@ private:
 	IntermediateNode *mCondition;
 	IntermediateNode *mThenBranch;
 	IntermediateNode *mElseBranch;
+	IntermediateNode *mExit;
 	bool mIsIfThenForm;
 };
 

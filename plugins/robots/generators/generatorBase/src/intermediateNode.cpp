@@ -40,11 +40,13 @@ qReal::Id SimpleNode::id() const
 IfNode::IfNode(IntermediateNode *condition
 							, IntermediateNode *thenBranch
 							, IntermediateNode *elseBranch
+							, IntermediateNode *exit
 							, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mThenBranch(thenBranch)
 	, mElseBranch(elseBranch)
+	, mExit(exit)
 	, mIsIfThenForm(elseBranch == nullptr)
 {
 }
@@ -62,6 +64,11 @@ IntermediateNode *IfNode::thenBranch() const
 IntermediateNode *IfNode::elseBranch() const
 {
 	return mElseBranch;
+}
+
+IntermediateNode *IfNode::exit() const
+{
+	return mExit;
 }
 
 bool IfNode::analyzeBreak()

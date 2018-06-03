@@ -170,6 +170,11 @@ bool Structurizator::isIfThenElse(int v, QSet<QPair<int, int> > &edgesToRemove, 
 		verticesRoles["condition"] = v;
 		verticesRoles["then"] = u1;
 		verticesRoles["else"] = u2;
+
+		if (outgoingEdgesNumber(u1) > 0) {
+			verticesRoles["exit"] = mFollowers[u1].first();
+		}
+
 		edgesToRemove += { makePair(v, u1), makePair(v, u2) };
 		return true;
 	}
@@ -202,6 +207,10 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 
 	verticesRoles["condition"] = v;
 	verticesRoles["then"] = thenNumber;
+
+	if (outgoingEdgesNumber(thenNumber) > 0) {
+		verticesRoles["exit"] = mFollowers[thenNumber].first();
+	}
 
 	edgesToRemove = { makePair(v, u1), makePair(v, u2) };
 
@@ -451,14 +460,27 @@ void Structurizator::reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QSt
 
 void Structurizator::reduceIfThenElse(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]], mTrees[verticesRoles["else"]], this);
+	IntermediateNode *exit = nullptr;
+	if (verticesRoles.contains("exit")) {
+		exit = mTrees[verticesRoles["exit"]];
+		verticesRoles.remove("exit");
+	}
+
+	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]]
+								, mTrees[verticesRoles["else"]], exit, this);
 
 	replace(appendVertex(ifNode), edgesToRemove, verticesRoles);
 }
 
 void Structurizator::reduceIfThen(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]], nullptr, this);
+	IntermediateNode *exit = nullptr;
+	if (verticesRoles.contains("exit")) {
+		exit = mTrees[verticesRoles["exit"]];
+		verticesRoles.remove("exit");
+	}
+
+	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]], nullptr, exit, this);
 
 	replace(appendVertex(ifNode), edgesToRemove, verticesRoles);
 }
