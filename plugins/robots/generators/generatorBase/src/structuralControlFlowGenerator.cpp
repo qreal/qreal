@@ -118,11 +118,9 @@ void StructuralControlFlowGenerator::performGeneration()
 	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(&mRepo, mIds);
 
 	// add checking whether threads are consistent
-
-	// "main" is hardcoded
-	resolveThreads(tree, "main");
-
 	if (tree) {
+		// "main" is hardcoded
+		resolveThreads(tree, "main");
 		obtainSemanticTree(tree);
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
@@ -353,7 +351,10 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::SwitchNod
 		return createSemanticSwitchNode(conditionId, branches, switchNode->hasBreakInside());
 	} else if (semanticsOf(conditionId) == enums::semantics::forkBlock) {
 
-		addThreadsToJoin(switchNode, switchNode->exit());
+		if (switchNode->exit()) {
+			addThreadsToJoin(switchNode, switchNode->exit());
+		}
+
 		return createSemanticForkNode(conditionId, branches, switchNode->currentThread());
 	}
 
