@@ -509,7 +509,9 @@ void StructuralControlFlowGenerator::addThreadsToJoin(myUtils::SwitchNode *forkN
 	for (const myUtils::IntermediateNode *branch : forkNode->branches()) {
 		const qReal::Id firstId = branch->firstId();
 		const QString threadId = mRepo.property(mRepo.incomingLinks(firstId).first(), "Guard").toString();
-		mCustomizer.factory()->threads().addJoin(joinId, threadId);
+		if (threadId != joinNode->currentThread()) {
+			mCustomizer.factory()->threads().addJoin(joinId, threadId);
+		}
 	}
 }
 
