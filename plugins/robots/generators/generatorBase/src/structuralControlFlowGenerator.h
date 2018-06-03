@@ -84,7 +84,7 @@ private:
 	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks);
 	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode);
 	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, bool generateIfs);
-	semantics::SemanticNode *createSemanticForkNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches);
+	semantics::SemanticNode *createSemanticForkNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, const QString &currentThread);
 
 	void addThreadsToJoin(myUtils::SwitchNode *switchNode, myUtils::IntermediateNode *joinNode);
 

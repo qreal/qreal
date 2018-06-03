@@ -30,6 +30,8 @@ public:
 
 	IntermediateNode(QObject *parent);
 
+	QString currentThread() const;
+	void setCurrentThread(const QString &thread);
 
 	virtual Type type() const = 0;
 	virtual qReal::Id firstId() const = 0;
@@ -41,6 +43,7 @@ public:
 protected:
 	bool mHasBreakInside;
 	bool mBreakWasAnalyzed;
+	QString mCurrentThread;
 };
 
 class SimpleNode : public IntermediateNode {

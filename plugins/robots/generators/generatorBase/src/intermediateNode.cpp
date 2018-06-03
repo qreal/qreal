@@ -87,6 +87,16 @@ IntermediateNode::IntermediateNode(QObject *parent)
 {
 }
 
+QString IntermediateNode::currentThread() const
+{
+	return mCurrentThread;
+}
+
+void IntermediateNode::setCurrentThread(const QString &thread)
+{
+	mCurrentThread = thread;
+}
+
 //bool IntermediateNode::analyzeBreak()
 //{
 //	if (mBreakWasAnalyzed) {

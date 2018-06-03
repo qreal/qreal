@@ -274,7 +274,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 		}
 
 		QList<myUtils::IntermediateNode *> branches = { ifNode->thenBranch(), ifNode->elseBranch() };
-		return createSemanticForkNode(conditionId, branches);
+		return createSemanticForkNode(conditionId, branches, ifNode->currentThread());
 	}
 
 	default:
@@ -351,7 +351,7 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::SwitchNod
 	} else if (semanticsOf(conditionId) == enums::semantics::forkBlock) {
 
 		addThreadsToJoin(switchNode, switchNode->exit());
-		return createSemanticForkNode(conditionId, branches);
+		return createSemanticForkNode(conditionId, branches, switchNode->currentThread());
 	}
 
 	qDebug() << "Problem: couldn't identidy semantics id for switchNode";
@@ -453,32 +453,49 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id 
 	return semanticSwitch;
 }
 
-SemanticNode *StructuralControlFlowGenerator::createSemanticForkNode(const Id &conditionId, const QList<myUtils::IntermediateNode *> &branches)
+SemanticNode *StructuralControlFlowGenerator::createSemanticForkNode(const Id &conditionId, const QList<myUtils::IntermediateNode *> &branches
+																		, const QString &currentThreadExpression)
 {
 	ForkNode *semanticFork = new ForkNode(conditionId, mSemanticTree);
+	SemanticNode *currentThreadNode = nullptr;
+
+	for (myUtils::IntermediateNode *branch : branches) {
+		if (branch->currentThread() == currentThreadExpression) {
+			currentThreadNode = transformNode(branch);
+			break;
+		}
+	}
+
+	ZoneNode *zone = new ZoneNode(mSemanticTree);
+	zone->appendChild(semanticFork);
+	zone->appendChild(currentThreadNode);
 
 	for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
 		const QString expression = mRepo.property(link, "Guard").toString();
 		const qReal::Id anotherThreadFirstVertex = mRepo.otherEntityFromLink(link, conditionId);
 
-		mCustomizer.factory()->threads().registerThread(anotherThreadFirstVertex, expression);
+		if (expression != currentThreadExpression) {
+			mCustomizer.factory()->threads().registerThread(anotherThreadFirstVertex, expression);
 
-		semanticFork->appendThread(anotherThreadFirstVertex, expression);
+			semanticFork->appendThread(anotherThreadFirstVertex, expression);
 
-		myUtils::IntermediateNode *newRoot = nullptr;
-		for (myUtils::IntermediateNode *branch : branches) {
-			if (branch->firstId() == anotherThreadFirstVertex) {
-				newRoot = branch;
-				break;
+			myUtils::IntermediateNode *newRoot = nullptr;
+			for (myUtils::IntermediateNode *branch : branches) {
+				if (branch->firstId() == anotherThreadFirstVertex) {
+					newRoot = branch;
+					break;
+				}
 			}
-		}
 
-		semantics::SemanticTree *newTree = new semantics::SemanticTree(mCustomizer, anotherThreadFirstVertex, false, mSemanticTree->parent());
-		newTree->setRoot(new RootNode(transformNode(newRoot), newTree));
-		mCustomizer.factory()->threads().threadProcessed(anotherThreadFirstVertex, *newTree);
+			semantics::SemanticTree *newTree = new semantics::SemanticTree(mCustomizer, anotherThreadFirstVertex, false, mSemanticTree->parent());
+			newTree->setRoot(new RootNode(transformNode(newRoot), newTree));
+			mCustomizer.factory()->threads().threadProcessed(anotherThreadFirstVertex, *newTree);
+		}
 	}
 
-	return semanticFork;
+
+
+	return zone;
 }
 
 void StructuralControlFlowGenerator::addThreadsToJoin(myUtils::SwitchNode *forkNode, myUtils::IntermediateNode *joinNode)
