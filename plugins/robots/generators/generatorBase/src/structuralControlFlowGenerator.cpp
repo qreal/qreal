@@ -455,14 +455,27 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id 
 
 SemanticNode *StructuralControlFlowGenerator::createSemanticForkNode(const Id &conditionId, const QList<myUtils::IntermediateNode *> &branches)
 {
-	Q_UNUSED(branches)
-
 	ForkNode *semanticFork = new ForkNode(conditionId, mSemanticTree);
 
 	for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
 		const QString expression = mRepo.property(link, "Guard").toString();
-		const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
-		semanticFork->appendThread(otherVertex, expression);
+		const qReal::Id anotherThreadFirstVertex = mRepo.otherEntityFromLink(link, conditionId);
+
+		mCustomizer.factory()->threads().registerThread(anotherThreadFirstVertex, expression);
+
+		semanticFork->appendThread(anotherThreadFirstVertex, expression);
+
+		myUtils::IntermediateNode *newRoot = nullptr;
+		for (myUtils::IntermediateNode *branch : branches) {
+			if (branch->firstId() == anotherThreadFirstVertex) {
+				newRoot = branch;
+				break;
+			}
+		}
+
+		semantics::SemanticTree *newTree = new semantics::SemanticTree(mCustomizer, anotherThreadFirstVertex, false, mSemanticTree->parent());
+		newTree->setRoot(new RootNode(transformNode(newRoot), newTree));
+		mCustomizer.factory()->threads().threadProcessed(anotherThreadFirstVertex, *newTree);
 	}
 
 	return semanticFork;
