@@ -119,6 +119,9 @@ void StructuralControlFlowGenerator::performGeneration()
 
 	// add checking whether threads are consistent
 
+	// "main" is hardcoded
+	resolveThreads(tree, "main");
+
 	if (tree) {
 		obtainSemanticTree(tree);
 	} else {
@@ -508,4 +511,29 @@ void StructuralControlFlowGenerator::addThreadsToJoin(myUtils::SwitchNode *forkN
 		const QString threadId = mRepo.property(mRepo.incomingLinks(firstId).first(), "Guard").toString();
 		mCustomizer.factory()->threads().addJoin(joinId, threadId);
 	}
+}
+
+void StructuralControlFlowGenerator::resolveThreads(myUtils::IntermediateNode *node, const QString &currentThreadName)
+{
+	node->setCurrentThread(currentThreadName);
+
+	if (semanticsOf(node->firstId()) == enums::semantics::forkBlock
+			&& (node->type() == myUtils::IntermediateNode::switchCondition
+				|| node->type() == myUtils::IntermediateNode::ifThenElseCondition
+				|| node->type() == myUtils::IntermediateNode::ifThenCondition)) {
+		for (myUtils::IntermediateNode *child : node->childrenNodes()) {
+			const qReal::Id firstIdOfAnotherThread = child->firstId();
+			QString otherThreadName = mRepo.property(mRepo.incomingLinks(firstIdOfAnotherThread).first(), "Guard").toString();
+			resolveThreads(child, otherThreadName);
+		}
+	}
+//	else if (semanticsOf(node->firstId()) == enums::semantics::joinBlock) {
+//		// newThreadName = mRepo.mRepo.outgoingLinks()
+//	}
+	else {
+		for (myUtils::IntermediateNode *child : node->childrenNodes()) {
+			resolveThreads(child, currentThreadName);
+		}
+	}
+
 }

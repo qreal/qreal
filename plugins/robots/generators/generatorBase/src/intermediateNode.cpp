@@ -27,6 +27,11 @@ bool SimpleNode::analyzeBreak()
 	return mHasBreakInside;
 }
 
+QList<IntermediateNode *> SimpleNode::childrenNodes() const
+{
+	return {};
+}
+
 qReal::Id SimpleNode::id() const
 {
 	return mId;
@@ -68,6 +73,16 @@ bool IfNode::analyzeBreak()
 	}
 
 	return mHasBreakInside;
+}
+
+QList<IntermediateNode *> IfNode::childrenNodes() const
+{
+	QList<IntermediateNode *> chilrendNodes = {mCondition, mThenBranch};
+	if (mElseBranch) {
+		chilrendNodes.append(mElseBranch);
+	}
+
+	return childrenNodes();
 }
 
 IntermediateNode::Type IfNode::type() const
@@ -150,6 +165,14 @@ bool SwitchNode::analyzeBreak()
 	return mHasBreakInside;
 }
 
+QList<IntermediateNode *> SwitchNode::childrenNodes() const
+{
+	QList<IntermediateNode *> childrenNodes = mBranches;
+	childrenNodes.append(mCondition);
+
+	return childrenNodes;
+}
+
 IntermediateNode::Type SwitchNode::type() const
 {
 	return Type::switchCondition;
@@ -186,6 +209,11 @@ bool BlockNode::analyzeBreak()
 	mHasBreakInside = mFirstNode->analyzeBreak() || mSecondNode->analyzeBreak();
 	mBreakWasAnalyzed = true;
 	return mHasBreakInside;
+}
+
+QList<IntermediateNode *> BlockNode::childrenNodes() const
+{
+	return { mFirstNode, mSecondNode };
 }
 
 IntermediateNode::Type BlockNode::type() const
@@ -232,6 +260,11 @@ bool WhileNode::analyzeBreak()
 	return mHasBreakInside;
 }
 
+QList<IntermediateNode *> WhileNode::childrenNodes() const
+{
+	return { mHeadNode, mBodyNode };
+}
+
 IntermediateNode::Type WhileNode::type() const
 {
 	return Type::whileloop;
@@ -262,6 +295,11 @@ bool SelfLoopNode::analyzeBreak()
 	mHasBreakInside = mBodyNode->analyzeBreak();
 	mBreakWasAnalyzed = true;
 	return mHasBreakInside;
+}
+
+QList<IntermediateNode *> SelfLoopNode::childrenNodes() const
+{
+	return { mBodyNode };
 }
 
 IntermediateNode::Type SelfLoopNode::type() const
@@ -297,6 +335,11 @@ bool BreakNode::analyzeBreak()
 	return mHasBreakInside;
 }
 
+QList<IntermediateNode *> BreakNode::childrenNodes() const
+{
+	return {};
+}
+
 FakeCycleHeadNode::FakeCycleHeadNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)
 	, mId(id)
@@ -318,6 +361,11 @@ bool FakeCycleHeadNode::analyzeBreak()
 	mHasBreakInside = false;
 	mBreakWasAnalyzed = true;
 	return mHasBreakInside;
+}
+
+QList<IntermediateNode *> FakeCycleHeadNode::childrenNodes() const
+{
+	return {};
 }
 
 NodeWithBreaks::NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent)
@@ -352,6 +400,14 @@ bool NodeWithBreaks::analyzeBreak()
 	mHasBreakInside = true;
 	mBreakWasAnalyzed = true;
 	return mHasBreakInside;
+}
+
+QList<IntermediateNode *> NodeWithBreaks::childrenNodes() const
+{
+	QList<IntermediateNode *> childrenNodes = mExitBranches;
+	childrenNodes.append(mCondition);
+
+	return childrenNodes;
 }
 
 IntermediateNode::Type NodeWithBreaks::type() const

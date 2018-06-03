@@ -33,13 +33,13 @@ public:
 	QString currentThread() const;
 	void setCurrentThread(const QString &thread);
 
+	virtual QList<IntermediateNode *> childrenNodes() const = 0;
+
 	virtual Type type() const = 0;
 	virtual qReal::Id firstId() const = 0;
 	virtual bool analyzeBreak() = 0;
 	bool hasBreakInside() const;
 
-
-	QSet<qReal::Id> ids() const;
 protected:
 	bool mHasBreakInside;
 	bool mBreakWasAnalyzed;
@@ -56,6 +56,7 @@ public:
 	Type type() const;
 	qReal::Id firstId() const;
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 
 	qReal::Id id() const;
 private:
@@ -73,6 +74,7 @@ public:
 	Type type() const;
 	qReal::Id firstId() const;
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 
 private:
 	const qReal::Id mId;
@@ -89,6 +91,7 @@ public:
 	Type type() const;
 	qReal::Id firstId() const;
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 
 private:
 	const qReal::Id mId;
@@ -106,6 +109,7 @@ public:
 	IntermediateNode *elseBranch() const;
 
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -129,6 +133,7 @@ public:
 
 	void setRestBranches(const QList<IntermediateNode *> &restBranches);
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -149,6 +154,7 @@ public:
 	IntermediateNode *exit() const;
 
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -169,6 +175,7 @@ public:
 	IntermediateNode *secondNode() const;
 
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -188,6 +195,7 @@ public:
 	IntermediateNode *exitNode() const;
 
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 	Type type() const;
 	qReal::Id firstId() const;
 private:
@@ -207,6 +215,7 @@ public:
 	IntermediateNode *bodyNode() const;
 
 	bool analyzeBreak();
+	QList<IntermediateNode *> childrenNodes() const override;
 	Type type() const;
 	qReal::Id firstId() const;
 private:
