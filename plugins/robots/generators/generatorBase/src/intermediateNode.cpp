@@ -77,12 +77,12 @@ bool IfNode::analyzeBreak()
 
 QList<IntermediateNode *> IfNode::childrenNodes() const
 {
-	QList<IntermediateNode *> chilrendNodes = {mCondition, mThenBranch};
+	QList<IntermediateNode *> childrenNodes = {mCondition, mThenBranch};
 	if (mElseBranch) {
-		chilrendNodes.append(mElseBranch);
+		childrenNodes.append(mElseBranch);
 	}
 
-	return childrenNodes();
+	return childrenNodes;
 }
 
 IntermediateNode::Type IfNode::type() const
