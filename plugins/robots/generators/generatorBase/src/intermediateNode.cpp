@@ -102,10 +102,11 @@ bool IntermediateNode::hasBreakInside() const
 	return mHasBreakInside;
 }
 
-SwitchNode::SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent)
+SwitchNode::SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, IntermediateNode *exit, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mBranches(QList<IntermediateNode *>(branches))
+	, mExit(exit)
 {
 }
 
@@ -117,6 +118,11 @@ IntermediateNode *SwitchNode::condition() const
 QList<IntermediateNode *> SwitchNode::branches() const
 {
 	return mBranches;
+}
+
+IntermediateNode *SwitchNode::exit() const
+{
+	return mExit;
 }
 
 bool SwitchNode::analyzeBreak()

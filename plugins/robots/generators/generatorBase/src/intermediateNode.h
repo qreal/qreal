@@ -139,10 +139,11 @@ class SwitchNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, QObject *parent);
+	SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, IntermediateNode *exit, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> branches() const;
+	IntermediateNode *exit() const;
 
 	bool analyzeBreak();
 	Type type() const;
@@ -150,6 +151,7 @@ public:
 private:
 	IntermediateNode *mCondition;
 	const QList<IntermediateNode *> mBranches;
+	IntermediateNode *mExit;
 };
 
 
