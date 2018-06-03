@@ -21,6 +21,7 @@
 
 
 #include "generatorBase/parts/subprograms.h"
+#include "generatorBase/parts/threads.h"
 
 using namespace qReal;
 using namespace generatorBase;
@@ -115,6 +116,9 @@ void StructuralControlFlowGenerator::performGeneration()
 	ControlFlowGeneratorBase::performGeneration();
 
 	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(&mRepo, mIds);
+
+	// add checking whether threads are consistent
+
 	if (tree) {
 		obtainSemanticTree(tree);
 	} else {
@@ -207,7 +211,23 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Intermediat
 
 SemanticNode *StructuralControlFlowGenerator::transformSimple(myUtils::SimpleNode *simpleNode)
 {
-	return mSemanticTree->produceNodeFor(simpleNode->id());
+	const qReal::Id id = simpleNode->id();
+	SemanticNode *semanticNode = mSemanticTree->produceNodeFor(id);
+
+	if (semanticsOf(id) == enums::semantics::joinBlock) {
+		JoinNode *joinSemanticNode = static_cast<JoinNode *>(semanticNode);
+		joinSemanticNode->setThreadId(mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString());
+
+
+//		mCustomizer.factory()->threads().addJoin(id, "test1");
+//		mCustomizer.factory()->threads().addJoin(id, "test2");
+//		mCustomizer.factory()->threads().addJoin(id, "test3");
+//		for (const qReal::Id link : mRepo.incomingLinks(id)) {
+//			mCustomizer.factory()->threads().addJoin(id, mRepo.property(link, "Guard").toString());
+//		}
+	}
+
+	return semanticNode;
 }
 
 SemanticNode *StructuralControlFlowGenerator::transformBlock(myUtils::BlockNode *blockNode)
@@ -329,6 +349,8 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::SwitchNod
 	if (semanticsOf(conditionId) == enums::semantics::switchBlock) {
 		return createSemanticSwitchNode(conditionId, branches, switchNode->hasBreakInside());
 	} else if (semanticsOf(conditionId) == enums::semantics::forkBlock) {
+
+		addThreadsToJoin(switchNode, switchNode->exit());
 		return createSemanticForkNode(conditionId, branches);
 	}
 
@@ -438,10 +460,22 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticForkNode(const Id &c
 	ForkNode *semanticFork = new ForkNode(conditionId, mSemanticTree);
 
 	for (const qReal::Id &link : mRepo.outgoingLinks(conditionId)) {
-		const QString expression = mRepo.property(link, "Expression").toString();
+		const QString expression = mRepo.property(link, "Guard").toString();
 		const qReal::Id otherVertex = mRepo.otherEntityFromLink(link, conditionId);
 		semanticFork->appendThread(otherVertex, expression);
 	}
 
 	return semanticFork;
+}
+
+void StructuralControlFlowGenerator::addThreadsToJoin(myUtils::SwitchNode *forkNode, myUtils::IntermediateNode *joinNode)
+{
+	const qReal::Id joinId = joinNode->firstId();
+
+	// mistake. not all branches should be joined
+	for (const myUtils::IntermediateNode *branch : forkNode->branches()) {
+		const qReal::Id firstId = branch->firstId();
+		const QString threadId = mRepo.property(mRepo.incomingLinks(firstId).first(), "Guard").toString();
+		mCustomizer.factory()->threads().addJoin(joinId, threadId);
+	}
 }
