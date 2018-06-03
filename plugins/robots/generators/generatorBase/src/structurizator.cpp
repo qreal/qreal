@@ -210,7 +210,7 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 
 bool Structurizator::isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	if (mFollowers[v].size() < 3) {
+	if (outgoingEdgesNumber(v) < 3) {
 		return false;
 	}
 
@@ -219,22 +219,23 @@ bool Structurizator::isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 	QSet<QPair<int, int> > edges = {};
 	for (const int u : mFollowers[v]) {
 		if (incomingEdgesNumber(u) != 1 || outgoingEdgesNumber(u) >= 2) {
-			return false;
-		}
-
-		if (outgoingEdgesNumber(u) == 1) {
-			int m = mFollowers[u].first();
-			if (exit == -1) {
-				exit = m;
-				if (exit == v) {
-					return false;
-				}
-			} else if (m != exit) {
+			if (exit != -1) {
+				exit = u;
+			} else if (exit != u) {
 				return false;
 			}
+		} else {
+			if (outgoingEdgesNumber(u) == 1) {
+				int m = mFollowers[u].first();
+				if (exit == -1) {
+					exit = m;
+				} else if (m != exit) {
+					return false;
+				}
+			}
+			vertices.insert(u);
 		}
 
-		vertices.insert(u);
 		edges.insert(makePair(v, u));
 	}
 
@@ -472,8 +473,12 @@ void Structurizator::reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QS
 	otherVerteces.remove(v);
 
 	QList<IntermediateNode *> branches;
-	for (const int u : otherVerteces) {
-		branches.append(mTrees[u]);
+	for (const int u : mFollowers[v]) {
+		if (otherVerteces.contains(u)) {
+			branches.append(mTrees[u]);
+		} else {
+			branches.append(new SimpleNode(qReal::Id(), this));
+		}
 	}
 
 	IntermediateNode *exitNode = exitNodeNumber == -1 ? nullptr : mTrees[exitNodeNumber];
