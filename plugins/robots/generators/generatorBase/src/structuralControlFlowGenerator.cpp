@@ -244,7 +244,7 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Intermediat
 		qDebug() << "Undefined type of Intermediate node!";
 		mCantBeGeneratedIntoStructuredCode = true;
 
-		return nullptr;
+		return new SimpleNode(qReal::Id(), mSemanticTree);
 	}
 }
 
@@ -307,10 +307,6 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 		return createSemanticSwitchNode(conditionId, branches, ifNode->hasBreakInside());
 	}
 
-	case enums::semantics::loopBlock: {
-		return createSemanticLoopNode(conditionId, ifNode->thenBranch(), ifNode->elseBranch());
-	}
-
 	default:
 		break;
 	}
@@ -318,7 +314,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 	qDebug() << "Problem: couldn't transform if-then-else";
 	mCantBeGeneratedIntoStructuredCode = true;
 
-	return nullptr;
+	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
 
 SemanticNode *StructuralControlFlowGenerator::transformSelfLoop(myUtils::SelfLoopNode *selfLoopNode)
@@ -420,7 +416,7 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 	default:
 		qDebug() << "Problem in createConditionWithBreaks";
 		mCantBeGeneratedIntoStructuredCode = false;
-		return nullptr;
+		return new SimpleNode(qReal::Id(), mSemanticTree);
 	}
 
 }
@@ -441,17 +437,6 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &con
 	}
 
 	return semanticIf;
-}
-
-SemanticNode *StructuralControlFlowGenerator::createSemanticLoopNode(const Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode)
-{
-	LoopNode *loop = new LoopNode(conditionId, mSemanticTree);
-//	QPair<LinkInfo, LinkInfo> branches = loopBranchesFor(conditionId);
-
-//	if (branches.first.target == thenNode->firstId()) {
-//		loop->
-//	}
-	return loop;
 }
 
 SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, bool generateIfs)
