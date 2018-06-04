@@ -77,7 +77,17 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 				newLinks.append(link);
 			}
 		}
+
 		links = newLinks;
+
+	} else if (mCustomizer.semanticsOf(id) == enums::semantics::joinBlock) {
+		QString threadNameAfterJoin = mRepo.property(links.first().linkId, "Guard").toString();
+
+		if (threadNameAfterJoin != mThreadId) {
+			links.clear();
+		}
+
+		mCustomizer.factory()->threads().addJoin(id, mThreadId);
 	}
 
 	for (const LinkInfo &link : links) {
@@ -246,15 +256,27 @@ SemanticNode *StructuralControlFlowGenerator::transformSimple(myUtils::SimpleNod
 
 	if (semanticsOf(id) == enums::semantics::joinBlock) {
 		JoinNode *joinSemanticNode = static_cast<JoinNode *>(semanticNode);
-		joinSemanticNode->setThreadId(mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString());
+		QString postJoinThreadName = mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString();
+		joinSemanticNode->setThreadId(postJoinThreadName);
 
 
 //		mCustomizer.factory()->threads().addJoin(id, "test1");
 //		mCustomizer.factory()->threads().addJoin(id, "test2");
 //		mCustomizer.factory()->threads().addJoin(id, "test3");
-//		for (const qReal::Id link : mRepo.incomingLinks(id)) {
-//			mCustomizer.factory()->threads().addJoin(id, mRepo.property(link, "Guard").toString());
-//		}
+		for (const qReal::Id &link : mRepo.incomingLinks(id)) {
+			QString preJoinThreadName = mRepo.property(link, "Guard").toString();
+			mCustomizer.factory()->threads().addJoin(id, preJoinThreadName);
+		}
+	} else if (semanticsOf(id) == enums::semantics::forkBlock) {
+		ForkNode *forkSemanticNode = static_cast<ForkNode *>(semanticNode);
+		for (const qReal::Id &link : mRepo.outgoingLinks(id)) {
+			qReal::Id anotherId = mRepo.otherEntityFromLink(link, id);
+			QString threadName = mRepo.property(link, "Guard").toString();
+
+			if (threadName != mThreadId) {
+				forkSemanticNode->appendThread(anotherId, threadName);
+			}
+		}
 	}
 
 	return semanticNode;
@@ -295,16 +317,16 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 		return createSemanticSwitchNode(conditionId, branches, ifNode->hasBreakInside());
 	}
 
-	case enums::semantics::forkBlock: {
+//	case enums::semantics::forkBlock: {
 
-		QList<myUtils::IntermediateNode *> branches = { ifNode->thenBranch()};
-		if (ifNode->elseBranch()) {
-			branches.append(ifNode->elseBranch());
-		}
+//		QList<myUtils::IntermediateNode *> branches = { ifNode->thenBranch()};
+//		if (ifNode->elseBranch()) {
+//			branches.append(ifNode->elseBranch());
+//		}
 
-		addThreadsToJoin(branches, ifNode->exit());
-		return createSemanticForkNode(conditionId, branches, ifNode->currentThread());
-	}
+//		addThreadsToJoin(branches, ifNode->exit());
+//		return createSemanticForkNode(conditionId, branches, ifNode->currentThread());
+//	}
 
 	default:
 		break;
