@@ -16,7 +16,7 @@ class Structurizator : public QObject
 	Q_OBJECT
 
 public:
-	Structurizator(QObject *parent = 0);
+	explicit Structurizator(QObject *parent = 0);
 
 	myUtils::IntermediateNode *performStructurization(const qrRepo::RepoApi *repo, const QSet<qReal::Id> &vertecesIds);
 

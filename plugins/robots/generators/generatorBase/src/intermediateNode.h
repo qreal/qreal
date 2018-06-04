@@ -28,7 +28,7 @@ public:
 		, nodeWithBreaks
 	};
 
-	IntermediateNode(QObject *parent);
+	explicit IntermediateNode(QObject *parent);
 
 	QString currentThread() const;
 	void setCurrentThread(const QString &thread);
@@ -51,7 +51,7 @@ class SimpleNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	SimpleNode(const qReal::Id &id, QObject *parent = nullptr);
+	explicit SimpleNode(const qReal::Id &id, QObject *parent = nullptr);
 
 	Type type() const;
 	qReal::Id firstId() const;
@@ -69,7 +69,7 @@ class FakeCycleHeadNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	FakeCycleHeadNode(const qReal::Id &id, QObject *parent);
+	explicit FakeCycleHeadNode(const qReal::Id &id, QObject *parent);
 
 	Type type() const;
 	qReal::Id firstId() const;
@@ -86,7 +86,7 @@ class BreakNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	BreakNode(const qReal::Id &id, QObject *parent);
+	explicit BreakNode(const qReal::Id &id, QObject *parent);
 
 	Type type() const;
 	qReal::Id firstId() const;
@@ -102,7 +102,7 @@ class IfNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, IntermediateNode *exit, QObject *parent);
+	explicit IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, IntermediateNode *exit, QObject *parent);
 
 	IntermediateNode *condition() const;
 	IntermediateNode *thenBranch() const;
@@ -127,7 +127,7 @@ class NodeWithBreaks : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent);
+	explicit NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> exitBranches() const;
@@ -149,7 +149,7 @@ class SwitchNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, IntermediateNode *exit, QObject *parent);
+	explicit SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, IntermediateNode *exit, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> branches() const;
@@ -171,7 +171,7 @@ class BlockNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	BlockNode(IntermediateNode *firstNode, IntermediateNode *secondNode, QObject *parent);
+	explicit BlockNode(IntermediateNode *firstNode, IntermediateNode *secondNode, QObject *parent);
 
 	IntermediateNode *firstNode() const;
 	IntermediateNode *secondNode() const;
@@ -190,7 +190,7 @@ class WhileNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent);
+	explicit WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent);
 
 	IntermediateNode *headNode() const;
 	IntermediateNode *bodyNode() const;
@@ -212,7 +212,7 @@ class SelfLoopNode : public IntermediateNode {
 	Q_OBJECT
 
 public:
-	SelfLoopNode(IntermediateNode *bodyNode, QObject *parent = nullptr);
+	explicit SelfLoopNode(IntermediateNode *bodyNode, QObject *parent = nullptr);
 
 	IntermediateNode *bodyNode() const;
 
