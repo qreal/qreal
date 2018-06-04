@@ -56,10 +56,6 @@ public:
 	/// control flow generators (non-fatal errors occured).
 	bool cantBeGeneratedIntoStructuredCode() const;
 
-	semantics::SemanticTree *generate(const qReal::Id &initialNode = qReal::Id(), const QString &threadId = "main");
-
-	typedef QMap<QString, int> Region;
-
 private:
 	/// Implementation of generation process for structural generator.
 	/// Important: the graph in the model would be traversed two or more times

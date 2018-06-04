@@ -111,23 +111,14 @@ bool StructuralControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 	return mCantBeGeneratedIntoStructuredCode;
 }
 
-SemanticTree *StructuralControlFlowGenerator::generate(const Id &initialNode, const QString &threadId)
-{
-	ControlFlowGeneratorBase::generate(initialNode, threadId);
-	return mSemanticTree;
-}
-
 void StructuralControlFlowGenerator::performGeneration()
 {
-	//isPerformingGeneration = false;
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
 
 	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(mIds, mVertexNumber[mStartVertex], mFollowers, mVertexNumber, mVerticesNumber);
 
-	// add checking whether threads are consistent
 	if (tree) {
-		//resolveThreads(tree, mThreadId);
 		obtainSemanticTree(tree);
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
