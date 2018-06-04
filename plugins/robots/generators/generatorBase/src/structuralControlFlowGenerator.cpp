@@ -85,9 +85,8 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 
 		if (threadNameAfterJoin != mThreadId) {
 			links.clear();
+			mCustomizer.factory()->threads().addJoin(id, mThreadId);
 		}
-
-		mCustomizer.factory()->threads().addJoin(id, mThreadId);
 	}
 
 	for (const LinkInfo &link : links) {
@@ -256,17 +255,8 @@ SemanticNode *StructuralControlFlowGenerator::transformSimple(myUtils::SimpleNod
 
 	if (semanticsOf(id) == enums::semantics::joinBlock) {
 		JoinNode *joinSemanticNode = static_cast<JoinNode *>(semanticNode);
-		QString postJoinThreadName = mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString();
-		joinSemanticNode->setThreadId(postJoinThreadName);
-
-
-//		mCustomizer.factory()->threads().addJoin(id, "test1");
-//		mCustomizer.factory()->threads().addJoin(id, "test2");
-//		mCustomizer.factory()->threads().addJoin(id, "test3");
-		for (const qReal::Id &link : mRepo.incomingLinks(id)) {
-			QString preJoinThreadName = mRepo.property(link, "Guard").toString();
-			mCustomizer.factory()->threads().addJoin(id, preJoinThreadName);
-		}
+		//QString postJoinThreadName = mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString();
+		joinSemanticNode->setThreadId(mThreadId);
 	} else if (semanticsOf(id) == enums::semantics::forkBlock) {
 		ForkNode *forkSemanticNode = static_cast<ForkNode *>(semanticNode);
 		for (const qReal::Id &link : mRepo.outgoingLinks(id)) {
