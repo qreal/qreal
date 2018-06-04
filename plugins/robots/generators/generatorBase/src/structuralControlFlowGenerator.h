@@ -83,20 +83,14 @@ private:
 
 	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks);
 	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode);
+	semantics::SemanticNode *createSemanticLoopNode(const qReal::Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode);
 	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, bool generateIfs);
-	semantics::SemanticNode *createSemanticForkNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, const QString &currentThread);
-
-	void addThreadsToJoin(const QList<myUtils::IntermediateNode *> &branches, myUtils::IntermediateNode *joinNode);
-	void resolveThreads(myUtils::IntermediateNode *node, const QString &currentThreadName);
 
 	void appendVertex(const qReal::Id &vertex);
-	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
-	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;
 	Structurizator *mStructurizator;
-
 
 	int mVerticesNumber;
 	QSet<qReal::Id> mIds;
