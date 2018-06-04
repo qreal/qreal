@@ -89,13 +89,20 @@ private:
 	void addThreadsToJoin(const QList<myUtils::IntermediateNode *> &branches, myUtils::IntermediateNode *joinNode);
 	void resolveThreads(myUtils::IntermediateNode *node, const QString &currentThreadName);
 
+	void appendVertex(const qReal::Id &vertex);
 	//generatorBase::semantics::IfNode *createIfFromSwitch(int v, int bodyNumber);
 	//QString constructConditionFromSwitch(const qReal::Id &id, const QList<qReal::Id> &links) const;
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;
 	Structurizator *mStructurizator;
+
+
+	int mVerticesNumber;
 	QSet<qReal::Id> mIds;
+	qReal::Id mStartVertex;
+	QMap<qReal::Id, int> mVertexNumber;
+	QMap<int, QSet<int> > mFollowers;
 };
 
 }

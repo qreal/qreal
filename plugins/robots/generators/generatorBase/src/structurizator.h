@@ -18,9 +18,10 @@ class Structurizator : public QObject
 public:
 	explicit Structurizator(QObject *parent = 0);
 
-	myUtils::IntermediateNode *performStructurization(const qrRepo::RepoApi *repo, const QSet<qReal::Id> &vertecesIds);
+	myUtils::IntermediateNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
+														, const QMap<int, QSet<int>> &followers, const QMap<qReal::Id, int> &vertexNumber
+														, int verticesNumber);
 
-	void setRepo(const qrRepo::RepoApi *repo);
 	void setVerteces(const QSet<qReal::Id> &vertecesIds);
 
 private:
@@ -70,7 +71,7 @@ private:
 	void removeVertex(int vertex);
 
 	/// methods used before structurization process
-	void createGraph();
+	//void createGraph();
 	void calculateDominators();
 	void findStartVertex();
 	void calculatePostOrder();
@@ -99,9 +100,8 @@ private:
 
 	QMap<int, myUtils::IntermediateNode *> mTrees;
 
-	const qrRepo::RepoApi *mRepo;
 	QSet<qReal::Id> mInitialIds;
-	int mVertecesNumber;
+	int mVerticesNumber;
 	int mStartVertex;
 	int mMaxPostOrderTime;
 };

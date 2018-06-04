@@ -7,21 +7,32 @@ using namespace myUtils;
 
 Structurizator::Structurizator(QObject *parent)
 	: QObject(parent)
-	, mVertecesNumber(1)
+	, mVerticesNumber(1)
 	, mStartVertex(-1)
 	, mMaxPostOrderTime(-1)
 {
 }
 
-IntermediateNode *Structurizator::performStructurization(const qrRepo::RepoApi *repo, const QSet<qReal::Id> &vertecesIds)
+IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
+															, const QMap<int, QSet<int> > &followers, const QMap<qReal::Id, int> &vertexNumber
+															, int verticesNumber)
 {
-	setRepo(repo);
-	setVerteces(vertecesIds);
+	for (const qReal::Id &id : verticesIds) {
+		mInitialIds.insert(id);
+		mMapIdToInt[id] = vertexNumber[id];
+		mVertices.insert(vertexNumber[id]);
+	}
 
-	// constructing graph
-	createGraph();
+	mVerticesNumber = verticesNumber;
 
-	findStartVertex();
+	mStartVertex = startVertex;
+
+	for (const int v : followers.keys()) {
+		for (const int u : followers[v]) {
+			mFollowers[v].push_back(u);
+			mPredecessors[u].push_back(v);
+		}
+	}
 
 	// post order
 	calculatePostOrder();
@@ -113,23 +124,18 @@ IntermediateNode *Structurizator::performStructurization(const qrRepo::RepoApi *
 	return nullptr;
 }
 
-void Structurizator::setRepo(const qrRepo::RepoApi *repo)
-{
-	mRepo = repo;
-}
-
 void Structurizator::setVerteces(const QSet<qReal::Id> &vertecesIds)
 {
 	mVertices.clear();
 	mMapIdToInt.clear();
-	mVertecesNumber = 1;
+	mVerticesNumber = 1;
 	mInitialIds.clear();
 
 	for (const qReal::Id &id : vertecesIds) {
 		mInitialIds.insert(id);
-		mMapIdToInt[id] = mVertecesNumber;
-		mVertices.insert(mVertecesNumber);
-		mVertecesNumber++;
+		mMapIdToInt[id] = mVerticesNumber;
+		mVertices.insert(mVerticesNumber);
+		mVerticesNumber++;
 	}
 }
 
@@ -720,20 +726,20 @@ void Structurizator::removeVertex(int vertex)
 	mVertices.remove(vertex);
 }
 
-void Structurizator::createGraph()
-{
-	for (const qReal::Id &vertex : mInitialIds) {
-		for (const qReal::Id &link : mRepo->outgoingLinks(vertex)) {
-			int v = mMapIdToInt[vertex];
-			int u = mMapIdToInt[mRepo->otherEntityFromLink(link, vertex)];
+//void Structurizator::createGraph()
+//{
+//	for (const qReal::Id &vertex : mInitialIds) {
+//		for (const qReal::Id &link : mRepo->outgoingLinks(vertex)) {
+//			int v = mMapIdToInt[vertex];
+//			int u = mMapIdToInt[mRepo->otherEntityFromLink(link, vertex)];
 
-			if (!mFollowers[v].contains(u)) {
-				mFollowers[v].push_back(u);
-				mPredecessors[u].push_back(v);
-			}
-		}
-	}
-}
+//			if (!mFollowers[v].contains(u)) {
+//				mFollowers[v].push_back(u);
+//				mPredecessors[u].push_back(v);
+//			}
+//		}
+//	}
+//}
 
 void Structurizator::calculateDominators()
 {
@@ -815,10 +821,11 @@ void Structurizator::dfs(int v, int &currentTime, QMap<int, bool> &used)
 
 int Structurizator::appendVertex(IntermediateNode *node)
 {
-	mTrees[mVertecesNumber] = node;
-	mVertices.insert(mVertecesNumber);
-	mVertecesNumber++;
-	return mVertecesNumber - 1;
+	mVerticesNumber++;
+	mTrees[mVerticesNumber] = node;
+	mVertices.insert(mVerticesNumber);
+
+	return mVerticesNumber;
 }
 
 int Structurizator::outgoingEdgesNumber(int v) const

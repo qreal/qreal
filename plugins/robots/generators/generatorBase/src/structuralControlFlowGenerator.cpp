@@ -37,6 +37,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, bool isThisDiagramMain)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mStructurizator(new Structurizator(this))
+	, mVerticesNumber(0)
 {
 }
 
@@ -55,11 +56,40 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	Q_UNUSED(links)
-	mIds.insert(id);
+	if (mIds.isEmpty()) {
+		mStartVertex = id;
+	}
+
+	if (!mIds.contains(id)) {
+		appendVertex(id);
+	}
 
 	if (mCustomizer.isSubprogramCall(id)) {
 		mCustomizer.factory()->subprograms()->usageFound(id);
+	} else if (mCustomizer.semanticsOf(id) == enums::semantics::forkBlock) {
+
+		QList<LinkInfo> newLinks = {};
+		for (const LinkInfo &link : links) {
+			QString threadName = mRepo.property(link.linkId, "Guard").toString();
+			if (threadName != mThreadId) {
+				mCustomizer.factory()->threads().registerThread(link.target, threadName);
+			} else {
+				newLinks.append(link);
+			}
+		}
+		links = newLinks;
+	}
+
+	for (const LinkInfo &link : links) {
+		const qReal::Id otherVertex = link.target;
+
+		if (!mIds.contains(otherVertex)) {
+			appendVertex(otherVertex);
+		}
+
+		int v = mVertexNumber[id];
+		int u = mVertexNumber[otherVertex];
+		mFollowers[v].insert(u);
 	}
 
 }
@@ -115,12 +145,11 @@ void StructuralControlFlowGenerator::performGeneration()
 	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
 
-	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(&mRepo, mIds);
+	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(mIds, mVertexNumber[mStartVertex], mFollowers, mVertexNumber, mVerticesNumber);
 
 	// add checking whether threads are consistent
 	if (tree) {
-		// "main" is hardcoded
-		resolveThreads(tree, "main");
+		//resolveThreads(tree, mThreadId);
 		obtainSemanticTree(tree);
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
@@ -553,4 +582,11 @@ void StructuralControlFlowGenerator::resolveThreads(myUtils::IntermediateNode *n
 		}
 	}
 
+}
+
+void StructuralControlFlowGenerator::appendVertex(const Id &vertex)
+{
+	mIds.insert(vertex);
+	mVerticesNumber++;
+	mVertexNumber[vertex] = mVerticesNumber;
 }
