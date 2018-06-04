@@ -33,12 +33,6 @@ public:
 	/// Will be called when both branches link to same block, making thus if statement unnesesary.
 	void transformToSimple();
 
-	void setFromSwitchCase(bool fromSwitchCase);
-	void setLinks(const QList<qReal::Id> &links);
-	void setCondition(const QString &condition);
-
-	/// Sometimes it is needed to obtain IfNode from switchSemantics
-	static IfNode *fromSwitchCase(const qReal::Id &idBinded, const QList<qReal::Id> &thenLinks, QObject *parent = 0);
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
@@ -47,9 +41,6 @@ private:
 	ZoneNode *mThenZone;  // Takes ownership
 	ZoneNode *mElseZone;  // Takes ownership
 	bool mIsSimple;
-	bool mFromSwitchCase;
-	QString mCondition;
-	QList<qReal::Id> mLinks;
 };
 
 }

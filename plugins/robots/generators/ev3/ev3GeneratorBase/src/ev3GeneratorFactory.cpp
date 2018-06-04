@@ -67,9 +67,9 @@ parts::Mailboxes &Ev3GeneratorFactory::mailboxes()
 }
 
 AbstractSimpleGenerator *Ev3GeneratorFactory::ifGenerator(const qReal::Id &id
-		, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting, bool fromSwitch, const QString &conditionFromSwitch)
+		, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting)
 {
-	return GeneratorFactoryBase::ifGenerator(id, customizer, elseIsEmpty, needInverting, fromSwitch, conditionFromSwitch);
+	return GeneratorFactoryBase::ifGenerator(id, customizer, elseIsEmpty, needInverting);
 }
 
 AbstractSimpleGenerator *Ev3GeneratorFactory::forLoopGenerator(const qReal::Id &id

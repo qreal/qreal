@@ -41,7 +41,6 @@ public:
 	/// This can help to resolve confusion in case when one branch enter into the middle of another.
 	void setBranchesMergedFlag();
 
-	void transformToSimple();
 	void setGenerateIfs();
 
 protected:
@@ -59,7 +58,6 @@ private:
 	QMap<QString, ZoneNode *> mBranches;
 	ZoneNode *mDefaultBranch;
 	bool mBranchesMerged;
-	bool mIsSimple;
 	bool mGenerateIfs;
 };
 

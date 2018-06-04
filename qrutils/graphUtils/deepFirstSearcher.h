@@ -59,7 +59,6 @@ public:
 	};
 
 	explicit DeepFirstSearcher(const qrRepo::LogicalRepoApi &repo);
-	virtual ~DeepFirstSearcher();
 
 	/// Starts walking though the model with reporting to visitor about all visited nodes
 	void startSearch(const qReal::Id &firstId, VisitorInterface *visitor);
@@ -71,8 +70,8 @@ public:
 	/// it will be performed only after current node will be processed by all visitors
 	void terminateSearch();
 
-protected:
-	virtual void dfs(const qReal::Id &id, QList<VisitorInterface *> const &visitors);
+private:
+	void dfs(const qReal::Id &id, QList<VisitorInterface *> const &visitors);
 
 	const qrRepo::LogicalRepoApi &mRepo;
 	QSet<qReal::Id> mVisitedNodes;

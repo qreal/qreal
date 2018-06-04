@@ -50,7 +50,6 @@ public:
 
 protected:
 	explicit SemanticNode(const qReal::Id &idBinded = qReal::Id(), QObject *parent = 0);
-	explicit SemanticNode(const QString &text, QObject *parent = 0);
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
 
@@ -59,8 +58,6 @@ protected:
 	qReal::Id mId;
 	SemanticNode *mParentNode;
 	bool mLabeled;
-	bool mHasBreakInside;
-	QString mText;
 };
 
 }

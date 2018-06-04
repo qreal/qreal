@@ -24,8 +24,6 @@ IfNode::IfNode(const Id &idBinded, QObject *parent)
 	, mThenZone(new ZoneNode(this))
 	, mElseZone(new ZoneNode(this))
 	, mIsSimple(false)
-	, mFromSwitchCase(false)
-	, mLinks()
 {
 	mThenZone->setParentNode(this);
 	mElseZone->setParentNode(this);
@@ -46,30 +44,6 @@ void IfNode::transformToSimple()
 	mIsSimple = true;
 }
 
-void IfNode::setFromSwitchCase(bool fromSwitchCase)
-{
-	mFromSwitchCase = fromSwitchCase;
-}
-
-void IfNode::setLinks(const QList<Id> &links)
-{
-	mLinks = links;
-}
-
-void IfNode::setCondition(const QString &condition)
-{
-	mCondition = condition;
-}
-
-IfNode *IfNode::fromSwitchCase(const Id &idBinded, const QList<Id> &thenLinks, QObject *parent)
-{
-	IfNode *ifNode = new IfNode(idBinded, parent);
-	ifNode->setFromSwitchCase(true);
-	ifNode->setLinks(thenLinks);
-
-	return ifNode;
-}
-
 QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	if (mIsSimple) {
@@ -82,7 +56,7 @@ QString IfNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const 
 
 	const bool elseIsEmpty = mElseZone->isEmpty();
 	QString result = utils::StringUtils::addIndent(customizer.factory()->
-			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition, mFromSwitchCase, mCondition)->generate(), indent, indentString);
+			ifGenerator(mId, customizer, elseIsEmpty, mAddNotToCondition)->generate(), indent, indentString);
 
 	const QString thenBlock = mThenZone->toString(customizer, indent + 1, indentString);
 	const QString elseBlock = mElseZone->toString(customizer, indent + 1, indentString);

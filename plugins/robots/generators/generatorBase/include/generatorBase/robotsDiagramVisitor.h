@@ -16,6 +16,7 @@
 
 #include <qrrepo/repoApi.h>
 #include <qrutils/graphUtils/deepFirstSearcher.h>
+
 #include "generatorBase/generatorCustomizer.h"
 
 #include "robotsGeneratorDeclSpec.h"

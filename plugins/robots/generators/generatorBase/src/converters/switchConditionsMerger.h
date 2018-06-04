@@ -27,7 +27,8 @@ class SwitchConditionsMerger : public TemplateParametrizedConverter
 public:
 	SwitchConditionsMerger(const QStringList &pathsToTemplates
 			, const ConverterInterface * const systemVariablesConverter
-			, const QStringList &values, bool generateIf);
+			, const QStringList &values
+			, bool generateIf);
 
 	~SwitchConditionsMerger() override;
 

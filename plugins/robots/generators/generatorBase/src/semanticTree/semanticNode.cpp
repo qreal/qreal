@@ -24,17 +24,6 @@ SemanticNode::SemanticNode(const Id &idBinded, QObject *parent)
 	, mId(idBinded)
 	, mParentNode(nullptr)
 	, mLabeled(false)
-	, mHasBreakInside(false)
-{
-}
-
-SemanticNode::SemanticNode(const QString &text, QObject *parent)
-	: QObject(parent)
-	, mId(qReal::Id())
-	, mParentNode(nullptr)
-	, mLabeled(false)
-	, mHasBreakInside(false)
-	, mText(text)
 {
 }
 
