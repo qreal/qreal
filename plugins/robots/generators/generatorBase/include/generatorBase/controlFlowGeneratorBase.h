@@ -35,8 +35,10 @@ public:
 			, GeneratorCustomizer &customizer
 			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
+			, bool isPerformingGenerationWhileVisiting
+			, bool isThisDiagramMain = true
 			, QObject *parent = 0
-			, bool isThisDiagramMain = true);
+			);
 
 	~ControlFlowGeneratorBase() override;
 
@@ -92,6 +94,7 @@ protected:
 
 	const qReal::Id mDiagram;
 	PrimaryControlFlowValidator &mValidator;
+	bool mIsPerformingGenerationWhileVisiting;
 };
 
 }

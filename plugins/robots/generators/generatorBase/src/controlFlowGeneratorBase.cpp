@@ -31,8 +31,10 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, PrimaryControlFlowValidator &validator
 		, const Id &diagramId
+		, bool isPerformingGenerationWhileVisiting
+		, bool isThisDiagramMain
 		, QObject *parent
-		, bool isThisDiagramMain)
+		)
 	: QObject(parent)
 	, RobotsDiagramVisitor(repo, customizer)
 	, mRepo(repo)
@@ -41,6 +43,7 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 	, mIsMainGenerator(isThisDiagramMain)
 	, mDiagram(diagramId)
 	, mValidator(validator)
+	, mIsPerformingGenerationWhileVisiting(isPerformingGenerationWhileVisiting)
 {
 }
 
@@ -188,7 +191,7 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 
 	visitRegular(id, { currentThread });
 	links.removeAll(currentThread);
-	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads());
+	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads(), mIsPerformingGenerationWhileVisiting);
 	rule.apply();
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
@@ -198,7 +201,7 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 void ControlFlowGeneratorBase::visitJoin(const Id &id, QList<LinkInfo> &links)
 {
 	bool const fromMain = (mRepo.stringProperty(links[0].linkId, "Guard") == mThreadId);
-	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain);
+	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain, mIsPerformingGenerationWhileVisiting);
 	rule.apply();
 
 	if (fromMain) {

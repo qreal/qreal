@@ -43,7 +43,6 @@ public:
 	void beforeSearch() override;
 
 	void visit(const qReal::Id &id, QList<LinkInfo> &links) override;
-	void visitRegular(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
@@ -86,6 +85,7 @@ private:
 	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, bool generateIfs);
 
 	void appendVertex(const qReal::Id &vertex);
+	void addEdgeIntoGraph(const qReal::Id &from, const qReal::Id &to);
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;

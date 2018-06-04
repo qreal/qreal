@@ -40,7 +40,7 @@ ReadableControlFlowGenerator::ReadableControlFlowGenerator(const qrRepo::RepoApi
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, true, isThisDiagramMain, parent)
 	, mTravelingForSecondTime(false)
 {
 }

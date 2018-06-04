@@ -35,7 +35,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, false, isThisDiagramMain, parent)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
 {
@@ -64,30 +64,7 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 		appendVertex(id);
 	}
 
-	if (mCustomizer.isSubprogramCall(id)) {
-		mCustomizer.factory()->subprograms()->usageFound(id);
-	} else if (mCustomizer.semanticsOf(id) == enums::semantics::forkBlock) {
-
-		QList<LinkInfo> newLinks = {};
-		for (const LinkInfo &link : links) {
-			QString threadName = mRepo.property(link.linkId, "Guard").toString();
-			if (threadName != mThreadId) {
-				mCustomizer.factory()->threads().registerThread(link.target, threadName);
-			} else {
-				newLinks.append(link);
-			}
-		}
-
-		links = newLinks;
-
-	} else if (mCustomizer.semanticsOf(id) == enums::semantics::joinBlock) {
-		QString threadNameAfterJoin = mRepo.property(links.first().linkId, "Guard").toString();
-
-		if (threadNameAfterJoin != mThreadId) {
-			links.clear();
-			mCustomizer.factory()->threads().addJoin(id, mThreadId);
-		}
-	}
+	ControlFlowGeneratorBase::visit(id, links);
 
 	for (const LinkInfo &link : links) {
 		const qReal::Id otherVertex = link.target;
@@ -96,17 +73,9 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 			appendVertex(otherVertex);
 		}
 
-		int v = mVertexNumber[id];
-		int u = mVertexNumber[otherVertex];
-		mFollowers[v].insert(u);
+		addEdgeIntoGraph(id, otherVertex);
 	}
 
-}
-
-void StructuralControlFlowGenerator::visitRegular(const Id &id, const QList<LinkInfo> &links)
-{
-	Q_UNUSED(id)
-	Q_UNUSED(links)
 }
 
 void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
@@ -257,16 +226,6 @@ SemanticNode *StructuralControlFlowGenerator::transformSimple(myUtils::SimpleNod
 		JoinNode *joinSemanticNode = static_cast<JoinNode *>(semanticNode);
 		//QString postJoinThreadName = mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString();
 		joinSemanticNode->setThreadId(mThreadId);
-	} else if (semanticsOf(id) == enums::semantics::forkBlock) {
-		ForkNode *forkSemanticNode = static_cast<ForkNode *>(semanticNode);
-		for (const qReal::Id &link : mRepo.outgoingLinks(id)) {
-			qReal::Id anotherId = mRepo.otherEntityFromLink(link, id);
-			QString threadName = mRepo.property(link, "Guard").toString();
-
-			if (threadName != mThreadId) {
-				forkSemanticNode->appendThread(anotherId, threadName);
-			}
-		}
 	}
 
 	return semanticNode;
@@ -484,4 +443,9 @@ void StructuralControlFlowGenerator::appendVertex(const Id &vertex)
 	mIds.insert(vertex);
 	mVerticesNumber++;
 	mVertexNumber[vertex] = mVerticesNumber;
+}
+
+void StructuralControlFlowGenerator::addEdgeIntoGraph(const Id &from, const Id &to)
+{
+	mFollowers[mVertexNumber[from]].insert(mVertexNumber[to]);
 }

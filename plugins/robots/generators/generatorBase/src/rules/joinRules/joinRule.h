@@ -28,7 +28,8 @@ public:
 			, const qReal::Id &id
 			, const QString &threadId
 			, parts::Threads &threadsStorage
-			, bool fromMain);
+			, bool fromMain
+			, bool isPerformingGenerationWhileVisiting);
 
 	bool apply() override;
 
@@ -36,6 +37,7 @@ private:
 	QString mThreadId;
 	parts::Threads &mThreadsStorage;
 	bool mFromMain;
+	bool mIsPerformingGenerationWhileVisiting;
 };
 
 }
