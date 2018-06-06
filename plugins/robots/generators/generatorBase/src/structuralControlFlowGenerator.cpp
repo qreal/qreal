@@ -379,7 +379,13 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &con
 	QPair<LinkInfo, LinkInfo> links = ifBranchesFor(conditionId);
 
 	if (links.first.target != thenNode->firstId()) {
-		semanticIf->invertCondition();
+		if (elseNode) {
+			myUtils::IntermediateNode *tmp = thenNode;
+			thenNode = elseNode;
+			elseNode = tmp;
+		} else {
+			semanticIf->invertCondition();
+		}
 	}
 
 	semanticIf->thenZone()->appendChild(transformNode(thenNode));
