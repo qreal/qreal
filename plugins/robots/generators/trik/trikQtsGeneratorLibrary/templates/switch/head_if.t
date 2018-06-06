@@ -1,2 +1,0 @@
-if (@@CONDITION@@) {
-@@BODY@@
