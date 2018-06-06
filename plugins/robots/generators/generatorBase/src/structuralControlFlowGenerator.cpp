@@ -62,22 +62,8 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 		mStartVertex = id;
 	}
 
-	if (!mIds.contains(id)) {
-		appendVertex(id);
-	}
-
 	ControlFlowGeneratorBase::visit(id, links);
-
-	for (const LinkInfo &link : links) {
-		const qReal::Id otherVertex = link.target;
-
-		if (!mIds.contains(otherVertex)) {
-			appendVertex(otherVertex);
-		}
-
-		addEdgeIntoGraph(id, otherVertex);
-	}
-
+	appendEdges(id, links);
 }
 
 void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
@@ -257,6 +243,29 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 		}
 
 		return createSemanticSwitchNode(conditionId, branches, ifNode->hasBreakInside());
+	}
+
+	case enums::semantics::loopBlock: {
+		if (ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId()) {
+			ZoneNode *zone = new ZoneNode(mSemanticTree);
+			const qReal::Id loopCondition = ifNode->condition()->firstId();
+			LoopNode *innerLoop = new LoopNode(loopCondition, mSemanticTree);
+
+			QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(loopCondition);
+			myUtils::IntermediateNode *restBranch = ifNode->thenBranch();
+
+			if (ifNode->thenBranch()->firstId() == loopBranches.first.target) {
+				innerLoop->bodyZone()->appendChild(transformNode(ifNode->thenBranch()));
+				restBranch = ifNode->elseBranch();
+			} else {
+				innerLoop->bodyZone()->appendChild(transformNode(ifNode->elseBranch()));
+			}
+
+
+			zone->appendChild(innerLoop);
+			zone->appendChild(transformNode(restBranch));
+			return zone;
+		}
 	}
 
 	default:
@@ -460,4 +469,21 @@ void StructuralControlFlowGenerator::appendVertex(const Id &vertex)
 void StructuralControlFlowGenerator::addEdgeIntoGraph(const Id &from, const Id &to)
 {
 	mFollowers[mVertexNumber[from]].insert(mVertexNumber[to]);
+}
+
+void StructuralControlFlowGenerator::appendEdges(const Id &vertex, QList<LinkInfo> &links)
+{
+	if (!mIds.contains(vertex)) {
+		appendVertex(vertex);
+	}
+
+	for (const LinkInfo &link : links) {
+		const qReal::Id otherVertex = link.target;
+
+		if (!mIds.contains(otherVertex)) {
+			appendVertex(otherVertex);
+		}
+
+		addEdgeIntoGraph(vertex, otherVertex);
+	}
 }

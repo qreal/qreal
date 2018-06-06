@@ -83,6 +83,7 @@ private:
 
 	void appendVertex(const qReal::Id &vertex);
 	void addEdgeIntoGraph(const qReal::Id &from, const qReal::Id &to);
+	void appendEdges(const qReal::Id &vertex, QList<LinkInfo> &links);
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;
