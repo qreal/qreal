@@ -234,7 +234,7 @@ bool Structurizator::isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 	QSet<QPair<int, int> > edges = {};
 	for (const int u : mFollowers[v]) {
 		if (incomingEdgesNumber(u) != 1 || outgoingEdgesNumber(u) >= 2) {
-			if (exit != -1) {
+			if (exit == -1) {
 				exit = u;
 			} else if (exit != u) {
 				return false;
