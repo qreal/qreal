@@ -96,11 +96,13 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 					continue;
 				}
 
-				qDebug() << "Cycle with breaks";
-				reduceConditionsWithBreaks(v, nodesWithExits, commonExit);
-				t = minTime;
-				somethingChanged = true;
-				continue;
+				if (nodesWithExits.size() > 0) {
+					qDebug() << "Cycle with breaks";
+					reduceConditionsWithBreaks(v, nodesWithExits, commonExit);
+					t = minTime;
+					somethingChanged = true;
+					continue;
+				}
 			}
 
 			if (verticesRoles.size()) {
