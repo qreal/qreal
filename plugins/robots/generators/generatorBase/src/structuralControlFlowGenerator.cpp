@@ -286,8 +286,21 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(myUtils::WhileN
 	const qReal::Id conditionId = headNode->firstId();
 
 	if (headNode->type() == myUtils::IntermediateNode::Type::simple) {
-		switch(semanticsOf(conditionId)) {
-		case enums::semantics::conditionalBlock:
+		switch (semanticsOf(conditionId)) {
+		case enums::semantics::conditionalBlock: {
+			if (ifBranchesFor(conditionId).first.target == bodyNode->firstId()) {
+				semanticLoop = new LoopNode(conditionId, mSemanticTree);
+			} else {
+				semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
+				IfNode *conditionNode = new IfNode(conditionId, mSemanticTree);
+				conditionNode->thenZone()->appendChild(SimpleNode::createBreakNode(mSemanticTree));
+				semanticLoop->bodyZone()->appendChild(conditionNode);
+			}
+
+			semanticLoop->bodyZone()->appendChild(transformNode(bodyNode));
+			return semanticLoop;
+		}
+
 		case enums::semantics::loopBlock: {
 			semanticLoop = new LoopNode(conditionId, mSemanticTree);
 			semanticLoop->bodyZone()->appendChild(transformNode(bodyNode));
