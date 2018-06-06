@@ -61,6 +61,7 @@ private:
 	/// Important: the graph in the model would be traversed two or more times
 	/// to build dominators tree and then perform structural analysis
 	void performGeneration() override;
+	bool applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule) override;
 
 	void performStructurization();
 	void obtainSemanticTree(myUtils::IntermediateNode *root);
@@ -92,6 +93,7 @@ private:
 	qReal::Id mStartVertex;
 	QMap<qReal::Id, int> mVertexNumber;
 	QMap<int, QSet<int> > mFollowers;
+	bool mStructurizationWasPerformed;
 };
 
 }

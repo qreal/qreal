@@ -24,7 +24,7 @@ class ForkRule : public SemanticTransformationRule
 {
 public:
 	ForkRule(SemanticTree *tree, const qReal::Id &id, const QList<LinkInfo> &threads
-			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage, bool isPerformingGenerationWhileVisiting);
+			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage);
 
 	bool apply() override;
 
@@ -32,7 +32,6 @@ private:
 	const QList<LinkInfo> mThreads;
 	const QHash<qReal::Id, QString> mThreadIds;
 	parts::Threads &mThreadsStorage;
-	bool mIsPerformingGenerationWhileVisiting;
 };
 
 }

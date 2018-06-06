@@ -18,6 +18,7 @@
 #include "primaryControlFlowValidator.h"
 #include "robotsDiagramVisitor.h"
 #include "semanticTree/semanticTree.h"
+#include "src/rules/semanticTransformationRule.h"
 
 namespace generatorBase {
 
@@ -29,15 +30,13 @@ class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public 
 public:
 	/// @param isThisDiagramMain 'true' if this generator generates code for main diagram
 	/// (main diagram is the one which was active when user requested generation)
-	ControlFlowGeneratorBase(
-			const qrRepo::RepoApi &repo
+	ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
-			, bool isPerformingGenerationWhileVisiting
-			, bool isThisDiagramMain = true
 			, QObject *parent = 0
+			, bool isThisDiagramMain = true
 			);
 
 	~ControlFlowGeneratorBase() override;
@@ -72,6 +71,7 @@ public:
 protected:
 	/// Can be overloaded by descendants for custom behaviour.
 	virtual void performGeneration();
+	virtual bool applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule);
 
 	bool generateForks();
 
@@ -94,7 +94,6 @@ protected:
 
 	const qReal::Id mDiagram;
 	PrimaryControlFlowValidator &mValidator;
-	bool mIsPerformingGenerationWhileVisiting;
 };
 
 }

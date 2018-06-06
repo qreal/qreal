@@ -35,9 +35,11 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, false, isThisDiagramMain, parent)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
+	, mCantBeGeneratedIntoStructuredCode(false)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
+	, mStructurizationWasPerformed(false)
 {
 }
 
@@ -113,13 +115,13 @@ bool StructuralControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 
 void StructuralControlFlowGenerator::performGeneration()
 {
-	mCantBeGeneratedIntoStructuredCode = false;
 	ControlFlowGeneratorBase::performGeneration();
-
 	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(mIds, mVertexNumber[mStartVertex], mFollowers, mVertexNumber, mVerticesNumber);
 
 	if (tree) {
 		obtainSemanticTree(tree);
+		mStructurizationWasPerformed = true;
+		ControlFlowGeneratorBase::performGeneration();
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
 	}
@@ -127,6 +129,15 @@ void StructuralControlFlowGenerator::performGeneration()
 	if (mCantBeGeneratedIntoStructuredCode) {
 		mSemanticTree = nullptr;
 	}
+}
+
+bool StructuralControlFlowGenerator::applyRuleWhileVisiting(SemanticTransformationRule * const rule)
+{
+	if (mStructurizationWasPerformed) {
+		return ControlFlowGeneratorBase::applyRuleWhileVisiting(rule);
+	}
+
+	return false;
 }
 
 void StructuralControlFlowGenerator::obtainSemanticTree(myUtils::IntermediateNode *root)
@@ -210,16 +221,7 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Intermediat
 
 SemanticNode *StructuralControlFlowGenerator::transformSimple(myUtils::SimpleNode *simpleNode)
 {
-	const qReal::Id id = simpleNode->id();
-	SemanticNode *semanticNode = mSemanticTree->produceNodeFor(id);
-
-	if (semanticsOf(id) == enums::semantics::joinBlock) {
-		JoinNode *joinSemanticNode = static_cast<JoinNode *>(semanticNode);
-		//QString postJoinThreadName = mRepo.property(mRepo.outgoingLinks(id).first(), "Guard").toString();
-		joinSemanticNode->setThreadId(mThreadId);
-	}
-
-	return semanticNode;
+	return mSemanticTree->produceNodeFor(simpleNode->id());
 }
 
 SemanticNode *StructuralControlFlowGenerator::transformBlock(myUtils::BlockNode *blockNode)

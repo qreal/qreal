@@ -20,28 +20,21 @@ using namespace generatorBase::semantics;
 using namespace qReal;
 
 ForkRule::ForkRule(SemanticTree *tree, const Id &id, const QList<LinkInfo> &threads
-		, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage, bool isPerformingGenerationWhileVisiting)
+		, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage)
 	: SemanticTransformationRule(tree, id)
 	, mThreads(threads)
 	, mThreadIds(threadIds)
 	, mThreadsStorage(threadsStorage)
-	, mIsPerformingGenerationWhileVisiting(isPerformingGenerationWhileVisiting)
 {
 }
 
 bool ForkRule::apply()
 {
-	ForkNode * fork = 0;
-
-	if (mIsPerformingGenerationWhileVisiting) {
-		fork = static_cast<ForkNode *>(mTree->findNodeFor(mId));
-	}
+	ForkNode * const fork = static_cast<ForkNode *>(mTree->findNodeFor(mId));
 
 	for (const LinkInfo &thread : mThreads) {
 		mThreadsStorage.registerThread(thread.target, mThreadIds[thread.linkId]);
-		if (fork) {
-			fork->appendThread(thread.target, mThreadIds[thread.linkId]);
-		}
+		fork->appendThread(thread.target, mThreadIds[thread.linkId]);
 	}
 
 	return true;

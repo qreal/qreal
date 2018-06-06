@@ -26,7 +26,7 @@ GotoControlFlowGenerator::GotoControlFlowGenerator(
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain)
-	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, true, isThisDiagramMain, parent)
+	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 {
 }
 

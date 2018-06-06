@@ -31,9 +31,8 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 		, GeneratorCustomizer &customizer
 		, PrimaryControlFlowValidator &validator
 		, const Id &diagramId
-		, bool isPerformingGenerationWhileVisiting
-		, bool isThisDiagramMain
 		, QObject *parent
+		, bool isThisDiagramMain
 		)
 	: QObject(parent)
 	, RobotsDiagramVisitor(repo, customizer)
@@ -43,7 +42,6 @@ ControlFlowGeneratorBase::ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 	, mIsMainGenerator(isThisDiagramMain)
 	, mDiagram(diagramId)
 	, mValidator(validator)
-	, mIsPerformingGenerationWhileVisiting(isPerformingGenerationWhileVisiting)
 {
 }
 
@@ -87,6 +85,11 @@ void ControlFlowGeneratorBase::performGeneration()
 	// This will start dfs on model graph with processing every block
 	// in subclasses which must construct control flow in handlers
 	startSearch(mSemanticTree->initialBlock());
+}
+
+bool ControlFlowGeneratorBase::applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule)
+{
+	return rule->apply();
 }
 
 bool ControlFlowGeneratorBase::generateForks()
@@ -191,8 +194,8 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 
 	visitRegular(id, { currentThread });
 	links.removeAll(currentThread);
-	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads(), mIsPerformingGenerationWhileVisiting);
-	rule.apply();
+	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads());
+	applyRuleWhileVisiting(&rule);
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
 	links = {currentThread};
@@ -201,8 +204,8 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 void ControlFlowGeneratorBase::visitJoin(const Id &id, QList<LinkInfo> &links)
 {
 	bool const fromMain = (mRepo.stringProperty(links[0].linkId, "Guard") == mThreadId);
-	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain, mIsPerformingGenerationWhileVisiting);
-	rule.apply();
+	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain);
+	applyRuleWhileVisiting(&rule);
 
 	if (fromMain) {
 		visitRegular(id, links);

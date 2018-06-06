@@ -23,22 +23,19 @@ JoinRule::JoinRule(SemanticTree *tree
 		, const QString &threadId
 		, parts::Threads &threadsStorage
 		, bool fromMain
-		, bool isPerformingGenerationWhileVisiting)
+		)
 	: SemanticTransformationRule(tree, id)
 	, mThreadId(threadId)
 	, mThreadsStorage(threadsStorage)
 	, mFromMain(fromMain)
-	, mIsPerformingGenerationWhileVisiting(isPerformingGenerationWhileVisiting)
 {
 
 }
 
 bool JoinRule::apply()
 {
-	if (mIsPerformingGenerationWhileVisiting) {
-		JoinNode *join = static_cast<JoinNode *>(mTree->findNodeFor(mId));
-		join->setThreadId(mThreadId);
-	}
+	JoinNode *join = static_cast<JoinNode *>(mTree->findNodeFor(mId));
+	join->setThreadId(mThreadId);
 
 	if (!mFromMain) {
 		mThreadsStorage.addJoin(mId, mThreadId);
