@@ -29,3 +29,8 @@ generatorBase::GeneratorFactoryBase *TrikGeneratorCustomizer::factory()
 {
 	return &mFactory;
 }
+
+bool TrikGeneratorCustomizer::supportsSwitchGeneration() const
+{
+	return true;
+}

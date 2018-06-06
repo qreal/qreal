@@ -29,3 +29,8 @@ generatorBase::GeneratorFactoryBase *Ev3GeneratorCustomizer::factory()
 {
 	return &mFactory;
 }
+
+bool Ev3GeneratorCustomizer::supportsSwitchGeneration() const
+{
+	return false;
+}

@@ -69,8 +69,8 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, co
 		}
 
 		result += generatePart(customizer, indent, indentString, zone, isHead
-				? customizer.factory()->switchHeadGenerator(mId, customizer, mBranches.keys(zone), mGenerateIfs)
-				: customizer.factory()->switchMiddleGenerator(mId, customizer, mBranches.keys(zone), mGenerateIfs));
+				? customizer.factory()->switchHeadGenerator(mId, customizer, mBranches.keys(zone), mGenerateIfs || !customizer.supportsSwitchGeneration())
+				: customizer.factory()->switchMiddleGenerator(mId, customizer, mBranches.keys(zone), mGenerateIfs || !customizer.supportsSwitchGeneration()));
 
 		isHead = false;
 	}
@@ -81,7 +81,7 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, co
 	}
 
 	result += generatePart(customizer, indent, indentString, mDefaultBranch
-			, customizer.factory()->switchDefaultGenerator(mId, customizer, mGenerateIfs));
+			, customizer.factory()->switchDefaultGenerator(mId, customizer, mGenerateIfs || !customizer.supportsSwitchGeneration()));
 
 	return result;
 }

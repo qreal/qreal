@@ -29,3 +29,8 @@ generatorBase::GeneratorFactoryBase *NxtGeneratorCustomizer::factory()
 {
 	return &mFactory;
 }
+
+bool NxtGeneratorCustomizer::supportsSwitchGeneration() const
+{
+	return false;
+}

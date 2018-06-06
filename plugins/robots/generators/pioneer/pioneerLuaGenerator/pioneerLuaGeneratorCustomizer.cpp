@@ -41,3 +41,8 @@ generatorBase::GeneratorFactoryBase *PioneerLuaGeneratorCustomizer::factory()
 {
 	return mFactory.data();
 }
+
+bool PioneerLuaGeneratorCustomizer::supportsSwitchGeneration() const
+{
+	return false;
+}

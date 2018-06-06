@@ -31,6 +31,8 @@ public:
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
+	bool supportsSwitchGeneration() const override;
+
 private:
 	Ev3GeneratorFactory mFactory;
 };

@@ -37,6 +37,8 @@ public:
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
+	bool supportsSwitchGeneration() const override;
+
 private:
 	/// Factory that creates simple generators for Pioneer-specific blocks.
 	QScopedPointer<PioneerLuaGeneratorFactory> mFactory;
