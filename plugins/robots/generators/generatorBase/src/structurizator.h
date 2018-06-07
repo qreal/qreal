@@ -22,8 +22,6 @@ public:
 														, const QMap<int, QSet<int>> &followers, const QMap<qReal::Id, int> &vertexNumber
 														, int verticesNumber);
 
-	void setVerteces(const QSet<qReal::Id> &vertecesIds);
-
 private:
 
 	typedef int Time;

@@ -126,21 +126,6 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 	return nullptr;
 }
 
-void Structurizator::setVerteces(const QSet<qReal::Id> &vertecesIds)
-{
-	mVertices.clear();
-	mMapIdToInt.clear();
-	mVerticesNumber = 1;
-	mInitialIds.clear();
-
-	for (const qReal::Id &id : vertecesIds) {
-		mInitialIds.insert(id);
-		mMapIdToInt[id] = mVerticesNumber;
-		mVertices.insert(mVerticesNumber);
-		mVerticesNumber++;
-	}
-}
-
 bool Structurizator::isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
 	if (outgoingEdgesNumber(v) != 1) {
