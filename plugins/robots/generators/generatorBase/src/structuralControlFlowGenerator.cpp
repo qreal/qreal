@@ -430,12 +430,24 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 		return createSemanticSwitchNode(conditionId, allBranches, true);
 	}
 
-	default:
-		qDebug() << "Problem in createConditionWithBreaks";
-		mCantBeGeneratedIntoStructuredCode = false;
-		return new SimpleNode(qReal::Id(), mSemanticTree);
+	case enums::semantics::loopBlock: {
+		if (exitBranches.size() != 1) {
+			break;
+		}
+
+		LoopNode *loopNode = new LoopNode(conditionId, mSemanticTree);
+		loopNode->bodyZone()->appendChild(transformNode(exitBranches.first()));
+		return loopNode;
 	}
 
+	default:
+		break;
+
+	}
+
+	qDebug() << "Problem in createConditionWithBreaks";
+	mCantBeGeneratedIntoStructuredCode = true;
+	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
 
 SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode)
