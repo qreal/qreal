@@ -683,50 +683,6 @@ void Structurizator::updateVertices(int newNodeNumber, QSet<int> &vertices)
 	mVertices.insert(newNodeNumber);
 }
 
-void Structurizator::addNewNodeNumberBeforeVertex(int newNodeNumber, int vertex)
-{
-	QMap<VertexNumber, QVector<VertexNumber> > predecessors = mPredecessors;
-	for (const int u : predecessors[vertex]) {
-		mFollowers[u].removeAll(vertex);
-		mPredecessors[vertex].removeAll(u);
-
-		mFollowers[u].push_back(newNodeNumber);
-		mPredecessors[newNodeNumber].push_back(u);
-	}
-
-	mFollowers[newNodeNumber].push_back(vertex);
-	mPredecessors[vertex].push_back(newNodeNumber);
-
-
-	// dominators
-	mDominators[newNodeNumber] = mDominators[vertex];
-	mDominators[newNodeNumber].subtract({vertex});
-	for (const int u : mVertices) {
-		if (mDominators[u].contains(vertex)) {
-			mDominators[u].insert(newNodeNumber);
-		}
-	}
-
-	calculatePostOrder();
-}
-
-void Structurizator::removeVertex(int vertex)
-{
-	for (const int u : mFollowers[vertex]) {
-		mPredecessors[u].removeAll(vertex);
-	}
-
-	for (const int u : mPredecessors[vertex]) {
-		mFollowers[u].removeAll(vertex);
-	}
-
-	mPredecessors.remove(vertex);
-	mFollowers.remove(vertex);
-
-	mDominators.remove(vertex);
-	mVertices.remove(vertex);
-}
-
 //void Structurizator::createGraph()
 //{
 //	for (const qReal::Id &vertex : mInitialIds) {
