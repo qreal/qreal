@@ -90,7 +90,7 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 
 				QMap<int, QSet<int> > nodesWithExits;
 				int commonExit = -1;
-				bool isCycle = isCycleWithBreaks(reachUnder, nodesWithExits, commonExit);
+				bool isCycle = isCycleWithBreaks(v, reachUnder, nodesWithExits, commonExit);
 				if (!isCycle) {
 					t++;
 					continue;
@@ -341,9 +341,9 @@ bool Structurizator::checkWhileLoopHelper(int head, int body)
 	return false;
 }
 
-bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
+bool Structurizator::isCycleWithBreaks(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
 {
-	bool result = findCommonExit(reachUnder, nodesWithExits, commonExit);
+	bool result = findCommonExit(cycleHead, reachUnder, nodesWithExits, commonExit);
 	if (!result) {
 		return false;
 	}
@@ -375,7 +375,7 @@ bool Structurizator::isHeadOfCycle(int v, QSet<int> &reachUnder)
 	return !reachUnder.isEmpty();
 }
 
-bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
+bool Structurizator::findCommonExit(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
 {
 	commonExit = -1;
 	QSet<int> exits;
@@ -395,6 +395,8 @@ bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> >
 			}
 		}
 	}
+
+	nodesWithExits.remove(cycleHead);
 
 	if (commonExit != -1) {
 		return true;
@@ -535,6 +537,7 @@ void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap
 void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &nodesWithExits, int commonExit)
 {
 	if (nodesWithExits.contains(v)) {
+		qDebug() << "broken assumption: head of cycle is not an exit";
 		FakeCycleHeadNode *fakeCycleHeadNode = new FakeCycleHeadNode(mTrees[v]->firstId(), this);
 		int newNodeNumber = appendVertex(fakeCycleHeadNode);
 		addNewNodeNumberBeforeVertex(newNodeNumber, v);

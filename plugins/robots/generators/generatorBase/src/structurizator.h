@@ -41,11 +41,11 @@ private:
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
 	bool checkWhileLoopHelper(int head, int body);
 
-	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool isCycleWithBreaks(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
 	bool isHeadOfCycle(int v, QSet<int> &reachUnder);
 
 
-	bool findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool findCommonExit(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
 	bool checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int> > &nodesWithExits);
 
 	void reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
