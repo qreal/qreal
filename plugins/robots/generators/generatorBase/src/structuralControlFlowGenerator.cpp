@@ -522,6 +522,7 @@ void StructuralControlFlowGenerator::appendEdges(const Id &vertex, QList<LinkInf
 		if (!mIds.contains(otherVertex)) {
 			if (semanticsOf(otherVertex) == enums::semantics::loopBlock) {
 				const qReal::Id loopHeader = qReal::Id();
+				mAdditionalVertices.push_back(loopHeader);
 				appendVertex(loopHeader);
 				appendVertex(otherVertex);
 				addEdgeIntoGraph(vertex, loopHeader);

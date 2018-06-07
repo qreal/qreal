@@ -23,6 +23,7 @@
 
 
 #include <QStack>
+#include <QVector>
 
 namespace generatorBase {
 
@@ -102,6 +103,7 @@ private:
 	bool mIsGraphBeingConstructed;
 	QStack<int> mLoopNumbers;
 	QSet<int> mVerticesInsideLoopBody;
+	QVector<qReal::Id> mAdditionalVertices;
 };
 
 }
