@@ -683,21 +683,6 @@ void Structurizator::updateVertices(int newNodeNumber, QSet<int> &vertices)
 	mVertices.insert(newNodeNumber);
 }
 
-//void Structurizator::createGraph()
-//{
-//	for (const qReal::Id &vertex : mInitialIds) {
-//		for (const qReal::Id &link : mRepo->outgoingLinks(vertex)) {
-//			int v = mMapIdToInt[vertex];
-//			int u = mMapIdToInt[mRepo->otherEntityFromLink(link, vertex)];
-
-//			if (!mFollowers[v].contains(u)) {
-//				mFollowers[v].push_back(u);
-//				mPredecessors[u].push_back(v);
-//			}
-//		}
-//	}
-//}
-
 void Structurizator::calculateDominators()
 {
 	for (const int u : mVertices) {

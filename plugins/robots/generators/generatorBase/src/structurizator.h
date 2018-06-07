@@ -68,7 +68,6 @@ private:
 	void updateVertices(int newNodeNumber, QSet<int> &vertices);
 
 	/// methods used before structurization process
-	//void createGraph();
 	void calculateDominators();
 	void findStartVertex();
 	void calculatePostOrder();
