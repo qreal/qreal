@@ -40,7 +40,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	, mCantBeGeneratedIntoStructuredCode(false)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
-	, mStructurizationWasPerformed(false)
+	, mIsGraphConstructed(true)
 {
 }
 
@@ -138,7 +138,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 	if (tree) {
 		obtainSemanticTree(tree);
-		mStructurizationWasPerformed = true;
+		mIsGraphConstructed = false;
 		ControlFlowGeneratorBase::performGeneration();
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
@@ -151,7 +151,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 bool StructuralControlFlowGenerator::applyRuleWhileVisiting(SemanticTransformationRule * const rule)
 {
-	if (mStructurizationWasPerformed) {
+	if (!mIsGraphConstructed) {
 		return ControlFlowGeneratorBase::applyRuleWhileVisiting(rule);
 	}
 

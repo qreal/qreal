@@ -99,7 +99,7 @@ private:
 	QMap<qReal::Id, int> mVertexNumber;
 	QMap<int, int> mLoopHeader;
 	QMap<int, QSet<int> > mFollowers;
-	bool mStructurizationWasPerformed;
+	bool mIsGraphConstructed;
 	QStack<int> mLoopNumbers;
 	QSet<int> mVerticesInsideLoopBody;
 };
