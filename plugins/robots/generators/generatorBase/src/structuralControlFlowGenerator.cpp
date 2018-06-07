@@ -40,7 +40,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	, mCantBeGeneratedIntoStructuredCode(false)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
-	, mIsGraphConstructed(true)
+	, mIsGraphBeingConstructed(true)
 {
 }
 
@@ -59,27 +59,33 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	if (mIds.isEmpty()) {
-		mStartVertex = id;
-	}
+	if (mIsGraphBeingConstructed) {
+		if (mIds.isEmpty()) {
+			mStartVertex = id;
+		}
 
-	if (!mIds.contains(id)) {
-		appendVertex(id);
-	}
+		if (!mIds.contains(id)) {
+			appendVertex(id);
+		}
 
-	appendEdges(id, links);
+		appendEdges(id, links);
 
-	ControlFlowGeneratorBase::visit(id, links);
-
-	if (mVerticesInsideLoopBody.contains(mVertexNumber[id])) {
-		for (const LinkInfo &link : links) {
-			mVerticesInsideLoopBody.insert(mVertexNumber[link.target]);
+		if (mVerticesInsideLoopBody.contains(mVertexNumber[id])) {
+			for (const LinkInfo &link : links) {
+				mVerticesInsideLoopBody.insert(mVertexNumber[link.target]);
+			}
 		}
 	}
+
+	ControlFlowGeneratorBase::visit(id, links);
 }
 
 void StructuralControlFlowGenerator::afterVisit(const Id &id, QList<LinkInfo> &links)
 {
+	if (!mIsGraphBeingConstructed) {
+		return;
+	}
+
 	if (semanticsOf(id) == enums::semantics::loopBlock) {
 		mLoopNumbers.pop();
 
@@ -103,6 +109,10 @@ void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<
 void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &links)
 {
 	Q_UNUSED(links)
+
+	if (!mIsGraphBeingConstructed) {
+		return;
+	}
 
 	mLoopNumbers.push(mVertexNumber[id]);
 
@@ -138,7 +148,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 	if (tree) {
 		obtainSemanticTree(tree);
-		mIsGraphConstructed = false;
+		mIsGraphBeingConstructed = false;
 		ControlFlowGeneratorBase::performGeneration();
 	} else {
 		mCantBeGeneratedIntoStructuredCode = true;
@@ -151,7 +161,7 @@ void StructuralControlFlowGenerator::performGeneration()
 
 bool StructuralControlFlowGenerator::applyRuleWhileVisiting(SemanticTransformationRule * const rule)
 {
-	if (!mIsGraphConstructed) {
+	if (!mIsGraphBeingConstructed) {
 		return ControlFlowGeneratorBase::applyRuleWhileVisiting(rule);
 	}
 
