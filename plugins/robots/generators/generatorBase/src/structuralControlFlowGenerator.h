@@ -80,7 +80,6 @@ private:
 	semantics::SemanticNode *transformWhileLoop(myUtils::WhileNode *whileNode);
 	semantics::SemanticNode *transformSwitch(myUtils::SwitchNode *switchNode);
 	semantics::SemanticNode *transformBreakNode();
-	semantics::SemanticNode *transformFakeCycleHead();
 
 	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks);
 	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode);

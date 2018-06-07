@@ -24,7 +24,6 @@ public:
 		, infiniteloop
 		, whileloop
 		, breakNode
-		, fakeCycleHead
 		, nodeWithBreaks
 	};
 
@@ -62,24 +61,6 @@ public:
 private:
 	const qReal::Id mId;
 };
-
-
-class FakeCycleHeadNode : public IntermediateNode {
-
-	Q_OBJECT
-
-public:
-	explicit FakeCycleHeadNode(const qReal::Id &id, QObject *parent);
-
-	Type type() const;
-	qReal::Id firstId() const;
-	bool analyzeBreak();
-	QList<IntermediateNode *> childrenNodes() const override;
-
-private:
-	const qReal::Id mId;
-};
-
 
 class BreakNode : public IntermediateNode {
 

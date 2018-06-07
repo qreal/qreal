@@ -538,10 +538,6 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &no
 {
 	if (nodesWithExits.contains(v)) {
 		qDebug() << "broken assumption: head of cycle is not an exit";
-		FakeCycleHeadNode *fakeCycleHeadNode = new FakeCycleHeadNode(mTrees[v]->firstId(), this);
-		int newNodeNumber = appendVertex(fakeCycleHeadNode);
-		addNewNodeNumberBeforeVertex(newNodeNumber, v);
-		v = newNodeNumber;
 	}
 
 	for (const int u : nodesWithExits.keys()) {

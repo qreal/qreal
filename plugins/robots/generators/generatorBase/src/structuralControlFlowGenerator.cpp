@@ -232,10 +232,6 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Intermediat
 		return transformBreakNode();
 	}
 
-	case myUtils::IntermediateNode::Type::fakeCycleHead: {
-		return transformFakeCycleHead();
-	}
-
 	case myUtils::IntermediateNode::Type::nodeWithBreaks: {
 		return createConditionWithBreaks(static_cast<myUtils::NodeWithBreaks *>(node));
 	}
@@ -406,11 +402,6 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::SwitchNod
 SemanticNode *StructuralControlFlowGenerator::transformBreakNode()
 {
 	return semantics::SimpleNode::createBreakNode(mSemanticTree);
-}
-
-SemanticNode *StructuralControlFlowGenerator::transformFakeCycleHead()
-{
-	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
 
 SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks)

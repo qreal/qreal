@@ -347,34 +347,6 @@ QList<IntermediateNode *> BreakNode::childrenNodes() const
 	return {};
 }
 
-FakeCycleHeadNode::FakeCycleHeadNode(const qReal::Id &id, QObject *parent)
-	: IntermediateNode(parent)
-	, mId(id)
-{
-}
-
-IntermediateNode::Type FakeCycleHeadNode::type() const
-{
-	return fakeCycleHead;
-}
-
-qReal::Id FakeCycleHeadNode::firstId() const
-{
-	return mId;
-}
-
-bool FakeCycleHeadNode::analyzeBreak()
-{
-	mHasBreakInside = false;
-	mBreakWasAnalyzed = true;
-	return mHasBreakInside;
-}
-
-QList<IntermediateNode *> FakeCycleHeadNode::childrenNodes() const
-{
-	return {};
-}
-
 NodeWithBreaks::NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
