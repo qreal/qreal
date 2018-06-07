@@ -60,25 +60,14 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	if (mIsGraphBeingConstructed) {
-		if (!mIds.contains(id)) {
-			appendVertex(id);
-		}
-
-		if (!mStartVertex) {
-			mStartVertex = mVertexNumber[id];
-		}
-
-		appendEdges(id, links);
-
-		if (mVerticesInsideLoopBody.contains(mVertexNumber[id])) {
-			for (const LinkInfo &link : links) {
-				mVerticesInsideLoopBody.insert(mVertexNumber[link.target]);
-			}
-		}
-	}
+	mWasDoneThisIteration = false;
 
 	ControlFlowGeneratorBase::visit(id, links);
+
+	if (!mWasDoneThisIteration) {
+		appendEdgesAndVertices(id, links);
+		addVerticesInLoopBody(id, links);
+	}
 }
 
 void StructuralControlFlowGenerator::afterVisit(const Id &id, QList<LinkInfo> &links)
@@ -109,11 +98,14 @@ void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<
 
 void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &links)
 {
-	Q_UNUSED(links)
-
 	if (!mIsGraphBeingConstructed) {
 		return;
 	}
+
+	appendEdgesAndVertices(id, links);
+	addVerticesInLoopBody(id, links);
+
+	mWasDoneThisIteration = true;
 
 	mLoopNumbers.push(mVertexNumber[id]);
 
@@ -517,8 +509,20 @@ void StructuralControlFlowGenerator::addEdgeIntoGraph(const Id &from, const Id &
 	mFollowers[mVertexNumber[from]].insert(mVertexNumber[to]);
 }
 
-void StructuralControlFlowGenerator::appendEdges(const Id &vertex, QList<LinkInfo> &links)
+void StructuralControlFlowGenerator::appendEdgesAndVertices(const Id &vertex, const QList<LinkInfo> &links)
 {
+	if (!mIsGraphBeingConstructed) {
+		return;
+	}
+
+	if (!mIds.contains(vertex)) {
+		appendVertex(vertex);
+	}
+
+	if (!mStartVertex) {
+		mStartVertex = mVertexNumber[vertex];
+	}
+
 	for (const LinkInfo &link : links) {
 		const qReal::Id otherVertex = link.target;
 
@@ -542,6 +546,15 @@ void StructuralControlFlowGenerator::appendEdges(const Id &vertex, QList<LinkInf
 			} else {
 				addEdgeIntoGraph(vertex, mVertexNumber.key(mLoopHeader[mVertexNumber[otherVertex]]));
 			}
+		}
+	}
+}
+
+void StructuralControlFlowGenerator::addVerticesInLoopBody(const Id &vertex, const QList<LinkInfo> &links)
+{
+	if (mVerticesInsideLoopBody.contains(mVertexNumber[vertex])) {
+		for (const LinkInfo &link : links) {
+			mVerticesInsideLoopBody.insert(mVertexNumber[link.target]);
 		}
 	}
 }
