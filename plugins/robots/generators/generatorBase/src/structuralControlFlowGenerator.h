@@ -21,6 +21,9 @@
 
 #include "structurizator.h"
 
+
+#include <QStack>
+
 namespace generatorBase {
 
 class ROBOTS_GENERATOR_EXPORT StructuralControlFlowGenerator : public ControlFlowGeneratorBase
@@ -43,6 +46,7 @@ public:
 	void beforeSearch() override;
 
 	void visit(const qReal::Id &id, QList<LinkInfo> &links) override;
+	void afterVisit(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
@@ -93,8 +97,11 @@ private:
 	QSet<qReal::Id> mIds;
 	qReal::Id mStartVertex;
 	QMap<qReal::Id, int> mVertexNumber;
+	QMap<int, int> mLoopHeader;
 	QMap<int, QSet<int> > mFollowers;
 	bool mStructurizationWasPerformed;
+	QStack<int> mLoopNumbers;
+	QSet<int> mVerticesInsideLoopBody;
 };
 
 }

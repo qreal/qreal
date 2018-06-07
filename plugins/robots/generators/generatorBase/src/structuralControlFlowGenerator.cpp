@@ -18,6 +18,7 @@
 #include <QtCore/QDebug>
 
 #include <algorithm>
+#include <QStack>
 
 
 #include "generatorBase/parts/subprograms.h"
@@ -62,8 +63,35 @@ void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 		mStartVertex = id;
 	}
 
-	ControlFlowGeneratorBase::visit(id, links);
+	if (!mIds.contains(id)) {
+		appendVertex(id);
+	}
+
 	appendEdges(id, links);
+
+	ControlFlowGeneratorBase::visit(id, links);
+
+	if (mVerticesInsideLoopBody.contains(mVertexNumber[id])) {
+		for (const LinkInfo &link : links) {
+			mVerticesInsideLoopBody.insert(mVertexNumber[link.target]);
+		}
+	}
+}
+
+void StructuralControlFlowGenerator::afterVisit(const Id &id, QList<LinkInfo> &links)
+{
+	if (semanticsOf(id) == enums::semantics::loopBlock) {
+		mLoopNumbers.pop();
+
+		QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
+		mVerticesInsideLoopBody.insert(mVertexNumber[loopBranches.first.target]);
+	}
+
+	if (mVerticesInsideLoopBody.contains(mVertexNumber[id])) {
+		for (const LinkInfo &link : links) {
+			mVerticesInsideLoopBody.remove(mVertexNumber[link.target]);
+		}
+	}
 }
 
 void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
@@ -74,8 +102,12 @@ void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<
 
 void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInfo> &links)
 {
-	Q_UNUSED(id)
 	Q_UNUSED(links)
+
+	mLoopNumbers.push(mVertexNumber[id]);
+
+	QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
+	mVerticesInsideLoopBody.insert(mVertexNumber[loopBranches.first.target]);
 }
 
 void StructuralControlFlowGenerator::visitSwitch(const Id &id, const QList<LinkInfo> &links)
@@ -473,17 +505,28 @@ void StructuralControlFlowGenerator::addEdgeIntoGraph(const Id &from, const Id &
 
 void StructuralControlFlowGenerator::appendEdges(const Id &vertex, QList<LinkInfo> &links)
 {
-	if (!mIds.contains(vertex)) {
-		appendVertex(vertex);
-	}
-
 	for (const LinkInfo &link : links) {
 		const qReal::Id otherVertex = link.target;
 
 		if (!mIds.contains(otherVertex)) {
-			appendVertex(otherVertex);
+			if (semanticsOf(otherVertex) == enums::semantics::loopBlock) {
+				const qReal::Id loopHeader = qReal::Id();
+				appendVertex(loopHeader);
+				appendVertex(otherVertex);
+				addEdgeIntoGraph(vertex, loopHeader);
+				addEdgeIntoGraph(loopHeader, otherVertex);
+				mLoopHeader[mVertexNumber[otherVertex]] = mVertexNumber[loopHeader];
+			} else {
+				appendVertex(otherVertex);
+				addEdgeIntoGraph(vertex, otherVertex);
+			}
+		} else {
+			if (semanticsOf(otherVertex) != enums::semantics::loopBlock ||
+					(mLoopNumbers.contains(mVertexNumber[otherVertex]) && mVerticesInsideLoopBody.contains(mVertexNumber[vertex]))) {
+				addEdgeIntoGraph(vertex, otherVertex);
+			} else {
+				addEdgeIntoGraph(vertex, mVertexNumber.key(mLoopHeader[mVertexNumber[otherVertex]]));
+			}
 		}
-
-		addEdgeIntoGraph(vertex, otherVertex);
 	}
 }
