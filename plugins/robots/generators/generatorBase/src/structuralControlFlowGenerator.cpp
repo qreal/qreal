@@ -40,6 +40,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	, mCantBeGeneratedIntoStructuredCode(false)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
+	, mStartVertex(0)
 	, mIsGraphBeingConstructed(true)
 {
 }
@@ -60,12 +61,12 @@ void StructuralControlFlowGenerator::beforeSearch()
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
 	if (mIsGraphBeingConstructed) {
-		if (mIds.isEmpty()) {
-			mStartVertex = id;
-		}
-
 		if (!mIds.contains(id)) {
 			appendVertex(id);
+		}
+
+		if (!mStartVertex) {
+			mStartVertex = mVertexNumber[id];
 		}
 
 		appendEdges(id, links);
@@ -144,7 +145,7 @@ bool StructuralControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 void StructuralControlFlowGenerator::performGeneration()
 {
 	ControlFlowGeneratorBase::performGeneration();
-	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(mIds, mVertexNumber[mStartVertex], mFollowers, mVertexNumber, mVerticesNumber);
+	myUtils::IntermediateNode *tree = mStructurizator->performStructurization(mIds, mStartVertex, mFollowers, mVertexNumber, mVerticesNumber);
 
 	if (tree) {
 		obtainSemanticTree(tree);

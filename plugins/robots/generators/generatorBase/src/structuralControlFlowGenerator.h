@@ -95,7 +95,7 @@ private:
 
 	int mVerticesNumber;
 	QSet<qReal::Id> mIds;
-	qReal::Id mStartVertex;
+	int mStartVertex;
 	QMap<qReal::Id, int> mVertexNumber;
 	QMap<int, int> mLoopHeader;
 	QMap<int, QSet<int> > mFollowers;
