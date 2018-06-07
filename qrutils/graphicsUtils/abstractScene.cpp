@@ -174,6 +174,7 @@ void AbstractScene::forPressResize(QGraphicsSceneMouseEvent *event)
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
 	}
+
 	update();
 }
 
@@ -238,6 +239,7 @@ QString AbstractScene::convertPenToString(const QPen &pen)
 	default:
 		break;
 	}
+
 	return penStyle;
 }
 

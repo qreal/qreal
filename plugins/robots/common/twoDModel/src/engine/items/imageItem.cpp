@@ -24,7 +24,7 @@ using namespace twoDModel::items;
 using namespace qReal;
 using namespace graphicsUtils;
 
-ImageItem::ImageItem(const model::Image &image, const QRect &geometry)
+ImageItem::ImageItem(model::Image *image, const QRect &geometry)
 	: mImpl()
 	, mImage(image)
 {
@@ -38,7 +38,7 @@ ImageItem::ImageItem(const model::Image &image, const QRect &geometry)
 
 AbstractItem *ImageItem::clone() const
 {
-	const auto cloned = new ImageItem(model::Image(mImage), QRect(x1(), y1(), x2() - x1(), y2() - y1()));
+	const auto cloned = new ImageItem(mImage, QRect(x1(), y1(), x2() - x1(), y2() - y1()));
 	AbstractItem::copyTo(cloned);
 	return cloned;
 }
@@ -66,7 +66,7 @@ void ImageItem::drawItem(QPainter *painter, const QStyleOptionGraphicsItem *opti
 	Q_UNUSED(option);
 	Q_UNUSED(widget);
 	const qreal zoom = scene()->views().isEmpty() ? 1.0 : scene()->views().first()->transform().m11();
-	mImage.draw(*painter, calcNecessaryBoundingRect().toRect(), zoom);
+	mImage->draw(*painter, calcNecessaryBoundingRect().toRect(), zoom);
 }
 
 QPainterPath ImageItem::shape() const
@@ -81,20 +81,20 @@ QDomElement ImageItem::serialize(QDomElement &parent) const
 	QDomElement imageNode = AbstractItem::serialize(parent);
 	imageNode.setTagName("image");
 
-	mImage.serialize(imageNode);
+//	mImage.serialize(imageNode);
 	imageNode.setAttribute("rect", QString("%1:%2:%3:%4").arg(
 			QString::number(x1())
 			, QString::number(y1())
 			, QString::number(x2() - x1())
 			, QString::number(y2() - y1())));
 	imageNode.setAttribute("position", QString::number(x()) + ":" + QString::number(y()));
+	imageNode.setAttribute("imageId", mImage->imageId());
 	return imageNode;
 }
 
 void ImageItem::deserialize(const QDomElement &element)
 {
 	AbstractItem::deserialize(element);
-	mImage = model::Image::deserialize(element);
 	const QRect rect = deserializeRect(element.attribute("rect"));
 	setPos(mImpl.deserializePoint(element.attribute("position")));
 	setX1(rect.left());
@@ -103,30 +103,42 @@ void ImageItem::deserialize(const QDomElement &element)
 	setY2(rect.bottom());
 }
 
-const twoDModel::model::Image &ImageItem::image() const
+twoDModel::model::Image *ImageItem::image() const
 {
 	return mImage;
 }
 
 bool ImageItem::memorizes() const
 {
-	return !mImage.external();
+	return !mImage->external();
 }
 
 QString ImageItem::path() const
 {
-	return mImage.path();
+	return mImage->path();
 }
 
 void ImageItem::setMemorize(bool memorize)
 {
-	mImage.setExternal(!memorize);
+	mImage->setExternal(!memorize);
+	emit internalImageChanged();
 }
 
 void ImageItem::setPath(const QString &path)
 {
-	mImage.setPath(path);
+	mImage->setPath(path);
 	update();
+	emit internalImageChanged();
+}
+
+void ImageItem::setBackgroundRole(bool background)
+{
+	mBackgroundRole = background;
+}
+
+bool ImageItem::isBackground() const
+{
+	return mBackgroundRole;
 }
 
 QVariant ImageItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)

@@ -88,7 +88,7 @@ QDomDocument Model::serialize() const
 	QDomDocument save;
 	QDomElement root = save.createElement("root");
 	save.appendChild(root);
-	mWorldModel.serialize(root);
+	mWorldModel.serializeWorld(root);
 
 	QDomElement robots = save.createElement("robots");
 	for (RobotModel *robotModel : mRobotModels) {
@@ -101,11 +101,11 @@ QDomDocument Model::serialize() const
 	return save;
 }
 
-void Model::deserialize(const QDomDocument &xml)
+void Model::deserialize(const QDomDocument &wordModel, const QDomDocument &blobs)
 {
-	const QDomNodeList worldList = xml.elementsByTagName("world");
-	const QDomNodeList robotsList = xml.elementsByTagName("robots");
-	const QDomElement constraints = xml.documentElement().firstChildElement("constraints");
+	const QDomNodeList worldList = wordModel.elementsByTagName("world");
+	const QDomNodeList robotsList = wordModel.elementsByTagName("robots");
+	const QDomElement constraints = wordModel.documentElement().firstChildElement("constraints");
 
 	if (mChecker) {
 		/// @todo: should we handle if it returned false?
@@ -116,11 +116,11 @@ void Model::deserialize(const QDomDocument &xml)
 		return;
 	}
 
-	mWorldModel.deserialize(worldList.at(0).toElement());
+	mWorldModel.deserialize(worldList.at(0).toElement(), blobs.documentElement().firstChildElement("blobs"));
 
 	if (robotsList.count() != 1) {
 		// need for backward compatibility with old format
-		const QDomNodeList robotList = xml.elementsByTagName("robot");
+		const QDomNodeList robotList = wordModel.elementsByTagName("robot");
 
 		if (robotList.count() != 1) {
 			/// @todo Report error
