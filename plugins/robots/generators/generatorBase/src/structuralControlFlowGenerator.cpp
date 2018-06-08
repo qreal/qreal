@@ -277,7 +277,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 	}
 
 	case enums::semantics::loopBlock: {
-		if (ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId()) {
+		if (ifNode->exit() && ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId() || (!ifNode->exit() && ifNode->elseBranch())) {
 			ZoneNode *zone = new ZoneNode(mSemanticTree);
 			const qReal::Id loopCondition = ifNode->condition()->firstId();
 			LoopNode *innerLoop = new LoopNode(loopCondition, mSemanticTree);
@@ -291,7 +291,6 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 			} else {
 				innerLoop->bodyZone()->appendChild(transformNode(ifNode->elseBranch()));
 			}
-
 
 			zone->appendChild(innerLoop);
 			zone->appendChild(transformNode(restBranch));
