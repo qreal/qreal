@@ -35,14 +35,15 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, PrimaryControlFlowValidator &validator
 		, const Id &diagramId
 		, QObject *parent
-		, bool isThisDiagramMain)
+		, bool isThisDiagramMain
+		, Id simpleId)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
 	, mCantBeGeneratedIntoStructuredCode(false)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
 	, mStartVertex(0)
 	, mIsGraphBeingConstructed(true)
-	, mSimpleId(qReal::Id())
+	, mSimpleId(simpleId)
 {
 }
 
@@ -50,7 +51,7 @@ ControlFlowGeneratorBase *StructuralControlFlowGenerator::cloneFor(const Id &dia
 {
 	StructuralControlFlowGenerator * const copy = new StructuralControlFlowGenerator(mRepo
 			, mErrorReporter, mCustomizer, (cloneForNewDiagram ? *mValidator.clone() : mValidator)
-			, diagramId, parent(), false);
+			, diagramId, parent(), false, mSimpleId);
 
 	return copy;
 }
@@ -61,7 +62,7 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	if (mCustomizer.isInitialNode(id)) {
+	if (mSimpleId == qReal::Id()) {
 		mSimpleId = id.sameTypeId();
 	}
 
@@ -521,7 +522,9 @@ void StructuralControlFlowGenerator::appendVertex(const Id &vertex)
 
 void StructuralControlFlowGenerator::addEdgeIntoGraph(const Id &from, const Id &to)
 {
-	mFollowers[mVertexNumber[from]].insert(mVertexNumber[to]);
+	int numberFrom = mVertexNumber[from];
+	int numberTo = mVertexNumber[to];
+	mFollowers[numberFrom].insert(numberTo);
 }
 
 void StructuralControlFlowGenerator::appendEdgesAndVertices(const Id &vertex, const QList<LinkInfo> &links)

@@ -46,7 +46,7 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 		somethingChanged = false;
 
 		int t = 0;
-		while (t <= mMaxPostOrderTime && mVertices.size() > 1) {
+		while (t <= mMaxPostOrderTime && (mVertices.size() > 1 || !mFollowers[mStartVertex].isEmpty())) {
 
 			if (!checkAllStructures()) {
 				bool flag = checkAllStructures();
@@ -137,7 +137,7 @@ bool Structurizator::isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<
 	}
 
 	int u = mFollowers[v].first();
-	if (outgoingEdgesNumber(u) <= 1 && incomingEdgesNumber(u) == 1) {
+	if (outgoingEdgesNumber(u) <= 1 && incomingEdgesNumber(u) == 1 && u != v) {
 		verticesRoles["block1"] = v;
 		verticesRoles["block2"] = u;
 

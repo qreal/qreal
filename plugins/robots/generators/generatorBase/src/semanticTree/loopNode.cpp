@@ -65,6 +65,11 @@ ZoneNode *LoopNode::bodyZone()
 	return mBodyZone;
 }
 
+Id LoopNode::id() const
+{
+	return mId != qReal::Id() ? mId : mBodyZone->id();
+}
+
 QLinkedList<SemanticNode *> LoopNode::children() const
 {
 	return QLinkedList<SemanticNode *>() << mBodyZone;

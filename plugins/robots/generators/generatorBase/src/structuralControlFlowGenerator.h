@@ -39,7 +39,8 @@ public:
 			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
-			, bool isThisDiagramMain = true);
+			, bool isThisDiagramMain = true
+			, qReal::Id simpleId = qReal::Id());
 
 	/// Implementation of clone operation for structural generator
 	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
