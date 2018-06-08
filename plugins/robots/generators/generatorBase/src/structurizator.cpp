@@ -137,7 +137,7 @@ bool Structurizator::isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<
 	}
 
 	int u = mFollowers[v].first();
-	if (outgoingEdgesNumber(u) <= 1 && incomingEdgesNumber(u) == 1 && u != v) {
+	if (outgoingEdgesNumber(u) <= 1 && incomingEdgesNumber(u) == 1 && u != v && mDominators[u].contains(v)) {
 		verticesRoles["block1"] = v;
 		verticesRoles["block2"] = u;
 
@@ -156,7 +156,7 @@ bool Structurizator::isIfThenElse(int v, QSet<QPair<int, int> > &edgesToRemove, 
 
 	int u1 = mFollowers[v].first();
 	int u2 = mFollowers[v].last();
-	if (incomingEdgesNumber(u1) != 1 || incomingEdgesNumber(u2) != 1) {
+	if (incomingEdgesNumber(u1) != 1 || incomingEdgesNumber(u2) != 1 || mDominators[v].contains(u1) || mDominators[v].contains(u2)) {
 		return false;
 	}
 
@@ -198,7 +198,7 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 		elseNumber = u1;
 	}
 
-	if (thenNumber == -1 || elseNumber == v) {
+	if (thenNumber == -1 || elseNumber == v || mDominators[v].contains(elseNumber) || mDominators[v].contains(thenNumber)) {
 		return false;
 	}
 
@@ -224,6 +224,10 @@ bool Structurizator::isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 	QSet<int> vertices = {};
 	QSet<QPair<int, int> > edges = {};
 	for (const int u : mFollowers[v]) {
+		if (mDominators[v].contains(u)) {
+			return false;
+		}
+
 		if (incomingEdgesNumber(u) != 1 || outgoingEdgesNumber(u) >= 2) {
 			if (exit == -1) {
 				exit = u;
@@ -295,6 +299,10 @@ bool Structurizator::isWhileLoop(int v, QSet<QPair<int, int> > &edgesToRemove, Q
 	}
 
 	if (bodyNumber == -1) {
+		return false;
+	}
+
+	if (mDominators[v].contains(bodyNumber) || mDominators[v].contains(exitNumber)) {
 		return false;
 	}
 
