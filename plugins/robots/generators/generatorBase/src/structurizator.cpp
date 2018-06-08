@@ -90,17 +90,21 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 
 				QMap<int, QSet<int> > nodesWithExits;
 				int commonExit = -1;
-				bool isCycle = isCycleWithBreaks(v, reachUnder, nodesWithExits, commonExit);
+				bool isCycle = isCycleWithBreaks(reachUnder, nodesWithExits, commonExit);
+				QSet<int> verticesWithExits = nodesWithExits.keys().toSet();
+
 				if (!isCycle) {
 					t++;
+					appendNodesDetectedAsNodeWithExit(verticesWithExits, v);
 					continue;
 				}
 
-				if (nodesWithExits.size() > 0) {
+				if (!nodesWithExits.isEmpty() && checkNodes(verticesWithExits)) {
 					qDebug() << "Cycle with breaks";
 					reduceConditionsWithBreaks(v, nodesWithExits, commonExit);
 					t = minTime;
 					somethingChanged = true;
+					appendNodesDetectedAsNodeWithExit(verticesWithExits, v);
 					continue;
 				}
 			}
@@ -326,9 +330,9 @@ bool Structurizator::checkWhileLoopHelper(int head, int body)
 	return false;
 }
 
-bool Structurizator::isCycleWithBreaks(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
+bool Structurizator::isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
 {
-	bool result = findCommonExit(cycleHead, reachUnder, nodesWithExits, commonExit);
+	bool result = findCommonExit(reachUnder, nodesWithExits, commonExit);
 	if (!result) {
 		return false;
 	}
@@ -360,7 +364,7 @@ bool Structurizator::isHeadOfCycle(int v, QSet<int> &reachUnder)
 	return !reachUnder.isEmpty();
 }
 
-bool Structurizator::findCommonExit(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
+bool Structurizator::findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit)
 {
 	commonExit = -1;
 	QSet<int> exits;
@@ -380,8 +384,6 @@ bool Structurizator::findCommonExit(int cycleHead, QSet<int> &reachUnder, QMap<i
 			}
 		}
 	}
-
-	nodesWithExits.remove(cycleHead);
 
 	if (commonExit != -1) {
 		return true;
@@ -444,6 +446,11 @@ bool Structurizator::checkCommonExitUniqueness(int commonExit, const QMap<int, Q
 	}
 
 	return true;
+}
+
+bool Structurizator::checkNodes(const QSet<int> &verticesWithExits)
+{
+	return !mWasPreviouslyDetectedAsNodeWithExit.keys().toSet().intersects(verticesWithExits);
 }
 
 void Structurizator::reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
@@ -519,12 +526,8 @@ void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap
 	replace(appendVertex(whileNode), edgesToRemove, verticesRoles);
 }
 
-void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &nodesWithExits, int commonExit)
+void Structurizator::reduceConditionsWithBreaks(int &v, QMap<int, QSet<int> > &nodesWithExits, int commonExit)
 {
-	if (nodesWithExits.contains(v)) {
-		qDebug() << "broken assumption: head of cycle is not an exit";
-	}
-
 	for (const int u : nodesWithExits.keys()) {
 		QList<IntermediateNode *> exitBranches;
 		QSet<QPair<int, int> > edgesToRemove;
@@ -550,6 +553,10 @@ void Structurizator::reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &no
 
 		NodeWithBreaks *nodeWithBreaks = new NodeWithBreaks(mTrees[u], exitBranches, this);
 		replace(appendVertex(nodeWithBreaks), edgesToRemove, vertices);
+
+		if (u == v) {
+			v = mTrees.key(nodeWithBreaks);
+		}
 	}
 
 	// adding edge from head to common exit
@@ -565,6 +572,7 @@ void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToR
 	updatePostOrder(newNodeNumber, vertices);
 	updateDominators(newNodeNumber, vertices);
 	updateVertices(newNodeNumber, vertices);
+	removeNodesPreviouslyDetectedAsNodeWithExit(vertices);
 }
 
 void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
@@ -668,6 +676,13 @@ void Structurizator::updateVertices(int newNodeNumber, QSet<int> &vertices)
 	mVertices.insert(newNodeNumber);
 }
 
+void Structurizator::removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices)
+{
+	for (const int v : vertices) {
+		mWasPreviouslyDetectedAsNodeWithExit.remove(v);
+	}
+}
+
 void Structurizator::calculateDominators()
 {
 	for (const int u : mVertices) {
@@ -744,6 +759,13 @@ void Structurizator::dfs(int v, int &currentTime, QMap<int, bool> &used)
 
 	mPostOrder[v] = currentTime;
 	currentTime++;
+}
+
+void Structurizator::appendNodesDetectedAsNodeWithExit(QSet<int> &vertices, int cycleHead)
+{
+	for (const int v : vertices) {
+		mWasPreviouslyDetectedAsNodeWithExit[v] = cycleHead;
+	}
 }
 
 int Structurizator::appendVertex(IntermediateNode *node)

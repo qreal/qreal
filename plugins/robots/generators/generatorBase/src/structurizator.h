@@ -39,12 +39,13 @@ private:
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
 	bool checkWhileLoopHelper(int head, int body);
 
-	bool isCycleWithBreaks(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
 	bool isHeadOfCycle(int v, QSet<int> &reachUnder);
 
 
-	bool findCommonExit(int cycleHead, QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
 	bool checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int> > &nodesWithExits);
+	bool checkNodes(const QSet<int> &verticesWithExits);
 
 	void reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	void reduceIfThenElse(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
@@ -53,7 +54,7 @@ private:
 	void reduceInfiniteLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	void reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 
-	void reduceConditionsWithBreaks(int v, QMap<int, QSet<int> > &nodesWithExits, int commonExit);
+	void reduceConditionsWithBreaks(int &v, QMap<int, QSet<int> > &nodesWithExits, int commonExit);
 	void reduceSimpleIfWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 	void addAdditionalConditionWithBreak(int conditionVertex, int thenVertex, int exitVertex);
 
@@ -64,6 +65,7 @@ private:
 	void updatePostOrder(int newNodeNumber, QSet<int> &vertices);
 	void updateDominators(int newNodeNumber, QSet<int> &vertices);
 	void updateVertices(int newNodeNumber, QSet<int> &vertices);
+	void removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices);
 
 	/// methods used before structurization process
 	void calculateDominators();
@@ -72,6 +74,7 @@ private:
 	void createInitialNodesForIds();
 	void dfs(int v, int &currentTime, QMap<int, bool> &used);
 
+	void appendNodesDetectedAsNodeWithExit(QSet<int> &vertices, int cycleHead);
 	int appendVertex(myUtils::IntermediateNode *node);
 
 	int outgoingEdgesNumber(int v) const;
@@ -91,6 +94,7 @@ private:
 	QMap<VertexNumber, QVector<VertexNumber> > mPredecessors;
 	QMap<VertexNumber, QSet<VertexNumber> > mDominators;
 	QMap<VertexNumber, Time> mPostOrder;
+	QMap<VertexNumber, VertexNumber> mWasPreviouslyDetectedAsNodeWithExit;
 
 	QMap<int, myUtils::IntermediateNode *> mTrees;
 
