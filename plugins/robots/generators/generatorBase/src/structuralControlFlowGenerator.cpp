@@ -362,6 +362,17 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(myUtils::WhileN
 		default:
 			break;
 		}
+	} else if (headNode->type() == myUtils::IntermediateNode::Type::nodeWithBreaks
+					&& semanticsOf(conditionId) == enums::semantics::loopBlock) {
+		myUtils::NodeWithBreaks *nodeWitBreaks = static_cast<myUtils::NodeWithBreaks *>(headNode);
+		if (nodeWitBreaks->exitBranches().size() != 1 || nodeWitBreaks->exitBranches().first()->type() == myUtils::IntermediateNode::block) {
+			mCantBeGeneratedIntoStructuredCode = true;
+			return new SimpleNode(qReal::Id(), mSemanticTree);
+		} else {
+			semanticLoop = new LoopNode(conditionId, mSemanticTree);
+			semanticLoop->bodyZone()->appendChild(transformNode(bodyNode));
+			return semanticLoop;
+		}
 	}
 
 	semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
