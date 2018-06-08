@@ -105,6 +105,8 @@ private:
 	QSet<int> mVerticesInsideLoopBody;
 	QVector<qReal::Id> mAdditionalVertices;
 	bool mWasDoneThisIteration;
+
+	qReal::Id mSimpleId;
 };
 
 }

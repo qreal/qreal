@@ -42,6 +42,7 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 	, mVerticesNumber(0)
 	, mStartVertex(0)
 	, mIsGraphBeingConstructed(true)
+	, mSimpleId(qReal::Id())
 {
 }
 
@@ -60,6 +61,10 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
+	if (mCustomizer.isInitialNode(id)) {
+		mSimpleId = id.sameTypeId();
+	}
+
 	mWasDoneThisIteration = false;
 
 	ControlFlowGeneratorBase::visit(id, links);
@@ -538,7 +543,7 @@ void StructuralControlFlowGenerator::appendEdgesAndVertices(const Id &vertex, co
 
 		if (!mIds.contains(otherVertex)) {
 			if (semanticsOf(otherVertex) == enums::semantics::loopBlock) {
-				const qReal::Id loopHeader = qReal::Id();
+				const qReal::Id loopHeader = mSimpleId.sameTypeId();
 				mAdditionalVertices.push_back(loopHeader);
 				appendVertex(loopHeader);
 				appendVertex(otherVertex);
