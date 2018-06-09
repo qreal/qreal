@@ -3,7 +3,7 @@
 #include <QQueue>
 
 using namespace generatorBase;
-using namespace myUtils;
+using namespace structurizatorNodes;
 
 SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)

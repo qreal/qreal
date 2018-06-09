@@ -7,7 +7,7 @@
 #include <generatorBase/semanticTree/semanticTree.h>
 
 namespace generatorBase {
-namespace myUtils {
+namespace structurizatorNodes {
 
 class IntermediateNode : public QObject {
 

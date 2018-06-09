@@ -3,7 +3,7 @@
 #include <QQueue>
 
 using namespace generatorBase;
-using namespace myUtils;
+using namespace structurizatorNodes;
 
 Structurizator::Structurizator(QObject *parent)
 	: QObject(parent)

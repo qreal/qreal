@@ -36,7 +36,7 @@ public:
 	explicit Structurizator(QObject *parent = 0);
 
 	/// main function that performs structurization
-	myUtils::IntermediateNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
+	structurizatorNodes::IntermediateNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
 														, const QMap<int, QSet<int>> &followers, const QMap<qReal::Id, int> &vertexNumber
 														, int verticesNumber);
 
@@ -100,7 +100,7 @@ private:
 
 	void appendNodesDetectedAsNodeWithExit(QSet<int> &vertices, int cycleHead);
 	void removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices);
-	int appendVertex(myUtils::IntermediateNode *node);
+	int appendVertex(structurizatorNodes::IntermediateNode *node);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
@@ -116,7 +116,7 @@ private:
 	QMap<VertexNumber, Time> mPostOrder;
 	QMap<VertexNumber, VertexNumber> mWasPreviouslyDetectedAsNodeWithExit;
 
-	QMap<int, myUtils::IntermediateNode *> mTrees;
+	QMap<int, structurizatorNodes::IntermediateNode *> mTrees;
 
 	QSet<qReal::Id> mInitialIds;
 	int mVerticesNumber;
