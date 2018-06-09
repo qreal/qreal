@@ -1,4 +1,4 @@
-/* Copyright 2017 QReal Research Group
+/* Copyright 2018 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,25 +88,30 @@ private:
 	bool applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule) override;
 
 	void performStructurization();
-	void obtainSemanticTree(structurizatorNodes::IntermediateNode *root);
+	void obtainSemanticTree(sn::IntermediateNode *root);
 
 	/// helper method for ZoneNode
-	void checkAndAppendBlock(semantics::ZoneNode *zone, structurizatorNodes::IntermediateNode *node);
+	void checkAndAppendBlock(semantics::ZoneNode *zone, sn::IntermediateNode *node);
 
 	/// transformation methods
-	semantics::SemanticNode *transformNode(structurizatorNodes::IntermediateNode *node);
-	semantics::SemanticNode *transformSimple(structurizatorNodes::SimpleNode *simpleNode);
-	semantics::SemanticNode *transformBlock(structurizatorNodes::BlockNode *blockNode);
-	semantics::SemanticNode *transformIfThenElse(structurizatorNodes::IfNode *ifNode);
-	semantics::SemanticNode *transformSelfLoop(structurizatorNodes::SelfLoopNode *selfLoopNode);
-	semantics::SemanticNode *transformWhileLoop(structurizatorNodes::WhileNode *whileNode);
-	semantics::SemanticNode *transformSwitch(structurizatorNodes::SwitchNode *switchNode);
+	semantics::SemanticNode *transformNode(sn::IntermediateNode *node);
+	semantics::SemanticNode *transformSimple(sn::SimpleNode *simpleNode);
+	semantics::SemanticNode *transformBlock(sn::BlockNode *blockNode);
+	semantics::SemanticNode *transformIfThenElse(sn::IfNode *ifNode);
+	semantics::SemanticNode *transformSelfLoop(sn::SelfLoopNode *selfLoopNode);
+	semantics::SemanticNode *transformWhileLoop(sn::WhileNode *whileNode);
+	semantics::SemanticNode *transformSwitch(sn::SwitchNode *switchNode);
 	semantics::SemanticNode *transformBreakNode();
 
 	/// helper functions
-	semantics::SemanticNode *createConditionWithBreaks(structurizatorNodes::NodeWithBreaks *nodeWithBreaks);
-	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId, structurizatorNodes::IntermediateNode *thenNode, structurizatorNodes::IntermediateNode *elseNode);
-	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId, const QList<structurizatorNodes::IntermediateNode *> &branches, bool generateIfs);
+	semantics::SemanticNode *createConditionWithBreaks(sn::NodeWithBreaks *nodeWithBreaks);
+	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId
+			, sn::IntermediateNode *thenNode
+			, sn::IntermediateNode *elseNode);
+
+	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId
+			, const QList<sn::IntermediateNode *> &branches
+			, bool generateIfs);
 
 	/// methods for building graph
 	void appendVertex(const qReal::Id &vertex);

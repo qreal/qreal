@@ -137,7 +137,8 @@ bool StructuralControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 void StructuralControlFlowGenerator::performGeneration()
 {
 	ControlFlowGeneratorBase::performGeneration();
-	structurizatorNodes::IntermediateNode *tree = mStructurizator->performStructurization(mIds, mStartVertex, mFollowers, mVertexNumber, mVerticesNumber);
+	sn::IntermediateNode *tree = mStructurizator->performStructurization(mIds,
+				mStartVertex, mFollowers, mVertexNumber, mVerticesNumber);
 
 	if (tree) {
 		obtainSemanticTree(tree);
@@ -161,17 +162,17 @@ bool StructuralControlFlowGenerator::applyRuleWhileVisiting(SemanticTransformati
 	return false;
 }
 
-void StructuralControlFlowGenerator::obtainSemanticTree(structurizatorNodes::IntermediateNode *root)
+void StructuralControlFlowGenerator::obtainSemanticTree(sn::IntermediateNode *root)
 {
 	root->analyzeBreak();
 	SemanticNode * semanticNode = transformNode(root);
 	mSemanticTree->setRoot(new RootNode(semanticNode, mSemanticTree));
 }
 
-void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, structurizatorNodes::IntermediateNode *node)
+void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, sn::IntermediateNode *node)
 {
-	if (node->type() == structurizatorNodes::IntermediateNode::simple) {
-		structurizatorNodes::SimpleNode *simpleNode = static_cast<structurizatorNodes::SimpleNode *>(node);
+	if (node->type() == sn::IntermediateNode::simple) {
+		sn::SimpleNode *simpleNode = static_cast<sn::SimpleNode *>(node);
 
 		switch (semanticsOf(simpleNode->id())) {
 		case enums::semantics::conditionalBlock:
@@ -187,45 +188,45 @@ void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, structu
 }
 
 // maybe use strategy to recursively handle this situation?
-SemanticNode *StructuralControlFlowGenerator::transformNode(structurizatorNodes::IntermediateNode *node)
+SemanticNode *StructuralControlFlowGenerator::transformNode(sn::IntermediateNode *node)
 {
 	switch (node->type()) {
-	case structurizatorNodes::IntermediateNode::Type::simple: {
-		structurizatorNodes::SimpleNode *simpleNode = static_cast<structurizatorNodes::SimpleNode *>(node);
+	case sn::IntermediateNode::Type::simple: {
+		sn::SimpleNode *simpleNode = static_cast<sn::SimpleNode *>(node);
 		return transformSimple(simpleNode);
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::block: {
-		structurizatorNodes::BlockNode *blockNode = static_cast<structurizatorNodes::BlockNode *>(node);
+	case sn::IntermediateNode::Type::block: {
+		sn::BlockNode *blockNode = static_cast<sn::BlockNode *>(node);
 		return transformBlock(blockNode);
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::ifThenElseCondition: {
-		structurizatorNodes::IfNode *ifNode = static_cast<structurizatorNodes::IfNode *>(node);
+	case sn::IntermediateNode::Type::ifThenElseCondition: {
+		sn::IfNode *ifNode = static_cast<sn::IfNode *>(node);
 		return transformIfThenElse(ifNode);
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::switchCondition: {
-		structurizatorNodes::SwitchNode *switchNode = static_cast<structurizatorNodes::SwitchNode *>(node);
+	case sn::IntermediateNode::Type::switchCondition: {
+		sn::SwitchNode *switchNode = static_cast<sn::SwitchNode *>(node);
 		return transformSwitch(switchNode);
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::infiniteloop: {
-		structurizatorNodes::SelfLoopNode *selfLoopNode = static_cast<structurizatorNodes::SelfLoopNode *>(node);
+	case sn::IntermediateNode::Type::infiniteloop: {
+		sn::SelfLoopNode *selfLoopNode = static_cast<sn::SelfLoopNode *>(node);
 		return transformSelfLoop(selfLoopNode);
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::whileloop: {
-		structurizatorNodes::WhileNode *whileNode = static_cast<structurizatorNodes::WhileNode *>(node);
+	case sn::IntermediateNode::Type::whileloop: {
+		sn::WhileNode *whileNode = static_cast<sn::WhileNode *>(node);
 		return transformWhileLoop(whileNode);
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::breakNode: {
+	case sn::IntermediateNode::Type::breakNode: {
 		return transformBreakNode();
 	}
 
-	case structurizatorNodes::IntermediateNode::Type::nodeWithBreaks: {
-		return createConditionWithBreaks(static_cast<structurizatorNodes::NodeWithBreaks *>(node));
+	case sn::IntermediateNode::Type::nodeWithBreaks: {
+		return createConditionWithBreaks(static_cast<sn::NodeWithBreaks *>(node));
 	}
 
 	default:
@@ -235,12 +236,12 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(structurizatorNodes:
 	}
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformSimple(structurizatorNodes::SimpleNode *simpleNode)
+SemanticNode *StructuralControlFlowGenerator::transformSimple(sn::SimpleNode *simpleNode)
 {
 	return mSemanticTree->produceNodeFor(simpleNode->id());
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformBlock(structurizatorNodes::BlockNode *blockNode)
+SemanticNode *StructuralControlFlowGenerator::transformBlock(sn::BlockNode *blockNode)
 {
 	ZoneNode *zone = new ZoneNode(mSemanticTree);
 	checkAndAppendBlock(zone, blockNode->firstNode());
@@ -249,10 +250,10 @@ SemanticNode *StructuralControlFlowGenerator::transformBlock(structurizatorNodes
 	return zone;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(structurizatorNodes::IfNode *ifNode)
+SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(sn::IfNode *ifNode)
 {
-	if (ifNode->condition()->type() == structurizatorNodes::IntermediateNode::nodeWithBreaks) {
-		structurizatorNodes::NodeWithBreaks *nodeWithBreaks = static_cast<structurizatorNodes::NodeWithBreaks *>(ifNode->condition());
+	if (ifNode->condition()->type() == sn::IntermediateNode::nodeWithBreaks) {
+		sn::NodeWithBreaks *nodeWithBreaks = static_cast<sn::NodeWithBreaks *>(ifNode->condition());
 		nodeWithBreaks->setRestBranches({ifNode->thenBranch(), ifNode->elseBranch()});
 		return createConditionWithBreaks(nodeWithBreaks);
 	}
@@ -266,7 +267,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(structurizator
 	}
 
 	case enums::semantics::switchBlock: {
-		QList<structurizatorNodes::IntermediateNode *> branches = { ifNode->thenBranch() };
+		QList<sn::IntermediateNode *> branches = { ifNode->thenBranch() };
 
 		if (ifNode->elseBranch()) {
 			branches.append(ifNode->elseBranch());
@@ -276,13 +277,14 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(structurizator
 	}
 
 	case enums::semantics::loopBlock: {
-		if ((ifNode->exit() && ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId()) || (!ifNode->exit() && ifNode->elseBranch())) {
+		if ((ifNode->exit() && ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId())
+				|| (!ifNode->exit() && ifNode->elseBranch())) {
 			ZoneNode *zone = new ZoneNode(mSemanticTree);
 			const qReal::Id loopCondition = ifNode->condition()->firstId();
 			LoopNode *innerLoop = new LoopNode(loopCondition, mSemanticTree);
 
 			QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(loopCondition);
-			structurizatorNodes::IntermediateNode *restBranch = ifNode->thenBranch();
+			sn::IntermediateNode *restBranch = ifNode->thenBranch();
 
 			if (ifNode->thenBranch()->firstId() == loopBranches.first.target) {
 				innerLoop->bodyZone()->appendChild(transformNode(ifNode->thenBranch()));
@@ -306,23 +308,23 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(structurizator
 	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformSelfLoop(structurizatorNodes::SelfLoopNode *selfLoopNode)
+SemanticNode *StructuralControlFlowGenerator::transformSelfLoop(sn::SelfLoopNode *selfLoopNode)
 {
 	LoopNode *semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
 	semanticLoop->bodyZone()->appendChild(transformNode(selfLoopNode->bodyNode()));
 	return semanticLoop;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(structurizatorNodes::WhileNode *whileNode)
+SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(sn::WhileNode *whileNode)
 {
-	structurizatorNodes::IntermediateNode *headNode = whileNode->headNode();
-	structurizatorNodes::IntermediateNode *bodyNode = whileNode->bodyNode();
-	structurizatorNodes::IntermediateNode *exitNode = whileNode->exitNode();
+	sn::IntermediateNode *headNode = whileNode->headNode();
+	sn::IntermediateNode *bodyNode = whileNode->bodyNode();
+	sn::IntermediateNode *exitNode = whileNode->exitNode();
 
 	LoopNode *semanticLoop = nullptr;
 	const qReal::Id conditionId = headNode->firstId();
 
-	if (headNode->type() == structurizatorNodes::IntermediateNode::Type::simple) {
+	if (headNode->type() == sn::IntermediateNode::Type::simple) {
 		switch (semanticsOf(conditionId)) {
 		case enums::semantics::conditionalBlock: {
 			if (ifBranchesFor(conditionId).first.target == bodyNode->firstId()) {
@@ -345,10 +347,10 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(structurizatorN
 		}
 
 		case enums::semantics::switchBlock: {
-			QList<structurizatorNodes::IntermediateNode *> exitBranches;
-			exitBranches.append(new structurizatorNodes::BreakNode(exitNode->firstId(), mStructurizator));
+			QList<sn::IntermediateNode *> exitBranches;
+			exitBranches.append(new sn::BreakNode(exitNode->firstId(), mStructurizator));
 
-			structurizatorNodes::NodeWithBreaks *nodeWithBreaks = new structurizatorNodes::NodeWithBreaks(headNode, exitBranches, mStructurizator);
+			sn::NodeWithBreaks *nodeWithBreaks = new sn::NodeWithBreaks(headNode, exitBranches, mStructurizator);
 			nodeWithBreaks->setRestBranches( { bodyNode } );
 
 			semanticLoop = new LoopNode(qReal::Id(), mSemanticTree);
@@ -359,10 +361,11 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(structurizatorN
 		default:
 			break;
 		}
-	} else if (headNode->type() == structurizatorNodes::IntermediateNode::Type::nodeWithBreaks
+	} else if (headNode->type() == sn::IntermediateNode::Type::nodeWithBreaks
 					&& semanticsOf(conditionId) == enums::semantics::loopBlock) {
-		structurizatorNodes::NodeWithBreaks *nodeWitBreaks = static_cast<structurizatorNodes::NodeWithBreaks *>(headNode);
-		if (nodeWitBreaks->exitBranches().size() != 1 || nodeWitBreaks->exitBranches().first()->type() == structurizatorNodes::IntermediateNode::block) {
+		sn::NodeWithBreaks *nodeWitBreaks = static_cast<sn::NodeWithBreaks *>(headNode);
+		if (nodeWitBreaks->exitBranches().size() != 1 ||
+					nodeWitBreaks->exitBranches().first()->type() == sn::IntermediateNode::block) {
 			mCantBeGeneratedIntoStructuredCode = true;
 			return new SimpleNode(qReal::Id(), mSemanticTree);
 		} else {
@@ -378,13 +381,13 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(structurizatorN
 	return semanticLoop;
 }
 
-SemanticNode *StructuralControlFlowGenerator::transformSwitch(structurizatorNodes::SwitchNode *switchNode)
+SemanticNode *StructuralControlFlowGenerator::transformSwitch(sn::SwitchNode *switchNode)
 {
 	const qReal::Id &conditionId = switchNode->condition()->firstId();
-	QList<structurizatorNodes::IntermediateNode *> branches = switchNode->branches();
+	QList<sn::IntermediateNode *> branches = switchNode->branches();
 
-	if (switchNode->condition()->type() == structurizatorNodes::IntermediateNode::nodeWithBreaks) {
-		structurizatorNodes::NodeWithBreaks *nodeWithBreaks = static_cast<structurizatorNodes::NodeWithBreaks *>(switchNode->condition());
+	if (switchNode->condition()->type() == sn::IntermediateNode::nodeWithBreaks) {
+		sn::NodeWithBreaks *nodeWithBreaks = static_cast<sn::NodeWithBreaks *>(switchNode->condition());
 		nodeWithBreaks->setRestBranches(branches);
 		return createConditionWithBreaks(nodeWithBreaks);
 	}
@@ -403,12 +406,12 @@ SemanticNode *StructuralControlFlowGenerator::transformBreakNode()
 	return semantics::SimpleNode::createBreakNode(mSemanticTree);
 }
 
-SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(structurizatorNodes::NodeWithBreaks *nodeWithBreaks)
+SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(sn::NodeWithBreaks *nodeWithBreaks)
 {
 	const qReal::Id conditionId = nodeWithBreaks->firstId();
 
-	QList<structurizatorNodes::IntermediateNode *> exitBranches = nodeWithBreaks->exitBranches();
-	QList<structurizatorNodes::IntermediateNode *> restBranches = nodeWithBreaks->restBranches();
+	QList<sn::IntermediateNode *> exitBranches = nodeWithBreaks->exitBranches();
+	QList<sn::IntermediateNode *> restBranches = nodeWithBreaks->restBranches();
 
 	switch(semanticsOf(conditionId)) {
 	case enums::semantics::conditionalBlock: {
@@ -416,12 +419,12 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(structur
 	}
 
 	case enums::semantics::switchBlock: {
-		QList<structurizatorNodes::IntermediateNode *> allBranches = restBranches + exitBranches;
+		QList<sn::IntermediateNode *> allBranches = restBranches + exitBranches;
 		return createSemanticSwitchNode(conditionId, allBranches, true);
 	}
 
 	case enums::semantics::loopBlock: {
-		if (exitBranches.size() != 1 || exitBranches.first()->type() == structurizatorNodes::IntermediateNode::Type::breakNode) {
+		if (exitBranches.size() != 1 || exitBranches.first()->type() == sn::IntermediateNode::Type::breakNode) {
 			break;
 		}
 
@@ -439,14 +442,15 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(structur
 	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
 
-SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &conditionId, structurizatorNodes::IntermediateNode *thenNode, structurizatorNodes::IntermediateNode *elseNode)
+SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &conditionId,
+		sn::IntermediateNode *thenNode, sn::IntermediateNode *elseNode)
 {
 	IfNode *semanticIf = new IfNode(conditionId, mSemanticTree);
 	QPair<LinkInfo, LinkInfo> links = ifBranchesFor(conditionId);
 
 	if (links.first.target != thenNode->firstId()) {
 		if (elseNode) {
-			structurizatorNodes::IntermediateNode *tmp = thenNode;
+			sn::IntermediateNode *tmp = thenNode;
 			thenNode = elseNode;
 			elseNode = tmp;
 		} else {
@@ -463,7 +467,8 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &con
 	return semanticIf;
 }
 
-SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id &conditionId, const QList<structurizatorNodes::IntermediateNode *> &branches, bool generateIfs)
+SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id &conditionId
+		, const QList<sn::IntermediateNode *> &branches, bool generateIfs)
 {
 	SwitchNode *semanticSwitch = new SwitchNode(conditionId, mSemanticTree);
 
@@ -479,7 +484,7 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticSwitchNode(const Id 
 		} else {
 			bool branchNodeWasFound = false;
 			SemanticNode *semanticNodeForBranch = nullptr;
-			for (structurizatorNodes::IntermediateNode *branchNode : branches) {
+			for (sn::IntermediateNode *branchNode : branches) {
 				if (branchNode->firstId() == otherVertex) {
 					semanticNodeForBranch = transformNode(branchNode);
 					branchNodeWasFound = true;
@@ -549,7 +554,8 @@ void StructuralControlFlowGenerator::appendEdgesAndVertices(const Id &vertex, co
 			}
 		} else {
 			if (semanticsOf(otherVertex) != enums::semantics::loopBlock ||
-					(mLoopNumbers.contains(mVertexNumber[otherVertex]) && mVerticesInsideLoopBody.contains(mVertexNumber[vertex]))) {
+						(mLoopNumbers.contains(mVertexNumber[otherVertex])
+						&& mVerticesInsideLoopBody.contains(mVertexNumber[vertex]))) {
 				addEdgeIntoGraph(vertex, otherVertex);
 			} else {
 				addEdgeIntoGraph(vertex, mVertexNumber.key(mLoopHeader[mVertexNumber[otherVertex]]));

@@ -430,9 +430,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 	return new converters::TypeConverter(pathsToTemplates());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(const QStringList &values, bool generateIf) const
+Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(const QStringList &values
+		, bool generateIf) const
 {
-	return new converters::SwitchConditionsMerger(pathsToTemplates(), reservedVariableNameConverter(), values, generateIf);
+	return new converters::SwitchConditionsMerger(pathsToTemplates(), reservedVariableNameConverter()
+			, values, generateIf);
 }
 
 QString GeneratorFactoryBase::initCode()

@@ -1,9 +1,23 @@
+/* Copyright 2018 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #include "structurizator.h"
 
 #include <QQueue>
 
 using namespace generatorBase;
-using namespace structurizatorNodes;
+using namespace sn;
 
 Structurizator::Structurizator(QObject *parent)
 	: QObject(parent)
@@ -14,8 +28,7 @@ Structurizator::Structurizator(QObject *parent)
 }
 
 IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
-															, const QMap<int, QSet<int> > &followers, const QMap<qReal::Id, int> &vertexNumber
-															, int verticesNumber)
+		, const QMap<int, QSet<int> > &followers, const QMap<qReal::Id, int> &vertexNumber, int verticesNumber)
 {
 	for (const qReal::Id &id : verticesIds) {
 		mInitialIds.insert(id);
@@ -136,7 +149,8 @@ bool Structurizator::isIfThenElse(int v, QSet<QPair<int, int> > &edgesToRemove, 
 
 	int u1 = mFollowers[v].first();
 	int u2 = mFollowers[v].last();
-	if (incomingEdgesNumber(u1) != 1 || incomingEdgesNumber(u2) != 1 || mDominators[v].contains(u1) || mDominators[v].contains(u2)) {
+	if (incomingEdgesNumber(u1) != 1 || incomingEdgesNumber(u2) != 1 || mDominators[v].contains(u1)
+			|| mDominators[v].contains(u2)) {
 		return false;
 	}
 
@@ -178,7 +192,8 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap
 		elseNumber = u1;
 	}
 
-	if (thenNumber == -1 || elseNumber == v || mDominators[v].contains(elseNumber) || mDominators[v].contains(thenNumber)) {
+	if (thenNumber == -1 || elseNumber == v || mDominators[v].contains(elseNumber)
+			|| mDominators[v].contains(thenNumber)) {
 		return false;
 	}
 
@@ -468,7 +483,8 @@ void Structurizator::reduceIfThen(QSet<QPair<int, int> > &edgesToRemove, QMap<QS
 		verticesRoles.remove("exit");
 	}
 
-	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]], mTrees[verticesRoles["then"]], nullptr, exit, this);
+	IfNode *ifNode = new IfNode(mTrees[verticesRoles["condition"]],
+			mTrees[verticesRoles["then"]], nullptr, exit, this);
 	replace(appendVertex(ifNode), edgesToRemove, verticesRoles);
 }
 
@@ -505,7 +521,8 @@ void Structurizator::reduceInfiniteLoop(QSet<QPair<int, int> > &edgesToRemove, Q
 
 void Structurizator::reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
 {
-	WhileNode *whileNode = new WhileNode(mTrees[verticesRoles["head"]], mTrees[verticesRoles["body"]], mTrees[verticesRoles["exit"]], this);
+	WhileNode *whileNode = new WhileNode(mTrees[verticesRoles["head"]]
+			, mTrees[verticesRoles["body"]], mTrees[verticesRoles["exit"]], this);
 
 	verticesRoles.remove("exit");
 	replace(appendVertex(whileNode), edgesToRemove, verticesRoles);
@@ -560,7 +577,8 @@ void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToR
 	removeNodesPreviouslyDetectedAsNodeWithExit(vertices);
 }
 
-void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
+void Structurizator::replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove,
+		QMap<QString, int> &verticesRoles)
 {
 	QSet<int> vertices = verticesRoles.values().toSet();
 	replace(newNodeNumber, edgesToRemove, vertices);

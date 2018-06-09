@@ -1,3 +1,17 @@
+/* Copyright 2018 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <qrkernel/ids.h>
@@ -36,17 +50,16 @@ public:
 	explicit Structurizator(QObject *parent = 0);
 
 	/// main function that performs structurization
-	structurizatorNodes::IntermediateNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
-														, const QMap<int, QSet<int>> &followers, const QMap<qReal::Id, int> &vertexNumber
-														, int verticesNumber);
+	sn::IntermediateNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
+			, const QMap<int, QSet<int>> &followers, const QMap<qReal::Id, int> &vertexNumber, int verticesNumber);
 
 private:
 	typedef int Time;
 	typedef int VertexNumber;
 
 	/// methods to identify patterns for structural analysis
-	/// @param edgesToRemove -- passed by reference.
-	/// @param verticesRoles -- passed by reference.
+	/// @arg edgesToRemove -- passed by reference.
+	/// @arg verticesRoles -- passed by reference.
 	bool isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	bool isIfThenElse(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
 	bool isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
@@ -60,8 +73,8 @@ private:
 
 	/// functions for identifying loops that have "obstructive" vertices with edges going outside loop to EXIT.
 	/// EXIT --- is a vertex to which control is transfered after loop execution.
-	/// the main idea is to remove such vertices and edges substituting them with new vertices of class NodeWithBreaks
-	/// NodeWithBreaks subclass remembers actions to perform before Break.
+	/// the main idea is to remove such vertices and edges substituting them with new vertices
+	/// of class NodeWithBreaks which remember actions to perform before Break.
 	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
 	bool isHeadOfCycle(int v, QSet<int> &reachUnder);
 	bool findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
@@ -70,8 +83,9 @@ private:
 	bool checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int> > &nodesWithExits);
 
 	/// Vertices with exits must belong only to one loop.
-	/// This limitation was introduced in order to forbid situation of nested loops when break nodes belong to inner one,
-	/// because in general such a situation is resolved with introducing new flag-variables.
+	/// This limitation was introduced in order to forbid situation of nested loops when break
+	/// nodes belong to inner one, because in general such a situation is resolved with
+	/// introducing new flag-variables.
 	bool checkNodes(const QSet<int> &verticesWithExits);
 
 	/// methods for reducing recognised pattern
@@ -100,7 +114,7 @@ private:
 
 	void appendNodesDetectedAsNodeWithExit(QSet<int> &vertices, int cycleHead);
 	void removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices);
-	int appendVertex(structurizatorNodes::IntermediateNode *node);
+	int appendVertex(sn::IntermediateNode *node);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
@@ -116,7 +130,7 @@ private:
 	QMap<VertexNumber, Time> mPostOrder;
 	QMap<VertexNumber, VertexNumber> mWasPreviouslyDetectedAsNodeWithExit;
 
-	QMap<int, structurizatorNodes::IntermediateNode *> mTrees;
+	QMap<int, sn::IntermediateNode *> mTrees;
 
 	QSet<qReal::Id> mInitialIds;
 	int mVerticesNumber;

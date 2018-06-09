@@ -218,7 +218,8 @@ public:
 
 	/// Returns a pointer to a converter that makes one composite switch enumeration block from a set
 	/// of their values. Accepts an expression that will be compared to @arg values.
-	virtual simple::Binding::ConverterInterface *switchConditionsMerger(const QStringList &values, bool generateIf) const;
+	virtual simple::Binding::ConverterInterface *switchConditionsMerger(const QStringList &values
+			, bool generateIf) const;
 
 	// ------------------------- Init-terminate code ---------------------------
 

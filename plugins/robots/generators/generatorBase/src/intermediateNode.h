@@ -1,3 +1,17 @@
+/* Copyright 2018 QReal Research Group
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License. */
+
 #pragma once
 
 #include <qrrepo/repoApi.h>
@@ -9,7 +23,8 @@
 namespace generatorBase {
 namespace structurizatorNodes {
 
-class IntermediateNode : public QObject {
+class IntermediateNode : public QObject
+{
 
 	Q_OBJECT
 
@@ -38,7 +53,8 @@ protected:
 	bool mBreakWasAnalyzed;
 };
 
-class SimpleNode : public IntermediateNode {
+class SimpleNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
@@ -54,7 +70,8 @@ private:
 	const qReal::Id mId;
 };
 
-class BreakNode : public IntermediateNode {
+class BreakNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
@@ -69,12 +86,14 @@ private:
 	const qReal::Id mId;
 };
 
-class IfNode : public IntermediateNode {
+class IfNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
 public:
-	explicit IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch, IntermediateNode *exit, QObject *parent);
+	explicit IfNode(IntermediateNode *condition, IntermediateNode *thenBranch, IntermediateNode *elseBranch
+			, IntermediateNode *exit, QObject *parent);
 
 	IntermediateNode *condition() const;
 	IntermediateNode *thenBranch() const;
@@ -92,12 +111,14 @@ private:
 };
 
 
-class NodeWithBreaks : public IntermediateNode {
+class NodeWithBreaks : public IntermediateNode
+{
 
 	Q_OBJECT
 
 public:
-	explicit NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches, QObject *parent);
+	explicit NodeWithBreaks(IntermediateNode *condition, QList<IntermediateNode *> &exitBranches
+			, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> exitBranches() const;
@@ -113,12 +134,14 @@ private:
 	QList<IntermediateNode *> mRestBranches;
 };
 
-class SwitchNode : public IntermediateNode {
+class SwitchNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
 public:
-	explicit SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches, IntermediateNode *exit, QObject *parent);
+	explicit SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches
+			, IntermediateNode *exit, QObject *parent);
 
 	IntermediateNode *condition() const;
 	QList<IntermediateNode *> branches() const;
@@ -134,7 +157,8 @@ private:
 };
 
 
-class BlockNode : public IntermediateNode {
+class BlockNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
@@ -152,12 +176,14 @@ private:
 	IntermediateNode *mSecondNode;
 };
 
-class WhileNode : public IntermediateNode {
+class WhileNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
 public:
-	explicit WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode, QObject *parent);
+	explicit WhileNode(IntermediateNode *headNode, IntermediateNode *bodyNode, IntermediateNode *exitNode
+			, QObject *parent);
 
 	IntermediateNode *headNode() const;
 	IntermediateNode *bodyNode() const;
@@ -173,7 +199,8 @@ private:
 };
 
 
-class SelfLoopNode : public IntermediateNode {
+class SelfLoopNode : public IntermediateNode
+{
 
 	Q_OBJECT
 
@@ -190,4 +217,6 @@ private:
 };
 
 }
+
+namespace sn = structurizatorNodes;
 }
