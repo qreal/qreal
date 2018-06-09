@@ -28,7 +28,8 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, const QString &generatorName);
+			, const QString &generatorName
+			, bool supportsSwitchGeneration);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
@@ -36,6 +37,7 @@ public:
 
 private:
 	Ev3RbfGeneratorFactory mFactory;
+	bool mSupportsSwitchGeneration;
 };
 
 }

@@ -33,7 +33,7 @@ NxtMasterGeneratorBase::NxtMasterGeneratorBase(const qrRepo::RepoApi &repo
 
 generatorBase::GeneratorCustomizer *NxtMasterGeneratorBase::createCustomizer()
 {
-	return new NxtGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+	return new NxtGeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor(), mGeneratorName, supportsSwitchCaseGeneration());
 }
 
 void NxtMasterGeneratorBase::beforeGeneration()

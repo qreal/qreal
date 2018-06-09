@@ -20,8 +20,10 @@ Ev3GeneratorCustomizer::Ev3GeneratorCustomizer(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, const QString &generatorName)
+		, const QString &generatorName
+		, bool supportsSwitchGeneration)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
+	, mSupportsSwitchGeneration(supportsSwitchGeneration)
 {
 }
 
@@ -32,5 +34,5 @@ generatorBase::GeneratorFactoryBase *Ev3GeneratorCustomizer::factory()
 
 bool Ev3GeneratorCustomizer::supportsSwitchGeneration() const
 {
-	return false;
+	return mSupportsSwitchGeneration;
 }

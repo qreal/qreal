@@ -23,7 +23,8 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName
-		, GotoLabelManager &gotoLabelManager)
+		, GotoLabelManager &gotoLabelManager
+		, bool supportsSwitchGeneration)
 	: mFactory(
 			new PioneerLuaGeneratorFactory(
 					repo
@@ -32,8 +33,8 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 					, luaProcessor
 					, generatorName
 					, gotoLabelManager
-			)
-	)
+			))
+	, mSupportsSwitchGeneration(supportsSwitchGeneration)
 {
 }
 
@@ -44,5 +45,5 @@ generatorBase::GeneratorFactoryBase *PioneerLuaGeneratorCustomizer::factory()
 
 bool PioneerLuaGeneratorCustomizer::supportsSwitchGeneration() const
 {
-	return false;
+	return mSupportsSwitchGeneration;
 }

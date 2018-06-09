@@ -33,7 +33,8 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
 			, const QString &generatorName
-			, GotoLabelManager &gotoLabelManager);
+			, GotoLabelManager &gotoLabelManager
+			, bool supportsSwitchGeneration);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
@@ -42,6 +43,7 @@ public:
 private:
 	/// Factory that creates simple generators for Pioneer-specific blocks.
 	QScopedPointer<PioneerLuaGeneratorFactory> mFactory;
+	bool mSupportsSwitchGeneration;
 };
 
 }

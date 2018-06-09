@@ -42,6 +42,11 @@ bool TrikFSharpMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
+bool TrikFSharpMasterGenerator::supportsSwitchCaseGeneration() const
+{
+	return false;
+}
+
 generatorBase::PrimaryControlFlowValidator *TrikFSharpMasterGenerator::createValidator()
 {
 	return new TrikFSharpControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);

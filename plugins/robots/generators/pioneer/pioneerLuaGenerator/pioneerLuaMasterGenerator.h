@@ -51,6 +51,7 @@ private:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+	bool supportsSwitchCaseGeneration() const override;
 
 	void beforeGeneration() override;
 	QString generate(const QString &indentString) override;

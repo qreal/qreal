@@ -40,6 +40,11 @@ bool TrikPythonMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
+bool TrikPythonMasterGenerator::supportsSwitchCaseGeneration() const
+{
+	return false;
+}
+
 generatorBase::PrimaryControlFlowValidator *TrikPythonMasterGenerator::createValidator()
 {
 	return new TrikPythonControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);

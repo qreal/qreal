@@ -35,6 +35,7 @@ public:
 protected:
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
+	bool supportsSwitchCaseGeneration() const override;
 
 	void afterGeneration() override;
 

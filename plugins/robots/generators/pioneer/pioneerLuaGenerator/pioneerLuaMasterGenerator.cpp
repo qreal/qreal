@@ -83,7 +83,8 @@ generatorBase::GeneratorCustomizer *PioneerLuaMasterGenerator::createCustomizer(
 			, mRobotModelManager
 			, *createLuaProcessor()
 			, mGeneratorName
-			, *mGotoLabelManager);
+			, *mGotoLabelManager
+			, supportsSwitchCaseGeneration());
 }
 
 QString PioneerLuaMasterGenerator::targetPath()
@@ -94,6 +95,11 @@ QString PioneerLuaMasterGenerator::targetPath()
 bool PioneerLuaMasterGenerator::supportsGotoGeneration() const
 {
 	return true;
+}
+
+bool PioneerLuaMasterGenerator::supportsSwitchCaseGeneration() const
+{
+	return false;
 }
 
 void PioneerLuaMasterGenerator::beforeGeneration()

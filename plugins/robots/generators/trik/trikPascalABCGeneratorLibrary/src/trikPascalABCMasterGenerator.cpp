@@ -40,6 +40,11 @@ bool TrikPascalABCMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
+bool TrikPascalABCMasterGenerator::supportsSwitchCaseGeneration() const
+{
+	return false;
+}
+
 generatorBase::PrimaryControlFlowValidator *TrikPascalABCMasterGenerator::createValidator()
 {
 	return new TrikPascalABCControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);

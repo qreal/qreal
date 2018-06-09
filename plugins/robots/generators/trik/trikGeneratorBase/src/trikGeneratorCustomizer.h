@@ -27,7 +27,8 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, const QStringList &pathsToTemplates);
+			, const QStringList &pathsToTemplates
+			, bool supportsSwitchGeneration);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
@@ -35,6 +36,7 @@ public:
 
 private:
 	TrikGeneratorFactory mFactory;
+	bool mSupportsSwitchGeneration;
 };
 
 }

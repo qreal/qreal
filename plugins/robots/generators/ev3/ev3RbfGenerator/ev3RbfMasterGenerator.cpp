@@ -140,6 +140,11 @@ bool Ev3RbfMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
+bool Ev3RbfMasterGenerator::supportsSwitchCaseGeneration() const
+{
+	return false;
+}
+
 generatorBase::lua::LuaProcessor *Ev3RbfMasterGenerator::createLuaProcessor()
 {
 	mLuaProcessorInstance = new lua::Ev3LuaProcessor(mErrorReporter, mTextLanguage
@@ -150,5 +155,5 @@ generatorBase::lua::LuaProcessor *Ev3RbfMasterGenerator::createLuaProcessor()
 GeneratorCustomizer *Ev3RbfMasterGenerator::createCustomizer()
 {
 	return new Ev3RbfGeneratorCustomizer(mRepo, mErrorReporter
-			, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+			, mRobotModelManager, *createLuaProcessor(), mGeneratorName, supportsSwitchCaseGeneration());
 }

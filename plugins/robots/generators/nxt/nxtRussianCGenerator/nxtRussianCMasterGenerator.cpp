@@ -37,3 +37,8 @@ bool NxtRussianCMasterGenerator::supportsGotoGeneration() const
 {
 	return false;
 }
+
+bool NxtRussianCMasterGenerator::supportsSwitchCaseGeneration() const
+{
+	return false;
+}
