@@ -84,11 +84,6 @@ private:
 
 	QPair<int, int> makePair(int a, int b);
 
-	bool checkAllStructures();
-	bool checkFollowers();
-	bool checkDominators();
-	bool checkPostOrder();
-
 	QSet<VertexNumber> mVertices;
 	QMap<VertexNumber, QVector<VertexNumber> > mFollowers;
 	QMap<VertexNumber, QVector<VertexNumber> > mPredecessors;
