@@ -1,6 +1,5 @@
 #pragma once
 
-#include <qrrepo/repoApi.h>
 #include <qrkernel/ids.h>
 
 #include "intermediateNode.h"
@@ -26,7 +25,6 @@ private:
 
 	typedef int Time;
 	typedef int VertexNumber;
-
 
 	/// methods to identify patterns for structural analysis
 	bool isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
@@ -65,7 +63,6 @@ private:
 	void updatePostOrder(int newNodeNumber, QSet<int> &vertices);
 	void updateDominators(int newNodeNumber, QSet<int> &vertices);
 	void updateVertices(int newNodeNumber, QSet<int> &vertices);
-	void removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices);
 
 	/// methods used before structurization process
 	void calculateDominators();
@@ -75,6 +72,7 @@ private:
 	void dfs(int v, int &currentTime, QMap<int, bool> &used);
 
 	void appendNodesDetectedAsNodeWithExit(QSet<int> &vertices, int cycleHead);
+	void removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices);
 	int appendVertex(myUtils::IntermediateNode *node);
 
 	int outgoingEdgesNumber(int v) const;
