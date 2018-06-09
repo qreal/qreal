@@ -27,6 +27,15 @@
 
 namespace generatorBase {
 
+
+/// Generates semantic tree in control-structured style.
+/// First we obtain control flow graph.
+/// Then we are trying structurize such a graph with Structurizator.
+/// If structurization was successfull then we are trying to transform
+/// control flow tree to Semantic Tree used for code generation.
+///
+/// If control flow can`t be represented with structured code generation process
+/// is considered to be unsuccessfull.
 class ROBOTS_GENERATOR_EXPORT StructuralControlFlowGenerator : public ControlFlowGeneratorBase
 {
 	Q_OBJECT
@@ -47,12 +56,19 @@ public:
 
 	void beforeSearch() override;
 
+	/// functions for visiting Ids. While each visit we contruct graph.
 	void visit(const qReal::Id &id, QList<LinkInfo> &links) override;
-	void afterVisit(const qReal::Id &id, QList<LinkInfo> &links) override;
 	void visitConditional(const qReal::Id &id, const QList<LinkInfo> &links) override;
-	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitSwitch(const qReal::Id &id, const QList<LinkInfo> &links) override;
 	void visitUnknown(const qReal::Id &id, QList<LinkInfo> const &links) override;
+
+	/// We introduce fake-loop-preheader vertex incident to vertices not from loop body.
+	/// We remember vertices belonging to loop.
+	void visitLoop(const qReal::Id &id, const QList<LinkInfo> &links) override;
+
+	/// We clean old info about vertices belonging to some loop.
+	void afterVisit(const qReal::Id &id, QList<LinkInfo> &links) override;
+
 
 	/// This method can be used for semantic tree debug printing after all
 	/// traversal stages.
@@ -67,12 +83,17 @@ private:
 	/// Important: the graph in the model would be traversed two or more times
 	/// to build dominators tree and then perform structural analysis
 	void performGeneration() override;
+
+	/// Rule is applied only when generation was performed so there's a ForkNode or JoinNode variable.
 	bool applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule) override;
 
 	void performStructurization();
 	void obtainSemanticTree(myUtils::IntermediateNode *root);
 
+	/// helper method for ZoneNode
 	void checkAndAppendBlock(semantics::ZoneNode *zone, myUtils::IntermediateNode *node);
+
+	/// transformation methods
 	semantics::SemanticNode *transformNode(myUtils::IntermediateNode *node);
 	semantics::SemanticNode *transformSimple(myUtils::SimpleNode *simpleNode);
 	semantics::SemanticNode *transformBlock(myUtils::BlockNode *blockNode);
@@ -82,13 +103,17 @@ private:
 	semantics::SemanticNode *transformSwitch(myUtils::SwitchNode *switchNode);
 	semantics::SemanticNode *transformBreakNode();
 
+	/// helper functions
 	semantics::SemanticNode *createConditionWithBreaks(myUtils::NodeWithBreaks *nodeWithBreaks);
 	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId, myUtils::IntermediateNode *thenNode, myUtils::IntermediateNode *elseNode);
 	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId, const QList<myUtils::IntermediateNode *> &branches, bool generateIfs);
 
+	/// methods for building graph
 	void appendVertex(const qReal::Id &vertex);
 	void addEdgeIntoGraph(const qReal::Id &from, const qReal::Id &to);
 	void appendEdgesAndVertices(const qReal::Id &vertex, const QList<LinkInfo> &links);
+
+	/// methods for handling vertices belonging to loop body
 	void addVerticesInLoopBody(const qReal::Id &vertex, const QList<LinkInfo> &links);
 	void removeVerticesFromLoopBody(const qReal::Id &vertex, const QList<LinkInfo> &links);
 
