@@ -430,7 +430,7 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 	}
 
 	case enums::semantics::loopBlock: {
-		if (exitBranches.size() != 1) {
+		if (exitBranches.size() != 1 || exitBranches.first()->type() == myUtils::IntermediateNode::Type::breakNode) {
 			break;
 		}
 
