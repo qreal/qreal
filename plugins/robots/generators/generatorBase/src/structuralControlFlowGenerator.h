@@ -90,6 +90,7 @@ private:
 	void addEdgeIntoGraph(const qReal::Id &from, const qReal::Id &to);
 	void appendEdgesAndVertices(const qReal::Id &vertex, const QList<LinkInfo> &links);
 	void addVerticesInLoopBody(const qReal::Id &vertex, const QList<LinkInfo> &links);
+	void removeVerticesFromLoopBody(const qReal::Id &vertex, const QList<LinkInfo> &links);
 
 	QMap<int, semantics::SemanticNode *> mTrees;
 	bool mCantBeGeneratedIntoStructuredCode;

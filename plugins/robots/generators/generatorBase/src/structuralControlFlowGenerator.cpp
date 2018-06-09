@@ -84,14 +84,10 @@ void StructuralControlFlowGenerator::afterVisit(const Id &id, QList<LinkInfo> &l
 		mLoopNumbers.pop();
 
 		QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
-		mVerticesInsideLoopBody.insert(mVertexNumber[loopBranches.first.target]);
+		mVerticesInsideLoopBody.remove(mVertexNumber[loopBranches.first.target]);
 	}
 
-	if (mVerticesInsideLoopBody.contains(mVertexNumber[id])) {
-		for (const LinkInfo &link : links) {
-			mVerticesInsideLoopBody.remove(mVertexNumber[link.target]);
-		}
-	}
+	removeVerticesFromLoopBody(id, links);
 }
 
 void StructuralControlFlowGenerator::visitConditional(const Id &id, const QList<LinkInfo> &links)
@@ -567,6 +563,15 @@ void StructuralControlFlowGenerator::addVerticesInLoopBody(const Id &vertex, con
 	if (mVerticesInsideLoopBody.contains(mVertexNumber[vertex])) {
 		for (const LinkInfo &link : links) {
 			mVerticesInsideLoopBody.insert(mVertexNumber[link.target]);
+		}
+	}
+}
+
+void StructuralControlFlowGenerator::removeVerticesFromLoopBody(const Id &vertex, const QList<LinkInfo> &links)
+{
+	if (mVerticesInsideLoopBody.contains(mVertexNumber[vertex])) {
+		for (const LinkInfo &link : links) {
+			mVerticesInsideLoopBody.remove(mVertexNumber[link.target]);
 		}
 	}
 }
