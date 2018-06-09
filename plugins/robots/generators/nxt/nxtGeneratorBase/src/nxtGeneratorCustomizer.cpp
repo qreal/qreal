@@ -21,9 +21,9 @@ NxtGeneratorCustomizer::NxtGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName
-		, bool supportsSwitchGeneration)
+		, bool supportsSwitchUnstableToBreaks)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
-	, mSupportsSwitchGeneration(supportsSwitchGeneration)
+	, mSupportsSwitchUnstableToBreaks(supportsSwitchUnstableToBreaks)
 {
 }
 
@@ -32,7 +32,7 @@ generatorBase::GeneratorFactoryBase *NxtGeneratorCustomizer::factory()
 	return &mFactory;
 }
 
-bool NxtGeneratorCustomizer::supportsSwitchGeneration() const
+bool NxtGeneratorCustomizer::supportsSwitchUnstableToBreaks() const
 {
-	return mSupportsSwitchGeneration;
+	return mSupportsSwitchUnstableToBreaks;
 }

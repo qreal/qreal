@@ -29,15 +29,15 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
 			, const QString &generatorName
-			, bool supportsSwitchGeneration);
+			, bool supportsSwitchUnstableToBreaks);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
-	bool supportsSwitchGeneration() const override;
+	bool supportsSwitchUnstableToBreaks() const override;
 
 private:
 	Ev3RbfGeneratorFactory mFactory;
-	bool mSupportsSwitchGeneration;
+	bool mSupportsSwitchUnstableToBreaks;
 };
 
 }

@@ -40,7 +40,7 @@ bool TrikQtsMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
-bool TrikQtsMasterGenerator::supportsSwitchCaseGeneration() const
+bool TrikQtsMasterGenerator::supportsSwitchUnstableToBreaks() const
 {
 	return true;
 }

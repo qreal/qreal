@@ -24,7 +24,7 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName
 		, GotoLabelManager &gotoLabelManager
-		, bool supportsSwitchGeneration)
+		, bool supportsSwitchUnstableToBreaks)
 	: mFactory(
 			new PioneerLuaGeneratorFactory(
 					repo
@@ -34,7 +34,7 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 					, generatorName
 					, gotoLabelManager
 			))
-	, mSupportsSwitchGeneration(supportsSwitchGeneration)
+	, mSupportsSwitchUnstableToBreaks(supportsSwitchUnstableToBreaks)
 {
 }
 
@@ -43,7 +43,7 @@ generatorBase::GeneratorFactoryBase *PioneerLuaGeneratorCustomizer::factory()
 	return mFactory.data();
 }
 
-bool PioneerLuaGeneratorCustomizer::supportsSwitchGeneration() const
+bool PioneerLuaGeneratorCustomizer::supportsSwitchUnstableToBreaks() const
 {
-	return mSupportsSwitchGeneration;
+	return mSupportsSwitchUnstableToBreaks;
 }

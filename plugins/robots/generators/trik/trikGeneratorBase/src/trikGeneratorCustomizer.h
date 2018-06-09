@@ -28,15 +28,15 @@ public:
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
 			, const QStringList &pathsToTemplates
-			, bool supportsSwitchGeneration);
+			, bool supportsSwitchUnstableToBreaks);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
-	bool supportsSwitchGeneration() const override;
+	bool supportsSwitchUnstableToBreaks() const override;
 
 private:
 	TrikGeneratorFactory mFactory;
-	bool mSupportsSwitchGeneration;
+	bool mSupportsSwitchUnstableToBreaks;
 };
 
 }

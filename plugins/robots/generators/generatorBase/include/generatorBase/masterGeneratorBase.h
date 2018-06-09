@@ -86,7 +86,7 @@ protected:
 	virtual QString targetPath() = 0;
 
 	virtual bool supportsGotoGeneration() const = 0;
-	virtual bool supportsSwitchCaseGeneration() const = 0;
+	virtual bool supportsSwitchUnstableToBreaks() const = 0;
 
 	virtual void beforeGeneration();
 	virtual void processGeneratedCode(QString &generatedCode);

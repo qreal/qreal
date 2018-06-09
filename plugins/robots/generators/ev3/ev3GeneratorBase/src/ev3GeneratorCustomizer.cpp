@@ -21,9 +21,9 @@ Ev3GeneratorCustomizer::Ev3GeneratorCustomizer(const qrRepo::RepoApi &repo
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName
-		, bool supportsSwitchGeneration)
+		, bool supportsSwitchUnstableToBreaks)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
-	, mSupportsSwitchGeneration(supportsSwitchGeneration)
+	, mSupportsSwitchUnstableToBreaks(supportsSwitchUnstableToBreaks)
 {
 }
 
@@ -32,7 +32,7 @@ generatorBase::GeneratorFactoryBase *Ev3GeneratorCustomizer::factory()
 	return &mFactory;
 }
 
-bool Ev3GeneratorCustomizer::supportsSwitchGeneration() const
+bool Ev3GeneratorCustomizer::supportsSwitchUnstableToBreaks() const
 {
-	return mSupportsSwitchGeneration;
+	return mSupportsSwitchUnstableToBreaks;
 }

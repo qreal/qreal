@@ -34,16 +34,16 @@ public:
 			, generatorBase::lua::LuaProcessor &luaProcessor
 			, const QString &generatorName
 			, GotoLabelManager &gotoLabelManager
-			, bool supportsSwitchGeneration);
+			, bool supportsSwitchUnstableToBreaks);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
-	bool supportsSwitchGeneration() const override;
+	bool supportsSwitchUnstableToBreaks() const override;
 
 private:
 	/// Factory that creates simple generators for Pioneer-specific blocks.
 	QScopedPointer<PioneerLuaGeneratorFactory> mFactory;
-	bool mSupportsSwitchGeneration;
+	bool mSupportsSwitchUnstableToBreaks;
 };
 
 }

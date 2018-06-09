@@ -42,7 +42,7 @@ bool TrikFSharpMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
-bool TrikFSharpMasterGenerator::supportsSwitchCaseGeneration() const
+bool TrikFSharpMasterGenerator::supportsSwitchUnstableToBreaks() const
 {
 	return false;
 }

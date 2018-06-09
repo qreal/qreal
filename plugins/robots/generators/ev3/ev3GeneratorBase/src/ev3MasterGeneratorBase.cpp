@@ -32,7 +32,7 @@ Ev3MasterGeneratorBase::Ev3MasterGeneratorBase(const qrRepo::RepoApi &repo
 
 generatorBase::GeneratorCustomizer *Ev3MasterGeneratorBase::createCustomizer()
 {
-	return new Ev3GeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor(), mGeneratorName, supportsSwitchCaseGeneration());
+	return new Ev3GeneratorCustomizer(mRepo, mErrorReporter, mRobotModelManager, *createLuaProcessor(), mGeneratorName, supportsSwitchUnstableToBreaks());
 }
 
 void Ev3MasterGeneratorBase::beforeGeneration()

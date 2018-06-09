@@ -84,7 +84,7 @@ generatorBase::GeneratorCustomizer *PioneerLuaMasterGenerator::createCustomizer(
 			, *createLuaProcessor()
 			, mGeneratorName
 			, *mGotoLabelManager
-			, supportsSwitchCaseGeneration());
+			, supportsSwitchUnstableToBreaks());
 }
 
 QString PioneerLuaMasterGenerator::targetPath()
@@ -97,7 +97,7 @@ bool PioneerLuaMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
-bool PioneerLuaMasterGenerator::supportsSwitchCaseGeneration() const
+bool PioneerLuaMasterGenerator::supportsSwitchUnstableToBreaks() const
 {
 	return false;
 }

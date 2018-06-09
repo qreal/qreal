@@ -21,9 +21,9 @@ TrikGeneratorCustomizer::TrikGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QStringList &pathsToTemplates
-		, bool supportsSwitchGeneration)
+		, bool supportsSwitchUnstableToBreaks)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, pathsToTemplates)
-	, mSupportsSwitchGeneration(supportsSwitchGeneration)
+	, mSupportsSwitchUnstableToBreaks(supportsSwitchUnstableToBreaks)
 {
 }
 
@@ -32,7 +32,7 @@ generatorBase::GeneratorFactoryBase *TrikGeneratorCustomizer::factory()
 	return &mFactory;
 }
 
-bool TrikGeneratorCustomizer::supportsSwitchGeneration() const
+bool TrikGeneratorCustomizer::supportsSwitchUnstableToBreaks() const
 {
-	return mSupportsSwitchGeneration;
+	return mSupportsSwitchUnstableToBreaks;
 }

@@ -42,7 +42,7 @@ protected:
 	generatorBase::GeneratorCustomizer *createCustomizer() override;
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
-	bool supportsSwitchCaseGeneration() const override;
+	bool supportsSwitchUnstableToBreaks() const override;
 
 private:
 	lua::Ev3LuaProcessor *mLuaProcessorInstance;

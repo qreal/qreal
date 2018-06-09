@@ -40,7 +40,7 @@ bool TrikPythonMasterGenerator::supportsGotoGeneration() const
 	return false;
 }
 
-bool TrikPythonMasterGenerator::supportsSwitchCaseGeneration() const
+bool TrikPythonMasterGenerator::supportsSwitchUnstableToBreaks() const
 {
 	return false;
 }

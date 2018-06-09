@@ -64,7 +64,7 @@ public:
 	/// concrete generator. Shall not transfer ownership.
 	virtual GeneratorFactoryBase *factory() = 0;
 
-	virtual bool supportsSwitchGeneration() const = 0;
+	virtual bool supportsSwitchUnstableToBreaks() const = 0;
 
 protected:
 	GeneratorCustomizer();

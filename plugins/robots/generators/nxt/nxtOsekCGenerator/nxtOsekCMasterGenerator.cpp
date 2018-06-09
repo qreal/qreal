@@ -48,7 +48,7 @@ bool NxtOsekCMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
-bool NxtOsekCMasterGenerator::supportsSwitchCaseGeneration() const
+bool NxtOsekCMasterGenerator::supportsSwitchUnstableToBreaks() const
 {
 	return false;
 }
