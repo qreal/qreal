@@ -15,8 +15,6 @@
 
 #include <QtCore/QQueue>
 
-#include <QtCore/QDebug>
-
 #include <algorithm>
 #include <QStack>
 
@@ -235,7 +233,6 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(myUtils::Intermediat
 	}
 
 	default:
-		qDebug() << "Undefined type of Intermediate node!";
 		mCantBeGeneratedIntoStructuredCode = true;
 
 		return new SimpleNode(qReal::Id(), mSemanticTree);
@@ -283,7 +280,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 	}
 
 	case enums::semantics::loopBlock: {
-		if (ifNode->exit() && ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId() || (!ifNode->exit() && ifNode->elseBranch())) {
+		if ((ifNode->exit() && ifNode->elseBranch() && ifNode->exit()->firstId() == ifNode->firstId()) || (!ifNode->exit() && ifNode->elseBranch())) {
 			ZoneNode *zone = new ZoneNode(mSemanticTree);
 			const qReal::Id loopCondition = ifNode->condition()->firstId();
 			LoopNode *innerLoop = new LoopNode(loopCondition, mSemanticTree);
@@ -308,7 +305,6 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(myUtils::IfNod
 		break;
 	}
 
-	qDebug() << "Problem: couldn't transform if-then-else";
 	mCantBeGeneratedIntoStructuredCode = true;
 
 	return new SimpleNode(qReal::Id(), mSemanticTree);
@@ -401,7 +397,6 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(myUtils::SwitchNod
 		return createSemanticSwitchNode(conditionId, branches, switchNode->hasBreakInside());
 	}
 
-	qDebug() << "Problem: couldn't identidy semantics id for switchNode";
 	mCantBeGeneratedIntoStructuredCode = true;
 
 	return new SimpleNode(qReal::Id(), mSemanticTree);
@@ -444,7 +439,6 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(myUtils:
 
 	}
 
-	qDebug() << "Problem in createConditionWithBreaks";
 	mCantBeGeneratedIntoStructuredCode = true;
 	return new SimpleNode(qReal::Id(), mSemanticTree);
 }
