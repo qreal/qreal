@@ -453,7 +453,9 @@ bool Structurizator::checkCommonExitUniqueness(int commonExit, const QMap<int, Q
 
 bool Structurizator::checkNodes(const QSet<int> &verticesWithExits)
 {
-	return !mWasPreviouslyDetectedAsNodeWithExit.keys().toSet().intersects(verticesWithExits);
+	QSet<int> testSet = mWasPreviouslyDetectedAsNodeWithExit.keys().toSet();
+	testSet.intersect(verticesWithExits);
+	return testSet.isEmpty();
 }
 
 void Structurizator::reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles)
@@ -644,29 +646,31 @@ void Structurizator::updatePostOrder(int newNodeNumber, QSet<int> &verteces)
 	}
 }
 
-void Structurizator::updateDominators(int newNodeNumber, QSet<int> &verteces)
+void Structurizator::updateDominators(int newNodeNumber, QSet<int> &vertices)
 {
 	// others
 	for (int v : mPostOrder.keys()) {
-		if (mDominators[v].intersects(verteces)) {
-			mDominators[v].subtract(verteces);
+		QSet<int> tempSet = mDominators[v];
+		tempSet.intersect(vertices);
+		if (!tempSet.isEmpty()) {
+			mDominators[v].subtract(vertices);
 			mDominators[v].insert(newNodeNumber);
 		}
 	}
 
 	// new
 	QSet<int> doms = mVertices;
-	for (int v : verteces) {
+	for (int v : vertices) {
 		doms.intersect(mDominators[v]);
 	}
 
-	doms.subtract(verteces);
+	doms.subtract(vertices);
 	doms.insert(newNodeNumber);
 
 	mDominators[newNodeNumber] = doms;
 
 	// old
-	for (int v : verteces) {
+	for (int v : vertices) {
 		mDominators.remove(v);
 	}
 }
