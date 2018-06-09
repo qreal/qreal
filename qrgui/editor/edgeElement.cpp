@@ -369,7 +369,7 @@ void EdgeElement::connectToPort()
 	if (newSrc && newDst) {
 		highlight(mPenColor);
 	} else {
-		//highlight(Qt::red);
+		highlight(Qt::red);
 	}
 }
 
@@ -882,7 +882,7 @@ void EdgeElement::updateData()
 
 	update();
 	updateLongestPart();
-	//highlight(isHanging() ? Qt::red : mPenColor);
+	highlight(isHanging() ? Qt::red : mPenColor);
 }
 
 void EdgeElement::removeLink(const NodeElement *from)
