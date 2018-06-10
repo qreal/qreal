@@ -70,32 +70,13 @@ HEADERS += \
 	$$PWD/src/intermediateNode.h \
 
 HEADERS += \
-	$$PWD/src/readableControlFlowGenerator.h \
 	$$PWD/src/rules/semanticTransformationRule.h \
-	$$PWD/src/rules/simpleRules/simpleBlockRuleBase.h \
-	$$PWD/src/rules/simpleRules/simpleUnvisitedRule.h \
-	$$PWD/src/rules/simpleRules/simpleVisitedOneZoneRule.h \
-	$$PWD/src/rules/simpleRules/simpleVisitedRuleBase.h \
-	$$PWD/src/rules/simpleRules/simpleMergedIfBranchesRule.h \
-	$$PWD/src/rules/simpleRules/simpleIfInsideCycleRule.h \
-	$$PWD/src/rules/ifRules/ifBlockRuleBase.h \
-	$$PWD/src/rules/ifRules/ifWithBothUnvisitedRule.h \
-	$$PWD/src/rules/ifRules/ifWithOneVisitedRule.h \
-	$$PWD/src/rules/loopRules/loopBlockRuleBase.h \
-	$$PWD/src/rules/loopRules/loopWithBothUnvisitedRule.h \
-	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.h \
-	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.h \
-	$$PWD/src/rules/forkRules/forkRule.h \
-	$$PWD/src/rules/joinRules/joinRule.h \
-	$$PWD/src/rules/switchRules/switchInitializationRule.h \
-	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.h \
 
 SOURCES += \
 	$$PWD/src/robotsGeneratorPluginBase.cpp \
 	$$PWD/src/masterGeneratorBase.cpp \
 	$$PWD/src/generatorCustomizer.cpp \
 	$$PWD/src/controlFlowGeneratorBase.cpp \
-	$$PWD/src/readableControlFlowGenerator.cpp \
 	$$PWD/src/robotsDiagramVisitor.cpp \
 	$$PWD/src/primaryControlFlowValidator.cpp \
 	$$PWD/src/generatorFactoryBase.cpp \
@@ -121,24 +102,6 @@ SOURCES += \
 	$$PWD/src/semanticTree/forkNode.cpp \
 	$$PWD/src/semanticTree/joinNode.cpp \
 	$$PWD/src/semanticTree/rootNode.cpp \
-	$$PWD/src/rules/semanticTransformationRule.cpp \
-	$$PWD/src/rules/simpleRules/simpleBlockRuleBase.cpp \
-	$$PWD/src/rules/simpleRules/simpleUnvisitedRule.cpp \
-	$$PWD/src/rules/simpleRules/simpleVisitedOneZoneRule.cpp \
-	$$PWD/src/rules/simpleRules/simpleVisitedRuleBase.cpp \
-	$$PWD/src/rules/simpleRules/simpleMergedIfBranchesRule.cpp \
-	$$PWD/src/rules/simpleRules/simpleIfInsideCycleRule.cpp \
-	$$PWD/src/rules/ifRules/ifBlockRuleBase.cpp \
-	$$PWD/src/rules/ifRules/ifWithBothUnvisitedRule.cpp \
-	$$PWD/src/rules/ifRules/ifWithOneVisitedRule.cpp \
-	$$PWD/src/rules/loopRules/loopBlockRuleBase.cpp \
-	$$PWD/src/rules/loopRules/loopWithBothUnvisitedRule.cpp \
-	$$PWD/src/rules/loopRules/loopWithIterationVisitedRule.cpp \
-	$$PWD/src/rules/loopRules/loopWithNextVisitedRule.cpp \
-	$$PWD/src/rules/forkRules/forkRule.cpp \
-	$$PWD/src/rules/joinRules/joinRule.cpp \
-	$$PWD/src/rules/switchRules/switchInitializationRule.cpp \
-	$$PWD/src/rules/switchRules/mergedSwitchBranchesRule.cpp \
 	$$PWD/src/gotoControlFlowGenerator.cpp \
 	$$PWD/src/converters/dynamicPropertiesConverter.cpp \
 	$$PWD/src/structuralControlFlowGenerator.cpp \

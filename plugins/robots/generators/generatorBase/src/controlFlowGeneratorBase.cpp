@@ -20,8 +20,8 @@
 #include "generatorBase/parts/threads.h"
 #include "generatorBase/parts/subprograms.h"
 
-#include "src/rules/forkRules/forkRule.h"
-#include "src/rules/joinRules/joinRule.h"
+#include "generatorBase/semanticTree/forkNode.h"
+#include "generatorBase/semanticTree/joinNode.h"
 
 using namespace generatorBase;
 using namespace qReal;
@@ -87,9 +87,30 @@ void ControlFlowGeneratorBase::performGeneration()
 	startSearch(mSemanticTree->initialBlock());
 }
 
-bool ControlFlowGeneratorBase::applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule)
+bool ControlFlowGeneratorBase::registerOtherThreads(const Id &id, const QList<LinkInfo> &threads
+		, const QHash<Id, QString> &threadIds, parts::Threads &threadsStorage)
 {
-	return rule->apply();
+	semantics::ForkNode * const fork = static_cast<semantics::ForkNode *>(mSemanticTree->findNodeFor(id));
+
+	for (const LinkInfo &thread : threads) {
+		threadsStorage.registerThread(thread.target, threadIds[thread.linkId]);
+		fork->appendThread(thread.target, threadIds[thread.linkId]);
+	}
+
+	return true;
+}
+
+bool ControlFlowGeneratorBase::registerTerminatingThreads(const Id &id, parts::Threads &threadsStorage
+		, bool fromMain)
+{
+	semantics::JoinNode *join = static_cast<semantics::JoinNode *>(mSemanticTree->findNodeFor(id));
+	join->setThreadId(mThreadId);
+
+	if (!fromMain) {
+		threadsStorage.addJoin(id, mThreadId);
+	}
+
+	return true;
 }
 
 bool ControlFlowGeneratorBase::generateForks()
@@ -194,8 +215,7 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 
 	visitRegular(id, { currentThread });
 	links.removeAll(currentThread);
-	semantics::ForkRule rule(mSemanticTree, id, links, threadIds, mCustomizer.factory()->threads());
-	applyRuleWhileVisiting(&rule);
+	registerOtherThreads(id, links, threadIds, mCustomizer.factory()->threads());
 
 	// Restricting visiting other threads, they will be generated to new semantic trees.
 	links = {currentThread};
@@ -204,8 +224,7 @@ void ControlFlowGeneratorBase::visitFork(const Id &id, QList<LinkInfo> &links)
 void ControlFlowGeneratorBase::visitJoin(const Id &id, QList<LinkInfo> &links)
 {
 	bool const fromMain = (mRepo.stringProperty(links[0].linkId, "Guard") == mThreadId);
-	semantics::JoinRule rule(mSemanticTree, id, mThreadId, mCustomizer.factory()->threads(), fromMain);
-	applyRuleWhileVisiting(&rule);
+	registerTerminatingThreads(id, mCustomizer.factory()->threads(), fromMain);
 
 	if (fromMain) {
 		visitRegular(id, links);

@@ -25,7 +25,6 @@
 #include <qrtext/languageToolboxInterface.h>
 
 #include "structuralControlFlowGenerator.h"
-#include "readableControlFlowGenerator.h"
 #include "generatorBase/gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
@@ -66,8 +65,6 @@ void MasterGeneratorBase::initialize()
 
 	mValidator = createValidator();
 
-	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
-			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 	mGotoControlFlowGenerator = new GotoControlFlowGenerator(mRepo
 			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 	mStructuralControlFlowGenerator = new StructuralControlFlowGenerator(mRepo

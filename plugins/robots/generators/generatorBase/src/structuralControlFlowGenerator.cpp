@@ -154,10 +154,21 @@ void StructuralControlFlowGenerator::performGeneration()
 	}
 }
 
-bool StructuralControlFlowGenerator::applyRuleWhileVisiting(SemanticTransformationRule * const rule)
+bool StructuralControlFlowGenerator::registerOtherThreads(const Id &id, const QList<LinkInfo> &threads
+		, const QHash<Id, QString> &threadIds, parts::Threads &threadsStorage)
 {
 	if (!mIsGraphBeingConstructed) {
-		return ControlFlowGeneratorBase::applyRuleWhileVisiting(rule);
+		return ControlFlowGeneratorBase::registerOtherThreads(id, threads, threadIds, threadsStorage);
+	}
+
+	return false;
+}
+
+bool StructuralControlFlowGenerator::registerTerminatingThreads(const Id &id, parts::Threads &threadsStorage
+		, bool fromMain)
+{
+	if (!mIsGraphBeingConstructed) {
+		return ControlFlowGeneratorBase::registerTerminatingThreads(id, threadsStorage, fromMain);
 	}
 
 	return false;

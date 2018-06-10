@@ -103,7 +103,6 @@ protected:
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	PrimaryControlFlowValidator *mValidator;
-	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
 	StructuralControlFlowGenerator *mStructuralControlFlowGenerator; // Takes ownership
 	QString mProjectName;

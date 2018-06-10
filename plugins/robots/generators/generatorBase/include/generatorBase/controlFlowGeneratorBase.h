@@ -18,7 +18,6 @@
 #include "primaryControlFlowValidator.h"
 #include "robotsDiagramVisitor.h"
 #include "semanticTree/semanticTree.h"
-#include "src/rules/semanticTransformationRule.h"
 
 namespace generatorBase {
 
@@ -71,7 +70,12 @@ public:
 protected:
 	/// Can be overloaded by descendants for custom behaviour.
 	virtual void performGeneration();
-	virtual bool applyRuleWhileVisiting(semantics::SemanticTransformationRule * const rule);
+
+	virtual bool registerOtherThreads(const qReal::Id &id, const QList<LinkInfo> &threads
+			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage);
+
+	virtual bool registerTerminatingThreads(const qReal::Id &id, parts::Threads &threadsStorage
+			, bool fromMain);
 
 	bool generateForks();
 
