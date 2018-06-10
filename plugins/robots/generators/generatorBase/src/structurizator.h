@@ -16,13 +16,27 @@
 
 #include <qrkernel/ids.h>
 
-#include "intermediateNode.h"
-
 #include <QObject>
 #include <QSet>
 #include <QMap>
 
+
 namespace generatorBase {
+
+namespace structurizatorNodes {
+	class IntermediateNode;
+	class SimpleNode;
+	class BreakNode;
+	class IfNode;
+	class NodeWithBreaks;
+	class SwitchNode;
+	class BlockNode;
+	class WhileNode;
+	class SelfLoopNode;
+}
+
+namespace sn = structurizatorNodes;
+
 
 /// @class Structurizator is aimed to produce control flow AST from diagram performing Structural Analysis.
 /// AST Nodes are concrete classes (BlockNode, WhileNode, etc.) of abstract @class IntermediateNode

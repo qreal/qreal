@@ -218,5 +218,4 @@ private:
 
 }
 
-namespace sn = structurizatorNodes;
 }

@@ -14,6 +14,8 @@
 
 #include "structurizator.h"
 
+
+#include "intermediateNode.h"
 #include <QQueue>
 
 using namespace generatorBase;

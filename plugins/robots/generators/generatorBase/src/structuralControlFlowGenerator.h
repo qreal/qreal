@@ -27,7 +27,6 @@
 
 namespace generatorBase {
 
-
 /// Generates semantic tree in control-structured style.
 /// First we obtain control flow graph.
 /// Then we are trying structurize such a graph with Structurizator.

@@ -19,6 +19,7 @@
 #include <QStack>
 
 
+#include "intermediateNode.h"
 #include "generatorBase/parts/subprograms.h"
 #include "generatorBase/parts/threads.h"
 

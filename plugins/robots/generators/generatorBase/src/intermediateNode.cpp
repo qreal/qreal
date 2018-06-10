@@ -17,7 +17,9 @@
 #include <QQueue>
 
 using namespace generatorBase;
-using namespace sn;
+using namespace structurizatorNodes;
+
+namespace sn = structurizatorNodes;
 
 SimpleNode::SimpleNode(const qReal::Id &id, QObject *parent)
 	: IntermediateNode(parent)
