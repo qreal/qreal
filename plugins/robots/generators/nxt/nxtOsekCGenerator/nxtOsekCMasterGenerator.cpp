@@ -48,11 +48,6 @@ bool NxtOsekCMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
-bool NxtOsekCMasterGenerator::supportsSwitchUnstableToBreaks() const
-{
-	return false;
-}
-
 void NxtOsekCMasterGenerator::afterGeneration()
 {
 	generateOilFile(mProjectName, mProjectDir);

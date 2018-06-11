@@ -86,7 +86,10 @@ protected:
 	virtual QString targetPath() = 0;
 
 	virtual bool supportsGotoGeneration() const = 0;
-	virtual bool supportsSwitchUnstableToBreaks() const = 0;
+
+	/// Default implementation returns "false", because most
+	/// generators doesn't support "switch" structure which is unstable to breaks
+	virtual bool supportsSwitchUnstableToBreaks() const;
 
 	virtual void beforeGeneration();
 	virtual void processGeneratedCode(QString &generatedCode);

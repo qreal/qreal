@@ -237,6 +237,11 @@ PrimaryControlFlowValidator *MasterGeneratorBase::createValidator()
 	return new PrimaryControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
 }
 
+bool MasterGeneratorBase::supportsSwitchUnstableToBreaks() const
+{
+	return false;
+}
+
 void MasterGeneratorBase::beforeGeneration()
 {
 }

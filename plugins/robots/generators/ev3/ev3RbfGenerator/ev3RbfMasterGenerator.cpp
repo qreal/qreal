@@ -140,11 +140,6 @@ bool Ev3RbfMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
-bool Ev3RbfMasterGenerator::supportsSwitchUnstableToBreaks() const
-{
-	return false;
-}
-
 generatorBase::lua::LuaProcessor *Ev3RbfMasterGenerator::createLuaProcessor()
 {
 	mLuaProcessorInstance = new lua::Ev3LuaProcessor(mErrorReporter, mTextLanguage

@@ -97,11 +97,6 @@ bool PioneerLuaMasterGenerator::supportsGotoGeneration() const
 	return true;
 }
 
-bool PioneerLuaMasterGenerator::supportsSwitchUnstableToBreaks() const
-{
-	return false;
-}
-
 void PioneerLuaMasterGenerator::beforeGeneration()
 {
 	QDir().mkpath(mProjectDir + "/ap/");

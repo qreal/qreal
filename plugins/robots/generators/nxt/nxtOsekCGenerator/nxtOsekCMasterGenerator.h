@@ -35,7 +35,6 @@ public:
 protected:
 	QString targetPath() override;
 	bool supportsGotoGeneration() const override;
-	bool supportsSwitchUnstableToBreaks() const override;
 
 	void afterGeneration() override;
 
