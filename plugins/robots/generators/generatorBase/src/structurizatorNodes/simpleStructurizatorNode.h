@@ -14,8 +14,6 @@
 
 #pragma once
 
-#include <qrkernel/ids.h>
-
 #include "intermediateStructurizatorNode.h"
 
 namespace generatorBase {

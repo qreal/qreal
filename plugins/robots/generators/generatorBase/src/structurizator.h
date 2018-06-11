@@ -20,7 +20,6 @@
 #include <QSet>
 #include <QMap>
 
-
 namespace generatorBase {
 
 class IntermediateStructurizatorNode;

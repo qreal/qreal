@@ -19,7 +19,6 @@
 #include "generatorBase/semanticTree/semanticTree.h"
 
 #include "structurizator.h"
-#include <qrkernel/ids.h>
 
 #include <QStack>
 #include <QVector>
