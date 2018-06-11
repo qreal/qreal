@@ -19,7 +19,7 @@
 #include "generatorBase/semanticTree/semanticTree.h"
 
 #include "structurizator.h"
-
+#include <qrkernel/ids.h>
 
 #include <QStack>
 #include <QVector>
@@ -93,29 +93,29 @@ private:
 			, bool fromMain) override;
 
 	void performStructurization();
-	void obtainSemanticTree(structurizatorNodes::IntermediateNode *root);
+	void obtainSemanticTree(IntermediateStructurizatorNode *root);
 
 	/// helper method for ZoneNode
-	void checkAndAppendBlock(semantics::ZoneNode *zone, sn::IntermediateNode *node);
+	void checkAndAppendBlock(semantics::ZoneNode *zone, IntermediateStructurizatorNode *node);
 
 	/// transformation methods
-	semantics::SemanticNode *transformNode(structurizatorNodes::IntermediateNode *node);
-	semantics::SemanticNode *transformSimple(structurizatorNodes::SimpleNode *simpleNode);
-	semantics::SemanticNode *transformBlock(structurizatorNodes::BlockNode *blockNode);
-	semantics::SemanticNode *transformIfThenElse(structurizatorNodes::IfNode *ifNode);
-	semantics::SemanticNode *transformSelfLoop(structurizatorNodes::SelfLoopNode *selfLoopNode);
-	semantics::SemanticNode *transformWhileLoop(structurizatorNodes::WhileNode *whileNode);
-	semantics::SemanticNode *transformSwitch(structurizatorNodes::SwitchNode *switchNode);
+	semantics::SemanticNode *transformNode(IntermediateStructurizatorNode *node);
+	semantics::SemanticNode *transformSimple(SimpleStructurizatorNode *simpleNode);
+	semantics::SemanticNode *transformBlock(BlockStructurizatorNode *blockNode);
+	semantics::SemanticNode *transformIfThenElse(IfStructurizatorNode *ifNode);
+	semantics::SemanticNode *transformSelfLoop(SelfLoopStructurizatorNode *selfLoopNode);
+	semantics::SemanticNode *transformWhileLoop(WhileStructurizatorNode *whileNode);
+	semantics::SemanticNode *transformSwitch(SwitchStructurizatorNode *switchNode);
 	semantics::SemanticNode *transformBreakNode();
 
 	/// helper functions
-	semantics::SemanticNode *createConditionWithBreaks(structurizatorNodes::NodeWithBreaks *nodeWithBreaks);
+	semantics::SemanticNode *createConditionWithBreaks(StructurizatorNodeWithBreaks *nodeWithBreaks);
 	semantics::SemanticNode *createSemanticIfNode(const qReal::Id &conditionId
-			, structurizatorNodes::IntermediateNode *thenNode
-			, structurizatorNodes::IntermediateNode *elseNode);
+			, IntermediateStructurizatorNode *thenNode
+			, IntermediateStructurizatorNode *elseNode);
 
 	semantics::SemanticNode *createSemanticSwitchNode(const qReal::Id &conditionId
-			, const QList<structurizatorNodes::IntermediateNode *> &branches
+			, const QList<IntermediateStructurizatorNode *> &branches
 			, bool generateIfs);
 
 	/// methods for building graph

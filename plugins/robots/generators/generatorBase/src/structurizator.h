@@ -23,20 +23,15 @@
 
 namespace generatorBase {
 
-namespace structurizatorNodes {
-	class IntermediateNode;
-	class SimpleNode;
-	class BreakNode;
-	class IfNode;
-	class NodeWithBreaks;
-	class SwitchNode;
-	class BlockNode;
-	class WhileNode;
-	class SelfLoopNode;
-}
-
-namespace sn = structurizatorNodes;
-
+class IntermediateStructurizatorNode;
+class SimpleStructurizatorNode;
+class BreakStructurizatorNode;
+class IfStructurizatorNode;
+class SwitchStructurizatorNode;
+class BlockStructurizatorNode;
+class WhileStructurizatorNode;
+class SelfLoopStructurizatorNode;
+class StructurizatorNodeWithBreaks;
 
 /// @class Structurizator is aimed to produce control flow AST from diagram performing Structural Analysis.
 /// AST Nodes are concrete classes (BlockNode, WhileNode, etc.) of abstract @class IntermediateNode
@@ -64,7 +59,7 @@ public:
 	explicit Structurizator(QObject *parent = 0);
 
 	/// main function that performs structurization
-	sn::IntermediateNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
+	IntermediateStructurizatorNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex
 			, const QMap<int, QSet<int>> &followers, const QMap<qReal::Id, int> &vertexNumber, int verticesNumber);
 
 private:
@@ -128,7 +123,7 @@ private:
 
 	void appendNodesDetectedAsNodeWithExit(QSet<int> &vertices, int cycleHead);
 	void removeNodesPreviouslyDetectedAsNodeWithExit(QSet<int> &vertices);
-	int appendVertex(sn::IntermediateNode *node);
+	int appendVertex(IntermediateStructurizatorNode *node);
 
 	int outgoingEdgesNumber(int v) const;
 	int incomingEdgesNumber(int v) const;
@@ -141,7 +136,7 @@ private:
 	QMap<VertexNumber, Time> mPostOrder;
 	QMap<VertexNumber, VertexNumber> mWasPreviouslyDetectedAsNodeWithExit;
 
-	QMap<int, sn::IntermediateNode *> mTrees;
+	QMap<int, IntermediateStructurizatorNode *> mTrees;
 
 	QSet<qReal::Id> mInitialIds;
 	int mVerticesNumber;

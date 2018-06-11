@@ -67,10 +67,18 @@ HEADERS += \
 	$$PWD/src/converters/dynamicPropertiesConverter.h \
 	$$PWD/src/structuralControlFlowGenerator.h \
 	$$PWD/src/structurizator.h \
-	$$PWD/src/intermediateNode.h \
 
 HEADERS += \
-	$$PWD/src/rules/semanticTransformationRule.h \
+	$$PWD/src/structurizatorNodes/intermediateStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/simpleStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/breakStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/ifStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/structurizatorNodeWithBreaks.h \
+	$$PWD/src/structurizatorNodes/switchStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/blockStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/whileStructurizatorNode.h \
+	$$PWD/src/structurizatorNodes/selfLoopStructurizatorNode.h \
+
 
 SOURCES += \
 	$$PWD/src/robotsGeneratorPluginBase.cpp \
@@ -106,7 +114,6 @@ SOURCES += \
 	$$PWD/src/converters/dynamicPropertiesConverter.cpp \
 	$$PWD/src/structuralControlFlowGenerator.cpp \
 	$$PWD/src/structurizator.cpp \
-	$$PWD/src/intermediateNode.cpp \
 
 # Simple element generators & converters
 
@@ -244,3 +251,14 @@ SOURCES += \
 	$$PWD/src/lua/luaPrinter.cpp \
 	$$PWD/src/lua/reservedFunctionsConverter.cpp \
 	$$PWD/src/lua/precedenceConverter.cpp \
+
+SOURCES += \
+	$$PWD/src/structurizatorNodes/intermediateStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/simpleStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/breakStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/ifStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/structurizatorNodeWithBreaks.cpp \
+	$$PWD/src/structurizatorNodes/switchStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/blockStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/whileStructurizatorNode.cpp \
+	$$PWD/src/structurizatorNodes/selfLoopStructurizatorNode.cpp \
