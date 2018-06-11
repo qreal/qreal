@@ -136,7 +136,7 @@ private:
 	int mStartVertex;
 	QMap<qReal::Id, int> mVertexNumber;
 	QMap<int, int> mLoopHeader;
-	QMap<int, QSet<int> > mFollowers;
+	QMap<int, QSet<int>> mFollowers;
 	bool mIsGraphBeingConstructed;
 	QStack<int> mLoopNumbers;
 	QSet<int> mVerticesInsideLoopBody;

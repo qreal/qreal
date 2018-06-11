@@ -105,7 +105,7 @@ NonZoneNode *SemanticTree::findNodeFor(const Id &id)
 	return dynamic_cast<NonZoneNode *>(mRoot->findNodeFor(id));
 }
 
-void SemanticTree::setRoot(RootNode *root)
+void SemanticTree::setRoot(SemanticNode *node)
 {
-	mRoot = root;
+	mRoot = new RootNode(node, this);
 }

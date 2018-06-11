@@ -42,7 +42,7 @@ namespace sn = structurizatorNodes;
 /// AST Nodes are concrete classes (BlockNode, WhileNode, etc.) of abstract @class IntermediateNode
 /// and represent some type of control structure of high-order programming language.
 ///
-/// Before the main algorithm we should fill neede structures:
+/// We should fill needed structures before performing main algorithm:
 /// 1) calculate dominators used for detecting vertices in cycle body;
 /// 2) calculate postorder vertices numbers to perform structurizaion from down to up.
 ///
@@ -74,12 +74,12 @@ private:
 	/// methods to identify patterns for structural analysis
 	/// @arg edgesToRemove -- passed by reference.
 	/// @arg verticesRoles -- passed by reference.
-	bool isBlock(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	bool isIfThenElse(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	bool isIfThen(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	bool isSwitch(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	bool isInfiniteLoop(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	bool isWhileLoop(int v, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isBlock(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isIfThenElse(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isIfThen(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isSwitch(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isInfiniteLoop(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	bool isWhileLoop(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
 
 	/// helper functions for clarifying vertices roles
 	bool checkIfThenHelper(int thenNumber, int elseNumber);
@@ -89,12 +89,12 @@ private:
 	/// EXIT --- is a vertex to which control is transfered after loop execution.
 	/// the main idea is to remove such vertices and edges substituting them with new vertices
 	/// of class NodeWithBreaks which remember actions to perform before Break.
-	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool isCycleWithBreaks(QSet<int> &reachUnder, QMap<int, QSet<int>> &nodesWithExits, int &commonExit);
 	bool isHeadOfCycle(int v, QSet<int> &reachUnder);
-	bool findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int> > &nodesWithExits, int &commonExit);
+	bool findCommonExit(QSet<int> &reachUnder, QMap<int, QSet<int>> &nodesWithExits, int &commonExit);
 
 	/// EXIT must be unique.
-	bool checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int> > &nodesWithExits);
+	bool checkCommonExitUniqueness(int commonExit, const QMap<int, QSet<int>> &nodesWithExits);
 
 	/// Vertices with exits must belong only to one loop.
 	/// This limitation was introduced in order to forbid situation of nested loops when break
@@ -103,18 +103,18 @@ private:
 	bool checkNodes(const QSet<int> &verticesWithExits);
 
 	/// methods for reducing recognised pattern
-	void reduceBlock(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceIfThenElse(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceIfThen(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceSwitch(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceInfiniteLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceWhileLoop(QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void reduceConditionsWithBreaks(int &v, QMap<int, QSet<int> > &nodesWithExits, int commonExit);
+	void reduceBlock(QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceIfThenElse(QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceIfThen(QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceSwitch(QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceInfiniteLoop(QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceWhileLoop(QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void reduceConditionsWithBreaks(int &v, QMap<int, QSet<int>> &nodesWithExits, int commonExit);
 
 	/// Replacing some verteces with a new one and proper maintenance of edges
-	void replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices);
-	void replace(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QMap<QString, int> &verticesRoles);
-	void updateEdges(int newNodeNumber, QSet<QPair<int, int> > &edgesToRemove, QSet<int> &vertices);
+	void replace(int newNodeNumber, QSet<QPair<int, int>> &edgesToRemove, QSet<int> &vertices);
+	void replace(int newNodeNumber, QSet<QPair<int, int>> &edgesToRemove, QMap<QString, int> &verticesRoles);
+	void updateEdges(int newNodeNumber, QSet<QPair<int, int>> &edgesToRemove, QSet<int> &vertices);
 	void updatePostOrder(int newNodeNumber, QSet<int> &vertices);
 	void updateDominators(int newNodeNumber, QSet<int> &vertices);
 	void updateVertices(int newNodeNumber, QSet<int> &vertices);
@@ -138,9 +138,9 @@ private:
 	QPair<int, int> makePair(int a, int b);
 
 	QSet<VertexNumber> mVertices;
-	QMap<VertexNumber, QVector<VertexNumber> > mFollowers;
-	QMap<VertexNumber, QVector<VertexNumber> > mPredecessors;
-	QMap<VertexNumber, QSet<VertexNumber> > mDominators;
+	QMap<VertexNumber, QVector<VertexNumber>> mFollowers;
+	QMap<VertexNumber, QVector<VertexNumber>> mPredecessors;
+	QMap<VertexNumber, QSet<VertexNumber>> mDominators;
 	QMap<VertexNumber, Time> mPostOrder;
 	QMap<VertexNumber, VertexNumber> mWasPreviouslyDetectedAsNodeWithExit;
 
