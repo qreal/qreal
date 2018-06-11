@@ -195,7 +195,6 @@ void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, Interme
 		default:
 			zone->appendChild(transformSimple(simpleNode));
 		}
-
 	} else {
 		zone->appendChild(transformNode(node));
 	}
