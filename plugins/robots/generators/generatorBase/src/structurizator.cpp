@@ -97,6 +97,15 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 				}
 
 				if (!nodesWithExits.isEmpty() && checkNodes(verticesWithExits)) {
+
+					for (const int vertexInsideLoop : nodesWithExits.keys()) {
+						for (const int vertexOutsideLoop : nodesWithExits[vertexInsideLoop]) {
+							if (minTime > mPostOrder[vertexOutsideLoop]) {
+								minTime = mPostOrder[vertexOutsideLoop];
+							}
+						}
+					}
+
 					reduceConditionsWithBreaks(v, nodesWithExits, commonExit);
 					t = minTime;
 					somethingChanged = true;
