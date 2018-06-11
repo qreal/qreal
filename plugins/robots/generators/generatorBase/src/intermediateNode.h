@@ -1,4 +1,4 @@
-/* Copyright 2018 QReal Research Group
+/* Copyright 2018 Konstantin Batoev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ namespace structurizatorNodes {
 
 class IntermediateNode : public QObject
 {
-
 	Q_OBJECT
 
 public:
@@ -55,7 +54,6 @@ protected:
 
 class SimpleNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -72,7 +70,6 @@ private:
 
 class BreakNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -88,7 +85,6 @@ private:
 
 class IfNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -113,7 +109,6 @@ private:
 
 class NodeWithBreaks : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -136,7 +131,6 @@ private:
 
 class SwitchNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -159,7 +153,6 @@ private:
 
 class BlockNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -178,7 +171,6 @@ private:
 
 class WhileNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:
@@ -201,7 +193,6 @@ private:
 
 class SelfLoopNode : public IntermediateNode
 {
-
 	Q_OBJECT
 
 public:

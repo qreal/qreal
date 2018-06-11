@@ -1,4 +1,4 @@
-/* Copyright 2018 QReal Research Group
+/* Copyright 2018 Konstantin Batoev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,6 +119,7 @@ IntermediateNode *Structurizator::performStructurization(const QSet<qReal::Id> &
 				if (t < 0) {
 					t = 0;
 				}
+
 				somethingChanged = true;
 			} else {
 				t++;
@@ -144,7 +145,7 @@ bool Structurizator::isBlock(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<Q
 		verticesRoles["block1"] = v;
 		verticesRoles["block2"] = u;
 
-		edgesToRemove.insert(makePair(v, u));
+		edgesToRemove.insert(qMakePair(v, u));
 		return true;
 	}
 
@@ -176,7 +177,7 @@ bool Structurizator::isIfThenElse(int v, QSet<QPair<int, int>> &edgesToRemove, Q
 			verticesRoles["exit"] = mFollowers[u1].first();
 		}
 
-		edgesToRemove += { makePair(v, u1), makePair(v, u2) };
+		edgesToRemove += { qMakePair(v, u1), qMakePair(v, u2) };
 		return true;
 	}
 
@@ -213,7 +214,7 @@ bool Structurizator::isIfThen(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<
 		verticesRoles["exit"] = mFollowers[thenNumber].first();
 	}
 
-	edgesToRemove = { makePair(v, u1), makePair(v, u2) };
+	edgesToRemove = { qMakePair(v, u1), qMakePair(v, u2) };
 
 	return true;
 }
@@ -228,8 +229,6 @@ bool Structurizator::isSwitch(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<
 	QSet<int> vertices = {};
 	QSet<QPair<int, int>> edges = {};
 	for (const int u : mFollowers[v]) {
-
-
 		if (incomingEdgesNumber(u) != 1 || outgoingEdgesNumber(u) >= 2) {
 			if (exit == -1) {
 				exit = u;
@@ -252,7 +251,7 @@ bool Structurizator::isSwitch(int v, QSet<QPair<int, int>> &edgesToRemove, QMap<
 			return false;
 		}
 
-		edges.insert(makePair(v, u));
+		edges.insert(qMakePair(v, u));
 	}
 
 	verticesRoles["head"] = v;
@@ -281,7 +280,7 @@ bool Structurizator::isInfiniteLoop(int v, QSet<QPair<int, int>> &edgesToRemove,
 	}
 
 	verticesRoles["body"] = v;
-	edgesToRemove.insert(makePair(v, v));
+	edgesToRemove.insert(qMakePair(v, v));
 	return true;
 }
 
@@ -312,7 +311,7 @@ bool Structurizator::isWhileLoop(int v, QSet<QPair<int, int>> &edgesToRemove, QM
 		return false;
 	}
 
-	edgesToRemove = { makePair(v, bodyNumber), makePair(bodyNumber, v) };
+	edgesToRemove = { qMakePair(v, bodyNumber), qMakePair(bodyNumber, v) };
 
 	verticesRoles["head"] = v;
 	verticesRoles["body"] = bodyNumber;
@@ -559,10 +558,10 @@ void Structurizator::reduceConditionsWithBreaks(int &v, QMap<int, QSet<int>> &no
 				vertices.insert(exit);
 
 				if (mFollowers[exit].contains(commonExit)) {
-					edgesToRemove.insert(makePair(exit, commonExit));
+					edgesToRemove.insert(qMakePair(exit, commonExit));
 				}
 			}
-			edgesToRemove.insert(makePair(u, exit));
+			edgesToRemove.insert(qMakePair(u, exit));
 			exitBranches.append(node);
 		}
 
@@ -803,9 +802,4 @@ int Structurizator::outgoingEdgesNumber(int v) const
 int Structurizator::incomingEdgesNumber(int v) const
 {
 	return mPredecessors[v].size();
-}
-
-QPair<int, int> Structurizator::makePair(int a, int b)
-{
-	return QPair<int, int>(a, b);
 }

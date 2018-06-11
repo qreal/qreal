@@ -71,10 +71,10 @@ protected:
 	/// Can be overloaded by descendants for custom behaviour.
 	virtual void performGeneration();
 
-	virtual bool registerOtherThreads(const qReal::Id &id, const QList<LinkInfo> &threads
+	virtual void registerOtherThreads(const qReal::Id &id, const QList<LinkInfo> &threads
 			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage);
 
-	virtual bool registerTerminatingThreads(const qReal::Id &id, parts::Threads &threadsStorage
+	virtual void registerTerminatingThreads(const qReal::Id &id, parts::Threads &threadsStorage
 			, bool fromMain);
 
 	bool generateForks();

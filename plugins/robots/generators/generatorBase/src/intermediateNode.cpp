@@ -1,4 +1,4 @@
-/* Copyright 2018 QReal Research Group
+/* Copyright 2018 Konstantin Batoev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,10 +49,10 @@ qReal::Id SimpleNode::id() const
 }
 
 IfNode::IfNode(IntermediateNode *condition
-							, IntermediateNode *thenBranch
-							, IntermediateNode *elseBranch
-							, IntermediateNode *exit
-							, QObject *parent)
+		, IntermediateNode *thenBranch
+		, IntermediateNode *elseBranch
+		, IntermediateNode *exit
+		, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mThenBranch(thenBranch)
@@ -84,7 +84,6 @@ IntermediateNode *IfNode::exit() const
 bool IfNode::analyzeBreak()
 {
 	mHasBreakInside = mThenBranch->analyzeBreak();
-
 	if (mElseBranch) {
 		mHasBreakInside |= mElseBranch->analyzeBreak();
 	}
@@ -115,7 +114,7 @@ bool IntermediateNode::hasBreakInside() const
 }
 
 SwitchNode::SwitchNode(IntermediateNode *condition, const QList<IntermediateNode *> &branches,
-							IntermediateNode *exit, QObject *parent)
+		IntermediateNode *exit, QObject *parent)
 	: IntermediateNode(parent)
 	, mCondition(condition)
 	, mBranches(QList<IntermediateNode *>(branches))
@@ -148,8 +147,8 @@ bool SwitchNode::analyzeBreak()
 	for (IntermediateNode *node : mBranches) {
 		mHasBreakInside |= node->analyzeBreak();
 	}
-	mBreakWasAnalyzed = true;
 
+	mBreakWasAnalyzed = true;
 	return mHasBreakInside;
 }
 

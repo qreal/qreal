@@ -1,4 +1,4 @@
-/* Copyright 2017 QReal Research Group
+/* Copyright 2018 Konstantin Batoev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -154,24 +154,20 @@ void StructuralControlFlowGenerator::performGeneration()
 	}
 }
 
-bool StructuralControlFlowGenerator::registerOtherThreads(const Id &id, const QList<LinkInfo> &threads
+void StructuralControlFlowGenerator::registerOtherThreads(const Id &id, const QList<LinkInfo> &threads
 		, const QHash<Id, QString> &threadIds, parts::Threads &threadsStorage)
 {
 	if (!mIsGraphBeingConstructed) {
-		return ControlFlowGeneratorBase::registerOtherThreads(id, threads, threadIds, threadsStorage);
+		ControlFlowGeneratorBase::registerOtherThreads(id, threads, threadIds, threadsStorage);
 	}
-
-	return false;
 }
 
-bool StructuralControlFlowGenerator::registerTerminatingThreads(const Id &id, parts::Threads &threadsStorage
+void StructuralControlFlowGenerator::registerTerminatingThreads(const Id &id, parts::Threads &threadsStorage
 		, bool fromMain)
 {
 	if (!mIsGraphBeingConstructed) {
-		return ControlFlowGeneratorBase::registerTerminatingThreads(id, threadsStorage, fromMain);
+		ControlFlowGeneratorBase::registerTerminatingThreads(id, threadsStorage, fromMain);
 	}
-
-	return false;
 }
 
 void StructuralControlFlowGenerator::obtainSemanticTree(sn::IntermediateNode *root)
@@ -242,7 +238,6 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(sn::IntermediateNode
 
 	default:
 		mCantBeGeneratedIntoStructuredCode = true;
-
 		return mSemanticTree->produceSimple();
 	}
 }
@@ -564,9 +559,9 @@ void StructuralControlFlowGenerator::appendEdgesAndVertices(const Id &vertex, co
 				addEdgeIntoGraph(vertex, otherVertex);
 			}
 		} else {
-			if (semanticsOf(otherVertex) != enums::semantics::loopBlock ||
-						(mLoopNumbers.contains(mVertexNumber[otherVertex])
-						&& mVerticesInsideLoopBody.contains(mVertexNumber[vertex]))) {
+			if (semanticsOf(otherVertex) != enums::semantics::loopBlock
+					|| (mLoopNumbers.contains(mVertexNumber[otherVertex])
+							&& mVerticesInsideLoopBody.contains(mVertexNumber[vertex]))) {
 				addEdgeIntoGraph(vertex, otherVertex);
 			} else {
 				addEdgeIntoGraph(vertex, mVertexNumber.key(mLoopHeader[mVertexNumber[otherVertex]]));

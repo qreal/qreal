@@ -1,4 +1,4 @@
-/* Copyright 2018 QReal Research Group
+/* Copyright 2018 Konstantin Batoev
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,9 +134,6 @@ private:
 	int incomingEdgesNumber(int v) const;
 
 	QMap<qReal::Id, int> mMapIdToInt;
-
-	QPair<int, int> makePair(int a, int b);
-
 	QSet<VertexNumber> mVertices;
 	QMap<VertexNumber, QVector<VertexNumber>> mFollowers;
 	QMap<VertexNumber, QVector<VertexNumber>> mPredecessors;

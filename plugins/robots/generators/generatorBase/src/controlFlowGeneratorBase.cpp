@@ -87,7 +87,7 @@ void ControlFlowGeneratorBase::performGeneration()
 	startSearch(mSemanticTree->initialBlock());
 }
 
-bool ControlFlowGeneratorBase::registerOtherThreads(const Id &id, const QList<LinkInfo> &threads
+void ControlFlowGeneratorBase::registerOtherThreads(const Id &id, const QList<LinkInfo> &threads
 		, const QHash<Id, QString> &threadIds, parts::Threads &threadsStorage)
 {
 	semantics::ForkNode * const fork = static_cast<semantics::ForkNode *>(mSemanticTree->findNodeFor(id));
@@ -96,11 +96,9 @@ bool ControlFlowGeneratorBase::registerOtherThreads(const Id &id, const QList<Li
 		threadsStorage.registerThread(thread.target, threadIds[thread.linkId]);
 		fork->appendThread(thread.target, threadIds[thread.linkId]);
 	}
-
-	return true;
 }
 
-bool ControlFlowGeneratorBase::registerTerminatingThreads(const Id &id, parts::Threads &threadsStorage
+void ControlFlowGeneratorBase::registerTerminatingThreads(const Id &id, parts::Threads &threadsStorage
 		, bool fromMain)
 {
 	semantics::JoinNode *join = static_cast<semantics::JoinNode *>(mSemanticTree->findNodeFor(id));
@@ -109,8 +107,6 @@ bool ControlFlowGeneratorBase::registerTerminatingThreads(const Id &id, parts::T
 	if (!fromMain) {
 		threadsStorage.addJoin(id, mThreadId);
 	}
-
-	return true;
 }
 
 bool ControlFlowGeneratorBase::generateForks()
