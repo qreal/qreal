@@ -5,7 +5,7 @@
     <Description>TRIK Studio engine, must be installed</Description>
     <Description xml:lang="ru_ru">Ядро системы TRIK Studio, обязательно к установке</Description>
     <Version>3.2.0-4</Version>
-    <ReleaseDate>2017</ReleaseDate>
+    <ReleaseDate>2018-06-15</ReleaseDate>
     <Licenses>
         <License name="Box2D Component License" file="Box2D-license.txt" />
     </Licenses>
