@@ -4,7 +4,7 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-cp     $INSTALLER_ROOT/licenses/Box2D-license*.txt
+cp     $INSTALLER_ROOT/licenses/Box2D-license*.txt                      $PWD
 
 mkdir -p $PWD/../data/plugins/editors
 mkdir -p $PWD/../data/plugins/tools
