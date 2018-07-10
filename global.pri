@@ -169,20 +169,20 @@ defineTest(copyToDestdir) {
 		}
 
 		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
-		win32:DDIR ~= s,/,\\,g
+		#win32:DDIR ~= s,/,\\,g ??? why not system_path?
+		DDIR = $$system_path($$DDIR)
 		mkpath($$DDIR)
 
 		isEmpty(NOW) {
 			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
-			win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\\*
-			win32:QMAKE_POST_LINK += $$quote("xcopy /s /e /q /y /i") $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE'.'
+			win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\*
+			win32:QMAKE_POST_LINK += $$quote("xcopy /l /s /e /y /i") $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 			!win32:QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
 		} else {
 			win32 {
 				# Message here is very useful in diagnostics.
-				message("Executing `cmd /C xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i`")
-				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
+				system("cmd.exe /c \"xcopy $$quote($$FILE) $$quote($$DDIR) /l /s /e /y /i\"")
 			}
 
 			unix:!macx {
