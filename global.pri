@@ -169,7 +169,8 @@ defineTest(copyToDestdir) {
 		}
 
 		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
-		win32:DDIR ~= s,/,\\,g
+		#win32:DDIR ~= s,/,\\,g ??? why not system_path?
+		DDIR = $$system_path($$DDIR)
 		mkpath($$DDIR)
 
 		isEmpty(NOW) {
@@ -181,8 +182,8 @@ defineTest(copyToDestdir) {
 		} else {
 			win32 {
 				# Message here is very useful in diagnostics.
-				message("Executing `cmd /C xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i`")
-				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
+				message("Executing cmd /C \\\"xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i\\\"")
+				system("cmd /C \\\"xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i\\\"")
 			}
 
 			unix:!macx {
