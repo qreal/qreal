@@ -158,40 +158,29 @@ defineTest(copyToDestdir) {
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
 		AFTER_SLASH = $$section(FILE, "/", -1, -1)
-		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
-		win32 {
-			FILE = $$system_path($$FILE)
-			isDir($$FILE) {
-				ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
-				BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
-				DESTDIR_SUFFIX = /$$BASE_NAME
-			}
+		isDir($$FILE) {
+			ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
+			BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
+			DESTDIR_SUFFIX = /$$BASE_NAME
+			FILE = $$FILE/*
 		}
 
-		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
-		#win32:DDIR ~= s,/,\\,g ??? why not system_path?
-		DDIR = $$system_path($$DDIR)
+		DDIR = $$system_path($$DESTDIR/$$3$$DESTDIR_SUFFIX)
+		FILE = $$system_path($$FILE)
+
 		mkpath($$DDIR)
 
-		isEmpty(NOW) {
-			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE'.'
-			win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\*
-			win32:QMAKE_POST_LINK += $$quote("xcopy /l /s /e /y /i") $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-			!win32:QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+		win32 {
+			# probably, xcopy needs /s and /e for directories
+			COPY_DIR = "cmd.exe /C xcopy /f /l /y /i"
 		} else {
-			win32 {
-				# Message here is very useful in diagnostics.
-				system("cmd.exe /c \"xcopy $$quote($$FILE) $$quote($$DDIR) /l /s /e /y /i\"")
-			}
-
-			unix:!macx {
-				system("cp -r -f $$FILE $$DDIR/")
-			}
-
-			macx {
-				system("rsync -avz $$FILE $$DDIR/")
-			}
+		 	COPY_DIR = "rsync -avz "
+		}
+		COPY_COMMAND = $$COPY_DIR $$quote($$FILE) $$quote($$DDIR/)
+		isEmpty(NOW) {
+			QMAKE_POST_LINK += $$COPY_COMMAND $$escape_expand(\\n\\t)
+		} else {
+			system($$COPY_COMMAND)
 		}
 	}
 
@@ -209,6 +198,7 @@ defineTest(includes) {
 }
 
 defineTest(links) {
+	LIBS += -L$$DESTDIR
 	PROJECTS = $$1
 
 	for(PROJECT, PROJECTS) {
