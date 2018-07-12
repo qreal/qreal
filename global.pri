@@ -172,7 +172,7 @@ defineTest(copyToDestdir) {
 
 		win32 {
 			# probably, xcopy needs /s and /e for directories
-			COPY_DIR = "cmd.exe /C xcopy /f /l /y /i"
+			COPY_DIR = "cmd.exe /C xcopy /f /y /i"
 		} else {
 		 	COPY_DIR = "rsync -avz "
 		}
