@@ -165,18 +165,18 @@ defineTest(copyToDestdir) {
 			FILE = $$FILE/*
 		}
 
-		DDIR = $$system_path($$DESTDIR/$$3$$DESTDIR_SUFFIX)
+		DDIR = $$system_path($$DESTDIR/$$3$$DESTDIR_SUFFIX/)
 		FILE = $$system_path($$FILE)
 
 		mkpath($$DDIR)
 
 		win32 {
 			# probably, xcopy needs /s and /e for directories
-			COPY_DIR = "cmd.exe /C xcopy /f /y /i"
+			COPY_DIR = "cmd.exe /C xcopy /f /y /i /e"
 		} else {
 		 	COPY_DIR = "rsync -avz "
 		}
-		COPY_COMMAND = $$COPY_DIR $$quote($$FILE) $$quote($$DDIR/)
+		COPY_COMMAND = $$COPY_DIR $$quote($$FILE) $$quote($$DDIR)
 		isEmpty(NOW) {
 			QMAKE_POST_LINK += $$COPY_COMMAND $$escape_expand(\\n\\t)
 		} else {
