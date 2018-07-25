@@ -14,6 +14,8 @@
 
 #include "structurizator.h"
 
+#include <QtCore/QQueue>
+
 #include "structurizatorNodes/intermediateStructurizatorNode.h"
 #include "structurizatorNodes/blockStructurizatorNode.h"
 #include "structurizatorNodes/breakStructurizatorNode.h"
@@ -23,7 +25,6 @@
 #include "structurizatorNodes/simpleStructurizatorNode.h"
 #include "structurizatorNodes/switchStructurizatorNode.h"
 #include "structurizatorNodes/whileStructurizatorNode.h"
-#include <QQueue>
 
 using namespace generatorBase;
 
@@ -48,7 +49,6 @@ IntermediateStructurizatorNode *Structurizator::performStructurization(const QSe
 	}
 
 	mVerticesNumber = verticesNumber;
-
 	mStartVertex = startVertex;
 
 	for (const int v : followers.keys()) {
@@ -59,9 +59,7 @@ IntermediateStructurizatorNode *Structurizator::performStructurization(const QSe
 	}
 
 	calculatePostOrder();
-
 	calculateDominators();
-
 	createInitialNodesForIds();
 
 	bool somethingChanged = true;

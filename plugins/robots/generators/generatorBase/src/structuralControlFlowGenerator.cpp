@@ -11,11 +11,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
 #include "structuralControlFlowGenerator.h"
-
-#include <QtCore/QQueue>
-
-#include <QStack>
 
 #include "structurizatorNodes/intermediateStructurizatorNode.h"
 #include "structurizatorNodes/blockStructurizatorNode.h"
@@ -26,14 +23,12 @@
 #include "structurizatorNodes/simpleStructurizatorNode.h"
 #include "structurizatorNodes/switchStructurizatorNode.h"
 #include "structurizatorNodes/whileStructurizatorNode.h"
-
 #include "generatorBase/parts/subprograms.h"
 #include "generatorBase/parts/threads.h"
 
 using namespace qReal;
 using namespace generatorBase;
 using namespace semantics;
-
 
 StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::RepoApi &repo
 		, ErrorReporterInterface &errorReporter
@@ -42,22 +37,22 @@ StructuralControlFlowGenerator::StructuralControlFlowGenerator(const qrRepo::Rep
 		, const Id &diagramId
 		, QObject *parent
 		, bool isThisDiagramMain
-		, Id simpleId)
+		, const Id &simpleId)
 	: ControlFlowGeneratorBase(repo, errorReporter, customizer, validator, diagramId, parent, isThisDiagramMain)
-	, mCantBeGeneratedIntoStructuredCode(false)
+	, mCanBeGeneratedIntoStructuredCode(true)
 	, mStructurizator(new Structurizator(this))
 	, mVerticesNumber(0)
 	, mStartVertex(0)
 	, mIsGraphBeingConstructed(true)
-	, mSimpleId(simpleId)
+	, mFictiveId(simpleId)
 {
 }
 
 ControlFlowGeneratorBase *StructuralControlFlowGenerator::cloneFor(const Id &diagramId, bool cloneForNewDiagram)
 {
 	StructuralControlFlowGenerator * const copy = new StructuralControlFlowGenerator(mRepo
-			, mErrorReporter, mCustomizer, (cloneForNewDiagram ? *mValidator.clone() : mValidator)
-			, diagramId, parent(), false, mSimpleId);
+			, mErrorReporter, mCustomizer, cloneForNewDiagram ? *mValidator.clone() : mValidator
+			, diagramId, parent(), false, mFictiveId);
 
 	return copy;
 }
@@ -68,15 +63,15 @@ void StructuralControlFlowGenerator::beforeSearch()
 
 void StructuralControlFlowGenerator::visit(const Id &id, QList<LinkInfo> &links)
 {
-	if (mSimpleId == qReal::Id()) {
-		mSimpleId = id.sameTypeId();
+	if (mFictiveId.isNull()) {
+		mFictiveId = id.sameTypeId();
 	}
 
-	mWasDoneThisIteration = false;
+	mEdgesAndVerticesWereAdded = false;
 
 	ControlFlowGeneratorBase::visit(id, links);
 
-	if (!mWasDoneThisIteration) {
+	if (!mEdgesAndVerticesWereAdded) {
 		appendEdgesAndVertices(id, links);
 		addVerticesInLoopBody(id, links);
 	}
@@ -91,7 +86,7 @@ void StructuralControlFlowGenerator::afterVisit(const Id &id, QList<LinkInfo> &l
 	if (semanticsOf(id) == enums::semantics::loopBlock) {
 		mLoopNumbers.pop();
 
-		QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
+		const QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
 		mVerticesInsideLoopBody.remove(mVertexNumber[loopBranches.first.target]);
 	}
 
@@ -113,11 +108,11 @@ void StructuralControlFlowGenerator::visitLoop(const Id &id, const QList<LinkInf
 	appendEdgesAndVertices(id, links);
 	addVerticesInLoopBody(id, links);
 
-	mWasDoneThisIteration = true;
+	mEdgesAndVerticesWereAdded = true;
 
 	mLoopNumbers.push(mVertexNumber[id]);
 
-	QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
+	const QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(id);
 	mVerticesInsideLoopBody.insert(mVertexNumber[loopBranches.first.target]);
 }
 
@@ -139,7 +134,7 @@ void StructuralControlFlowGenerator::afterSearch()
 
 bool StructuralControlFlowGenerator::cantBeGeneratedIntoStructuredCode() const
 {
-	return mCantBeGeneratedIntoStructuredCode;
+	return !mCanBeGeneratedIntoStructuredCode;
 }
 
 void StructuralControlFlowGenerator::performGeneration()
@@ -153,10 +148,10 @@ void StructuralControlFlowGenerator::performGeneration()
 		mIsGraphBeingConstructed = false;
 		ControlFlowGeneratorBase::performGeneration();
 	} else {
-		mCantBeGeneratedIntoStructuredCode = true;
+		mCanBeGeneratedIntoStructuredCode = false;
 	}
 
-	if (mCantBeGeneratedIntoStructuredCode) {
+	if (!mCanBeGeneratedIntoStructuredCode) {
 		mSemanticTree = nullptr;
 	}
 }
@@ -200,7 +195,6 @@ void StructuralControlFlowGenerator::checkAndAppendBlock(ZoneNode *zone, Interme
 	}
 }
 
-// maybe use strategy to recursively handle this situation?
 SemanticNode *StructuralControlFlowGenerator::transformNode(IntermediateStructurizatorNode *node)
 {
 	switch (node->type()) {
@@ -243,7 +237,7 @@ SemanticNode *StructuralControlFlowGenerator::transformNode(IntermediateStructur
 	}
 
 	default:
-		mCantBeGeneratedIntoStructuredCode = true;
+		mCanBeGeneratedIntoStructuredCode = false;
 		return mSemanticTree->produceSimple();
 	}
 }
@@ -296,7 +290,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(IfStructurizat
 			const qReal::Id loopCondition = ifNode->condition()->firstId();
 			LoopNode *innerLoop = mSemanticTree->produceLoop(loopCondition);
 
-			QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(loopCondition);
+			const QPair<LinkInfo, LinkInfo> loopBranches = loopBranchesFor(loopCondition);
 			IntermediateStructurizatorNode *restBranch = ifNode->thenBranch();
 
 			if (ifNode->thenBranch()->firstId() == loopBranches.first.target) {
@@ -316,8 +310,7 @@ SemanticNode *StructuralControlFlowGenerator::transformIfThenElse(IfStructurizat
 		break;
 	}
 
-	mCantBeGeneratedIntoStructuredCode = true;
-
+	mCanBeGeneratedIntoStructuredCode = false;
 	return mSemanticTree->produceSimple();
 }
 
@@ -360,11 +353,8 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(WhileStructuriz
 		}
 
 		case enums::semantics::switchBlock: {
-			QList<IntermediateStructurizatorNode *> exitBranches;
-			exitBranches.append(new BreakStructurizatorNode(exitNode->firstId(), mStructurizator));
-
 			StructurizatorNodeWithBreaks *nodeWithBreaks = new StructurizatorNodeWithBreaks(headNode
-					, exitBranches, mStructurizator);
+					, { new BreakStructurizatorNode(exitNode->firstId(), mStructurizator) }, mStructurizator);
 			nodeWithBreaks->setRestBranches( { bodyNode } );
 
 			semanticLoop = mSemanticTree->produceLoop();
@@ -376,11 +366,11 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(WhileStructuriz
 			break;
 		}
 	} else if (headNode->type() == IntermediateStructurizatorNode::Type::nodeWithBreaks
-					&& semanticsOf(conditionId) == enums::semantics::loopBlock) {
+			&& semanticsOf(conditionId) == enums::semantics::loopBlock) {
 		StructurizatorNodeWithBreaks *nodeWitBreaks = static_cast<StructurizatorNodeWithBreaks *>(headNode);
 		if (nodeWitBreaks->exitBranches().size() != 1 ||
-					nodeWitBreaks->exitBranches().first()->type() == IntermediateStructurizatorNode::block) {
-			mCantBeGeneratedIntoStructuredCode = true;
+				nodeWitBreaks->exitBranches().first()->type() == IntermediateStructurizatorNode::block) {
+			mCanBeGeneratedIntoStructuredCode = false;
 			return mSemanticTree->produceSimple();
 		} else {
 			semanticLoop = mSemanticTree->produceLoop(conditionId);
@@ -398,7 +388,7 @@ SemanticNode *StructuralControlFlowGenerator::transformWhileLoop(WhileStructuriz
 SemanticNode *StructuralControlFlowGenerator::transformSwitch(SwitchStructurizatorNode *switchNode)
 {
 	const qReal::Id &conditionId = switchNode->condition()->firstId();
-	QList<IntermediateStructurizatorNode *> branches = switchNode->branches();
+	const QList<IntermediateStructurizatorNode *> branches = switchNode->branches();
 
 	if (switchNode->condition()->type() == IntermediateStructurizatorNode::nodeWithBreaks) {
 		StructurizatorNodeWithBreaks *nodeWithBreaks =
@@ -411,8 +401,7 @@ SemanticNode *StructuralControlFlowGenerator::transformSwitch(SwitchStructurizat
 		return createSemanticSwitchNode(conditionId, branches, switchNode->hasBreakInside());
 	}
 
-	mCantBeGeneratedIntoStructuredCode = true;
-
+	mCanBeGeneratedIntoStructuredCode = false;
 	return mSemanticTree->produceSimple();
 }
 
@@ -425,8 +414,8 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(Structur
 {
 	const qReal::Id conditionId = nodeWithBreaks->firstId();
 
-	QList<IntermediateStructurizatorNode *> exitBranches = nodeWithBreaks->exitBranches();
-	QList<IntermediateStructurizatorNode *> restBranches = nodeWithBreaks->restBranches();
+	const QList<IntermediateStructurizatorNode *> exitBranches = nodeWithBreaks->exitBranches();
+	const QList<IntermediateStructurizatorNode *> restBranches = nodeWithBreaks->restBranches();
 
 	switch(semanticsOf(conditionId)) {
 	case enums::semantics::conditionalBlock: {
@@ -434,7 +423,7 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(Structur
 	}
 
 	case enums::semantics::switchBlock: {
-		QList<IntermediateStructurizatorNode *> allBranches = restBranches + exitBranches;
+		const QList<IntermediateStructurizatorNode *> allBranches = restBranches + exitBranches;
 		return createSemanticSwitchNode(conditionId, allBranches, true);
 	}
 
@@ -454,7 +443,7 @@ SemanticNode *StructuralControlFlowGenerator::createConditionWithBreaks(Structur
 
 	}
 
-	mCantBeGeneratedIntoStructuredCode = true;
+	mCanBeGeneratedIntoStructuredCode = false;
 	return mSemanticTree->produceSimple();
 }
 
@@ -463,7 +452,7 @@ SemanticNode *StructuralControlFlowGenerator::createSemanticIfNode(const Id &con
 		, IntermediateStructurizatorNode *elseNode)
 {
 	IfNode *semanticIf = mSemanticTree->produceConditional(conditionId);
-	QPair<LinkInfo, LinkInfo> links = ifBranchesFor(conditionId);
+	const QPair<LinkInfo, LinkInfo> links = ifBranchesFor(conditionId);
 
 	if (links.first.target != thenNode->firstId()) {
 		if (elseNode) {
@@ -558,7 +547,7 @@ void StructuralControlFlowGenerator::appendEdgesAndVertices(const Id &vertex, co
 
 		if (!mIds.contains(otherVertex)) {
 			if (semanticsOf(otherVertex) == enums::semantics::loopBlock) {
-				const qReal::Id loopHeader = mSimpleId.sameTypeId();
+				const qReal::Id loopHeader = mFictiveId.sameTypeId();
 				mAdditionalVertices.push_back(loopHeader);
 				appendVertex(loopHeader);
 				appendVertex(otherVertex);

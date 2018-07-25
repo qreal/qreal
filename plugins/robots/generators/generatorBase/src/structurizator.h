@@ -14,11 +14,10 @@
 
 #pragma once
 
-#include <qrkernel/ids.h>
+#include <QtCore/QSet>
+#include <QtCore/QMap>
 
-#include <QObject>
-#include <QSet>
-#include <QMap>
+#include <qrkernel/ids.h>
 
 namespace generatorBase {
 

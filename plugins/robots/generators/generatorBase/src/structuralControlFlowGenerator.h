@@ -17,11 +17,10 @@
 #include "generatorBase/robotsGeneratorDeclSpec.h"
 #include "generatorBase/controlFlowGeneratorBase.h"
 #include "generatorBase/semanticTree/semanticTree.h"
-
 #include "structurizator.h"
 
-#include <QStack>
-#include <QVector>
+#include <QtCore/QStack>
+#include <QtCore/QVector>
 
 namespace generatorBase {
 
@@ -38,15 +37,14 @@ class ROBOTS_GENERATOR_EXPORT StructuralControlFlowGenerator : public ControlFlo
 	Q_OBJECT
 
 public:
-	StructuralControlFlowGenerator(
-			const qrRepo::RepoApi &repo
+	explicit StructuralControlFlowGenerator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
 			, bool isThisDiagramMain = true
-			, qReal::Id simpleId = qReal::Id());
+			, const qReal::Id &simpleId = qReal::Id());
 
 	/// Implementation of clone operation for structural generator
 	ControlFlowGeneratorBase *cloneFor(const qReal::Id &diagramId, bool cloneForNewDiagram) override;
@@ -65,7 +63,6 @@ public:
 
 	/// We clean old info about vertices belonging to some loop.
 	void afterVisit(const qReal::Id &id, QList<LinkInfo> &links) override;
-
 
 	/// This method can be used for semantic tree debug printing after all
 	/// traversal stages.
@@ -127,7 +124,7 @@ private:
 	void removeVerticesFromLoopBody(const qReal::Id &vertex, const QList<LinkInfo> &links);
 
 	QMap<int, semantics::SemanticNode *> mTrees;
-	bool mCantBeGeneratedIntoStructuredCode;
+	bool mCanBeGeneratedIntoStructuredCode;
 	Structurizator *mStructurizator;
 
 	int mVerticesNumber;
@@ -140,8 +137,8 @@ private:
 	QStack<int> mLoopNumbers;
 	QSet<int> mVerticesInsideLoopBody;
 	QVector<qReal::Id> mAdditionalVertices;
-	bool mWasDoneThisIteration;
-	qReal::Id mSimpleId;
+	bool mEdgesAndVerticesWereAdded;
+	qReal::Id mFictiveId;
 };
 
 }
