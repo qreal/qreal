@@ -89,6 +89,9 @@ protected:
 private:
 	void drawDebugRobot(model::RobotModel* const robot);
 	void createDebugRobot(model::RobotModel* const robot);
+	void onPressedReleasedSelectedItems(bool active);
+
+	bool itemTracked(QGraphicsItem * const item);
 
 	twoDModel::view::TwoDModelScene *mScene;
 	qreal mPixelsInCm;

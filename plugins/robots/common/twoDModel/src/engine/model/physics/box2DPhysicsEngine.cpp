@@ -74,8 +74,10 @@ Box2DPhysicsEngine::~Box2DPhysicsEngine(){
 
 QVector2D Box2DPhysicsEngine::positionShift(model::RobotModel &robot) const
 {
-	if (!mBox2DRobots.contains(&robot))
+	if (!mBox2DRobots.contains(&robot)) {
 		return QVector2D();
+	}
+
 	return QVector2D(positionToScene(mBox2DRobots[&robot]->getBody()->GetPosition() - mPrevPosition));
 }
 
@@ -120,6 +122,21 @@ void Box2DPhysicsEngine::createDebugRobot(model::RobotModel* const robot)
 	mScene->addItem(myDebugWheel2Item);
 }
 
+void Box2DPhysicsEngine::onPressedReleasedSelectedItems(bool active)
+{
+	for (auto *item : mScene->selectedItems()) {
+		Box2DItem *bItem = mBox2DDynamicItems.value(item, nullptr);
+		if (bItem) {
+			bItem->getBody()->SetActive(active);
+		}
+	}
+}
+
+bool Box2DPhysicsEngine::itemTracked(QGraphicsItem * const item)
+{
+	return mBox2DResizableItems.contains(item) || mBox2DDynamicItems.contains(item);
+}
+
 void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 {
 	PhysicsEngineBase::addRobot(robot);
@@ -147,6 +164,7 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 			if (rItem != nullptr)
 				onMouseReleased(rItem->pos(), rItem->rotation());
 		};
+
 		connect(mScene->robot(*robot), &view::RobotItem::mouseInteractionStopped, this, funcRelease);
 		connect(mScene->robot(*robot), &view::RobotItem::mouseInteractionStarted
 				, this, &Box2DPhysicsEngine::onMousePressed);
@@ -174,7 +192,7 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 		});
 
 		connect(robot, &model::RobotModel::deserialized, this, &Box2DPhysicsEngine::onMouseReleased);
-		//add connect to stop robot here
+//		add connect to stop robot here
 //		drawDebugRobot(robot);
 	});
 }
@@ -223,6 +241,8 @@ void Box2DPhysicsEngine::onMouseReleased(QPointF newPos, qreal newAngle)
 	robot->reinit();
 	onRobotStartAngleChanged(newAngle, robot->getRobotModel());
 	onRobotStartPositionChanged(newPos, robot->getRobotModel());
+
+	onPressedReleasedSelectedItems(true);
 }
 
 void Box2DPhysicsEngine::onMousePressed()
@@ -241,6 +261,8 @@ void Box2DPhysicsEngine::onMousePressed()
 //		p2.addPolygon(robot->getWheelAt(1)->mDebuggingDrawPolygon);
 //		mScene->addPath(p2);
 	}
+
+	onPressedReleasedSelectedItems(false);
 }
 
 void Box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
@@ -283,9 +305,11 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		mWorld->Step(secondsInterval, velocityIterations, positionIterations);
 
 		for(QGraphicsItem *item : mBox2DDynamicItems.keys()) {
-			item->setPos(positionToScene(mBox2DDynamicItems[item]->getPosition()));
-			item->moveBy(-item->boundingRect().center().x(), -item->boundingRect().center().y());
-			item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
+			if (mBox2DDynamicItems[item]->getBody()->IsActive()) {
+				item->setPos(positionToScene(mBox2DDynamicItems[item]->getPosition()));
+				item->moveBy(-item->boundingRect().center().x(), -item->boundingRect().center().y());
+				item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
+			}
 		}
 
 #ifdef BOX2D_DEBUG_PATH
@@ -344,19 +368,44 @@ void Box2DPhysicsEngine::itemAdded(QGraphicsItem * const item)
 		connect(abstractItem, &graphicsUtils::AbstractItem::x2Changed, this, onItemDraggedLambda);
 		connect(abstractItem, &graphicsUtils::AbstractItem::y1Changed, this, onItemDraggedLambda);
 		connect(abstractItem, &graphicsUtils::AbstractItem::y2Changed, this, onItemDraggedLambda);
+
+		connect(abstractItem, &graphicsUtils::AbstractItem::mouseInteractionStarted, this, [=](){
+			onPressedReleasedSelectedItems(false);
+		});
+
+		connect(abstractItem, &graphicsUtils::AbstractItem::mouseInteractionStopped, this, [=](){
+			onPressedReleasedSelectedItems(true);
+		});
+
 		onItemDragged(abstractItem);
 	}
 }
 
 void Box2DPhysicsEngine::onItemDragged(graphicsUtils::AbstractItem *item)
 {
-	itemRemoved(item);
-	if (auto solidItem = dynamic_cast<items::SolidItem *>(item)) {
-		QPolygonF collidingPolygon = solidItem->collidingPolygon();
+	// for items, that allows resizing/growing/reshaping, we should recreate box2d object
+	if (auto wallItem = dynamic_cast<items::WallItem *>(item)) {
+		itemRemoved(item);
+		QPolygonF collidingPolygon = wallItem->collidingPolygon();
 		if (collidingPolygon.boundingRect().isEmpty() || collidingPolygon.size() < 3) {
 			return;
 		}
 
+		b2Vec2 pos = positionToBox2D(collidingPolygon.boundingRect().center());
+		Box2DItem *box2dItem = new Box2DItem(this, *wallItem, pos, angleToBox2D(item->rotation()));
+		mBox2DResizableItems[item] = box2dItem;
+		return;
+	}
+
+	auto solidItem = dynamic_cast<items::SolidItem *>(item);
+	QPolygonF collidingPolygon = solidItem->collidingPolygon();
+	if (itemTracked(item)) {
+		if (solidItem->bodyType() == items::SolidItem::DYNAMIC) {
+			auto *bItem = mBox2DDynamicItems[item];
+			bItem->moveToPosition(positionToBox2D(item->scenePos() + item->boundingRect().center()));
+			bItem->setRotation(angleToBox2D(item->rotation()));
+		}
+	} else {
 		b2Vec2 pos = positionToBox2D(collidingPolygon.boundingRect().center());
 		Box2DItem *box2dItem = new Box2DItem(this, *solidItem, pos, angleToBox2D(item->rotation()));
 		mBox2DResizableItems[item] = box2dItem;

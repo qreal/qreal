@@ -179,13 +179,8 @@ void TwoDModelScene::onSkittleAdded(items::SkittleItem *skittle)
 	subscribeItem(skittle);
 	connect(skittle, &items::SkittleItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	skittle->setEditable(!mWorldReadOnly);
-	connect(skittle, &items::SkittleItem::mouseInteractionStopped, this, [&](){
-		for (QGraphicsItem *item : selectedItems()) {
-			if (auto skittle = dynamic_cast<items::SkittleItem *>(item)) {
-				skittle->saveStartPosition();
-			}
-		}
-	});
+	connect(skittle, &items::SkittleItem::mouseInteractionStopped
+			, this, &TwoDModelScene::handleMouseInteractionWithSelectedItems);
 }
 
 void TwoDModelScene::onBallAdded(items::BallItem *ball)
@@ -194,13 +189,19 @@ void TwoDModelScene::onBallAdded(items::BallItem *ball)
 	subscribeItem(ball);
 	connect(ball, &items::BallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	ball->setEditable(!mWorldReadOnly);
-	connect(ball, &items::BallItem::mouseInteractionStopped, this, [&](){
-		for (QGraphicsItem *item : selectedItems()) {
-			if (auto ball = dynamic_cast<items::BallItem *>(item)) {
-				ball->saveStartPosition();
-			}
+	connect(ball, &items::BallItem::mouseInteractionStopped
+			, this, &TwoDModelScene::handleMouseInteractionWithSelectedItems);
+}
+
+void TwoDModelScene::handleMouseInteractionWithSelectedItems()
+{
+	for (QGraphicsItem *item : selectedItems()) {
+		if (auto ball = dynamic_cast<items::BallItem *>(item)) {
+			ball->saveStartPosition();
+		} else if (auto skittle = dynamic_cast<items::SkittleItem *>(item)) {
+			skittle->saveStartPosition();
 		}
-	});
+	}
 }
 
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)

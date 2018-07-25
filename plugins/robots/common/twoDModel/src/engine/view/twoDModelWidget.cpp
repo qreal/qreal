@@ -778,6 +778,7 @@ QGraphicsView::DragMode TwoDModelWidget::cursorTypeToDragType(CursorType type) c
 	case drawStylus:
 	case drawWall:
 	case drawSkittle:
+	case drawBall:
 		return QGraphicsView::NoDrag;
 	case hand:
 		return QGraphicsView::ScrollHandDrag;

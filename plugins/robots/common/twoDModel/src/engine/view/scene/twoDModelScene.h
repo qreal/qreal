@@ -226,6 +226,8 @@ private:
 	void subscribeItem(graphicsUtils::AbstractItem *item);
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
+	void handleMouseInteractionWithSelectedItems();
+
 	qreal currentZoom() const;
 
 	model::Model &mModel;
