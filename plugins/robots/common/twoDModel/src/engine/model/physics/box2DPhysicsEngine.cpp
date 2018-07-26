@@ -161,8 +161,9 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 		mScene = dynamic_cast<view::TwoDModelScene *>(robot->startPositionMarker()->scene());
 		auto funcRelease = [=]() {
 			view::RobotItem *rItem = mScene->robot(*robot);
-			if (rItem != nullptr)
+			if (rItem != nullptr) {
 				onMouseReleased(rItem->pos(), rItem->rotation());
+			}
 		};
 
 		connect(mScene->robot(*robot), &view::RobotItem::mouseInteractionStopped, this, funcRelease);
@@ -303,11 +304,11 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		mPrevAngle = rBody->GetAngle();
 
 		mWorld->Step(secondsInterval, velocityIterations, positionIterations);
-
+		/// @todo: make it only when next frame called, not on every tick
 		for(QGraphicsItem *item : mBox2DDynamicItems.keys()) {
-			if (mBox2DDynamicItems[item]->getBody()->IsActive()) {
-				item->setPos(positionToScene(mBox2DDynamicItems[item]->getPosition()));
-				item->moveBy(-item->boundingRect().center().x(), -item->boundingRect().center().y());
+			if (mBox2DDynamicItems[item]->getBody()->IsActive() && mBox2DDynamicItems[item]->angleOrPositionChanged()) {
+				QPointF scenePos = positionToScene(mBox2DDynamicItems[item]->getPosition());
+				item->setPos(scenePos - item->boundingRect().center());
 				item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
 			}
 		}

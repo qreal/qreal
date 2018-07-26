@@ -231,12 +231,10 @@ QVariant RobotItem::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	if (change == ItemPositionHasChanged) {
 		mRobotModel.setPosition(value.value<QPointF>());
-		//emit itemChanged(this, value.value<QPointF>(), mRobotModel.rotation());
 	}
 
 	if (change == ItemRotationHasChanged) {
 		mRobotModel.setRotation(value.toReal());
-		//emit itemChanged(this, mRobotModel.position(), value.toReal());
 	}
 
 	return RotateItem::itemChange(change, value);

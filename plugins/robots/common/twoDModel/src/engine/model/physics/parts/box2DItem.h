@@ -12,10 +12,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 #pragma once
-class QPolygonF;
 
-class b2Body;
-class b2Vec2;
+#include <Box2D/Box2D.h>
+
+class QPolygonF;
 
 namespace twoDModel{
 namespace items {
@@ -41,16 +41,22 @@ public:
 	void moveToPosition(const b2Vec2 &pos);
 	void setRotation(float angle);
 
-	const b2Vec2 &getPosition() const;
-	float getRotation() const;
+	const b2Vec2 &getPosition();
+	float getRotation();
 
 	b2Body *getBody() const;
+
+	/// Returns true if the position or angle were changed since previous get or set calls.
+	bool angleOrPositionChanged() const;
 
 private:
 	b2Body *mBody; // Takes ownership
 	b2Vec2 *mPolygon; // Takes ownership
 
 	bool mIsCircle;
+
+	b2Vec2 mPreviousPosition;
+	float mPreviousRotation;
 
 	twoDModel::items::SolidItem &mItem; // Doesn't take ownership
 	twoDModel::model::physics::Box2DPhysicsEngine &mEngine; // Doesn't take ownership

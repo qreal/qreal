@@ -13,8 +13,6 @@
  * limitations under the License. */
 #include "box2DItem.h"
 
-#include <Box2D/Box2D.h>
-
 #include "src/engine/model/physics/box2DPhysicsEngine.h"
 #include "src/engine/items/solidItem.h"
 
@@ -87,24 +85,34 @@ Box2DItem::~Box2DItem()
 void Box2DItem::moveToPosition(const b2Vec2 &pos)
 {
 	mBody->SetTransform(pos, mBody->GetAngle());
+	mPreviousPosition = mBody->GetPosition();
 }
 
 void Box2DItem::setRotation(float angle)
 {
 	mBody->SetTransform(mBody->GetPosition(), angle);
+	mPreviousRotation = mBody->GetAngle();
 }
 
-const b2Vec2 &Box2DItem::getPosition() const
+const b2Vec2 &Box2DItem::getPosition()
 {
-	return mBody->GetPosition();
+	mPreviousPosition = mBody->GetPosition();
+	return mPreviousPosition;
 }
 
-float Box2DItem::getRotation() const
+float Box2DItem::getRotation()
 {
-	return mBody->GetAngle();
+	mPreviousRotation = mBody->GetAngle();
+	return mPreviousRotation;
 }
 
 b2Body *Box2DItem::getBody() const
 {
 	return mBody;
+}
+
+bool Box2DItem::angleOrPositionChanged() const
+{
+	return b2Distance(mPreviousPosition, mBody->GetPosition()) > b2_epsilon
+			|| mPreviousRotation - mBody->GetAngle() > b2_epsilon;
 }
