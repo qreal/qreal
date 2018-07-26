@@ -278,6 +278,10 @@ void Model::initPhysics()
 	connect(this, &model::Model::robotRemoved, mSimplePhysicsEngine, &physics::PhysicsEngineBase::removeRobot);
 
 	connect(&mTimeline, &Timeline::tick, this, &Model::recalculatePhysicsParams);
+
+	connect(&mTimeline, &Timeline::nextFrame, this, [this](){
+		mRealisticPhysicsEngine->nextFrame();
+	});
 }
 
 void Model::recalculatePhysicsParams()

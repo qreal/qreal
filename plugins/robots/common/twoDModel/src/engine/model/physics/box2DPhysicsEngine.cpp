@@ -156,6 +156,8 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 	connect(robot, &model::RobotModel::positionChanged, this, handlePos);
 	connect(robot, &model::RobotModel::rotationChanged, this, handleAngle);
 
+	connect(robot, &model::RobotModel::robotRided, this, &Box2DPhysicsEngine::nextFrame);
+
 	QTimer::singleShot(10, [=]() {
 //		createDebugRobot(robot);
 		mScene = dynamic_cast<view::TwoDModelScene *>(robot->startPositionMarker()->scene());
@@ -304,14 +306,6 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		mPrevAngle = rBody->GetAngle();
 
 		mWorld->Step(secondsInterval, velocityIterations, positionIterations);
-		/// @todo: make it only when next frame called, not on every tick
-		for(QGraphicsItem *item : mBox2DDynamicItems.keys()) {
-			if (mBox2DDynamicItems[item]->getBody()->IsActive() && mBox2DDynamicItems[item]->angleOrPositionChanged()) {
-				QPointF scenePos = positionToScene(mBox2DDynamicItems[item]->getPosition());
-				item->setPos(scenePos - item->boundingRect().center());
-				item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
-			}
-		}
 
 #ifdef BOX2D_DEBUG_PATH
 		delete debugPathBox2D;
@@ -352,6 +346,17 @@ void Box2DPhysicsEngine::wakeUp()
 	for (Box2DRobot *robot : mBox2DRobots) {
 		onRobotStartAngleChanged(robot->getRobotModel()->rotation(), robot->getRobotModel());
 		onRobotStartPositionChanged(robot->getRobotModel()->position(), robot->getRobotModel());
+	}
+}
+
+void Box2DPhysicsEngine::nextFrame()
+{
+	for(QGraphicsItem *item : mBox2DDynamicItems.keys()) {
+		if (mBox2DDynamicItems[item]->getBody()->IsActive() && mBox2DDynamicItems[item]->angleOrPositionChanged()) {
+			QPointF scenePos = positionToScene(mBox2DDynamicItems[item]->getPosition());
+			item->setPos(scenePos - item->boundingRect().center());
+			item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
+		}
 	}
 }
 

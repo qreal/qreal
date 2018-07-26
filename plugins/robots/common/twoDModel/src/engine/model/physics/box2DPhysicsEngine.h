@@ -54,6 +54,7 @@ public:
 	void removeRobot(RobotModel * const robot) override;
 	void recalculateParameters(qreal timeInterval) override;
 	void wakeUp() override;
+	void nextFrame() override;
 
 	float pxToCm(qreal px) const;
 	b2Vec2 pxToCm(const QPointF posInPx) const;

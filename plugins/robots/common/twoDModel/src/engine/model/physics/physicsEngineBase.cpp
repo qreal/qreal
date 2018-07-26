@@ -48,6 +48,10 @@ void PhysicsEngineBase::wakeUp()
 {
 }
 
+void PhysicsEngineBase::nextFrame()
+{
+}
+
 void PhysicsEngineBase::onPixelsInCmChanged(qreal value)
 {
 	Q_UNUSED(value)

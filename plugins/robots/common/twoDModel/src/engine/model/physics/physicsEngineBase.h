@@ -57,8 +57,11 @@ public:
 	/// Recalculates all solid items positions and angles.
 	virtual void recalculateParameters(qreal timeInterval) = 0;
 
-	/// Recalculates all solid items positions and angles correspond to world model changes.
+	/// Reinitialize physics engine, e.g. changing of engines requires some update.
 	virtual void wakeUp();
+
+	/// Recalculates all solid items positions and angles correspond to world model changes.
+	virtual void nextFrame();
 
 protected:
 	/// A useful method for counting wheel linear speed from interpreter`s speed.
