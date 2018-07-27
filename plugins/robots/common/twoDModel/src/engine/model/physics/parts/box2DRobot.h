@@ -58,7 +58,9 @@ public:
 	twoDModel::model::RobotModel *getRobotModel() const;
 	Box2DWheel *getWheelAt(int i) const;
 
-	QPolygonF mDebuggingDrawPolygon;
+	// For debugging purpose
+	const QPolygonF & getDebuggingPolygon() const;
+	const QMap<twoDModel::view::SensorItem *, parts::Box2DItem *> &getSensors() const;
 
 private:
 	void connectWheels();
@@ -76,6 +78,8 @@ private:
 	b2Vec2 *mPolygon; // Takes ownership
 
 	bool mIsStopping = false;
+
+	QPolygonF mDebuggingDrawPolygon;
 };
 
 }

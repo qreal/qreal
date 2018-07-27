@@ -344,13 +344,14 @@ void TwoDModelWidget::returnToStartMarker()
 	mModel.worldModel().clearRobotTrace();
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
-		for (items::SkittleItem *skittle : mModel.worldModel().skittles()) {
-			skittle->returnToStartPosition();
-		}
+	}
 
-		for (items::BallItem *ball : mModel.worldModel().balls()) {
-			ball->returnToStartPosition();
-		}
+	for (items::SkittleItem *skittle : mModel.worldModel().skittles()) {
+		skittle->returnToStartPosition();
+	}
+
+	for (items::BallItem *ball : mModel.worldModel().balls()) {
+		ball->returnToStartPosition();
 	}
 }
 

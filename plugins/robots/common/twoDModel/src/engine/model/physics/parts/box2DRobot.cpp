@@ -112,7 +112,7 @@ void Box2DRobot::addSensor(twoDModel::view::SensorItem *sensor)
 {
 	QPolygonF collidingPolygon = sensor->collidingPolygon();
 	QPointF localCenter = collidingPolygon.boundingRect().center();
-	b2Vec2 pos = mEngine->positionToBox2D(sensor->scenePos() - localCenter);
+	b2Vec2 pos = mEngine->positionToBox2D(mModel->position() + sensor->pos() - localCenter);
 	float32 angle = mEngine->angleToBox2D(sensor->rotation());
 	mSensors[sensor] = new Box2DItem(mEngine, *sensor, pos, angle);
 	reinit();
@@ -127,6 +127,15 @@ void Box2DRobot::removeSensor(twoDModel::view::SensorItem *sensor)
 
 void Box2DRobot::reinit()
 {
+	mBody->SetActive(false);
+	for (auto wheel : mWheels) {
+		wheel->getBody()->SetActive(false);
+	}
+
+	for (auto sensor : mSensors) {
+		sensor->getBody()->SetActive(false);
+	}
+
 	mJoints.clear();
 	for (auto i = mBody->GetJointList(); i; i = i->next) {
 		mWorld.DestroyJoint(i->joint);
@@ -138,9 +147,18 @@ void Box2DRobot::reinit()
 
 	for (twoDModel::view::SensorItem *sensor : mSensors.keys()) {
 		const b2Vec2 pos = mEngine->positionToBox2D(
-				sensor->scenePos() - sensor->collidingPolygon().boundingRect().center());
+				mModel->position() + sensor->pos() - sensor->collidingPolygon().boundingRect().center());
 		mSensors[sensor]->moveToPosition(pos);
 		connectSensor(*mSensors[sensor]);
+	}
+
+	mBody->SetActive(true);
+	for (auto wheel : mWheels) {
+		wheel->getBody()->SetActive(true);
+	}
+
+	for (auto sensor : mSensors) {
+		sensor->getBody()->SetActive(true);
 	}
 }
 
@@ -162,6 +180,16 @@ twoDModel::model::RobotModel *Box2DRobot::getRobotModel() const
 Box2DWheel *Box2DRobot::getWheelAt(int i) const
 {
 	return mWheels.at(i);
+}
+
+const QPolygonF &Box2DRobot::getDebuggingPolygon() const
+{
+	return mDebuggingDrawPolygon;
+}
+
+const QMap<twoDModel::view::SensorItem *, Box2DItem *> &Box2DRobot::getSensors() const
+{
+	return mSensors;
 }
 
 void Box2DRobot::connectWheels() {
@@ -206,6 +234,7 @@ void Box2DRobot::connectSensor(const Box2DItem &sensor)
 	jointDef.bodyA = mBody;
 	jointDef.bodyB = sensor.getBody();
 	jointDef.referenceAngle = sensor.getBody()->GetAngle() - mBody->GetAngle();
+	jointDef.dampingRatio = 1;
 
 	jointDef.localAnchorA = mBody->GetLocalCenter();
 	jointDef.localAnchorB = sensor.getBody()->GetLocalPoint(mBody->GetWorldCenter());

@@ -188,10 +188,10 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 		});
 		connect(mScene->robot(*robot), &view::RobotItem::sensorUpdated
 				, this, [&](twoDModel::view::SensorItem *sensor) {
-			Q_UNUSED(sensor);
 			auto rItem = dynamic_cast<view::RobotItem *>(sender());
 			auto model = &rItem->robotModel();
-			mBox2DRobots[model]->reinit();
+			mBox2DRobots[model]->removeSensor(sensor);
+			mBox2DRobots[model]->addSensor(sensor);
 		});
 
 		connect(robot, &model::RobotModel::deserialized, this, &Box2DPhysicsEngine::onMouseReleased);
@@ -241,9 +241,9 @@ void Box2DPhysicsEngine::onMouseReleased(QPointF newPos, qreal newAngle)
 	Box2DRobot *robot = mBox2DRobots.first();
 
 	robot->finishStopping();
-	robot->reinit();
 	onRobotStartAngleChanged(newAngle, robot->getRobotModel());
 	onRobotStartPositionChanged(newPos, robot->getRobotModel());
+	mBox2DRobots.first()->reinit();
 
 	onPressedReleasedSelectedItems(true);
 }
@@ -252,17 +252,6 @@ void Box2DPhysicsEngine::onMousePressed()
 {
 	for (Box2DRobot *robot: mBox2DRobots){
 		robot->startStopping();
-
-// uncomment it for debug drawing
-//		QPainterPath p;
-//		p.addPolygon(robot->mDebuggingDrawPolygon);
-//		mScene->addPath(p);
-//		QPainterPath p1;
-//		p1.addPolygon(robot->getWheelAt(0)->mDebuggingDrawPolygon);
-//		mScene->addPath(p1);
-//		QPainterPath p2;
-//		p2.addPolygon(robot->getWheelAt(1)->mDebuggingDrawPolygon);
-//		mScene->addPath(p2);
 	}
 
 	onPressedReleasedSelectedItems(false);
@@ -328,6 +317,19 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 
 				path.addPath(lpathTR);
 			}
+		}
+
+		// uncomment it for watching mutual position of robot and wheels
+//		path.addPolygon(mBox2DRobots[robot]->getDebuggingPolygon());
+//		path.addPolygon(mBox2DRobots[robot]->getWheelAt(0)->mDebuggingDrawPolygon);
+//		path.addPolygon(mBox2DRobots[robot]->getWheelAt(1)->mDebuggingDrawPolygon);
+
+		const QMap<view::SensorItem *, Box2DItem *> sensors = mBox2DRobots[robot]->getSensors();
+		for (Box2DItem * sensor : sensors.values()) {
+			const b2Vec2 position = sensor->getBody()->GetPosition();
+			QPointF scenePos = positionToScene(position);
+			// just for position
+			path.addEllipse(scenePos, 10, 10);
 		}
 
 		debugPathBox2D = new QGraphicsPathItem(path);

@@ -171,6 +171,8 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
 	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
+	connect(wall, &items::WallItem::wallDragged
+			, this, [ this ](){ handleMouseInteractionWithSelectedItems(); });
 }
 
 void TwoDModelScene::onSkittleAdded(items::SkittleItem *skittle)
@@ -437,6 +439,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		setSceneRect(sceneRect().united(robotItem->sceneBoundingRect()));
 	}
 
+	handleMouseInteractionWithSelectedItems();
 	update();
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
