@@ -131,6 +131,7 @@ bool ProjectManager::openProject(const QString &fileName)
 	try {
 		mModels.repoControlApi().open(fileName);
 	} catch (qrRepo::QrRepoException) {
+		showMessage(tr("Error"), tr("Cannot open file, please try with another one."));
 		return false;
 	}
 

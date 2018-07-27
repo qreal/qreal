@@ -190,7 +190,12 @@ void MainWindow::connectActions()
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-	connect(mUi->actionOpen, SIGNAL(triggered()), mProjectManager, SLOT(suggestToOpenExisting()));
+	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
+		if (!mProjectManager->suggestToOpenExisting()) {
+			openStartTab();
+		}
+	});
+
 	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(tryToSave()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
