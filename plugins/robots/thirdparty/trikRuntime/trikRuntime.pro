@@ -18,6 +18,7 @@ include(../../../../global.pri)
 
 SUBDIRS += \
 	qslog \
+	PythonQt \
 	trikKernel \
 	trikNetwork \
 	trikControl \
@@ -27,14 +28,14 @@ SUBDIRS += \
 
 qslog.file = $$PWD/trikRuntime/qslog/QsLogSharedLibrary.pro
 
+PythonQt.subdir = $$PWD/trikRuntime/PythonQt
 trikScriptRunner.subdir = $$PWD/trikRuntime/trikScriptRunner
 trikKernel.subdir = $$PWD/trikRuntime/trikKernel
 trikNetwork.subdir = $$PWD/trikRuntime/trikNetwork
 trikControl.subdir = $$PWD/trikRuntime/trikControl
 trikHal.subdir = $$PWD/trikRuntime/trikHal
-
 trikControl.depends = trikKernel trikHal qslog
 trikKernel.depends = qslog
 trikNetwork.depends = trikKernel qslog
-trikScriptRunner.depends = trikControl trikKernel trikNetwork qslog
+trikScriptRunner.depends = trikControl trikKernel trikNetwork qslog PythonQt
 trikHal.depends = qslog trikKernel
