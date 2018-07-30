@@ -23,7 +23,8 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
 		, const QString &generatorName
-		, GotoLabelManager &gotoLabelManager)
+		, GotoLabelManager &gotoLabelManager
+		, bool supportsSwitchUnstableToBreaks)
 	: mFactory(
 			new PioneerLuaGeneratorFactory(
 					repo
@@ -32,12 +33,17 @@ PioneerLuaGeneratorCustomizer::PioneerLuaGeneratorCustomizer(const qrRepo::RepoA
 					, luaProcessor
 					, generatorName
 					, gotoLabelManager
-			)
-	)
+			))
+	, mSupportsSwitchUnstableToBreaks(supportsSwitchUnstableToBreaks)
 {
 }
 
 generatorBase::GeneratorFactoryBase *PioneerLuaGeneratorCustomizer::factory()
 {
 	return mFactory.data();
+}
+
+bool PioneerLuaGeneratorCustomizer::supportsSwitchUnstableToBreaks() const
+{
+	return mSupportsSwitchUnstableToBreaks;
 }

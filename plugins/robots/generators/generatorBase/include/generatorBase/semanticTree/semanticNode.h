@@ -30,7 +30,7 @@ class ROBOTS_GENERATOR_EXPORT SemanticNode : public QObject
 {
 public:
 	/// Returns an id of the binded to this semantic node block
-	qReal::Id id() const;
+	virtual qReal::Id id() const;
 
 	/// Binds this node to a given block
 	void bindTo(const qReal::Id &id);

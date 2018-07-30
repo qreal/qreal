@@ -28,12 +28,16 @@ public:
 			, qReal::ErrorReporterInterface &errorReporter
 			, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 			, generatorBase::lua::LuaProcessor &luaProcessor
-			, const QString &generatorName);
+			, const QString &generatorName
+			, bool supportsSwitchUnstableToBreaks);
 
 	generatorBase::GeneratorFactoryBase *factory() override;
 
+	bool supportsSwitchUnstableToBreaks() const override;
+
 private:
 	Ev3RbfGeneratorFactory mFactory;
+	bool mSupportsSwitchUnstableToBreaks;
 };
 
 }

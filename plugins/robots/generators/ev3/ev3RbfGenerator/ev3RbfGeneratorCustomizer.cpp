@@ -20,12 +20,19 @@ Ev3RbfGeneratorCustomizer::Ev3RbfGeneratorCustomizer(const qrRepo::RepoApi &repo
 		, qReal::ErrorReporterInterface &errorReporter
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		, generatorBase::lua::LuaProcessor &luaProcessor
-		, const QString &generatorName)
+		, const QString &generatorName
+		, bool supportsSwitchUnstableToBreaks)
 	: mFactory(repo, errorReporter, robotModelManager, luaProcessor, generatorName)
+	, mSupportsSwitchUnstableToBreaks(supportsSwitchUnstableToBreaks)
 {
 }
 
 generatorBase::GeneratorFactoryBase *Ev3RbfGeneratorCustomizer::factory()
 {
 	return &mFactory;
+}
+
+bool Ev3RbfGeneratorCustomizer::supportsSwitchUnstableToBreaks() const
+{
+	return mSupportsSwitchUnstableToBreaks;
 }
