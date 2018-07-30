@@ -17,7 +17,7 @@
 #include <qrtext/lua/luaToolbox.h>
 
 #include "generatorBase/parts/subprograms.h"
-#include "src/readableControlFlowGenerator.h"
+#include "src/structuralControlFlowGenerator.h"
 
 using namespace generatorBase::parts;
 using namespace qReal;
@@ -106,7 +106,7 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 		}
 
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
-		auto readableGenerator = dynamic_cast<ReadableControlFlowGenerator *>(generator);
+		auto readableGenerator = dynamic_cast<StructuralControlFlowGenerator *>(generator);
 		semantics::SemanticTree *controlFlow = generator->generate(Id(), "@@unknown@@");
 		if (!controlFlow || (readableGenerator && readableGenerator->cantBeGeneratedIntoStructuredCode())) {
 			return GenerationResult::error;

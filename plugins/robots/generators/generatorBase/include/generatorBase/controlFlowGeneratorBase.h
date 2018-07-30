@@ -29,14 +29,14 @@ class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public 
 public:
 	/// @param isThisDiagramMain 'true' if this generator generates code for main diagram
 	/// (main diagram is the one which was active when user requested generation)
-	ControlFlowGeneratorBase(
-			const qrRepo::RepoApi &repo
+	ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
-			, bool isThisDiagramMain = true);
+			, bool isThisDiagramMain = true
+			);
 
 	~ControlFlowGeneratorBase() override;
 
@@ -70,6 +70,12 @@ public:
 protected:
 	/// Can be overloaded by descendants for custom behaviour.
 	virtual void performGeneration();
+
+	virtual void registerOtherThreads(const qReal::Id &id, const QList<LinkInfo> &threads
+			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage);
+
+	virtual void registerTerminatingThreads(const qReal::Id &id, parts::Threads &threadsStorage
+			, bool fromMain);
 
 	bool generateForks();
 

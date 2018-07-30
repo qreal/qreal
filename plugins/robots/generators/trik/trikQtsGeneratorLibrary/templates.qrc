@@ -224,5 +224,11 @@
         <file>templates/buttons/RightButton.t</file>
         <file>templates/buttons/UpButton.t</file>
         <file>templates/subprograms/subprogramArgument.t</file>
+        <file>templates/switch/conditionsSeparator_switch.t</file>
+        <file>templates/switch/default_switch.t</file>
+        <file>templates/switch/expression_switch.t</file>
+        <file>templates/switch/head_switch.t</file>
+        <file>templates/switch/middle_switch.t</file>
+        <file>templates/switch/oneCase_switch.t</file>
     </qresource>
 </RCC>

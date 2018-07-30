@@ -83,7 +83,8 @@ generatorBase::GeneratorCustomizer *PioneerLuaMasterGenerator::createCustomizer(
 			, mRobotModelManager
 			, *createLuaProcessor()
 			, mGeneratorName
-			, *mGotoLabelManager);
+			, *mGotoLabelManager
+			, supportsSwitchUnstableToBreaks());
 }
 
 QString PioneerLuaMasterGenerator::targetPath()

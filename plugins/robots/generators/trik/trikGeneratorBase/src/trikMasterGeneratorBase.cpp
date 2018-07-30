@@ -32,5 +32,5 @@ TrikMasterGeneratorBase::TrikMasterGeneratorBase(const qrRepo::RepoApi &repo
 generatorBase::GeneratorCustomizer *TrikMasterGeneratorBase::createCustomizer()
 {
 	return new TrikGeneratorCustomizer(mRepo, mErrorReporter
-			, mRobotModelManager, *createLuaProcessor(), mPathsToTemplates);
+			, mRobotModelManager, *createLuaProcessor(), mPathsToTemplates, supportsSwitchUnstableToBreaks());
 }

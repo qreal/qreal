@@ -1,3 +1,2 @@
-@@CONDITION@@
+} else if (@@CONDITION@@) {
 @@BODY@@
-	break;

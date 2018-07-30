@@ -76,6 +76,9 @@ public:
 	/// a node with specified id binded if such was found or nullptr otherwise.
 	NonZoneNode *findNodeFor(const qReal::Id &id);
 
+	/// Explicitly sets tree's root to the new one, corresponding to given node
+	void setRoot(SemanticNode *node);
+
 private:
 	GeneratorCustomizer &mCustomizer;
 	const bool mIsMainTree;

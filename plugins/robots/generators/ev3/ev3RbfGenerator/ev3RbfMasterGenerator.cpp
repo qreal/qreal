@@ -153,5 +153,5 @@ generatorBase::lua::LuaProcessor *Ev3RbfMasterGenerator::createLuaProcessor()
 GeneratorCustomizer *Ev3RbfMasterGenerator::createCustomizer()
 {
 	return new Ev3RbfGeneratorCustomizer(mRepo, mErrorReporter
-			, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+			, mRobotModelManager, *createLuaProcessor(), mGeneratorName, supportsSwitchUnstableToBreaks());
 }
