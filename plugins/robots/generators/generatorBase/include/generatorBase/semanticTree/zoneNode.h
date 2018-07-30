@@ -27,6 +27,8 @@ class ROBOTS_GENERATOR_EXPORT ZoneNode : public SemanticNode
 public:
 	explicit ZoneNode(QObject *parent = 0);
 
+	qReal::Id id() const override;
+
 	/// Returns 'true' if this zone doesn`t have children
 	bool isEmpty() const;
 

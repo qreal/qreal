@@ -26,7 +26,7 @@ CalibratePIDGenerator::CalibratePIDGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "sensors/lineLeader/calibratePid.t", QList<Binding *>()
+	: BindingGenerator(repo, customizer, id, "sensors/lineLeader/calibratePID.t", QList<Binding *>()
 			<< Binding::createConverting("@@PORT@@", "Port"
 					, static_cast<Ev3GeneratorFactory *>(customizer.factory())->portNameConverter())
 			<< Binding::createConverting("@@SET_POINT@@", "SetPoint"

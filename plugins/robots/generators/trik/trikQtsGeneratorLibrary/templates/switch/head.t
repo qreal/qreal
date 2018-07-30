@@ -1,4 +1,2 @@
-switch (@@EXPRESSION@@) {
-@@CONDITION@@
+if (@@CONDITION@@) {
 @@BODY@@
-	break;

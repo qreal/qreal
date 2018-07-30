@@ -41,6 +41,8 @@ public:
 	/// This can help to resolve confusion in case when one branch enter into the middle of another.
 	void setBranchesMergedFlag();
 
+	void setGenerateIfs();
+
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
@@ -56,6 +58,7 @@ private:
 	QMap<QString, ZoneNode *> mBranches;
 	ZoneNode *mDefaultBranch;
 	bool mBranchesMerged;
+	bool mGenerateIfs;
 };
 
 }

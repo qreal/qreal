@@ -208,7 +208,7 @@ QString Ev3LuaPrinter::newRegister(Ev3RbfType type)
 
 	const QString declarationTemplate = (type == Ev3RbfType::dataS)
 			? "DATA%1 %2 255"
-			: (isArray(type) ? QString("ARRAY%1 %2 255").arg(typeNames[elementType(type)], result) : "DATA%1 %2");
+			: (isArray(type) ? QString("ARRAY%1 %2 4").arg(typeNames[elementType(type)], result) : "DATA%1 %2");
 	mVariables.appendManualDeclaration(declarationTemplate.arg(typeNames[type], result));
 	return result;
 }
@@ -246,6 +246,34 @@ QString Ev3LuaPrinter::constantsEvaluation() const
 				.replace("@@TYPE2@@", typeName)
 				.replace("@@VARIABLE@@", constantName)
 				.replace("@@VALUE@@", type == Ev3RbfType::dataF ? value + "F" : value);
+	}
+
+	return code.join("\n");
+}
+
+QString Ev3LuaPrinter::arraysEvaluation()
+{
+	QStringList code;
+	const QString tableConstuctorTemplate = readTemplate("tableConstructor.t");
+	QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression> > variables
+			= mTextLanguage.variableTypes();
+	for (const QString &arrayVariable : variables.keys()) {
+		if (variables[arrayVariable].data()->is<qrtext::lua::types::Table>()
+				&& !mTextLanguage.specialIdentifiers().contains(arrayVariable)) {
+			Ev3RbfType ev3Type = toEv3Type(
+					dynamic_cast<qrtext::lua::types::Table *>(variables[arrayVariable].data())->elementType());
+			QString constuctorTemplate = tableConstuctorTemplate;
+			code << constuctorTemplate.replace("@@TYPE@@", typeNames[ev3Type]).replace("@@RESULT@@", arrayVariable);
+		}
+	}
+
+	for (auto arrayType : mArrayDeclarationCount.keys()) {
+		for (int i = 1; i <= mArrayDeclarationCount[arrayType]; ++i) {
+			QString constuctorTemplate = tableConstuctorTemplate;
+			code << constuctorTemplate
+					.replace("@@TYPE@@", typeNames[elementType(arrayType)])
+					.replace("@@RESULT@@", registerNames[arrayType] + QString::number(i));
+		}
 	}
 
 	return code.join("\n");
@@ -551,9 +579,6 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::FieldInitializa
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructor> &node
 		, const QSharedPointer<qrtext::core::ast::Node> &)
 {
-	const auto &type = mTextLanguage.type(qrtext::as<qrtext::core::ast::Node>(node));
-	const auto &elementType = static_cast<qrtext::lua::types::Table *>(type.data())->elementType();
-	const QString elementTypeName = typeNames[toEv3Type(elementType)];
 	mTableInitializersCount = -1;
 	QStringList initializers = popResults(qrtext::as<qrtext::lua::ast::Node>(node->initializers()));
 	const QString result = newRegister(node);
@@ -561,9 +586,9 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::TableConstructo
 		initializers[i].replace("@@TABLE@@", result);
 	}
 
-	pushResult(node, result, readTemplate("tableConstructor.t")
-			.replace("@@TYPE@@", elementTypeName)
-			.replace("@@RESULT@@", result) + initializers.join("\n"));
+	// all arrays(tables) for EV3 are created in array initialisation section
+	// here we only should process initializers
+	pushResult(node, result, initializers.join("\n"));
 }
 
 void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::String> &node
@@ -670,8 +695,18 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::Assignment> &no
 	if (dynamic_cast<qrtext::lua::ast::IndexingExpression *>(node->variable().data())) {
 		// We are dealing with write-indexer here. Template for result is already ready,
 		// we just need to replace @@VALUE@@ there.
-		QString writeTemplate = popResult(node->variable());
-		pushResult(node, writeTemplate.replace("@@VALUE@@", popResult(node->value())), QString());
+		// PopResult returns mGeneratedCode, but in case of EV3 there is no expression like x[E1] = E2
+		// So we need to look at additional code, which contains E1 evaluation for variable, and
+		// E2 evaluation for value.
+		QString writeTemplate;
+		if (!mAdditionalCode[node->variable().data()].isEmpty()) {
+			writeTemplate = mAdditionalCode[node->variable().data()].last();
+			mAdditionalCode[node->variable().data()].pop_back();
+		}
+
+		QString value = popResult(node->value());
+		popResults({node->value(), node->variable()});
+		pushResult(node, writeTemplate.replace("@@VALUE@@", value), QString());
 		return;
 	}
 
@@ -696,7 +731,8 @@ void Ev3LuaPrinter::visit(const QSharedPointer<qrtext::lua::ast::IndexingExpress
 		, const QSharedPointer<qrtext::core::ast::Node> &parent)
 {
 	bool isWriteIndexer = false;
-	if (auto assignment = dynamic_cast<qrtext::lua::ast::Assignment *>(parent.data())) {
+	auto assignment = dynamic_cast<qrtext::lua::ast::Assignment *>(parent.data());
+	if (assignment) {
 		isWriteIndexer = assignment->variable() == node;
 	}
 
