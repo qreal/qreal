@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>TRIK Studio</Name>
-    <Version>3.2.0 PIONEER</Version>
+    <Version>3.2.0</Version>
     <Title>TRIK Studio</Title>
     <Publisher>CyberTech Labs Ltd.</Publisher>
     <ProductUrl>http://robots.qreal.ru</ProductUrl>

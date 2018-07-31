@@ -16,26 +16,26 @@ TEMPLATE = subdirs
 
 SUBDIRS = \
 	generatorBase \
-#	trikGeneratorBase \
-#	trikQtsGeneratorLibrary \
-#	trikV6QtsGenerator \
-#	trikV62QtsGenerator \
-#	trikFSharpGeneratorLibrary \
-#	trikV6FSharpGenerator \
-#	trikV62FSharpGenerator \
-#	trikPascalABCGeneratorLibrary \
-#	trikV6PascalABCGenerator \
-#	trikV62PascalABCGenerator \
-#	trikPythonGeneratorLibrary \
-#	trikV62PythonGenerator \
-#	trikV6RuntimeUploaderPlugin \
-#	trikV62RuntimeUploaderPlugin \
-#	trikSharpBinaries \
-#	nxtGeneratorBase \
-#	nxtOsekCGenerator \
-#	nxtRussianCGenerator \
-#	ev3GeneratorBase \
-#	ev3RbfGenerator \
+	trikGeneratorBase \
+	trikQtsGeneratorLibrary \
+	trikV6QtsGenerator \
+	trikV62QtsGenerator \
+	trikFSharpGeneratorLibrary \
+	trikV6FSharpGenerator \
+	trikV62FSharpGenerator \
+	trikPascalABCGeneratorLibrary \
+	trikV6PascalABCGenerator \
+	trikV62PascalABCGenerator \
+	trikPythonGeneratorLibrary \
+	trikV62PythonGenerator \
+	trikV6RuntimeUploaderPlugin \
+	trikV62RuntimeUploaderPlugin \
+	trikSharpBinaries \
+	nxtGeneratorBase \
+	nxtOsekCGenerator \
+	nxtRussianCGenerator \
+	ev3GeneratorBase \
+	ev3RbfGenerator \
 	pioneerLuaGenerator \
 
 trikGeneratorBase.subdir = $$PWD/trik/trikGeneratorBase
