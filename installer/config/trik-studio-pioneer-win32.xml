@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Installer>
-    <Name>TRIK Studio</Name>
-    <Version>PIONEER 2018</Version>
-    <Title>TRIK Studio</Title>
+    <Name>TRIK Studio PIONEER</Name>
+    <Version>2018.6</Version>
+    <Title>TRIK Studio PIONEER</Title>
     <Publisher>CyberTech Labs Ltd.</Publisher>
     <ProductUrl>http://robots.qreal.ru</ProductUrl>
 
@@ -11,14 +11,14 @@
     <Logo>../images/trik-studio-logo.png</Logo>
     <Watermark>../images/trik-studio-watermark.png</Watermark>
 
-    <StartMenuDir>TRIK Studio</StartMenuDir>
+    <StartMenuDir>TRIK Studio PIONEER</StartMenuDir>
     <MaintenanceToolName>maintenance</MaintenanceToolName>
     <RemoveTargetDir>true</RemoveTargetDir>
     <AllowSpaceInPath>false</AllowSpaceInPath>
     <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
 
-    <TargetDir>@RootDir@TRIKStudio</TargetDir>
-    <AdminTargetDir>@RootDir@TRIKStudio</AdminTargetDir>
+    <TargetDir>@RootDir@TRIKStudioPIONEER</TargetDir>
+    <AdminTargetDir>@RootDir@TRIKStudioPIONEER</AdminTargetDir>
 
     <RunProgram>@TargetDir@/trik-studio</RunProgram>
 

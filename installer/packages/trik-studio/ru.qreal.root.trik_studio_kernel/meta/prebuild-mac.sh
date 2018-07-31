@@ -26,6 +26,7 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/editors/librobotsMetamodel.
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/librobots-plugin.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-interpreter-core.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-2d-model.1.0.0.dylib"
+fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/Box2D.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-generator-base.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-kit-base.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-utils.1.0.0.dylib"

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>F# generator</DisplayName>
+    <DisplayName xml:lang="ru_ru">Генератор в F#</DisplayName>
+    <Description>Install it for working with TRIK in TRIK Studio</Description>
+    <Description xml:lang="ru_ru">Установите это и хотя бы один из компонентов ниже для работы с конструктором ТРИК на языке F#</Description>
+    <Dependencies>ru.qreal.root.trik.core</Dependencies>
+    <Version>3.2.0-4</Version>
+    <ReleaseDate>2017-11-14</ReleaseDate>
+    <SortingPriority>5</SortingPriority>
+    <Default>false</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>

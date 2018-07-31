@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Package>
+    <DisplayName>F# generator (new case)</DisplayName>
+    <DisplayName xml:lang="ru_ru">Генератор в F# (новый корпус)</DisplayName>
+    <Description>Install it for generation of F# code for TRIK</Description>
+    <Description xml:lang="ru_ru">Установите это для генерации кода на F# для конструктора ТРИК (новый корпус, с портами энкодеров E1 - E4)</Description>
+    <Dependencies>ru.qreal.root.trik.core.v62</Dependencies>
+    <Version>3.2.0-4</Version>
+    <ReleaseDate>2017-11-14</ReleaseDate>
+    <SortingPriority>5</SortingPriority>
+    <Default>false</Default>
+    <ForcedInstallation>false</ForcedInstallation>
+</Package>
