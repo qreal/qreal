@@ -1,1 +1,1 @@
-//Trik.Helpers.Media.PlayTone(@@FREQUENCY@@, @@DURATION@@);
+Trik.Helpers.Media.PlayTone(@@FREQUENCY@@, @@DURATION@@);

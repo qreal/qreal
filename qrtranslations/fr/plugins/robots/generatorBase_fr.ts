@@ -2,29 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
-    <name>MasterGeneratorBase</name>
-    <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="115"/>
-        <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
-        <translation type="unfinished">Ce diagramme ne peut pas être transformé en code structuré. Le code contenant &apos;goto&apos; sera généré.</translation>
-    </message>
-    <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="130"/>
-        <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
-        <translation type="unfinished">Ce diagramme ne peut pas être transformé même en code avec des expressions &apos;goto&apos;. S&apos;il vous plait, contactez les developpeurs (qu&apos;est-ce que vous avez fait ?)</translation>
-    </message>
-    <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="132"/>
-        <source>This diagram cannot be generated into the structured code.</source>
-        <translation type="unfinished">Ce diagramme ne peut pas être transformé en code structuré.</translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
-    <message>
-        <source>Port %1 is unknown. It will be generated as-is.</source>
-        <translation type="vanished">Port &apos;%1&apos; est inconnu. Le code sera généré tel quel.</translation>
-    </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/converters/reservedVariablesConverter.cpp" line="64"/>
         <source>Device on port %1 is not configured. Please select it on the &quot;Configure devices&quot; panel on the right-hand side.</source>
@@ -41,17 +19,17 @@
         <translation>Il n&apos;y a pas de diagramme d&apos;ouvert</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="82"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="83"/>
         <source>Graphical diagram instance not found</source>
         <translation>L&apos;instance graphique du diagramme n&apos;est pas trouvé</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="207"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="208"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Entrez un identificateur valide de style C pour le sous-programme &quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="213"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="214"/>
         <source>Duplicate identifier: </source>
         <translation>Cet identificateur est deja utilisé:</translation>
     </message>
@@ -154,16 +132,19 @@
 <context>
     <name>generatorBase::MasterGeneratorBase</name>
     <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="115"/>
         <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
-        <translation type="vanished">Ce diagramme ne peut pas être transformé en code structuré. Le code contenant &apos;goto&apos; sera généré.</translation>
+        <translation>Ce diagramme ne peut pas être transformé en code structuré. Le code contenant &apos;goto&apos; sera généré.</translation>
     </message>
     <message>
-        <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers (WTF did you do?)</source>
-        <translation type="vanished">Ce diagramme ne peut pas être transformé même en code avec des expressions &apos;goto&apos;. S&apos;il vous plait, contactez les developpeurs (qu&apos;est-ce que vous avez fait ?)</translation>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="130"/>
+        <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers.</source>
+        <translation>Ce diagramme ne peut pas être transformé même en code avec des expressions &apos;goto&apos;. S&apos;il vous plait, contactez les developpeurs.</translation>
     </message>
     <message>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="132"/>
         <source>This diagram cannot be generated into the structured code.</source>
-        <translation type="vanished">Ce diagramme ne peut pas être transformé en code structuré.</translation>
+        <translation>Ce diagramme ne peut pas être transformé en code structuré.</translation>
     </message>
 </context>
 </TS>
