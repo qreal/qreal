@@ -24,6 +24,11 @@ ZoneNode::ZoneNode(QObject *parent)
 {
 }
 
+Id ZoneNode::id() const
+{
+	return mChildren.isEmpty() ? mId : mChildren.first()->id();
+}
+
 bool ZoneNode::isEmpty() const
 {
 	return mChildren.isEmpty();

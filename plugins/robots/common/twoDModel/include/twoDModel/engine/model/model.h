@@ -67,7 +67,7 @@ public:
 	qReal::ErrorReporterInterface *errorReporter();
 
 	QDomDocument serialize() const;
-	void deserialize(const QDomDocument &xml);
+	void deserialize(const QDomDocument &wordModel, const QDomDocument &blobs);
 
 	/// Add new robot model
 	/// @param robotModel Model to be added
@@ -92,6 +92,10 @@ signals:
 	/// Emitted each time when some user actions lead to world model modifications
 	/// @param xml World model description in xml format
 	void modelChanged(const QDomDocument &xml);
+
+	/// Emitted each time when some user actions lead to modifications of blobs on world model
+	/// @param xml blobs description in xml format
+	void blobsChanged(const QDomDocument &xml);
 
 	/// Emitted after new robot model added
 	/// @param robotModel Pointer to robot model which was removed

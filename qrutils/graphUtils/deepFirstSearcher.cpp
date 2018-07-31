@@ -73,8 +73,24 @@ void DeepFirstSearcher::dfs(const Id &id, const QList<VisitorInterface *> &visit
 			dfs(link.target, visitors);
 		}
 	}
+
+	for (VisitorInterface * const visitor : visitors) {
+		visitor->afterVisit(id, linkInfos);
+	}
 }
 
+
+void DeepFirstSearcher::VisitorInterface::beforeVisit(const Id &nodeId, QList<DeepFirstSearcher::LinkInfo> &links)
+{
+	Q_UNUSED(nodeId)
+	Q_UNUSED(links)
+}
+
+void DeepFirstSearcher::VisitorInterface::afterVisit(const Id &nodeId, QList<DeepFirstSearcher::LinkInfo> &links)
+{
+	Q_UNUSED(nodeId)
+	Q_UNUSED(links)
+}
 
 void DeepFirstSearcher::VisitorInterface::beforeSearch()
 {

@@ -491,6 +491,7 @@ void Scene::clearScene()
 {
 	clear();
 	mEmptyRect = addRect(0, 0, sizeEmptyRectX, sizeEmptyRectY, QPen(Qt::white));
+	mEmptyRect->setVisible(false);
 	mZValue = 0;
 }
 

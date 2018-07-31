@@ -51,6 +51,9 @@ public:
 		/// DFSer for visiting some of his children).
 		virtual void visit(const qReal::Id &nodeId, QList<LinkInfo> &links) = 0;
 
+		virtual void beforeVisit(const qReal::Id &nodeId, QList<LinkInfo> &links);
+		virtual void afterVisit(const qReal::Id &nodeId, QList<LinkInfo> &links);
+
 		/// Called when model traversal is going to be started
 		virtual void beforeSearch();
 

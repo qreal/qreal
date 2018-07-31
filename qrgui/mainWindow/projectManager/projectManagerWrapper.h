@@ -41,7 +41,7 @@ public slots:
 
 	void close() override;
 
-	void save() override;
+	bool save() override;
 	bool suggestToSaveAs() override;
 	bool saveOrSuggestToSaveAs() override;
 

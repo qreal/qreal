@@ -24,7 +24,7 @@
 #include <qrutils/stringUtils.h>
 #include <qrtext/languageToolboxInterface.h>
 
-#include "readableControlFlowGenerator.h"
+#include "structuralControlFlowGenerator.h"
 #include "generatorBase/gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
@@ -65,9 +65,9 @@ void MasterGeneratorBase::initialize()
 
 	mValidator = createValidator();
 
-	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
-			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 	mGotoControlFlowGenerator = new GotoControlFlowGenerator(mRepo
+			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
+	mStructuralControlFlowGenerator = new StructuralControlFlowGenerator(mRepo
 			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 }
 
@@ -90,12 +90,14 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 		generator->reinit();
 	}
 
+
+
 	QString mainCode;
-	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
-	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
+	const semantics::SemanticTree *mainControlFlow = mStructuralControlFlowGenerator->generate();
+	if (mainControlFlow && !mStructuralControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
 		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()->subprograms()->generate(
-				mReadableControlFlowGenerator, indentString);
+				mStructuralControlFlowGenerator, indentString);
 		switch (subprogramsResult) {
 		case parts::Subprograms::GenerationResult::success:
 			break;
@@ -106,7 +108,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 			return QString();
 		}
 	} else {
-		if (mReadableControlFlowGenerator->errorsOccured()) {
+		if (mStructuralControlFlowGenerator->errorsOccured()) {
 			return QString();
 		}
 	}
@@ -128,7 +130,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	if (mainCode.isEmpty()) {
 		const QString errorMessage = supportsGotoGeneration()
 				? tr("This diagram cannot be even generated into the code with 'goto'"\
-						"statements. Please contact the developers (WTF did you do?)")
+						"statements. Please contact the developers.")
 				: tr("This diagram cannot be generated into the structured code.");
 		mErrorReporter.addError(errorMessage);
 		return QString();
@@ -233,6 +235,11 @@ lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
 PrimaryControlFlowValidator *MasterGeneratorBase::createValidator()
 {
 	return new PrimaryControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
+}
+
+bool MasterGeneratorBase::supportsSwitchUnstableToBreaks() const
+{
+	return false;
 }
 
 void MasterGeneratorBase::beforeGeneration()

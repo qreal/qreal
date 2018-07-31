@@ -29,7 +29,7 @@ const QString kitIdString = "trikV62Kit";
 TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 	: TrikKitInterpreterPluginBase()
 {
-	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
+	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikKitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
 	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
 

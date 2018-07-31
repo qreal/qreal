@@ -131,6 +131,7 @@ bool ProjectManager::openProject(const QString &fileName)
 	try {
 		mModels.repoControlApi().open(fileName);
 	} catch (qrRepo::QrRepoException) {
+		showMessage(tr("Error"), tr("Cannot open file, please try with another one."));
 		return false;
 	}
 
@@ -281,20 +282,24 @@ void ProjectManager::close()
 	emit closed();
 }
 
-void ProjectManager::saveTo(const QString &fileName)
+bool ProjectManager::saveTo(const QString &fileName)
 {
 	QLOG_INFO() << "Saving project into" << fileName;
-	mModels.repoControlApi().saveTo(fileName);
+	return mModels.repoControlApi().saveTo(fileName);
 }
 
-void ProjectManager::save()
+bool ProjectManager::save()
 {
 	// Do not change the method to saveAll - in the current implementation, an empty project in the repository is
 	// created to initialize the file name with an empty string, which allows the internal state of the file
 	// name = "" Attempt to save the project in this case result in
-	saveTo(mSaveFilePath);
-	mAutosaver.removeAutoSave();
-	refreshApplicationStateAfterSave();
+	if (saveTo(mSaveFilePath)) {
+		mAutosaver.removeAutoSave();
+		refreshApplicationStateAfterSave();
+		return true;
+	}
+
+	return false;
 }
 
 bool ProjectManager::restoreIncorrectlyTerminated()
@@ -311,8 +316,7 @@ bool ProjectManager::askQuestion(const QString &title, const QString &question) 
 
 bool ProjectManager::saveOrSuggestToSaveAs()
 {
-	save();
-	return true;
+	return save();
 }
 
 bool ProjectManager::suggestToSaveAs()
@@ -328,10 +332,13 @@ bool ProjectManager::saveAs(const QString &fileName)
 	}
 
 	mAutosaver.removeAutoSave();
-	mModels.repoControlApi().saveTo(workingFileName);
-	setSaveFilePath(workingFileName);
-	refreshApplicationStateAfterSave();
-	return true;
+	if (mModels.repoControlApi().saveTo(workingFileName)) {
+		setSaveFilePath(workingFileName);
+		refreshApplicationStateAfterSave();
+		return true;
+	}
+
+	return false;
 }
 
 QString ProjectManager::openFileName(const QString &promptPhrase) const

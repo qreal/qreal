@@ -26,121 +26,68 @@ ARRAY(CREATE32, 4, answerRes@@RANDOM_ID_6@@)
 
 //read raw 8 byte
 INPUT_DEVICE(SETUP, 0, @@PORT@@, 1, 0, 2, @ar@@RANDOM_ID_1@@, 8, @answer@@RANDOM_ID_2@@)
-// reverse and make uint REWRITE TO LOOP!!!
+// reverse and make uint TODO: REWRITE TO LOOP!!!
 ARRAY_READ(answer@@RANDOM_ID_2@@, 0, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 7, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_7@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 7, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_7@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 1, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 6, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_8@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 6, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_8@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 2, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 5, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_9@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 5, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_9@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 3, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 4, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_10@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 4, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_10@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 4, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 3, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_11@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 3, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_11@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 5, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 2, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_12@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 2, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_12@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 6, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 1, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_13@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 1, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_13@@:
 
 ARRAY_READ(answer@@RANDOM_ID_2@@, 7, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
+CALL(B2U32_EV3_KERNEL_util, tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 0, tmp32@@RANDOM_ID_5@@)
-JR_GTEQ8(tmp@@RANDOM_ID_4@@, 0, m@@RANDOM_ID_14@@)
-AND8(tmp@@RANDOM_ID_4@@, 127, tmp@@RANDOM_ID_4@@)
-MOVE8_32(tmp@@RANDOM_ID_4@@, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, 128, tmp32@@RANDOM_ID_5@@)
-ARRAY_WRITE(answerBuf@@RANDOM_ID_3@@, 0, tmp32@@RANDOM_ID_5@@)
-m@@RANDOM_ID_14@@:
 
-// ok now we have right ordered array of uint8 in array32, here we build 16bit array32. REWRITE TO LOOP!!!
-DATA32 tmp232@@RANDOM_ID_15@@
+// ok now we have right ordered array of uint8 in array32, here we build 16bit array32. TODO: REWRITE TO LOOP!!!
+DATA32 tmp232@@RANDOM_ID_7@@
 ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 0, tmp32@@RANDOM_ID_5@@)
-ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 1, tmp232@@RANDOM_ID_15@@)
+ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 1, tmp232@@RANDOM_ID_7@@)
 MUL32(tmp32@@RANDOM_ID_5@@, 256, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_15@@, tmp32@@RANDOM_ID_5@@)
+ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_7@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerRes@@RANDOM_ID_6@@, 0, tmp32@@RANDOM_ID_5@@)
 
 ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 2, tmp32@@RANDOM_ID_5@@)
-ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 3, tmp232@@RANDOM_ID_15@@)
+ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 3, tmp232@@RANDOM_ID_7@@)
 MUL32(tmp32@@RANDOM_ID_5@@, 256, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_15@@, tmp32@@RANDOM_ID_5@@)
+ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_7@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerRes@@RANDOM_ID_6@@, 1, tmp32@@RANDOM_ID_5@@)
 
 ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 4, tmp32@@RANDOM_ID_5@@)
-ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 5, tmp232@@RANDOM_ID_15@@)
+ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 5, tmp232@@RANDOM_ID_7@@)
 MUL32(tmp32@@RANDOM_ID_5@@, 256, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_15@@, tmp32@@RANDOM_ID_5@@)
+ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_7@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerRes@@RANDOM_ID_6@@, 2, tmp32@@RANDOM_ID_5@@)
 
 ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 6, tmp32@@RANDOM_ID_5@@)
-ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 7, tmp232@@RANDOM_ID_15@@)
+ARRAY_READ(answerBuf@@RANDOM_ID_3@@, 7, tmp232@@RANDOM_ID_7@@)
 MUL32(tmp32@@RANDOM_ID_5@@, 256, tmp32@@RANDOM_ID_5@@)
-ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_15@@, tmp32@@RANDOM_ID_5@@)
+ADD32(tmp32@@RANDOM_ID_5@@, tmp232@@RANDOM_ID_7@@, tmp32@@RANDOM_ID_5@@)
 ARRAY_WRITE(answerRes@@RANDOM_ID_6@@, 3, tmp32@@RANDOM_ID_5@@)
 
 ARRAY(DELETE, answer@@RANDOM_ID_2@@)
 ARRAY(DELETE, ar@@RANDOM_ID_1@@)
 ARRAY(DELETE, answerBuf@@RANDOM_ID_3@@)
 
-DATA32 sizeRes@@RANDOM_ID_16@@
-ARRAY(SIZE, @@RESULT@@, sizeRes@@RANDOM_ID_16@@)
-JR_GT32(sizeRes@@RANDOM_ID_16@@, 255, m@@RANDOM_ID_17@@)
-ARRAY(DELETE, @@RESULT@@)
-m@@RANDOM_ID_17@@:
-
-MOVE32_32(answerRes@@RANDOM_ID_6@@, @@RESULT@@)
+CALL(assign32Array_EV3_KERNEL_util, answerRes@@RANDOM_ID_6@@, @@RESULT@@)
+ARRAY(DELETE, answerRes@@RANDOM_ID_6@@)

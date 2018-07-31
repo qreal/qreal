@@ -184,8 +184,6 @@ QString RobotsGeneratorPluginBase::friendlyKitName() const
 
 bool RobotsGeneratorPluginBase::generateCode(bool openTab)
 {
-	mProjectManager->save();
-	/// @todo: clearErrors() and clear() are absolutely different methods without documentation - wtf?
 	mMainWindowInterface->errorReporter()->clearErrors();
 	mMainWindowInterface->errorReporter()->clear();
 

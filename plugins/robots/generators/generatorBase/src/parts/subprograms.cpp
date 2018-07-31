@@ -17,7 +17,7 @@
 #include <qrtext/lua/luaToolbox.h>
 
 #include "generatorBase/parts/subprograms.h"
-#include "src/readableControlFlowGenerator.h"
+#include "src/structuralControlFlowGenerator.h"
 
 using namespace generatorBase::parts;
 using namespace qReal;
@@ -64,6 +64,7 @@ void Subprograms::usageFound(const Id &logicalId)
 	const Id diagram = mRepo.outgoingExplosion(logicalId);
 	if (diagram != Id() && !mDiscoveredSubprograms.contains(diagram)) {
 		mDiscoveredSubprograms[diagram] = false;
+		mDiscoveredSubprogramsOrder.push_back(diagram);
 	}
 }
 
@@ -105,7 +106,7 @@ Subprograms::GenerationResult Subprograms::generate(ControlFlowGeneratorBase *ma
 		}
 
 		ControlFlowGeneratorBase *generator = mainGenerator->cloneFor(graphicalDiagramId, true);
-		auto readableGenerator = dynamic_cast<ReadableControlFlowGenerator *>(generator);
+		auto readableGenerator = dynamic_cast<StructuralControlFlowGenerator *>(generator);
 		semantics::SemanticTree *controlFlow = generator->generate(Id(), "@@unknown@@");
 		if (!controlFlow || (readableGenerator && readableGenerator->cantBeGeneratedIntoStructuredCode())) {
 			return GenerationResult::error;
@@ -221,7 +222,9 @@ bool Subprograms::checkIdentifier(const QString &identifier, const QString &rawN
 
 Id Subprograms::firstToGenerate() const
 {
-	foreach (const Id &id, mDiscoveredSubprograms.keys()) {
+	while (!mDiscoveredSubprogramsOrder.isEmpty()) {
+		const Id &id = mDiscoveredSubprogramsOrder.first();
+		mDiscoveredSubprogramsOrder.pop_front();
 		if (!mDiscoveredSubprograms[id]) {
 			return id;
 		}

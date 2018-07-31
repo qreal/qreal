@@ -115,6 +115,7 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3SendMail")
 		, id("Ev3StartCompassCalibration")
 		, id("Ev3StopCompassCalibration")
+		, id("Ev3ReadRGB")
 
 		, id("Ev3WaitForTouchSensor")
 		, id("Ev3WaitForSonarDistance")
@@ -156,6 +157,7 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 				<< id("Ev3CalibrateGyroscope")
 				<< id("Ev3StartCompassCalibration")
 				<< id("Ev3StopCompassCalibration")
+				<< id("Ev3ReadRGB")
 				<< id("Ev3CalibrateWhiteLL")
 				<< id("Ev3CalibrateBlackLL")
 				<< id("Ev3CalibratePIDLL")

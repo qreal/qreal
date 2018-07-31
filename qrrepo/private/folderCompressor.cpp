@@ -99,6 +99,10 @@ void FolderCompressor::decompressFolder(const QString &sourceFile, const QString
 
 	QDataStream dataStream(&file);
 
+	if (dataStream.atEnd()) {
+		throw CorruptSaveFileException(sourceFile);
+	}
+
 	while (!dataStream.atEnd()) {
 		QString fileName;
 		QByteArray data;

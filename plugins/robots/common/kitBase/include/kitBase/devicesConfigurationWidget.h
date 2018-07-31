@@ -66,13 +66,13 @@ public slots:
 private:
 	QWidget *configurerForRobotModel(robotModel::RobotModelInterface &robotModel);
 
-	QLayout *initPort(const QString &robotModel
+	QLayout *initPort(const QString &robotModelName
 			, const robotModel::PortInfo &port
 			, const QList<robotModel::DeviceInfo> &sensors);
 
 	void hideAllConfigurers();
 
-	void onDeviceConfigurationChanged(const QString &robotModel
+	void onDeviceConfigurationChanged(const QString &robotId
 			, const robotModel::PortInfo &port
 			, const robotModel::DeviceInfo &sensor
 			, Reason reason) override;
@@ -91,7 +91,7 @@ private:
 	bool mAutosaveMode;
 	bool mCompactMode;
 	QString mCurrentModelType;
-	QString mCurrentModelId;
+	QString mCurrentRobotId;
 	QMap<QString, robotModel::RobotModelInterface *> mRobotModels;  // Does not have ownership.
 	QMap<QString, QWidget *> mRobotModelConfigurers;  // Has indirect ownership via Qt parent-child memory management.
 	QList<QComboBox *> mConfigurers;  // Has indirect ownership of comboboxes via Qt parent-child memory management.

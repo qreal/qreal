@@ -1,1 +1,1 @@
-Trik.Helpers.Media.PlayFile('/home/root/trik/@@FILENAME@@');
+Trik.Helpers.Media.PlayTone(@@FREQUENCY@@, @@DURATION@@);

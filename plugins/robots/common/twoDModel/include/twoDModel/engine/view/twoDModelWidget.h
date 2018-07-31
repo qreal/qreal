@@ -82,7 +82,7 @@ public:
 	SensorItem *sensorItem(const kitBase::robotModel::PortInfo &port);
 	void setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible);
 
-	void loadXml(const QDomDocument &worldModel);
+	void loadXmls(const QDomDocument &worldModel, const QDomDocument &blobs);
 
 	/// Returns a reference to a model part of 2D model MVC architecture.
 	model::Model &model() const;
@@ -132,7 +132,7 @@ protected:
 
 	void focusInEvent(QFocusEvent *event) override;
 
-	void onDeviceConfigurationChanged(const QString &robotModel
+	void onDeviceConfigurationChanged(const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
 			, Reason reason) override;
@@ -140,7 +140,9 @@ protected:
 private slots:
 	void bringToFront();
 
-	void saveToRepo();
+	void saveWorldModelToRepo();
+	void saveBlobsToRepo();
+
 	void saveWorldModel();
 	void loadWorldModel();
 	void setBackground();
@@ -184,7 +186,9 @@ private:
 	void setDetailsVisibility(bool visible);
 	void setRunStopButtonsVisibility();
 
-	QDomDocument generateXml() const;
+	QDomDocument generateWordModelXml() const;
+	QDomDocument generateBlobsXml() const;
+	QDomDocument generateWordModelWithBlobsXml() const;
 
 	/// Set active panel toggle button and deactivate all others
 	void setActiveButton(int active);

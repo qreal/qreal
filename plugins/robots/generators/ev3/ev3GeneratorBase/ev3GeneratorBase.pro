@@ -57,6 +57,7 @@ HEADERS += \
 	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.h \
 	$$PWD/src/simpleGenerators/startCompassCalibrationGenerator.h \
 	$$PWD/src/simpleGenerators/stopCompassCalibrationGenerator.h \
+	$$PWD/src/simpleGenerators/readRGBGenerator.h \
 	$$PWD/src/simpleGenerators/lineLeader/calibrateBlackGenerator.h \
 	$$PWD/src/simpleGenerators/lineLeader/calibratePIDGenerator.h \
 	$$PWD/src/simpleGenerators/lineLeader/calibrateWhiteGenerator.h \
@@ -88,6 +89,7 @@ SOURCES += \
 	$$PWD/src/simpleGenerators/calibrateGyroscopeGenerator.cpp \
 	$$PWD/src/simpleGenerators/startCompassCalibrationGenerator.cpp \
 	$$PWD/src/simpleGenerators/stopCompassCalibrationGenerator.cpp \
+	$$PWD/src/simpleGenerators/readRGBGenerator.cpp \
 	$$PWD/src/simpleGenerators/lineLeader/calibrateBlackGenerator.cpp \
 	$$PWD/src/simpleGenerators/lineLeader/calibratePIDGenerator.cpp \
 	$$PWD/src/simpleGenerators/lineLeader/calibrateWhiteGenerator.cpp \
