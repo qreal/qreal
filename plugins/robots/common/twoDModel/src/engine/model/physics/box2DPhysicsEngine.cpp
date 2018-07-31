@@ -259,6 +259,15 @@ void Box2DPhysicsEngine::onMousePressed()
 
 void Box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
 {
+	mWorld->ClearForces();
+	for (auto item : mBox2DDynamicItems) {
+		b2Body *body = item->getBody();
+		body->SetActive(false);
+		item->getBody()->SetLinearVelocity({0, 0});
+		item->getBody()->SetAngularVelocity(0);
+		body->SetActive(true);
+	}
+
 	onMouseReleased(pos, angleToScene(mBox2DRobots.first()->getBody()->GetAngle()));
 }
 

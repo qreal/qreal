@@ -264,6 +264,8 @@ void RobotItem::returnToStartPosition()
 	const QPointF markerPos = mRobotModel.startPositionMarker()->scenePos();
 	const QPointF shiftToCenter = mapToScene(QPointF()) - mapToScene(boundingRect().center() - shiftFromPicture);
 	mRobotModel.setPosition(markerPos + shiftToCenter);
+
+	emit recoverRobotPosition(markerPos + shiftToCenter);
 }
 
 QPolygonF RobotItem::collidingPolygon() const

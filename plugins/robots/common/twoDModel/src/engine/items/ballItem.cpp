@@ -149,7 +149,7 @@ qreal BallItem::mass() const
 
 qreal BallItem::friction() const
 {
-	return 0.0f;
+	return 1.0f;
 }
 
 SolidItem::BodyType BallItem::bodyType() const
