@@ -37,7 +37,7 @@ public:
 	~Image();
 
 	/// Reads image from XML-representation.
-	static Image deserialize(const QDomElement &element);
+	static Image *deserialize(const QDomElement &element);
 
 	/// Returns true if image was successfully loaded.
 	bool isValid() const;
@@ -63,6 +63,9 @@ public:
 	/// Draws image with \a painter inside the \a rect considering \a zoom.
 	void draw(QPainter &painter, const QRect &rect, qreal zoom = 1.0);
 
+	/// Returns imageId for this image.
+	QString imageId() const;
+
 	bool operator==(const Image &other) const;
 	bool operator!=(const Image &other) const;
 	Image &operator=(const Image &right);
@@ -73,6 +76,7 @@ private:
 	bool mExternal;
 	bool mIsSvg;
 	QString mPath;
+	QString mImageId;
 	QScopedPointer<QImage> mImage;
 	QByteArray mSvgBytes;
 	QScopedPointer<QSvgRenderer> mSvgRenderer;

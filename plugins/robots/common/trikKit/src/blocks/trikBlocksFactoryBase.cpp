@@ -165,6 +165,7 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 	qReal::IdList result;
 
 	result << id("TrikPlayTone");
+	result << id("TrikPlayToneHz");
 
 	result
 			<< id("TrikV6EnginesBackward")
@@ -233,6 +234,7 @@ qReal::IdList TrikBlocksFactoryBase::blocksToDisable() const
 	// because there is no implementation for it
 	if (!mRobotModelManager->model().name().contains("Gen")) {
 		result << id("TrikPlayTone");
+		result << id("TrikPlayToneHz");
 	}
 
 	if (mRobotModelManager->model().name().contains("TwoD")) {

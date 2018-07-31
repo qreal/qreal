@@ -124,15 +124,18 @@ public:
 	bool isLogicalElement(const qReal::Id &id) const override;
 	bool isGraphicalElement(const qReal::Id &id) const override;
 
-	void exterminate() override;
+	bool exterminate() override;
 
 	/// RepoApi's wrapper for Repository.importFromDisk
 	/// @param importedFile - file to be imported
 	void importFromDisk(const QString &importedFile) override;
-	void saveAll() const override;
-	void save(const qReal::IdList &list) const override;
-	void saveTo(const QString &workingFile) override;
-	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;
+
+	/// All methods which starts with save, return true if save process has succeed and false otherwise
+	bool saveAll() const override;
+	bool save(const qReal::IdList &list) const override;
+	bool saveTo(const QString &workingFile) override;
+	bool saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds) override;
+
 	void open(const QString &saveFile) override;
 	void exportToXml(const QString &targetFile) const override;
 

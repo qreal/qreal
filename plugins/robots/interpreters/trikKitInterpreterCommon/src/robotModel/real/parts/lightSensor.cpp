@@ -17,8 +17,6 @@
 using namespace trik::robotModel::real::parts;
 using namespace kitBase::robotModel;
 
-const int maxLightValue = 1023;
-
 LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
 		, utils::robotCommunication::TcpRobotCommunicator &tcpRobotCommunicator)
 	: kitBase::robotModel::robotParts::LightSensor(info, port)
@@ -30,13 +28,13 @@ LightSensor::LightSensor(const DeviceInfo &info, const PortInfo &port
 
 void LightSensor::read()
 {
-	emit newData(mOldValue);
+	emit newData(100 - mOldValue);
 }
 
 void LightSensor::onIncomingData(const QString &portName, int value)
 {
 	if (portName == port().name()) {
 		mOldValue = value;
-		emit newData(mOldValue);
+		emit newData(100 - mOldValue);
 	}
 }

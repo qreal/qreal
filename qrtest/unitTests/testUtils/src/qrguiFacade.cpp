@@ -33,7 +33,7 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 	ON_CALL(mMainWindowInterpretersInterfaceMock, dehighlight()).WillByDefault(Return());
 
 	ON_CALL(mProjectManagementInterfaceMock, saveFilePath()).WillByDefault(Return(QString("./test")));
-	ON_CALL(mProjectManagementInterfaceMock, save()).WillByDefault(Return());
+	ON_CALL(mProjectManagementInterfaceMock, save()).WillByDefault(Return(true));
 
 	ON_CALL(mTextManagerMock, showInTextEditor(_, _, _)).WillByDefault(Invoke(
 			[this](const QFileInfo &file, const QString & genName, const qReal::text::LanguageInfo &language) {

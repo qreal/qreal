@@ -177,7 +177,7 @@
 				</logic>
 			</node>
 
-			<node displayedName="Play Tone" name="TrikPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.">
+			<node displayedName="Play Sound" name="TrikPlayTone" path="130, 62 : 130, 146 :  | 106, 0 : 106, 212 :  | 0, 106 : 106, 212 :  | 0, 106 : 106, 0 : " description="Plays on the robot a sound file (.wav or .mp3) previously uploaded to it.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/playToneBlock.png" x1="0" y2="50" x2="50"/>
@@ -192,6 +192,32 @@
 					<properties>
 						<property displayedName="File Name" type="string" name="FileName">
 							<default>media/beep.wav</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Play Tone" name="TrikPlayToneHz" description="Plays on the robot a sound with the given frequency and duration.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/beepBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="50" y="-35" textBinded="Frequency" hard="true" background="white" prefix="Frequency:" suffix="Hz"/>
+						<label x="50" y="60" textBinded="Duration" background="white" prefix="Duration:" suffix="ms"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Frequency" type="string" name="Frequency">
+							<default>1000</default>
+						</property>
+						<property displayedName="Duration" type="string" name="Duration">
+							<default>1000</default>
 						</property>
 					</properties>
 					<generalizations>
@@ -1218,7 +1244,9 @@
 
 		<palette sorted="false">
 			<group name="Actions">
+				<!-- combine play tone in one block -->
 				<element name="TrikPlayTone"/>
+				<element name="TrikPlayToneHz"/>
 				<element name="TrikV6EnginesForward"/>
 				<element name="TrikV6EnginesBackward"/>
 				<element name="TrikV6EnginesStop"/>

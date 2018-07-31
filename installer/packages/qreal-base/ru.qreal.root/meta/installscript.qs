@@ -69,9 +69,9 @@ Component.prototype.createOperations = function()
 	if (installer.shouldDeinstallPrevious) {
 		component.addOperation("Execute", Dir.toNativeSeparator("@TargetDir@/" + installer.maintenanceName));
 		if (installer.value("os") == "win") {
-			var timeoutBatch = "ping 127.0.0.1 -n 4 > nul";
+			var timeoutBatch = "ping localhost -n 4 > nul";
 			component.addOperation("Execute", "cmd", "/c", timeoutBatch);
-			var joinBatch = "for /l %N in () do (tasklist | find \"cscript\" >nul && ping 127.0.0.1 -n 2 >nul || exit 0) ";
+			var joinBatch = "for /l %N in () do (tasklist | find \"cscript\" >nul && ping localhost -n 2 >nul || exit 0) ";
 			component.addOperation("Execute", "cmd", "/c", joinBatch);
 		}
 	}

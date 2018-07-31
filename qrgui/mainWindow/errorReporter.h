@@ -63,7 +63,9 @@ signals:
 	void criticalAdded(const QString &message, const Id &position);
 
 public slots:
+	/// Clears only widget with errors.
 	virtual void clear();
+	/// Clears only error list.
 	virtual void clearErrors();
 
 private:

@@ -51,7 +51,7 @@ public:
 			);
 
 private:
-	void onDeviceConfigurationChanged(const QString &robotModel
+	void onDeviceConfigurationChanged(const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &sensor
 			, Reason reason) override;

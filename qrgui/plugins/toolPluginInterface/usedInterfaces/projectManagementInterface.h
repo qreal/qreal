@@ -46,8 +46,9 @@ public slots:
 	/// Closes current project without suggestion to save it
 	virtual void close() = 0;
 
-	/// Save the project in the user file, if it specified. Otherwise save to autosave file
-	virtual void save() = 0;
+	/// Save the project in the user file, if it specified. Otherwise save to autosave file.
+	/// Returns true if writing is successfull.
+	virtual bool save() = 0;
 
 	/// Save the project in the file with the name fileName, if it not empty (fileName). Otherwise return false only.
 	virtual bool saveAs(const QString &fileName) = 0;

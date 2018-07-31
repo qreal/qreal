@@ -19,7 +19,7 @@
 namespace trik {
 namespace simple {
 
-/// Generator for 'PlayTone' block.
+/// Generator for 'PlaySound' block.
 class PlayToneGenerator : public generatorBase::simple::BindingGenerator
 {
 public:

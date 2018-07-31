@@ -244,7 +244,7 @@ void TcpRobotCommunicatorWorker::connect()
 		versionRequest();
 		emit connected();
 	} else {
-		emit connectionError(tr("Connection failed"));
+		emit connectionError(tr("Connection failed. IP: %1").arg(server));
 	}
 }
 

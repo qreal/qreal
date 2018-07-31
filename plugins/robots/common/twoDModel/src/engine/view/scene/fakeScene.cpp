@@ -67,8 +67,8 @@ void FakeScene::deleteItem(QGraphicsItem * const original)
 
 void FakeScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if (mBackground.isValid()) {
-		mBackground.draw(*painter, mBackgroundRect, 1.0);
+	if (mBackground && mBackground->isValid()) {
+		mBackground->draw(*painter, mBackgroundRect, 1.0);
 	}
 
 	QGraphicsScene::drawBackground(painter, rect);
@@ -83,9 +83,12 @@ QImage view::FakeScene::render(const QRectF &piece)
 	return result;
 }
 
-void FakeScene::setBackground(const Image &background, const QRect &backgroundRect)
+void FakeScene::setBackground(Image * const background, const QRect &backgroundRect)
 {
-	if (mBackground != background || mBackgroundRect != backgroundRect) {
+	if ((background && mBackground && *background != *mBackground)
+			|| (background && !mBackground)
+			|| (!background && mBackground)
+			|| backgroundRect != mBackgroundRect) {
 		mBackground = background;
 		mBackgroundRect = backgroundRect;
 		update();

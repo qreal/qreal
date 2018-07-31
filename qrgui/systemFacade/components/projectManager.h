@@ -40,7 +40,7 @@ public slots:
 
 	void close() override;
 
-	void save() override;
+	bool save() override;
 	bool saveAs(const QString &fileName) override;
 	bool suggestToSaveAs() override;
 	bool saveOrSuggestToSaveAs() override;
@@ -48,7 +48,7 @@ public slots:
 	void setUnsavedIndicator(bool isUnsaved) override;
 
 	/// Saves current project into given file without refreshing application state after it
-	void saveTo(const QString &fileName);
+	bool saveTo(const QString &fileName);
 
 public:
 	bool openEmptyWithSuggestToSaveChanges() override;

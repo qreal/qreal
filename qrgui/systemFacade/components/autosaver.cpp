@@ -56,6 +56,7 @@ uint Autosaver::interval() const
 	if (result == 0) {
 		result = defaultInterval;
 	}
+
 	return result;
 }
 

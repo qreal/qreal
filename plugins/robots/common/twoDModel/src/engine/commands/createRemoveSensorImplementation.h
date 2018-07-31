@@ -30,7 +30,7 @@ class CreateRemoveSensorImplementation : public kitBase::DevicesConfigurationPro
 {
 public:
 	CreateRemoveSensorImplementation(model::SensorsConfiguration &configurator
-			, const QString &robotModel
+			, const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
 			, const QPointF &position
@@ -41,7 +41,7 @@ public:
 
 private:
 	model::SensorsConfiguration &mConfigurator;
-	const QString mRobotModel;
+	const QString mRobotId;
 	const kitBase::robotModel::PortInfo mPort;
 	kitBase::robotModel::DeviceInfo mDevice;
 	QPointF mPosition;

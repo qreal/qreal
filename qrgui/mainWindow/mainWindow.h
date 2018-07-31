@@ -226,6 +226,7 @@ private slots:
 
 	void openRecentProjectsMenu();
 
+	void tryToSave();
 	void saveDiagramAsAPicture();
 	void print();
 	void makeSvg();

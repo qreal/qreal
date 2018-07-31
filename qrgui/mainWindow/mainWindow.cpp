@@ -190,8 +190,13 @@ void MainWindow::connectActions()
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
-	connect(mUi->actionOpen, SIGNAL(triggered()), mProjectManager, SLOT(suggestToOpenExisting()));
-	connect(mUi->actionSave, SIGNAL(triggered()), mProjectManager, SLOT(saveOrSuggestToSaveAs()));
+	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
+		if (!mProjectManager->suggestToOpenExisting()) {
+			openStartTab();
+		}
+	});
+
+	connect(mUi->actionSave, SIGNAL(triggered()), this, SLOT(tryToSave()));
 	connect(mUi->actionSave_as, SIGNAL(triggered()), mProjectManager, SLOT(suggestToSaveAs()));
 	connect(mUi->actionSave_diagram_as_a_picture, SIGNAL(triggered()), this, SLOT(saveDiagramAsAPicture()));
 	connect(mUi->actionPrint, SIGNAL(triggered()), this, SLOT(print()));
@@ -372,8 +377,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 	if (!mProjectManager->suggestToSaveChangesOrCancel()) {
 		event->ignore();
+		mErrorReporter->addWarning(tr("Could not save file, try to save it to another place"));
 		return;
 	}
+
 	mProjectManager->close();
 
 	SettingsManager::setValue("maximized", isMaximized());
@@ -549,7 +556,14 @@ void MainWindow::openRecentProjectsMenu()
 	}
 
 	QObject::connect(mRecentProjectsMapper, SIGNAL(mapped(const QString &))
-			, mProjectManager, SLOT(openExisting(const QString &)));
+					 , mProjectManager, SLOT(openExisting(const QString &)));
+}
+
+void MainWindow::tryToSave()
+{
+	if(!mProjectManager->saveOrSuggestToSaveAs()) {
+		mErrorReporter->addWarning(tr("Could not save file, try to save it to another place"));
+	}
 }
 
 void MainWindow::closeAllTabs()
@@ -1755,16 +1769,22 @@ void MainWindow::addExternalToolActions()
 				const QString toolName = tool.attribute("name");
 				const QString program = PlatformInfo::invariantPath(tool.attribute("program"));
 				QStringList arguments = tool.attribute("arguments").split(" ");
-				for (QString &arg : arguments) {
-					if (arg.startsWith("@@")) {
-						arg = SettingsManager::value(arg.remove("@@")).toString();
-					}
-				}
 
 				if (QFile(program).exists()) {
 					QAction *action = new QAction(toolName, externalToolsMenu);
 					connect(action, &QAction::triggered, [=](){
-						QProcess::startDetached(program, arguments);
+						if (arguments.isEmpty()) {
+							QProcess::startDetached(program);
+						} else {
+							QStringList processedArguments = arguments;
+							for (QString &arg : processedArguments) {
+								if (arg.startsWith("@@")) {
+									arg = SettingsManager::value(arg.remove("@@")).toString();
+								}
+							}
+
+							QProcess::startDetached(program, processedArguments);
+						}
 					});
 
 					externalToolsMenu->addAction(action);

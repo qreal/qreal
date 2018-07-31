@@ -48,6 +48,7 @@ class TWO_D_MODEL_EXPORT WorldModel : public QObject
 
 public:
 	WorldModel();
+	~WorldModel();
 
 	void init(qReal::ErrorReporterInterface &errorReporter);
 
@@ -91,10 +92,10 @@ public:
 	void removeColorField(items::ColorFieldItem *colorField);
 
 	/// Adds image item into 2D model.
-	void addImage(items::ImageItem *image);
+	void addImageItem(items::ImageItem *imageItem);
 
 	/// Removes image item from 2D model.
-	void removeImage(items::ImageItem *image);
+	void removeImageItem(items::ImageItem *imageItem);
 
 	/// Removes all walls, colored items, regions and robot traces from the world model.
 	void clear();
@@ -106,7 +107,10 @@ public:
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomElement &parent) const;
+	QDomElement serializeWorld(QDomElement &parent) const;
+
+	/// Saves blobs to XML.
+	QDomElement serializeBlobs(QDomElement &parent) const;
 
 	/// Saves all information about the item with \a id into XML element. Item then can be recreated from
 	/// this specification using createElement(QDomElement) method.
@@ -114,16 +118,17 @@ public:
 
 	/// Restores world model XML specification.
 	/// @param element Root element of the world model XML specification.
-	void deserialize(const QDomElement &element);
+	/// @param blobs Root element of the blobs XML specification.
+	void deserialize(const QDomElement &element, const QDomElement &blobs);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
 	QGraphicsObject *findId(const QString &id) const;
 
 	/// Sets a background image on the scene and its geometry.
-	void setBackground(const Image &image, const QRect &rect);
+	void setBackground(Image * const image, const QRect &rect);
 
 	/// Returns a path to scene background image.
-	Image &background();
+	Image *background();
 
 	/// Returns a scene background image size and position.
 	QRect &backgroundRect();
@@ -150,7 +155,7 @@ public:
 	void createStylus(const QDomElement &element);
 
 	/// Creates image item described by \a element in the world model.
-	void createImage(const QDomElement &element);
+	items::ImageItem *createImageItem(const QDomElement &element, bool background=false);
 
 	/// Creates region item described by \a element in the world model.
 	void createRegion(const QDomElement &element);
@@ -181,22 +186,34 @@ signals:
 	void robotTraceAppearedOrDisappeared(bool appeared);
 
 	/// Emitted when user changes background image or its size.
-	void backgroundChanged(const Image &image, const QRect &backgroundRect);
+	void backgroundChanged(Image * const image, const QRect &backgroundRect);
+
+	/// Emitted when blobs information changed.
+	void blobsChanged();
+
+	/// Emitted each time when imageItem with background created.
+	void backgroundImageItemAdded(items::ImageItem *item);
 
 private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(const int distance, const QPointF &position
 			, const qreal direction, const QPainterPath &wallPath) const;
 	QPainterPath buildWallPath() const;
+
+	void createBackgroundImageItem(const QDomElement &element);
+
+	void serializeBackground(QDomElement &background, const QRect &rect, const Image * const img) const;
 	QRect deserializeRect(const QString &string) const;
 	void deserializeBackground(const QDomElement &backgroundElement);
 
 	QMap<QString, items::WallItem *> mWalls;
 	QMap<QString, items::ColorFieldItem *> mColorFields;
-	QMap<QString, items::ImageItem *> mImages;
+	QMap<QString, items::ImageItem *> mImageItems;
 	QMap<QString, items::RegionItem *> mRegions;
+	QMap<QString, Image*> mImages; // takes ownership
+	QMap<QString, int> mOrder;
 	QList<QGraphicsLineItem *> mRobotTrace;
-	Image mBackgroundImage;
+	Image *mBackgroundImage = nullptr;
 	QRect mBackgroundRect;
 	QScopedPointer<QDomDocument> mXmlFactory;
 	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn`t take ownership.

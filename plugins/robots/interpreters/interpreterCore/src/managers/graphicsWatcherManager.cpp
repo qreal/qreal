@@ -48,15 +48,15 @@ void GraphicsWatcherManager::forceStop()
 	mWatcher->stopJob();
 }
 
-void GraphicsWatcherManager::onDeviceConfigurationChanged(const QString &robotModel
+void GraphicsWatcherManager::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
 	Q_UNUSED(reason)
 
-	if (robotModel == mRobotManager.model().robotId()) {
-		updateSensorsList(robotModel);
+	if (robotId == mRobotManager.model().robotId()) {
+		updateSensorsList(robotId);
 	}
 }
 
