@@ -75,7 +75,7 @@ void Serializer::setWorkingFile(const QString &workingFile)
 	mWorkingFile = workingFile;
 }
 
-void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const
+bool Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const
 {
 	Q_ASSERT_X(!mWorkingFile.isEmpty()
 		, "Serializer::saveToDisk(...)"
@@ -106,7 +106,11 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 	}
 
 	const QString filePath = fileInfo.absolutePath() + "/" + fileName + ".qrs";
-	FolderCompressor::compressFolder(compressDir.absolutePath(), filePath);
+	try {
+		FolderCompressor::compressFolder(compressDir.absolutePath(), filePath);
+	} catch (...) {
+		return false;
+	}
 
 	// Hiding autosaved files
 	if (fileName.contains("~")) {
@@ -114,6 +118,8 @@ void Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 	}
 
 	clearWorkingDir();
+
+	return true;
 }
 
 void Serializer::loadFromDisk(QHash<qReal::Id, Object*> &objectsHash, QHash<QString, QVariant> &metaInfo)

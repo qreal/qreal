@@ -122,6 +122,11 @@ QString PlatformInfo::invariantPath(const QString &path)
 		const QStringList documentsPaths = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 		const QString documentsPath = documentsPaths.isEmpty() ? applicationDirPath() : documentsPaths.first();
 		return QString(path).replace("@DocumentsPath@", documentsPath);
+	} else if (path.startsWith("@AppDataLocation@")) {
+		const QStringList appDataLocationPaths = QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+		const QString appDataLocationPath = appDataLocationPaths.isEmpty()
+				? applicationDirPath() : appDataLocationPaths.first();
+		return QString(path).replace("@AppDataLocation@", appDataLocationPath);
 	} else if (path.startsWith("@TempLocation@")) {
 		const QString tempPath = QStandardPaths::writableLocation(QStandardPaths::TempLocation);
 		return QString(path).replace("@TempLocation@", tempPath);

@@ -103,13 +103,13 @@ void RobotsBlockParser::clear()
 	setReservedVariables();
 }
 
-void RobotsBlockParser::onDeviceConfigurationChanged(const QString &robotModel
+void RobotsBlockParser::onDeviceConfigurationChanged(const QString &robotId
 		, const kitBase::robotModel::PortInfo &port
 		, const kitBase::robotModel::DeviceInfo &device
 		, kitBase::DevicesConfigurationProvider::Reason reason)
 {
 	Q_UNUSED(reason)
-	if (mRobotModelManager.model().robotId() == robotModel){
+	if (mRobotModelManager.model().robotId() == robotId){
 		if (!port.reservedVariable().isEmpty() && !device.isNull()) {
 			setVariableDependedOnDeviceType(port.reservedVariable(), device);
 		}

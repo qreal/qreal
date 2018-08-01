@@ -130,7 +130,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	if (mainCode.isEmpty()) {
 		const QString errorMessage = supportsGotoGeneration()
 				? tr("This diagram cannot be even generated into the code with 'goto'"\
-						"statements. Please contact the developers (WTF did you do?)")
+						"statements. Please contact the developers.")
 				: tr("This diagram cannot be generated into the structured code.");
 		mErrorReporter.addError(errorMessage);
 		return QString();

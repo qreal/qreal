@@ -41,7 +41,9 @@ public:
 	void setWorkingFile(const QString &workingFile);
 
 	void removeFromDisk(const qReal::Id &id) const;
-	void saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
+
+	/// Returns true if saving was successfull.
+	bool saveToDisk(QList<Object *> const &objects, QHash<QString, QVariant> const &metaInfo) const;
 	void loadFromDisk(QHash<qReal::Id, Object *> &objectsHash, QHash<QString, QVariant> &metaInfo);
 
 	/// Decompresses given file into working directory.

@@ -94,12 +94,15 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::selectionChanged, this, &TwoDModelWidget::onSelectionChange);
 	connect(mScene, &TwoDModelScene::mousePressed, this, &TwoDModelWidget::refreshCursor);
 	connect(mScene, &TwoDModelScene::mouseReleased, this, &TwoDModelWidget::refreshCursor);
-	connect(mScene, &TwoDModelScene::mouseReleased, this, [this](){ saveToRepo(); });
+	connect(mScene, &TwoDModelScene::mouseReleased, this, [this](){ saveWorldModelToRepo(); });
 	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
 	connect(&mModel.worldModel(), &WorldModel::backgroundChanged, mScene, &TwoDModelScene::setBackground);
-	connect(&mModel.worldModel(), &WorldModel::itemRemoved, this, [this](){ saveToRepo(); });
+	connect(&mModel.worldModel(), &WorldModel::itemRemoved, this, [this]() { saveWorldModelToRepo(); });
+
+	connect(&mModel.worldModel(), &WorldModel::blobsChanged, this, [this]() { saveBlobsToRepo(); });
+
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();
@@ -177,9 +180,13 @@ void TwoDModelWidget::initWidget()
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, QBrush(pen.color(), Qt::NoBrush));
 	});
-	connect(mColorFieldItemPopup, &ColorItemPopup::propertyChanged, this, &TwoDModelWidget::saveToRepo);
 
-	connect(mImageItemPopup, &ImageItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
+	connect(mColorFieldItemPopup, &ColorItemPopup::propertyChanged, this, &TwoDModelWidget::saveWorldModelToRepo);
+
+	connect(mImageItemPopup, &ImageItemPopup::somethingChanged, this, [=]() {
+		saveBlobsToRepo();
+		saveWorldModelToRepo();
+	});
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;
@@ -433,7 +440,7 @@ void TwoDModelWidget::saveWorldModel()
 		saveFileName += ".xml";
 	}
 
-	const QDomDocument save = generateXml();
+	const QDomDocument save = generateWordModelWithBlobsXml();
 
 	utils::OutFile saveFile(saveFileName);
 	saveFile() << "<?xml version='1.0' encoding='utf-8'?>\n";
@@ -458,7 +465,16 @@ void TwoDModelWidget::loadWorldModel()
 				.arg(QString::number(errorLine), QString::number(errorColumn), errorMessage));
 	}
 
-	loadXml(save);
+	QDomNodeList blobsList = save.elementsByTagName("blobs");
+	if (blobsList.length()) {
+		QDomDocument blobs;
+		QDomElement root = blobs.createElement("root");
+		root.appendChild(blobsList.at(0));
+		blobs.appendChild(root);
+		loadXmls(save, blobs);
+	} else {
+		loadXmls(save, QDomDocument());
+	}
 }
 
 void TwoDModelWidget::setBackground()
@@ -473,8 +489,8 @@ void TwoDModelWidget::setBackground()
 		return;
 	}
 
-	const Image image(loadFileName, false);
-	const QSize size = image.preferedSize();
+	Image *image = new Image(loadFileName, false);
+	const QSize size = image->preferedSize();
 	mModel.worldModel().setBackground(image, QRect(QPoint(-size.width()/2, -size.height()/2), size));
 }
 
@@ -599,17 +615,39 @@ SensorItem *TwoDModelWidget::sensorItem(const kitBase::robotModel::PortInfo &por
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
 }
 
-void TwoDModelWidget::saveToRepo()
+void TwoDModelWidget::saveWorldModelToRepo()
 {
-	emit mModel.modelChanged(generateXml());
+	emit mModel.modelChanged(generateWordModelXml());
 }
 
-QDomDocument TwoDModelWidget::generateXml() const
+void TwoDModelWidget::saveBlobsToRepo()
+{
+	emit mModel.blobsChanged(generateBlobsXml());
+}
+
+QDomDocument TwoDModelWidget::generateWordModelXml() const
 {
 	return mModel.serialize();
 }
 
-void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
+QDomDocument TwoDModelWidget::generateBlobsXml() const
+{
+	QDomDocument save;
+	QDomElement root = save.createElement("root");
+	mModel.worldModel().serializeBlobs(root);
+	save.appendChild(root);
+	return save;
+}
+
+QDomDocument TwoDModelWidget::generateWordModelWithBlobsXml() const
+{
+	QDomDocument wordModelXml = generateWordModelXml();
+	QDomDocument blobsXml = generateBlobsXml();
+	wordModelXml.firstChild().appendChild(blobsXml.firstChild().firstChild());
+	return wordModelXml;
+}
+
+void TwoDModelWidget::loadXmls(const QDomDocument &worldModel, const QDomDocument &blobs)
 {
 	if (mController) {
 		// Clearing 2D model undo stack...
@@ -618,7 +656,7 @@ void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
 	}
 
 	mScene->clearScene(true, Reason::loading);
-	mModel.deserialize(worldModel);
+	mModel.deserialize(worldModel, blobs);
 	updateWheelComboBoxes();
 	mUi->trainingModeButton->setVisible(mModel.hasConstraints());
 }
@@ -848,7 +886,7 @@ void TwoDModelWidget::syncCursorButtons()
 	}
 }
 
-void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
+void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	Q_UNUSED(port)
@@ -856,7 +894,7 @@ void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 	Q_UNUSED(reason)
 
 	/// @todo Convert configuration between models or something?
-	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info().robotId()) {
+	if (mSelectedRobotItem && robotId == mSelectedRobotItem->robotModel().info().robotId()) {
 		updateWheelComboBoxes();
 	}
 }
@@ -963,7 +1001,7 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 		auto checkAndSaveToRepo = [this](const PortInfo &port, bool isLoaded) {
 			Q_UNUSED(port);
 			if (!isLoaded) {
-				saveToRepo();
+				saveWorldModelToRepo();
 			}
 		};
 

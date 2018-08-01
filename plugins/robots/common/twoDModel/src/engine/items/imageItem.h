@@ -29,7 +29,7 @@ class ImageItem : public graphicsUtils::AbstractItem
 	Q_PROPERTY(QString path READ path WRITE setPath)
 
 public:
-	ImageItem(const model::Image &image, const QRect &geometry);
+	ImageItem(model::Image *image, const QRect &geometry);
 
 	AbstractItem *clone() const;
 
@@ -47,7 +47,7 @@ public:
 	void deserialize(const QDomElement &element) override;
 
 	/// Returns image of this item.
-	const model::Image &image() const;
+	model::Image *image() const;
 
 	/// Returns true if this item is embedded into save.
 	bool memorizes() const;
@@ -61,9 +61,18 @@ public:
 	/// Sets a path to displayed image.
 	void setPath(const QString &path);
 
+	/// Tells item to serialize itself as background or as image.
+	void setBackgroundRole(bool background);
+
+	/// Returns role.
+	bool isBackground() const;
+
 signals:
 	/// Emitted when user selects or unselects
 	void selectedChanged(bool selected);
+
+	/// Emitted when user changed path to image or memorize flag.
+	void internalImageChanged();
 
 private:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -71,7 +80,9 @@ private:
 	QRect deserializeRect(const QString &string) const;
 
 	graphicsUtils::RectangleImpl mImpl;
-	model::Image mImage;
+	model::Image *mImage = nullptr; // Does not have ownership
+
+	bool mBackgroundRole = false;
 };
 
 }

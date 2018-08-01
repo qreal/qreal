@@ -67,11 +67,10 @@ QString DevicesConfigurationManager::save() const
 void DevicesConfigurationManager::load(const QString &configuration)
 {
 	clearConfiguration(Reason::loading);
-
 	QMap<QString, QMap<PortInfo, DeviceInfo>> const parsed = RobotModelUtils::deserialize(configuration);
-	for (const QString &robotModel : parsed.keys()) {
-		for (const PortInfo &port : parsed[robotModel].keys()) {
-			deviceConfigurationChanged(robotModel, port, parsed[robotModel][port], Reason::loading);
+	for (const QString &robotId : parsed.keys()) {
+		for (const PortInfo &port : parsed[robotId].keys()) {
+			deviceConfigurationChanged(robotId, port, parsed[robotId][port], Reason::loading);
 		}
 	}
 }
@@ -94,14 +93,14 @@ Id DevicesConfigurationManager::mainDiagramId() const
 	return result;
 }
 
-void DevicesConfigurationManager::onDeviceConfigurationChanged(const QString &robotModel
+void DevicesConfigurationManager::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	if (reason == Reason::loading) {
 		return;
 	}
 
-	Q_UNUSED(robotModel)
+	Q_UNUSED(robotId)
 	Q_UNUSED(port)
 	Q_UNUSED(sensor)
 

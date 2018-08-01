@@ -20,13 +20,13 @@ using namespace twoDModel;
 using namespace commands;
 
 CreateRemoveSensorImplementation::CreateRemoveSensorImplementation(model::SensorsConfiguration &configurator
-		, const QString &robotModel
+		, const QString &robotId
 		, const kitBase::robotModel::PortInfo &port
 		, const kitBase::robotModel::DeviceInfo &device
 		, const QPointF &position
 		, const qreal direction)
 	: mConfigurator(configurator)
-	, mRobotModel(robotModel)
+	, mRobotId(robotId)
 	, mPort(port)
 	, mDevice(device)
 	, mPosition(position)
@@ -37,7 +37,7 @@ CreateRemoveSensorImplementation::CreateRemoveSensorImplementation(model::Sensor
 
 void CreateRemoveSensorImplementation::create()
 {
-	deviceConfigurationChanged(mRobotModel, mPort, mDevice, Reason::userAction);
+	deviceConfigurationChanged(mRobotId, mPort, mDevice, Reason::userAction);
 	mConfigurator.setPosition(mPort, mPosition);
 	mConfigurator.setDirection(mPort, mDirection);
 }
@@ -47,5 +47,5 @@ void CreateRemoveSensorImplementation::remove()
 	mDevice = mConfigurator.type(mPort);
 	mPosition = mConfigurator.position(mPort);
 	mDirection = mConfigurator.direction(mPort);
-	deviceConfigurationChanged(mRobotModel, mPort, kitBase::robotModel::DeviceInfo(), Reason::userAction);
+	deviceConfigurationChanged(mRobotId, mPort, kitBase::robotModel::DeviceInfo(), Reason::userAction);
 }

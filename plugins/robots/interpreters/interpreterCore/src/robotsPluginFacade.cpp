@@ -188,8 +188,12 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 				}
 			});
 
-	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered
-			, [this] () { mSaveAsTaskManager->save(); });
+	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered, [this] () {
+		if (!mSaveAsTaskManager->save()) {
+			mMainWindow->errorReporter()
+					->addError(tr("Cannot export exercise to the given location (try to change location)"));
+		}
+	});
 
 	mLogicalModelApi = &configurer.logicalModelApi();
 	mTextManager = &configurer.textManager();

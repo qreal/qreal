@@ -48,6 +48,7 @@ class CurveItem;
 class StylusItem;
 class RectangleItem;
 class EllipseItem;
+class ImageItem;
 }
 
 namespace model {
@@ -133,7 +134,7 @@ public slots:
 	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
 	/// Sets a background image on the scene and its geometry.
-	void setBackground(const model::Image &background, const QRect &backgroundRect);
+	void setBackground(model::Image * const background, const QRect &backgroundRect);
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
@@ -151,11 +152,10 @@ signals:
 	/// Emitted at any changes of robot list (adding or removing)
 	void robotListChanged(RobotItem *robotItem);
 
-	/// Emitted when user pressed escape during this scene is focused.
-	void escapePressed();
-
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
+
+	void handleBackgroundImageItem(items::ImageItem *backgroundImageItem);
 
 	/// Called after robot model was added and create new robot item
 	/// @param robotModel Robot model which was added
