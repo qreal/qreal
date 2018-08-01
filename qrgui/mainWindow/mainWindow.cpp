@@ -191,7 +191,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
-		if (!mProjectManager->suggestToOpenExisting()) {
+		if (!mProjectManager->suggestToOpenExisting() && !currentTab()) {
 			openStartTab();
 		}
 	});
