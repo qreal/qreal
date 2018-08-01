@@ -419,8 +419,16 @@ void Box2DPhysicsEngine::onItemDragged(graphicsUtils::AbstractItem *item)
 	if (itemTracked(item)) {
 		if (solidItem->bodyType() == items::SolidItem::DYNAMIC) {
 			auto *bItem = mBox2DDynamicItems[item];
-			bItem->moveToPosition(positionToBox2D(item->scenePos() + item->boundingRect().center()));
-			bItem->setRotation(angleToBox2D(item->rotation()));
+
+			qreal localRotation = item->rotation();
+			item->setRotation(0);
+			QPointF localScenePos = item->scenePos();
+			item->setRotation(localRotation);
+			QRectF localBoundingRect = item->boundingRect();
+			QPointF localCenter = localBoundingRect.center();
+			bItem->setRotation(0);
+			bItem->moveToPosition(positionToBox2D(localScenePos + localCenter));
+			bItem->setRotation(angleToBox2D(localRotation));
 		}
 	} else {
 		b2Vec2 pos = positionToBox2D(collidingPolygon.boundingRect().center());
