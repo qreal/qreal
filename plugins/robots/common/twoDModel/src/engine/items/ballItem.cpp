@@ -87,6 +87,7 @@ void BallItem::deserialize(const QDomElement &element)
 	setTransformOriginPoint(boundingRect().center());
 	mStartPosition = {markerX, markerY};
 	setRotation(rotation);
+	emit x1Changed(x1());
 }
 
 void BallItem::saveStartPosition()
