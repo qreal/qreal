@@ -48,6 +48,10 @@ void PhysicsEngineBase::wakeUp()
 {
 }
 
+void PhysicsEngineBase::clearForcesAndStop()
+{
+}
+
 void PhysicsEngineBase::nextFrame()
 {
 }

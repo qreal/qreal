@@ -195,7 +195,6 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 		});
 
 		connect(robot, &model::RobotModel::deserialized, this, &Box2DPhysicsEngine::onMouseReleased);
-//		add connect to stop robot here
 //		drawDebugRobot(robot);
 	});
 }
@@ -259,14 +258,7 @@ void Box2DPhysicsEngine::onMousePressed()
 
 void Box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
 {
-	mWorld->ClearForces();
-	for (auto item : mBox2DDynamicItems) {
-		b2Body *body = item->getBody();
-		body->SetActive(false);
-		item->getBody()->SetLinearVelocity({0, 0});
-		item->getBody()->SetAngularVelocity(0);
-		body->SetActive(true);
-	}
+	clearForcesAndStop();
 
 	onMouseReleased(pos, angleToScene(mBox2DRobots.first()->getBody()->GetAngle()));
 }
@@ -368,6 +360,18 @@ void Box2DPhysicsEngine::nextFrame()
 			item->setPos(scenePos - item->boundingRect().center());
 			item->setRotation(angleToScene(mBox2DDynamicItems[item]->getRotation()));
 		}
+	}
+}
+
+void Box2DPhysicsEngine::clearForcesAndStop()
+{
+	mWorld->ClearForces();
+	for (auto item : mBox2DDynamicItems) {
+		b2Body *body = item->getBody();
+		body->SetActive(false);
+		item->getBody()->SetLinearVelocity({0, 0});
+		item->getBody()->SetAngularVelocity(0);
+		body->SetActive(true);
 	}
 }
 

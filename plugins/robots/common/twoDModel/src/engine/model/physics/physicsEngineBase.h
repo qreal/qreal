@@ -60,6 +60,9 @@ public:
 	/// Reinitialize physics engine, e.g. changing of engines requires some update.
 	virtual void wakeUp();
 
+	/// Clears all forces and velocities. Freezes all dynamic elements.
+	virtual void clearForcesAndStop();
+
 	/// Recalculates all solid items positions and angles correspond to world model changes.
 	virtual void nextFrame();
 

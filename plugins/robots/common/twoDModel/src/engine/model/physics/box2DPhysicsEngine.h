@@ -55,6 +55,7 @@ public:
 	void recalculateParameters(qreal timeInterval) override;
 	void wakeUp() override;
 	void nextFrame() override;
+	void clearForcesAndStop() override;
 
 	float pxToCm(qreal px) const;
 	b2Vec2 pxToCm(const QPointF posInPx) const;

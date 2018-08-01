@@ -191,6 +191,7 @@ void Model::addRobotModel(robotModel::TwoDRobotModel &robotModel, const QPointF 
 
 	connect(&mTimeline, &Timeline::started, robot, &RobotModel::reinit);
 	connect(&mTimeline, &Timeline::stopped, robot, &RobotModel::stopRobot);
+	connect(&mTimeline, &Timeline::stopped, mRealisticPhysicsEngine, &physics::PhysicsEngineBase::clearForcesAndStop);
 
 	connect(&mTimeline, &Timeline::tick, robot, &RobotModel::recalculateParams);
 	connect(&mTimeline, &Timeline::nextFrame, robot, &RobotModel::nextFragment);
