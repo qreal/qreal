@@ -18,7 +18,7 @@ SUBDIRS = \
 	editor \
 	examples \
 	common \
-    interpreters \
+	interpreters \
 	generators \
 	utils \
 	checker \
