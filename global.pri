@@ -62,8 +62,15 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<[5-6]\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
+!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<5\.[0-9]+\."' ){ CONFIG += gcc5 }
+!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<4\.[0-9]+\."' ){ CONFIG += gcc4 }
+
+CONFIG(no-sanitizers): CONFIG += nosanitizers
+
+!CONFIG(nosanitizers):!clang:gcc:*-g++*:gcc4{
+	warning("Disabled sanitizers, failed to detect compiler version or too old compiler: $$QMAKE_CXX")
+	CONFIG += nosanitizers
+}
 
 unix:!CONFIG(nosanitizers) {
 
