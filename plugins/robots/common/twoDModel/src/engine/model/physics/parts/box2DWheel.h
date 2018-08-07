@@ -31,14 +31,15 @@ class Box2DRobot;
 class Box2DWheel
 {
 public:
-	Box2DWheel(twoDModel::model::physics::Box2DPhysicsEngine *engine,
-			const b2Vec2 &positionBox2D
+	Box2DWheel(twoDModel::model::physics::Box2DPhysicsEngine *engine
+			, const b2Vec2 &positionBox2D
 			, const float rotationBox2D
 			, Box2DRobot &mRobot);
 	~Box2DWheel();
 
 	b2Vec2 getLateralVelocity() const;
 	b2Vec2 getForwardVelocity() const;
+
 	void keepConstantSpeed(float speed);
 	b2Body *getBody();
 
@@ -51,12 +52,11 @@ private:
 	b2Body *mBody;
 	Box2DRobot &mRobot;
 	twoDModel::model::physics::Box2DPhysicsEngine *mEngine; // Doesn't take ownership
-	const float wheelHeightM;
-	const float wheelWidthM;
-	const float wheelFriction = 1.0f;
-	const float wheelMass = 0.1f;
+	const float mWheelHeightM;
+	const float mWheelWidthM;
+	const float mWheelFriction = 1.0f;
+	const float mWheelMass = 0.1f;
 	b2Vec2 *mPolygon; // Takes ownership
-
 };
 
 }

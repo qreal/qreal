@@ -89,8 +89,6 @@ protected:
 	void itemRemoved(QGraphicsItem * const item) override;
 
 private:
-	void drawDebugRobot(model::RobotModel* const robot);
-	void createDebugRobot(model::RobotModel* const robot);
 	void onPressedReleasedSelectedItems(bool active);
 
 	bool itemTracked(QGraphicsItem * const item);

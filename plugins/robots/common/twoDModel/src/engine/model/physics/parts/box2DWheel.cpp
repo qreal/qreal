@@ -30,8 +30,8 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 	: prevSpeed(0.0)
 	, mRobot(robot)
 	, mEngine(engine)
-	, wheelHeightM(engine->pxToM(twoDModel::robotWheelDiameterInPx / 2))
-	, wheelWidthM(engine->pxToM(twoDModel::robotWheelDiameterInPx))
+	, mWheelHeightM(engine->pxToM(twoDModel::robotWheelDiameterInPx / 2))
+	, mWheelWidthM(engine->pxToM(twoDModel::robotWheelDiameterInPx))
 	, mPolygon(new b2Vec2[8])
 {
 	b2BodyDef bodyDef;
@@ -42,26 +42,26 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.restitution = 0.5;
-	fixtureDef.friction = wheelFriction;
+	fixtureDef.friction = mWheelFriction;
 	b2PolygonShape polygonShape;
 
-	b2Vec2 center = b2Vec2(0.5 * wheelWidthM, 0.5 * wheelHeightM);
-	mPolygon[0] = b2Vec2(0.2 * wheelWidthM, wheelHeightM) - center;
-	mPolygon[1] = b2Vec2(0.8 * wheelWidthM, wheelHeightM) - center;
-	mPolygon[2] = b2Vec2(wheelWidthM, 0.6 * wheelHeightM) - center;
-	mPolygon[3] = b2Vec2(wheelWidthM, 0.4 * wheelHeightM) - center;
-	mPolygon[4] = b2Vec2(0.8 * wheelWidthM, 0.0) - center;
-	mPolygon[5] = b2Vec2(0.2 * wheelWidthM, 0.0) - center;
-	mPolygon[6] = b2Vec2(0.0, 0.4 * wheelHeightM) - center;
-	mPolygon[7] = b2Vec2(0.0, 0.6 * wheelHeightM) - center;
+	b2Vec2 center = b2Vec2(0.5 * mWheelWidthM, 0.5 * mWheelHeightM);
+	mPolygon[0] = b2Vec2(0.2 * mWheelWidthM, mWheelHeightM) - center;
+	mPolygon[1] = b2Vec2(0.8 * mWheelWidthM, mWheelHeightM) - center;
+	mPolygon[2] = b2Vec2(mWheelWidthM, 0.6 * mWheelHeightM) - center;
+	mPolygon[3] = b2Vec2(mWheelWidthM, 0.4 * mWheelHeightM) - center;
+	mPolygon[4] = b2Vec2(0.8 * mWheelWidthM, 0.0) - center;
+	mPolygon[5] = b2Vec2(0.2 * mWheelWidthM, 0.0) - center;
+	mPolygon[6] = b2Vec2(0.0, 0.4 * mWheelHeightM) - center;
+	mPolygon[7] = b2Vec2(0.0, 0.6 * mWheelHeightM) - center;
 
 	polygonShape.Set(mPolygon, 8);
 	fixtureDef.shape = &polygonShape;
 	fixtureDef.density = engine->computeDensity(
 			QPolygonF(QRectF(0, 0, twoDModel::robotWheelDiameterInPx / 2, twoDModel::robotWheelDiameterInPx))
-			, wheelMass);
+			, mWheelMass);
 
-	mBody->CreateFixture( &fixtureDef );
+	mBody->CreateFixture(&fixtureDef);
 
 	mBody->SetUserData(this);
 
@@ -80,42 +80,39 @@ Box2DWheel::~Box2DWheel() {
 }
 
 b2Vec2 Box2DWheel::getLateralVelocity() const {
-	b2Vec2 currentRightNormal = mBody->GetWorldVector( b2Vec2(0, 1) );
-	return b2Dot( currentRightNormal, mBody->GetLinearVelocity() ) * currentRightNormal;
+	b2Vec2 currentRightNormal = mBody->GetWorldVector(b2Vec2(0, 1));
+	return b2Dot(currentRightNormal, mBody->GetLinearVelocity()) * currentRightNormal;
 }
 
 b2Vec2 Box2DWheel::getForwardVelocity() const {
-	b2Vec2 currentForwardNormal = mBody->GetWorldVector( b2Vec2(1, 0) );
-	return b2Dot( currentForwardNormal, mBody->GetLinearVelocity() ) * currentForwardNormal;
+	b2Vec2 currentForwardNormal = mBody->GetWorldVector(b2Vec2(1, 0));
+	return b2Dot(currentForwardNormal, mBody->GetLinearVelocity()) * currentForwardNormal;
 }
 
 void Box2DWheel::keepConstantSpeed(float speed) {
 	const int acceleration = 20;
-
 	if (!mathUtils::Math::eq(prevSpeed, speed)){
 		mRobot.applyForceToCenter(mBody->GetWorldVector(b2Vec2(0.1f * mathUtils::Math::sign(speed), 0)), true);
 		prevSpeed = speed;
 	}
 
+	// clears lateral velocity
 	b2Vec2 lateralImpulse = mBody->GetMass() * -getLateralVelocity();
-	mBody->ApplyLinearImpulse(lateralImpulse, mBody->GetWorldCenter(), true );
+	mBody->ApplyLinearImpulse(lateralImpulse, mBody->GetWorldCenter(), true);
 
-	b2Vec2 forwardNormal = getForwardVelocity();
-	float scalar = b2Dot(forwardNormal, mBody->GetWorldVector(b2Vec2(1, 0))) < 0 ? -1 : 1;
-	float currentForwardSpeed = forwardNormal.Normalize() * scalar;
-	forwardNormal = mBody->GetWorldVector(b2Vec2(1, 0));
+	b2Vec2 forwardVelocity = getForwardVelocity();
+	float scalar = b2Dot(forwardVelocity, mBody->GetWorldVector(b2Vec2(1, 0))) < 0 ? -1 : 1;
+	float currentForwardSpeed = forwardVelocity.Normalize() * scalar;
 
-	float desiredSpeed = currentForwardSpeed;
-	float speedPiece = fabs(speed) / acceleration;
-	if (currentForwardSpeed < speed) {
-		desiredSpeed += speedPiece;
-	} else if (currentForwardSpeed > speed) {
-		desiredSpeed -= speedPiece;
-	} else {
+	if (mathUtils::Math::eq(currentForwardSpeed, speed)) {
 		return;
 	}
 
+	float speedDelta = fabs(speed) / acceleration * (currentForwardSpeed < speed ? 1 : -1);
+	float desiredSpeed = currentForwardSpeed + speedDelta;
+
 	float speedDiff = desiredSpeed - currentForwardSpeed;
+	b2Vec2 forwardNormal = mBody->GetWorldVector(b2Vec2(1, 0));
 	b2Vec2 linearImpulse = speedDiff * mBody->GetMass() * forwardNormal;
 	mBody->ApplyLinearImpulse(linearImpulse, mBody->GetWorldCenter(), true);
 }

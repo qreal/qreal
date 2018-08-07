@@ -108,57 +108,96 @@ bool Box2DRobot::isStopping()
 	return mIsStopping;
 }
 
-void Box2DRobot::addSensor(twoDModel::view::SensorItem *sensor)
+void Box2DRobot::addSensor(const twoDModel::view::SensorItem &sensor)
 {
-	QPolygonF collidingPolygon = sensor->collidingPolygon();
+	// orientation and direction will be set by reinitSensor() method
+	mSensors[&sensor] = new Box2DItem(mEngine, sensor, {0, 0}, 0);
+	reinitSensor(sensor);
+}
+
+void Box2DRobot::removeSensor(const twoDModel::view::SensorItem &sensor)
+{
+	mWorld.DestroyJoint(mSensors[&sensor]->getBody()->GetJointList()->joint);
+	delete mSensors[&sensor];
+	mSensors.remove(&sensor);
+}
+
+void Box2DRobot::moveToPoint(const b2Vec2 &destination)
+{
+	// it is just a parallel transport, there is no need to reinit joints and etc
+	const b2Vec2 oldPosition = mBody->GetPosition();
+	if (oldPosition == destination) {
+		return;
+	}
+
+	mBody->SetTransform(destination, mBody->GetAngle());
+	const b2Vec2 shift = destination - oldPosition;
+
+	for (auto wheel : mWheels) {
+		b2Body *wheelBody = wheel->getBody();
+		wheelBody->SetTransform(wheelBody->GetPosition() + shift, mBody->GetAngle());
+	}
+
+	for (auto sensor: mSensors) {
+		b2Body *sensorBody = sensor->getBody();
+		sensorBody->SetTransform(sensorBody->GetPosition() + shift, sensorBody->GetAngle());
+	}
+}
+
+void Box2DRobot::setRotation(float angle)
+{
+	mBody->SetTransform(mBody->GetPosition(), angle);
+
+	for (auto wheel : mWheels) {
+		b2Body *wheelBody = wheel->getBody();
+		wheelBody->SetTransform(wheelBody->GetJointList()->joint->GetAnchorB(), angle);
+	}
+
+	reinitSensors();
+}
+
+void Box2DRobot::reinitSensor(const twoDModel::view::SensorItem &sensor)
+{
+	// box2d doesn't rotate or shift elements, which connected to main robot body via joints in case
+	// when we manually use method SetTransform.
+	// So we need to handle elements such as sensors by hand.
+	// We use this method in case when user shift or rotate sensor(s).
+
+	auto box2dSensor = mSensors[&sensor];
+	box2dSensor->getBody()->SetLinearVelocity({0, 0});
+	box2dSensor->getBody()->SetAngularVelocity(0);
+	if (const b2JointEdge *jointList = box2dSensor->getBody()->GetJointList()) {
+		auto joint = jointList->joint;
+		mJoints.removeAll(joint);
+		mWorld.DestroyJoint(joint);
+	}
+
+	QPolygonF collidingPolygon = sensor.collidingPolygon();
 	QPointF localCenter = collidingPolygon.boundingRect().center();
-	b2Vec2 pos = mEngine->positionToBox2D(mModel->position() + sensor->pos() - localCenter);
-	float32 angle = mEngine->angleToBox2D(sensor->rotation());
-	mSensors[sensor] = new Box2DItem(mEngine, *sensor, pos, angle);
-	reinit();
+
+	QPointF deltaToCenter = mModel->rotationCenter() - mModel->position();
+	QPointF localPos = sensor.pos() - deltaToCenter;
+	QTransform transform;
+	QPointF dif = mModel->rotationCenter();
+	transform.translate(-dif.x(), -dif.y());
+	transform.rotate(mModel->rotation());
+	localPos = transform.map(localPos);
+	transform.reset();
+	transform.translate(dif.x(), dif.y());
+	localPos = transform.map(localPos);
+
+	const b2Vec2 pos = mEngine->positionToBox2D(localPos - localCenter + mModel->rotationCenter());
+	// IMPORTANT: we connect every sensors with box2d circle item.
+	// So rotation of sensor doesn't matter, we set rotation corresponding to robot.
+	// if in future it will be changed, you'll see some strange behavior, because of joints. See connectSensor method.
+	mSensors[&sensor]->getBody()->SetTransform(pos, mBody->GetAngle());
+	connectSensor(*mSensors[&sensor]);
 }
 
-void Box2DRobot::removeSensor(twoDModel::view::SensorItem *sensor)
+void Box2DRobot::reinitSensors()
 {
-	delete mSensors[sensor];
-	mSensors.remove(sensor);
-	reinit();
-}
-
-void Box2DRobot::reinit()
-{
-	mBody->SetActive(false);
-	for (auto wheel : mWheels) {
-		wheel->getBody()->SetActive(false);
-	}
-
-	for (auto sensor : mSensors) {
-		sensor->getBody()->SetActive(false);
-	}
-
-	mJoints.clear();
-	for (auto i = mBody->GetJointList(); i; i = i->next) {
-		mWorld.DestroyJoint(i->joint);
-	}
-
-	for (auto wheel : mWheels) {
-		connectWheel(*wheel);
-	}
-
-	for (twoDModel::view::SensorItem *sensor : mSensors.keys()) {
-		const b2Vec2 pos = mEngine->positionToBox2D(
-				mModel->position() + sensor->pos() - sensor->collidingPolygon().boundingRect().center());
-		mSensors[sensor]->moveToPosition(pos);
-		connectSensor(*mSensors[sensor]);
-	}
-
-	mBody->SetActive(true);
-	for (auto wheel : mWheels) {
-		wheel->getBody()->SetActive(true);
-	}
-
-	for (auto sensor : mSensors) {
-		sensor->getBody()->SetActive(true);
+	for (const twoDModel::view::SensorItem *sensor : mSensors.keys()) {
+		reinitSensor(*sensor);
 	}
 }
 
@@ -187,7 +226,7 @@ const QPolygonF &Box2DRobot::getDebuggingPolygon() const
 	return mDebuggingDrawPolygon;
 }
 
-const QMap<twoDModel::view::SensorItem *, Box2DItem *> &Box2DRobot::getSensors() const
+const QMap<const twoDModel::view::SensorItem *, Box2DItem *> &Box2DRobot::getSensors() const
 {
 	return mSensors;
 }
@@ -204,8 +243,8 @@ void Box2DRobot::connectWheels() {
 
 	Box2DWheel *leftWheel = new Box2DWheel(mEngine, posLeftWheel, mBody->GetAngle(), *this);
 	Box2DWheel *rightWheel = new Box2DWheel(mEngine, posRightWheel, mBody->GetAngle(), *this);
-	mWheels.push_back(leftWheel);
-	mWheels.push_back(rightWheel);
+	mWheels.append(leftWheel);
+	mWheels.append(rightWheel);
 	connectWheel(*leftWheel);
 	connectWheel(*rightWheel);
 }
@@ -225,7 +264,7 @@ void Box2DRobot::connectWheel(Box2DWheel &wheel){
 	revDef.upperAngle = 0;
 
 	b2Joint *joint = mWorld.CreateJoint(&revDef);
-	mJoints.push_back(joint);
+	mJoints.append(joint);
 }
 
 void Box2DRobot::connectSensor(const Box2DItem &sensor)
@@ -233,7 +272,8 @@ void Box2DRobot::connectSensor(const Box2DItem &sensor)
 	b2WeldJointDef jointDef;
 	jointDef.bodyA = mBody;
 	jointDef.bodyB = sensor.getBody();
-	jointDef.referenceAngle = sensor.getBody()->GetAngle() - mBody->GetAngle();
+
+	jointDef.referenceAngle = 0;
 	jointDef.dampingRatio = 1;
 
 	jointDef.localAnchorA = mBody->GetLocalCenter();

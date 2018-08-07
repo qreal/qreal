@@ -20,11 +20,9 @@ using namespace twoDModel::model::physics;
 using namespace twoDModel::items;
 using namespace parts;
 
-#include <QDebug>
 Box2DItem::Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *engine
-		, twoDModel::items::SolidItem &item, const b2Vec2 &pos, float angle)
+		, const SolidItem &item, const b2Vec2 &pos, float angle)
 	: mIsCircle(false)
-	, mItem(item)
 	, mEngine(*engine)
 {
 	b2BodyDef bodyDef;

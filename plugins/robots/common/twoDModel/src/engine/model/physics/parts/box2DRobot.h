@@ -48,9 +48,14 @@ public:
 	void finishStopping();
 	bool isStopping();
 
-	void addSensor(twoDModel::view::SensorItem *sensor);
-	void removeSensor(twoDModel::view::SensorItem *sensor);
-	void reinit();
+	void addSensor(const view::SensorItem &sensor);
+	void removeSensor(const view::SensorItem &sensor);
+
+	void moveToPoint(const b2Vec2 &destination);
+	void setRotation(float angle);
+
+	void reinitSensor(const view::SensorItem &sensor);
+	void reinitSensors();
 
 	void applyForceToCenter(const b2Vec2 &force, bool wake);
 
@@ -60,7 +65,7 @@ public:
 
 	// For debugging purpose
 	const QPolygonF & getDebuggingPolygon() const;
-	const QMap<twoDModel::view::SensorItem *, parts::Box2DItem *> &getSensors() const;
+	const QMap<const view::SensorItem *, Box2DItem *> &getSensors() const;
 
 private:
 	void connectWheels();
@@ -70,7 +75,7 @@ private:
 	b2Body *mBody; // Takes ownership
 	QList<Box2DWheel *> mWheels; // Takes ownership
 	QList<b2Joint *> mJoints; // Takes ownership
-	QMap<twoDModel::view::SensorItem *, parts::Box2DItem *> mSensors;  // Takes ownership on b2Sensor instances
+	QMap<const twoDModel::view::SensorItem *, parts::Box2DItem *> mSensors;  // Takes ownership on b2Sensor instances
 	twoDModel::model::RobotModel * const mModel; // Doesn't take ownership
 	twoDModel::model::physics::Box2DPhysicsEngine *mEngine; // Doesn't take ownership
 	b2World &mWorld; // Doesn't take ownership
