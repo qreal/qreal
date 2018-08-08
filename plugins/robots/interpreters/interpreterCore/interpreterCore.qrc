@@ -14,9 +14,9 @@
         <file>icons/robots_run.svg</file>
         <file>icons/robots_connect.svg</file>
         <file>icons/robots_settings.png</file>
-		<file>icons/2d_wall.png</file>
-		<file>icons/2d_can.svg</file>
-		<file>icons/2d_ball.svg</file>
+        <file>icons/2d_wall.png</file>
+        <file>icons/2d_can.svg</file>
+        <file>icons/2d_ball.svg</file>
         <file>icons/2d_hand.png</file>
         <file>icons/2d_multiselection.png</file>
         <file>icons/2d_open.png</file>
@@ -54,8 +54,8 @@
         <file>icons/2d_drawLineCursor.png</file>
         <file>icons/2d_drawStylusCursor.png</file>
         <file>icons/2d_drawWallCursor.png</file>
-		<file>icons/2d_drawCanCursor.png</file>
-		<file>icons/2d_drawBallCursor.png</file>
+        <file>icons/2d_drawCanCursor.png</file>
+        <file>icons/2d_drawBallCursor.png</file>
         <file>icons/2d-model.svg</file>
         <file>icons/switch-2d.svg</file>
         <file>icons/switch-real-nxt.svg</file>
