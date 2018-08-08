@@ -158,10 +158,10 @@ void Box2DRobot::setRotation(float angle)
 
 void Box2DRobot::reinitSensor(const twoDModel::view::SensorItem &sensor)
 {
-	// box2d doesn't rotate or shift elements, which connected to main robot body via joints in case
+	// box2d doesn't rotate or shift elements, which are connected to main robot body via joints in case
 	// when we manually use method SetTransform.
 	// So we need to handle elements such as sensors by hand.
-	// We use this method in case when user shift or rotate sensor(s).
+	// We use this method in case when user shifts or rotates sensor(s).
 
 	auto box2dSensor = mSensors[&sensor];
 	box2dSensor->getBody()->SetLinearVelocity({0, 0});

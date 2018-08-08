@@ -225,7 +225,7 @@ void Box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
 	stop(mBox2DRobots.first()->getWheelAt(0)->getBody());
 	stop(mBox2DRobots.first()->getWheelAt(1)->getBody());
 
-	onMouseReleased(pos, angleToScene(mBox2DRobots.keys().first()->startPositionMarker()->rotation()));
+	onMouseReleased(pos, mBox2DRobots.keys().first()->startPositionMarker()->rotation());
 }
 
 void Box2DPhysicsEngine::removeRobot(model::RobotModel * const robot)
