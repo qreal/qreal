@@ -15,13 +15,13 @@
 #include "box2DWheel.h"
 
 #include <qrutils/mathUtils/math.h>
-#include "twoDModel/engine/model/constants.h"
-#include "box2DRobot.h"
-
 #include <Box2D/Dynamics/b2Body.h>
 #include <Box2D/Dynamics/b2World.h>
 #include <Box2D/Dynamics/b2Fixture.h>
 #include <Box2D/Collision/Shapes/b2PolygonShape.h>
+
+#include "twoDModel/engine/model/constants.h"
+#include "box2DRobot.h"
 
 using namespace twoDModel::model::physics::parts;
 

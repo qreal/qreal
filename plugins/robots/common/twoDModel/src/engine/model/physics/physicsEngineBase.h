@@ -20,11 +20,6 @@
 #include "twoDModel/engine/model/robotModel.h"
 
 namespace twoDModel {
-
-namespace items {
-class SolidItem;
-}
-
 namespace model {
 
 class WorldModel;

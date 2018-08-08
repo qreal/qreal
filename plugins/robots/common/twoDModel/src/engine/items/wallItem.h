@@ -67,7 +67,6 @@ public:
 	void setDraggedEnd(qreal x, qreal y);
 	void alignTheWall(int indexGrid);
 
-
 	QPolygonF collidingPolygon() const override;
 	qreal mass() const override;
 	qreal friction() const override;

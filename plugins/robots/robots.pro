@@ -24,7 +24,6 @@ SUBDIRS = \
 	checker \
 	thirdparty \
 
-
 utils.depends = thirdparty
 common.depends = thirdparty utils
 interpreters.depends = common thirdparty utils

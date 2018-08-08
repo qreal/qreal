@@ -14,7 +14,6 @@
 #include "box2DRobot.h"
 
 #include <Box2D/Box2D.h>
-#include <QDebug>
 
 #include "src/engine/model/physics/box2DPhysicsEngine.h"
 #include "src/engine/view/scene/sonarSensorItem.h"

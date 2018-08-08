@@ -39,7 +39,6 @@ class AbstractItem;
 namespace twoDModel {
 
 namespace items {
-class SolidItem;
 class WallItem;
 class SkittleItem;
 class BallItem;
@@ -179,6 +178,8 @@ private slots:
 
 	/// Called after new image item is added to a world model.
 	void onImageItemAdded(graphicsUtils::AbstractItem *item);
+
+	void onAbstractItemAdded(graphicsUtils::AbstractItem *item);
 
 	/// Called after some item was kicked away from a world model.
 	void onItemRemoved(QGraphicsItem *item);

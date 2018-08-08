@@ -739,7 +739,6 @@ void WorldModel::createBall(const QDomElement &element)
 	addBall(ball);
 }
 
-
 void WorldModel::createLine(const QDomElement &element)
 {
 	items::LineItem *lineItem = new items::LineItem(QPointF(), QPointF());
@@ -827,7 +826,7 @@ void WorldModel::removeItem(const QString &id)
 		removeSkittle(skittleItem);
 	} else if (auto ballItem = dynamic_cast<items::BallItem *>(item)) {
 		removeBall(ballItem);
-	} else if (items::ImageItem *image = dynamic_cast<items::ImageItem *>(item)) {
+	} else if (auto image = dynamic_cast<items::ImageItem *>(item)) {
 		removeImageItem(image);
 	}
 }

@@ -112,5 +112,5 @@ b2Body *Box2DItem::getBody() const
 bool Box2DItem::angleOrPositionChanged() const
 {
 	return b2Distance(mPreviousPosition, mBody->GetPosition()) > b2_epsilon
-			|| mPreviousRotation - mBody->GetAngle() > b2_epsilon;
+			|| fabs(mPreviousRotation - mBody->GetAngle()) > b2_epsilon;
 }

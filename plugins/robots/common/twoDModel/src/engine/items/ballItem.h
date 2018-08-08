@@ -14,8 +14,9 @@
 
 #pragma once
 
-#include "src/engine/items/solidItem.h"
 #include <qrutils/graphicsUtils/abstractItem.h>
+
+#include "src/engine/items/solidItem.h"
 
 class QSvgRenderer;
 

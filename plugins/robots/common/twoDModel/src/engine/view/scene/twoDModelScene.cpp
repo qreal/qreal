@@ -192,26 +192,19 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
 	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
-	connect(wall, &items::WallItem::wallDragged
-			, this, [ this ](){ handleMouseInteractionWithSelectedItems(); });
+	connect(wall, &items::WallItem::wallDragged, this, [this](){ handleMouseInteractionWithSelectedItems(); });
 }
 
 void TwoDModelScene::onSkittleAdded(items::SkittleItem *skittle)
 {
-	addItem(skittle);
-	subscribeItem(skittle);
-	connect(skittle, &items::SkittleItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
-	skittle->setEditable(!mWorldReadOnly);
+	onAbstractItemAdded(skittle);
 	connect(skittle, &items::SkittleItem::mouseInteractionStopped
 			, this, &TwoDModelScene::handleMouseInteractionWithSelectedItems);
 }
 
 void TwoDModelScene::onBallAdded(items::BallItem *ball)
 {
-	addItem(ball);
-	subscribeItem(ball);
-	connect(ball, &items::BallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
-	ball->setEditable(!mWorldReadOnly);
+	onAbstractItemAdded(ball);
 	connect(ball, &items::BallItem::mouseInteractionStopped
 			, this, &TwoDModelScene::handleMouseInteractionWithSelectedItems);
 }
@@ -229,13 +222,15 @@ void TwoDModelScene::handleMouseInteractionWithSelectedItems()
 
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
-	addItem(item);
-	subscribeItem(item);
-	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
-	item->setEditable(!mWorldReadOnly);
+	onAbstractItemAdded(item);
 }
 
 void TwoDModelScene::onImageItemAdded(graphicsUtils::AbstractItem *item)
+{
+	onAbstractItemAdded(item);
+}
+
+void TwoDModelScene::onAbstractItemAdded(AbstractItem *item)
 {
 	addItem(item);
 	subscribeItem(item);

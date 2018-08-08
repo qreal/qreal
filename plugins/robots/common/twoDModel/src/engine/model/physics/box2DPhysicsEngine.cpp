@@ -133,8 +133,6 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 
 		connect(mScene->robot(*robot), &view::RobotItem::mouseInteractionStarted
 				, this, &Box2DPhysicsEngine::onMousePressed);
-//		connect(mScene->robot(*robot), &view::RobotItem::mouseInteractionStopped
-//				, this, &Box2DPhysicsEngine::onMouseReleased);
 
 		connect(mScene->robot(*robot), &view::RobotItem::recoverRobotPosition
 				, this, &Box2DPhysicsEngine::onRecoverRobotPosition);

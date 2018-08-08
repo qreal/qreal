@@ -44,7 +44,7 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	, mSettings(settings)
 	, mRobotModel(robotModel)
 	, mSensorsConfiguration(robotModel.robotId(), robotModel.size())
-	, mPos(QPointF(0,0))
+	, mPos(QPointF(0, 0))
 	, mAngle(0)
 	, mDeltaRadiansOfAngle(0)
 	, mBeepTime(0)
