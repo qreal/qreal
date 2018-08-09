@@ -42,7 +42,8 @@ using namespace kitBase::robotModel;
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mDisplayWidget(new NxtDisplayWidget())
-	, mCollidingPolygon({QPointF(10, 10), QPointF(42, 10), QPointF(45, 20), QPointF(45, 30), QPointF(42, 40), QPointF(10, 40)})
+	, mCollidingPolygon({QPointF(10, 10), QPointF(42, 10), QPointF(45, 20)
+			, QPointF(45, 30), QPointF(42, 40), QPointF(10, 40)})
 {
 }
 

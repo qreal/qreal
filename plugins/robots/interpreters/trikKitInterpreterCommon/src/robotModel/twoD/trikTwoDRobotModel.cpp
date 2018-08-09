@@ -51,7 +51,8 @@ TrikTwoDRobotModel::TrikTwoDRobotModel(RobotModelInterface &realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
-	, mCollidingPolygon({QPointF(1, 10), QPointF(47, 10), QPointF(49, 20), QPointF(49, 30), QPointF(47, 40), QPointF(1, 40)})
+	, mCollidingPolygon({QPointF(1, 10), QPointF(47, 10), QPointF(49, 20)
+			, QPointF(49, 30), QPointF(47, 40), QPointF(1, 40)})
 {
 	/// @todo: One day we will support gamepad in 2D model and there will be piece.
 	/// But till that day gamepad ports must be killed cause they spam logs.
