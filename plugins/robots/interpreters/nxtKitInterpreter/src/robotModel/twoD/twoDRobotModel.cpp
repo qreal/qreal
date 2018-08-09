@@ -42,6 +42,7 @@ using namespace kitBase::robotModel;
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mDisplayWidget(new NxtDisplayWidget())
+	, mCollidingPolygon({QPointF(10, 10), QPointF(42, 10), QPointF(45, 20), QPointF(45, 30), QPointF(42, 40), QPointF(10, 40)})
 {
 }
 
@@ -110,10 +111,7 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 
 QPolygonF TwoDRobotModel::collidingPolygon() const
 {
-	QPolygonF res;
-	res << QPointF(10, 10) << QPointF(42, 10) << QPointF(45, 20)
-			<< QPointF(45, 30) << QPointF(42, 40) << QPointF(10, 40);
-	return res;
+	return mCollidingPolygon;
 }
 
 qreal TwoDRobotModel::mass() const

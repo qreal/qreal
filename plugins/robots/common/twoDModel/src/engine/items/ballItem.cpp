@@ -24,7 +24,6 @@ using namespace twoDModel::items;
 
 BallItem::BallItem(const QPointF &position)
 	: SolidItem()
-	, mStartPosition(QPointF())
 	, mStartRotation(0.0f)
 	, mSvgRenderer(new QSvgRenderer)
 {
@@ -106,9 +105,7 @@ void BallItem::returnToStartPosition()
 
 QPolygonF BallItem::collidingPolygon() const
 {
-	QRectF rect = {{0, 0}, ballSize - QSize(1, 1)};
-	rect.moveTo(scenePos());
-	return QPolygonF(rect);
+	return QPolygonF(QRectF(scenePos(), ballSize - QSize(1, 1)));
 }
 
 qreal BallItem::angularDamping() const

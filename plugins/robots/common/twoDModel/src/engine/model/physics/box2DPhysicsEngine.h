@@ -1,4 +1,4 @@
-/* Copyright 2017 Dmitry Mordvinov, Gleb Zakharov
+/* Copyright 2017-2018 Dmitry Mordvinov, Gleb Zakharov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,26 +45,27 @@ namespace twoDModel {
 class Box2DPhysicsEngine : public PhysicsEngineBase
 {
 public:
-	Box2DPhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots);
+	Box2DPhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> &robots);
 	~Box2DPhysicsEngine();
 	QVector2D positionShift(RobotModel &robot) const override;
 	qreal rotation(RobotModel &robot) const override;
 	void addRobot(RobotModel * const robot) override;
-	void addRobot(RobotModel * const robot, QPointF pos, qreal angle);
+	void addRobot(RobotModel * const robot, const QPointF &pos, qreal angle);
 	void removeRobot(RobotModel * const robot) override;
 	void recalculateParameters(qreal timeInterval) override;
 	void wakeUp() override;
 	void nextFrame() override;
 	void clearForcesAndStop() override;
+	bool isRobotStuck() const override;
 
 	float pxToCm(qreal px) const;
-	b2Vec2 pxToCm(const QPointF posInPx) const;
+	b2Vec2 pxToCm(const QPointF &posInPx) const;
 	qreal cmToPx(float cm) const;
 	QPointF cmToPx(const b2Vec2 posInCm) const;
 	float32 pxToM(qreal px) const;
 	qreal mToPx(float32 m) const;
 
-	b2Vec2 positionToBox2D(QPointF sceneCoords) const;
+	b2Vec2 positionToBox2D(const QPointF &sceneCoords) const;
 	b2Vec2 positionToBox2D(float32 x, float32 y) const;
 	QPointF positionToScene(b2Vec2 boxCoords) const;
 	QPointF positionToScene(float32 x, float32 y) const;
@@ -79,9 +80,9 @@ public slots:
 	void onItemDragged(graphicsUtils::AbstractItem *item);
 	void onRobotStartPositionChanged(const QPointF &newPos, twoDModel::model::RobotModel *robot);
 	void onRobotStartAngleChanged(const qreal newAngle, twoDModel::model::RobotModel *robot);
-	void onMouseReleased(QPointF newPos, qreal newAngle);
+	void onMouseReleased(const QPointF &newPos, qreal newAngle);
 	void onMousePressed();
-	void onRecoverRobotPosition(QPointF pos);
+	void onRecoverRobotPosition(const QPointF &pos);
 
 protected:
 	void onPixelsInCmChanged(qreal value) override;
@@ -93,7 +94,7 @@ private:
 
 	bool itemTracked(QGraphicsItem * const item);
 
-	twoDModel::view::TwoDModelScene *mScene;
+	twoDModel::view::TwoDModelScene *mScene; // Doesn't take ownership
 	qreal mPixelsInCm;
 	QScopedPointer<b2World> mWorld;
 
@@ -106,10 +107,6 @@ private:
 
 	b2Vec2 mPrevPosition;
 	float32 mPrevAngle;
-
-	QGraphicsRectItem *mDebugRobotItem;
-	QGraphicsRectItem *mDebugWheel1Item;
-	QGraphicsRectItem *myDebugWheel2Item;
 };
 
 }

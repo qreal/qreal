@@ -27,7 +27,7 @@ using namespace twoDModel::model;
 using namespace physics;
 using namespace mathUtils;
 
-SimplePhysicsEngine::SimplePhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> robots)
+SimplePhysicsEngine::SimplePhysicsEngine(const WorldModel &worldModel, const QList<RobotModel *> &robots)
 	: PhysicsEngineBase(worldModel, robots)
 {
 }
@@ -49,16 +49,23 @@ void SimplePhysicsEngine::recalculateParameters(qreal timeInterval)
 	}
 }
 
+bool SimplePhysicsEngine::isRobotStuck() const
+{
+	return mStuck;
+}
+
 void SimplePhysicsEngine::recalculateParameters(qreal timeInterval, RobotModel &robot)
 {
 	if (mWorldModel.checkCollision(robot.robotBoundingPath())) {
 		mPositionShift[&robot] = -mPositionShift[&robot];
 		mRotation[&robot] = -mRotation[&robot];
+		mStuck = true;
 		return;
 	}
 
 	mPositionShift[&robot] = QVector2D();
 	mRotation[&robot] = 0.0;
+	mStuck = false;
 
 	const qreal speed1 = wheelLinearSpeed(robot, robot.leftWheel());
 	const qreal speed2 = wheelLinearSpeed(robot, robot.rightWheel());

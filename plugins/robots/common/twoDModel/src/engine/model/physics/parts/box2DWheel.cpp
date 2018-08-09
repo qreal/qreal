@@ -1,4 +1,4 @@
-/* Copyright 2017 Dmitry Mordvinov, Gleb Zakharov
+/* Copyright 2017-2018 Dmitry Mordvinov, Gleb Zakharov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License. */
+
+// For best understanding see http://www.iforce2d.net/b2dtut/top-down-car
 
 #include "box2DWheel.h"
 
@@ -38,7 +40,7 @@ Box2DWheel::Box2DWheel(Box2DPhysicsEngine *engine
 	bodyDef.type = b2_dynamicBody;
 	bodyDef.position = positionBox2D;
 	bodyDef.angle = rotationBox2D;
-	mBody = engine->box2DWorld().CreateBody( &bodyDef );
+	mBody = engine->box2DWorld().CreateBody(&bodyDef);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.restitution = 0.5;
@@ -91,7 +93,7 @@ b2Vec2 Box2DWheel::getForwardVelocity() const {
 
 void Box2DWheel::keepConstantSpeed(float speed) {
 	const int acceleration = 20;
-	if (!mathUtils::Math::eq(prevSpeed, speed)){
+	if (qAbs(prevSpeed - speed) > b2_epsilon){
 		mRobot.applyForceToCenter(mBody->GetWorldVector(b2Vec2(0.1f * mathUtils::Math::sign(speed), 0)), true);
 		prevSpeed = speed;
 	}
@@ -108,7 +110,7 @@ void Box2DWheel::keepConstantSpeed(float speed) {
 		return;
 	}
 
-	float speedDelta = fabs(speed) / acceleration * (currentForwardSpeed < speed ? 1 : -1);
+	float speedDelta = qAbs(speed) / acceleration * (currentForwardSpeed < speed ? 1 : -1);
 	float desiredSpeed = currentForwardSpeed + speedDelta;
 
 	float speedDiff = desiredSpeed - currentForwardSpeed;

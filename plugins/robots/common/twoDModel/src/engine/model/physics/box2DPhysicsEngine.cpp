@@ -1,4 +1,4 @@
-/* Copyright 2017 Dmitry Mordvinov, Gleb Zakharov
+/* Copyright 2017-2018 Dmitry Mordvinov, Gleb Zakharov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * limitations under the License. */
 #include "box2DPhysicsEngine.h"
 
-#include <QDebug>
 #include <Box2D/Box2D.h>
 
 #include <qrutils/graphicsUtils/abstractItem.h>
@@ -47,7 +46,7 @@ using namespace mathUtils;
 const qreal scaleCoeff = 0.001;
 
 Box2DPhysicsEngine::Box2DPhysicsEngine (const WorldModel &worldModel
-		, const QList<RobotModel *> robots)
+		, const QList<RobotModel *> &robots)
 	: PhysicsEngineBase(worldModel, robots)
 	, mPixelsInCm(worldModel.pixelsInCm() * scaleCoeff)
 	, mWorld(new b2World(b2Vec2(0, 0)))
@@ -160,7 +159,7 @@ void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot)
 	});
 }
 
-void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot, QPointF pos, qreal angle)
+void Box2DPhysicsEngine::addRobot(model::RobotModel * const robot, const QPointF &pos, qreal angle)
 {
 	if (mBox2DRobots.contains(robot)) {
 		delete mBox2DRobots[robot];
@@ -190,7 +189,7 @@ void Box2DPhysicsEngine::onRobotStartAngleChanged(const qreal newAngle, model::R
 	mBox2DRobots[robot]->setRotation(angleToBox2D(newAngle));
 }
 
-void Box2DPhysicsEngine::onMouseReleased(QPointF newPos, qreal newAngle)
+void Box2DPhysicsEngine::onMouseReleased(const QPointF &newPos, qreal newAngle)
 {
 	Box2DRobot *robot = mBox2DRobots.first();
 
@@ -210,7 +209,7 @@ void Box2DPhysicsEngine::onMousePressed()
 	onPressedReleasedSelectedItems(false);
 }
 
-void Box2DPhysicsEngine::onRecoverRobotPosition(QPointF pos)
+void Box2DPhysicsEngine::onRecoverRobotPosition(const QPointF &pos)
 {
 	clearForcesAndStop();
 
@@ -360,6 +359,11 @@ void Box2DPhysicsEngine::clearForcesAndStop()
 	}
 }
 
+bool Box2DPhysicsEngine::isRobotStuck() const
+{
+	return false;
+}
+
 void Box2DPhysicsEngine::onPixelsInCmChanged(qreal value)
 {
 	mPixelsInCm = value * scaleCoeff;
@@ -451,7 +455,7 @@ float32 Box2DPhysicsEngine::pxToCm(qreal px) const
 	return static_cast<float32>(px / mPixelsInCm);
 }
 
-b2Vec2 Box2DPhysicsEngine::pxToCm(const QPointF posInPx) const
+b2Vec2 Box2DPhysicsEngine::pxToCm(const QPointF &posInPx) const
 {
 	return b2Vec2(pxToCm(posInPx.x()), pxToCm(posInPx.y()));
 }
@@ -466,7 +470,7 @@ QPointF Box2DPhysicsEngine::cmToPx(const b2Vec2 posInCm) const
 	return QPointF(cmToPx(posInCm.x), cmToPx(posInCm.y));
 }
 
-b2Vec2 Box2DPhysicsEngine::positionToBox2D(QPointF sceneCoords) const
+b2Vec2 Box2DPhysicsEngine::positionToBox2D(const QPointF &sceneCoords) const
 {
 	return positionToBox2D(sceneCoords.x(), sceneCoords.y());
 }

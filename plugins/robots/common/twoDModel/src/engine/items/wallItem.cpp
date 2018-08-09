@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -344,7 +344,7 @@ void WallItem::alignTheWall(int indexGrid)
 
 QPolygonF WallItem::collidingPolygon() const
 {
-	QPolygonF polygon = mPath.toFillPolygon();
+	const QPolygonF polygon = mPath.toFillPolygon();
 	// here we have "one point" wall
 	if (polygon.isEmpty()) {
 		auto offset = QPointF(wallWidth, wallWidth);
@@ -376,7 +376,7 @@ QPolygonF WallItem::collidingPolygon() const
 				<< dcIntersection.first() << adIntersection.first();
 	}
 
-	//else we have the same polygon as abcdBoundingRect
+	// else we have the same polygon as abcdBoundingRect
 	return abcdBoundingRect;
 }
 

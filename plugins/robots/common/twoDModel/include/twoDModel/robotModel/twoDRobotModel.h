@@ -82,7 +82,7 @@ public:
 	/// By default returns center of robot`s rectangle.
 	virtual QPointF rotationCenter() const;
 
-	/// Returns a point(pixels) list of wheels coordinates on robot.
+	/// Returns a point (pixels) list of wheels coordinates on robot.
 	virtual QList<QPointF> wheelsPosition() const = 0;
 
 	/// Returns an average number of degrees that motor rotates per one second on power 1.

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class PhysicsEngineBase : public QObject
 	Q_OBJECT
 
 public:
-	explicit PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> robots);
+	PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> &robots);
 	virtual ~PhysicsEngineBase();
 
 	/// Returns item`s position delta after last recalculation.
@@ -51,6 +51,9 @@ public:
 
 	/// Recalculates all solid items positions and angles.
 	virtual void recalculateParameters(qreal timeInterval) = 0;
+
+	/// A hacky method to understand when robot in simple physics mode got stuck in the wall.
+	virtual bool isRobotStuck() const = 0;
 
 	/// Reinitialize physics engine, e.g. changing of engines requires some update.
 	virtual void wakeUp();

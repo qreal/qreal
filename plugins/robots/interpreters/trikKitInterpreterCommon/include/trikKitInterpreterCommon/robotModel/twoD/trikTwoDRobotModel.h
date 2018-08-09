@@ -79,6 +79,7 @@ private:
 	QString mRightWheelPort;
 	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;
 	qReal::ErrorReporterInterface *mErrorReporter;
+	QPolygonF mCollidingPolygon;
 };
 
 }

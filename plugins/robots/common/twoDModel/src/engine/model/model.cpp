@@ -244,19 +244,12 @@ void Model::setConstraintsEnabled(bool enabled)
 
 void Model::resetPhysics()
 {
-	if (mSettings.realisticPhysics()) {
-		for (RobotModel * const robot : mRobotModels) {
-			robot->setPhysicalEngine(*mRealisticPhysicsEngine);
-		}
-
-		mRealisticPhysicsEngine->wakeUp();
-	} else if (!mSettings.realisticPhysics()) {
-		for (RobotModel * const robot : mRobotModels) {
-			robot->setPhysicalEngine(*mSimplePhysicsEngine);
-		}
-
-		mSimplePhysicsEngine->wakeUp();
+	auto engine = mSettings.realisticPhysics() ? mRealisticPhysicsEngine : mSimplePhysicsEngine;
+	for (RobotModel * const robot : mRobotModels) {
+		robot->setPhysicalEngine(*engine);
 	}
+
+	engine->wakeUp();
 }
 
 int Model::findModel(const twoDModel::robotModel::TwoDRobotModel &robotModel)

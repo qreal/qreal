@@ -1,4 +1,4 @@
-/* Copyright 2017 Dmitry Mordvinov, Gleb Zakharov
+/* Copyright 2017-2018 Dmitry Mordvinov, Gleb Zakharov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

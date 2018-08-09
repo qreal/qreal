@@ -21,7 +21,6 @@
 
 #include <qrkernel/settingsManager.h>
 
-
 using namespace qReal;
 
 #if defined Q_OS_WIN

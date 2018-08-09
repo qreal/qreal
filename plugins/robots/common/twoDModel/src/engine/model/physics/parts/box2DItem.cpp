@@ -1,4 +1,4 @@
-/* Copyright 2017 CyberTech Labs Ltd.
+/* Copyright 2017-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,12 @@ Box2DItem::Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *engine
 
 	b2FixtureDef fixture;
 	fixture.restitution = 0.8;
-	b2CircleShape circleShape;
-	b2PolygonShape polygonShape;
 	QPolygonF collidingPolygon = item.collidingPolygon();
 	QPointF localCenter = collidingPolygon.boundingRect().center();
 	if (item.isCircle()) {
 		mIsCircle = true;
 		qreal radius = collidingPolygon.boundingRect().height() / 2;
+		b2CircleShape circleShape;
 		circleShape.m_radius = this->mEngine.pxToM(radius);
 		fixture.shape = &circleShape;
 		fixture.density = engine->computeDensity(radius, item.mass());
@@ -62,6 +61,7 @@ Box2DItem::Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *engine
 			mPolygon[i] = engine->positionToBox2D(collidingPolygon.at(i) - localCenter);
 		}
 
+		b2PolygonShape polygonShape;
 		polygonShape.Set(mPolygon, collidingPolygon.size());
 		fixture.shape = &polygonShape;
 		fixture.density = engine->computeDensity(collidingPolygon, item.mass());
@@ -112,5 +112,5 @@ b2Body *Box2DItem::getBody() const
 bool Box2DItem::angleOrPositionChanged() const
 {
 	return b2Distance(mPreviousPosition, mBody->GetPosition()) > b2_epsilon
-			|| fabs(mPreviousRotation - mBody->GetAngle()) > b2_epsilon;
+			|| qAbs(mPreviousRotation - mBody->GetAngle()) > b2_epsilon;
 }

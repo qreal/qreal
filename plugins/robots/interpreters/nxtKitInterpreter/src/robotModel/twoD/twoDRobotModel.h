@@ -47,6 +47,7 @@ protected:
 
 private:
 	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;  // Does not have ownership
+	QPolygonF mCollidingPolygon;
 };
 
 }

@@ -1,4 +1,4 @@
-/* Copyright 2017 CyberTech Labs Ltd.
+/* Copyright 2017-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -106,9 +106,7 @@ void SkittleItem::returnToStartPosition()
 
 QPolygonF SkittleItem::collidingPolygon() const
 {
-	QRectF rect = {{0, 0}, skittleSize - QSize(1, 1)};
-	rect.moveTo(scenePos());
-	return QPolygonF(rect);
+	return QPolygonF(QRectF(scenePos(), skittleSize - QSize(1, 1)));
 }
 
 qreal SkittleItem::angularDamping() const
@@ -128,7 +126,7 @@ QPainterPath SkittleItem::path() const
 	QMatrix m;
 	m.rotate(rotation());
 
-	QPointF firstP = collidingPlgn.at(0);
+	const QPointF firstP = collidingPlgn.at(0);
 	collidingPlgn.translate(-firstP.x(), -firstP.y());
 
 	path.addEllipse(collidingPlgn.boundingRect());

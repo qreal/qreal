@@ -1,4 +1,4 @@
-/* Copyright 2017 Dmitry Mordvinov, Gleb Zakharov
+/* Copyright 2017-2018 Dmitry Mordvinov, Gleb Zakharov, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -186,7 +186,7 @@ void Box2DRobot::reinitSensor(const twoDModel::view::SensorItem &sensor)
 	localPos = transform.map(localPos);
 
 	const b2Vec2 pos = mEngine->positionToBox2D(localPos - localCenter + mModel->rotationCenter());
-	// IMPORTANT: we connect every sensors with box2d circle item.
+	// IMPORTANT: we connect every sensor with box2d circle item.
 	// So rotation of sensor doesn't matter, we set rotation corresponding to robot.
 	// if in future it will be changed, you'll see some strange behavior, because of joints. See connectSensor method.
 	mSensors[&sensor]->getBody()->SetTransform(pos, mBody->GetAngle());

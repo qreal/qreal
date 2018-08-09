@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 
 using namespace twoDModel::model::physics;
 
-PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> robots)
+PhysicsEngineBase::PhysicsEngineBase(const WorldModel &worldModel, const QList<RobotModel *> &robots)
 	: mWorldModel(worldModel)
 {
 	for (RobotModel * const robot : robots) {

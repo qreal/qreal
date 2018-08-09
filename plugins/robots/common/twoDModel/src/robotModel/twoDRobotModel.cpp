@@ -118,7 +118,7 @@ void TwoDRobotModel::setEngine(engine::TwoDModelEngineInterface &engine)
 
 QPolygonF TwoDRobotModel::collidingPolygon() const
 {
-	return QPolygonF(QRectF(QPointF(), size()));
+	return QPolygonF(QRectF({0, 0}, size()));
 }
 
 QSizeF TwoDRobotModel::size() const
@@ -128,7 +128,8 @@ QSizeF TwoDRobotModel::size() const
 
 QPointF TwoDRobotModel::rotationCenter() const
 {
-	return QRectF(QPointF(), size()).center();
+	QSizeF localSize = size() / 2;
+	return QPointF(localSize.width(), localSize.height());
 }
 
 robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const DeviceInfo &deviceInfo)

@@ -43,6 +43,8 @@ using namespace kitBase::robotModel;
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mDisplayWidget(new Ev3DisplayWidget())
+	, mCollidingPolygon({QPointF(1, 20), QPointF(8, 10), QPointF(47, 10), QPointF(49, 20)
+			,QPointF(49, 30), QPointF(47, 40), QPointF(8, 40), QPointF(1, 30)})
 {
 }
 
@@ -125,10 +127,7 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 
 QPolygonF TwoDRobotModel::collidingPolygon() const
 {
-	QPolygonF res;
-	res << QPointF(1, 20) << QPointF(8, 10) << QPointF(47, 10) << QPointF(49, 20)
-			<< QPointF(49, 30) << QPointF(47, 40) << QPointF(8, 40) << QPointF(1, 30);
-	return res;
+	return mCollidingPolygon;
 }
 
 qreal TwoDRobotModel::mass() const
