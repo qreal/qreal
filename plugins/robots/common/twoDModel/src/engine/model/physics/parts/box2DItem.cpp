@@ -44,10 +44,11 @@ Box2DItem::Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *engine
 	fixture.restitution = 0.8;
 	QPolygonF collidingPolygon = item.collidingPolygon();
 	QPointF localCenter = collidingPolygon.boundingRect().center();
+	b2CircleShape circleShape;
+	b2PolygonShape polygonShape;
 	if (item.isCircle()) {
 		mIsCircle = true;
 		qreal radius = collidingPolygon.boundingRect().height() / 2;
-		b2CircleShape circleShape;
 		circleShape.m_radius = this->mEngine.pxToM(radius);
 		fixture.shape = &circleShape;
 		fixture.density = engine->computeDensity(radius, item.mass());
@@ -61,7 +62,6 @@ Box2DItem::Box2DItem(twoDModel::model::physics::Box2DPhysicsEngine *engine
 			mPolygon[i] = engine->positionToBox2D(collidingPolygon.at(i) - localCenter);
 		}
 
-		b2PolygonShape polygonShape;
 		polygonShape.Set(mPolygon, collidingPolygon.size());
 		fixture.shape = &polygonShape;
 		fixture.density = engine->computeDensity(collidingPolygon, item.mass());
