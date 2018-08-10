@@ -64,6 +64,7 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDSpeaker.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDInfraredSensor.h \
+	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDLightSensor.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDLed.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDLineSensor.h \
 	$$PWD/include/trikKitInterpreterCommon/robotModel/twoD/parts/twoDObjectSensor.h \
@@ -85,7 +86,7 @@ HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikledadapter.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikaccelerometeradapter.h \
 	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikGyroscopeAdapter.h \
-	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikProxyMarker.h
+	$$PWD/include/trikKitInterpreterCommon/trikEmulation/trikProxyMarker.h \
 
 SOURCES += \
 	$$PWD/src/robotModel/real/parts/display.cpp \
@@ -115,6 +116,7 @@ SOURCES += \
 	$$PWD/src/robotModel/twoD/parts/twoDDisplay.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDSpeaker.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDInfraredSensor.cpp \
+	$$PWD/src/robotModel/twoD/parts/twoDLightSensor.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDLineSensor.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDObjectSensor.cpp \
 	$$PWD/src/robotModel/twoD/parts/twoDColorSensor.cpp \
@@ -135,7 +137,7 @@ SOURCES += \
 	$$PWD/src/trikEmulation/trikledadapter.cpp \
 	$$PWD/src/trikEmulation/trikaccelerometeradapter.cpp \
 	$$PWD/src/trikEmulation/trikGyroscopeAdapter.cpp \
-	$$PWD/src/trikEmulation/trikProxyMarker.cpp
+	$$PWD/src/trikEmulation/trikProxyMarker.cpp \
 
 FORMS += \
 	$$PWD/src/trikAdditionalPreferences.ui \

@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,37 +14,28 @@
 
 #pragma once
 
-#include <kitBase/robotModel/robotParts/lightSensor.h>
+#include <twoDModel/robotModel/parts/lightSensor.h>
 
-#include "twoDModel/twoDModelDeclSpec.h"
+#include "trikKitInterpreterCommon/declSpec.h"
 
-namespace twoDModel {
-
-namespace engine {
-class TwoDModelEngineInterface;
-}
-
+namespace trik {
 namespace robotModel {
+namespace twoD {
 namespace parts {
 
-/// An implementation of the light sensor for the 2D model window.
-/// Returns a brightness value from 0 to 100.
-/// Configuration is perfomed immediately, the answer is ready immediately too.
-class TWO_D_MODEL_EXPORT LightSensor : public kitBase::robotModel::robotParts::LightSensor
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TwoDLightSensor : public twoDModel::robotModel::parts::LightSensor
 {
 	Q_OBJECT
 
 public:
-	LightSensor(const kitBase::robotModel::DeviceInfo &info
+	TwoDLightSensor(const kitBase::robotModel::DeviceInfo &info
 			, const kitBase::robotModel::PortInfo &port
-			, engine::TwoDModelEngineInterface &engine);
+			, twoDModel::engine::TwoDModelEngineInterface &engine);
 
 	void read() override;
-
-protected:
-	engine::TwoDModelEngineInterface &mEngine;
 };
 
+}
 }
 }
 }
