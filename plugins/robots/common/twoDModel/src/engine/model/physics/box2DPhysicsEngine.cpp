@@ -239,8 +239,6 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 	const int velocityIterations = 10;
 	const int positionIterations = 6;
 
-	const int speedAdaptation = 19;
-
 	model::RobotModel * const robot = mRobots.first();
 	if (mBox2DRobots[robot]) {
 		b2Body *rBody = mBox2DRobots[robot]->getBody();
@@ -249,8 +247,9 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		if (mBox2DRobots[robot]->isStopping()){
 			mBox2DRobots[robot]->stop();
 		} else {
-			const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * speedAdaptation;
-			const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * speedAdaptation;
+			// 19 is the speed adaptation coefficient for physics engines
+			const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * 19;
+			const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * 19;
 
 			mLeftWheels[robot]->keepConstantSpeed(speed1);
 			mRightWheels[robot]->keepConstantSpeed(speed2);
