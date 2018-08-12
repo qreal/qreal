@@ -21,6 +21,9 @@ namespace twoDModel {
 
 const qreal lowPrecision = 0.00001;
 
+const qreal robotMass = 800;
+const QSize skittleSize(20, 20);
+const QSize ballSize(30, 30);
 const qreal robotWidth = 50;
 const qreal robotHeight = 50;
 const qreal robotZPoint = 100;
@@ -59,7 +62,6 @@ const qreal spoilSonarDispersion = 1.5;
 const qreal varySpeedDispersion = 0.0125;
 const qreal percentSaltPepperNoise = 20.0;
 
-const qreal robotMass = 800;
 const qreal robotInertialMoment = 20;
 const qreal reactionForceStabilizationCoefficient = 20;
 const qreal floorFrictionCoefficient = 0.2;

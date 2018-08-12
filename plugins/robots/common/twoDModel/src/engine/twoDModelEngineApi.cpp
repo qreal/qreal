@@ -349,9 +349,10 @@ uint TwoDModelEngineApi::spoilLight(const uint color) const
 QPair<QPointF, qreal> TwoDModelEngineApi::countPositionAndDirection(const PortInfo &port) const
 {
 	RobotModel * const robotModel = mModel.robotModels()[0];
-	const QVector2D sensorVector = QVector2D(robotModel->configuration().position(port) - rotatePoint);
+	const QPointF rotationCenter = robotModel->info().rotationCenter();
+	const QVector2D sensorVector = QVector2D(robotModel->configuration().position(port) - rotationCenter);
 	const QPointF rotatedVector = mathUtils::Geometry::rotateVector(sensorVector, robotModel->rotation()).toPointF();
-	const QPointF position = robotModel->position() + rotatePoint + rotatedVector;
+	const QPointF position = robotModel->position() + rotationCenter + rotatedVector;
 	const qreal direction = robotModel->configuration().direction(port) + robotModel->rotation();
 	return { position, direction };
 }

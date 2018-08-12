@@ -27,5 +27,3 @@ mkdir -p trikRuntime
 cd trikRuntime
 tar xfvz ../trik-runtime-builds/trikRuntime.tar.gz
 rm -rf ../trik-runtime-builds
-cd "$(dirname "$0")"/../data/trik-runtime-builds
-rm -rf .git

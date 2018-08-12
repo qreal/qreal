@@ -14,15 +14,49 @@
 
 #pragma once
 
-#include <qrutils/graphicsUtils/abstractItem.h>
+#include <QtGui/QPolygonF>
+#include <QtCore/qglobal.h>
 
 namespace twoDModel {
 namespace items {
 
-class SolidItem : public graphicsUtils::AbstractItem
+/// Provides information for physics such as friction, mass, form, etc.
+class SolidItem
 {
+
 public:
-	explicit SolidItem(QGraphicsItem *parent = 0);
+	/// static: zero mass, zero velocity, may be manually moved
+	/// kinematic: zero mass, non-zero velocity set by user
+	/// dynamic: positive mass, non-zero velocity determined by forces
+	enum BodyType
+	{
+		DYNAMIC,
+		STATIC,
+		KINEMATIC
+	};
+
+	virtual ~SolidItem(){}
+
+	/// Returns body form as polygon.
+	virtual QPolygonF collidingPolygon() const = 0;
+
+	/// Returns true if body form is circle, in such case, radius is a half of collidingPolygon() bounding rect size
+	virtual bool isCircle() const;
+
+	/// Returns body's mass in kg.
+	virtual qreal mass() const = 0;
+
+	/// Returns body's friction.
+	virtual qreal friction() const = 0;
+
+	/// Returns body's type.
+	virtual BodyType bodyType() const = 0;
+
+	/// Returns body's angular damping.
+	virtual qreal angularDamping() const;
+
+	/// Returns body's linear damping.
+	virtual qreal linearDamping() const;
 };
 
 }

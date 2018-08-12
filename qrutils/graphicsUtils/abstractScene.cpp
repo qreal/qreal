@@ -88,6 +88,7 @@ void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event)
 		if (mGraphicsItem->dragState() != graphicsUtils::AbstractItem::None) {
 			mView->setDragMode(QGraphicsView::NoDrag);
 		}
+
 		mGraphicsItem->resizeItem(event);
 	}
 }
