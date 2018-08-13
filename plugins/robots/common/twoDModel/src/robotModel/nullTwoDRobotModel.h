@@ -37,11 +37,16 @@ public:
 	QString friendlyName() const override;
 	QList<kitBase::robotModel::PortInfo> configurablePorts() const override;
 	QList<kitBase::robotModel::DeviceInfo> convertibleBases() const override;
-	QString robotImage() const;
-	kitBase::robotModel::PortInfo defaultLeftWheelPort() const;
+	QString robotImage() const override;
+	kitBase::robotModel::PortInfo defaultLeftWheelPort() const override;
 	kitBase::robotModel::PortInfo defaultRightWheelPort() const override;
 
-	engine::TwoDModelDisplayWidget *displayWidget() const;
+	engine::TwoDModelDisplayWidget *displayWidget() const override;
+
+	qreal mass() const override;
+	qreal friction() const override;
+	qreal onePercentAngularVelocity() const override;
+	QList<QPointF> wheelsPosition() const override;
 
 private:
 	engine::TwoDModelDisplayWidget *mDisplayWidget;

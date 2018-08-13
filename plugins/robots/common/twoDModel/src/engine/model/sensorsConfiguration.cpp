@@ -17,14 +17,14 @@
 #include <qrutils/mathUtils/math.h>
 #include <qrutils/mathUtils/geometry.h>
 
-#include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/sensorsConfiguration.h"
 
 using namespace twoDModel::model;
 using namespace kitBase::robotModel;
 
-SensorsConfiguration::SensorsConfiguration(const QString &robotModelName)
+SensorsConfiguration::SensorsConfiguration(const QString &robotModelName, const QSizeF &robotSize)
 	: mRobotId(robotModelName)
+	, mRobotSize(robotSize)
 {
 }
 
@@ -52,7 +52,7 @@ void SensorsConfiguration::onDeviceConfigurationChanged(const QString &robotId
 QPointF SensorsConfiguration::defaultPosition() const
 {
 	/// @todo: Move it somewhere?
-	return QPointF(robotWidth * 3 / 2, robotHeight / 2);
+	return QPointF(mRobotSize.width() * 3 / 2, mRobotSize.height() / 2);
 }
 
 QPointF SensorsConfiguration::position(const PortInfo &port) const

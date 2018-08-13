@@ -65,6 +65,29 @@ public:
 	/// Returns a pointer to a widget with display emulator for current robot model.
 	virtual engine::TwoDModelDisplayWidget *displayWidget() const = 0;
 
+	/// Returns robot`s polygon. By default returns polygon constructed as rectangle using size.
+	virtual QPolygonF collidingPolygon() const;
+
+	/// Returns robot`s mass in kilograms. Mass will be used by physical engine to process collisions correctly.
+	virtual qreal mass() const = 0;
+
+	/// Returns robot`s fixture friction coefficient.
+	virtual qreal friction() const = 0;
+
+	/// Returns robot`s rectangle size in pixels.
+	/// By default returns (50, 50).
+	virtual QSizeF size() const;
+
+	/// Returns a point (pixels) in items coordinates arround which robot rotates.
+	/// By default returns center of robot`s rectangle.
+	virtual QPointF rotationCenter() const;
+
+	/// Returns a point (pixels) list of wheels coordinates on robot.
+	virtual QList<QPointF> wheelsPosition() const = 0;
+
+	/// Returns an average number of degrees that motor rotates per one second on power 1.
+	virtual qreal onePercentAngularVelocity() const = 0;
+
 	/// Provides path to sensor image by given device type or empty string if default sensor image shall be used.
 	virtual QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const
 	{
