@@ -21,11 +21,12 @@ using namespace twoDModel::items;
 const QSizeF size = QSizeF(13, 13);
 const int lineWidth = 3;
 
-StartPosition::StartPosition(QGraphicsItem *parent)
+StartPosition::StartPosition(const QSizeF &robotSize, QGraphicsItem *parent)
 	: RotateItem(parent)
+	, mRobotSize(robotSize)
 {
-	setX(robotWidth / 2);
-	setY(robotHeight / 2);
+	setX(mRobotSize.width() / 2);
+	setY(mRobotSize.height() / 2);
 	RotateItem::init();
 }
 
@@ -71,8 +72,8 @@ void StartPosition::deserializeCompatibly(const QDomElement &robotElement)
 		const QStringList robotPositionParts = robotElement.attribute("position").split(":");
 		const QString robotX = robotPositionParts.count() != 2 ? "0" : robotPositionParts[0];
 		const QString robotY = robotPositionParts.count() != 2 ? "0" : robotPositionParts[1];
-		setX(robotX.toDouble() + robotWidth / 2);
-		setY(robotY.toDouble() + robotHeight / 2);
+		setX(robotX.toDouble() + mRobotSize.width() / 2);
+		setY(robotY.toDouble() + mRobotSize.height() / 2);
 		setRotation(robotElement.attribute("direction").toDouble());
 	} else {
 		deserialize(startPositionElement);

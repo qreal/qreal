@@ -24,13 +24,14 @@
 
 #include <kitBase/robotModel/portInfo.h>
 
+#include "src/engine/items/solidItem.h"
 #include "twoDModel/engine/model/sensorsConfiguration.h"
 
 namespace twoDModel {
 namespace view {
 
 /// Class that represents sensor in 2D model.
-class SensorItem : public graphicsUtils::RotateItem
+class SensorItem : public graphicsUtils::RotateItem, public items::SolidItem
 {
 	Q_OBJECT
 
@@ -49,6 +50,12 @@ public:
 
 	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &element) override;
+
+	QPolygonF collidingPolygon() const override;
+	qreal mass() const override;
+	qreal friction() const override;
+	bool isCircle() const override;
+	BodyType bodyType() const override;
 
 protected:
 	class PortItem : public QGraphicsItem

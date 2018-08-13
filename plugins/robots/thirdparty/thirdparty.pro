@@ -18,3 +18,4 @@ SUBDIRS += \
 	qextserialport \
 	libusb-1.0.19 \
 	trikRuntime \
+	Box2D \

@@ -14,7 +14,8 @@
 
 #pragma once
 
-#include <QtCore/QPoint>
+#include <QtCore/QPointF>
+#include <QtCore/QSizeF>
 #include <QtCore/QHash>
 #include <QtXml/QDomDocument>
 
@@ -31,7 +32,8 @@ class TWO_D_MODEL_EXPORT SensorsConfiguration : public QObject, public kitBase::
 	Q_OBJECT
 
 public:
-	explicit SensorsConfiguration(const QString &robotModelName);
+	SensorsConfiguration(const QString &robotModelName, const QSizeF &robotSize);
+
 
 	void setPosition(const kitBase::robotModel::PortInfo &port, const QPointF &position);
 	QPointF position(const kitBase::robotModel::PortInfo &port) const;
@@ -78,6 +80,7 @@ private:
 
 	QPointF defaultPosition() const;
 
+	const QSizeF mRobotSize;
 	QString mRobotId;
 	QHash<kitBase::robotModel::PortInfo, SensorInfo> mSensorsInfo;
 };

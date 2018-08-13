@@ -57,6 +57,17 @@ public:
 		, right
 	};
 
+	struct Wheel
+	{
+		int radius;
+		int speed;
+		int spoiledSpeed;
+		int degrees;
+		ATime activeTimeType;
+		bool isUsed;
+		bool breakMode;
+	};
+
 	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
 			, const Settings &settings, QObject *parent = 0);
 
@@ -71,6 +82,12 @@ public:
 	void setNewMotor(int speed, uint degrees, const kitBase::robotModel::PortInfo &port, bool breakMode);
 
 	SensorsConfiguration &configuration();
+
+	/// Returns information about the robot`s left wheel state (its size, speed, encoder value, etc).
+	const Wheel &leftWheel() const;
+
+	/// Returns information about the robot`s right wheel state (its size, speed, encoder value, etc).
+	const Wheel &rightWheel() const;
 
 	/// Returns a reference to external robot description.
 	robotModel::TwoDRobotModel &info() const;
@@ -123,15 +140,21 @@ public:
 	/// Returns gyroscope sensor data.
 	QVector<int> gyroscopeReading() const;
 
-public slots:
-	void resetPhysics(const WorldModel &worldModel, const Timeline &timeline);
+	/// Returns a bounding path of robot and its sensors in scene coordinates.
+	QPainterPath robotBoundingPath() const;
 
+	/// Sets a physical engine. Robot recalculates its position using this engine.
+	void setPhysicalEngine(physics::PhysicsEngineBase &engine);
+
+public slots:
 	void recalculateParams();
 	void nextFragment();
 
 signals:
 	void positionChanged(const QPointF &newPosition);
 	void rotationChanged(qreal newRotation);
+
+	void deserialized(QPointF newPosition, qreal newRotation);
 
 	/// Emitted when robot rided himself (moved on motors force, not dragged by user or smth) from one point to other.
 	void robotRided(const QPointF &newPosition, const qreal newRotation);
@@ -146,21 +169,9 @@ signals:
 	void wheelOnPortChanged(WheelEnum wheel, const kitBase::robotModel::PortInfo &port);
 
 private:
-	struct Motor
-	{
-		int radius;
-		int speed;
-		int spoiledSpeed;
-		int degrees;
-		ATime activeTimeType;
-		bool isUsed;
-		bool breakMode;
-	};
-
 	QVector2D robotDirectionVector() const;
-	QPainterPath robotBoundingPath() const;
 
-	Motor *initMotor(int radius, int speed, long unsigned int degrees
+	Wheel *initMotor(int radius, int speed, long unsigned int degrees
 			, const kitBase::robotModel::PortInfo &port, bool isUsed);
 
 	void countNewForces();
@@ -182,7 +193,7 @@ private:
 
 	/// Simulated robot motors.
 	/// Has ownership.
-	QHash<kitBase::robotModel::PortInfo, Motor *> mMotors;
+	QHash<kitBase::robotModel::PortInfo, Wheel *> mMotors;
 	/// Stores how many degrees the motor rotated on.
 	QHash<kitBase::robotModel::PortInfo, qreal> mTurnoverEngines;
 	/// Describes which wheel is driven by which motor.
@@ -204,7 +215,8 @@ private:
 	bool mIsFirstAngleStamp;
 	qreal mAngleStampPrevious;
 
-	physics::PhysicsEngineBase *mPhysicsEngine;
+	physics::PhysicsEngineBase *mPhysicsEngine;  // Does not take ownership
+
 	items::StartPosition *mStartPositionMarker;  // Transfers ownership to QGraphicsScene
 };
 

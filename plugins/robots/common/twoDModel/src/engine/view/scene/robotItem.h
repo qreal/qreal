@@ -17,13 +17,14 @@
 #include <qrutils/graphicsUtils/rectangleImpl.h>
 
 #include "sensorItem.h"
+#include "src/engine/items/solidItem.h"
 #include "twoDModel/engine/model/robotModel.h"
 
 namespace twoDModel {
 namespace view {
 
 /** @brief Class that represents a robot in 2D model */
-class RobotItem : public graphicsUtils::RotateItem
+class RobotItem : public graphicsUtils::RotateItem, public items::SolidItem
 {
 	Q_OBJECT
 
@@ -34,7 +35,7 @@ public:
 	QRectF calcNecessaryBoundingRect() const override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 	void drawExtractionForItem(QPainter *painter) override;
-	void mousePressEvent(QGraphicsSceneMouseEvent *event);
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
@@ -61,6 +62,11 @@ public:
 	/// Returns true if a robot is currently dragged with mouse.
 	bool isDragged() const;
 
+	QPolygonF collidingPolygon() const override;
+	qreal mass() const override;
+	qreal friction() const override;
+	BodyType bodyType() const override;
+
 protected:
 	QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
@@ -70,6 +76,10 @@ signals:
 	void mousePressed();
 	void changedPosition(RobotItem *robotItem);
 	void drawTrace(const QPen &pen, const QPointF &from, const QPointF &to);
+	void recoverRobotPosition(QPointF oldPos);
+	void sensorAdded(SensorItem *sensor);
+	void sensorRemoved(SensorItem *sensor);
+	void sensorUpdated(SensorItem *sensor);
 
 private:
 	class BeepItem : public QGraphicsItem

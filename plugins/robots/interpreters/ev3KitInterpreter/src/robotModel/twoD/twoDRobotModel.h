@@ -35,6 +35,12 @@ public:
 	QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 	QRect sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const;
 
+	QPolygonF collidingPolygon() const override;
+	qreal mass() const override;
+	qreal friction() const override;
+	qreal onePercentAngularVelocity() const override;
+	QList<QPointF> wheelsPosition() const override;
+
 protected:
 	kitBase::robotModel::robotParts::Device *createDevice(
 			kitBase::robotModel::PortInfo const &port
@@ -43,6 +49,7 @@ protected:
 
 private:
 	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;  // Does not have ownership
+	QPolygonF mCollidingPolygon;
 };
 
 }

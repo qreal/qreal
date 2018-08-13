@@ -16,9 +16,11 @@ QT += widgets xml svg
 
 DEFINES += TWO_D_MODEL_LIBRARY
 
-links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base)
+links(qrkernel qslog qrutils qrgui-tool-plugin-interface qrgui-controller robots-utils robots-kit-base Box2D)
+
 includes(plugins/robots/common/kitBase)
 includes(plugins/robots/utils qrtext)
+includes(plugins/robots/thirdparty/)
 
 TRANSLATIONS = \
 	$$PWD/../../../../qrtranslations/ru/plugins/robots/twoDModel_ru.ts \
@@ -87,7 +89,8 @@ HEADERS += \
 	$$PWD/src/engine/model/modelTimer.h \
 	$$PWD/src/engine/model/physics/physicsEngineBase.h \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.h \
-	$$PWD/src/engine/model/physics/realisticPhysicsEngine.h \
+	$$PWD/src/engine/model/physics/parts/box2DRobot.h \
+	$$PWD/src/engine/model/physics/parts/box2DWheel.h \
 	$$PWD/src/engine/items/solidItem.h \
 	$$PWD/src/engine/items/wallItem.h \
 	$$PWD/src/engine/items/stylusItem.h \
@@ -97,6 +100,8 @@ HEADERS += \
 	$$PWD/src/engine/items/rectangleItem.h \
 	$$PWD/src/engine/items/ellipseItem.h \
 	$$PWD/src/engine/items/imageItem.h \
+	$$PWD/src/engine/items/skittleItem.h \
+	$$PWD/src/engine/items/ballItem.h \
 	$$PWD/src/engine/items/startPosition.h \
 	$$PWD/src/engine/items/regions/regionItem.h \
 	$$PWD/src/engine/items/regions/ellipseRegion.h \
@@ -112,6 +117,8 @@ HEADERS += \
 	$$PWD/src/engine/commands/changePropertyCommand.h \
 	$$PWD/src/engine/commands/reshapeCommand.h \
 	$$PWD/src/robotModel/nullTwoDRobotModel.h \
+	$$PWD/src/engine/model/physics/box2DPhysicsEngine.h \
+	$$PWD/src/engine/model/physics/parts/box2DItem.h \
 
 SOURCES += \
 	$$PWD/src/engine/twoDModelEngineFacade.cpp \
@@ -144,7 +151,8 @@ SOURCES += \
 	$$PWD/src/engine/model/image.cpp \
 	$$PWD/src/engine/model/physics/physicsEngineBase.cpp \
 	$$PWD/src/engine/model/physics/simplePhysicsEngine.cpp \
-	$$PWD/src/engine/model/physics/realisticPhysicsEngine.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DRobot.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DWheel.cpp \
 	$$PWD/src/engine/items/solidItem.cpp \
 	$$PWD/src/engine/items/wallItem.cpp \
 	$$PWD/src/engine/items/stylusItem.cpp \
@@ -154,6 +162,8 @@ SOURCES += \
 	$$PWD/src/engine/items/rectangleItem.cpp \
 	$$PWD/src/engine/items/ellipseItem.cpp \
 	$$PWD/src/engine/items/imageItem.cpp \
+	$$PWD/src/engine/items/skittleItem.cpp \
+	$$PWD/src/engine/items/ballItem.cpp \
 	$$PWD/src/engine/items/startPosition.cpp \
 	$$PWD/src/engine/items/regions/regionItem.cpp \
 	$$PWD/src/engine/items/regions/ellipseRegion.cpp \
@@ -193,6 +203,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/marker.cpp \
 	$$PWD/src/blocks/markerDownBlock.cpp \
 	$$PWD/src/blocks/markerUpBlock.cpp \
+	$$PWD/src/engine/model/physics/box2DPhysicsEngine.cpp \
+	$$PWD/src/engine/model/physics/parts/box2DItem.cpp \
 
 FORMS += \
 	$$PWD/src/engine/view/twoDModelWidget.ui \
