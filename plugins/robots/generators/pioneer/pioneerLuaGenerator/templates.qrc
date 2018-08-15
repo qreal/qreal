@@ -36,6 +36,7 @@
         <file>templates/initialization/rng.t</file>
         <file>templates/initialization/led.t</file>
         <file>templates/initialization/magnet.t</file>
+        <file>templates/initialization/tof.t</file>
         <file>templates/luaPrinting/addition.t</file>
         <file>templates/luaPrinting/argumentsSeparator.t</file>
         <file>templates/luaPrinting/assignment.t</file>
@@ -83,6 +84,7 @@
         <file>templates/quadcopterCommands/takeoff.t</file>
         <file>templates/quadcopterCommands/goToLocalPoint.t</file>
         <file>templates/quadcopterCommands/goToPoint.t</file>
+        <file>templates/quadcopterCommands/readTofSensor.t</file>
         <file>templates/signs/equals.t</file>
         <file>templates/signs/greater.t</file>
         <file>templates/signs/less.t</file>

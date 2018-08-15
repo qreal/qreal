@@ -17,6 +17,7 @@
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
 #include "parts/ledPart.h"
+#include "parts/tofPart.h"
 #include "parts/magnetPart.h"
 #include "parts/randomGeneratorPart.h"
 #include "simpleGenerators/endOfHandlerGenerator.h"
@@ -33,6 +34,7 @@
 #include "simpleGenerators/pioneerLedGenerator.h"
 #include "simpleGenerators/pioneerYawGenerator.h"
 #include "simpleGenerators/randomInitGenerator.h"
+#include "simpleGenerators/pioneerReadRangeSensor.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -81,6 +83,8 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		return new PioneerYawGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Randomizer") {
 		return new RandomInitGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "PioneerReadRangeSensor") {
+		return new PioneerReadRangeSensor(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -95,6 +99,7 @@ void PioneerLuaGeneratorFactory::initialize()
 {
 	generatorBase::GeneratorFactoryBase::initialize();
 	mLedPart.reset(new LedPart(pathsToTemplates()));
+	mTofPart.reset(new TofPart(pathsToTemplates()));
 	mMagnetPart.reset(new MagnetPart(pathsToTemplates()));
 	mRandomGeneratorPart.reset(new RandomGeneratorPart(pathsToTemplates()));
 }
@@ -102,6 +107,11 @@ void PioneerLuaGeneratorFactory::initialize()
 LedPart& PioneerLuaGeneratorFactory::ledPart()
 {
 	return *mLedPart;
+}
+
+TofPart &PioneerLuaGeneratorFactory::tofPart()
+{
+	return *mTofPart;
 }
 
 MagnetPart& PioneerLuaGeneratorFactory::magnetPart()
@@ -129,6 +139,6 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::goto
 QList<generatorBase::parts::InitTerminateCodeGenerator *> PioneerLuaGeneratorFactory::initTerminateGenerators()
 {
 	auto result = generatorBase::GeneratorFactoryBase::initTerminateGenerators();
-	result << mRandomGeneratorPart.data() << mMagnetPart.data() << mLedPart.data();
+	result << mRandomGeneratorPart.data() << mMagnetPart.data() << mLedPart.data() << mTofPart.data();
 	return result;
 }

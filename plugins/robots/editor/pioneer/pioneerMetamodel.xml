@@ -235,6 +235,29 @@
 				</logic>
 			</node>
 
+			<node displayedName="Read Range Sensor" name="PioneerReadRangeSensor" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Reads distance from rangefinder.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/readRangeSensor.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Variable" prefix="Variable:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>range</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 		</graphicTypes>
 
 		<palette sorted="false">
@@ -248,6 +271,7 @@
 				<element name="PioneerMagnet"/>
 				<element name="PioneerSystem"/>
 				<element name="PioneerYaw"/>
+				<element name="PioneerReadRangeSensor"/>
 			</group>
 		</palette>
 	</diagram>

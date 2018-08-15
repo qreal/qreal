@@ -51,6 +51,7 @@ HEADERS += \
 	$$PWD/generators/semanticTreeManager.h \
 	$$PWD/parts/ledPart.h \
 	$$PWD/parts/magnetPart.h \
+	$$PWD/parts/tofPart.h \
 	$$PWD/parts/randomGeneratorPart.h \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.h \
 	$$PWD/simpleGenerators/endOfHandlerGenerator.h \
@@ -66,6 +67,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/pioneerLedGenerator.h \
 	$$PWD/simpleGenerators/pioneerYawGenerator.h \
 	$$PWD/simpleGenerators/randomInitGenerator.h \
+	$$PWD/simpleGenerators/pioneerReadRangeSensor.h \
 	$$PWD/simpleGenerators/goToGPSPointGenerator.h \
 	$$PWD/widgets/pioneerAdditionalPreferences.h \
 
@@ -84,6 +86,7 @@ SOURCES += \
 	$$PWD/parts/ledPart.cpp \
 	$$PWD/parts/magnetPart.cpp \
 	$$PWD/parts/randomGeneratorPart.cpp \
+	$$PWD/parts/tofPart.cpp \
 	$$PWD/robotModel/pioneerGeneratorRobotModel.cpp \
 	$$PWD/simpleGenerators/endOfHandlerGenerator.cpp \
 	$$PWD/simpleGenerators/geoLandingGenerator.cpp \
@@ -99,6 +102,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/pioneerYawGenerator.cpp \
 	$$PWD/simpleGenerators/randomInitGenerator.cpp \
 	$$PWD/simpleGenerators/goToGPSPointGenerator.cpp \
+	$$PWD/simpleGenerators/pioneerReadRangeSensor.cpp \
 	$$PWD/widgets/pioneerAdditionalPreferences.cpp \
 
 FORMS += \

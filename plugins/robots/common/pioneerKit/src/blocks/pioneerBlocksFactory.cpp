@@ -32,6 +32,7 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			, id("PioneerPrint")
 			, id("PioneerSystem")
 			, id("PioneerLed")
+			, id("PioneerReadRangeSensor")
 			, id("PioneerMagnet")
 			, id("PioneerYaw")
 	};
