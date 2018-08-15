@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
+GLOBAL_PRI_INCLUDED = $$PWD
+
+CONFIG+=qt
+
+CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
+
 win32 {
 	PLATFORM = windows
 }
@@ -36,7 +43,7 @@ CONFIG(debug, debug | release) {
 	CONFIGURATION_SUFFIX =
 }
 
-DESTDIR = $$PWD/bin/$$CONFIGURATION
+DESTDIR = $$absolute_path(bin/$$CONFIGURATION)
 
 PROJECT_BASENAME = $$basename(_PRO_FILE_)
 PROJECT_NAME = $$section(PROJECT_BASENAME, ".", 0, 0)
@@ -62,10 +69,9 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<5\.[0-9]+\."' ){ CONFIG += gcc5 }
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<4\.[0-9]+\."' ){ CONFIG += gcc4 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<5\.[0-9]+\."' ){ CONFIG += gcc5 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<4\.[0-9]+\."' ){ CONFIG += gcc4 }
 
-CONFIG(no-sanitizers): CONFIG += nosanitizers
 
 !CONFIG(nosanitizers):!clang:gcc:*-g++*:gcc4{
 	warning("Disabled sanitizers, failed to detect compiler version or too old compiler: $$QMAKE_CXX")
@@ -147,7 +153,7 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 # I want -Werror to be turned on, but Qt has problems
 #QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
 
-GLOBAL_PWD = $$PWD
+GLOBAL_PWD = $$absolute_path($$PWD)
 
 # Simple function that checks if given argument is a file or directory.
 # Returns false if argument 1 is a file or does not exist.
@@ -225,3 +231,5 @@ defineTest(links) {
 
 	export(LIBS)
 }
+message($$CONFIG)
+} # GLOBAL_PRI_INCLUDED

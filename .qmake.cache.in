@@ -1,0 +1,3 @@
+CONFIG ''= $$CONFIG
+DESTDIR = $$GLOBAL_PWD/$$DESTDIR
+include($$GLOBAL_PWD/global.pri)

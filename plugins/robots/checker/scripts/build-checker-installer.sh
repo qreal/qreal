@@ -187,8 +187,9 @@ cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/twoDModel_ru.qm ./tr
 cp -fP $qRealDir/bin/release/translations/ru/plugins/robots/twoDModelRunner_ru.qm ./translations/ru/plugins/robots/
 
 # Copying TRIKRuntime dependencies
-cp -fP $qRealDir/bin/release/*-x86.so* .
+cp -fP $qRealDir/bin/release/libtrik*.so* .
 cp -fP $qRealDir/bin/release/*.js .
+cp -fP $qRealDir/bin/release/*.py .
 
 # Copying checker itself
 cp -fP $qRealDir/bin/release/2D-model .

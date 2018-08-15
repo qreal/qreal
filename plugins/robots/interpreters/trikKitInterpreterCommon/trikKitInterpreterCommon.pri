@@ -27,7 +27,7 @@ includes(plugins/robots/common/kitBase \
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qslog \
-		trikControl-x86 trikScriptRunner-x86 trikKernel-x86 qrgui-text-editor \
+		trikControl trikScriptRunner trikKernel qrgui-text-editor \
 		)
 
 copyToDestdir(./icons/trik-robot.svg, now, images/)
