@@ -13,7 +13,7 @@
 # limitations under the License.
 
 !isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
-GLOBAL_PRI_INCLUDED = $$PWD
+#GLOBAL_PRI_INCLUDED = $$PWD
 
 CONFIG+=qt
 
@@ -231,5 +231,4 @@ defineTest(links) {
 
 	export(LIBS)
 }
-message($$CONFIG)
 } # GLOBAL_PRI_INCLUDED
