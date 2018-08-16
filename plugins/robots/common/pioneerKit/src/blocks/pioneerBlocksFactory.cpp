@@ -29,6 +29,7 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			, id("GeoLanding")
 			, id("GoToPoint")
 			, id("GoToGPSPoint")
+			, id("PioneerGetLPSPosition")
 			, id("PioneerPrint")
 			, id("PioneerSystem")
 			, id("PioneerLed")

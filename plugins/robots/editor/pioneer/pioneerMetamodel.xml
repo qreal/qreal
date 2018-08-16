@@ -74,6 +74,37 @@
 				</logic>
 			</node>
 
+			<node displayedName="Get LPS Position" name="PioneerGetLPSPosition" description="Returns position (local positioning system).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/getCoordinatesBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="X" background="white" prefix="X:"/>
+						<label x="35" y="90" textBinded="Y" background="white" prefix="Y:"/>
+						<label x="35" y="120" textBinded="Z" background="white" prefix="Z:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+						<properties>
+							<property displayedName="X" type="string" name="X">
+								<default>x</default>
+							</property>
+							<property displayedName="Y" type="string" name="Y">
+								<default>y</default>
+							</property>
+							<property displayedName="Z" type="string" name="Z">
+								<default>z</default>
+							</property>
+						</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 			<node displayedName="Go to point" name="GoToGPSPoint" path="" description="Orders quadcopter to fly to given GPS coordinates.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -266,6 +297,7 @@
 				<element name="GeoLanding"/>
 				<element name="GoToPoint"/>
 				<element name="GoToGPSPoint"/>
+				<element name="PioneerGetLPSPosition"/>
 				<element name="PioneerLed"/>
 <!--				<element name="PioneerPrint"/>-->
 				<element name="PioneerMagnet"/>

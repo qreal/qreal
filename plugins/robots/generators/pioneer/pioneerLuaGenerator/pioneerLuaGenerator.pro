@@ -64,6 +64,7 @@ HEADERS += \
 	$$PWD/simpleGenerators/labelGenerator.h \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.h \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.h \
+	$$PWD/simpleGenerators/pioneerGetLPSPosition.h \
 	$$PWD/simpleGenerators/pioneerLedGenerator.h \
 	$$PWD/simpleGenerators/pioneerYawGenerator.h \
 	$$PWD/simpleGenerators/randomInitGenerator.h \
@@ -96,6 +97,7 @@ SOURCES += \
 	$$PWD/simpleGenerators/pioneerMagnetGenerator.cpp \
 	$$PWD/simpleGenerators/initialNodeGenerator.cpp \
 	$$PWD/simpleGenerators/labelGenerator.cpp \
+	$$PWD/simpleGenerators/pioneerGetLPSPosition.cpp \
 	$$PWD/simpleGenerators/pioneerPrintGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerSystemGenerator.cpp \
 	$$PWD/simpleGenerators/pioneerLedGenerator.cpp \
