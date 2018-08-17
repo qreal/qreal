@@ -5,8 +5,7 @@ case $TRAVIS_OS_NAME in
     ;;
   linux)
     docker stop builder
+    if [ "$TESTS" != "true" ]; then codecov --gcov-args '-o ${PWD}'; fi
     ;;
   *) exit 1 ;;
 esac
-if [ "$TESTS" != "true" ]; then codecov --gcov-exec ${GCOV} --gcov-args '-o ${PWD}'; fi
-

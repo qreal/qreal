@@ -49,4 +49,4 @@ after_script:
   - ./.travis/after_script.sh
 
 after_success:
-  - if [ "$CONFIG" = "debug" ]; then codecov; fi
+  - true

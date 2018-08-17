@@ -16,7 +16,7 @@ unix {
     linux* {
         SOURCES        += $$PWD/qextserialenumerator_linux.cpp
     } else:macx {
-        QMAKE_CXX      += -Wno-error=cast-qual
+        QMAKE_CXXFLAGS += -Wno-error=cast-qual
         SOURCES        += $$PWD/qextserialenumerator_osx.cpp
     } else {
         SOURCES        += $$PWD/qextserialenumerator_unix.cpp
