@@ -24,7 +24,7 @@ matrix:
       dist: trusty
       sudo: required
       services: docker
-      env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTests TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
+      env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTest TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
       name: "Linux debug + vera + tests"
     - os: osx
       osx_image: 9.latest
@@ -32,7 +32,7 @@ matrix:
     - os: osx
       osx_image: 9.latest
       name: "macOS debug + tests"
-      env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTests TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
+      env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTest TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
 git:
   depth: 1
 

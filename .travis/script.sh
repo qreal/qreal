@@ -14,7 +14,7 @@ case $TRAVIS_OS_NAME in
 esac
 
 if [ "$VERA" = "true" ]; then $EXECUTOR .travis/runVera++.sh ; fi
-$EXECUTOR qmake -r CONFIG+=$CONFIG CONFIG+=no-sanitizers QMAKE_CXX='ccache g++' -Wall $PROJECT.pro
-$EXECUTOR make -k -j2
+$EXECUTOR qmake CONFIG+=$CONFIG CONFIG+=no-sanitizers QMAKE_CXX='ccache g++' -Wall $PROJECT.pro
+$EXECUTOR make -k -j2 >/dev/null
 $EXECUTOR sh -c "cd bin/$CONFIG && ls"
 $EXECUTOR sh -c "export DISPLAY=:0 && cd bin/$CONFIG && $TESTS"

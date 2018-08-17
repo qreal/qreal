@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
+!isEmpty(_PRO_FILE_):!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
 #GLOBAL_PRI_INCLUDED = $$PWD
 
-CONFIG+=qt
+!CONFIG(qt): CONFIG+=qt
 
 CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
 
@@ -69,8 +69,8 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<5\.[0-9]+\."' ){ CONFIG += gcc5 }
-!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\<4\.[0-9]+\."' ){ CONFIG += gcc4 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<5\\.[0-9]+\\."' ){ CONFIG += gcc5 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<4\\.[0-9]+\\."' ){ CONFIG += gcc4 }
 
 
 !CONFIG(nosanitizers):!clang:gcc:*-g++*:gcc4{
@@ -188,7 +188,7 @@ defineTest(copyToDestdir) {
 
 		# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
 		!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
-		win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\\*
+		win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\*
 		win32 {
 			COPY_COMMAND   = xcopy /f /y /i /s
 		} else {
