@@ -5,6 +5,8 @@ environment:
   global:
     MINGW: C:\Qt\Tools\mingw492_32
     QTDIR: C:\Qt\5.6.3\mingw49_32
+    PYTHON_PATH: C:\Python27
+    PYTHON_LIB: C:\Python27\libs
   matrix:
     - PROJECT_FILE: qrealRobots
     - PROJECT_FILE: qreal
@@ -14,8 +16,8 @@ configuration:
   - release
 
 before_build:
-  - if %PROJECT_FILE%==qrealRobots git submodule update --init
-  - set PATH=%QTDIR%\bin;%MINGW%\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
+  - if %PROJECT_FILE%==qrealRobots git submodule update --init --recursive
+  - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
 
 build_script:
   - qmake %PROJECT_FILE%.pro -r -spec win32-g++ CONFIG+=%CONFIGURATION%
