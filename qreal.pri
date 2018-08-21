@@ -19,6 +19,7 @@ contains(QT_VERSION, ^4\\.[0-5]\\..*){
 
 TEMPLATE = subdirs
 SUBDIRS = \
+	initvars.pro \
 	qrmc \
 	qrxc \
 	qrgui \
@@ -31,6 +32,7 @@ SUBDIRS = \
 	thirdparty \
 	qrtranslations \
 
+thirdparty.depends = initvars.pro
 qrkernel.depends = thirdparty
 qrgraph.depends = qrkernel
 qrutils.depends = qrkernel qrtext

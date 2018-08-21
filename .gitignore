@@ -1,3 +1,5 @@
+buildScripts/vera++/params
+.qmake.cache
 *~
 *.autosave
 *.a

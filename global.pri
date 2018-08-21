@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+!isEmpty(_PRO_FILE_):!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
+#GLOBAL_PRI_INCLUDED = $$PWD
+
+!CONFIG(qt): CONFIG+=qt
+
+CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
+
 win32 {
 	PLATFORM = windows
 }
@@ -36,7 +43,7 @@ CONFIG(debug, debug | release) {
 	CONFIGURATION_SUFFIX =
 }
 
-DESTDIR = $$PWD/bin/$$CONFIGURATION
+DESTDIR = $$absolute_path(bin/$$CONFIGURATION)
 
 PROJECT_BASENAME = $$basename(_PRO_FILE_)
 PROJECT_NAME = $$section(PROJECT_BASENAME, ".", 0, 0)
@@ -62,8 +69,14 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<[5-6]\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<5\\.[0-9]+\\."' ){ CONFIG += gcc5 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<4\\.[0-9]+\\."' ){ CONFIG += gcc4 }
+
+
+!CONFIG(nosanitizers):!clang:gcc:*-g++*:gcc4{
+	warning("Disabled sanitizers, failed to detect compiler version or too old compiler: $$QMAKE_CXX")
+	CONFIG += nosanitizers
+}
 
 unix:!CONFIG(nosanitizers) {
 
@@ -140,7 +153,7 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 # I want -Werror to be turned on, but Qt has problems
 #QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
 
-GLOBAL_PWD = $$PWD
+GLOBAL_PWD = $$absolute_path($$PWD)
 
 # Simple function that checks if given argument is a file or directory.
 # Returns false if argument 1 is a file or does not exist.
@@ -169,33 +182,27 @@ defineTest(copyToDestdir) {
 		}
 
 		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
-		win32:DDIR ~= s,/,\\,g
+		#win32:DDIR ~= s,/,\\,g ??? why not system_path?
+		DDIR = $$system_path($$DDIR)
 		mkpath($$DDIR)
 
-		isEmpty(NOW) {
-			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
-			win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\\*
-			win32:QMAKE_POST_LINK += $$quote("xcopy /s /e /q /y /i") $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
-			!win32:QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+		# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
+		!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
+		win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\*
+		win32 {
+			COPY_COMMAND   = xcopy /f /y /i /s
 		} else {
-			win32 {
-				# Message here is very useful in diagnostics.
-				message("Executing `cmd /C xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i`")
-				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
-			}
-
-			unix:!macx {
-				system("cp -r -f $$FILE $$DDIR/")
-			}
-
-			macx {
-				system("rsync -avz $$FILE $$DDIR/")
-			}
+			COPY_COMMAND = rsync -avz
+		}
+                COPY_COMMAND += $$quote($$FILE) $$quote($$DDIR)
+		isEmpty(NOW) {
+			QMAKE_POST_LINK += $$COPY_COMMAND $$escape_expand(\\n\\t)
+			export(QMAKE_POST_LINK)
+		} else {
+			system($$COPY_COMMAND)
 		}
 	}
 
-	export(QMAKE_POST_LINK)
 }
 
 defineTest(includes) {
@@ -217,3 +224,4 @@ defineTest(links) {
 
 	export(LIBS)
 }
+} # GLOBAL_PRI_INCLUDED

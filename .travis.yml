@@ -1,62 +1,54 @@
-sudo: required
-dist: trusty
+compiler:
+  - gcc
 
+env: CONFIG=release   VERA=false  PROJECT=qrealRobots TESTS=true
+
+cache: ccache
+
+addons:
+  apt:
+    update: true
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - python-pip
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      services: docker
+      name: "Linux release"
+    - os: linux
+      dist: trusty
+      sudo: required
+      services: docker
+      env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTest TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
+      name: "Linux debug + vera + tests"
+    - os: osx
+      osx_image: 9.latest
+      name: "macOS release"
+    - os: osx
+      osx_image: 9.latest
+      name: "macOS debug + tests"
+      env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTest TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
 git:
   depth: 1
 
 language: cpp
-compiler: gcc
-
-cache: ccache
-
-env:
-  - CONFIG=debug   PROJECT=qreal           VERA=true  TESTS=true
-  - CONFIG=release PROJECT=qreal           VERA=false TESTS=true
-  - CONFIG=debug   PROJECT=qrealRobots     VERA=false TESTS=true
-  - CONFIG=release PROJECT=qrealRobots     VERA=false TESTS=true
-  - CONFIG=debug   PROJECT=qrealBP         VERA=false TESTS=true
-  - CONFIG=release PROJECT=qrealBP         VERA=false TESTS=true
-  - CONFIG=debug   PROJECT=qrealTest       VERA=false TESTS="./exampleTests-d && ./qrgui_unittests-d && ./qrrepo_unittests-d && ./qrutils_unittests-d && ./visualDebugSupport_unittests-d && ./qrtext_unittests-d && ./qrgraph_unittests-d && ./generationRulesTool_unittests-d"
-  - CONFIG=release PROJECT=qrealTest       VERA=false TESTS="./exampleTests && ./qrgui_unittests && ./qrrepo_unittests && ./qrutils_unittests && ./visualDebugSupport_unittests && ./qrtext_unittests && ./qrgraph_unittests && ./generationRulesTool_unittests"
-  - CONFIG=debug   PROJECT=qrealRobotsTest VERA=false TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
 
 before_install:
-  - if [ "$TESTS" != "true" ]; then pip install --user codecov; fi
+  - ./.travis/before_install.sh
 
 install:
-  - if [ "$CXX" = "g++" ]; then sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get update -qq; fi
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.9 -y; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 90; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 90; fi
-  - if [ "$CXX" = "g++" ]; then sudo update-alternatives --install /usr/bin/gcov gcov /usr/bin/gcov-4.9 90; fi
-  - sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 10C56D0DE9977759
-  - sudo add-apt-repository "deb http://ppa.launchpad.net/beineri/opt-qt551-trusty/ubuntu trusty main"
-  - sudo add-apt-repository ppa:smspillaz/verapp-latest -y
-  - sudo apt-get update
-  - sudo apt-get install libboost-system-dev libboost-wave-dev tcl -y
-  - sudo apt-get install vera++ -y
-  - sudo apt-get -f install libpango-1.0-0 qt55base qt55svg qt55script qt55multimedia libgl1-mesa-dev libusb-1.0.0-dev -y
-  - . /opt/qt55/bin/qt55-env.sh
-  - sudo apt-get install xvfb -y
-  - Xvfb :0 &
-  - export DISPLAY=:0
+  - ./.travis/install.sh
 
 script:
-  - gcc --version
-  - qmake --version
-  - if [ "$VERA" = "true" ]; then tclsh buildScripts/vera++/generatePaths.tcl; fi
-  - if [ "$VERA" = "true" ]; then vera++ --error -p allRules --root buildScripts/vera++ <buildScripts/vera++/params; fi
-  - qmake $PROJECT.pro CONFIG+=$CONFIG
-  - make -j2
-  - cd ./bin/$CONFIG
-  - ls -A
-  - sh -c "$TESTS"
+  - ./.travis/script.sh
 
-notifications:
-  email:
-  recipients:
-    - qreal-build-reports@googlegroups.com
+after_script:
+  - ./.travis/after_script.sh
 
 after_success:
-  - if [ "$TESTS" != "true" ]; then codecov --gcov-exec ${GCOV} --gcov-args '-o ${PWD}'; fi
+  - true

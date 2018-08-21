@@ -86,6 +86,7 @@ public slots:
 	trikControl::FifoInterface *fifo(const QString &) override {return nullptr;}
 
 	void playTone(int, int) override {}
+	QVector<uint8_t> getStillImage() override { return QVector<uint8_t>(); }
 	trikControl::EventDeviceInterface *eventDevice(const QString &) override {return nullptr;}
 	void stopEventDevice(const QString &) override {}
 

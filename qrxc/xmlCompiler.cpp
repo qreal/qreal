@@ -425,7 +425,7 @@ void XmlCompiler::generateResourceFile()
 
 void XmlCompiler::generateEnumValues(OutFile &out)
 {
-	out() << "void " << mPluginName << "Plugin::initEnums() \n{\n";
+	out() << "void " << mPluginName << "Plugin::initEnums()\n{\n";
 
 	for (const EnumType * const type : mEditors[mCurrentEditor]->getAllEnumTypes()) {
 		const QString name = type->name();

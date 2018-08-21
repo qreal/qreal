@@ -19,22 +19,14 @@ include(../../../../../global.pri)
 !win32 {
 	copyToDestdir(scripts/pioneerUpload.sh, now)
 	copyToDestdir(scripts/pioneerStartStop.sh, now)
-	copyToDestdir(scripts/pioneerCompile.sh, now)
 } else {
 	copyToDestdir(scripts/pioneerUpload.bat, now)
 	copyToDestdir(scripts/pioneerStartStop.bat, now)
-	copyToDestdir(scripts/pioneerCompile.bat, now)
 }
-
-copyToDestdir(thirdparty/controller/controller.exe, now)
-copyToDestdir(thirdparty/controller/controller, now)
-copyToDestdir(thirdparty/luac, now)
 
 !win32 {
 	system("chmod +x $$DESTDIR/pioneerUpload.sh")
 	system("chmod +x $$DESTDIR/pioneerStartStop.sh")
-	system("chmod +x $$DESTDIR/pioneerCompile.sh")
-	system("chmod +x $$DESTDIR/controller")
 }
 
 QT += widgets network

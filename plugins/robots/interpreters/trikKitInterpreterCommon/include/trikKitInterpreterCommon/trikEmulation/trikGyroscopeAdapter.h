@@ -45,6 +45,8 @@ public slots:
 	virtual void calibrate(int msec) override;
 	virtual bool isCalibrated() const override;
 	virtual QVector<int> readRawData() const override;
+	virtual void setCalibrationValues(const QVector<int> &) override {}
+	virtual QVector<int> getCalibrationValues() override { return QVector<int>(); }
 
 private slots:
 	void countTilt(const QVector<int> &oldFormat);
