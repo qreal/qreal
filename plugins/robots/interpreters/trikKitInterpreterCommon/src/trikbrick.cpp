@@ -28,6 +28,7 @@
 #include <kitBase/robotModel/robotParts/random.h>
 #include <kitBase/robotModel/robotParts/random.h>
 #include <twoDModel/robotModel/parts/marker.h>
+#include <twoDModel/engine/model/timeline.h>
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
 
@@ -37,7 +38,6 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	: mTwoDRobotModel(model)
 	, mDisplay(model)
 	, mKeys(model)
-	, mIsWaitingEnabled(true)
 	, mSensorUpdater(model->timeline().produceTimer())
 {
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
@@ -46,8 +46,6 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout, [model](){
 		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
 	});
-
-	connect(this, &TrikBrick::stopWaiting, [this]() { mIsWaitingEnabled = false; });
 }
 
 TrikBrick::~TrikBrick()
@@ -110,7 +108,6 @@ void TrikBrick::init()
 	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
 	QMetaObject::invokeMethod(mSensorUpdater.data(), "start"); // failproof against timer manipulation in another thread
 	//mSensorUpdater.start();
-	mIsWaitingEnabled = true;
 }
 
 void TrikBrick::setCurrentDir(const QString &dir)
@@ -340,23 +337,48 @@ int TrikBrick::random(int from, int to)
 
 void TrikBrick::wait(int milliseconds)
 {
-	if (!mIsWaitingEnabled)
-		return;
 	QEventLoop loop;
-	QObject::connect(this, SIGNAL(stopWaiting()), &loop, SLOT(quit())/*, Qt::DirectConnection*/);
-	QScopedPointer<utils::AbstractTimer> t(mTwoDRobotModel->timeline().produceTimer());
-	//t->moveToThread(QThread::currentThread());
-	t->setRepeatable(true);
-	connect(t.data(), SIGNAL(timeout()), &loop, SLOT(quit()), Qt::DirectConnection);
-	t->start(milliseconds);
-	if (!mIsWaitingEnabled) {
-		return; // to be safe;
-	}
+	auto &timeline = dynamic_cast<twoDModel::model::Timeline &> (mTwoDRobotModel->timeline());
 
-	loop.exec();
+	if (timeline.isStarted()) {
+		QScopedPointer<utils::AbstractTimer> t(timeline.produceTimer());
+		QTimer abortTimer;
+		QMetaObject::Connection abortConnection;
+
+		auto mainHandler = [this, &t, &loop, &timeline, &abortConnection]() {
+			disconnect(abortConnection);
+			disconnect(this, &TrikBrick::stopWaiting, nullptr, nullptr);
+			disconnect(&timeline, &twoDModel::model::Timeline::beforeStop, nullptr, nullptr);
+			disconnect(t.data(), &utils::AbstractTimer::timeout, nullptr, nullptr);
+			loop.quit();
+		};
+
+		auto abortHandler = [mainHandler, &timeline]() {
+			if (!timeline.isStarted()) {
+				mainHandler();
+			}
+		};
+
+		connect(t.data(), &utils::AbstractTimer::timeout, mainHandler);
+		connect(this, &TrikBrick::stopWaiting, mainHandler);
+
+		// timers that are produced by produceTimer() doesn't use stop singal
+		// be careful, one who use just utils::AbstractTimer can stuck
+		connect(&timeline, &twoDModel::model::Timeline::beforeStop, mainHandler);
+		abortConnection = connect(&abortTimer, &QTimer::timeout, abortHandler);
+
+		// because timer is depends on twoDModel::model::Timeline
+		if (timeline.isStarted()) {
+			t->start(milliseconds);
+			abortTimer.start(10);
+			loop.exec();
+		} else {
+			mainHandler();
+		}
+	}
 }
 
-qint64 TrikBrick::time() const
+quint64 TrikBrick::time() const
 {
 	return mTwoDRobotModel->timeline().timestamp();
 }
