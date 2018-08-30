@@ -47,9 +47,9 @@ class TrikBrick final : public trikControl::BrickInterface
 	// BrickInterface interface
 public:
 	TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
-	~TrikBrick();
+	~TrikBrick() override;
 	void reset() override;
-	QString configVersion() const {return QString();}
+	QString configVersion() const override {return QString();}
 	trikControl::DisplayWidgetInterface *graphicsWidget() override {
 		return nullptr;
 	}
@@ -93,10 +93,11 @@ public slots:
 	/// some ScriptExecution control replacements. @todo: factor out in the separate class
 	int random(int from, int to);
 	void wait(int milliseconds);
-	qint64 time() const;
+	quint64 time() const;
 	QStringList readAll(const QString &path);
 	/// In trikRuntime returns QTimer, but we need timer with emulated 2D time. Hopefully this is enough
 	utils::AbstractTimer *timer(int milliseconds);
+
 signals:
 	void error(const QString &msg);
 	void warning(const QString &msg);
@@ -110,8 +111,6 @@ private:
 
 	TrikDisplayEmu mDisplay;
 	TrikKeysInterfaceStub mKeys;
-
-	bool mIsWaitingEnabled;
 
 	QScopedPointer<utils::AbstractTimer> mSensorUpdater;
 

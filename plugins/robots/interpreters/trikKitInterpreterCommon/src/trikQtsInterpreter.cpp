@@ -80,7 +80,8 @@ void trik::TrikQtsInterpreter::abort()
 {
 	//mScriptRunner.abort();
 	mBrick.stopWaiting();
-	QMetaObject::invokeMethod(&mScriptRunner, "abort"); // just a wild test
+	Q_ASSERT(mScriptRunner.thread() == thread());
+	QMetaObject::invokeMethod(&mScriptRunner, "abort", Qt::QueuedConnection); // just a wild test
 	mRunning = false; // reset brick?
 }
 
