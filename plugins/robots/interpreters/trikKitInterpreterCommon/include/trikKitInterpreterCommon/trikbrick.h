@@ -76,6 +76,7 @@ public slots:
 	trikControl::LineSensorInterface *lineSensor(const QString &port) override;
 	trikControl::ColorSensorInterface *colorSensor(const QString &) override {return nullptr;}
 	trikControl::ObjectSensorInterface *objectSensor(const QString &) override {return nullptr;}
+	QVector<uint8_t> getStillImage() override { return QVector<uint8_t>(); }
 	trikControl::SoundSensorInterface *soundSensor(const QString &) override {return nullptr;}
 	trikControl::EncoderInterface *encoder(const QString &port) override;
 	trikControl::BatteryInterface *battery() override {return nullptr;}

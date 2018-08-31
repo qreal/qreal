@@ -32,13 +32,15 @@ PioneerReadRangeSensor::PioneerReadRangeSensor(const qrRepo::RepoApi &repo
 		, { Binding::createConverting(
 				"@@VARIABLE@@"
 				, "Variable"
-				, customizer.factory()->intPropertyConverter(id, "Variable"))
+				, customizer.factory()->stringPropertyConverter(id, "Variable"))
 		}
 		, parent)
 {
 	auto factory = dynamic_cast<PioneerLuaGeneratorFactory *>(mCustomizer.factory());
 	if (factory) {
 		factory->tofPart().registerUsage();
+		customizer.factory()->functionBlockConverter(id, "")->convert(
+				QString("%1 = 0").arg(repo.stringProperty(id, "Variable")));
 	} else {
 		throw qReal::Exception("Pioneer PioneerLedGenerator will work only with PioneerLuaGeneratorFactory");
 	}

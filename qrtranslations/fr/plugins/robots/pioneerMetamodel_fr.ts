@@ -19,132 +19,132 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>black</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>blue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>green</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>white</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>yellow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>norm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>x-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>y-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>z-axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Package</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Private</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Protected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Public</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>greater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>less</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>not greater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>not less</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
         <source>Composite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
         <source>Shared</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>In</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>Inout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>Out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>Return</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="119"/>
         <source>false</source>
         <translation type="unfinished"></translation>
@@ -155,18 +155,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="119"/>
         <source>true</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
         <source>break</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
         <source>float</source>
         <translation type="unfinished"></translation>
     </message>

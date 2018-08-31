@@ -17,7 +17,7 @@
 #include <generatorBase/semanticTree/semanticNode.h>
 #include <generatorBase/semanticTree/simpleNode.h>
 
-#define TRACE
+//#define TRACE
 
 using namespace pioneer::lua;
 using namespace generatorBase;

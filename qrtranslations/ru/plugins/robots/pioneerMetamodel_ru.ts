@@ -27,92 +27,92 @@
         <translation>Последовательно</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>black</source>
         <translation>чёрный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>blue</source>
         <translation>синий</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>green</source>
         <translation>зелёный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>red</source>
         <translation>красный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>white</source>
         <translation>белый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
         <source>yellow</source>
         <translation>жёлтый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>norm</source>
         <translation>нормальное</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>x-axis</source>
         <translation>по оси x</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>y-axis</source>
         <translation>по оси y</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="107"/>
         <source>z-axis</source>
         <translation>по оси z</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Package</source>
         <translation>Пакетный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Private</source>
         <translation>Приватный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Protected</source>
         <translation>Защищённый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
         <source>Public</source>
         <translation>Публичный</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>greater</source>
         <translation>больше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>less</source>
         <translation>меньше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>not greater</source>
         <translation>не больше</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
         <source>not less</source>
         <translation>не меньше</translation>
     </message>
@@ -125,42 +125,42 @@
         <translation type="vanished">оранжевый</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
         <source>Composite</source>
         <translation>Композиция</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
         <source>Shared</source>
         <translation>Агрегация</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>In</source>
         <translation>Входной</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>Inout</source>
         <translation>Входной-выходной</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>Out</source>
         <translation>Выходной</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="121"/>
         <source>Return</source>
         <translation>Возврат</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="119"/>
         <source>false</source>
         <translation>ложь</translation>
@@ -171,18 +171,18 @@
         <translation>тело цикла</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="111"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="109"/>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="119"/>
         <source>true</source>
         <translation>истина</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
         <source>break</source>
         <translation>break</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="105"/>
+        <location filename="../../../../plugins/robots/editor/pioneer/generated/pluginInterface.cpp" line="113"/>
         <source>float</source>
         <translation>float</translation>
     </message>
@@ -358,7 +358,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/elements.h" line="191"/>
         <source>Time:</source>
-        <translation type="unfinished"></translation>
+        <translation>Время:</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/elements.h" line="217"/>

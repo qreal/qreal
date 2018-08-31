@@ -199,10 +199,11 @@ QString PioneerLuaGeneratorPlugin::kitId() const
 QList<kitBase::robotModel::RobotModelInterface *> PioneerLuaGeneratorPlugin::robotModels()
 {
 	return { mGeneratorForRealCopterRobotModel.data()
-#ifndef WIN32
-			// Simulator does not work for Windows.
-			, mGeneratorForSimulatorRobotModel.data()
-#endif
+/// disabled for now @TODO: restore later
+//#ifndef WIN32
+//			// Simulator does not work for Windows.
+//			, mGeneratorForSimulatorRobotModel.data()
+//#endif
 	};
 }
 

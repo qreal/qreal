@@ -40,4 +40,9 @@ PioneerGetLPSPosition::PioneerGetLPSPosition(const qrRepo::RepoApi &repo
 			}
 		, parent)
 {
+	customizer.factory()->functionBlockConverter(id, "")->convert(
+			QString("%1 = 0;%2 = 0;%3 = 0;")
+					.arg(repo.stringProperty(id, "X"))
+					.arg(repo.stringProperty(id, "Y"))
+					.arg(repo.stringProperty(id, "Z")));
 }

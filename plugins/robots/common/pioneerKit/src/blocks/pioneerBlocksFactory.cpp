@@ -55,8 +55,8 @@ qReal::IdList PioneerBlocksFactory::blocksToHide() const
 			, id("Fork")
 			, id("Join")
 			, id("KillThread")
-			, id("IfBlock")
-			, id("FiBlock")
+//			, id("IfBlock")
+//			, id("FiBlock")
 
 			, id("SendMessageThreads")
 
