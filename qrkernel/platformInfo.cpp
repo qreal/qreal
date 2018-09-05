@@ -86,9 +86,11 @@ QString PlatformInfo::applicationDirPath()
 	}
 
 	QDir result(QCoreApplication::applicationDirPath());  // ../bin/debug/qreal-d.app/Contents/MacOS/ or ../bin/debug
-	result.cdUp();                                        // ../bin/debug/qreal-d.app/Contents/
-	result.cdUp();                                        // ../bin/debug/qreal-d.app/
-	result.cdUp();                                        // ../bin/debug/
+	if (result.dirName() == "MacOS") {
+		result.cdUp();					      // ../bin/debug/qreal-d.app/Contents/
+		result.cdUp();					      // ../bin/debug/qreal-d.app/
+		result.cdUp();					      // ../bin/debug/
+	}
 	return result.absolutePath();
 #else
 	return QCoreApplication::applicationDirPath();
