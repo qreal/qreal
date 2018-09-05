@@ -20,6 +20,7 @@
 #include "parts/tofPart.h"
 #include "parts/magnetPart.h"
 #include "parts/randomGeneratorPart.h"
+#include "generators/gotoLabelManager.h"
 #include "simpleGenerators/endOfHandlerGenerator.h"
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
@@ -63,7 +64,9 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 	if (elementType == "EndOfHandler") {
 		return new EndOfHandlerGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "InitialNode") {
-		return new InitialNodeGenerator(mRepo, customizer, id, this);
+		qReal::Id firstId = mRepo.to(mRepo.links(id).first());
+		QString localLabelFor = mGotoLabelManager.labelFor(firstId);
+		return new InitialNodeGenerator(mRepo, customizer, firstId, this);
 	} else if (elementType == "GeoTakeoff") {
 		return new GeoTakeoffGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GeoLanding") {

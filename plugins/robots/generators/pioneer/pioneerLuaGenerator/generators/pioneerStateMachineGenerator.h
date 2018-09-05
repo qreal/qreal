@@ -17,6 +17,7 @@
 #include <functional>
 #include <QtCore/QSet>
 #include <QtCore/QList>
+#include <QtCore/QQueue>
 #include <QtCore/QString>
 
 #include <generatorBase/gotoControlFlowGenerator.h>
@@ -122,6 +123,13 @@ private:
 	/// is a target for two non-trivial If branches, for example). Shall fix it in upstream DFS algorithm, but this
 	/// can be breaking change.
 	QSet<qReal::Id> mVisitedNodes;
+
+	/// Queue to keep track conditional nodes. Bolean value indicates presense of asynchronous nodes in braches.
+	QQueue<QPair<generatorBase::semantics::SemanticNode *, bool>> mConditionZonesQueue;
+
+	/// For assertion, that diagram has same number of Conditonal and End If blocks.
+	int mConditionals;
+	int mConditionalEnds;
 };
 
 }

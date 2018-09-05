@@ -16,24 +16,18 @@
 
 #include <generatorBase/generatorCustomizer.h>
 
+#include <QtCore/QRegularExpression>
+
 using namespace pioneer::lua;
 
 InitialNodeGenerator::InitialNodeGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(
-			repo
-			, customizer
-			, id
-			, "initialNode.t"
-			, {
-					generatorBase::simple::Binding::createStaticConverting(
-							"@@ID@@"
-							, id.id()
-							, customizer.factory()->nameNormalizerConverter()
-					)
-			}
-			, parent)
+	: BindingGenerator(repo, customizer, id, "initialNode.t", {}, parent)
 {
+	QString label = customizer.factory()->labelGenerator(id, customizer)->generate();
+	QString section = label.section('[', 1).remove(QRegularExpression("].*"));
+	addBinding(generatorBase::simple::Binding::createStatic("@@LABEL@@", label));
+	addBinding(generatorBase::simple::Binding::createStatic("@@ID@@", section));
 }
