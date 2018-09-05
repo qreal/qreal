@@ -296,7 +296,7 @@
 				<element name="GeoTakeoff"/>
 				<element name="GeoLanding"/>
 				<element name="GoToPoint"/>
-				<element name="GoToGPSPoint"/>
+<!--				<element name="GoToGPSPoint"/>-->
 				<element name="PioneerGetLPSPosition"/>
 				<element name="PioneerLed"/>
 <!--				<element name="PioneerPrint"/>-->
