@@ -16,6 +16,7 @@
 #GLOBAL_PRI_INCLUDED = $$PWD
 
 !CONFIG(qt): CONFIG+=qt
+CONFIG += ltcg
 
 CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
 
