@@ -41,8 +41,7 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 
 qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 {
-	return {
-	};
+	return blocksToHide();
 }
 
 qReal::IdList PioneerBlocksFactory::blocksToHide() const
@@ -55,8 +54,6 @@ qReal::IdList PioneerBlocksFactory::blocksToHide() const
 			, id("Fork")
 			, id("Join")
 			, id("KillThread")
-//			, id("IfBlock")
-//			, id("FiBlock")
 
 			, id("SendMessageThreads")
 
