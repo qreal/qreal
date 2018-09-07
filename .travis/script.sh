@@ -7,17 +7,19 @@ case $TRAVIS_OS_NAME in
      EXECUTOR=time
     ;;
   linux)
-      docker run -d -v `pwd`:`pwd` -w `pwd` --name builder trikset/linux-builder Xvfb :0
-      EXECUTOR="time docker exec builder "
+     EXECUTOR="time docker exec builder "
    ;;
   *) exit 1 ;;
 esac
-export EXECUTOR
-$EXECUTOR sh -c "export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG"
+$EXECUTOR export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG
 $EXECUTOR which g++
+$EXECUTOR g++ --version
+$EXECUTOR ccache -M 0
+$EXECUTOR pkg-config --list-all
 if [ "$VERA" = "true" ]; then $EXECUTOR .travis/runVera++.sh ; fi
 $EXECUTOR qmake -Wall CONFIG+=$CONFIG CONFIG+=no-sanitizers $PROJECT.pro
-$EXECUTOR make -k -j2 qmake_all 1>>build.log 2>&1
-$EXECUTOR make -k -j2 all 1>>build.log 2>&1
+$EXECUTOR sh -c 'make -k -j2 qmake_all 1>>build.log 2>&1'
+$EXECUTOR sh -c 'make -k -j2 all 1>>build.log 2>&1'
+$EXECUTOR ccache -sp
 $EXECUTOR sh -c "cd bin/$CONFIG && ls"
 $EXECUTOR sh -c "export DISPLAY=:0 && cd bin/$CONFIG && $TESTS"
