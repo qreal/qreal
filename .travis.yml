@@ -12,6 +12,9 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - python-pip
+  artifacts:
+    paths:
+      - build.log
 
 matrix:
   include:
@@ -45,7 +48,9 @@ install:
   - ./.travis/install.sh
 
 script:
+  - while sleep 5m; do echo "=====[ $SECONDS seconds, still building... ]====="; done &
   - ./.travis/script.sh
+  - kill %1
 
 after_script:
   - ./.travis/after_script.sh
