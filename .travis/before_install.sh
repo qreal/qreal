@@ -8,7 +8,7 @@ case $TRAVIS_OS_NAME in
     docker pull trikset/linux-builder
     if [[ "$CONFIG" == "debug" ]]
     then
-      pip install --upgrade pip
+      pip install --user --upgrade pip
       pip install --user codecov
     fi
     ;;
