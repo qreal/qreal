@@ -65,7 +65,7 @@ install:
 
 script:
   - while sleep 5m; do echo "=====[ $SECONDS seconds, still building... ]====="; done &
-  - ./.travis/script.sh
+  - ./.travis/script.sh & WPID=$!; sleep 2000 && kill $WPID & KPID=$!; wait $WPID && { kill $KPID ; true ; }
   - kill %1
 
 after_script:
