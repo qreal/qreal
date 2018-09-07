@@ -20,6 +20,6 @@ $EXECUTOR sh -c "export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG \
 && qmake -Wall CONFIG+=$CONFIG CONFIG+=no-sanitizers $PROJECT.pro \
 && sh -c 'make -k -j2 qmake_all 1>>build.log 2>&1' \
 && sh -c 'make -k -j2 all 1>>build.log 2>&1' \
-&& ccache -sp \
+&& ccache -s \
 && sh -c \"cd bin/$CONFIG && ls\" \
 && sh -c \"export DISPLAY=:0 && cd bin/$CONFIG && $TESTS\""

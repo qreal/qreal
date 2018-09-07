@@ -5,9 +5,11 @@ env: CONFIG=release   VERA=false  PROJECT=qrealRobots TESTS=true
 
 cache:
   ccache: true
+  pip: true
   directories:
     - /usr/local/Cellar/
     - /usr/local/opt/
+    - /usr/local/lib/
 #    - $HOME/.ccache
 #    - $HOME/.cache
 
