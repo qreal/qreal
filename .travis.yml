@@ -10,6 +10,7 @@ env:
     - CELLAR_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'osx' ] && echo "/usr/local/Cellar" || echo "")
 
 cache:
+  timeout: 1000
   apt: true
   ccache: true
   pip: true
