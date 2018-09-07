@@ -3,7 +3,13 @@ compiler:
 
 env: CONFIG=release   VERA=false  PROJECT=qrealRobots TESTS=true
 
-cache: ccache
+cache:
+  ccache: true
+  directories:
+    - /usr/local/Cellar/
+    - /usr/local/opt/
+#    - $HOME/.ccache
+#    - $HOME/.cache
 
 addons:
   apt:
