@@ -12,6 +12,7 @@ case $TRAVIS_OS_NAME in
    ;;
   *) exit 1 ;;
 esac
+export EXECUTOR
 $EXECUTOR sh -c "export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG"
 $EXECUTOR which g++
 if [ "$VERA" = "true" ]; then $EXECUTOR .travis/runVera++.sh ; fi

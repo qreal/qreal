@@ -1,5 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
+$EXECUTOR ccache -sp
 case $TRAVIS_OS_NAME in
   osx)
     ;;
