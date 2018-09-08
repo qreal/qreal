@@ -26,7 +26,7 @@ configuration:
   - release
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
-  - pacman -S ccache
+  - pacman --verbose --noconfirm --sync --refresh --sysupgrade --clean --ask=20 ccache
   - ccache.exe -V || appveyor DownloadFile "%CCACHE_URL%" -FileName "ccache.exe" && xcopy /Y /V /I ccache.exe %MINGW%\bin
   - ccache -VM 900M
 
