@@ -7,7 +7,7 @@ env:
     - VERA=false
     - PROJECT=qrealRobots
     - TESTS=true
-    - CELLAR_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'osx' ] && echo "/usr/local/Cellar" || { mkdir -p .empty ; echo .empty ; } )
+    - CELLAR_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'osx' ] && echo "/usr/local/Cellar" || { mkdir -p .empty/{qt,ccache} ; echo .empty ; } )
     - HEARTBEAT=$(while sleep 100; do echo "=====[ $SECONDS seconds, still building... ]====="; done >&2 & echo $! )
 
 cache:
@@ -16,7 +16,8 @@ cache:
   ccache: true
   pip: true
   directories:
-    - $CELLAR_CACHE_DIR
+    - $CELLAR_CACHE_DIR/qt
+    - $CELLAR_CACHE_DIR/ccache
 #    - /usr/local/opt/
 #    - /usr/local/lib/
 #    - $HOME/.ccache
