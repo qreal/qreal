@@ -65,7 +65,7 @@ install:
   - ./.travis/install.sh
 
 script:
-  - ./.travis/script.sh & WPID=$!; sleep 2000 && kill $WPID & KPID=$!; wait $WPID && { kill $KPID ; true ; }
+  - ./.travis/script.sh & WPID=$!; sleep 1800 && kill $WPID & KPID=$!; { wait $WPID ; RES=$?; kill $KPID || true ; ( exit $RES ) ; }
 
 after_script:
   - ./.travis/after_script.sh
