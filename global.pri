@@ -16,7 +16,7 @@
 #GLOBAL_PRI_INCLUDED = $$PWD
 
 !CONFIG(qt): CONFIG+=qt
-CONFIG += ltcg
+unix:CONFIG += ltcg
 
 #deal with mixed configurations
 CONFIG -= debug_and_release debug_and_release_target
