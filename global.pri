@@ -18,6 +18,10 @@
 !CONFIG(qt): CONFIG+=qt
 CONFIG += ltcg
 
+#deal with mixed configurations
+CONFIG -= debug_and_release debug_and_release_target
+CONFIG(release, release | debug): CONFIG -= debug
+CONFIG(debug, debug | release): CONFIG -= release
 CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
 
 win32 {
@@ -32,7 +36,7 @@ macx {
 	PLATFORM = mac
 }
 
-CONFIG(debug, debug | release) {
+CONFIG(debug) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
 	unix {
@@ -87,7 +91,7 @@ unix:!CONFIG(nosanitizers) {
 		CONFIG += sanitizer sanitize_undefined
 	}
 
-	CONFIG(debug, debug | release):!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
+	CONFIG(debug):!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
 
 	CONFIG(sanitize_leak) {
 		#LSan can be used without performance degrade even in release build
@@ -118,7 +122,7 @@ unix:!CONFIG(nosanitizers) {
 		}
 	}
 
-	CONFIG(release, debug | release){
+	CONFIG(release){
 		CONFIG(gcc4) {
 			message("Too old compiler: $$QMAKE_CXX")
 		} else {
