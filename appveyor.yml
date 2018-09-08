@@ -46,7 +46,7 @@ before_build:
 build_script:
   - qmake %PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% QMAKE_CXX="ccache g++"
   - mingw32-make -j2 qmake_all
-  - mingw32-make -j2 all
+  - mingw32-make -j2 -k all
 
 test_script:
   - cd bin\%CONFIGURATION% && cmd /c "%TEST_SUITE%"
