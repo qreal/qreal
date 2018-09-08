@@ -1,8 +1,16 @@
+version: 2.1.20.{branch}-{build}
 clone_folder: c:\qreal
 test: off
 
+cache:
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  - C:\Users\appveyor\.ccache
+
 environment:
   global:
+    APPVEYOR_CACHE_ENTRY_ZIP_ARGS:
+    APPVEYOR_SAVE_CACHE_ON_ERROR: true
     PYTHON_PATH: C:\Python27
     PYTHON_LIB: C:\Python27\libs
     PROJECT_FILE: qrealRobots
@@ -16,14 +24,24 @@ environment:
 configuration:
 #  - debug
   - release
+install:
+  - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
+  - pacman -S ccache
+  - ccache.exe -V || appveyor DownloadFile "%CCACHE_URL%" -FileName "ccache.exe" && xcopy /Y /V /I ccache.exe %MINGW%\bin
+  - ccache -VM 900M
 
 before_build:
   - git submodule update --init --recursive
-  - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%WINDIR%\system32;%WINDIR%;%WINDIR%\System32\WindowsPowerShell\v1.0\;
+
 
 build_script:
-  - qmake %PROJECT_FILE%.pro -r -spec win32-g++ CONFIG+=%CONFIGURATION%
-  - mingw32-make -j2
+  - qmake %PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% QMAKE_CXX='ccache g++'
+  - mingw32-make -j2 qmake_all
+  - mingw32-make -j2 all
+
+after_build:
+  - ccache -s
+
 
 artifacts:
  - path: bin\$(configuration)
