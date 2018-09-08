@@ -8,6 +8,7 @@ env:
     - PROJECT=qrealRobots
     - TESTS=true
     - CELLAR_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'osx' ] && echo "/usr/local/Cellar" || echo "")
+    - HEARTBEAT=$(while sleep 100; do echo "=====[ $SECONDS seconds, still building... ]====="; done >&2 & echo $! )
 
 cache:
   timeout: 1000
@@ -64,12 +65,11 @@ install:
   - ./.travis/install.sh
 
 script:
-  - while sleep 5m; do echo "=====[ $SECONDS seconds, still building... ]====="; done &
   - ./.travis/script.sh & WPID=$!; sleep 2000 && kill $WPID & KPID=$!; wait $WPID && { kill $KPID ; true ; }
-  - kill %1
 
 after_script:
   - ./.travis/after_script.sh
+  - kill $HEARTBEAT
 
 after_success:
   - true
