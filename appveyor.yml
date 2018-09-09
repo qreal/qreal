@@ -41,10 +41,11 @@ install:
 before_build:
   - git submodule update --init --recursive
   - ccache -M 900M
+  - g++ --version
 
 
 build_script:
-  - qmake %PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% QMAKE_CXX="ccache g++"
+  - qmake %PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% # QMAKE_CXX="ccache g++"
   - mingw32-make -j2 qmake_all
   - mingw32-make -j2 -k all
 
