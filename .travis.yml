@@ -9,7 +9,7 @@ env:
     - TESTS=true
     - CELLAR_CACHE_DIR=$([ $TRAVIS_OS_NAME = 'osx' ] && echo "/usr/local/Cellar" || { mkdir -p .empty/{qt,ccache} ; echo .empty ; } )
     - HEARTBEAT=$(while sleep 100; do echo "=====[ $SECONDS seconds, still building... ]====="; done >&2 & echo $! )
-
+    - ALL_TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
 cache:
   timeout: 1000
   apt: true
@@ -45,7 +45,7 @@ matrix:
       dist: trusty
       sudo: required
       services: docker
-      env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTest TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
+      env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTest TESTS=$ALL_TESTS
       name: "Linux debug + vera + tests"
     - os: osx
       osx_image: 9.latest
@@ -53,7 +53,7 @@ matrix:
     - os: osx
       osx_image: 9.latest
       name: "macOS debug + tests"
-      env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTest TESTS="./robots_kitBase_unittests-d && ./robots_interpreterCore_unittests-d && ./robots_twoDModel_unittests-d && ./trik-v62-qts-generator-tests-d && ./robots_utils_unittests-d && ./run-simulator-tests.sh"
+      env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTest TESTS=$ALL_TESTS
 git:
   depth: 1
 

@@ -39,8 +39,8 @@ SUBDIRS += \
 	$$PWD/tools/uxInfo/uxInfo.pro \
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../qrutils/debug/ -lqrutils
+win32:CONFIG(release): LIBS += -L$$OUT_PWD/../qrutils/release/ -lqrutils
+else:win32:CONFIG(debug): LIBS += -L$$OUT_PWD/../qrutils/debug/ -lqrutils
 else:unix: LIBS += -L$$OUT_PWD/../qrutils/ -lqrutils
 
 INCLUDEPATH += $$PWD/../qrutils
