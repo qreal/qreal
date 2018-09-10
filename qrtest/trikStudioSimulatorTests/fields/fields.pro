@@ -16,7 +16,7 @@ TEMPLATE = subdirs
 
 include(../../../global.pri)
 
-copyToDestdir(fields/, now)
+copyToDestdir(fields, now)
 
 OTHER_FILES += \
 	$$PWD/fields/randomizer/finish1-test.xml \

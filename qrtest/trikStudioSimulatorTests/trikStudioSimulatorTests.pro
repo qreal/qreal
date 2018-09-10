@@ -19,7 +19,7 @@ SUBDIRS = \
 
 include(../../global.pri)
 
-copyToDestdir(solutions/, now)
+copyToDestdir(solutions, now)
 
 OTHER_FILES += \
 	$$PWD/run-simulator-tests.sh \

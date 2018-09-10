@@ -16,6 +16,7 @@ TARGET = robots-pioneer-lua-generator
 
 include(../../../../../global.pri)
 
+
 QT += widgets network
 
 TEMPLATE = lib

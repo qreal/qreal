@@ -12,6 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+!isEmpty(_PRO_FILE_):!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
+#GLOBAL_PRI_INCLUDED = $$PWD
+
+!CONFIG(qt): CONFIG+=qt
+unix:CONFIG += ltcg
+
+#deal with mixed configurations
+CONFIG -= debug_and_release debug_and_release_target
+CONFIG(release, release | debug): CONFIG -= debug
+CONFIG(debug, debug | release): CONFIG -= release
+CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
+
 win32 {
 	PLATFORM = windows
 }
@@ -24,7 +36,7 @@ macx {
 	PLATFORM = mac
 }
 
-CONFIG(debug, debug | release) {
+CONFIG(debug) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
 	unix {
@@ -36,7 +48,7 @@ CONFIG(debug, debug | release) {
 	CONFIGURATION_SUFFIX =
 }
 
-DESTDIR = $$PWD/bin/$$CONFIGURATION
+DESTDIR = $$absolute_path(bin/$$CONFIGURATION)
 
 PROJECT_BASENAME = $$basename(_PRO_FILE_)
 PROJECT_NAME = $$section(PROJECT_BASENAME, ".", 0, 0)
@@ -62,8 +74,14 @@ macx-clang {
 	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<[5-6]\\.[0-9]\\+\\.\' ){ CONFIG += gcc5 }
-!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -oe \'\\<4\\.[0-9]\\+\\.\' ){ CONFIG += gcc4 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<5\\.[0-9]+\\."' ){ CONFIG += gcc5 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<4\\.[0-9]+\\."' ){ CONFIG += gcc4 }
+
+
+!CONFIG(nosanitizers):!clang:gcc:*-g++*:gcc4{
+	warning("Disabled sanitizers, failed to detect compiler version or too old compiler: $$QMAKE_CXX")
+	CONFIG += nosanitizers
+}
 
 unix:!CONFIG(nosanitizers) {
 
@@ -73,7 +91,7 @@ unix:!CONFIG(nosanitizers) {
 		CONFIG += sanitizer sanitize_undefined
 	}
 
-	CONFIG(debug, debug | release):!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
+	CONFIG(debug):!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
 
 	CONFIG(sanitize_leak) {
 		#LSan can be used without performance degrade even in release build
@@ -104,7 +122,7 @@ unix:!CONFIG(nosanitizers) {
 		}
 	}
 
-	CONFIG(release, debug | release){
+	CONFIG(release){
 		CONFIG(gcc4) {
 			message("Too old compiler: $$QMAKE_CXX")
 		} else {
@@ -140,7 +158,7 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 # I want -Werror to be turned on, but Qt has problems
 #QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
 
-GLOBAL_PWD = $$PWD
+GLOBAL_PWD = $$absolute_path($$PWD)
 
 # Simple function that checks if given argument is a file or directory.
 # Returns false if argument 1 is a file or does not exist.
@@ -158,33 +176,39 @@ defineTest(copyToDestdir) {
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
 		AFTER_SLASH = $$section(FILE, "/", -1, -1)
-		isDir($$FILE) {
-			ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
-			BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
-			DESTDIR_SUFFIX = /$$BASE_NAME
-			FILE = $$FILE/*
+		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
+		win32 {
+			FILE = $$system_path($$FILE)
+			isDir($$FILE) {
+				ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
+				BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
+				DESTDIR_SUFFIX = /$$BASE_NAME
+			}
 		}
 
-		DDIR = $$system_path($$DESTDIR/$$3$$DESTDIR_SUFFIX/)
-		FILE = $$system_path($$FILE)
-
+		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
+		#win32:DDIR ~= s,/,\\,g ??? why not system_path?
+		DDIR = $$system_path($$DDIR)
 		mkpath($$DDIR)
 
+		# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
+		!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
+		win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\*
 		win32 {
-			# probably, xcopy needs /s and /e for directories
-			COPY_DIR = "cmd.exe /C xcopy /f /y /i /e"
+			COPY_COMMAND   = xcopy /f /y /i /s
 		} else {
-		 	COPY_DIR = "rsync -avz "
+			COPY_COMMAND = rsync -avz
 		}
-		COPY_COMMAND = $$COPY_DIR $$quote($$FILE) $$quote($$DDIR)
+		
+		COPY_COMMAND += $$quote($$FILE) $$quote($$DDIR)
 		isEmpty(NOW) {
 			QMAKE_POST_LINK += $$COPY_COMMAND $$escape_expand(\\n\\t)
+			export(QMAKE_POST_LINK)
 		} else {
 			system($$COPY_COMMAND)
 		}
 	}
 
-	export(QMAKE_POST_LINK)
 }
 
 defineTest(includes) {
@@ -198,7 +222,6 @@ defineTest(includes) {
 }
 
 defineTest(links) {
-	LIBS += -L$$DESTDIR
 	PROJECTS = $$1
 
 	for(PROJECT, PROJECTS) {
@@ -207,3 +230,4 @@ defineTest(links) {
 
 	export(LIBS)
 }
+} # GLOBAL_PRI_INCLUDED
