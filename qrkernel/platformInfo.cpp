@@ -91,6 +91,7 @@ QString PlatformInfo::applicationDirPath()
 		result.cdUp();					      // ../bin/debug/qreal-d.app/
 		result.cdUp();					      // ../bin/debug/
 	}
+	
 	return result.absolutePath();
 #else
 	return QCoreApplication::applicationDirPath();
