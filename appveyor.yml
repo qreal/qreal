@@ -29,8 +29,10 @@ cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 #  - C:\ccache.cache
+  - C:\qreal\.build # BUILD_DIR
 
 install:
+  - set BUILD_DIR=%APPVEYOR_BUILD_FOLDER%\.build
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
   - pacman --verbose --noconfirm --sync ccache
 #--refresh --sysupgrade --ask=20
@@ -44,13 +46,15 @@ before_build:
 
 
 build_script:
-  - qmake %PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% # QMAKE_CXX="ccache g++"
+  - cd %BUILD_DIR%
+  - qmake %APPVEYOR_BUILD_FOLDER%\%PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% # QMAKE_CXX="ccache g++"
   - mingw32-make -j2 qmake_all
   - mingw32-make -j2 -k all
 
 test_script:
   - echo %cd%
   - cd bin\%CONFIGURATION%
+  - dir
   - cmd /c %TEST_SUITE%
 
 on_finish:
