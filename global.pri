@@ -15,15 +15,16 @@
 !isEmpty(_PRO_FILE_):!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
 #GLOBAL_PRI_INCLUDED = $$PWD
 
-!CONFIG(qt): CONFIG+=qt
-unix:CONFIG += ltcg
+CONFIG *= qt
+unix:CONFIG *= ltcg
 
 #deal with mixed configurations
 CONFIG -= debug_and_release debug_and_release_target
-CONFIG(release, release | debug): CONFIG -= debug
 CONFIG(debug, debug | release): CONFIG -= release
-CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
-
+else:!CONFIG(debug):CONFIG *= release
+CONFIG(release): CONFIG -= debug
+CONFIG(no-sanitizers): CONFIG *= nosanitizers
+CONFIG = $$unique(CONFIG)
 win32 {
 	PLATFORM = windows
 }
@@ -155,6 +156,11 @@ CONFIG(gcc5)|clang{
 QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
 			-Werror=non-virtual-dtor -Wno-error=overloaded-virtual \
 			-Werror=uninitialized -Werror=init-self
+
+#Workaround for a known gcc/ld (before 7.3/bionic) issue
+CONFIG(sanitizer):!clang:!win32: QMAKE_LFLAGS += -fuse-ld=gold -Wl,--disable-new-dtags
+CONFIG(ltcg):win32:QMAKE_LFLAGS += -fno-use-linker-plugin
+
 
 
 # I want -Werror to be turned on, but Qt has problems

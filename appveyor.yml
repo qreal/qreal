@@ -7,7 +7,6 @@ clone_depth: 1
 
 environment:
   global:
-    APPVEYOR_CACHE_ENTRY_ZIP_ARGS:
     APPVEYOR_SAVE_CACHE_ON_ERROR: true
     PYTHON_PATH: C:\Python27
     PYTHON_LIB: C:\Python27\libs
@@ -41,6 +40,7 @@ install:
   - ccache -p || echo "Failed to print ccache config (missing -p option)"
 
 before_build:
+  - if not exist %BUILD_DIR% mkdir %BUILD_DIR%
   - git submodule update --init --recursive
   - ccache -M 900M
   - g++ --version
@@ -54,7 +54,7 @@ build_script:
 
 test_script:
   - echo %cd%
-  - cd bin\%CONFIGURATION%
+  - cd %APPVEYOR_BUILD_FOLDER%\bin\%CONFIGURATION%
   - dir
   - cmd /c %TEST_SUITE%
 
