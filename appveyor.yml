@@ -14,6 +14,7 @@ environment:
     CCACHE_DIR: C:\ccache.cache
     PROJECT_FILE: qrealRobotsTest
     TEST_SUITE: .\robots_kitBase_unittests.exe && .\robots_interpreterCore_unittests.exe && .\robots_twoDModel_unittests.exe && .\trik-v62-qts-generator-tests.exe && .\robots_utils_unittests.exe"
+    APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
   matrix:
 #    - PROJECT_FILE: qreal
       - MINGW: C:\Qt\Tools\mingw530_32
@@ -34,7 +35,7 @@ cache:
 install:
   - set BUILD_DIR=%APPVEYOR_BUILD_FOLDER%\.build
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
-  - pacman --verbose --noconfirm --sync ccache
+  - pacman --verbose --noconfirm --sync ccache rsync
 #--refresh --sysupgrade --ask=20
   - ccache.exe -V || appveyor DownloadFile "http://alam.srb2.org/ccache.exe" -FileName "ccache.exe" && xcopy /Y /V /I ccache.exe %MINGW%\bin && ccache -V
   - ccache -p || echo "Failed to print ccache config (missing -p option)"
