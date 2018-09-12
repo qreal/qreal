@@ -21,6 +21,15 @@
 
 #include "kernelDeclSpec.h"
 
+// Sometitmes minor/major macroes come from sys/types.h
+#ifdef major
+#    undef major
+#endif
+
+#ifdef minor
+#    undef minor
+#endif
+
 namespace qReal {
 
 /// Represents a version of an editor. String representation is expected to consist

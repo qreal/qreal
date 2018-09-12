@@ -7,14 +7,19 @@ case $TRAVIS_OS_NAME in
      EXECUTOR=
     ;;
   linux)
-      docker run -d -v `pwd`:`pwd` -w `pwd` --name builder trikset/linux-builder Xvfb :0
-      EXECUTOR="docker exec builder "
+     EXECUTOR="time docker exec builder "
    ;;
   *) exit 1 ;;
 esac
-
-if [ "$VERA" = "true" ]; then $EXECUTOR .travis/runVera++.sh ; fi
-$EXECUTOR qmake CONFIG+=$CONFIG CONFIG+=no-sanitizers QMAKE_CXX='ccache g++' -Wall $PROJECT.pro
-$EXECUTOR make -k -j2 >/dev/null
-$EXECUTOR sh -c "cd bin/$CONFIG && ls"
-$EXECUTOR sh -c "export DISPLAY=:0 && cd bin/$CONFIG && $TESTS"
+$EXECUTOR sh -c "export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG \
+&& which g++ \
+&& g++ --version \
+&& ccache -M 0 \
+&& pkg-config --list-all \
+&& if $VERA ; then .travis/runVera++.sh ; fi \
+&& qmake -Wall CONFIG+=$CONFIG CONFIG+=no-sanitizers QMAKE_CXX=\"ccache $CXX\" $PROJECT.pro \
+&& sh -c 'make -k -j2 qmake_all 1>>build.log 2>&1' \
+&& sh -c 'make -k -j2 all 1>>build.log 2>&1' \
+&& ccache -s \
+&& sh -c \"cd bin/$CONFIG && ls\" \
+&& sh -c \"export DISPLAY=:0 && cd bin/$CONFIG && $TESTS\""
