@@ -117,7 +117,7 @@ private:
 	const QMetaObject *mDeviceType;
 	QString mName;
 	QString mFriendlyName;
-	bool mSimulated;
+	bool mSimulated {};
 	Direction mDirection;
 };
 

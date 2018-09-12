@@ -19,4 +19,4 @@ ROOT = ../../..
 
 include (../../editorsSdk/editorsCommon.pri)
 
-copyToDestdir(images/, now)
+copyToDestdir(images, now)

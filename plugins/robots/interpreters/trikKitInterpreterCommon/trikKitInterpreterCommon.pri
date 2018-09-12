@@ -27,13 +27,13 @@ includes(plugins/robots/common/kitBase \
 
 links(qrkernel qrutils qrtext qrgui-preferences-dialog qrgui-tool-plugin-interface qscintilla2 \
 		robots-utils robots-kit-base robots-2d-model robots-trik-kit qslog \
-		trikControl-x86 trikScriptRunner-x86 trikKernel-x86 qrgui-text-editor \
+		trikControl trikScriptRunner trikKernel qrgui-text-editor \
 		)
 
 copyToDestdir(./icons/trik-robot.svg, now, images/)
-LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
+#LIBS += -L$$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION
 # it's here because it looks like it can't be placed in a subdirs project (where is nothing to link)
-copyToDestdir($$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION/*)
+#copyToDestdir($$GLOBAL_PWD/plugins/robots/thirdparty/trikRuntime/trikRuntime/bin/x86-$$CONFIGURATION/*)
 
 HEADERS += \
 	$$PWD/include/trikKitInterpreterCommon/declSpec.h \

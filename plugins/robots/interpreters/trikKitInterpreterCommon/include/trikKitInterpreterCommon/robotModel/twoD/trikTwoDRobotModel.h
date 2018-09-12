@@ -48,7 +48,7 @@ public:
 
 	QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 
-	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const;
+	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 
 	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> specialDevices() const override;
 
