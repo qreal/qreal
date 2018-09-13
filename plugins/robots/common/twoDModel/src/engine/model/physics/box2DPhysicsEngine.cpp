@@ -247,9 +247,10 @@ void Box2DPhysicsEngine::recalculateParameters(qreal timeInterval)
 		if (mBox2DRobots[robot]->isStopping()){
 			mBox2DRobots[robot]->stop();
 		} else {
-			// 19 is the speed adaptation coefficient for physics engines
-			const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * 19;
-			const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * 19;
+			// sAdpt is the speed adaptation coefficient for physics engines
+			const int sAdpt = 10;
+			const qreal speed1 = pxToM(wheelLinearSpeed(*robot, robot->leftWheel())) / secondsInterval * sAdpt;
+			const qreal speed2 = pxToM(wheelLinearSpeed(*robot, robot->rightWheel())) / secondsInterval * sAdpt;
 
 			mLeftWheels[robot]->keepConstantSpeed(speed1);
 			mRightWheels[robot]->keepConstantSpeed(speed2);
