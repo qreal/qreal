@@ -6,40 +6,44 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>153</height>
+    <width>497</width>
+    <height>97</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QWidget" name="uploadSettingsWidget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="useControllerScriptCheckBox">
-        <property name="text">
-         <string>Use &quot;controller&quot; tool to upload and run programs</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="useComPortCheckBox">
-        <property name="text">
-         <string>Use COM port to upload programs </string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="connectionSettingsGroupBox">
      <property name="title">
       <string>Connection Settings</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="baseStationIpLabel">
         <property name="text">
@@ -57,23 +61,6 @@
         </property>
         <property name="placeholderText">
          <string>127.0.0.1</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="comPortLabel">
-        <property name="text">
-         <string>COM Port:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLineEdit" name="comPortLineEdit">
-        <property name="inputMask">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>COM1</string>
         </property>
        </widget>
       </item>

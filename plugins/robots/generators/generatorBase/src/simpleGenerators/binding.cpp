@@ -111,7 +111,7 @@ void Binding::applyMulti(const QString &property, QString &data)
 {
 	QString result;
 	const QStringList parts = mMultiConverter->convert(property);
-	foreach (const QString &part, parts) {
+	for (const QString &part : parts) {
 		QString dataCopy = data;
 		dataCopy.replace(mLabel, part);
 		result += dataCopy;

@@ -22,6 +22,8 @@
 
 #include "parts/randomGeneratorPart.h"
 
+const QString randomKeyWord = "random";
+
 using namespace pioneer::lua;
 
 RandomFunctionChecker::RandomFunctionChecker(
@@ -47,9 +49,13 @@ void RandomFunctionChecker::checkNode(const qReal::Id &id)
 
 	const auto properties = mMetamodel.propertyNames(id.type());
 	for (const auto &property : properties) {
-		const auto ast = mLanguageToolbox.parse(id, property, mRepo.stringProperty(id, property));
-		if (!ast.isNull()) {
-			checkAst(ast);
+		const QString localStringProperty = mRepo.stringProperty(id, property);
+
+		if (localStringProperty.contains(randomKeyWord)) {
+			const auto ast = mLanguageToolbox.parse(id, property, localStringProperty);
+			if (!ast.isNull()) {
+				checkAst(ast);
+			}
 		}
 	}
 }
@@ -62,7 +68,7 @@ void RandomFunctionChecker::checkAst(QSharedPointer<qrtext::core::ast::Node> ast
 			// We don't support indirect function calls here, but upstream text language tools do not support them
 			// anyways.
 			auto idNode = qrtext::as<qrtext::lua::ast::Identifier>(call->function());
-			if (idNode->name() == "random") {
+			if (idNode->name() == randomKeyWord) {
 				mRandomGeneratorPart.registerUsage();
 				return;
 			}
@@ -70,7 +76,9 @@ void RandomFunctionChecker::checkAst(QSharedPointer<qrtext::core::ast::Node> ast
 	}
 
 	for (const auto child : ast->children()) {
-		checkAst(child);
+		if (child) {
+			checkAst(child);
+		}
 	}
 }
 

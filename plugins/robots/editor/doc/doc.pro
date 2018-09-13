@@ -30,4 +30,5 @@ OTHER_FILES += \
 	help/programming.html \
 	help/style.css \
 	help/trik.html \
+	help/pioneer.html \
 	help/version.js \

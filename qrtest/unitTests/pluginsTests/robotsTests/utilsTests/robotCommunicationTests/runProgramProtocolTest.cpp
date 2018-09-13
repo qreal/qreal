@@ -69,7 +69,7 @@ TEST_F(RunProgramProtocolTest, mainExecutionTest)
 
 	protocol.run(QFileInfo("test"));
 
-	signalsTester.wait(100);
+	signalsTester.wait(250);
 
 	ASSERT_TRUE(signalsTester.allIsGood());
 }
@@ -90,7 +90,7 @@ TEST_F(RunProgramProtocolTest, incorrectCasingVersion)
 
 	protocol.run(QFileInfo("test"));
 
-	signalsTester.wait(100);
+	signalsTester.wait(250);
 
 	ASSERT_TRUE(signalsTester.allIsGood());
 }

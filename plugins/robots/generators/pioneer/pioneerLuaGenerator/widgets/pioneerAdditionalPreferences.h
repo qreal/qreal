@@ -40,10 +40,6 @@ signals:
 	/// Emitted when some settings are changed.
 	void settingsChanged();
 
-private slots:
-	/// Get called when "use controller" checkbox or "use COM port" checkbox changes state.
-	void onCheckboxesChanged();
-
 private:
 	Ui::PioneerAdditionalPreferences *mUi;
 };
