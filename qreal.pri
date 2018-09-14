@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-contains(QT_VERSION, ^4\\.[0-5]\\..*){
-	message("Cannot build qreal using Qt version $${QT_VERSION}")
-	error("Use at least Qt 4.6")
+contains(QT_VERSION, ^4\\.[0-9]\\..*){
+	message("Cannot build using Qt version $${QT_VERSION}")
+	error("Use at least Qt 5.1")
 }
 
 TEMPLATE = subdirs
