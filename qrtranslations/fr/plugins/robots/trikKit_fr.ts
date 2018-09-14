@@ -12,10 +12,10 @@
 <context>
     <name>trik::robotModel::TrikRobotModelBase</name>
     <message>
-        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="89"/>
-        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="132"/>
-        <source>Line sensor</source>
-        <translation>Capteur de ligne</translation>
+        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="91"/>
+        <location filename="../../../../plugins/robots/common/trikKit/src/robotModel/trikRobotModelBase.cpp" line="134"/>
+        <source>Video 2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -83,6 +83,14 @@
     </message>
 </context>
 <context>
+    <name>trik::robotModel::parts::TrikLightSensor</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikLightSensor.h" line="28"/>
+        <source>Light sensor</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>trik::robotModel::parts::TrikLineSensor</name>
     <message>
         <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikLineSensor.h" line="28"/>
@@ -96,6 +104,14 @@
         <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikMotionSensor.h" line="27"/>
         <source>Motion Sensor</source>
         <translation>Capteur de mouvement</translation>
+    </message>
+</context>
+<context>
+    <name>trik::robotModel::parts::TrikMotorsAggregator</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikMotorsAggregator.h" line="27"/>
+        <source>Trik Motors Aggregator</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -123,18 +139,19 @@
     </message>
 </context>
 <context>
-    <name>trik::robotModel::parts::TrikShell</name>
-    <message>
-        <source>Shell</source>
-        <translation type="vanished">Interpréteur de commandes</translation>
-    </message>
-</context>
-<context>
     <name>trik::robotModel::parts::TrikSonarSensor</name>
     <message>
         <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikSonarSensor.h" line="26"/>
         <source>Sonic Sensor</source>
         <translation>Capteur de son</translation>
+    </message>
+</context>
+<context>
+    <name>trik::robotModel::parts::TrikTouchSensor</name>
+    <message>
+        <location filename="../../../../plugins/robots/common/trikKit/include/trikKit/robotModel/parts/trikTouchSensor.h" line="28"/>
+        <source>Touch sensor</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

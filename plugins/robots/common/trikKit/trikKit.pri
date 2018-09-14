@@ -46,6 +46,8 @@ HEADERS += \
 	$$PWD/include/trikKit/robotModel/parts/trikObjectSensor.h \
 	$$PWD/include/trikKit/robotModel/parts/trikShell.h \
 	$$PWD/include/trikKit/robotModel/parts/trikMotorsAggregator.h \
+	$$PWD/include/trikKit/robotModel/parts/trikTouchSensor.h \
+	$$PWD/include/trikKit/robotModel/parts/trikLightSensor.h \
 	$$PWD/include/trikKit/blocks/trikBlocksFactoryBase.h \
 	$$PWD/include/trikKit/blocks/trikV6BlocksFactory.h \
 	$$PWD/include/trikKit/blocks/trikV62BlocksFactory.h \
@@ -99,6 +101,8 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/trikSpeaker.cpp \
 	$$PWD/src/robotModel/parts/trikShell.cpp \
 	$$PWD/src/robotModel/parts/trikMotorsAggregator.cpp \
+	$$PWD/src/robotModel/parts/trikTouchSensor.cpp \
+	$$PWD/src/robotModel/parts/trikLightSensor.cpp \
 	$$PWD/src/blocks/trikBlocksFactoryBase.cpp \
 	$$PWD/src/blocks/trikV6BlocksFactory.cpp \
 	$$PWD/src/blocks/trikV62BlocksFactory.cpp \
