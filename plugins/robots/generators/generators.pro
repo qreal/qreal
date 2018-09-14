@@ -28,8 +28,8 @@ SUBDIRS = \
 	trikV62PascalABCGenerator \
 	trikPythonGeneratorLibrary \
 	trikV62PythonGenerator \
-	trikV6RuntimeUploaderPlugin \
-	trikV62RuntimeUploaderPlugin \
+#	trikV6RuntimeUploaderPlugin \
+#	trikV62RuntimeUploaderPlugin \
 	trikSharpBinaries \
 	nxtGeneratorBase \
 	nxtOsekCGenerator \
@@ -50,8 +50,8 @@ trikV6PascalABCGenerator.subdir = $$PWD/trik/trikV6PascalABCGenerator
 trikV62PascalABCGenerator.subdir = $$PWD/trik/trikV62PascalABCGenerator
 trikPythonGeneratorLibrary.subdir = $$PWD/trik/trikPythonGeneratorLibrary
 trikV62PythonGenerator.subdir = $$PWD/trik/trikV62PythonGenerator
-trikV6RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV6RuntimeUploaderPlugin
-trikV62RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV62RuntimeUploaderPlugin
+#trikV6RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV6RuntimeUploaderPlugin
+#trikV62RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV62RuntimeUploaderPlugin
 trikSharpBinaries.subdir = $$PWD/trik/trikSharpBinaries
 nxtGeneratorBase.subdir = $$PWD/nxt/nxtGeneratorBase
 nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
