@@ -44,7 +44,6 @@ HEADERS += \
 	$$PWD/pioneerLuaMasterGenerator.h \
 	$$PWD/communicator/communicatorInterface.h \
 	$$PWD/communicator/communicationManager.h \
-	$$PWD/communicator/controllerCommunicator.h \
 	$$PWD/communicator/httpCommunicator.h \
 	$$PWD/generators/gotoLabelManager.h \
 	$$PWD/generators/pioneerStateMachineGenerator.h \
@@ -79,7 +78,6 @@ SOURCES += \
 	$$PWD/pioneerLuaGeneratorPlugin.cpp \
 	$$PWD/pioneerLuaMasterGenerator.cpp \
 	$$PWD/communicator/communicationManager.cpp \
-	$$PWD/communicator/controllerCommunicator.cpp \
 	$$PWD/communicator/httpCommunicator.cpp \
 	$$PWD/generators/gotoLabelManager.cpp \
 	$$PWD/generators/pioneerStateMachineGenerator.cpp \
