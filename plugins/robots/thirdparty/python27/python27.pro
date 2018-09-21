@@ -1,4 +1,4 @@
-# Copyright 2015 QReal Research Group
+# Copyright 2018 Cybertech Labs Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,16 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS += \
-	qextserialport \
-	libusb-1.0.19 \
-	trikRuntime \
-	Box2D \
-	python27 \
+include(../../../../global.pri)
+
+win32 {
+	copyToDestdir(python27.dll, NOW)
+}
+
+macx {
+	copyToDestdir(libpython27.dylib, NOW)
+}
+
+CONFIG(clang) {
+	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+}
