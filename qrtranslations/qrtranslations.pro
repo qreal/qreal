@@ -19,13 +19,20 @@ include(../global.pri)
 
 win32 {
 	DESTDIR ~= s,/,\\,g
+	system(cmd /C "DEL /s *.qm")
+	system(cmd /C "for /R %G in (*.ts) do lrelease -nounfinished -removeidentical %G")
 	system(cmd /C "xcopy *.qm $$DESTDIR\\translations\\ /s /e /y")
 }
 
 unix:!macx {
-	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec cp --parents {} $$DESTDIR/translations \\;)
+	system(mkdir -p $$DESTDIR/translations/; find ./ -name '*.qm' -delete)
+	system(find ./ -name '*.ts' -exec lrelease -nounfinished -removeidentical {} \\;)
+	system(find ./ -name *.qm -exec cp --parents {} $$DESTDIR/translations \\;)
+
 }
 
 macx {
-	system(mkdir -p $$DESTDIR/translations/; find ./ -name *.qm -exec rsync -R {} $$DESTDIR/translations \\;)
+	system(mkdir -p $$DESTDIR/translations/; find ./ -name '*.qm' -delete)
+	system(find ./ -name '*.ts' -exec lrelease -nounfinished -removeidentical {} \\;)
+	system(find ./ -name *.qm -exec rsync -R {} $$DESTDIR/translations \\;)
 }
