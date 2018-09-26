@@ -62,6 +62,8 @@ plugins.depends = \
 
 qrtext.depends = qrkernel
 
+qrtranslations.depends = initvars.pro
+
 OTHER_FILES += \
 	$$PWD/.travis.yml \
 	$$PWD/appveyor.yml \
