@@ -1,4 +1,4 @@
-# Copyright 2016 Iakov Kirilenko, 2007-2017 QReal Research Group
+# Copyright 2018 Iakov Kirilenko, 2007-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ isEmpty(TARGET) {
 equals(TEMPLATE, app) {
 	unix:!macx {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
-		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,\'\$$ORIGIN\'
 	}
 	macx:!CONFIG(no_rpath) {
 		QMAKE_LFLAGS += -rpath . -rpath @executable_path/../Lib -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
