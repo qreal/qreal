@@ -779,7 +779,7 @@ void TwoDModelWidget::setCursorType(CursorType cursor)
 
 void TwoDModelWidget::changePhysicsSettings()
 {
-	SettingsManager::setValue("2DModelRealisticPhysics", mUi->realisticPhysicsCheckBox->isChecked());
+	SettingsManager::setValue("2dModelRealisticPhysics", mUi->realisticPhysicsCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 
