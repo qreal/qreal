@@ -263,7 +263,6 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
-	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
