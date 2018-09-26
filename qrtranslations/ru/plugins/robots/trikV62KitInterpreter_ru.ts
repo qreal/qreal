@@ -9,8 +9,8 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
-        <source>TRIK (model-2015)</source>
-        <translation>TRIK (модель 2015)</translation>
+        <source>TRIK</source>
+        <translation>TRIK</translation>
     </message>
 </context>
 <context>
