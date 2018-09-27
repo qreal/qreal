@@ -24,11 +24,3 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/librobots-trik-kit-interpreter-comm
 
 mkdir -p "$BUNDLE_CONTENTS/MacOS"
 rsync -a  $BIN_DIR/system.{py,js}                                                 "$BUNDLE_CONTENTS/MacOS/"
-
-
-cd "$(dirname "$0")"/../data
-rm -rf winscp
-mkdir -p "$BUNDLE_CONTENTS/Resources/trikRuntime"
-cd "$BUNDLE_CONTENTS/Resources/trikRuntime"
-tar xfvz ../../../../trik-runtime-builds/trikRuntime.tar.gz
-rm -rf ../../../../trik-runtime-builds
