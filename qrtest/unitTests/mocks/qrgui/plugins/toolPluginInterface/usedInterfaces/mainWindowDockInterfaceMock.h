@@ -32,6 +32,7 @@ public:
 	MOCK_CONST_METHOD0(propertyEditorDock, QDockWidget *());
 	MOCK_CONST_METHOD0(errorReporterDock, QDockWidget *());
 	MOCK_CONST_METHOD0(paletteDock, QDockWidget *());
+	MOCK_CONST_METHOD0(minimapDock, QDockWidget *());
 	MOCK_CONST_METHOD0(statusBar, QStatusBar *());
 	MOCK_CONST_METHOD0(toolBars, QList<QToolBar *>());
 	MOCK_METHOD2(tabifyDockWidget, void(QDockWidget *, QDockWidget *));
