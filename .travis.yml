@@ -18,6 +18,8 @@ cache:
   directories:
     - $CELLAR_CACHE_DIR/qt
     - $CELLAR_CACHE_DIR/ccache
+    - $CELLAR_CACHE_DIR/python@2
+    - $CELLAR_CACHE_DIR/python@3
 #    - /usr/local/opt/
 #    - /usr/local/lib/
 #    - $HOME/.ccache
