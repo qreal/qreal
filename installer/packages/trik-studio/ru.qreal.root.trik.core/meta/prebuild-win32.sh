@@ -25,9 +25,7 @@ cp    $BIN_DIR/system.js                                                        
 cp    $BIN_DIR/system.py                                                          $PWD/../data/bin/
 
 cd "$(dirname "$0")"/../data
-rm -rf winscp
+rm -rf trik-runtime-builds
+git clone  --depth 1 https://github.com/qreal/trik-runtime-builds
 mv trik-runtime-builds/winscp $PWD
-mkdir -p trikRuntime
-cd trikRuntime
-tar xfvz ../trik-runtime-builds/trikRuntime.tar.gz
-rm -rf ../trik-runtime-builds
+rm -rf trik-runtime-builds
