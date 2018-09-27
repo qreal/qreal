@@ -28,7 +28,6 @@ unix:!macx {
 	system(mkdir -p $$DESTDIR/translations/; find ./ -name '*.qm' -delete)
 	system(find ./ -name '*.ts' -exec lrelease -nounfinished -removeidentical {} \\;)
 	system(find ./ -name *.qm -exec cp --parents {} $$DESTDIR/translations \\;)
-
 }
 
 macx {
