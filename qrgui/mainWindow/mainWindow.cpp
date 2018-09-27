@@ -2095,6 +2095,11 @@ QDockWidget *MainWindow::paletteDock() const
 	return mUi->paletteDock;
 }
 
+QDockWidget *MainWindow::minimapDock() const
+{
+	return mUi->minimapDock;
+}
+
 QStatusBar *MainWindow::statusBar() const
 {
 	return mUi->statusbar;

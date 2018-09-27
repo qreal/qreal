@@ -48,6 +48,9 @@ public:
 	/// Returns the pointer to main window`s palette dock.
 	virtual QDockWidget *paletteDock() const = 0;
 
+	/// Returns the pointer to main window`s minimap dock.
+	virtual QDockWidget *minimapDock() const = 0;
+
 	/// Returns the pointer to main window`s stripe in the bottom of the window.
 	virtual QStatusBar *statusBar() const = 0;
 

@@ -148,6 +148,7 @@ public:
 	QDockWidget *propertyEditorDock() const override;
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
+	QDockWidget *minimapDock() const override;
 	QStatusBar *statusBar() const override;
 	QList<QToolBar *> toolBars() const override;
 

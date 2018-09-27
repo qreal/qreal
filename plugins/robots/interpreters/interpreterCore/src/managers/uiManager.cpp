@@ -15,6 +15,7 @@
 #include "uiManager.h"
 
 #include <QtCore/QTimer>
+#include <QtCore/QSet>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -27,6 +28,7 @@
 
 #include <qrkernel/logging.h>
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
 #include <qrutils/inFile.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/widgets/consoleDock.h>
@@ -95,13 +97,24 @@ UiManager::UiManager(QAction &debugModeAction
 
 	switchToEditorMode();
 	onActiveTabChanged(qReal::TabInfo());
+
+	qReal::SettingsListener::listen("dockableWidgets", this, &UiManager::updateDocksSettings);
+}
+
+UiManager::~UiManager()
+{
+	mDockWidgets.clear();
 }
 
 void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 {
 	QDockWidget * const devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
 	devicesDock->setObjectName("devicesConfigurationDock");
-	connect(this, &QObject::destroyed, [devicesDock](){ devicesDock->setParent(nullptr); });
+	connect(this, &QObject::destroyed, [this, devicesDock](){
+		devicesDock->setParent(nullptr);
+		mDockWidgets.remove(devicesDock);
+	});
+
 	utils::SmartDock::hideCloseButton(devicesDock);
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, devicesDock);
 }
@@ -113,12 +126,20 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	watchWindow->setObjectName("variablesDebuggerDock");
 	watchWindow->setFloating(false);
 
+	mDockWidgets.insert(watchWindow);
 	QDockWidget * const graphWatchDock = produceDockWidget(QObject::tr("Sensors state"), graphicsWatch);
 	graphWatchDock->setObjectName("graphicsWatcherDock");
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
-	connect(this, &QObject::destroyed, [watchWindow](){ watchWindow->setParent(nullptr); });
-	connect(this, &QObject::destroyed, [graphWatchDock](){ graphWatchDock->setParent(nullptr); });
+	connect(this, &QObject::destroyed, [this, watchWindow](){
+		watchWindow->setParent(nullptr);
+		mDockWidgets.remove(watchWindow);
+	});
+
+	connect(this, &QObject::destroyed, [this, graphWatchDock](){
+		graphWatchDock->setParent(nullptr);
+		mDockWidgets.remove(graphWatchDock);
+	});
 
 	mMainWindow.tabifyDockWidget(watchWindow, graphWatchDock);
 	reloadDocks();
@@ -230,10 +251,12 @@ void UiManager::toggleModeButtons()
 	mMainWindow.statusBar()->setVisible(true);
 }
 
-QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content) const
+QDockWidget *UiManager::produceDockWidget(const QString &title, QWidget *content)
 {
 	QDockWidget * const dock = new QDockWidget(title);
+	mDockWidgets.insert(dock);
 	dock->setWidget(content);
+	updateDocksSettings();
 	return dock;
 }
 
@@ -276,7 +299,7 @@ void UiManager::saveDocks() const
 	qReal::SettingsManager::setValue(currentSettingsKey(), mMainWindow.saveState(currentMode()));
 }
 
-void UiManager::reloadDocks() const
+void UiManager::reloadDocks()
 {
 	hack2dModelDock();
 	const QByteArray state = qReal::SettingsManager::value(currentSettingsKey()).toByteArray();
@@ -288,10 +311,12 @@ void UiManager::reloadDocks() const
 		if (mRobotConsole->isEmpty()) {
 			mRobotConsole->hide();
 		}
+
+		updateDocksSettings();
 	}
 }
 
-void UiManager::reloadDocksSavingToolbarsAndErrors() const
+void UiManager::reloadDocksSavingToolbarsAndErrors()
 {
 	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
 	// will loose some toolbars visibility and error reporter state, so memorizing it here...
@@ -334,6 +359,45 @@ void UiManager::ensureDiagramVisible()
 		if (twoDModel->isCentral()) {
 			switchToEditorMode();
 			return;
+		}
+	}
+}
+
+void UiManager::updateDocksSettings()
+{
+	auto dockableWidgets = qReal::SettingsManager::value("dockableWidgets", false).toBool();
+	auto flag = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable;
+	if (dockableWidgets) {
+		mMainWindow.paletteDock()->setFeatures(flag);
+		mMainWindow.minimapDock()->setFeatures(flag);
+		mMainWindow.logicalModelDock()->setFeatures(flag);
+		mMainWindow.errorReporterDock()->setFeatures(flag);
+		mMainWindow.graphicalModelDock()->setFeatures(flag);
+		mMainWindow.propertyEditorDock()->setFeatures(flag);
+		mRobotConsole->setFeatures(flag);
+	} else {
+		mMainWindow.paletteDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mMainWindow.minimapDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mMainWindow.logicalModelDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mMainWindow.errorReporterDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mMainWindow.graphicalModelDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mMainWindow.propertyEditorDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mRobotConsole->setFeatures(QDockWidget::NoDockWidgetFeatures);
+	}
+
+	for (auto dock : mDockWidgets) {
+		if (dockableWidgets) {
+			dock->setFeatures(flag);
+		} else {
+			dock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		}
+	}
+
+	for (utils::SmartDock * const twoDModel : mMainWindow.windowWidget()->findChildren<utils::SmartDock *>()) {
+		if (dockableWidgets) {
+			twoDModel->setFeatures(flag);
+		} else {
+			twoDModel->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		}
 	}
 }

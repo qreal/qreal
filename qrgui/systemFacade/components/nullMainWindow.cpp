@@ -34,6 +34,7 @@ NullMainWindow::NullMainWindow(ErrorReporterInterface &errorReporter
 	, mPropertyEditorDock(new QDockWidget(mWindowWidget))
 	, mErrorReporterDock(new QDockWidget(mWindowWidget))
 	, mPaletteDock(new QDockWidget(mWindowWidget))
+	, mMinimapDock(new QDockWidget(mWindowWidget))
 	, mStatusBar(new QStatusBar(mWindowWidget))
 {
 }
@@ -280,6 +281,11 @@ QDockWidget *NullMainWindow::errorReporterDock() const
 QDockWidget *NullMainWindow::paletteDock() const
 {
 	return mPaletteDock;
+}
+
+QDockWidget *NullMainWindow::minimapDock() const
+{
+	return mMinimapDock;
 }
 
 QStatusBar *NullMainWindow::statusBar() const

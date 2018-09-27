@@ -73,3 +73,4 @@ scriptInterpretation=false
 scriptName=:/mainWindow/hintScripts/obstacle.js
 interpreterStackSize=4000
 gesturesEnabled=true
+dockableWidgets=false
