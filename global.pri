@@ -1,4 +1,4 @@
-# Copyright 2016 Iakov Kirilenko, 2007-2017 QReal Research Group
+# Copyright 2018 Iakov Kirilenko, 2007-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,15 +15,16 @@
 !isEmpty(_PRO_FILE_):!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
 #GLOBAL_PRI_INCLUDED = $$PWD
 
-!CONFIG(qt): CONFIG+=qt
-unix:CONFIG += ltcg
+CONFIG *= qt
+unix:CONFIG *= ltcg
 
 #deal with mixed configurations
 CONFIG -= debug_and_release debug_and_release_target
-CONFIG(release, release | debug): CONFIG -= debug
 CONFIG(debug, debug | release): CONFIG -= release
-CONFIG(no-sanitizers):!CONFIG(nosanitizers): CONFIG += nosanitizers
-
+else:!CONFIG(debug):CONFIG *= release
+CONFIG(release): CONFIG -= debug
+CONFIG(no-sanitizers): CONFIG *= nosanitizers
+CONFIG = $$unique(CONFIG)
 win32 {
 	PLATFORM = windows
 }
@@ -48,7 +49,9 @@ CONFIG(debug) {
 	CONFIGURATION_SUFFIX =
 }
 
-DESTDIR = $$absolute_path(bin/$$CONFIGURATION)
+GLOBAL_PWD = $$absolute_path($$PWD)
+
+#DESTDIR = $$absolute_path($$GLOBAL_PWD/bin/$$CONFIGURATION)
 
 PROJECT_BASENAME = $$basename(_PRO_FILE_)
 PROJECT_NAME = $$section(PROJECT_BASENAME, ".", 0, 0)
@@ -62,7 +65,7 @@ isEmpty(TARGET) {
 equals(TEMPLATE, app) {
 	unix:!macx {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
-		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,\'\$$ORIGIN\'
 	}
 	macx:!CONFIG(no_rpath) {
 		QMAKE_LFLAGS += -rpath . -rpath @executable_path/../Lib -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
@@ -138,9 +141,9 @@ MOC_DIR = .build/$$CONFIGURATION/moc
 RCC_DIR = .build/$$CONFIGURATION/rcc
 UI_DIR = .build/$$CONFIGURATION/ui
 
-INCLUDEPATH += $$_PRO_FILE_PWD_ \
-	$$_PRO_FILE_PWD_/include \
-	$$PWD \
+INCLUDEPATH += $$absolute_path($$_PRO_FILE_PWD_) \
+	$$absolute_path($$_PRO_FILE_PWD_/include) \
+	$$absolute_path($$PWD) \
 
 LIBS += -L$$DESTDIR
 
@@ -154,11 +157,14 @@ QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decl
 			-Werror=non-virtual-dtor -Wno-error=overloaded-virtual \
 			-Werror=uninitialized -Werror=init-self
 
+#Workaround for a known gcc/ld (before 7.3/bionic) issue
+CONFIG(sanitizer):!clang:!win32: QMAKE_LFLAGS += -fuse-ld=gold -Wl,--disable-new-dtags
+CONFIG(ltcg):win32:QMAKE_LFLAGS += -fno-use-linker-plugin
+
+
 
 # I want -Werror to be turned on, but Qt has problems
 #QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
-
-GLOBAL_PWD = $$absolute_path($$PWD)
 
 # Simple function that checks if given argument is a file or directory.
 # Returns false if argument 1 is a file or does not exist.

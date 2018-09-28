@@ -11,13 +11,17 @@ case $TRAVIS_OS_NAME in
    ;;
   *) exit 1 ;;
 esac
+if $VERA ; then $EXECUTOR .travis/runVera++.sh ; fi
 $EXECUTOR sh -c "export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG \
+&& export CCACHE_CPP2=yes \
+&& export CCACHE_SLOPPINESS=time_macros \
 && which g++ \
 && g++ --version \
+&& which qmake \
+&& qmake -query \
 && ccache -M 0 \
 && pkg-config --list-all \
-&& if $VERA ; then .travis/runVera++.sh ; fi \
-&& qmake -Wall CONFIG+=$CONFIG CONFIG+=no-sanitizers QMAKE_CXX=\"ccache $CXX\" $PROJECT.pro \
+&& qmake -Wall CONFIG+=$CONFIG $PROJECT.pro \
 && sh -c 'make -k -j2 qmake_all 1>>build.log 2>&1' \
 && sh -c 'make -k -j2 all 1>>build.log 2>&1' \
 && ccache -s \
