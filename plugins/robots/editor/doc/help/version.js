@@ -1,5 +1,5 @@
-﻿var version = "3.2.0";
-var year = 2017;
+﻿var version = "3.3.0";
+var year = 2018;
 
 window.onload = function() {
 	document.title = document.title.replace("%version%", version);

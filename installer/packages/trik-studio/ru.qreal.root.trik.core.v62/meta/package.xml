@@ -4,7 +4,7 @@
     <DisplayName xml:lang="ru_ru">Поддержка ТРИК (новый корпус)</DisplayName>
     <Description>Enables support of TRIK (new case) in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Поддержка конструктора ТРИК (новый корпус, с портами энкодеров E1 - E4)</Description>
-    <Version>3.2.0-4</Version>
+    <Version>3.3.0-2</Version>
     <ReleaseDate>2017-11-14</ReleaseDate>
     <SortingPriority>10</SortingPriority>
     <Default>true</Default>
