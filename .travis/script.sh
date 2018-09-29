@@ -22,8 +22,8 @@ $EXECUTOR sh -c "export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG \
 && ccache -M 0 \
 && pkg-config --list-all \
 && qmake -Wall CONFIG+=$CONFIG $PROJECT.pro \
-&& sh -c 'make -k -j2 qmake_all 1>>build.log 2>&1' \
-&& sh -c 'make -k -j2 all 1>>build.log 2>&1' \
+&& sh -c 'make -j2 qmake_all 1>>build.log 2>&1' \
+&& sh -c 'make -j2 all 1>>build.log 2>&1' \
 && ccache -s \
 && sh -c \"cd bin/$CONFIG && ls\" \
 && sh -c \"export DISPLAY=:0 && cd bin/$CONFIG && $TESTS\""
