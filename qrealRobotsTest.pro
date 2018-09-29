@@ -40,3 +40,5 @@ robotsTests.depends = \
 testUtils.depends = \
 	googletest \
 	qrgui \
+
+trikStudioSimulatorTests.depends =  qrgui

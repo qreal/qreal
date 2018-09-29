@@ -18,6 +18,8 @@ cache:
   directories:
     - $CELLAR_CACHE_DIR/qt
     - $CELLAR_CACHE_DIR/ccache
+    - $CELLAR_CACHE_DIR/python@2
+    - $CELLAR_CACHE_DIR/python@3
 #    - /usr/local/opt/
 #    - /usr/local/lib/
 #    - $HOME/.ccache
@@ -66,7 +68,9 @@ install:
   - ./.travis/install.sh
 
 script:
-  - ./.travis/script.sh & WPID=$!; sleep 1800 && kill $WPID & KPID=$!; { wait $WPID ; RES=$?; kill $KPID || true ; ( exit $RES ) ; }
+  - ./.travis/script.sh & WPID=$!
+  - sleep 2400 && { kill $WPID || true ; echo "***KILLED ON TIMEOUT***" ; } & KPID=$!
+  - wait $WPID ; RES=$?; kill $KPID > /dev/null ; ( exit $RES )
 
 after_script:
   - ./.travis/after_script.sh
