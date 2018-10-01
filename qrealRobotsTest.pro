@@ -27,6 +27,7 @@ testUtils.subdir = $$PWD/qrtest/unitTests/testUtils
 robotsTests.subdir = $$PWD/qrtest/unitTests/pluginsTests/robotsTests
 trikStudioSimulatorTests.subdir = $$PWD/qrtest/trikStudioSimulatorTests
 
+googletest.depends = initvars.pro
 robotsTests.depends = \
 	qrxc \
 	qrgui \
