@@ -31,13 +31,13 @@ QString TofPart::initCode()
 	if (mIsUsed) {
 		return readTemplateIfExists("initialization/tof.t");
 	} else {
-		return "";
+		return QString();
 	}
 }
 
 QString TofPart::terminateCode()
 {
-	return "";
+	return QString();
 }
 
 void TofPart::registerUsage()

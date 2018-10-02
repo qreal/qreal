@@ -459,7 +459,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/elements.h" line="445"/>
         <source>Read Range Sensor</source>
-        <translation>Дальномер в переменную</translation>
+        <translation>Прочитать дальномер</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/pioneer/generated/elements.h" line="447"/>
