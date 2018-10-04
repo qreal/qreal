@@ -17,6 +17,7 @@
 #include <QtWidgets/QMainWindow>
 
 #include "scriptAPI/scriptAPI.h"
+#include "scriptingControlAPI.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
@@ -172,8 +173,12 @@ public:
 	/// Additional actions for interpreter palette.
 	QList<QAction *> optionalMenuActionsForInterpretedPlugins();
 
+	/// @returns the pointer to the new ScriptingControlAPI, mainWindow doesn't have ownership of one.
+	qReal::gui::ScriptingControlAPI *createScriptingControlAPI();
+
 signals:
 	void rootDiagramChanged();
+	void goingToBeDestroyed();
 
 public slots:
 	void propertyEditorScrollTo(const QModelIndex &index);

@@ -24,7 +24,7 @@ class QRUTILS_EXPORT WidgetFinder
 {
 public:
 	/// Returns widget defined by type (class name) and object name.
-	static QWidget *widget(QWidget *parent, const QString &type, const QString &name = "");
+	static QWidget *widget(const QWidget *parent, const QString &type, const QString &name = "");
 };
 
 }

@@ -16,13 +16,15 @@
 
 #include <QtWidgets/QListWidget>
 
+#include "qrgui/dialogs/dialogsDeclSpec.h"
+
 namespace qReal {
 
 /// @brief List with button for confirm choice. The selected data is sent through a signal.
 /// List in which you can add element together with associated with it the string data.
 /// Selecting an item by either double clicking or by using the supporting buttons.
 /// The selected string data sent through the signal userDataSelected(const QString &userData).
-class ListWidget : public QWidget
+class QRGUI_DIALOGS_EXPORT ListWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -33,7 +35,11 @@ public:
 	/// @param userData Associated with item the string data
 	/// @param toolTip Item tooltip
 	void addItem(const QString &text, const QString &userData, const QString &toolTip = "");
+
 	void highlightFirstItem();
+
+	/// @return the basic widget that indeed contains all items (not a wrapper)
+	QListWidget *mainListWidget() const;
 
 signals:
 	void userDataSelected(const QString &userData);

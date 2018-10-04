@@ -60,7 +60,7 @@ void DeploymentInterpreterPlugin::init(PluginConfigurator const &configurator)
 	connect(mRunAction, &QAction::triggered, mInterpreter, &interpretation::Interpreter::startInterpretation);
 	connect(mStopAction, &QAction::triggered, mInterpreter, &interpretation::Interpreter::stopInterpretation);
 
-	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged, [=](TabInfo const &info) {
+	connect(&configurator.systemEvents(), &SystemEvents::activeTabChanged, this, [=](TabInfo const &info) {
 		const bool isOurTab = info.rootDiagramId().editor() == startingElementType.editor()
 				&& info.rootDiagramId().diagram() == startingElementType.diagram();
 		mRunAction->setVisible(isOurTab);
@@ -90,5 +90,9 @@ void DeploymentInterpreterPlugin::placeShellWidget(QWidget *shell, QWidget *main
 	QDockWidget * const shellDock = new QDockWidget(tr("Console output"), mainWindow);
 	shellDock->setWidget(shell);
 	mainWindow->tabifyDockWidget(mainWindow->findChild<QDockWidget *>("errorDock"), shellDock);
+	connect(this, &QObject::destroyed, shellDock, [=]() {
+		shell->setParent(nullptr);
+		shellDock->setParent(nullptr);
+	});
 	mShellDock = shellDock;
 }

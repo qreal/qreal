@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 #include "qRealFileDialog.h"
 
 #include <qrkernel/settingsManager.h>
+#include <QtWidgets/QApplication>
 
 using namespace utils;
 
@@ -26,6 +27,13 @@ QString QRealFileDialog::getOpenFileName(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
+	{
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QString result = QFileDialog::getOpenFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
@@ -41,6 +49,13 @@ QString QRealFileDialog::getSaveFileName(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
+	{
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir) + "/" + defaultFile;
 	const QString result = QFileDialog::getSaveFileName(parent, caption, lastDir, filter, selectedFilter, options);
 	saveState(id, directoryOf(result));
@@ -53,6 +68,13 @@ QString QRealFileDialog::getExistingDirectory(const QString &id
 		, const QString &dir
 		, QFileDialog::Options options)
 {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
+	{
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QString result = QFileDialog::getExistingDirectory(parent, caption, lastDir, options);
 	saveState(id, result);
@@ -67,6 +89,13 @@ QStringList QRealFileDialog::getOpenFileNames(const QString &id
 		, QString *selectedFilter
 		, QFileDialog::Options options)
 {
+	const QVariant dontUseNativeDialogs = QCoreApplication::instance()->property("DontUseNativeDialogs");
+	if ((dontUseNativeDialogs.isValid() && dontUseNativeDialogs.toBool())
+			|| QCoreApplication::instance()->arguments().contains(nativeDialogsOption))
+	{
+		options = options | QFileDialog::DontUseNativeDialog;
+	}
+
 	const QString lastDir = lastSelectedDirectory(id, dir);
 	const QStringList result = QFileDialog::getOpenFileNames(parent, caption, lastDir, filter, selectedFilter, options);
 

@@ -39,6 +39,7 @@ PaletteTree::PaletteTree(QWidget *parent)
 	, mTemporarySpacer(nullptr)
 {
 	initUi();
+	setObjectName("paletteTree");
 }
 
 void PaletteTree::initUi()

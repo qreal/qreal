@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,10 @@
 
 namespace utils {
 
+static const QString nativeDialogsOption = "--dont-use-native-dialogs";
+
 /// Provides a dialog that allow users to select files or directories
-/// with saving in settings last selected diractory
+/// with saving in settings last selected directory
 class QRUTILS_EXPORT QRealFileDialog
 {
 public:
@@ -36,7 +38,7 @@ public:
 			, QFileDialog::Options options = 0);
 
 	/// Makes same as QFileDialog::getSaveFileName but with restoring selected
-	/// directory last time when promted dialog with the same id
+	/// directory last time when prompted dialog with the same id
 	static QString getSaveFileName(const QString &id
 			, QWidget *parent = 0
 			, const QString &caption = QString()

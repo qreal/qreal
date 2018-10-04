@@ -48,6 +48,9 @@ public:
 	/// @returns A string list of graphical identifiers of matching nodes.
 	Q_INVOKABLE QStringList nodeList(const QString &diagram, const QString &element);
 
+	/// @returns A string list of graphical identifiers of all nodes in scene in current tab.
+	Q_INVOKABLE QStringList currentSceneNodeList() const;
+
 	/// Creates block with id, like paletteElement in (\a xSceneCoord, \a ySceneCoord) point on scene.
 	QString createBlockOnScene(const DraggableElement *paletteElement, int xSceneCoord, int ySceneCoord);
 

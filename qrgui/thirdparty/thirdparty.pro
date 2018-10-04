@@ -20,6 +20,8 @@ TEMPLATE = lib
 
 DEFINES += QRGUI_THIRDPARTY_LIBRARY
 
+CONFIG += warn_off
+
 TRANSLATIONS = \
 	$$PWD/../../qrtranslations/ru/qrgui_thirdparty_ru.ts \
 	$$PWD/../../qrtranslations/fr/qrgui_thirdparty_fr.ts \

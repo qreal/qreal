@@ -79,6 +79,7 @@ HEADERS += \
 	../../qrgui/mainWindow/qrealApplication.h  \
 	../../qrgui/mainWindow/projectManager/versionsConverterManager.h \
 	../../qrgui/mainWindow/mainWindow.h \
+	../../qrgui/mainWindow/scriptingControlAPI.h \
 	../../qrgui/mainWindow/errorReporter.h \
 	../../qrgui/mainWindow/error.h \
 	../../qrgui/mainWindow/errorListWidget.h \
@@ -146,6 +147,7 @@ SOURCES += \
 	../../qrgui/mainWindow/modelExplorer.cpp \
 	../../qrgui/mainWindow/projectManager/versionsConverterManager.cpp \
 	../../qrgui/mainWindow/mainWindow.cpp \
+	../../qrgui/mainWindow/scriptingControlAPI.cpp \
 	../../qrgui/mainWindow/errorReporter.cpp \
 	../../qrgui/mainWindow/error.cpp \
 	../../qrgui/mainWindow/errorListWidget.cpp \
