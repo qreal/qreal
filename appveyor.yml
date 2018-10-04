@@ -7,7 +7,7 @@ clone_depth: 1
 
 environment:
   global:
-    APPVEYOR_SAVE_CACHE_ON_ERROR: true
+    APPVEYOR_SAVE_CACHE_ON_ERROR: false
     PYTHON_PATH: C:\Python27
     PYTHON_LIB: C:\Python27\libs
     CCACHE_DIR: C:\ccache.cache
