@@ -26,6 +26,7 @@ class TrikLineSensor : public kitBase::robotModel::robotParts::VectorSensor
 	Q_OBJECT
 	Q_CLASSINFO("name", "trikLineSensor")
 	Q_CLASSINFO("friendlyName", tr("Line Sensor"))
+	Q_CLASSINFO("simulated", "true")
 
 public:
 	TrikLineSensor(const kitBase::robotModel::DeviceInfo &info

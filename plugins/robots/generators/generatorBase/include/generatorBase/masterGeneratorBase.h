@@ -43,6 +43,7 @@ class LuaProcessor;
 
 class ReadableControlFlowGenerator;
 class GotoControlFlowGenerator;
+class StructuralControlFlowGenerator;
 
 /// The main class for every code generator. Produces nessesary components and
 /// controls their work. Must be reimplemented in each concrete generator.
@@ -70,6 +71,7 @@ public:
 
 protected:
 	void generateLinkingInfo(QString &resultCode);
+	void cleanUpLinkingInfo(QString &code);
 	virtual GeneratorCustomizer *createCustomizer() = 0;
 
 	/// Default implementation takes ownership via QObject parentship system.
@@ -85,11 +87,17 @@ protected:
 
 	virtual bool supportsGotoGeneration() const = 0;
 
+	/// Default implementation returns "false", because most
+	/// generators doesn't support "switch" structure which is unstable to breaks
+	virtual bool supportsSwitchUnstableToBreaks() const;
+
 	virtual void beforeGeneration();
 	virtual void processGeneratedCode(QString &generatedCode);
 	virtual void afterGeneration();
 
 	void outputCode(const QString &path, const QString &code);
+
+	void replaceWithAutoIndent(QString &where, const QString &what, const QString &withWhat);
 
 	const qrRepo::RepoApi &mRepo;
 	qReal::ErrorReporterInterface &mErrorReporter;
@@ -98,8 +106,8 @@ protected:
 	qReal::Id mDiagram;
 	GeneratorCustomizer *mCustomizer;
 	PrimaryControlFlowValidator *mValidator;
-	ReadableControlFlowGenerator *mReadableControlFlowGenerator;  // Takes ownership
 	GotoControlFlowGenerator *mGotoControlFlowGenerator;  // Takes ownership
+	StructuralControlFlowGenerator *mStructuralControlFlowGenerator; // Takes ownership
 	QString mProjectName;
 	QString mProjectDir;
 	int mCurInitialNodeNumber;

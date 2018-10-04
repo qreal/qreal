@@ -17,6 +17,7 @@
 #include <QtCore/QFileInfo>
 
 #include <qrgui/systemFacade/components/projectManager.h>
+
 #include "textEditor/textManagerInterface.h"
 #include "versionsConverterManager.h"
 
@@ -40,7 +41,7 @@ public slots:
 
 	void close() override;
 
-	void save() override;
+	bool save() override;
 	bool suggestToSaveAs() override;
 	bool saveOrSuggestToSaveAs() override;
 
@@ -74,6 +75,7 @@ private:
 	MainWindow *mMainWindow;
 	TextManagerInterface *mTextManager;
 	VersionsConverterManager mVersionsConverter;
+	bool openQRProject(const QFileInfo &fileInfo); //move to public?
 };
 
 }

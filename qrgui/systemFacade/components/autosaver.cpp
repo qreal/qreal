@@ -56,6 +56,7 @@ uint Autosaver::interval() const
 	if (result == 0) {
 		result = defaultInterval;
 	}
+
 	return result;
 }
 
@@ -172,7 +173,7 @@ QString Autosaver::openAutosavePrompt() const
 QString Autosaver::openTempFilePrompt() const
 {
 	return tr("It seems like the last application session was terminated in an "\
-			"unusial way. Do you wish to recover unsaved project?");
+			"unusual way. Do you wish to recover unsaved project?");
 }
 
 void Autosaver::saveAutoSave()

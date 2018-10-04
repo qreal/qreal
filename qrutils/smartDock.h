@@ -48,6 +48,9 @@ public:
 	/// Returns true if this widget is currently replacing main window central area.
 	bool isCentral() const;
 
+	/// Hides close button leaving dock widget closable.
+	static void hideCloseButton(QDockWidget *dock);
+
 public slots:
 	/// Embeds inner widget into this dock widget instance, docks it to some panel.
 	void switchToDocked();
@@ -74,6 +77,11 @@ private slots:
 	void checkCentralWidget();
 
 private:
+	class CloseButtonVisibilityFilter : public QObject
+	{
+		bool eventFilter(QObject *obj, QEvent *event) override;
+	};
+
 	QMainWindow *findMainWindow() const;
 
 	bool event(QEvent *event) override;

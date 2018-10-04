@@ -4,14 +4,15 @@
     <DisplayName xml:lang="ru_ru">@ProductName@</DisplayName>
     <Description>QReal metacase tool engine</Description>
     <Description xml:lang="ru_ru">Ядро системы визуального метамоделирования QReal</Description>
-    <Version>3.1.4-4</Version>
-    <ReleaseDate>2016-06-07</ReleaseDate>
+    <Version>3.2.0-4</Version>
+    <ReleaseDate>2017-11-14</ReleaseDate>
     <Script>installscript.qs</Script>
     <Licenses>
          <!-- TODO: find all russian license texts -->
         <License name="Apache License 2.0" file="ApacheLicense-v2.0.txt" />
         <License name="GNU Public License 3.0" file="gpl-3.0.txt" />
         <License name="Open Fonts License" file="OFL.txt" />
+        <License name="DejaVu Fonts License" file="DejaVu_Fonts_License.txt" />
         <License name="Kinetic Scroller Component License" file="QsKineticScroller-license.txt" />
         <License name="QsLog Component License" file="QsLog-license.txt" />
         <License name="QScintilla Component License" file="Scintilla-license.txt" />

@@ -30,10 +30,11 @@ DeviceInfo::DeviceInfo()
 }
 
 DeviceInfo::DeviceInfo(const QMetaObject *deviceType, const QString &name
-		, const QString &friendlyName, Direction direction)
+		, const QString &friendlyName, bool simulated, Direction direction)
 	: mDeviceType(deviceType)
 	, mName(name)
 	, mFriendlyName(friendlyName)
+	, mSimulated(simulated)
 	, mDirection(direction)
 {
 }
@@ -62,6 +63,11 @@ QString DeviceInfo::friendlyName() const
 	return mDeviceType
 			? QCoreApplication::translate(mDeviceType->className(), mFriendlyName.toLatin1())
 			: QString();
+}
+
+bool DeviceInfo::simulated() const
+{
+	return mSimulated;
 }
 
 Direction DeviceInfo::direction() const

@@ -1,0 +1,1 @@
+@@VARIABLE@@ := random(@@FROM@@, @@TO@@);

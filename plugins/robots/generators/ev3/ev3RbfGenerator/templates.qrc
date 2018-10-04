@@ -89,14 +89,25 @@
         <file>templates/sensors/colorGreen.t</file>
         <file>templates/sensors/colorBlue.t</file>
         <file>templates/sensors/colorNone.t</file>
+        <file>templates/sensors/NXTColorSensorV2Color.t</file>
+        <file>templates/sensors/NXTColorSensorV2Passive.t</file>
+        <file>templates/sensors/NXTColorSensorV2RGB.t</file>
+        <file>templates/sensors/NXTColorSensorV2Raw.t</file>
         <file>templates/sensors/encoder.t</file>
         <file>templates/sensors/light.t</file>
         <file>templates/sensors/sonar.t</file>
         <file>templates/sensors/sound.t</file>
         <file>templates/sensors/touch.t</file>
         <file>templates/sensors/gyroscope.t</file>
+        <file>templates/sensors/compass.t</file>
+        <file>templates/sensors/ACIRSeeker.t</file>
+        <file>templates/sensors/DCIRSeeker.t</file>
         <file>templates/sensors/scalar.t</file>
         <file>templates/sensors/vector.t</file>
+        <file>templates/sensors/calibrateGyroscope.t</file>
+        <file>templates/sensors/stopCompassCalibration.t</file>
+        <file>templates/sensors/startCompassCalibration.t</file>
+        <file>templates/sensors/readRGBIntoVariables.t</file>
         <file>templates/functions/abs.t</file>
         <file>templates/functions/acos.t</file>
         <file>templates/functions/asin.t</file>
@@ -127,6 +138,7 @@
         <file>templates/wait/touch.t</file>
         <file>templates/wait/button.t</file>
         <file>templates/subprograms/subprogramCall.t</file>
+        <file>templates/subprograms/declarationArgumentsSeparator.t</file>
         <file>templates/subprograms/declarationsSectionHeader.t</file>
         <file>templates/subprograms/forwardDeclaration.t</file>
         <file>templates/subprograms/implementation.t</file>
@@ -193,5 +205,20 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/subprograms/subprogramArgument.t</file>
+        <file>templates/subprograms/stringSubprogramArgument.t</file>
+        <file>templates/mailboxes/closeMailbox.t</file>
+        <file>templates/mailboxes/openMailbox.t</file>
+        <file>templates/mailboxes/readMailAsynchronous.t</file>
+        <file>templates/mailboxes/readMailSynchronous.t</file>
+        <file>templates/mailboxes/writeMail.t</file>
+        <file>templates/sensors/lineLeader/calibrateBlack.t</file>
+        <file>templates/sensors/lineLeader/calibratePID.t</file>
+        <file>templates/sensors/lineLeader/calibrateWhite.t</file>
+        <file>templates/sensors/lineLeader/readAverage.t</file>
+        <file>templates/sensors/lineLeader/readSensorArray.t</file>
+        <file>templates/sensors/lineLeader/readSteering.t</file>
+        <file>templates/sensors/lineLeader/sleep.t</file>
+        <file>templates/sensors/lineLeader/wakeUp.t</file>
     </qresource>
 </RCC>

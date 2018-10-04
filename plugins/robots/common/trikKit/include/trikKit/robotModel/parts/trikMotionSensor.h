@@ -25,6 +25,7 @@ class TrikMotionSensor : public kitBase::robotModel::robotParts::ScalarSensor
 	Q_OBJECT
 	Q_CLASSINFO("name", "motion")
 	Q_CLASSINFO("friendlyName", tr("Motion Sensor"))
+	Q_CLASSINFO("simulated", "true")
 
 public:
 	TrikMotionSensor(const kitBase::robotModel::DeviceInfo &info

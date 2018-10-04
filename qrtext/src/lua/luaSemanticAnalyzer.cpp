@@ -92,6 +92,11 @@ void LuaSemanticAnalyzer::addReadOnlyVariable(const QString &name)
 	mReadOnlyVariables.insert(name);
 }
 
+void LuaSemanticAnalyzer::removeReadOnlyVariable(const QString &name)
+{
+	mReadOnlyVariables.remove(name);
+}
+
 void LuaSemanticAnalyzer::precheck(QSharedPointer<ast::Node> const &node)
 {
 	checkReservedIdentifiersUsage(node, {});
@@ -227,8 +232,8 @@ void LuaSemanticAnalyzer::analyzeBinaryOperator(const QSharedPointer<core::ast::
 		///       arithmetic (usually the IEEE 754 standard), and the result is a float."
 		///       (http://www.lua.org/work/doc/manual.html#3.4.1)
 		///       Code below is a hack, here we need more complex constraints over type variables.
-		if (typeVariable(left)->isResolved() && typeVariable(left)->finalType() == mInteger
-				&& typeVariable(right)->isResolved() && typeVariable(right)->finalType() == mInteger)
+		if (typeVariable(left)->isResolved() && typeVariable(left)->finalType()->is<types::Integer>()
+				&& typeVariable(right)->isResolved() && typeVariable(right)->finalType()->is<types::Integer>())
 		{
 			assign(node, mInteger);
 		} else {

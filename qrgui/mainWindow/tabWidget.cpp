@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2016 QReal Research Group, Dmitry Mordvinov
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ using namespace qReal::gui;
 TabWidget::TabWidget(QWidget *parent)
 	: QTabWidget(parent)
 {
+	connect(this, &QTabWidget::currentChanged, this, &TabWidget::onTabChanged);
 }
 
 void TabWidget::setTabUnclosable(int index)
@@ -36,9 +37,109 @@ void TabWidget::setTabUnclosable(int index)
 	}
 }
 
+QString TabWidget::editorId() const
+{
+	return currentEditor() ? currentEditor()->editorId() : "qReal.TabWidget";
+}
+
+bool TabWidget::supportsZooming() const
+{
+	return currentEditor() ? currentEditor()->supportsZooming() : false;
+}
+
+bool TabWidget::supportsCopying() const
+{
+	return currentEditor() ? currentEditor()->supportsCopying() : false;
+}
+
+bool TabWidget::supportsPasting() const
+{
+	return currentEditor() ? currentEditor()->supportsPasting() : false;
+}
+
+bool TabWidget::supportsCutting() const
+{
+	return currentEditor() ? currentEditor()->supportsCutting() : false;
+}
+
+bool TabWidget::supportsSearching() const
+{
+	return currentEditor() ? currentEditor()->supportsSearching() : false;
+}
+
+void TabWidget::zoomIn()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->zoomIn();
+	}
+}
+
+void TabWidget::zoomOut()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->zoomOut();
+	}
+}
+
+void TabWidget::copy()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->copy();
+	}
+}
+
+void TabWidget::paste()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->paste();
+	}
+}
+
+void TabWidget::cut()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->cut();
+	}
+}
+
+void TabWidget::find()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->find();
+	}
+}
+
+void TabWidget::forceFocus()
+{
+	onTabChanged();
+}
+
+int TabWidget::addTab(QWidget *widget, const QString &name)
+{
+	if (EditorInterface * const editor = dynamic_cast<EditorInterface *>(widget)) {
+		editor->configure(*mZoomInAction, *mZoomOutAction, *mUndoAction, *mRedoAction
+				, *mCopyAction, *mPasteAction, *mCutAction, *mFindAction);
+		connect(&editor->focusAction(), &QAction::triggered, &focusAction(), &QAction::trigger);
+	}
+
+	return QTabWidget::addTab(widget, name);
+}
+
 void TabWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::MiddleButton && tabBar()->tabAt(event->pos()) > -1) {
 		removeTab(tabBar()->tabAt(event->pos()));
+	}
+}
+
+qReal::EditorInterface *TabWidget::currentEditor() const
+{
+	return dynamic_cast<EditorInterface *>(currentWidget());
+}
+
+void TabWidget::onTabChanged()
+{
+	if (currentEditor()) {
+		onFocusIn();
 	}
 }

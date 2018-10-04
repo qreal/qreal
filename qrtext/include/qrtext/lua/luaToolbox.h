@@ -112,6 +112,9 @@ public:
 		DebuggerInterface::setVariableValue<T>(name, value);
 	}
 
+	/// Removes given @arg identifier from identifier's list, to allow re-inference of its type.
+	void forgetIdentifier(const QString &identifier);
+
 	void clear() override;
 
 	bool isGeneralization(const QSharedPointer<core::types::TypeExpression> &specific

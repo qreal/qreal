@@ -78,7 +78,7 @@ AbstractSimpleGenerator *TrikGeneratorFactory::simpleGenerator(const qReal::Id &
 			|| elementType.contains("AngularServo"))
 	{
 		return new TrikEnginesGenerator(mRepo, customizer, id, elementType, this);
-	} else if (elementType.contains("TrikPlayTone")) {
+	} else if (elementType == "TrikPlayTone") {
 		return new PlayToneGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "TrikDrawLine") {
 		return new DrawLineGenerator(mRepo, customizer, id, this);

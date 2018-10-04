@@ -50,15 +50,18 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 		, qReal::LogicalModelAssistInterface &logicalModel
 		, qReal::ControllerInterface &controller
 		, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+		, qReal::gui::MainWindowDockInterface &dockInterface
 		, const qReal::ProjectManagementInterface &projectManager
 		, kitBase::InterpreterControlInterface &interpreterControl)
 {
 	mModel->init(*interpretersInterface.errorReporter(), interpreterControl);
+	dockInterface.registerEditor(*mView);
 	mView->setController(controller);
 
 	const auto onActiveTabChanged = [this](const qReal::TabInfo &info)
 	{
 		mView->setEnabled(info.type() != qReal::TabInfo::TabType::other);
+		mCurrentTabInfo = info.type();
 	};
 
 	const auto reloadWorld = [this, &logicalModel, &interpretersInterface, &projectManager]()
@@ -75,7 +78,16 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 					.arg(QString::number(errorLine), QString::number(errorColumn), errorMessage));
 		}
 
-		mView->loadXml(worldModel);
+		const QString blobsXml = projectManager.somethingOpened()
+				? logicalModel.logicalRepoApi().metaInformation("blobs").toString()
+				: QString();
+		QDomDocument blobs;
+		if (!blobsXml.isEmpty() && !blobs.setContent(blobsXml, &errorMessage, &errorLine, &errorColumn)) {
+			interpretersInterface.errorReporter()->addError(QString("%1:%2: %3")
+					.arg(QString::number(errorLine), QString::number(errorColumn), errorMessage));
+		}
+
+		mView->loadXmls(worldModel, blobs);
 
 		loadReadOnlyFlags(logicalModel);
 		QLOG_DEBUG() << "Reloading 2D world done";
@@ -92,11 +104,17 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 				, Qt::UniqueConnection);
 
 		connect(this, &twoDModel::TwoDModelControlInterface::runButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::interpret
-				, Qt::UniqueConnection);
+				, [this, &interpreterControl](){
+			if (mCurrentTabInfo == qReal::TabInfo::TabType::editor) {
+				emit interpreterControl.interpret();
+			} else {
+				emit interpreterControl.startJsInterpretation();
+			}
+		});
 
-		connect(this, &twoDModel::TwoDModelControlInterface::stopButtonPressed
-				, &interpreterControl, &kitBase::InterpreterControlInterface::userStopRobot
+		connect(this, SIGNAL(stopButtonPressed())
+				, &interpreterControl
+				, SIGNAL(stopAllInterpretation())
 				, Qt::UniqueConnection);
 	};
 
@@ -119,8 +137,12 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 	connect(&projectManager, &qReal::ProjectManagementInterface::closed, this, reloadWorld);
 	connect(&systemEvents, &qReal::SystemEvents::activeTabChanged, this, onActiveTabChanged);
 
-	connect(mModel.data(), &model::Model::modelChanged, [this, &logicalModel] (const QDomDocument &xml) {
+	connect(mModel.data(), &model::Model::modelChanged, [&logicalModel] (const QDomDocument &xml) {
 		logicalModel.mutableLogicalRepoApi().setMetaInformation("worldModel", xml.toString(4));
+	});
+
+	connect(mModel.data(), &model::Model::blobsChanged, [&logicalModel] (const QDomDocument &xml) {
+		logicalModel.mutableLogicalRepoApi().setMetaInformation("blobs", xml.toString(4));
 	});
 
 	// Queued connection cause such actions like stopRobot() must be performed earlier.
@@ -139,7 +161,7 @@ void TwoDModelEngineFacade::init(const kitBase::EventsForKitPluginInterface &eve
 					mDock->detachFromMainWindow();
 				}
 			}
-			);
+	);
 }
 
 kitBase::DevicesConfigurationProvider &TwoDModelEngineFacade::devicesConfigurationProvider()

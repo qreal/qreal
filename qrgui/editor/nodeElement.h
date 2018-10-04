@@ -63,9 +63,6 @@ public:
 
 	~NodeElement() override;
 
-	QMap<QString, QVariant> graphicalProperties() const;
-	QMap<QString, QVariant> logicalProperties() const;
-
 	void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w) override;
 
 	QRectF boundingRect() const override;
@@ -76,7 +73,7 @@ public:
 	/// Folded contents of node
 	QRectF foldedContentsRect() const;
 
-	virtual void updateData();
+	void updateData() override;
 	void setGeometry(const QRectF &geom);
 	void setPos(const QPointF &pos);
 	void setPos(qreal x, qreal y);
@@ -117,9 +114,6 @@ public:
 
 	/// Returns descriptor of this node element's type.
 	const NodeElementType &nodeType() const;
-
-	/// Collects data about this instance and returns structure describing it.
-	NodeInfo data() const;
 
 	/// Make ports of specified types visible, hide other ports
 	void setPortsVisible(const QStringList &types);
@@ -187,8 +181,11 @@ public:
 	 */
 	IdList sortedChildren() const;
 
+	void initExplosionConnections();
+
 public slots:
 	void switchGrid(bool isChecked);
+	void updateDynamicProperties(const Id &target);
 
 private slots:
 	void initRenderedDiagram();
@@ -263,6 +260,10 @@ private:
 
 	QRectF diagramRenderingRect() const;
 
+	void updateDynamicLabels();
+
+	bool compareDynamicLabels(QString labelsPack1, QString labelsPack2) const;
+
 	qReal::commands::AbstractCommand *changeParentCommand(const Id &newParent, const QPointF &position) const;
 
 	const NodeElementType &mType;
@@ -305,6 +306,12 @@ private:
 
 	QImage mRenderedDiagram;
 	QTimer mRenderTimer;
+
+	/// Used in updateDynamicProperties() for deleting old dynamic labels.
+	int mStartingLabelsCount;
+
+	QString mPreviousDynamicLabels;
+	QString mPreviousShape;
 };
 
 }

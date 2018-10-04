@@ -1,10 +1,10 @@
-# Copyright 2007-2015 QReal Research Group
+# Copyright 2018 Iakov Kirilenko, 2007-2017 QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	  http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,6 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+!isEmpty(_PRO_FILE_):!isEmpty(CONFIG):isEmpty(GLOBAL_PRI_INCLUDED){
+#GLOBAL_PRI_INCLUDED = $$PWD
+
+CONFIG *= qt
+unix:CONFIG *= ltcg
+
+#deal with mixed configurations
+CONFIG -= debug_and_release debug_and_release_target
+CONFIG(debug, debug | release): CONFIG -= release
+else:!CONFIG(debug):CONFIG *= release
+CONFIG(release): CONFIG -= debug
+CONFIG(no-sanitizers): CONFIG *= nosanitizers
+CONFIG = $$unique(CONFIG)
 win32 {
 	PLATFORM = windows
 }
@@ -24,7 +37,7 @@ macx {
 	PLATFORM = mac
 }
 
-CONFIG(debug, debug | release) {
+CONFIG(debug) {
 	CONFIGURATION = debug
 	CONFIGURATION_SUFFIX = -d
 	unix {
@@ -36,7 +49,9 @@ CONFIG(debug, debug | release) {
 	CONFIGURATION_SUFFIX =
 }
 
-DESTDIR = $$PWD/bin/$$CONFIGURATION
+GLOBAL_PWD = $$absolute_path($$PWD)
+
+#DESTDIR = $$absolute_path($$GLOBAL_PWD/bin/$$CONFIGURATION)
 
 PROJECT_BASENAME = $$basename(_PRO_FILE_)
 PROJECT_NAME = $$section(PROJECT_BASENAME, ".", 0, 0)
@@ -50,32 +65,75 @@ isEmpty(TARGET) {
 equals(TEMPLATE, app) {
 	unix:!macx {
 		QMAKE_LFLAGS += -Wl,-rpath-link,$$DESTDIR
-		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,.
+		!CONFIG(no_rpath) QMAKE_LFLAGS += -Wl,-O1,-rpath,\'\$$ORIGIN\'
+	}
+	macx:!CONFIG(no_rpath) {
+		QMAKE_LFLAGS += -rpath . -rpath @executable_path/../Lib -rpath @executable_path/../Frameworks -rpath @executable_path/../../../
 	}
 }
 
-macx {
-	QMAKE_CXXFLAGS += -stdlib=libc++
-	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@executable_path/../../../
+macx-clang {
+	QMAKE_MACOSX_DEPLOYMENT_TARGET=10.9
+	QMAKE_LFLAGS_SONAME = -Wl,-install_name,@rpath/
 }
 
-unix:!macx {
-	CONFIG(debug):!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
-		# Ubsan is turned on by default into debug build
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<5\\.[0-9]+\\."' ){ CONFIG += gcc5 }
+!gcc4:!gcc5:!clang:!win32:gcc:*-g++*:system($$QMAKE_CXX --version | grep -qEe '"\\<4\\.[0-9]+\\."' ){ CONFIG += gcc4 }
+
+
+!CONFIG(nosanitizers):!clang:gcc:*-g++*:gcc4{
+	warning("Disabled sanitizers, failed to detect compiler version or too old compiler: $$QMAKE_CXX")
+	CONFIG += nosanitizers
+}
+
+unix:!CONFIG(nosanitizers) {
+
+	# seems like we want USan always, but are afraid of ....
+	!CONFIG(sanitize_address):!CONFIG(sanitize_thread):!CONFIG(sanitize_memory):!CONFIG(sanitize_kernel_address) {
+		# Ubsan is turned on by default
 		CONFIG += sanitizer sanitize_undefined
 	}
 
-	linux-g++:CONFIG(sanitize_undefined):system( g++ --version | grep -e "\<5.[0-9]" ) {
+	CONFIG(debug):!CONFIG(sanitize_address):!macx-clang { CONFIG += sanitize_leak }
+
+	CONFIG(sanitize_leak) {
+		#LSan can be used without performance degrade even in release build
+		QMAKE_CFLAGS += -fsanitize=leak
+		QMAKE_CXXFLAGS += -fsanitize=leak
+		QMAKE_LFLAGS += -fsanitize=leak
+	}
+
+	CONFIG(sanitize_undefined):macx-clang {
+		# sometimes runtime is missing in clang. this hack allows to avoid runtime dependency.
+		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fsanitize-trap=undefined
+		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fsanitize-trap=undefined
+		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fsanitize-trap=undefined
+	}
+
+
+	CONFIG(gcc5){
+		CONFIG(sanitize_undefined){
 		# Ubsan has (had at least) known issues with false errors about calls of methods of the base class.
 		# That must be disabled. Variables for confguring ubsan are taken from here:
 		# https://codereview.qt-project.org/#/c/43420/17/mkspecs/common/sanitize.conf
 		# They can change in some version of Qt, keep track of it.
 		# By the way, simply setting QMAKE_CFLAGS, QMAKE_CXXFLAGS and QMAKE_LFLAGS instead of those used below
 		# will not work due to arguments order ("-fsanitize=undefined" must be declared before "-fno-sanitize=vptr").
-		QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
-		QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
-		QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_CFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_CXXFLAGS += -fno-sanitize=vptr
+			QMAKE_SANITIZE_UNDEFINED_LFLAGS += -fno-sanitize=vptr
+		}
 	}
+
+	CONFIG(release){
+		CONFIG(gcc4) {
+			message("Too old compiler: $$QMAKE_CXX")
+		} else {
+			QMAKE_CFLAGS += -fsanitize-recover=all
+			QMAKE_CXXFLAGS += -fsanitize-recover=all
+		}
+	}
+
 }
 
 OBJECTS_DIR = .build/$$CONFIGURATION/obj
@@ -83,16 +141,37 @@ MOC_DIR = .build/$$CONFIGURATION/moc
 RCC_DIR = .build/$$CONFIGURATION/rcc
 UI_DIR = .build/$$CONFIGURATION/ui
 
-INCLUDEPATH += $$_PRO_FILE_PWD_ \
-	$$_PRO_FILE_PWD_/include \
-	$$PWD \
+INCLUDEPATH += $$absolute_path($$_PRO_FILE_PWD_) \
+	$$absolute_path($$_PRO_FILE_PWD_/include) \
+	$$absolute_path($$PWD) \
 
 LIBS += -L$$DESTDIR
 
-CONFIG += c++14
-QMAKE_CXXFLAGS += -Wextra -Wcast-qual -Wwrite-strings -Wredundant-decls -Wunreachable-code -Wnon-virtual-dtor
+QMAKE_CXXFLAGS += -pedantic-errors -ansi -std=c++11 -Wextra
 
-GLOBAL_PWD = $$PWD
+CONFIG(gcc5)|clang{
+	QMAKE_CXXFLAGS +=-Werror=pedantic -Werror=delete-incomplete
+}
+
+QMAKE_CXXFLAGS += -Werror=cast-qual -Werror=write-strings -Werror=redundant-decls -Werror=unreachable-code \
+			-Werror=non-virtual-dtor -Wno-error=overloaded-virtual \
+			-Werror=uninitialized -Werror=init-self
+
+#Workaround for a known gcc/ld (before 7.3/bionic) issue
+CONFIG(sanitizer):!clang:!win32: QMAKE_LFLAGS += -fuse-ld=gold -Wl,--disable-new-dtags
+CONFIG(ltcg):win32:QMAKE_LFLAGS += -fno-use-linker-plugin
+
+
+
+# I want -Werror to be turned on, but Qt has problems
+#QMAKE_CXXFLAGS += -Werror -Wno-error=inconsistent-missing-override -Wno-error=deprecated-declarations -Wno-error=unused-parameter
+
+# Simple function that checks if given argument is a file or directory.
+# Returns false if argument 1 is a file or does not exist.
+defineTest(isDir) {
+	exists($$1/*):return(true)
+	return(false)
+}
 
 # Useful function to copy additional files to destination,
 # from http://stackoverflow.com/questions/3984104/qmake-how-to-copy-a-file-to-the-output
@@ -102,43 +181,39 @@ defineTest(copyToDestdir) {
 
 	for(FILE, FILES) {
 		DESTDIR_SUFFIX =
-		isEmpty(QMAKE_SH) {
+		AFTER_SLASH = $$section(FILE, "/", -1, -1)
 		# This ugly code is needed because xcopy requires to add source directory name to target directory name when copying directories
-			win32 {
-				AFTER_SLASH = $$section(FILE, "/", -1, -1)
-				BASE_NAME = $$section(FILE, "/", -2, -2)
-				equals(AFTER_SLASH, ""):DESTDIR_SUFFIX = /$$BASE_NAME
-
-				FILE ~= s,/$,,g
-
-				FILE ~= s,/,\,g
+		win32 {
+			FILE = $$system_path($$FILE)
+			isDir($$FILE) {
+				ABSOLUTE_PATH = $$absolute_path($$FILE, $$GLOBAL_PWD)
+				BASE_NAME = $$section(ABSOLUTE_PATH, "/", -1, -1)
+				DESTDIR_SUFFIX = /$$BASE_NAME
 			}
-			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
-			win32:DDIR ~= s,/,\,g
-		} else {
-			DDIR = $$DESTDIR$$DESTDIR_SUFFIX/$$3
 		}
 
-		isEmpty(NOW) {
-			# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
-			!win32:equals(AFTER_SLASH, ""):FILE = $$FILE*
-			QMAKE_POST_LINK += $(COPY_DIR) $$quote($$FILE) $$quote($$DDIR) $$escape_expand(\\n\\t)
+		DDIR = $$DESTDIR/$$3$$DESTDIR_SUFFIX
+		#win32:DDIR ~= s,/,\\,g ??? why not system_path?
+		DDIR = $$system_path($$DDIR)
+		mkpath($$DDIR)
+
+		# In case this is directory add "*" to copy contents of a directory instead of directory itself under linux.
+		!win32:equals(AFTER_SLASH, ""):FILE = $$FILE* #looks like inconsistent behaviour
+		win32:equals(AFTER_SLASH, "*"):FILE = $$section(FILE, "*", 0, -2)\\*
+		win32 {
+			COPY_COMMAND   = xcopy /f /y /i /s
 		} else {
-			win32 {
-				system("cmd /C "xcopy $$quote($$FILE) $$quote($$DDIR) /s /e /q /y /i"")
-			}
-
-			unix:!macx {
-				system("cp -r -f $$FILE $$DDIR")
-			}
-
-			macx {
-				system("cp -R $$FILE $$DDIR/$$FILE")
-			}
+			COPY_COMMAND = rsync -avz
+		}
+                COPY_COMMAND += $$quote($$FILE) $$quote($$DDIR)
+		isEmpty(NOW) {
+			QMAKE_POST_LINK += $$COPY_COMMAND $$escape_expand(\\n\\t)
+			export(QMAKE_POST_LINK)
+		} else {
+			system($$COPY_COMMAND)
 		}
 	}
 
-	export(QMAKE_POST_LINK)
 }
 
 defineTest(includes) {
@@ -160,3 +235,4 @@ defineTest(links) {
 
 	export(LIBS)
 }
+} # GLOBAL_PRI_INCLUDED

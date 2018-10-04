@@ -23,6 +23,7 @@ SwitchNode::SwitchNode(const Id &idBinded, QObject *parent)
 	: NonZoneNode(idBinded, parent)
 	, mDefaultBranch(nullptr)
 	, mBranchesMerged(false)
+	, mGenerateIfs(false)
 {
 }
 
@@ -52,6 +53,11 @@ void SwitchNode::setBranchesMergedFlag()
 	mBranchesMerged = true;
 }
 
+void SwitchNode::setGenerateIfs()
+{
+	mGenerateIfs = true;
+}
+
 QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const
 {
 	QString result;
@@ -63,8 +69,10 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, co
 		}
 
 		result += generatePart(customizer, indent, indentString, zone, isHead
-				? customizer.factory()->switchHeadGenerator(mId, customizer, mBranches.keys(zone))
-				: customizer.factory()->switchMiddleGenerator(mId, customizer, mBranches.keys(zone)));
+				? customizer.factory()->switchHeadGenerator(mId, customizer, mBranches.keys(zone)
+						, mGenerateIfs || !customizer.supportsSwitchUnstableToBreaks())
+				: customizer.factory()->switchMiddleGenerator(mId, customizer, mBranches.keys(zone)
+						, mGenerateIfs || !customizer.supportsSwitchUnstableToBreaks()));
 
 		isHead = false;
 	}
@@ -75,7 +83,8 @@ QString SwitchNode::toStringImpl(GeneratorCustomizer &customizer, int indent, co
 	}
 
 	result += generatePart(customizer, indent, indentString, mDefaultBranch
-			, customizer.factory()->switchDefaultGenerator(mId, customizer));
+			, customizer.factory()->switchDefaultGenerator(mId, customizer
+			, mGenerateIfs || !customizer.supportsSwitchUnstableToBreaks()));
 
 	return result;
 }

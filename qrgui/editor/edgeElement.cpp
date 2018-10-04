@@ -39,6 +39,8 @@ const qreal epsilon = 0.00000000001;
 
 const int rightRotation = 1;// the difference between the elements of NodeSide
 const int maxReductCoeff = 16;
+const QPointF dummyStart(0, 0);
+const QPointF dummyEnd(200, 60);
 
 /** @brief indicator of edges' movement */
 
@@ -71,18 +73,19 @@ EdgeElement::EdgeElement(const EdgeElementType &type, const Id &id, const models
 	setFlag(ItemClipsToShape, false);
 	setFlag(ItemClipsChildrenToShape, false);
 
-	mLine << QPointF(0, 0) << QPointF(200, 60);
-
 	setAcceptHoverEvents(true);
 
 	const QList<LabelProperties> labelsInfos = mType.labels();
 	for (const LabelProperties &labelInfo : labelsInfos) {
-		Label * const label = new Label(mGraphicalAssistApi, mId, labelInfo);
+		Label * const label = new Label(mGraphicalAssistApi, mLogicalAssistApi, mId, labelInfo);
 		label->init(boundingRect());
 		label->setParentItem(this);
 		label->setShouldCenter(false);
 		mLabels.append(label);
 	}
+
+	QPolygon configuration = mGraphicalAssistApi.configuration(id);
+	mLine = configuration.isEmpty() ? QPolygonF(QVector<QPointF>{dummyStart, dummyEnd}) : configuration;
 
 	mShapeType = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 	initLineHandler();
@@ -119,8 +122,7 @@ void EdgeElement::initLineHandler()
 void EdgeElement::changeShapeType(LinkShape shapeType)
 {
 	mShapeType = shapeType;
-	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape"
-			, mLineFactory->shapeToString(shapeType));
+	mGraphicalAssistApi.mutableGraphicalRepoApi().setProperty(id(), "linkShape", EdgeInfo::shapeToString(shapeType));
 	initLineHandler();
 	layOut();
 }
@@ -280,13 +282,33 @@ void EdgeElement::updateLongestPart()
 
 	mLongPart = maxIdx;
 
-	if (mLabels.count() == 1) {
-		Label *title = mLabels[0];
-		qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
-		qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
-		x -= title->boundingRect().width() / 2;
-		y -= title->boundingRect().height() / 2;
-		title->setPos(x, y);
+	int firstIdx = 0;
+	int lastIdx = mLine.size() - 2;
+
+	int i = 0;
+	int j = 0;
+
+	for (Label * const label : mLabels) {
+		if (label->location() == "beginRole") {
+			Label *title = label;
+			const qreal x = (mLine[firstIdx].x() + 40);
+			const qreal y = (mLine[firstIdx].y() + 25 * i + 10);
+			title->setPos(x, y);
+			++i;
+		} else if (label->location() == "endRole") {
+			Label *title = label;
+			const qreal x = (mLine[lastIdx + 1].x() - 40);
+			const qreal y = (mLine[lastIdx + 1].y() + 25 * j + 10);
+			title->setPos(x, y);
+			++j;
+		} else {
+			Label *title = label;
+			qreal x = (mLine[maxIdx].x() + mLine[maxIdx + 1].x()) / 2;
+			qreal y = (mLine[maxIdx].y() + mLine[maxIdx + 1].y()) / 2;
+			x -= title->boundingRect().width() / 2;
+			y -= title->boundingRect().height() / 2;
+			title->setPos(x, y);
+		}
 	}
 }
 
@@ -529,7 +551,7 @@ void EdgeElement::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 	Element::mousePressEvent(event);
 
-	if ((mSrc && mSrc->isSelected() && isSelected()) || (mDst && mDst->isSelected() && isSelected())) {
+	if (isSelected() && ((mSrc && mSrc->isSelected()) || (mDst && mDst->isSelected()))) {
 		mDragType = wholeEdge;
 		if (mSrc && mSrc->isSelected()) {
 			mSrc->startResize();
@@ -950,33 +972,6 @@ void EdgeElement::highlight(const QColor &color)
 	update();
 }
 
-EdgeInfo EdgeElement::data()
-{
-	EdgeInfo result(id()
-			, logicalId()
-			, mLogicalAssistApi.parent(logicalId())
-			, mGraphicalAssistApi.parent(id())
-			, mPortFrom
-			, mPortTo
-			, mGraphicalAssistApi.configuration(mId)
-			, static_cast<int>(mShapeType)
-	);
-
-	result.setSrcId(src() ? src()->id() : Id::rootId());
-	result.setDstId(dst() ? dst()->id() : Id::rootId());
-
-	const QMap<QString, QVariant> properties = mGraphicalAssistApi.properties(logicalId());
-	for (const QString &property : properties.keys()) {
-		if (property != "from" && property != "to") {
-			result.setLogicalProperty(property, properties[property]);
-		}
-	}
-
-	result.setGraphicalProperty("position", mGraphicalAssistApi.position(mId));
-
-	return result;
-}
-
 QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 	switch (change)
@@ -991,6 +986,7 @@ QVariant EdgeElement::itemChange(GraphicsItemChange change, const QVariant &valu
 					prepareGeometryChange();
 					mLine.first() = mapFromItem(mSrc, mSrc->portPos(mPortFrom));
 				}
+
 				if (mDst && !mDst->isSelected()) {
 					prepareGeometryChange();
 					mLine.last() = mapFromItem(mDst, mDst->portPos(mPortTo));

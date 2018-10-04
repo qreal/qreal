@@ -17,7 +17,7 @@ TARGET = 2D-model
 include(../../../../global.pri)
 
 TEMPLATE = app
-
+CONFIG-=app_bundle
 QT += widgets
 
 includes(plugins/robots/interpreters/interpreterCore \

@@ -161,7 +161,7 @@
     <message>
         <location filename="../../../../plugins/robots/common/kitBase/include/kitBase/robotModel/robotParts/gyroscopeSensor.h" line="29"/>
         <source>Gyroscope</source>
-        <translation>Гироскоп</translation>
+        <translation>Гиродатчик</translation>
     </message>
 </context>
 <context>

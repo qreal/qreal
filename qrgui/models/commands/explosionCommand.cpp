@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2016 Dmitry Mordvinov, Denis Kogutich
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,9 @@
  * limitations under the License. */
 
 #include "explosionCommand.h"
+
+#include <qrkernel/logging.h>
+#include <qrutils/inFile.h>
 
 using namespace qReal::commands;
 
@@ -53,9 +56,28 @@ bool ExplosionCommand::processExplosion(bool add)
 
 	if (add) {
 		mLogicalApi.addExplosion(mSource, mTarget);
+		saveTargetShape();
 	} else {
 		mLogicalApi.removeExplosion(mSource, mTarget);
 	}
 
 	return true;
+}
+
+void ExplosionCommand::saveTargetShape()
+{
+	if (!mLogicalApi.logicalRepoApi().stringProperty(mTarget, "shape").isEmpty()) {
+		return;
+	}
+
+	QString errorString;
+	QDomDocument shape;
+	const QString filePath = ":/generated/shapes/" + mSource.element() + "Class.sdf";
+	utils::InFile::readAll(filePath, &errorString);
+	if (!errorString.isEmpty()) {
+		QLOG_ERROR() << "IO error while saving shape:" << errorString;
+		return;
+	}
+
+	mLogicalApi.mutableLogicalRepoApi().setProperty(mTarget, "shape", shape.toString(0));
 }

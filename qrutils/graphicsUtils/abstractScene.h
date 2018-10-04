@@ -34,6 +34,8 @@ public:
 
 	void setDragMode(int itemsType);
 	void setDragMode(QGraphicsView::DragMode mode);
+	QGraphicsView::DragMode currentDragMode() const;
+
 	virtual void forPressResize(QGraphicsSceneMouseEvent *event);
 	virtual void forMoveResize(QGraphicsSceneMouseEvent *event);
 	virtual void forReleaseResize(QGraphicsSceneMouseEvent *event);
@@ -68,6 +70,9 @@ signals:
 	/// Emitted when user releases left mouse button on this scene.
 	void leftButtonReleased();
 
+	/// Emitted when user focuses in the scene.
+	void focused();
+
 protected:
 	void setEmptyRect(int x, int y, int w, int h);
 
@@ -90,7 +95,8 @@ protected:
 
 	QList<AbstractItem *> abstractItems(const QPointF &scenePos) const;
 
-	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+	void focusInEvent(QFocusEvent *event) override;
 
 	AbstractView *mView;
 	graphicsUtils::AbstractItem *mGraphicsItem;

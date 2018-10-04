@@ -63,6 +63,7 @@ TrikRobotModelBase::TrikRobotModelBase(const QString &kitId, const QString &robo
 	addAllowedConnection(PortInfo("Down", input, {}, "buttonDown"), { buttonInfo() });
 	addAllowedConnection(PortInfo("Enter", input, {}, "buttonEnter"), { buttonInfo() });
 	addAllowedConnection(PortInfo("Esc", input, {}, "buttonEsc"), { buttonInfo() });
+	addAllowedConnection(PortInfo("Power", input, {}, "buttonPower"), { buttonInfo() });
 
 	addAllowedConnection(PortInfo("M1", output, { "М1" }), { powerMotorInfo() });
 	addAllowedConnection(PortInfo("M2", output, { "М2" }), { powerMotorInfo() });

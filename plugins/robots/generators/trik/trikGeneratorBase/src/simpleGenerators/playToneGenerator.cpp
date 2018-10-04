@@ -24,7 +24,7 @@ PlayToneGenerator::PlayToneGenerator(const qrRepo::RepoApi &repo
 		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "playTone.t"
+			, "playSound.t"
 			, QList<Binding *>()
 					<< Binding::createDirect("@@FILENAME@@", "FileName")
 			, parent)

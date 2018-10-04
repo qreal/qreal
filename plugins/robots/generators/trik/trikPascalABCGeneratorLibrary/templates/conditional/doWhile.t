@@ -1,5 +1,5 @@
 repeat
-	begin
-	@@BODY@@
-	end
-until not(@@CONDITION@@);
+begin
+@@BODY@@
+end
+until not (@@CONDITION@@);

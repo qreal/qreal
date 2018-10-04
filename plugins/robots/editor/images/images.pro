@@ -16,4 +16,4 @@ TEMPLATE = subdirs
 
 include(../../../../global.pri)
 
-copyToDestdir(images/, now)
+copyToDestdir(images, now)

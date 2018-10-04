@@ -57,7 +57,6 @@
 #include "simpleGenerators/receiveMessageThreadsGenerator.h"
 #include "simpleGenerators/getButtonCodeGenerator.h"
 #include "generatorBase/simpleGenerators/waitForButtonGenerator.h"
-#include "generatorBase/simpleGenerators/randomIdGenerator.h"
 
 #include "converters/nameNormalizerConverter.h"
 #include "converters/inequalitySignConverter.h"
@@ -72,6 +71,7 @@
 #include "converters/boolPropertyConverter.h"
 #include "converters/switchConditionsMerger.h"
 #include "converters/stringPropertyConverter.h"
+#include "converters/dynamicPropertiesConverter.h"
 
 #include "generatorBase/parts/variables.h"
 #include "generatorBase/parts/subprograms.h"
@@ -118,7 +118,7 @@ void GeneratorFactoryBase::initialize()
 void GeneratorFactoryBase::setMainDiagramId(const Id &diagramId)
 {
 	mDiagram = diagramId;
-	mSensors->reinit(currentConfiguration());
+	mSensors->reinitDevices(currentConfiguration());
 }
 
 void GeneratorFactoryBase::initVariables()
@@ -129,7 +129,7 @@ void GeneratorFactoryBase::initVariables()
 void GeneratorFactoryBase::initSubprograms()
 {
 	mSubprograms = new parts::Subprograms(mRepo, mErrorReporter
-			, pathsToTemplates(), nameNormalizerConverter());
+			, pathsToTemplates(), mLuaTranslator.toolbox(), nameNormalizerConverter(), typeConverter());
 }
 
 void GeneratorFactoryBase::initEngines()
@@ -227,21 +227,21 @@ simple::AbstractSimpleGenerator *GeneratorFactoryBase::forLoopGenerator(const Id
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchHeadGenerator(const Id &id
-		, GeneratorCustomizer &customizer, const QStringList &values)
+		, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs)
 {
-	return new SwitchGenerator(mRepo, customizer, id, "head", values, this);
+	return new SwitchGenerator(mRepo, customizer, id, "head", values, generateIfs, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchMiddleGenerator(const Id &id
-		, GeneratorCustomizer &customizer, const QStringList &values)
+		, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs)
 {
-	return new SwitchGenerator(mRepo, customizer, id, "middle", values, this);
+	return new SwitchGenerator(mRepo, customizer, id, "middle", values, generateIfs, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::switchDefaultGenerator(const Id &id
-		, GeneratorCustomizer &customizer)
+		, GeneratorCustomizer &customizer, bool generateIfs)
 {
-	return new SwitchGenerator(mRepo, customizer, id, "default", {}, this);
+	return new SwitchGenerator(mRepo, customizer, id, "default", {}, generateIfs, this);
 }
 
 AbstractSimpleGenerator *GeneratorFactoryBase::forkCallGenerator(const Id &id
@@ -350,11 +350,6 @@ AbstractSimpleGenerator *GeneratorFactoryBase::finalNodeGenerator(const qReal::I
 	return new FinalNodeGenerator(mRepo, customizer, id, fromMainGenerator, this);
 }
 
-AbstractSimpleGenerator *GeneratorFactoryBase::randomIdGenerator(AbstractSimpleGenerator *other)
-{
-	return new RandomIdGenerator(other);
-}
-
 // Converters can be instantiated without taking ownership because binders do this
 
 Binding::ConverterInterface *GeneratorFactoryBase::intPropertyConverter(const Id &id, const QString &property) const
@@ -396,6 +391,12 @@ Binding::ConverterInterface *GeneratorFactoryBase::nameNormalizerConverter() con
 	return new converters::NameNormalizerConverter;
 }
 
+Binding::ConverterInterface *GeneratorFactoryBase::dynamicPropertiesConverter(const qReal::Id &block) const
+{
+	return new converters::DynamicPropertiesConverter(mLuaTranslator, block
+			, pathsToTemplates(), reservedVariableNameConverter());
+}
+
 Binding::ConverterInterface *GeneratorFactoryBase::functionBlockConverter(const qReal::Id &block
 		, const QString &property) const
 {
@@ -429,9 +430,11 @@ Binding::ConverterInterface *GeneratorFactoryBase::typeConverter() const
 	return new converters::TypeConverter(pathsToTemplates());
 }
 
-Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(const QStringList &values) const
+Binding::ConverterInterface *GeneratorFactoryBase::switchConditionsMerger(const QStringList &values
+		, bool generateIf) const
 {
-	return new converters::SwitchConditionsMerger(pathsToTemplates(), reservedVariableNameConverter(), values);
+	return new converters::SwitchConditionsMerger(pathsToTemplates(), reservedVariableNameConverter()
+			, values, generateIf);
 }
 
 QString GeneratorFactoryBase::initCode()

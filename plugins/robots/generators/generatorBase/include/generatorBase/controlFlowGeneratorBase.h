@@ -21,7 +21,7 @@
 
 namespace generatorBase {
 
-/// A base class for generators that builds sementic tree from model in repo
+/// A base class for generators that builds semantic tree from model in repo
 class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public RobotsDiagramVisitor
 {
 	Q_OBJECT
@@ -29,15 +29,16 @@ class ROBOTS_GENERATOR_EXPORT ControlFlowGeneratorBase : public QObject, public 
 public:
 	/// @param isThisDiagramMain 'true' if this generator generates code for main diagram
 	/// (main diagram is the one which was active when user requested generation)
-	ControlFlowGeneratorBase(
-			const qrRepo::RepoApi &repo
+	ControlFlowGeneratorBase(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
 			, PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
 			, QObject *parent = 0
-			, bool isThisDiagramMain = true);
-	virtual ~ControlFlowGeneratorBase();
+			, bool isThisDiagramMain = true
+			);
+
+	~ControlFlowGeneratorBase() override;
 
 	/// Validates diagram checking if given model in repo satisfies the simplest
 	/// conditions (like all links are connected and correctly marked and so on)
@@ -67,8 +68,14 @@ public:
 	void visitJoin(const qReal::Id &id, QList<LinkInfo> &links) override;
 
 protected:
-	/// Can be overloaded by ancestors for custom behaviour.
+	/// Can be overloaded by descendants for custom behaviour.
 	virtual void performGeneration();
+
+	virtual void registerOtherThreads(const qReal::Id &id, const QList<LinkInfo> &threads
+			, const QHash<qReal::Id, QString> &threadIds, parts::Threads &threadsStorage);
+
+	virtual void registerTerminatingThreads(const qReal::Id &id, parts::Threads &threadsStorage
+			, bool fromMain);
 
 	bool generateForks();
 

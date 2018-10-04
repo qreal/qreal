@@ -60,12 +60,12 @@ void DevicesConfigurationWidget::loadRobotModels(QList<RobotModelInterface *> co
 
 void DevicesConfigurationWidget::selectRobotModel(RobotModelInterface &robotModel)
 {
-	if (mCurrentModelType == robotModel.name() && mCurrentModelId == robotModel.robotId()) {
+	if (mCurrentModelType == robotModel.name() && mCurrentRobotId == robotModel.robotId()) {
 		return;
 	}
 
 	mCurrentModelType = robotModel.name();
-	mCurrentModelId = robotModel.robotId();
+	mCurrentRobotId = robotModel.robotId();
 	takeWidget();
 	if (mRobotModels.contains(mCurrentModelType)) {
 		setWidget(mRobotModelConfigurers[mCurrentModelType]);
@@ -102,7 +102,7 @@ QWidget *DevicesConfigurationWidget::configurerForRobotModel(RobotModelInterface
 	return result;
 }
 
-QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
+QLayout *DevicesConfigurationWidget::initPort(const QString &robotModelName
 		, const PortInfo &port, const QList<DeviceInfo> &sensors)
 {
 	const QString labelText = mCompactMode ? tr("%1:") : tr("Port %1:");
@@ -113,7 +113,7 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 	comboBox->setPalette(Qt::white);
 	comboBox->setObjectName("Port " + port.name() + " DeviceConfig");
 	comboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
-	comboBox->setProperty("robotModel", robotModel);
+	comboBox->setProperty("robotModelName", robotModelName);
 	comboBox->setProperty("port", QVariant::fromValue(port));
 	mConfigurers << comboBox;
 	comboBox->addItem(tr("Unused"), QVariant::fromValue(DeviceInfo()));
@@ -134,7 +134,7 @@ QLayout *DevicesConfigurationWidget::initPort(const QString &robotModel
 	return layout;
 }
 
-void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotModel
+void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &sensor, Reason reason)
 {
 	Q_UNUSED(port)
@@ -143,7 +143,7 @@ void DevicesConfigurationWidget::onDeviceConfigurationChanged(const QString &rob
 
 	// This method can be called when we did not accomplish processing all combo boxes during saving.
 	// So ignoring such case.
-	if (!mSaving && robotModel == mCurrentModelId) {
+	if (!mSaving && robotId == mCurrentRobotId) {
 		refresh();
 	}
 }
@@ -153,7 +153,7 @@ void DevicesConfigurationWidget::refresh()
 	mRefreshing = true;
 	for (QComboBox * const box : mConfigurers) {
 		const PortInfo port = box->property("port").value<PortInfo>();
-		const DeviceInfo device = currentConfiguration(mCurrentModelId, port);
+		const DeviceInfo device = currentConfiguration(mCurrentRobotId, port);
 		if (device.isNull()) {
 			box->setCurrentIndex(0);
 		} else {
@@ -182,10 +182,10 @@ void DevicesConfigurationWidget::save()
 			continue;
 		}
 
-		const QString robotModel = box->property("robotModel").toString();
+		const QString robotModelName = box->property("robotModelName").toString();
 		const PortInfo port = box->property("port").value<PortInfo>();
 		const DeviceInfo device = box->itemData(box->currentIndex()).value<DeviceInfo>();
-		if (robotModel == mCurrentModelType && currentConfiguration(mCurrentModelId, port) != device) {
+		if (robotModelName == mCurrentModelType && currentConfiguration(mCurrentRobotId, port) != device) {
 			propagateChanges(port, device);
 		}
 	}

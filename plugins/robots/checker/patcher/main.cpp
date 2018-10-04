@@ -56,7 +56,9 @@ int main(int argc, char *argv[])
 	fieldFile.close();
 
 	repo.setMetaInformation("worldModel", fieldContents);
-	repo.saveAll();
+	if (!repo.saveAll()) {
+		return -1;
+	}
 
 	return 0;
 }

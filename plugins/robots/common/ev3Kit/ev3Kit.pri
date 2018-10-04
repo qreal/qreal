@@ -38,6 +38,13 @@ macx {
 	LIBS += -lusb-1.0
 }
 
+# libusb headers contain dirty code
+CONFIG(clang) {
+	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+} else {
+	QMAKE_CXXFLAGS += -Wno-error=vla
+}
+
 HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/ev3RobotModelBase.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Display.h \
@@ -45,6 +52,13 @@ HEADERS += \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Motor.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Led.h \
 	$$PWD/include/ev3Kit/robotModel/parts/ev3Gyroscope.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3Compass.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3DCIRSeeker.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3ACIRSeeker.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3NXTColorSensorV2Color.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3NXTColorSensorV2RGB.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3NXTColorSensorV2Passive.h \
+	$$PWD/include/ev3Kit/robotModel/parts/ev3NXTColorSensorV2Raw.h \
 	$$PWD/include/ev3Kit/blocks/ev3BlocksFactory.h \
 	$$PWD/include/ev3Kit/communication/commandConstants.h \
 	$$PWD/include/ev3Kit/communication/ev3DirectCommand.h \
@@ -69,6 +83,13 @@ SOURCES += \
 	$$PWD/src/robotModel/parts/ev3Motor.cpp \
 	$$PWD/src/robotModel/parts/ev3Led.cpp \
 	$$PWD/src/robotModel/parts/ev3Gyroscope.cpp \
+	$$PWD/src/robotModel/parts/ev3Compass.cpp \
+	$$PWD/src/robotModel/parts/ev3DCIRSeeker.cpp \
+	$$PWD/src/robotModel/parts/ev3ACIRSeeker.cpp \
+	$$PWD/src/robotModel/parts/ev3NXTColorSensorV2Color.cpp \
+	$$PWD/src/robotModel/parts/ev3NXTColorSensorV2RGB.cpp \
+	$$PWD/src/robotModel/parts/ev3NXTColorSensorV2Passive.cpp \
+	$$PWD/src/robotModel/parts/ev3NXTColorSensorV2Raw.cpp \
 	$$PWD/src/blocks/ev3BlocksFactory.cpp \
 	$$PWD/src/blocks/details/speakerBlock.cpp \
 	$$PWD/src/blocks/details/beepBlock.cpp \

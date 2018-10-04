@@ -18,9 +18,10 @@
 #include <QtGui/QPainter>
 
 #include <qrkernel/settingsManager.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrgui/controller/controllerInterface.h>
 
 #include <kitBase/robotModel/robotParts/touchSensor.h>
@@ -36,6 +37,8 @@
 #include "src/engine/view/scene/sensorItem.h"
 #include "src/engine/view/scene/sonarSensorItem.h"
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
+#include "src/engine/items/ballItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/stylusItem.h"
 #include "src/engine/items/rectangleItem.h"
@@ -54,8 +57,6 @@ using namespace view;
 using namespace qReal;
 using namespace graphicsUtils;
 
-const QString twoDModelUndoStackName = "2D-model-undo-stack";
-
 TwoDModelScene::TwoDModelScene(model::Model &model
 		, AbstractView *view
 		, QObject *parent)
@@ -71,11 +72,16 @@ TwoDModelScene::TwoDModelScene(model::Model &model
 	setEmptyPenBrushItems();
 
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded, this, &TwoDModelScene::onWallAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::skittleAdded, this, &TwoDModelScene::onSkittleAdded);
+	connect(&mModel.worldModel(), &model::WorldModel::ballAdded, this, &TwoDModelScene::onBallAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded, this, &TwoDModelScene::onColorItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::imageItemAdded, this, &TwoDModelScene::onImageItemAdded);
 	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [=](items::RegionItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) { addItem(item); });
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, this, &TwoDModelScene::onItemRemoved);
+
+	connect(&mModel.worldModel(), &model::WorldModel::backgroundImageItemAdded
+			, this, &TwoDModelScene::handleBackgroundImageItem);
 
 	connect(&mModel, &model::Model::robotAdded, this, &TwoDModelScene::onRobotAdd);
 	connect(&mModel, &model::Model::robotRemoved, this, &TwoDModelScene::onRobotRemove);
@@ -93,7 +99,6 @@ bool TwoDModelScene::oneRobot() const
 void TwoDModelScene::setController(ControllerInterface &controller)
 {
 	mController = &controller;
-	mController->moduleOpened(twoDModelUndoStackName);
 }
 
 void TwoDModelScene::setInteractivityFlags(kitBase::ReadOnlyFlags flags)
@@ -129,6 +134,24 @@ void TwoDModelScene::handleNewRobotPosition(RobotItem *robotItem)
 	}
 }
 
+void TwoDModelScene::handleBackgroundImageItem(items::ImageItem *backgroundImageItem)
+{
+	connect(backgroundImageItem, &items::ImageItem::selectedChanged, this, [=](bool selected) {
+		if (!selected) {
+			QRect backgroundRect;
+			backgroundRect.setLeft(backgroundImageItem->x1() + backgroundImageItem->x());
+			backgroundRect.setTop(backgroundImageItem->y1() + backgroundImageItem->y());
+			backgroundRect.setRight(backgroundImageItem->x2() + backgroundImageItem->x());
+			backgroundRect.setBottom(backgroundImageItem->y2() + backgroundImageItem->y());
+			mModel.worldModel().setBackground(backgroundImageItem->image(), backgroundRect);
+			mModel.worldModel().removeImageItem(backgroundImageItem);
+			update();
+		}
+
+		setDragMode(QGraphicsView::NoDrag);
+	});
+}
+
 void TwoDModelScene::onRobotAdd(model::RobotModel *robotModel)
 {
 	RobotItem * const robotItem = new RobotItem(robotModel->info().robotImage(), *robotModel);
@@ -139,7 +162,9 @@ void TwoDModelScene::onRobotAdd(model::RobotModel *robotModel)
 
 	robotItem->setEditable(!mRobotReadOnly);
 
+	robotItem->setZValue(robotZPoint);
 	addItem(robotItem);
+	robotItem->robotModel().startPositionMarker()->setZValue(robotZPoint - lowPrecision);
 	addItem(robotItem->robotModel().startPositionMarker());
 	subscribeItem(static_cast<AbstractItem *>(robotModel->startPositionMarker()));
 
@@ -164,20 +189,48 @@ void TwoDModelScene::onWallAdded(items::WallItem *wall)
 {
 	addItem(wall);
 	subscribeItem(wall);
-	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
 	connect(wall, &items::WallItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
 	wall->setEditable(!mWorldReadOnly);
+	connect(wall, &items::WallItem::wallDragged, this, &TwoDModelScene::worldWallDragged);
+	connect(wall, &items::WallItem::wallDragged, this, [this](){ handleMouseInteractionWithSelectedItems(); });
+}
+
+void TwoDModelScene::onSkittleAdded(items::SkittleItem *skittle)
+{
+	onAbstractItemAdded(skittle);
+	connect(skittle, &items::SkittleItem::mouseInteractionStopped
+			, this, &TwoDModelScene::handleMouseInteractionWithSelectedItems);
+}
+
+void TwoDModelScene::onBallAdded(items::BallItem *ball)
+{
+	onAbstractItemAdded(ball);
+	connect(ball, &items::BallItem::mouseInteractionStopped
+			, this, &TwoDModelScene::handleMouseInteractionWithSelectedItems);
+}
+
+void TwoDModelScene::handleMouseInteractionWithSelectedItems()
+{
+	for (QGraphicsItem *item : selectedItems()) {
+		if (auto ball = dynamic_cast<items::BallItem *>(item)) {
+			ball->saveStartPosition();
+		} else if (auto skittle = dynamic_cast<items::SkittleItem *>(item)) {
+			skittle->saveStartPosition();
+		}
+	}
 }
 
 void TwoDModelScene::onColorItemAdded(graphicsUtils::AbstractItem *item)
 {
-	addItem(item);
-	subscribeItem(item);
-	connect(item, &graphicsUtils::AbstractItem::deletedWithContextMenu, this, &TwoDModelScene::deleteSelectedItems);
-	item->setEditable(!mWorldReadOnly);
+	onAbstractItemAdded(item);
 }
 
 void TwoDModelScene::onImageItemAdded(graphicsUtils::AbstractItem *item)
+{
+	onAbstractItemAdded(item);
+}
+
+void TwoDModelScene::onAbstractItemAdded(AbstractItem *item)
 {
 	addItem(item);
 	subscribeItem(item);
@@ -248,6 +301,16 @@ void TwoDModelScene::mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent)
 				mCurrentWall = new items::WallItem(position, position);
 				initItem(mCurrentWall);
 				mModel.worldModel().addWall(mCurrentWall);
+				break;
+			case skittle:
+				mCurrentSkittle = new items::SkittleItem(position);
+				initItem(mCurrentSkittle);
+				mModel.worldModel().addSkittle(mCurrentSkittle);
+				break;
+			case ball:
+				mCurrentBall = new items::BallItem(position);
+				initItem(mCurrentBall);
+				mModel.worldModel().addBall(mCurrentBall);
 				break;
 			case line:
 				mCurrentLine = new items::LineItem(position, position);
@@ -337,6 +400,16 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		mCurrentWall = nullptr;
 		break;
 	}
+	case skittle: {
+		createdItem = mCurrentSkittle;
+		mCurrentSkittle = nullptr;
+		break;
+	}
+	case ball: {
+		createdItem = mCurrentBall;
+		mCurrentBall = nullptr;
+		break;
+	}
 	case line: {
 		reshapeLine(mouseEvent);
 		createdItem = mCurrentLine;
@@ -371,6 +444,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		if (createdItem) {
 			forReleaseResize(mouseEvent);
 		}
+
 		break;
 	}
 
@@ -381,6 +455,7 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 		setSceneRect(sceneRect().united(robotItem->sceneBoundingRect()));
 	}
 
+	handleMouseInteractionWithSelectedItems();
 	update();
 	AbstractScene::mouseReleaseEvent(mouseEvent);
 }
@@ -388,25 +463,16 @@ void TwoDModelScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void TwoDModelScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent)
 {
 	const QList<QGraphicsItem *> itemsUnderCursor = items(mouseEvent->scenePos());
-	const bool isSceneClick = itemsUnderCursor.count() == 1 && itemsUnderCursor.first() == mEmptyRect;
-	if (isSceneClick && mBackgroundRect.contains(mouseEvent->scenePos().toPoint())) {
-		items::ImageItem *item = new items::ImageItem(mBackground, mBackgroundRect);
-		mBackground = model::Image();
-		mBackgroundRect = QRect();
-		mModel.worldModel().addImage(item);
+	const bool isSceneClick = itemsUnderCursor.count() == 0;
+	if (isSceneClick && mModel.worldModel().backgroundRect().contains(mouseEvent->scenePos().toPoint())) {
+		setDragMode(QGraphicsView::NoDrag);
+		items::ImageItem *item = new items::ImageItem(mModel.worldModel().background()
+				, mModel.worldModel().backgroundRect());
+		item->setBackgroundRole(true);
+		mModel.worldModel().setBackground(nullptr, QRect());
+		mModel.worldModel().addImageItem(item);
 		item->setSelected(true);
-		connect(this, &TwoDModelScene::escapePressed, this, [=]() { item->setSelected(false); });
-		connect(item, &items::ImageItem::selectedChanged, this, [=](bool selected) {
-			if (!selected) {
-				mBackground = item->image();
-				mBackgroundRect.setLeft(item->x1() + item->x());
-				mBackgroundRect.setTop(item->y1() + item->y());
-				mBackgroundRect.setRight(item->x2() + item->x());
-				mBackgroundRect.setBottom(item->y2() + item->y());
-				mModel.worldModel().removeImage(item);
-				update();
-			}
-		});
+		handleBackgroundImageItem(item);
 	}
 }
 
@@ -419,6 +485,8 @@ void TwoDModelScene::deleteSelectedItems()
 		items::WallItem * const wall = dynamic_cast<items::WallItem *>(item);
 		items::ColorFieldItem * const colorField = dynamic_cast<items::ColorFieldItem *>(item);
 		items::ImageItem * const image = dynamic_cast<items::ImageItem *>(item);
+		items::SkittleItem * const skittle = dynamic_cast<items::SkittleItem *>(item);
+		items::BallItem * const ball = dynamic_cast<items::BallItem *>(item);
 
 		if (sensor && !mSensorsReadOnly) {
 			for (RobotItem * const robotItem : mRobots.values()) {
@@ -430,6 +498,12 @@ void TwoDModelScene::deleteSelectedItems()
 		} else if (wall && !mWorldReadOnly) {
 			worldItemsToDelete << wall->id();
 			mCurrentWall = nullptr;
+		} else if (skittle && !mWorldReadOnly) {
+			worldItemsToDelete << skittle->id();
+			mCurrentSkittle = nullptr;
+		} else if (ball && !mWorldReadOnly) {
+			worldItemsToDelete << ball->id();
+			mCurrentBall = nullptr;
 		} else if (colorField && !mWorldReadOnly) {
 			worldItemsToDelete << colorField->id();
 			mCurrentLine = nullptr;
@@ -438,7 +512,7 @@ void TwoDModelScene::deleteSelectedItems()
 			mCurrentRectangle = nullptr;
 			mCurrentCurve = nullptr;
 		} else if (image && !mWorldReadOnly) {
-			mModel.worldModel().removeImage(image);
+			worldItemsToDelete << image->id();
 		}
 	}
 
@@ -494,25 +568,15 @@ void TwoDModelScene::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Delete) {
 		deleteSelectedItems();
-	} else if (event->key() == Qt::Key_Escape) {
-		emit escapePressed();
 	} else {
 		QGraphicsScene::keyPressEvent(event);
 	}
 }
 
-void TwoDModelScene::focusInEvent(QFocusEvent *event)
-{
-	QGraphicsScene::focusInEvent(event);
-	if (mController) {
-		mController->setActiveModule(twoDModelUndoStackName);
-	}
-}
-
 void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-	if (mBackground.isValid()) {
-		mBackground.draw(*painter, mBackgroundRect, currentZoom());
+	if (mModel.worldModel().background() && mModel.worldModel().background()->isValid()) {
+		mModel.worldModel().background()->draw(*painter, mModel.worldModel().backgroundRect(), currentZoom());
 	}
 
 	if (SettingsManager::value("2dShowGrid").toBool()) {
@@ -528,6 +592,16 @@ void TwoDModelScene::drawBackground(QPainter *painter, const QRectF &rect)
 void TwoDModelScene::addWall()
 {
 	mDrawingAction = wall;
+}
+
+void TwoDModelScene::addSkittle()
+{
+	mDrawingAction = skittle;
+}
+
+void TwoDModelScene::addBall()
+{
+	mDrawingAction = ball;
 }
 
 void TwoDModelScene::addLine()
@@ -559,17 +633,19 @@ void TwoDModelScene::addImage()
 {
 	// Loads world and robot models simultaneously.
 	const QString loadFileName = utils::QRealFileDialog::getOpenFileName("2DSelectImage", views().first()
-			, tr("Select image"), "./fields", tr("Graphics (*.*)"));
+			, tr("Select image")
+			, qReal::PlatformInfo::invariantSettingsPath("pathToImages") + "/../fields"
+			, tr("Graphics (*.*)"));
 	if (loadFileName.isEmpty()) {
 		return;
 	}
 
 	mDrawingAction = image;
-	const model::Image image(loadFileName, false);
-	const QSize size = image.preferedSize();
+	model::Image *image = new model::Image(loadFileName, false);
+	const QSize size = image->preferedSize();
 	const QRect rect(QPoint(-size.width() / 2, -size.height() / 2), size);
 	twoDModel::items::ImageItem *result = new twoDModel::items::ImageItem(image, rect);
-	mModel.worldModel().addImage(result);
+	mModel.worldModel().addImageItem(result);
 	registerInUndoStack(result);
 	setNoneStatus();
 }
@@ -588,9 +664,19 @@ void TwoDModelScene::clearScene(bool removeRobot, Reason reason)
 		for (const items::WallItem *wall : mModel.worldModel().walls()) {
 			worldItemsToDelete << wall->id();
 		}
+
+		for (const items::SkittleItem *skittle : mModel.worldModel().skittles()) {
+			worldItemsToDelete << skittle->id();
+		}
+
+		for (const items::BallItem *ball : mModel.worldModel().balls()) {
+			worldItemsToDelete << ball->id();
+		}
+
 		for (const items::ColorFieldItem *colorField : mModel.worldModel().colorFields()) {
 			worldItemsToDelete << colorField->id();
 		}
+
 		for (const items::RegionItem *region : mModel.worldModel().regions()) {
 			worldItemsToDelete << region->id();
 		}
@@ -752,7 +838,9 @@ void TwoDModelScene::subscribeItem(AbstractItem *item)
 		if (mDrawingAction == none) {
 			mCurrentReshapeCommand->stopTracking();
 			if (mController) {
+				mCurrentReshapeCommand->setRedoEnabled(false);
 				mController->execute(mCurrentReshapeCommand);
+				mCurrentReshapeCommand->setRedoEnabled(true);
 			}
 
 			mCurrentReshapeCommand = nullptr;
@@ -772,13 +860,8 @@ void TwoDModelScene::worldWallDragged(items::WallItem *wall, const QPainterPath 
 	}
 
 	wall->onOverlappedWithRobot(isNeedStop);
-	if (wall->isDragged() && ((mDrawingAction == none) ||
-			(mDrawingAction == TwoDModelScene::wall && mCurrentWall == wall)))
-	{
-		wall->setFlag(QGraphicsItem::ItemIsMovable, !isNeedStop);
-		if (isNeedStop) {
-			wall->setCoordinates(oldPos);
-		}
+	if ((mDrawingAction == none || (mDrawingAction == TwoDModelScene::wall && mCurrentWall == wall)) && isNeedStop) {
+		wall->setCoordinates(oldPos);
 	}
 }
 
@@ -821,23 +904,10 @@ void TwoDModelScene::centerOnRobot(RobotItem *selectedItem)
 	}
 }
 
-model::Image TwoDModelScene::background() const
+void TwoDModelScene::setBackground(model::Image * const background, const QRect &backgroundRect)
 {
-	return mBackground;
-}
-
-QRect TwoDModelScene::backgroundRect() const
-{
-	return mBackgroundRect;
-}
-
-void TwoDModelScene::setBackground(const model::Image &background, const QRect &backgroundRect)
-{
-	if (mBackground != background || mBackgroundRect != backgroundRect) {
-		mBackground = background;
-		mBackgroundRect = backgroundRect;
-		update();
-	}
+	mModel.worldModel().setBackground(background, backgroundRect);
+	update();
 }
 
 void TwoDModelScene::reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port)
@@ -846,15 +916,7 @@ void TwoDModelScene::reinitSensor(RobotItem *robotItem, const kitBase::robotMode
 	model::RobotModel &robotModel = robotItem->robotModel();
 
 	const kitBase::robotModel::DeviceInfo &device = robotModel.configuration().type(port);
-	if (device.isNull() || (
-			/// @todo: Add supported by 2D model sensors here
-			!device.isA<kitBase::robotModel::robotParts::TouchSensor>()
-			&& !device.isA<kitBase::robotModel::robotParts::ColorSensor>()
-			&& !device.isA<kitBase::robotModel::robotParts::LightSensor>()
-			&& !device.isA<kitBase::robotModel::robotParts::RangeSensor>()
-			/// @todo For working with line sensor from TRIK. Actually this information shall be loaded from plugins.
-			&& !device.isA<kitBase::robotModel::robotParts::VectorSensor>()
-			))
+	if (device.isNull() || !device.simulated())
 	{
 		return;
 	}

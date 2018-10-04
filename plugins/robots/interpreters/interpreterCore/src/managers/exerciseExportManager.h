@@ -33,7 +33,7 @@ public:
 
 	~ExerciseExportManager();
 
-	void save();
+	bool save();
 
 private:
 	qReal::LogicalModelAssistInterface &mLogicalModel;

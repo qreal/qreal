@@ -12,13 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-contains(QT_VERSION, ^4\\.[0-5]\\..*){
-	message("Cannot build qreal using Qt version $${QT_VERSION}")
-	error("Use at least Qt 4.6")
+contains(QT_VERSION, ^4\\.[0-9]\\..*){
+	message("Cannot build using Qt version $${QT_VERSION}")
+	error("Use at least Qt 5.1")
 }
 
 TEMPLATE = subdirs
 SUBDIRS = \
+	initvars.pro \
 	qrmc \
 	qrxc \
 	qrgui \
@@ -31,6 +32,7 @@ SUBDIRS = \
 	thirdparty \
 	qrtranslations \
 
+thirdparty.depends = initvars.pro
 qrkernel.depends = thirdparty
 qrgraph.depends = qrkernel
 qrutils.depends = qrkernel qrtext
@@ -60,6 +62,9 @@ plugins.depends = \
 
 qrtext.depends = qrkernel
 
+qrtranslations.depends = initvars.pro
+
 OTHER_FILES += \
 	$$PWD/.travis.yml \
 	$$PWD/appveyor.yml \
+	$$PWD/global.pri \

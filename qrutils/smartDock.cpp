@@ -23,7 +23,8 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QPushButton>
 
-#include <qrutils/qRealDialog.h>
+#include <qrutils/widgets/qRealDialog.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 using namespace utils;
 
@@ -49,6 +50,20 @@ bool SmartDock::isCentral() const
 	return !isFloating() && isVisible()
 			// I know that const_cast is bad, but this is beacuse of bad qt design.
 			&& mMainWindow->dockWidgetArea(const_cast<SmartDock *>(this)) == Qt::TopDockWidgetArea;
+}
+
+void SmartDock::hideCloseButton(QDockWidget *dock)
+{
+	static CloseButtonVisibilityFilter filter;
+	const QString buttonName = "qt_dockwidget_closebutton";
+	for (QObject *child : dock->children()) {
+		if (child->objectName() == buttonName) {
+			if (QWidget *button = dynamic_cast<QWidget *>(child)) {
+				button->installEventFilter(&filter);
+				button->hide();
+			}
+		}
+	}
 }
 
 void SmartDock::switchToDocked()
@@ -137,10 +152,11 @@ void SmartDock::checkCentralWidget()
 	const bool tabsVisible = isFloating() || !isVisible() || mMainWindow->dockWidgetArea(this) != Qt::TopDockWidgetArea;
 	for (QTabWidget * const centralWidget : mMainWindow->centralWidget()->findChildren<QTabWidget *>()) {
 		centralWidget->setVisible(tabsVisible);
-		if (tabsVisible) {
-			centralWidget->setFocus();
-		} else {
-			mInnerWidget->setFocus();
+		qReal::EditorInterface *editor = tabsVisible
+				? dynamic_cast<qReal::EditorInterface *>(centralWidget)
+				: dynamic_cast<qReal::EditorInterface *>(mInnerWidget);
+		if (editor) {
+			editor->forceFocus();
 		}
 	}
 
@@ -239,4 +255,14 @@ void SmartDock::initDialog()
 			mInnerWidget->close();
 		}
 	});
+}
+
+bool SmartDock::CloseButtonVisibilityFilter::eventFilter(QObject *obj, QEvent *event)
+{
+	if (event->type() == QEvent::Show) {
+		dynamic_cast<QWidget *>(obj)->hide();
+		return true;
+	}
+
+	return QObject::eventFilter(obj, event);
 }

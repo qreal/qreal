@@ -73,7 +73,12 @@ void Element::updateData()
 			continue;
 		}
 
-		const QString text = label->info().binding() == "name" ? name() : logicalProperty(label->info().binding());
+		QString roleName = label->info().nameForRoleProperty();
+		if (roleName.isEmpty()) {
+			roleName = label->info().binding();
+		}
+
+		const QString text = label->info().binding() == "name" ? name() : logicalProperty(roleName);
 		/// @todo: Label must decide what to call itself.
 		if (label->info().isPlainTextMode()) {
 			label->setPlainText(text);
@@ -98,13 +103,33 @@ void Element::setName(const QString &value, bool withUndoRedo)
 
 QString Element::logicalProperty(const QString &roleName) const
 {
-	return mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
+	const QString logicalProperty = mLogicalAssistApi.propertyByRoleName(logicalId(), roleName).toString();
+	if (!logicalProperty.isEmpty()) {
+		return logicalProperty;
+	}
+
+	const QString dynamicProperties =
+			mLogicalAssistApi.mutableLogicalRepoApi().stringProperty(logicalId(), "dynamicProperties");
+	QDomDocument dynamicPropertiesDocument;
+	dynamicPropertiesDocument.setContent(dynamicProperties);
+	QMap<QString, QString> roleNameToPropertyValueMap;
+
+	for (QDomElement element = dynamicPropertiesDocument.firstChildElement("properties").firstChildElement("property")
+			; !element.isNull()
+			; element = element.nextSiblingElement("property"))
+	{
+		const QString roleName = element.attribute("name");
+		const QString value = element.attribute("dynamicPropertyValue");
+		roleNameToPropertyValueMap[roleName] = value;
+	}
+
+	return roleNameToPropertyValueMap.value(roleName, "");
 }
 
 void Element::setLogicalProperty(const QString &roleName, const QString &oldValue
 		, const QString &newValue, bool withUndoRedo)
 {
-	if (oldValue == newValue) {
+	if ((oldValue == newValue) && withUndoRedo) {
 		return;
 	}
 
@@ -153,7 +178,7 @@ void Element::updateEnabledState()
 void Element::setHideNonHardLabels(bool hide)
 {
 	for (Label * const label : mLabels) {
-		label->setVisible(label->isHard() || !hide || label->isSelected());
+		label->setVisible(label->isHard() || !hide || (label->isSelected() && label->hasCursor()));
 	}
 }
 

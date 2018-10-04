@@ -21,7 +21,7 @@
 
 using namespace twoDModel::view;
 
-const int timeToLive = 3000;
+constexpr auto timeToLive = 2000;
 const QString pattern = QObject::tr("Speed:&nbsp;&nbsp;<b>%1%</b>");
 
 SpeedPopup::SpeedPopup(QWidget *parent)
@@ -36,7 +36,7 @@ SpeedPopup::SpeedPopup(QWidget *parent)
 	connect(mResetButton, &QAbstractButton::clicked, this, &SpeedPopup::resetToDefault);
 	layout->addWidget(mText);
 	layout->addWidget(mResetButton);
-	mHideTimer->setInterval(2000);
+	mHideTimer->setInterval(timeToLive);
 	mHideTimer->setSingleShot(true);
 	connect(mHideTimer, &QTimer::timeout, this, &SpeedPopup::hide);
 	updateDueToLayout();

@@ -239,6 +239,8 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 	QEventLoop eventLoop;
 	QTimer::singleShot(2000, &eventLoop, &QEventLoop::quit);
 	eventLoop.exec();
+	mMainWindowInterface->errorReporter()->addInformation(
+		tr("Compile completed"));
 
 #ifdef Q_OS_WIN
 	if (qReal::SettingsManager::value("WinScpPath").toString().isEmpty()) {
@@ -250,28 +252,51 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 	}
 #endif
 
-	mMainWindowInterface->errorReporter()->addInformation(
-		tr("Uploading... Please wait for about 20 seconds.")
-	);
-
 	const QFileInfo binaryFile(fileInfo.canonicalPath() + "/" + fileInfo.completeBaseName() + ".exe");
+	QFile shScript(fileInfo.canonicalPath() + "/" + fileInfo.completeBaseName() + ".sh");
+	shScript.open(QIODevice::WriteOnly);
+	const QString script = "mono /home/root/trik/" + binaryFile.fileName();
+	shScript.write(script.toStdString().data());
+	shScript.close();
+	const QFileInfo scriptFile = QFileInfo(shScript);
+	const QString scriptPath = scriptFile.canonicalFilePath();
 
 #ifdef Q_OS_WIN
-	const QString moveCommand = QString(
+	const QString moveBinary = QString(
 			"\"%1\" /command  \"open scp://root@%2\" \"put %3 /home/root/trik/\"")
 			.arg(qReal::SettingsManager::value("WinScpPath").toString())
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
 			.arg(binaryFile.canonicalFilePath().replace("/", "\\"));
 #else
-	const QString moveCommand = QString(
-			"scp %2 root@%1:/home/root/trik/")
+	//todo chmod and moveScript for windows
+	const QString chmod = QString("chmod +x %1").arg(scriptPath);
+	const QString moveScript = QString("scp %2 root@%1:/home/root/trik/scripts")
 			.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
-			.arg(binaryFile.canonicalFilePath());
+			.arg(scriptPath);
+	QProcess chmodProcess;
+	chmodProcess.start(chmod);
+	chmodProcess.waitForFinished();
+	QProcess moveScriptProcess;
+	moveScriptProcess.start(moveScript);
+	moveScriptProcess.waitForFinished(3000);
+	const QString moveBinary = QString(
+				"scp %2 root@%1:/home/root/trik")
+				.arg(qReal::SettingsManager::value("TrikTcpServer").toString())
+				.arg(binaryFile.canonicalFilePath());
 #endif
 
+	mMainWindowInterface->errorReporter()->addInformation(
+		tr("Uploading... Please wait for about 20 seconds.")
+	);
+
 	QProcess deployProcess;
-	if (!deployProcess.startDetached(moveCommand)) {
-		mMainWindowInterface->errorReporter()->addError(tr("Unable to launch WinSCP"));
+
+	//check on windows
+	deployProcess.start(moveBinary);
+
+	if (deployProcess.state() == QProcess::NotRunning) {
+		mMainWindowInterface->errorReporter()->addError(
+					tr("Cant't start download process"));
 		return "";
 	}
 
@@ -279,8 +304,15 @@ QString TrikPascalABCGeneratorPluginBase::uploadProgram()
 		tr("After downloading the program, enter 'exit' or close the window")
 	);
 
-	QTimer::singleShot(20000, &eventLoop, &QEventLoop::quit);
-	eventLoop.exec();
+	if (deployProcess.exitCode() != 0 or !deployProcess.waitForFinished(10000))
+	{
+		mMainWindowInterface->errorReporter()->addError(
+					tr("Failed to download program. Check connection"));
+		return "";
+	}
+
+	mMainWindowInterface->errorReporter()->addInformation(
+				tr("Download completed"));
 
 	return binaryFile.fileName();
 }

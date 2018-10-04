@@ -59,7 +59,7 @@ QMAKE_EXTRA_COMPILERS += qrxc_resource
 
 # Here we need to call moc explicitly because by default it will be called before any files were generated
 new_moc.output  = $$MOC_DIR/moc_${QMAKE_FILE_BASE}.cpp
-new_moc.commands = $$dirname(QMAKE_QMAKE)/moc -I $$ROOT/qrgui/plugins/metaMetaModel/include/ ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
+new_moc.commands = $$dirname(QMAKE_QMAKE)/moc -I $$GLOBAL_PWD/qrgui/plugins/metaMetaModel/include/ ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}
 new_moc.input = MOC_HEADERS
 new_moc.variable_out = SOURCES
 

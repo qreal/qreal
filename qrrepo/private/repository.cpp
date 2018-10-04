@@ -256,7 +256,7 @@ void Repository::copyProperties(const Id &dest, const Id &src)
 	mObjects[dest]->copyPropertiesFrom(*mObjects[src]);
 }
 
-QMap<QString, QVariant> Repository::properties(const Id &id)
+QMap<QString, QVariant> Repository::properties(const Id &id) const
 {
 	return mObjects[id]->properties();
 }
@@ -266,7 +266,7 @@ void Repository::setProperties(const Id &id, QMap<QString, QVariant> const &prop
 	mObjects[id]->setProperties(properties);
 }
 
-QVariant Repository::property( const Id &id, const QString &name ) const
+QVariant Repository::property(const Id &id, const QString &name) const
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->property(name);
@@ -275,7 +275,7 @@ QVariant Repository::property( const Id &id, const QString &name ) const
 	}
 }
 
-void Repository::removeProperty( const Id &id, const QString &name )
+void Repository::removeProperty(const Id &id, const QString &name)
 {
 	if (mObjects.contains(id)) {
 		return mObjects[id]->removeProperty(name);
@@ -419,33 +419,34 @@ bool Repository::exist(const Id &id) const
 	return (mObjects[id] != nullptr);
 }
 
-void Repository::saveAll() const
+bool Repository::saveAll() const
 {
-	mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
+	return mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
 }
 
-void Repository::save(const IdList &list) const
+bool Repository::save(const IdList &list) const
 {
 	QList<Object*> toSave;
 	for (const Id &id : list) {
 		toSave.append(allChildrenOf(id));
 	}
 
-	mSerializer.saveToDisk(toSave, mMetaInfo);
+	return mSerializer.saveToDisk(toSave, mMetaInfo);
 }
 
-void Repository::saveWithLogicalId(const qReal::IdList &list) const
+bool Repository::saveWithLogicalId(const qReal::IdList &list) const
 {
 	QList<Object*> toSave;
 	for (const Id &id : list) {
 		toSave << allChildrenOfWithLogicalId(id);
 	}
 
-	mSerializer.saveToDisk(toSave, mMetaInfo);
+	return mSerializer.saveToDisk(toSave, mMetaInfo);
 }
 
-void Repository::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
+bool Repository::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 {
+	bool result = true;
 	const QString currentWorkingFile = mWorkingFile;
 	for (const QString &savePath : diagramIds.keys()) {
 		const qReal::IdList diagrams = diagramIds[savePath];
@@ -459,10 +460,11 @@ void Repository::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 			elementsToSave += logicalId(id);
 		}
 
-		saveWithLogicalId(elementsToSave);
+		result = result && saveWithLogicalId(elementsToSave);
 	}
 
 	setWorkingFile(currentWorkingFile);
+	return result;
 }
 
 void Repository::remove(const IdList &list) const
@@ -513,17 +515,17 @@ void Repository::printDebug() const
 	}
 }
 
-void Repository::exterminate()
+bool Repository::exterminate()
 {
 	printDebug();
 	mObjects.clear();
 	//serializer.clearWorkingDir();
-	if (!mWorkingFile.isEmpty()) {
-		mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
-	}
+	bool result = !mWorkingFile.isEmpty() && mSerializer.saveToDisk(mObjects.values(), mMetaInfo);
 
 	init();
 	printDebug();
+
+	return result;
 }
 
 void Repository::open(const QString &saveFile)

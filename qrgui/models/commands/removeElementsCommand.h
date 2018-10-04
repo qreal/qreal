@@ -69,6 +69,7 @@ protected:
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	const models::Exploser &mExploser;
 	CreateRemoveCommandImplementation mImpl;
+	IdList mExplosionSources;
 };
 
 }

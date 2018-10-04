@@ -1,23 +1,18 @@
 // This module implements the QsciLexer class.
 //
-// Copyright (c) 2012 Riverbank Computing Limited <info@riverbankcomputing.com>
+// Copyright (c) 2017 Riverbank Computing Limited <info@riverbankcomputing.com>
 // 
 // This file is part of QScintilla.
 // 
-// This file may be used under the terms of the GNU General Public
-// License versions 2.0 or 3.0 as published by the Free Software
-// Foundation and appearing in the files LICENSE.GPL2 and LICENSE.GPL3
-// included in the packaging of this file.  Alternatively you may (at
-// your option) use any later version of the GNU General Public
-// License if such license has been publicly approved by Riverbank
-// Computing Limited (or its successors, if any) and the KDE Free Qt
-// Foundation. In addition, as a special exception, Riverbank gives you
-// certain additional rights. These rights are described in the Riverbank
-// GPL Exception version 1.1, which can be found in the file
-// GPL_EXCEPTION.txt in this package.
+// This file may be used under the terms of the GNU General Public License
+// version 3.0 as published by the Free Software Foundation and appearing in
+// the file LICENSE included in the packaging of this file.  Please review the
+// following information to ensure the GNU General Public License version 3.0
+// requirements will be met: http://www.gnu.org/copyleft/gpl.html.
 // 
-// If you are unsure which license is appropriate for your use, please
-// contact the sales department at sales@riverbankcomputing.com.
+// If you do not wish to use this file under the terms of the GPL version 3.0
+// then you may purchase a commercial license.  For more information contact
+// info@riverbankcomputing.com.
 // 
 // This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
 // WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
@@ -405,7 +400,8 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
         else
             rc = false;
 
-        // Read the font
+        // Read the font.  First try the deprecated format that uses an integer
+        // point size.
         full_key = key + "font";
 
         ok = qs.contains(full_key);
@@ -425,6 +421,34 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
         }
         else
             rc = false;
+
+        // Now try the newer font format that uses a floating point point size.
+        // It is not an error if it doesn't exist.
+        full_key = key + "font2";
+
+        ok = qs.contains(full_key);
+        fdesc = qs.value(full_key).toStringList();
+
+        if (ok)
+        {
+            // Allow for future versions with more fields.
+            if (fdesc.count() >= 5)
+            {
+                QFont f;
+
+                f.setFamily(fdesc[0]);
+                f.setPointSizeF(fdesc[1].toDouble());
+                f.setBold(fdesc[2].toInt());
+                f.setItalic(fdesc[3].toInt());
+                f.setUnderline(fdesc[4].toInt());
+
+                setFont(f, i);
+            }
+            else
+            {
+                rc = false;
+            }
+        }
 
         // Read the background colour.
         full_key = key + "paper";
@@ -471,7 +495,8 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
     else
         rc = false;
 
-    // Read the default font.
+    // Read the default font.  First try the deprecated format that uses an
+    // integer point size.
     full_key = key + "defaultfont";
 
     ok = qs.contains(full_key);
@@ -491,6 +516,34 @@ bool QsciLexer::readSettings(QSettings &qs,const char *prefix)
     }
     else
         rc = false;
+
+    // Now try the newer font format that uses a floating point point size.  It
+    // is not an error if it doesn't exist.
+    full_key = key + "defaultfont2";
+
+    ok = qs.contains(full_key);
+    fdesc = qs.value(full_key).toStringList();
+
+    if (ok)
+    {
+        // Allow for future versions with more fields.
+        if (fdesc.count() >= 5)
+        {
+            QFont f;
+
+            f.setFamily(fdesc[0]);
+            f.setPointSizeF(fdesc[1].toDouble());
+            f.setBold(fdesc[2].toInt());
+            f.setItalic(fdesc[3].toInt());
+            f.setUnderline(fdesc[4].toInt());
+
+            setDefaultFont(f);
+        }
+        else
+        {
+            rc = false;
+        }
+    }
 
     full_key = key + "autoindentstyle";
 
@@ -536,7 +589,7 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
         // Write the end-of-line fill.
         qs.setValue(key + "eolfill", eolFill(i));
 
-        // Write the font
+        // Write the font using the deprecated format.
         QFont f = font(i);
 
         fdesc.clear();
@@ -549,6 +602,11 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
         fdesc += fmt.arg((int)f.underline());
 
         qs.setValue(key + "font", fdesc);
+
+        // Write the font using the newer format.
+        fdesc[1] = fmt.arg(f.pointSizeF());
+
+        qs.setValue(key + "font2", fdesc);
 
         // Write the background colour.
         c = paper(i);
@@ -576,7 +634,7 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
 
     qs.setValue(key + "defaultpaper", num);
 
-    // Write the default font
+    // Write the default font using the deprecated format.
     fdesc.clear();
     fdesc += defFont.family();
     fdesc += fmt.arg(defFont.pointSize());
@@ -587,6 +645,11 @@ bool QsciLexer::writeSettings(QSettings &qs,const char *prefix) const
     fdesc += fmt.arg((int)defFont.underline());
 
     qs.setValue(key + "defaultfont", fdesc);
+
+    // Write the font using the newer format.
+    fdesc[1] = fmt.arg(defFont.pointSizeF());
+
+    qs.setValue(key + "defaultfont2", fdesc);
 
     qs.setValue(key + "autoindentstyle", autoIndStyle);
 

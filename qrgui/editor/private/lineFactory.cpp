@@ -42,7 +42,7 @@ LineHandler * LineFactory::createHandler(LinkShape type) const
 	}
 }
 
-QMenu * LineFactory::shapeTypeMenu() const
+QMenu *LineFactory::shapeTypeMenu() const
 {
 	QMenu * const menu = new QMenu();
 
@@ -56,31 +56,6 @@ QMenu * LineFactory::shapeTypeMenu() const
 	connect(curveLine, SIGNAL(triggered()), this, SLOT(setCurveLine()));
 
 	return menu;
-}
-
-QString LineFactory::shapeToString(LinkShape shapeType)
-{
-	switch (shapeType) {
-	case LinkShape::broken:
-		return "broken";
-	case LinkShape::curve:
-		return "curve";
-	default:
-		return "square";
-	}
-}
-
-LinkShape LineFactory::stringToShape(const QString &string)
-{
-	if (string == "broken") {
-		return LinkShape::broken;
-	} else if (string == "square") {
-		return LinkShape::square;
-	} else if (string == "curve") {
-		return LinkShape::curve;
-	} else {
-		return static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
-	}
 }
 
 void LineFactory::setSquareLine() const

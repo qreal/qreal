@@ -49,6 +49,11 @@ void Block::init(const Id &graphicalId
 	}
 }
 
+QStringList Block::identifiers() const
+{
+	return mParser->identifiers();
+}
+
 bool Block::initNextBlocks()
 {
 	if (id().isNull() || id() == Id::rootId()) {

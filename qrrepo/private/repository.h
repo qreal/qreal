@@ -74,7 +74,7 @@ public:
 	void setProperty(const qReal::Id &id, const QString &name, const QVariant &value) const;
 	void copyProperties(const qReal::Id &dest, const qReal::Id &src);
 	QVariant property(const qReal::Id &id, const QString &name) const;
-	QMap<QString, QVariant> properties(const qReal::Id &id);
+	QMap<QString, QVariant> properties(const qReal::Id &id) const;
 	void setProperties(const qReal::Id &id, QMap<QString, QVariant> const &properties);
 	bool hasProperty(const qReal::Id &id, const QString &name, bool sensitivity = false
 			, bool regExpression = false) const;
@@ -95,7 +95,7 @@ public:
 
 	void printDebug() const;
 
-	void exterminate();
+	bool exterminate();
 	void open(const QString &saveFile);
 
 	bool exist(const qReal::Id &id) const;
@@ -104,10 +104,11 @@ public:
 	/// @param importedFile - name of file to be imported
 	void importFromDisk(const QString &importedFile);
 
-	void saveAll() const;
-	void save(const qReal::IdList &list) const;
-	void saveWithLogicalId(const qReal::IdList &list) const;
-	void saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
+	/// All methods which starts with save, return true if save process has succeed and false otherwise
+	bool saveAll() const;
+	bool save(const qReal::IdList &list) const;
+	bool saveWithLogicalId(const qReal::IdList &list) const;
+	bool saveDiagramsById(QHash<QString, qReal::IdList> const &diagramIds);
 	void remove(const qReal::IdList &list) const;
 	void setWorkingFile(const QString &workingDir);
 	void exportToXml(const QString &targetFile) const;

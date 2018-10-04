@@ -25,6 +25,7 @@ class TrikInfraredSensor : public kitBase::robotModel::robotParts::RangeSensor
 	Q_OBJECT
 	Q_CLASSINFO("name", "infrared")
 	Q_CLASSINFO("friendlyName", tr("Infrared Sensor"))
+	Q_CLASSINFO("simulated", "true")
 
 public:
 	TrikInfraredSensor(const kitBase::robotModel::DeviceInfo &info

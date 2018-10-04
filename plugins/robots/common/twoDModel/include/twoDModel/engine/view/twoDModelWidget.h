@@ -19,6 +19,7 @@
 #include <QtWidgets/QGraphicsView>
 
 #include <qrutils/graphicsUtils/lineImpl.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 #include <kitBase/readOnly.h>
 
 #include <kitBase/devicesConfigurationWidget.h>
@@ -62,7 +63,9 @@ class ImageItemPopup;
 class RobotItemPopup;
 class SpeedPopup;
 
-class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget, public kitBase::DevicesConfigurationProvider
+class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget
+		, public kitBase::DevicesConfigurationProvider
+		, public qReal::EditorInterface
 {
 	Q_OBJECT
 
@@ -79,7 +82,7 @@ public:
 	SensorItem *sensorItem(const kitBase::robotModel::PortInfo &port);
 	void setSensorVisible(const kitBase::robotModel::PortInfo &port, bool isVisible);
 
-	void loadXml(const QDomDocument &worldModel);
+	void loadXmls(const QDomDocument &worldModel, const QDomDocument &blobs);
 
 	/// Returns a reference to a model part of 2D model MVC architecture.
 	model::Model &model() const;
@@ -95,6 +98,15 @@ public:
 	/// Enables or disables compact 2D model mode.
 	/// In a compact mode 2D model window has less controls, they may seem in another way.
 	void setCompactMode(bool enabled);
+
+	QString editorId() const override;
+	bool supportsZooming() const override;
+	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find) override;
+
+public slots:
+	void zoomIn() override;
+	void zoomOut() override;
 
 signals:
 	/// Emitted each time when user closes 2D model window.
@@ -118,7 +130,9 @@ protected:
 	void keyPressEvent(QKeyEvent *event) override;
 	void closeEvent(QCloseEvent *event) override;
 
-	void onDeviceConfigurationChanged(const QString &robotModel
+	void focusInEvent(QFocusEvent *event) override;
+
+	void onDeviceConfigurationChanged(const QString &robotId
 			, const kitBase::robotModel::PortInfo &port
 			, const kitBase::robotModel::DeviceInfo &device
 			, Reason reason) override;
@@ -126,7 +140,9 @@ protected:
 private slots:
 	void bringToFront();
 
-	void saveToRepo();
+	void saveWorldModelToRepo();
+	void saveBlobsToRepo();
+
 	void saveWorldModel();
 	void loadWorldModel();
 	void setBackground();
@@ -156,6 +172,8 @@ private:
 		, hand
 		, multiselection
 		, drawWall
+		, drawSkittle
+		, drawBall
 		, drawLine
 		, drawStylus
 		, drawEllipse
@@ -170,7 +188,9 @@ private:
 	void setDetailsVisibility(bool visible);
 	void setRunStopButtonsVisibility();
 
-	QDomDocument generateXml() const;
+	QDomDocument generateWordModelXml() const;
+	QDomDocument generateBlobsXml() const;
+	QDomDocument generateWordModelWithBlobsXml() const;
 
 	/// Set active panel toggle button and deactivate all others
 	void setActiveButton(int active);

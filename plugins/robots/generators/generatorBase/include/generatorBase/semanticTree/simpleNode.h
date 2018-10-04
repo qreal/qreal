@@ -16,11 +16,13 @@
 
 #include "nonZoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with simple semantics
-class SimpleNode : public NonZoneNode
+class ROBOTS_GENERATOR_EXPORT SimpleNode : public NonZoneNode
 {
 public:
 	/// Represents all options that may be added by control flow generator
@@ -38,6 +40,7 @@ public:
 	/// Binds this block to given artificial construction instead of binding to id.
 	void bindToSyntheticConstruction(SyntheticBlockType type);
 
+	static SimpleNode *createBreakNode(QObject *parent);
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 

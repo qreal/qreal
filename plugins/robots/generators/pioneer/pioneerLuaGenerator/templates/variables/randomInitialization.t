@@ -1,0 +1,1 @@
+		@@VARIABLE@@ = math.random(@@FROM@@, @@TO@@)

@@ -16,11 +16,13 @@
 
 #include "conditionalNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for loops inside program
-class LoopNode : public ConditionalNode
+class ROBOTS_GENERATOR_EXPORT LoopNode : public ConditionalNode
 {
 public:
 	explicit LoopNode(const qReal::Id &idBinded, QObject *parent = 0);
@@ -32,6 +34,7 @@ public:
 
 	ZoneNode *bodyZone();
 
+	qReal::Id id() const override;
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;

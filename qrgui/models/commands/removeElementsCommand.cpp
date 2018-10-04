@@ -40,9 +40,9 @@ RemoveElementsCommand *RemoveElementsCommand::withItemsToDelete(const IdList &it
 		}
 	}
 
-	appendHangingEdges(nodes, edges);
-
 	// ElementInfos must be given into implementation in reverse order (in order they will be created during undo).
+	appendHangingEdges(nodes, edges);
+	mExploser.handleRemoveCommand(mExplosionSources, this);
 	mImpl.setElements(nodes + edges);
 	return this;
 }
@@ -55,6 +55,7 @@ RemoveElementsCommand *RemoveElementsCommand::withLogicalItemToDelete(const qRea
 	appendHangingEdges(nodes, edges);
 
 	// ElementInfos must be given into implementation in reverse order (in order they will be created during undo).
+	mExploser.handleRemoveCommand(mExplosionSources, this);
 	mImpl.setElements(nodes + edges);
 	return this;
 }
@@ -145,7 +146,7 @@ void RemoveElementsCommand::appendExplosionsCommands(const Id &logicalId
 		appendLogicalDelete(logicalChild, nodes, edges);
 	}
 
-	mExploser.handleRemoveCommand(logicalId, this);
+	mExplosionSources << logicalId;
 }
 
 void RemoveElementsCommand::appendHangingEdges(QList<ElementInfo> &nodes, QList<ElementInfo> &edges)

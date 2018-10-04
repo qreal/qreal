@@ -1,4 +1,4 @@
-for var @@ITERATOR@@ := @@INITIAL_VALUE@@ to @@BOUND@@ do
+for var @@ITERATOR@@ := @@INITIAL_VALUE@@ to @@BOUND@@ - 1 do
 begin
-    @@BODY@@
+@@BODY@@
 end;

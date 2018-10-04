@@ -2,6 +2,25 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
 <context>
+    <name>Block</name>
+    <message>
+        <source>Control flow break detected, stopping</source>
+        <translation type="obsolete">Une pause de flux de contrôle détecté, arrêt en cours</translation>
+    </message>
+    <message>
+        <source>Too many outgoing links</source>
+        <translation type="obsolete">Trop de liens sortants</translation>
+    </message>
+    <message>
+        <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
+        <translation type="obsolete">Aucun lien sortant, s&apos;il vous plait connectez ce bloc à un autre ou bien utilisez un nœud final pour terminer le programme</translation>
+    </message>
+    <message>
+        <source>Outgoing link is not connected</source>
+        <translation type="obsolete">Le lien sortant n&apos;est pas connecté</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../../qrutils/expressionsParser/expressionsParser.cpp" line="647"/>
@@ -69,7 +88,7 @@
         <translation>Division entière par zéro</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="502"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="525"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
@@ -108,30 +127,30 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="60"/>
         <source>Control flow break detected, stopping</source>
         <translation>Une pause de flux de contrôle détecté, arrêt en cours</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="65"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="150"/>
+        <source>Block has disappeared!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="72"/>
         <source>Too many outgoing links</source>
         <translation>Trop de liens sortants</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="71"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="77"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Aucun lien sortant, s&apos;il vous plait connectez ce bloc à un autre ou bien utilisez un nœud final pour terminer le programme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="78"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="84"/>
         <source>Outgoing link is not connected</source>
         <translation>Le lien sortant n&apos;est pas connecté</translation>
-    </message>
-    <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
-        <location filename="../../qrutils/interpreter/block.cpp" line="144"/>
-        <source>Block has disappeared!</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -160,17 +179,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="117"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Aucun point d&apos;entrée n&apos;est trouvé, ajoutez un nœud initial à un diagramme</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="122"/>
         <source>Stack overflow</source>
         <translation>Débordement de pile</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="181"/>
         <source>Block has disappeared!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -292,7 +311,7 @@
 <context>
     <name>qReal::interpretation::blocks::SubprogramBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="33"/>
+        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="35"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Entrez un nom valide (style C) pour le sousprogramme &quot;</translation>
     </message>
@@ -331,6 +350,32 @@
         <location filename="../../qrutils/interpreter/blocks/unsupportedBlock.cpp" line="21"/>
         <source>Block of a type which is unsupported by an interpreter</source>
         <translation>Le bloc de ce type n&apos;est pas supporté par l&apos;intérpréteur</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::ConsoleDock</name>
+    <message>
+        <location filename="../../qrutils/widgets/consoleDock.cpp" line="36"/>
+        <source>Reset shell</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::ImagePicker</name>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="35"/>
+        <source>Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="68"/>
+        <source>Select image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="70"/>
+        <source>Images (*.png *.svg *.jpg *.gif *.bmp);;All files (*.*)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -382,6 +427,104 @@
         <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="121"/>
         <source>Cannot build new editor</source>
         <translation>Impossible à créer un nouvel editeur</translation>
+    </message>
+</context>
+<context>
+    <name>utils::QRealMessageBox</name>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="30"/>
+        <source>Ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="31"/>
+        <source>Open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="32"/>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="33"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="34"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="35"/>
+        <source>Discard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="36"/>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="37"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="38"/>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="39"/>
+        <source>Save All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="40"/>
+        <source>Yes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="41"/>
+        <source>Yes To All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="42"/>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="43"/>
+        <source>No To All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="44"/>
+        <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="45"/>
+        <source>Retry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="46"/>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="47"/>
+        <source>NoButton</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="49"/>
+        <source>Restore Defaults</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -4,7 +4,7 @@
 	<namespace>UML 2.0</namespace>
 	<diagram name="MetaEditor" nodeName="MetamodelDiagram" displayedName="Meta Editor">
 		<nonGraphicTypes>
-			<enum name="associationTypes" displayedName="Association Types">
+			<enum name="arrowTypes" displayedName="Arrow Types">
 				<value name="no_arrow" displayedName="No arrow"/>
 				<value name="open_arrow" displayedName="Opened arrow"/>
 				<value name="empty_arrow" displayedName="Empty arrow"/>
@@ -32,6 +32,18 @@
 				<value name="debug" displayedName="Debug"/>
 				<value name="release" displayedName="Release"/>
 			</enum>
+ 			<role arrowType="no_arrow" name="NoArrowRole">
+                		<properties/>
+			</role>
+ 			<role arrowType="open_arrow" name="OpenArrowRole">
+                		<properties/>
+			</role>
+			<role arrowType="empty_arrow" name="EmptyArrowRole">
+                		<properties/>
+			</role>
+			<role arrowType="filled_arrow" name="FilledArrowRole">
+                		<properties/>
+			</role>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<node name="PackageDiagram" displayedName="Package Diagram" description="Предназначен для описания связей между метамоделями. Также может быть корневым элементом метамодели">
@@ -143,6 +155,7 @@
 					<container>
 						<contains type="MetaEditor::MetaEntityNode"/>
 						<contains type="MetaEditor::MetaEntityEdge"/>
+						<contains type="MetaEditor::MetaEntityRole"/>
 						<contains type="MetaEditor::MetaEntityPort"/>
 						<contains type="MetaEditor::MetaEntityEnum"/>
 						<contains type="MetaEditor::MetaEntityGroup"/>
@@ -267,42 +280,37 @@
 				<logic>
 					<generalizations/>
 					<properties>
+						<property type="MetaEntityRole" name="beginRole"/>
+						<property type="string" name="description"/>						
 						<property type="string" name="displayedName"/>
-						<property type="string" name="description"/>
-						<property type="string" name="path"/>
-						<property type="bool" name="isDividable">
-							<default>false</default>
+						<property type="MetaEntityRole" name="endRole"/>
+						<property type="reference" name="fromPorts">
+							<reference type="MetaEntityPort"/>
 						</property>
+						<property type="string" name="path"/>
+						
 						<property type="bool" name="hardLabel">
 							<default>true</default>
 						</property>
+						<property type="bool" name="isDividable">
+							<default>false</default>
+						</property>
+						<property type="string" name="labelText"/>
 						<property type="labelTypes" name="labelType">
 							<default>dynamicText</default>
 							<description>тип текста(статический, динамический)</description>
 						</property>
-						<property type="string" name="labelText"/>
+						
 						<property type="lineTypes" name="lineType">
 							<default>solidLine</default>
 							<description>тип линии (прямая, пунктирная и т.д.)</description>
 						</property>
-						<property type="reference" name="fromPorts">
-							<reference type="MetaEntityPort"/>
+						<property type="linkShapeType" name="shape">
+							<default>broken</default>
 						</property>
 						<property type="reference" name="toPorts">
 							<reference type="MetaEntityPort"/>
 						</property>
-						<property type="linkShapeType" name="shape">
-							<default>broken</default>
-						</property>
-      						<property type="associationTypes" name="beginType">
-							<default>no_arrow</default>
-						</property>
-						<property type="associationTypes" name="endType">
-							<default>no_arrow</default>
-						</property>
-                                                        
-						<property type="string" name="beginName"/>
-						<property type="string" name="endName"/>
 					</properties>
 					<container>
 						<contains type="MetaEditor::MetaEntity Attribute"/>
@@ -315,6 +323,45 @@
 							<forestalling size="25,35,25,25"/>
 							<childrenForestalling size="5"/>
 						</properties>
+					</container>
+				</logic>
+			</node>
+			<node name="MetaEntityRole" displayedName="Role" description="Вспомогательный элемент для MetaEntityEdge. Вкладывается в MetaEntityEdge">
+				<graphics>
+					<picture sizey="147" sizex="129">
+						<line y2="30a" x1="14a" x2="115a" stroke-style="solid" stroke="#ff000000" fill="#ffffffff" stroke-width="0" fill-style="none" y1="30a"/>
+						<ellipse y2="143a" x1="3a" x2="125a" stroke-style="solid" stroke="#ff000000" fill="#ffffffff" stroke-width="0" fill-style="none" y1="0a"/>
+					</picture>
+					<labels>
+						<label x="48a" y="3a" textBinded="name"/>
+					</labels>
+					<ports>
+						<pointPort x="22" y="124" type="NonTyped"/>
+						<pointPort x="114" y="30" type="NonTyped"/>
+						<pointPort x="126" y="69" type="NonTyped"/>
+						<pointPort x="110" y="121" type="NonTyped"/>
+						<pointPort x="67" y="144" type="NonTyped"/>
+						<pointPort x="2" y="72" type="NonTyped"/>
+						<pointPort x="14" y="31" type="NonTyped"/>
+						<pointPort x="43" y="4" type="NonTyped"/>
+						<pointPort x="83" y="4" type="NonTyped"/>
+ 					</ports>
+				</graphics>
+				<logic>
+					<generalizations/>
+					<properties>
+						<property type="arrowTypes" name="arrowType">
+							<default>no_arrow</default>
+						</property>
+						<property type="string" name="end">
+							<default>false</default>
+						</property>
+						<property type="string" name="navigable">
+							<default>false</default>
+						</property>
+					</properties>
+					<container>
+						<contains type="MetaEditor::MetaEntity Attribute"/>
 					</container>
 				</logic>
 			</node>
@@ -546,9 +593,8 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations endType="no_arrow" beginType="empty_arrow">
-						<association beginName="Inheritance1" endName="Inheritance2"/>
-					</associations>
+					<beginRole role="EmptyArrowRole"/>
+					<endRole role="NoArrowRole"/>
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
@@ -562,9 +608,8 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations endType="no_arrow" beginType="open_arrow">
-						<association beginName="Container1" endName="Container2"/>
-					</associations>
+					<beginRole role="OpenArrowRole"/>
+					<endRole role="NoArrowRole"/>
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
@@ -575,9 +620,8 @@
 					<lineType type="solidLine"/>
 				</graphics>
 				<logic>
-					<associations endType="no_arrow" beginType="filled_arrow">
-						<association beginName="Explosion1" endName="Explosion2"/>
-					</associations>
+					<beginRole role="FilledArrowRole"/>
+					<endRole role="NoArrowRole"/>
 					<generalizations>
 						<parent parentName="KernelDiagram::Relationship" overrides="all"/>
 					</generalizations>
@@ -655,6 +699,7 @@
 			<group name="DSL Elements" description="Элементы метаязыка для описания узлов и связей создаваемого языка">
 				<element name="MetaEntityNode"/>
 				<element name="MetaEntityEdge"/>
+				<element name="MetaEntityRole"/>
 				<element name="MetaEntityPort"/>
 				<element name="MetaEntityEnum"/>
 				<element name="MetaEntityImport"/>

@@ -21,3 +21,8 @@ GyroscopeSensor::GyroscopeSensor(const DeviceInfo &info, const PortInfo &port)
 	: VectorSensor(info, port)
 {
 }
+
+void GyroscopeSensor::calibrate()
+{
+	setLastData({0, 0, 0});
+}

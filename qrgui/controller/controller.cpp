@@ -33,9 +33,11 @@ Controller::~Controller()
 	disconnect(this, SLOT(resetCanRedoState()));
 	disconnect(this, SLOT(resetCanUndoState()));
 	for (UndoStack * const stack : mModuleStacks) {
-		// 'delete stack;' causes segfaults when app is beeing closed:
-		// for some reason slots are still connected
-		stack->deleteLater();
+		if (stack) {
+			// 'delete stack;' causes segfaults when app is beeing closed:
+			// for some reason slots are still connected
+			stack->deleteLater();
+		}
 	}
 
 	mGlobalStack->deleteLater();
@@ -53,6 +55,11 @@ bool Controller::canRedo() const
 
 void Controller::setActiveModule(const QString &moduleId)
 {
+	if (!moduleId.isEmpty() && !mModuleStacks.contains(moduleId)) {
+		// Ignoring editors without undo-redo support.
+		return;
+	}
+
 	if (moduleId.isEmpty()) {
 		setActiveStack(nullptr);
 	} else {

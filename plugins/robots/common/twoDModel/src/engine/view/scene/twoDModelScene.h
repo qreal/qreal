@@ -1,4 +1,4 @@
-/* Copyright 2012-2016 CyberTech Labs Ltd.
+/* Copyright 2012-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,11 +40,14 @@ namespace twoDModel {
 
 namespace items {
 class WallItem;
+class SkittleItem;
+class BallItem;
 class LineItem;
 class CurveItem;
 class StylusItem;
 class RectangleItem;
 class EllipseItem;
+class ImageItem;
 }
 
 namespace model {
@@ -86,6 +89,12 @@ public slots:
 	/// Sets a flag that next user mouse actions should draw a wall on the scene.
 	void addWall();
 
+	/// Sets a flag that next user mouse actions should draw a skittle on the scene.
+	void addSkittle();
+
+	/// Sets a flag that next user mouse actions should draw a ball on the scene.
+	void addBall();
+
 	/// Sets a flag that next user mouse actions should draw a colored line on the scene.
 	void addLine();
 
@@ -123,14 +132,8 @@ public slots:
 	/// Focuses all graphics views on the robot if it is not visible.
 	void centerOnRobot(RobotItem *selectedItem = nullptr);
 
-	/// Returns a path to scene background image.
-	model::Image background() const;
-
-	/// Returns a scene background image size and position.
-	QRect backgroundRect() const;
-
 	/// Sets a background image on the scene and its geometry.
-	void setBackground(const model::Image &background, const QRect &backgroundRect);
+	void setBackground(model::Image * const background, const QRect &backgroundRect);
 
 	/// Reread sensor configuration on given port, delete old sensor item and create new.
 	void reinitSensor(RobotItem *robotItem, const kitBase::robotModel::PortInfo &port);
@@ -148,11 +151,10 @@ signals:
 	/// Emitted at any changes of robot list (adding or removing)
 	void robotListChanged(RobotItem *robotItem);
 
-	/// Emitted when user pressed escape during this scene is focused.
-	void escapePressed();
-
 private slots:
 	void handleNewRobotPosition(RobotItem *robotItem);
+
+	void handleBackgroundImageItem(items::ImageItem *backgroundImageItem);
 
 	/// Called after robot model was added and create new robot item
 	/// @param robotModel Robot model which was added
@@ -165,11 +167,19 @@ private slots:
 	/// Called after new wall is added to a world model.
 	void onWallAdded(items::WallItem *wall);
 
+	/// Called after new skittle is added to a world model.
+	void onSkittleAdded(items::SkittleItem *skittle);
+
+	/// Called after new ball is added to a world model.
+	void onBallAdded(items::BallItem *ball);
+
 	/// Called after new color field item is added to a world model.
 	void onColorItemAdded(graphicsUtils::AbstractItem *item);
 
 	/// Called after new image item is added to a world model.
 	void onImageItemAdded(graphicsUtils::AbstractItem *item);
+
+	void onAbstractItemAdded(graphicsUtils::AbstractItem *item);
 
 	/// Called after some item was kicked away from a world model.
 	void onItemRemoved(QGraphicsItem *item);
@@ -181,6 +191,8 @@ private:
 	{
 		none = 0
 		, wall
+		, skittle
+		, ball
 		, line
 		, bezier
 		, stylus
@@ -192,12 +204,10 @@ private:
 	void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
-	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 	void keyPressEvent(QKeyEvent *event) override;
-
-	void focusInEvent(QFocusEvent *event);
 
 	void reshapeItem(QGraphicsSceneMouseEvent *event);
 
@@ -217,13 +227,13 @@ private:
 	void subscribeItem(graphicsUtils::AbstractItem *item);
 	void worldWallDragged(items::WallItem *wall, const QPainterPath &shape, const QRectF &oldPos);
 
+	void handleMouseInteractionWithSelectedItems();
+
 	qreal currentZoom() const;
 
 	model::Model &mModel;
 	qReal::ControllerInterface *mController = nullptr;
 
-	model::Image mBackground;
-	QRect mBackgroundRect;
 	graphicsUtils::GridDrawer mGridDrawer;
 	qreal mWidthOfGrid;
 
@@ -234,6 +244,8 @@ private:
 
 	/// Temporary wall that's being created. When it's complete, it's added to world model
 	items::WallItem *mCurrentWall = nullptr;
+	items::SkittleItem *mCurrentSkittle = nullptr;
+	items::BallItem *mCurrentBall = nullptr;
 	items::LineItem *mCurrentLine = nullptr;
 	items::CurveItem *mCurrentCurve = nullptr;
 	items::StylusItem *mCurrentStylus = nullptr;

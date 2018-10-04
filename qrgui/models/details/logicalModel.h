@@ -77,6 +77,8 @@ private:
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
 			, details::modelsImplementation::AbstractModelItem *child);
 
+	QVariant dynamicPropertyData(const Id &id, int role) const;
+
 	GraphicalModelView mGraphicalModelView;
 	qrRepo::LogicalRepoApi &mApi;
 	LogicalModelAssistApi *mLogicalAssistApi;

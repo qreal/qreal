@@ -10,6 +10,8 @@ This software may use following third-party components:
 
 It also uses Pfennig font by Daniel Johnson, licensed under SIL Open Font License (OFL). Copy of this license can be found in licenses/OFL.txt.
 
+It also uses DejaVu Sans Mono font. Copy of license can be found in licenses/DejaVu Fonts License.txt.
+
 Some icons are provided by Tatiana Yanchuk and are available under Creative Commons Attribution 4.0 International license (http://creativecommons.org/licenses/by/4.0/legalcode)
 
 Special thanks to Dmitrii Sokolov for french localization!

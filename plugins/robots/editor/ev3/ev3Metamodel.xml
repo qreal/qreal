@@ -36,6 +36,12 @@
 				<value name="Right"/>
 				<value name="Up"/>
 			</enum>
+			<enum name="Ev3MsgType">
+				<value name="int" displayedName="int"/>
+				<value name="float" displayedName="float"/>
+				<value name="string" displayedName="string"/>
+				<value name="bool" displayedName="bool"/>
+			</enum>
 		</nonGraphicTypes>
 		<graphicTypes>
 			<!--- Engine movement commands -->
@@ -43,9 +49,10 @@
 				<logic>
 					<container/>
 					<properties>
-						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+						<!--TODO: mode is not supported for forward and backward movement commands-->
+						<!--<property displayedName="Mode" type="BreakEngineMode" name="Mode">
 							<default>break</default>
-						</property>
+						</property>-->
 						<property displayedName="Ports" type="string" name="Ports" >
 							<default>B, C</default>
 						</property>
@@ -107,6 +114,12 @@
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/enginesStopBlock.png" x1="0" y2="50" x2="50"/>
+						<rectangle fill="#7cfc00" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#000000" x2="10" stroke-style="none">
+							<showIf value="float" property="Mode" sign="="/>
+						</rectangle>
+						<rectangle fill="#ff0000" stroke-width="1" fill-style="solid" y1="0" y2="10" x1="0" stroke="#ffa500" x2="10" stroke-style="none">
+							<showIf value="break" property="Mode" sign="="/>
+						</rectangle>
 					</picture>
 					<labels>
 						<label x="25" y="-35" textBinded="Ports" hard="true" background="white" prefix="Ports:"/>
@@ -119,6 +132,9 @@
 						<parent parentName="EngineCommand"/>
 					</generalizations>
 					<properties>
+						<property displayedName="Mode" type="BreakEngineMode" name="Mode">
+							<default>break</default>
+						</property>
 						<property displayedName="Ports" type="string" name="Ports">
 							<default>A, B, C, D</default>
 						</property>
@@ -207,7 +223,96 @@
 					</generalizations>
 				</logic>
 			</node>
-
+			<node displayedName="Calibrate gyroscope" name="Ev3CalibrateGyroscope" path="" description="Sets gyroscope's angle to zero in current position.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/calibrateGyroscopeBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Start Compass Calibration" name="Ev3StartCompassCalibration" path="" description="Starts compass calibration under program control. To calibrate, robot needs to spin >=540 clockwise and counterclockwise with minimum 20 seconds duration for each direction. Atfer robot rotation add Stop Compass Сalibration block.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/startCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Stop Compass Calibration" name="Ev3StopCompassCalibration" path="" description="Ends compass calibration process. Stores result of calibration into the given variable. Not zero means success.">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/stopCompassCalibrationBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+									<label x="40" y="60" textBinded="Variable" hard="false" prefix="Variable:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+								<property displayedName="Variable" type="string" name="Variable" />
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Read RGB into Variables" name="Ev3ReadRGB" path="" description="Reads R, G, B channels values into given variables">
+					<graphics>
+							<picture sizex="50" sizey="50">
+									<image y1="0" name="images/readRGBBlock.svg" x1="0" y2="50" x2="50"/>
+							</picture>
+							<labels>
+									<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+									<label x="40" y="60" textBinded="RVariable" hard="false" prefix="R Variable:"/>
+									<label x="40" y="90" textBinded="GVariable" hard="false" prefix="G Variable:"/>
+									<label x="40" y="120" textBinded="BVariable" hard="false" prefix="B Variable:"/>
+							</labels>
+							<nonResizeable/>
+					</graphics>
+					<logic>
+							<container/>
+							<properties>
+								<property displayedName="R Variable" type="string" name="RVariable">
+									<default>r</default>
+								</property>
+								<property displayedName="G Variable" type="string" name="GVariable">
+									<default>g</default>
+								</property>
+								<property displayedName="B Variable" type="string" name="BVariable">
+									<default>b</default>
+								</property>
+							</properties>
+							<generalizations>
+									<parent parentName="Ev3SensorBlock"/>
+							</generalizations>
+					</logic>
+			</node>
 			<node displayedName="Led" name="Ev3Led" path="70, 79 : 70, 121 :  | 25, 78 : 25, 122 :  | 12, 12 : 86, 12 : 86, 78 : 12, 78 : 12, 12 : " description="Sets the color of the LED on the robot`s front panel.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -230,8 +335,266 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Send Mail" name="Ev3SendMail" description="Sends mail (message) to another robot. If Receiver name left empty, message will be sent to all connected robots">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sendMessageBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="45" y="60" textBinded="MsgType" hard="false" background="white" prefix="Message type:"/>
+						<label x="45" y="90" textBinded="Message" hard="false" prefix="Message:"/>
+						<label x="45" y="120" textBinded="ReceiverName" hard="false" prefix="Receiver name:"/>
+						<label x="45" y="150" textBinded="ReceiverMailBoxName" hard="false" prefix="Mailbox name:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Message type" type="Ev3MsgType" name="MsgType">
+							<default>int</default>
+						</property>
+						<property displayedName="Message" type="string" name="Message">
+							<default>42</default>
+						</property>
+						<property displayedName="Receiver name" type="string" name="ReceiverName"/>
+						<property displayedName="Mailbox name" type="string" name="ReceiverMailBoxName">
+							<default>EV3MailBox</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<!-- LineLeader, EV3 -->
+			<node displayedName="Calibrate White" name="Ev3CalibrateWhiteLL" description="Calibrates the white threshold for each sensor in the array. Place the array over the white surface with all sensors on the white area.">
+					<graphics>
+						<picture sizex="50" sizey="50">
+							<image y1="0" name="images/calWhiteLineLeader.svg" x1="0" y2="50" x2="50"/>
+						</picture>
+						<labels>
+							<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						</labels>
+						<nonResizeable/>
+					</graphics>
+					<logic>
+						<properties>
+						</properties>
+						<container/>
+						<generalizations>
+							<parent parentName="Ev3SensorBlock"/>
+						</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Calibrate Black" name="Ev3CalibrateBlackLL" description="Calibrates the black threshold for each sensor in the array. Place the array over the black surface with all sensors on the black area.">
+					<graphics>
+						<picture sizex="50" sizey="50">
+							<image y1="0" name="images/calBlackLineLeader.svg" x1="0" y2="50" x2="50"/>
+						</picture>
+						<labels>
+							<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						</labels>
+						<nonResizeable/>
+					</graphics>
+					<logic>
+						<properties>
+						</properties>
+						<container/>
+						<generalizations>
+							<parent parentName="Ev3SensorBlock"/>
+						</generalizations>
+					</logic>
+			</node>
+			<node displayedName="Calibrate PID" name="Ev3CalibratePIDLL" description="Sets set point, P, I, D value of PID control and P factor, I factor, D factor for P, I, D value of PID control.">
+					<graphics>
+						<picture sizex="50" sizey="50">
+							<image y1="0" name="images/calPIDLineLeader.svg" x1="0" y2="50" x2="50"/>
+						</picture>
+						<labels>
+							<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							<label x="45" y="60" textBinded="SetPoint" hard="false" prefix="Set point:"/>
+							<label x="45" y="90" textBinded="P" hard="false" prefix="P:"/>
+							<label x="45" y="120" textBinded="PFactor" hard="false" prefix="P factor:"/>
+							<label x="45" y="150" textBinded="I" hard="false" prefix="I:"/>
+							<label x="45" y="180" textBinded="IFactor" hard="false" prefix="I factor:"/>
+							<label x="45" y="210" textBinded="D" hard="false" prefix="D:"/>
+							<label x="45" y="240" textBinded="DFactor" hard="false" prefix="D factor:"/>
+						</labels>
+						<nonResizeable/>
+					</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Set point" type="int" name="SetPoint">
+							<default>45</default>
+						</property>
+						<property displayedName="P" type="int" name="P">
+							<default>25</default>
+						</property>
+						<property displayedName="P factor" type="int" name="PFactor">
+							<default>32</default>
+						</property>
+						<property displayedName="I" type="int" name="I">
+							<default>0</default>
+						</property>
+						<property displayedName="I factor" type="int" name="IFactor">
+							<default>32</default>
+						</property>
+						<property displayedName="D" type="int" name="D">
+							<default>8</default>
+						</property>
+						<property displayedName="D factor" type="int" name="DFactor">
+							<default>32</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Sleep Line Leader" name="Ev3SleepLL" description="Puts the line leader to sleep conserve power">
+					<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/sleepLineLeader.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wake Up Line Leader" name="Ev3WakeUpLL" description="Wakes the line leader to prepare for use.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/wakeUpLineLeader.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Read Average to Variable" name="Ev3ReadAvrLL" description="Read the Weighted Average value from the sensor.  This value is calculated internally by the sensor where each of the eight sensors is either triggered or not and multiplied by a factor to help determine if the line is left, right or on center of the line (according to the set point). EXPECTED VALUES: 0-80 (-1=ERROR)">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/readAvrLineLeader.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Variable" hard="false" background="white" prefix="Variable:"/>
+					</labels>
+						<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>x</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Read Sensor to Array" name="Ev3ReadAllLL" description="Read the values from the Line Leader.  Amount of light or dark each sensor sees.  Typically between 0-20.  0=black, 100=white.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/readCalLineLeader.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="45" y="60" textBinded="Variable" hard="false" background="white" prefix="Array:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Array Variable" type="string" name="Variable">
+							<default>a</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Read Steering to Variable" name="Ev3ReadSteeringLL" description="Read the Steering value from the sensor.  This value is calculated internally and can directly be used to set turning values for the robot's motors. EXPECTED VALUES: -100 to 100 (-101=ERROR)">
+				<graphics>
+						<picture sizex="50" sizey="50">
+							<image y1="0" name="images/readSteeringLineLeader.svg" x1="0" y2="50" x2="50"/>
+						</picture>
+						<labels>
+							<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+							<label x="45" y="60" textBinded="Variable" hard="false" background="white" prefix="Variable:"/>
+						</labels>
+						<nonResizeable/>
+				</graphics>
+				<logic>
+						<properties>
+							<property displayedName="Variable" type="string" name="Variable">
+								<default>x</default>
+							</property>
+						</properties>
+						<container/>
+						<generalizations>
+							<parent parentName="Ev3SensorBlock"/>
+						</generalizations>
+				</logic>
+			</node>
 
 			<!-- Waiting for sensors blocks, EV3 -->
+			<node displayedName="Wait for Mail Receiving" name="Ev3WaitForReceivingMail" description="Stores a message from another robot (fom mailbox) into a given variable. When no incoming messages are present at the moment, a robot will wait for incoming message if 'Synchronized' property is true, and doing nothing otherwise.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForMessageBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="45" y="60" textBinded="MsgType" hard="false" background="white" prefix="Message type:"/>
+						<label x="45" y="90" textBinded="MailBoxName" hard="false" prefix="Mailbox name:"/>
+						<label x="45" y="120" textBinded="Variable" hard="false" prefix="Variable:"/>
+						<label x="45" y="150" textBinded="Synchronized" hard="false" prefix="Synchronized:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Message type" type="Ev3MsgType" name="MsgType">
+							<default>int</default>
+						</property>
+						<property displayedName="Mailbox name" type="string" name="MailBoxName">
+							<default>EV3MailBox</default>
+						</property>
+						<property displayedName="Variable" type="string" name="Variable" />
+						<property displayedName="Synchronized" type="bool" name="Synchronized">
+							<default>true</default>
+						</property>
+					</properties>
+					<container/>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node name="Ev3SensorBlock">
 				<logic>
 					<container/>
@@ -376,6 +739,23 @@
 					</generalizations>
 				</logic>
 			</node>
+			<node displayedName="Wait for Touch Sensor" name="Ev3WaitForTouchSensor" path="12, 123 : 174, 123 :  | 174, 12 : 358, 12 : 358, 234 : 174, 234 : 174, 12 : " description="Waits till the touch sensor is pressed. The only parameter is a sensor`s port number (1, 2, 3 or 4).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForTouchSensorBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
+					</generalizations>
+				</logic>
+			</node>
 			<node displayedName="Wait for Encoder" name="Ev3WaitForEncoder" path="203, 211 : 168, 176 :  | 203, 211 : 240, 174 :  | 12, 48 : 50, 86 :  | 12, 48 : 48, 12 :  | 203, 48 : 203, 211 :  | 12, 48 : 203, 48 : " description="Waits till the tacho limit of the motor on the given port will reach the value of the 'Tacho Limit' parameter.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -401,6 +781,33 @@
 					</properties>
 					<generalizations>
 						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Wait for Gyroscope" path="101, 106 : 212, 106 :  | 156, 183 : 156, 107 :  | 12, 183 : 156, 183 :  | 12, 12 : 12, 183 :  | 12, 12 : 164, 12 : " name="Ev3WaitForGyroscope" description="Waits till the value returned by the gyroscope on the given port will be greater or less than the given.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/waitForGyroscopeBlock.png" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Port" hard="true" background="white" prefix="Port:"/>
+						<label x="55" y="60" textBinded="Degrees" prefix="Value:"/>
+						<label x="55" y="90" textBinded="Sign" prefix="Sign:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Value" type="string" name="Degrees">
+							<default>90</default>
+						</property>
+						<property displayedName="Sign" type="DistanceSign" name="Sign">
+							<default>greater</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="Ev3SensorBlock"/>
 					</generalizations>
 				</logic>
 			</node>
@@ -573,7 +980,6 @@
 				</logic>
 			</node>
 		</graphicTypes>
-
 		<palette sorted="false">
 			<group name="Actions">
 				<element name="Ev3Beep"/>
@@ -583,6 +989,21 @@
 				<element name="Ev3EnginesStop"/>
 				<element name="Ev3ClearEncoder"/>
 				<element name="Ev3Led"/>
+				<element name="Ev3SendMail"/>
+				<element name="Ev3CalibrateGyroscope"/>
+				<element name="Ev3StartCompassCalibration"/>
+				<element name="Ev3StopCompassCalibration"/>
+				<element name="Ev3ReadRGB"/>
+			</group>
+			<group name="Line Leader">
+				<element name="Ev3CalibrateWhiteLL"/>
+				<element name="Ev3CalibrateBlackLL"/>
+				<element name="Ev3CalibratePIDLL"/>
+				<element name="Ev3SleepLL"/>
+				<element name="Ev3WakeUpLL"/>
+				<element name="Ev3ReadAvrLL"/>
+				<element name="Ev3ReadAllLL"/>
+				<element name="Ev3ReadSteeringLL"/>
 			</group>
 			<group name="Wait">
 				<element name="Ev3WaitForTouchSensor"/>
@@ -593,6 +1014,8 @@
 				<element name="Ev3WaitForSonarDistance"/>
 				<element name="Ev3WaitForButton"/>
 				<element name="Ev3WaitForSound"/>
+				<element name="Ev3WaitForGyroscope"/>
+				<element name="Ev3WaitForReceivingMail"/>
 			</group>
 			<group name="Drawing">
 				<element name="Ev3DrawRect"/>

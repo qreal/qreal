@@ -80,7 +80,6 @@ LuaPrinter::LuaPrinter(const QStringList &pathsToTemplates
 
 LuaPrinter::~LuaPrinter()
 {
-	delete mReservedVariablesConverter;
 }
 
 QStringList LuaPrinter::addSuffix(const QStringList &list)

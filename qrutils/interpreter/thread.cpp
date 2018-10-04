@@ -20,6 +20,8 @@
 #include <qrkernel/settingsManager.h>
 
 #include <qrutils/interpreter/blocks/receiveThreadMessageBlock.h>
+#include <qrutils/interpreter/blocks/subprogramBlock.h>
+
 
 using namespace qReal;
 using namespace interpretation;
@@ -67,9 +69,9 @@ Thread::Thread(const GraphicalModelAssistInterface *graphicalModelApi
 
 Thread::~Thread()
 {
-	for (const BlockInterface * const block : mStack) {
-		if (block) {
-			mInterpretersInterface.dehighlight(block->id());
+	for (const StackFrame &frame : mStack) {
+		if (frame.block()) {
+			mInterpretersInterface.dehighlight(frame.block()->id());
 		}
 	}
 }
@@ -131,7 +133,7 @@ void Thread::finishedSteppingInto()
 		return;
 	}
 
-	mCurrentBlock = mStack.top();
+	mCurrentBlock = mStack.top().block();
 
 	// If block already connected then nothing will happen because of Qt::UniquieConnection modifiers.
 	// But if it is disconnected (for example, we did it in turnOff() on recursive lifting) we should connect it back.
@@ -182,7 +184,20 @@ void Thread::turnOn(BlockInterface * const block)
 
 	mInterpretersInterface.highlight(mCurrentBlock->id(), false);
 	connectBlock(mCurrentBlock);
-	mStack.push(mCurrentBlock);
+
+	// Check subprogram block
+	const blocks::SubprogramBlock * const subprogram = dynamic_cast<blocks::SubprogramBlock *>(mCurrentBlock);
+	if (subprogram) {
+		QList<QPair<QString, QVariant>> properties;
+		const QList<blocks::SubprogramBlock::DynamicParameter> parameters = subprogram->dynamicParameters();
+		for (const blocks::SubprogramBlock::DynamicParameter &param : parameters) {
+			properties << qMakePair(param.name, subprogram->value<QVariant>(param.name));
+		}
+
+		mStack.push(StackFrame(mCurrentBlock, properties));
+	} else {
+		mStack.push(StackFrame(mCurrentBlock));
+	}
 
 	++mBlocksSincePreviousEventsProcessing;
 	if (mBlocksSincePreviousEventsProcessing > blocksCountTillProcessingEvents) {
@@ -223,6 +238,26 @@ void Thread::turnOff(BlockInterface * const block)
 
 	if (sender()) {
 		sender()->disconnect(this);
+	}
+
+	// Restoring old properties...
+	const QList<QPair<QString, QVariant>> &oldProperties = mStack.top().properties();
+	Block * const topBlock = dynamic_cast<Block *>(mStack.top().block());
+	for (const QPair<QString, QVariant> &property : oldProperties) {
+		const QString propertyName = property.first;
+		const QVariant propertyValue = property.second;
+
+		if (propertyValue.type() == QVariant::Int) {
+			topBlock->setVariableValue<int>(propertyName, propertyValue.toInt());
+		} else if (propertyValue.type() == QVariant::Bool) {
+			topBlock->setVariableValue<bool>(propertyName, propertyValue.toBool());
+		} else if (propertyValue.type() == QVariant::Double) {
+			topBlock->setVariableValue<qreal>(propertyName, propertyValue.toReal());
+		} else if (propertyValue.type() == QVariant::StringList) {
+			topBlock->setVectorVariableValue(propertyName, propertyValue.toStringList().toVector());
+		} else {
+			topBlock->setVariableValue<QString>(propertyName, propertyValue.toString());
+		}
 	}
 
 	mStack.pop();

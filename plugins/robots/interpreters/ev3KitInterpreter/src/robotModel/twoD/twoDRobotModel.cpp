@@ -14,6 +14,10 @@
 
 #include "twoDRobotModel.h"
 
+#include <QtCore/QFile>
+
+#include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsManager.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
 #include <kitBase/robotModel/robotParts/motor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
@@ -39,6 +43,8 @@ using namespace kitBase::robotModel;
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface const &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mDisplayWidget(new Ev3DisplayWidget())
+	, mCollidingPolygon({QPointF(1, 20), QPointF(8, 10), QPointF(47, 10), QPointF(49, 20)
+			,QPointF(49, 30), QPointF(47, 40), QPointF(8, 40), QPointF(1, 30)})
 {
 }
 
@@ -65,7 +71,14 @@ robotParts::Device *TwoDRobotModel::createDevice(PortInfo const &port, DeviceInf
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/ev3/interpreter/images/ev3-robot.png";
+	const QString key = "ev3Robot2DImage";
+	const QString hackDefaultPath = "./images/ev3-robot.png";
+	if (qReal::SettingsManager::value(key).isNull()) {
+		qReal::SettingsManager::setValue(key, hackDefaultPath);
+	}
+
+	const QString settingsPath = qReal::PlatformInfo::invariantSettingsPath(key);
+	return QFile::exists(settingsPath) ? settingsPath : ":/ev3/interpreter/images/ev3-robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const
@@ -95,7 +108,7 @@ QString TwoDRobotModel::sensorImagePath(const DeviceInfo &deviceType) const
 }
 
 
-QRect TwoDRobotModel::sensorImageRect(kitBase::robotModel::DeviceInfo const &deviceType) const
+QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const
 {
 	if (deviceType.isA<robotParts::TouchSensor>()) {
 		return QRect(-12, -5, 25, 10);
@@ -105,9 +118,34 @@ QRect TwoDRobotModel::sensorImageRect(kitBase::robotModel::DeviceInfo const &dev
 		return QRect(-6, -6, 12, 12);
 	}
 	if (deviceType.isA<robotParts::RangeSensor>()) {
-		return QRect(-20, -10, 40, 20);;
+		return QRect(-20, -10, 40, 20);
 	} else {
 		Q_ASSERT(!"Unknown sensor type");
 		return QRect();
 	}
+}
+
+QPolygonF TwoDRobotModel::collidingPolygon() const
+{
+	return mCollidingPolygon;
+}
+
+qreal TwoDRobotModel::mass() const
+{
+	return 0.5;  /// @todo measure it
+}
+
+qreal TwoDRobotModel::friction() const
+{
+	return 0.3;  /// @todo measure it
+}
+
+qreal TwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.0055;
+}
+
+QList<QPointF> TwoDRobotModel::wheelsPosition() const
+{
+	return { QPointF(35, 5), QPointF(35, 45) };
 }

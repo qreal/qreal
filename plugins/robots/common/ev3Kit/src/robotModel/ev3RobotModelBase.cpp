@@ -19,6 +19,14 @@
 #include "ev3Kit/robotModel/parts/ev3Display.h"
 #include "ev3Kit/robotModel/parts/ev3Led.h"
 #include "ev3Kit/robotModel/parts/ev3Gyroscope.h"
+#include "ev3Kit/robotModel/parts/ev3Compass.h"
+#include "ev3Kit/robotModel/parts/ev3ACIRSeeker.h"
+#include "ev3Kit/robotModel/parts/ev3DCIRSeeker.h"
+#include "ev3Kit/robotModel/parts/ev3NXTColorSensorV2Color.h"
+#include "ev3Kit/robotModel/parts/ev3NXTColorSensorV2Passive.h"
+#include "ev3Kit/robotModel/parts/ev3NXTColorSensorV2RGB.h"
+#include "ev3Kit/robotModel/parts/ev3NXTColorSensorV2Raw.h"
+
 
 #include <kitBase/robotModel/robotParts/display.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
@@ -49,6 +57,13 @@ Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotI
 			, colorBlueSensorInfo()
 			, colorPassiveSensorInfo()
 			, gyroscopeSensorInfo()
+			, compassSensorInfo()
+			, ACIRSeekerSensorInfo()
+			, DCIRSeekerSensorInfo()
+			, NXTColorSensorV2ColorInfo()
+			, NXTColorSensorV2RGBInfo()
+			, NXTColorSensorV2PassiveInfo()
+			, NXTColorSensorV2RawInfo()
 	};
 
 	addAllowedConnection(PortInfo("DisplayPort", output), { displayInfo() });
@@ -62,15 +77,15 @@ Ev3RobotModelBase::Ev3RobotModelBase(const QString &kitId, const QString &robotI
 	addAllowedConnection(PortInfo("Left", input, {}, "buttonLeft"), { buttonInfo() });
 	addAllowedConnection(PortInfo("Back", input, {}, "buttonBack"), { buttonInfo() });
 
-	addAllowedConnection(PortInfo("A", output), { motorInfo() });
-	addAllowedConnection(PortInfo("B", output), { motorInfo() });
-	addAllowedConnection(PortInfo("C", output), { motorInfo() });
+	addAllowedConnection(PortInfo("A", output, { QString::fromUtf8("А") }), { motorInfo() });
+	addAllowedConnection(PortInfo("B", output, { QString::fromUtf8("В") }), { motorInfo() });
+	addAllowedConnection(PortInfo("C", output, { QString::fromUtf8("С") }), { motorInfo() });
 	addAllowedConnection(PortInfo("D", output), { motorInfo() });
 
 	addAllowedConnection(PortInfo("A", input, { QString::fromUtf8("А") }, "encoderA"), { encoderInfo() });
 	addAllowedConnection(PortInfo("B", input, { QString::fromUtf8("В") }, "encoderB"), { encoderInfo() });
 	addAllowedConnection(PortInfo("C", input, { QString::fromUtf8("С") }, "encoderC"), { encoderInfo() });
-	addAllowedConnection(PortInfo("D", input, { QString::fromUtf8("D") }, "encoderD"), { encoderInfo() });
+	addAllowedConnection(PortInfo("D", input, {}, "encoderD"), { encoderInfo() });
 
 	addAllowedConnection(PortInfo("1", input, {}, "sensor1"), inputPortConnections);
 	addAllowedConnection(PortInfo("2", input, {}, "sensor2"), inputPortConnections);
@@ -89,6 +104,13 @@ QList<DeviceInfo> Ev3RobotModelBase::convertibleBases() const
 			, DeviceInfo::create<robotParts::ColorSensorGreen>()
 			, DeviceInfo::create<robotParts::ColorSensorPassive>()
 			, DeviceInfo::create<ev3::robotModel::parts::Ev3Gyroscope>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3Compass>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3ACIRSeeker>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3DCIRSeeker>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2Color>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2RGB>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2Passive>()
+			, DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2Raw>()
 	};
 }
 
@@ -165,4 +187,39 @@ DeviceInfo Ev3RobotModelBase::colorPassiveSensorInfo() const
 DeviceInfo Ev3RobotModelBase::gyroscopeSensorInfo() const
 {
 	return DeviceInfo::create<ev3::robotModel::parts::Ev3Gyroscope>();
+}
+
+DeviceInfo Ev3RobotModelBase::compassSensorInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3Compass>();
+}
+
+DeviceInfo Ev3RobotModelBase::ACIRSeekerSensorInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3ACIRSeeker>();
+}
+
+DeviceInfo Ev3RobotModelBase::DCIRSeekerSensorInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3DCIRSeeker>();
+}
+
+DeviceInfo Ev3RobotModelBase::NXTColorSensorV2ColorInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2Color>();
+}
+
+DeviceInfo Ev3RobotModelBase::NXTColorSensorV2RGBInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2RGB>();
+}
+
+DeviceInfo Ev3RobotModelBase::NXTColorSensorV2PassiveInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2Passive>();
+}
+
+DeviceInfo Ev3RobotModelBase::NXTColorSensorV2RawInfo() const
+{
+	return DeviceInfo::create<ev3::robotModel::parts::Ev3NXTColorSensorV2Raw>();
 }

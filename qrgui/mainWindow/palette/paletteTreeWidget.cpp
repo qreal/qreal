@@ -42,15 +42,16 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 		, const QString &diagramFriendlyName
 		, bool sort)
 {
+	mPaletteItems.clear();
+	mPaletteElements.clear();
+	mElementsSet.clear();
+	mItemsVisible.clear();
+
 	if (groups.isEmpty() && hideIfEmpty) {
 		hide();
 		return;
 	}
 
-	mPaletteItems.clear();
-	mPaletteElements.clear();
-	mElementsSet.clear();
-	mItemsVisible.clear();
 	clear();
 	show();
 
@@ -91,8 +92,7 @@ void PaletteTreeWidget::addGroups(QList<QPair<QString, QList<PaletteElement>>> &
 void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem *parent)
 {
 	QTreeWidgetItem *leaf = new QTreeWidgetItem;
-	DraggableElement *element = new DraggableElement(mMainWindow, data
-			, mPaletteTree.iconsView(), *mEditorManager);
+	DraggableElement *element = new DraggableElement(mMainWindow, data, mPaletteTree.iconsView(), *mEditorManager);
 
 	mElementsSet.insert(data);
 	mPaletteElements.insert(data.id(), element);
@@ -223,6 +223,7 @@ void PaletteTreeWidget::setElementVisible(const Id &metatype, bool visible)
 	if (mPaletteItems.contains(metatype)) {
 		mItemsVisible[mPaletteItems[metatype]] = visible;
 		mPaletteItems[metatype]->setHidden(!visible);
+		updateGroupVisibility(mPaletteItems[metatype]);
 	}
 }
 
@@ -285,4 +286,17 @@ void PaletteTreeWidget::traverse(QTreeWidgetItem * const item, const PaletteTree
 	for (int i = 0; i < item->childCount(); ++i) {
 		traverse(item->child(i), action);
 	}
+}
+
+void PaletteTreeWidget::updateGroupVisibility(const QTreeWidgetItem * const item)
+{
+	const auto parent = item->parent();
+	bool hasVisible = false;
+	for (int i = 0; i < parent->childCount(); ++i) {
+		if (mItemsVisible.contains(parent->child(i)) && mItemsVisible[parent->child(i)]) {
+			hasVisible = true;
+		}
+	}
+
+	parent->setHidden(!hasVisible);
 }

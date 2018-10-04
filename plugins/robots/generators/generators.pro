@@ -26,6 +26,8 @@ SUBDIRS = \
 	trikPascalABCGeneratorLibrary \
 	trikV6PascalABCGenerator \
 	trikV62PascalABCGenerator \
+	trikPythonGeneratorLibrary \
+	trikV62PythonGenerator \
 	trikV6RuntimeUploaderPlugin \
 	trikV62RuntimeUploaderPlugin \
 	trikSharpBinaries \
@@ -34,6 +36,7 @@ SUBDIRS = \
 	nxtRussianCGenerator \
 	ev3GeneratorBase \
 	ev3RbfGenerator \
+	pioneerLuaGenerator \
 
 trikGeneratorBase.subdir = $$PWD/trik/trikGeneratorBase
 trikQtsGeneratorLibrary.subdir = $$PWD/trik/trikQtsGeneratorLibrary
@@ -45,6 +48,8 @@ trikV62FSharpGenerator.subdir = $$PWD/trik/trikV62FSharpGenerator
 trikPascalABCGeneratorLibrary.subdir = $$PWD/trik/trikPascalABCGeneratorLibrary
 trikV6PascalABCGenerator.subdir = $$PWD/trik/trikV6PascalABCGenerator
 trikV62PascalABCGenerator.subdir = $$PWD/trik/trikV62PascalABCGenerator
+trikPythonGeneratorLibrary.subdir = $$PWD/trik/trikPythonGeneratorLibrary
+trikV62PythonGenerator.subdir = $$PWD/trik/trikV62PythonGenerator
 trikV6RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV6RuntimeUploaderPlugin
 trikV62RuntimeUploaderPlugin.subdir = $$PWD/trik/trikV62RuntimeUploaderPlugin
 trikSharpBinaries.subdir = $$PWD/trik/trikSharpBinaries
@@ -53,6 +58,7 @@ nxtOsekCGenerator.subdir = $$PWD/nxt/nxtOsekCGenerator
 nxtRussianCGenerator.subdir = $$PWD/nxt/nxtRussianCGenerator
 ev3GeneratorBase.subdir = $$PWD/ev3/ev3GeneratorBase
 ev3RbfGenerator.subdir = $$PWD/ev3/ev3RbfGenerator
+pioneerLuaGenerator.subdir = $$PWD/pioneer/pioneerLuaGenerator
 
 trikGeneratorBase.depends = generatorBase
 trikQtsGeneratorLibrary.depends = trikGeneratorBase
@@ -64,8 +70,11 @@ trikV62FSharpGenerator.depends = trikFSharpGeneratorLibrary
 trikPascalABCGeneratorLibrary.depends = trikGeneratorBase
 trikV6PascalABCGenerator.depends = trikPascalABCGeneratorLibrary
 trikV62PascalABCGenerator.depends = trikPascalABCGeneratorLibrary
+trikPythonGeneratorLibrary.depends = trikGeneratorBase
+trikV62PythonGenerator.depends = trikPythonGeneratorLibrary
 nxtGeneratorBase.depends = generatorBase
 nxtOsekCGenerator.depends = nxtGeneratorBase
 nxtRussianCGenerator.depends = nxtGeneratorBase
 ev3GeneratorBase.depends = generatorBase
 ev3RbfGenerator.depends = ev3GeneratorBase
+pioneerLuaGenerator.depends = generatorBase

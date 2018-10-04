@@ -14,6 +14,10 @@
 
 #include "runner.h"
 
+#include <QtCore/QFile>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonValue>
 #include <QtWidgets/QApplication>
 
 #include <twoDModel/engine/view/twoDModelWidget.h>
@@ -47,6 +51,14 @@ Runner::Runner(const QString &report, const QString &trajectory)
 	connect(&mErrorReporter, &qReal::ConsoleErrorReporter::criticalAdded, &mReporter, &Reporter::addError);
 }
 
+Runner::Runner(const QString &report, const QString &trajectory, const QString &input, const QString &mode)
+	: Runner(report, trajectory)
+
+{
+	mInputsFile = input;
+	mMode = mode;
+}
+
 Runner::~Runner()
 {
 	mReporter.onInterpretationEnd();
@@ -69,8 +81,9 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.interpreter(), &kitBase::InterpreterInterface::stopped, [&]() {
-			QTimer::singleShot(0, this, SLOT(close()));
+		connect(&mPluginFacade.eventsForKitPlugins
+				(), &kitBase::EventsForKitPluginInterface::interpretationStopped, [&]() {
+				QTimer::singleShot(0, this, SLOT(close()));
 		});
 	}
 
@@ -83,7 +96,11 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	mReporter.onInterpretationStart();
-	mPluginFacade.actionsManager().runAction().trigger();
+	if (mMode == "js") {
+		return mPluginFacade.interpretCode(mInputsFile);
+	} else if (mMode == "diagram") {
+		mPluginFacade.actionsManager().runAction().trigger();
+	}
 
 	return true;
 }

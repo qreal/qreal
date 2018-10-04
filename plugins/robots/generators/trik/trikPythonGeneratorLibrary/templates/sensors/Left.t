@@ -1,0 +1,1 @@
+brick.keys().wasPressed(105)

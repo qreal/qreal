@@ -15,7 +15,7 @@
 include(../global.pri)
 
 
-HEADERS += association.h \
+HEADERS += \
 	diagram.h \
 	edgeType.h \
 	editor.h \
@@ -37,8 +37,9 @@ HEADERS += association.h \
 	xmlCompiler.h \
 	portType.h \
 	circularPort.h \
+	roleType.h \
 
-SOURCES += association.cpp \
+SOURCES += \
 	diagram.cpp \
 	edgeType.cpp \
 	editor.cpp \
@@ -61,6 +62,7 @@ SOURCES += association.cpp \
 	xmlCompiler.cpp \
 	portType.cpp \
 	circularPort.cpp \
+	roleType.cpp \
 
 TEMPLATE = app
 QT += xml gui

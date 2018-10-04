@@ -53,6 +53,7 @@ public:
 	QWidget *quickPreferencesFor(const kitBase::robotModel::RobotModelInterface &model) override;
 	QIcon iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const override;
 	kitBase::DevicesConfigurationProvider * devicesConfigurationProvider() override;
+	QString defaultSettingsFile() const override;
 
 private:
 	QWidget *produceBluetoothPortConfigurer();  // Transfers ownership

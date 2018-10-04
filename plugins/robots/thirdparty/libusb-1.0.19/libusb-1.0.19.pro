@@ -23,3 +23,7 @@ win32 {
 macx {
 	copyToDestdir(libusb-1.0.dylib, NOW)
 }
+
+CONFIG(clang) {
+	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension
+}

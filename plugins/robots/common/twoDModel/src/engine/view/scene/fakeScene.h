@@ -40,7 +40,7 @@ public:
 
 public slots:
 	/// Sets a background image on the scene and its geometry.
-	void setBackground(const model::Image &background, const QRect &backgroundRect);
+	void setBackground(model::Image * const background, const QRect &backgroundRect);
 
 private:
 	void addClone(QGraphicsItem * const original, QGraphicsItem * const cloned);
@@ -48,7 +48,7 @@ private:
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
 
 	QMap<QGraphicsItem *, QGraphicsItem *> mClonedItems;
-	model::Image mBackground;
+	model::Image * mBackground = nullptr; // doesn't have the ownership
 	QRect mBackgroundRect;
 };
 

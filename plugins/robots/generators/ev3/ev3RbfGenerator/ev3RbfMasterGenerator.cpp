@@ -69,7 +69,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	mTextLanguage.clear();
 	mCustomizer->factory()->setMainDiagramId(mDiagram);
 
-	for (parts::InitTerminateCodeGenerator *generator : mCustomizer->factory()->initTerminateGenerators()) {
+	for (generatorBase::parts::InitTerminateCodeGenerator *generator
+			: mCustomizer->factory()->initTerminateGenerators()) {
 		generator->reinit();
 	}
 
@@ -77,9 +78,9 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	const semantics::SemanticTree * const gotoMainControlFlow = mGotoControlFlowGenerator->generate();
 	if (gotoMainControlFlow) {
 		mainCode = gotoMainControlFlow->toString(1, indentString);
-		const parts::Subprograms::GenerationResult gotoSubprogramsResult = mCustomizer->factory()
+		const generatorBase::parts::Subprograms::GenerationResult gotoSubprogramsResult = mCustomizer->factory()
 				->subprograms()->generate(mGotoControlFlowGenerator, indentString);
-		if (gotoSubprogramsResult != parts::Subprograms::GenerationResult::success) {
+		if (gotoSubprogramsResult != generatorBase::parts::Subprograms::GenerationResult::success) {
 			mainCode = QString();
 		}
 	}
@@ -96,6 +97,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	resultCode.replace("@@MAIN_CODE@@", mainCode);
 	resultCode.replace("@@CONSTANTS_INITIALIZATION@@", utils::StringUtils::addIndent(
 			mLuaProcessorInstance->constantsValuation(), 1, indentString));
+	resultCode.replace("@@ARRAYS_INITIALIZATION@@", utils::StringUtils::addIndent(
+			mLuaProcessorInstance->arraysInitialization(), 1, indentString));
 	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1, indentString));
 	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
@@ -105,8 +108,9 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 
 	const QString constantsString = utils::StringUtils::addIndent(
 			mCustomizer->factory()->variables()->generateConstantsString(), 1, "\t");
-	const QString variablesString = utils::StringUtils::addIndent(
-			mCustomizer->factory()->variables()->generateVariableString(), 1, "\t");
+	QStringList variablesList = mCustomizer->factory()->variables()->generateVariableString().split('\n');
+	qSort(variablesList.begin(), variablesList.end());
+	const QString variablesString = utils::StringUtils::addIndent(variablesList.join('\n'), 1, "\t");
 	if (resultCode.contains("@@CONSTANTS@@")) {
 		resultCode.replace("@@CONSTANTS@@", constantsString);
 		resultCode.replace("@@VARIABLES@@", variablesString);
@@ -118,6 +122,8 @@ QString Ev3RbfMasterGenerator::generate(const QString &indentString)
 	resultCode.replace(QRegExp("\n(\n)+"), "\n\n");
 
 	processGeneratedCode(resultCode);
+
+	generateLinkingInfo(resultCode);
 
 	const QString pathToOutput = targetPath();
 	outputCode(pathToOutput, resultCode);
@@ -147,5 +153,5 @@ generatorBase::lua::LuaProcessor *Ev3RbfMasterGenerator::createLuaProcessor()
 GeneratorCustomizer *Ev3RbfMasterGenerator::createCustomizer()
 {
 	return new Ev3RbfGeneratorCustomizer(mRepo, mErrorReporter
-			, mRobotModelManager, *createLuaProcessor(), mGeneratorName);
+			, mRobotModelManager, *createLuaProcessor(), mGeneratorName, supportsSwitchUnstableToBreaks());
 }

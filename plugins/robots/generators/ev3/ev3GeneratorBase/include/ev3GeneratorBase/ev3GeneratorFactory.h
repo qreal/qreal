@@ -16,6 +16,7 @@
 
 #include <generatorBase/generatorFactoryBase.h>
 
+#include "parts/ev3Mailboxes.h"
 #include "ev3GeneratorBase/ev3GeneratorBaseDeclSpec.h"
 
 namespace ev3 {
@@ -30,6 +31,9 @@ public:
 			, const QString &generatorName);
 
 	~Ev3GeneratorFactory() override;
+
+	/// Returns an entity processing everything about Mailboxes.
+	parts::Mailboxes &mailboxes();
 
 	generatorBase::simple::AbstractSimpleGenerator *ifGenerator(const qReal::Id &id
 			, generatorBase::GeneratorCustomizer &customizer, bool elseIsEmpty, bool needInverting) override;
@@ -48,8 +52,11 @@ public:
 
 	QStringList pathsToTemplates() const override;
 
+	void reportError(const QString &errorMessage, const qReal::Id &id);
+
 private:
 	const QString mGeneratorName;
+	parts::Mailboxes mMailboxes;
 };
 
 }

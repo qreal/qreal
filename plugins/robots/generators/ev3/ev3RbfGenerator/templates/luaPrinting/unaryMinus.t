@@ -1,1 +1,1 @@
--@@OPERAND@@
+MUL32(@@OPERAND@@, -1, @@RESULT@@)

@@ -28,6 +28,7 @@ public:
 			, const qReal::Id &id
 			, const QString &part
 			, const QStringList &values
+			, bool generateIfs
 			, QObject *parent = 0);
 };
 

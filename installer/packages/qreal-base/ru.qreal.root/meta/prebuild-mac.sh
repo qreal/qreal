@@ -1,12 +1,11 @@
 #!/bin/bash
 set -o nounset
 set -o errexit
-
 cd "$(dirname "$0")"
 source $INSTALLER_ROOT/utils/mac_utils.sh
 
-
-cp -R $BIN_DIR/qreal.app                                                  "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app"
+rm -rf "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app"
+rsync -a $BIN_DIR/qreal.app/                                              "$PWD/../data/$PRODUCT_DISPLAYED_NAME.app/"
 cp    $INSTALLER_ROOT/platform/$PRODUCT-mac-platform.config               "$BUNDLE_CONTENTS/MacOS/platform.config"
 mkdir -p "$BUNDLE_CONTENTS/Lib/plugins/tools"
 
@@ -70,6 +69,7 @@ copy_qt_lib QtWidgets
 copy_qt_lib QtXml
 copy_qt_lib QtScript
 copy_qt_lib QtTest
+copy_qt_lib QtMacExtras
 
 mkdir "$BUNDLE_CONTENTS/MacOS/platforms"
 mkdir "$BUNDLE_CONTENTS/MacOS/imageformats"

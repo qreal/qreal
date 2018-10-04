@@ -229,7 +229,7 @@ void EditorViewMViface::handleNodeElementsForRowsInserted(
 }
 
 void EditorViewMViface::handleEdgeElementsForRowsInserted(
-		const QList<QPair<EdgeElement *, QPersistentModelIndex> > &edges
+		const QList<QPair<EdgeElement *, QPersistentModelIndex>> &edges
 		, const QModelIndex &parent
 		)
 {
@@ -429,7 +429,7 @@ void EditorViewMViface::configure(models::GraphicalModelAssistApi &graphicalAssi
 void EditorViewMViface::setLogicalModel(QAbstractItemModel * const logicalModel)
 {
 	connect(logicalModel, SIGNAL(dataChanged(QModelIndex, QModelIndex))
-			, this, SLOT(logicalDataChanged(QModelIndex, QModelIndex)));
+			, this, SLOT(logicalDataChanged(QModelIndex, QModelIndex)), Qt::UniqueConnection);
 }
 
 void EditorViewMViface::logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)

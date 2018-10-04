@@ -90,38 +90,56 @@ IdList Exploser::elementsWithHardDependencyFrom(const Id &id) const
 	return result;
 }
 
-void Exploser::handleCreationWithExplosion(AbstractCommand *createCommand, const models::Models &models
-		, const Id &source, const Id &target) const
+void Exploser::handleCreationWithExplosions(AbstractCommand *createCommand, const models::Models &models
+		, const IdList &sourceList, const Id &target) const
 {
 	if (target.isNull()) {
-		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(source);
-		for (const Explosion *explosion : explosions) {
-			if (explosion->source().typeId() == source.type() && explosion->requiresImmediateLinkage()) {
-				createCommand->addPostAction(createElementWithIncomingExplosionCommand(
-						source, explosion->target().typeId(), models));
+		for (const Id &source : sourceList) {
+			const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(source);
+			for (const Explosion *explosion : explosions) {
+				if (explosion->source().typeId() == source.type() && explosion->requiresImmediateLinkage()) {
+					createCommand->addPostAction(createElementWithIncomingExplosionCommand(
+							source, explosion->target().typeId(), models));
+				}
 			}
 		}
 	} else {
-		createCommand->addPostAction(addExplosionCommand(source, target, &models.graphicalModelAssistApi()));
+		for (const Id &source : sourceList) {
+			createCommand->addPostAction(addExplosionCommand(source, target, &models.graphicalModelAssistApi()));
+		}
+
+		connect(createCommand, &AbstractCommand::redoComplete, this, [&, target](bool success){
+			if (success) {
+				emit explosionTargetCouldChangeProperties(target);
+			}
+		});
 	}
 }
 
-void Exploser::handleRemoveCommand(const Id &logicalId, AbstractCommand * const command) const
+void Exploser::handleRemoveCommand(const IdList &explosionSources, AbstractCommand * const command) const
 {
-	const Id outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
-	if (!outgoing.isNull()) {
-		command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
-	}
+	for (const Id &logicalId : explosionSources) {
+		const Id outgoing = mApi.logicalRepoApi().outgoingExplosion(logicalId);
+		if (!outgoing.isNull()) {
+			command->addPreAction(new ExplosionCommand(mApi, nullptr, logicalId, outgoing, false));
+		}
 
-	const Id targetType = logicalId.type();
-	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
-	foreach (const Id &incoming, incomingExplosions) {
-		const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
-		foreach (const Explosion *explosion, explosions) {
-			if (explosion->target().typeId() == targetType && !explosion->requiresImmediateLinkage()) {
-				command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
+		const Id targetType = logicalId.type();
+		const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(logicalId);
+		for (const Id &incoming : incomingExplosions) {
+			const QList<const Explosion *> explosions = mApi.editorManagerInterface().explosions(incoming.type());
+			for (const Explosion *explosion : explosions) {
+				if (explosion->target().typeId() == targetType && !explosion->requiresImmediateLinkage()) {
+					command->addPreAction(new ExplosionCommand(mApi, nullptr, incoming, logicalId, false));
+				}
 			}
 		}
+
+		connect(command, &AbstractCommand::undoComplete, this, [&, outgoing](bool success){
+			if (success) {
+				emit explosionTargetCouldChangeProperties(outgoing);
+			}
+		});
 	}
 }
 

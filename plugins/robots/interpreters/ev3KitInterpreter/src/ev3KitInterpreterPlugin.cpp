@@ -90,6 +90,7 @@ void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			, configurator.qRealConfigurator().logicalModelApi()
 			, configurator.qRealConfigurator().controller()
 			, interpretersInterface
+			, configurator.qRealConfigurator().mainWindowDockInterface()
 			, configurator.qRealConfigurator().projectManager()
 			, configurator.interpreterControl());
 }
@@ -160,6 +161,11 @@ QIcon Ev3KitInterpreterPlugin::iconForFastSelector(const kitBase::robotModel::Ro
 kitBase::DevicesConfigurationProvider *Ev3KitInterpreterPlugin::devicesConfigurationProvider()
 {
 	return &mTwoDModel->devicesConfigurationProvider();
+}
+
+QString Ev3KitInterpreterPlugin::defaultSettingsFile() const
+{
+	return ":/ev3/interpreter/ev3DefaultSettings.ini";
 }
 
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>AddNodeDialog</name>
     <message>
@@ -45,6 +45,44 @@
         <location filename="../../qrgui/dialogs/metamodelingOnFly/chooseTypeDialog.ui" line="99"/>
         <source>Relationship</source>
         <translation>Relations</translation>
+    </message>
+</context>
+<context>
+    <name>DynamicPropertiesDialog</name>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="35"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="44"/>
+        <source>Subprogram name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="58"/>
+        <source>Dynamic Properties:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="90"/>
+        <source>Add Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="97"/>
+        <source>Subprogram picture:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="104"/>
+        <source>Subprogram picture background:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="111"/>
+        <source>Save All</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -298,9 +336,9 @@
 <context>
     <name>QMessageBox</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/addNodeDialog.cpp" line="46"/>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="46"/>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="120"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/addNodeDialog.cpp" line="47"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/edgePropertiesDialog.cpp" line="47"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="123"/>
         <source>Close</source>
         <translation type="unfinished">Fermer</translation>
     </message>
@@ -354,51 +392,51 @@
 <context>
     <name>qReal::EditPropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="101"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="103"/>
         <source>Warning:</source>
         <translation>Attention :</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="102"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="104"/>
         <source>You changed the type of property. In case of incorrect conversion it may result in resetting of the existing property value.</source>
         <translation>Vous avez modifié le type de propriété. Dans le cas d&apos;une conversion incorrecte ça peut écraser la valeur de la propriété existante.</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="105"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="107"/>
         <source>Proceed anyway</source>
         <translation>Continuer malgré cela</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="106"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="108"/>
         <source>Cancel the type conversion</source>
         <translation>Annuler la conversion de type</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="120"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="122"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="120"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="122"/>
         <source>All required properties should be filled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Toutes les propriétés indespensables doivent être renseignées !</translation>
+        <translation type="obsolete">Toutes les propriétés indespensables doivent être renseignées !</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="129"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="132"/>
         <source>Restore properties</source>
         <translation>Restaurer les propriétés</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="155"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="158"/>
         <source>Add new property</source>
         <translation>Rajouter une nouvelle propriété</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="158"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/editPropertiesDialog.cpp" line="161"/>
         <source>Properties editor: </source>
         <translation>Editeur de propriétés :</translation>
     </message>
@@ -407,11 +445,11 @@
     <name>qReal::ProgressBar</name>
     <message>
         <source>%p% - canceled</source>
-        <translation type="vanished">%p% - annulé</translation>
+        <translation type="obsolete">%p% - annulé</translation>
     </message>
     <message>
         <source>canceled</source>
-        <translation type="vanished">annulé</translation>
+        <translation type="obsolete">annulé</translation>
     </message>
 </context>
 <context>
@@ -526,7 +564,56 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Toutes les propriétés essentielles doivent être renseignées !</translation>
+        <translation type="obsolete">Toutes les propriétés essentielles doivent être renseignées !</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::gui::DynamicPropertiesDialog</name>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="49"/>
+        <source>Properties</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="51"/>
+        <source>Value</source>
+        <translation type="unfinished">Valeur</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="151"/>
+        <source>Error</source>
+        <translation type="unfinished">Erreur</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="337"/>
+        <source>Name is not filled in row %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="348"/>
+        <source>Value in row %1 is not integer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="358"/>
+        <source>Duplicate names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="118"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="366"/>
+        <source>Delete</source>
+        <translation type="unfinished">Supprimer</translation>
     </message>
 </context>
 <context>
@@ -543,13 +630,13 @@
     </message>
     <message>
         <source>All required properties should be filled!</source>
-        <translation type="vanished">Toutes les propriétés essentielles doivent être renseignées !</translation>
+        <translation type="obsolete">Toutes les propriétés essentielles doivent être renseignées !</translation>
     </message>
 </context>
 <context>
     <name>qReal::gui::PropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/propertiesDialog.cpp" line="40"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/propertiesDialog.cpp" line="42"/>
         <source>Properties: </source>
         <translation>Propriétés :</translation>
     </message>

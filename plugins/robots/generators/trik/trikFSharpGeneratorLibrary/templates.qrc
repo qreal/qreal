@@ -7,6 +7,7 @@
         <file>templates/finalNodeSubprogram.t</file>
         <file>templates/function.t</file>
         <file>templates/playTone.t</file>
+        <file>templates/playSound.t</file>
         <file>templates/main.t</file>
         <file>templates/comment.t</file>
         <file>templates/led.t</file>
@@ -188,5 +189,6 @@
         <file>templates/luaPrinting/floatToString.t</file>
         <file>templates/luaPrinting/boolToString.t</file>
         <file>templates/luaPrinting/otherToString.t</file>
+        <file>templates/subprograms/subprogramArgument.t</file>
     </qresource>
 </RCC>

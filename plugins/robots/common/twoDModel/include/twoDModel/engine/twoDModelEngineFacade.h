@@ -54,6 +54,7 @@ public:
 			, qReal::LogicalModelAssistInterface &logicalModel
 			, qReal::ControllerInterface &controller
 			, qReal::gui::MainWindowInterpretersInterface &interpretersInterface
+			, qReal::gui::MainWindowDockInterface &dockInterface
 			, const qReal::ProjectManagementInterface &projectManager
 			, kitBase::InterpreterControlInterface &interpreterControl) override;
 
@@ -74,6 +75,8 @@ private:
 	QScopedPointer<view::TwoDModelWidget> mView;
 	QScopedPointer<TwoDModelEngineInterface> mApi;
 	utils::SmartDock *mDock;  // Transfers ownership to main window indirectly
+
+	qReal::TabInfo::TabType mCurrentTabInfo; // temp hack
 };
 
 }

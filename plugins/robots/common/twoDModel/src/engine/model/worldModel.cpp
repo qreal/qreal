@@ -1,4 +1,4 @@
-/* Copyright 2012-2016 CyberTech Labs Ltd., Anna Deripaska
+/* Copyright 2012-2018 CyberTech Labs Ltd., Anna Deripaska
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,17 @@
 
 #include <QtGui/QTransform>
 #include <QtCore/QStringList>
+#include <QtCore/QUuid>
+
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "twoDModel/engine/model/constants.h"
 #include "twoDModel/engine/model/worldModel.h"
 #include "twoDModel/engine/model/image.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
+#include "src/engine/items/ballItem.h"
 #include "src/engine/items/colorFieldItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/rectangleItem.h"
@@ -33,6 +38,8 @@
 using namespace twoDModel;
 using namespace model;
 
+//#define D2_MODEL_FRAMES_DEBUG
+
 #ifdef D2_MODEL_FRAMES_DEBUG
 #include <QtWidgets/QGraphicsPathItem>
 QGraphicsPathItem *debugPath = nullptr;
@@ -40,7 +47,27 @@ QGraphicsPathItem *debugPath = nullptr;
 
 WorldModel::WorldModel()
 	: mXmlFactory(new QDomDocument)
+	, mErrorReporter(nullptr)
 {
+}
+
+WorldModel::~WorldModel()
+{
+	for (Image* img : mImages.values()) {
+		delete img;
+	}
+
+	mImages.clear();
+}
+
+void WorldModel::init(qReal::ErrorReporterInterface &errorReporter)
+{
+	mErrorReporter = &errorReporter;
+}
+
+qreal WorldModel::pixelsInCm() const
+{
+	return twoDModel::pixelsInCm;
 }
 
 int WorldModel::sonarReading(const QPointF &position, qreal direction) const
@@ -49,15 +76,15 @@ int WorldModel::sonarReading(const QPointF &position, qreal direction) const
 	int minSonarRangeCms = 0;
 	int currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2;
 
-	const QPainterPath wallPath = buildWallPath();
-	if (!checkSonarDistance(maxSonarRangeCms, position, direction, wallPath)) {
+	const QPainterPath path = buildSolidItemsPath();
+	if (!checkSonarDistance(maxSonarRangeCms, position, direction, path)) {
 		return maxSonarRangeCms;
 	}
 
 	for ( ; minSonarRangeCms < maxSonarRangeCms;
 			currentRangeInCm = (minSonarRangeCms + maxSonarRangeCms) / 2)
 	{
-		if (checkSonarDistance(currentRangeInCm, position, direction, wallPath)) {
+		if (checkSonarDistance(currentRangeInCm, position, direction, path)) {
 			maxSonarRangeCms = currentRangeInCm;
 		} else {
 			minSonarRangeCms = currentRangeInCm + 1;
@@ -82,7 +109,7 @@ QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, int range)
 QPainterPath WorldModel::sonarScanningRegion(const QPointF &position, qreal direction, int range) const
 {
 	const qreal rayWidthDegrees = 10.0;
-	const qreal rangeInPixels = range * pixelsInCm;
+	const qreal rangeInPixels = range * pixelsInCm();
 
 	QPainterPath rayPath;
 	rayPath.arcTo(QRectF(-rangeInPixels, -rangeInPixels, 2 * rangeInPixels, 2 * rangeInPixels)
@@ -96,7 +123,7 @@ bool WorldModel::checkCollision(const QPainterPath &path) const
 {
 #ifdef D2_MODEL_FRAMES_DEBUG
 	delete debugPath;
-	QPainterPath commonPath = buildWallPath();
+	QPainterPath commonPath = buildSolidItemsPath();
 	commonPath.addPath(path);
 	debugPath = new QGraphicsPathItem(commonPath);
 	debugPath->setBrush(Qt::red);
@@ -104,15 +131,16 @@ bool WorldModel::checkCollision(const QPainterPath &path) const
 	debugPath->setZValue(100);
 
 	QGraphicsScene * const scene = mWalls.isEmpty()
-			? (mColorFields.isEmpty() ? nullptr : mColorFields[0]->scene())
-			: mWalls[0]->scene();
+			? (mColorFields.isEmpty() ? nullptr : mColorFields.first()->scene())
+			: mWalls.first()->scene();
+
 	if (scene) {
 		scene->addItem(debugPath);
 		scene->update();
 	}
 #endif
 
-	return buildWallPath().intersects(path);
+	return buildSolidItemsPath().intersects(path);
 }
 
 const QMap<QString, items::WallItem *> &WorldModel::walls() const
@@ -120,9 +148,26 @@ const QMap<QString, items::WallItem *> &WorldModel::walls() const
 	return mWalls;
 }
 
+const QMap<QString, items::SkittleItem *> &WorldModel::skittles() const
+{
+	return mSkittles;
+}
+
+const QMap<QString, items::BallItem *> &WorldModel::balls() const
+{
+	return mBalls;
+}
+
 void WorldModel::addWall(items::WallItem *wall)
 {
-	mWalls[wall->id()] = wall;
+	const QString id = wall->id();
+	if (mWalls.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return; // probably better than having no way to delete those duplicate items on the scene
+	}
+
+	mWalls[id] = wall;
+	mOrder[id] = mOrder.size();
 	emit wallAdded(wall);
 }
 
@@ -132,6 +177,42 @@ void WorldModel::removeWall(items::WallItem *wall)
 	emit itemRemoved(wall);
 }
 
+void WorldModel::addSkittle(items::SkittleItem *skittle)
+{
+	const QString id = skittle->id();
+	if (mSkittles.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return; // probably better than having no way to delete those duplicate items on the scene
+	}
+
+	mSkittles[id] = skittle;
+	emit skittleAdded(skittle);
+}
+
+void WorldModel::removeSkittle(items::SkittleItem *skittle)
+{
+	mSkittles.remove(skittle->id());
+	emit itemRemoved(skittle);
+}
+
+void WorldModel::addBall(items::BallItem *ball)
+{
+	const QString id = ball->id();
+	if (mBalls.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return; // probably better than having no way to delete those duplicate items on the scene
+	}
+
+	mBalls[id] = ball;
+	emit ballAdded(ball);
+}
+
+void WorldModel::removeBall(items::BallItem *ball)
+{
+	mBalls.remove(ball->id());
+	emit itemRemoved(ball);
+}
+
 const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
 {
 	return mColorFields;
@@ -139,7 +220,7 @@ const QMap<QString, items::ColorFieldItem *> &WorldModel::colorFields() const
 
 const QMap<QString, items::ImageItem *> &WorldModel::imageItems() const
 {
-	return mImages;
+	return mImageItems;
 }
 
 const QMap<QString, items::RegionItem *> &WorldModel::regions() const
@@ -154,7 +235,14 @@ const QList<QGraphicsLineItem *> &WorldModel::trace() const
 
 void WorldModel::addColorField(items::ColorFieldItem *colorField)
 {
-	mColorFields[colorField->id()] = colorField;
+	const QString id = colorField->id();
+	if (mColorFields.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return;
+	}
+
+	mColorFields[id] = colorField;
+	mOrder[id] = mOrder.size();
 	emit colorItemAdded(colorField);
 }
 
@@ -164,16 +252,30 @@ void WorldModel::removeColorField(items::ColorFieldItem *colorField)
 	emit itemRemoved(colorField);
 }
 
-void WorldModel::addImage(items::ImageItem *image)
+void WorldModel::addImageItem(items::ImageItem *imageItem)
 {
-	mImages[image->id()] = image;
-	emit imageItemAdded(image);
+	const QString id = imageItem->id();
+	if (mImageItems.contains(id)) {
+		mErrorReporter->addError(tr("Trying to add an item with a duplicate id: %1").arg(id));
+		return;
+	}
+
+	mImageItems[id] = imageItem;
+	mImages[imageItem->image()->imageId()] = imageItem->image();
+	mOrder[id] = mOrder.size();
+	connect(imageItem, &items::ImageItem::internalImageChanged, this, &WorldModel::blobsChanged);
+	emit imageItemAdded(imageItem);
+	if (!imageItem->isBackground()) {
+		emit blobsChanged();
+	}
 }
 
-void WorldModel::removeImage(items::ImageItem *image)
+void WorldModel::removeImageItem(items::ImageItem *imageItem)
 {
-	mImages.remove(image->id());
-	emit itemRemoved(image);
+	mImageItems.remove(imageItem->id());
+
+	emit itemRemoved(imageItem);
+	emit blobsChanged();
 }
 
 void WorldModel::clear()
@@ -182,22 +284,35 @@ void WorldModel::clear()
 		removeWall(mWalls.last());
 	}
 
+	while (!mSkittles.isEmpty()) {
+		removeSkittle(mSkittles.last());
+	}
+
+	while (!mBalls.isEmpty()) {
+		removeBall(mBalls.last());
+	}
+
 	while (!mColorFields.isEmpty()) {
 		removeColorField(mColorFields.last());
 	}
 
-	while (!mImages.isEmpty()) {
-		removeImage(mImages.last());
+	while (!mImageItems.isEmpty()) {
+		removeImageItem(mImageItems.last());
 	}
 
 	while (!mRegions.isEmpty()) {
 		QGraphicsItem * const toRemove = mRegions.last();
-		mRegions.remove(mRegions.lastKey());
+		const QString toRemoveKey = mRegions.lastKey(); // possible fix of the crash in remove
+		mRegions.remove(toRemoveKey);
 		emit itemRemoved(toRemove);
 	}
 
+	mOrder.clear();
+
 	clearRobotTrace();
-	setBackground(Image(), QRect());
+	setBackground(nullptr, QRect());
+
+	emit blobsChanged();
 }
 
 void WorldModel::appendRobotTrace(const QPen &pen, const QPointF &begin, const QPointF &end)
@@ -228,16 +343,36 @@ void WorldModel::clearRobotTrace()
 	emit robotTraceAppearedOrDisappeared(false);
 }
 
-QPainterPath WorldModel::buildWallPath() const
+QPainterPath WorldModel::buildSolidItemsPath() const
 {
 	/// @todo Maintain a cache for this.
-	QPainterPath wallPath;
+	QPainterPath path;
 
 	for (items::WallItem *wall : mWalls) {
-		wallPath.addPath(wall->path());
+		path.addPath(wall->path());
 	}
 
-	return wallPath;
+	for (items::SkittleItem *skittle: mSkittles) {
+		path.addPath(skittle->path());
+	}
+
+	for (items::BallItem *ball: mBalls) {
+		path.addPath(ball->path());
+	}
+
+	return path;
+}
+
+void WorldModel::serializeBackground(QDomElement &background, const QRect &rect, const Image * const img) const
+{
+	background.setAttribute("backgroundRect", QString("%1:%2:%3:%4").arg(
+			QString::number(rect.x())
+			, QString::number(rect.y())
+			, QString::number(rect.width())
+			, QString::number(rect.height())));
+
+	const QString imageId = img ? img->imageId() : "";
+	background.setAttribute("imageId", imageId);
 }
 
 QRect WorldModel::deserializeRect(const QString &string) const
@@ -256,52 +391,124 @@ QRect WorldModel::deserializeRect(const QString &string) const
 
 void WorldModel::deserializeBackground(const QDomElement &backgroundElement)
 {
-	const Image image = Image::deserialize(backgroundElement);
+	QString imageId = backgroundElement.attribute("imageId");
 	const QRect backgroundRect = deserializeRect(backgroundElement.attribute("backgroundRect"));
-	setBackground(image, backgroundRect);
+	if (backgroundRect.isNull()) {
+		return;
+	}
+
+	if (!imageId.isEmpty()) {
+		setBackground(mImages[imageId], backgroundRect);
+	} else {
+		Image *image = Image::deserialize(backgroundElement);
+		mImages[image->imageId()] = image;
+		setBackground(image, backgroundRect);
+	}
 }
 
-QDomElement WorldModel::serialize(QDomElement &parent) const
+QDomElement WorldModel::serializeWorld(QDomElement &parent) const
 {
 	QDomElement result = parent.ownerDocument().createElement("world");
 	parent.appendChild(result);
 
 	QDomElement background = parent.ownerDocument().createElement("background");
-	mBackgroundImage.serialize(background);
-	background.setAttribute("backgroundRect", QString("%1:%2:%3:%4").arg(
-			QString::number(mBackgroundRect.x())
-			, QString::number(mBackgroundRect.y())
-			, QString::number(mBackgroundRect.width())
-			, QString::number(mBackgroundRect.height())));
+	if (mBackgroundImage) {
+		serializeBackground(background, mBackgroundRect, mBackgroundImage);
+	} else {
+		for (auto imageItem : mImageItems) {
+			if (imageItem->isBackground()) {
+				QRect rect;
+				rect.setLeft(imageItem->x1() + imageItem->x());
+				rect.setTop(imageItem->y1() + imageItem->y());
+				rect.setRight(imageItem->x2() + imageItem->x());
+				rect.setBottom(imageItem->y2() + imageItem->y());
+				serializeBackground(background, rect, imageItem->image());
+				break;
+			}
+		}
+	}
+
 	result.appendChild(background);
+
+	auto comparator = [&](const QString &id1, const QString &id2) { return mOrder[id1] < mOrder[id2]; };
 
 	QDomElement walls = parent.ownerDocument().createElement("walls");
 	result.appendChild(walls);
-	for (items::WallItem * const wall : mWalls) {
-		wall->serialize(walls);
+	QList<QString> wallsIds = mWalls.keys();
+	qSort(wallsIds.begin(), wallsIds.end(), comparator);
+	for (const QString &wall : wallsIds) {
+		mWalls[wall]->serialize(walls);
+	}
+
+	QDomElement skittles = parent.ownerDocument().createElement("skittles");
+	result.appendChild(skittles);
+	for (items::SkittleItem * const skittle : mSkittles) {
+		skittle->serialize(skittles);
+	}
+
+	QDomElement balls = parent.ownerDocument().createElement("balls");
+	result.appendChild(balls);
+	for (items::BallItem * const ball : mBalls) {
+		ball->serialize(balls);
 	}
 
 	QDomElement colorFields = parent.ownerDocument().createElement("colorFields");
 	result.appendChild(colorFields);
-	for (const items::ColorFieldItem *colorField : mColorFields) {
-		colorField->serialize(colorFields);
+	QList<QString> colorFieldsIds = mColorFields.keys();
+	qSort(colorFieldsIds.begin(), colorFieldsIds.end(), comparator);
+	for (const QString &colorField : colorFieldsIds) {
+		mColorFields[colorField]->serialize(colorFields);
 	}
 
 	QDomElement images = parent.ownerDocument().createElement("images");
 	result.appendChild(images);
-	for (items::ImageItem * const image : mImages) {
-		image->serialize(parent);
+	QList<QString> imageIds = mImageItems.keys();
+	qSort(imageIds.begin(), imageIds.end(), comparator);
+	for (const QString &image : imageIds) {
+		if (mImageItems[image]->isBackground()) {
+			continue;
+		}
+
+		mImageItems[image]->serialize(images);
 	}
 
 	QDomElement regions = parent.ownerDocument().createElement("regions");
 	result.appendChild(regions);
-	for (const items::RegionItem *region : mRegions) {
+	QList<QString> regionIds = mRegions.keys();
+	qSort(regionIds.begin(), regionIds.end(), comparator);
+	for (const QString &region : regionIds) {
 		QDomElement regionElement = parent.ownerDocument().createElement("region");
-		region->serialize(regionElement);
+		mRegions[region]->serialize(regionElement);
 		regions.appendChild(regionElement);
 	}
 
 	// Robot trace saving is disabled
+
+	return result;
+}
+
+QDomElement WorldModel::serializeBlobs(QDomElement &parent) const
+{
+	QDomElement result = parent.ownerDocument().createElement("blobs");
+	QDomElement images = parent.ownerDocument().createElement("images");
+
+	if (mBackgroundImage && mBackgroundImage->isValid()) {
+		QDomElement background = parent.ownerDocument().createElement("image");
+		mBackgroundImage->serialize(background);
+		images.appendChild(background);
+	}
+
+	QList<QString> imageIds = mImageItems.keys();
+	for (const QString &imageItem : imageIds) {
+		QDomElement image = parent.ownerDocument().createElement("image");
+		mImageItems[imageItem]->image()->serialize(image);
+		images.appendChild(image);
+	}
+
+	if (!images.childNodes().isEmpty()) {
+		result.appendChild(images);
+		parent.appendChild(result);
+	}
 
 	return result;
 }
@@ -314,10 +521,19 @@ QDomElement WorldModel::serializeItem(const QString &id) const
 	}
 
 	QDomElement temporalParent = mXmlFactory->createElement("temporalParent");
+
+	if (auto imageItem = dynamic_cast<const items::ImageItem *>(item)) {
+		if (imageItem->isBackground()) {
+			QDomElement backgroundImageItem = item->serialize(temporalParent);
+			backgroundImageItem.setAttribute("background", true);
+			return backgroundImageItem;
+		}
+	}
+
 	return item->serialize(temporalParent);
 }
 
-void WorldModel::deserialize(const QDomElement &element)
+void WorldModel::deserialize(const QDomElement &element, const QDomElement &blobs)
 {
 	if (element.isNull()) {
 		/// @todo Report error
@@ -325,6 +541,18 @@ void WorldModel::deserialize(const QDomElement &element)
 	}
 
 	clear();
+
+	// blobs section
+	if (!blobs.isNull()) {
+		for (QDomElement imagesNode = blobs.firstChildElement("images"); !imagesNode.isNull()
+				; imagesNode = imagesNode.nextSiblingElement("images")) {
+			for (QDomElement imageNode = imagesNode.firstChildElement("image"); !imageNode.isNull()
+					; imageNode = imageNode.nextSiblingElement("image")) {
+				model::Image *img = Image::deserialize(imageNode);
+				mImages.insert(img->imageId(), img);
+			}
+		}
+	}
 
 	deserializeBackground(element.firstChildElement("background"));
 
@@ -349,6 +577,22 @@ void WorldModel::deserialize(const QDomElement &element)
 		}
 	}
 
+	for (QDomElement skittlesNode = element.firstChildElement("skittles"); !skittlesNode.isNull()
+			; skittlesNode = skittlesNode.nextSiblingElement("skittles")) {
+		for (QDomElement skittleNode = skittlesNode.firstChildElement("skittle"); !skittleNode.isNull()
+				; skittleNode = skittleNode.nextSiblingElement("skittle")) {
+			createSkittle(skittleNode);
+		}
+	}
+
+	for (QDomElement ballsNode = element.firstChildElement("balls"); !ballsNode.isNull()
+			; ballsNode = ballsNode.nextSiblingElement("balls")) {
+		for (QDomElement ballNode = ballsNode.firstChildElement("ball"); !ballNode.isNull()
+				; ballNode = ballNode.nextSiblingElement("ball")) {
+			createBall(ballNode);
+		}
+	}
+
 	for (QDomElement colorFieldsNode = element.firstChildElement("colorFields"); !colorFieldsNode.isNull()
 			; colorFieldsNode = colorFieldsNode.nextSiblingElement("colorFields")) {
 		for (QDomElement elementNode = colorFieldsNode.firstChildElement(); !elementNode.isNull()
@@ -361,7 +605,18 @@ void WorldModel::deserialize(const QDomElement &element)
 			; imagesNode = imagesNode.nextSiblingElement("images")) {
 		for (QDomElement imageNode = imagesNode.firstChildElement("image"); !imageNode.isNull()
 				; imageNode = imageNode.nextSiblingElement("image")) {
-			createImage(imageNode);
+			if (imageNode.hasAttribute("path")) {
+				model::Image *img = Image::deserialize(imageNode);
+				QString id = element.attribute("imageId");
+				if (id.isNull()) {
+					id = img->imageId();
+					imageNode.setAttribute("imageId", id);
+				}
+
+				mImages.insert(id, img);
+			}
+
+			createImageItem(imageNode);
 		}
 	}
 
@@ -383,12 +638,20 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 		return mWalls[id];
 	}
 
+	if (mSkittles.contains(id)) {
+		return mSkittles[id];
+	}
+
+	if (mBalls.contains(id)) {
+		return mBalls[id];
+	}
+
 	if (mColorFields.contains(id)) {
 		return mColorFields[id];
 	}
 
-	if (mImages.contains(id)) {
-		return mImages[id];
+	if (mImageItems.contains(id)) {
+		return mImageItems[id];
 	}
 
 	if (mRegions.contains(id)) {
@@ -398,13 +661,32 @@ QGraphicsObject *WorldModel::findId(const QString &id) const
 	return nullptr;
 }
 
-void WorldModel::setBackground(const Image &image, const QRect &rect)
+void WorldModel::setBackground(Image * const image, const QRect &rect)
 {
-	if (image != mBackgroundImage || rect != mBackgroundRect) {
+	/// @todo: should we check image content if it exist?
+	if (image && !mImages.contains(image->imageId())) {
+		mImages[image->imageId()] = image;
+	}
+
+	if ((image && mBackgroundImage && *image != *mBackgroundImage)
+			|| (image && !mBackgroundImage)
+			|| (!image && mBackgroundImage)
+			|| rect != mBackgroundRect) {
 		mBackgroundImage = image;
 		mBackgroundRect = rect;
 		emit backgroundChanged(mBackgroundImage, mBackgroundRect);
+		emit blobsChanged();
 	}
+}
+
+Image *WorldModel::background()
+{
+	return mBackgroundImage;
+}
+
+QRect &WorldModel::backgroundRect()
+{
+	return mBackgroundRect;
 }
 
 void WorldModel::createElement(const QDomElement &element)
@@ -420,13 +702,19 @@ void WorldModel::createElement(const QDomElement &element)
 	} else if (element.tagName() == "stylus") {
 		createStylus(element);
 	} else if (element.tagName() == "image") {
-		createImage(element);
+		if (element.hasAttribute("background")) {
+			createBackgroundImageItem(element);
+		} else {
+			createImageItem(element);
+		}
 	} else if (element.tagName() == "wall") {
 		createWall(element);
+	} else if (element.tagName() == "skittle") {
+		createSkittle(element);
+	} else if (element.tagName() == "ball") {
+		createBall(element);
 	} else if (element.tagName() == "region") {
 		createRegion(element);
-	} else if (element.tagName() == "background") {
-		deserializeBackground(element);
 	}
 }
 
@@ -435,6 +723,20 @@ void WorldModel::createWall(const QDomElement &element)
 	items::WallItem *wall = new items::WallItem(QPointF(), QPointF());
 	wall->deserialize(element);
 	addWall(wall);
+}
+
+void WorldModel::createSkittle(const QDomElement &element)
+{
+	items::SkittleItem *skittle = new items::SkittleItem(QPointF());
+	skittle->deserialize(element);
+	addSkittle(skittle);
+}
+
+void WorldModel::createBall(const QDomElement &element)
+{
+	items::BallItem *ball = new items::BallItem(QPointF());
+	ball->deserialize(element);
+	addBall(ball);
 }
 
 void WorldModel::createLine(const QDomElement &element)
@@ -472,11 +774,20 @@ void WorldModel::createStylus(const QDomElement &element)
 	addColorField(stylusItem);
 }
 
-void WorldModel::createImage(const QDomElement &element)
+items::ImageItem * WorldModel::createImageItem(const QDomElement &element, bool background)
 {
-	items::ImageItem *image = new items::ImageItem(model::Image(), QRect());
+	items::ImageItem *image = new items::ImageItem(mImages.value(element.attribute("imageId"), nullptr), QRect());
 	image->deserialize(element);
-	addImage(image);
+	image->setBackgroundRole(background);
+	addImageItem(image);
+
+	return image;
+}
+
+void WorldModel::createBackgroundImageItem(const QDomElement &element)
+{
+	items::ImageItem *backgroundImageItem = createImageItem(element, true);
+	emit backgroundImageItemAdded(backgroundImageItem);
 }
 
 void WorldModel::createRegion(const QDomElement &element)
@@ -507,11 +818,15 @@ void WorldModel::createRegion(const QDomElement &element)
 void WorldModel::removeItem(const QString &id)
 {
 	QGraphicsObject *item = findId(id);
-	if (items::WallItem *wall = dynamic_cast<items::WallItem *>(item)) {
+	if (auto wall = dynamic_cast<items::WallItem *>(item)) {
 		removeWall(wall);
-	} else if (items::ColorFieldItem *colorItem = dynamic_cast<items::ColorFieldItem *>(item)) {
+	} else if (auto colorItem = dynamic_cast<items::ColorFieldItem *>(item)) {
 		removeColorField(colorItem);
-	} else if (items::ImageItem *image = dynamic_cast<items::ImageItem *>(item)) {
-		removeImage(image);
+	} else if (auto skittleItem = dynamic_cast<items::SkittleItem *>(item)) {
+		removeSkittle(skittleItem);
+	} else if (auto ballItem = dynamic_cast<items::BallItem *>(item)) {
+		removeBall(ballItem);
+	} else if (auto image = dynamic_cast<items::ImageItem *>(item)) {
+		removeImageItem(image);
 	}
 }

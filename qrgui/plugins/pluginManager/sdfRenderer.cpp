@@ -25,6 +25,7 @@
 #include <QtGui/QIcon>
 
 #include <qrutils/imagesCache.h>
+#include <metaMetaModel/elementRepoInterface.h>
 
 using namespace qReal;
 

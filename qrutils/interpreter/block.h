@@ -53,6 +53,30 @@ public:
 			, qrtext::LanguageToolboxInterface &textLanguageToolbox
 			);
 
+	/// A list of identifiers currently known to interpreter.
+	QStringList identifiers() const;
+
+	/// A value of identifier with given name.
+	template<typename T>
+	T value(const QString &identifier) const
+	{
+		return mParser->value<T>(identifier);
+	}
+
+	/// Sets a value of given identifier in interpreter to given value.
+	template<typename T>
+	void setVariableValue(const QString &name, T value)
+	{
+		mParser->setVariableValue<T>(name, value);
+	}
+
+	/// Sets a value of given identifier in interpreter to given vector value.
+	template<typename T>
+	void setVectorVariableValue(const QString &name, const QVector<T> &value)
+	{
+		mParser->setVectorVariableValue<T>(name, value);
+	}
+
 protected:
 	/// Enum with flags whether to report parser errors or let the language toolbox fail silently.
 	enum class ReportErrors {

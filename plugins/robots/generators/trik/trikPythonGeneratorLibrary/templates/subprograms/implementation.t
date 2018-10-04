@@ -1,0 +1,2 @@
+def @@NAME@@(@@ARGUMENTS@@):
+@@BODY@@

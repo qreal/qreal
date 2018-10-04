@@ -27,10 +27,16 @@
 
 class QGraphicsItem;
 
+namespace qReal {
+class ErrorReporterInterface;
+}
+
 namespace twoDModel {
 
 namespace items {
 class WallItem;
+class SkittleItem;
+class BallItem;
 class ColorFieldItem;
 class ImageItem;
 class RegionItem;
@@ -44,6 +50,12 @@ class TWO_D_MODEL_EXPORT WorldModel : public QObject
 
 public:
 	WorldModel();
+	~WorldModel();
+
+	void init(qReal::ErrorReporterInterface &errorReporter);
+
+	/// Returns a number of pixels in 1 cm. This value may change, pixelsInCmChanged() signal will then be emitted.
+	qreal pixelsInCm() const;
 
 	/// Measures the distance between robot and wall
 	int sonarReading(const QPointF &position, qreal direction) const;
@@ -59,6 +71,12 @@ public:
 
 	/// Returns a set of walls in the world model. Result is mapping of wall ids to walls themselves.
 	const QMap<QString, items::WallItem *> &walls() const;
+
+	/// Returns a set of skittles in the world model. Result is mapping of skittle ids to slittles themselves.
+	const QMap<QString, items::SkittleItem *> &skittles() const;
+
+	/// Returns a set of balls in the world model. Result is mapping of ball ids to balls themselves.
+	const QMap<QString, items::BallItem *> &balls() const;
 
 	/// Returns a set of color field items in the world model. Result is mapping of field ids to fields themselves.
 	const QMap<QString, items::ColorFieldItem *> &colorFields() const;
@@ -78,6 +96,18 @@ public:
 	/// Removes \a wall from the world model.
 	void removeWall(items::WallItem *wall);
 
+	/// Appends \a skittle into world model.
+	void addSkittle(items::SkittleItem *skittle);
+
+	/// Removes \a skittle from the world model.
+	void removeSkittle(items::SkittleItem *skittle);
+
+	/// Appends \a ball into world model.
+	void addBall(items::BallItem *ball);
+
+	/// Removes \a ball from the world model.
+	void removeBall(items::BallItem *ball);
+
 	/// Appends colored item \a colorField into the world model.
 	void addColorField(items::ColorFieldItem *colorField);
 
@@ -85,10 +115,10 @@ public:
 	void removeColorField(items::ColorFieldItem *colorField);
 
 	/// Adds image item into 2D model.
-	void addImage(items::ImageItem *image);
+	void addImageItem(items::ImageItem *imageItem);
 
 	/// Removes image item from 2D model.
-	void removeImage(items::ImageItem *image);
+	void removeImageItem(items::ImageItem *imageItem);
 
 	/// Removes all walls, colored items, regions and robot traces from the world model.
 	void clear();
@@ -100,7 +130,10 @@ public:
 	void clearRobotTrace();
 
 	/// Saves world to XML.
-	QDomElement serialize(QDomElement &parent) const;
+	QDomElement serializeWorld(QDomElement &parent) const;
+
+	/// Saves blobs to XML.
+	QDomElement serializeBlobs(QDomElement &parent) const;
 
 	/// Saves all information about the item with \a id into XML element. Item then can be recreated from
 	/// this specification using createElement(QDomElement) method.
@@ -108,19 +141,32 @@ public:
 
 	/// Restores world model XML specification.
 	/// @param element Root element of the world model XML specification.
-	void deserialize(const QDomElement &element);
+	/// @param blobs Root element of the blobs XML specification.
+	void deserialize(const QDomElement &element, const QDomElement &blobs);
 
 	/// Searches on the scene item with the given id. Returns nullptr if not found.
 	QGraphicsObject *findId(const QString &id) const;
 
 	/// Sets a background image on the scene and its geometry.
-	void setBackground(const Image &image, const QRect &rect);
+	void setBackground(Image * const image, const QRect &rect);
+
+	/// Returns a path to scene background image.
+	Image *background();
+
+	/// Returns a scene background image size and position.
+	QRect &backgroundRect();
 
 	/// Creates element from serialized XML specification.
 	void createElement(const QDomElement &element);
 
 	/// Creates wall item described by \a element in the world model.
 	void createWall(const QDomElement &element);
+
+	/// Creates skittle item described by \a element in the world model.
+	void createSkittle(const QDomElement &element);
+
+	/// Creates ball item described by \a element in the world model.
+	void createBall(const QDomElement &element);
 
 	/// Creates line colored item described by \a element in the world model.
 	void createLine(const QDomElement &element);
@@ -138,7 +184,7 @@ public:
 	void createStylus(const QDomElement &element);
 
 	/// Creates image item described by \a element in the world model.
-	void createImage(const QDomElement &element);
+	items::ImageItem *createImageItem(const QDomElement &element, bool background=false);
 
 	/// Creates region item described by \a element in the world model.
 	void createRegion(const QDomElement &element);
@@ -147,8 +193,17 @@ public:
 	void removeItem(const QString &id);
 
 signals:
+	/// Emitted when current metrics system conversion constant has changed.
+	void pixelsInCmChanged(qreal newValue);
+
 	/// Emitted each time when model is appended with some new wall.
 	void wallAdded(items::WallItem *item);
+
+	/// Emitted each time when model is appended with some new skittle.
+	void skittleAdded(items::SkittleItem *item);
+
+	/// Emitted each time when model is appended with some new skittle.
+	void ballAdded(items::BallItem *item);
 
 	/// Emitted each time when model is appended with some new color field item.
 	void colorItemAdded(items::ColorFieldItem *item);
@@ -169,24 +224,39 @@ signals:
 	void robotTraceAppearedOrDisappeared(bool appeared);
 
 	/// Emitted when user changes background image or its size.
-	void backgroundChanged(const Image &image, const QRect &backgroundRect);
+	void backgroundChanged(Image * const image, const QRect &backgroundRect);
+
+	/// Emitted when blobs information changed.
+	void blobsChanged();
+
+	/// Emitted each time when imageItem with background created.
+	void backgroundImageItemAdded(items::ImageItem *item);
 
 private:
 	/// Returns true if ray intersects some wall.
 	bool checkSonarDistance(const int distance, const QPointF &position
 			, const qreal direction, const QPainterPath &wallPath) const;
-	QPainterPath buildWallPath() const;
+	QPainterPath buildSolidItemsPath() const;
+
+	void createBackgroundImageItem(const QDomElement &element);
+
+	void serializeBackground(QDomElement &background, const QRect &rect, const Image * const img) const;
 	QRect deserializeRect(const QString &string) const;
 	void deserializeBackground(const QDomElement &backgroundElement);
 
 	QMap<QString, items::WallItem *> mWalls;
+	QMap<QString, items::SkittleItem *> mSkittles;
+	QMap<QString, items::BallItem *> mBalls;
 	QMap<QString, items::ColorFieldItem *> mColorFields;
-	QMap<QString, items::ImageItem *> mImages;
+	QMap<QString, items::ImageItem *> mImageItems;
 	QMap<QString, items::RegionItem *> mRegions;
+	QMap<QString, Image*> mImages; // takes ownership
+	QMap<QString, int> mOrder;
 	QList<QGraphicsLineItem *> mRobotTrace;
-	Image mBackgroundImage;
+	Image *mBackgroundImage = nullptr;
 	QRect mBackgroundRect;
 	QScopedPointer<QDomDocument> mXmlFactory;
+	qReal::ErrorReporterInterface *mErrorReporter;  // Doesn`t take ownership.
 };
 
 }

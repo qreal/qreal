@@ -16,11 +16,13 @@
 
 #include "nonZoneNode.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
 /// A semantic node for the block with 'switch' semantics
-class SwitchNode : public NonZoneNode
+class ROBOTS_GENERATOR_EXPORT SwitchNode : public NonZoneNode
 {
 public:
 	explicit SwitchNode(const qReal::Id &idBinded, QObject *parent = 0);
@@ -39,6 +41,8 @@ public:
 	/// This can help to resolve confusion in case when one branch enter into the middle of another.
 	void setBranchesMergedFlag();
 
+	void setGenerateIfs();
+
 protected:
 	QLinkedList<SemanticNode *> children() const override;
 	QString toStringImpl(GeneratorCustomizer &customizer, int indent, const QString &indentString) const override;
@@ -54,6 +58,7 @@ private:
 	QMap<QString, ZoneNode *> mBranches;
 	ZoneNode *mDefaultBranch;
 	bool mBranchesMerged;
+	bool mGenerateIfs;
 };
 
 }

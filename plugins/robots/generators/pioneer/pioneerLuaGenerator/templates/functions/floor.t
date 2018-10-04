@@ -1,0 +1,1 @@
+-- floor() function is currently not supported

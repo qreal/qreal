@@ -1,1 +1,1 @@
-brick.playSound("@@FILENAME@@");
+brick.playTone(@@FREQUENCY@@, @@DURATION@@);

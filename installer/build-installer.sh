@@ -7,6 +7,8 @@
 
 set -o nounset
 set -o errexit
+#[ -z "${PRODUCT_DISPLAYED_NAME+x}" ] && echo -e "\x1b[93;41mUse corresponding helper script, do not run this one directly\x1b[0m" && exit 3
+[ -e $(basename $0) ] || {  pushd $(dirname $(readlink -f $0)); ./$(basename $0) $* ; popd ; }
 
 export INSTALLER_ROOT=$PWD/
 export BIN_DIR=$PWD/../bin/release/
@@ -33,6 +35,8 @@ find $PWD/packages/$PRODUCT -name prebuild-common.sh -print0 | xargs -0 chmod +x
 find $PWD/packages/$PRODUCT -name prebuild-$OS.sh -print0 | xargs -0 chmod +x
 find $PWD/packages/$PRODUCT -name prebuild-common.sh | bash
 find $PWD/packages/$PRODUCT -name prebuild-$OS.sh | bash
+
+find . -type d -empty -delete
 
 echo "Building online installer..."
 $QTIFW_DIR/binarycreator --online-only -c config/$PRODUCT-$OS_EXT.xml -p packages/qreal-base -p packages/$PRODUCT ${*:4} $PRODUCT-online-$OS_EXT-installer

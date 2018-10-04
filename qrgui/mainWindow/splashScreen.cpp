@@ -23,7 +23,6 @@
 using namespace qReal;
 
 const QString defaultImage = ":/mainWindow/images/kroki3.PNG";
-const Qt::WindowFlags windowFlags = Qt::SplashScreen | Qt::WindowStaysOnTopHint;
 
 SplashScreen::SplashScreen(bool isVisible)
 	: QSplashScreen()

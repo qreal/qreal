@@ -17,7 +17,7 @@
 #include "ev3RobotCommunicationThread.h"
 
 class QTimer;
-class libusb_device_handle;
+struct libusb_device_handle;
 
 namespace ev3 {
 namespace communication {
@@ -31,10 +31,10 @@ public:
 	~UsbRobotCommunicationThread();
 
 public slots:
-	bool send(QObject *addressee, const QByteArray &buffer, int responseSize);
-	bool connect();
-	void reconnect();
-	void disconnect();
+	bool send(QObject *addressee, const QByteArray &buffer, int responseSize) override;
+	bool connect() override;
+	void reconnect() override;
+	void disconnect() override;
 
 	void allowLongJobs(bool allow = true) override;
 
@@ -44,7 +44,7 @@ private slots:
 
 private:
 	bool send(const QByteArray &buffer, int responseSize, QByteArray &outputBuffer) override;
-	bool send(const QByteArray &buffer) const override;
+	bool send1(const QByteArray &buffer) const override;
 
 	QByteArray receive(int size) const override;
 

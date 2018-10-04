@@ -15,8 +15,11 @@
 #include "trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h"
 
 #include <QtGui/QColor>
+#include <QtCore/QFile>
 
 #include <qrkernel/logging.h>
+#include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsManager.h>
 
 #include <kitBase/robotModel/robotModelUtils.h>
 #include <kitBase/robotModel/robotParts/lightSensor.h>
@@ -48,6 +51,8 @@ TrikTwoDRobotModel::TrikTwoDRobotModel(RobotModelInterface &realModel)
 	, mLeftWheelPort("M3")
 	, mRightWheelPort("M4")
 	, mDisplayWidget(new TrikDisplayWidget())
+	, mCollidingPolygon({QPointF(1, 10), QPointF(47, 10), QPointF(49, 20)
+			, QPointF(49, 30), QPointF(47, 40), QPointF(1, 40)})
 {
 	/// @todo: One day we will support gamepad in 2D model and there will be piece.
 	/// But till that day gamepad ports must be killed cause they spam logs.
@@ -122,7 +127,14 @@ void TrikTwoDRobotModel::onInterpretationStarted()
 
 QString TrikTwoDRobotModel::robotImage() const
 {
-	return ":icons/trikTwoDRobot.svg";
+	const QString key = "trikRobot2DImage";
+	const QString hackDefaultPath = "./images/trik-robot.svg";
+	if (qReal::SettingsManager::value(key).isNull()) {
+		qReal::SettingsManager::setValue(key, hackDefaultPath);
+	}
+
+	const QString settingsPath = qReal::PlatformInfo::invariantSettingsPath(key);
+	return QFile::exists(settingsPath) ? settingsPath : ":icons/trik-robot.svg";
 }
 
 PortInfo TrikTwoDRobotModel::defaultLeftWheelPort() const
@@ -191,6 +203,31 @@ QPair<QPoint, qreal> TrikTwoDRobotModel::specialDeviceConfiguration(const PortIn
 	}
 
 	return twoDModel::robotModel::TwoDRobotModel::specialDeviceConfiguration(port);
+}
+
+QPolygonF TrikTwoDRobotModel::collidingPolygon() const
+{
+	return mCollidingPolygon;
+}
+
+qreal TrikTwoDRobotModel::mass() const
+{
+	return 1.05;
+}
+
+qreal TrikTwoDRobotModel::friction() const
+{
+	return 0.3;  /// @todo measure it
+}
+
+qreal TrikTwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.0055;
+}
+
+QList<QPointF> TrikTwoDRobotModel::wheelsPosition() const
+{
+	return {QPointF(10, 3), QPointF(10, 47)};
 }
 
 QHash<QString, int> TrikTwoDRobotModel::buttonCodes() const

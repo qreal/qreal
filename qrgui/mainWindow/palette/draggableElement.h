@@ -68,6 +68,7 @@ public:
 
 private slots:
 	void changePropertiesPaletteActionTriggered();
+	void changeDynamicPropertiesPaletteActionTriggered();
 	void changeAppearancePaletteActionTriggered();
 	void deleteElementPaletteActionTriggered();
 	void deleteElement();

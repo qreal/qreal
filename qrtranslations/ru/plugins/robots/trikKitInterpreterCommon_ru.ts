@@ -2,6 +2,19 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikQtsInterpreter.cpp" line="113"/>
+        <source>Bogus input values</source>
+        <translation>Неподходящие значения аргументов</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikQtsInterpreter.cpp" line="135"/>
+        <source>Error: File %1 couldn&apos;t be opened!</source>
+        <translation>Ошибка: Не удаётся открыть файл %1!</translation>
+    </message>
+</context>
+<context>
     <name>TrikAdditionalPreferences</name>
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="14"/>
@@ -9,14 +22,84 @@
         <translation>Настройки TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="32"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="36"/>
         <source>TCP Settings</source>
         <translation>Настройки TCP</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="38"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="42"/>
         <source>Enter robot IP-address here</source>
         <translation>Введите IP-адрес робота</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.cpp" line="30"/>
+        <source>2D robot image:</source>
+        <translation>Картинка робота в 2D</translation>
+    </message>
+</context>
+<context>
+    <name>TrikBrick</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="102"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="306"/>
+        <source>Trying to read from file %1 failed</source>
+        <translation>Не удалось открыть файл %1</translation>
+    </message>
+    <message>
+        <source>No configured motor on port: </source>
+        <translation type="vanished">Не найден сконфигурированный  мотор на порту: </translation>
+    </message>
+    <message>
+        <source>No configured sensor on port: </source>
+        <translation type="vanished">Не найден сконфигурированный  сенсор на порту: </translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="133"/>
+        <source>No configured motor on port: %1</source>
+        <translation>Не найден сконфигурированный  мотор на порту: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="149"/>
+        <source>No configured sensor on port: %1</source>
+        <translation>Не найден сконфигурированный  сенсор на порту: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="179"/>
+        <source>No configured accelerometer</source>
+        <translation>Акселерометр не сконфигурирован</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="193"/>
+        <source>No configured gyroscope</source>
+        <translation>Гиродатчик не сконфигурирован</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="211"/>
+        <source>No configured LineSensor on port: %1</source>
+        <translation>Не найден сконфигурированный сенсор линии на порту: %1</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="225"/>
+        <source>No configured encoder on port: %1</source>
+        <translation>Не найден сконфигурированный енкодер на порту: %1</translation>
+    </message>
+    <message>
+        <source>No configured LineSensor on port: </source>
+        <translation type="vanished">Не найден сконфигурированный сенсор линии на порту: </translation>
+    </message>
+    <message>
+        <source>No configured encoder on port: </source>
+        <translation type="vanished">Не найден сконфигурированный енкодер на порту: </translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="255"/>
+        <source>No configured led</source>
+        <translation>LED не сконфигурирован</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikbrick.cpp" line="269"/>
+        <source>No cofigured random device</source>
+        <translation>Генератор случайных чисел не сконфигурирован</translation>
     </message>
 </context>
 <context>
@@ -40,6 +123,14 @@
     <message>
         <source>enter path to F# compile </source>
         <translation type="vanished">Введите путь к компилятору F#</translation>
+    </message>
+</context>
+<context>
+    <name>TrikKitInterpreterPluginBase</name>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="157"/>
+        <source>Enter robot`s IP-address here...</source>
+        <translation>Введите IP-адрес робота...</translation>
     </message>
 </context>
 <context>
@@ -75,9 +166,29 @@
 <context>
     <name>trik::TrikKitInterpreterPluginBase</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="155"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="34"/>
+        <source>Start QTS</source>
+        <translation>Запустить QTS</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="34"/>
+        <source>Stop QTS</source>
+        <translation>Оставновить QTS</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="154"/>
+        <source>Run program</source>
+        <translation>Выполнить программу</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="158"/>
+        <source>Stop robot</source>
+        <translation>Остановить программу</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="324"/>
         <source>Enter robot`s IP-address here...</source>
-        <translation type="unfinished">Введите IP-адрес робота...</translation>
+        <translation>Введите IP-адрес робота...</translation>
     </message>
 </context>
 <context>

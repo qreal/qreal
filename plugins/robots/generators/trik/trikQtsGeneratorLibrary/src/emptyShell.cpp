@@ -58,7 +58,9 @@ void EmptyShell::readFile(const QString &filePath)
 	Q_UNUSED(filePath)
 }
 
-void EmptyShell::initVideoStreaming()
+void EmptyShell::initVideoStreaming(int qual, bool grayscaled)
 {
+	Q_UNUSED(qual)
+	Q_UNUSED(grayscaled)
 }
 

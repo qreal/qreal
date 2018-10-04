@@ -64,7 +64,7 @@
         <translation>Исходящая связь ни к чему не присоединена</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsControlFlowValidator.cpp" line="35"/>
+        <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsControlFlowValidator.cpp" line="37"/>
         <source>There is nothing to generate, diagram doesn&apos;t have Initial Node</source>
         <translation>На диаграмме нет блока &quot;Начало&quot;</translation>
     </message>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsGeneratorPluginBase.cpp" line="107"/>
         <source>Generate TRIK code</source>
-        <translation>Генерировать код на QtScript</translation>
+        <translation>Генерировать JavaScript код</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsGeneratorPluginBase.cpp" line="113"/>
@@ -155,7 +155,7 @@
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsGeneratorPluginBase.cpp" line="140"/>
         <source>Generate TRIK Code</source>
-        <translation>Сгенерированть код для ТРИК на QtScript</translation>
+        <translation>Сгенерировать JavaScript код для TRIK</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/trik/trikQtsGeneratorLibrary/src/trikQtsGeneratorPluginBase.cpp" line="141"/>

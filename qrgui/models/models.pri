@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-QT += widgets
+QT += xml widgets
 
-links(qrkernel qrrepo qrgraph qrgui-meta-meta-model qrgui-controller qrgui-plugin-manager)
+links(qrkernel qslog qrutils qrrepo qrgraph qrgui-meta-meta-model qrgui-controller qrgui-plugin-manager)
 includes(qrgui qrgraph qrgui/plugins/metaMetaModel)
 
 HEADERS += \
@@ -27,6 +27,7 @@ HEADERS += \
 	$$PWD/elementInfo.h \
 	$$PWD/nodeInfo.h \
 	$$PWD/edgeInfo.h \
+	$$PWD/clipboard.h \
 	$$PWD/commands/createElementsCommand.h \
 	$$PWD/commands/createPatternCommand.h \
 	$$PWD/commands/removeElementsCommand.h \
@@ -61,6 +62,7 @@ SOURCES += \
 	$$PWD/elementInfo.cpp \
 	$$PWD/nodeInfo.cpp \
 	$$PWD/edgeInfo.cpp \
+	$$PWD/clipboard.cpp \
 	$$PWD/commands/createElementsCommand.cpp \
 	$$PWD/commands/removeElementsCommand.cpp \
 	$$PWD/commands/createPatternCommand.cpp \

@@ -53,23 +53,26 @@ QString Variables::generateConstantsString() const
 	return result;
 }
 
-QString Variables::generateVariableString() const
+QStringList Variables::generateVariablesList() const
 {
 	const QMap<QString, QSharedPointer<qrtext::core::types::TypeExpression>> variables = mLuaToolbox.variableTypes();
 	const QStringList reservedNames = mLuaToolbox.specialIdentifiers();
 
-	QString result;
+	QStringList result;
 	for (const QString &curVariable : variables.keys()) {
 		if (reservedNames.contains(curVariable)) {
 			continue;
 		}
 
-		result += variableDeclaration(variables[curVariable]).replace("@@NAME@@", curVariable);
+		result << variableDeclaration(variables[curVariable]).replace("@@NAME@@", curVariable);
 	}
 
-	result += mManualDeclarations.join('\n');
+	return result << mManualDeclarations;
+}
 
-	return result;
+QString Variables::generateVariableString() const
+{
+	return generateVariablesList().join('\n');
 }
 
 QString Variables::typeExpression(const QSharedPointer<qrtext::core::types::TypeExpression> &type) const

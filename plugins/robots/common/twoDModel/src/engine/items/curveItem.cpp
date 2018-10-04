@@ -151,6 +151,7 @@ void CurveItem::deserialize(const QDomElement &element)
 	const QPointF cp1 = deserializePoint(element.attribute("cp1"));
 	const QPointF cp2 = deserializePoint(element.attribute("cp2"));
 
+	setPos(QPointF());
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());

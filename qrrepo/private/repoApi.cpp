@@ -279,7 +279,7 @@ void RepoApi::copyProperties(const Id &dest, const Id &src)
 	mRepository->copyProperties(dest, src);
 }
 
-QMap<QString, QVariant> RepoApi::properties(const Id &id)
+QMap<QString, QVariant> RepoApi::properties(const Id &id) const
 {
 	return mRepository->properties(id);
 }
@@ -316,6 +316,7 @@ void RepoApi::setFrom(const Id &id, const Id &from)
 		Id prev = mRepository->property(id, "from").value<Id>();
 		removeFromList(prev, "links", id, "from");
 	}
+
 	mRepository->setProperty(id, "from", from.toVariant());
 	addToIdList(from, "links", id, "from");
 }
@@ -393,9 +394,9 @@ qReal::Id RepoApi::logicalId(const qReal::Id &id) const
 	return mRepository->logicalId(id);
 }
 
-void RepoApi::exterminate()
+bool RepoApi::exterminate()
 {
-	mRepository->exterminate();
+	return mRepository->exterminate();
 }
 
 void RepoApi::open(const QString &saveFile)
@@ -408,24 +409,26 @@ void RepoApi::exportToXml(const QString &targetFile) const
 	mRepository->exportToXml(targetFile);
 }
 
-void RepoApi::saveAll() const
+bool RepoApi::saveAll() const
 {
-	mRepository->saveAll();
+	return mRepository->saveAll();
 }
 
-void RepoApi::saveTo(const QString &workingFile)
+bool RepoApi::saveTo(const QString &workingFile)
 {
 	if (!mIgnoreAutosave) {
 		mRepository->setWorkingFile(workingFile);
 		if (!workingFile.isEmpty()) {
-			mRepository->saveAll();
+			return mRepository->saveAll();
 		}
 	}
+
+	return false;
 }
 
-void RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
+bool RepoApi::saveDiagramsById(QHash<QString, IdList> const &diagramIds)
 {
-	mRepository->saveDiagramsById(diagramIds);
+	return mRepository->saveDiagramsById(diagramIds);
 }
 
 void RepoApi::importFromDisk(const QString &importedFile)
@@ -433,9 +436,9 @@ void RepoApi::importFromDisk(const QString &importedFile)
 	mRepository->importFromDisk(importedFile);
 }
 
-void RepoApi::save(const qReal::IdList &list) const
+bool RepoApi::save(const qReal::IdList &list) const
 {
-	mRepository->save(list);
+	return mRepository->save(list);
 }
 
 QString RepoApi::workingFile() const

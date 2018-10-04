@@ -1,0 +1,1 @@
+brick.playTone(@@FREQUENCY@@, @@DURATION@@)

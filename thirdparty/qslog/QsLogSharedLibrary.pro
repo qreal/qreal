@@ -6,9 +6,10 @@ TARGET = qslog
 include(../../global.pri)
 
 QT -= gui
+QT += core
 CONFIG -= console
 CONFIG -= app_bundle
-CONFIG += shared c++14 warn_off
+CONFIG += shared warn_off qt
 
 TEMPLATE = lib
 

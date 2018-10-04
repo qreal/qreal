@@ -131,6 +131,32 @@ void SensorItem::deserialize(const QDomElement &element)
 	setRotation(element.attribute("direction", "0").toDouble());
 }
 
+QPolygonF SensorItem::collidingPolygon() const
+{
+	/// @todo: returning different polygons based on sensor type
+	return QPolygonF(QRectF(-7, -7, 15, 15));
+}
+
+qreal SensorItem::friction() const
+{
+	return 0.0;
+}
+
+bool SensorItem::isCircle() const
+{
+	return true;
+}
+
+twoDModel::items::SolidItem::BodyType SensorItem::bodyType() const
+{
+	return BodyType::DYNAMIC;
+}
+
+qreal SensorItem::mass() const
+{
+	return 0.01; /// @todo
+}
+
 QString SensorItem::name() const
 {
 	const DeviceInfo sensor = mConfiguration.type(mPort);

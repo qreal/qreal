@@ -4,7 +4,7 @@ set -o errexit
 
 cd "$(dirname "$0")"
 
-mkdir -p $PWD/../data/
+mkdir -p $PWD/../data/bin
 source $INSTALLER_ROOT/utils/common_utils.sh
 
 cp     $INSTALLER_ROOT/licenses/WinScp-license.txt                        $PWD

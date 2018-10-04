@@ -47,16 +47,17 @@ RobotItem::RobotItem(const QString &robotImageFileName, model::RobotModel &robot
 	setAcceptDrops(true);
 	setCursor(QCursor(Qt::PointingHandCursor));
 	setZValue(1);
-	setX2(x1() + robotWidth);
-	setY2(y1() + robotHeight);
+	const QSizeF robotSize = mRobotModel.info().size();
+	setX2(x1() + robotSize.width());
+	setY2(y1() + robotSize.height());
 	mMarkerPoint = QPointF(0, y2() / 2);  // Marker is situated behind the robot
 	QPen pen(this->pen());
 	pen.setWidth(defaultTraceWidth);
 	setPen(pen);
 
-	setTransformOriginPoint(rotatePoint);
+	setTransformOriginPoint(mRobotModel.info().rotationCenter());
 	mBeepItem->setParentItem(this);
-	mBeepItem->setPos((robotWidth - beepWavesSize) / 2, (robotHeight - beepWavesSize) / 2);
+	mBeepItem->setPos((robotSize.width() - beepWavesSize) / 2, (robotSize.height() - beepWavesSize) / 2);
 	mBeepItem->setVisible(false);
 
 	RotateItem::init();
@@ -190,6 +191,7 @@ void RobotItem::addSensor(const kitBase::robotModel::PortInfo &port, SensorItem 
 
 	sensor->setPos(mRobotModel.configuration().position(port));
 	sensor->setRotation(mRobotModel.configuration().direction(port));
+	emit sensorAdded(sensor);
 }
 
 void RobotItem::removeSensor(const kitBase::robotModel::PortInfo &port)
@@ -200,6 +202,7 @@ void RobotItem::removeSensor(const kitBase::robotModel::PortInfo &port)
 
 	scene()->removeItem(mSensors[port]);
 	delete mSensors[port];
+	emit sensorRemoved(mSensors[port]);
 	mSensors[port] = nullptr;
 }
 
@@ -207,6 +210,7 @@ void RobotItem::updateSensorPosition(const kitBase::robotModel::PortInfo &port)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setPos(mRobotModel.configuration().position(port));
+		emit sensorUpdated(mSensors[port]);
 	}
 }
 
@@ -214,6 +218,7 @@ void RobotItem::updateSensorRotation(const kitBase::robotModel::PortInfo &port)
 {
 	if (mSensors[port]) {
 		mSensors[port]->setRotation(mRobotModel.configuration().direction(port));
+		emit sensorUpdated(mSensors[port]);
 	}
 }
 
@@ -243,6 +248,7 @@ void RobotItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 void RobotItem::recoverDragStartPosition()
 {
 	mRobotModel.setPosition(mDragStart);
+	emit recoverRobotPosition(mDragStart);
 }
 
 RobotModel &RobotItem::robotModel()
@@ -258,6 +264,28 @@ void RobotItem::returnToStartPosition()
 	const QPointF markerPos = mRobotModel.startPositionMarker()->scenePos();
 	const QPointF shiftToCenter = mapToScene(QPointF()) - mapToScene(boundingRect().center() - shiftFromPicture);
 	mRobotModel.setPosition(markerPos + shiftToCenter);
+
+	emit recoverRobotPosition(markerPos + shiftToCenter);
+}
+
+QPolygonF RobotItem::collidingPolygon() const
+{
+	return mRobotModel.info().collidingPolygon();
+}
+
+qreal RobotItem::mass() const
+{
+	return mRobotModel.info().mass();
+}
+
+qreal RobotItem::friction() const
+{
+	return mRobotModel.info().friction();
+}
+
+twoDModel::items::SolidItem::BodyType RobotItem::bodyType() const
+{
+	return BodyType::DYNAMIC;
 }
 
 void RobotItem::BeepItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option

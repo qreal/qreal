@@ -18,7 +18,7 @@ include(../../global.pri)
 
 TEMPLATE = lib
 
-links(qrkernel qrutils qscintilla2 qrgui-tool-plugin-interface)
+links(qrkernel qrutils qscintilla2 qrgui-tool-plugin-interface qrgui-brand-manager)
 
 QT += widgets
 

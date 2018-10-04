@@ -1,4 +1,4 @@
 if @@CONDITION@@ then
 begin
-    @@THEN_BODY@@
+@@THEN_BODY@@
 end;

@@ -17,19 +17,24 @@
 using namespace trik;
 
 #include <trikKit/blocks/trikV62BlocksFactory.h>
+#include <kitBase/robotModel/robotModelUtils.h>
 
 #include "robotModel/real/trikV62RealRobotModel.h"
 #include "robotModel/twoD/trikV62TwoDRobotModel.h"
+
+#include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h"
 
 const QString kitIdString = "trikV62Kit";
 
 TrikV62KitInterpreterPlugin::TrikV62KitInterpreterPlugin()
 	: TrikKitInterpreterPluginBase()
 {
-	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikV62KitRobot");
+	const auto realRobotModel = new robotModel::real::RealRobotModel(kitIdString, "trikKitRobot");
 	const auto twoDRobotModel = new robotModel::twoD::TwoDRobotModel(*realRobotModel);
 	const auto blocksFactory = new blocks::TrikV62BlocksFactory();
+
 	initKitInterpreterPluginBase(realRobotModel, twoDRobotModel, blocksFactory);
+
 }
 
 QString TrikV62KitInterpreterPlugin::kitId() const

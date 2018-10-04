@@ -21,14 +21,20 @@ namespace twoDModel {
 
 const qreal lowPrecision = 0.00001;
 
+const qreal robotMass = 800;
+const QSize skittleSize(20, 20);
+const QSize ballSize(30, 30);
 const qreal robotWidth = 50;
 const qreal robotHeight = 50;
+const qreal robotZPoint = 100;
 const QPointF rotatePoint = QPointF(robotWidth / 2, robotHeight / 2);
 const QSize displaySize(200, 300);
 const qreal beepWavesSize = 120;
+const int timeQuant = 10;
+
 
 /// Experimental constant that scales gyroscope output so that it is close to real robot gyroscope readings.
-const qreal gyroscopeConstant = -1600;
+const qreal gyroscopeConstant = 875000;
 
 /// Experimental constant that scales accelerometer output so that it is close to real robot accelerometer readings
 /// with our magic acceleration smoothing formula.
@@ -56,7 +62,6 @@ const qreal spoilSonarDispersion = 1.5;
 const qreal varySpeedDispersion = 0.0125;
 const qreal percentSaltPepperNoise = 20.0;
 
-const qreal robotMass = 800;
 const qreal robotInertialMoment = 20;
 const qreal reactionForceStabilizationCoefficient = 20;
 const qreal floorFrictionCoefficient = 0.2;
@@ -65,7 +70,7 @@ const qreal rotationalFrictionFactor = 1500;
 const qreal angularVelocityFrictionFactor = 200;
 
 const qreal onePercentAngularVelocity = 0.0055;
-const int maxLightSensorValue = 1023;
+const qreal maxLightSensorValue = 1023;
 const int touchSensorPressedSignal = 1;
 const int touchSensorNotPressedSignal = 0;
 

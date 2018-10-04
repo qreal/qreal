@@ -16,13 +16,14 @@
 #include "ui_twoDModelWidget.h"
 
 #include <QtCore/qmath.h>
-#include <QtWidgets/QMessageBox>
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
+#include <qrkernel/platformInfo.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrgui/controller/controllerInterface.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
@@ -39,6 +40,8 @@
 #include "scene/robotItem.h"
 
 #include "src/engine/items/wallItem.h"
+#include "src/engine/items/skittleItem.h"
+#include "src/engine/items/ballItem.h"
 #include "src/engine/items/curveItem.h"
 #include "src/engine/items/rectangleItem.h"
 #include "src/engine/items/ellipseItem.h"
@@ -63,7 +66,6 @@ using namespace robotParts;
 
 const QList<int> speedFactors = { 2, 3, 4, 5, 6, 8, 10, 15, 20 };
 const int defaultSpeedFactorIndex = 3;
-const QString twoDModelUndoStackName = "2D-model-undo-stack";
 
 TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	: QWidget(parent)
@@ -92,11 +94,15 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	connect(mScene, &TwoDModelScene::selectionChanged, this, &TwoDModelWidget::onSelectionChange);
 	connect(mScene, &TwoDModelScene::mousePressed, this, &TwoDModelWidget::refreshCursor);
 	connect(mScene, &TwoDModelScene::mouseReleased, this, &TwoDModelWidget::refreshCursor);
-	connect(mScene, &TwoDModelScene::mouseReleased, this, [this](){ saveToRepo(); });
+	connect(mScene, &TwoDModelScene::mouseReleased, this, [this](){ saveWorldModelToRepo(); });
 	connect(mScene, &TwoDModelScene::robotPressed, mUi->palette, &Palette::unselect);
 	connect(mScene, &TwoDModelScene::robotListChanged, this, &TwoDModelWidget::onRobotListChange);
 
 	connect(&mModel.worldModel(), &WorldModel::backgroundChanged, mScene, &TwoDModelScene::setBackground);
+	connect(&mModel.worldModel(), &WorldModel::itemRemoved, this, [this]() { saveWorldModelToRepo(); });
+
+	connect(&mModel.worldModel(), &WorldModel::blobsChanged, this, [this]() { saveBlobsToRepo(); });
+
 	connect(&mModel.timeline(), &Timeline::started, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();
@@ -111,7 +117,7 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 		const QPoint upCoords = mUi->speedUpButton->mapTo(this, mUi->speedUpButton->rect().bottomLeft());
 		const QPoint coords((downCoords.x() + upCoords.x() - mSpeedPopup->width()) / 2, downCoords.y() + 10);
 		mSpeedPopup->move(coords);
-		// Setting value in precents
+		// Setting value in percents
 		mSpeedPopup->setSpeed(100 / speedFactors[defaultSpeedFactorIndex] * value);
 	});
 	setRunStopButtonsVisibility();
@@ -128,6 +134,17 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 	mUi->verticalRuler->setScene(mUi->graphicsView);
 	mUi->horizontalRuler->setPixelsInCm(pixelsInCm);
 	mUi->verticalRuler->setPixelsInCm(pixelsInCm);
+
+	/// @todo: make some values editable
+	mUi->detailsTab->setParamsSettings(mUi->physicsParamsFrame);
+	mUi->wheelDiamInCm->setValue(robotWheelDiameterInCm);
+	mUi->wheelDiamInCm->setButtonSymbols(QAbstractSpinBox::NoButtons);
+	mUi->robotHeightInCm->setValue(robotHeight / pixelsInCm); // Not sure if correct
+	mUi->robotHeightInCm->setButtonSymbols(QAbstractSpinBox::NoButtons);
+	mUi->robotWidthInCm->setValue(robotWidth / pixelsInCm);
+	mUi->robotWidthInCm->setButtonSymbols(QAbstractSpinBox::NoButtons);
+	mUi->robotMassInGr->setValue(robotMass);
+	mUi->robotMassInGr->setButtonSymbols(QAbstractSpinBox::NoButtons);
 }
 
 TwoDModelWidget::~TwoDModelWidget()
@@ -163,9 +180,13 @@ void TwoDModelWidget::initWidget()
 	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, QBrush(pen.color(), Qt::NoBrush));
 	});
-	connect(mColorFieldItemPopup, &ColorItemPopup::propertyChanged, this, &TwoDModelWidget::saveToRepo);
 
-	connect(mImageItemPopup, &ImageItemPopup::somethingChanged, this, &TwoDModelWidget::saveToRepo);
+	connect(mColorFieldItemPopup, &ColorItemPopup::propertyChanged, this, &TwoDModelWidget::saveWorldModelToRepo);
+
+	connect(mImageItemPopup, &ImageItemPopup::somethingChanged, this, [=]() {
+		saveBlobsToRepo();
+		saveWorldModelToRepo();
+	});
 
 	connect(mSpeedPopup, &SpeedPopup::resetToDefault, this, [=]() {
 		mCurrentSpeed = defaultSpeedFactorIndex;
@@ -189,6 +210,7 @@ void TwoDModelWidget::initWidget()
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->verticalRuler, SLOT(update()));
+	connect(mScene, &AbstractScene::focused, this, [=]() { onFocusIn(); });
 	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->horizontalRuler, SLOT(update()));
 	connect(mScene->mainView(), SIGNAL(zoomChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene->mainView(), SIGNAL(contentsRectChanged()), mUi->horizontalRuler, SLOT(update()));
@@ -198,6 +220,8 @@ void TwoDModelWidget::initWidget()
 void TwoDModelWidget::initPalette()
 {
 	QAction * const wallTool = items::WallItem::wallTool();
+	QAction * const skittleTool = items::SkittleItem::skittleTool();
+	QAction * const ballTool = items::BallItem::ballTool();
 	QAction * const lineTool = items::LineItem::lineTool();
 	QAction * const bezierTool = items::CurveItem::curveTool();
 	QAction * const rectangleTool = items::RectangleItem::rectangleTool();
@@ -206,6 +230,8 @@ void TwoDModelWidget::initPalette()
 	QAction * const imageTool = items::ImageItem::imageTool();
 
 	mUi->palette->registerTool(wallTool);
+	mUi->palette->registerTool(skittleTool);
+	mUi->palette->registerTool(ballTool);
 	mUi->palette->registerTool(lineTool);
 	mUi->palette->registerTool(bezierTool);
 	mUi->palette->registerTool(rectangleTool);
@@ -214,6 +240,8 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(imageTool);
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
+	connect(skittleTool, &QAction::triggered, mScene, &TwoDModelScene::addSkittle);
+	connect(ballTool, &QAction::triggered, mScene, &TwoDModelScene::addBall);
 	connect(lineTool, &QAction::triggered, mScene, &TwoDModelScene::addLine);
 	connect(bezierTool, &QAction::triggered, mScene, &TwoDModelScene::addBezier);
 	connect(rectangleTool, &QAction::triggered, mScene, &TwoDModelScene::addRectangle);
@@ -223,6 +251,8 @@ void TwoDModelWidget::initPalette()
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
 
 	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
+	connect(skittleTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawSkittle); });
+	connect(ballTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawBall); });
 	connect(lineTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawLine); });
 	connect(ellipseTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawEllipse); });
 	connect(stylusTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawStylus); });
@@ -240,13 +270,12 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 
 	connect(&mActions->deleteAllAction(), &QAction::triggered, [this](){
-		QMessageBox confirmation;
-		confirmation.setWindowTitle(tr("Warning"));
-		confirmation.setText(tr("Do you really want to clear scene?"));
-		confirmation.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-		confirmation.setButtonText(QMessageBox::Yes, tr("Yes"));
-		confirmation.setButtonText(QMessageBox::Cancel, tr("Cancel"));
-		if (QMessageBox::Yes == confirmation.exec()) {
+		if (QMessageBox::Yes
+				== utils::QRealMessageBox::question(nullptr
+						, tr("Warning")
+						, tr("Do you really want to clear scene?")
+						, QMessageBox::Yes | QMessageBox::Cancel)
+		) {
 			mScene->clearScene(false, Reason::userAction);
 		}
 	});
@@ -323,6 +352,14 @@ void TwoDModelWidget::returnToStartMarker()
 	for (RobotModel * const model : mModel.robotModels()) {
 		mScene->robot(*model)->returnToStartPosition();
 	}
+
+	for (items::SkittleItem *skittle : mModel.worldModel().skittles()) {
+		skittle->returnToStartPosition();
+	}
+
+	for (items::BallItem *ball : mModel.worldModel().balls()) {
+		ball->returnToStartPosition();
+	}
 }
 
 void TwoDModelWidget::trainingModeChanged(bool enabled)
@@ -336,11 +373,7 @@ void TwoDModelWidget::trainingModeChanged(bool enabled)
 void TwoDModelWidget::keyPressEvent(QKeyEvent *event)
 {
 	QWidget::keyPressEvent(event);
-	if ((event->key() == Qt::Key_Equal || event->key() == Qt::Key_Plus) && event->modifiers() == Qt::ControlModifier) {
-		mScene->mainView()->zoomIn();
-	} else if (event->matches(QKeySequence::ZoomOut)) {
-		mScene->mainView()->zoomOut();
-	} else if (event->key() == Qt::Key_F5) {
+	if (event->key() == Qt::Key_F5) {
 		mUi->runButton->animateClick();
 	} else if (event->key() == Qt::Key_Escape) {
 		mUi->stopButton->animateClick();
@@ -407,7 +440,7 @@ void TwoDModelWidget::saveWorldModel()
 		saveFileName += ".xml";
 	}
 
-	const QDomDocument save = generateXml();
+	const QDomDocument save = generateWordModelWithBlobsXml();
 
 	utils::OutFile saveFile(saveFileName);
 	saveFile() << "<?xml version='1.0' encoding='utf-8'?>\n";
@@ -432,20 +465,32 @@ void TwoDModelWidget::loadWorldModel()
 				.arg(QString::number(errorLine), QString::number(errorColumn), errorMessage));
 	}
 
-	loadXml(save);
+	QDomNodeList blobsList = save.elementsByTagName("blobs");
+	if (blobsList.length()) {
+		QDomDocument blobs;
+		QDomElement root = blobs.createElement("root");
+		root.appendChild(blobsList.at(0));
+		blobs.appendChild(root);
+		loadXmls(save, blobs);
+	} else {
+		loadXmls(save, QDomDocument());
+	}
 }
 
 void TwoDModelWidget::setBackground()
 {
 	// Loads world and robot models simultaneously.
-	const QString loadFileName = QRealFileDialog::getOpenFileName("2DSelectBackground", this
-			, tr("Select background image"), "./fields", tr("Graphics (*.*)"));
+	const QString loadFileName = QRealFileDialog::getOpenFileName("2DSelectBackground"
+			, this
+			, tr("Select background image")
+			, qReal::PlatformInfo::invariantSettingsPath("pathToImages") + "/../fields"
+			, tr("Graphics (*.*)"));
 	if (loadFileName.isEmpty()) {
 		return;
 	}
 
-	const Image image(loadFileName, false);
-	const QSize size = image.preferedSize();
+	Image *image = new Image(loadFileName, false);
+	const QSize size = image->preferedSize();
 	mModel.worldModel().setBackground(image, QRect(QPoint(-size.width()/2, -size.height()/2), size));
 }
 
@@ -559,31 +604,59 @@ void TwoDModelWidget::closeEvent(QCloseEvent *event)
 	emit widgetClosed();
 }
 
+void TwoDModelWidget::focusInEvent(QFocusEvent *event)
+{
+	QWidget::focusInEvent(event);
+	onFocusIn();
+}
+
 SensorItem *TwoDModelWidget::sensorItem(const kitBase::robotModel::PortInfo &port)
 {
 	return mScene->robot(*mModel.robotModels()[0])->sensors().value(port);
 }
 
-void TwoDModelWidget::saveToRepo()
+void TwoDModelWidget::saveWorldModelToRepo()
 {
-	emit mModel.modelChanged(generateXml());
+	emit mModel.modelChanged(generateWordModelXml());
 }
 
-QDomDocument TwoDModelWidget::generateXml() const
+void TwoDModelWidget::saveBlobsToRepo()
+{
+	emit mModel.blobsChanged(generateBlobsXml());
+}
+
+QDomDocument TwoDModelWidget::generateWordModelXml() const
 {
 	return mModel.serialize();
 }
 
-void TwoDModelWidget::loadXml(const QDomDocument &worldModel)
+QDomDocument TwoDModelWidget::generateBlobsXml() const
+{
+	QDomDocument save;
+	QDomElement root = save.createElement("root");
+	mModel.worldModel().serializeBlobs(root);
+	save.appendChild(root);
+	return save;
+}
+
+QDomDocument TwoDModelWidget::generateWordModelWithBlobsXml() const
+{
+	QDomDocument wordModelXml = generateWordModelXml();
+	QDomDocument blobsXml = generateBlobsXml();
+	wordModelXml.firstChild().appendChild(blobsXml.firstChild().firstChild());
+	return wordModelXml;
+}
+
+void TwoDModelWidget::loadXmls(const QDomDocument &worldModel, const QDomDocument &blobs)
 {
 	if (mController) {
 		// Clearing 2D model undo stack...
-		mController->moduleClosed(twoDModelUndoStackName);
-		mController->moduleOpened(twoDModelUndoStackName);
+		mController->moduleClosed(editorId());
+		mController->moduleOpened(editorId());
 	}
 
 	mScene->clearScene(true, Reason::loading);
-	mModel.deserialize(worldModel);
+	mModel.deserialize(worldModel, blobs);
 	updateWheelComboBoxes();
 	mUi->trainingModeButton->setVisible(mModel.hasConstraints());
 }
@@ -606,6 +679,7 @@ void TwoDModelWidget::setController(ControllerInterface &controller)
 
 	connect(mRobotItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
 	connect(mColorFieldItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
+	connect(mImageItemPopup, &graphicsUtils::ItemPopup::propertyChanged, this, setItemsProperty);
 }
 
 void TwoDModelWidget::setInteractivityFlags(ReadOnlyFlags flags)
@@ -658,6 +732,33 @@ void TwoDModelWidget::setCompactMode(bool enabled)
 	mCompactMode = enabled;
 	setRunStopButtonsVisibility();
 	mActions->setSaveLoadActionsShortcutsEnabled(!mCompactMode);
+}
+
+QString TwoDModelWidget::editorId() const
+{
+	return "TrikStudio.2DModel.Editor";
+}
+
+bool TwoDModelWidget::supportsZooming() const
+{
+	return true;
+}
+
+void TwoDModelWidget::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
+{
+	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find);
+	addActions({ mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction });
+}
+
+void TwoDModelWidget::zoomIn()
+{
+	mScene->mainView()->zoomIn();
+}
+
+void TwoDModelWidget::zoomOut()
+{
+	mScene->mainView()->zoomOut();
 }
 
 void TwoDModelWidget::enableRobotFollowing(bool on)
@@ -715,6 +816,8 @@ QGraphicsView::DragMode TwoDModelWidget::cursorTypeToDragType(CursorType type) c
 	case drawLine:
 	case drawStylus:
 	case drawWall:
+	case drawSkittle:
+	case drawBall:
 		return QGraphicsView::NoDrag;
 	case hand:
 		return QGraphicsView::ScrollHandDrag;
@@ -738,6 +841,10 @@ QCursor TwoDModelWidget::cursorTypeToCursor(CursorType type) const
 		return QCursor(QPixmap(":/icons/2d_drawLineCursor.png"), 0, 0);
 	case drawWall:
 		return QCursor(QPixmap(":/icons/2d_drawWallCursor.png"), 0, 0);
+	case drawSkittle:
+		return QCursor(QPixmap(":/icons/2d_drawCanCursor.png"), 0, 0);
+	case drawBall:
+		return QCursor(QPixmap(":/icons/2d_drawBallCursor.png"), 0, 0);
 	case drawEllipse:
 		return QCursor(QPixmap(":/icons/2d_drawEllipseCursor.png"), 0, 0);
 	case drawStylus:
@@ -779,7 +886,7 @@ void TwoDModelWidget::syncCursorButtons()
 	}
 }
 
-void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
+void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotId
 		, const PortInfo &port, const DeviceInfo &device, Reason reason)
 {
 	Q_UNUSED(port)
@@ -787,7 +894,7 @@ void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotModel
 	Q_UNUSED(reason)
 
 	/// @todo Convert configuration between models or something?
-	if (mSelectedRobotItem && robotModel == mSelectedRobotItem->robotModel().info().robotId()) {
+	if (mSelectedRobotItem && robotId == mSelectedRobotItem->robotModel().info().robotId()) {
 		updateWheelComboBoxes();
 	}
 }
@@ -894,7 +1001,7 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 		auto checkAndSaveToRepo = [this](const PortInfo &port, bool isLoaded) {
 			Q_UNUSED(port);
 			if (!isLoaded) {
-				saveToRepo();
+				saveWorldModelToRepo();
 			}
 		};
 

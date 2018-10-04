@@ -22,7 +22,7 @@ namespace items {
 class StartPosition : public graphicsUtils::RotateItem
 {
 public:
-	explicit StartPosition(QGraphicsItem *parent = 0);
+	explicit StartPosition(const QSizeF &robotSize, QGraphicsItem *parent = 0);
 
 	QRectF boundingRect() const override;
 	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
@@ -36,6 +36,8 @@ private:
 	void changeDragState(qreal x, qreal y) override;
 
 	void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
+
+	const QSizeF mRobotSize;
 };
 
 }

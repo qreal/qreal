@@ -20,7 +20,7 @@
 #include <qrgui/models/logicalModelAssistApi.h>
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/projectManagementInterface.h>
 #include <qrrepo/repoControlInterface.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 #include "src/ui/exerciseExportDialog.h"
 
@@ -39,11 +39,11 @@ ExerciseExportManager::~ExerciseExportManager()
 {
 }
 
-void ExerciseExportManager::save()
+bool ExerciseExportManager::save()
 {
 	ui::ExerciseExportDialog dialog;
 	if (dialog.exec() == QDialog::Rejected) {
-		return;
+		return false;
 	}
 
 	ReadOnlyFlags flags = dialog.readOnlyFlags();
@@ -67,14 +67,12 @@ void ExerciseExportManager::save()
 			, QObject::tr("QReal Save File(*.qrs)"));
 
 	if (fileName.isEmpty()) {
-		return;
+		return false;
 	}
 
 	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
 		fileName += ".qrs";
 	}
 
-	mRepoControlApi.saveTo(fileName);
-
-	mProjectManager.open(fileName);
+	return mRepoControlApi.saveTo(fileName) && mProjectManager.open(fileName);
 }

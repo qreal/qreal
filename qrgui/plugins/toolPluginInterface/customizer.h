@@ -36,6 +36,12 @@ class Customizer
 public:
 	virtual ~Customizer() {}
 
+	/// Tells if we can change subprogram properties.
+	virtual bool allowSubprogramPropertiesChanging() const
+	{
+		return true;
+	}
+
 	/// Tells if we should show the button of opening the interpreted diagram or not
 	virtual bool showInterpeterButton() const
 	{

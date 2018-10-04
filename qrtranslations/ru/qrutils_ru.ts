@@ -8,6 +8,10 @@
         <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
+        <source>Block has disappeared!</source>
+        <translation type="vanished">Блок исчез!</translation>
+    </message>
+    <message>
         <source>Too many outgoing links</source>
         <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
@@ -88,9 +92,85 @@
         <translation>Целичисленное деление на ноль</translation>
     </message>
     <message>
-        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="502"/>
+        <location filename="../../qrutils/graphicsUtils/abstractItem.cpp" line="525"/>
         <source>Remove</source>
         <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Ok</source>
+        <translation type="vanished">Да</translation>
+    </message>
+    <message>
+        <source>Open</source>
+        <translation type="vanished">Открыть</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="vanished">Сохранить</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="vanished">Отмена</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="vanished">Закрыть</translation>
+    </message>
+    <message>
+        <source>Discard</source>
+        <translation type="vanished">Отменить</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="vanished">Применить</translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="vanished">Сбросить</translation>
+    </message>
+    <message>
+        <source>Restore Defaults</source>
+        <translation type="vanished">Восстановить по умолчанию</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="vanished">Помощь</translation>
+    </message>
+    <message>
+        <source>Save All</source>
+        <translation type="vanished">Сохранить все</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="vanished">Да</translation>
+    </message>
+    <message>
+        <source>Yes To All</source>
+        <translation type="vanished">Да для всех</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="vanished">Нет</translation>
+    </message>
+    <message>
+        <source>No To All</source>
+        <translation type="vanished">Нет для всех</translation>
+    </message>
+    <message>
+        <source>Abort</source>
+        <translation type="vanished">Остановить</translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation type="vanished">Повторить</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="vanished">Игнорировать</translation>
+    </message>
+    <message>
+        <source>NoButton</source>
+        <translation type="vanished">Не кнопка</translation>
     </message>
 </context>
 <context>
@@ -127,28 +207,28 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="54"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="60"/>
         <source>Control flow break detected, stopping</source>
         <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="66"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="72"/>
         <source>Too many outgoing links</source>
         <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="71"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="77"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
         <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="78"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="84"/>
         <source>Outgoing link is not connected</source>
         <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="59"/>
-        <location filename="../../qrutils/interpreter/block.cpp" line="144"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="65"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="150"/>
         <source>Block has disappeared!</source>
         <translation>Блок исчез!</translation>
     </message>
@@ -183,17 +263,17 @@
 <context>
     <name>qReal::interpretation::Thread</name>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="115"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="117"/>
         <source>No entry point found, please add Initial Node to a diagram</source>
         <translation>Не найдено начало программы. Пожалуйста, добавьте блок &quot;Начало&quot;</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="120"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="122"/>
         <source>Stack overflow</source>
         <translation>Переполнение стека</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/thread.cpp" line="174"/>
+        <location filename="../../qrutils/interpreter/thread.cpp" line="181"/>
         <source>Block has disappeared!</source>
         <translation>Блок исчез!</translation>
     </message>
@@ -331,7 +411,7 @@
 <context>
     <name>qReal::interpretation::blocks::SubprogramBlock</name>
     <message>
-        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="33"/>
+        <location filename="../../qrutils/interpreter/blocks/subprogramBlock.cpp" line="35"/>
         <source>Please enter valid c-style name for subprogram &quot;</source>
         <translation>Укажите корректный идентификатор подпрограммы (в c-стиле)</translation>
     </message>
@@ -378,6 +458,32 @@
         <location filename="../../qrutils/interpreter/blocks/unsupportedBlock.cpp" line="21"/>
         <source>Block of a type which is unsupported by an interpreter</source>
         <translation>Блок типа, не поддерживаемого в интерпретаторе</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::ConsoleDock</name>
+    <message>
+        <location filename="../../qrutils/widgets/consoleDock.cpp" line="36"/>
+        <source>Reset shell</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::ImagePicker</name>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="35"/>
+        <source>Browse...</source>
+        <translation>Обзор...</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="68"/>
+        <source>Select image</source>
+        <translation>Выберите изображение</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/imagePicker.cpp" line="70"/>
+        <source>Images (*.png *.svg *.jpg *.gif *.bmp);;All files (*.*)</source>
+        <translation>Картинки (*.png *.svg *.jpg *.gif *.bmp);;Все файлы (*.*)</translation>
     </message>
 </context>
 <context>
@@ -429,6 +535,108 @@
         <location filename="../../qrutils/metamodelGeneratorSupport.cpp" line="121"/>
         <source>Cannot build new editor</source>
         <translation>Не могу скомпилировать новый редактор. Проверьте имена элементов</translation>
+    </message>
+</context>
+<context>
+    <name>utils::QRealMessageBox</name>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="30"/>
+        <source>Ok</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="31"/>
+        <source>Open</source>
+        <translation>Открыть</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="32"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="33"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="34"/>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="35"/>
+        <source>Discard</source>
+        <translation>Отменить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="36"/>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="37"/>
+        <source>Reset</source>
+        <translation>Сбросить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="38"/>
+        <source>Help</source>
+        <translation>Помощь</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="39"/>
+        <source>Save All</source>
+        <translation>Сохранить все</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="40"/>
+        <source>Yes</source>
+        <translation>Да</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="41"/>
+        <source>Yes To All</source>
+        <translation>Да для всех</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="42"/>
+        <source>No</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="43"/>
+        <source>No To All</source>
+        <translation>Нет для всех</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="44"/>
+        <source>Abort</source>
+        <translation>Остановить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="45"/>
+        <source>Retry</source>
+        <translation>Повторить</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="46"/>
+        <source>Ignore</source>
+        <translation>Игнорировать</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="47"/>
+        <source>NoButton</source>
+        <translation>Не кнопка</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/qRealMessageBox.cpp" line="49"/>
+        <source>Restore Defaults</source>
+        <translation>Восстановить по умолчанию</translation>
+    </message>
+    <message>
+        <source>yes</source>
+        <translation type="vanished">Да</translation>
     </message>
 </context>
 <context>

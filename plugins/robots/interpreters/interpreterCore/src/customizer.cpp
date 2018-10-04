@@ -39,7 +39,7 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.1.4";
+	return "3.2.0";
 }
 
 QString Customizer::aboutText() const
@@ -63,6 +63,11 @@ QList<QPair<QString, qReal::ActionVisibility> > Customizer::actionsVisibility() 
 bool Customizer::showInterpeterButton() const
 {
 	return false;
+}
+
+bool Customizer::allowSubprogramPropertiesChanging() const
+{
+	return true;
 }
 
 QString Customizer::userPaletteTitle() const

@@ -42,7 +42,7 @@ const qrRepo::LogicalRepoApi &LogicalModelAssistApi::logicalRepoApi() const
 	return mLogicalModel.api();
 }
 
-qrRepo::LogicalRepoApi &LogicalModelAssistApi::mutableLogicalRepoApi()
+qrRepo::LogicalRepoApi &LogicalModelAssistApi::mutableLogicalRepoApi() const
 {
 	return mLogicalModel.mutableApi();
 }
@@ -101,10 +101,38 @@ void LogicalModelAssistApi::removeExplosion(const Id &source, const Id &destinat
 
 void LogicalModelAssistApi::setPropertyByRoleName(const Id &elem, const QVariant &newValue, const QString &roleName)
 {
-	const int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
+	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole) {
-		return;
+		const QString dynamicPropertiesKey = "dynamicProperties";
+		const QString shapeKey = "shape";
+		if (roleName == dynamicPropertiesKey) {
+			/// @todo: hack
+			mutableLogicalRepoApi().setProperty(elem, roleName, newValue);
+		}
+
+		const QString dynamicProperties = logicalRepoApi().stringProperty(elem, dynamicPropertiesKey);
+		if (dynamicProperties.isEmpty()) {
+			return;
+		}
+
+		const int propertiesCount = editorManagerInterface().propertyNames(elem.type()).count();
+		int index = 0;
+		QDomDocument dynamicPropertiesXml;
+		dynamicPropertiesXml.setContent(dynamicProperties);
+		for (QDomElement element = dynamicPropertiesXml.firstChildElement("properties").firstChildElement("property")
+				; !element.isNull()
+				; element = element.nextSiblingElement("property"))
+		{
+			if (element.attribute("name") == roleName) {
+				break;
+			}
+
+			++index;
+		}
+
+		roleIndex = roles::customPropertiesBeginRole + propertiesCount + index;
 	}
+
 	mModelsAssistApi.setProperty(elem, newValue, roleIndex);
 }
 
@@ -112,7 +140,7 @@ QVariant LogicalModelAssistApi::propertyByRoleName(const Id &elem, const QString
 {
 	int roleIndex = mModelsAssistApi.roleIndexByName(elem, roleName);
 	if (roleIndex < roles::customPropertiesBeginRole)
-		return "";
+		return QVariant();
 	return mModelsAssistApi.property(elem, roleIndex);
 }
 

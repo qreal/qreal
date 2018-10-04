@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2007-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 
 #include <qrkernel/settingsManager.h>
 #include <qrutils/mathUtils/geometry.h>
+#include <twoDModel/engine/model/constants.h>
 
 using namespace twoDModel::items;
 using namespace qReal;
@@ -27,14 +28,14 @@ using namespace graphicsUtils;
 const int wallWidth = 10;
 
 WallItem::WallItem(const QPointF &begin, const QPointF &end)
-	: SolidItem()
+	: AbstractItem()
 	, mImage(":/icons/2d_wall.png")
 {
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());
 	setY2(end.y());
-	setFlags(ItemIsSelectable | ItemIsMovable);
+	setFlags(ItemIsSelectable | ItemIsMovable | ItemSendsScenePositionChanges);
 	setPrivateData();
 	setAcceptDrops(true);
 }
@@ -56,7 +57,6 @@ WallItem *WallItem::clone() const
 
 	cloned->mOldX1 = mOldX1;
 	cloned->mOldY1 = mOldY1;
-	cloned->mDragged = mDragged;
 	cloned->mOverlappedWithRobot = mOverlappedWithRobot;
 	cloned->mPath = mPath;
 	return cloned;
@@ -81,6 +81,38 @@ void WallItem::setPrivateData()
 	brush.setStyle(Qt::SolidPattern);
 	brush.setTextureImage(mImage);
 	setBrush(brush);
+}
+
+void WallItem::handleReposition(const QPointF &pos)
+{
+	if (((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
+		const QPointF deltaPos = pos - mOldPosition;
+		if (mathUtils::Geometry::eq(deltaPos, QPointF(0,0), twoDModel::lowPrecision)) {
+			return;
+		}
+
+		const qreal deltaX = (x1() - x2());
+		const qreal deltaY = (y1() - y2());
+		setX1(mOldX1 + deltaPos.x());
+		setX2(mOldX2 + deltaPos.x());
+		setY1(mOldY1 + deltaPos.y());
+		setY2(mOldY2 + deltaPos.y());
+
+		if (SettingsManager::value("2dShowGrid").toBool()) {
+			const int indexGrid = SettingsManager::value("2dGridCellSize").toInt();
+			reshapeBeginWithGrid(indexGrid);
+			mCellNumbX1 = static_cast<int>(x1() / indexGrid);
+			mCellNumbY1 = static_cast<int>(y1() / indexGrid);
+			mCellNumbX2 = static_cast<int>(x2() / indexGrid);
+			mCellNumbY2 = static_cast<int>(y2() / indexGrid);
+		}
+
+		setDraggedEnd(deltaX, deltaY);
+		setPos(mOldPosition);
+
+		const QRectF oldPos = QRectF(QPointF(mOldX1, mOldY1), QPointF(mOldX2, mOldY2));
+		emit wallDragged(this, realShape(), oldPos);
+	}
 }
 
 QPointF WallItem::begin() const
@@ -122,85 +154,34 @@ void WallItem::drawExtractionForItem(QPainter *painter)
 	mLineImpl.drawFieldForResizeItem(painter, resizeDrift, x1(), y1(), x2(), y2());
 }
 
-void WallItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-	AbstractItem::mousePressEvent(event);
-
-	if (!editable()) {
-		return;
-	}
-
-	mDragged = (flags() & ItemIsMovable) || mOverlappedWithRobot;
-	mOldX1 = event->scenePos().x() - x1();
-	mOldY1 = event->scenePos().y() - y1();
-}
-
-void WallItem::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
-{
-	if (!editable()) {
-		return;
-	}
-
-	// When selecting a robot item on the scene than display widget may appear.
-	// After that scene would be shrinked and mouse move event would be generated (but actually
-	// mouse cursor is not moved). Because of that selected robot item moves which should not be because you
-	// only select robot item and not move it. It also happens when you unselect robot item by selecting another
-	// item (not only robot item). In this case new selected item moves.
-	if (event->lastScreenPos() == event->screenPos()) {
-		return;
-	}
-
-	const QRectF oldPos = QRectF(QPointF(x1(), y1()), QPointF(x2(), y2()));
-
-	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
-		const QPointF pos = event->scenePos();
-		const qreal deltaX = (x1() - x2());
-		const qreal deltaY = (y1() - y2());
-		setX1(pos.x() - mOldX1);
-		setY1(pos.y() - mOldY1);
-
-		if (SettingsManager::value("2dShowGrid").toBool()) {
-			const int indexGrid = SettingsManager::value("2dGridCellSize").toInt();
-			reshapeBeginWithGrid(indexGrid);
-			mCellNumbX1 = x1() / indexGrid;
-			mCellNumbY1 = y1() / indexGrid;
-			mCellNumbX2 = x2() / indexGrid;
-			mCellNumbY2 = y2() / indexGrid;
-		}
-
-		setDraggedEnd(deltaX, deltaY);
-	}  else if (mDragged) {
-		AbstractItem::mouseMoveEvent(event);
-	}
-
-	// Items under cursor cannot be dragged when adding new item,
-	// but it mustn`t confuse the case when item is unmovable
-	// because overapped with robot
-	if (mDragged && ((flags() & ItemIsMovable) || mOverlappedWithRobot)) {
-		emit wallDragged(this, realShape(), oldPos);
-	}
-	event->accept();
-}
-
-bool WallItem::isDragged() const
-{
-	return mDragged;
-}
-
 qreal WallItem::width() const
 {
 	return pen().width();
 }
 
-void WallItem::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
+QVariant WallItem::itemChange(QGraphicsItem::GraphicsItemChange change, const QVariant &value)
 {
-	AbstractItem::mouseReleaseEvent(event);
-	mDragged = false;
+	if (change == QGraphicsItem::ItemScenePositionHasChanged) {
+		emit positionChanged(value.toPointF());
+		handleReposition(value.toPointF());
+		return pos();
+	}
+
+	if (change == QGraphicsItem::ItemSelectedHasChanged) {
+		mOldX1 = x1();
+		mOldY1 = y1();
+		mOldX2 = x2();
+		mOldY2 = y2();
+		mOldPosition = pos();
+		return value;
+	}
+
+	return AbstractItem::itemChange(change, value);
 }
 
 QDomElement WallItem::serialize(QDomElement &parent) const
 {
-	QDomElement wallNode = SolidItem::serialize(parent);
+	QDomElement wallNode = AbstractItem::serialize(parent);
 	wallNode.setTagName("wall");
 	mLineImpl.serialize(wallNode, x1() + scenePos().x(), y1() + scenePos().y()
 			, x2() + scenePos().x(), y2() + scenePos().y());
@@ -214,6 +195,7 @@ void WallItem::deserialize(const QDomElement &element)
 	const QPointF begin = points.first;
 	const QPointF end = points.second;
 
+	setPos(QPointF());
 	setX1(begin.x());
 	setY1(begin.y());
 	setX2(end.x());
@@ -258,7 +240,7 @@ void WallItem::resizeItem(QGraphicsSceneMouseEvent *event)
 			resizeWithGrid(event, SettingsManager::value("2dGridCellSize").toInt());
 		} else {
 			if (dragState() == TopLeft || dragState() == BottomRight) {
-				SolidItem::resizeItem(event);
+				AbstractItem::resizeItem(event);
 			} else {
 				setFlag(QGraphicsItem::ItemIsMovable, true);
 			}
@@ -358,6 +340,59 @@ void WallItem::alignTheWall(int indexGrid)
 	countCellNumbCoordinates(indexGrid);
 	setBeginCoordinatesWithGrid(indexGrid);
 	setEndCoordinatesWithGrid(indexGrid);
+}
+
+QPolygonF WallItem::collidingPolygon() const
+{
+	const QPolygonF polygon = mPath.toFillPolygon();
+	// here we have "one point" wall
+	if (polygon.isEmpty()) {
+		auto offset = QPointF(wallWidth, wallWidth);
+		return QRectF(begin() - offset, begin() + offset);
+	}
+
+	QRectF abcdBoundingRect = polygon.boundingRect();
+	QLineF ab(abcdBoundingRect.topLeft(), abcdBoundingRect.topRight());
+	QLineF bc(abcdBoundingRect.topRight(), abcdBoundingRect.bottomRight());
+	QLineF dc(abcdBoundingRect.bottomLeft(), abcdBoundingRect.bottomRight());
+	QLineF ad(abcdBoundingRect.topLeft(), abcdBoundingRect.bottomLeft());
+
+	QList<QPointF> abIntersection = mathUtils::Geometry::intersection(ab, mPath);
+	QList<QPointF> bcIntersection = mathUtils::Geometry::intersection(bc, mPath);
+	QList<QPointF> dcIntersection = mathUtils::Geometry::intersection(dc, mPath);
+	QList<QPointF> adIntersection = mathUtils::Geometry::intersection(ad, mPath);
+
+	Q_ASSERT(abIntersection.length() == 2);
+	Q_ASSERT(bcIntersection.length() == 2);
+	Q_ASSERT(dcIntersection.length() == 2);
+	Q_ASSERT(adIntersection.length() == 2);
+
+	// it is rotated rect
+	if (abIntersection.first() == abIntersection.last()
+			|| bcIntersection.first() == bcIntersection.last()
+			|| dcIntersection.first() == dcIntersection.last()
+			|| adIntersection.first() == adIntersection.last()) {
+		return QPolygonF() << abIntersection.first() << bcIntersection.first()
+				<< dcIntersection.first() << adIntersection.first();
+	}
+
+	// else we have the same polygon as abcdBoundingRect
+	return abcdBoundingRect;
+}
+
+qreal WallItem::mass() const
+{
+	return 0.0;
+}
+
+qreal WallItem::friction() const
+{
+	return 1.0;
+}
+
+SolidItem::BodyType WallItem::bodyType() const
+{
+	return BodyType::STATIC;
 }
 
 void WallItem::countCellNumbCoordinates(int indexGrid)

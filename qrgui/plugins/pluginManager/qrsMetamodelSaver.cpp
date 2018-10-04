@@ -51,8 +51,7 @@ bool QrsMetamodelSaver::save(const QList<Metamodel *> &metamodels, const QString
 		saveMetamodel(repo, *metamodel);
 	}
 
-	repo.saveTo(path);
-	return true;
+	return repo.saveTo(path);
 }
 
 void QrsMetamodelSaver::saveMetamodel(qrRepo::RepoApi &repo, const Metamodel &metamodel)

@@ -24,7 +24,7 @@
 
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
-#include <qrutils/qRealFileDialog.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 #include <qrutils/widgets/colorListEditor.h>
 
 #include "mainWindow/shapeEdit/xmlLoader.h"
@@ -395,6 +395,41 @@ void ShapeEdit::load(const QString &text)
 
 	XmlLoader loader(mScene);
 	loader.readString(text);
+}
+
+QString ShapeEdit::editorId() const
+{
+	return "qReal.ShapeEditor";
+}
+
+bool ShapeEdit::supportsZooming() const
+{
+	return true;
+}
+
+bool ShapeEdit::supportsCopying() const
+{
+	return false;
+}
+
+bool ShapeEdit::supportsPasting() const
+{
+	return false;
+}
+
+bool ShapeEdit::supportsCutting() const
+{
+	return false;
+}
+
+void ShapeEdit::zoomIn()
+{
+	mUi->graphicsView->zoomIn();
+}
+
+void ShapeEdit::zoomOut()
+{
+	mUi->graphicsView->zoomOut();
 }
 
 void ShapeEdit::addImage(bool checked)

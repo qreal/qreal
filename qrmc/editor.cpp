@@ -117,11 +117,7 @@ QSet<EnumType*> Editor::getAllEnumTypes() const
 
 Diagram* Editor::findDiagram(const QString &name) const
 {
-	if (mDiagrams.contains(name)) {
-		return mDiagrams[name];
-	}
-
-	return nullptr;
+	return mDiagrams.value(name, nullptr);
 }
 
 QStringList Editor::getAllPortNames() const

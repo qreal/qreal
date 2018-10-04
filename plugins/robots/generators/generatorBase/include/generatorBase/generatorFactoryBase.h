@@ -56,7 +56,7 @@ public:
 
 	virtual ~GeneratorFactoryBase();
 
-	void initialize();
+	virtual void initialize();
 
 	/// Sets an id of the root diagram for obtaining sensors configuration.
 	void setMainDiagramId(const qReal::Id &diagramId);
@@ -112,15 +112,15 @@ public:
 
 	/// Returns a pointer to a code generator for switch first enumeration block.
 	virtual simple::AbstractSimpleGenerator *switchHeadGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer, const QStringList &values);
+			, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs);
 
 	/// Returns a pointer to a code generator for switch enumeration block somewhere in the middle.
 	virtual simple::AbstractSimpleGenerator *switchMiddleGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer, const QStringList &values);
+			, GeneratorCustomizer &customizer, const QStringList &values, bool generateIfs);
 
 	/// Returns a pointer to a code generator for switch enumeration block in the end (default case).
 	virtual simple::AbstractSimpleGenerator *switchDefaultGenerator(const qReal::Id &id
-			, GeneratorCustomizer &customizer);
+			, GeneratorCustomizer &customizer, bool generateIfs);
 
 	/// Returns a pointer to a threads instantiation generator
 	virtual simple::AbstractSimpleGenerator *forkCallGenerator(const qReal::Id &id
@@ -153,9 +153,6 @@ public:
 	/// Returns a pointer to a code generator for blocks with final-blocks semantics
 	virtual simple::AbstractSimpleGenerator *finalNodeGenerator(const qReal::Id &id
 			, GeneratorCustomizer &customizer, bool fromMainGenerator);
-
-	/// Returns a pointer to a code generator that replaces all @@RANDOM_ID@@ occurences to random c++ identifier string
-	virtual simple::AbstractSimpleGenerator *randomIdGenerator(simple::AbstractSimpleGenerator *other);
 
 	/// Implementation must return a list of paths to folders containing templates for
 	/// customizing concrete generator. List must be sorted by folder priority --- generator looks for template
@@ -193,6 +190,10 @@ public:
 	/// without taking ownership on it
 	virtual simple::Binding::ConverterInterface *nameNormalizerConverter() const;
 
+	/// Produces converter for transformation a string of dynamic properties into appropriate arguments list
+	/// without taking ownership on it
+	virtual simple::Binding::ConverterInterface *dynamicPropertiesConverter(const qReal::Id &block) const;
+
 	/// Produces converter for transformation function block code into
 	/// generator-dependent code without taking ownership on it
 	virtual simple::Binding::ConverterInterface *functionBlockConverter(const qReal::Id &block
@@ -217,7 +218,8 @@ public:
 
 	/// Returns a pointer to a converter that makes one composite switch enumeration block from a set
 	/// of their values. Accepts an expression that will be compared to @arg values.
-	virtual simple::Binding::ConverterInterface *switchConditionsMerger(const QStringList &values) const;
+	virtual simple::Binding::ConverterInterface *switchConditionsMerger(const QStringList &values
+			, bool generateIf) const;
 
 	// ------------------------- Init-terminate code ---------------------------
 

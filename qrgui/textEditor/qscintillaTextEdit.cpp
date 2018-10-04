@@ -17,6 +17,8 @@
 #include <QtWidgets/QShortcut>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
+#include <brandManager/brandManager.h>
+#include <qrutils/widgets/searchLinePanel.h>
 
 using namespace qReal;
 using namespace text;
@@ -44,6 +46,12 @@ LanguageInfo QScintillaTextEdit::currentLanguage() const
 	return mLanguage;
 }
 
+void QScintillaTextEdit::setCurrentFont(const QFont &font) {
+	mFont = font;
+	QFontMetrics metrics(mFont);
+	mAverageCharWidth = metrics.averageCharWidth();
+}
+
 void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 {
 	setLexer(0);
@@ -51,9 +59,12 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 	mLanguage = language;
 	setIndentationsUseTabs(mLanguage.tabIndentation);
 	setTabWidth(mLanguage.tabSize);
+	setFont(mFont);
 	setLexer(mLanguage.lexer);
 
 	if (mLanguage.lexer) {
+		mFont.setPointSize(mLanguage.lexer->defaultFont().pointSize());
+		mLanguage.lexer->setFont(mFont);
 		QsciAPIs * const api = new QsciAPIs(mLanguage.lexer);
 		for (const QString &additionalToken : mLanguage.additionalAutocompletionTokens) {
 			api->add(additionalToken);
@@ -63,16 +74,101 @@ void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 	}
 }
 
+QString QScintillaTextEdit::editorId() const
+{
+	return "qReal.TextEditor." + QString::number(mIndex.internalId());
+}
+
+bool QScintillaTextEdit::supportsZooming() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsCopying() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsPasting() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsCutting() const
+{
+	return true;
+}
+
+bool QScintillaTextEdit::supportsSearching() const
+{
+	return true;
+}
+
+void QScintillaTextEdit::zoomIn()
+{
+	QsciScintilla::zoomIn();
+}
+
+void QScintillaTextEdit::zoomOut()
+{
+	QsciScintilla::zoomOut();
+}
+
+void QScintillaTextEdit::copy()
+{
+	QsciScintilla::copy();
+}
+
+void QScintillaTextEdit::paste()
+{
+	QsciScintilla::paste();
+}
+
+void QScintillaTextEdit::cut()
+{
+	QsciScintilla::cut();
+}
+
+void QScintillaTextEdit::find()
+{
+	mSearchLinePanel->attachTo(this);
+}
+
 void QScintillaTextEdit::init()
 {
 	// For some reason c++11-style connections do not work here!
 	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
 	setDefaultSettings();
 	setCurrentLanguage(Languages::textFileInfo("*.txt"));
+	mSearchLinePanel = new ui::SearchLinePanel(this);
+	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this](){
+		findNext();
+	});
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::textChanged, [this](const QRegExp &textToSearch){
+		if (textToSearch.isEmpty()) {
+			return;
+		}
+
+		bool cs = textToSearch.caseSensitivity() == Qt::CaseSensitive;
+		if (findFirst(textToSearch.pattern(), true, cs, true, true, true, 0, 0)) {
+			mSearchLinePanel->setBackgroundColor("white");
+		} else {
+			mSearchLinePanel->setBackgroundColor("red");
+		}
+	});
 }
 
 void QScintillaTextEdit::setDefaultSettings()
 {
+	// Default font
+	int id = QFontDatabase::addApplicationFont(BrandManager::fonts()->monospaceFont());
+	QString family = QFontDatabase::applicationFontFamilies(id).at(0);
+	mFont = QFont(family, 9, 50);
+	QFontMetrics metrics(mFont);
+	mAverageCharWidth = metrics.averageCharWidth();
+	setFont(mFont);
+
 	// Current line highlighting
 	setCaretLineVisible(true);
 	setCaretLineBackgroundColor(QColor("gainsboro"));
@@ -85,7 +181,7 @@ void QScintillaTextEdit::setDefaultSettings()
 	setIndentationWidth(0);
 
 	// Whitespaces visibility
-	setWhitespaceVisibility(QsciScintilla::WsVisible);
+	setWhitespaceVisibility(QsciScintilla::WsInvisible);
 
 	// Show margin with line numbers (up to 1000)
 	setMarginsBackgroundColor(QColor("gainsboro"));
@@ -123,5 +219,7 @@ void QScintillaTextEdit::setDefaultSettings()
 
 void QScintillaTextEdit::emitTextWasModified()
 {
+	cancelList();
+	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth + 10);
 	emit textWasModified(this);
 }

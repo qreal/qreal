@@ -1,0 +1,1 @@
+-- cos() function is currently not supported

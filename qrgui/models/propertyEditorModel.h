@@ -17,6 +17,7 @@
 #include <QtCore/QAbstractTableModel>
 #include <QtCore/QStringList>
 
+#include <qrkernel/exception/exception.h>
 #include <qrrepo/logicalRepoApi.h>
 
 #include "models/modelsDeclSpec.h"
@@ -24,15 +25,22 @@
 
 /// Proxy model for property editor, maps single element from main model
 /// (logical or graphical) to a list model with element properties.
-class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractTableModel
+class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractItemModel
 {
 	Q_OBJECT
 
 public:
 	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface, QObject *parent = 0);
 
+	QModelIndex parent(const QModelIndex &index) const;
+
+	QString getValueFromIndex(const QModelIndex &index);
+
 	int rowCount(const QModelIndex &index) const;
 	int columnCount(const QModelIndex &index) const;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
+
+	int countOfChilds(const QModelIndex &index) const;
 
 	Qt::ItemFlags flags(const QModelIndex &index) const;
 
@@ -76,10 +84,6 @@ public:
 
 	qReal::Id idByIndex(const QModelIndex &index) const;
 
-private slots:
-	void rereadData(const QModelIndex &, const QModelIndex &);
-
-private:
 	enum AttributeClassEnum {
 		namePseudoattribute
 		, logicalAttribute
@@ -89,30 +93,172 @@ private:
 		, metatypePseudoattribute
 	};
 
-	struct Field {
-		QString fieldName;
-		AttributeClassEnum attributeClass;
-		int role;
+	class Field {
 
-		Field(QString fieldName_, AttributeClassEnum attributeClass_, int role_)
-			: fieldName(fieldName_), attributeClass(attributeClass_), role(role_)
+	public:
+		Field(
+				const QString &fieldName
+				, AttributeClassEnum attributeClass
+				, int role
+				, Field *parent
+				, QPersistentModelIndex targetLogicalObject
+				, QPersistentModelIndex targetGraphicalObject
+				)
+			: mFieldName(fieldName)
+			, mAttributeClass(attributeClass)
+			, mRole(role)
+			, mParentItem(parent)
+			, mTargetLogicalObject(targetLogicalObject)
+			, mTargetGraphicalObject(targetGraphicalObject)
 		{
 		}
 
-		Field(QString fieldName_, AttributeClassEnum attributeClass_)
-			: fieldName(fieldName_), attributeClass(attributeClass_), role(-1)
+		Field(const QString &name)
+			: Field(name, logicalAttribute, -1, nullptr, QPersistentModelIndex(), QPersistentModelIndex())
 		{
 		}
+
+		Field()
+			: Field("root")
+		{
+		}
+
+		~Field()
+		{
+			qDeleteAll(mChildItems);
+		}
+
+		void appendChild(Field *item)
+		{
+			mChildItems.append(item);
+		}
+
+		Field* child(int row) const
+		{
+			return mChildItems.value(row);
+		}
+
+		int childCount() const
+		{
+			return mChildItems.count();
+		}
+
+		Field *parentItem() const
+		{
+			return mParentItem;
+		}
+
+		QList<Field*> children(Field* parent) const
+		{
+			QList<Field*> result;
+			for (int i = 0; i < mChildItems.count(); ++i) {
+				if ((mChildItems.at(i)->parentItem() == parent)) {
+					result.append(mChildItems.at(i));
+				}
+			}
+
+			return result;
+		}
+
+		int numberOfChildren(Field* parent) const
+		{
+			int result = 0;
+			for (int i = 0; i < mChildItems.count(); ++i) {
+				if ((mChildItems.at(i)->parentItem() == parent)) {
+					++result;
+				}
+			}
+
+			return result;
+		}
+
+		int row() const
+		{
+			if (mParentItem) {
+				return mParentItem->mChildItems.indexOf(const_cast<Field*>(this));
+			}
+
+			return 0;
+		}
+
+		AttributeClassEnum attributeClass() const
+		{
+			return mAttributeClass;
+		}
+
+		QString fieldName() const
+		{
+			return mFieldName;
+		}
+
+		int role() const
+		{
+			return mRole;
+		}
+
+		QString value() const
+		{
+			switch (mAttributeClass) {
+			case namePseudoattribute:
+			case logicalAttribute:
+			case logicalIdPseudoattribute:
+			case metatypePseudoattribute: {
+				const QVariant data = mTargetLogicalObject.data(mRole);
+				if (mRole == qReal::roles::idRole) {
+					return data.value<qReal::Id>().id();
+				} else {
+					return data.toString();
+				}
+			}
+			case graphicalIdPseudoattribute:
+			case graphicalAttribute: {
+				const QVariant data = mTargetGraphicalObject.data(mRole);
+				if (mRole == qReal::roles::idRole) {
+					return data.value<qReal::Id>().id();
+				} else {
+					return data.toString();
+				}
+			}
+			}
+
+			throw qReal::Exception("Unknown AttributeClass in PropertyEditorModel::Field::value");
+		}
+
+	private:
+		const QString mFieldName;
+
+		const AttributeClassEnum mAttributeClass;
+
+		const int mRole;
+
+		/// Has ownership over contained items.
+		QList<Field*> mChildItems;
+
+		/// Does not have ownership.
+		Field * const mParentItem;
+
+		const QPersistentModelIndex mTargetLogicalObject;
+		const QPersistentModelIndex mTargetGraphicalObject;
 	};
 
+private slots:
+	void rereadData(const QModelIndex &, const QModelIndex &);
+
+private:
+	/// Does not have ownership.
 	QAbstractItemModel *mTargetLogicalModel;
+
+	/// Does not have ownership.
 	QAbstractItemModel *mTargetGraphicalModel;
+
 	QPersistentModelIndex mTargetLogicalObject;
 	QPersistentModelIndex mTargetGraphicalObject;
 
-	QList<Field> mFields;
+	QScopedPointer<Field> mField;
 
 	const qReal::EditorManagerInterface &mEditorManagerInterface;
 
 	bool isValid() const;
+
+	QString fullPropertyName(const QModelIndex &index) const;
 };

@@ -52,7 +52,7 @@ QString Sensors::code(const QString &directory
 	return readTemplateIfExists(templatePath).replace("@@PORT@@", portString);
 }
 
-void Sensors::reinit(const QMap<kitBase::robotModel::PortInfo
+void Sensors::reinitDevices(const QMap<kitBase::robotModel::PortInfo
 		, kitBase::robotModel::DeviceInfo> &devices)
 {
 	mInitCode.clear();

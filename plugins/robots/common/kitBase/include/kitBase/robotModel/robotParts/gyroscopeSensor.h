@@ -31,6 +31,9 @@ class ROBOTS_KIT_BASE_EXPORT GyroscopeSensor : public VectorSensor
 public:
 	/// Constructor, takes device type info and port on which this sensor is configured.
 	GyroscopeSensor(const DeviceInfo &info, const PortInfo &port);
+
+	/// Clears gyroscope readings, and makes this sensor return "zero", like a robot is turned on just now.
+	virtual void calibrate();
 };
 
 }

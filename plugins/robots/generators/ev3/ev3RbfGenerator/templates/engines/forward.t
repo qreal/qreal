@@ -1,2 +1,5 @@
-﻿OUTPUT_POWER(0, @@PORT@@, @@POWER@@)
+﻿DATA32 @@RANDOM_ID@@
+MOVE32_32(@@POWER@@, @@RANDOM_ID@@)
+CALL(motors_overflow_check_EV3_KERNEL_util, @@RANDOM_ID@@, @@RANDOM_ID@@)
+OUTPUT_POWER(0, @@PORT@@, @@RANDOM_ID@@)
 OUTPUT_START(0, @@PORT@@)

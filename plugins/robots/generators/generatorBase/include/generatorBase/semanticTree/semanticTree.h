@@ -26,6 +26,8 @@
 #include "switchNode.h"
 #include "generatorBase/generatorCustomizer.h"
 
+#include "generatorBase/robotsGeneratorDeclSpec.h"
+
 namespace generatorBase {
 namespace semantics {
 
@@ -73,6 +75,9 @@ public:
 	/// Performs deep (recursive) search in this tree and returns
 	/// a node with specified id binded if such was found or nullptr otherwise.
 	NonZoneNode *findNodeFor(const qReal::Id &id);
+
+	/// Explicitly sets tree's root to the new one, corresponding to given node
+	void setRoot(SemanticNode *node);
 
 private:
 	GeneratorCustomizer &mCustomizer;

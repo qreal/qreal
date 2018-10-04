@@ -63,7 +63,13 @@ protected:
 private:
 	Multigraph &mParent;
 	unsigned int mType;
+
+	/// Begin node of an edge.
+	/// Does not have ownership.
 	Node *mBegin;
+
+	/// End node of an edge.
+	/// Does not have ownership.
 	Node *mEnd;
 
 	friend class Multigraph;

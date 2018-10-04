@@ -62,7 +62,9 @@ bool ColorItemPopup::attachTo(const QList<QGraphicsItem *> &items)
 	blockSignals(true);
 	mSpinBox->blockSignals(true);
 
-	mColorPicker->setColor(dominantPropertyValue("color").value<QColor>());
+	auto color = dominantPropertyValue("color").value<QColor>();
+	mColorPicker->setColor(color);
+	setBrushPickerColor(color);
 	mBrushPicker->setVisible(hasProperty("filled"));
 	mBrushPicker->setChecked(dominantPropertyValue("filled").toBool());
 	mSpinBox->setValue(dominantPropertyValue("thickness").toInt());

@@ -14,6 +14,8 @@
 
 #include "trikQtsControlFlowValidator.h"
 
+#include <trikGeneratorBase/trikBlocksValidator.h>
+
 #include "threadsValidator.h"
 
 using namespace generatorBase;
@@ -37,7 +39,10 @@ bool TrikQtsControlFlowValidator::validate(const qReal::Id &diagramId, const QSt
 	}
 
 	ThreadsValidator threadsValidator(mRepo, mCustomizer, mErrorReporter);
+	trik::TrikBlocksValidator blocksValidator(mRepo, mCustomizer, mErrorReporter);
+
 	return threadsValidator.validate(mInitialNode, threadId)
+			&& blocksValidator.validate(mInitialNode)
 			&& PrimaryControlFlowValidator::validate(diagramId, threadId);
 }
 

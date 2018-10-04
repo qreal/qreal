@@ -24,14 +24,13 @@ namespace generatorBase {
 namespace parts {
 
 /// Inspects sensors usage and generates code for their initialization and termination.
-class Sensors : public InitTerminateCodeGenerator
+class ROBOTS_GENERATOR_EXPORT Sensors : public InitTerminateCodeGenerator
 {
 public:
 	Sensors(const QStringList &pathsToTemplates, const simple::Binding::ConverterInterface *inputPortConverter);
 	virtual ~Sensors();
 
-	virtual void reinit(const QMap<kitBase::robotModel::PortInfo
-			, kitBase::robotModel::DeviceInfo> &devices);
+	virtual void reinitDevices(const QMap<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> &devices);
 
 	virtual QString initCode();
 	virtual QString terminateCode();

@@ -48,11 +48,17 @@ public:
 
 	QString sensorImagePath(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 
-	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const;
+	QRect sensorImageRect(const kitBase::robotModel::DeviceInfo &deviceType) const override;
 
 	QHash<kitBase::robotModel::PortInfo, kitBase::robotModel::DeviceInfo> specialDevices() const override;
 
 	QPair<QPoint, qreal> specialDeviceConfiguration(const kitBase::robotModel::PortInfo &port) const override;
+
+	QPolygonF collidingPolygon() const override;
+	qreal mass() const override;
+	qreal friction() const override;
+	qreal onePercentAngularVelocity() const override;
+	QList<QPointF> wheelsPosition() const override;
 
 	void setWheelPorts(const QString &leftWheelPort, const QString &rightWheelPort);
 
@@ -73,6 +79,7 @@ private:
 	QString mRightWheelPort;
 	twoDModel::engine::TwoDModelDisplayWidget *mDisplayWidget;
 	qReal::ErrorReporterInterface *mErrorReporter;
+	QPolygonF mCollidingPolygon;
 };
 
 }

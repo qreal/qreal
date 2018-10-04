@@ -1,1 +1,1 @@
-not @@OPERAND@@
+not (@@OPERAND@@)

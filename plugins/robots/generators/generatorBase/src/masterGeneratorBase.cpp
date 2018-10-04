@@ -17,13 +17,14 @@
 #include <QtCore/QDir>
 #include <QtCore/QPair>
 #include <QtCore/QStack>
+#include <QtCore/QRegularExpression>
 
 #include <qrutils/outFile.h>
 #include <qrutils/fileSystemUtils.h>
 #include <qrutils/stringUtils.h>
 #include <qrtext/languageToolboxInterface.h>
 
-#include "readableControlFlowGenerator.h"
+#include "structuralControlFlowGenerator.h"
 #include "generatorBase/gotoControlFlowGenerator.h"
 #include "generatorBase/lua/luaProcessor.h"
 #include "generatorBase/parts/variables.h"
@@ -64,9 +65,9 @@ void MasterGeneratorBase::initialize()
 
 	mValidator = createValidator();
 
-	mReadableControlFlowGenerator = new ReadableControlFlowGenerator(mRepo
-			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 	mGotoControlFlowGenerator = new GotoControlFlowGenerator(mRepo
+			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
+	mStructuralControlFlowGenerator = new StructuralControlFlowGenerator(mRepo
 			, mErrorReporter, *mCustomizer, *mValidator, mDiagram, this);
 }
 
@@ -89,12 +90,14 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 		generator->reinit();
 	}
 
+
+
 	QString mainCode;
-	const semantics::SemanticTree *mainControlFlow = mReadableControlFlowGenerator->generate();
-	if (mainControlFlow && !mReadableControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
+	const semantics::SemanticTree *mainControlFlow = mStructuralControlFlowGenerator->generate();
+	if (mainControlFlow && !mStructuralControlFlowGenerator->cantBeGeneratedIntoStructuredCode()) {
 		mainCode = mainControlFlow->toString(1, indentString);
 		const parts::Subprograms::GenerationResult subprogramsResult = mCustomizer->factory()->subprograms()->generate(
-				mReadableControlFlowGenerator, indentString);
+				mStructuralControlFlowGenerator, indentString);
 		switch (subprogramsResult) {
 		case parts::Subprograms::GenerationResult::success:
 			break;
@@ -105,7 +108,7 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 			return QString();
 		}
 	} else {
-		if (mReadableControlFlowGenerator->errorsOccured()) {
+		if (mStructuralControlFlowGenerator->errorsOccured()) {
 			return QString();
 		}
 	}
@@ -127,31 +130,35 @@ QString MasterGeneratorBase::generate(const QString &indentString)
 	if (mainCode.isEmpty()) {
 		const QString errorMessage = supportsGotoGeneration()
 				? tr("This diagram cannot be even generated into the code with 'goto'"\
-						"statements. Please contact the developers (WTF did you do?)")
+						"statements. Please contact the developers.")
 				: tr("This diagram cannot be generated into the structured code.");
 		mErrorReporter.addError(errorMessage);
 		return QString();
 	}
 
 	QString resultCode = readTemplate("main.t");
-	resultCode.replace("@@SUBPROGRAMS_FORWARDING@@", mCustomizer->factory()->subprograms()->forwardDeclarations());
-	resultCode.replace("@@SUBPROGRAMS@@", mCustomizer->factory()->subprograms()->implementations());
-	resultCode.replace("@@THREADS_FORWARDING@@", mCustomizer->factory()->threads().generateDeclarations());
-	resultCode.replace("@@THREADS@@", mCustomizer->factory()->threads().generateImplementations(indentString));
-	resultCode.replace("@@MAIN_CODE@@", mainCode);
-	resultCode.replace("@@INITHOOKS@@", utils::StringUtils::addIndent(
+	replaceWithAutoIndent(resultCode, "@@SUBPROGRAMS_FORWARDING@@"
+			, mCustomizer->factory()->subprograms()->forwardDeclarations());
+	replaceWithAutoIndent(resultCode, "@@SUBPROGRAMS@@"
+			, mCustomizer->factory()->subprograms()->implementations());
+	replaceWithAutoIndent(resultCode, "@@THREADS_FORWARDING@@"
+			, mCustomizer->factory()->threads().generateDeclarations());
+	replaceWithAutoIndent(resultCode, "@@THREADS@@"
+			, mCustomizer->factory()->threads().generateImplementations(indentString));
+	replaceWithAutoIndent(resultCode, "@@MAIN_CODE@@", mainCode);
+	replaceWithAutoIndent(resultCode, "@@INITHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->initCode(), 1, indentString));
-	resultCode.replace("@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
+	replaceWithAutoIndent(resultCode, "@@TERMINATEHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->terminateCode(), 1, indentString));
-	resultCode.replace("@@USERISRHOOKS@@", utils::StringUtils::addIndent(
+	replaceWithAutoIndent(resultCode, "@@USERISRHOOKS@@", utils::StringUtils::addIndent(
 			mCustomizer->factory()->isrHooksCode(), 1, indentString));
 	const QString constantsString = mCustomizer->factory()->variables()->generateConstantsString();
 	const QString variablesString = mCustomizer->factory()->variables()->generateVariableString();
 	if (resultCode.contains("@@CONSTANTS@@")) {
-		resultCode.replace("@@CONSTANTS@@", constantsString);
-		resultCode.replace("@@VARIABLES@@", variablesString);
+		replaceWithAutoIndent(resultCode, "@@CONSTANTS@@", constantsString);
+		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", variablesString);
 	} else {
-		resultCode.replace("@@VARIABLES@@", constantsString + "\n" + variablesString);
+		replaceWithAutoIndent(resultCode, "@@VARIABLES@@", constantsString + "\n" + variablesString);
 	}
 
 	// This will remove too many empty lines
@@ -174,8 +181,8 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 	const QString open = "@~(qrm:(/\\w+)+/\\{(\\w+-)+\\w+\\})~@";
 	const QString close = "@#%1#@";
 	QRegExp re;
-	QStack <QPair<QString, int>> stack;
-	QList <QPair<QString, QPair<int, int>>> results;
+	QStack<QPair<QString, int>> stack;
+	QList<QPair<QString, QPair<int, int>>> results;
 	int lineNumber = 1;
 
 	for (const QString &line : resultCode.split("\n")){
@@ -189,8 +196,7 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 		if (!stack.isEmpty()) {
 			const QString id = stack.top().first;
 			if (line.contains(close.arg(id))) {
-				results.append(QPair<QString, QPair<int, int>>(id
-						, QPair<int, int>(stack.top().second, lineNumber)));
+				results.append(qMakePair(id, qMakePair(stack.top().second, lineNumber)));
 				stack.pop();
 			}
 		}
@@ -213,7 +219,12 @@ void MasterGeneratorBase::generateLinkingInfo(QString &resultCode)
 
 	outputCode(targetPath() + ".dbg", out);
 
-	resultCode = resultCode.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
+	cleanUpLinkingInfo(resultCode);
+}
+
+void MasterGeneratorBase::cleanUpLinkingInfo(QString &code)
+{
+	code.remove(QRegExp("@(~|#)qrm:(((/\\w+)+/\\{(\\w+-)+\\w+\\})|(/))(~|#)@"));
 }
 
 lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
@@ -224,6 +235,11 @@ lua::LuaProcessor *MasterGeneratorBase::createLuaProcessor()
 PrimaryControlFlowValidator *MasterGeneratorBase::createValidator()
 {
 	return new PrimaryControlFlowValidator(mRepo, mErrorReporter, *mCustomizer, this);
+}
+
+bool MasterGeneratorBase::supportsSwitchUnstableToBreaks() const
+{
+	return false;
 }
 
 void MasterGeneratorBase::beforeGeneration()
@@ -249,4 +265,16 @@ void MasterGeneratorBase::outputCode(const QString &path, const QString &code)
 	utils::OutFile out(path);
 	utils::FileSystemUtils::setCreationDateToNow(path);
 	out() << code;
+}
+
+void MasterGeneratorBase::replaceWithAutoIndent(QString &where, const QString &what, const QString &withWhat)
+{
+	const QRegularExpression regexp(QString("^(([ \\t]*)%1)$").arg(what), QRegularExpression::MultilineOption);
+	const QRegularExpressionMatch match = regexp.match(where, 0
+			, QRegularExpression::NormalMatch, QRegularExpression::NoMatchOption);
+	if (match.hasMatch()) {
+		const QString wholeString = match.captured(1);
+		const QString indentString = match.captured(2);
+		where.replace(wholeString, utils::StringUtils::addIndent(withWhat, 1, indentString));
+	}
 }

@@ -32,7 +32,7 @@ Autoconfigurer::Autoconfigurer(const GraphicalModelAssistInterface &graphicalMod
 {
 }
 
-bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, const QString &robotModelName)
+bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, const QString &robotId)
 {
 	for (const Id &diagram : diagrams) {
 		const IdList children = mGraphicalModelApi.graphicalRepoApi().children(diagram);
@@ -47,14 +47,14 @@ bool Autoconfigurer::configure(QList<qReal::Id> const &diagrams, const QString &
 			QMap<PortInfo, DeviceInfo> const usedDevices = block->usedDevices();
 			for (const PortInfo &port : usedDevices.keys()) {
 				const DeviceInfo device = usedDevices[port];
-				const DeviceInfo existingDevice = currentConfiguration(robotModelName, port);
+				const DeviceInfo existingDevice = currentConfiguration(robotId, port);
 				if (!existingDevice.isNull() && !existingDevice.isA(device)) {
 					mErrorReporter.addError(QObject::tr("Sensor on port %1 does not correspond to blocks "\
 							"on the diagram.").arg(port.name()), child);
 					return false;
 				} else if (existingDevice.isNull()) {
 					/// @todo: Do it loudly, user must notice it
-					deviceConfigurationChanged(robotModelName, port, device, Reason::automaticConfiguration);
+					deviceConfigurationChanged(robotId, port, device, Reason::automaticConfiguration);
 				}
 			}
 		}

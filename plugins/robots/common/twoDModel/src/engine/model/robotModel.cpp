@@ -15,6 +15,7 @@
 #include "twoDModel/engine/model/robotModel.h"
 
 #include <qmath.h>
+#include <QtCore/QtMath>
 #include <QtGui/QTransform>
 
 #include <qrutils/mathUtils/math.h>
@@ -26,18 +27,15 @@
 #include "twoDModel/engine/model/settings.h"
 #include "twoDModel/engine/model/timeline.h"
 
-#include "physics/simplePhysicsEngine.h"
-#include "physics/realisticPhysicsEngine.h"
+#include "physics/physicsEngineBase.h"
 
 #include "src/engine/items/startPosition.h"
 
 using namespace twoDModel::model;
-using namespace physics;
 using namespace kitBase::robotModel;
 using namespace kitBase::robotModel::robotParts;
 
 const int positionStampsCount = 50;
-const int angleStampsCount = 50;
 
 RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 		, const Settings &settings
@@ -45,25 +43,25 @@ RobotModel::RobotModel(robotModel::TwoDRobotModel &robotModel
 	: QObject(parent)
 	, mSettings(settings)
 	, mRobotModel(robotModel)
-	, mSensorsConfiguration(robotModel.robotId())
+	, mSensorsConfiguration(robotModel.robotId(), robotModel.size())
 	, mPos(QPointF(0, 0))
 	, mAngle(0)
-	, mAngularSpeed(0)
+	, mDeltaRadiansOfAngle(0)
 	, mBeepTime(0)
 	, mIsOnTheGround(true)
 	, mMarker(Qt::transparent)
 	, mAcceleration(QPointF(0, 0))
 	, mPosStamps(positionStampsCount)
-	, mAngleStamps(angleStampsCount)
+	, mIsFirstAngleStamp(true)
+	, mAngleStampPrevious(0)
 	, mPhysicsEngine(nullptr)
-	, mStartPositionMarker(new items::StartPosition)
+	, mStartPositionMarker(new items::StartPosition(info().size()))
 {
 	reinit();
 }
 
 RobotModel::~RobotModel()
 {
-	delete mPhysicsEngine;
 }
 
 void RobotModel::reinit()
@@ -79,6 +77,8 @@ void RobotModel::reinit()
 	}
 
 	mBeepTime = 0;
+	mDeltaRadiansOfAngle = 0;
+	mAcceleration = QPointF(0, 0);
 }
 
 void RobotModel::clear()
@@ -88,10 +88,10 @@ void RobotModel::clear()
 	setRotation(0);
 }
 
-RobotModel::Motor *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
+RobotModel::Wheel *RobotModel::initMotor(int radius, int speed, long unsigned int degrees
 		, const PortInfo &port, bool isUsed)
 {
-	Motor *motor = new Motor();
+	Wheel *motor = new Wheel();
 	motor->radius = radius;
 	motor->speed = speed;
 	motor->degrees = degrees;
@@ -140,9 +140,9 @@ void RobotModel::setNewMotor(int speed, uint degrees, const PortInfo &port, bool
 
 void RobotModel::countMotorTurnover()
 {
-	for (Motor * const motor : mMotors) {
+	for (Wheel * const motor : mMotors) {
 		const PortInfo port = mMotors.key(motor);
-		const qreal degrees = Timeline::timeInterval * motor->spoiledSpeed * onePercentAngularVelocity;
+		const qreal degrees = Timeline::timeInterval * motor->spoiledSpeed * mRobotModel.onePercentAngularVelocity();
 		const qreal actualDegrees = mPhysicsEngine->isRobotStuck() ? 0 : degrees;
 		mTurnoverEngines[mMotorToEncoderPortMap[port]] += actualDegrees;
 		if (motor->isUsed && (motor->activeTimeType == DoByLimit)
@@ -169,6 +169,16 @@ SensorsConfiguration &RobotModel::configuration()
 	return mSensorsConfiguration;
 }
 
+const RobotModel::Wheel &RobotModel::leftWheel() const
+{
+	return *mMotors[mWheelsToMotorPortsMap[left]];
+}
+
+const RobotModel::Wheel &RobotModel::rightWheel() const
+{
+	return *mMotors[mWheelsToMotorPortsMap[right]];
+}
+
 twoDModel::robotModel::TwoDRobotModel &RobotModel::info() const
 {
 	return mRobotModel;
@@ -178,10 +188,10 @@ void RobotModel::stopRobot()
 {
 	mBeepTime = 0;
 	mRobotModel.displayWidget()->reset();
-	mAngleStamps.clear();
+	mIsFirstAngleStamp = true;
 	mPosStamps.clear();
 	emit playingSoundChanged(false);
-	for (Motor * const engine : mMotors) {
+	for (Wheel * const engine : mMotors) {
 		engine->speed = 0;
 		engine->breakMode = true;
 	}
@@ -199,12 +209,13 @@ void RobotModel::countBeep()
 
 void RobotModel::countSpeedAndAcceleration()
 {
-	if (mAngleStamps.size() >= angleStampsCount) {
-		mAngleStamps.dequeue();
+	if (mIsFirstAngleStamp) {
+		mAngleStampPrevious = mAngle;
+		mIsFirstAngleStamp = false;
+	} else {
+		mDeltaRadiansOfAngle = qDegreesToRadians(mAngle - mAngleStampPrevious);
+		mAngleStampPrevious = mAngle;
 	}
-
-	mAngleStamps.enqueue(mAngle);
-	mAngularSpeed = averageAngularSpeed();
 
 	if (mPosStamps.size() >= positionStampsCount) {
 		mPosStamps.dequeue();
@@ -226,20 +237,15 @@ QPointF RobotModel::averageAcceleration() const
 					- mPosStamps.nthFromHead(1) + mPosStamps.head()) / mPosStamps.size());
 }
 
-qreal RobotModel::averageAngularSpeed() const
-{
-	return mAngleStamps.isEmpty() ? 0 : (mAngleStamps.tail() - mAngleStamps.head()) / mAngleStamps.size();
-}
-
 QPointF RobotModel::rotationCenter() const
 {
-	return QPointF(mPos.x() + robotWidth / 2, mPos.y() + robotHeight / 2);
+	return mPos + mRobotModel.rotationCenter();
 }
 
 QPainterPath RobotModel::robotBoundingPath() const
 {
 	QPainterPath path;
-	const QRectF boundingRect(QPointF(), QSizeF(robotWidth, robotHeight));
+	const QRectF boundingRect(QPointF(), mRobotModel.size());
 	path.addRect(boundingRect);
 
 	const QPointF realRotatePoint = QPointF(boundingRect.width() / 2, boundingRect.height() / 2);
@@ -249,7 +255,7 @@ QPainterPath RobotModel::robotBoundingPath() const
 			.rotate(mAngle).translate(translationToZero.x(), translationToZero.y());
 
 	for (const PortInfo &port : mRobotModel.configurablePorts()){
-		if (!mSensorsConfiguration.type(port).isNull()) {
+		if (!mSensorsConfiguration.type(port).isNull() && mSensorsConfiguration.type(port).simulated()) {
 			const QPointF sensorPos = mSensorsConfiguration.position(port);
 			QPainterPath tempSensorPath;
 			tempSensorPath.addRect(sensorRect(port, sensorPos));
@@ -262,6 +268,11 @@ QPainterPath RobotModel::robotBoundingPath() const
 	}
 
 	return transform.map(path);
+}
+
+void RobotModel::setPhysicalEngine(physics::PhysicsEngineBase &engine)
+{
+	mPhysicsEngine = &engine;
 }
 
 QRectF RobotModel::sensorRect(const PortInfo &port, const QPointF sensorPos) const
@@ -298,14 +309,14 @@ QVector<int> RobotModel::accelerometerReading() const
 
 QVector<int> RobotModel::gyroscopeReading() const
 {
-	return {0, 0, static_cast<int>(mAngularSpeed * gyroscopeConstant)};
+	return {0, 0, static_cast<int>(mDeltaRadiansOfAngle * gyroscopeConstant)};
 }
 
 void RobotModel::nextStep()
 {
 	// Changing position quietly, they must not be caught by UI here.
-	mPos += mPhysicsEngine->shift().toPointF();
-	mAngle += mPhysicsEngine->rotation();
+	mPos += mPhysicsEngine->positionShift(*this).toPointF();
+	mAngle += mPhysicsEngine->rotation(*this);
 	emit positionRecalculated(mPos, mAngle);
 }
 
@@ -316,35 +327,22 @@ void RobotModel::recalculateParams()
 		return;
 	}
 
-	struct EngineOutput {
-		qreal speed;
-		bool breakMode;
-	};
-
 	auto calculateMotorOutput = [&](WheelEnum wheel) {
 		const PortInfo &port = mWheelsToMotorPortsMap.value(wheel, PortInfo());
 		if (!port.isValid() || port.name() == "None") {
-			return EngineOutput{0, true};
+			return;
 		}
 
-		Motor * const engine = mMotors.value(port, nullptr);
+		Wheel * const engine = mMotors.value(port, nullptr);
 		if (!engine) {
-			return EngineOutput{0, true};
+			return;
 		}
 
 		engine->spoiledSpeed = mSettings.realisticMotors() ? varySpeed(engine->speed) : engine->speed;
-		return EngineOutput{
-				engine->spoiledSpeed * 2 * M_PI * engine->radius * onePercentAngularVelocity / 360
-				, engine->breakMode
-		};
 	};
 
-	const EngineOutput outputLeft = calculateMotorOutput(left);
-	const EngineOutput outputRight = calculateMotorOutput(right);
-
-	mPhysicsEngine->recalculateParams(Timeline::timeInterval, outputLeft.speed, outputRight.speed
-			, outputLeft.breakMode, outputRight.breakMode
-			, rotationCenter(), mAngle, robotBoundingPath());
+	calculateMotorOutput(left);
+	calculateMotorOutput(right);
 
 	nextStep();
 	countSpeedAndAcceleration();
@@ -418,6 +416,7 @@ void RobotModel::deserialize(const QDomElement &robotElement)
 	setRotation(robotElement.attribute("direction", "0").toDouble());
 	mStartPositionMarker->deserializeCompatibly(robotElement);
 	deserializeWheels(robotElement);
+	emit deserialized(QPointF(x, y), robotElement.attribute("direction", "0").toDouble());
 	nextFragment();
 }
 
@@ -437,18 +436,6 @@ void RobotModel::setMotorPortOnWheel(WheelEnum wheel, const kitBase::robotModel:
 		mWheelsToMotorPortsMap[wheel] = port;
 		emit wheelOnPortChanged(wheel, port);
 	}
-}
-
-void RobotModel::resetPhysics(const WorldModel &worldModel, const Timeline &timeline)
-{
-	physics::PhysicsEngineBase *oldEngine = mPhysicsEngine;
-	if (mSettings.realisticPhysics()) {
-		mPhysicsEngine = new physics::RealisticPhysicsEngine(worldModel, timeline);
-	} else {
-		mPhysicsEngine = new physics::SimplePhysicsEngine(worldModel);
-	}
-
-	delete oldEngine;
 }
 
 int RobotModel::varySpeed(const int speed) const

@@ -21,10 +21,11 @@
 
 #include <qrkernel/roles.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
+#include <qrgui/models/clipboard.h>
 #include <qrgui/mouseGestures/mouseMovementManagerInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
-#include "qrgui/editor/private/clipboardHandler.h"
 #include "qrgui/editor/private/exploserView.h"
 
 namespace qReal {
@@ -36,9 +37,12 @@ class CreateElementsCommand;
 namespace gui {
 namespace editor {
 
+class NodeElement;
+class EdgeElement;
+
 const int arrowMoveOffset = 5;
 
-class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene
+class QRGUI_EDITOR_EXPORT EditorViewScene : public QGraphicsScene, public EditorInterface
 {
 	Q_OBJECT
 
@@ -46,7 +50,7 @@ public:
 	EditorViewScene(const models::Models &models
 			, Controller &controller
 			/// @todo: move scene customizer properties to metamodel
-			, const SceneCustomizer &customizer
+			, const SceneCustomizer &sceneCustomizer
 			, const Id &rootId
 			, QObject *parent = 0);
 	~EditorViewScene();
@@ -77,7 +81,7 @@ public:
 	const models::Models &models() const;
 	Controller &controller() const;
 	const EditorManagerInterface &editorManager() const;
-	const qReal::gui::editor::SceneCustomizer &customizer() const;
+	const qReal::gui::editor::SceneCustomizer &sceneCustomizer() const;
 
 	/// Produces and returns a widget that shows gestures available for this tab.
 	/// Transfers owneship.
@@ -128,24 +132,23 @@ public:
 	/// Returns a reference to action that removes selected elements from the scene.
 	QAction &deleteAction();
 
-	/// Returns a list of scene actions that can be added to other views.
-	/// Currently those are copy, cut, paste and paste reference actions.
-	QList<QAction *> const &editorActions() const;
-
-	/// Enables or diasables all editor actions.
-	void setActionsEnabled(bool enabled);
-
 	/// Handles deletion of the element from scene.
 	void onElementDeleted(Element *element);
 
 	/// Enable or Disable mousegestures
 	void enableMouseGestures(bool enabled);
 
+	QString editorId() const override;
+
+	/// Returns a list of ids of currently selected elements.
+	IdList selectedIds() const;
+
 public slots:
 	Id createElement(const QString &type);
 
-	void cut();
-	void copy();
+	void cut() override;
+	void copy() override;
+	void paste() override;
 	void paste(bool logicalCopy);
 
 	/// selects all elements on the current scene
@@ -193,7 +196,8 @@ protected:
 	void wheelEvent(QGraphicsSceneWheelEvent *wheelEvent) override;
 
 	void drawBackground(QPainter *painter, const QRectF &rect) override;
-	void focusInEvent(QFocusEvent *event);
+	void focusInEvent(QFocusEvent *event) override;
+	void focusOutEvent(QFocusEvent *event) override;
 
 private slots:
 	void createEdge(const Id &id);
@@ -204,6 +208,7 @@ private slots:
 	void updateMovedElements();
 
 	void deselectLabels();
+	void updateActions();
 
 private:
 	void deleteElements(const IdList &idsToDelete);
@@ -219,9 +224,6 @@ private:
 
 	void initializeActions();
 	void initContextMenu(Element *e, const QPointF &pos);
-	bool isEmptyClipboard();
-
-	void disableActions(Element *focusElement);
 
 	inline bool isArrow(int key);
 
@@ -229,6 +231,7 @@ private:
 	bool moveNodes();
 	void moveEdges();
 	QPointF offsetByDirection(int direction);
+	QPointF currentMousePos() const;
 
 	void createElement(const ElementInfo &elementInfo
 			, const QPointF &scenePos
@@ -238,7 +241,7 @@ private:
 	const models::Models &mModels;
 	const EditorManagerInterface &mEditorManager;
 	Controller &mController;
-	const SceneCustomizer &mCustomizer;
+	const SceneCustomizer &mSceneCustomizer;
 	const Id mRootId;
 
 	Id mLastCreatedFromLinker;
@@ -246,7 +249,7 @@ private:
 	/// Does not have ownership.
 	qReal::commands::CreateElementsCommand *mLastCreatedFromLinkerCommand;
 
-	ClipboardHandler mClipboardHandler;
+	models::Clipboard mClipboardHandler;
 
 	bool mRightButtonPressed;
 	bool mLeftButtonPressed;
@@ -259,8 +262,6 @@ private:
 	NodeElement *mHighlightNode;
 
 	QList<QGraphicsItem *> mGesture;
-
-	QList<QAction *> mEditorActions;
 
 	QPointF mCreatePoint;
 
@@ -288,10 +289,6 @@ private:
 
 	view::details::ExploserView mExploser;
 	QAction mActionDeleteFromDiagram;
-	QAction mActionCutOnDiagram;
-	QAction mActionCopyOnDiagram;
-	QAction mActionPasteOnDiagram;
-	QAction mActionPasteReference;
 };
 
 }

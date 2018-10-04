@@ -24,6 +24,7 @@
 #include <kitBase/blocksBase/common/waitForSonarDistanceBlock.h>
 #include <kitBase/blocksBase/common/waitForSoundSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForTouchSensorBlock.h>
+#include <kitBase/blocksBase/common/waitForGyroscopeSensorBlock.h>
 #include <kitBase/blocksBase/common/waitForButtonBlock.h>
 
 #include <kitBase/robotModel/robotParts/rangeSensor.h>
@@ -82,6 +83,8 @@ qReal::interpretation::Block *Ev3BlocksFactory::produceBlock(const qReal::Id &el
 		return new WaitForLightSensorBlock(mRobotModelManager->model());
 	} else if (elementMetatypeIs(element, "Ev3WaitForSound")) {
 		return new WaitForSoundSensorBlock(mRobotModelManager->model());
+	} else if (elementMetatypeIs(element, "Ev3WaitForGyroscope")) {
+		return new WaitForGyroscopeSensorBlock(mRobotModelManager->model());
 
 	} else if (elementMetatypeIs(element, "Ev3WaitForButton")) {
 		return new WaitForButtonBlock(mRobotModelManager->model());
@@ -107,7 +110,12 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3EnginesBackward")
 		, id("Ev3EnginesStop")
 		, id("Ev3ClearEncoder")
+		, id("Ev3CalibrateGyroscope")
 		, id("Ev3Led")
+		, id("Ev3SendMail")
+		, id("Ev3StartCompassCalibration")
+		, id("Ev3StopCompassCalibration")
+		, id("Ev3ReadRGB")
 
 		, id("Ev3WaitForTouchSensor")
 		, id("Ev3WaitForSonarDistance")
@@ -117,6 +125,17 @@ qReal::IdList Ev3BlocksFactory::providedBlocks() const
 		, id("Ev3WaitForEncoder")
 		, id("Ev3WaitForButton")
 		, id("Ev3WaitForSound")
+		, id("Ev3WaitForGyroscope")
+		, id("Ev3WaitForReceivingMail")
+
+		, id("Ev3CalibrateWhiteLL")
+		, id("Ev3CalibrateBlackLL")
+		, id("Ev3CalibratePIDLL")
+		, id("Ev3SleepLL")
+		, id("Ev3WakeUpLL")
+		, id("Ev3ReadAvrLL")
+		, id("Ev3ReadAllLL")
+		, id("Ev3ReadSteeringLL")
 
 		, id("Ev3DrawPixel")
 		, id("Ev3DrawLine")
@@ -132,6 +151,23 @@ qReal::IdList Ev3BlocksFactory::blocksToDisable() const
 	if (mRobotModelManager->model().name().contains("TwoD")) {
 		result
 				<< id("Ev3WaitForSound")
+				<< id("Ev3SendMail")
+				<< id("Ev3WaitForReceivingMail")
+				<< id("Ev3WaitForGyroscope")
+				<< id("Ev3CalibrateGyroscope")
+				<< id("Ev3StartCompassCalibration")
+				<< id("Ev3StopCompassCalibration")
+				<< id("Ev3ReadRGB")
+				<< id("Ev3CalibrateWhiteLL")
+				<< id("Ev3CalibrateBlackLL")
+				<< id("Ev3CalibratePIDLL")
+				<< id("Ev3SleepLL")
+				<< id("Ev3WakeUpLL")
+				<< id("Ev3ReadAvrLL")
+				<< id("Ev3ReadAllLL")
+				<< id("Ev3ReadSteeringLL")
+				<< id("Ev3WaitForGyroscope")
+				<< id("Ev3WaitForReceivingMail")
 				;
 	} else {
 		if (!mInterpretedModels.contains(mRobotModelManager->model().robotId())) {

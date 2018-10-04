@@ -17,6 +17,7 @@
 #include <QtCore/QString>
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowDockInterface.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/editorInterface.h>
 
 #include <gmock/gmock.h>
 
@@ -39,6 +40,7 @@ public:
 	MOCK_CONST_METHOD1(saveState, QByteArray(int));
 	MOCK_METHOD2(restoreState, bool(const QByteArray &, int));
 	MOCK_METHOD2(setCorner, void(Qt::Corner, Qt::DockWidgetArea));
+	MOCK_METHOD1(registerEditor, void(qReal::EditorInterface &));
 };
 
 }

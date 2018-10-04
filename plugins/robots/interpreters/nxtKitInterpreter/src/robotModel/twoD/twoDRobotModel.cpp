@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2012-2017 QReal Research Group
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,10 @@
 
 #include "twoDRobotModel.h"
 
+#include <QtCore/QFile>
+
+#include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsManager.h>
 #include <kitBase/robotModel/robotParts/speaker.h>
 #include <kitBase/robotModel/robotParts/motor.h>
 #include <kitBase/robotModel/robotParts/encoderSensor.h>
@@ -38,6 +42,8 @@ using namespace kitBase::robotModel;
 TwoDRobotModel::TwoDRobotModel(RobotModelInterface &realModel)
 	: twoDModel::robotModel::TwoDRobotModel(realModel)
 	, mDisplayWidget(new NxtDisplayWidget())
+	, mCollidingPolygon({QPointF(10, 10), QPointF(42, 10), QPointF(45, 20)
+			, QPointF(45, 30), QPointF(42, 40), QPointF(10, 40)})
 {
 }
 
@@ -60,7 +66,14 @@ robotParts::Device *TwoDRobotModel::createDevice(const PortInfo &port, const Dev
 
 QString TwoDRobotModel::robotImage() const
 {
-	return ":/icons/nxt_robot.png";
+	const QString key = "nxtRobot2DImage";
+	const QString hackDefaultPath = "./images/nxt-robot.png";
+	if (qReal::SettingsManager::value(key).isNull()) {
+		qReal::SettingsManager::setValue(key, hackDefaultPath);
+	}
+
+	const QString settingsPath = qReal::PlatformInfo::invariantSettingsPath(key);
+	return QFile::exists(settingsPath) ? settingsPath : ":/icons/nxt-robot.png";
 }
 
 PortInfo TwoDRobotModel::defaultLeftWheelPort() const
@@ -95,4 +108,29 @@ QRect TwoDRobotModel::sensorImageRect(const kitBase::robotModel::DeviceInfo &dev
 	}
 
 	return QRect();
+}
+
+QPolygonF TwoDRobotModel::collidingPolygon() const
+{
+	return mCollidingPolygon;
+}
+
+qreal TwoDRobotModel::mass() const
+{
+	return 0.5;  /// @todo: measure it
+}
+
+qreal TwoDRobotModel::friction() const
+{
+	return 0.3;  /// @todo measure it
+}
+
+qreal TwoDRobotModel::onePercentAngularVelocity() const
+{
+	return 0.0055;
+}
+
+QList<QPointF> TwoDRobotModel::wheelsPosition() const
+{
+	return {QPointF(41, 5), QPointF(41, 45)};
 }

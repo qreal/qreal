@@ -53,7 +53,7 @@ class ExploserView : public QObject
 public:
 	explicit ExploserView(const models::Models &models
 			, Controller &controller
-			, const SceneCustomizer &customizer
+			, const SceneCustomizer &sceneCustomizer
 			, QObject *parent = 0);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
@@ -86,6 +86,7 @@ private slots:
 	void removeExplosionActionTriggered();
 	void expandExplosionActionTriggered();
 	void changePropertiesActionTriggered();
+	void changeDynamicPropertiesActionTriggered();
 	void changeAppearanceActionTriggered();
 	void addElementToPaletteActionTriggered();
 
@@ -105,7 +106,7 @@ private:
 	models::GraphicalModelAssistApi &mGraphicalApi;
 	models::Exploser &mExploser;
 	Controller &mController;
-	const SceneCustomizer &mCustomizer;
+	const SceneCustomizer &mSceneCustomizer;
 };
 
 }
