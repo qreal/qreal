@@ -1,3 +1,6 @@
 [submodule "plugins/robots/thirdparty/trikRuntime"]
 	path = plugins/robots/thirdparty/trikRuntime/trikRuntime
 	url = https://github.com/trikset/trikRuntime.git
+[submodule "qrtest/thirdparty/googletest/googletest"]
+	path = qrtest/thirdparty/googletest/googletest
+	url = https://github.com/google/googletest
