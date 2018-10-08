@@ -7,7 +7,7 @@ clone_depth: 1
 
 environment:
   global:
-    APPVEYOR_SAVE_CACHE_ON_ERROR: true
+    APPVEYOR_SAVE_CACHE_ON_ERROR: false
     PYTHON_PATH: C:\Python27
     PYTHON_LIB: C:\Python27\libs
     CCACHE_DIR: C:\ccache.cache
@@ -29,8 +29,8 @@ configuration:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-  - '%CCACHE_DIR%'
-  - '%BUILD_DIR%'
+#  - '%CCACHE_DIR%'
+#  - '%BUILD_DIR%'
 
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%

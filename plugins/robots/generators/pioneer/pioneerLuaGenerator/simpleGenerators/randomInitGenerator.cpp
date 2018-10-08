@@ -39,6 +39,11 @@ RandomInitGenerator::RandomInitGenerator(const qrRepo::RepoApi &repo
 					, customizer.factory()->functionBlockConverter(id, "UpperBound")) }
 			, parent)
 {
+	const QString separator = !repo.stringProperty(id, "LowerBound").isEmpty()
+			&& !repo.stringProperty(id, "UpperBound").isEmpty()
+					? readTemplate("luaPrinting/fieldInitializersSeparator.t") : "";
+	addBinding(Binding::createStatic("@@SEP@@", separator));
+
 	auto factory = dynamic_cast<PioneerLuaGeneratorFactory *>(mCustomizer.factory());
 	if (factory) {
 		factory->randomGeneratorPart().registerUsage();

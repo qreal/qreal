@@ -13,9 +13,8 @@
         <translation type="vanished">Использовать &quot;controller.py&quot; для загрузки и выполнения программы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="30"/>
         <source>Use COM port to upload programs </source>
-        <translation>Использовать COM-порт для загрузки и выполнения программы </translation>
+        <translation type="vanished">Использовать COM-порт для загрузки и выполнения программы </translation>
     </message>
     <message>
         <source>Path to Python 2.7:</source>
@@ -26,37 +25,34 @@
         <translation type="vanished">Выбрать</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="23"/>
         <source>Use &quot;controller&quot; tool to upload and run programs</source>
-        <translation>Использовать &quot;controller&quot; для загрузки и выполнения программы</translation>
+        <translation type="vanished">Использовать &quot;controller&quot; для загрузки и выполнения программы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="40"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="35"/>
         <source>Connection Settings</source>
         <translation>Настройки соединения</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="66"/>
         <source>COM Port:</source>
-        <translation>COM-порт:</translation>
+        <translation type="vanished">COM-порт:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="76"/>
         <source>COM1</source>
-        <translation>COM1</translation>
+        <translation type="vanished">COM1</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="83"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="70"/>
         <source>Base station port:</source>
         <translation>Порт базовой станции:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="90"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="77"/>
         <source>00000</source>
         <translation>00000</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="93"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="80"/>
         <source>8000</source>
         <translation>8000</translation>
     </message>
@@ -65,22 +61,22 @@
         <translation type="vanished">Настройки базовой станции</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="46"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="50"/>
         <source>Base station IP:</source>
         <translation>IP-адрес базовой станции:</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="53"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="57"/>
         <source>009.009.009.009</source>
         <translation>009.009.009.009</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="56"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="60"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="59"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/widgets/pioneerAdditionalPreferences.ui" line="63"/>
         <source>127.0.0.1</source>
         <translation>127.0.0.1</translation>
     </message>
@@ -92,7 +88,7 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaMasterGenerator.cpp" line="110"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaMasterGenerator.cpp" line="111"/>
         <source>There is no opened diagram</source>
         <translation>Диаграмма не открыта</translation>
     </message>
@@ -380,7 +376,7 @@
 <context>
     <name>pioneer::lua::PioneerLuaMasterGenerator</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaMasterGenerator.cpp" line="144"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaMasterGenerator.cpp" line="145"/>
         <source>Generation failed. Possible causes are internal error in generator or too complex program structure.</source>
         <translation>Генерация закончилась с ошибкой. Возможные причины: внутренняя ошибка генератора или слишком сложная структура программы. Обратитесь к разработчикам.</translation>
     </message>
@@ -404,37 +400,58 @@
         <translation type="vanished">На данный момент генерация кода, в котором цикл заканчивается на блоке, последнем в своей структурной конструкции, не поддержана. Измените структуру программы.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="140"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="53"/>
+        <source>Diagram should has same number of &quot;Conditonal&quot; and &quot;End If&quot; blocks.</source>
+        <translation>Количество блоков &quot;Условие&quot; и &quot;Конец условия&quot; должно быть равным.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="173"/>
         <source>Generation internal error, failed to create a node.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: не удалось создать узел семантического дерева.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="163"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="203"/>
         <source>Can not find end of an If statement, generation internal error or too complex algorithmic construction.</source>
         <translation>Не удалось найти конец блока оператора &quot;Если&quot;, внутренняя ошибка генерации или слишком сложная алгоритмическая конструкция. Попробуйте записать программу по-другому.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="279"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="205"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="238"/>
+        <source>Only fully synchronous IF construction is supported now, or fully asynchronous IF construction, where &quot;End if&quot; has two Asynchronous parents.</source>
+        <translation>Поддерживаются только полностью синхронные условные конструкциия или полностью асинхронные, при условии, что блоку &quot;Конец условия&quot; предшествуют асинхронные блоки.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="220"/>
+        <source>&quot;End if&quot; block without &quot;Conditional&quot; is not allowed.</source>
+        <translation>Использование блока &quot;Конец условия&quot; без блока &quot;Условие&quot; не допускается.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="285"/>
+        <source>Nested If&apos;s constructions is not allowed.</source>
+        <translation>Вложенные условные конструкции не допускаются.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="355"/>
         <source>Generation internal error, zone node corresponds to a block in a diagram.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: узел-зона семантического дерева соответствует блоку на диаграмме. Узел-зона может быть только частью представления блока.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="294"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="370"/>
         <source>Generation internal error, non-zone node is a start of a fragment.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: синхронный фрагмент начинается с узла-зоны.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="346"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="422"/>
         <source>Generation internal error, program ends abruptly.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: программа неожиданно закончилась. Такие ошибки должны ловиться при предварительной проверке программы.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="372"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="448"/>
         <source>Generation internal error, asynchronous node does not have target node.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: асинхронный узел не имеет узла, которому надо передать управления после асинхронной операции.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="394"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="470"/>
         <source>Purely synchronous loops or If branches are not supported yet.</source>
         <translation>Чисто синхронные циклы или ветки оператора If на данный момент не поддержаны. Добавьте какой-нибудь асинхронный блок внутрь тела цикла или ветки If (например, &quot;лететь в точку&quot;).</translation>
     </message>

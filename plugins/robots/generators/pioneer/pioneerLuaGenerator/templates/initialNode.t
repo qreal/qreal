@@ -1,6 +1,6 @@
 -- переменная текущего состояния
-local curr_state = "START"
+local curr_state = @@ID@@
 
 -- таблица функций, вызываемых в зависимости от состояния
 action = {
-	["START"] = function(x)
+@@LABEL@@

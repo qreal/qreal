@@ -28,9 +28,12 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 			id("GeoTakeoff")
 			, id("GeoLanding")
 			, id("GoToPoint")
+//			, id("GoToGPSPoint")
+			, id("PioneerGetLPSPosition")
 			, id("PioneerPrint")
 			, id("PioneerSystem")
 			, id("PioneerLed")
+			, id("PioneerReadRangeSensor")
 			, id("PioneerMagnet")
 			, id("PioneerYaw")
 	};
@@ -38,8 +41,7 @@ qReal::IdList PioneerBlocksFactory::providedBlocks() const
 
 qReal::IdList PioneerBlocksFactory::blocksToDisable() const
 {
-	return {
-	};
+	return blocksToHide();
 }
 
 qReal::IdList PioneerBlocksFactory::blocksToHide() const

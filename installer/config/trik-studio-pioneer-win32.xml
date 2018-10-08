@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>TRIK Studio PIONEER</Name>
+    <Version>2018.6</Version>
+    <Title>TRIK Studio PIONEER</Title>
+    <Publisher>CyberTech Labs Ltd.</Publisher>
+    <ProductUrl>http://robots.qreal.ru</ProductUrl>
+
+    <InstallerWindowIcon>../images/trik-studio.ico</InstallerWindowIcon>
+    <InstallerApplicationIcon>../images/trik-studio.ico</InstallerApplicationIcon>
+    <Logo>../images/trik-studio-logo.png</Logo>
+    <Watermark>../images/trik-studio-watermark.png</Watermark>
+
+    <StartMenuDir>TRIK Studio PIONEER</StartMenuDir>
+    <MaintenanceToolName>maintenance</MaintenanceToolName>
+    <RemoveTargetDir>true</RemoveTargetDir>
+    <AllowSpaceInPath>false</AllowSpaceInPath>
+    <AllowNonAsciiCharacters>false</AllowNonAsciiCharacters>
+
+    <TargetDir>@RootDir@TRIKStudioPIONEER</TargetDir>
+    <AdminTargetDir>@RootDir@TRIKStudioPIONEER</AdminTargetDir>
+
+    <RunProgram>@TargetDir@/trik-studio</RunProgram>
+
+    <RemoteRepositories>
+        <Repository>
+            <Url>http://195.19.241.150/packages/trik-studio-repo-win32/</Url>
+        </Repository>
+    </RemoteRepositories>
+</Installer>
