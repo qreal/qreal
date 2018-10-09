@@ -46,8 +46,7 @@ GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
 		addBinding(Binding::createStatic("@@Time@@", QString()));
 	} else {
 		Binding::ConverterInterface *intConverter = customizer.factory()->intPropertyConverter(id, "Time");
-		const QString time = intConverter->convert(timeValue);
 		addBinding(Binding::createStatic("@@VAR_ARG_SEPARATOR@@", readTemplate("luaPrinting/argumentsSeparator.t")));
-		addBinding(Binding::createStatic("@@Time@@", time));
+		addBinding(Binding::createConverting("@@Time@@", "Time", intConverter));
 	}
 }

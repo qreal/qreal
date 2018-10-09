@@ -50,7 +50,7 @@ void PioneerStateMachineGenerator::performGeneration()
 	mSemanticTreeManager.reset(new SemanticTreeManager(*mSemanticTree, mErrorReporter, mErrorsOccured));
 	GotoControlFlowGenerator::performGeneration();
 	if (mConditionals != mConditionalEnds) {
-		reportError(tr("Diagram should has same number of \"Conditonal\" and \"End If\" blocks."));
+		reportError(tr("Diagram should have same number of \"Conditonal\" and \"End If\" blocks."));
 	}
 }
 
@@ -81,7 +81,7 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 			processNode(thisNode, target);
 		} else {
 			mErrorsOccured = true;
-			break;
+			return;
 		}
 	}
 
@@ -235,7 +235,7 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 
 			if (target.element() == "FiBlock") {
 				if (mLabeledNodes.contains(target) || mConditionZonesQueue.first().second) {
-					reportError(tr("Only fully synchronous IF construction is supported now,"
+					reportError(tr("Only fully synchronous IF construction is supported for now,"
 							" or fully asynchronous IF construction, where \"End if\" has two Asynchronous parents."));
 				} else {
 					mConditionZonesQueue.pop_front();
