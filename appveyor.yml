@@ -7,9 +7,10 @@ clone_depth: 1
 
 environment:
   global:
-    APPVEYOR_SAVE_CACHE_ON_ERROR: false
+    MSYS_DIR: C:\msys64
+    APPVEYOR_SAVE_CACHE_ON_ERROR: true
     PYTHON_PATH: C:\Python35
-    PYTHON_LIB: C:\Python35\libs
+    PYTHON_LIB: '%PYTHONPATH%\libs'
     CCACHE_DIR: C:\ccache.cache
     BUILD_DIR: '%APPVEYOR_BUILD_FOLDER%\.build'
     PROJECT_FILE: qrealRobotsTest
@@ -29,8 +30,9 @@ configuration:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-#  - '%CCACHE_DIR%'
-#  - '%BUILD_DIR%'
+  - '%CCACHE_DIR%' -> '**\*.pr?'
+  - '%BUILD_DIR%' -> '**\*.pr?'
+  - '%MSYS_DIR%\var\cache\pacman\pkg' -> appveyor.yml
 
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
