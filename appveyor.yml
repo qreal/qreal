@@ -34,6 +34,14 @@ cache:
   - '%BUILD_DIR%' -> '**\*.pr?'
   - '%MSYS_DIR%\var\cache\pacman\pkg' -> appveyor.yml
 
+clone_script:
+  - cmd: >-
+      git clone --progress --depth=3 --single-branch --no-checkout --branch=%APPVEYOR_REPO_BRANCH% https://github.com/%APPVEYOR_REPO_NAME%.git %APPVEYOR_BUILD_FOLDER%
+      && cd %APPVEYOR_BUILD_FOLDER%
+      && git checkout -f %APPVEYOR_REPO_COMMIT%
+      && git submodule update --init --recursive
+
+
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
   - pacman --verbose --noconfirm --sync ccache rsync curl
