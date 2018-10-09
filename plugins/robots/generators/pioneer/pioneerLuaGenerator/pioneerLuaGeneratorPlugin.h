@@ -76,15 +76,6 @@ private slots:
 	/// Uploads current program to a quadcopter.
 	void uploadProgram();
 
-	/// Attempts to run current program on a quadcopter. Generates and uploads it first.
-	void runProgram();
-
-	/// Attempts to stop currently executed program.
-	void stopProgram();
-
-	/// Reacts to changing setting in Settings window.
-	void onSettingsChanged();
-
 private:
 	generatorBase::MasterGeneratorBase *masterGenerator() override;
 
@@ -99,29 +90,17 @@ private:
 	/// Set "enabled" state of "upload" and "run" actions to a given value.
 	void setActionsEnabled(bool isEnabled);
 
-	/// Sets "enabled" property of "stop program" action according to settings.
-	void checkAndSetStopProgramAction();
-
 	/// Action that launches code generator.
 	QAction *mGenerateCodeAction;  // Doesn't have ownership; may be disposed by GUI.
 
 	/// Action that uploads generated program onto quadcopter.
 	QAction *mUploadProgramAction;  // Doesn't have ownership; may be disposed by GUI.
 
-	/// Action that executes program on a quadcopter.
-	QAction *mRunProgramAction;  // Doesn't have ownership; may be disposed by GUI.
-
-	/// Action that stops currently executed program.
-	QAction *mStopProgramAction;  // Doesn't have ownership; may be disposed by GUI.
-
 	/// Factory for blocks on a diagram that can be processed by this generator.
 	blocks::PioneerBlocksFactory *mBlocksFactory;  // Transfers ownership
 
 	/// Robot model for a generator, defines robot name and other unneeded properties.
 	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorForRealCopterRobotModel;
-
-	/// Actially the same model as previous, but provides different settings and slightly different blocks.
-	QScopedPointer<PioneerGeneratorRobotModel> mGeneratorForSimulatorRobotModel;
 
 	/// Additional preferences widget, which allows to set IP of a base station.
 	/// Transfers ownership.

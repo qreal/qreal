@@ -23,7 +23,7 @@ GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
-	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToPoint.t"
+	: BindingGenerator(repo, customizer, id, "quadcopterCommands/goToLocalPoint.t"
 		, {
 			Binding::createConverting(
 					"@@X@@"
@@ -40,4 +40,13 @@ GoToPointGenerator::GoToPointGenerator(const qrRepo::RepoApi &repo
 			}
 		, parent)
 {
+	const QString timeValue = mRepo.property(mId, "Time").toString();
+	if (timeValue.isEmpty()) {
+		addBinding(Binding::createStatic("@@VAR_ARG_SEPARATOR@@", QString()));
+		addBinding(Binding::createStatic("@@Time@@", QString()));
+	} else {
+		Binding::ConverterInterface *intConverter = customizer.factory()->intPropertyConverter(id, "Time");
+		addBinding(Binding::createStatic("@@VAR_ARG_SEPARATOR@@", readTemplate("luaPrinting/argumentsSeparator.t")));
+		addBinding(Binding::createConverting("@@Time@@", "Time", intConverter));
+	}
 }

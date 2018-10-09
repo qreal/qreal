@@ -1,1 +1,1 @@
-		@@VARIABLE@@ = math.random(@@FROM@@, @@TO@@)
+		@@VARIABLE@@ = math.random(@@FROM@@@@SEP@@@@TO@@)

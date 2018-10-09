@@ -39,7 +39,7 @@
 				</logic>
 			</node>
 
-			<node displayedName="Go to point" name="GoToPoint" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Orders quadcopter to fly to given coordinates.">
+			<node displayedName="Go to local point" name="GoToPoint" path="185, 207 : 287, 105 :  | 287, 105 : 182, 0 :  | 0, 105 : 287, 105 : " description="Orders quadcopter to fly to given coordinates.">
 				<graphics>
 					<picture sizex="50" sizey="50">
 						<image y1="0" name="images/pioneerGoToPointBlock.svg" x1="0" y2="50" x2="50"/>
@@ -48,6 +48,7 @@
 						<label x="35" y="60" textBinded="X" background="white" prefix="X:"/>
 						<label x="35" y="90" textBinded="Y" background="white" prefix="Y:"/>
 						<label x="35" y="120" textBinded="Z" background="white" prefix="Z:"/>
+						<label x="35" y="150" textBinded="Time" background="white" prefix="Time:"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -62,6 +63,71 @@
 							</property>
 							<property displayedName="Z" type="string" name="Z">
 								<default>0</default>
+							</property>
+							<property displayedName="Time" type="string" name="Time">
+								<default></default>
+							</property>
+						</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Get LPS Position" name="PioneerGetLPSPosition" description="Returns position (local positioning system).">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/getCoordinatesBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="X" background="white" prefix="X:"/>
+						<label x="35" y="90" textBinded="Y" background="white" prefix="Y:"/>
+						<label x="35" y="120" textBinded="Z" background="white" prefix="Z:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+						<properties>
+							<property displayedName="X" type="string" name="X">
+								<default>x</default>
+							</property>
+							<property displayedName="Y" type="string" name="Y">
+								<default>y</default>
+							</property>
+							<property displayedName="Z" type="string" name="Z">
+								<default>z</default>
+							</property>
+						</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
+			<node displayedName="Go to point" name="GoToGPSPoint" path="" description="Orders quadcopter to fly to given GPS coordinates.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/pioneerGoToPointBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="35" y="60" textBinded="Latitude" background="white" prefix="Latitude:"/>
+						<label x="35" y="90" textBinded="Longitude" background="white" prefix="Longitude:"/>
+						<label x="35" y="120" textBinded="Altitude" background="white" prefix="Altitude:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+						<properties>
+							<property displayedName="Latitude" type="string" name="Latitude">
+								<default>600859810</default>
+							</property>
+							<property displayedName="Longitude" type="string" name="Longitude">
+								<default>304206500</default>
+							</property>
+							<property displayedName="Altitude" type="string" name="Altitude">
+								<default>50</default>
 							</property>
 						</properties>
 					<generalizations>
@@ -200,6 +266,29 @@
 				</logic>
 			</node>
 
+			<node displayedName="Read Range Sensor" name="PioneerReadRangeSensor" path="190, 162 : 219, 122 :  | 219, 122 : 190, 86 :  | 120, 122 : 219, 122 :  | 12, 118 : 118, 12 :  | 12, 118 : 118, 224 :  | 118, 12 : 118, 224 : " description="Reads distance from rangefinder.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/readRangeSensor.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="60" textBinded="Variable" prefix="Variable:"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<container/>
+					<properties>
+						<property displayedName="Variable" type="string" name="Variable">
+							<default>range</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+
 		</graphicTypes>
 
 		<palette sorted="false">
@@ -207,11 +296,14 @@
 				<element name="GeoTakeoff"/>
 				<element name="GeoLanding"/>
 				<element name="GoToPoint"/>
+<!--				<element name="GoToGPSPoint"/>-->
+				<element name="PioneerGetLPSPosition"/>
 				<element name="PioneerLed"/>
-				<element name="PioneerPrint"/>
+<!--				<element name="PioneerPrint"/>-->
 				<element name="PioneerMagnet"/>
 				<element name="PioneerSystem"/>
 				<element name="PioneerYaw"/>
+				<element name="PioneerReadRangeSensor"/>
 			</group>
 		</palette>
 	</diagram>

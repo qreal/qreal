@@ -29,7 +29,7 @@ void RandomGeneratorPart::reinit()
 QString RandomGeneratorPart::initCode()
 {
 	if (mIsRngUsed) {
-		return readTemplateIfExists("initialization/rng.t").replace("@@RAND_SEED@@", QString::number(qrand()));
+		return readTemplateIfExists("initialization/rng.t").replace("@@RAND_SEED@@", "time()");
 	} else {
 		return "";
 	}

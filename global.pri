@@ -205,7 +205,8 @@ defineTest(copyToDestdir) {
 		} else {
 			COPY_COMMAND = rsync -avz
 		}
-                COPY_COMMAND += $$quote($$FILE) $$quote($$DDIR)
+		
+		COPY_COMMAND += $$quote($$FILE) $$quote($$DDIR)
 		isEmpty(NOW) {
 			QMAKE_POST_LINK += $$COPY_COMMAND $$escape_expand(\\n\\t)
 			export(QMAKE_POST_LINK)

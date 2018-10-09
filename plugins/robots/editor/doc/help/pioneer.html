@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="TRIKStudio, help, manual, user guide" />
+<meta name="description" content="TRIKStudio help center" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Программирование квадрокоптера Пионер в TRIK Studio</title>
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="version.js"></script>
+</head>
+
+<body>
+<div id="wrapper">
+	<script type="text/javascript" src="header.html.js"></script>
+	<div id="page" class="container">
+		<div id="sidebar">
+			<script type="text/javascript" src="contents.html.js"></script>
+		</div>
+		<div id="content">
+			<div class="post">
+				<h2 class="title">Программирование квадрокоптера Пионер в TRIK Studio<a href="#"></a></h2>
+				<div class="entry">
+					<p></p>
+				</div>
+			</div>
+
+			<h3><a name="setup">Подключение робота</a></h3>
+
+			<p>
+			Первое, что необходимо сделать для программирования  pioneer – переключить TRIKStudio в режим поддержки
+			 pioneer. Это делается в окне "Настройки", вкладка "Роботы":
+			</p>
+
+			<center><img src="pics/pioneer/kit-selection.png" alt="Выбор конструктора  pioneer" width="660"></center>
+
+			<h3><a name="blocks">Блоки  pioneer</a></h3>
+
+			<table cellspacing="2" border="1" cellpadding="5" width="800" >
+				<tr>
+					<td><b>Название элемента</b></td>
+					<td><b>Пиктограмма</b></td>
+					<td><b>Описание</b></td>
+				</tr>
+				<tr>
+					<td>Случайное число</td>
+					<td><center><img src="pics/blocks-random.png" alt="Случайное число"></center></td>
+					<td>Присвоить указанной переменной случайное целое число из заданного с помощью свойств "От" и "До" промежутка. При пустых свойствах "От" и "До" будет сгенерирован код без границ.</td>
+				</tr>
+				<tr>
+					<td>Взлёт</td>
+					<td><center><img src="pics/pioneer/up.png" alt="Взлёт"></center></td>
+					<td>Указывает квадракоптеру взлететь.</td>
+				</tr>
+				<tr>
+					<td>Посадка</td>
+					<td><center><img src="pics/pioneer/down.png" alt="Посадка"></center></td>
+					<td>Указывает квадракоптеру приземлиться.</td>
+				</tr>
+				<tr>
+					<td>Лететь в точку (ЛК)</td>
+					<td><center><img src="pics/pioneer/goLCS.png" alt="Лететь в точку (ЛК)"></center></td>
+					<td>Указывает квадракоптеру лететь в указанные координаты. x – задается координата точки по оси x, в метрах; y – задается координата точки по оси y, в метрах; z – задается координата точки по оси z, в метрах; time – время, за которое коптер перейдет в следующую точку, в секундах. Если значение не указано, коптер стремится к точке с максимальной скоростью.</td>
+				</tr>
+<!-- 				<tr>
+					<td>Лететь в точку</td>
+					<td><center><img src="pics/pioneer/goToPointGps.png" alt="Лететь в точку"></center></td>
+					<td>Указывает квадракоптеру лететь в указанные координаты. широта – задается в градусах, умноженных на 10<sup>−7</sup>; долгота – задается в градусах, умноженных на 10<sup>−7</sup>; высота – задается в метрах.</td>
+				</tr> -->
+				<tr>
+					<td>Получить точку (ЛК)</td>
+					<td><center><img src="pics/pioneer/getPos.png" alt="Получить точку (ЛК)"></center></td>
+					<td>Получает значения положения по 3-м осям координат в указанные переменные.</td>
+				</tr>
+				<tr>
+					<td>Светодиод</td>
+					<td><center><img src="pics/pioneer/led.png" alt="Светодиод"></center></td>
+					<td>Устанавливает цвет на конкретном светодиоде. Параметры: num – номер светодиода, нумеруются с 0 по 3 на плате, далее последовательно по подключенным модулям; r – интенсивность красной компоненты цвета в интервале от [0;1]; g – интенсивность зеленой компоненты цвета в интервале от [0;1]; b – интенсивность синей компоненты цвета в интервале от [0;1].</td>
+				</tr>
+				<tr>
+					<td>Магнит</td>
+					<td><center><img src="pics/pioneer/magnet.png" alt="Магнит"></center></td>
+					<td>Включает/выключает магнит. Параметр задается пользователем.</td>
+				</tr>
+				<tr>
+					<td>Команда</td>
+					<td><center><img src="pics/pioneer/system.png" alt="Команда"></center></td>
+					<td>Исполняет заданную строку на языке Lua на квадракоптере.</td>
+				</tr>
+				<tr>
+					<td>Рыскание</td>
+					<td><center><img src="pics/pioneer/yaw.png" alt="Рысканье"></center></td>
+					<td>Устанавливает рыскание коптера. Принимаемый параметр "угол" задается в градусах.</td>
+				</tr>
+				<tr>
+					<td>Дальномер в переменную</td>
+					<td><center><img src="pics/pioneer/tof.png" alt="Дальномер в переменную"></center></td>
+					<td>Считывает показания дальномера в заданную переменную.</td>
+				</tr>
+			</table>
+			<p>
+			Описание блоков, общих для всех конструкторов, можно посмотреть в разделе
+			<a href="programming.html#blocks">Создание программ/Создание блоков</a>.
+			</p>
+
+			<h3><a name="run-programs">Запуск программы</a></h3>
+
+			<p>
+			Чтобы запустить программу на выполнение, необходимо запустить приложение "Наземная станция управления Pioneer Station" и загрузить в нее сгенерированную программу. 
+			</p>
+
+			<center><img src="pics/pioneer/upload.png" alt="Кнопка загрузки программы" /></center>
+
+			<p>
+			По программе будет сгенерирован код на внутреннем языке pioneer и загружен в НСУ. Если требуется только сгенерировать программу, не загружая её, нужно воспользоваться кнопкой "сгенерировать программу".
+			</p>
+
+			<center><img src="pics/pioneer/generateLuaCode.png" alt="Кнопка генерации программы" /></center>
+
+			<p>
+			Эксперты в pioneer могут посмотреть на сгенерированный на внутреннем языке pioneer код. Теоретически, его можно подредактировать и запустить на исполнение, или вообще использовать для текстового программирования pioneer, но делать это неудобно – язык создавался для автоматической генерации, а не написания программ.
+			</p>
+		</div>
+		<!-- end #content -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end #page -->
+</div>
+<script type="text/javascript" src="footer.html.js"></script>
+</body>
+</html>

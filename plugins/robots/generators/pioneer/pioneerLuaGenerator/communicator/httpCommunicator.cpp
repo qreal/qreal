@@ -47,7 +47,10 @@ HttpCommunicator::HttpCommunicator(qReal::ErrorReporterInterface &errorReporter)
 
 HttpCommunicator::~HttpCommunicator()
 {
-	// Empty destructor to keep QScopedPointer happy.
+	disconnect(mNetworkManager.data(), &QNetworkAccessManager::finished
+			, this, &HttpCommunicator::onPostRequestFinished);
+	disconnect(mRequestTimeoutTimer.data(), &QTimer::timeout
+			, this, &HttpCommunicator::onTimeout);
 }
 
 void HttpCommunicator::uploadProgram(const QFileInfo &program)

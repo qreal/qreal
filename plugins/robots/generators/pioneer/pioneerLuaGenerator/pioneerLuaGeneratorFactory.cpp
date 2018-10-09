@@ -17,13 +17,17 @@
 #include <generatorBase/simpleGenerators/waitForButtonGenerator.h>
 
 #include "parts/ledPart.h"
+#include "parts/tofPart.h"
 #include "parts/magnetPart.h"
 #include "parts/randomGeneratorPart.h"
+#include "generators/gotoLabelManager.h"
 #include "simpleGenerators/endOfHandlerGenerator.h"
 #include "simpleGenerators/geoLandingGenerator.h"
 #include "simpleGenerators/geoTakeoffGenerator.h"
 #include "simpleGenerators/gotoGenerator.h"
 #include "simpleGenerators/goToPointGenerator.h"
+#include "simpleGenerators/goToGPSPointGenerator.h"
+#include "simpleGenerators/pioneerGetLPSPosition.h"
 #include "simpleGenerators/initialNodeGenerator.h"
 #include "simpleGenerators/labelGenerator.h"
 #include "simpleGenerators/pioneerMagnetGenerator.h"
@@ -32,6 +36,7 @@
 #include "simpleGenerators/pioneerLedGenerator.h"
 #include "simpleGenerators/pioneerYawGenerator.h"
 #include "simpleGenerators/randomInitGenerator.h"
+#include "simpleGenerators/pioneerReadRangeSensor.h"
 
 using namespace pioneer::lua;
 using namespace generatorBase::simple;
@@ -59,13 +64,19 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 	if (elementType == "EndOfHandler") {
 		return new EndOfHandlerGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "InitialNode") {
-		return new InitialNodeGenerator(mRepo, customizer, id, this);
+		qReal::Id firstId = mRepo.to(mRepo.links(id).first());
+		QString localLabelFor = mGotoLabelManager.labelFor(firstId);
+		return new InitialNodeGenerator(mRepo, customizer, firstId, this);
 	} else if (elementType == "GeoTakeoff") {
 		return new GeoTakeoffGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GeoLanding") {
 		return new GeoLandingGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "GoToPoint") {
 		return new GoToPointGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "GoToGPSPoint") {
+		return new GoToGPSPointGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "PioneerGetLPSPosition") {
+		return new PioneerGetLPSPosition(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerMagnet") {
 		return new PioneerMagnetGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "PioneerPrint") {
@@ -78,6 +89,8 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::simp
 		return new PioneerYawGenerator(mRepo, customizer, id, this);
 	} else if (elementType == "Randomizer") {
 		return new RandomInitGenerator(mRepo, customizer, id, this);
+	} else if (elementType == "PioneerReadRangeSensor") {
+		return new PioneerReadRangeSensor(mRepo, customizer, id, this);
 	}
 
 	return GeneratorFactoryBase::simpleGenerator(id, customizer);
@@ -92,6 +105,7 @@ void PioneerLuaGeneratorFactory::initialize()
 {
 	generatorBase::GeneratorFactoryBase::initialize();
 	mLedPart.reset(new LedPart(pathsToTemplates()));
+	mTofPart.reset(new TofPart(pathsToTemplates()));
 	mMagnetPart.reset(new MagnetPart(pathsToTemplates()));
 	mRandomGeneratorPart.reset(new RandomGeneratorPart(pathsToTemplates()));
 }
@@ -99,6 +113,11 @@ void PioneerLuaGeneratorFactory::initialize()
 LedPart& PioneerLuaGeneratorFactory::ledPart()
 {
 	return *mLedPart;
+}
+
+TofPart &PioneerLuaGeneratorFactory::tofPart()
+{
+	return *mTofPart;
 }
 
 MagnetPart& PioneerLuaGeneratorFactory::magnetPart()
@@ -126,6 +145,6 @@ generatorBase::simple::AbstractSimpleGenerator *PioneerLuaGeneratorFactory::goto
 QList<generatorBase::parts::InitTerminateCodeGenerator *> PioneerLuaGeneratorFactory::initTerminateGenerators()
 {
 	auto result = generatorBase::GeneratorFactoryBase::initTerminateGenerators();
-	result << mRandomGeneratorPart.data() << mMagnetPart.data() << mLedPart.data();
+	result << mRandomGeneratorPart.data() << mMagnetPart.data() << mLedPart.data() << mTofPart.data();
 	return result;
 }
