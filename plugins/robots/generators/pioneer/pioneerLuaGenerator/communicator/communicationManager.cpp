@@ -17,7 +17,6 @@
 #include <qrkernel/settingsManager.h>
 #include <pioneerKit/constants.h>
 
-#include "communicator/controllerCommunicator.h"
 #include "communicator/httpCommunicator.h"
 
 using namespace pioneer;
@@ -29,8 +28,9 @@ CommunicationManager::CommunicationManager(
 		, const kitBase::robotModel::RobotModelManagerInterface &robotModelManager
 		)
 	: mHttpCommunicator(new HttpCommunicator(errorReporter))
-	, mControllerCommunicator(new ControllerCommunicator(errorReporter, robotModelManager))
 {
+	Q_UNUSED(robotModelManager)
+
 	auto connectCommunicator = [this](CommunicatorInterface &communicator) {
 		connect(
 				&communicator
@@ -55,7 +55,6 @@ CommunicationManager::CommunicationManager(
 	};
 
 	connectCommunicator(*mHttpCommunicator);
-	connectCommunicator(*mControllerCommunicator);
 }
 
 CommunicationManager::~CommunicationManager()
@@ -83,11 +82,8 @@ void CommunicationManager::stopProgram()
 
 void CommunicationManager::onUploadCompleted(bool isSuccessful)
 {
-	if (mCurrentAction == Action::uploading || !isSuccessful) {
-		done();
-	} else {
-		communicator().startProgram();
-	}
+	Q_UNUSED(isSuccessful);
+	done();
 }
 
 void CommunicationManager::onStartCompleted(bool isSuccessful)
@@ -104,11 +100,7 @@ void CommunicationManager::onStopCompleted(bool isSuccessful)
 
 CommunicatorInterface &CommunicationManager::communicator() const
 {
-	if (SettingsManager::value(settings::pioneerUseController).toBool()) {
-		return *mControllerCommunicator;
-	} else {
-		return *mHttpCommunicator;
-	}
+	return *mHttpCommunicator;
 }
 
 void CommunicationManager::done()

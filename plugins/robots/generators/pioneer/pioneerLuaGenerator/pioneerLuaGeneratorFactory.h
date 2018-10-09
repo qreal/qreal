@@ -21,6 +21,7 @@ namespace lua {
 
 class GotoLabelManager;
 class LedPart;
+class TofPart;
 class MagnetPart;
 class RandomGeneratorPart;
 
@@ -46,6 +47,9 @@ public:
 
 	/// Returns generator part that analyzes LED usage and initializes it if it is needed.
 	LedPart& ledPart();
+
+	/// Returns generator part that analyzes Tof usage and initializes it if it is needed.
+	TofPart& tofPart();
 
 	/// Returns generator part that analyzes magnet usage and initializes it if it is needed.
 	MagnetPart& magnetPart();
@@ -74,6 +78,9 @@ private:
 
 	/// Generator part that tracks LED usage and initializes it if needed.
 	QScopedPointer<LedPart> mLedPart;
+
+	/// Generator part that tracks Tof usage and initializes it if needed.
+	QScopedPointer<TofPart> mTofPart;
 
 	/// Generator part that tracks magnet usage and initializes it if needed.
 	QScopedPointer<MagnetPart> mMagnetPart;

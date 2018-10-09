@@ -31,8 +31,6 @@ using namespace qReal;
 PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 	: mGenerateCodeAction(new QAction(nullptr))
 	, mUploadProgramAction(new QAction(nullptr))
-	, mRunProgramAction(new QAction(nullptr))
-	, mStopProgramAction(new QAction(nullptr))
 	, mBlocksFactory(new blocks::PioneerBlocksFactory)
 	, mGeneratorForRealCopterRobotModel(
 			new PioneerGeneratorRobotModel(
@@ -41,17 +39,7 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 					, modelNames::realCopter
 					, tr("Pioneer model (real copter)")
 					, 9
-				)
-		)
-	, mGeneratorForSimulatorRobotModel(
-		new PioneerGeneratorRobotModel(
-				kitId()
-				, "Pioneer"
-				, modelNames::simulator
-				, tr("Pioneer model (simulator)")
-				, 10
-			)
-		)
+			))
 {
 	mAdditionalPreferences = new PioneerAdditionalPreferences;
 
@@ -72,26 +60,6 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 			, &QAction::triggered
 			, this
 			, &PioneerLuaGeneratorPlugin::uploadProgram
-			, Qt::UniqueConnection
-	);
-
-	mRunProgramAction->setText(tr("Run program on a Pioneer"));
-	mRunProgramAction->setIcon(QIcon(":/pioneer/lua/images/run.svg"));
-	connect(
-			mRunProgramAction
-			, &QAction::triggered
-			, this
-			, &PioneerLuaGeneratorPlugin::runProgram
-			, Qt::UniqueConnection
-	);
-
-	mStopProgramAction->setText(tr("Stop currently executing program"));
-	mStopProgramAction->setIcon(QIcon(":/pioneer/lua/images/stop.svg"));
-	connect(
-			mStopProgramAction
-			, &QAction::triggered
-			, this
-			, &PioneerLuaGeneratorPlugin::stopProgram
 			, Qt::UniqueConnection
 	);
 
@@ -126,42 +94,19 @@ void PioneerLuaGeneratorPlugin::init(const kitBase::KitPluginConfigurator &confi
 			, &CommunicationManager::uploadCompleted
 			, [this]() { setActionsEnabled(true); }
 	);
-
-	connect(
-			mCommunicationManager.data()
-			, &CommunicationManager::runCompleted
-			, [this]() { setActionsEnabled(true); }
-	);
-
-	connect(
-			mCommunicationManager.data()
-			, &CommunicationManager::stopCompleted
-			, [this]() { setActionsEnabled(true); }
-	);
-
-	connect(
-			mAdditionalPreferences
-			, &PioneerAdditionalPreferences::settingsChanged
-			, this
-			, &PioneerLuaGeneratorPlugin::onSettingsChanged
-	);
 }
 
 QList<ActionInfo> PioneerLuaGeneratorPlugin::customActions()
 {
 	const ActionInfo generateCodeActionInfo(mGenerateCodeAction, "generators", "tools");
 	const ActionInfo uploadProgramActionInfo(mUploadProgramAction, "generators", "tools");
-	const ActionInfo runProgramActionInfo(mRunProgramAction, "generators", "tools");
-	const ActionInfo stopProgramActionInfo(mStopProgramAction, "generators", "tools");
-	return { generateCodeActionInfo, uploadProgramActionInfo, runProgramActionInfo, stopProgramActionInfo };
+	return { generateCodeActionInfo, uploadProgramActionInfo, /*runProgramActionInfo, stopProgramActionInfo*/ };
 }
 
 QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
 {
 	mGenerateCodeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_G));
 	mUploadProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_U));
-	mRunProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F5));
-	mStopProgramAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_F5));
 
 	HotKeyActionInfo generateActionInfo(
 			"Generator.GeneratePioneerLua"
@@ -173,11 +118,7 @@ QList<HotKeyActionInfo> PioneerLuaGeneratorPlugin::hotKeyActions()
 			, tr("Upload Pioneer program")
 			, mUploadProgramAction);
 
-	HotKeyActionInfo runProgramInfo("Generator.RunPioneerLua", tr("Run Pioneer Program"), mRunProgramAction);
-
-	HotKeyActionInfo stopProgramInfo("Generator.StopPioneerLua", tr("Stop Pioneer Program"), mStopProgramAction);
-
-	return { generateActionInfo, uploadProgramInfo, runProgramInfo, stopProgramInfo };
+	return { generateActionInfo, uploadProgramInfo/*, runProgramInfo, stopProgramInfo */};
 }
 
 QIcon PioneerLuaGeneratorPlugin::iconForFastSelector(const kitBase::robotModel::RobotModelInterface &robotModel) const
@@ -198,12 +139,7 @@ QString PioneerLuaGeneratorPlugin::kitId() const
 
 QList<kitBase::robotModel::RobotModelInterface *> PioneerLuaGeneratorPlugin::robotModels()
 {
-	return { mGeneratorForRealCopterRobotModel.data()
-#ifndef WIN32
-			// Simulator does not work for Windows.
-			, mGeneratorForSimulatorRobotModel.data()
-#endif
-	};
+	return { mGeneratorForRealCopterRobotModel.data() };
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *PioneerLuaGeneratorPlugin::blocksFactoryFor(
@@ -229,16 +165,11 @@ void PioneerLuaGeneratorPlugin::onCurrentRobotModelChanged(kitBase::robotModel::
 	RobotsGeneratorPluginBase::onCurrentRobotModelChanged(model);
 	mGenerateCodeAction->setVisible(model.kitId() == kitId());
 	mUploadProgramAction->setVisible(model.kitId() == kitId());
-	mRunProgramAction->setVisible(model.kitId() == kitId());
-	mStopProgramAction->setVisible(model.kitId() == kitId());
 }
 
 void PioneerLuaGeneratorPlugin::onCurrentDiagramChanged(const qReal::TabInfo &info)
 {
 	generatorBase::RobotsGeneratorPluginBase::onCurrentDiagramChanged(info);
-	if (mStopProgramAction->isEnabled()) {
-		checkAndSetStopProgramAction();
-	}
 }
 
 QString PioneerLuaGeneratorPlugin::defaultFilePath(const QString &projectName) const
@@ -280,35 +211,7 @@ void PioneerLuaGeneratorPlugin::uploadProgram()
 	mCommunicationManager->uploadProgram(program);
 }
 
-void PioneerLuaGeneratorPlugin::runProgram()
-{
-	const QFileInfo program = generateCodeForProcessing();
-	setActionsEnabled(false);
-	mCommunicationManager->runProgram(program);
-}
-
-void PioneerLuaGeneratorPlugin::stopProgram()
-{
-	setActionsEnabled(false);
-	mCommunicationManager->stopProgram();
-}
-
-void PioneerLuaGeneratorPlugin::onSettingsChanged()
-{
-	checkAndSetStopProgramAction();
-}
-
 void PioneerLuaGeneratorPlugin::setActionsEnabled(bool isEnabled)
 {
 	mUploadProgramAction->setEnabled(isEnabled);
-	mRunProgramAction->setEnabled(isEnabled);
-	mStopProgramAction->setEnabled(isEnabled);
-	if (isEnabled) {
-		checkAndSetStopProgramAction();
-	}
-}
-
-void PioneerLuaGeneratorPlugin::checkAndSetStopProgramAction()
-{
-	mStopProgramAction->setEnabled(SettingsManager::value(settings::pioneerUseController).toBool());
 }

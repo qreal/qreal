@@ -65,6 +65,19 @@ document.write('\
                     </ul>\
                 </ul>\
             </li>\
+            <li><a href="pioneer.html">Пионер</a>\
+                <ul>\
+                    <li><a href="pioneer.html#setup">Подключение</a></li>\
+                    <li><a href="pioneer.html#blocks">Блоки "Пионер"</a></li>\
+                    <li><a href="pioneer.html#sensor-variables">Сенсорные переменные</a></li>\
+                    <li><a href="pioneer.html#run-programs">Запуск программ</a></li>\
+                    <!-- <ul>\
+                        <li><a href="pioneer.html#run-programs-config">Настройка подключения</a></li>\
+                        <li><a href="pioneer.html#run-programs-flashing">Прошивка в робота</a></li>\
+                    </ul>\
+                    -->\
+                </ul>\
+            </li>\
         </ul>\
     </div>\
 ');

@@ -97,9 +97,6 @@ private:
 
 	/// Communicator object that communicates with robot using HTTP requests.
 	QScopedPointer<CommunicatorInterface> mHttpCommunicator;
-
-	/// Communicator object that communicates with robot "controller" tool.
-	QScopedPointer<CommunicatorInterface> mControllerCommunicator;
 };
 
 }
