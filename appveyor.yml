@@ -7,7 +7,8 @@ clone_depth: 1
 
 environment:
   global:
-    APPVEYOR_SAVE_CACHE_ON_ERROR: false
+    MSYS_DIR: C:\msys64
+    APPVEYOR_SAVE_CACHE_ON_ERROR: true
     PYTHON_PATH: C:\Python27
     PYTHON_LIB: C:\Python27\libs
     CCACHE_DIR: C:\ccache.cache
@@ -29,8 +30,17 @@ configuration:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-#  - '%CCACHE_DIR%'
-#  - '%BUILD_DIR%'
+  - '%CCACHE_DIR% -> **\*.pr?'
+  - '%BUILD_DIR% -> **\*.pr?'
+  - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
+
+clone_script:
+  - cmd: >-
+      git clone --progress --depth=3 --single-branch --no-checkout --branch=%APPVEYOR_REPO_BRANCH% https://github.com/%APPVEYOR_REPO_NAME%.git %APPVEYOR_BUILD_FOLDER%
+      && cd %APPVEYOR_BUILD_FOLDER%
+      && git checkout -f %APPVEYOR_REPO_COMMIT%
+      && git submodule update --init --recursive
+
 
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%

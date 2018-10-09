@@ -18,18 +18,25 @@ TEMPLATE = lib
 
 # CONFIG += warn_off
 
+#DEFINES += GTEST_HAS_STREAM_REDIRECTION=1 GTEST_LANG_CXX11=1 GTEST_HAS_STD_WSTRING=1 \
+#           GTEST_HAS_RTTI=1 \
+#           GTEST_HAS_PTHREAD=0 \
+#           GTEST_HAS_EXCEPTIONS=1 \
+#           GTEST_LINKED_AS_SHARED_LIBRARY=1 \
+#           GTEST_CREATE_SHARED_LIBRARY=1
+
 INCLUDEPATH += \
-	$$PWD/googletest/ \
-	$$PWD/googletest/include/ \
-	$$PWD/googlemock/ \
-	$$PWD/googlemock/include/ \
+	$$PWD/googletest/googletest/ \
+	$$PWD/googletest/googletest/include/ \
+	$$PWD/googletest/googlemock/ \
+	$$PWD/googletest/googlemock/include/ \
 
 HEADERS += \
-	$$files(googletest/include/gtest/*.h) \
-	$$files(googletest/include/gtest/internal/*.h) \
-	$$files(googlemock/include/gmock/*.h) \
-	$$files(googlemock/include/gmock/internal/*.h) \
+	$$files(googletest/googletest/include/gtest/*.h) \
+	$$files(googletest/googletest/include/gtest/internal/*.h) \
+	$$files(googletest/googlemock/include/gmock/*.h) \
+	$$files(googletest/googlemock/include/gmock/internal/*.h) \
 
 SOURCES += \
-	$$PWD/googletest/src/gtest-all.cc \
-	$$PWD/googlemock/src/gmock-all.cc \
+	$$PWD/googletest/googletest/src/gtest-all.cc \
+	$$PWD/googletest/googlemock/src/gmock-all.cc \
