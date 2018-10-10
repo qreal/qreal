@@ -74,12 +74,12 @@ private slots:
 	void toggleModeButtons();
 
 	void saveDocks() const;
-	void reloadDocks();
-	void reloadDocksSavingToolbarsAndErrors();
+	void reloadDocks() const;
+	void reloadDocksSavingToolbarsAndErrors() const;
 	void resetMainWindowCorners() const;
 	void ensureDiagramVisible();
 
-	void updateDocksSettings();
+	void updateDocksSettings() const;
 
 private:
 	void initTab();

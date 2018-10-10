@@ -299,7 +299,7 @@ void UiManager::saveDocks() const
 	qReal::SettingsManager::setValue(currentSettingsKey(), mMainWindow.saveState(currentMode()));
 }
 
-void UiManager::reloadDocks()
+void UiManager::reloadDocks() const
 {
 	hack2dModelDock();
 	const QByteArray state = qReal::SettingsManager::value(currentSettingsKey()).toByteArray();
@@ -316,7 +316,7 @@ void UiManager::reloadDocks()
 	}
 }
 
-void UiManager::reloadDocksSavingToolbarsAndErrors()
+void UiManager::reloadDocksSavingToolbarsAndErrors() const
 {
 	// To this moment toolbars already updated their visibility. Calling just reloadDocks() here
 	// will loose some toolbars visibility and error reporter state, so memorizing it here...
@@ -363,7 +363,7 @@ void UiManager::ensureDiagramVisible()
 	}
 }
 
-void UiManager::updateDocksSettings()
+void UiManager::updateDocksSettings() const
 {
 	auto dockableWidgets = qReal::SettingsManager::value("dockableWidgets", false).toBool();
 	auto flag = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable;
