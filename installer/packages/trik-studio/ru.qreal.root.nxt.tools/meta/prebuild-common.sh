@@ -9,4 +9,4 @@ rm -rf ../data
 mkdir -p $PWD/../data/bin
 cd $PWD/../data/bin
 
-git clone  --depth 1 https://github.com/zimingrigory/nxt-tools.git
+git clone  --depth 1 https://github.com/qreal/nxt-tools.git
