@@ -112,6 +112,7 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		libusb_detach_kernel_driver(mHandle, NXT_INTERFACE_NUMBER);
 	}
 
+	// old tool libnxt says that it should be 1
 	const int possibleConfigurations = device_descriptor.bNumConfigurations;
 	bool configurationFound = false;
 	bool interfaceFound = false;
@@ -125,11 +126,14 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 			const int err = libusb_get_active_config_descriptor(devices[i], &config_descriptor);
 			if (err >= 0) {
 				const int possibleInterfaces = config_descriptor->bNumInterfaces;
-				for (int interface = firmwareMode ? 1 : 0; interface <= possibleInterfaces; interface++) {
-					const int err = libusb_claim_interface(mHandle, interface);
+				// old tool libnxt says that it should be 1
+				QList<int> interfaces = {1, 0, 2};
+				const int interfacesBound = possibleInterfaces < 3 ? possibleInterfaces : 3;
+				for (int i = 0; i <= interfacesBound; i++) {
+					const int err = libusb_claim_interface(mHandle, interfaces[i]);
 					if (err < 0 && err != LIBUSB_ERROR_NOT_FOUND && err != LIBUSB_ERROR_INVALID_PARAM) {
 						QLOG_ERROR() << "libusb_claim_interface for NXT returned"
-								<< err << "for interface" << interface;
+								<< err << "for interface" << i;
 					} else if (err >= 0) {
 						interfaceFound = true;
 						break;
