@@ -111,7 +111,8 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		libusb_detach_kernel_driver(mHandle, NXT_INTERFACE_NUMBER);
 	}
 
-	const QList<int> configurations = {0, 1, 2};
+	// old tool libnxt says that it should be 1
+	const QList<int> configurations = {1, 0, 2};
 	bool configurationFound = false;
 	for (int configiration : configurations) {
 		const int err = libusb_set_configuration(mHandle, configiration);
@@ -133,7 +134,8 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		return false;
 	}
 
-	const QList<int> interfaces = firmwareMode ? QList<int>({1, 2}) : QList<int>({0, 1, 2});
+	// old tool libnxt says that it should be 1
+	const QList<int> interfaces = QList<int>({1, 0, 2});
 	bool interfaceFound = false;
 	for (int interface : interfaces) {
 		const int err = libusb_claim_interface(mHandle, interface);
