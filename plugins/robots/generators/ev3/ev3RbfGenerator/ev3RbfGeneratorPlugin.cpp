@@ -232,7 +232,9 @@ bool Ev3RbfGeneratorPlugin::compile(const QFileInfo &lmsFile)
 
 QString Ev3RbfGeneratorPlugin::upload(const QFileInfo &lmsFile)
 {
-	const QString targetPath = "../prjs/" + lmsFile.baseName();
+	const QString folderName = SettingsManager::value("Ev3CommonFolderChecboxChecked", false).toBool()
+			? SettingsManager::value("Ev3CommonFolderName", "ts").toString() : lmsFile.baseName();
+	const QString targetPath = "../prjs/" + folderName;
 	const QString rbfPath = lmsFile.absolutePath() + "/" + lmsFile.baseName() + ".rbf";
 	bool connected = false;
 	communication::Ev3RobotCommunicationThread *communicator = currentCommunicator();

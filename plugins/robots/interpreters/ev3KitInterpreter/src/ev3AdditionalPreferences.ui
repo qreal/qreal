@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>412</width>
-    <height>164</height>
+    <width>418</width>
+    <height>322</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QGridLayout" name="gridLayout_3">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,33 +26,62 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item>
-    <widget class="qReal::ui::ImagePicker" name="robotImagePicker">
+   <item row="0" column="0">
+    <widget class="qReal::ui::ImagePicker" name="robotImagePicker" native="true">
+     <zorder>bluetoothSettingsGroupBox</zorder>
     </widget>
    </item>
-   <item>
-    <widget class="QGroupBox" name="bluetoothSettingsGroupBox">
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="RobotFoldersGroupBox">
      <property name="title">
-      <string>Bluetooth Settings</string>
+      <string>Robot's Folders</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="1" column="0">
-       <widget class="QLabel" name="comPortLabel">
-        <property name="text">
-         <string>COM Port:</string>
-        </property>
-       </widget>
-      </item>
+     <layout class="QGridLayout" name="gridLayout_5">
       <item row="1" column="1">
-       <widget class="QComboBox" name="comPortComboBox">
+       <widget class="QLineEdit" name="commonFolderNameLineEdit">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="text">
+         <string>ts</string>
+        </property>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="commonFolderNameLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Common folder:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="commonFolderChecbox">
+        <property name="text">
+         <string>Use common folder for all projects</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="bluetoothSettingsGroupBox">
+     <property name="title">
+      <string>Bluetooth Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="2" column="0">
        <widget class="QLabel" name="directInputComPortLabel">
         <property name="text">
@@ -67,6 +96,23 @@
         </property>
         <property name="wordWrap">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="comPortLabel">
+        <property name="text">
+         <string>COM Port:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comPortComboBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </item>
