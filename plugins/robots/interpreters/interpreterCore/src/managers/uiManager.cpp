@@ -379,7 +379,7 @@ void UiManager::updateDocksSettings() const
 		mMainWindow.paletteDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		mMainWindow.minimapDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		mMainWindow.logicalModelDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
-		mMainWindow.errorReporterDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mMainWindow.errorReporterDock()->setFeatures(QDockWidget::DockWidgetClosable);
 		mMainWindow.graphicalModelDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		mMainWindow.propertyEditorDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		mRobotConsole->setFeatures(QDockWidget::NoDockWidgetFeatures);
