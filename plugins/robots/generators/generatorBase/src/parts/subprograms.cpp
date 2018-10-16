@@ -223,7 +223,7 @@ bool Subprograms::checkIdentifier(const QString &identifier, const QString &rawN
 Id Subprograms::firstToGenerate() const
 {
 	while (!mDiscoveredSubprogramsOrder.isEmpty()) {
-		const Id &id = mDiscoveredSubprogramsOrder.first();
+		const Id id = mDiscoveredSubprogramsOrder.first();
 		mDiscoveredSubprogramsOrder.pop_front();
 		if (!mDiscoveredSubprograms[id]) {
 			return id;
