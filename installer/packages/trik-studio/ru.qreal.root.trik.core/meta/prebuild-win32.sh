@@ -27,5 +27,5 @@ cp    $BIN_DIR/system.py                                                        
 cd "$(dirname "$0")"/../data
 rm -rf trik-runtime-builds
 git clone  --depth 1 https://github.com/qreal/trik-runtime-builds
-mv trik-runtime-builds/winscp $PWD
+mv trik-runtime-builds/winscp .
 rm -rf trik-runtime-builds
