@@ -56,6 +56,20 @@ void Updater::executeUpdater(const QString &mode)
 
 void Updater::readAnswer()
 {
+	const QString errorOutput = mUpdaterProcess->readAllStandardError();
+
+	if (errorOutput.isEmpty()) {
+		if (errorOutput.contains("There are currently no updates available.")) {
+			emit noNewVersionAvailable();
+		} else if (errorOutput.contains("Cannot retrieve remote tree")) {
+			emit networkError();
+		} else {
+			emit unidentifiedError();
+		}
+
+		return;
+	}
+
 	const QString output = mUpdaterProcess->readAllStandardOutput();
 	// Checking that output is a valid XML
 	QDomDocument parser;

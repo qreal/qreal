@@ -62,6 +62,12 @@ void UpdatesCheckerPlugin::checkForUpdates(bool reportNoUpdates)
 		connect(updater, &Updater::newVersionAvailable, this, &UpdatesCheckerPlugin::showUpdatesDialog);
 		if (reportNoUpdates) {
 			connect(updater, &Updater::noNewVersionAvailable, this, &UpdatesCheckerPlugin::reportNoUpdates);
+			connect(updater, &Updater::networkError, [this](){
+				mErrorReporter->addInformation(tr("There is some connection problem, may be network is disabled"));
+			});
+			connect(updater, &Updater::unidentifiedError, [this](){
+				mErrorReporter->addInformation(tr("There is some unrecognized error with updating process"));
+			});
 		}
 
 		QLOG_INFO() << "Starting updater...";

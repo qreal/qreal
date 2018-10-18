@@ -27,17 +27,27 @@
 <context>
     <name>updatesChecker::UpdatesCheckerPlugin</name>
     <message>
-        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="31"/>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="33"/>
         <source>Check for updates</source>
         <translation>Vérifier si des mises à jour sont disponibles</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="72"/>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="66"/>
+        <source>There is some connection problem, may be network is disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="69"/>
+        <source>There is some unrecognized error with updating process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="80"/>
         <source>No updates available</source>
         <translation>Pas de mises à jour disponibles</translation>
     </message>
     <message>
-        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="83"/>
+        <location filename="../../../plugins/tools/updatesChecker/updatesCheckerPlugin.cpp" line="91"/>
         <source>Check for updates on start</source>
         <translation>Vérifier si des mises à jour sont disponibles à chaque lancement du programme</translation>
     </message>
