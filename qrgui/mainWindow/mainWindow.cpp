@@ -262,6 +262,8 @@ void MainWindow::connectActions()
 			, [](bool checked) { SettingsManager::setValue("hideNonHardLabels", !checked); });
 
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
+	mUi->actionAbout->setText(mUi->actionAbout->text()
+			+ mToolManager->customizer()->windowTitle().remove(mToolManager->customizer()->productVersion()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
 
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
@@ -771,9 +773,9 @@ void MainWindow::removeReferences(const Id &id)
 	models().logicalModelAssistApi().removeReferencesFrom(id);
 }
 
-void MainWindow::showAbout()
+void MainWindow::showAbout() const
 {
-	QMessageBox::about(this, tr("About QReal"), mToolManager->customizer()->aboutText());
+	QDesktopServices::openUrl(QUrl(mToolManager->customizer()->aboutText()));
 }
 
 void MainWindow::showHelp()

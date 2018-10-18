@@ -219,7 +219,7 @@ private slots:
 
 	void updateTabName(const Id &id);
 
-	void showAbout();
+	void showAbout() const;
 	void showHelp();
 
 	void fullscreen();
