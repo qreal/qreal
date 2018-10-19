@@ -58,7 +58,7 @@ void Updater::readAnswer()
 {
 	const QString errorOutput = mUpdaterProcess->readAllStandardError();
 
-	if (errorOutput.isEmpty()) {
+	if (!errorOutput.isEmpty()) {
 		if (errorOutput.contains("There are currently no updates available.")) {
 			emit noNewVersionAvailable();
 		} else if (errorOutput.contains("Cannot retrieve remote tree")) {
