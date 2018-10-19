@@ -19,4 +19,4 @@ SUBDIRS += \
 	libusb-1.0.19 \
 	trikRuntime \
 	Box2D \
-	python27 \
+	python \
