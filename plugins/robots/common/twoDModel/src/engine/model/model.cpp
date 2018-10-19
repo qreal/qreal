@@ -122,6 +122,14 @@ void Model::deserialize(const QDomDocument &wordModel, const QDomDocument &blobs
 		mChecker->parseConstraints(constraints);
 	}
 
+	if (worldList.count() == 0 && !mRobotModels.empty()) {
+		for (auto *model : mRobotModels) {
+			QSizeF modelSize = model->info().size() / 2;
+			model->startPositionMarker()->setPos(modelSize.height(), modelSize.width());
+			model->startPositionMarker()->setRotation(0);
+		}
+	}
+
 	if (worldList.count() != 1) {
 		return;
 	}
