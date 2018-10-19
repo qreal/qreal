@@ -83,7 +83,7 @@ void SkittleItem::deserialize(const QDomElement &element)
 	qreal rotation = element.attribute("rotation", "0").toDouble();
 	mStartRotation = element.attribute("startRotation", "0").toDouble();
 
-	setPos(QPointF(x, y) + boundingRect().center());
+	setPos(QPointF(x, y));
 	setTransformOriginPoint(boundingRect().center());
 	mStartPosition = {markerX, markerY};
 	setRotation(rotation);
