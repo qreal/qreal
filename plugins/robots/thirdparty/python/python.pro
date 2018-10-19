@@ -18,7 +18,7 @@ include(../../../../global.pri)
 
 win32 {
 	copyToDestdir(python27.dll, NOW)
-	copyToDestdir(python3.dll, NOW)
+	copyToDestdir(python35.dll, NOW)
 }
 
 macx {
