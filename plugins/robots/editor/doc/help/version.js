@@ -1,4 +1,4 @@
-﻿var version = "3.3.0";
+﻿var version = "3.3.0-β1";
 var year = 2018;
 
 window.onload = function() {
