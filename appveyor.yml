@@ -8,8 +8,8 @@ clone_depth: 1
 environment:
   global:
     APPVEYOR_SAVE_CACHE_ON_ERROR: false
-    PYTHON_PATH: C:\Python27
-    PYTHON_LIB: C:\Python27\libs
+    PYTHON_PATH: C:\Python35
+    PYTHON_LIB: C:\Python35\libs
     CCACHE_DIR: C:\ccache.cache
     BUILD_DIR: '%APPVEYOR_BUILD_FOLDER%\.build'
     PROJECT_FILE: qrealRobotsTest
