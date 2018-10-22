@@ -84,6 +84,7 @@ public slots:
 	trikControl::LedInterface *led() override;
 	trikControl::GamepadInterface *gamepad() override {return nullptr;}
 	trikControl::FifoInterface *fifo(const QString &) override {return nullptr;}
+	trikControl::I2cDeviceInterface *i2c(int, int) override {return nullptr;}
 
 	void playTone(int, int) override {}
 	QVector<uint8_t> getStillImage() override { return QVector<uint8_t>(); }
