@@ -18,7 +18,7 @@ cp    $BIN_DIR/trikScriptRunner.dll                                             
 cp    $BIN_DIR/trikHal.dll                                                        $PWD/../data/
 cp    $BIN_DIR/trikKernel.dll                                                     $PWD/../data/
 cp    $BIN_DIR/trikNetwork.dll                                                    $PWD/../data/
-cp    $BIN_DIR/python27.dll                                                       $PWD/../data/
+cp    $BIN_DIR/python35.dll                                                       $PWD/../data/
 
 
 cp    $BIN_DIR/system.js                                                          $PWD/../data/bin/
