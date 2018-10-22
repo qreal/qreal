@@ -30,9 +30,9 @@ configuration:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-  - '%CCACHE_DIR%' -> '**\*.pr?'
-  - '%BUILD_DIR%' -> '**\*.pr?'
-  - '%MSYS_DIR%\var\cache\pacman\pkg' -> appveyor.yml
+  - '%CCACHE_DIR% -> **\*.pr?'
+  - '%BUILD_DIR% -> **\*.pr?'
+  - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
 
 clone_script:
   - cmd: >-
