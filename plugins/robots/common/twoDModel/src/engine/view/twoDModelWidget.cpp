@@ -489,6 +489,15 @@ void TwoDModelWidget::setBackground()
 		return;
 	}
 
+	QFile imageFile(loadFileName);
+	if (imageFile.size() > 5 * 1024 * 1024) {
+		if (utils::QRealMessageBox::question(QApplication::focusWidget(), tr("Warning")
+				, tr("You are trying to load to big image, it may freeze execution for some time. Continue?"))
+						!= QMessageBox::Yes) {
+			return;
+		}
+	}
+
 	Image *image = new Image(loadFileName, false);
 	const QSize size = image->preferedSize();
 	mModel.worldModel().setBackground(image, QRect(QPoint(-size.width()/2, -size.height()/2), size));
@@ -779,7 +788,7 @@ void TwoDModelWidget::setCursorType(CursorType cursor)
 
 void TwoDModelWidget::changePhysicsSettings()
 {
-	SettingsManager::setValue("2DModelRealisticPhysics", mUi->realisticPhysicsCheckBox->isChecked());
+	SettingsManager::setValue("2dModelRealisticPhysics", mUi->realisticPhysicsCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfSensors", mUi->enableSensorNoiseCheckBox->isChecked());
 	SettingsManager::setValue("enableNoiseOfMotors", mUi->enableMotorNoiseCheckBox->isChecked());
 

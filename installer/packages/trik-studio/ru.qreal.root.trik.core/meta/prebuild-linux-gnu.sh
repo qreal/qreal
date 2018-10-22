@@ -15,10 +15,3 @@ cp -pr $BIN_DIR/libPythonQt-Qt*-Python*.so*                                     
 cp -pr $BIN_DIR/libtrik*.so*                                                         $PWD/../data/lib/
 
 cp     $BIN_DIR/system.{py,js}                                                		 $PWD/../data/bin/
-
-cd "$(dirname "$0")"/../data
-rm -rf winscp
-mkdir -p resources/trikRuntime
-cd resources/trikRuntime
-tar xfvz ../../trik-runtime-builds/trikRuntime.tar.gz
-rm -rf ../../trik-runtime-builds

@@ -25,14 +25,14 @@ class PreferencesBehaviourPage : public qReal::gui::PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit PreferencesBehaviourPage(QWidget *parent = 0);
+	explicit PreferencesBehaviourPage(QWidget *parent = nullptr);
 	~PreferencesBehaviourPage() override;
 
 	void save() override;
 	void restoreSettings() override;
 
 protected:
-	void changeEvent(QEvent *e);
+	void changeEvent(QEvent *e) override;
 
 private slots:
 	void showAutoSaveBox(bool show);

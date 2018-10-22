@@ -24,6 +24,16 @@
         <translation>Задержка после жеста</translation>
     </message>
     <message>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="174"/>
+        <source>Widgets</source>
+        <translation>Элементы интерфейса</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="190"/>
+        <source>Dockable mode</source>
+        <translation>Режим плавающих окон</translation>
+    </message>
+    <message>
         <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="91"/>
         <source>msec</source>
         <translation>мсек</translation>
@@ -67,7 +77,7 @@
         <translation>Режим работы на тач-экране</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="115"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="117"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Системный язык&gt;</translation>
     </message>

@@ -39,12 +39,12 @@ QImage Customizer::applicationLogo() const
 QString Customizer::productVersion() const
 {
 	/// @todo other storage for it?
-	return "3.2.0";
+	return "3.3.0-β1";
 }
 
 QString Customizer::aboutText() const
 {
-	return "<b>" + windowTitle() + "<b><br><br><a href=\"http://robots.qreal.ru/\">http://robots.qreal.ru/</a>";
+	return "http://www.trikset.com/products/trik-studio";
 }
 
 QString Customizer::examplesDirectory() const

@@ -100,8 +100,12 @@ bool ProjectManagerWrapper::open(const QString &fileName)
 	} else if (fileInfo.suffix() == "qrp") {
 		return openQRProject(fileInfo);
 	} else if (fileInfo.exists()) {
+		Id localActiveDiagram = mMainWindow->activeDiagram();
 		mMainWindow->closeStartTab();
 		mTextManager->showInTextEditor(fileInfo, text::Languages::pickByExtension(fileInfo.suffix()));
+		if (localActiveDiagram.isNull()) {
+			emit afterOpen(fileName);
+		}
 	}
 
 	return true;

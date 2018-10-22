@@ -21,6 +21,7 @@ cp -pr $BIN_DIR/librobots-generator-base.so*                            $PWD/../
 cp -pr $BIN_DIR/librobots-kit-base.so*                                  $PWD/../data/lib/
 cp -pr $BIN_DIR/librobots-utils.so*                                     $PWD/../data/lib/
 cp -pr $BIN_DIR/libqextserialport.so*                                   $PWD/../data/lib/
+mv     $PWD/../data/externalToolsConfig                                 $PWD/../data/bin/externalToolsConfig
 
 # Cleaning up prebuild-common.sh results...
 rm -rf $PWD/../data/plugins/

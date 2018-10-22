@@ -148,6 +148,7 @@ public:
 	QDockWidget *propertyEditorDock() const override;
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
+	QDockWidget *minimapDock() const override;
 	QStatusBar *statusBar() const override;
 	QList<QToolBar *> toolBars() const override;
 
@@ -218,7 +219,7 @@ private slots:
 
 	void updateTabName(const Id &id);
 
-	void showAbout();
+	void showAbout() const;
 	void showHelp();
 
 	void fullscreen();

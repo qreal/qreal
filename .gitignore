@@ -9,6 +9,7 @@ buildScripts/vera++/params
 *.orig
 *.rej
 *.so
+*.qm
 .#*
 *.*#
 moc_*.cpp

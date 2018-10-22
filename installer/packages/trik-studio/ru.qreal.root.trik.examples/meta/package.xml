@@ -4,7 +4,7 @@
     <DisplayName xml:lang="ru_ru">Примеры</DisplayName>
     <Description>A set of examples for TRIK kit</Description>
     <Description xml:lang="ru_ru">Набор примеров программ для ТРИК</Description>
-    <Version>3.2.0-4</Version>
+    <Version>3.3.0-2</Version>
     <ReleaseDate>2017-11-14</ReleaseDate>
     <SortingPriority>9</SortingPriority>
     <Default>true</Default>

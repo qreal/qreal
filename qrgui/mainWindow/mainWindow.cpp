@@ -191,7 +191,7 @@ void MainWindow::connectActions()
 
 	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
-		if (!mProjectManager->suggestToOpenExisting()) {
+		if (!mProjectManager->suggestToOpenExisting() && !currentTab()) {
 			openStartTab();
 		}
 	});
@@ -262,8 +262,9 @@ void MainWindow::connectActions()
 			, [](bool checked) { SettingsManager::setValue("hideNonHardLabels", !checked); });
 
 	connect(mUi->actionHelp, SIGNAL(triggered()), this, SLOT(showHelp()));
+	mUi->actionAbout->setText(mUi->actionAbout->text()
+			+ mToolManager->customizer()->windowTitle().remove(mToolManager->customizer()->productVersion()));
 	connect(mUi->actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
-	connect(mUi->actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
@@ -772,9 +773,9 @@ void MainWindow::removeReferences(const Id &id)
 	models().logicalModelAssistApi().removeReferencesFrom(id);
 }
 
-void MainWindow::showAbout()
+void MainWindow::showAbout() const
 {
-	QMessageBox::about(this, tr("About QReal"), mToolManager->customizer()->aboutText());
+	QDesktopServices::openUrl(QUrl(mToolManager->customizer()->aboutText()));
 }
 
 void MainWindow::showHelp()
@@ -2094,6 +2095,11 @@ QDockWidget *MainWindow::errorReporterDock() const
 QDockWidget *MainWindow::paletteDock() const
 {
 	return mUi->paletteDock;
+}
+
+QDockWidget *MainWindow::minimapDock() const
+{
+	return mUi->minimapDock;
 }
 
 QStatusBar *MainWindow::statusBar() const

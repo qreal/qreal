@@ -16,12 +16,14 @@
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QPainter>
+#include <QtWidgets/QApplication>
 
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/platformInfo.h>
 #include <qrutils/graphicsUtils/gridDrawer.h>
 #include <qrutils/deleteLaterHelper.h>
 #include <qrutils/widgets/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrgui/controller/controllerInterface.h>
 
 #include <kitBase/robotModel/robotParts/touchSensor.h>
@@ -638,6 +640,15 @@ void TwoDModelScene::addImage()
 			, tr("Graphics (*.*)"));
 	if (loadFileName.isEmpty()) {
 		return;
+	}
+
+	QFile imageFile(loadFileName);
+	if (imageFile.size() >  5 * 1024 * 1024) {
+		if (utils::QRealMessageBox::question(QApplication::focusWidget(), tr("Warning")
+				, tr("You are trying to load to big image, it may freeze execution for some time. Continue?"))
+						!= QMessageBox::Yes) {
+			return;
+		}
 	}
 
 	mDrawingAction = image;

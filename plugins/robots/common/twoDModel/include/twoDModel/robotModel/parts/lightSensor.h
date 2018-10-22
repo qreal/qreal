@@ -41,7 +41,7 @@ public:
 
 	void read() override;
 
-private:
+protected:
 	engine::TwoDModelEngineInterface &mEngine;
 };
 

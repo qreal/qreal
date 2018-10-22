@@ -59,7 +59,17 @@
         <translation>Mode tactile</translation>
     </message>
     <message>
-        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="115"/>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="174"/>
+        <source>Widgets</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.ui" line="190"/>
+        <source>Dockable mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/preferencesDialog/preferencesPages/behaviourPage.cpp" line="117"/>
         <source>&lt;System Language&gt;</source>
         <translation>&lt;Langage système&gt;</translation>
     </message>

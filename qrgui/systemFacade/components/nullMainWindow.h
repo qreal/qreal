@@ -96,6 +96,7 @@ public:
 	QDockWidget *propertyEditorDock() const override;
 	QDockWidget *errorReporterDock() const override;
 	QDockWidget *paletteDock() const override;
+	QDockWidget *minimapDock() const override;
 	QStatusBar *statusBar() const override;
 	QList<QToolBar *> toolBars() const override;
 
@@ -127,6 +128,7 @@ private:
 	QDockWidget *mPropertyEditorDock;  // Takes ownership
 	QDockWidget *mErrorReporterDock;  // Takes ownership
 	QDockWidget *mPaletteDock;  // Takes ownership
+	QDockWidget *mMinimapDock;  // Takes ownership
 	QStatusBar *mStatusBar;  // Takes ownership
 	bool mClosed = false;
 };

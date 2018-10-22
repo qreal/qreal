@@ -409,9 +409,11 @@ void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 		mStart.setEnabled(false); // Should matter
 		mStop.setEnabled(false);
 	}
+
 	if (mQtsInterpreter->isRunning()) {
 		mStop.trigger(); // Should interpretation should always stops at the change of tabs or not?
 	}
+
 	mStart.setVisible(isCodeTab && isQtsInterp);
 	mStop.setVisible(false);
 }

@@ -44,5 +44,5 @@ QString TrikV62KitInterpreterPlugin::kitId() const
 
 QString TrikV62KitInterpreterPlugin::friendlyKitName() const
 {
-	return tr("TRIK (model-2015)");
+	return tr("TRIK");
 }

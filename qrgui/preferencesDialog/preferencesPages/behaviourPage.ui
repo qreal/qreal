@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>364</height>
+    <width>502</width>
+    <height>437</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -162,6 +162,32 @@
        <widget class="QCheckBox" name="touchModeCheckBox">
         <property name="text">
          <string>Touch Mode</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Widgets</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame_3">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QCheckBox" name="dockableModeCheckBox">
+        <property name="text">
+         <string>Dockable mode</string>
         </property>
        </widget>
       </item>

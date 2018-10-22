@@ -67,6 +67,7 @@ void PreferencesBehaviourPage::save()
 	SettingsManager::setValue("gesturesEnabled", mUi->gesturesCheckBox->isChecked());
 	SettingsManager::setValue("gestureDelay", mUi->gestureDelaySpinBox->value());
 	SettingsManager::setValue("touchMode", mUi->touchModeCheckBox->isChecked());
+	SettingsManager::setValue("dockableWidgets", mUi->dockableModeCheckBox->isChecked());
 }
 
 void PreferencesBehaviourPage::restoreSettings()
@@ -86,6 +87,7 @@ void PreferencesBehaviourPage::restoreSettings()
 	mUi->autoSaveSpinBox->setValue(SettingsManager::value("AutosaveInterval").toInt());
 	mUi->gestureDelaySpinBox->setValue(SettingsManager::value("gestureDelay").toInt());
 	mUi->touchModeCheckBox->setChecked(SettingsManager::value("touchMode").toBool());
+	mUi->dockableModeCheckBox->setChecked(SettingsManager::value("dockableWidgets").toBool());
 	mUi->gesturesCheckBox->setChecked(gesturesEnabled);
 
 	mUi->gestureDelaySpinBox->setVisible(gesturesEnabled);

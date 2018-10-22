@@ -10,7 +10,6 @@ mkdir -p "$BUNDLE_CONTENTS/Lib"
 #cp -pr $QT_DIR/lib/libQt5MultimediaWidgets.so*		$PWD/../data/lib/
 #cp -pr $QT_DIR/lib/libQt5OpenGL.so*			$PWD/../data/lib/
 
-git clone --depth 1 https://github.com/trikset/trik-desktop-gamepad.git gamepad-build
 
 cd gamepad-build
 $QT_DIR/bin/qmake CONFIG+=release

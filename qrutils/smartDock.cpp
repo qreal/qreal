@@ -232,7 +232,6 @@ void SmartDock::initDock()
 
 	setWindowTitle(mInnerWidget->windowTitle());
 	setWidget(mInnerWidget);
-	setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 	connect(this, &QDockWidget::topLevelChanged, this, &SmartDock::checkFloating);
 	connect(this, &QDockWidget::dockLocationChanged, this, &SmartDock::checkCentralWidget);
 }

@@ -73,9 +73,10 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 	libusb_set_debug(nullptr, DEBUG_LEVEL);
 
 	libusb_device **devices;
-	int count = libusb_get_device_list(nullptr, &devices);
-	for (int i = 0; i < count; ++i) {
-		libusb_device_descriptor device_descriptor;
+	ssize_t count = libusb_get_device_list(nullptr, &devices);
+	libusb_device_descriptor device_descriptor;
+	int i = 0;
+	for (; i < count; ++i) {
 		if (libusb_get_device_descriptor(devices[i], &device_descriptor) < 0) {
 			continue;
 		}
@@ -112,21 +113,47 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 	}
 
 	// old tool libnxt says that it should be 1
-	const QList<int> configurations = {1, 0, 2};
+	const int possibleConfigurations = device_descriptor.bNumConfigurations;
 	bool configurationFound = false;
-	for (int configiration : configurations) {
-		const int err = libusb_set_configuration(mHandle, configiration);
+	bool interfaceFound = false;
+	for (int configuration = 0; configuration <= possibleConfigurations; configuration++) {
+		const int err = libusb_set_configuration(mHandle, configuration);
 		if (err < 0 && err != LIBUSB_ERROR_NOT_FOUND && err != LIBUSB_ERROR_INVALID_PARAM) {
-			QLOG_ERROR() << "libusb_set_configuration for NXT returned" << err << "for configuration" << configiration;
-			break;
+			QLOG_ERROR() << "libusb_set_configuration for NXT returned" << err << "for configuration" << configuration;
 		} else if (err >= 0) {
 			configurationFound = true;
-			break;
+			libusb_config_descriptor *config_descriptor = new libusb_config_descriptor;
+			const int err = libusb_get_active_config_descriptor(devices[i], &config_descriptor);
+			if (err >= 0) {
+				const int possibleInterfaces = config_descriptor->bNumInterfaces;
+				// old tool libnxt says that it should be 1
+				QList<int> interfaces = {1, 0, 2};
+				const int interfacesBound = possibleInterfaces < 3 ? possibleInterfaces : 3;
+				for (int i = 0; i <= interfacesBound; i++) {
+					const int err = libusb_claim_interface(mHandle, interfaces[i]);
+					if (err < 0 && err != LIBUSB_ERROR_NOT_FOUND && err != LIBUSB_ERROR_INVALID_PARAM) {
+						QLOG_ERROR() << "libusb_claim_interface for NXT returned"
+								<< err << "for interface" << i;
+					} else if (err >= 0) {
+						interfaceFound = true;
+						break;
+					}
+				}
+
+				if (interfaceFound) {
+					delete config_descriptor;
+					break;
+				}
+			} else {
+				QLOG_ERROR() << "libusb_get_active_config_descriptor for" << configuration << "returned" << err;
+			}
+
+			delete config_descriptor;
 		}
 	}
 
 	if (!configurationFound) {
-		QLOG_ERROR() << "No appropriate configuration found among" << configurations << ". Giving up.";
+		QLOG_ERROR() << "No appropriate configuration found among all possible configurations. Giving up.";
 		emit connected(false, tr("USB Device configuration problem. Try to restart TRIK Studio and re-plug NXT."));
 		libusb_close(mHandle);
 		mHandle = nullptr;
@@ -134,22 +161,8 @@ bool UsbRobotCommunicationThread::connectImpl(bool firmwareMode, int vid, int pi
 		return false;
 	}
 
-	// old tool libnxt says that it should be 1
-	const QList<int> interfaces = QList<int>({1, 0, 2});
-	bool interfaceFound = false;
-	for (int interface : interfaces) {
-		const int err = libusb_claim_interface(mHandle, interface);
-		if (err < 0 && err != LIBUSB_ERROR_NOT_FOUND && err != LIBUSB_ERROR_INVALID_PARAM) {
-			QLOG_ERROR() << "libusb_claim_interface for NXT returned" << err << "for interface" << interface;
-			break;
-		} else if (err >= 0) {
-			interfaceFound = true;
-			break;
-		}
-	}
-
 	if (!interfaceFound) {
-		QLOG_ERROR() << "No appropriate interface found among" << interfaces << ". Giving up.";
+		QLOG_ERROR() << "No appropriate interface found among possible interfaces. Giving up.";
 		emit connected(false, tr("NXT device is already used by another software."));
 		libusb_close(mHandle);
 		mHandle = nullptr;

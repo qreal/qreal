@@ -230,7 +230,7 @@
          </sizepolicy>
         </property>
         <property name="title">
-         <string>Type of constructor kit</string>
+         <string>Robotics construction kit</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2"/>
        </widget>
@@ -244,7 +244,7 @@
          </sizepolicy>
         </property>
         <property name="title">
-         <string>Type of robot model</string>
+         <string>Robot model</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3"/>
        </widget>

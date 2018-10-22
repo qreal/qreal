@@ -92,7 +92,7 @@ b2Vec2 Box2DWheel::getForwardVelocity() const {
 }
 
 void Box2DWheel::keepConstantSpeed(float speed) {
-	const int acceleration = 20;
+	const int acceleration = 1;//20;
 	if (qAbs(prevSpeed - speed) > b2_epsilon){
 		mRobot.applyForceToCenter(mBody->GetWorldVector(b2Vec2(0.1f * mathUtils::Math::sign(speed), 0)), true);
 		prevSpeed = speed;
@@ -116,6 +116,14 @@ void Box2DWheel::keepConstantSpeed(float speed) {
 	float speedDiff = desiredSpeed - currentForwardSpeed;
 	b2Vec2 forwardNormal = mBody->GetWorldVector(b2Vec2(1, 0));
 	b2Vec2 linearImpulse = speedDiff * mBody->GetMass() * forwardNormal;
+
+	//break stop
+	if (qAbs(speedDiff) < b2_epsilon) {
+		mBody->SetLinearVelocity({0, 0});
+		mBody->SetAngularVelocity(0);
+		return;
+	}
+
 	mBody->ApplyLinearImpulse(linearImpulse, mBody->GetWorldCenter(), true);
 }
 

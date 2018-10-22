@@ -41,6 +41,7 @@
 #include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDLineSensor.h"
 #include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDObjectSensor.h"
 #include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDColorSensor.h"
+#include "trikKitInterpreterCommon/robotModel/twoD/parts/twoDLightSensor.h"
 
 using namespace trik::robotModel;
 using namespace trik::robotModel::twoD;
@@ -72,6 +73,10 @@ robotParts::Device *TrikTwoDRobotModel::createDevice(const PortInfo &port, const
 
 	if (deviceInfo.isA<robotParts::Speaker>()) {
 		return new parts::TwoDSpeaker(deviceInfo, port, *engine());
+	}
+
+	if (deviceInfo.isA<robotParts::LightSensor>()) {
+		return new parts::TwoDLightSensor(deviceInfo, port, *engine());
 	}
 
 	if (deviceInfo.isA<robotModel::parts::TrikShell>()) {

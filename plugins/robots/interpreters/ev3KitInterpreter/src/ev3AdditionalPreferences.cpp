@@ -29,6 +29,8 @@ Ev3AdditionalPreferences::Ev3AdditionalPreferences(QWidget *parent)
 	mUi->robotImagePicker->configure("ev3Robot2DImage", tr("2D robot image:"));
 	connect(mUi->manualComPortCheckbox, &QCheckBox::toggled
 			, this, &Ev3AdditionalPreferences::manualComPortCheckboxChecked);
+	connect(mUi->commonFolderChecbox, &QCheckBox::toggled
+			, this, [this](bool state){ mUi->commonFolderNameLineEdit->setEnabled(state); });
 }
 
 Ev3AdditionalPreferences::~Ev3AdditionalPreferences()
@@ -40,6 +42,8 @@ void Ev3AdditionalPreferences::save()
 {
 	SettingsManager::setValue("Ev3BluetoothPortName", selectedPortName());
 	SettingsManager::setValue("Ev3ManualComPortCheckboxChecked", mUi->manualComPortCheckbox->isChecked());
+	SettingsManager::setValue("Ev3CommonFolderChecboxChecked", mUi->commonFolderChecbox->isChecked());
+	SettingsManager::setValue("Ev3CommonFolderName", mUi->commonFolderNameLineEdit->text());
 	mUi->robotImagePicker->save();
 	emit settingsChanged();
 }
@@ -67,6 +71,10 @@ void Ev3AdditionalPreferences::restoreSettings()
 		mUi->manualComPortCheckbox->setChecked(false);
 		mUi->manualComPortCheckbox->setChecked(SettingsManager::value("Ev3ManualComPortCheckboxChecked").toBool());
 	}
+
+	mUi->commonFolderChecbox->setChecked(SettingsManager::value("Ev3CommonFolderChecboxChecked", false).toBool());
+	mUi->commonFolderNameLineEdit->setEnabled(mUi->commonFolderChecbox->isChecked());
+	mUi->commonFolderNameLineEdit->setText(SettingsManager::value("Ev3CommonFolderName", "ts").toString());
 }
 
 void Ev3AdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotModelInterface * const robotModel)

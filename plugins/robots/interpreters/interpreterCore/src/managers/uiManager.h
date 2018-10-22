@@ -50,6 +50,8 @@ public:
 			, kitBase::EventsForKitPluginInterface &kitPluginEvents
 			, kitBase::robotModel::RobotModelManagerInterface &robotModelManager);
 
+	~UiManager();
+
 	/// Embeds the given widget into main window`s left dock panel
 	void placeDevicesConfig(QWidget *devicesWidget);
 
@@ -77,10 +79,12 @@ private slots:
 	void resetMainWindowCorners() const;
 	void ensureDiagramVisible();
 
+	void updateDocksSettings() const;
+
 private:
 	void initTab();
 
-	QDockWidget *produceDockWidget(const QString &title, QWidget *content) const;
+	QDockWidget *produceDockWidget(const QString &title, QWidget *content);
 	void produceModeButton(Mode mode, QAction &action, QStatusBar *statusBar) const;
 
 	int currentMode() const;
@@ -100,6 +104,8 @@ private:
 	// Takes ownership on keys, doesn`t take on values.
 	// QAction manages underlying widgets visibility.
 	QMap<QAction *, kitBase::robotModel::RobotModelInterface *> mToolBarWidgets;
+
+	QSet<QDockWidget *> mDockWidgets;
 };
 
 }

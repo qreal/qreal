@@ -26,7 +26,7 @@ class Updater : public QObject
 	Q_OBJECT
 
 public:
-	explicit Updater(QObject *parent = 0);
+	explicit Updater(QObject *parent = nullptr);
 
 	/// Updater will just perform light-weight versions comparison network operation.
 	/// If new updates are available newVersionAvailable() signal will be emitted.
@@ -41,6 +41,10 @@ signals:
 	void newVersionAvailable();
 	/// Emitted when no new version was found on remote server
 	void noNewVersionAvailable();
+	/// Emitted when there is some network problem
+	void networkError();
+	/// Emitted when there is an output in stderr but not recognised
+	void unidentifiedError();
 
 private slots:
 	void readAnswer();
