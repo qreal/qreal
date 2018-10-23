@@ -23,8 +23,10 @@ static const uchar SYSTEM_COMMAND_REPLY =             0x01;    //  System comman
 static const uchar SYSTEM_COMMAND_NO_REPLY =          0x81;    //  System command, reply not required
 static const uchar BEGIN_DOWNLOAD =                   0x92;    //  Begin file down load
 static const uchar CONTINUE_DOWNLOAD =                0x93;    //  Continue file down load
+static const uchar DELETE_FILE =                      0x9C;    //  Remove file
 static const uchar SYSTEM_REPLY =                     0x03;    //  System command reply
 static const uchar SYSTEM_REPLY_ERROR =               0x05;    //  System command reply error
+static const uchar DELETE_FILE_RESPONSE_SIZE =        8;
 static const uchar BEGIN_DOWNLOAD_RESPONSE_SIZE =     8;
 static const uchar CONTINUE_DOWNLOAD_RESPONSE_SIZE =  8;
 static const uchar SUCCESS =                          0x00;
@@ -51,6 +53,26 @@ QString Ev3RobotCommunicationThread::uploadFile(const QString &sourceFile, const
 	file.close();
 	const int chunkSize = 960;
 
+	// try to delete existing
+	const int cmdDeleteSize = 6 + devicePath.size();
+	QByteArray commandDelete(cmdDeleteSize, 0);
+	commandDelete[0] = cmdDeleteSize & 0xFF;
+	commandDelete[1] = (cmdDeleteSize >> 8) & 0xFF ;
+	commandDelete[2] = 0x02;
+	commandDelete[3] = 0x00;
+	commandDelete[4] = SYSTEM_COMMAND_REPLY;
+	commandDelete[5] = DELETE_FILE;
+	int index = 6;
+	for (int i = 0; i < devicePath.size(); ++i) {
+		commandDelete[index++] = devicePath.at(i).toLatin1();
+	}
+
+	commandDelete[index] = 0x00;
+
+	send1(commandDelete);
+	QByteArray commandDeleteResponse = receive(DELETE_FILE_RESPONSE_SIZE);
+
+	// start downloading
 	const int cmdBeginSize = 11 + devicePath.size();
 	QByteArray commandBegin(cmdBeginSize, 0);
 	commandBegin[0] = (cmdBeginSize - 2) & 0xFF;
@@ -63,7 +85,7 @@ QString Ev3RobotCommunicationThread::uploadFile(const QString &sourceFile, const
 	commandBegin[7] = (data.size() >> 8) & 0xFF;
 	commandBegin[8] = (data.size() >> 16) & 0xFF;
 	commandBegin[9] = (data.size() >> 24) & 0xFF;
-	int index = 10;
+	index = 10;
 	for (int i = 0; i < devicePath.size(); ++i) {
 		commandBegin[index++] = devicePath.at(i).toLatin1();
 	}
@@ -72,7 +94,8 @@ QString Ev3RobotCommunicationThread::uploadFile(const QString &sourceFile, const
 
 	send1(commandBegin);
 	QByteArray commandBeginResponse = receive(BEGIN_DOWNLOAD_RESPONSE_SIZE);
-	if (commandBeginResponse.at(4) != SYSTEM_REPLY) {
+
+	if (commandBeginResponse.at(4) == SYSTEM_REPLY_ERROR) {
 		return QString();
 	}
 
@@ -110,7 +133,7 @@ bool Ev3RobotCommunicationThread::runProgram(const QString &pathOnRobot)
 			, enums::commandType::CommandTypeEnum::DIRECT_COMMAND_NO_REPLY);
 	int index = 7;
 	#define charOf(x) static_cast<char>(static_cast<uchar>(x))
-	command[index++] = charOf(0xC0);// opFILE            Opcode file related
+	command[index++] = charOf(0xC0);  // opFILE            Opcode file related
 	command[index++] = charOf(0x08);
 	command[index++] = charOf(0x82);  // LC0(LOAD_IMAGE)   Command encoded as single byte constant
 	command[index++] = charOf(0x01);  // LC2(USER_SLOT)    User slot (1 = program slot) encoded as single constant byte
