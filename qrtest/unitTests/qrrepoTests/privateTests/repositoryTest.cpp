@@ -53,7 +53,7 @@ void RepositoryTest::removeDirectory(QString const &dirName)
 {
 	QDir const dir(dirName);
 
-	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden
+	for (QFileInfo info : dir.entryInfoList(QDir::Hidden
 			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {

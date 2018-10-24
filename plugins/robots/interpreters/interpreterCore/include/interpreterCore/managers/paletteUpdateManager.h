@@ -32,7 +32,7 @@ public:
 	/// @param parent - parent of this object in terms of Qt memory management system.
 	PaletteUpdateManager(qReal::gui::MainWindowInterpretersInterface &paletteProvider
 			, const BlocksFactoryManagerInterface &factoryManager
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 public slots:
 	/// Called when selected robot model is changed, updates palette.

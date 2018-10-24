@@ -33,7 +33,7 @@ public:
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;
-	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 	void drawExtractionForItem(QPainter *painter) override;
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

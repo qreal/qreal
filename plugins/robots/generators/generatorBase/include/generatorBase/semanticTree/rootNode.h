@@ -25,7 +25,7 @@ namespace semantics {
 class ROBOTS_GENERATOR_EXPORT RootNode : public SemanticNode
 {
 public:
-	explicit RootNode(SemanticNode * const initialBlock, QObject *parent = 0);
+	explicit RootNode(SemanticNode * const initialBlock, QObject *parent = nullptr);
 
 	qReal::Id initialBlock() const;
 

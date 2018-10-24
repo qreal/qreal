@@ -42,7 +42,7 @@ class ROBOTS_UTILS_EXPORT SensorsGraph : public QWidget
 	Q_OBJECT
 
 public:
-	explicit SensorsGraph(const qrtext::DebuggerInterface &parser, QWidget *parent = 0);
+	explicit SensorsGraph(const qrtext::DebuggerInterface &parser, QWidget *parent = nullptr);
 	~SensorsGraph();
 
 	/// Hides or shows start and stop buttons.
@@ -59,7 +59,7 @@ public:
 	void clearTrackingObjects();
 
 	/// paintEvent makes resize operations
-	void paintEvent(QPaintEvent *event = 0);
+	void paintEvent(QPaintEvent *event = nullptr);
 
 	static const int readSensorDefaultInterval = 50;
 	static const int autoscalingDefault = 3000;

@@ -82,7 +82,7 @@ bool RulesChecker::makeDetour(Id const &currentNode, IdList &usedNodes)
 	}
 
 	bool foundFinalNode = false; // to catch that we have found end-node anywhere in path
-	foreach (Id const &node, frontNodes) {
+	for (Id const &node : frontNodes) {
 		if (makeDetour(node, usedNodes)) {
 			foundFinalNode = true;
 		}
@@ -109,7 +109,7 @@ void RulesChecker::checkFinalNodeRule(qReal::Id const &node)
 	IdList incorrectLinks = (isLastNode) ? outgoingSequenceFlow(node) : incomingSequenceFlow(node);
 	if (!incorrectLinks.isEmpty()) {
 		postError((isLastNode) ? linkFromFinalNode : linkToStartNode, node);
-		foreach (Id const &key, incorrectLinks) {
+		for (Id const &key : incorrectLinks) {
 			mDiagramElements.removeOne(key);
 		}
 	}
@@ -154,7 +154,7 @@ void RulesChecker::checkAllDiagrams()
 
 	IdList diagrams = mGRepoApi->graphicalElements(Id("BPMNDiagram", "BPMNMetamodel", "BPMNDiagramNode"));
 
-	foreach (Id const &diagram, diagrams) {
+	for (Id const &diagram : diagrams) {
 		mDiagramElements = elementsOfDiagram(diagram);
 		checkDiagram();
 	}
@@ -234,7 +234,7 @@ bool RulesChecker::isEndNode(qReal::Id const &node) const
 qReal::IdList RulesChecker::elementsOfDiagram(qReal::Id const &diagram) const
 {
 	IdList result = mGRepoApi->children(diagram);
-	foreach (Id const &id, result) {
+	for (Id const &id : result) {
 		if (id.element() == "MessageFlow") {
 			result.removeAll(id);
 		}
@@ -250,7 +250,7 @@ qReal::IdList RulesChecker::elementsOfDiagram(qReal::Id const &diagram) const
 
 void RulesChecker::checkDiagramElements()
 {
-	foreach (Id const &id, mDiagramElements) {
+	for (Id const &id : mDiagramElements) {
 		if (isContainer(id)) {
 			mDiagramElements.removeOne(id);
 		}
@@ -263,7 +263,7 @@ void RulesChecker::checkDiagramElements()
 qReal::IdList RulesChecker::collectStartNodes() const
 {
 	IdList headNodes;
-	foreach (Id const &id, mDiagramElements) {
+	for (Id const &id : mDiagramElements) {
 		if (isStartNode(id)) {
 			headNodes << id;
 		}
@@ -276,7 +276,7 @@ qReal::Id RulesChecker::findFirstNode() const
 	Id result = mDiagramElements.first();
 	int minIncomingLinks = incomingSequenceFlow(result).size();
 
-	foreach (Id const &element, mDiagramElements) {
+	for (Id const &element : mDiagramElements) {
 		int incomingLinks = incomingSequenceFlow(element).size();
 		if (incomingLinks < minIncomingLinks) {
 			minIncomingLinks = incomingLinks;
@@ -290,7 +290,7 @@ qReal::Id RulesChecker::findFirstNode() const
 qReal::IdList RulesChecker::incomingSequenceFlow(qReal::Id const &id) const
 {
 	IdList result = mGRepoApi->incomingLinks(id);
-	foreach (Id const link, result) {
+	for (Id const link : result) {
 		if (link.element() == "MessageFlow") {
 			result.removeAll(link);
 		}
@@ -301,7 +301,7 @@ qReal::IdList RulesChecker::incomingSequenceFlow(qReal::Id const &id) const
 qReal::IdList RulesChecker::outgoingSequenceFlow(qReal::Id const &id) const
 {
 	IdList result = mGRepoApi->outgoingLinks(id);
-	foreach (Id const link, result) {
+	for (Id const link : result) {
 		if (link.element() == "MessageFlow") {
 			result.removeAll(link);
 		}

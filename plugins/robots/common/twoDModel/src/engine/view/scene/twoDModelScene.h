@@ -70,7 +70,7 @@ class TwoDModelScene: public graphicsUtils::AbstractScene, public kitBase::Devic
 public:
 	TwoDModelScene(model::Model &model
 			, graphicsUtils::AbstractView *view
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	~TwoDModelScene() override;
 

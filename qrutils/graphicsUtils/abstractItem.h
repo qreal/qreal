@@ -41,14 +41,14 @@ public:
 		, Ctrl
 	};
 
-	explicit AbstractItem(QGraphicsItem *parent = 0);
+	explicit AbstractItem(QGraphicsItem *parent = nullptr);
 
 	virtual QRectF boundingRect() const = 0;
 	virtual QRectF realBoundingRect() const;
 	virtual QRectF calcNecessaryBoundingRect() const;
 	virtual QPainterPath realShape() const;
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	virtual void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) = 0;
+	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
+	virtual void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) = 0;
 	virtual void drawExtractionForItem(QPainter *painter);
 	virtual void drawFieldForResizeItem(QPainter *painter);
 	virtual void setPenBrushForExtraction(QPainter *painter, const QStyleOptionGraphicsItem *option);

@@ -59,7 +59,7 @@ IdList GraphicalModelAssistApi::graphicalIdsByLogicalId(const Id &logicalId) con
 {
 	IdList result;
 	QList<QPersistentModelIndex> indexes = mGraphicalModel.indexesWithLogicalId(logicalId);
-	foreach (const QPersistentModelIndex &index, indexes) {
+	for (const QPersistentModelIndex &index : indexes) {
 		result.append(idByIndex(index));
 	}
 

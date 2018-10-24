@@ -41,7 +41,7 @@ void HascolParser::parse(QStringList const &files)
 	mImportedStructureDiagramId = initDiagram("Imported structure", "HascolStructureDiagram");
 	mApi.setProperty(mImportedStructureDiagramId, "output directory", "");
 
-	foreach (QString const &file, files) {
+	for (QString const &file : files) {
 		preprocessFile(file);
 		parseFile(file + ".xml");
 	}

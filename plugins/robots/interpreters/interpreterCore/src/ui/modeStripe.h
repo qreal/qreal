@@ -25,7 +25,7 @@ class ModeStripe : public QLabel
 	Q_OBJECT
 
 public:
-	ModeStripe(QAction &modeAction, const QString &text, QWidget *parent = 0);
+	ModeStripe(QAction &modeAction, const QString &text, QWidget *parent = nullptr);
 
 private:
 	void mousePressEvent(QMouseEvent * event) override;

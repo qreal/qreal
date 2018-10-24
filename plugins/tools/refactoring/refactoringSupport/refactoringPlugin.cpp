@@ -229,7 +229,7 @@ void RefactoringPlugin::addRefactoringLanguageElements(QString const &diagramNam
 		if (name == "beforeBlock" || name == "afterBlock") {
 			QDomElement logic = nodeElement.elementsByTagName("logic").at(0).toElement();
 			QDomElement container = logic.elementsByTagName("container").at(0).toElement();
-			foreach (QString elementName, mEditorElementNames) {
+			for (QString elementName : mEditorElementNames) {
 				QDomElement contains = metamodel.createElement("contains");
 				contains.setAttribute("type", diagramName + "::" + elementName);
 				container.appendChild(contains);
@@ -254,7 +254,7 @@ void RefactoringPlugin::saveRefactoring()
 {
 	IdList const childrenIDs = mLogicalModelApi->children(Id::rootId());
 	QHash<QString, IdList> diagramIds;
-	foreach (Id const &childId, childrenIDs) {
+	for (Id const &childId : childrenIDs) {
 		if (childId.element() == "RefactoringDiagramNode" && childId == mMainWindowIFace->activeDiagram()) {
 			QString elementName = mGraphicalModelApi->name(childId).replace(" ", "")
 					.replace("(", "").replace(")", "");
@@ -336,7 +336,7 @@ void RefactoringPlugin::addPaletteGroup(QDomDocument metamodel
 		, QDomElement palette, const QString &groupName, const QStringList &elementNameList)
 {
 	QDomElement group = createPaletteElement("group", metamodel, groupName);
-	foreach (QString const &elementName, elementNameList) {
+	for (QString const &elementName : elementNameList) {
 		QDomElement element = createPaletteElement("element", metamodel, elementName);
 		group.appendChild(element);
 	}
@@ -378,7 +378,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 	mRefactoringRepoApi->open(refactoringPath);
 	if (mRefactoringFinder->refactoringRuleContainsSelectedSegment()) {
 		mSelectedElementsOnActiveDiagram = mMainWindowIFace->selectedElementsOnActiveDiagram();
-		foreach (Id const &selectedElement, mSelectedElementsOnActiveDiagram) {
+		for (Id const &selectedElement : mSelectedElementsOnActiveDiagram) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 			bool isExclusive = false;
 			mMainWindowIFace->highlight(selectedElement, isExclusive, color);
@@ -392,7 +392,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 			return;
 		}
 		mCurrentMatch = mMatches.takeFirst();
-		foreach (Id const &id, mCurrentMatch.keys()) {
+		for (Id const &id : mCurrentMatch.keys()) {
 			Id valueId = mCurrentMatch.value(id);
 			if (mLogicalModelApi->isLogicalId(valueId)) {
 				mMainWindowIFace->errorReporter()->addInformation(tr("No graphical elements match"));
@@ -400,7 +400,7 @@ void RefactoringPlugin::findRefactoring(const QString &refactoringName)
 				return;
 			}
 		}
-		foreach (Id const &id, mCurrentMatch.keys()) {
+		for (Id const &id : mCurrentMatch.keys()) {
 			Id valueId = mCurrentMatch.value(id);
 			QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 			bool isExclusive = false;
@@ -423,7 +423,7 @@ void RefactoringPlugin::findNextRefactoring()
 		mRefactoringWindow->discard();
 	} else {
 		mCurrentMatch = mMatches.takeFirst();
-		foreach (Id const &id, mCurrentMatch.keys()) {
+		for (Id const &id : mCurrentMatch.keys()) {
 			QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 			bool isExclusive = false;
 			mMainWindowIFace->highlight(mCurrentMatch.value(id), isExclusive, color);
@@ -485,7 +485,7 @@ void RefactoringPlugin::makeSubprogramHARDCODE() // FIXME
 	QString const newDiagramName = mGraphicalModelApi->name(activeDiagramId)
 			+ "_Subprogram_" + mRefactoringRepoApi->name(subprogramElementInRuleId);
 	mGraphicalModelApi->createElement(Id::rootId(), newDiagramId, false, newDiagramName, QPointF());
-	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+	for (Id const &id : mSelectedElementsOnActiveDiagram) {
 		mGraphicalModelApi->changeParent(id, newDiagramId, mGraphicalModelApi->position(id));
 	}
 
@@ -514,9 +514,9 @@ void RefactoringPlugin::makeSubprogramHARDCODE() // FIXME
 QList<QPair<Id, QPair<Id, bool> > > RefactoringPlugin::findOutsideSelectionLinks()
 {
 	QList<QPair<Id, QPair<Id, bool> > > result;
-	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+	for (Id const &id : mSelectedElementsOnActiveDiagram) {
 		IdList const currentIdList = mGraphicalModelApi->graphicalRepoApi().links(id);
-		foreach (Id const currentId, currentIdList) {
+		for (Id const currentId : currentIdList) {
 			Id const toId = mGraphicalModelApi->to(currentId);
 			Id const fromId = mGraphicalModelApi->from(currentId);
 			if (mSelectedElementsOnActiveDiagram.contains(toId)
@@ -536,7 +536,7 @@ QList<QPair<Id, QPair<Id, bool> > > RefactoringPlugin::findOutsideSelectionLinks
 
 void RefactoringPlugin::removeUnnecessaryLinksFromSelected()
 {
-	foreach (Id const &id, mSelectedElementsOnActiveDiagram) {
+	for (Id const &id : mSelectedElementsOnActiveDiagram) {
 		if (mGraphicalModelApi->to(id) == Id::rootId()
 				&& mGraphicalModelApi->from(id) == Id::rootId()) {
 			continue;

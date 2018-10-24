@@ -33,7 +33,7 @@ public:
 			, Controller &controller
 			, const SceneCustomizer &sceneCustomizer
 			, const Id &rootId
-			, QWidget *parent = 0);
+			, QWidget *parent = nullptr);
 
 	const EditorViewMViface &mvIface() const;
 	EditorViewMViface &mutableMvIface();

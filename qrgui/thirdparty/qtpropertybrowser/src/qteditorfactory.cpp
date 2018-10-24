@@ -1616,7 +1616,7 @@ class QtCharEdit : public QWidget
 {
     Q_OBJECT
 public:
-    QtCharEdit(QWidget *parent = 0);
+    QtCharEdit(QWidget *parent = nullptr);
 
     QChar value() const;
     bool eventFilter(QObject *o, QEvent *e);

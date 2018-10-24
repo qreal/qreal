@@ -31,8 +31,8 @@ class ROBOTS_UTILS_EXPORT CanvasObject : public QObject
 	Q_PROPERTY(int thickness READ thickness WRITE setThickness)
 
 public:
-	explicit CanvasObject(QObject *parent = 0);
-	CanvasObject(const QColor &color = Qt::black, int thickness = 1, QObject *parent = 0);
+	explicit CanvasObject(QObject *parent = nullptr);
+	CanvasObject(const QColor &color = Qt::black, int thickness = 1, QObject *parent = nullptr);
 
 	/// Returns the color of the point.
 	QColor color() const;

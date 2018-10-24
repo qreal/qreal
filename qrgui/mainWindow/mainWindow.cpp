@@ -549,7 +549,7 @@ void MainWindow::openRecentProjectsMenu()
 	mRecentProjectsMenu->clear();
 	const QString stringList = SettingsManager::value("recentProjects").toString();
 	const QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
-	foreach (QString projectPath, recentProjects) {
+	for (QString projectPath : recentProjects) {
 		mRecentProjectsMenu->addAction(projectPath);
 		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered())
 				, mRecentProjectsMapper, SLOT(map()));
@@ -580,7 +580,7 @@ void MainWindow::setReference(const QStringList &data, const QPersistentModelInd
 {
 	removeOldBackReference(index, role);
 	setData(data.join(','), index, role);
-	foreach (const QString &target, data) {
+	for (const QString &target : data) {
 		if (!target.isEmpty()) {
 			setBackReference(index, target);
 		}
@@ -815,7 +815,7 @@ bool MainWindow::loadPlugin(const QString &fileName, const QString &pluginName)
 		return false;
 	}
 
-	foreach (const Id &diagram, editorManager().diagrams(Id(pluginName))) {
+	for (const Id &diagram : editorManager().diagrams(Id(pluginName))) {
 		mUi->paletteTree->addEditorElements(editorManager(), Id(pluginName), diagram);
 	}
 
@@ -1321,7 +1321,7 @@ void MainWindow::setShowAlignment(bool isChecked)
 		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
 			const QList<QGraphicsItem *> list = tab->scene()->items();
-			foreach (QGraphicsItem * const item, list) {
+			for (QGraphicsItem * const item : list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
 					nodeItem->showAlignment(isChecked);
@@ -1337,7 +1337,7 @@ void MainWindow::setSwitchGrid(bool isChecked)
 		EditorView  const *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
 			const QList<QGraphicsItem *> list = tab->scene()->items();
-			foreach (QGraphicsItem *const item, list) {
+			for (QGraphicsItem *const item : list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
 					nodeItem->switchGrid(isChecked);
@@ -1353,7 +1353,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 		EditorView *const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
 			const QList<QGraphicsItem *> list = tab->scene()->items();
-			foreach (QGraphicsItem * const item, list) {
+			for (QGraphicsItem * const item : list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
 					nodeItem->switchAlignment(isChecked);
@@ -1572,7 +1572,7 @@ void MainWindow::removeOldBackReference(const QPersistentModelIndex &index, cons
 {
 	QStringList data = index.data(role).toString().split(',', QString::SkipEmptyParts);
 
-	foreach (const QString &reference, data) {
+	for (const QString &reference : data) {
 		Id id = Id::loadFromString(reference);
 		Id indexId = models().logicalModelAssistApi().idByIndex(index);
 		models().logicalRepoApi().removeBackReference(id, indexId);
@@ -1839,7 +1839,7 @@ void MainWindow::initToolPlugins()
 
 	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager->preferencesPages();
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;
-	foreach (const PageDescriptor page, preferencesPages) {
+	for (const PageDescriptor page : preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
@@ -2053,7 +2053,7 @@ IdList MainWindow::selectedElementsOnActiveDiagram()
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
 	IdList selected;
-	foreach (QGraphicsItem* item, items) {
+	for (QGraphicsItem* item : items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
 			if (element->isSelected()) {

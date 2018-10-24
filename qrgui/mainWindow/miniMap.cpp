@@ -70,7 +70,7 @@ void MiniMap::showScene()
 
 void MiniMap::ensureVisible(QList<QRectF> region)
 {
-	foreach (QRectF rect, region) {
+	for (QRectF rect : region) {
 		fitInView(rect, Qt::KeepAspectRatio);
 	}
 }
@@ -143,7 +143,7 @@ void MiniMap::drawForeground(QPainter *painter, const QRectF &rect)
 void MiniMap::drawNonExistentAreas(QPainter *painter, const QRectF &rect)
 {
 	QList<QRectF> areas = getNonExistentAreas(rect);
-	foreach (QRectF area, areas) {
+	for (QRectF area : areas) {
 		painter->fillRect(area, Qt::lightGray);
 	}
 }

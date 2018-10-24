@@ -40,7 +40,7 @@ Object::Object(const QDomElement &element)
 
 	mParent = ValuesSerializer::deserializeId(element.attribute("parent", ""));
 
-	foreach (const Id &child, ValuesSerializer::deserializeIdList(element, "children")) {
+	for (const Id &child: ValuesSerializer::deserializeIdList(element, "children")) {
 		mChildren.append(child);
 	}
 
@@ -59,7 +59,7 @@ Object::~Object()
 
 void Object::replaceProperties(const QString &value, const QString &newValue)
 {
-	foreach (const QVariant &val, mProperties.values()) {
+	for (const QVariant &val : mProperties.values()) {
 		if (val.toString().contains(value)) {
 			mProperties[mProperties.key(val)] = newValue;
 		}
@@ -73,7 +73,7 @@ Object *Object::clone(QHash<Id, Object*> &objHash) const
 
 	result->mParent = mParent;
 
-	foreach (const Id &childId, mChildren) {
+	for (const Id &childId : mChildren) {
 		Object * const child = objHash[childId]->clone(objHash);
 		child->setParent(mId);
 		result->addChild(child->id());

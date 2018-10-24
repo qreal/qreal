@@ -170,7 +170,7 @@ QModelIndex GraphicalPartModel::findIndex(const Id &element, int index) const
 	const int parentRow = mIdPositions.value(element);
 	const QModelIndex parent = createIndex(parentRow, 0, static_cast<void *>(nullptr));
 	int partRow = 0;
-	foreach (const modelsImplementation::GraphicalPartModelItem * const item, mItems[parentRow]) {
+	for (const modelsImplementation::GraphicalPartModelItem * const item : mItems[parentRow]) {
 		if (item->index() == index) {
 			break;
 		}
@@ -203,7 +203,7 @@ void GraphicalPartModel::rowsAboutToBeRemovedInGraphicalModel(const QModelIndex 
 void GraphicalPartModel::clear()
 {
 	typedef QList<modelsImplementation::GraphicalPartModelItem *> GraphicalPartModelItemList;
-	foreach (const GraphicalPartModelItemList &list, mItems) {
+	for (const GraphicalPartModelItemList &list : mItems) {
 		qDeleteAll(list);
 	}
 }
@@ -211,7 +211,7 @@ void GraphicalPartModel::clear()
 void GraphicalPartModel::load(const Id &parent)
 {
 	loadElement(parent);
-	foreach (const Id &child, mRepoApi.children(parent)) {
+	for (const Id &child : mRepoApi.children(parent)) {
 		if (mRepoApi.isGraphicalElement(child)) {
 			load(child);
 		}
@@ -220,7 +220,7 @@ void GraphicalPartModel::load(const Id &parent)
 
 void GraphicalPartModel::loadElement(const Id &id)
 {
-	foreach (int partIndex, mRepoApi.graphicalParts(id)) {
+	for (int partIndex : mRepoApi.graphicalParts(id)) {
 		addGraphicalPart(id, partIndex, false);
 	}
 }

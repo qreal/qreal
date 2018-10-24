@@ -35,7 +35,7 @@ public:
 	/// Constructor.
 	/// @param diagram Id of a diagram to which we will add new node.
 	/// @param editorManagerProxy Editor manager.
-	explicit AddNodeDialog(const Id &diagram, const EditorManagerInterface &editorManagerProxy, QWidget *parent = 0);
+	explicit AddNodeDialog(const Id &diagram, const EditorManagerInterface &editorManagerProxy, QWidget *parent = nullptr);
 
 	/// Destructor.
 	~AddNodeDialog();

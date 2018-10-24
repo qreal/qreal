@@ -56,14 +56,14 @@ public:
 		bool operator!=(const VisibilityCondition &other) const;
 	};
 
-	Item(graphicsUtils::AbstractItem* parent = 0);
+	Item(graphicsUtils::AbstractItem* parent = nullptr);
 	virtual Item* clone() = 0;
 	virtual void setItemZValue(int zValue);
 	int itemZValue();
 	static int sign(int x);
 	static qreal length(const QPointF &point1, const QPointF &point2);
 	virtual QRectF calcNecessaryBoundingRect() const;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0) = 0;
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr) = 0;
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
 

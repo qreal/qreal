@@ -66,7 +66,7 @@ class QSCINTILLA_EXPORT QsciLexer : public QObject
 public:
     //! Construct a QsciLexer with parent \a parent.  \a parent is typically
     //! the QsciScintilla instance.
-    QsciLexer(QObject *parent = 0);
+    QsciLexer(QObject *parent = nullptr);
 
     //! Destroy the QSciLexer.
     virtual ~QsciLexer();
@@ -111,7 +111,7 @@ public:
     //! Returns a space separated list of words or characters in a particular
     //! style that define the end of a block for auto-indentation.  The style
     //! is returned via \a style.
-    virtual const char *blockEnd(int *style = 0) const;
+    virtual const char *blockEnd(int *style = nullptr) const;
 
     //! Returns the number of lines prior to the current one when determining
     //! the scope of a block when auto-indenting.
@@ -120,12 +120,12 @@ public:
     //! Returns a space separated list of words or characters in a particular
     //! style that define the start of a block for auto-indentation.  The style
     //! is returned via \a style.
-    virtual const char *blockStart(int *style = 0) const;
+    virtual const char *blockStart(int *style = nullptr) const;
 
     //! Returns a space separated list of keywords in a particular style that
     //! define the start of a block for auto-indentation.  The style is
     //! returned via \a style.
-    virtual const char *blockStartKeyword(int *style = 0) const;
+    virtual const char *blockStartKeyword(int *style = nullptr) const;
 
     //! Returns the style used for braces for brace matching.
     virtual int braceStyle() const;

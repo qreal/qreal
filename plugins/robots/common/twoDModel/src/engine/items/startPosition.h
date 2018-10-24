@@ -22,10 +22,10 @@ namespace items {
 class StartPosition : public graphicsUtils::RotateItem
 {
 public:
-	explicit StartPosition(const QSizeF &robotSize, QGraphicsItem *parent = 0);
+	explicit StartPosition(const QSizeF &robotSize, QGraphicsItem *parent = nullptr);
 
 	QRectF boundingRect() const override;
-	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &startPositionElement) override;

@@ -32,7 +32,7 @@ class Ev3DisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 	Q_OBJECT
 
 public:
-	explicit Ev3DisplayWidget(QWidget *parent = 0);
+	explicit Ev3DisplayWidget(QWidget *parent = nullptr);
 	~Ev3DisplayWidget();
 
 	void setPainter(qReal::ui::PainterInterface *painter) override;

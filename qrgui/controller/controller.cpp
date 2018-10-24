@@ -168,7 +168,7 @@ QList<UndoStack *> Controller::stacks() const
 void Controller::projectSaved()
 {
 	mGlobalStack->setClean();
-	foreach (UndoStack * const stack, mModuleStacks) {
+	for (UndoStack * const stack : mModuleStacks) {
 		stack->setClean();
 	}
 }

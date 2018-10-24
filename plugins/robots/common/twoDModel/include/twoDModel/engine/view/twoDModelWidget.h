@@ -70,7 +70,7 @@ class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget
 	Q_OBJECT
 
 public:
-	TwoDModelWidget(model::Model &model, QWidget *parent = 0);
+	TwoDModelWidget(model::Model &model, QWidget *parent = nullptr);
 	~TwoDModelWidget();
 
 	/// Overrides default closing behaviour with just hiding window.

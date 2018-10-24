@@ -30,7 +30,7 @@ class QRGUI_DIALOGS_EXPORT ProgressBar : public QProgressBar, public ProgressRep
 	Q_OBJECT
 
 public:
-	explicit ProgressBar(QWidget *parent = 0);
+	explicit ProgressBar(QWidget *parent = nullptr);
 
 	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 

@@ -91,7 +91,7 @@ bool Editor::load(const QDir &currentDir)
 	}
 
 	// Load diagram part two: resolve all dependencies.
-	foreach (Diagram *diagram, mDiagrams.values())
+	for (Diagram *diagram : mDiagrams.values())
 		if (!diagram->resolve())
 			return false;
 
@@ -154,15 +154,15 @@ QSet<EnumType*> Editor::getAllEnumTypes()
 	EnumType *current = nullptr;
 	QSet<EnumType*> result;
 
-	foreach (Diagram *diagram, mDiagrams.values()) {
-		foreach (Type *type, diagram->types()) {
+	for (Diagram *diagram : mDiagrams.values()) {
+		for (Type *type : diagram->types()) {
 			current = dynamic_cast<EnumType*>(type);
 			if (current)
 				result << current;
 		}
 	}
 
-	foreach (Editor *editor, mIncludes) {
+	for (Editor *editor : mIncludes) {
 		result += editor->getAllEnumTypes();
 	}
 

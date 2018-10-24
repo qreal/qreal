@@ -55,17 +55,17 @@ IdList RefactoringApplier::elementsFromBlock(QString const &blockType) const
 	IdList list;
 	IdList resultList;
 	IdList const refactoringElements = mRefactoringRepoApi->children(Id::rootId());
-	foreach (Id const &refactoringElement, refactoringElements) {
+	for (Id const &refactoringElement : refactoringElements) {
 		if (mRefactoringRepoApi->isGraphicalElement(refactoringElement)) {
 			if (refactoringElement.element() == "RefactoringDiagramNode") {
 				list = mRefactoringRepoApi->children(refactoringElement);
-				foreach (Id const &id, list) {
+				for (Id const &id : list) {
 					if (id.element() == blockType) {
 						resultList.append(mRefactoringRepoApi->children(id));
 						break;
 					}
 				}
-				foreach (Id const &id, list) {
+				for (Id const &id : list) {
 					if (id.element() == "Link" && resultList.contains(toInRule(id))
 							&& resultList.contains(fromInRule(id)))
 					{
@@ -80,7 +80,7 @@ IdList RefactoringApplier::elementsFromBlock(QString const &blockType) const
 
 Id RefactoringApplier::idElementWithID(QString const &idValue, IdList const &idList)
 {
-	foreach (Id const &id, idList) {
+	for (Id const &id : idList) {
 		if (propertyID(id) == idValue) {
 			return id;
 		}
@@ -103,7 +103,7 @@ void RefactoringApplier::loadRefactoringRule()
 
 	mInterpretersInterface.dehighlight();
 
-	foreach (Id const &beforeId, before) {
+	for (Id const &beforeId : before) {
 		QString const beforeElementID =
 				refactoringProperty(mRefactoringRepoApi->logicalId(beforeId), "ID").toString();
 		if (beforeElementID == "noThisProperty") {
@@ -113,7 +113,7 @@ void RefactoringApplier::loadRefactoringRule()
 		mRule->append(qMakePair(beforeId, elementAfterId));
 		mApply->append(qMakePair(elementAfterId, mMatch->value(beforeId)));
 	}
-	foreach (Id const &afterId, after) {
+	for (Id const &afterId : after) {
 		QString const afterElementID =
 				refactoringProperty(mRefactoringRepoApi->logicalId(afterId), "ID").toString();
 		Id const elementBeforeId = idElementWithID(afterElementID, before);
@@ -225,7 +225,7 @@ void RefactoringApplier::changePropertiesInModel(Id const &changeFromId, Id cons
 
 	QHash<QString, QVariant> currentProperties = properties(changeFromId);
 
-	foreach (QString const &key, currentProperties.keys()) {
+	for (QString const &key : currentProperties.keys()) {
 		QVariant const value = currentProperties.value(key);
 
 		if (hasProperty(changeToId, key)) {
@@ -257,10 +257,10 @@ void RefactoringApplier::changeElementInModel(const Id &changeFromId, const Id &
 		Id const newId = Id(newEditor, changeToId.diagram(), changeToId.element(), QUuid::createUuid().toString());
 		Id const newElementId = mGraphicalModelApi.createElement(parentId, newId
 				, isFromLogicalModel, "ololo", position.toPointF());
-		foreach (Id idLink, inLinks) {
+		for (Id idLink : inLinks) {
 			mGraphicalModelApi.mutableGraphicalRepoApi().setTo(idLink, newElementId);
 		}
-		foreach (Id idLink, outLinks) {
+		for (Id idLink : outLinks) {
 			mGraphicalModelApi.mutableGraphicalRepoApi().setFrom(idLink, newElementId);
 		}
 		mGraphicalModelApi.mutableGraphicalRepoApi().removeChild(parentId, changeFromId);
@@ -358,7 +358,7 @@ Id RefactoringApplier::subprogramElementId() const
 {
 	IdList result;
 	IdList const after = elementsFromAfterBlock();
-	foreach (Id const &id, after) {
+	for (Id const &id : after) {
 		if (mRefactoringRepoApi->isGraphicalElement(id)
 				&& (isNodeInRule(id)))
 			result.append(id);

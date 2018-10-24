@@ -63,7 +63,7 @@ IdList VisualInterpreterUnit::allRules() const
 {
 	IdList const elements = elementsFromActiveDiagram();
 	IdList result;
-	foreach (Id const &element, elements) {
+	for (Id const &element : elements) {
 		if (element.element() == "SemanticsRule") {
 			result.append(element);
 		}
@@ -113,7 +113,7 @@ void VisualInterpreterUnit::orderRulesByPriority()
 {
 	IdList rules = allRules();
 	QList<int> priorities;
-	foreach (Id const &rule, rules) {
+	for (Id const &rule : rules) {
 		mOrderedRules.append(property(rule, "ruleName").toString());
 		priorities.append(property(rule, "priority").toInt());
 	}
@@ -142,7 +142,7 @@ void VisualInterpreterUnit::orderRulesByPriority()
 void VisualInterpreterUnit::readInitialization()
 {
 	IdList const elements = elementsFromActiveDiagram();
-	foreach (Id const &element, elements) {
+	for (Id const &element : elements) {
 		if (element.element() == "Initialization") {
 			mInitializationCode.first = property(element, "languageType").toString();
 			mInitializationCode.second = property(element, "initializationCode").toString();
@@ -174,7 +174,7 @@ void VisualInterpreterUnit::loadSemantics()
 	mInterpretersInterface.dehighlight();
 	readInitialization();
 
-	foreach (Id const &rule, rules) {
+	for (Id const &rule : rules) {
 		QString const ruleName = property(rule, "ruleName").toString();
 		if (ruleName == "") {
 			semanticsLoadingError(tr("One of the rules doesn't have a name."));
@@ -189,7 +189,7 @@ void VisualInterpreterUnit::loadSemantics()
 		}
 
 		mRules.insert(ruleName, rule);
-		foreach (Id const &ruleElement, ruleElements) {
+		for (Id const &ruleElement : ruleElements) {
 			if (ruleElement.element() == "ControlFlowLocation" || ruleElement.element() == "Wildcard") {
 				continue;
 			}
@@ -297,7 +297,7 @@ void VisualInterpreterUnit::stopInterpretation()
 
 void VisualInterpreterUnit::highlightMatch()
 {
-	foreach (Id const &id, mMatch.keys()) {
+	for (Id const &id : mMatch.keys()) {
 		mInterpretersInterface.highlight(mMatch.value(id), false);
 	}
 
@@ -308,7 +308,7 @@ void VisualInterpreterUnit::highlightMatch()
 
 bool VisualInterpreterUnit::findMatch()
 {
-	foreach (QString const &ruleName, mOrderedRules) {
+	for (QString const &ruleName : mOrderedRules) {
 		mCurrentRuleName = ruleName;
 		mRuleToFind = mRules.value(ruleName);
 		if (checkRuleMatching() && checkApplicationCondition(ruleName)) {
@@ -380,7 +380,7 @@ bool VisualInterpreterUnit::checkApplicationConditionPython(QHash<Id, Id> const 
 Id VisualInterpreterUnit::startElement() const
 {
 	if (mNodesWithControlMark.contains(mCurrentRuleName)) {
-		foreach (Id const &element, *mNodesWithControlMark.value(mCurrentRuleName)) {
+		for (Id const &element : *mNodesWithControlMark.value(mCurrentRuleName)) {
 			if (!hasProperty(element, "semanticsStatus") ||
 					property(element, "semanticsStatus").toString() != "@new@")
 			{
@@ -391,7 +391,7 @@ Id VisualInterpreterUnit::startElement() const
 
 	IdList const elementsInRule = children(mRuleToFind);
 
-	foreach (Id const &element, elementsInRule) {
+	for (Id const &element : elementsInRule) {
 		if (!isEdgeInRule(element) && element.element() != "ControlFlowMark") {
 			if (!hasProperty(element, "semanticsStatus") ||
 					property(element, "semanticsStatus").toString() != "@new@")
@@ -417,7 +417,7 @@ bool VisualInterpreterUnit::deleteElements()
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 
 	if (mDeletedElements.contains(mMatchedRuleName)) {
-		foreach (Id const &id, *(mDeletedElements.value(mMatchedRuleName))) {
+		for (Id const &id : *(mDeletedElements.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.dehighlight(node);
 			mCurrentNodesWithControlMark.removeOne(node);
@@ -436,7 +436,7 @@ bool VisualInterpreterUnit::createElements()
 
 	if (mCreatedElements.contains(mMatchedRuleName)) {
 		mCreatedElementsPairs.clear();
-		foreach (Id const &id, *(mCreatedElements.value(mMatchedRuleName))) {
+		for (Id const &id : *(mCreatedElements.value(mMatchedRuleName))) {
 			Id const createdId = Id(mInterpretersInterface.activeDiagram().editor()
 					, mInterpretersInterface.activeDiagram().diagram()
 					, id.element()
@@ -463,7 +463,7 @@ void VisualInterpreterUnit::arrangeConnections()
 {
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 
-	foreach (Id const &idInRule, mCreatedElementsPairs.keys()) {
+	for (Id const &idInRule : mCreatedElementsPairs.keys()) {
 		Id const idInModel = mCreatedElementsPairs.value(idInRule);
 
 		Id const toInRul = toInRule(idInRule);
@@ -483,7 +483,7 @@ QPointF VisualInterpreterUnit::position()
 	IdList const elements = elementsFromActiveDiagram();
 	int x = 0;
 	int y = 0;
-	foreach (Id const &element, elements) {
+	for (Id const &element : elements) {
 		QPointF pos = mGraphicalModelApi.position(element);
 		x = pos.x() > x ? pos.x() : x;
 	}
@@ -497,7 +497,7 @@ bool VisualInterpreterUnit::createElementsToReplace()
 
 	if (mReplacedElements.contains(mMatchedRuleName)) {
 		mReplacedElementsPairs.clear();
-		foreach (Id const &fromId, mReplacedElements.value(mMatchedRuleName)->keys()) {
+		for (Id const &fromId : mReplacedElements.value(mMatchedRuleName)->keys()) {
 			Id const toInRule = mReplacedElements.value(mMatchedRuleName)->value(fromId);
 			Id const fromInModel = firstMatch->value(fromId);
 
@@ -525,13 +525,13 @@ bool VisualInterpreterUnit::createElementsToReplace()
 void VisualInterpreterUnit::replaceElements()
 {
 	if (mReplacedElements.contains(mMatchedRuleName)) {
-		foreach (Id const &fromInModel, mReplacedElementsPairs.keys()) {
+		for (Id const &fromInModel : mReplacedElementsPairs.keys()) {
 			Id const toInModel = mReplacedElementsPairs.value(fromInModel);
 
-			foreach (Id const &link, outgoingLinks(fromInModel)) {
+			for (Id const &link : outgoingLinks(fromInModel)) {
 				mGraphicalModelApi.setFrom(link, toInModel);
 			}
-			foreach (Id const &link, incomingLinks(fromInModel)) {
+			for (Id const &link : incomingLinks(fromInModel)) {
 				mGraphicalModelApi.setTo(link, toInModel);
 			}
 
@@ -546,7 +546,7 @@ void VisualInterpreterUnit::moveControlFlow()
 	QHash<Id, Id> firstMatch = mMatches.at(0);
 
 	if (mNodesWithDeletedControlMark.contains(mMatchedRuleName)) {
-		foreach (Id const &id, *(mNodesWithDeletedControlMark.value(mMatchedRuleName))) {
+		for (Id const &id : *(mNodesWithDeletedControlMark.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.dehighlight(node);
 			mCurrentNodesWithControlMark.removeOne(node);
@@ -554,7 +554,7 @@ void VisualInterpreterUnit::moveControlFlow()
 	}
 
 	if (mNodesWithNewControlMark.contains(mMatchedRuleName)) {
-		foreach (Id const &id, *(mNodesWithNewControlMark.value(mMatchedRuleName))) {
+		for (Id const &id : *(mNodesWithNewControlMark.value(mMatchedRuleName))) {
 			Id const node = firstMatch.value(id);
 			mInterpretersInterface.highlight(node, false);
 			mCurrentNodesWithControlMark.prepend(node);
@@ -614,7 +614,7 @@ void VisualInterpreterUnit::copyProperties(Id const &elemInModel, Id const &elem
 {
 	QHash<QString, QVariant> ruleProperties = properties(elemInRule);
 
-	foreach (QString const &key, ruleProperties.keys()) {
+	for (QString const &key : ruleProperties.keys()) {
 		QVariant const value = ruleProperties.value(key);
 
 		if (value.toString().isEmpty()) {
@@ -693,7 +693,7 @@ Id VisualInterpreterUnit::nodeIdWithControlMark(Id const &controlMarkId) const
 IdList VisualInterpreterUnit::linksInRule(Id const &id) const
 {
 	IdList result;
-	foreach (Id const &link, mLogicalModelApi.logicalRepoApi().links(id)) {
+	for (Id const &link : mLogicalModelApi.logicalRepoApi().links(id)) {
 		if (link.element() != "Replacement" && link.element() != "ControlFlowLocation") {
 			QString const semStatus = property(link, "semanticsStatus").toString();
 			if (semStatus != "@new@") {
@@ -720,7 +720,7 @@ void VisualInterpreterUnit::processTextCodeInterpreterStdOutput(QHash<QPair<QStr
 		, TextCodeInterpreter::CodeLanguage const language)
 {
 	QPair<QString, QString> pair;
-	foreach (pair, output.keys()) {
+	for (pair : output.keys()) {
 		QString const elemName = pair.first;
 		QString const propName = pair.second;
 		QString value = output.value(pair);

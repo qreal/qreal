@@ -25,7 +25,7 @@ class PreferencesMiscellaniousPage : public qReal::gui::PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit PreferencesMiscellaniousPage(QWidget *parent = 0);
+	explicit PreferencesMiscellaniousPage(QWidget *parent = nullptr);
 	~PreferencesMiscellaniousPage();
 
 	void save();

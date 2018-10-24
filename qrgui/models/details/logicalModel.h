@@ -39,33 +39,33 @@ class QRGUI_MODELS_EXPORT LogicalModel : public modelsImplementation::AbstractMo
 
 public:
 	LogicalModel(qrRepo::LogicalRepoApi *repoApi, const EditorManagerInterface &editorManagerInterface);
-	virtual ~LogicalModel();
+	virtual ~LogicalModel() override;
 
 	void connectToGraphicalModel(GraphicalModel * const graphicalModel);
 	void updateElements(const Id &logicalId, const QString &name);
-	virtual QMimeData* mimeData(const QModelIndexList &indexes) const;
+	virtual QMimeData* mimeData(const QModelIndexList &indexes) const override;
 	void addElementToModel(ElementInfo &elementInfo) override;
 	void addElementsToModel(QList<ElementInfo> &elementsInfo) override;
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	virtual QVariant data(const QModelIndex &index, int role) const override;
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
 	void changeParent(const Id &parentId, const Id &childId);
 	const qrRepo::LogicalRepoApi &api() const;
 	qrRepo::LogicalRepoApi &mutableApi() const;
-	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
-	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
+	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const override;
 	LogicalModelAssistApi &logicalModelAssistApi() const;
-	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling) override;
 
 private:
-	virtual void init();
+	virtual void init() override;
 	void loadSubtreeFromClient(modelsImplementation::LogicalModelItem * const parent);
 	modelsImplementation::LogicalModelItem *loadElement(modelsImplementation::LogicalModelItem *parentItem
 			, const Id &id);
 	void addInsufficientProperties(const Id &id, const QString &name = QString());
 
 	virtual modelsImplementation::AbstractModelItem *createModelItem(const Id &id
-			, modelsImplementation::AbstractModelItem *parentItem) const;
+			, modelsImplementation::AbstractModelItem *parentItem) const override;
 	void addTree(const Id &parent, const QMultiMap<Id, ElementInfo> &childrenOfParents, QSet<Id> &visited);
 	/// Adds entries to row model without inserting rows and notifying about that connected views.
 	/// @returns created model item.
@@ -75,7 +75,7 @@ private:
 			, modelsImplementation::AbstractModelItem *parentItem
 			, modelsImplementation::AbstractModelItem *item);
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
-			, details::modelsImplementation::AbstractModelItem *child);
+			, details::modelsImplementation::AbstractModelItem *child) override;
 
 	QVariant dynamicPropertyData(const Id &id, int role) const;
 

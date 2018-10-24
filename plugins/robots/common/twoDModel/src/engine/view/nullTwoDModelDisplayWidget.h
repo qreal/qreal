@@ -25,7 +25,7 @@ class NullTwoDModelDisplayWidget : public twoDModel::engine::TwoDModelDisplayWid
 	Q_OBJECT
 
 public:
-	explicit NullTwoDModelDisplayWidget(QWidget *parent = 0);
+	explicit NullTwoDModelDisplayWidget(QWidget *parent = nullptr);
 
 	~NullTwoDModelDisplayWidget();
 

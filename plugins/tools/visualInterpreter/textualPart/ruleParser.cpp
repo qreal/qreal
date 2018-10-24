@@ -359,7 +359,7 @@ void RuleParser::parseStringCode(QString const &stream)
 
 Id RuleParser::elementByName(QString const &name, QHash<Id, Id> const &mMatch)
 {
-	foreach (Id const &elem, mMatch.keys()) {
+	for (Id const &elem : mMatch.keys()) {
 		if (mLogicalModelApi.logicalRepoApi().name(elem) == name) {
 			return mMatch.value(elem);
 		}

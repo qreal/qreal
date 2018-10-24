@@ -72,7 +72,7 @@ QLinkedList<SemanticNode *> ZoneNode::removeStartingFrom(SemanticNode *node)
 	QLinkedList<SemanticNode *> result;
 	bool foundNode = node == nullptr;
 
-	foreach (SemanticNode * const current, mChildren) {
+	for (SemanticNode * const current : mChildren) {
 		if (!foundNode) {
 			foundNode = current == node;
 		}

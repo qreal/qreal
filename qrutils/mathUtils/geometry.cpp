@@ -142,7 +142,7 @@ QList<QPointF> Geometry::pathToPoints(const QPainterPath &path)
 	QList<QPolygonF> polygons = path.toFillPolygons();
 	QList<QPointF> result;
 
-	foreach (const QPolygonF &polygon, polygons) {
+	for (const QPolygonF &polygon : polygons) {
 		if (square(polygon) < polygonIsPointCondition) {
 			result << polygon[0];
 		} else {
@@ -206,7 +206,7 @@ QPointF Geometry::closestPointTo(const QList<QPointF> &points, const QPointF &po
 {
 	qreal minDistance = 10e10;
 	QPointF closestPoint;
-	foreach (const QPointF &currentPoint, points) {
+	for (const QPointF &currentPoint : points) {
 		const qreal currentDistance = distance(currentPoint, point);
 		if (currentDistance < minDistance) {
 			closestPoint = currentPoint;

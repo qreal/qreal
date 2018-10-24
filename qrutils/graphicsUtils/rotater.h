@@ -32,7 +32,7 @@ public:
 
 	QRectF boundingRect() const;
 
-	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem *option, QWidget* widget = 0) override;
+	void drawItem(QPainter* painter, const QStyleOptionGraphicsItem *option, QWidget* widget = nullptr) override;
 	void drawExtractionForItem(QPainter* painter) override;
 	void drawFieldForResizeItem(QPainter* painter) override;
 	void setPenBrushForExtraction(QPainter* painter, const QStyleOptionGraphicsItem* option) override;

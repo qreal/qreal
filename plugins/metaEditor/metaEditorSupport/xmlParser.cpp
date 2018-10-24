@@ -127,7 +127,7 @@ void XmlParser::loadIncludeList(const QString &fileName)
 	if (QMessageBox::question(nullptr, QObject::tr("loading.."),"Do you want to load connected metamodels?"
 			, QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes)
 	{
-		foreach (QString const &include, includeList) {
+		for (QString const &include : includeList) {
 			if (!containsName(include))
 				parseFile(include);
 		}
@@ -137,7 +137,7 @@ void XmlParser::loadIncludeList(const QString &fileName)
 bool XmlParser::containsName(const QString &name)
 {
 	IdList idList = mApi.children(Id::rootId());
-	foreach (Id const &id, idList) {
+	for (Id const &id : idList) {
 		if (mApi.name(id) == name)
 			return true;
 	}
@@ -148,7 +148,7 @@ bool XmlParser::containsName(const QString &name)
 Id XmlParser::getPackageId()
 {
 	IdList const children = mApi.children(Id::rootId());
-	foreach (Id id, children) {
+	for (Id id : children) {
 		if (id.element() == "PackageDiagram")
 			return id;
 	}
@@ -612,14 +612,14 @@ void XmlParser::initUsage(const QDomElement &usage, const Id &elementId)
 
 void XmlParser::initGeneralization(const QString &diagramName)
 {
-	foreach (Id const id, mParents.keys()) {
+	for (Id const id : mParents.keys()) {
 		setParents(id, diagramName);
 	}
 }
 
 void XmlParser::initContainer(const QString &diagramName)
 {
-	foreach (Id const id, mContainers.keys()) {
+	for (Id const id : mContainers.keys()) {
 		setContains(id, diagramName);
 	}
 }
@@ -627,7 +627,7 @@ void XmlParser::initContainer(const QString &diagramName)
 void XmlParser::setParents(const Id &id, const QString &diagramName)
 {
 	IdList parents;
-	foreach (QString const elementName, mParents[id]) {
+	for (QString const elementName : mParents[id]) {
 		QStringList name = elementName.split("::");
 		QString baseElementName;
 		if (name.size() < 2)
@@ -671,7 +671,7 @@ Id XmlParser::getParentId(const QString &elementName)
 
 void XmlParser::setContains(const Id &id, const QString &diagramName)
 {
-	foreach (QString const elementName, mContainers[id]) {
+	for (QString const elementName : mContainers[id]) {
 		QStringList name = elementName.split("::");
 		QString baseElementName;
 		if (name.size() < 2)
@@ -698,7 +698,7 @@ void XmlParser::initContains(const Id &idFrom, const Id &idTo)
 
 void XmlParser::manageParents(const IdList &parents)
 {
-	foreach (Id const id, parents) {
+	for (Id const id : parents) {
 		mApi.setProperty(id, "position", QPointF(mParentPositionX, 0));
 		mParentPositionX += 120;
 	}

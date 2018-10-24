@@ -27,7 +27,7 @@ public:
 		, GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, const QMap<qReal::Id, QString> &threads
-		, QObject *parent = 0);
+		, QObject *parent = nullptr);
 
 	QString generate() override;
 

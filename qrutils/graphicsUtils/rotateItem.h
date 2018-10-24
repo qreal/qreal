@@ -23,7 +23,7 @@ class Rotater;
 class QRUTILS_EXPORT RotateItem : public AbstractItem
 {
 public:
-	explicit RotateItem(QGraphicsItem *parent = 0);
+	explicit RotateItem(QGraphicsItem *parent = nullptr);
 
 	/// Can be overrided to determine rotater`s position: it will be placed to the center of rect`s right side.
 	virtual QRectF rect() const;

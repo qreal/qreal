@@ -76,7 +76,7 @@ QVariant ValuesSerializer::deserializeQVariant(const QString &typeName, const QS
 		const QStringList points = valueStr.split(" : ", QString::SkipEmptyParts);
 		QPolygon polygonResult;
 		QPolygonF polygonFResult;
-		foreach (const QString &str, points) {
+		for (const QString &str : points) {
 			const QPointF point = deserializeQPointF(str);
 			polygonFResult << point;
 			polygonResult << point.toPoint();
@@ -141,7 +141,7 @@ QString ValuesSerializer::serializeQPointF(const QPointF &p)
 QString ValuesSerializer::serializeQPolygonF(const QPolygonF &p)
 {
 	QString result("");
-	foreach (const QPointF &point, p) {
+	for (const QPointF &point : p) {
 		result += serializeQPointF(point) + " : ";
 	}
 
@@ -151,7 +151,7 @@ QString ValuesSerializer::serializeQPolygonF(const QPolygonF &p)
 QDomElement ValuesSerializer::serializeIdList(const QString &tagName, const IdList &idList, QDomDocument &document)
 {
 	QDomElement result = document.createElement(tagName);
-	foreach (Id id, idList) {
+	for (Id id : idList) {
 		QDomElement element = document.createElement("object");
 		element.setAttribute("id", id.toString());
 		result.appendChild(element);

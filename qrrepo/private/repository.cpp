@@ -54,14 +54,14 @@ IdList Repository::findElementsByName(const QString &name, bool sensitivity, boo
 	IdList result;
 
 	if (regExpression){
-		foreach (Object * const element, mObjects.values()) {
+		for (Object * const element : mObjects.values()) {
 			if (element->property("name").toString().contains(regExp)
 					&& !isLogicalId(mObjects.key(element))) {
 				result.append(mObjects.key(element));
 			}
 		}
 	} else {
-		foreach (Object * const element, mObjects.values()) {
+		for (Object * const element : mObjects.values()) {
 			if (element->property("name").toString().contains(name, caseSensitivity)
 					&& !isLogicalId(mObjects.key(element))) {
 				result.append(mObjects.key(element));
@@ -77,7 +77,7 @@ qReal::IdList Repository::elementsByProperty(const QString &property, bool sensi
 {
 	IdList result;
 
-	foreach (Object *element, mObjects.values()) {
+	for (Object *element : mObjects.values()) {
 		if ((element->hasProperty(property, sensitivity, regExpression))
 				&& (!isLogicalId(mObjects.key(element)))) {
 			result.append(mObjects.key(element));
@@ -95,7 +95,7 @@ qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue
 	const QRegExp regExp(propertyValue, caseSensitivity);
 	IdList result;
 
-	foreach (Object * const element, mObjects.values()) {
+	for (Object * const element : mObjects.values()) {
 		QMapIterator<QString, QVariant> iterator = element->propertiesIterator();
 		if (regExpression) {
 			while (iterator.hasNext()) {
@@ -119,7 +119,7 @@ qReal::IdList Repository::elementsByPropertyContent(const QString &propertyValue
 
 void Repository::replaceProperties(const qReal::IdList &toReplace, const QString &value, const QString &newValue)
 {
-	foreach (const qReal::Id &currentId, toReplace) {
+	for (const qReal::Id &currentId : toReplace) {
 		mObjects[currentId]->replaceProperties(value, newValue);
 	}
 }
@@ -373,10 +373,11 @@ void Repository::importFromDisk(const QString &importedFile)
 
 void Repository::addChildrenToRootObject()
 {
-	foreach (Object *object, mObjects.values()) {
+	for (Object *object : mObjects.values()) {
 		if (object->parent() == Id::rootId()) {
-			if (!mObjects[Id::rootId()]->children().contains(object->id()))
+			if (!mObjects[Id::rootId()]->children().contains(object->id())) {
 				mObjects[Id::rootId()]->addChild(object->id());
+			}
 		}
 	}
 }
@@ -504,10 +505,10 @@ QString Repository::workingFile() const
 void Repository::printDebug() const
 {
 	qDebug() << mObjects.size() << " objects in repository";
-	foreach (Object *object, mObjects.values()) {
+	for (Object *object : mObjects.values()) {
 		qDebug() << object->id().toString();
 		qDebug() << "Children:";
-		foreach (Id id, object->children())
+		for (Id id : object->children())
 			qDebug() << id.toString();
 		qDebug() << "Parent:";
 		qDebug() << object->parent().toString();

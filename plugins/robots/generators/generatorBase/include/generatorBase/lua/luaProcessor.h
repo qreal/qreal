@@ -43,7 +43,7 @@ public:
 	LuaProcessor(qReal::ErrorReporterInterface &errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const utils::ParserErrorReporter &parserErrorReporter
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Converts the given Lua code into the target language and substitues all
 	/// reserved variables and functions code.

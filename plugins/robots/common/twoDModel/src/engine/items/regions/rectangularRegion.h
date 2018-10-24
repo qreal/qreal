@@ -23,7 +23,7 @@ namespace items {
 class RectangularRegion : public RegionItem
 {
 public:
-	explicit RectangularRegion(QGraphicsItem *parent = 0);
+	explicit RectangularRegion(QGraphicsItem *parent = nullptr);
 
 private:
 	QPainterPath shape() const override;

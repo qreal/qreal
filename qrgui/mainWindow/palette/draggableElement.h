@@ -85,7 +85,7 @@ private:
 	class HackTouchDragThread : public QThread
 	{
 	public:
-		explicit HackTouchDragThread(QObject *parent = 0);
+		explicit HackTouchDragThread(QObject *parent = nullptr);
 
 		static void simulateSystemPress();
 		static void simulateSystemMove();

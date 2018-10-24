@@ -92,7 +92,7 @@ private:
     int gridRow(WidgetItem *item) const;
     int gridSpan(WidgetItem *item) const;
     void setExpanded(WidgetItem *item, bool expanded);
-    QToolButton *createButton(QWidget *panret = 0) const;
+    QToolButton *createButton(QWidget *panret = nullptr) const;
 
     QMap<QtBrowserItem *, WidgetItem *> m_indexToItem;
     QMap<WidgetItem *, QtBrowserItem *> m_itemToIndex;

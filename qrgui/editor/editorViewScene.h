@@ -52,13 +52,13 @@ public:
 			/// @todo: move scene customizer properties to metamodel
 			, const SceneCustomizer &sceneCustomizer
 			, const Id &rootId
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 	~EditorViewScene();
 
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, bool canBeConnected, qReal::commands::CreateElementsCommand **elementCommand = 0);
+			, bool canBeConnected, qReal::commands::CreateElementsCommand **elementCommand = nullptr);
 
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
 	virtual Id createElement(const QString &idString

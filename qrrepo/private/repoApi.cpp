@@ -96,7 +96,7 @@ void RepoApi::removeChild(const Id &id, const Id &child)
 
 void RepoApi::removeChildren(const Id &id)
 {
-	foreach (const Id &child, children(id)) {
+	for (const Id &child : children(id)) {
 		removeChild(id, child);
 	}
 }
@@ -105,13 +105,13 @@ void RepoApi::removeElement(const Id &id)
 {
 	Q_ASSERT(id != Id::rootId());
 
-	foreach (const Id &child, children(id)) {
+	for (const Id &child : children(id)) {
 		removeElement(child);
 	}
 
 	if (hasProperty(id, "links")) {
 		const IdList links = property(id, "links").value<IdList>();
-		foreach (const Id &link, links) {
+		for (const Id &link : links) {
 			if (mRepository->exist(link)) {
 				if (hasProperty(link, "from") && property(link, "from").value<Id>() == id) {
 					setProperty(link, "from", Id::rootId().toVariant());
@@ -128,14 +128,14 @@ void RepoApi::removeElement(const Id &id)
 
 	if (hasProperty(id, "outgoingExplosions")) {
 		const IdList explosions = property(id, "outgoingExplosions").value<IdList>();
-		foreach (const Id &target, explosions) {
+		for (const Id &target : explosions) {
 			removeExplosion(id, target);
 		}
 	}
 
 	if (hasProperty(id, "incomingExplosions")) {
 		const IdList explosions = property(id, "incomingExplosions").value<IdList>();
-		foreach (const Id &source, explosions) {
+		for (const Id &source : explosions) {
 			if (exist(source)) {
 				removeExplosion(source, id);
 			}
@@ -233,7 +233,7 @@ qReal::IdList RepoApi::connectedElements(const qReal::Id &id) const
 qReal::IdList RepoApi::outgoingConnectedElements(const qReal::Id &id) const
 {
 	qReal::IdList result;
-	foreach (qReal::Id curLink, outgoingLinks(id)) {
+	for (qReal::Id curLink : outgoingLinks(id)) {
 		qReal::Id toElem = to(curLink);
 
 		result.append(toElem);
@@ -244,7 +244,7 @@ qReal::IdList RepoApi::outgoingConnectedElements(const qReal::Id &id) const
 qReal::IdList RepoApi::incomingConnectedElements(const qReal::Id &id) const
 {
 	qReal::IdList result;
-	foreach (qReal::Id curLink, incomingLinks(id)) {
+	for (qReal::Id curLink : incomingLinks(id)) {
 		qReal::Id fromElem = from(curLink);
 
 		result.append(fromElem);
@@ -449,7 +449,7 @@ QString RepoApi::workingFile() const
 IdList RepoApi::graphicalElements() const
 {
 	IdList result;
-	foreach (const Id &id, mRepository->elements()) {
+	for (const Id &id : mRepository->elements()) {
 		if (!mRepository->isLogicalId(id))
 			result.append(id);
 	}
@@ -507,7 +507,7 @@ IdList RepoApi::logicalElements(const Id &type) const
 	Q_ASSERT(type.idSize() == 3);
 
 	IdList result;
-	foreach (Id id, mRepository->elements()) {
+	for (Id id : mRepository->elements()) {
 		if (id.element() == type.element() && mRepository->isLogicalId(id))
 			result.append(id);
 	}
@@ -519,7 +519,7 @@ IdList RepoApi::graphicalElements(const Id &type) const
 	Q_ASSERT(type.idSize() == 3);
 
 	IdList result;
-	foreach (Id id, mRepository->elements()) {
+	for (Id id : mRepository->elements()) {
 		if (id.element() == type.element() && !mRepository->isLogicalId(id))
 			result.append(id);
 	}
@@ -535,13 +535,13 @@ IdList RepoApi::elementsByType(const QString &type, bool sensitivity, bool regEx
 	IdList result;
 
 	if (regExpression) {
-		foreach (const Id &id, mRepository->elements()) {
+		for (const Id &id : mRepository->elements()) {
 			if (id.element().contains(*regExp)) {
 				result.append(id);
 			}
 		}
 	} else {
-		foreach (const Id &id, mRepository->elements()) {
+		for (const Id &id : mRepository->elements()) {
 			if (id.element().contains(type, caseSensitivity)) {
 				result.append(id);
 			}

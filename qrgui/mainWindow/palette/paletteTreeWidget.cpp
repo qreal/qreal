@@ -104,7 +104,7 @@ void PaletteTreeWidget::addItemType(const PaletteElement &data, QTreeWidgetItem 
 void PaletteTreeWidget::addItemsRow(QList<PaletteElement> const &items, QTreeWidgetItem *parent)
 {
 	if (mPaletteTree.itemsCountInARow() == 1 || !mPaletteTree.iconsView()) {
-		foreach (const PaletteElement &element, items) {
+		for (const PaletteElement &element : items) {
 			addItemType(element, parent);
 		}
 
@@ -242,7 +242,7 @@ void PaletteTreeWidget::setElementEnabled(const Id &metatype, bool enabled)
 
 void PaletteTreeWidget::setEnabledForAllElements(bool enabled)
 {
-	foreach (QWidget * const element, mPaletteElements.values()) {
+	for (QWidget * const element : mPaletteElements.values()) {
 		element->setEnabled(enabled);
 	}
 }

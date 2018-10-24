@@ -41,7 +41,7 @@ class PaletteTree: public QWidget
 	Q_OBJECT
 
 public:
-	explicit PaletteTree(QWidget *parent = 0);
+	explicit PaletteTree(QWidget *parent = nullptr);
 	~PaletteTree();
 
 	/** Adds all editor's elements to appropriate tree.

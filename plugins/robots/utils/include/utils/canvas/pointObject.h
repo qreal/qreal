@@ -29,8 +29,8 @@ class ROBOTS_UTILS_EXPORT PointObject : public CanvasObject
 	Q_PROPERTY(QPoint pos READ pos)
 
 public:
-	explicit PointObject(QObject *parent = 0);
-	PointObject(int x, int y, const QColor &color = Qt::black, int thickness = 1, QObject *parent = 0);
+	explicit PointObject(QObject *parent = nullptr);
+	PointObject(int x, int y, const QColor &color = Qt::black, int thickness = 1, QObject *parent = nullptr);
 
 	/// Returns the x-coordinate of the point.
 	int x() const;

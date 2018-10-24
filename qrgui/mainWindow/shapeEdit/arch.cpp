@@ -17,7 +17,7 @@
 #include <math.h>
 #include <QtWidgets/QGraphicsSceneMouseEvent>
 
-Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = 0)
+Arch::Arch(QRectF rect, int startAngle, int spanAngle, Item* parent = nullptr)
 	:Item(parent)
 {
 	mNeedScalingRect = false;

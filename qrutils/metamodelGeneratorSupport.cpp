@@ -199,7 +199,7 @@ void MetamodelGeneratorSupport::appendTypesToElement(
 		, const QString &childName, const QString &prefix
 		, const QStringList &elementTypes)
 {
-	foreach (const QString &elementType, elementTypes) {
+	for (const QString &elementType : elementTypes) {
 		QDomElement child = parentDomDocument.createElement(childName);
 		child.setAttribute("type", prefix + "::" + elementType);
 		parent.appendChild(child);

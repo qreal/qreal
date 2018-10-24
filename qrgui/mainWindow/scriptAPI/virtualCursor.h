@@ -35,7 +35,7 @@ class VirtualCursor : public QLabel
 	Q_OBJECT
 
 public:
-	explicit VirtualCursor(ScriptAPI &scriptAPI, QWidget *parent = 0);
+	explicit VirtualCursor(ScriptAPI &scriptAPI, QWidget *parent = nullptr);
 
 	/// Moves virtual cursor towards the \a target widget for \a duration milliseconds.
 	Q_INVOKABLE void moveTo(const QWidget *target, int duration);

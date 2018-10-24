@@ -56,7 +56,7 @@ QRect AbstractScene::realItemsBoundingRect() const
 	int minX = static_cast<int>(rect.right());
 	QList<QGraphicsItem *> list = items();
 
-	foreach (QGraphicsItem *graphicsItem, list) {
+	for (QGraphicsItem *graphicsItem : list) {
 		AbstractItem* item = dynamic_cast<AbstractItem*>(graphicsItem);
 		if (item) {
 			const QRectF itemRect = item->realBoundingRect();
@@ -107,7 +107,7 @@ void AbstractScene::reshapeItem(QGraphicsSceneMouseEvent *event,graphicsUtils::A
 void AbstractScene::setMoveFlag(QGraphicsSceneMouseEvent *event)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list){
+	for (QGraphicsItem *graphicsItem : list){
 		AbstractItem *item = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem);
 		if (item && item->editable()) {
 			graphicsItem->setFlag(QGraphicsItem::ItemIsMovable, true);
@@ -134,7 +134,7 @@ void AbstractScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void AbstractScene::removeMoveFlag(QGraphicsSceneMouseEvent *event, QGraphicsItem *item)
 {
 	QList<QGraphicsItem *> list = items(event->scenePos());
-	foreach (QGraphicsItem *graphicsItem, list) {
+	for (QGraphicsItem *graphicsItem : list) {
 		AbstractItem *grItem = dynamic_cast<graphicsUtils::AbstractItem *>(graphicsItem);
 		if (grItem) {
 			grItem->setFlag(QGraphicsItem::ItemIsMovable, false);

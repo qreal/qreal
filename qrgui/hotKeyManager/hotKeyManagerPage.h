@@ -30,7 +30,7 @@ class QRGUI_HOTKEY_MANAGER_EXPORT PreferencesHotKeyManagerPage : public qReal::g
 	Q_OBJECT
 
 public:
-	explicit PreferencesHotKeyManagerPage(QWidget *parent = 0);
+	explicit PreferencesHotKeyManagerPage(QWidget *parent = nullptr);
 	~PreferencesHotKeyManagerPage();
 
 	void save();

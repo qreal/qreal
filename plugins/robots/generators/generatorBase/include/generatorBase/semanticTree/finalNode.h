@@ -29,7 +29,7 @@ public:
 	/// It is important to differentiate theese cases because generated code for
 	/// the main diagram final block may differ from subprograms one
 	/// (for example, terminating task vs 'return')
-	FinalNode(const qReal::Id &idBinded, bool inMainDigram, QObject *parent = 0);
+	FinalNode(const qReal::Id &idBinded, bool inMainDigram, QObject *parent = nullptr);
 
 protected:
 	QLinkedList<SemanticNode *> children() const override;

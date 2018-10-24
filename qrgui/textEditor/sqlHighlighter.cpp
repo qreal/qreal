@@ -26,7 +26,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document)
 	QStringList signPatterns;
 	signPatterns << "," << ">" << "<" << "-" << "\\*" << "\\+"
 				 << "\\." << "=" << "\\(" << "\\)";
-	foreach (const QString &pattern, signPatterns) {
+	for (const QString &pattern : signPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mSignFormat;
 		mHighlightingRules.append(rule);
@@ -38,7 +38,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document)
 	keywordPatterns << "\\bSELECT\\b" << "\\bFROM\\b" << "\\bWHERE\\b" << "\\bORDER BY\\b"
 					<< "\\bCOUNT\\b" << "\\bAS\\b" << "\\bJOIN\\b" << "\\bON\\b"
 					<< "\\bGROUP BY\\b" << "\\bHAVING\\b" << "\\bNATURAL JOIN\\b"  ;
-	foreach (const QString &pattern, keywordPatterns) {
+	for (const QString &pattern : keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
 		mHighlightingRules.append(rule);
@@ -72,7 +72,7 @@ SQLHighlighter::SQLHighlighter(QTextDocument *document)
 
 void SQLHighlighter::highlightBlock(const QString &text)
 {
-	foreach (const HighlightingRule &rule, mHighlightingRules) {
+	for (const HighlightingRule &rule : mHighlightingRules) {
 		QRegExp expression(rule.pattern);
 		int index = expression.indexIn(text);
 		while (index >= 0) {

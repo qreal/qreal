@@ -55,7 +55,7 @@ QHash<Id, QPair<QString, QString>> DatabaseEditorSchemeGenerator::modelList()
 	IdList models = mApi.children(repoId);
 	QHash<Id, QPair<QString, QString>> currentModelList;
 
-	foreach (Id modelId, models) {
+	for (Id modelId : models) {
 		QString const elementType = modelId.element();
 		if (elementType == "DatabaseDiagram" && mApi.isLogicalId(modelId)) {
 			QString directoryName = mApi.logicalRepoApi().stringProperty(modelId, "saveToTheDirectory");
@@ -80,7 +80,7 @@ ErrorReporterInterface& DatabaseEditorSchemeGenerator::generateDatabaseScheme(co
 	IdList tableList = mApi.children(modelId);
 	bool fileOpened = false;
 	OutFile sqlFile(pathToFile + ".sql", &fileOpened);
-	foreach (Id tableId, tableList) {
+	for (Id tableId : tableList) {
 		QString const tableType = tableId.element();
 		if (tableType == "Table" && mApi.isLogicalId(tableId)) {
 			QString tableName = mApi.logicalRepoApi().stringProperty(tableId, "name");
@@ -104,7 +104,7 @@ void DatabaseEditorSchemeGenerator::processingColumns(const Id &tableId, utils::
 	IdList columns = mApi.children(tableId);
 	outFile() << "(\n";
 	bool start = true;
-	foreach (Id id, columns) {
+	for (Id id : columns) {
 		if (!start) {
 			outFile() << ",\n";
 		}
@@ -129,7 +129,7 @@ void DatabaseEditorSchemeGenerator::addForeignKeys(const Id &tableId, utils::Out
 {
 	IdList foreignKeys = mApi.logicalRepoApi().outgoingLinks(tableId);
 
-	foreach (Id id, foreignKeys) {
+	for (Id id : foreignKeys) {
 		outFile() << ",\n";
 		if (id.element() == "Connection") {
 			QString foreignKeyName = mApi.logicalRepoApi().stringProperty(id, "Foreign Key");

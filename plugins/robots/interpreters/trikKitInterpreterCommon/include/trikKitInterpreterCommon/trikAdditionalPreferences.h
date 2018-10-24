@@ -29,7 +29,7 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikAdditionalPreferences : publ
 	Q_OBJECT
 
 public:
-	explicit TrikAdditionalPreferences(const QStringList &realRobotNames, QWidget *parent = 0);
+	explicit TrikAdditionalPreferences(const QStringList &realRobotNames, QWidget *parent = nullptr);
 	~TrikAdditionalPreferences();
 
 	void save() override;

@@ -29,7 +29,7 @@ class Palette : public QWidget
 	Q_OBJECT
 
 public:
-	explicit Palette(QWidget *parent = 0);
+	explicit Palette(QWidget *parent = nullptr);
 	~Palette();
 
 	/// Returns a pointer to 'none' tool that triggered when no other tool selected.

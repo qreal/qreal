@@ -33,7 +33,7 @@ public:
 	/// \a duration / 2 milliseconds, then the message fades away for the same time.
 	/// @param parent The widget in top-right corner of which the message is shown.
 	/// If nullptr is passed then main window will be used.
-	virtual void sendBubblingMessage(const QString &message, int duration, QWidget *parent = 0) = 0;
+	virtual void sendBubblingMessage(const QString &message, int duration, QWidget *parent = nullptr) = 0;
 
 	virtual void clear() = 0;
 	virtual void clearErrors() = 0;

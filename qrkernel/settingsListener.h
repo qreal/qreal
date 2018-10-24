@@ -73,7 +73,7 @@ public:
 	/// Starts listening of the settings manager`s updates by the given key. The usage syntax is similar to
 	/// QObject::connect() function in lambda case. The lambda must be parameterless.
 	/// @param owner The QObject whoose disposal will disconnect this lambda too.
-	static void listen(const QString &key, const std::function<void()> &lambda, QObject *owner = 0)
+	static void listen(const QString &key, const std::function<void()> &lambda, QObject *owner = nullptr)
 	{
 		instance().mListeners.insertMulti(key, new LambdaListener0(lambda, owner));
 		if (owner) {
@@ -87,7 +87,7 @@ public:
 	/// @param owner The QObject whoose disposal will disconnect this lambda too.
 	template <typename Func, typename Type
 			= typename QtPrivate::FunctionPointer<decltype(&Func::operator())>::Arguments::Car>
-	static void listen(const QString &key, Func lambda, QObject *owner = 0)
+	static void listen(const QString &key, Func lambda, QObject *owner = nullptr)
 	{
 		instance().mListeners.insertMulti(key, new LambdaListener1<Type>(lambda, owner));
 		if (owner) {

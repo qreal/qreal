@@ -30,7 +30,7 @@ public:
 			, const qReal::Id &id
 			, const QString &pathToTemplate
 			, QList<Binding *> const &bindings
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	virtual ~BindingGenerator();
 

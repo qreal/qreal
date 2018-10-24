@@ -54,7 +54,7 @@ class Structurizator : public QObject
 	Q_OBJECT
 
 public:
-	explicit Structurizator(QObject *parent = 0);
+	explicit Structurizator(QObject *parent = nullptr);
 
 	/// main function that performs structurization
 	IntermediateStructurizatorNode *performStructurization(const QSet<qReal::Id> &verticesIds, int startVertex

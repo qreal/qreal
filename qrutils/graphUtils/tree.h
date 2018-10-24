@@ -41,7 +41,7 @@ public:
 	void parentLeftRight(Visitor &visitor)
 	{
 		visitor(this);
-		foreach (Tree *node, mChildren) {
+		for (Tree *node : mChildren) {
 			if (node) {
 				node->parentLeftRight(visitor);
 			}
@@ -54,7 +54,7 @@ public:
 	template<typename Visitor>
 	void leftRightParent(Visitor &visitor)
 	{
-		foreach (Tree *node, mChildren) {
+		for (Tree *node : mChildren) {
 			node->parentLeftRight(visitor);
 		}
 		visitor(this);

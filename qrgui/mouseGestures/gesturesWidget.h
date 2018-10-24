@@ -34,7 +34,7 @@ class GesturesWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit GesturesWidget(QWidget *parent = 0);
+	explicit GesturesWidget(QWidget *parent = nullptr);
 	~GesturesWidget();
 
 	void draw(const QString &paths);

@@ -28,7 +28,7 @@ class TabWidget : public QTabWidget, public EditorInterface
 
 public:
 	/// Constructor.
-	explicit TabWidget(QWidget *parent = 0);
+	explicit TabWidget(QWidget *parent = nullptr);
 
 	/// Hides close button on the tab with the given \a index.
 	void setTabUnclosable(int index);

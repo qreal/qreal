@@ -31,7 +31,7 @@ void SingleXmlSerializer::exportToXml(const QString &targetFile, QHash<qReal::Id
 	QDomElement root = doc.createElement("project");
 	doc.appendChild(root);
 
-	foreach (const Id &id, objects[Id::rootId()]->children()) {
+	for (const Id &id : objects[Id::rootId()]->children()) {
 
 		// skip logical elements of diagrams
 		if (objects[id]->isLogicalObject()) {
@@ -61,7 +61,7 @@ void SingleXmlSerializer::exportDiagram(const Id &diagramId, QDomDocument &doc, 
 
 	QDomElement elements = doc.createElement("elements");
 
-	foreach (const Id &id, objects[diagramId]->children()) {
+	for (const Id &id : objects[diagramId]->children()) {
 		exportElement(id, doc, elements, objects);
 	}
 
@@ -100,7 +100,7 @@ void SingleXmlSerializer::exportChildren(const Id &id, QDomDocument &doc, QDomEl
 	QDomElement children = doc.createElement("children");
 	children.setAttribute("count", size);
 
-	foreach (const Id &id, object->children()) {
+	for (const Id &id : object->children()) {
 		exportElement(id, doc, children, objects);
 	}
 
@@ -131,7 +131,7 @@ void SingleXmlSerializer::exportProperties(const Id&id, QDomDocument &doc, QDomE
 		properties[i.key()] = i.value();
 	}
 
-	foreach (const QString &key, properties.keys()) {
+	for (const QString &key : properties.keys()) {
 		QDomElement prop = doc.createElement("property");
 
 		QString typeName = properties[key].typeName();

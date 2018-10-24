@@ -47,11 +47,11 @@ IdList RefactoringFinder::elementsFromBlock(QString const &blockType) const
 {
 	IdList list;
 	IdList const refactoringElements = mRefactoringRepoApi->children(Id::rootId());
-	foreach (Id const &refactoringElement, refactoringElements) {
+	for (Id const &refactoringElement : refactoringElements) {
 		if (mRefactoringRepoApi->isGraphicalElement(refactoringElement)) {
 			if (refactoringElement.element() == "RefactoringDiagramNode") {
 				list = mRefactoringRepoApi->children(refactoringElement);
-				foreach (Id const &id, list) {
+				for (Id const &id : list) {
 					if (id.element() == blockType) {
 						return mRefactoringRepoApi->children(id);
 					}
@@ -64,7 +64,7 @@ IdList RefactoringFinder::elementsFromBlock(QString const &blockType) const
 
 bool RefactoringFinder::containElementWithID(QString const &idValue, IdList const &idList)
 {
-	foreach (Id const &id, idList) {
+	for (Id const &id : idList) {
 		if (mRefactoringRepoApi->property(id, "ID").toString() == idValue) {
 			return true;
 		}
@@ -84,7 +84,7 @@ void RefactoringFinder::highlightMatch()
 	if (findMatch()) {
 		for (int i = 0; i < mMatches.size(); ++i) {
 			QHash <Id, Id> currentMatch = mMatches.at(i);
-			foreach (Id const &id, currentMatch.keys()) {
+			for (Id const &id : currentMatch.keys()) {
 				QColor const color = QColor(SettingsManager::value("refactoringColor", "cyan").toString());
 				bool isExclusive = false;
 				mInterpretersInterface.highlight(currentMatch.value(id), isExclusive, color);
@@ -109,7 +109,7 @@ Id RefactoringFinder::startElement() const
 {
 	IdList const before = elementsFromBeforeBlock();
 
-	foreach (Id const &beforeId, before) {
+	for (Id const &beforeId : before) {
 		if (!isEdgeInRule(beforeId)) {
 			return beforeId;
 		}
@@ -177,7 +177,7 @@ IdList RefactoringFinder::linksInRule(Id const &id) const
 bool RefactoringFinder::refactoringRuleContainsSelectedSegment()
 {
 	IdList const before = elementsFromBeforeBlock();
-	foreach (Id const &beforeId, before) {
+	for (Id const &beforeId : before) {
 		if (beforeId.element() == "SelectedSegment") {
 			return true;
 		}
