@@ -388,8 +388,10 @@ IdList Repository::idsOfAllChildrenOf(Id id) const
 	result.clear();
 	result.append(id);
 	IdList list = mObjects[id]->children();
-	foreach(const Id &childId, list)
+	for (const Id &childId : list) {
 		result.append(idsOfAllChildrenOf(childId));
+	}
+
 	return result;
 }
 
@@ -397,8 +399,10 @@ QList<Object*> Repository::allChildrenOf(Id id) const
 {
 	QList<Object*> result;
 	result.append(mObjects[id]);
-	foreach(const Id &childId, mObjects[id]->children())
+	for (const Id &childId : mObjects[id]->children()) {
 		result.append(allChildrenOf(childId));
+	}
+
 	return result;
 }
 
@@ -441,6 +445,7 @@ bool Repository::saveWithLogicalId(const qReal::IdList &list) const
 	for (const Id &id : list) {
 		toSave << allChildrenOfWithLogicalId(id);
 	}
+
 
 	return mSerializer.saveToDisk(toSave, mMetaInfo);
 }

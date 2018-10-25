@@ -446,26 +446,35 @@ QString RepoApi::workingFile() const
 	return mRepository->workingFile();
 }
 
+void RepoApi::setWorkingFile(const QString &workingFile) const
+{
+	mRepository->setWorkingFile(workingFile);
+}
+
 IdList RepoApi::graphicalElements() const
 {
 	IdList result;
 	for (const Id &id : mRepository->elements()) {
-		if (!mRepository->isLogicalId(id))
+		if (!mRepository->isLogicalId(id)) {
 			result.append(id);
+		}
 	}
+
 	return result;
 }
 
 void RepoApi::addToIdList(const Id &target, const QString &listName, const Id &data, const QString &direction)
 {
-	if (target == Id::rootId())
+	if (target == Id::rootId()) {
 		return;
+	}
 
 	IdList list = mRepository->property(target, listName).value<IdList>();
 
 	// Values in the list must be unique.
-	if (list.contains(data))
+	if (list.contains(data)) {
 		return;
+	}
 
 	list.append(data);
 	mRepository->setProperty(target, listName, IdListHelper::toVariant(list));
@@ -479,14 +488,16 @@ void RepoApi::addToIdList(const Id &target, const QString &listName, const Id &d
 
 void RepoApi::removeFromList(const Id &target, const QString &listName, const Id &data, const QString &direction)
 {
-	if (target == Id::rootId())
+	if (target == Id::rootId()) {
 		return;
+	}
 
 	IdList list = mRepository->property(target, listName).value<IdList>();
 	IdList temporaryRemovedList = mRepository->temporaryRemovedLinksAt(target, direction);
 	if(listName == "links" && list.contains(data)) {
 		temporaryRemovedList.append(data);
 	}
+
 	list.removeAll(data);
 
 	mRepository->setProperty(target, listName, IdListHelper::toVariant(list));
@@ -496,10 +507,11 @@ void RepoApi::removeFromList(const Id &target, const QString &listName, const Id
 Id RepoApi::otherEntityFromLink(const Id &linkId, const Id &firstNode) const
 {
 	const Id fromId = from(linkId);
-	if (fromId != firstNode)
+	if (fromId != firstNode) {
 		return fromId;
-	else
+	} else {
 		return to(linkId);
+	}
 }
 
 IdList RepoApi::logicalElements(const Id &type) const
@@ -511,6 +523,7 @@ IdList RepoApi::logicalElements(const Id &type) const
 		if (id.element() == type.element() && mRepository->isLogicalId(id))
 			result.append(id);
 	}
+
 	return result;
 }
 
@@ -523,6 +536,7 @@ IdList RepoApi::graphicalElements(const Id &type) const
 		if (id.element() == type.element() && !mRepository->isLogicalId(id))
 			result.append(id);
 	}
+
 	return result;
 }
 
@@ -547,6 +561,7 @@ IdList RepoApi::elementsByType(const QString &type, bool sensitivity, bool regEx
 			}
 		}
 	}
+
 	return result;
 }
 

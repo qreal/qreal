@@ -140,6 +140,7 @@ public:
 	void exportToXml(const QString &targetFile) const override;
 
 	QString workingFile() const override;
+	void setWorkingFile(const QString &workingFile) const override;
 
 	// "Global" methods for querying the whole model.
 	// Returns all elements with .element() == type.element()
@@ -150,8 +151,9 @@ public:
 	qReal::Id logicalId(const qReal::Id &id) const override;
 
 	/// Returns all elements with .element() == type
-	qReal::IdList elementsByType(const QString &type, bool sensitivity = false, bool regExpression = false) const;
-	int elementsCount() const;
+	qReal::IdList elementsByType(const QString &type, bool sensitivity = false
+			, bool regExpression = false) const override;
+	int elementsCount() const override;
 
 	bool exist(const qReal::Id &id) const override;
 

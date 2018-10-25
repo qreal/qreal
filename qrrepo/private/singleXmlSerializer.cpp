@@ -31,8 +31,7 @@ void SingleXmlSerializer::exportToXml(const QString &targetFile, QHash<qReal::Id
 	QDomElement root = doc.createElement("project");
 	doc.appendChild(root);
 
-	for (const Id &id : objects[Id::rootId()]->children()) {
-
+	for (const Id &id : objects.keys()) {
 		// skip logical elements of diagrams
 		if (objects[id]->isLogicalObject()) {
 			continue;

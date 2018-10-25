@@ -81,6 +81,7 @@ bool Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		, "Serializer::saveToDisk(...)"
 		, "may be Repository of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
+	clearWorkingDir();
 	for (const Object * const object : objects) {
 		const QString filePath = createDirectory(object->id(), object->isLogicalObject());
 
