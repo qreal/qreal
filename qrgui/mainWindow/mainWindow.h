@@ -215,7 +215,6 @@ private slots:
 	void showFindDialog();
 
 	void adjustMinimapZoom(int zoom);
-	void toggleShowSplash(bool show);
 
 	void updateTabName(const Id &id);
 

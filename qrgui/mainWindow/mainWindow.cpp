@@ -189,7 +189,6 @@ void MainWindow::connectActions()
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
 
-	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
 		if (!mProjectManager->suggestToOpenExisting() && !currentTab()) {
 			openStartTab();
@@ -329,7 +328,6 @@ void MainWindow::connectSystemEvents()
 
 void MainWindow::initActionsFromSettings()
 {
-	mUi->actionShowSplash->setChecked(SettingsManager::value("Splashscreen").toBool());
 }
 
 void MainWindow::registerMetaTypes()
@@ -783,11 +781,6 @@ void MainWindow::showHelp()
 	const QString pathToHelp = PlatformInfo::invariantSettingsPath("pathToHelp");
 	const QString url = QString("file:///%1/index.html").arg(pathToHelp);
 	QDesktopServices::openUrl(QUrl(url));
-}
-
-void MainWindow::toggleShowSplash(bool show)
-{
-	SettingsManager::setValue("Splashscreen", show);
 }
 
 bool MainWindow::unloadPlugin(const QString &pluginName)

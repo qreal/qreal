@@ -73,7 +73,6 @@
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
-    <addaction name="actionShowSplash"/>
     <addaction name="separator"/>
     <addaction name="menuPanels"/>
    </widget>
@@ -518,17 +517,6 @@
   <action name="actionAboutQt">
    <property name="text">
     <string>About Qt...</string>
-   </property>
-  </action>
-  <action name="actionShowSplash">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Show splashscreen</string>
    </property>
   </action>
   <action name="actionSave">
