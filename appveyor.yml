@@ -65,7 +65,7 @@ before_build:
 
 build_script:
   - cd %BUILD_DIR%
-  - qmake %APPVEYOR_BUILD_FOLDER%\%PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% # QMAKE_CXX="ccache g++"
+  - qmake %APPVEYOR_BUILD_FOLDER%\%PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% CONFIG+=silent # QMAKE_CXX="ccache g++"
   - mingw32-make -j2 qmake_all
   - mingw32-make -j2 -k all
 
