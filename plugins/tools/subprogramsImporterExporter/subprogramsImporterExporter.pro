@@ -18,7 +18,7 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools/
 
-includes(qrutils)
+includes(qrkernel qrutils)
 
 QT += widgets core
 

@@ -16,6 +16,8 @@
 
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
+class QEventLoop;
+
 namespace subprogramsImporterExporter {
 
 /// Plugin to export/import subprograms from/to models.
@@ -36,6 +38,7 @@ public:
 private slots:
 	void exportToFile() const;
 	void importToProject() const;
+	void saveToCollectionTriggered();
 
 private:
 	QAction mFirstSeparatorAction;

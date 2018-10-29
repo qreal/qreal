@@ -27,22 +27,20 @@ class SubprogramsCollectionDialog : public QDialog
 	Q_OBJECT
 
 public:
-	SubprogramsCollectionDialog(const QList<QPair<QString, bool>> &values, QWidget *parent = nullptr);
+	SubprogramsCollectionDialog(QMap<QString, bool> &values, QWidget *parent = nullptr);
 	~SubprogramsCollectionDialog() override;
 
 public slots:
 	void accept() override;
 
-signals:
-	void okButtonTriggered(const QStringList &selectedValues);
-
 private slots:
 	void highlightItem(QListWidgetItem *item);
 
 private:
-	void updateValues(const QList<QPair<QString, bool>> &values);
+	void updateValues();
 
 	Ui::subprogramsCollectionDialog *mUi;
 
-	bool selectMode;
+	bool mSelectMode;
+	QMap<QString, bool> &mValues;
 };

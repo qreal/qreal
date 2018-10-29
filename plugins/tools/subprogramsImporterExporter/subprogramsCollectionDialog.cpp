@@ -18,24 +18,25 @@
 #include <QtWidgets/QListWidgetItem>
 #include <QtWidgets/QListWidget>
 
-SubprogramsCollectionDialog::SubprogramsCollectionDialog(const QList<QPair<QString, bool>> &values, QWidget *parent) :
+SubprogramsCollectionDialog::SubprogramsCollectionDialog(QMap<QString, bool> &values, QWidget *parent) :
 	QDialog(parent)
 	, mUi(new Ui::subprogramsCollectionDialog)
-	, selectMode(true)
+	, mSelectMode(true)
+	, mValues(values)
 {
 	mUi->setupUi(this);
 
 	setWindowTitle(tr("Subprograms collection manager"));
-	updateValues(values);
+	updateValues();
 
 	connect(mUi->listWidget, &QListWidget::itemChanged, this, &SubprogramsCollectionDialog::highlightItem);
 	connect(mUi->selectAllButton, &QPushButton::clicked, [this]() {
 		for (int i=0; i < mUi->listWidget->count(); ++i) {
-			mUi->listWidget->item(i)->setCheckState(selectMode ? Qt::Checked : Qt::Unchecked);
+			mUi->listWidget->item(i)->setCheckState(mSelectMode ? Qt::Checked : Qt::Unchecked);
 		}
 
-		selectMode = not selectMode;
-		if (selectMode) {
+		mSelectMode = not mSelectMode;
+		if (mSelectMode) {
 			mUi->selectAllButton->setText(tr("Select All"));
 		} else {
 			mUi->selectAllButton->setText(tr("Deselect All"));
@@ -48,31 +49,31 @@ SubprogramsCollectionDialog::~SubprogramsCollectionDialog()
 	delete mUi;
 }
 
-void SubprogramsCollectionDialog::updateValues(const QList<QPair<QString, bool>> &values)
+void SubprogramsCollectionDialog::updateValues()
 {
 	mUi->listWidget->clear();
 	mUi->selectAllButton->hide();
-	for (auto p : values) {
-		mUi->listWidget->addItem(p.first);
+	for (auto file : mValues.keys()) {
+		mUi->listWidget->addItem(file);
 		QListWidgetItem *item = mUi->listWidget->item(mUi->listWidget->count() - 1);
 		item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
-		item->setCheckState(p.second ? Qt::Checked : Qt::Unchecked);
+		item->setCheckState(mValues[file] ? Qt::Checked : Qt::Unchecked);
 		highlightItem(item);
 	}
 
-	if (values.size() > 0) {
+	if (mValues.size() > 0) {
 		mUi->selectAllButton->show();
 	}
 }
 
 void SubprogramsCollectionDialog::accept()
 {
-	QStringList values;
-	for (auto item : mUi->listWidget->selectedItems()) {
-		values << item->text();
+	for (int i=0; i < mUi->listWidget->count(); ++i) {
+		QListWidgetItem const * const item = mUi->listWidget->item(i);
+		mValues[item->text()] = item->checkState() == Qt::Checked;
 	}
 
-	emit okButtonTriggered(values);
+	QDialog::accept();
 }
 
 void SubprogramsCollectionDialog::highlightItem(QListWidgetItem *item)

@@ -157,6 +157,20 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	}
 
 	const QString localStringPropertyName = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "name");
+
+	QSet<QString> uniqueNames;
+	QMultiMap<Id, Id> localExplosions = mExploser.explosions(mId);
+	for (const Id &id : localExplosions.values()) {
+		if (id != mId) {
+			uniqueNames.insert(mLogicalRepoApi.name(id));
+		}
+	}
+
+	if (uniqueNames.contains(mUi->subprogramName->text())) {
+		QMessageBox::critical(this, tr("Error"), tr("There is already a subprogram with that name"));
+		return;
+	}
+
 	auto command = new commands::ChangePropertyCommand(
 			&mLogicalRepoApi.mutableLogicalRepoApi()
 			, "name"

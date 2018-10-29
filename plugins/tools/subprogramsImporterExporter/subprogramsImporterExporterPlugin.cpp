@@ -15,6 +15,7 @@
 #include "subprogramsImporterExporterPlugin.h"
 
 #include <QtCore/QStandardPaths>
+#include <QtCore/QEventLoop>
 
 #include <widgets/qRealFileDialog.h>
 
@@ -38,10 +39,8 @@ SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
 {
 	connect(&mExportAction, &QAction::triggered, this, &SubprogramsImporterExporterPlugin::exportToFile);
 	connect(&mImportToProjectAction, &QAction::triggered, this, &SubprogramsImporterExporterPlugin::importToProject);
-	connect(&mSaveToCollection, &QAction::triggered, [](){
-		SubprogramsCollectionDialog dialog({{"olololo", true}, {"olololo2", false}});
-		dialog.exec();
-	});
+	connect(&mSaveToCollection, &QAction::triggered, this
+			, &SubprogramsImporterExporterPlugin::saveToCollectionTriggered);
 }
 
 SubprogramsImporterExporterPlugin::~SubprogramsImporterExporterPlugin()
@@ -143,4 +142,22 @@ void SubprogramsImporterExporterPlugin::importToProject() const
 	mMainWindowInterpretersInterface->reinitModels();
 	mMainWindowInterpretersInterface->activateItemOrDiagram(activeDiagram);
 	mProjectManager->afterOpen(mRepo->workingFile());
+}
+
+void SubprogramsImporterExporterPlugin::saveToCollectionTriggered()
+{
+	// todo: list of SP which are not saved.
+	qReal::IdList subprograms = mRepo->findElementsByName("SubprogramDiagram", true, false);
+	QSet<QString> uniqueNames;
+	for (const qReal::Id &id : subprograms) {
+		uniqueNames.insert(mGraphicalModel->name(id));
+	}
+
+	QMap<QString, bool> map = {{"olololo", true}, {"olololo2", false}};
+	SubprogramsCollectionDialog dialog(map);
+	dialog.exec();
+	if (dialog.result() == QDialog::Accepted) {
+		// todo: save to independent project.... dependences????? another subprograms... needs to be copied if it was
+		// inside in selected subprogram
+	}
 }
