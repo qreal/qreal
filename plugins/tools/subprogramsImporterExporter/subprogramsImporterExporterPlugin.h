@@ -38,11 +38,15 @@ private slots:
 	void importToProject() const;
 
 private:
-	QAction mSeparatorAction;
+	QAction mFirstSeparatorAction;
+	QAction mSecondSeparatorAction;
 	QAction mImportToProjectAction;
 	QAction mExportAction;
+	QAction mSaveToCollection;
+	QAction mExportFromCollection;
 
-	qrRepo::RepoControlInterface *mRepo;  // Doesn't have ownership
+
+	qrRepo::RepoControlInterface *mRepo; // Doesn't have ownership
 	qReal::gui::MainWindowInterpretersInterface *mMainWindowInterpretersInterface; // Doesn`t have ownership
 	qReal::GraphicalModelAssistInterface *mGraphicalModel; // Doesn`t have ownership
 	qReal::LogicalModelAssistInterface *mLogicalModel; // Doesn`t have ownership

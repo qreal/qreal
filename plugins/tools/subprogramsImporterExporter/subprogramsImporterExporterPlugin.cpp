@@ -18,12 +18,18 @@
 
 #include <widgets/qRealFileDialog.h>
 
+#include "subprogramsCollectionDialog.h"
+
+const QString programDirectory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+const QString subprogramsCollectionDirectory = "subprogramsCollection";
 
 using namespace subprogramsImporterExporter;
 
 SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
 	: mImportToProjectAction(tr("Import subprograms to current project"), nullptr)
 	, mExportAction(tr("Export subprograms to file"), nullptr)
+	, mSaveToCollection(tr("Save subprograms to collection"), nullptr)
+	, mExportFromCollection(tr("Export subprograms from collection"), nullptr)
 	, mRepo(nullptr)
 	, mMainWindowInterpretersInterface(nullptr)
 	, mGraphicalModel(nullptr)
@@ -32,6 +38,10 @@ SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
 {
 	connect(&mExportAction, &QAction::triggered, this, &SubprogramsImporterExporterPlugin::exportToFile);
 	connect(&mImportToProjectAction, &QAction::triggered, this, &SubprogramsImporterExporterPlugin::importToProject);
+	connect(&mSaveToCollection, &QAction::triggered, [](){
+		SubprogramsCollectionDialog dialog({{"olololo", true}, {"olololo2", false}});
+		dialog.exec();
+	});
 }
 
 SubprogramsImporterExporterPlugin::~SubprogramsImporterExporterPlugin()
@@ -40,10 +50,14 @@ SubprogramsImporterExporterPlugin::~SubprogramsImporterExporterPlugin()
 
 QList<qReal::ActionInfo> SubprogramsImporterExporterPlugin::actions()
 {
-	mSeparatorAction.setSeparator(true);
-	return { qReal::ActionInfo(&mSeparatorAction, "", "tools")
+	mFirstSeparatorAction.setSeparator(true);
+	mSecondSeparatorAction.setSeparator(true);
+	return { qReal::ActionInfo(&mFirstSeparatorAction, "", "tools")
 			, qReal::ActionInfo(&mImportToProjectAction, "", "tools")
-			, qReal::ActionInfo(&mExportAction, "", "tools") };
+			, qReal::ActionInfo(&mExportAction, "", "tools")
+			, qReal::ActionInfo(&mSaveToCollection, "", "tools")
+			, qReal::ActionInfo(&mExportFromCollection, "", "tools")
+			, qReal::ActionInfo(&mSecondSeparatorAction, "", "tools") };
 }
 
 void SubprogramsImporterExporterPlugin::init(qReal::PluginConfigurator const &configurator)

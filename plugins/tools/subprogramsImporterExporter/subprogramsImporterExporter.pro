@@ -30,6 +30,11 @@ INCLUDEPATH += \
 
 HEADERS = \
 	subprogramsImporterExporterPlugin.h \
+	subprogramsCollectionDialog.h
 
 SOURCES = \
 	subprogramsImporterExporterPlugin.cpp \
+	subprogramsCollectionDialog.cpp
+
+FORMS += \
+	subprogramsCollectionDialog.ui
