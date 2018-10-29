@@ -38,6 +38,7 @@ private slots:
 	void importToProject() const;
 
 private:
+	QAction mSeparatorAction;
 	QAction mImportToProjectAction;
 	QAction mExportAction;
 

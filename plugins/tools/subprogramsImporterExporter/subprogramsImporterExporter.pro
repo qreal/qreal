@@ -18,9 +18,15 @@ TEMPLATE = lib
 CONFIG += plugin
 DESTDIR = $$DESTDIR/plugins/tools/
 
-includes(qrgui)
+includes(qrutils)
 
-QT += widgets
+QT += widgets core
+
+TRANSLATIONS = \
+	$$PWD/../../../qrtranslations/ru/plugins/subprogramsImporterExporter_ru.ts \
+
+INCLUDEPATH += \
+	$$PWD/../../../qrutils/ \
 
 HEADERS = \
 	subprogramsImporterExporterPlugin.h \

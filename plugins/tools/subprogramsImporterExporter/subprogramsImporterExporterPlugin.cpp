@@ -14,6 +14,11 @@
 
 #include "subprogramsImporterExporterPlugin.h"
 
+#include <QtCore/QStandardPaths>
+
+#include <widgets/qRealFileDialog.h>
+
+
 using namespace subprogramsImporterExporter;
 
 SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
@@ -35,7 +40,9 @@ SubprogramsImporterExporterPlugin::~SubprogramsImporterExporterPlugin()
 
 QList<qReal::ActionInfo> SubprogramsImporterExporterPlugin::actions()
 {
-	return { qReal::ActionInfo(&mImportToProjectAction, "", "tools")
+	mSeparatorAction.setSeparator(true);
+	return { qReal::ActionInfo(&mSeparatorAction, "", "tools")
+			, qReal::ActionInfo(&mImportToProjectAction, "", "tools")
 			, qReal::ActionInfo(&mExportAction, "", "tools") };
 }
 
@@ -50,6 +57,20 @@ void SubprogramsImporterExporterPlugin::init(qReal::PluginConfigurator const &co
 
 void SubprogramsImporterExporterPlugin::exportToFile() const
 {
+	const QString fileLocation = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+	QString fileName = utils::QRealFileDialog::getSaveFileName("ExportSubprograms"
+			, mMainWindowInterpretersInterface->currentTab()
+			, tr("Select subprograms file (name for new one)")
+			, fileLocation, tr("QReal Save File(*.qrs)"));
+
+	if (fileName.isEmpty()) {
+		return;
+	}
+
+	if (!fileName.isEmpty() && !fileName.endsWith(".qrs", Qt::CaseInsensitive)) {
+		fileName += ".qrs";
+	}
+
 	qReal::IdList graphicalChildrens = mGraphicalModel->children(mGraphicalModel->rootId());
 	qReal::IdList exportedIds;
 	for (auto id : graphicalChildrens) {
@@ -86,15 +107,25 @@ void SubprogramsImporterExporterPlugin::exportToFile() const
 	}
 
 	QString currnetWorkingFile = mRepo->workingFile();
-	mRepo->setWorkingFile("/home/greg/Documents/qrealFolder/importTest1.qrs");
+	mRepo->setWorkingFile(fileName);
 	mRepo->save(set.toList());
 	mRepo->setWorkingFile(currnetWorkingFile);
 }
 
 void SubprogramsImporterExporterPlugin::importToProject() const
 {
+	const QString fileLocation = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+	QString fileName = utils::QRealFileDialog::getOpenFileName("ExportSubprograms"
+			, mMainWindowInterpretersInterface->currentTab()
+			, tr("Select subprograms file")
+			, fileLocation, tr("QReal Save File(*.qrs)"));
+
+	if (fileName.isEmpty()) {
+		return;
+	}
+
 	qReal::Id activeDiagram = mMainWindowInterpretersInterface->activeDiagram();
-	mRepo->importFromDisk("/home/greg/Documents/qrealFolder/importTest1.qrs");
+	mRepo->importFromDisk(fileName);
 	mMainWindowInterpretersInterface->reinitModels();
 	mMainWindowInterpretersInterface->activateItemOrDiagram(activeDiagram);
 	mProjectManager->afterOpen(mRepo->workingFile());
