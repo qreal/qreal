@@ -122,7 +122,7 @@ void DynamicPropertiesDialog::addLabelButtonClicked()
 	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
 	QComboBox *types = new QComboBox(this);
-	types->addItems({"int", "bool", "string"});
+	types->addItems({"int", "float", "bool", "string"});
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
 }
@@ -131,6 +131,10 @@ QString DynamicPropertiesDialog::defaultLabelValue(const QString &type) const
 {
 	if (type == "int") {
 		return "0";
+	}
+
+	if (type == "float") {
+		return "0.0";
 	}
 
 	if (type == "string") {
@@ -195,7 +199,7 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		const QString type = qobject_cast<QComboBox *>(mUi->labels->cellWidget(i, 1))->currentText();
 		const QString value = type == "bool"
 				? qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 2))->currentText()
-				: mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
+				: mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : QString();
 
 		QDomElement label = dynamicLabels.createElement("label");
 		label.setAttribute("x", x);
@@ -372,7 +376,7 @@ void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type,
 	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
 	QComboBox *types = new QComboBox(this);
-	types->addItems({"int", "bool", "string"});
+	types->addItems({"int", "float", "bool", "string"});
 	types->setCurrentText(type);
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);

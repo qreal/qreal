@@ -21,6 +21,7 @@
 #include <qrgui/models/exploser.h>
 #include <qrrepo/repoApi.h>
 #include <qrgui/controller/controller.h>
+
 #include "qrgui/dialogs/dialogsDeclSpec.h"
 #include "shapePropertyWidget.h"
 
