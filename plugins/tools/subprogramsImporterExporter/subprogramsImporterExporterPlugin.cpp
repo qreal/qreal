@@ -17,20 +17,28 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QEventLoop>
 
+#include <algorithm>
+
 #include <widgets/qRealFileDialog.h>
+#include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
 #include "subprogramsCollectionDialog.h"
 
-const QString programDirectory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-const QString subprogramsCollectionDirectory = "subprogramsCollection";
+
+const QString PROGRAM_DIRECTORY = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+const QString SUBPROGRAMS_COLLECTION_DIRECTORY = "subprogramsCollection";
+const QMap<QString, QString> KIT_ID_TO_FRIENDLY_NAME = {
+		{"trikV62Kit", "TRIK"}, {"ev3Kit", "Lego EV3"}, {"nxtKit", "Lego NXT"}};
 
 using namespace subprogramsImporterExporter;
 
 SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
-	: mImportToProjectAction(tr("Import subprograms to current project"), nullptr)
-	, mExportAction(tr("Export subprograms to file"), nullptr)
-	, mSaveToCollection(tr("Save subprograms to collection"), nullptr)
-	, mExportFromCollection(tr("Export subprograms from collection"), nullptr)
+	: mMenu(tr("Subprograms collection"))
+	, mImportToProjectAction(tr("Import subprograms to current project"), &mMenu)
+	, mExportAction(tr("Export subprograms to file"), &mMenu)
+	, mSaveToCollection(tr("Save subprograms to collection"), &mMenu)
+	, mImportFromCollection(tr("Import subprograms from collection"), &mMenu)
+	, mClearCollection(tr("Clear collection"), &mMenu)
 	, mRepo(nullptr)
 	, mMainWindowInterpretersInterface(nullptr)
 	, mGraphicalModel(nullptr)
@@ -41,6 +49,10 @@ SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
 	connect(&mImportToProjectAction, &QAction::triggered, this, &SubprogramsImporterExporterPlugin::importToProject);
 	connect(&mSaveToCollection, &QAction::triggered, this
 			, &SubprogramsImporterExporterPlugin::saveToCollectionTriggered);
+	connect(&mImportFromCollection, &QAction::triggered, this
+			, &SubprogramsImporterExporterPlugin::importFromCollectionTriggered);
+	connect(&mClearCollection, &QAction::triggered, this
+			, &SubprogramsImporterExporterPlugin::clearCollectionTriggered);
 }
 
 SubprogramsImporterExporterPlugin::~SubprogramsImporterExporterPlugin()
@@ -51,11 +63,13 @@ QList<qReal::ActionInfo> SubprogramsImporterExporterPlugin::actions()
 {
 	mFirstSeparatorAction.setSeparator(true);
 	mSecondSeparatorAction.setSeparator(true);
+	mMenu.addAction(&mExportAction);
+	mMenu.addAction(&mImportToProjectAction);
+	mMenu.addAction(&mSaveToCollection);
+	mMenu.addAction(&mImportFromCollection);
+	mMenu.addAction(&mClearCollection);
 	return { qReal::ActionInfo(&mFirstSeparatorAction, "", "tools")
-			, qReal::ActionInfo(&mImportToProjectAction, "", "tools")
-			, qReal::ActionInfo(&mExportAction, "", "tools")
-			, qReal::ActionInfo(&mSaveToCollection, "", "tools")
-			, qReal::ActionInfo(&mExportFromCollection, "", "tools")
+			, qReal::ActionInfo(&mMenu, "tools")
 			, qReal::ActionInfo(&mSecondSeparatorAction, "", "tools") };
 }
 
@@ -70,6 +84,10 @@ void SubprogramsImporterExporterPlugin::init(qReal::PluginConfigurator const &co
 
 void SubprogramsImporterExporterPlugin::exportToFile() const
 {
+	if (not checkOpenedProject() || not checkSubprogramsForUniqueNames()) {
+		return;
+	}
+
 	const QString fileLocation = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 	QString fileName = utils::QRealFileDialog::getSaveFileName("ExportSubprograms"
 			, mMainWindowInterpretersInterface->currentTab()
@@ -84,49 +102,36 @@ void SubprogramsImporterExporterPlugin::exportToFile() const
 		fileName += ".qrs";
 	}
 
-	qReal::IdList graphicalChildrens = mGraphicalModel->children(mGraphicalModel->rootId());
-	qReal::IdList exportedIds;
-	for (auto id : graphicalChildrens) {
-		if (id.element() == "Subprogram" || id.element() == "SubprogramDiagram") {
-			qReal::IdList childrens = mGraphicalModel->children(id);
-			exportedIds.append(childrens);
-			exportedIds.append(id);
-		}
+	qReal::IdList subprograms = mLogicalModel->logicalRepoApi().elementsByType("SubprogramDiagram", true, false);
+	QSet<QString> uniqueNames;
+	QMap<QString, qReal::Id> nameToId;
+
+	for (const qReal::Id &id : subprograms) {
+		uniqueNames.insert(mGraphicalModel->name(id));
+		nameToId[mGraphicalModel->name(id)] = id;
 	}
 
-	qReal::IdList logicalChildrens = mLogicalModel->children(mGraphicalModel->rootId());
-	for (auto id : logicalChildrens) {
-		if (id.element() == "Subprogram" || id.element() == "SubprogramDiagram") {
-			qReal::IdList childrens = mLogicalModel->children(id);
-			exportedIds.append(childrens);
-			exportedIds.append(id);
-		}
-
-		qReal::IdList localIncomingExplosions = mLogicalModel->logicalRepoApi().incomingExplosions(id);
-		if (not localIncomingExplosions.isEmpty()) {
-			exportedIds.append(localIncomingExplosions);
-		}
+	uniqueNames.remove("");
+	if (uniqueNames.isEmpty()) {
+		mMainWindowInterpretersInterface->errorReporter()->addInformation(tr("There are not subprograms"
+				" in your project"));
+		return;
 	}
 
-	QSet<qReal::Id> set;
-	for (auto id : exportedIds) {
-		set.insert(id);
-		if (mGraphicalModel->graphicalRepoApi().isGraphicalElement(id)) {
-			qReal::Id logicalId = mGraphicalModel->graphicalRepoApi().logicalId(id);
-			if (not logicalId.isNull()) {
-				set.insert(logicalId);
-			}
-		}
-	}
+	nameToId.remove("");
+	QSet<qReal::Id> set(subprograms.toSet());
+	QHash<QString, qReal::IdList> toSave;
+	toSave.insert(fileName, nameToId.values());
 
-	QString currnetWorkingFile = mRepo->workingFile();
-	mRepo->setWorkingFile(fileName);
-	mRepo->save(set.toList());
-	mRepo->setWorkingFile(currnetWorkingFile);
+	mRepo->saveDiagramsById(toSave);
 }
 
 void SubprogramsImporterExporterPlugin::importToProject() const
 {
+	if (not checkOpenedProject() || not checkSubprogramsForUniqueNames()) {
+		return;
+	}
+
 	const QString fileLocation = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 	QString fileName = utils::QRealFileDialog::getOpenFileName("ExportSubprograms"
 			, mMainWindowInterpretersInterface->currentTab()
@@ -142,22 +147,168 @@ void SubprogramsImporterExporterPlugin::importToProject() const
 	mMainWindowInterpretersInterface->reinitModels();
 	mMainWindowInterpretersInterface->activateItemOrDiagram(activeDiagram);
 	mProjectManager->afterOpen(mRepo->workingFile());
+
+	checkSubprogramsForUniqueNames();
 }
 
-void SubprogramsImporterExporterPlugin::saveToCollectionTriggered()
+void SubprogramsImporterExporterPlugin::saveToCollectionTriggered() const
 {
-	// todo: list of SP which are not saved.
-	qReal::IdList subprograms = mRepo->findElementsByName("SubprogramDiagram", true, false);
+	if (not checkOpenedProject() || not checkSubprogramsForUniqueNames()) {
+		return;
+	}
+
+	const QString currentPath = QDir::currentPath();
+
+	// Directories are depend on kit
+	const QString path = PROGRAM_DIRECTORY + QDir::separator() + SUBPROGRAMS_COLLECTION_DIRECTORY;
+	if (not QDir(path).exists()) {
+		QDir().mkdir(path);
+	}
+
+	QDir collectionDirectory(path);
+	const QString kit = mLogicalModel->logicalRepoApi().metaInformation("lastKitId").toString();
+	if (not collectionDirectory.cd(kit)) {
+		collectionDirectory.mkdir(kit);
+		collectionDirectory.cd(kit);
+	}
+
+	qReal::IdList subprograms = mLogicalModel->logicalRepoApi().elementsByType("SubprogramDiagram", true, false);
 	QSet<QString> uniqueNames;
+
 	for (const qReal::Id &id : subprograms) {
 		uniqueNames.insert(mGraphicalModel->name(id));
 	}
 
-	QMap<QString, bool> map = {{"olololo", true}, {"olololo2", false}};
+	uniqueNames.remove("");
+	if (uniqueNames.isEmpty()) {
+		mMainWindowInterpretersInterface->errorReporter()->addInformation(tr("There are not subprograms"
+				" in your project"));
+		QDir().cd(currentPath);
+		return;
+	}
+
+	QMap<QString, qReal::Id> nameToId;
+	for (const qReal::Id &id : subprograms) {
+		nameToId[mGraphicalModel->name(id)] = id;
+	}
+
+	QMap<QString, bool> map = markLeftExistedInRight(uniqueNames.toList(), currentlySavedSubprograms());
 	SubprogramsCollectionDialog dialog(map);
+	dialog.showWarningLabel(true);
 	dialog.exec();
+
 	if (dialog.result() == QDialog::Accepted) {
 		// todo: save to independent project.... dependences????? another subprograms... needs to be copied if it was
 		// inside in selected subprogram
+		QHash<QString, qReal::IdList> toSave;
+		for (auto key : map.keys()) {
+			if (map[key]) {
+				toSave.insert(collectionDirectory.path() + QDir::separator() + key + ".qrs", { nameToId[key] });
+			}
+		}
+
+		mRepo->saveDiagramsById(toSave);
 	}
+}
+
+void SubprogramsImporterExporterPlugin::importFromCollectionTriggered() const
+{
+	if (not checkOpenedProject() || not checkSubprogramsForUniqueNames()) {
+		return;
+	}
+
+	QStringList currentlySavedSPs= currentlySavedSubprograms();
+	if (currentlySavedSPs.isEmpty()) {
+		QString kitId = mLogicalModel->logicalRepoApi().metaInformation("lastKitId").toString();
+		mMainWindowInterpretersInterface->errorReporter()->addInformation(tr("There are not subprograms"
+				" in your collection for %1 robot").arg(KIT_ID_TO_FRIENDLY_NAME.value(kitId, QString())));
+		return;
+	}
+
+	QMap<QString, bool> map;
+	for (auto str :  currentlySavedSPs){
+		map[str] = false;
+	}
+
+	SubprogramsCollectionDialog dialog(map);
+	dialog.exec();
+	if (dialog.result() == QDialog::Accepted) {
+		qReal::Id activeDiagram = mMainWindowInterpretersInterface->activeDiagram();
+		const QString directoryPath = PROGRAM_DIRECTORY + QDir::separator() + SUBPROGRAMS_COLLECTION_DIRECTORY
+				+ QDir::separator() + mLogicalModel->logicalRepoApi().metaInformation("lastKitId").toString()
+				+ QDir::separator();
+		for (auto key : map.keys()) {
+			if (map[key]) {
+				mRepo->importFromDisk(directoryPath + key + ".qrs");
+			}
+		}
+
+		mMainWindowInterpretersInterface->reinitModels();
+		mMainWindowInterpretersInterface->activateItemOrDiagram(activeDiagram);
+		mProjectManager->afterOpen(mRepo->workingFile());
+
+		checkSubprogramsForUniqueNames();
+	}
+}
+
+void SubprogramsImporterExporterPlugin::clearCollectionTriggered() const
+{
+	const QString directoryPath = PROGRAM_DIRECTORY + QDir::separator() + SUBPROGRAMS_COLLECTION_DIRECTORY;
+	if (QDir(directoryPath).exists()) {
+		QDir(directoryPath).removeRecursively();
+	}
+}
+
+bool SubprogramsImporterExporterPlugin::checkOpenedProject() const
+{
+	if (not mProjectManager->somethingOpened()) {
+		mMainWindowInterpretersInterface->errorReporter()->addError(tr("There is no opened project"));
+		return false;
+	}
+
+	return true;
+}
+
+bool SubprogramsImporterExporterPlugin::checkSubprogramsForUniqueNames() const
+{
+	qReal::IdList subprograms = mLogicalModel->logicalRepoApi().elementsByType("SubprogramDiagram", true, false);
+	QMap<qReal::Id, QString> idToName;
+
+	for (const qReal::Id &id : subprograms) {
+		QString name = mGraphicalModel->name(id);
+		if (not name.isNull()) {
+			idToName[id] = name;
+		}
+	}
+
+	if (idToName.size() == idToName.values().toSet().size()) {
+		return true;
+	} else {
+		mMainWindowInterpretersInterface->errorReporter()->addInformation(tr("There are different subprograms"
+				" with the same name in your project. Please make them unique."));
+		return false;
+	}
+}
+
+QStringList SubprogramsImporterExporterPlugin::currentlySavedSubprograms() const
+{
+	const QString tmpPath = PROGRAM_DIRECTORY + QDir::separator() + SUBPROGRAMS_COLLECTION_DIRECTORY;
+	const QString kit = mLogicalModel->logicalRepoApi().metaInformation("lastKitId").toString();
+	const QString path = tmpPath + QDir::separator() + kit;
+
+	QStringList list = QDir(path).entryList({ "*.qrs" });
+	std::transform(list.begin(), list.end(), list.begin(), [](QString &str){ return str.chopped(4); });
+
+	return list;
+}
+
+QMap<QString, bool> SubprogramsImporterExporterPlugin::markLeftExistedInRight(const QStringList &left
+		, const QStringList &right) const
+{
+	QMap<QString, bool> answer;
+	for (auto s : left) {
+		answer[s] = right.contains(s);
+	}
+
+	return answer;
 }

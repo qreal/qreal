@@ -28,6 +28,7 @@ SubprogramsCollectionDialog::SubprogramsCollectionDialog(QMap<QString, bool> &va
 
 	setWindowTitle(tr("Subprograms collection manager"));
 	updateValues();
+	showWarningLabel(false);
 
 	connect(mUi->listWidget, &QListWidget::itemChanged, this, &SubprogramsCollectionDialog::highlightItem);
 	connect(mUi->selectAllButton, &QPushButton::clicked, [this]() {
@@ -47,6 +48,11 @@ SubprogramsCollectionDialog::SubprogramsCollectionDialog(QMap<QString, bool> &va
 SubprogramsCollectionDialog::~SubprogramsCollectionDialog()
 {
 	delete mUi;
+}
+
+void SubprogramsCollectionDialog::showWarningLabel(bool show)
+{
+	mUi->warningLabel->setVisible(show);
 }
 
 void SubprogramsCollectionDialog::updateValues()

@@ -30,6 +30,8 @@ public:
 	SubprogramsCollectionDialog(QMap<QString, bool> &values, QWidget *parent = nullptr);
 	~SubprogramsCollectionDialog() override;
 
+	void showWarningLabel(bool show);
+
 public slots:
 	void accept() override;
 
