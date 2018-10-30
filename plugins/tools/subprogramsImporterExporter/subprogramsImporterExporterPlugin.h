@@ -62,6 +62,7 @@ private:
 
 	bool checkOpenedProject() const;
 	bool checkSubprogramsForUniqueNames() const;
+	void innerSubprograms(const qReal::Id &id, qReal::IdList &list) const;
 };
 
 }

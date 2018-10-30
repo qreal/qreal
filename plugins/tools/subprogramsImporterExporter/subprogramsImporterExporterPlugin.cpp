@@ -203,7 +203,9 @@ void SubprogramsImporterExporterPlugin::saveToCollectionTriggered() const
 		QHash<QString, qReal::IdList> toSave;
 		for (auto key : map.keys()) {
 			if (map[key]) {
-				toSave.insert(collectionDirectory.path() + QDir::separator() + key + ".qrs", { nameToId[key] });
+				qReal::IdList innerSPs = { nameToId[key] };
+				innerSubprograms(nameToId[key], innerSPs);
+				toSave.insert(collectionDirectory.path() + QDir::separator() + key + ".qrs", innerSPs);
 			}
 		}
 
@@ -287,6 +289,20 @@ bool SubprogramsImporterExporterPlugin::checkSubprogramsForUniqueNames() const
 		mMainWindowInterpretersInterface->errorReporter()->addInformation(tr("There are different subprograms"
 				" with the same name in your project. Please make them unique."));
 		return false;
+	}
+}
+
+void SubprogramsImporterExporterPlugin::innerSubprograms(const qReal::Id &id, qReal::IdList &list) const
+{
+	qReal::IdList children = mGraphicalModel->graphicalRepoApi().children(id);
+	for (auto chId : children) {
+		qReal::Id logicalId = mGraphicalModel->graphicalRepoApi().logicalId(chId);
+		qReal::Id outgoingExplosion = mLogicalModel->logicalRepoApi().outgoingExplosion(logicalId);
+		if (outgoingExplosion.element() == "SubprogramDiagram") {
+			qReal::IdList diagrams = mGraphicalModel->graphicalIdsByLogicalId(outgoingExplosion);
+			list.append(diagrams.first());
+			innerSubprograms(diagrams.first(), list);
+		}
 	}
 }
 
