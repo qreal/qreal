@@ -1,4 +1,4 @@
-version: 999.{branch}-{build}
+#version: 999.{branch}-{build}
 clone_folder: c:\qreal
 #test: off
 
@@ -34,12 +34,15 @@ cache:
   - '%BUILD_DIR% -> **\*.pr?'
   - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
 
+init:
+  - git config --global core.autocrlf true
+
 clone_script:
-  - cmd: >-
-      git clone --progress --depth=3 --single-branch --no-checkout --branch=%APPVEYOR_REPO_BRANCH% https://github.com/%APPVEYOR_REPO_NAME%.git %APPVEYOR_BUILD_FOLDER%
-      && cd %APPVEYOR_BUILD_FOLDER%
-      && git checkout -f %APPVEYOR_REPO_COMMIT%
-      && git submodule update --init --recursive
+    - cmd: |
+         git clone --progress --depth=3 --single-branch --no-checkout --branch=%appveyor_repo_branch% https://github.com/%appveyor_repo_name%.git %appveyor_build_folder%
+         cd %appveyor_build_folder%
+         if "x%appveyor_pull_request_number%" == "x" ( git checkout -f %appveyor_repo_commit% ) else ( git fetch origin +refs/pull/%appveyor_pull_request_number%/merge: && git checkout -f FETCH_HEAD )
+         git submodule update --init --recursive
 
 
 install:
