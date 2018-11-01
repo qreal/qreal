@@ -1,4 +1,4 @@
-version: 999.{branch}-{build}
+#version: 999.{branch}-{build}
 clone_folder: c:\qreal
 #test: off
 
@@ -7,9 +7,10 @@ clone_depth: 1
 
 environment:
   global:
-    APPVEYOR_SAVE_CACHE_ON_ERROR: false
+    MSYS_DIR: C:\msys64
+    APPVEYOR_SAVE_CACHE_ON_ERROR: true
     PYTHON_PATH: C:\Python35
-    PYTHON_LIB: C:\Python35\libs
+    PYTHON_LIB: '%PYTHON_PATH%\libs'
     CCACHE_DIR: C:\ccache.cache
     BUILD_DIR: '%APPVEYOR_BUILD_FOLDER%\.build'
     PROJECT_FILE: qrealRobotsTest
@@ -29,8 +30,20 @@ configuration:
 cache:
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
-#  - '%CCACHE_DIR%'
-#  - '%BUILD_DIR%'
+  - '%CCACHE_DIR% -> **\*.pr?'
+  - '%BUILD_DIR% -> **\*.pr?'
+  - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
+
+init:
+  - git config --global core.autocrlf true
+
+clone_script:
+    - cmd: |
+         git clone --progress --depth=3 --single-branch --no-checkout --branch=%appveyor_repo_branch% https://github.com/%appveyor_repo_name%.git %appveyor_build_folder%
+         cd %appveyor_build_folder%
+         if "x%appveyor_pull_request_number%" == "x" ( git checkout -f %appveyor_repo_commit% ) else ( git fetch origin +refs/pull/%appveyor_pull_request_number%/merge: && git checkout -f FETCH_HEAD )
+         git submodule update --init --recursive
+
 
 install:
   - set PATH=%QTDIR%\bin;%MINGW%\bin;C:\msys64\usr\bin;%PATH%
@@ -46,15 +59,16 @@ install:
 
 
 before_build:
-  - git submodule update --init --recursive
   - curl https://raw.githubusercontent.com/MestreLion/git-tools/master/git-restore-mtime-bare > .fix-mtime.py
+  - python "%PYTHON_PATH%\Tools\scripts\2to3.py" -v -p -w -n -f all .fix-mtime.py
+  - sed -ri "s#line.(startswith|split)\(#line.\1\(b#g" .fix-mtime.py
   - python .fix-mtime.py
   - git submodule foreach --recursive python %cd%\.fix-mtime.py
 
 
 build_script:
   - cd %BUILD_DIR%
-  - qmake %APPVEYOR_BUILD_FOLDER%\%PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% # QMAKE_CXX="ccache g++"
+  - qmake %APPVEYOR_BUILD_FOLDER%\%PROJECT_FILE%.pro -spec win32-g++ CONFIG+=%CONFIGURATION% CONFIG+=silent # QMAKE_CXX="ccache g++"
   - mingw32-make -j2 qmake_all
   - mingw32-make -j2 -k all
 
