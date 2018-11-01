@@ -30,8 +30,12 @@
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/parts/subprograms.cpp" line="214"/>
+        <source>Subprograms should have unique names, please rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Duplicate identifier: </source>
-        <translation>Cet identificateur est deja utilisé:</translation>
+        <translation type="vanished">Cet identificateur est deja utilisé:</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/generators/generatorBase/src/primaryControlFlowValidator.cpp" line="44"/>
@@ -132,17 +136,17 @@
 <context>
     <name>generatorBase::MasterGeneratorBase</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="115"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="117"/>
         <source>This diagram cannot be generated into the structured code. Generating it into the code with &apos;goto&apos; statements.</source>
         <translation>Ce diagramme ne peut pas être transformé en code structuré. Le code contenant &apos;goto&apos; sera généré.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="130"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="132"/>
         <source>This diagram cannot be even generated into the code with &apos;goto&apos;statements. Please contact the developers.</source>
         <translation>Ce diagramme ne peut pas être transformé même en code avec des expressions &apos;goto&apos;. S&apos;il vous plait, contactez les developpeurs.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="132"/>
+        <location filename="../../../../plugins/robots/generators/generatorBase/src/masterGeneratorBase.cpp" line="134"/>
         <source>This diagram cannot be generated into the structured code.</source>
         <translation>Ce diagramme ne peut pas être transformé en code structuré.</translation>
     </message>

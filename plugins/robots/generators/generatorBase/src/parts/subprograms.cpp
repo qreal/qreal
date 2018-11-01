@@ -211,7 +211,7 @@ bool Subprograms::checkIdentifier(const QString &identifier, const QString &rawN
 	}
 
 	if (mUsedNames.contains(identifier)) {
-		mErrorReporter.addError(QObject::tr("Duplicate identifier: ") + identifier);
+		mErrorReporter.addError(QObject::tr("Subprograms should have unique names, please rename"));
 		return false;
 	}
 

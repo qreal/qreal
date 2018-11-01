@@ -365,12 +365,12 @@ QString DynamicPropertiesDialog::tryToSave() const
 	for (int i = 0; i < rowCount; ++i) {
 		// Return false if "Name" not filled
 		if (!mUi->labels->item(i, 0) || mUi->labels->item(i, 0)->text().isEmpty()) {
-			return tr("Name is not filled in row %1").arg(i);
+			return tr("Name is not filled in row %1").arg(i + 1);
 		}
 
 		// Return false if "Name" starts with digit
 		if (!mUi->labels->item(i, 0) || not mUi->labels->item(i, 0)->text().at(0).isLower()) {
-			return tr("Name should start with a lowercase letter(row %1)").arg(i);
+			return tr("Name should start with a lowercase letter(row %1)").arg(i + 1);
 		}
 
 		const QString type = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 1))->currentText();

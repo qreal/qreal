@@ -56,6 +56,7 @@ QString RenameDialog::selectNewName(const QString &currentName, QWidget *parent)
 	if (!parent) {
 		delete dialog;
 	}
+
 	return result;
 }
 
