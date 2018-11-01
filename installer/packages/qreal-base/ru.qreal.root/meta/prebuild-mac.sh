@@ -31,6 +31,7 @@ cp -pR $BIN_DIR/libqrgui-thirdparty*.dylib                                "$BUND
 cp -pR $BIN_DIR/libqrgui-tool-plugin-interface*.dylib                     "$BUNDLE_CONTENTS/Lib"
 cp -pR $BIN_DIR/libqrgui-facade*.dylib                                    "$BUNDLE_CONTENTS/Lib"
 cp     $BIN_DIR/plugins/tools/libupdatesChecker.dylib                     "$BUNDLE_CONTENTS/Lib/plugins/tools"
+cp     $BIN_DIR/plugins/tools/subprogramsImporterExporter.dylib           "$BUNDLE_CONTENTS/Lib/plugins/tools"
 
 
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/libqrkernel.1.0.0.dylib"
@@ -53,6 +54,7 @@ fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/libqrgui-thirdparty.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/libqrgui-tool-plugin-interface.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/libqrgui-facade.1.0.0.dylib"
 fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/libupdatesChecker.dylib"
+fix_qreal_dependencies "$BUNDLE_CONTENTS/Lib/plugins/tools/subprogramsImporterExporter.dylib"
 
 mv "$BUNDLE_CONTENTS/MacOS/qreal" "$BUNDLE_CONTENTS/MacOS/$PRODUCT"
 sed -i.bak s/qreal/trik-studio/g "$BUNDLE_CONTENTS/Info.plist"
