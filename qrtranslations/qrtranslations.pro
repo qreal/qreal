@@ -24,14 +24,8 @@ win32 {
 	system(cmd /C "xcopy *.qm $$DESTDIR\\translations\\ /s /e /y")
 }
 
-unix:!macx {
-	system(mkdir -p $$DESTDIR/translations/; find ./ -name '*.qm' -delete)
-	system(find ./ -name '*.ts' -exec lrelease -nounfinished -removeidentical {} \\;)
-	system(find ./ -name *.qm -exec cp --parents {} $$DESTDIR/translations \\;)
-}
-
-macx {
-	system(mkdir -p $$DESTDIR/translations/; find ./ -name '*.qm' -delete)
-	system(find ./ -name '*.ts' -exec lrelease -nounfinished -removeidentical {} \\;)
-	system(find ./ -name *.qm -exec rsync -R {} $$DESTDIR/translations \\;)
+unix {
+	system(mkdir -p $$DESTDIR/translations/; find $$PWD/ -name '*.qm' -delete)
+	system(find ./ -name '*.ts' -exec $$[QT_INSTALL_BINS]/lrelease -nounfinished -removeidentical {} \\;)
+	system(find ./ -name '*.qm' -print0 | rsync -a --files-from=- --from0 ./ $$DESTDIR/translations/)
 }

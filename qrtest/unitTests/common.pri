@@ -31,8 +31,8 @@ if (equals(QMAKE_CXX, "g++") : !macx) {
 INCLUDEPATH += \
 	$$PWD/ \
 	$$PWD/../../ \
-	$$PWD/../thirdparty/googletest/googletest/include \
-	$$PWD/../thirdparty/googletest/googlemock/include \
+	$$PWD/../thirdparty/googletest/googletest/googletest/include \
+	$$PWD/../thirdparty/googletest/googletest/googlemock/include \
 	$$PWD/testUtils/include \
 
 links(googletest)
