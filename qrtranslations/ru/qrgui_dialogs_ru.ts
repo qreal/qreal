@@ -598,28 +598,44 @@
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="155"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="166"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="181"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="343"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="181"/>
+        <source>There is already a subprogram with that name</source>
+        <translation>Уже существует подпрограмма с таким именем</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="368"/>
         <source>Name is not filled in row %1</source>
         <translation>Имя параметра %1 не заполнено</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="354"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="373"/>
+        <source>Name should start with a lowercase letter(row %1)</source>
+        <translation>Имя аргумента должно начинаться с маленькой буквы (строка %1)</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="384"/>
         <source>Value in row %1 is not integer</source>
         <translation>Значение параметра %1 не целое</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="364"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="389"/>
+        <source>Value in row %1 is not float</source>
+        <translation>Значение параметра %1 не число</translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="399"/>
         <source>Duplicate names</source>
         <translation>Одинаковые имена</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="118"/>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="372"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="129"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="407"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>

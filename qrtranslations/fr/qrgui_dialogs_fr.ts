@@ -590,28 +590,44 @@
         <translation type="unfinished">Valeur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="155"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="166"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="181"/>
         <source>Error</source>
         <translation type="unfinished">Erreur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="343"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="181"/>
+        <source>There is already a subprogram with that name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="368"/>
         <source>Name is not filled in row %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="354"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="373"/>
+        <source>Name should start with a lowercase letter(row %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="384"/>
         <source>Value in row %1 is not integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="364"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="389"/>
+        <source>Value in row %1 is not float</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="399"/>
         <source>Duplicate names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="118"/>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="372"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="129"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="407"/>
         <source>Delete</source>
         <translation type="unfinished">Supprimer</translation>
     </message>

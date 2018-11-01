@@ -50,6 +50,17 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setColumnCount(4);
 	mUi->labels->setHorizontalHeaderLabels({tr("Name"), tr("Type"), tr("Value"), ""});
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	connect(mUi->labels, &QTableWidget::cellChanged, [&](int row, int col){
+		if (col != 0) {
+			return;
+		}
+
+		QString text = mUi->labels->item(row, col)->text();
+		if (text.size() > 0 && text.at(0).isUpper()) {
+			text[0] = text[0].toLower();
+			mUi->labels->item(row, col)->setText(text);
+		}
+	});
 
 	if (hideLabels) {
 		mUi->labels->hide();
@@ -357,15 +368,25 @@ QString DynamicPropertiesDialog::tryToSave() const
 			return tr("Name is not filled in row %1").arg(i);
 		}
 
+		// Return false if "Name" starts with digit
+		if (!mUi->labels->item(i, 0) || not mUi->labels->item(i, 0)->text().at(0).isLower()) {
+			return tr("Name should start with a lowercase letter(row %1)").arg(i);
+		}
+
 		const QString type = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 1))->currentText();
-		if (type == "int") {
-			QString value = mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
-			if (!value.isEmpty()) {
-				bool ok;
+		QString value = mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
+		if (!value.isEmpty()) {
+			bool ok;
+			if (type == "int") {
 				value.toInt(&ok);
 				// Return false if "int" value isn't int
 				if (!ok) {
 					return tr("Value in row %1 is not integer").arg(i + 1);
+				}
+			} else if (type == "float") {
+				value.toDouble(&ok);
+				if (!ok) {
+					return tr("Value in row %1 is not float").arg(i + 1);
 				}
 			}
 		}
