@@ -16,8 +16,6 @@
 
 #include <qrgui/plugins/toolPluginInterface/toolPluginInterface.h>
 
-class QEventLoop;
-
 namespace subprogramsImporterExporter {
 
 /// Plugin to export/import subprograms from/to models.
