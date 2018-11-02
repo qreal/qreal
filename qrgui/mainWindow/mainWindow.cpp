@@ -235,6 +235,11 @@ void MainWindow::connectActions()
 			mCurrentEditor->cut();
 		}
 	});
+	connect(mUi->actionReplaceBy, &QAction::triggered, [=]() {
+		if (mCurrentEditor && mCurrentEditor->supportsReplacingBy()) {
+			mCurrentEditor->replaceBy();
+		}
+	});
 
 	connect(mUi->actionFind, &QAction::triggered, [=]() {
 		if (mCurrentEditor && mCurrentEditor->supportsSearching()) {
@@ -736,20 +741,17 @@ void MainWindow::changeWindowTitle()
 void MainWindow::registerEditor(EditorInterface &editor)
 {
 	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
-			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind);
+			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind, *mUi->actionReplaceBy);
 	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
 		mCurrentEditor = &editor;
 		const bool zoomingEnabled = editor.supportsZooming();
-		const bool copyEnabled = editor.supportsCopying();
-		const bool pasteEnabled = editor.supportsPasting();
-		const bool cutEnabled = editor.supportsCutting();
-		const bool findEnabled = editor.supportsSearching();
 		mUi->actionZoom_In->setEnabled(zoomingEnabled);
 		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
-		mUi->actionCopy->setEnabled(copyEnabled);
-		mUi->actionPaste->setEnabled(pasteEnabled);
-		mUi->actionCut->setEnabled(cutEnabled);
-		mUi->actionFind->setEnabled(findEnabled);
+		mUi->actionCopy->setEnabled(editor.supportsCopying());
+		mUi->actionPaste->setEnabled(editor.supportsPasting());
+		mUi->actionCut->setEnabled(editor.supportsCutting());
+		mUi->actionFind->setEnabled(editor.supportsSearching());
+		mUi->actionReplaceBy->setEnabled(editor.supportsReplacingBy());
 		mController->setActiveModule(editor.editorId());
 	});
 }

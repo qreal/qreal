@@ -719,6 +719,11 @@
     <string>Find and replace</string>
    </property>
   </action>
+  <action name="actionReplaceBy">
+   <property name="text">
+    <string>Replace by...</string>
+   </property>
+  </action>
   <action name="actionUndo">
    <property name="icon">
     <iconset resource="mainWindow.qrc">

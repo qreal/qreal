@@ -241,7 +241,7 @@ void NullMainWindow::openFirstDiagram()
 
 	const Id rootId = mGraphicalModel->rootId();
 	Id graphicalDiagramId;
-	for (const Id diagram : mGraphicalModel->children(rootId)) {
+	for (const Id &diagram : mGraphicalModel->children(rootId)) {
 		if (mGraphicalModel->graphicalRepoApi().isGraphicalElement(diagram)) {
 			graphicalDiagramId = diagram;
 			break;
@@ -340,7 +340,7 @@ void NullMainWindow::registerEditor(EditorInterface &editor)
 {
 	QAction *dummyAction = new QAction(this);
 	editor.configure(*dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction
-			, *dummyAction, *dummyAction);
+			, *dummyAction, *dummyAction, *dummyAction);
 }
 
 void NullMainWindow::emulateClose(int returnCode)

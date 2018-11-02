@@ -46,11 +46,11 @@ class QRGUI_EDITOR_EXPORT EditorViewMViface : public QAbstractItemView
 
 public:
 	EditorViewMViface(EditorView *view, EditorViewScene *scene);
-	~EditorViewMViface();
+	~EditorViewMViface() override;
 
-	QModelIndex indexAt(const QPoint &point) const;
-	QRect visualRect(const QModelIndex &index) const;
-	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible);
+	QModelIndex indexAt(const QPoint &point) const override;
+	QRect visualRect(const QModelIndex &index) const override;
+	void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible) override;
 	bool isDescendentOf(const QModelIndex &descendent, const QModelIndex &ancestor);
 	void configure(models::GraphicalModelAssistApi &graphicalAssistApi
 			, models::LogicalModelAssistApi &logicalAssistApi
@@ -67,8 +67,8 @@ signals:
 	void rootElementRemoved(const QModelIndex &graphicsIndex);
 
 public slots:
-	void reset();
-	void setRootIndex(const QModelIndex &index);
+	void reset() override;
+	void setRootIndex(const QModelIndex &index) override;
 	void rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
 			, const QModelIndex &destinationParent, int destinationRow);
 	void rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd
@@ -77,8 +77,8 @@ public slots:
 private slots:
 	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight
 			, const QVector<int> &roles = QVector<int>()) override;
-	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-	void rowsInserted(const QModelIndex &parent, int start, int end);
+	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end) override;
+	void rowsInserted(const QModelIndex &parent, int start, int end) override;
 	void logicalDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 
 private:
@@ -93,16 +93,16 @@ private:
 	/** @brief elements on the scene. their indices change SUDDENLY, so don't use maps, hashes etc. */
 	QSet<IndexElementPair> mItems;
 
-	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers);
+	QModelIndex moveCursor(QAbstractItemView::CursorAction cursorAction, Qt::KeyboardModifiers modifiers) override;
 
-	int horizontalOffset() const;
-	int verticalOffset() const;
+	int horizontalOffset() const override;
+	int verticalOffset() const override;
 
-	bool isIndexHidden(const QModelIndex &index) const;
+	bool isIndexHidden(const QModelIndex &index) const override;
 
-	void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command);
+	void setSelection(const QRect& rect, QItemSelectionModel::SelectionFlags command) override;
 
-	QRegion visualRegionForSelection(const QItemSelection &selection ) const;
+	QRegion visualRegionForSelection(const QItemSelection &selection ) const override;
 
 	Element *item(const QPersistentModelIndex &index) const;
 	void setItem(const QPersistentModelIndex &index, Element *item);

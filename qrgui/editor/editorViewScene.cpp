@@ -341,7 +341,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 			QAction *element = new QAction(friendlyName, createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
-			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
+			QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
 			menuSignalMapper->setMapping(element, id.toString());
 		}
 	}
@@ -649,6 +649,46 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 	mClipboardHandler.paste(rootItemId(), currentMousePos(), isGraphicalCopy);
 }
 
+void EditorViewScene::replaceBy()
+{
+	QList<NodeElement *> nodes;
+	for (auto *item : selectedItems()) {
+		if (auto node = dynamic_cast<NodeElement *>(item)) {
+			nodes << node;
+		}
+	}
+
+	if (nodes.size() == 1) {
+		NodeElement *node = nodes.first();
+		QMenu menu(tr("Replace by element"));
+
+		QStringList targets;
+		const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
+
+		for (const QString &group : groups) {
+			menu.addSection(group);
+			const QStringList groupsContents = mEditorManager.paletteGroupList(
+					node->id(), nodes[0]->id(), group);
+			for (const QString &elementInGroup : groupsContents) {
+				const Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/"
+						+ node->id().diagram() + "/" + elementInGroup);
+				const QString friendlyName = mEditorManager.friendlyName(id);
+				QAction *element = new QAction(friendlyName, &menu);
+				element->setData(id.toString());
+				menu.addAction(element);
+			}
+		}
+
+		QAction *action = menu.exec(QCursor::pos());
+		if (action) {
+			QString string = action->data().toString();
+			mCreatePoint = node->pos();
+			createElement(string);
+			mController.execute((new RemoveAndUpdateCommand(*this, mModels))->withItemsToDelete({ node->id() }));
+		}
+	}
+}
+
 QPointF EditorViewScene::currentMousePos() const
 {
 	const EditorView *editor = nullptr;
@@ -820,6 +860,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	mContextMenu.addAction(mCopyAction);
 	mContextMenu.addAction(mPasteAction);
 	mContextMenu.addAction(mCutAction);
+	mContextMenu.addAction(mReplaceByAction);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (const NodeElement *node = dynamic_cast<NodeElement *>(e)) {

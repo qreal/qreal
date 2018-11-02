@@ -40,6 +40,7 @@ public:
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
 	bool supportsSearching() const override;
+	bool supportsReplacingBy() const override;
 
 	void zoomIn() override;
 	void zoomOut() override;
@@ -48,6 +49,7 @@ public:
 	void paste() override;
 	void cut() override;
 	void find() override;
+	void replaceBy() override;
 
 	void forceFocus() override;
 

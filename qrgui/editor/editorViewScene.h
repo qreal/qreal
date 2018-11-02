@@ -53,7 +53,7 @@ public:
 			, const SceneCustomizer &sceneCustomizer
 			, const Id &rootId
 			, QObject *parent = nullptr);
-	~EditorViewScene();
+	~EditorViewScene() override;
 
 	void clearScene();
 
@@ -63,11 +63,11 @@ public:
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
 	virtual Id createElement(const QString &idString
 			, const QPointF &scenePos
-			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
+			, qReal::commands::CreateElementsCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
-			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
+			, qReal::commands::CreateElementsCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -150,6 +150,7 @@ public slots:
 	void copy() override;
 	void paste() override;
 	void paste(bool logicalCopy);
+	void replaceBy() override;
 
 	/// selects all elements on the current scene
 	void selectAll();

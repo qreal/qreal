@@ -239,7 +239,8 @@ void EditorView::ensureElementVisible(const Element * const element)
 		const qreal widgetHeight = size().height();
 		const qreal elementWidth = element->boundingRect().width();
 		const qreal elementHeight = element->boundingRect().height();
-		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
+		ensureVisible(element, static_cast<int>((widgetWidth - elementWidth) / 2)
+				, static_cast<int>((widgetHeight - elementHeight) / 2));
 	}
 }
 
@@ -276,10 +277,15 @@ bool EditorView::supportsCutting() const
 	return true;
 }
 
-void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
+bool EditorView::supportsReplacingBy() const
 {
-	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find);
+	return  true;
+}
+
+void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy)
+{
+	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, replaceBy);
 }
 
 void EditorView::zoomInTime()
@@ -333,6 +339,11 @@ void EditorView::paste()
 void EditorView::cut()
 {
 	mScene.cut();
+}
+
+void EditorView::replaceBy()
+{
+	mScene.replaceBy();
 }
 
 void EditorView::setSceneFont()
