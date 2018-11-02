@@ -16,6 +16,7 @@
 
 #include <QtCore/QStandardPaths>
 #include <QtCore/QEventLoop>
+#include <QtCore/QString>
 
 #include <algorithm>
 
@@ -34,6 +35,8 @@ using namespace subprogramsImporterExporter;
 
 SubprogramsImporterExporterPlugin::SubprogramsImporterExporterPlugin()
 	: mMenu(tr("Subprograms collection"))
+	, mFirstSeparatorAction(nullptr)
+	, mSecondSeparatorAction(nullptr)
 	, mImportToProjectAction(tr("Import subprograms to current project"), &mMenu)
 	, mExportAction(tr("Export subprograms to file"), &mMenu)
 	, mSaveToCollection(tr("Save subprograms to collection"), &mMenu)
@@ -313,7 +316,7 @@ QStringList SubprogramsImporterExporterPlugin::currentlySavedSubprograms() const
 	const QString path = tmpPath + QDir::separator() + kit;
 
 	QStringList list = QDir(path).entryList({ "*.qrs" });
-	std::transform(list.begin(), list.end(), list.begin(), [](QString &str){ return str.chopped(4); });
+	std::transform(list.begin(), list.end(), list.begin(), [](QString &str){ str.chop(4); return str; });
 
 	return list;
 }
