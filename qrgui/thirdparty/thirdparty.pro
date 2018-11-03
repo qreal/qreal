@@ -25,7 +25,6 @@ TRANSLATIONS = \
 	$$PWD/../../qrtranslations/fr/qrgui_thirdparty_fr.ts \
 
 # Some warnings are turned off because of problems specific to thirdparty code.
-QMAKE_CXXFLAGS += -Wno-switch
 
 win32 {
 	HEADERS += \
@@ -43,3 +42,4 @@ SOURCES += \
 	$$PWD/qsKineticScroller.cpp \
 
 include($$PWD/qtpropertybrowser/src/qtpropertybrowser.pri)
+INCLUDEPATH+=$$MOC_DIR

@@ -4,3 +4,6 @@
 [submodule "qrtest/thirdparty/googletest/googletest"]
 	path = qrtest/thirdparty/googletest/googletest
 	url = https://github.com/google/googletest
+[submodule "qrgui/thirdparty/qt-solutions"]
+	path = qrgui/thirdparty/qt-solutions
+	url = https://github.com/qtproject/qt-solutions
