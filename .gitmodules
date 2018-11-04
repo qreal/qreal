@@ -6,4 +6,4 @@
 	url = https://github.com/google/googletest
 [submodule "qrgui/thirdparty/qt-solutions"]
 	path = qrgui/thirdparty/qt-solutions
-	url = https://github.com/qtproject/qt-solutions
+	url = https://github.com/trikset/qt-solutions
