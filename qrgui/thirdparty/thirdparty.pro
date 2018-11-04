@@ -41,5 +41,5 @@ HEADERS += \
 SOURCES += \
 	$$PWD/qsKineticScroller.cpp \
 
-include($$PWD/qtpropertybrowser/src/qtpropertybrowser.pri)
+include($$PWD/qt-solutions/qtpropertybrowser/src/qtpropertybrowser.pri)
 INCLUDEPATH+=$$MOC_DIR
