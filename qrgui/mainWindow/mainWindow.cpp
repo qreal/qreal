@@ -535,12 +535,17 @@ void MainWindow::refreshRecentProjectsList(const QString &fileName)
 	if (!previousList.isEmpty() && (previousList.size() == mRecentProjectsLimit)) {
 		previousList.removeLast();
 	}
-	previousList.push_front(fileName);
-	previousString = "";
-	QStringListIterator iterator(previousList);
-	while (iterator.hasNext()) {
-		previousString = previousString + iterator.next() + ";";
+
+	previousString.clear();
+	qDebug() << previousString;
+	if (mRecentProjectsLimit > 0) {
+		previousList.push_front(fileName);
+		QStringListIterator iterator(previousList);
+		while (iterator.hasNext()) {
+			previousString = previousString + iterator.next() + ";";
+		}
 	}
+
 	SettingsManager::setValue("recentProjects", previousString);
 }
 
@@ -551,7 +556,13 @@ void MainWindow::openRecentProjectsMenu()
 
 	mRecentProjectsMenu->clear();
 	const QString stringList = SettingsManager::value("recentProjects").toString();
-	const QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
+	QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
+
+	mRecentProjectsLimit = SettingsManager::value("recentProjectsLimit", mRecentProjectsLimit).toInt();
+	while (recentProjects.size() > mRecentProjectsLimit) {
+		recentProjects.pop_front();
+	}
+
 	for (QString projectPath : recentProjects) {
 		mRecentProjectsMenu->addAction(projectPath);
 		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered())
