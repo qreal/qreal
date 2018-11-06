@@ -334,6 +334,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		if (i > 0) {
 			createElemMenu->addSeparator();
 		}
+
 		const QStringList targetsInGroup = targetsInGroups.values(targetGroups[i]);
 		for (const QString &target : targetsInGroup) {
 			const Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
@@ -662,7 +663,9 @@ void EditorViewScene::replaceBy()
 		NodeElement *node = nodes.first();
 		QMenu menu(tr("Replace by element"));
 
-		QStringList targets;
+		const QList<EdgeElement *> edges = node->edgeList();
+
+		auto currentDiagramsAllowedElementsSet = mEditorManager.elements(node->id()).toSet();
 		const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
 
 		for (const QString &group : groups) {
@@ -673,9 +676,11 @@ void EditorViewScene::replaceBy()
 				const Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/"
 						+ node->id().diagram() + "/" + elementInGroup);
 				const QString friendlyName = mEditorManager.friendlyName(id);
-				QAction *element = new QAction(friendlyName, &menu);
-				element->setData(id.toString());
-				menu.addAction(element);
+				if (currentDiagramsAllowedElementsSet.contains(id)) {
+					QAction *element = new QAction(friendlyName, &menu);
+					element->setData(id.toString());
+					menu.addAction(element);
+				}
 			}
 		}
 
@@ -685,6 +690,10 @@ void EditorViewScene::replaceBy()
 			mCreatePoint = node->pos();
 			createElement(string);
 			mController.execute((new RemoveAndUpdateCommand(*this, mModels))->withItemsToDelete({ node->id() }));
+		}
+
+		for (auto edge : edges) {
+			reConnectLink(edge);
 		}
 	}
 }
