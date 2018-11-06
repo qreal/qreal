@@ -76,6 +76,8 @@ void PreferencesMiscellaniousPage::restoreSettings()
 	mUi->antialiasingCheckBox->setChecked(SettingsManager::value("Antialiasing").toBool());
 	mUi->splashScreenCheckBox->setChecked(SettingsManager::value("Splashscreen").toBool());
 
+	mUi->recentProjectsLimitSpinBox->setValue(SettingsManager::value("recentProjectsLimit").toInt());
+
 	mUi->toolbarSizeSlider->setValue(SettingsManager::value("toolbarSize").toInt());
 
 	mUi->imagesPathEdit->setText(SettingsManager::value("pathToImages").toString());
