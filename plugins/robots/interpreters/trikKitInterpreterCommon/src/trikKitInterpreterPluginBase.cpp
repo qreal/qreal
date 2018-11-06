@@ -71,7 +71,7 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 			"js"
 			, QObject::tr("Javascript")
 			, true
-			, 8
+			, 4
 			, new QsciLexerCPP()
 			, mQtsInterpreter.data()->knownMethodNames()
 	};
@@ -277,7 +277,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 QList<kitBase::robotModel::RobotModelInterface *> TrikKitInterpreterPluginBase::robotModels()
 {
-	return {mRealRobotModel.data(), mTwoDRobotModel.data()};
+	// @todo: restore it later
+	return {/*mRealRobotModel.data(),*/ mTwoDRobotModel.data()};
 }
 
 kitBase::blocksBase::BlocksFactoryInterface *TrikKitInterpreterPluginBase::blocksFactoryFor(
