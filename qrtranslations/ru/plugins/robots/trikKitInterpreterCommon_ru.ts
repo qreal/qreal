@@ -27,14 +27,39 @@
         <translation>Настройки TRIK</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="36"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="35"/>
         <source>TCP Settings</source>
         <translation>Настройки TCP</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="42"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="41"/>
         <source>Enter robot IP-address here</source>
         <translation>Введите IP-адрес робота</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="51"/>
+        <source>Multimedia Settings</source>
+        <translation>Настройки мультимедия</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="57"/>
+        <source>Use real camera</source>
+        <translation>Использовать камеру</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="73"/>
+        <source>Pack images to project</source>
+        <translation>Запаковывать изображения в проект</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="80"/>
+        <source>Images:</source>
+        <translation>Изображения:</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.ui" line="90"/>
+        <source>Browse</source>
+        <translation>Открыть</translation>
     </message>
 </context>
 <context>
@@ -48,9 +73,18 @@
 <context>
     <name>trik::TrikAdditionalPreferences</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.cpp" line="29"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.cpp" line="30"/>
         <source>2D robot image:</source>
         <translation>Картинка робота в 2D:</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikAdditionalPreferences.cpp" line="40"/>
+        <source>Select Directory</source>
+        <translation>Выберите папку</translation>
+    </message>
+    <message>
+        <source>Open Directory</source>
+        <translation type="vanished">Открыть директорию</translation>
     </message>
 </context>
 <context>
@@ -125,7 +159,7 @@
         <translation>Остановить программу</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="344"/>
+        <location filename="../../../../plugins/robots/interpreters/trikKitInterpreterCommon/src/trikKitInterpreterPluginBase.cpp" line="345"/>
         <source>Enter robot`s IP-address here...</source>
         <translation>Введите IP-адрес робота...</translation>
     </message>

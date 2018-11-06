@@ -1,4 +1,4 @@
-/* Copyright 2014-2017 QReal Research Group
+/* Copyright 2014-2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 #include "ui_trikAdditionalPreferences.h"
 
 #include <qrkernel/settingsManager.h>
+#include <qrutils/widgets/qRealFileDialog.h>
 
 using namespace trik;
 using namespace qReal;
@@ -27,6 +28,18 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 {
 	mUi->setupUi(this);
 	mUi->robotImagePicker->configure("trikRobot2DImage", tr("2D robot image:"));
+
+	mUi->simulatedCameraFrame->setEnabled(not mUi->realCameraCheckBox->isChecked());
+
+	connect(mUi->realCameraCheckBox, &QCheckBox::clicked, [this](bool checked) {
+		mUi->simulatedCameraFrame->setEnabled(not checked);
+	});
+
+	connect(mUi->browseImagesPathButton, &QPushButton::clicked, [this]() {
+		const QString directoryName = utils::QRealFileDialog::getExistingDirectory("TrikSimulatedCameraImagesPath"
+					, this, tr("Select Directory")).replace("\\", "/");
+		mUi->imagesPathlineEdit->setText(directoryName);
+	});
 }
 
 TrikAdditionalPreferences::~TrikAdditionalPreferences()
@@ -37,6 +50,9 @@ TrikAdditionalPreferences::~TrikAdditionalPreferences()
 void TrikAdditionalPreferences::save()
 {
 	SettingsManager::setValue("TrikTcpServer", mUi->tcpServerLineEdit->text());
+	SettingsManager::setValue("TrikWebCameraReal", mUi->realCameraCheckBox->isChecked());
+	SettingsManager::setValue("TrikSimulatedCameraImagesPackToProject", mUi->packImagesCheckBox->isChecked());
+	SettingsManager::setValue("TrikSimulatedCameraImagesPath", mUi->imagesPathlineEdit->text());
 	mUi->robotImagePicker->save();
 	emit settingsChanged();
 }
@@ -44,6 +60,10 @@ void TrikAdditionalPreferences::save()
 void TrikAdditionalPreferences::restoreSettings()
 {
 	mUi->tcpServerLineEdit->setText(SettingsManager::value("TrikTcpServer").toString());
+	mUi->packImagesCheckBox->setChecked(SettingsManager::value("TrikSimulatedCameraImagesPackToProject").toBool());
+	mUi->realCameraCheckBox->setChecked(SettingsManager::value("TrikWebCameraReal").toBool());
+	mUi->imagesPathlineEdit->setText(SettingsManager::value("TrikSimulatedCameraImagesPath").toString());
+	mUi->simulatedCameraFrame->setEnabled(not mUi->realCameraCheckBox->isChecked());
 	mUi->robotImagePicker->restore();
 }
 
@@ -51,4 +71,5 @@ void TrikAdditionalPreferences::onRobotModelChanged(kitBase::robotModel::RobotMo
 {
 	const bool isReal = !robotModel->name().contains("TwoD");
 	mUi->tcpSettingsGroupBox->setVisible(isReal);
+	mUi->multimediaSettingsGroupBox->setVisible(not isReal);
 }
