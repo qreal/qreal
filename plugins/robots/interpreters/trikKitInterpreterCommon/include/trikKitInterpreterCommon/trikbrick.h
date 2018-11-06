@@ -20,7 +20,6 @@
 #include <QtCore/QDir>
 
 #include <trikControl/brickInterface.h>
-
 #include <trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h>
 
 #include "trikEmulation/trikdisplayemu.h"
@@ -36,6 +35,10 @@
 
 namespace utils {
 class AbstractTimer;
+}
+
+namespace trikControl {
+class CameraImplementationInterface;
 }
 
 namespace trik {
@@ -87,7 +90,7 @@ public slots:
 	trikControl::I2cDeviceInterface *i2c(int, int) override {return nullptr;}
 
 	void playTone(int, int) override {}
-	QVector<uint8_t> getStillImage() override { return QVector<uint8_t>(); }
+	QVector<uint8_t> getStillImage() override;
 	trikControl::EventDeviceInterface *eventDevice(const QString &) override {return nullptr;}
 	void stopEventDevice(const QString &) override {}
 
@@ -123,6 +126,8 @@ private:
 	QScopedPointer<TrikAccelerometerAdapter> mAccelerometer;
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
 	QScopedPointer<TrikProxyMarker> mTrikProxyMarker;
+
+	QScopedPointer<trikControl::CameraImplementationInterface> mImitationCamera;
 
 	QDir mCurrentDir;
 	bool mIsExcerciseMode = false;

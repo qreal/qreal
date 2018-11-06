@@ -29,10 +29,12 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 	mUi->setupUi(this);
 	mUi->robotImagePicker->configure("trikRobot2DImage", tr("2D robot image:"));
 
-	mUi->simulatedCameraFrame->setEnabled(not mUi->realCameraCheckBox->isChecked());
+	mUi->simulatedCameraFrame->setVisible(not mUi->realCameraCheckBox->isChecked());
+	mUi->realCameraFrame->setVisible(mUi->realCameraCheckBox->isChecked());
 
 	connect(mUi->realCameraCheckBox, &QCheckBox::clicked, [this](bool checked) {
-		mUi->simulatedCameraFrame->setEnabled(not checked);
+		mUi->simulatedCameraFrame->setVisible(not checked);
+		mUi->realCameraFrame->setVisible(checked);
 	});
 
 	connect(mUi->browseImagesPathButton, &QPushButton::clicked, [this]() {
@@ -53,6 +55,7 @@ void TrikAdditionalPreferences::save()
 	SettingsManager::setValue("TrikWebCameraReal", mUi->realCameraCheckBox->isChecked());
 	SettingsManager::setValue("TrikSimulatedCameraImagesPackToProject", mUi->packImagesCheckBox->isChecked());
 	SettingsManager::setValue("TrikSimulatedCameraImagesPath", mUi->imagesPathlineEdit->text());
+	SettingsManager::setValue("TrikWebCameraRealName", mUi->cameraNameLineEdit->text());
 	mUi->robotImagePicker->save();
 	emit settingsChanged();
 }
@@ -63,6 +66,7 @@ void TrikAdditionalPreferences::restoreSettings()
 	mUi->packImagesCheckBox->setChecked(SettingsManager::value("TrikSimulatedCameraImagesPackToProject").toBool());
 	mUi->realCameraCheckBox->setChecked(SettingsManager::value("TrikWebCameraReal").toBool());
 	mUi->imagesPathlineEdit->setText(SettingsManager::value("TrikSimulatedCameraImagesPath").toString());
+	mUi->cameraNameLineEdit->setText(SettingsManager::value("TrikWebCameraRealName").toString());
 	mUi->simulatedCameraFrame->setEnabled(not mUi->realCameraCheckBox->isChecked());
 	mUi->robotImagePicker->restore();
 }

@@ -29,8 +29,15 @@
 #include <kitBase/robotModel/robotParts/random.h>
 #include <twoDModel/robotModel/parts/marker.h>
 #include <twoDModel/engine/model/timeline.h>
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
+#include <qrkernel/platformInfo.h>
+#include <src/qtCameraImplementation.h>
+#include <src/imitationCameraImplementation.h>
+
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
+
 
 using namespace trik;
 
@@ -46,6 +53,14 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout, [model](){
 		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
 	});
+
+//	const QString path = qReal::SettingsManager::value("TrikSimulatedCameraImagesPath").toString();
+	const QString path = "/home/greg/Documents/qreal/bin/debug"; // test only
+	mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+
+	qReal::SettingsListener::listen("TrikSimulatedCameraImagesPath", [&](QString path) {
+		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+	}, this);
 }
 
 TrikBrick::~TrikBrick()
@@ -65,12 +80,15 @@ void TrikBrick::reset()
 	for (const auto &m : mMotors) {
 		m->powerOff();
 	}
+
 	for (const auto &e : mEncoders) {
 		e->reset();
 	}
+
 	for (const auto &t : mTimers) {
 		t->stop();
 	}
+
 	qDeleteAll(mTimers);
 	mTimers.clear();
 	QMetaObject::invokeMethod(mSensorUpdater.data(), "stop"); // failproof against timer manipulation in another thread
@@ -85,6 +103,7 @@ void TrikBrick::printToShell(const QString &msg)
 		qDebug("Error: 2d model shell part was not found");
 		return;
 	}
+
 	sh->print(msg);
 }
 
@@ -146,6 +165,7 @@ void TrikBrick::say(const QString &msg) {
 		qDebug("Error: 2d model shell part was not found");
 		return;
 	}
+
 	QMetaObject::invokeMethod(sh, "say", Q_ARG(const QString &, msg));
 }
 
@@ -320,6 +340,22 @@ trikControl::LedInterface *TrikBrick::led() {
 	}
 
 	return mLed.data();
+}
+
+QVector<uint8_t> TrikBrick::getStillImage()
+{
+	const bool webCamera = qReal::SettingsManager::value("TrikWebCameraReal").toBool();
+
+	if (webCamera) {
+		const QString webCameraName = qReal::SettingsManager::value("TrikWebCameraRealName").toString();
+		trikControl::QtCameraImplementation camera(webCameraName);
+		camera.setTempDir(qReal::PlatformInfo::invariantSettingsPath("pathToTempFolder"));
+		QVector<uint8_t> photo = camera.getPhoto();
+		return photo;
+	} else {
+		QVector<uint8_t> photo = mImitationCamera->getPhoto();
+		return photo;
+	}
 }
 
 int TrikBrick::random(int from, int to)
