@@ -661,7 +661,7 @@ void EditorViewScene::replaceBy()
 
 	if (nodes.size() == 1) {
 		NodeElement *node = nodes.first();
-		QMenu menu(tr("Replace by element"));
+		QMenu menu(tr("Replace by..."));
 
 		const QList<EdgeElement *> edges = node->edgeList();
 
