@@ -97,6 +97,9 @@ private:
 	void startJSInterpretation(const QString &code);
 	void startJSInterpretation(const QString &code, const QString &inputs);
 
+	/// Handles all file workings  with camera imitation process
+	void handleImitationCameraWork();
+
 	QScopedPointer<twoDModel::TwoDModelControlInterface> mTwoDModel;
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
@@ -121,6 +124,7 @@ private:
 
 	kitBase::InterpreterControlInterface *mInterpreterControl;  // Does not have ownership.
 	qReal::ProjectManagementInterface *mProjectManager; // Does not have ownership.
+	qReal::LogicalModelAssistInterface *mLogicalModel; // Doesn`t have ownership
 	QString mCurrentlySelectedModelName;
 };
 

@@ -15,6 +15,8 @@
 #include "trikKitInterpreterCommon/trikAdditionalPreferences.h"
 #include "ui_trikAdditionalPreferences.h"
 
+#include <QtWidgets/QStyle>
+
 #include <qrkernel/settingsManager.h>
 #include <qrutils/widgets/qRealFileDialog.h>
 
@@ -28,6 +30,8 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 {
 	mUi->setupUi(this);
 	mUi->robotImagePicker->configure("trikRobot2DImage", tr("2D robot image:"));
+	mUi->browseImagesPathButton->setIcon(style()->standardIcon(QStyle::SP_DirIcon));
+	mUi->packImagesPushButton->setIcon(style()->standardIcon(QStyle::SP_DialogSaveButton));
 
 	mUi->simulatedCameraFrame->setVisible(not mUi->realCameraCheckBox->isChecked());
 	mUi->realCameraFrame->setVisible(mUi->realCameraCheckBox->isChecked());
@@ -37,11 +41,18 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 		mUi->realCameraFrame->setVisible(checked);
 	});
 
+	connect(mUi->imagesFromProjectCheckBox, &QCheckBox::clicked, [this](bool checked) {
+		mUi->imagesFromDiskFrame->setEnabled(not checked);
+	});
+
 	connect(mUi->browseImagesPathButton, &QPushButton::clicked, [this]() {
 		const QString directoryName = utils::QRealFileDialog::getExistingDirectory("TrikSimulatedCameraImagesPath"
 					, this, tr("Select Directory")).replace("\\", "/");
 		mUi->imagesPathlineEdit->setText(directoryName);
 	});
+
+	connect(mUi->packImagesPushButton, &QPushButton::clicked
+			, this, &TrikAdditionalPreferences::packImagesToProjectClicked);
 }
 
 TrikAdditionalPreferences::~TrikAdditionalPreferences()
@@ -53,8 +64,8 @@ void TrikAdditionalPreferences::save()
 {
 	SettingsManager::setValue("TrikTcpServer", mUi->tcpServerLineEdit->text());
 	SettingsManager::setValue("TrikWebCameraReal", mUi->realCameraCheckBox->isChecked());
-	SettingsManager::setValue("TrikSimulatedCameraImagesPackToProject", mUi->packImagesCheckBox->isChecked());
 	SettingsManager::setValue("TrikSimulatedCameraImagesPath", mUi->imagesPathlineEdit->text());
+	SettingsManager::setValue("TrikSimulatedCameraImagesFromProject", mUi->imagesFromProjectCheckBox->isChecked());
 	SettingsManager::setValue("TrikWebCameraRealName", mUi->cameraNameLineEdit->text());
 	mUi->robotImagePicker->save();
 	emit settingsChanged();
@@ -63,11 +74,12 @@ void TrikAdditionalPreferences::save()
 void TrikAdditionalPreferences::restoreSettings()
 {
 	mUi->tcpServerLineEdit->setText(SettingsManager::value("TrikTcpServer").toString());
-	mUi->packImagesCheckBox->setChecked(SettingsManager::value("TrikSimulatedCameraImagesPackToProject").toBool());
 	mUi->realCameraCheckBox->setChecked(SettingsManager::value("TrikWebCameraReal").toBool());
 	mUi->imagesPathlineEdit->setText(SettingsManager::value("TrikSimulatedCameraImagesPath").toString());
 	mUi->cameraNameLineEdit->setText(SettingsManager::value("TrikWebCameraRealName").toString());
-	mUi->simulatedCameraFrame->setEnabled(not mUi->realCameraCheckBox->isChecked());
+	mUi->imagesFromProjectCheckBox->setChecked(SettingsManager::value("TrikSimulatedCameraImagesFromProject").toBool());
+	mUi->simulatedCameraFrame->setVisible(not mUi->realCameraCheckBox->isChecked());
+	mUi->realCameraFrame->setVisible(mUi->realCameraCheckBox->isChecked());
 	mUi->robotImagePicker->restore();
 }
 

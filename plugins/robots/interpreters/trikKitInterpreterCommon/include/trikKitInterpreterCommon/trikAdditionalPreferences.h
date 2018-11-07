@@ -38,6 +38,7 @@ public:
 
 signals:
 	void settingsChanged();
+	void packImagesToProjectClicked();
 
 private:
 	Ui::TrikAdditionalPreferences *mUi;

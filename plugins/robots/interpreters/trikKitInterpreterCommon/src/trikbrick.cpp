@@ -61,6 +61,13 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	qReal::SettingsListener::listen("TrikSimulatedCameraImagesPath", [&](QString path) {
 		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
 	}, this);
+
+	qReal::SettingsListener::listen("TrikSimulatedCameraImagesFromProject", [&](bool checked) {
+		if (checked) {
+			const QString path = qReal::PlatformInfo::invariantSettingsPath("trikCameraImitationImagesDir");
+			mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+		}
+	}, this);
 }
 
 TrikBrick::~TrikBrick()

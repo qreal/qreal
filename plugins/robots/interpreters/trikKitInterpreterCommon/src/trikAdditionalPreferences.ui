@@ -58,42 +58,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QFrame" name="simulatedCameraFrame">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0" colspan="3">
-          <widget class="QCheckBox" name="packImagesCheckBox">
-           <property name="text">
-            <string>Pack images to project</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="imagesPathLabel">
-           <property name="text">
-            <string>Images:</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="imagesPathlineEdit"/>
-         </item>
-         <item row="1" column="2">
-          <widget class="QPushButton" name="browseImagesPathButton">
-           <property name="text">
-            <string>Browse</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
       <item row="1" column="1">
        <widget class="QFrame" name="realCameraFrame">
         <property name="frameShape">
@@ -112,6 +76,51 @@
          </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="cameraNameLineEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QFrame" name="simulatedCameraFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="imagesFromProjectCheckBox">
+           <property name="text">
+            <string>Use images from project</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QGroupBox" name="imagesFromDiskFrame">
+           <property name="title">
+            <string>Images:</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="browseImagesPathButton">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLineEdit" name="imagesPathlineEdit"/>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QPushButton" name="packImagesPushButton">
+              <property name="text">
+               <string>Pack images to project</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
         </layout>
        </widget>
