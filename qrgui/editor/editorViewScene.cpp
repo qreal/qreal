@@ -653,37 +653,49 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 void EditorViewScene::replaceBy()
 {
 	QList<NodeElement *> nodes;
+	QList<EdgeElement *> edges;
+
+	// it may be node or edge, node is replaced by new node,
+	// edge is replaced by two edges and node (if it connected and it's not cycled link)
 	for (auto *item : selectedItems()) {
 		if (auto node = dynamic_cast<NodeElement *>(item)) {
 			nodes << node;
+		}
+
+		if (auto edge = dynamic_cast<EdgeElement *>(item)) {
+			edges << edge;
+		}
+	}
+
+	/// @todo: allow multiple replacing
+	if (nodes.size() + edges.size() != 1) {
+		return;
+	}
+
+	Element *elem = edges.isEmpty() ? dynamic_cast<Element *>(nodes.first()) : edges.first();
+	QMenu menu(tr("Replace by..."));
+	auto currentDiagramsAllowedElementsSet = mEditorManager.elements(elem->id()).toSet();
+	const QStringList groups = mEditorManager.paletteGroups(elem->id(), elem->id());
+
+	for (const QString &group : groups) {
+		menu.addSection(group);
+		const QStringList groupsContents = mEditorManager.paletteGroupList(
+				elem->id(), elem->id(), group);
+		for (const QString &elementInGroup : groupsContents) {
+			const Id id = Id::loadFromString("qrm:/" + elem->id().editor() + "/"
+					+ elem->id().diagram() + "/" + elementInGroup);
+			const QString friendlyName = mEditorManager.friendlyName(id);
+			if (currentDiagramsAllowedElementsSet.contains(id)) {
+				QAction *element = new QAction(friendlyName, &menu);
+				element->setData(id.toString());
+				menu.addAction(element);
+			}
 		}
 	}
 
 	if (nodes.size() == 1) {
 		NodeElement *node = nodes.first();
-		QMenu menu(tr("Replace by..."));
-
 		const QList<EdgeElement *> edges = node->edgeList();
-
-		auto currentDiagramsAllowedElementsSet = mEditorManager.elements(node->id()).toSet();
-		const QStringList groups = mEditorManager.paletteGroups(node->id(), node->id());
-
-		for (const QString &group : groups) {
-			menu.addSection(group);
-			const QStringList groupsContents = mEditorManager.paletteGroupList(
-					node->id(), nodes[0]->id(), group);
-			for (const QString &elementInGroup : groupsContents) {
-				const Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/"
-						+ node->id().diagram() + "/" + elementInGroup);
-				const QString friendlyName = mEditorManager.friendlyName(id);
-				if (currentDiagramsAllowedElementsSet.contains(id)) {
-					QAction *element = new QAction(friendlyName, &menu);
-					element->setData(id.toString());
-					menu.addAction(element);
-				}
-			}
-		}
-
 		QAction *action = menu.exec(QCursor::pos());
 		if (action) {
 			QString string = action->data().toString();
@@ -694,6 +706,24 @@ void EditorViewScene::replaceBy()
 
 		for (auto edge : edges) {
 			reConnectLink(edge);
+		}
+	} else {
+		EdgeElement *edge = edges.first();
+		if (edge->isHanging()) {
+			return;
+		}
+
+		QAction *action = menu.exec(QCursor::pos());
+		if (action) {
+			QString string = action->data().toString();
+			QPolygonF line = edge->line();
+			if (line.size() == 2) {
+				mCreatePoint = line.boundingRect().center() + edge->pos();
+			} else {
+				mCreatePoint = line.at(line.size() / 2) + edge->pos();
+			}
+
+			const Id createdId = createElement(string);
 		}
 	}
 }
@@ -1292,6 +1322,7 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		} else {
 			emit zoomOut();
 		}
+
 		wheelEvent->accept();
 	}
 }
