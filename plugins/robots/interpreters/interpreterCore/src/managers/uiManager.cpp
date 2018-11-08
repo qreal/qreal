@@ -382,7 +382,7 @@ void UiManager::updateDocksSettings() const
 		mMainWindow.errorReporterDock()->setFeatures(QDockWidget::DockWidgetClosable);
 		mMainWindow.graphicalModelDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
 		mMainWindow.propertyEditorDock()->setFeatures(QDockWidget::NoDockWidgetFeatures);
-		mRobotConsole->setFeatures(QDockWidget::NoDockWidgetFeatures);
+		mRobotConsole->setFeatures(QDockWidget::DockWidgetClosable);
 	}
 
 	for (auto dock : mDockWidgets) {

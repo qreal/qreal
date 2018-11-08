@@ -56,6 +56,7 @@ public:
 	trikControl::DisplayWidgetInterface *graphicsWidget() override {
 		return nullptr;
 	}
+
 	void init();
 
 	void setCurrentDir(const QString &dir);
