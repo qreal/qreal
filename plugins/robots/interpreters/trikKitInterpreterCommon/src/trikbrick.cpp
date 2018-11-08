@@ -54,20 +54,7 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
 	});
 
-//	const QString path = qReal::SettingsManager::value("TrikSimulatedCameraImagesPath").toString();
-	const QString path = "/home/greg/Documents/qreal/bin/debug"; // test only
-	mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
-
-	qReal::SettingsListener::listen("TrikSimulatedCameraImagesPath", [&](QString path) {
-		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
-	}, this);
-
-	qReal::SettingsListener::listen("TrikSimulatedCameraImagesFromProject", [&](bool checked) {
-		if (checked) {
-			const QString path = qReal::PlatformInfo::invariantSettingsPath("trikCameraImitationImagesDir");
-			mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
-		}
-	}, this);
+	reinitImitationCamera();
 }
 
 TrikBrick::~TrikBrick()
@@ -162,6 +149,17 @@ void TrikBrick::setCurrentInputs(const QString &f)
 	}
 
 	mInputs = result;
+}
+
+void TrikBrick::reinitImitationCamera()
+{
+	if (not qReal::SettingsManager::value("TrikSimulatedCameraImagesFromProject").toBool()) {
+		const QString path = qReal::SettingsManager::value("TrikSimulatedCameraImagesPath").toString();
+		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+	} else {
+		const QString path = qReal::PlatformInfo::invariantSettingsPath("trikCameraImitationImagesDir");
+		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+	}
 }
 
 void TrikBrick::say(const QString &msg) {

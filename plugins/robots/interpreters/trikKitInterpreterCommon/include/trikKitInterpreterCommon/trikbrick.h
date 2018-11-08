@@ -61,6 +61,8 @@ public:
 	void setCurrentDir(const QString &dir);
 	void setCurrentInputs(const QString &f);
 
+	void reinitImitationCamera();
+
 public slots:
 	void configure(const QString &, const QString &) override {}
 	void playSound(const QString &) override {}

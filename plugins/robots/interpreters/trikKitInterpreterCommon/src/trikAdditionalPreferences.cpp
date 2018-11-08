@@ -49,6 +49,7 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 		const QString directoryName = utils::QRealFileDialog::getExistingDirectory("TrikSimulatedCameraImagesPath"
 					, this, tr("Select Directory")).replace("\\", "/");
 		mUi->imagesPathlineEdit->setText(directoryName);
+		SettingsManager::setValue("TrikSimulatedCameraImagesPath", directoryName);
 	});
 
 	connect(mUi->packImagesPushButton, &QPushButton::clicked

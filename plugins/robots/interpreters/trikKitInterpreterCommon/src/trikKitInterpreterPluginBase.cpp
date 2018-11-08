@@ -144,10 +144,10 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 				if (dir.exists()) {
 					dir.cd(path);
 					dir.removeRecursively();
-				} else {
-					dir.mkpath(path);
-					dir.cd(path);
 				}
+
+				dir.mkpath(path);
+				dir.cd(path);
 
 				QDomDocument images;
 				images.setContent(rawData.toString());
@@ -166,6 +166,10 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 
 				dir.cd(curPath);
 			}
+		}
+
+		if (mQtsInterpreter) {
+			mQtsInterpreter->reinitRobotsParts();
 		}
 	};
 
@@ -204,6 +208,7 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 				imagesDomDoc.appendChild(images);
 				mLogicalModel->mutableLogicalRepoApi().setMetaInformation("cameraImitationImages"
 						, imagesDomDoc.toString());
+				mProjectManager->setUnsavedIndicator(true);
 			}
 		}
 	});

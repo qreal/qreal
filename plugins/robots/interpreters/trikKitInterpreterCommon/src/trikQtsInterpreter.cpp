@@ -179,6 +179,11 @@ QStringList trik::TrikQtsInterpreter::knownMethodNames() const
 	return mScriptRunner.knownMethodNames();
 }
 
+void trik::TrikQtsInterpreter::reinitRobotsParts()
+{
+	mBrick.reinitImitationCamera();
+}
+
 void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)
 {
 	Q_UNUSED(scriptId);
