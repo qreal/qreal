@@ -10,7 +10,7 @@
     <message>
         <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
         <source>TRIK</source>
-        <translation>TRIK</translation>
+        <translation>ТРИК</translation>
     </message>
 </context>
 <context>
