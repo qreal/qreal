@@ -23,7 +23,7 @@
 
 #include <qrgui/controller/controller.h>
 
-#include <qrgui/thirdparty/qtpropertybrowser/src/qttreepropertybrowser.h>
+#include <qrgui/thirdparty/qt-solutions/qtpropertybrowser/src/qttreepropertybrowser.h>
 
 #include "qrgui/editor/editorDeclSpec.h"
 #include "qrgui/editor/private/pushButtonProperty.h"
