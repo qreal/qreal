@@ -50,9 +50,8 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
 	mSensorUpdater->setRepeatable(true);
 	mSensorUpdater->setInterval(model->updateIntervalForInterpretation()); // seems to be x2 of timeline tick
-	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout, [model](){
-		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
-	});
+	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout
+			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::updateSensorsValues);
 
 	reinitImitationCamera();
 }
@@ -85,7 +84,6 @@ void TrikBrick::reset()
 
 	qDeleteAll(mTimers);
 	mTimers.clear();
-	QMetaObject::invokeMethod(mSensorUpdater.data(), "stop"); // failproof against timer manipulation in another thread
 }
 
 void TrikBrick::printToShell(const QString &msg)
@@ -104,23 +102,13 @@ void TrikBrick::printToShell(const QString &msg)
 void TrikBrick::init()
 {
 	mDisplay.init();
-//	for (const auto &m : mMotors) {
-//		m->powerOff();
-//	}
-//	for (const auto &e : mEncoders) {
-//		e->read();
-//	}
-//	for (const auto &s : mSensors) {
-//		s->read();
-//	}
 	mTwoDRobotModel->updateSensorsValues();
 	mMotors.clear(); // needed? reset?
 	mSensors.clear();
 	mEncoders.clear();
 	mKeys.init();
 	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
-	QMetaObject::invokeMethod(mSensorUpdater.data(), "start"); // failproof against timer manipulation in another thread
-	//mSensorUpdater.start();
+	processSensors(true);
 }
 
 void TrikBrick::setCurrentDir(const QString &dir)
@@ -258,6 +246,7 @@ trikControl::VectorSensorInterface *TrikBrick::accelerometer() {
 			emit error(tr("No configured accelerometer"));
 			return nullptr;
 		}
+
 		mAccelerometer.reset(new TrikAccelerometerAdapter(a));
 	}
 
@@ -273,6 +262,7 @@ trikControl::GyroSensorInterface *TrikBrick::gyroscope() {
 			emit error(tr("No configured gyroscope"));
 			return nullptr;
 		}
+
 		mGyroscope.reset(new TrikGyroscopeAdapter(a, mTwoDRobotModel));
 	}
 
@@ -317,18 +307,6 @@ trikControl::EncoderInterface *TrikBrick::encoder(const QString &port) {
 
 trikControl::DisplayInterface *TrikBrick::display()
 {
-//	trik::robotModel::parts::TrikDisplay * const display =
-//			kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel
-//					, "DisplayPort");
-//	if (display) {
-//		bool res = QMetaObject::invokeMethod(display,
-//		"drawSmile",
-//		Qt::QueuedConnection, // connection type, auto?
-//		Q_ARG(bool, false));
-//		//display->drawSmile(false);
-//		printf(res ? "true" : "false");
-//	}
-//	return nullptr;
 	return &mDisplay;
 }
 
@@ -464,8 +442,13 @@ utils::AbstractTimer *TrikBrick::timer(int milliseconds)
 {
 	utils::AbstractTimer *result = mTwoDRobotModel->timeline().produceTimer();
 	mTimers.append(result);
-	result->setRepeatable(true); // seems to be the case
+	result->setRepeatable(true);
 	result->start(milliseconds);
 	return result;
+}
+
+void TrikBrick::processSensors(bool isRunnig)
+{
+	QMetaObject::invokeMethod(mSensorUpdater.data(), isRunnig ? "start" : "stop");
 }
 

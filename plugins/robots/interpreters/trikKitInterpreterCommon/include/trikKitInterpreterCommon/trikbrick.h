@@ -104,6 +104,7 @@ public slots:
 	QStringList readAll(const QString &path);
 	/// In trikRuntime returns QTimer, but we need timer with emulated 2D time. Hopefully this is enough
 	utils::AbstractTimer *timer(int milliseconds);
+	void processSensors(bool isRunnig = true);
 
 signals:
 	void error(const QString &msg);
