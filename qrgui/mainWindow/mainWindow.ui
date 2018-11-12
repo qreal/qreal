@@ -58,6 +58,7 @@
     <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
+    <addaction name="actionRestore_default_settings"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -511,7 +512,7 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-	<string>About </string>
+    <string>About </string>
    </property>
   </action>
   <action name="actionAboutQt">
@@ -809,6 +810,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionRestore_default_settings">
+   <property name="text">
+    <string>Restore default settings and Quit</string>
    </property>
   </action>
  </widget>

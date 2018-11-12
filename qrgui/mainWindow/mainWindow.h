@@ -23,6 +23,7 @@
 
 #include <qrgui/preferencesDialog/preferencesDialog.h>
 
+
 class QGraphicsView;
 class QSignalMapper;
 class QListWidget;
@@ -73,7 +74,7 @@ class MainWindow : public QMainWindow
 
 public:
 	explicit MainWindow(const QString &fileToOpen = QString());
-	~MainWindow();
+	~MainWindow() override;
 
 	EditorManagerInterface &editorManager();
 	gui::editor::EditorView *getCurrentTab() const;
@@ -404,6 +405,8 @@ private:
 	QString mInitialFileToOpen;
 
 	gui::ScriptAPI mScriptAPI;
+
+	bool mRestoreDefaultSettingsOnClose;
 };
 
 }

@@ -42,6 +42,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/widgets/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/graphicsUtils/animatedEffects.h>
 #include <qrutils/xmlUtils.h>
@@ -111,6 +112,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	, mStartWidget(nullptr)
 	, mSceneCustomizer(new SceneCustomizer())
 	, mInitialFileToOpen(fileToOpen)
+	, mRestoreDefaultSettingsOnClose(false)
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -188,6 +190,15 @@ void MainWindow::connectActions()
 	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid").toBool());
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+	connect(mUi->actionRestore_default_settings, &QAction::triggered, this, [this](){
+		if (utils::QRealMessageBox::question(this, tr("Restore default settings"),
+				tr("Do you realy want to restore default settings?"
+						"\nWARNING: Settings restoring cannot be undone"
+						"\nWARNING: The settings will be restored after application restart")) == QMessageBox::Yes) {
+			mRestoreDefaultSettingsOnClose = true;
+			close();
+		}
+	});
 
 	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
 		if (!mProjectManager->suggestToOpenExisting() && !currentTab()) {
@@ -368,6 +379,11 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mUi;
+
+	if (mRestoreDefaultSettingsOnClose) {
+		SettingsManager::clearSettings();
+		SettingsManager::instance()->saveData();
+	}
 }
 
 EditorManagerInterface &MainWindow::editorManager()
