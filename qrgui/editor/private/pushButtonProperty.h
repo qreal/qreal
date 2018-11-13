@@ -16,8 +16,8 @@
 
 #include <QtWidgets/QPushButton>
 
-#include "thirdparty/qtpropertybrowser/src/qtvariantproperty.h"
-#include "thirdparty/qtpropertybrowser/src/qteditorfactory.h"
+#include "thirdparty/qt-solutions/qtpropertybrowser/src/qtvariantproperty.h"
+#include "thirdparty/qt-solutions/qtpropertybrowser/src/qteditorfactory.h"
 
 namespace qReal {
 namespace gui {
