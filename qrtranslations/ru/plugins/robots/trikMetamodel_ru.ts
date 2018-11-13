@@ -380,7 +380,7 @@
     <message>
         <location filename="../../../../plugins/robots/editor/trik/generated/elements.h" line="667"/>
         <source>Enables video stream on robot. Video then can be watched on TRIK gamepad or in browser using URL http://ROBOT.IP.ADDRESS:8080/?action=stream</source>
-        <translation>Включает видео-трансляцию на роботе. Видео может быть просмотрено, например, на пульте управления ТРИК или в браузере по адресу http://IP.АДРЕС.РОБОТА:8080/?action=stream</translation>
+        <translation>Включает видеотрансляцию на роботе. Видео может быть просмотрено, например, на пульте управления ТРИК или в браузере по адресу http://IP.АДРЕС.РОБОТА:8080/?action=stream</translation>
     </message>
     <message>
         <location filename="../../../../plugins/robots/editor/trik/generated/elements.h" line="697"/>
