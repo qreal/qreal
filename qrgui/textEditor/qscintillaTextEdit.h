@@ -78,6 +78,8 @@ signals:
 private slots:
 	void emitTextWasModified();
 
+	void commentUncommentLines();
+
 private:
 	void init();
 	/// Configures some settings such as autoindentation and margin properties, brackets highlighting, etc

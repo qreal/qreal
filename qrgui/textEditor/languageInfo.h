@@ -47,6 +47,12 @@ struct LanguageInfo
 	/// A size of the tab indent used in editor (in spaces).
 	int tabSize;
 
+	/// The comments view for the current language.
+	QString lineCommentStart;
+	QString lineCommentEnd;
+	QString multilineCommentStart;
+	QString multilineCommentEnd;
+
 	/// A pointer to text edit colorer object; nullptr can be passed to disable coloring.
 	/// Transfers ownership to editor.
 	QsciLexer *lexer;
@@ -85,6 +91,10 @@ public:
 				, QObject::tr("Text File")                                   /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
+				, QString()                                                  /* line comment start */
+				, QString()                                                  /* line comment end */
+				, QString()                                                  /* multiline comment start */
+				, QString()                                                  /* multiline comment end */
 				, nullptr                                                    /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
@@ -97,6 +107,10 @@ public:
 				, QObject::tr("C Language Source File")                      /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
+				, "//"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "/*"                                                       /* multiline comment start */
+				, "*/"                                                       /* multiline comment end */
 				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
@@ -109,6 +123,10 @@ public:
 				, QObject::tr("Russian Algorithmic Language Source File")    /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
+				, "//"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "/*"                                                       /* multiline comment start */
+				, "*/"                                                       /* multiline comment end */
 				/// @todo: write own lexer
 				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
@@ -122,6 +140,10 @@ public:
 				, QObject::tr("Python Source File")                          /* extension description */
 				, false                                                      /* tabs indentation */
 				, 2                                                          /* tab size */
+				, "#"                                                        /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "\"\"\""                                                   /* multiline comment start */
+				, "\"\"\""                                                   /* multiline comment end */
 				, new QsciLexerPython()                                      /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
@@ -134,6 +156,10 @@ public:
 				, QObject::tr("Java Script Language Source File")            /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
+				, "//"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "/*"                                                       /* multiline comment start */
+				, "*/"                                                       /* multiline comment end */
 				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
@@ -146,6 +172,10 @@ public:
 				, QObject::tr("QtScript Language Source File")               /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
+				, "//"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "/*"                                                       /* multiline comment start */
+				, "*/"                                                       /* multiline comment end */
 				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
@@ -158,6 +188,10 @@ public:
 				, QObject::tr("F# Language Source File")                     /* extension description */
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
+				, "//"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "(*"                                                       /* multiline comment start */
+				, "*)"                                                       /* multiline comment end */
 				/// @todo: write own lexer?
 				, new QsciLexerCPP()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
@@ -171,7 +205,11 @@ public:
 				, QObject::tr("PascalABC Language Source File")              /* extension description */
 				, false                                                      /* tabs indentation */
 				, 4                                                          /* tab size */
-				, new QsciLexerPascal()                                         /* lexer */
+				, "--"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "{*"                                                       /* multiline comment start */
+				, "*}"                                                       /* multiline comment end */
+				, new QsciLexerPascal()                                      /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};
 	}
@@ -183,6 +221,10 @@ public:
 				, QObject::tr("Lua Language Source File")                    /* extension description */
 				, true                                                       /* tabs indentation */
 				, 8                                                          /* tab size */
+				, "--"                                                       /* line comment start */
+				, QString()                                                  /* line comment end */
+				, "--[["                                                     /* multiline comment start */
+				, "]]"                                                       /* multiline comment end */
 				, new QsciLexerLua()                                         /* lexer */
 				, additionalTokens                                           /* additional autocompletion tokens */
 		};

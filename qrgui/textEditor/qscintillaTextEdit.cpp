@@ -15,6 +15,7 @@
 #include "qscintillaTextEdit.h"
 
 #include <QtWidgets/QShortcut>
+#include <QtCore/QRegularExpression>
 
 #include <thirdparty/qscintilla/Qt4Qt5/Qsci/qsciapis.h>
 #include <brandManager/brandManager.h>
@@ -54,7 +55,7 @@ void QScintillaTextEdit::setCurrentFont(const QFont &font) {
 
 void QScintillaTextEdit::setCurrentLanguage(const LanguageInfo &language)
 {
-	setLexer(0);
+	setLexer(nullptr);
 
 	mLanguage = language;
 	setIndentationsUseTabs(mLanguage.tabIndentation);
@@ -215,6 +216,124 @@ void QScintillaTextEdit::setDefaultSettings()
 	// Ctrl + Space Autocomplete
 	QShortcut * const ctrlSpace = new QShortcut(QKeySequence("Ctrl+Space"), this);
 	connect(ctrlSpace, &QShortcut::activated, this, &QScintillaTextEdit::autoCompleteFromAll);
+
+	// Ctrl + / comment/uncomment
+	QShortcut * const ctrlSlash = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Slash), this);
+	connect(ctrlSlash, &QShortcut::activated, this, &QScintillaTextEdit::commentUncommentLines);
+}
+
+void QScintillaTextEdit::commentUncommentLines()
+{
+	auto regExpForm = [](const QString &str) {
+		QString result;
+		result.reserve(2 * str.size());
+		QSet<QChar> shouldBeEscaped = {'?', '*', '['}; ///@todo: add more
+		for (auto ch : str) {
+			if (shouldBeEscaped.contains(ch)) {
+				result.append(QString("\\%1").arg(ch));
+			} else result.append(ch);
+		}
+
+		return result;
+	};
+
+	QString selectedText = this->selectedText();
+
+	const QRegularExpression lineRegExp(QString("^(?<indent>[ |\t]*)%1(?<innerCode>.*)%2[ |\t]*$")
+			.arg(regExpForm(mLanguage.lineCommentStart)).arg(regExpForm(mLanguage.lineCommentEnd)));
+	if (not selectedText.isEmpty()) {
+		long startSelectedPosition = SendScintilla(SCI_GETSELECTIONSTART);
+		long endSelectedPosition = SendScintilla(SCI_GETSELECTIONEND);
+		int lineStart = -1;
+		int indexStart = -1;
+		int lineEnd = -1;
+		int indexEnd = -1;
+		lineIndexFromPosition(static_cast<int>(startSelectedPosition), &lineStart, &indexStart);
+		lineIndexFromPosition(static_cast<int>(endSelectedPosition), &lineEnd, &indexEnd);
+
+		long lastSelectedLine = SendScintilla(SCI_LINEFROMPOSITION, endSelectedPosition);
+		long lastSelectedLineEndPos = SendScintilla(SCI_GETLINEENDPOSITION, lastSelectedLine);
+
+		// first case: selected full block with one or more lines
+		if (indexStart == 0 && lastSelectedLineEndPos == endSelectedPosition) {
+			QVector<QStringRef> selectedLines = selectedText.splitRef('\n');
+			int sizeOfSelectedText = selectedText.length()
+					+ selectedLines.length()
+							* (mLanguage.lineCommentStart.length() + mLanguage.lineCommentEnd.length());
+			QString textForReplace;
+			textForReplace.reserve(sizeOfSelectedText);
+			bool fullyCommented = true;
+
+			for (const QStringRef &str : selectedLines) {
+				fullyCommented &= lineRegExp.match(str).hasMatch();
+			}
+
+			int selectedLinesCount = selectedLines.count();
+			if (fullyCommented) {
+				const QStringRef &first = selectedLines.first();
+				const QStringRef indent = lineRegExp.match(first).capturedRef("indent");
+				textForReplace.append(indent);
+				const QStringRef innerCode = lineRegExp.match(first).capturedRef("innerCode");
+				textForReplace.append(innerCode);
+				for (int i = 1; i < selectedLinesCount; ++i) {
+					textForReplace.append('\n');
+					textForReplace.append(lineRegExp.match(selectedLines[i]).capturedRef("innerCode"));
+				}
+			} else {
+				textForReplace.append(QString("%1%2%3").arg(mLanguage.lineCommentStart)
+						.arg(mLanguage.lineCommentEnd).arg(selectedLines.first()));
+				for (int i = 1; i < selectedLinesCount; ++i) {
+					textForReplace.append(QString("\n%1%2%3").arg(mLanguage.lineCommentStart)
+							.arg(selectedLines[i]).arg(mLanguage.lineCommentEnd));
+				}
+			}
+
+			replaceSelectedText(textForReplace);
+		// second case: selected block with one or more lines
+		} else {
+			const QRegularExpression multiLineRegExp(QString("^%1(?<innerCode>.*)%2$")
+					.arg(regExpForm(mLanguage.multilineCommentStart))
+					.arg(regExpForm(mLanguage.multilineCommentEnd))
+					, QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+			QRegularExpressionMatch match = multiLineRegExp.match(selectedText);
+			if (match.hasMatch()) {
+				QString replaceTo = match.captured("innerCode");
+				replaceSelectedText(replaceTo);
+			} else {
+				QString replaceTo = QString("%1%2%3")
+						.arg(mLanguage.multilineCommentStart).arg(selectedText).arg(mLanguage.multilineCommentEnd);
+				replaceSelectedText(replaceTo);
+			}
+		}
+
+		SendScintilla(SCI_SETCURRENTPOS, startSelectedPosition);
+	} else {
+		// third case: comment single line
+		int currentPosition = static_cast<int>(SendScintilla(SCI_GETCURRENTPOS));
+		int currentPositionLine = static_cast<int>(SendScintilla(SCI_LINEFROMPOSITION, currentPosition));
+		int currentPositionLineEnd = static_cast<int>(SendScintilla(SCI_GETLINEENDPOSITION, currentPositionLine));
+		int endLineIndex = -1;
+		int currentPositionIndex = -1;
+		lineIndexFromPosition(currentPositionLineEnd, &currentPositionLine, &endLineIndex);
+		lineIndexFromPosition(currentPosition, &currentPositionLine, &currentPositionIndex);
+		setSelection(currentPositionLine, 0, currentPositionLine, endLineIndex);
+		const QString selectedText = this->selectedText();
+		const QRegularExpressionMatch match = lineRegExp.match(selectedText);
+		if (match.hasMatch()) {
+			QString replaceTo(match.capturedRef("indent") + match.capturedRef("innerCode"));
+			replaceSelectedText(replaceTo);
+		} else {
+			QString replaceTo;
+			replaceTo.append(QString("%1%2%3").arg(mLanguage.lineCommentStart)
+					.arg(selectedText).arg(mLanguage.lineCommentEnd));
+			replaceSelectedText(replaceTo);
+		}
+
+		const int length = mLanguage.lineCommentStart.length();
+		const int shift = match.hasMatch() ? -length : length;
+		setSelection(currentPositionLine, currentPositionIndex + shift
+				, currentPositionLine, currentPositionIndex + shift);
+	}
 }
 
 void QScintillaTextEdit::emitTextWasModified()
