@@ -21,8 +21,8 @@
 using namespace trik::robotModel::twoD::parts;
 using namespace kitBase::robotModel;
 
-const int realWidth = 218;
-const int realHeight = 274;
+const int realWidth = 238;
+const int realHeight = 278;
 const int textSize = 20;
 
 Display::Display(const DeviceInfo &info
