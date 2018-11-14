@@ -19,7 +19,7 @@ environment:
   matrix:
 #    - PROJECT_FILE: qreal
       - MINGW: C:\Qt\Tools\mingw530_32
-        QTDIR: C:\Qt\5.11.1\mingw53_32
+        QTDIR: C:\Qt\5.11.2\mingw53_32
       - MINGW: C:\Qt\Tools\mingw492_32
         QTDIR: C:\Qt\5.6.3\mingw49_32
 
@@ -56,6 +56,8 @@ install:
   - ccache -M 900M
   - which g++
   - g++ --version
+  - dir C:\Qt\Tools\
+  - dir C:\Qt
 
 
 before_build:
