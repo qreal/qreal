@@ -117,80 +117,64 @@
 <context>
     <name>pioneer::lua::ControllerCommunicator</name>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="112"/>
         <source>Unable to execute upload script</source>
-        <translation>Не удалось выполнить скрипт загрузки</translation>
+        <translation type="vanished">Не удалось выполнить скрипт загрузки</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="117"/>
         <source>Uploading started, please wait...</source>
-        <translation>Загрузка начата, пожалуйста, подождите...</translation>
+        <translation type="vanished">Загрузка начата, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="189"/>
         <source>Uploading finished.</source>
-        <translation>Загрузка завершена.</translation>
+        <translation type="vanished">Загрузка завершена.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="197"/>
         <source>Starting finished.</source>
-        <translation>Запуск завершён.</translation>
+        <translation type="vanished">Запуск завершён.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="145"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="177"/>
         <source>Unable to execute script</source>
-        <translation>Не удалось выполнить скрипт</translation>
+        <translation type="vanished">Не удалось выполнить скрипт</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="181"/>
         <source>Stopping program, please wait...</source>
-        <translation>Программа останавливается, пожалуйста, подождите...</translation>
+        <translation type="vanished">Программа останавливается, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="205"/>
         <source>Stopping finished.</source>
-        <translation>Остановка завершена.</translation>
+        <translation type="vanished">Остановка завершена.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="149"/>
         <source>Starting program, please wait...</source>
-        <translation>Программа запускается, пожалуйста, подождите...</translation>
+        <translation type="vanished">Программа запускается, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="212"/>
         <source>Uploading</source>
-        <translation>Загрузка</translation>
+        <translation type="vanished">Загрузка</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="214"/>
         <source>Starting</source>
-        <translation>Запуск</translation>
+        <translation type="vanished">Запуск</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="216"/>
         <source>Stopping</source>
-        <translation>Остановка</translation>
+        <translation type="vanished">Остановка</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="219"/>
         <source>took too long, aborted.</source>
-        <translation>заняла слишком много времени.</translation>
+        <translation type="vanished">заняла слишком много времени.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="252"/>
         <source>Pioneer base station IP address is not set. It can be set in Settings window.</source>
-        <translation>IP-адрес базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
+        <translation type="vanished">IP-адрес базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="258"/>
         <source>Pioneer base station port is not set. It can be set in Settings window.</source>
-        <translation>Порт базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
+        <translation type="vanished">Порт базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/controllerCommunicator.cpp" line="265"/>
         <source>Pioneer COM port is not set. It can be set in Settings window.</source>
-        <translation>COM-порт для связи с Пионером не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
+        <translation type="vanished">COM-порт для связи с Пионером не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
 </context>
 <context>
@@ -204,50 +188,50 @@
         <translation type="vanished">Загрузка начата, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="131"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="134"/>
         <source>Uploading finished.</source>
         <translation>Загрузка завершена.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="139"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="142"/>
         <source>Start finished.</source>
         <translation>Запуск завершён.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="57"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="97"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="60"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="100"/>
         <source>Pioneer base station IP address is not set. It can be set in Settings window.</source>
         <translation>IP-адрес базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="63"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="103"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="66"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="106"/>
         <source>Pioneer base station port is not set. It can be set in Settings window.</source>
         <translation>Порт базовой станции Пионера не указан. Его можно указать в окне &quot;Настройки&quot; -&gt; &quot;Роботы&quot; -&gt; &quot;Пионер&quot;.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="69"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="78"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="72"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="81"/>
         <source>Generation failed, upload aborted.</source>
         <translation>Генерация завершились с ошибкой, загрузка отменена.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="84"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="87"/>
         <source>Uploading to: %1, please wait...</source>
         <translation>Производится загрузка на %1, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="108"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="111"/>
         <source>Starting program. Senging request to: %1, please wait...</source>
         <translation>Скрипт запускается. Запрос запуска к %1, пожалуйста, подождите...</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="118"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="121"/>
         <source>Stopping program is not supported for HTTP communication mode.</source>
         <translation>Остановка программы не поддерживается в режиме передачи по HTTP, используйте инструмент &quot;controller&quot; для связи с роботом (включается в настройках).</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="150"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/communicator/httpCommunicator.cpp" line="153"/>
         <source>Pioneer base station took too long to respond. Request aborted.</source>
         <translation>НСУ Пионер не отвечает.</translation>
     </message>
@@ -274,59 +258,54 @@
         <translation type="vanished">Квадрокоптер &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="42"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="40"/>
         <source>Pioneer model (real copter)</source>
         <translation>Реальный квадрокоптер</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="51"/>
         <source>Pioneer model (simulator)</source>
-        <translation>Симулятор</translation>
+        <translation type="vanished">Симулятор</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="58"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="46"/>
         <source>Generate to Pioneer Lua</source>
         <translation>Генерировать в .lua для Пионера</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="68"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="56"/>
         <source>Upload generated program to Pioneer</source>
         <translation>Загрузить программу на Пионер</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="78"/>
         <source>Run program on a Pioneer</source>
-        <translation>Запустить программу на Пионере</translation>
+        <translation type="vanished">Запустить программу на Пионере</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="88"/>
         <source>Stop currently executing program</source>
-        <translation>Остановить программу, исполняемую на квадрокоптере</translation>
+        <translation type="vanished">Остановить программу, исполняемую на квадрокоптере</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="99"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="67"/>
         <source>Lua language</source>
         <translation>Язык Lua</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="168"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="113"/>
         <source>Generate Lua script for Pioneer Quadcopter</source>
         <translation>Генерировать скрипт на Lua для квадрокоптера &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="173"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="118"/>
         <source>Upload Pioneer program</source>
         <translation>Загрузить программу на квадрокоптер &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="176"/>
         <source>Run Pioneer Program</source>
-        <translation>Запустить программу на квадрокоптере &quot;Пионер&quot;</translation>
+        <translation type="vanished">Запустить программу на квадрокоптере &quot;Пионер&quot;</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/pioneerLuaGeneratorPlugin.cpp" line="178"/>
         <source>Stop Pioneer Program</source>
-        <translation>Остановить программу (Пионер)</translation>
+        <translation type="vanished">Остановить программу (Пионер)</translation>
     </message>
     <message>
         <source>Pioneer base station IP address is not set. It can be set in Settings window.</source>
@@ -400,60 +379,85 @@
         <translation type="vanished">На данный момент генерация кода, в котором цикл заканчивается на блоке, последнем в своей структурной конструкции, не поддержана. Измените структуру программы.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="53"/>
         <source>Diagram should has same number of &quot;Conditonal&quot; and &quot;End If&quot; blocks.</source>
-        <translation>Количество блоков &quot;Условие&quot; и &quot;Конец условия&quot; должно быть равным.</translation>
+        <translation type="vanished">Количество блоков &quot;Условие&quot; и &quot;Конец условия&quot; должно быть равным.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="173"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="195"/>
         <source>Generation internal error, failed to create a node.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: не удалось создать узел семантического дерева.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="203"/>
         <source>Can not find end of an If statement, generation internal error or too complex algorithmic construction.</source>
-        <translation>Не удалось найти конец блока оператора &quot;Если&quot;, внутренняя ошибка генерации или слишком сложная алгоритмическая конструкция. Попробуйте записать программу по-другому.</translation>
+        <translation type="vanished">Не удалось найти конец блока оператора &quot;Если&quot;, внутренняя ошибка генерации или слишком сложная алгоритмическая конструкция. Попробуйте записать программу по-другому.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="205"/>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="238"/>
         <source>Only fully synchronous IF construction is supported now, or fully asynchronous IF construction, where &quot;End if&quot; has two Asynchronous parents.</source>
-        <translation>Поддерживаются только полностью синхронные условные конструкциия или полностью асинхронные, при условии, что блоку &quot;Конец условия&quot; предшествуют асинхронные блоки.</translation>
+        <translation type="vanished">Поддерживаются только полностью синхронные условные конструкциия или полностью асинхронные, при условии, что блоку &quot;Конец условия&quot; предшествуют асинхронные блоки.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="220"/>
         <source>&quot;End if&quot; block without &quot;Conditional&quot; is not allowed.</source>
-        <translation>Использование блока &quot;Конец условия&quot; без блока &quot;Условие&quot; не допускается.</translation>
+        <translation type="vanished">Использование блока &quot;Конец условия&quot; без блока &quot;Условие&quot; не допускается.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="285"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="53"/>
+        <source>The diagram must have the same number of &quot;Conditonal&quot; and &quot;End If&quot; blocks.</source>
+        <translation>Количество блоков &quot;Условие&quot; и &quot;Конец условия&quot; должно быть равным.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="152"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="237"/>
+        <source>&quot;End If&quot; block occurs before &quot;If block&quot;</source>
+        <translation>Использование блока &quot;Конец условия&quot; без блока &quot;Условие&quot; не допускается</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="308"/>
         <source>Nested If&apos;s constructions is not allowed.</source>
         <translation>Вложенные условные конструкции не допускаются.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="355"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="378"/>
         <source>Generation internal error, zone node corresponds to a block in a diagram.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: узел-зона семантического дерева соответствует блоку на диаграмме. Узел-зона может быть только частью представления блока.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="370"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="393"/>
         <source>Generation internal error, non-zone node is a start of a fragment.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: синхронный фрагмент начинается с узла-зоны.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="422"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="445"/>
         <source>Generation internal error, program ends abruptly.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: программа неожиданно закончилась. Такие ошибки должны ловиться при предварительной проверке программы.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="448"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="471"/>
         <source>Generation internal error, asynchronous node does not have target node.</source>
         <translation>Внутренняя ошибка генерации. Дополнительная информация: асинхронный узел не имеет узла, которому надо передать управления после асинхронной операции.</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="470"/>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="493"/>
+        <source>There is a problem with If construction or with loops (loops without sending requests to the autopilot through &quot;Takeoff&quot;, &quot;Landing&quot;, &quot;Go to local point&quot; blocks are not supported yet).</source>
+        <translation>В диаграмме присутстует ошибка в использовании условных конструкций или циклов (циклы без использования обращений к автопилоту через блоки &quot;Взлет&quot;, &quot;Посадка&quot;, &quot;Лететь в точку (ЛК)&quot; пока не поддержаны).</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="534"/>
+        <source>The blocks (&quot;Takeoff&quot;, &quot;Landing&quot;, &quot;Go to local point&quot;) which work with autopilot were observed in both (or only in one) conditional branches.</source>
+        <translation>Блоки (&quot;Взлет&quot;, &quot;Посадка&quot;, &quot;Лететь в точку (ЛК)&quot;), работающие с автопилотом квадрокоптера, найдены в диаграмме в одной или нескольких ветвях.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="536"/>
+        <source>Such blocks must appear and finish both branches (the &quot;End if&quot; block must have two such parents) or not appear at branches at all.</source>
+        <translation>Такие блоки должны встречаться и заканчивать обе ветви условной конструкции (блок &quot;Конец условия&quot; должен иметь два таких предка) или не встречаться вовсе.</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/generators/pioneer/pioneerLuaGenerator/generators/pioneerStateMachineGenerator.cpp" line="538"/>
+        <source>Such blocks may appear in each branch several times but one of them must finish it in each branch.</source>
+        <translation>Такие блоки могут встречаться в каждой ветви условной конструкции неограниченное число раз, но один из них в каждой ветви должен быть завершающим.</translation>
+    </message>
+    <message>
         <source>Purely synchronous loops or If branches are not supported yet.</source>
-        <translation>Чисто синхронные циклы или ветки оператора If на данный момент не поддержаны. Добавьте какой-нибудь асинхронный блок внутрь тела цикла или ветки If (например, &quot;лететь в точку&quot;).</translation>
+        <translation type="vanished">Чисто синхронные циклы или ветки оператора If на данный момент не поддержаны. Добавьте какой-нибудь асинхронный блок внутрь тела цикла или ветки If (например, &quot;лететь в точку&quot;).</translation>
     </message>
     <message>
         <source>Purely synchronous loops are not supported yet.</source>
