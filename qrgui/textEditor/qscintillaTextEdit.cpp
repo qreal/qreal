@@ -316,7 +316,8 @@ void QScintillaTextEdit::commentUncommentLines()
 		const QString selectedText = this->selectedText();
 		const QRegularExpressionMatch match = lineRegExp.match(selectedText);
 		if (match.hasMatch()) {
-			QString replaceTo(match.capturedRef("indent") + match.capturedRef("innerCode"));
+			QString replaceTo(QString(match.capturedRef("indent").toString()
+					+ match.capturedRef("innerCode").toString()));
 			replaceSelectedText(replaceTo);
 		} else {
 			QString replaceTo;
