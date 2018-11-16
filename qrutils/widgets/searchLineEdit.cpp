@@ -73,6 +73,26 @@ void SearchLineEdit::focusMe()
 	mLineEdit->setFocus(Qt::ShortcutFocusReason);
 }
 
+void SearchLineEdit::setSearchOption(const SearchLineEdit::SearchOptions &option)
+{
+	mCurrentOption = option;
+}
+
+void SearchLineEdit::makeSearchOptionsSelectable(bool selectable)
+{
+	mOptionsButton->setEnabled(selectable);
+}
+
+void SearchLineEdit::setPlaceHolderTextToLineEdit(const QString &text)
+{
+	mLineEdit->setPlaceholderText(text);
+}
+
+QString SearchLineEdit::getText() const
+{
+	return mLineEdit->text();
+}
+
 QToolButton *SearchLineEdit::initButton(const QIcon &icon, const QString &toolTip)
 {
 	QToolButton * const result = new QToolButton(this);

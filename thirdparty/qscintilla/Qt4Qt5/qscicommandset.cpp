@@ -712,7 +712,7 @@ QsciCommandSet::QsciCommandSet(QsciScintilla *qs) : qsci(qs)
         },
         {
             QsciCommand::LineCut,
-            Qt::Key_L | Qt::CTRL,
+			Qt::Key_L | Qt::CTRL | Qt::SHIFT,
             0,
             QT_TRANSLATE_NOOP("QsciCommand", "Cut current line")
         },

@@ -15,9 +15,11 @@
 #include "searchLinePanel.h"
 
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QAbstractScrollArea>
 #include <QtWidgets/QStyle>
+#include <QtWidgets/QLineEdit>
 #include <QtCore/QEvent>
 #include <QtGui/QResizeEvent>
 
@@ -31,32 +33,51 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 	, mSearchLineEdit(new SearchLineEdit(this, false))
 	, mNextButton(new QPushButton(this))
 	, mCloseButton(new QPushButton(this))
+	, mReplaceButton(new QPushButton(this))
+	, mReplaceLineEdit(new QLineEdit(this))
 {
-	auto hLayout = new QHBoxLayout(this);
-	hLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
-	hLayout->addWidget(mSearchLineEdit);
+	auto gridLayout = new QGridLayout(this);
+	auto hLayoutFst = new QHBoxLayout(this);
+	auto hLayoutSnd = new QHBoxLayout(this);
+	gridLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
+
+	hLayoutFst->addWidget(mSearchLineEdit);
 	mNextButton->setIcon(style()->standardIcon(QStyle::SP_ArrowDown));
 	mNextButton->setFlat(true);
 	mNextButton->setFixedWidth(mNextButton->height());
-	hLayout->addWidget(mNextButton);
+	hLayoutFst->addWidget(mNextButton);
 	mCloseButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
 	mCloseButton->setFlat(true);
 	mCloseButton->setFixedWidth(mCloseButton->height());
-	hLayout->addWidget(mCloseButton);
+	hLayoutFst->addWidget(mCloseButton);
 
-	setFrameShape(QFrame::Box);
-	hLayout->setContentsMargins(0, 0, 0, 0);
-	hLayout->setMargin(0);
-	hLayout->setSpacing(0);
+	hLayoutSnd->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
+	hLayoutSnd->addWidget(mReplaceLineEdit);
+	mReplaceButton->setIcon(style()->standardIcon(QStyle::SP_DialogYesButton));
+	mReplaceButton->setFlat(true);
+	mReplaceButton->setFixedWidth(mReplaceButton->height());
+	hLayoutSnd->addWidget(mReplaceButton);
 
-	connect(mSearchLineEdit, &SearchLineEdit::textChanged, this, &SearchLinePanel::textChanged);
+	gridLayout->setContentsMargins(0, 0, 0, 0);
+	gridLayout->setMargin(0);
+	gridLayout->setSpacing(0);
+
+	gridLayout->addLayout(hLayoutFst, 0, 0);
+	gridLayout->addLayout(hLayoutSnd, 1, 0);
+	setFrameShape(QFrame::StyledPanel);
+	setLayout(gridLayout);
+
+	connect(mSearchLineEdit, &SearchLineEdit::textChanged, this, &SearchLinePanel::findTextChanged);
+	connect(mReplaceLineEdit, &QLineEdit::textChanged, this, &SearchLinePanel::replaceTextChanged);
 	connect(mNextButton, &QPushButton::pressed, this, &SearchLinePanel::nextPressed);
+	connect(mReplaceButton, &QPushButton::pressed, this, &SearchLinePanel::replacePressed);
 	connect(mCloseButton, &QPushButton::pressed, [this](){
 		emit closePressed();
 		detach();
 		hide();
 	});
 
+	setMode(OperationOptions::Find);
 	setBackgroundColor("white");
 	hide();
 }
@@ -80,6 +101,55 @@ void SearchLinePanel::attachTo(QWidget *parent)
 void SearchLinePanel::detach()
 {
 	parent()->removeEventFilter(this);
+}
+
+void SearchLinePanel::setMode(const SearchLinePanel::OperationOptions &option)
+{
+	mCurrentOption = option;
+
+	switch (option) {
+		case SearchLinePanel::OperationOptions::Find: {
+			mReplaceButton->hide();
+			mReplaceLineEdit->hide();
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseSensitive);
+			mSearchLineEdit->makeSearchOptionsSelectable(true);
+			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("Enter search text..."));
+			break;
+		}
+
+		case SearchLinePanel::OperationOptions::FindAndReplace: {
+			mReplaceButton->show();
+			mReplaceLineEdit->show();
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseSensitive);
+			mSearchLineEdit->makeSearchOptionsSelectable(true);
+			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("Enter search text..."));
+			break;
+		}
+
+		case SearchLinePanel::OperationOptions::GoToLineAndColumn: {
+			mReplaceButton->hide();
+			mReplaceLineEdit->hide();
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseSensitive);
+			mSearchLineEdit->makeSearchOptionsSelectable(false);
+			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("<line>:<column>"));
+			break;
+		}
+	}
+}
+
+SearchLinePanel::OperationOptions SearchLinePanel::getMode() const
+{
+	return mCurrentOption;
+}
+
+QString SearchLinePanel::getTextForReplace() const
+{
+	return mReplaceLineEdit->text();
+}
+
+QString SearchLinePanel::getTextForFind() const
+{
+	return mSearchLineEdit->getText();
 }
 
 bool SearchLinePanel::eventFilter(QObject *obj, QEvent *event)

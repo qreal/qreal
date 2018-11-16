@@ -132,6 +132,7 @@ void QScintillaTextEdit::cut()
 
 void QScintillaTextEdit::find()
 {
+	mSearchLinePanel->setMode(ui::SearchLinePanel::OperationOptions::Find);
 	mSearchLinePanel->attachTo(this);
 }
 
@@ -139,25 +140,9 @@ void QScintillaTextEdit::init()
 {
 	// For some reason c++11-style connections do not work here!
 	connect(this, SIGNAL(textChanged()), this, SLOT(emitTextWasModified()));
+	initFindModeConnections();
 	setDefaultSettings();
 	setCurrentLanguage(Languages::textFileInfo("*.txt"));
-	mSearchLinePanel = new ui::SearchLinePanel(this);
-	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this](){
-		findNext();
-	});
-
-	connect(mSearchLinePanel, &ui::SearchLinePanel::textChanged, [this](const QRegExp &textToSearch){
-		if (textToSearch.isEmpty()) {
-			return;
-		}
-
-		bool cs = textToSearch.caseSensitivity() == Qt::CaseSensitive;
-		if (findFirst(textToSearch.pattern(), true, cs, true, true, true, 0, 0)) {
-			mSearchLinePanel->setBackgroundColor("white");
-		} else {
-			mSearchLinePanel->setBackgroundColor("red");
-		}
-	});
 }
 
 void QScintillaTextEdit::setDefaultSettings()
@@ -220,6 +205,14 @@ void QScintillaTextEdit::setDefaultSettings()
 	// Ctrl + / comment/uncomment
 	QShortcut * const ctrlSlash = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Slash), this);
 	connect(ctrlSlash, &QShortcut::activated, this, &QScintillaTextEdit::commentUncommentLines);
+
+	// Ctrl + L Go to line and column
+	QShortcut * const ctrlL = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
+	connect(ctrlL, &QShortcut::activated, this, &QScintillaTextEdit::goToLineColumn);
+
+	// Ctrl + H Find And Replace
+	QShortcut * const ctrlH = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_H), this);
+	connect(ctrlH, &QShortcut::activated, this, &QScintillaTextEdit::findAndReplace);
 }
 
 void QScintillaTextEdit::commentUncommentLines()
@@ -231,7 +224,9 @@ void QScintillaTextEdit::commentUncommentLines()
 		for (auto ch : str) {
 			if (shouldBeEscaped.contains(ch)) {
 				result.append(QString("\\%1").arg(ch));
-			} else result.append(ch);
+			} else {
+				result.append(ch);
+			}
 		}
 
 		return result;
@@ -336,9 +331,73 @@ void QScintillaTextEdit::commentUncommentLines()
 	}
 }
 
+void QScintillaTextEdit::goToLineColumn()
+{
+	mSearchLinePanel->setMode(ui::SearchLinePanel::OperationOptions::GoToLineAndColumn);
+	mSearchLinePanel->attachTo(this);
+}
+
+void QScintillaTextEdit::findAndReplace()
+{
+	mSearchLinePanel->setMode(ui::SearchLinePanel::OperationOptions::FindAndReplace);
+	mSearchLinePanel->attachTo(this);
+}
+
 void QScintillaTextEdit::emitTextWasModified()
 {
 	cancelList();
 	setMarginWidth(1, QString::number(lines()).size() * mAverageCharWidth + 10);
+	mSearchLinePanel->update();
 	emit textWasModified(this);
+}
+
+void QScintillaTextEdit::initFindModeConnections()
+{
+	mSearchLinePanel = new ui::SearchLinePanel(this);
+	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this](){
+		if (mSearchLinePanel->getMode() == ui::SearchLinePanel::OperationOptions::GoToLineAndColumn) {
+			QRegularExpression regExp("^(?<line>\\d+)(:(?<column>\\d+))*$");
+			QRegularExpressionMatch match = regExp.match(mSearchLinePanel->getTextForFind());
+			int line = match.captured("line").toInt();
+			int column = match.captured("column").toInt();
+			if (lines() >= line) {
+				mSearchLinePanel->detach();
+				this->setFocus(Qt::TabFocusReason);
+				SendScintilla(SCI_GOTOPOS, positionFromLineIndex(line - 1, column));
+			}
+		} else {
+			findNext();
+		}
+
+	});
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &textToSearch){
+		if (textToSearch.isEmpty()) {
+			return;
+		}
+
+		if (mSearchLinePanel->getMode() == ui::SearchLinePanel::OperationOptions::GoToLineAndColumn) {
+			QString str = textToSearch.pattern();
+			QRegularExpression regExp("^(?<line>\\d+)(:(?<column>\\d+))*$");
+			QRegularExpressionMatch match = regExp.match(str);
+			if (match.hasMatch()) {
+				mSearchLinePanel->setBackgroundColor("white");
+			} else {
+				mSearchLinePanel->setBackgroundColor("red");
+			}
+		} else {
+			bool cs = textToSearch.caseSensitivity() == Qt::CaseSensitive;
+			if (findFirst(textToSearch.pattern(), true, cs, true, true, true, 0, 0)) {
+				mSearchLinePanel->setBackgroundColor("white");
+			} else {
+				mSearchLinePanel->setBackgroundColor("red");
+			}
+		}
+	});
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::replacePressed, [this](){
+		if (not selectedText().isEmpty()) {
+			this->replaceSelectedText(mSearchLinePanel->getTextForReplace());
+		}
+	});
 }

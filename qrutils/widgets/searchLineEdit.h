@@ -46,6 +46,12 @@ public:
 	void setBorderEnabled(bool enabled);
 	void focusMe();
 
+	void setSearchOption(const SearchOptions &option);
+	void makeSearchOptionsSelectable(bool selectable);
+	void setPlaceHolderTextToLineEdit(const QString &text);
+
+	QString getText() const;
+
 signals:
 	/// Emitted when the text in the text field is modified.
 	/// @param text A ready for matching regular expression.

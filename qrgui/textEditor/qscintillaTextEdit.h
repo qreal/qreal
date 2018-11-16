@@ -78,7 +78,10 @@ signals:
 private slots:
 	void emitTextWasModified();
 
+	void initFindModeConnections();
 	void commentUncommentLines();
+	void goToLineColumn();
+	void findAndReplace();
 
 private:
 	void init();

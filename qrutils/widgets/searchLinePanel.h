@@ -19,6 +19,8 @@
 #include <QtWidgets/QFrame>
 
 class QPushButton;
+class QLineEdit;
+class QHBoxLayout;
 
 namespace qReal {
 namespace ui {
@@ -30,17 +32,37 @@ class QRUTILS_EXPORT SearchLinePanel : public QFrame
 	Q_OBJECT
 
 public:
+	/// A enumeration of possible search options
+	enum class OperationOptions
+	{
+		/// Search representation
+		Find
+		/// Search and replace representation
+		, FindAndReplace
+		/// Go to line and column representation
+		, GoToLineAndColumn
+	};
+
 	explicit SearchLinePanel(QWidget *parent);
 
 	void setBackgroundColor(const QColor &color);
 	void attachTo(QWidget *parent);
 	void detach();
 
+	void setMode(const OperationOptions &option);
+	OperationOptions getMode() const;
+
+	QString getTextForReplace() const;
+	QString getTextForFind() const;
+
 signals:
-	/// Emitted when the text in the text field is modified.
+	/// Emitted when the text in the find text field is modified.
 	/// @param text A ready for matching regular expression.
-	void textChanged(const QRegExp &text);
+	void findTextChanged(const QRegExp &text);
+	/// Emitted when the text in the replace text field is modified.
+	void replaceTextChanged(const QString &text);
 	void nextPressed();
+	void replacePressed();
 	void closePressed();
 
 protected:
@@ -53,6 +75,10 @@ private:
 	SearchLineEdit *mSearchLineEdit;
 	QPushButton *mNextButton;
 	QPushButton *mCloseButton;
+	QPushButton *mReplaceButton;
+	QLineEdit *mReplaceLineEdit;
+
+	OperationOptions mCurrentOption;
 };
 
 }
