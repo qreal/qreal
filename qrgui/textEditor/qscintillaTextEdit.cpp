@@ -276,10 +276,11 @@ void QScintillaTextEdit::commentUncommentLines()
 				}
 			} else {
 				textForReplace.append(QString("%1%2%3").arg(mLanguage.lineCommentStart)
-						.arg(mLanguage.lineCommentEnd).arg(selectedLines.first()));
+						.arg(selectedLines.first().toString())
+						.arg(mLanguage.lineCommentEnd));
 				for (int i = 1; i < selectedLinesCount; ++i) {
 					textForReplace.append(QString("\n%1%2%3").arg(mLanguage.lineCommentStart)
-							.arg(selectedLines[i]).arg(mLanguage.lineCommentEnd));
+							.arg(selectedLines[i].toString()).arg(mLanguage.lineCommentEnd));
 				}
 			}
 
