@@ -42,6 +42,9 @@ public slots:
 	/// Activates cursor action.
 	void unselect();
 
+	/// Sets size of tools in pallete.
+	void setSize(const QSize &size);
+
 private:
 	QScopedPointer<QAction> mCursorAction;
 	QScopedPointer<QActionGroup> mGroup;
