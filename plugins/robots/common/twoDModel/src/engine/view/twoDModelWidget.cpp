@@ -20,6 +20,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsListener.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/widgets/qRealFileDialog.h>
@@ -219,6 +220,7 @@ void TwoDModelWidget::initWidget()
 
 void TwoDModelWidget::initPalette()
 {
+
 	QAction * const wallTool = items::WallItem::wallTool();
 	QAction * const skittleTool = items::SkittleItem::skittleTool();
 	QAction * const ballTool = items::BallItem::ballTool();
@@ -238,6 +240,8 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(ellipseTool);
 	mUi->palette->registerTool(stylusTool);
 	mUi->palette->registerTool(imageTool);
+
+	qReal::SettingsListener::listen("toolbarSize", [this](int size){ mUi->palette->setSize({size, size}); });
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(skittleTool, &QAction::triggered, mScene, &TwoDModelScene::addSkittle);

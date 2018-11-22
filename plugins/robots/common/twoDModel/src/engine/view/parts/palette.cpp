@@ -61,3 +61,8 @@ void Palette::unselect()
 {
 	mCursorAction->trigger();
 }
+
+void Palette::setSize(const QSize &size)
+{
+	mToolBar->setIconSize(size);
+}
