@@ -931,6 +931,7 @@ void EditorViewScene::updateActions()
 	mCopyAction->setEnabled(elementActionsEnabled);
 	mCutAction->setEnabled(elementActionsEnabled);
 	mPasteAction->setEnabled(!mClipboardHandler.isEmpty());
+	mReplaceByAction->setEnabled(elementActionsEnabled);
 }
 
 void EditorViewScene::getObjectByGesture()
