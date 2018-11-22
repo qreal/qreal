@@ -9,7 +9,7 @@ environment:
   global:
     MSYS_DIR: C:\msys64
     APPVEYOR_SAVE_CACHE_ON_ERROR: true
-    PYTHON_PATH: C:\Python35
+    PYTHON_PATH: C:\Python36
     PYTHON_LIB: '%PYTHON_PATH%\libs'
     CCACHE_DIR: C:\ccache.cache
     BUILD_DIR: '%APPVEYOR_BUILD_FOLDER%\.build'
