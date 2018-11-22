@@ -116,6 +116,7 @@
     <addaction name="actionCut"/>
     <addaction name="separator"/>
     <addaction name="actionFind"/>
+    <addaction name="actionFind_and_replace"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menuEdit"/>

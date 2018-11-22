@@ -105,6 +105,11 @@ bool QScintillaTextEdit::supportsSearching() const
 	return true;
 }
 
+bool QScintillaTextEdit::supportsFindAndReplace() const
+{
+	return true;
+}
+
 void QScintillaTextEdit::zoomIn()
 {
 	QsciScintilla::zoomIn();
@@ -209,10 +214,6 @@ void QScintillaTextEdit::setDefaultSettings()
 	// Ctrl + L Go to line and column
 	QShortcut * const ctrlL = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_L), this);
 	connect(ctrlL, &QShortcut::activated, this, &QScintillaTextEdit::goToLineColumn);
-
-	// Ctrl + H Find And Replace
-	QShortcut * const ctrlH = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_H), this);
-	connect(ctrlH, &QShortcut::activated, this, &QScintillaTextEdit::findAndReplace);
 }
 
 void QScintillaTextEdit::commentUncommentLines()

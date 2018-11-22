@@ -258,6 +258,12 @@ void MainWindow::connectActions()
 		}
 	});
 
+	connect(mUi->actionFind_and_replace, &QAction::triggered, [=]() {
+		if (mCurrentEditor && mCurrentEditor->supportsFindAndReplace()) {
+			mCurrentEditor->findAndReplace();
+		}
+	});
+
 	connect(mUi->actionUndo, &QAction::triggered, mController, &Controller::undo);
 	connect(mUi->actionRedo, &QAction::triggered, mController, &Controller::redo);
 
@@ -767,8 +773,9 @@ void MainWindow::changeWindowTitle()
 
 void MainWindow::registerEditor(EditorInterface &editor)
 {
-	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
-			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind, *mUi->actionReplaceBy);
+	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo, *mUi->actionCopy
+			, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind, *mUi->actionFind_and_replace
+			, *mUi->actionReplaceBy);
 	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
 		mCurrentEditor = &editor;
 		const bool zoomingEnabled = editor.supportsZooming();
@@ -778,6 +785,7 @@ void MainWindow::registerEditor(EditorInterface &editor)
 		mUi->actionPaste->setEnabled(editor.supportsPasting());
 		mUi->actionCut->setEnabled(editor.supportsCutting());
 		mUi->actionFind->setEnabled(editor.supportsSearching());
+		mUi->actionFind_and_replace->setEnabled(editor.supportsFindAndReplace());
 		mUi->actionReplaceBy->setEnabled(editor.supportsReplacingBy());
 		mController->setActiveModule(editor.editorId());
 	});
@@ -1175,6 +1183,7 @@ void MainWindow::setDefaultShortcuts()
 	mUi->actionZoom_Out->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Minus));
 
 	mUi->actionFind->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+	mUi->actionFind_and_replace->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_H));
 
 	mUi->actionNewProject->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_N));
 	mUi->actionNew_Diagram->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_T));
@@ -1194,6 +1203,7 @@ void MainWindow::setDefaultShortcuts()
 	HotKeyManager::setCommand("Editor.CloseAllTabs", tr("Close all tabs"), closeAllTabsAction);
 	HotKeyManager::setCommand("Editor.Print", tr("Print"), mUi->actionPrint);
 	HotKeyManager::setCommand("Editor.Find", tr("Find"), mUi->actionFind);
+	HotKeyManager::setCommand("Editor.FindAndReplace", tr("Find and replace"), mUi->actionFind_and_replace);
 	HotKeyManager::setCommand("Editor.ToggleTitles", tr("Show all text"), mUi->actionShow_all_text);
 	HotKeyManager::setCommand("View.ToggleErrorReporter", tr("Toggle errors panel")
 			, mUi->errorDock->toggleViewAction());
@@ -1214,6 +1224,7 @@ void MainWindow::currentTabChanged(int newIndex)
 	mUi->actionSave_diagram_as_a_picture->setEnabled(isEditorTab);
 	mUi->actionPrint->setEnabled(!isDecorativeTab);
 	mUi->actionFind->setEnabled(!isDecorativeTab);
+	mUi->actionFind_and_replace->setEnabled(!isDecorativeTab);
 	mUi->actionGesturesShow->setEnabled(qReal::SettingsManager::value("gesturesEnabled").toBool());
 
 	if (isEditorTab) {

@@ -283,9 +283,9 @@ bool EditorView::supportsReplacingBy() const
 }
 
 void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &findAndReplace, QAction &replaceBy)
 {
-	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, replaceBy);
+	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, findAndReplace, replaceBy);
 }
 
 void EditorView::zoomInTime()

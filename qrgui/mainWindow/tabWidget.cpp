@@ -67,6 +67,11 @@ bool TabWidget::supportsSearching() const
 	return currentEditor() ? currentEditor()->supportsSearching() : false;
 }
 
+bool TabWidget::supportsFindAndReplace() const
+{
+	return currentEditor() ? currentEditor()->supportsFindAndReplace() : false;
+}
+
 bool TabWidget::supportsReplacingBy() const
 {
 	return currentEditor() ? currentEditor()->supportsReplacingBy() : false;
@@ -114,6 +119,13 @@ void TabWidget::find()
 	}
 }
 
+void TabWidget::findAndReplace()
+{
+	if (EditorInterface *editor = currentEditor()) {
+		editor->findAndReplace();
+	}
+}
+
 void TabWidget::replaceBy()
 {
 	if (EditorInterface *editor = currentEditor()) {
@@ -130,7 +142,7 @@ int TabWidget::addTab(QWidget *widget, const QString &name)
 {
 	if (EditorInterface * const editor = dynamic_cast<EditorInterface *>(widget)) {
 		editor->configure(*mZoomInAction, *mZoomOutAction, *mUndoAction, *mRedoAction
-				, *mCopyAction, *mPasteAction, *mCutAction, *mFindAction, *mReplaceByAction);
+				, *mCopyAction, *mPasteAction, *mCutAction, *mFindAction, *mFindAndReplaceAction, *mReplaceByAction);
 		connect(&editor->focusAction(), &QAction::triggered, &focusAction(), &QAction::trigger);
 	}
 

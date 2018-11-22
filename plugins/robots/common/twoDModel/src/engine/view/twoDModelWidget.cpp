@@ -758,9 +758,9 @@ bool TwoDModelWidget::supportsZooming() const
 }
 
 void TwoDModelWidget::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &findAndeReplace, QAction &replaceBy)
 {
-	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, replaceBy);
+	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, findAndeReplace, replaceBy);
 	addActions({ mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction });
 }
 

@@ -59,6 +59,7 @@ public:
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
 	bool supportsSearching() const override;
+	bool supportsFindAndReplace() const override;
 
 public slots:
 	void zoomIn() override;
@@ -68,6 +69,7 @@ public slots:
 	void paste() override;
 	void cut() override;
 	void find() override;
+	void findAndReplace() override;
 
 signals:
 	/// Emitted in destructor to save written text to according model element
@@ -81,7 +83,6 @@ private slots:
 	void initFindModeConnections();
 	void commentUncommentLines();
 	void goToLineColumn();
-	void findAndReplace();
 
 private:
 	void init();

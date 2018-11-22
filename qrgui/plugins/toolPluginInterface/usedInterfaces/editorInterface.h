@@ -80,6 +80,12 @@ public:
 		return false;
 	}
 
+	/// Can be reimplemented to enable find-and-replace actions in main menu when this editor is active.
+	virtual bool supportsFindAndReplace() const
+	{
+		return false;
+	}
+
 	/// Can be reimplemented to zoom the picture shown in editor in. Implementation has sense only when
 	/// supportsZooming() returns true.
 	virtual void zoomIn() {}
@@ -108,6 +114,10 @@ public:
 	/// supportsReplacingBy() returns true.
 	virtual void replaceBy() {}
 
+	/// Can be to find and reblace items by smth in editors space. Implementation has sense only when
+	/// supportsFindAndReplace() returns true.
+	virtual void findAndReplace() {}
+
 	/// Can be reimplemented to force focus capturing when system requires that. By default simply triggers focusAction.
 	virtual void forceFocus()
 	{
@@ -116,7 +126,7 @@ public:
 
 	/// Configures editor with the given set of editor actions.
 	virtual void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &findAndReplace, QAction &replaceBy)
 	{
 		mZoomInAction = &zoomIn;
 		mZoomOutAction = &zoomOut;
@@ -126,6 +136,7 @@ public:
 		mPasteAction = &paste;
 		mCutAction = &cut;
 		mFindAction = &find;
+		mFindAndReplaceAction = &findAndReplace;
 		mReplaceByAction = &replaceBy;
 	}
 
@@ -156,10 +167,10 @@ protected:
 	QAction *mPasteAction;  // Does not have ownership.
 	QAction *mCutAction;  // Does not have ownership.
 	QAction *mFindAction;  // Does not have ownership.
+	QAction *mFindAndReplaceAction;  // Does not have ownership.
 	QAction *mReplaceByAction;  // Does not have ownership.
 
 private:
 	QAction mFocusAction;
 };
-
 }
