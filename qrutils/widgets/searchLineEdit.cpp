@@ -68,6 +68,11 @@ void SearchLineEdit::setBorderEnabled(bool enabled)
 	}
 }
 
+void SearchLineEdit::setLineEditColor(const QColor &color)
+{
+	mLineEdit->setStyleSheet(QString("QLineEdit {background: %1}").arg(color.name(QColor::HexArgb)));
+}
+
 void SearchLineEdit::focusMe()
 {
 	mLineEdit->setFocus(Qt::ShortcutFocusReason);
@@ -91,6 +96,11 @@ void SearchLineEdit::setPlaceHolderTextToLineEdit(const QString &text)
 QString SearchLineEdit::getText() const
 {
 	return mLineEdit->text();
+}
+
+void SearchLineEdit::clearText()
+{
+	mLineEdit->clear();
 }
 
 QToolButton *SearchLineEdit::initButton(const QIcon &icon, const QString &toolTip)

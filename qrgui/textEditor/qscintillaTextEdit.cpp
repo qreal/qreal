@@ -357,50 +357,80 @@ void QScintillaTextEdit::emitTextWasModified()
 void QScintillaTextEdit::initFindModeConnections()
 {
 	mSearchLinePanel = new ui::SearchLinePanel(this);
-	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this](){
-		if (mSearchLinePanel->getMode() == ui::SearchLinePanel::OperationOptions::GoToLineAndColumn) {
-			QRegularExpression regExp("^(?<line>\\d+)(:(?<column>\\d+))*$");
-			QRegularExpressionMatch match = regExp.match(mSearchLinePanel->getTextForFind());
-			int line = match.captured("line").toInt();
-			int column = match.captured("column").toInt();
-			if (lines() >= line) {
-				mSearchLinePanel->detach();
-				this->setFocus(Qt::TabFocusReason);
-				SendScintilla(SCI_GOTOPOS, positionFromLineIndex(line - 1, column));
-			}
-		} else {
-			findNext();
-		}
 
-	});
-
-	connect(mSearchLinePanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &textToSearch){
-		if (textToSearch.isEmpty()) {
+	auto findlambda = [this](bool forward){
+		if (mLastSearch.isEmpty()) {
 			return;
 		}
 
 		if (mSearchLinePanel->getMode() == ui::SearchLinePanel::OperationOptions::GoToLineAndColumn) {
-			QString str = textToSearch.pattern();
 			QRegularExpression regExp("^(?<line>\\d+)(:(?<column>\\d+))*$");
-			QRegularExpressionMatch match = regExp.match(str);
-			if (match.hasMatch()) {
-				mSearchLinePanel->setBackgroundColor("white");
+			QRegularExpressionMatch match = regExp.match(mLastSearch.pattern());
+			if (not match.hasMatch()) {
+				mSearchLinePanel->reportError();
 			} else {
-				mSearchLinePanel->setBackgroundColor("red");
+				mLastSearchCalled = true;
 			}
 		} else {
-			bool cs = textToSearch.caseSensitivity() == Qt::CaseSensitive;
-			if (findFirst(textToSearch.pattern(), true, cs, true, true, true, 0, 0)) {
-				mSearchLinePanel->setBackgroundColor("white");
+			int currentPosition = static_cast<int>(SendScintilla(SCI_GETCURRENTPOS));
+			int currentPositionLine = static_cast<int>(SendScintilla(SCI_LINEFROMPOSITION, currentPosition));
+			int currentPositionIndex = -1;
+			lineIndexFromPosition(currentPosition, &currentPositionLine, &currentPositionIndex);
+			bool cs = mLastSearch.caseSensitivity() == Qt::CaseSensitive;
+			if (not findFirst(mLastSearch.pattern(), true, cs
+					, true, true, forward, currentPositionLine, currentPositionIndex)) {
+				mSearchLinePanel->reportError();
 			} else {
-				mSearchLinePanel->setBackgroundColor("red");
+				mLastSearchCalled = true;
 			}
 		}
+	};
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this, findlambda](){
+		if (mSearchLinePanel->getMode() == ui::SearchLinePanel::OperationOptions::GoToLineAndColumn) {
+			QRegularExpression regExp("^(?<line>\\d+)(:(?<column>\\d+))*$");
+			QRegularExpressionMatch match = regExp.match(mSearchLinePanel->getTextForFind());
+			if (not match.hasMatch()) {
+				mSearchLinePanel->reportError();
+				return;
+			}
+
+			int line = match.captured("line").toInt();
+			int column = match.captured("column").toInt();
+			if (lines() >= line) {
+				mSearchLinePanel->detach();
+				mSearchLinePanel->hide();
+				this->setFocus(Qt::TabFocusReason);
+				SendScintilla(SCI_GOTOPOS, positionFromLineIndex(line - 1, column));
+			}
+		} else {
+			if (mSearchForward && mLastSearchCalled) {
+				findNext();
+			} else {
+				mSearchForward = true;
+				findlambda(true);
+			}
+		}
+	});
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::previousPressed, [this, findlambda](){
+		if (mSearchForward || not mLastSearchCalled) {
+			mSearchForward = false;
+			findlambda(false);
+		} else {
+			findNext();
+		}
+	});
+
+	connect(mSearchLinePanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &textToSearch){
+		mLastSearchCalled = false;
+		mLastSearch = textToSearch;
 	});
 
 	connect(mSearchLinePanel, &ui::SearchLinePanel::replacePressed, [this](){
 		if (not selectedText().isEmpty()) {
 			this->replaceSelectedText(mSearchLinePanel->getTextForReplace());
+			this->findNext();
 		}
 	});
 }

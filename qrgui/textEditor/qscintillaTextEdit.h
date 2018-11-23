@@ -95,6 +95,10 @@ private:
 	QFont mFont;
 	int mAverageCharWidth;
 	ui::SearchLinePanel *mSearchLinePanel;
+
+	QRegExp mLastSearch;
+	bool mLastSearchCalled = false;
+	bool mSearchForward = true;
 };
 
 }

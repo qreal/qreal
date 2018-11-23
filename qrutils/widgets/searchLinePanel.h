@@ -30,6 +30,7 @@ class SearchLineEdit;
 class QRUTILS_EXPORT SearchLinePanel : public QFrame
 {
 	Q_OBJECT
+	Q_PROPERTY(QColor searchLineColor READ getSearchLineColor WRITE setSearchLineColor)
 
 public:
 	/// A enumeration of possible search options
@@ -45,7 +46,7 @@ public:
 
 	explicit SearchLinePanel(QWidget *parent);
 
-	void setBackgroundColor(const QColor &color);
+	void reportError();
 	void attachTo(QWidget *parent);
 	void detach();
 
@@ -55,6 +56,10 @@ public:
 	QString getTextForReplace() const;
 	QString getTextForFind() const;
 
+public:
+	QColor getSearchLineColor() const;
+	void setSearchLineColor(const QColor &color);
+
 signals:
 	/// Emitted when the text in the find text field is modified.
 	/// @param text A ready for matching regular expression.
@@ -62,6 +67,7 @@ signals:
 	/// Emitted when the text in the replace text field is modified.
 	void replaceTextChanged(const QString &text);
 	void nextPressed();
+	void previousPressed();
 	void replacePressed();
 	void closePressed();
 
@@ -74,11 +80,13 @@ private:
 
 	SearchLineEdit *mSearchLineEdit;
 	QPushButton *mNextButton;
+	QPushButton *mPreviousButton;
 	QPushButton *mCloseButton;
 	QPushButton *mReplaceButton;
 	QLineEdit *mReplaceLineEdit;
 
 	OperationOptions mCurrentOption;
+	QColor mSearchLineColor = "white";
 };
 
 }
