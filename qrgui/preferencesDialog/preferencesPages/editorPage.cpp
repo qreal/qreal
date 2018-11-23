@@ -112,8 +112,6 @@ void PreferencesEditorPage::save()
 	SettingsManager::setValue("CustomFont", mUi->fontCheckBox->isChecked());
 	SettingsManager::setValue("PaletteRepresentation", mUi->paletteComboBox->currentIndex());
 	SettingsManager::setValue("PaletteIconsInARowCount", mUi->paletteSpinBox->value());
-	SettingsManager::setValue("MoveLabels", mUi->enableMoveLabelsCheckBox->isChecked());
-	SettingsManager::setValue("ResizeLabels", mUi->enableResizeLabelsCheckBox->isChecked());
 	SettingsManager::setValue("manualFontCheckBoxChecked", mUi->fontCheckBox->isChecked());
 
 	mWidthGrid = mUi->gridWidthSlider->value();
@@ -142,9 +140,6 @@ void PreferencesEditorPage::restoreSettings()
 	mUi->embeddedLinkerIndentSlider->setValue(SettingsManager::value("EmbeddedLinkerIndent").toInt());
 	mUi->embeddedLinkerSizeSlider->setValue(SettingsManager::value("EmbeddedLinkerSize").toInt());
 	mUi->loopEdgeBoundsIndent->setValue(SettingsManager::value("LoopEdgeBoundsIndent").toInt());
-
-	mUi->enableMoveLabelsCheckBox->setChecked(SettingsManager::value("MoveLabels").toBool());
-	mUi->enableResizeLabelsCheckBox->setChecked(SettingsManager::value("ResizeLabels").toBool());
 
 	const LinkShape type = static_cast<LinkShape>(SettingsManager::value("LineType").toInt());
 	mUi->lineMode->setCurrentIndex(static_cast<int>(type));
