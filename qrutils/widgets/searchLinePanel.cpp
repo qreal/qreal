@@ -129,7 +129,7 @@ void SearchLinePanel::setMode(const SearchLinePanel::OperationOptions &option)
 			mReplaceButton->hide();
 			mReplaceLineEdit->hide();
 			mPreviousButton->show();
-			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseSensitive);
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseInsensitive);
 			mSearchLineEdit->makeSearchOptionsSelectable(true);
 			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("Enter search text..."));
 			break;
@@ -139,7 +139,7 @@ void SearchLinePanel::setMode(const SearchLinePanel::OperationOptions &option)
 			mReplaceButton->show();
 			mReplaceLineEdit->show();
 			mPreviousButton->show();
-			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseSensitive);
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseInsensitive);
 			mSearchLineEdit->makeSearchOptionsSelectable(true);
 			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("Enter search text..."));
 			break;
@@ -150,7 +150,7 @@ void SearchLinePanel::setMode(const SearchLinePanel::OperationOptions &option)
 			mReplaceLineEdit->hide();
 			mSearchLineEdit->clearText();
 			mPreviousButton->hide();
-			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseSensitive);
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseInsensitive);
 			mSearchLineEdit->makeSearchOptionsSelectable(false);
 			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("<line>:<column>"));
 			break;
