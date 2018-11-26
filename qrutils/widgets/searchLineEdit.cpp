@@ -124,10 +124,12 @@ void SearchLineEdit::makeContextMenu()
 		mCurrentOption = SearchOptions::CaseSensitive;
 		notifyTextChanged();
 	});
+
 	connect(mCaseInsensitive, &QAction::triggered, [=]() {
 		mCurrentOption = SearchOptions::CaseInsensitive;
 		notifyTextChanged();
 	});
+
 	connect(mRegularExpression, &QAction::triggered, [=]() {
 		mCurrentOption = SearchOptions::RegularExpression;
 		notifyTextChanged();
@@ -155,12 +157,18 @@ void SearchLineEdit::notifyTextChanged()
 
 QRegExp SearchLineEdit::regexpFromText(const QString &text, SearchOptions option) const
 {
-	if (option == SearchOptions::RegularExpression) {
-		return QRegExp(text);
-	}
+	QRegExp result(text);
 
-	const QStringList parts = text.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-	QRegExp result(parts.join("|"));
-	result.setCaseSensitivity(option == SearchOptions::CaseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
-	return result;
+	switch (option) {
+		case SearchOptions::RegularExpression:
+			return result;
+		case SearchOptions::CaseInsensitive:
+			result.setPatternSyntax(QRegExp::FixedString);
+			result.setCaseSensitivity(Qt::CaseInsensitive);
+			return result;
+		case SearchOptions::CaseSensitive:
+			result.setPatternSyntax(QRegExp::FixedString);
+			result.setCaseSensitivity(Qt::CaseSensitive);
+			return result;
+	}
 }
