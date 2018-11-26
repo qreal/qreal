@@ -18,6 +18,8 @@ include(../../../../global.pri)
 
 win32 {
 	copyToDestdir(python36.dll, NOW)
+	copyToDestdir(msvcp140.dll, NOW)     # python deps
+	copyToDestdir(vcruntime140.dll, NOW) # python deps
 }
 
 # todo check and add appropriate libs!!!
