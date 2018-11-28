@@ -4,24 +4,30 @@
 <context>
     <name>Block</name>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="60"/>
         <source>Control flow break detected, stopping</source>
-        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="65"/>
+        <location filename="../../qrutils/interpreter/block.cpp" line="150"/>
         <source>Block has disappeared!</source>
-        <translation type="vanished">Блок исчез!</translation>
+        <translation>Блок исчез!</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="72"/>
         <source>Too many outgoing links</source>
-        <translation type="vanished">Слишком много исходящих связей</translation>
+        <translation>Слишком много исходящих связей</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="77"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
+        <location filename="../../qrutils/interpreter/block.cpp" line="84"/>
         <source>Outgoing link is not connected</source>
-        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
+        <translation>Исходящая связь ни к чему не подключена</translation>
     </message>
 </context>
 <context>
@@ -207,30 +213,24 @@
 <context>
     <name>qReal::interpretation::Block</name>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="60"/>
         <source>Control flow break detected, stopping</source>
-        <translation>Обнаружен разрыв потока управления, исполнение завершено</translation>
+        <translation type="vanished">Обнаружен разрыв потока управления, исполнение завершено</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="72"/>
         <source>Too many outgoing links</source>
-        <translation>Слишком много исходящих связей</translation>
+        <translation type="vanished">Слишком много исходящих связей</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="77"/>
         <source>No outgoing links, please connect this block to something or use Final Node to end program</source>
-        <translation>Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
+        <translation type="vanished">Нет исходящих связей. Пожалуйста, подключите этот блок к чему-нибудь или используйте блок &quot;Конец&quot;, чтобы завершить выполнение программы</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="84"/>
         <source>Outgoing link is not connected</source>
-        <translation>Исходящая связь ни к чему не подключена</translation>
+        <translation type="vanished">Исходящая связь ни к чему не подключена</translation>
     </message>
     <message>
-        <location filename="../../qrutils/interpreter/block.cpp" line="65"/>
-        <location filename="../../qrutils/interpreter/block.cpp" line="150"/>
         <source>Block has disappeared!</source>
-        <translation>Блок исчез!</translation>
+        <translation type="vanished">Блок исчез!</translation>
     </message>
 </context>
 <context>
@@ -512,6 +512,20 @@
         <location filename="../../qrutils/widgets/searchLineEdit.cpp" line="43"/>
         <source>Enter search text...</source>
         <translation>Введите текст поиска...</translation>
+    </message>
+</context>
+<context>
+    <name>qReal::ui::SearchLinePanel</name>
+    <message>
+        <location filename="../../qrutils/widgets/searchLinePanel.cpp" line="116"/>
+        <location filename="../../qrutils/widgets/searchLinePanel.cpp" line="125"/>
+        <source>Enter search text...</source>
+        <translation>Введите текст поиска...</translation>
+    </message>
+    <message>
+        <location filename="../../qrutils/widgets/searchLinePanel.cpp" line="134"/>
+        <source>&lt;line&gt;:&lt;column&gt;</source>
+        <translation>&lt;строка&gt;:&lt;столбец&gt;</translation>
     </message>
 </context>
 <context>

@@ -74,6 +74,10 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 			, QObject::tr("Javascript")
 			, true
 			, 4
+			, "//"
+			, QString()
+			, "/*"
+			, "*/"
 			, new QsciLexerCPP()
 			, mQtsInterpreter.data()->knownMethodNames()
 	};

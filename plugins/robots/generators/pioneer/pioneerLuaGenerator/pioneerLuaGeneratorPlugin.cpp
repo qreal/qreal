@@ -67,6 +67,10 @@ PioneerLuaGeneratorPlugin::PioneerLuaGeneratorPlugin()
 			, tr("Lua language")
 			, true
 			, 4
+			, "--"
+			, QString()
+			, "--[["
+			, "]]"
 			, nullptr
 			, {}
 	});

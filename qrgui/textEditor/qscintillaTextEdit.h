@@ -59,6 +59,7 @@ public:
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
 	bool supportsSearching() const override;
+	bool supportsFindAndReplace() const override;
 
 public slots:
 	void zoomIn() override;
@@ -68,6 +69,7 @@ public slots:
 	void paste() override;
 	void cut() override;
 	void find() override;
+	void findAndReplace() override;
 
 signals:
 	/// Emitted in destructor to save written text to according model element
@@ -77,6 +79,10 @@ signals:
 
 private slots:
 	void emitTextWasModified();
+
+	void initFindModeConnections();
+	void commentUncommentLines();
+	void goToLineColumn();
 
 private:
 	void init();
@@ -89,6 +95,10 @@ private:
 	QFont mFont;
 	int mAverageCharWidth;
 	ui::SearchLinePanel *mSearchLinePanel;
+
+	QRegExp mLastSearch;
+	bool mLastSearchCalled = false;
+	bool mSearchForward = true;
 };
 
 }

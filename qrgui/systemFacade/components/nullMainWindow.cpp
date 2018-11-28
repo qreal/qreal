@@ -340,7 +340,7 @@ void NullMainWindow::registerEditor(EditorInterface &editor)
 {
 	QAction *dummyAction = new QAction(this);
 	editor.configure(*dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction, *dummyAction
-			, *dummyAction, *dummyAction, *dummyAction);
+			, *dummyAction, *dummyAction, *dummyAction, *dummyAction);
 }
 
 void NullMainWindow::emulateClose(int returnCode)

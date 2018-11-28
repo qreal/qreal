@@ -15,11 +15,14 @@
 #include "searchLinePanel.h"
 
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QAbstractScrollArea>
 #include <QtWidgets/QStyle>
+#include <QtWidgets/QLineEdit>
 #include <QtCore/QEvent>
 #include <QtGui/QResizeEvent>
+#include <QtCore/QPropertyAnimation>
 
 #include "searchLineEdit.h"
 
@@ -30,40 +33,75 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 	: QFrame(parent)
 	, mSearchLineEdit(new SearchLineEdit(this, false))
 	, mNextButton(new QPushButton(this))
+	, mPreviousButton(new QPushButton(this))
 	, mCloseButton(new QPushButton(this))
+	, mReplaceButton(new QPushButton(this))
+	, mReplaceLineEdit(new QLineEdit(this))
 {
-	auto hLayout = new QHBoxLayout(this);
-	hLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
-	hLayout->addWidget(mSearchLineEdit);
+	auto gridLayout = new QGridLayout(this);
+	auto hLayoutFst = new QHBoxLayout(this);
+	auto hLayoutSnd = new QHBoxLayout(this);
+	gridLayout->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
+
+	hLayoutFst->addWidget(mSearchLineEdit);
+
 	mNextButton->setIcon(style()->standardIcon(QStyle::SP_ArrowDown));
 	mNextButton->setFlat(true);
 	mNextButton->setFixedWidth(mNextButton->height());
-	hLayout->addWidget(mNextButton);
+	hLayoutFst->addWidget(mNextButton);
+
+	mPreviousButton->setIcon(style()->standardIcon(QStyle::SP_ArrowUp));
+	mPreviousButton->setFlat(true);
+	mPreviousButton->setFixedWidth(mPreviousButton->height());
+	hLayoutFst->addWidget(mPreviousButton);
+
 	mCloseButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
 	mCloseButton->setFlat(true);
 	mCloseButton->setFixedWidth(mCloseButton->height());
-	hLayout->addWidget(mCloseButton);
+	hLayoutFst->addWidget(mCloseButton);
 
-	setFrameShape(QFrame::Box);
-	hLayout->setContentsMargins(0, 0, 0, 0);
-	hLayout->setMargin(0);
-	hLayout->setSpacing(0);
+	hLayoutSnd->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
+	hLayoutSnd->addWidget(mReplaceLineEdit);
+	mReplaceButton->setIcon(style()->standardIcon(QStyle::SP_DialogYesButton));
+	mReplaceButton->setFlat(true);
+	mReplaceButton->setFixedWidth(mReplaceButton->height());
+	hLayoutSnd->addWidget(mReplaceButton);
 
-	connect(mSearchLineEdit, &SearchLineEdit::textChanged, this, &SearchLinePanel::textChanged);
+	gridLayout->setContentsMargins(0, 0, 0, 0);
+	gridLayout->setMargin(0);
+	gridLayout->setSpacing(0);
+
+	gridLayout->addLayout(hLayoutFst, 0, 0);
+	gridLayout->addLayout(hLayoutSnd, 1, 0);
+	setFrameShape(QFrame::StyledPanel);
+	setLayout(gridLayout);
+
+	connect(mSearchLineEdit, &SearchLineEdit::textChanged, [this](const QRegExp &text){
+		setSearchLineColor(QColor("white"));
+		emit findTextChanged(text);
+	});
+	connect(mReplaceLineEdit, &QLineEdit::textChanged, this, &SearchLinePanel::replaceTextChanged);
 	connect(mNextButton, &QPushButton::pressed, this, &SearchLinePanel::nextPressed);
+	connect(mPreviousButton, &QPushButton::pressed, this, &SearchLinePanel::previousPressed);
+	connect(mReplaceButton, &QPushButton::pressed, this, &SearchLinePanel::replacePressed);
 	connect(mCloseButton, &QPushButton::pressed, [this](){
 		emit closePressed();
 		detach();
 		hide();
 	});
 
-	setBackgroundColor("white");
+	setMode(OperationOptions::Find);
 	hide();
 }
 
-void SearchLinePanel::setBackgroundColor(const QColor &color)
+void SearchLinePanel::reportError()
 {
-	setStyleSheet(QString("QFrame { background: %0; }").arg(color.name()));
+	QPropertyAnimation *animation = new QPropertyAnimation(this, "searchLineColor");
+	animation->setDuration(300);
+	animation->setStartValue(QColor(255, 0, 0, 0));
+	animation->setKeyValueAt(0.5, QColor(255, 0, 0, 255));
+	animation->setEndValue(QColor("white"));
+	animation->start();
 }
 
 void SearchLinePanel::attachTo(QWidget *parent)
@@ -82,6 +120,70 @@ void SearchLinePanel::detach()
 	parent()->removeEventFilter(this);
 }
 
+void SearchLinePanel::setMode(const SearchLinePanel::OperationOptions &option)
+{
+	mCurrentOption = option;
+
+	switch (option) {
+		case SearchLinePanel::OperationOptions::Find: {
+			mReplaceButton->hide();
+			mReplaceLineEdit->hide();
+			mPreviousButton->show();
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseInsensitive);
+			mSearchLineEdit->makeSearchOptionsSelectable(true);
+			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("Enter search text..."));
+			break;
+		}
+
+		case SearchLinePanel::OperationOptions::FindAndReplace: {
+			mReplaceButton->show();
+			mReplaceLineEdit->show();
+			mPreviousButton->show();
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseInsensitive);
+			mSearchLineEdit->makeSearchOptionsSelectable(true);
+			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("Enter search text..."));
+			break;
+		}
+
+		case SearchLinePanel::OperationOptions::GoToLineAndColumn: {
+			mReplaceButton->hide();
+			mReplaceLineEdit->hide();
+			mSearchLineEdit->clearText();
+			mPreviousButton->hide();
+			mSearchLineEdit->setSearchOption(SearchLineEdit::SearchOptions::CaseInsensitive);
+			mSearchLineEdit->makeSearchOptionsSelectable(false);
+			mSearchLineEdit->setPlaceHolderTextToLineEdit(tr("<line>:<column>"));
+			break;
+		}
+	}
+}
+
+SearchLinePanel::OperationOptions SearchLinePanel::getMode() const
+{
+	return mCurrentOption;
+}
+
+QString SearchLinePanel::getTextForReplace() const
+{
+	return mReplaceLineEdit->text();
+}
+
+QString SearchLinePanel::getTextForFind() const
+{
+	return mSearchLineEdit->getText();
+}
+
+QColor SearchLinePanel::getSearchLineColor() const
+{
+	return mSearchLineColor;
+}
+
+void SearchLinePanel::setSearchLineColor(const QColor &color)
+{
+	mSearchLineColor = color;
+	mSearchLineEdit->setLineEditColor(color);
+}
+
 bool SearchLinePanel::eventFilter(QObject *obj, QEvent *event)
 {
 	if (event->type() == QEvent::Resize) {
@@ -98,11 +200,20 @@ bool SearchLinePanel::eventFilter(QObject *obj, QEvent *event)
 
 void SearchLinePanel::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape) {
+	if ((event->modifiers() & Qt::ShiftModifier) && event->key() == Qt::Key_Return) {
+		mPreviousButton->animateClick();
+		event->accept();
+	} else if (event->key() == Qt::Key_Escape) {
 		mCloseButton->animateClick();
 		event->accept();
-	} else if (event->key() == Qt::Key_Return) {
+	} else if (not event->modifiers() && event->key() == Qt::Key_Return) {
 		mNextButton->animateClick();
+		event->accept();
+	} else if (event->key() == Qt::Key_Tab && mReplaceLineEdit->isVisible()) {
+		mReplaceLineEdit->setFocus(Qt::ShortcutFocusReason);
+		event->accept();
+	} else if (event->key() == Qt::Key_Backtab && mReplaceLineEdit->isVisible()) {
+		mSearchLineEdit->focusMe();
 		event->accept();
 	} else {
 		QFrame::keyPressEvent(event);

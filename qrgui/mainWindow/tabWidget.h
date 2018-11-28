@@ -41,6 +41,7 @@ public:
 	bool supportsCutting() const override;
 	bool supportsSearching() const override;
 	bool supportsReplacingBy() const override;
+	bool supportsFindAndReplace() const override;
 
 	void zoomIn() override;
 	void zoomOut() override;
@@ -49,6 +50,7 @@ public:
 	void paste() override;
 	void cut() override;
 	void find() override;
+	void findAndReplace() override;
 	void replaceBy() override;
 
 	void forceFocus() override;

@@ -101,8 +101,8 @@ public:
 
 	QString editorId() const override;
 	bool supportsZooming() const override;
-	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy) override;
+	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo, QAction &copy, QAction &paste
+			, QAction &cut, QAction &find, QAction &findAndeReplace, QAction &replaceBy) override;
 
 public slots:
 	void zoomIn() override;

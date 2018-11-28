@@ -30,6 +30,10 @@
 
 namespace qReal {
 
+namespace ui {
+class SearchLinePanel;
+}
+
 namespace commands {
 class CreateElementsCommand;
 }
@@ -142,6 +146,9 @@ public:
 
 	/// Returns a list of ids of currently selected elements.
 	IdList selectedIds() const;
+
+	/// Connects to search panel's signals.
+	void setSearchPanel(ui::SearchLinePanel &searchPanel);
 
 public slots:
 	Id createElement(const QString &type);
@@ -290,6 +297,11 @@ private:
 
 	view::details::ExploserView mExploser;
 	QAction mActionDeleteFromDiagram;
+
+	QList<NodeElement *> mLastSearchElements;
+	QRegExp mSearchText;
+	bool mLastSearchOccur = false;
+	int mCurrentSearchElement;
 };
 
 }

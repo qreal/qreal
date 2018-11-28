@@ -44,7 +44,15 @@ public:
 	explicit SearchLineEdit(QWidget *parent = nullptr, bool borderEnabled = true);
 
 	void setBorderEnabled(bool enabled);
+	void setLineEditColor(const QColor &color);
 	void focusMe();
+
+	void setSearchOption(const SearchOptions &option);
+	void makeSearchOptionsSelectable(bool selectable);
+	void setPlaceHolderTextToLineEdit(const QString &text);
+
+	QString getText() const;
+	void clearText();
 
 signals:
 	/// Emitted when the text in the text field is modified.

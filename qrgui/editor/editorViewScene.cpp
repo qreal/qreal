@@ -22,12 +22,14 @@
 #include <QtWidgets/QMenu>
 #include <math.h>
 #include <qmath.h>
+#include <thread>
 
 #include <qrkernel/definitions.h>
 #include <qrkernel/logging.h>
 #include <qrgui/models/models.h>
 #include <qrgui/mouseGestures/mouseMovementManager.h>
 #include <qrgui/mouseGestures/dummyMouseMovementManager.h>
+#include <qrutils/widgets/searchLinePanel.h>
 #include <metaMetaModel/nodeElementType.h>
 #include <metaMetaModel/edgeElementType.h>
 
@@ -72,7 +74,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, sceneCustomizer, this)
 	, mActionDeleteFromDiagram(nullptr)
-
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<qreal>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -931,6 +932,7 @@ void EditorViewScene::updateActions()
 	mCopyAction->setEnabled(elementActionsEnabled);
 	mCutAction->setEnabled(elementActionsEnabled);
 	mPasteAction->setEnabled(!mClipboardHandler.isEmpty());
+	mReplaceByAction->setEnabled(elementActionsEnabled);
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -1478,6 +1480,77 @@ IdList EditorViewScene::selectedIds() const
 	}
 
 	return result;
+}
+
+void EditorViewScene::setSearchPanel(ui::SearchLinePanel &searchPanel)
+{
+	searchPanel.setMode(ui::SearchLinePanel::OperationOptions::Find);
+	connect(&searchPanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &txt) {
+		mSearchText = txt;
+		mLastSearchOccur = false;
+	});
+
+	/// @todo: add more polite politic
+	connect(mModels.graphicalModel(), &QAbstractItemModel::dataChanged, [this]() {
+		mLastSearchOccur = false;
+	});
+
+	auto handleNextPreviousSearch = [this](bool next) {
+		if (not mLastSearchOccur) {
+			mLastSearchElements.clear();
+			QList<NodeElement *> nodeDiagramElements;
+			for (QGraphicsItem *item : items()) {
+				NodeElement *node = dynamic_cast<NodeElement*>(item);
+				if (node && node->id().diagram() == mRootId.diagram()) {
+					nodeDiagramElements.append(node);
+				}
+			}
+
+			for (auto &&node : nodeDiagramElements) {
+				/// @todo: the node's name is stored in the language which
+				/// isn't updates when Studio change editor language..
+				bool success = false;
+				auto graphicalId = node->id();
+				auto logicalId = mModels.graphicalModelAssistApi().logicalId(graphicalId);
+				auto logicalPropertiesIterator = mModels.logicalRepoApi().propertiesIterator(logicalId);
+				QMap<QString, QVariant> graphicalProperties = mModels.graphicalRepoApi().properties(graphicalId);
+
+				for (auto &&value : graphicalProperties) {
+					success |= value.toString().contains(mSearchText);
+				}
+
+				while (logicalPropertiesIterator.hasNext()) {
+					logicalPropertiesIterator.next();
+					success |= logicalPropertiesIterator.value().toString().contains(mSearchText);
+				}
+
+				if (success) {
+					mLastSearchElements.append(node);
+				}
+			}
+
+			mCurrentSearchElement = 0;
+		}
+
+		if (mLastSearchElements.isEmpty()) {
+			return;
+		}
+
+		mLastSearchOccur = true;
+		this->clearSelection();
+		mCurrentSearchElement = (mCurrentSearchElement + (next ? 1 : -1)) % mLastSearchElements.length();
+		if (mCurrentSearchElement < 0) {
+			mCurrentSearchElement += mLastSearchElements.length();
+		}
+
+		mLastSearchElements.at(mCurrentSearchElement)->setSelected(true);
+		mLastSearchElements.at(mCurrentSearchElement)->setFocus(Qt::ShortcutFocusReason);
+	};
+
+	connect(&searchPanel, &ui::SearchLinePanel::nextPressed
+			, [handleNextPreviousSearch](){ handleNextPreviousSearch(true); });
+	connect(&searchPanel, &ui::SearchLinePanel::previousPressed
+			, [handleNextPreviousSearch](){ handleNextPreviousSearch(false); });
 }
 
 void EditorViewScene::deselectLabels()
