@@ -19,7 +19,6 @@ cp    $BIN_DIR/trikHal.dll                                                      
 cp    $BIN_DIR/trikKernel.dll                                                     $PWD/../data/
 cp    $BIN_DIR/trikNetwork.dll                                                    $PWD/../data/
 cp    $BIN_DIR/python3*.dll                                                       $PWD/../data/
-cp    $BIN_DIR/msvcp*.dll                                                         $PWD/../data/
 cp    $BIN_DIR/vcruntime*.dll                                                     $PWD/../data/
 
 cp    $BIN_DIR/system.js                                                          $PWD/../data/bin/
