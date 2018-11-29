@@ -242,6 +242,8 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(imageTool);
 
 	qReal::SettingsListener::listen("toolbarSize", [this](int size){ mUi->palette->setSize({size, size}); });
+	const int size = qReal::SettingsManager::value("toolbarSize", 32).toInt();
+	mUi->palette->setSize({size, size});
 
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(skittleTool, &QAction::triggered, mScene, &TwoDModelScene::addSkittle);
