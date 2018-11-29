@@ -62,7 +62,7 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 
 	hLayoutSnd->setSizeConstraint(QLayout::SizeConstraint::SetMinimumSize);
 	hLayoutSnd->addWidget(mReplaceLineEdit);
-	mReplaceButton->setIcon(style()->standardIcon(QStyle::SP_DialogYesButton));
+	mReplaceButton->setIcon(style()->standardIcon(QStyle::SP_DialogApplyButton));
 	mReplaceButton->setFlat(true);
 	mReplaceButton->setFixedWidth(mReplaceButton->height());
 	hLayoutSnd->addWidget(mReplaceButton);
