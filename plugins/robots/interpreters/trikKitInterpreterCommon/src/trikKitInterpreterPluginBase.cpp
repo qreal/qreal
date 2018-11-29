@@ -176,6 +176,7 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 
 	connect(mProjectManager, &ProjectManagementInterface::afterOpen, prepareImagesFromProject);
 	qReal::SettingsListener::listen("TrikSimulatedCameraImagesFromProject", prepareImagesFromProject);
+	qReal::SettingsListener::listen("TrikSimulatedCameraImagesPath", prepareImagesFromProject);
 
 	connect(mAdditionalPreferences, &TrikAdditionalPreferences::packImagesToProjectClicked, [this]() {
 		// in case if user works with images and want to pack them into qrs
