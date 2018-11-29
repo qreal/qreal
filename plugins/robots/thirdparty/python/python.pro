@@ -17,8 +17,8 @@ TEMPLATE = subdirs
 include(../../../../global.pri)
 
 win32 {
+	copyToDestdir(python35.dll, NOW)
 	copyToDestdir(python36.dll, NOW)
-	copyToDestdir(msvcp140.dll, NOW)     # python deps
 	copyToDestdir(vcruntime140.dll, NOW) # python deps
 }
 
