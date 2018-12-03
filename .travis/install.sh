@@ -4,6 +4,7 @@ case $TRAVIS_OS_NAME in
   osx)
     REQUIRED_PACKAGES="qt ccache pyenv"
     export HOMEBREW_NO_AUTO_UPDATE=1
+    brew list --versions
     for pkg in $REQUIRED_PACKAGES ; do
       p="${pkg##*/}"
       p="${p%.*}"
