@@ -28,7 +28,7 @@ class UsbRobotCommunicationThread : public Ev3RobotCommunicationThread
 
 public:
 	UsbRobotCommunicationThread();
-	~UsbRobotCommunicationThread();
+	~UsbRobotCommunicationThread() override;
 
 public slots:
 	bool send(QObject *addressee, const QByteArray &buffer, int responseSize) override;

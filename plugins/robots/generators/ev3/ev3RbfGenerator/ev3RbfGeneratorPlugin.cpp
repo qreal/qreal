@@ -228,7 +228,11 @@ bool Ev3RbfGeneratorPlugin::compile(const QFileInfo &lmsFile)
 	QProcess java;
 	java.setEnvironment(QProcess::systemEnvironment());
 	java.setWorkingDirectory(lmsFile.absolutePath());
+#ifdef Q_OS_WIN
 	java.start("cmd /c java -jar assembler.jar " + lmsFile.absolutePath() + "/" + lmsFile.baseName());
+#else
+	java.start("java -jar assembler.jar " + lmsFile.absolutePath() + "/" + lmsFile.baseName());
+#endif
 	connect(&java, &QProcess::readyRead, this, [&java]() { QLOG_INFO() << java.readAll(); });
 	java.waitForFinished();
 	return true;
