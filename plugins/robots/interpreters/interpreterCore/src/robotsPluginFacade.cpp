@@ -39,6 +39,7 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
+	, mPaletteUpdateManager(nullptr)
 {
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, &mActionsManager, &ActionsManager::onRobotModelChanged);
@@ -336,7 +337,9 @@ bool RobotsPluginFacade::selectKit()
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		qReal::SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		mPaletteUpdateManager->disableAll();
+		if (mPaletteUpdateManager) {
+			mPaletteUpdateManager->disableAll();
+		}
 
 		/// @todo Correctly handle unselected kit.
 		return false;
