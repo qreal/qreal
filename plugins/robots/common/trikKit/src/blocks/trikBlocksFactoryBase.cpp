@@ -178,9 +178,11 @@ qReal::IdList TrikBlocksFactoryBase::providedBlocks() const
 			<< id("TrikLed")
 			<< id("TrikSystem")
 			<< id("TrikInitCamera")
+			<< id("TrikStopCamera")
 			<< id("TrikDetect")
 			<< id("TrikDetectorToVariable")
 			<< id("TrikInitVideoStreaming")
+			<< id("TrikStopVideoStreaming")
 			<< id("TrikSendMessage")
 			<< id("TrikWaitForMessage")
 			;
@@ -235,6 +237,8 @@ qReal::IdList TrikBlocksFactoryBase::blocksToDisable() const
 	if (!mRobotModelManager->model().name().contains("Gen")) {
 		result << id("TrikPlayTone");
 		result << id("TrikPlayToneHz");
+		result << id("TrikStopCamera");
+		result << id("TrikStopVideoStreaming");
 	}
 
 	if (mRobotModelManager->model().name().contains("TwoD")) {
@@ -251,6 +255,8 @@ qReal::IdList TrikBlocksFactoryBase::blocksToDisable() const
 				<< id("TrikWaitGamepadDisconnect")
 				<< id("TrikWaitGamepadConnect")
 				<< id("TrikInitVideoStreaming")
+				<< id("TrikStopCamera")
+				<< id("TrikStopVideoStreaming")
 				;
 	}
 
