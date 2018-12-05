@@ -16,8 +16,9 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonObject>
 #include <QtCore/QFile>
+#include <QtCore/QRegularExpression>
 
-#include "trikKitInterpreterCommon/trikQtsInterpreter.h"
+#include "trikKitInterpreterCommon/trikTextualInterpreter.h"
 
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/errorReporterInterface.h>
 
@@ -26,7 +27,7 @@
 
 Q_DECLARE_METATYPE(utils::AbstractTimer*)
 
-const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;"
+const QString jsOverrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;"
 		"script.readAll = brick.readAll;script.timer = brick.timer;"
 		"arrayPPinternal = function(arg) {"
 			"var res = '[';"
@@ -51,11 +52,13 @@ const QString overrides = "script.random = brick.random;script.wait = brick.wait
 		"};"
 		"script.system = function() {print('system is disabled in the interpreter');};";
 
-trik::TrikQtsInterpreter::TrikQtsInterpreter(const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
+const QString pyOverrides ="\ndef print(args): brick.log(args);\n";
+
+trik::TrikTextualInterpreter::TrikTextualInterpreter(const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
 	: mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr), mErrorReporter(nullptr)
 {
-	connect(&mBrick, &TrikBrick::error, this, &TrikQtsInterpreter::reportError);
-	connect(&mBrick, &TrikBrick::warning, this, &TrikQtsInterpreter::reportWarning);
+	connect(&mBrick, &TrikBrick::error, this, &TrikTextualInterpreter::reportError);
+	connect(&mBrick, &TrikBrick::warning, this, &TrikTextualInterpreter::reportWarning);
 
 	auto atimerToScriptValue = [](QScriptEngine *engine, utils::AbstractTimer* const &in){
 		return engine->newQObject(in);
@@ -69,34 +72,48 @@ trik::TrikQtsInterpreter::TrikQtsInterpreter(const QSharedPointer<trik::robotMod
 	connect(&mScriptRunner, SIGNAL(completed(QString,int)), this, SLOT(scriptFinished(QString,int)));
 }
 
-trik::TrikQtsInterpreter::~TrikQtsInterpreter()
+trik::TrikTextualInterpreter::~TrikTextualInterpreter()
 {
 	abort();
 }
 
-void trik::TrikQtsInterpreter::interpretCommand(const QString &script)
+void trik::TrikTextualInterpreter::interpretCommand(const QString &script)
 {
 	mScriptRunner.runDirectCommand(script);
 }
 
-void trik::TrikQtsInterpreter::interpretScript(const QString &script)
+void trik::TrikTextualInterpreter::interpretScript(const QString &script, const QString &languageExtension)
 {
 	mRunning = true;
 	mBrick.processSensors(true);
-	mScriptRunner.run(overrides + script);
+	if (languageExtension.contains("js")) {
+		mScriptRunner.run(jsOverrides + script);
+	} else if (languageExtension.contains("py")) {
+		QString updatedScript = script;
+		int lastIndexOfImport = updatedScript.lastIndexOf(QRegularExpression("^import .*"
+				, QRegularExpression::MultilineOption));
+		int indexOf = updatedScript.indexOf(QRegularExpression("$", QRegularExpression::MultilineOption)
+				, lastIndexOfImport);
+		updatedScript.insert(indexOf + 1, pyOverrides);
+		mScriptRunner.run(updatedScript, "dummyFile.py");
+	} else {
+		Q_ASSERT(false);
+	}
 }
 
-void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, const QString &inputs)
+void trik::TrikTextualInterpreter::interpretScriptExercise(const QString &script
+		, const QString &inputs, const QString &languageExtension)
 {
+	Q_UNUSED(languageExtension)
 	mRunning = true;
 	mBrick.processSensors(true);
 	mBrick.setCurrentInputs(inputs);
-	QString newScript = overrides + "script.writeToFile = null;\n" + script;
+	QString newScript = jsOverrides + "script.writeToFile = null;\n" + script;
 	//qDebug() << newScript;
 	mScriptRunner.run(newScript);
 }
 
-void trik::TrikQtsInterpreter::abort()
+void trik::TrikTextualInterpreter::abort()
 {
 	//mScriptRunner.abort();
 	mBrick.stopWaiting();
@@ -106,38 +123,38 @@ void trik::TrikQtsInterpreter::abort()
 	mBrick.processSensors(false);
 }
 
-void trik::TrikQtsInterpreter::init()
+void trik::TrikTextualInterpreter::init()
 {
 	mBrick.init(); // very crucial. Maybe move into interpret methods?
 }
 
-void trik::TrikQtsInterpreter::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
+void trik::TrikTextualInterpreter::setErrorReporter(qReal::ErrorReporterInterface &errorReporter)
 {
 	mErrorReporter = &errorReporter;
 }
 
-bool trik::TrikQtsInterpreter::isRunning() const
+bool trik::TrikTextualInterpreter::isRunning() const
 {
 	return mRunning;
 }
 
-void trik::TrikQtsInterpreter::reportError(const QString &msg)
+void trik::TrikTextualInterpreter::reportError(const QString &msg)
 {
 	mErrorReporter->addError(msg);
 	//	mBrick.abort(); what if there are more errors?
 }
 
-void trik::TrikQtsInterpreter::reportWarning(const QString &msg)
+void trik::TrikTextualInterpreter::reportWarning(const QString &msg)
 {
 	mErrorReporter->addWarning(msg);
 }
 
-void trik::TrikQtsInterpreter::reportLog(const QString &msg)
+void trik::TrikTextualInterpreter::reportLog(const QString &msg)
 {
 	mErrorReporter->addInformation("log: " + msg);
 }
 
-QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
+QString trik::TrikTextualInterpreter::initInputs(const QString &inputs) const
 {
 	auto jsValToStr = [this](const QJsonValue &val) -> QString {
 		switch (val.type()) {
@@ -180,33 +197,33 @@ QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
 	return result;
 }
 
-void trik::TrikQtsInterpreter::setRunning(bool running)
+void trik::TrikTextualInterpreter::setRunning(bool running)
 {
 	mRunning = running;
 	mBrick.processSensors(running);
 }
 
-void trik::TrikQtsInterpreter::setCurrentDir(const QString &dir)
+void trik::TrikTextualInterpreter::setCurrentDir(const QString &dir)
 {
 	mBrick.setCurrentDir(dir);
 }
 
-QStringList trik::TrikQtsInterpreter::supportedRobotModelNames() const
+QStringList trik::TrikTextualInterpreter::supportedRobotModelNames() const
 {
 	return {"TwoDRobotModelForTrikV62RealRobotModel", "TwoDRobotModelForTrikV6RealRobotModel"};
 }
 
-QStringList trik::TrikQtsInterpreter::knownMethodNames() const
+QStringList trik::TrikTextualInterpreter::knownMethodNames() const
 {
 	return mScriptRunner.knownMethodNames();
 }
 
-void trik::TrikQtsInterpreter::reinitRobotsParts()
+void trik::TrikTextualInterpreter::reinitRobotsParts()
 {
 	mBrick.reinitImitationCamera();
 }
 
-void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)
+void trik::TrikTextualInterpreter::scriptFinished(const QString &error, int scriptId)
 {
 	Q_UNUSED(scriptId);
 	if (!error.isEmpty()) {
