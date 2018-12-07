@@ -91,7 +91,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
-	connect(&mExploser, &view::details::ExploserView::expandElement, [=](const Id &element) {
+	connect(&mExploser, &view::details::ExploserView::expandElement, this, [=](const Id &element) {
 		if (NodeElement * const node = getNodeById(element)) {
 			mController.execute(new ExpandCommand(node));
 		}
@@ -1020,7 +1020,7 @@ void EditorViewScene::createEdgeMenu(const IdList &ids)
 	for (const Id &id : ids) {
 		QAction *element = new QAction(mEditorManager.friendlyName(id), edgeMenu.data());
 		edgeMenu->addAction(element);
-		QObject::connect(element, &QAction::triggered, [this, id](){
+		QObject::connect(element, &QAction::triggered, this, [this, id](){
 			createEdge(id);
 		});
 	}

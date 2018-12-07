@@ -178,11 +178,11 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 	};
 
 
-	connect(mProjectManager, &ProjectManagementInterface::afterOpen, prepareImagesFromProject);
+	connect(mProjectManager, &ProjectManagementInterface::afterOpen, this, prepareImagesFromProject);
 	qReal::SettingsListener::listen("TrikSimulatedCameraImagesFromProject", prepareImagesFromProject, this);
 	qReal::SettingsListener::listen("TrikSimulatedCameraImagesPath", prepareImagesFromProject, this);
 
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::packImagesToProjectClicked, [this]() {
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::packImagesToProjectClicked, this, [this]() {
 		// in case if user works with images and want to pack them into qrs
 		// we are saving images to metadata using logicalRepoApi
 		if (mCurrentlySelectedModelName.contains("trik", Qt::CaseInsensitive)
@@ -268,6 +268,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(&configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretCode
+			, this
 			, [this](const QString &code, const QString &inputs){
 		if (mIsModelSelected) {
 			startJSInterpretation(code, inputs);
@@ -276,6 +277,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(&configurer.robotModelManager()
 			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
+			, this
 			, [this](kitBase::robotModel::RobotModelInterface &model){
 		mIsModelSelected = robotModels().contains(&model);
 		/// @todo: would probably make sense to make the current opened tab info available globally somewhere
@@ -332,6 +334,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 
 	connect(&configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretationStarted
+			, this
 			, [this](){ /// @todo
 		const bool isQtsInt = mQtsInterpreter->isRunning();
 		mStart.setEnabled(isQtsInt);
@@ -349,6 +352,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	QObject::connect(
 				&configurer.eventsForKitPlugin()
 				, &kitBase::EventsForKitPluginInterface::interpretationStopped
+				, this
 				, [this](qReal::interpretation::StopReason reason){ /// @todo
 		Q_UNUSED(reason);
 		mStart.setEnabled(true);
@@ -446,13 +450,13 @@ QWidget *TrikKitInterpreterPluginBase::produceIpAddressConfigurer()
 	};
 
 	updateQuickPreferences();
-	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, updateQuickPreferences);
+	connect(mAdditionalPreferences, &TrikAdditionalPreferences::settingsChanged, this, updateQuickPreferences);
 	qReal::SettingsListener::listen("TrikTcpServer", updateQuickPreferences, this);
-	connect(quickPreferences, &QLineEdit::textChanged, [](const QString &text) {
+	connect(quickPreferences, &QLineEdit::textChanged, this, [](const QString &text) {
 		qReal::SettingsManager::setValue("TrikTcpServer", text);
 	});
 
-	connect(this, &QObject::destroyed, [quickPreferences]() { delete quickPreferences; });
+	connect(this, &QObject::destroyed, this, [quickPreferences]() { delete quickPreferences; });
 	return quickPreferences;
 }
 

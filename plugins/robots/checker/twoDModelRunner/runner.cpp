@@ -81,14 +81,15 @@ bool Runner::interpret(const QString &saveFile, bool background)
 	}
 
 	if (background) {
-		connect(&mPluginFacade.eventsForKitPlugins
-				(), &kitBase::EventsForKitPluginInterface::interpretationStopped, [&]() {
+		connect(&mPluginFacade.eventsForKitPlugins(), &kitBase::EventsForKitPluginInterface::interpretationStopped
+				, this, [this]() {
 				QTimer::singleShot(0, this, SLOT(close()));
 		});
 	}
 
 	for (view::TwoDModelWidget * const twoDModelWindow : twoDModelWindows) {
-		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, [=]() { mMainWindow.emulateClose(); });
+		connect(twoDModelWindow, &view::TwoDModelWidget::widgetClosed, &mMainWindow
+				, [this]() { this->mMainWindow.emulateClose(); });
 		twoDModelWindow->model().timeline().setImmediateMode(background);
 		for (const model::RobotModel *robotModel : twoDModelWindow->model().robotModels()) {
 			connectRobotModel(robotModel);
@@ -111,7 +112,8 @@ void Runner::connectRobotModel(const model::RobotModel *robotModel)
 			, this, &Runner::onRobotRided, Qt::UniqueConnection);
 
 	connect(&robotModel->info().configuration(), &kitBase::robotModel::ConfigurationInterface::deviceConfigured
-			, this, [=](const kitBase::robotModel::robotParts::Device *device) {
+			, this, [=](const kitBase::robotModel::robotParts::Device *device)
+	{
 		connect(device, &kitBase::robotModel::robotParts::Device::propertyChanged, this
 				, [=](const QString &property, const QVariant &value) {
 			onDeviceStateChanged(robotModel->info().robotId(), device, property, value);

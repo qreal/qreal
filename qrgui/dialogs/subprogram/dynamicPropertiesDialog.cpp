@@ -50,7 +50,7 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setColumnCount(4);
 	mUi->labels->setHorizontalHeaderLabels({tr("Name"), tr("Type"), tr("Value"), ""});
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	connect(mUi->labels, &QTableWidget::cellChanged, [&](int row, int col){
+	connect(mUi->labels, &QTableWidget::cellChanged, this, [&](int row, int col){
 		if (col != 0) {
 			return;
 		}

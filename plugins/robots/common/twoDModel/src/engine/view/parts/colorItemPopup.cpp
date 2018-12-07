@@ -98,7 +98,7 @@ QWidget *ColorItemPopup::initColorPicker()
 	const QStringList colorList = { "Black", "Blue", "Green", "Yellow", "White", "Red" };
 	editor->setColorList(colorList);
 	editor->setFocusPolicy(Qt::NoFocus);
-	connect(editor, &qReal::ui::ColorListEditor::colorChanged, [=](const QColor &color) {
+	connect(editor, &qReal::ui::ColorListEditor::colorChanged, this, [=](const QColor &color) {
 		setPropertyMassively("color", color);
 		if (mLastColor != color) {
 			mLastColor = color;
@@ -118,7 +118,7 @@ QWidget *ColorItemPopup::initBrushPicker()
 	connect(mColorPicker, &qReal::ui::ColorListEditor::colorChanged, this, &ColorItemPopup::setBrushPickerColor);
 	setBrushPickerColor(mColorPicker->color());
 
-	connect(editor, &QCheckBox::toggled, [this, editor](bool checked) {
+	connect(editor, &QCheckBox::toggled, this, [this, editor](bool checked) {
 		editor->setToolTip(checked ? tr("Disable filling") : tr("Enable filling"));
 		setPropertyMassively("filled", checked);
 		if (mLastFilled != checked) {
