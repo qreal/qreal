@@ -27,7 +27,7 @@
 #include "robotModel/twoD/trikTwoDRobotModel.h"
 #include "trikAdditionalPreferences.h"
 
-#include <trikKitInterpreterCommon/trikQtsInterpreter.h>
+#include <trikKitInterpreterCommon/trikTextualInterpreter.h>
 
 /// @todo: refactor
 #include <qrgui/plugins/toolPluginInterface/usedInterfaces/mainWindowInterpretersInterface.h>
@@ -69,12 +69,12 @@ public:
 
 	QList<qReal::HotKeyActionInfo> hotKeyActions() override;
 
-	TrikQtsInterpreter * qtsInterpreter() const;
+	TrikTextualInterpreter *textualInterpreter() const;
 
 signals:
 	void started();
 	void stopped(qReal::interpretation::StopReason reason);
-	void codeInterpretationStarted(const QString &code);
+	void codeInterpretationStarted(const QString &code, const QString &languageExtension);
 
 private slots:
 	QWidget *produceIpAddressConfigurer();  // Transfers ownership
@@ -94,8 +94,8 @@ protected:
 	qReal::gui::MainWindowInterpretersInterface *mMainWindow;
 
 private:
-	void startJSInterpretation(const QString &code);
-	void startJSInterpretation(const QString &code, const QString &inputs);
+	void startCodeInterpretation(const QString &code, const QString &extension);
+	void startCodeInterpretation(const QString &code, const QString &inputs, const QString &extension);
 
 	/// Handles all file workings  with camera imitation process
 	void handleImitationCameraWork();
@@ -104,7 +104,7 @@ private:
 	QScopedPointer<robotModel::TrikRobotModelBase> mRealRobotModel;
 	QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> mTwoDRobotModel;
 
-	QScopedPointer<TrikQtsInterpreter> mQtsInterpreter;
+	QScopedPointer<TrikTextualInterpreter> mTextualInterpreter;
 
 	QAction mStart;
 	QAction mStop;

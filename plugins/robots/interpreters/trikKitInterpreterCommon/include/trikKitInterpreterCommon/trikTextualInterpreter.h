@@ -24,18 +24,18 @@
 
 namespace trik {
 
-class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikQtsInterpreter
+class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikTextualInterpreter
 		: public QObject
 {
 	Q_OBJECT
 
 public:
-	TrikQtsInterpreter(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
-	~TrikQtsInterpreter() override;
+	TrikTextualInterpreter(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> &model);
+	~TrikTextualInterpreter() override;
 
 	void interpretCommand(const QString &script);
-	void interpretScript(const QString &script);
-	void interpretScriptExercise(const QString &script, const QString &inputs);
+	void interpretScript(const QString &script, const QString &languageExtension);
+	void interpretScriptExercise(const QString &script, const QString &inputs, const QString &languageExtension);
 	void abort();
 
 	void init();

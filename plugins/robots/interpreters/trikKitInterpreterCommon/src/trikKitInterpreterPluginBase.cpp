@@ -33,7 +33,7 @@ const Id robotDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagra
 const Id subprogramDiagramType = Id("RobotsMetamodel", "RobotsDiagram", "SubprogramDiagram");
 
 TrikKitInterpreterPluginBase::TrikKitInterpreterPluginBase() :
-	mStart(tr("Start QTS"), nullptr), mStop(tr("Stop QTS"), nullptr)
+	mStart(tr("Start"), nullptr), mStop(tr("Stop"), nullptr)
 {
 }
 
@@ -67,26 +67,12 @@ void TrikKitInterpreterPluginBase::initKitInterpreterPluginBase
 
 	mAdditionalPreferences = new TrikAdditionalPreferences({ mRealRobotModel->name() });
 
-	mQtsInterpreter.reset(new TrikQtsInterpreter(mTwoDRobotModel));
-
-	text::LanguageInfo javascriptForTrik = text::LanguageInfo {
-			"js"
-			, QObject::tr("Javascript")
-			, true
-			, 4
-			, "//"
-			, QString()
-			, "/*"
-			, "*/"
-			, new QsciLexerCPP()
-			, mQtsInterpreter.data()->knownMethodNames()
-	};
-	text::Languages::registerLanguage(javascriptForTrik);
+	mTextualInterpreter.reset(new TrikTextualInterpreter(mTwoDRobotModel));
 }
 
-void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
+void TrikKitInterpreterPluginBase::startCodeInterpretation(const QString &code, const QString &extension)
 {
-	emit codeInterpretationStarted(code);
+	emit codeInterpretationStarted(code, extension);
 
 	auto model = mTwoDRobotModel;
 	model->stopRobot(); // testStop?
@@ -100,18 +86,19 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code)
 	model->applyConfiguration();
 
 	mMainWindow->errorReporter()->clear();
-	qtsInterpreter()->init();
+	textualInterpreter()->init();
 
-	qtsInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
-	qtsInterpreter()->setRunning(true);
+	textualInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
+	textualInterpreter()->setRunning(true);
 	emit started();
-	qtsInterpreter()->interpretScript(code);
+	textualInterpreter()->interpretScript(code, extension);
 }
 
-void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, const QString &inputs)
+void TrikKitInterpreterPluginBase::startCodeInterpretation(const QString &code
+		, const QString &inputs, const QString &extension)
 {
 	// we are in exercise mode (maybe rename it later)
-	emit codeInterpretationStarted(code);
+	emit codeInterpretationStarted(code, extension);
 
 	auto model = mTwoDRobotModel;
 	model->stopRobot(); // testStop?
@@ -125,12 +112,12 @@ void TrikKitInterpreterPluginBase::startJSInterpretation(const QString &code, co
 	model->applyConfiguration();
 
 	mMainWindow->errorReporter()->clear();
-	qtsInterpreter()->init();
+	textualInterpreter()->init();
 
-	qtsInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
-	qtsInterpreter()->setRunning(true);
+	textualInterpreter()->setCurrentDir(mProjectManager->saveFilePath());
+	textualInterpreter()->setRunning(true);
 	emit started();
-	qtsInterpreter()->interpretScriptExercise(code, inputs);
+	textualInterpreter()->interpretScriptExercise(code, inputs, extension);
 }
 
 void TrikKitInterpreterPluginBase::handleImitationCameraWork()
@@ -172,8 +159,8 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 			}
 		}
 
-		if (mQtsInterpreter) {
-			mQtsInterpreter->reinitRobotsParts();
+		if (mTextualInterpreter) {
+			mTextualInterpreter->reinitRobotsParts();
 		}
 	};
 
@@ -219,9 +206,9 @@ void TrikKitInterpreterPluginBase::handleImitationCameraWork()
 	});
 }
 
-TrikQtsInterpreter * TrikKitInterpreterPluginBase::qtsInterpreter() const
+TrikTextualInterpreter * TrikKitInterpreterPluginBase::textualInterpreter() const
 {
-	return mQtsInterpreter.data();
+	return mTextualInterpreter.data();
 }
 
 void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &configurer)
@@ -247,7 +234,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	mRealRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 	mTwoDRobotModel->setErrorReporter(*interpretersInterface.errorReporter());
 
-	mQtsInterpreter->setErrorReporter(*interpretersInterface.errorReporter());
+	mTextualInterpreter->setErrorReporter(*interpretersInterface.errorReporter());
 
 	mMainWindow = &configurer.qRealConfigurator().mainWindowInterpretersInterface();
 
@@ -255,11 +242,11 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	mLogicalModel = &configurer.qRealConfigurator().logicalModelApi();
 
 	/// @todo: refactor?
-	mStart.setObjectName("runQts");
+	mStart.setObjectName("runTextualInterpretation");
 	mStart.setText(tr("Run program"));
 	mStart.setIcon(QIcon(":/trik/qts/images/run.png"));
 
-	mStop.setObjectName("stopQts");
+	mStop.setObjectName("stopTextualInterpretation");
 	mStop.setText(tr("Stop robot"));
 	mStop.setIcon(QIcon(":/trik/qts/images/stop.png"));
 
@@ -269,9 +256,9 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	connect(&configurer.eventsForKitPlugin()
 			, &kitBase::EventsForKitPluginInterface::interpretCode
 			, this
-			, [this](const QString &code, const QString &inputs){
+			, [this](const QString &code, const QString &inputs, const QString &ext){
 		if (mIsModelSelected) {
-			startJSInterpretation(code, inputs);
+			startCodeInterpretation(code, inputs, ext);
 		}
 	});
 
@@ -283,7 +270,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 		/// @todo: would probably make sense to make the current opened tab info available globally somewhere
 		bool isCodeTabOpen = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab()) != nullptr;
 		/// @todo: bad, relies on the slot order, because of another @todo in actionManager (custom visibility logic)
-		bool isQtsInterp = mQtsInterpreter->supportedRobotModelNames().contains(model.name());
+		bool isQtsInterp = mTextualInterpreter->supportedRobotModelNames().contains(model.name());
 		mStart.setVisible(mIsModelSelected && isCodeTabOpen && isQtsInterp);
 		mStop.setVisible(false); // interpretation should always stop when switching models?
 	});
@@ -292,7 +279,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::InterpreterControlInterface::stopAllInterpretation
 			, this
 			, [this](qReal::interpretation::StopReason reason) {
-		if (mQtsInterpreter->isRunning()) {
+		if (mTextualInterpreter->isRunning()) {
 			testStop(reason);
 		}
 	});
@@ -301,7 +288,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::InterpreterControlInterface::startJsInterpretation
 			, this
 			, [this]() {
-		if (!mQtsInterpreter->isRunning() && mIsModelSelected) { // temporary
+		if (!mTextualInterpreter->isRunning() && mIsModelSelected) { // temporary
 			testStart();
 		}
 	});
@@ -310,8 +297,8 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 	connect(&mStop, &QAction::triggered, this, [this](){
 		this->testStop(qReal::interpretation::StopReason::userStop);
 	});
-	connect(mQtsInterpreter.data()
-			, &TrikQtsInterpreter::completed
+	connect(mTextualInterpreter.data()
+			, &TrikTextualInterpreter::completed
 			, this
 			, [this](){
 		this->testStop(qReal::interpretation::StopReason::finised);
@@ -336,7 +323,7 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, this
 			, [this](){ /// @todo
-		const bool isQtsInt = mQtsInterpreter->isRunning();
+		const bool isQtsInt = mTextualInterpreter->isRunning();
 		mStart.setEnabled(isQtsInt);
 		mStop.setEnabled(isQtsInt);
 	}
@@ -469,9 +456,14 @@ void TrikKitInterpreterPluginBase::testStart()
 
 	auto texttab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
 	auto isJS = [](const QString &ext){ return ext == "js" || ext == "qts"; };
+	auto isPython = [](const QString &ext){ return ext == "py"; };
 
-	if (texttab && isJS(texttab->currentLanguage().extension)) {
-		startJSInterpretation(texttab->text());
+	if (texttab) {
+		if (isJS(texttab->currentLanguage().extension)) {
+			startCodeInterpretation(texttab->text(), "js");
+		} else if (isPython(texttab->currentLanguage().extension)) {
+			startCodeInterpretation(texttab->text(), "py");
+		}
 	} else {
 		qDebug("wrong tab selected");
 		mStop.setVisible(false);
@@ -485,7 +477,7 @@ void TrikKitInterpreterPluginBase::testStop(qReal::interpretation::StopReason re
 	mStop.setVisible(false);
 	mStart.setVisible(true);
 
-	qtsInterpreter()->abort();
+	textualInterpreter()->abort();
 	mTwoDRobotModel->stopRobot();
 	emit stopped(reason);
 }
@@ -496,7 +488,7 @@ void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 		return;
 	}
 	const bool isCodeTab = info.type() == qReal::TabInfo::TabType::code;
-	const bool isQtsInterp = mQtsInterpreter->supportedRobotModelNames().contains(mCurrentlySelectedModelName);
+	const bool isQtsInterp = mTextualInterpreter->supportedRobotModelNames().contains(mCurrentlySelectedModelName);
 
 	if (isCodeTab) {
 		auto texttab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
@@ -510,7 +502,7 @@ void TrikKitInterpreterPluginBase::onTabChanged(const TabInfo &info)
 		mStop.setEnabled(false);
 	}
 
-	if (mQtsInterpreter->isRunning()) {
+	if (mTextualInterpreter->isRunning()) {
 		mStop.trigger(); // Should interpretation should always stops at the change of tabs or not?
 	}
 

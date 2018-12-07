@@ -205,13 +205,14 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 			, [=](const QString &path){
 		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
 		const QString code = logicalRepo->metaInformation("activeCode").toString();
-		const QString name = logicalRepo->metaInformation("activeCodeName").toString();
+		const QString name = "lastSavedCode";
+		const QString extension = logicalRepo->metaInformation("activeCodeLanguageExtension").toString();
 		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
 			return;
 		}
 
 		QFileInfo codeDir(path);
-		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
+		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + '.' + extension)); // absoluteDir?
 		bool success = false;
 		utils::OutFile out(codePath.filePath(), &success);
 		if (success) {
@@ -288,21 +289,21 @@ bool RobotsPluginFacade::interpretCode(const QString &inputs)
 {
 	auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
 	QString code = logicalRepo->metaInformation("activeCode").toString();
-	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
-	if (code.isEmpty() || name.isEmpty()) {
-		mMainWindow->errorReporter()->addError(tr("No saved js code found in the qrs file"));
+	QString extension = logicalRepo->metaInformation("activeCodeLanguageExtension").toString();
+	if (code.isEmpty()) {
+		mMainWindow->errorReporter()->addError(tr("No saved code found in the qrs file"));
 		return false;
 	}
 
-	emit mEventsForKitPlugin.interpretCode(code, inputs);
+	emit mEventsForKitPlugin.interpretCode(code, inputs, extension);
 	return true;
 }
 
-void RobotsPluginFacade::saveCode(const QString &code)
+void RobotsPluginFacade::saveCode(const QString &code, const QString &languageExtension)
 {
 	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
 	logicalRepo->setMetaInformation("activeCode", code);
-	logicalRepo->setMetaInformation("activeCodeName", "script");  // no concise name for now
+	logicalRepo->setMetaInformation("activeCodeLanguageExtension", languageExtension);
 	mProjectManager->setUnsavedIndicator(true);
 }
 

@@ -155,7 +155,7 @@ public:
 		return LanguageInfo{"js"                                             /* extension */
 				, QObject::tr("Java Script Language Source File")            /* extension description */
 				, true                                                       /* tabs indentation */
-				, 8                                                          /* tab size */
+                , 4                                                          /* tab size */
 				, "//"                                                       /* line comment start */
 				, QString()                                                  /* line comment end */
 				, "/*"                                                       /* multiline comment start */

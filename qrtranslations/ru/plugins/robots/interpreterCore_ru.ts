@@ -213,22 +213,26 @@
 <context>
     <name>interpreterCore::RobotsPluginFacade</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="147"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="148"/>
         <source>Robots</source>
         <translation>Роботы</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="194"/>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="195"/>
         <source>Cannot export exercise to the given location (try to change location)</source>
         <translation>Экспорт упражнения по заданному пути не удался (попробуйте другой путь)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="291"/>
-        <source>No saved js code found in the qrs file</source>
-        <translation>В qrs не найден сохраннёный js код</translation>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="293"/>
+        <source>No saved code found in the qrs file</source>
+        <translation>В qrs не найден сохраннёный код</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="384"/>
+        <source>No saved js code found in the qrs file</source>
+        <translation type="vanished">В qrs не найден сохраннёный js код</translation>
+    </message>
+    <message>
+        <location filename="../../../../plugins/robots/interpreters/interpreterCore/src/robotsPluginFacade.cpp" line="388"/>
         <source>Toggle robot console panel</source>
         <translation>Показать/спрятать панель консоли</translation>
     </message>

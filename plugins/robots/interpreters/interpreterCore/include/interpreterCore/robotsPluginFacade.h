@@ -82,7 +82,7 @@ public:
 	bool interpretCode(const QString &inputs);
 
 public slots:
-	void saveCode(const QString &code);
+	void saveCode(const QString &code, const QString &languageExtension);
 //	void openSavedCode();
 
 private:
