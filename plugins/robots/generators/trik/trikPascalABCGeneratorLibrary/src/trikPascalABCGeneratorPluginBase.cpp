@@ -153,7 +153,7 @@ void TrikPascalABCGeneratorPluginBase::init(const kitBase::KitPluginConfigurator
 
 	mStopRobotProtocol.reset(new StopRobotProtocol(*mCommunicator));
 
-	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, [this, &errorReporter]() {
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, this, [&errorReporter]() {
 		errorReporter.addError(tr("Stop robot operation timed out"));
 	});
 }

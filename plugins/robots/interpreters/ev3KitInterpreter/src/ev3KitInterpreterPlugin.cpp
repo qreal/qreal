@@ -60,7 +60,7 @@ Ev3KitInterpreterPlugin::~Ev3KitInterpreterPlugin()
 void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](const QString &modelName)
+			, this, [this](const QString &modelName)
 	{
 		mCurrentlySelectedModelName = modelName;
 	});
@@ -69,19 +69,19 @@ void Ev3KitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 			= configurator.qRealConfigurator().mainWindowInterpretersInterface();
 
 	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
 	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addInformation(message);
 	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addInformation(message);
 	});
 
@@ -171,6 +171,6 @@ QString Ev3KitInterpreterPlugin::defaultSettingsFile() const
 QWidget *Ev3KitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
 	QWidget * const result = new ui::ComPortPicker("Ev3BluetoothPortName", this);
-	connect(this, &QObject::destroyed, [result]() { delete result; });
+	connect(this, &QObject::destroyed, this, [result]() { delete result; });
 	return result;
 }

@@ -50,20 +50,20 @@ void Model::init(qReal::ErrorReporterInterface &errorReporter
 	mErrorReporter = &errorReporter;
 	mWorldModel.init(errorReporter);
 	mChecker.reset(new constraints::ConstraintsChecker(errorReporter, *this));
-	connect(mChecker.data(), &constraints::ConstraintsChecker::success, [&]() {
+	connect(mChecker.data(), &constraints::ConstraintsChecker::success, this, [&]() {
 		errorReporter.addInformation(tr("The task is accomplished!"));
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
 		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SIGNAL(stopAllInterpretation()));
 	});
-	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, [&](const QString &message) {
+	connect(mChecker.data(), &constraints::ConstraintsChecker::fail, this, [&](const QString &message) {
 		errorReporter.addError(message);
 		// Stopping cannot be performed immediately because we still have constraints to check in event loop
 		// and they need scene to be alive (in checker stopping interpretation means deleting all).
 		QTimer::singleShot(0, &interpreterControl, SLOT(stopAllInterpretation()));
 	});
 	connect(mChecker.data(), &constraints::ConstraintsChecker::checkerError
-			, [this, &errorReporter](const QString &message) {
+			, this, [&errorReporter](const QString &message) {
 				errorReporter.addCritical(tr("Error in checker: %1").arg(message));
 	});
 }

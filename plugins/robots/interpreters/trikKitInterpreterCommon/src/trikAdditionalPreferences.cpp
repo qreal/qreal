@@ -36,16 +36,16 @@ TrikAdditionalPreferences::TrikAdditionalPreferences(const QStringList &realRobo
 	mUi->simulatedCameraFrame->setVisible(not mUi->realCameraCheckBox->isChecked());
 	mUi->realCameraFrame->setVisible(mUi->realCameraCheckBox->isChecked());
 
-	connect(mUi->realCameraCheckBox, &QCheckBox::clicked, [this](bool checked) {
+	connect(mUi->realCameraCheckBox, &QCheckBox::clicked, this, [this](bool checked) {
 		mUi->simulatedCameraFrame->setVisible(not checked);
 		mUi->realCameraFrame->setVisible(checked);
 	});
 
-	connect(mUi->imagesFromProjectCheckBox, &QCheckBox::clicked, [this](bool checked) {
+	connect(mUi->imagesFromProjectCheckBox, &QCheckBox::clicked, this, [this](bool checked) {
 		mUi->imagesFromDiskFrame->setEnabled(not checked);
 	});
 
-	connect(mUi->browseImagesPathButton, &QPushButton::clicked, [this]() {
+	connect(mUi->browseImagesPathButton, &QPushButton::clicked, this, [this]() {
 		const QString directoryName = utils::QRealFileDialog::getExistingDirectory("TrikSimulatedCameraImagesPath"
 					, this, tr("Select Directory")).replace("\\", "/");
 		mUi->imagesPathlineEdit->setText(directoryName);

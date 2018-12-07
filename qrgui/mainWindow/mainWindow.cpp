@@ -220,39 +220,39 @@ void MainWindow::connectActions()
 	connect(mUi->graphicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromGraphicalExplorer);
 
-	connect(mUi->actionZoom_In, &QAction::triggered, [=]() {
+	connect(mUi->actionZoom_In, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->zoomIn();
 		}
 	});
-	connect(mUi->actionZoom_Out, &QAction::triggered, [=]() {
+	connect(mUi->actionZoom_Out, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->zoomOut();
 		}
 	});
 
-	connect(mUi->actionCopy, &QAction::triggered, [=]() {
+	connect(mUi->actionCopy, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->copy();
 		}
 	});
-	connect(mUi->actionPaste, &QAction::triggered, [=]() {
+	connect(mUi->actionPaste, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->paste();
 		}
 	});
-	connect(mUi->actionCut, &QAction::triggered, [=]() {
+	connect(mUi->actionCut, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->cut();
 		}
 	});
-	connect(mUi->actionReplaceBy, &QAction::triggered, [=]() {
+	connect(mUi->actionReplaceBy, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor && mCurrentEditor->supportsReplacingBy()) {
 			mCurrentEditor->replaceBy();
 		}
 	});
 
-	connect(mUi->actionFind, &QAction::triggered, [=]() {
+	connect(mUi->actionFind, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor && mCurrentEditor->supportsSearching()) {
 			mCurrentEditor->find();
 		}
@@ -284,7 +284,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
-	connect(mUi->actionFullscreen, &QAction::changed, [=]() {
+	connect(mUi->actionFullscreen, &QAction::changed, this, [=]() {
 		const int indexOfFullscreen = mUi->viewToolbar->actions().indexOf(mUi->actionFullscreen);
 		if (indexOfFullscreen > 0) {
 			QAction * const separatorBefore = mUi->viewToolbar->actions()[indexOfFullscreen - 1];
@@ -320,7 +320,7 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
-	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() {
+	connect(mUi->menuPanels, &QMenu::aboutToShow, this, [=]() {
 		mUi->menuPanels->clear();
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
@@ -1126,7 +1126,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, &tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(const QModelIndex &)>(&MainWindow::closeTab));
-	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](const Id &id) { activateItemOrDiagram(id); });
+	connect(&tab->editorViewScene(), &EditorViewScene::goTo, this, [=](const Id &id) { activateItemOrDiagram(id); });
 	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadEditorPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
 			(const Id &, const QString &, const EditorManagerInterface *, bool)>(&MainWindow::openShapeEditor));
@@ -1740,7 +1740,7 @@ void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
 			if (toolbar) {
 				toolbar->addAction(action.action());
-				connect(action.action(), &QAction::changed, [toolbar]() {
+				connect(action.action(), &QAction::changed, this, [toolbar]() {
 					for (QAction * const action : toolbar->actions()) {
 						if (action->isVisible()) {
 							toolbar->setVisible(true);
@@ -1795,7 +1795,7 @@ void MainWindow::addExternalToolActions()
 
 				if (QFile(program).exists()) {
 					QAction *action = new QAction(toolName, externalToolsMenu);
-					connect(action, &QAction::triggered, [=](){
+					connect(action, &QAction::triggered, this, [=](){
 						if (arguments.isEmpty()) {
 							QProcess::startDetached(program);
 						} else {

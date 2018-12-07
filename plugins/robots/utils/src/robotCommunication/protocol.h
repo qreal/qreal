@@ -109,7 +109,7 @@ public:
 		source->addTransition(successGuardSignalGenerator.data(), signature, destination);
 		source->addTransition(errorGuardSignalGenerator.data(), signature, mErrored);
 
-		connect(&mCommunicator, signal, [source, guard, successGuardSignalGenerator, errorGuardSignalGenerator]
+		connect(&mCommunicator, signal, this, [source, guard, successGuardSignalGenerator, errorGuardSignalGenerator]
 				(const ParamType &&param) {
 					if (guard(param)) {
 						successGuardSignalGenerator->onTrigger();

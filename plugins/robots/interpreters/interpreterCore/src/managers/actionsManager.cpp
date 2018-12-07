@@ -298,7 +298,7 @@ QAction *ActionsManager::produceMenuAction(const QString &kitId, const QString &
 	if (subActions.count() == 1) {
 		QAction * const result = subActions.first();
 		connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-				, [this, kitId, result](kitBase::robotModel::RobotModelInterface &model) {
+				, this, [kitId, result](kitBase::robotModel::RobotModelInterface &model) {
 			result->setChecked("switchTo" + kitId + model.name() == result->objectName());
 		});
 
@@ -310,7 +310,7 @@ QAction *ActionsManager::produceMenuAction(const QString &kitId, const QString &
 	menuAction->setMenu(new QMenu);
 	menuAction->menu()->addActions(subActions);
 
-	auto checkAction = [this, menuAction, kitId](const QString &name) {
+	auto checkAction = [menuAction, kitId](const QString &name) {
 		for (QAction * const action : menuAction->menu()->actions()) {
 			if (action->objectName() == name) {
 				action->setChecked(true);
@@ -326,11 +326,11 @@ QAction *ActionsManager::produceMenuAction(const QString &kitId, const QString &
 	};
 
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
-			, [this, kitId, checkAction](kitBase::robotModel::RobotModelInterface &model) {
+			, this, [kitId, checkAction](kitBase::robotModel::RobotModelInterface &model) {
 		checkAction("switchTo" + kitId + model.name());
 	});
 
-	connect(menuAction, &QAction::triggered, [this, kitId, checkAction, menuAction]() {
+	connect(menuAction, &QAction::triggered, this, [kitId, checkAction, menuAction]() {
 		const QString key = qReal::SettingsManager::value("lastFastSelectorActionFor" + kitId).toString();
 		if (QAction * const action = checkAction(key)) {
 			action->trigger();

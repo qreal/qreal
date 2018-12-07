@@ -22,7 +22,7 @@ ElementCommand::ElementCommand(const EditorViewScene *scene, const Id &id)
 	: mElement(nullptr), mScene(scene), mId(id), mSceneWasRemoved(false)
 {
 	reinitElement();
-	connect(mScene, SIGNAL(destroyed()), SLOT(onSceneWasRemoved()));
+	connect(mScene, SIGNAL(destroyed()), this, SLOT(onSceneWasRemoved()));
 }
 
 ElementCommand::~ElementCommand()

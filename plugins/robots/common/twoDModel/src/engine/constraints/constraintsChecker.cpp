@@ -36,7 +36,7 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 	, mFailTriggered(false)
 	, mEnabled(true)
 {
-	connect(&mStatus, &details::StatusReporter::success, [this](bool deferred) {
+	connect(&mStatus, &details::StatusReporter::success, this, [this](bool deferred) {
 		if (deferred) {
 			mDefferedSuccessTriggered = true;
 		} else {
@@ -44,7 +44,7 @@ ConstraintsChecker::ConstraintsChecker(qReal::ErrorReporterInterface &errorRepor
 			emit success();
 		}
 	});
-	connect(&mStatus, &details::StatusReporter::fail, [this]() { mFailTriggered = true; });
+	connect(&mStatus, &details::StatusReporter::fail, this, [this]() { mFailTriggered = true; });
 	connect(&mStatus, &details::StatusReporter::fail, this, &ConstraintsChecker::fail);
 	connect(&mStatus, &details::StatusReporter::checkerError, this, &ConstraintsChecker::checkerError);
 
@@ -153,12 +153,11 @@ void ConstraintsChecker::dropEvent()
 void ConstraintsChecker::bindToWorldModelObjects()
 {
 	connect(&mModel.worldModel(), &model::WorldModel::wallAdded
-			, [this](items::WallItem *item) { bindObject(item->id(), item); });
+			, this, [this](items::WallItem *item) { bindObject(item->id(), item); });
 	connect(&mModel.worldModel(), &model::WorldModel::colorItemAdded
-			, [this](items::ColorFieldItem *item) { bindObject(item->id(), item); });
-	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded, [this](items::RegionItem *item) {
-		bindObject(item->id(), item);
-	});
+			, this, [this](items::ColorFieldItem *item) { bindObject(item->id(), item); });
+	connect(&mModel.worldModel(), &model::WorldModel::regionItemAdded
+			, this, [this](items::RegionItem *item) { bindObject(item->id(), item); });
 
 	connect(&mModel.worldModel(), &model::WorldModel::itemRemoved, [this](QGraphicsItem *item) {
 		for (const QString &key : mObjects.keys(dynamic_cast<QObject *>(item))) {
@@ -174,7 +173,7 @@ void ConstraintsChecker::bindToRobotObjects()
 	}
 
 	connect(&mModel, &model::Model::robotAdded, this, &ConstraintsChecker::bindRobotObject);
-	connect(&mModel, &model::Model::robotRemoved, [this](model::RobotModel * const robot) {
+	connect(&mModel, &model::Model::robotRemoved, this, [this](model::RobotModel * const robot) {
 		const QStringList keys = mObjects.keys(robot);
 		for (const QString &keyToRemove : keys) {
 			for (const QString &key : mObjects.keys()) {
@@ -203,13 +202,13 @@ void ConstraintsChecker::bindRobotObject(twoDModel::model::RobotModel * const ro
 
 	// Led, display, marker, all such devices will be also caught here.
 	connect(&robot->info().configuration(), &kitBase::robotModel::ConfigurationInterface::deviceConfigured
-			, [=](const kitBase::robotModel::robotParts::Device *device)
+			, this, [=](const kitBase::robotModel::robotParts::Device *device)
 	{
 		bindDeviceObject(robotId, robot, device->port());
 	});
 
 	connect(&robot->configuration(), &model::SensorsConfiguration::deviceRemoved
-			, [=](const kitBase::robotModel::PortInfo &port, bool isLoading)
+			, this, [=](const kitBase::robotModel::PortInfo &port, bool isLoading)
 	{
 		Q_UNUSED(isLoading)
 		mObjects.remove(portName(robotId, robot, port));

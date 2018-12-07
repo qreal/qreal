@@ -72,9 +72,9 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 		onProtocolFinished();
 	};
 
-	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::timeout, timeout);
-	connect(mRunProgramProtocol.data(), &RunProgramProtocol::timeout, timeout);
-	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, timeout);
+	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::timeout, this, timeout);
+	connect(mRunProgramProtocol.data(), &RunProgramProtocol::timeout, this, timeout);
+	connect(mStopRobotProtocol.data(), &StopRobotProtocol::timeout, this, timeout);
 
 	connect(mUploadProgramProtocol.data(), &UploadProgramProtocol::error
 			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
@@ -91,7 +91,7 @@ void TrikQtsGeneratorPluginBase::init(const kitBase::KitPluginConfigurator &conf
 			, this, &TrikQtsGeneratorPluginBase::onProtocolFinished);
 
 	connect(mRunProgramProtocol.data(), &RunProgramProtocol::configVersionMismatch
-			, [this, errorReporter](const QString &expected, const QString &actual) {
+			, this, [errorReporter](const QString &expected, const QString &actual) {
 				Q_UNUSED(expected)
 				Q_UNUSED(actual)
 				errorReporter->addError(
