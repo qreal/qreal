@@ -4,8 +4,6 @@ case $TRAVIS_OS_NAME in
   osx)
     REQUIRED_PACKAGES="qt ccache pyenv"
     export HOMEBREW_NO_AUTO_UPDATE=1
-    brew list --versions
-    rm -rf /usr/local/Cellar/ccache/3.4.3
     for pkg in $REQUIRED_PACKAGES ; do
       p="${pkg##*/}"
       p="${p%.*}"
