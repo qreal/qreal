@@ -1,4 +1,4 @@
-/* Copyright 2007-2015 QReal Research Group
+/* Copyright 2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,22 +12,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
-#include "initCameraGenerator.h"
+#include "stopCameraGenerator.h"
 
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
 using namespace generatorBase::simple;
 
-InitCameraGenerator::InitCameraGenerator(const qrRepo::RepoApi &repo
+StopCameraGenerator::StopCameraGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
 		, const qReal::Id &id
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
-			, "videosensors/init" + repo.property(id, "Mode").toString() + "Sensor.t"
-			, { Binding::createConverting("@@DRAW@@"
-						, "DrawStream", customizer.factory()->boolPropertyConverter(id, "DrawStream", false))
-			}
+			, "videosensors/stop" + repo.property(id, "Mode").toString() + "Sensor.t"
+			, {}
 			, parent)
 {
 }

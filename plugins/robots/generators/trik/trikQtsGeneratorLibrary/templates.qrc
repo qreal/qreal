@@ -88,7 +88,11 @@
         <file>templates/videosensors/initlineSensor.t</file>
         <file>templates/videosensors/initobjectSensor.t</file>
         <file>templates/videosensors/initcolorSensor.t</file>
+        <file>templates/videosensors/stoplineSensor.t</file>
+        <file>templates/videosensors/stopobjectSensor.t</file>
+        <file>templates/videosensors/stopcolorSensor.t</file>
         <file>templates/videosensors/initVideoStreaming.t</file>
+        <file>templates/videosensors/stopVideoStreaming.t</file>
         <file>templates/gamepad/gamepadButton.t</file>
         <file>templates/gamepad/gamepadConnectionIndicator.t</file>
         <file>templates/gamepad/gamepadPad.t</file>

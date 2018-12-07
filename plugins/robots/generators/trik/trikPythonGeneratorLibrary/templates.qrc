@@ -225,5 +225,9 @@
         <file>templates/buttons/RightButton.t</file>
         <file>templates/buttons/UpButton.t</file>
         <file>templates/subprograms/subprogramArgument.t</file>
+        <file>templates/videosensors/stopcolorSensor.t</file>
+        <file>templates/videosensors/stoplineSensor.t</file>
+        <file>templates/videosensors/stopobjectSensor.t</file>
+        <file>templates/videosensors/stopVideoStreaming.t</file>
     </qresource>
 </RCC>
