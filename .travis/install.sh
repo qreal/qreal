@@ -2,7 +2,7 @@
 set -euxo pipefail
 case $TRAVIS_OS_NAME in
   osx)
-    REQUIRED_PACKAGES="qt ccache pyenv"
+    REQUIRED_PACKAGES="https://raw.githubusercontent.com/Homebrew/homebrew-core/5eb54ced793999e3dd3bce7c64c34e7ffe65ddfd/Formula/qt.rb ccache pyenv"
     export HOMEBREW_NO_AUTO_UPDATE=1
     for pkg in $REQUIRED_PACKAGES ; do
       p="${pkg##*/}"
