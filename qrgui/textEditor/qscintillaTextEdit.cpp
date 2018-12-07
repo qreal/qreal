@@ -386,7 +386,7 @@ void QScintillaTextEdit::initFindModeConnections()
 		}
 	};
 
-	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, [this, findlambda](){
+	connect(mSearchLinePanel, &ui::SearchLinePanel::nextPressed, this, [this, findlambda](){
 		if (mSearchLinePanel->getMode() == ui::SearchLinePanel::OperationOptions::GoToLineAndColumn) {
 			QRegularExpression regExp("^(?<line>\\d+)(:(?<column>\\d+))*$");
 			QRegularExpressionMatch match = regExp.match(mSearchLinePanel->getTextForFind());
@@ -413,7 +413,7 @@ void QScintillaTextEdit::initFindModeConnections()
 		}
 	});
 
-	connect(mSearchLinePanel, &ui::SearchLinePanel::previousPressed, [this, findlambda](){
+	connect(mSearchLinePanel, &ui::SearchLinePanel::previousPressed, this, [this, findlambda](){
 		if (mSearchForward || not mLastSearchCalled) {
 			mSearchForward = false;
 			findlambda(false);
@@ -422,12 +422,12 @@ void QScintillaTextEdit::initFindModeConnections()
 		}
 	});
 
-	connect(mSearchLinePanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &textToSearch){
+	connect(mSearchLinePanel, &ui::SearchLinePanel::findTextChanged, this, [this](const QRegExp &textToSearch){
 		mLastSearchCalled = false;
 		mLastSearch = textToSearch;
 	});
 
-	connect(mSearchLinePanel, &ui::SearchLinePanel::replacePressed, [this](){
+	connect(mSearchLinePanel, &ui::SearchLinePanel::replacePressed, this, [this](){
 		if (not selectedText().isEmpty()) {
 			this->replaceSelectedText(mSearchLinePanel->getTextForReplace());
 			this->findNext();

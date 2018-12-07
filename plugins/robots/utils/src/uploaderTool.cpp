@@ -173,6 +173,7 @@ bool UploaderTool::checkUnixToolExist(const QString &name, const QStringList &ar
 			, [&tool]() { QLOG_DEBUG() << tool.readAllStandardOutput(); });
 	connect(&tool, &QProcess::readyReadStandardError, this
 			, [&tool]() { QLOG_DEBUG() << tool.readAllStandardError(); });
+
 	tool.start(name, args);
 	if (!tool.waitForFinished()) {
 		QLOG_ERROR() << qPrintable(name) << "failed to start; error: " << tool.errorString();

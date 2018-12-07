@@ -1485,13 +1485,13 @@ IdList EditorViewScene::selectedIds() const
 void EditorViewScene::setSearchPanel(ui::SearchLinePanel &searchPanel)
 {
 	searchPanel.setMode(ui::SearchLinePanel::OperationOptions::Find);
-	connect(&searchPanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &txt) {
+	connect(&searchPanel, &ui::SearchLinePanel::findTextChanged, this, [this](const QRegExp &txt) {
 		mSearchText = txt;
 		mLastSearchOccur = false;
 	});
 
 	/// @todo: add more polite politic
-	connect(mModels.graphicalModel(), &QAbstractItemModel::dataChanged, [this]() {
+	connect(mModels.graphicalModel(), &QAbstractItemModel::dataChanged, this, [this]() {
 		mLastSearchOccur = false;
 	});
 
@@ -1547,9 +1547,9 @@ void EditorViewScene::setSearchPanel(ui::SearchLinePanel &searchPanel)
 		mLastSearchElements.at(mCurrentSearchElement)->setFocus(Qt::ShortcutFocusReason);
 	};
 
-	connect(&searchPanel, &ui::SearchLinePanel::nextPressed
+	connect(&searchPanel, &ui::SearchLinePanel::nextPressed, this
 			, [handleNextPreviousSearch](){ handleNextPreviousSearch(true); });
-	connect(&searchPanel, &ui::SearchLinePanel::previousPressed
+	connect(&searchPanel, &ui::SearchLinePanel::previousPressed, this
 			, [handleNextPreviousSearch](){ handleNextPreviousSearch(false); });
 }
 

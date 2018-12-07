@@ -26,8 +26,8 @@ using namespace model;
 FakeScene::FakeScene(const WorldModel &world)
 {
 	connect(&world, &WorldModel::wallAdded, this, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
-	connect(&world, &WorldModel::colorItemAdded, this
-			, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
+	connect(&world, &WorldModel::colorItemAdded
+			, this, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
 	connect(&world, &WorldModel::imageItemAdded, this, [=](items::ImageItem *item) { addClone(item, item->clone()); });
 	connect(&world, &WorldModel::traceItemAdded, this, [=](QGraphicsLineItem *item) {
 		addClone(item, new QGraphicsLineItem(item->line()));

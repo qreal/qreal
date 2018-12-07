@@ -76,7 +76,7 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 	setFrameShape(QFrame::StyledPanel);
 	setLayout(gridLayout);
 
-	connect(mSearchLineEdit, &SearchLineEdit::textChanged, [this](const QRegExp &text){
+	connect(mSearchLineEdit, &SearchLineEdit::textChanged, this, [this](const QRegExp &text){
 		setSearchLineColor(QColor("white"));
 		emit findTextChanged(text);
 	});

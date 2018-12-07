@@ -258,7 +258,7 @@ void MainWindow::connectActions()
 		}
 	});
 
-	connect(mUi->actionFind_and_replace, &QAction::triggered, [=]() {
+	connect(mUi->actionFind_and_replace, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor && mCurrentEditor->supportsFindAndReplace()) {
 			mCurrentEditor->findAndReplace();
 		}

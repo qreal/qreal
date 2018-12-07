@@ -125,7 +125,8 @@ void SearchLineEdit::makeContextMenu()
 		notifyTextChanged();
 	});
 
-    connect(mCaseInsensitive, &QAction::triggered, this, [=]() {
+
+	connect(mCaseInsensitive, &QAction::triggered, this, [=]() {
 		mCurrentOption = SearchOptions::CaseInsensitive;
 		notifyTextChanged();
 	});
