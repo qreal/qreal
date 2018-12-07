@@ -33,7 +33,7 @@ public:
 			, Controller &controller
 			, const SceneCustomizer &sceneCustomizer
 			, const Id &rootId
-			, QWidget *parent = 0);
+			, QWidget *parent = nullptr);
 
 	const EditorViewMViface &mvIface() const;
 	EditorViewMViface &mutableMvIface();
@@ -49,8 +49,9 @@ public:
 	bool supportsCopying() const override;
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
+	bool supportsReplacingBy() const override;
 	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find) override;
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy) override;
 
 signals:
 	/// Emitted when for some reason root element was removed and editor must be closed.
@@ -68,6 +69,7 @@ public slots:
 	void copy() override;
 	void paste() override;
 	void cut() override;
+	void replaceBy() override;
 
 protected:
 	void mouseMoveEvent(QMouseEvent *event) override;

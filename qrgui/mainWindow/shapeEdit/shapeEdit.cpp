@@ -162,7 +162,7 @@ void ShapeEdit::init()
 
 void ShapeEdit::resetHighlightAllButtons()
 {
-	foreach (QAbstractButton *button, mButtonGroup) {
+	for (QAbstractButton *button : mButtonGroup) {
 		button->setChecked(false);
 	}
 	mScene->addNone(true);
@@ -170,7 +170,7 @@ void ShapeEdit::resetHighlightAllButtons()
 
 void ShapeEdit::setHighlightOneButton(QAbstractButton *oneButton)
 {
-	foreach (QAbstractButton *button, mButtonGroup) {
+	for (QAbstractButton *button : mButtonGroup) {
 		if (button != oneButton) {
 			button->setChecked(false);
 		}
@@ -265,7 +265,7 @@ QList<QDomElement> ShapeEdit::generateGraphics()
 	mTopLeftPicture = sceneBoundingRect.topLeft();
 
 	QList<QGraphicsItem *> list = mScene->items();
-	foreach (QGraphicsItem *graphicsItem, list) {
+	for (QGraphicsItem *graphicsItem : list) {
 
 		Item* item = dynamic_cast<Item*>(graphicsItem);
 		if (item != nullptr) {
@@ -305,7 +305,7 @@ void ShapeEdit::generateDom()
 	mDocument.appendChild(graphics);
 
 	QList<QDomElement> list = generateGraphics();
-	foreach (QDomElement domItem, list) {
+	for (QDomElement domItem : list) {
 		graphics.appendChild(domItem);
 	}
 }
@@ -337,7 +337,7 @@ void ShapeEdit::save()
 		emit shapeSaved(mDocument.toString(4), mIndex, mRole);
 	} else {
 		mEditorManager->updateShape(mId, mDocument.documentElement());
-		foreach (const Id graphicalElement, mGraphicalElements) {
+		for (const Id graphicalElement : mGraphicalElements) {
 			mEditorManager->updateShape(graphicalElement, mDocument.documentElement());
 			for (QGraphicsItem * const item : mEditorView->editorViewScene().items()) {
 				qReal::gui::editor::NodeElement * const element = dynamic_cast<qReal::gui::editor::NodeElement *>(item);
@@ -670,7 +670,7 @@ QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties
 	qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
 	qReal::IdList enums = repoApi->elementsByType("MetaEntityEnum");
 
-	foreach (const qReal::Id &child, repoApi->children(mModel->idByIndex(mIndex))) {
+	for (const qReal::Id &child : repoApi->children(mModel->idByIndex(mIndex))) {
 		if (child.element() != "MetaEntity_Attribute") {
 			continue;
 		}
@@ -684,14 +684,14 @@ QMap<QString, VisibilityConditionsDialog::PropertyInfo> ShapeEdit::getProperties
 		} else if (type == "string") {
 			result.insert(repoApi->name(child), PropertyInfo(VisibilityConditionsDialog::String, QStringList()));
 		} else {
-			foreach (const qReal::Id &enumElement, enums) {
+			for (const qReal::Id &enumElement : enums) {
 				if (!repoApi->isLogicalElement(enumElement)) {
 					continue;
 				}
 
 				if (repoApi->name(enumElement) == type) {
 					QStringList enumValues;
-					foreach (const qReal::Id &value, repoApi->children(enumElement)) {
+					for (const qReal::Id &value : repoApi->children(enumElement)) {
 						enumValues << repoApi->stringProperty(value, "valueName");
 					}
 
@@ -711,7 +711,7 @@ QStringList ShapeEdit::getPortTypes() const
 	if (mUseTypedPorts) {
 		qrRepo::RepoApi *repoApi = dynamic_cast<qrRepo::RepoApi *>(&mModel->mutableApi());
 		if (repoApi) {
-			foreach (const qReal::Id &port, repoApi->elementsByType("MetaEntityPort")) {
+			for (const qReal::Id &port : repoApi->elementsByType("MetaEntityPort")) {
 				if (repoApi->isLogicalElement(port)) {
 					result << repoApi->name(port);
 				}

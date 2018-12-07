@@ -67,7 +67,7 @@ public:
 
     //! Construct a QsciLexerMatlab with parent \a parent.  \a parent is
     //! typically the QsciScintilla instance.
-    QsciLexerMatlab(QObject *parent = 0);
+    QsciLexerMatlab(QObject *parent = nullptr);
 
     //! Destroys the QsciLexerMatlab instance.
     virtual ~QsciLexerMatlab();

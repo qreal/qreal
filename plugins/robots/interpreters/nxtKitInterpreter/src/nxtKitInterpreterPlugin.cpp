@@ -60,7 +60,7 @@ NxtKitInterpreterPlugin::~NxtKitInterpreterPlugin()
 void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configurator)
 {
 	connect(&configurator.eventsForKitPlugin(), &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [this](const QString &modelName)
+			, this, [this](const QString &modelName)
 	{
 		mCurrentlySelectedModelName = modelName;
 	});
@@ -72,15 +72,15 @@ void NxtKitInterpreterPlugin::init(const kitBase::KitPluginConfigurator &configu
 				interpretersInterface.errorReporter()->addError(message);
 	});
 	connect(&mUsbRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addInformation(message);
 	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::errorOccured
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addError(message);
 	});
 	connect(&mBluetoothRealRobotModel, &robotModel::real::RealRobotModel::messageArrived
-			, [&interpretersInterface](const QString &message) {
+			, this, [&interpretersInterface](const QString &message) {
 				interpretersInterface.errorReporter()->addInformation(message);
 	});
 
@@ -168,6 +168,6 @@ kitBase::DevicesConfigurationProvider *NxtKitInterpreterPlugin::devicesConfigura
 QWidget *NxtKitInterpreterPlugin::produceBluetoothPortConfigurer()
 {
 	QWidget * const result = new ui::ComPortPicker("NxtBluetoothPortName", this);
-	connect(this, &QObject::destroyed, [result]() { delete result; });
+	connect(this, &QObject::destroyed, this, [result]() { delete result; });
 	return result;
 }

@@ -61,19 +61,7 @@ void RenameExplosionCommand::promptUserToEnterNewName()
 {
 	ensureLogicalId();
 	mOldName = mLogicalApi.name(mTarget);
-
-	QSet<QString> uniqueNames;
-	QMultiMap<Id, Id> localExplosions = mExploser.explosions(mTarget);
-	for (const Id &id : localExplosions.values()) {
-		if (id != mTarget) {
-			uniqueNames.insert(mLogicalApi.name(id));
-		}
-	}
-
 	mNewName = gui::RenameDialog::selectNewName(mOldName);
-	while (uniqueNames.contains(mNewName)) {
-		mNewName = gui::RenameDialog::selectNewName(mNewName);
-	}
 
 	// Adding real renaming commands; they will be executed just after this
 	// command so the sequence is ok

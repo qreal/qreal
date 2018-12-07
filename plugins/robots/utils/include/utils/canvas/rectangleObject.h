@@ -29,12 +29,12 @@ class ROBOTS_UTILS_EXPORT RectangleObject : public CanvasObject
 	Q_PROPERTY(bool filled READ filled WRITE setFilled)
 
 public:
-	explicit RectangleObject(QObject *parent = 0);
+	explicit RectangleObject(QObject *parent = nullptr);
 	RectangleObject(const QRect &shape
 			, const QColor &color = Qt::black
 			, int thickness = 1
 			, bool filled = false
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Returns the coordinates of this rectangle.
 	QRect shape() const;

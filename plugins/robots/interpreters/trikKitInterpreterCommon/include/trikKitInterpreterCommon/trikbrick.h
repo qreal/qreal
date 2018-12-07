@@ -20,7 +20,6 @@
 #include <QtCore/QDir>
 
 #include <trikControl/brickInterface.h>
-
 #include <trikKitInterpreterCommon/robotModel/twoD/trikTwoDRobotModel.h>
 
 #include "trikEmulation/trikdisplayemu.h"
@@ -38,6 +37,10 @@ namespace utils {
 class AbstractTimer;
 }
 
+namespace trikControl {
+class CameraImplementationInterface;
+}
+
 namespace trik {
 
 class TrikBrick final : public trikControl::BrickInterface
@@ -53,10 +56,13 @@ public:
 	trikControl::DisplayWidgetInterface *graphicsWidget() override {
 		return nullptr;
 	}
+
 	void init();
 
 	void setCurrentDir(const QString &dir);
 	void setCurrentInputs(const QString &f);
+
+	void reinitImitationCamera();
 
 public slots:
 	void configure(const QString &, const QString &) override {}
@@ -87,7 +93,7 @@ public slots:
 	trikControl::I2cDeviceInterface *i2c(int, int) override {return nullptr;}
 
 	void playTone(int, int) override {}
-	QVector<uint8_t> getStillImage() override { return QVector<uint8_t>(); }
+	QVector<uint8_t> getStillImage() override;
 	trikControl::EventDeviceInterface *eventDevice(const QString &) override {return nullptr;}
 	void stopEventDevice(const QString &) override {}
 
@@ -98,6 +104,7 @@ public slots:
 	QStringList readAll(const QString &path);
 	/// In trikRuntime returns QTimer, but we need timer with emulated 2D time. Hopefully this is enough
 	utils::AbstractTimer *timer(int milliseconds);
+	void processSensors(bool isRunnig = true);
 
 signals:
 	void error(const QString &msg);
@@ -123,6 +130,8 @@ private:
 	QScopedPointer<TrikAccelerometerAdapter> mAccelerometer;
 	QScopedPointer<TrikGyroscopeAdapter> mGyroscope;
 	QScopedPointer<TrikProxyMarker> mTrikProxyMarker;
+
+	QScopedPointer<trikControl::CameraImplementationInterface> mImitationCamera;
 
 	QDir mCurrentDir;
 	bool mIsExcerciseMode = false;

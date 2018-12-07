@@ -59,7 +59,7 @@ QMap<QString, QString> FindManager::findItems(const QStringList &searchData)
 		if (searchData[i] != tr("case sensitivity") && searchData[i] != tr("by regular expression")) {
 			qReal::IdList byMode = foundByMode(searchData.first(), searchData[i], sensitivity
 					, regExpression);
-			foreach (qReal::Id currentId, byMode) {
+			for (qReal::Id currentId : byMode) {
 				if (found.contains(currentId.toString())) {
 					found[currentId.toString()] += tr(", ") + searchData[i];
 					continue;
@@ -82,7 +82,7 @@ void FindManager::handleReplaceDialog(QStringList &searchData)
 		qReal::IdList toRename = foundByMode(searchData.first(), tr("by name")
 				, searchData.contains(tr("case sensitivity"))
 				, searchData.contains(tr("by regular expression")));
-		foreach (qReal::Id currentId, toRename) {
+		for (qReal::Id currentId : toRename) {
 			mLogicalApi.setName(currentId, searchData[1]);
 		}
 	}

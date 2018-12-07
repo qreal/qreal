@@ -28,9 +28,27 @@ Q_DECLARE_METATYPE(utils::AbstractTimer*)
 
 const QString overrides = "script.random = brick.random;script.wait = brick.wait;script.time = brick.time;"
 		"script.readAll = brick.readAll;script.timer = brick.timer;"
-		"print = function() {var res = '';"
-		"for(var i = 0; i < arguments.length; i++) {res += arguments[i].toString();}"
-		"brick.log(res);return res;};"
+		"arrayPPinternal = function(arg) {"
+			"var res = '[';"
+			"for(var i = 0; i < arg.length; i++) {"
+				"var separator = i + 1 != arg.length ? ', ' : '';"
+				"if (arg[i] instanceof Array) {"
+					"res += arrayPPinternal(arg[i]) + separator;"
+				"} else { res += arg[i].toString() + separator; }"
+			"}"
+			"res += ']';"
+			"return res;"
+		"};"
+		"print = function() "
+		"{"
+			"var res = '';"
+			"for(var i = 0; i < arguments.length; i++) {"
+				"if (arguments[i] instanceof Array) {res += arrayPPinternal(arguments[i]);"
+				"} else {res += arguments[i].toString();}"
+			"};"
+			"brick.log(res);"
+			"return res;"
+		"};"
 		"script.system = function() {print('system is disabled in the interpreter');};";
 
 trik::TrikQtsInterpreter::TrikQtsInterpreter(const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
@@ -64,12 +82,14 @@ void trik::TrikQtsInterpreter::interpretCommand(const QString &script)
 void trik::TrikQtsInterpreter::interpretScript(const QString &script)
 {
 	mRunning = true;
+	mBrick.processSensors(true);
 	mScriptRunner.run(overrides + script);
 }
 
 void trik::TrikQtsInterpreter::interpretScriptExercise(const QString &script, const QString &inputs)
 {
 	mRunning = true;
+	mBrick.processSensors(true);
 	mBrick.setCurrentInputs(inputs);
 	QString newScript = overrides + "script.writeToFile = null;\n" + script;
 	//qDebug() << newScript;
@@ -83,6 +103,7 @@ void trik::TrikQtsInterpreter::abort()
 	Q_ASSERT(mScriptRunner.thread() == thread());
 	QMetaObject::invokeMethod(&mScriptRunner, "abort", Qt::QueuedConnection); // just a wild test
 	mRunning = false; // reset brick?
+	mBrick.processSensors(false);
 }
 
 void trik::TrikQtsInterpreter::init()
@@ -162,6 +183,7 @@ QString trik::TrikQtsInterpreter::initInputs(const QString &inputs) const
 void trik::TrikQtsInterpreter::setRunning(bool running)
 {
 	mRunning = running;
+	mBrick.processSensors(running);
 }
 
 void trik::TrikQtsInterpreter::setCurrentDir(const QString &dir)
@@ -179,6 +201,11 @@ QStringList trik::TrikQtsInterpreter::knownMethodNames() const
 	return mScriptRunner.knownMethodNames();
 }
 
+void trik::TrikQtsInterpreter::reinitRobotsParts()
+{
+	mBrick.reinitImitationCamera();
+}
+
 void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId)
 {
 	Q_UNUSED(scriptId);
@@ -188,6 +215,7 @@ void trik::TrikQtsInterpreter::scriptFinished(const QString &error, int scriptId
 
 	if (mRunning) { /// @todo: figure out better place for this check - it should avoid double aborts
 		mRunning = false;
+		mBrick.processSensors(false);
 		emit completed();
 	}
 }

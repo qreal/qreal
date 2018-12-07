@@ -54,7 +54,7 @@ void RefactoringWindow::updateRefactorings(const QString &dirPath)
 	QStringList const pngFiles = currentDir.entryList(filters);
 	QListWidget *refactoringList = mUi->refactoringList;
 	refactoringList->clear();
-	foreach (QString png, pngFiles) {
+	for (QString png : pngFiles) {
 		png.chop(4);
 		QListWidgetItem *item = new QListWidgetItem(png);
 		item->setData(Qt::UserRole, dirPath + png + ".png");

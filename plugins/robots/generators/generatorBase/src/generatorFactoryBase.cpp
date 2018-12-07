@@ -441,7 +441,7 @@ QString GeneratorFactoryBase::initCode()
 {
 	QStringList result;
 	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
-	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
+	for (parts::InitTerminateCodeGenerator *generator : generators) {
 		result << generator->initCode();
 	}
 
@@ -452,7 +452,7 @@ QString GeneratorFactoryBase::terminateCode()
 {
 	QStringList result;
 	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
-	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
+	for (parts::InitTerminateCodeGenerator *generator : generators) {
 		result << generator->terminateCode();
 	}
 
@@ -463,7 +463,7 @@ QString GeneratorFactoryBase::isrHooksCode()
 {
 	QStringList result;
 	QList<parts::InitTerminateCodeGenerator *> const generators(initTerminateGenerators());
-	foreach (parts::InitTerminateCodeGenerator *generator, generators) {
+	for (parts::InitTerminateCodeGenerator *generator : generators) {
 		result << generator->isrHooksCode();
 	}
 

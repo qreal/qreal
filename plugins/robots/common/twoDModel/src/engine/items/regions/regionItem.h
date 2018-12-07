@@ -28,7 +28,7 @@ class RegionItem : public QGraphicsObject
 	Q_OBJECT
 
 public:
-	explicit RegionItem(QGraphicsItem *parent = 0);
+	explicit RegionItem(QGraphicsItem *parent = nullptr);
 
 	/// Returns a unique identifier of the region.
 	QString id() const;
@@ -75,7 +75,7 @@ public:
 	virtual void deserialize(const QDomElement &element);
 
 protected:
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 private:
 	virtual QString regionType() const = 0;

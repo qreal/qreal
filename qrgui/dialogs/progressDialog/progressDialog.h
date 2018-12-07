@@ -26,7 +26,7 @@ class QRGUI_DIALOGS_EXPORT ProgressDialog : public QProgressDialog, public Progr
 	Q_OBJECT
 
 public:
-	explicit ProgressDialog(QWidget *parent = 0);
+	explicit ProgressDialog(QWidget *parent = nullptr);
 
 	void reportOperation(const QFuture<void> &operation, const QString &description = QString()) override;
 

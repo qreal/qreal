@@ -42,6 +42,7 @@
 #include <qrutils/outFile.h>
 #include <qrutils/stringUtils.h>
 #include <qrutils/widgets/qRealFileDialog.h>
+#include <qrutils/widgets/qRealMessageBox.h>
 #include <qrutils/smartDock.h>
 #include <qrutils/graphicsUtils/animatedEffects.h>
 #include <qrutils/xmlUtils.h>
@@ -111,6 +112,7 @@ MainWindow::MainWindow(const QString &fileToOpen)
 	, mStartWidget(nullptr)
 	, mSceneCustomizer(new SceneCustomizer())
 	, mInitialFileToOpen(fileToOpen)
+	, mRestoreDefaultSettingsOnClose(false)
 {
 	mUi->setupUi(this);
 	mUi->paletteTree->initMainWindow(this);
@@ -188,8 +190,16 @@ void MainWindow::connectActions()
 	mUi->actionSwitch_on_grid->setChecked(SettingsManager::value("ActivateGrid").toBool());
 	mUi->actionSwitch_on_alignment->setChecked(SettingsManager::value("ActivateAlignment").toBool());
 	connect(mUi->actionQuit, SIGNAL(triggered()), this, SLOT(close()));
+	connect(mUi->actionRestore_default_settings, &QAction::triggered, this, [this](){
+		if (utils::QRealMessageBox::question(this, tr("Restore default settings"),
+				tr("Do you realy want to restore default settings?"
+						"\nWARNING: Settings restoring cannot be undone"
+						"\nWARNING: The settings will be restored after application restart")) == QMessageBox::Yes) {
+			mRestoreDefaultSettingsOnClose = true;
+			close();
+		}
+	});
 
-	connect(mUi->actionShowSplash, SIGNAL(toggled(bool)), this, SLOT (toggleShowSplash(bool)));
 	connect(mUi->actionOpen, &QAction::triggered, this, [this]() {
 		if (!mProjectManager->suggestToOpenExisting() && !currentTab()) {
 			openStartTab();
@@ -210,34 +220,39 @@ void MainWindow::connectActions()
 	connect(mUi->graphicalModelExplorer, &ModelExplorer::elementRemoved
 			, this, &MainWindow::deleteFromGraphicalExplorer);
 
-	connect(mUi->actionZoom_In, &QAction::triggered, [=]() {
+	connect(mUi->actionZoom_In, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->zoomIn();
 		}
 	});
-	connect(mUi->actionZoom_Out, &QAction::triggered, [=]() {
+	connect(mUi->actionZoom_Out, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->zoomOut();
 		}
 	});
 
-	connect(mUi->actionCopy, &QAction::triggered, [=]() {
+	connect(mUi->actionCopy, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->copy();
 		}
 	});
-	connect(mUi->actionPaste, &QAction::triggered, [=]() {
+	connect(mUi->actionPaste, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->paste();
 		}
 	});
-	connect(mUi->actionCut, &QAction::triggered, [=]() {
+	connect(mUi->actionCut, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor) {
 			mCurrentEditor->cut();
 		}
 	});
+	connect(mUi->actionReplaceBy, &QAction::triggered, this, [=]() {
+		if (mCurrentEditor && mCurrentEditor->supportsReplacingBy()) {
+			mCurrentEditor->replaceBy();
+		}
+	});
 
-	connect(mUi->actionFind, &QAction::triggered, [=]() {
+	connect(mUi->actionFind, &QAction::triggered, this, [=]() {
 		if (mCurrentEditor && mCurrentEditor->supportsSearching()) {
 			mCurrentEditor->find();
 		}
@@ -269,7 +284,7 @@ void MainWindow::connectActions()
 	connect(mUi->actionGesturesShow, SIGNAL(triggered()), this, SLOT(showGestures()));
 
 	connect(mUi->actionFullscreen, SIGNAL(triggered()), this, SLOT(fullscreen()));
-	connect(mUi->actionFullscreen, &QAction::changed, [=]() {
+	connect(mUi->actionFullscreen, &QAction::changed, this, [=]() {
 		const int indexOfFullscreen = mUi->viewToolbar->actions().indexOf(mUi->actionFullscreen);
 		if (indexOfFullscreen > 0) {
 			QAction * const separatorBefore = mUi->viewToolbar->actions()[indexOfFullscreen - 1];
@@ -305,7 +320,7 @@ void MainWindow::connectActions()
 	connect(mUi->propertyEditor, &PropertyEditorView::textEditorRequested, this, &MainWindow::openQscintillaTextEditor);
 	connect(mUi->propertyEditor, &PropertyEditorView::referenceListRequested, this, &MainWindow::openReferenceList);
 
-	connect(mUi->menuPanels, &QMenu::aboutToShow, [=]() {
+	connect(mUi->menuPanels, &QMenu::aboutToShow, this, [=]() {
 		mUi->menuPanels->clear();
 		mUi->menuPanels->addActions(createPopupMenu()->actions());
 	});
@@ -329,7 +344,6 @@ void MainWindow::connectSystemEvents()
 
 void MainWindow::initActionsFromSettings()
 {
-	mUi->actionShowSplash->setChecked(SettingsManager::value("Splashscreen").toBool());
 }
 
 void MainWindow::registerMetaTypes()
@@ -365,6 +379,11 @@ MainWindow::~MainWindow()
 	delete mSceneCustomizer;
 	delete mTextManager;
 	delete mUi;
+
+	if (mRestoreDefaultSettingsOnClose) {
+		SettingsManager::clearSettings();
+		SettingsManager::instance()->saveData();
+	}
 }
 
 EditorManagerInterface &MainWindow::editorManager()
@@ -532,12 +551,17 @@ void MainWindow::refreshRecentProjectsList(const QString &fileName)
 	if (!previousList.isEmpty() && (previousList.size() == mRecentProjectsLimit)) {
 		previousList.removeLast();
 	}
-	previousList.push_front(fileName);
-	previousString = "";
-	QStringListIterator iterator(previousList);
-	while (iterator.hasNext()) {
-		previousString = previousString + iterator.next() + ";";
+
+	previousString.clear();
+	qDebug() << previousString;
+	if (mRecentProjectsLimit > 0) {
+		previousList.push_front(fileName);
+		QStringListIterator iterator(previousList);
+		while (iterator.hasNext()) {
+			previousString = previousString + iterator.next() + ";";
+		}
 	}
+
 	SettingsManager::setValue("recentProjects", previousString);
 }
 
@@ -548,8 +572,14 @@ void MainWindow::openRecentProjectsMenu()
 
 	mRecentProjectsMenu->clear();
 	const QString stringList = SettingsManager::value("recentProjects").toString();
-	const QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
-	foreach (QString projectPath, recentProjects) {
+	QStringList recentProjects = stringList.split(";", QString::SkipEmptyParts);
+
+	mRecentProjectsLimit = SettingsManager::value("recentProjectsLimit", mRecentProjectsLimit).toInt();
+	while (recentProjects.size() > mRecentProjectsLimit) {
+		recentProjects.pop_front();
+	}
+
+	for (QString projectPath : recentProjects) {
 		mRecentProjectsMenu->addAction(projectPath);
 		QObject::connect(mRecentProjectsMenu->actions().last(), SIGNAL(triggered())
 				, mRecentProjectsMapper, SLOT(map()));
@@ -580,7 +610,7 @@ void MainWindow::setReference(const QStringList &data, const QPersistentModelInd
 {
 	removeOldBackReference(index, role);
 	setData(data.join(','), index, role);
-	foreach (const QString &target, data) {
+	for (const QString &target : data) {
 		if (!target.isEmpty()) {
 			setBackReference(index, target);
 		}
@@ -738,20 +768,17 @@ void MainWindow::changeWindowTitle()
 void MainWindow::registerEditor(EditorInterface &editor)
 {
 	editor.configure(*mUi->actionZoom_In, *mUi->actionZoom_Out, *mUi->actionUndo, *mUi->actionRedo
-			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind);
+			, *mUi->actionCopy, *mUi->actionPaste, *mUi->actionCut, *mUi->actionFind, *mUi->actionReplaceBy);
 	connect(&editor.focusAction(), &QAction::triggered, this, [this, &editor]() {
 		mCurrentEditor = &editor;
 		const bool zoomingEnabled = editor.supportsZooming();
-		const bool copyEnabled = editor.supportsCopying();
-		const bool pasteEnabled = editor.supportsPasting();
-		const bool cutEnabled = editor.supportsCutting();
-		const bool findEnabled = editor.supportsSearching();
 		mUi->actionZoom_In->setEnabled(zoomingEnabled);
 		mUi->actionZoom_Out->setEnabled(zoomingEnabled);
-		mUi->actionCopy->setEnabled(copyEnabled);
-		mUi->actionPaste->setEnabled(pasteEnabled);
-		mUi->actionCut->setEnabled(cutEnabled);
-		mUi->actionFind->setEnabled(findEnabled);
+		mUi->actionCopy->setEnabled(editor.supportsCopying());
+		mUi->actionPaste->setEnabled(editor.supportsPasting());
+		mUi->actionCut->setEnabled(editor.supportsCutting());
+		mUi->actionFind->setEnabled(editor.supportsSearching());
+		mUi->actionReplaceBy->setEnabled(editor.supportsReplacingBy());
 		mController->setActiveModule(editor.editorId());
 	});
 }
@@ -785,11 +812,6 @@ void MainWindow::showHelp()
 	QDesktopServices::openUrl(QUrl(url));
 }
 
-void MainWindow::toggleShowSplash(bool show)
-{
-	SettingsManager::setValue("Splashscreen", show);
-}
-
 bool MainWindow::unloadPlugin(const QString &pluginName)
 {
 	if (editorManager().editors().contains(Id(pluginName))) {
@@ -815,7 +837,7 @@ bool MainWindow::loadPlugin(const QString &fileName, const QString &pluginName)
 		return false;
 	}
 
-	foreach (const Id &diagram, editorManager().diagrams(Id(pluginName))) {
+	for (const Id &diagram : editorManager().diagrams(Id(pluginName))) {
 		mUi->paletteTree->addEditorElements(editorManager(), Id(pluginName), diagram);
 	}
 
@@ -1104,7 +1126,7 @@ void MainWindow::initCurrentTab(EditorView *const tab, const QModelIndex &rootIn
 			, &tab->mvIface(), SLOT(rowsMoved(QModelIndex, int, int, QModelIndex, int)));
 	connect(tab, &EditorView::rootElementRemoved, this
 			, static_cast<bool (MainWindow::*)(const QModelIndex &)>(&MainWindow::closeTab));
-	connect(&tab->editorViewScene(), &EditorViewScene::goTo, [=](const Id &id) { activateItemOrDiagram(id); });
+	connect(&tab->editorViewScene(), &EditorViewScene::goTo, this, [=](const Id &id) { activateItemOrDiagram(id); });
 	connect(&tab->editorViewScene(), &EditorViewScene::refreshPalette, this, &MainWindow::loadEditorPlugins);
 	connect(&tab->editorViewScene(), &EditorViewScene::openShapeEditor, this, static_cast<void (MainWindow::*)
 			(const Id &, const QString &, const EditorManagerInterface *, bool)>(&MainWindow::openShapeEditor));
@@ -1321,7 +1343,7 @@ void MainWindow::setShowAlignment(bool isChecked)
 		EditorView * const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
 			const QList<QGraphicsItem *> list = tab->scene()->items();
-			foreach (QGraphicsItem * const item, list) {
+			for (QGraphicsItem * const item : list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
 					nodeItem->showAlignment(isChecked);
@@ -1337,7 +1359,7 @@ void MainWindow::setSwitchGrid(bool isChecked)
 		EditorView  const *tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
 			const QList<QGraphicsItem *> list = tab->scene()->items();
-			foreach (QGraphicsItem *const item, list) {
+			for (QGraphicsItem *const item : list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
 					nodeItem->switchGrid(isChecked);
@@ -1353,7 +1375,7 @@ void MainWindow::setSwitchAlignment(bool isChecked)
 		EditorView *const tab = (dynamic_cast<EditorView *>(mUi->tabs->widget(i)));
 		if (tab != nullptr) {
 			const QList<QGraphicsItem *> list = tab->scene()->items();
-			foreach (QGraphicsItem * const item, list) {
+			for (QGraphicsItem * const item : list) {
 				NodeElement * const nodeItem = dynamic_cast<NodeElement*>(item);
 				if (nodeItem != nullptr) {
 					nodeItem->switchAlignment(isChecked);
@@ -1572,7 +1594,7 @@ void MainWindow::removeOldBackReference(const QPersistentModelIndex &index, cons
 {
 	QStringList data = index.data(role).toString().split(',', QString::SkipEmptyParts);
 
-	foreach (const QString &reference, data) {
+	for (const QString &reference : data) {
 		Id id = Id::loadFromString(reference);
 		Id indexId = models().logicalModelAssistApi().idByIndex(index);
 		models().logicalRepoApi().removeBackReference(id, indexId);
@@ -1718,7 +1740,7 @@ void MainWindow::traverseListOfActions(const QList<ActionInfo> &actions)
 			QToolBar * const toolbar = findChild<QToolBar *>(action.toolbarName() + "Toolbar");
 			if (toolbar) {
 				toolbar->addAction(action.action());
-				connect(action.action(), &QAction::changed, [toolbar]() {
+				connect(action.action(), &QAction::changed, this, [toolbar]() {
 					for (QAction * const action : toolbar->actions()) {
 						if (action->isVisible()) {
 							toolbar->setVisible(true);
@@ -1773,7 +1795,7 @@ void MainWindow::addExternalToolActions()
 
 				if (QFile(program).exists()) {
 					QAction *action = new QAction(toolName, externalToolsMenu);
-					connect(action, &QAction::triggered, [=](){
+					connect(action, &QAction::triggered, this, [=](){
 						if (arguments.isEmpty()) {
 							QProcess::startDetached(program);
 						} else {
@@ -1839,7 +1861,7 @@ void MainWindow::initToolPlugins()
 
 	QList<QPair<QString, PreferencesPage *> > const preferencesPages = mToolManager->preferencesPages();
 	typedef QPair<QString, PreferencesPage *> PageDescriptor;
-	foreach (const PageDescriptor page, preferencesPages) {
+	for (const PageDescriptor page : preferencesPages) {
 		mPreferencesDialog.registerPage(page.first, page.second);
 	}
 
@@ -2053,7 +2075,7 @@ IdList MainWindow::selectedElementsOnActiveDiagram()
 	QList<QGraphicsItem*> items = getCurrentTab()->scene()->items();
 
 	IdList selected;
-	foreach (QGraphicsItem* item, items) {
+	for (QGraphicsItem* item : items) {
 		Element* element = dynamic_cast<Element*>(item);
 		if (element) {
 			if (element->isSelected()) {

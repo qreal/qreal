@@ -155,7 +155,7 @@ void VisualDebugger::error(ErrorType e)
 Id const VisualDebugger::findBeginNode(QString const &name)
 {
 	IdList const children = mGraphicalModelApi.graphicalRepoApi().children(mCurrentDiagram);
-	foreach (Id const &child, children) {
+	for (Id const &child : children) {
 		if (child.element() == name) {
 			return child;
 		}
@@ -172,7 +172,7 @@ Id const VisualDebugger::findValidLink()
 	int pos = 0;
 	bool condition = mBlockParser->parseCondition(conditionStr, pos, mCurrentId);
 
-	foreach (Id const &link, outLinks) {
+	for (Id const &link : outLinks) {
 		if (checkForIncorrectUseOfLink(link, "ControlFlow")) {
 			return Id::rootId();
 		}
@@ -413,7 +413,7 @@ void VisualDebugger::generateCode()
 
 void VisualDebugger::getConditionLinks(IdList const &outLinks, Id &falseEdge, Id &trueEdge)
 {
-	foreach (Id const &outLink, outLinks) {
+	for (Id const &outLink : outLinks) {
 		if (checkForIncorrectUseOfLink(outLink, "ControlFlow")) {
 			error(codeGenerationError);
 			return;

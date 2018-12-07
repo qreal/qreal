@@ -23,11 +23,11 @@
 class QRealRectangle : public Item
 {
 public:
-	QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
+	QRealRectangle(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = nullptr);
 	QRealRectangle(const QRealRectangle &other);
 	virtual Item* clone();
 	virtual QRectF boundingRect() const;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document
 			, const QPoint &topLeftPicture);

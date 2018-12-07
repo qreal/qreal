@@ -457,7 +457,7 @@ QStringList EditorManager::allChildrenTypesOf(const Id &parent) const
 
 	QStringList result;
 
-	foreach (const Id &id, elements(parent)) {
+	for (const Id &id : elements(parent)) {
 		if (isParentOf(id, parent)) {
 			result << id.element();
 		}

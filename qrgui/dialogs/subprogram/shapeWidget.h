@@ -25,7 +25,7 @@ class ShapeWidget : public QWidget
 {
 	Q_OBJECT
 public:
-	explicit ShapeWidget(int index, QWidget *parent = 0);
+	explicit ShapeWidget(int index, QWidget *parent = nullptr);
 
 	/// Returns index of this widget in the list of available shapes.
 	int index() const;

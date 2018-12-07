@@ -26,7 +26,7 @@ public:
 	TrikPythonControlFlowValidator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, generatorBase::GeneratorCustomizer &customizer
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	bool validate(const qReal::Id &diagramId, const QString &threadId) override;
 

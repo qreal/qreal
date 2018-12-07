@@ -20,6 +20,7 @@
 #include <qrkernel/settingsManager.h>
 #include <qrkernel/exception/exception.h>
 #include <qrkernel/platformInfo.h>
+#include <qrkernel/settingsListener.h>
 #include <qrutils/outFile.h>
 #include <qrutils/xmlUtils.h>
 #include <qrutils/widgets/qRealFileDialog.h>
@@ -103,16 +104,16 @@ TwoDModelWidget::TwoDModelWidget(Model &model, QWidget *parent)
 
 	connect(&mModel.worldModel(), &WorldModel::blobsChanged, this, [this]() { saveBlobsToRepo(); });
 
-	connect(&mModel.timeline(), &Timeline::started, [this]() {
+	connect(&mModel.timeline(), &Timeline::started, this, [this]() {
 		if (mRobotPositionReadOnly) {
 			returnToStartMarker();
 		}
 	});
-	connect(&mModel.timeline(), &Timeline::started, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
+	connect(&mModel.timeline(), &Timeline::started, this, [this]() { bringToFront(); mUi->timelineBox->setValue(0); });
 	connect(&mModel.timeline(), &Timeline::tick, this, &TwoDModelWidget::incrementTimelineCounter);
 	connect(&mModel.timeline(), &Timeline::started, this, &TwoDModelWidget::setRunStopButtonsVisibility);
 	connect(&mModel.timeline(), &Timeline::stopped, this, &TwoDModelWidget::setRunStopButtonsVisibility);
-	connect(&mModel.timeline(), &Timeline::speedFactorChanged, [=](int value) {
+	connect(&mModel.timeline(), &Timeline::speedFactorChanged, this, [=](int value) {
 		const QPoint downCoords = mUi->speedDownButton->mapTo(this, mUi->speedDownButton->rect().bottomRight());
 		const QPoint upCoords = mUi->speedUpButton->mapTo(this, mUi->speedUpButton->rect().bottomLeft());
 		const QPoint coords((downCoords.x() + upCoords.x() - mSpeedPopup->width()) / 2, downCoords.y() + 10);
@@ -177,7 +178,7 @@ void TwoDModelWidget::initWidget()
 	mSpeedPopup = new SpeedPopup(this);
 
 	mScene->setPenBrushItems(defaultPen, Qt::NoBrush);
-	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, [=](const QPen &pen) {
+	connect(mColorFieldItemPopup, &ColorItemPopup::userPenChanged, this, [=](const QPen &pen) {
 		mScene->setPenBrushItems(pen, QBrush(pen.color(), Qt::NoBrush));
 	});
 
@@ -205,7 +206,7 @@ void TwoDModelWidget::initWidget()
 	toggleRulers();
 
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mScene, SLOT(update()));
-	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, toggleRulers);
+	connect(mUi->gridParametersBox, &GridParameters::parametersChanged, this, toggleRulers);
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->horizontalRuler, SLOT(update()));
 	connect(mUi->gridParametersBox, SIGNAL(parametersChanged()), mUi->verticalRuler, SLOT(update()));
 	connect(mScene, SIGNAL(sceneRectChanged(QRectF)), mUi->horizontalRuler, SLOT(update()));
@@ -239,6 +240,10 @@ void TwoDModelWidget::initPalette()
 	mUi->palette->registerTool(stylusTool);
 	mUi->palette->registerTool(imageTool);
 
+	qReal::SettingsListener::listen("toolbarSize", [this](int size){ mUi->palette->setSize({size, size}); }, this);
+	const int size = qReal::SettingsManager::value("toolbarSize", 32).toInt();
+	mUi->palette->setSize({size, size});
+
 	connect(wallTool, &QAction::triggered, mScene, &TwoDModelScene::addWall);
 	connect(skittleTool, &QAction::triggered, mScene, &TwoDModelScene::addSkittle);
 	connect(ballTool, &QAction::triggered, mScene, &TwoDModelScene::addBall);
@@ -250,13 +255,14 @@ void TwoDModelWidget::initPalette()
 	connect(imageTool, &QAction::triggered, mScene, &TwoDModelScene::addImage);
 	connect(&mUi->palette->cursorAction(), &QAction::triggered, mScene, &TwoDModelScene::setNoneStatus);
 
-	connect(wallTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawWall); });
-	connect(skittleTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawSkittle); });
-	connect(ballTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawBall); });
-	connect(lineTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawLine); });
-	connect(ellipseTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawEllipse); });
-	connect(stylusTool, &QAction::triggered, [this](){ setCursorTypeForDrawing(drawStylus); });
-	connect(&mUi->palette->cursorAction(), &QAction::triggered, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
+	connect(wallTool, &QAction::triggered, this, [this](){ setCursorTypeForDrawing(drawWall); });
+	connect(skittleTool, &QAction::triggered, this, [this](){ setCursorTypeForDrawing(drawSkittle); });
+	connect(ballTool, &QAction::triggered, this, [this](){ setCursorTypeForDrawing(drawBall); });
+	connect(lineTool, &QAction::triggered, this, [this](){ setCursorTypeForDrawing(drawLine); });
+	connect(ellipseTool, &QAction::triggered, this, [this](){ setCursorTypeForDrawing(drawEllipse); });
+	connect(stylusTool, &QAction::triggered, this, [this](){ setCursorTypeForDrawing(drawStylus); });
+	connect(&mUi->palette->cursorAction(), &QAction::triggered, this
+			, [this](){ setCursorTypeForDrawing(mNoneCursorType); });
 }
 
 void TwoDModelWidget::initDetailsTab()
@@ -269,7 +275,7 @@ void TwoDModelWidget::connectUiButtons()
 	connect(mUi->enableMotorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 	connect(mUi->enableSensorNoiseCheckBox, &QAbstractButton::toggled, this, &TwoDModelWidget::changePhysicsSettings);
 
-	connect(&mActions->deleteAllAction(), &QAction::triggered, [this](){
+	connect(&mActions->deleteAllAction(), &QAction::triggered, this, [this](){
 		if (QMessageBox::Yes
 				== utils::QRealMessageBox::question(nullptr
 						, tr("Warning")
@@ -754,9 +760,9 @@ bool TwoDModelWidget::supportsZooming() const
 }
 
 void TwoDModelWidget::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy)
 {
-	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find);
+	EditorInterface::configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, replaceBy);
 	addActions({ mZoomInAction, mZoomOutAction, mUndoAction, mRedoAction, mCopyAction, mPasteAction, mCutAction });
 }
 
@@ -910,6 +916,12 @@ void TwoDModelWidget::onDeviceConfigurationChanged(const QString &robotId
 
 void TwoDModelWidget::bringToFront()
 {
+#ifdef Q_OS_MAC
+	// sanity check: macos
+	if (!QApplication::platformNativeInterface())
+		return;
+#endif
+
 	if (isHidden()) {
 		show();
 	}
@@ -1005,7 +1017,7 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 
 	if (robotItem) {
 		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded
-				, [this, robotItem](const PortInfo &port) { mScene->reinitSensor(robotItem, port); });
+				, this, [this, robotItem](const PortInfo &port) { mScene->reinitSensor(robotItem, port); });
 
 		auto checkAndSaveToRepo = [this](const PortInfo &port, bool isLoaded) {
 			Q_UNUSED(port);
@@ -1014,11 +1026,13 @@ void TwoDModelWidget::onRobotListChange(RobotItem *robotItem)
 			}
 		};
 
-		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded, checkAndSaveToRepo);
-		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceRemoved, checkAndSaveToRepo);
+		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceAdded
+				, this, checkAndSaveToRepo);
+		connect(&robotItem->robotModel().configuration(), &SensorsConfiguration::deviceRemoved
+				, this, checkAndSaveToRepo);
 
 		connect(&robotItem->robotModel(), &RobotModel::wheelOnPortChanged
-				, [=](RobotModel::WheelEnum wheel, const PortInfo &port)
+				, this, [=](RobotModel::WheelEnum wheel, const PortInfo &port)
 		{
 			if (port.isValid()) {
 				setSelectedPort(wheel == RobotModel::WheelEnum::left

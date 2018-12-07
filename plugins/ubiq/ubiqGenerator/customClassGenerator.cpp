@@ -45,7 +45,7 @@ QString CustomClassGenerator::generateConstructors(qReal::Id const &element)
 	QString defaultProperties;
 	QString properties;
 
-	foreach (Id const &property, mApi.children(element)) {
+	for (Id const &property : mApi.children(element)) {
 		QString const name = NameNormalizer::normalize(mApi.name(property));
 		QString const type = mApi.stringProperty(property, "type");
 
@@ -77,12 +77,12 @@ void CustomClassGenerator::generate()
 {
 	loadUtilsTemplates();
 
-	foreach (Id const &diagram, mApi.elementsByType("DataStructuresDiagram")) {
+	for (Id const &diagram : mApi.elementsByType("DataStructuresDiagram")) {
 		if (!mApi.isLogicalElement(diagram)) {
 			continue;
 		}
 
-		foreach (Id const &element, mApi.children(diagram)) {
+		for (Id const &element : mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element) || element.element() != customClassLabel) {
 				continue;
 			}

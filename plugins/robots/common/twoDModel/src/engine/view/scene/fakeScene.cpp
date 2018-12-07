@@ -25,10 +25,11 @@ using namespace model;
 
 FakeScene::FakeScene(const WorldModel &world)
 {
-	connect(&world, &WorldModel::wallAdded, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
-	connect(&world, &WorldModel::colorItemAdded, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
-	connect(&world, &WorldModel::imageItemAdded, [=](items::ImageItem *item) { addClone(item, item->clone()); });
-	connect(&world, &WorldModel::traceItemAdded, [=](QGraphicsLineItem *item) {
+	connect(&world, &WorldModel::wallAdded, this, [=](items::WallItem *wall) { addClone(wall, wall->clone()); });
+	connect(&world, &WorldModel::colorItemAdded, this
+			, [=](items::ColorFieldItem *item) { addClone(item, item->clone()); });
+	connect(&world, &WorldModel::imageItemAdded, this, [=](items::ImageItem *item) { addClone(item, item->clone()); });
+	connect(&world, &WorldModel::traceItemAdded, this, [=](QGraphicsLineItem *item) {
 		addClone(item, new QGraphicsLineItem(item->line()));
 	});
 	connect(&world, &WorldModel::itemRemoved, this, &FakeScene::deleteItem);
@@ -50,10 +51,10 @@ void FakeScene::addClone(QGraphicsItem * const original, QGraphicsItem * const c
 	// change its corners.
 	if (graphicsUtils::AbstractItem *orit = dynamic_cast<graphicsUtils::AbstractItem *>(original)) {
 		const auto hack = [=]() { cloned->moveBy(1, 1); cloned->moveBy(-1, -1); };
-		connect(orit, &graphicsUtils::AbstractItem::x1Changed, hack);
-		connect(orit, &graphicsUtils::AbstractItem::y1Changed, hack);
-		connect(orit, &graphicsUtils::AbstractItem::x2Changed, hack);
-		connect(orit, &graphicsUtils::AbstractItem::y2Changed, hack);
+		connect(orit, &graphicsUtils::AbstractItem::x1Changed, this, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y1Changed, this, hack);
+		connect(orit, &graphicsUtils::AbstractItem::x2Changed, this, hack);
+		connect(orit, &graphicsUtils::AbstractItem::y2Changed, this, hack);
 	}
 }
 

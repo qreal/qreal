@@ -26,7 +26,7 @@ class ActionsBox : public QObject
 	Q_OBJECT
 
 public:
-	explicit ActionsBox(QObject *parent = 0);
+	explicit ActionsBox(QObject *parent = nullptr);
 	~ActionsBox();
 
 	/// Returns a reference to action that switches scene to dragging mode (mouse interaction will move scene).

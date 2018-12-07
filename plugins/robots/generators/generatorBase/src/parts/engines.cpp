@@ -64,7 +64,7 @@ void Engines::registerUsageOnPort(const QString &outputPort)
 
 void Engines::registerUsageOnPorts(const QString &outputPorts)
 {
-	foreach (const QString &port, mOutputPortsConverter->convert(outputPorts)) {
+	for (const QString &port : mOutputPortsConverter->convert(outputPorts)) {
 		mUsedPorts << port;
 	}
 }

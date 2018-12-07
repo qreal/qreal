@@ -31,7 +31,7 @@ void SerializerTest::removeDirectory(QString const &dirName)
 {
 	QDir const dir(dirName);
 
-	foreach (const QFileInfo &info, dir.entryInfoList(QDir::Hidden
+	for (const QFileInfo &info : dir.entryInfoList(QDir::Hidden
 			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {

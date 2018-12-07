@@ -58,6 +58,7 @@
     <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
+    <addaction name="actionRestore_default_settings"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -73,7 +74,6 @@
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
     <addaction name="separator"/>
-    <addaction name="actionShowSplash"/>
     <addaction name="separator"/>
     <addaction name="menuPanels"/>
    </widget>
@@ -512,23 +512,12 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-	<string>About </string>
+    <string>About </string>
    </property>
   </action>
   <action name="actionAboutQt">
    <property name="text">
     <string>About Qt...</string>
-   </property>
-  </action>
-  <action name="actionShowSplash">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Show splashscreen</string>
    </property>
   </action>
   <action name="actionSave">
@@ -731,6 +720,11 @@
     <string>Find and replace</string>
    </property>
   </action>
+  <action name="actionReplaceBy">
+   <property name="text">
+    <string>Replace by...</string>
+   </property>
+  </action>
   <action name="actionUndo">
    <property name="icon">
     <iconset resource="mainWindow.qrc">
@@ -816,6 +810,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+X</string>
+   </property>
+  </action>
+  <action name="actionRestore_default_settings">
+   <property name="text">
+    <string>Restore default settings and Quit</string>
    </property>
   </action>
  </widget>

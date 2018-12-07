@@ -33,7 +33,7 @@ class ROBOTS_TRIK_KIT_INTERPRETER_COMMON_EXPORT TrikDisplayWidget : public twoDM
 
 public:
 	explicit TrikDisplayWidget(QWidget *parent = nullptr);
-	~TrikDisplayWidget();
+	~TrikDisplayWidget() override;
 
 	void reset() override;
 

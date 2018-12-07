@@ -37,6 +37,7 @@ cp -pr $BIN_DIR/libqrgui-tool-plugin-interface.so*                      $PWD/../
 cp -pr $BIN_DIR/libqrgui-facade.so*                                     $PWD/../data/lib/
 cp     $BIN_DIR/qreal                                                   $PWD/../data/bin/$PRODUCT
 cp     $BIN_DIR/plugins/tools/libupdatesChecker.so                      $PWD/../data/lib/plugins/tools/
+cp     $BIN_DIR/plugins/tools/subprogramsImporterExporter.so            $PWD/../data/lib/plugins/tools/
 
 
 cp -pr $QT_DIR/lib/libQt5Core.so*                                       $PWD/../data/lib/

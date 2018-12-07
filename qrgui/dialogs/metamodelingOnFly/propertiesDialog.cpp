@@ -132,7 +132,7 @@ bool PropertiesDialog::checkElementOnDiagram(const qrRepo::LogicalRepoApi &api, 
 
 	bool sign = !api.logicalElements(id).isEmpty();
 
-	foreach (Id nodeChild, mInterpreterEditorManager.children(id)) {
+	for (Id nodeChild : mInterpreterEditorManager.children(id)) {
 		sign |= checkElementOnDiagram(api, nodeChild);
 	}
 

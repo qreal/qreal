@@ -31,14 +31,14 @@ class ROBOTS_UTILS_EXPORT EllipseObject : public CanvasObject
 	Q_PROPERTY(bool filled READ filled WRITE setFilled)
 
 public:
-	explicit EllipseObject(QObject *parent = 0);
+	explicit EllipseObject(QObject *parent = nullptr);
 	EllipseObject(const QPoint &center
 			, int semiDiameterX
 			, int semiDiameterY
 			, const QColor &color = Qt::black
 			, int thickness = 1
 			, bool filled = false
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Returns the coordinates of the central point in pixels.
 	QPoint center() const;

@@ -141,7 +141,7 @@ void PaletteTreeWidgets::resizeIcons()
 					break;
 				}
 
-				foreach (QObject *child, field->children()) {
+				for (QObject *child : field->children()) {
 					DraggableElement *element = dynamic_cast<DraggableElement*>(child);
 					if (element) {
 						element->setIconSize(newSize);

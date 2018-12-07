@@ -3375,7 +3375,7 @@ public:
     };
 
     //! Construct an empty QsciScintillaBase with parent \a parent.
-    explicit QsciScintillaBase(QWidget *parent = 0);
+    explicit QsciScintillaBase(QWidget *parent = nullptr);
 
     //! Destroys the QsciScintillaBase instance.
     virtual ~QsciScintillaBase();

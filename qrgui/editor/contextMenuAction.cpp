@@ -19,7 +19,7 @@ using namespace qReal::gui::editor;
 ContextMenuAction::ContextMenuAction(const QString &text, QObject *parent)
 	: QAction(text, parent)
 {
-	connect(this, SIGNAL(triggered()), SLOT(trigger()));
+	connect(this, SIGNAL(triggered()), this, SLOT(trigger()));
 }
 
 void ContextMenuAction::setEventPos(const QPointF &pos)

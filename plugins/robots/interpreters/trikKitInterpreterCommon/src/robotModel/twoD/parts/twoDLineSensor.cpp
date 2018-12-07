@@ -93,9 +93,9 @@ void LineSensor::read()
 	}
 
 	const int x = qRound(xCoordinates / usefulRows);
-	const int lineWidth = blacks / height;
 	const int cross = qRound(crossBlacks * 100.0 / (height * horizontalLineWidth));
-	emit newData({ x, lineWidth, cross });
+	const int lineWidth = blacks / height;
+	emit newData({ x, cross, lineWidth });
 }
 
 bool LineSensor::closeEnough(QRgb color) const

@@ -27,7 +27,7 @@ public:
 			, GeneratorCustomizer &customizer
 			, const qReal::Id &id
 			, bool inMainDiagram
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 };
 
 }

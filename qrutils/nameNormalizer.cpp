@@ -34,7 +34,7 @@ QString NameNormalizer::normalize(const QString &name, bool isUpperFirst)
 QString NameNormalizer::normalizeStrongly(const QString &name, bool upperFirst)
 {
 	QString filteredName;
-	foreach (const QChar &character, name) {
+	for (const QChar &character : name) {
 		if ((filteredName.isEmpty() && (character.isLetter() || character == '_')) ||
 				(!filteredName.isEmpty() && (character.isLetterOrNumber()
 						|| character == ' ' || character == '_')))
@@ -57,7 +57,7 @@ QString NameNormalizer::upperFirst(const QString &string)
 	}
 	const QStringList tokens = string.split(" ");
 	QStringList upperedTokens;
-	foreach (const QString &token, tokens) {
+	for (const QString &token : tokens) {
 		upperedTokens.append(token.at(0).toUpper() + token.mid(1));
 	}
 	return upperedTokens.join("_");
@@ -70,7 +70,7 @@ QString NameNormalizer::lowerFirst(const QString &string)
 	}
 	const QStringList tokens = string.split(" ");
 	QStringList loweredTokens;
-	foreach (const QString &token, tokens) {
+	for (const QString &token : tokens) {
 		loweredTokens.append(token.at(0).toLower() + token.mid(1));
 	}
 	return loweredTokens.join("_");
@@ -94,7 +94,7 @@ QString NameNormalizer::russianTranslit(const QString &russianString)
 	}
 
 	QString result;
-	foreach (const QChar &letter, russianString) {
+	for (const QChar &letter : russianString) {
 		result += russianLetters.contains(letter)
 				? translitions[russianLetters.indexOf(letter)] : letter;
 	}

@@ -25,7 +25,7 @@ namespace semantics {
 class ROBOTS_GENERATOR_EXPORT ConditionalNode : public NonZoneNode
 {
 public:
-	explicit ConditionalNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit ConditionalNode(const qReal::Id &idBinded, QObject *parent = nullptr);
 
 	/// Remembers that binded condition must be inverted in the resulting code.
 	/// Calling this method even number of times leaves condition without changes.

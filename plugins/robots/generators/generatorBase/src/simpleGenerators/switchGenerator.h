@@ -29,7 +29,7 @@ public:
 			, const QString &part
 			, const QStringList &values
 			, bool generateIfs
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 };
 
 }

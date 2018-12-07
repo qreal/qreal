@@ -27,10 +27,10 @@ AbstractCommand::AbstractCommand()
 
 AbstractCommand::~AbstractCommand()
 {
-	foreach (AbstractCommand *command, mPreActions) {
+	for (AbstractCommand *command : mPreActions) {
 		delete command;
 	}
-	foreach (AbstractCommand *command, mPostActions) {
+	for (AbstractCommand *command : mPostActions) {
 		delete command;
 	}
 }
@@ -127,12 +127,12 @@ bool AbstractCommand::hierarchyContains(AbstractCommand * const command) const
 			|| contains(mPostActions, command)) {
 		return true;
 	}
-	foreach (AbstractCommand * const childCommand, mPreActions) {
+	for (AbstractCommand * const childCommand : mPreActions) {
 		if (childCommand->hierarchyContains(command)) {
 			return true;
 		}
 	}
-	foreach (AbstractCommand * const childCommand, mPostActions) {
+	for (AbstractCommand * const childCommand : mPostActions) {
 		if (childCommand->hierarchyContains(command)) {
 			return true;
 		}
@@ -143,7 +143,7 @@ bool AbstractCommand::hierarchyContains(AbstractCommand * const command) const
 bool AbstractCommand::contains(QList<AbstractCommand *> const &list
 		, const AbstractCommand *command) const
 {
-	foreach (AbstractCommand * const otherCommand, list) {
+	for (AbstractCommand * const otherCommand : list) {
 		if (*otherCommand == *command && otherCommand != command) {
 			return true;
 		}

@@ -27,8 +27,8 @@ QString QtScriptGenerator::createProperInitAndOutput(QString const &code, bool c
 {
 	QString init = "";
 	QString output = "''";
-	foreach (QString const &elemName, mPropertiesUsage.keys()) {
-		foreach (QString const &propertyName, *mPropertiesUsage.value(elemName)) {
+	for (QString const &elemName : mPropertiesUsage.keys()) {
+		for (QString const &propertyName : *mPropertiesUsage.value(elemName)) {
 			QString const variable = elemName + delimeter + propertyName;
 			QString const curPropertyValue = property(mMatch.value(idByName(elemName)), propertyName);
 

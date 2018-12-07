@@ -39,7 +39,7 @@ public:
 	GraphicalModel(qrRepo::GraphicalRepoApi *repoApi
 			, const EditorManagerInterface &editorManagerInterface);
 
-	virtual ~GraphicalModel();
+	virtual ~GraphicalModel() override;
 
 	/// Sets graphical assist interface for this model. Takes ownership.
 	void setAssistApi(GraphicalModelAssistApi * const graphicalAssistApi);
@@ -48,16 +48,16 @@ public:
 	void updateElements(const Id &logicalId, const QString &name);
 	void addElementToModel(ElementInfo &elementInfo) override;
 	void addElementsToModel(QList<ElementInfo> &elementsInfo) override;
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+	virtual QVariant data(const QModelIndex &index, int role) const override;
+	virtual bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 	virtual void changeParent(const QModelIndex &element, const QModelIndex &parent, const QPointF &position);
 	const qrRepo::GraphicalRepoApi &api() const;
 	qrRepo::GraphicalRepoApi &mutableApi() const;
-	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 	QList<QPersistentModelIndex> indexesWithLogicalId(const Id &logicalId) const;
-	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const;
+	virtual qReal::details::ModelsAssistInterface* modelAssistInterface() const override;
 	GraphicalModelAssistApi &graphicalModelAssistApi() const;
-	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling);
+	virtual void stackBefore(const QModelIndex &element, const QModelIndex &sibling) override;
 
 signals:
 	void nameChanged(const Id &id);
@@ -67,14 +67,14 @@ private:
 	qrRepo::GraphicalRepoApi &mApi;
 	GraphicalModelAssistApi *mGraphicalAssistApi;  // Has ownership.
 
-	virtual void init();
+	virtual void init() override;
 	void loadSubtreeFromClient(modelsImplementation::GraphicalModelItem * const parent);
 	modelsImplementation::GraphicalModelItem *loadElement(modelsImplementation::GraphicalModelItem *parentItem
 			, const Id &id);
 
 	void setNewName(const Id &id, const QString newValue);
 	virtual modelsImplementation::AbstractModelItem *createModelItem(const Id &id
-			, modelsImplementation::AbstractModelItem *parentItem) const;
+			, modelsImplementation::AbstractModelItem *parentItem) const override;
 	void addTree(const Id &parent, const QMultiMap<Id, ElementInfo *> &childrenOfParents, QSet<Id> &visited);
 	/// Adds entries to row model without inserting rows and notifying about that connected views.
 	/// @returns created model item.
@@ -84,7 +84,7 @@ private:
 			, modelsImplementation::AbstractModelItem *parentItem
 			, modelsImplementation::AbstractModelItem *item);
 	virtual void removeModelItemFromApi(details::modelsImplementation::AbstractModelItem *const root
-			, details::modelsImplementation::AbstractModelItem *child);
+			, details::modelsImplementation::AbstractModelItem *child) override;
 };
 }
 }

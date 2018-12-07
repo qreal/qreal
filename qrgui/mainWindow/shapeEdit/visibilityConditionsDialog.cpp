@@ -64,7 +64,7 @@ void VisibilityConditionsDialog::changeOperators(Type type)
 
 void VisibilityConditionsDialog::okClicked()
 {
-	foreach (Item *item, mItems) {
+	for (Item *item : mItems) {
 		item->setVisibilityCondition(ui->propertyComboBox->currentText()
 				, ui->operatorComboBox->currentText(), ui->valueWidget->value());
 	}
@@ -85,7 +85,7 @@ void VisibilityConditionsDialog::setWidgetValues()
 bool VisibilityConditionsDialog::areValuesEqual() const
 {
 	Item::VisibilityCondition value = mItems.first()->visibilityCondition();
-	foreach (Item *item, mItems) {
+	for (Item *item : mItems) {
 		if (item->visibilityCondition() != value) {
 			return false;
 		}

@@ -29,7 +29,7 @@ class QRUTILS_EXPORT QRealDialog : public QDialog
 public:
 	/// @param id The name of this dialog. Used for storing dialog`s parameters
 	///in settings so should be unique.
-	explicit QRealDialog(const QString &id, QWidget *parent = 0);
+	explicit QRealDialog(const QString &id, QWidget *parent = nullptr);
 
 	/// After this method called till the next call of resumeSerialization() this instance will
 	/// not serialize window geometry into settings when closed (default behaviour).

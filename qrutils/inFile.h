@@ -31,7 +31,7 @@ public:
 	/// @param errorString If non-null and file open operation failed it will be assigned with
 	///  human-readable error message.
 	/// @returns All contents of a file.
-	static QString readAll(const QString &fileName, QString *errorString = 0);
+	static QString readAll(const QString &fileName, QString *errorString = nullptr);
 };
 
 }

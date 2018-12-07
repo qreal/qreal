@@ -30,7 +30,8 @@ class QRGUI_MODELS_EXPORT PropertyEditorModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface, QObject *parent = 0);
+	explicit PropertyEditorModel(const qReal::EditorManagerInterface &editorManagerInterface
+			, QObject *parent = nullptr);
 
 	QModelIndex parent(const QModelIndex &index) const;
 

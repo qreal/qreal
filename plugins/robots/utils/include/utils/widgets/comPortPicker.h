@@ -30,7 +30,7 @@ class ROBOTS_UTILS_EXPORT ComPortPicker : public QComboBox
 
 public:
 	/// @param key The key that will be used to store entered COM port value in SettingsManager.
-	explicit ComPortPicker(const QString &key, QObject *parent = 0);
+	explicit ComPortPicker(const QString &key, QObject *parent = nullptr);
 
 	/// Populates the given combo box items list with the list of known COM ports.
 	/// @param settingsKey The name of the key in settings that used to store last selected COM port value. That value

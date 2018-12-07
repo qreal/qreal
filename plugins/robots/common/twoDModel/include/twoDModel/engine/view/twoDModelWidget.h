@@ -70,7 +70,7 @@ class TWO_D_MODEL_EXPORT TwoDModelWidget : public QWidget
 	Q_OBJECT
 
 public:
-	TwoDModelWidget(model::Model &model, QWidget *parent = 0);
+	TwoDModelWidget(model::Model &model, QWidget *parent = nullptr);
 	~TwoDModelWidget();
 
 	/// Overrides default closing behaviour with just hiding window.
@@ -102,7 +102,7 @@ public:
 	QString editorId() const override;
 	bool supportsZooming() const override;
 	void configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find) override;
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &replaceBy) override;
 
 public slots:
 	void zoomIn() override;

@@ -45,7 +45,7 @@ class TWO_D_MODEL_EXPORT Model : public QObject
 	Q_OBJECT
 
 public:
-	explicit Model(QObject *parent = 0);
+	explicit Model(QObject *parent = nullptr);
 	~Model();
 
 	void init(qReal::ErrorReporterInterface &errorReporter

@@ -29,7 +29,7 @@ class ImageItemPopup : public graphicsUtils::ItemPopup
 	Q_OBJECT
 
 public:
-	ImageItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
+	ImageItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = nullptr);
 	~ImageItemPopup();
 
 	/// Returns true if user selected to embed image into save last time.

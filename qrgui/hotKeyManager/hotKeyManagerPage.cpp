@@ -127,7 +127,7 @@ void PreferencesHotKeyManagerPage::loadHotKeys()
 		mUi->hotKeysTable->item(k, 1)->setText(i.value()->whatsThis());
 
 		int j = 0;
-		foreach (const QString &sequence, sequences) {
+		for (const QString &sequence : sequences) {
 			mUi->hotKeysTable->item(k, 2 + j)->setText(sequence);
 			mUi->hotKeysTable->item(k, 2 + j)->setTextColor(Qt::black);
 

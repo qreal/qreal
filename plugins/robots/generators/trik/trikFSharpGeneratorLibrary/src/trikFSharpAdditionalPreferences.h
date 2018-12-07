@@ -28,7 +28,7 @@ class TrikFSharpAdditionalPreferences : public kitBase::AdditionalPreferences
 	Q_OBJECT
 
 public:
-	explicit TrikFSharpAdditionalPreferences(const QString &robotName, QWidget *parent = 0);
+	explicit TrikFSharpAdditionalPreferences(const QString &robotName, QWidget *parent = nullptr);
 	~TrikFSharpAdditionalPreferences() override;
 
 	void save() override;

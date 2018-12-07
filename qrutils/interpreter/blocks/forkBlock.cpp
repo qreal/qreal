@@ -37,7 +37,7 @@ bool ForkBlock::initNextBlocks()
 		return false;
 	}
 
-	foreach (const Id &linkId, links) {
+	for (const Id &linkId : links) {
 		const Id targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull()) {
 			error(tr("Outgoing link is not connected"));

@@ -101,11 +101,11 @@ private:
 	QVariant propertyChain(const QVariant &value, const QStringList &properties, const QString &objectAlias) const;
 	QVariant propertyOf(const QVariant &value, const QString &property, const QString &objectAlias) const;
 	QVariant propertyOf(const QVariant &value, const QString &property
-			, bool *hasProperty = 0, bool *unknownType = 0) const;
-	QVariant propertyOf(const QObject *object, const QString &property, bool *ok = 0) const;
-	QVariant propertyOf(const QPoint &point, const QString &property, bool *ok = 0) const;
-	QVariant propertyOf(const QRect &rect, const QString &property, bool *ok = 0) const;
-	QVariant propertyOf(const QVariantList &list, const QString &property, bool *ok = 0) const;
+			, bool *hasProperty = 0, bool *unknownType = nullptr) const;
+	QVariant propertyOf(const QObject *object, const QString &property, bool *ok = nullptr) const;
+	QVariant propertyOf(const QPoint &point, const QString &property, bool *ok = nullptr) const;
+	QVariant propertyOf(const QRect &rect, const QString &property, bool *ok = nullptr) const;
+	QVariant propertyOf(const QVariantList &list, const QString &property, bool *ok = nullptr) const;
 	void iterate(const QVariant &collection, const std::function<void(const QVariant &)> &visitor) const;
 
 	void reportError(const QString &message) const;

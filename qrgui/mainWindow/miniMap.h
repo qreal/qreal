@@ -35,7 +35,7 @@ public:
 	/// Drag mode is used for dragging a rectangle of the main view
 	enum Mode { None, Drag };
 
-	explicit MiniMap(QWidget *parent = 0);
+	explicit MiniMap(QWidget *parent = nullptr);
 
 	void init(qReal::MainWindow *window);
 	void changeSource(int index);

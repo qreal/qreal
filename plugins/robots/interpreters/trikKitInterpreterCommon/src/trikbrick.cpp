@@ -29,8 +29,15 @@
 #include <kitBase/robotModel/robotParts/random.h>
 #include <twoDModel/robotModel/parts/marker.h>
 #include <twoDModel/engine/model/timeline.h>
+#include <qrkernel/settingsManager.h>
+#include <qrkernel/settingsListener.h>
+#include <qrkernel/platformInfo.h>
+#include <src/qtCameraImplementation.h>
+#include <src/imitationCameraImplementation.h>
+
 ///todo: temporary
 #include <trikKitInterpreterCommon/robotModel/twoD/parts/twoDDisplay.h>
+
 
 using namespace trik;
 
@@ -43,9 +50,10 @@ TrikBrick::TrikBrick(const QSharedPointer<robotModel::twoD::TrikTwoDRobotModel> 
 	connect(this, &TrikBrick::log, this, &TrikBrick::printToShell);
 	mSensorUpdater->setRepeatable(true);
 	mSensorUpdater->setInterval(model->updateIntervalForInterpretation()); // seems to be x2 of timeline tick
-	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout, [model](){
-		model->updateSensorsValues(); /// @todo: maybe connect to model directly?
-	});
+	connect(mSensorUpdater.data(), &utils::AbstractTimer::timeout
+			, mTwoDRobotModel.data(), &robotModel::twoD::TrikTwoDRobotModel::updateSensorsValues);
+
+	reinitImitationCamera();
 }
 
 TrikBrick::~TrikBrick()
@@ -65,15 +73,17 @@ void TrikBrick::reset()
 	for (const auto &m : mMotors) {
 		m->powerOff();
 	}
+
 	for (const auto &e : mEncoders) {
 		e->reset();
 	}
+
 	for (const auto &t : mTimers) {
 		t->stop();
 	}
+
 	qDeleteAll(mTimers);
 	mTimers.clear();
-	QMetaObject::invokeMethod(mSensorUpdater.data(), "stop"); // failproof against timer manipulation in another thread
 }
 
 void TrikBrick::printToShell(const QString &msg)
@@ -85,29 +95,20 @@ void TrikBrick::printToShell(const QString &msg)
 		qDebug("Error: 2d model shell part was not found");
 		return;
 	}
+
 	sh->print(msg);
 }
 
 void TrikBrick::init()
 {
 	mDisplay.init();
-//	for (const auto &m : mMotors) {
-//		m->powerOff();
-//	}
-//	for (const auto &e : mEncoders) {
-//		e->read();
-//	}
-//	for (const auto &s : mSensors) {
-//		s->read();
-//	}
 	mTwoDRobotModel->updateSensorsValues();
 	mMotors.clear(); // needed? reset?
 	mSensors.clear();
 	mEncoders.clear();
 	mKeys.init();
 	mGyroscope.reset(); // for some reason it won't reconnect to the robot parts otherwise.
-	QMetaObject::invokeMethod(mSensorUpdater.data(), "start"); // failproof against timer manipulation in another thread
-	//mSensorUpdater.start();
+	processSensors(true);
 }
 
 void TrikBrick::setCurrentDir(const QString &dir)
@@ -138,6 +139,17 @@ void TrikBrick::setCurrentInputs(const QString &f)
 	mInputs = result;
 }
 
+void TrikBrick::reinitImitationCamera()
+{
+	if (not qReal::SettingsManager::value("TrikSimulatedCameraImagesFromProject").toBool()) {
+		const QString path = qReal::SettingsManager::value("TrikSimulatedCameraImagesPath").toString();
+		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+	} else {
+		const QString path = qReal::PlatformInfo::invariantSettingsPath("trikCameraImitationImagesDir");
+		mImitationCamera.reset(new trikControl::ImitationCameraImplementation({"*.jpg","*.png"}, path));
+	}
+}
+
 void TrikBrick::say(const QString &msg) {
 	using namespace kitBase::robotModel;
 	using namespace trik::robotModel;
@@ -146,6 +158,7 @@ void TrikBrick::say(const QString &msg) {
 		qDebug("Error: 2d model shell part was not found");
 		return;
 	}
+
 	QMetaObject::invokeMethod(sh, "say", Q_ARG(const QString &, msg));
 }
 
@@ -233,6 +246,7 @@ trikControl::VectorSensorInterface *TrikBrick::accelerometer() {
 			emit error(tr("No configured accelerometer"));
 			return nullptr;
 		}
+
 		mAccelerometer.reset(new TrikAccelerometerAdapter(a));
 	}
 
@@ -248,6 +262,7 @@ trikControl::GyroSensorInterface *TrikBrick::gyroscope() {
 			emit error(tr("No configured gyroscope"));
 			return nullptr;
 		}
+
 		mGyroscope.reset(new TrikGyroscopeAdapter(a, mTwoDRobotModel));
 	}
 
@@ -292,18 +307,6 @@ trikControl::EncoderInterface *TrikBrick::encoder(const QString &port) {
 
 trikControl::DisplayInterface *TrikBrick::display()
 {
-//	trik::robotModel::parts::TrikDisplay * const display =
-//			kitBase::robotModel::RobotModelUtils::findDevice<trik::robotModel::parts::TrikDisplay>(*mTwoDRobotModel
-//					, "DisplayPort");
-//	if (display) {
-//		bool res = QMetaObject::invokeMethod(display,
-//		"drawSmile",
-//		Qt::QueuedConnection, // connection type, auto?
-//		Q_ARG(bool, false));
-//		//display->drawSmile(false);
-//		printf(res ? "true" : "false");
-//	}
-//	return nullptr;
 	return &mDisplay;
 }
 
@@ -316,10 +319,38 @@ trikControl::LedInterface *TrikBrick::led() {
 			emit error(tr("No configured led"));
 			return nullptr;
 		}
+
 		mLed.reset(new TrikLedAdapter(l));
 	}
 
 	return mLed.data();
+}
+
+QVector<uint8_t> TrikBrick::getStillImage()
+{
+	const bool webCamera = qReal::SettingsManager::value("TrikWebCameraReal").toBool();
+
+	if (webCamera) {
+		const QString webCameraName = qReal::SettingsManager::value("TrikWebCameraRealName").toString();
+		trikControl::QtCameraImplementation camera(webCameraName);
+		camera.setTempDir(qReal::PlatformInfo::invariantSettingsPath("pathToTempFolder"));
+
+		log(tr("Get photo with camera started"));
+		QVector<uint8_t> photo = camera.getPhoto();
+		log(tr("Get photo with camera finished"));
+		if (photo.isEmpty()) {
+			error(tr("Cannot get a photo from camera (possibly because of wrong camera name)"));
+		}
+
+		return photo;
+	} else {
+		QVector<uint8_t> photo = mImitationCamera->getPhoto();
+		if (photo.isEmpty()) {
+			error(tr("Cannot get a photo from folders/project (possibly because of wrong path/empty project)"));
+		}
+
+		return photo;
+	}
 }
 
 int TrikBrick::random(int from, int to)
@@ -359,13 +390,13 @@ void TrikBrick::wait(int milliseconds)
 			}
 		};
 
-		connect(t.data(), &utils::AbstractTimer::timeout, mainHandler);
-		connect(this, &TrikBrick::stopWaiting, mainHandler);
+		connect(t.data(), &utils::AbstractTimer::timeout, this, mainHandler);
+		connect(this, &TrikBrick::stopWaiting, this, mainHandler);
 
 		// timers that are produced by produceTimer() doesn't use stop singal
 		// be careful, one who use just utils::AbstractTimer can stuck
-		connect(&timeline, &twoDModel::model::Timeline::beforeStop, mainHandler);
-		abortConnection = connect(&abortTimer, &QTimer::timeout, abortHandler);
+		connect(&timeline, &twoDModel::model::Timeline::beforeStop, this, mainHandler);
+		abortConnection = connect(&abortTimer, &QTimer::timeout, this, abortHandler);
 
 		// because timer is depends on twoDModel::model::Timeline
 		if (timeline.isStarted()) {
@@ -411,8 +442,13 @@ utils::AbstractTimer *TrikBrick::timer(int milliseconds)
 {
 	utils::AbstractTimer *result = mTwoDRobotModel->timeline().produceTimer();
 	mTimers.append(result);
-	result->setRepeatable(true); // seems to be the case
+	result->setRepeatable(true);
 	result->start(milliseconds);
 	return result;
+}
+
+void TrikBrick::processSensors(bool isRunnig)
+{
+	QMetaObject::invokeMethod(mSensorUpdater.data(), isRunnig ? "start" : "stop");
 }
 

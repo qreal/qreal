@@ -42,6 +42,8 @@ void SubprogramBlock::run()
 			setVariableValue<bool>(param.name, evalCode<bool>(param.code));
 		} else if (param.type == "int") {
 			setVariableValue<int>(param.name, evalCode<int>(param.code));
+		} else if (param.type == "float") {
+			setVariableValue<qreal>(param.name, evalCode<qreal>(param.code));
 		} else {
 			setVariableValue<QString>(param.name, evalCode<QString>(param.code));
 		}

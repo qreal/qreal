@@ -41,7 +41,7 @@ bool LoopBlock::initNextBlocks()
 	const IdList links = mGraphicalModelApi->graphicalRepoApi().outgoingLinks(id());
 
 	const QString iterationNotFoundError = tr("There must be a link with \"body\" marker on it");
-	foreach (const Id &linkId, links) {
+	for (const Id &linkId : links) {
 		const Id targetBlockId = mGraphicalModelApi->graphicalRepoApi().otherEntityFromLink(linkId, id());
 		if (targetBlockId.isNull()) {
 			error(tr("Outgoing link is not connected"));

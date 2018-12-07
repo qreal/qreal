@@ -112,7 +112,7 @@ void SensorViewer::clear()
 {
 	mPointsDataProcessor->clearData();
 
-	foreach (QGraphicsItem *item, mScene->items()) {
+	for (QGraphicsItem *item : mScene->items()) {
 		QGraphicsLineItem *curLine = qgraphicsitem_cast<QGraphicsLineItem *>(item);
 		if (curLine == nullptr) {
 			continue;
@@ -163,7 +163,7 @@ void SensorViewer::drawNextFrame()
 	// shifting lines left
 	mPointsDataProcessor->makeShiftLeft(stepSize);
 
-	foreach (QGraphicsItem *item, mScene->items()) {
+	for (QGraphicsItem *item : mScene->items()) {
 		QGraphicsLineItem *curLine = qgraphicsitem_cast<QGraphicsLineItem *>(item);
 		if (curLine == nullptr) {
 			continue;

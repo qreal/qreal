@@ -57,10 +57,10 @@ ExerciseExportDialog::ExerciseExportDialog(QWidget *parent)
 
 	QPushButton * const okButton = new QPushButton(tr("Ok"), this);
 	okButton->setDefault(true);
-	connect(okButton, &QPushButton::clicked, [this] () { accept(); });
+	connect(okButton, &QPushButton::clicked, this, [this] () { accept(); });
 
 	QPushButton * const cancelButton = new QPushButton(tr("Cancel"), this);
-	connect(cancelButton, &QPushButton::clicked, [this] () { reject(); });
+	connect(cancelButton, &QPushButton::clicked, this, [this] () { reject(); });
 
 	buttonsLayout->addWidget(okButton);
 	buttonsLayout->addWidget(cancelButton);

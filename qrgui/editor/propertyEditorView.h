@@ -38,7 +38,7 @@ class QRGUI_EDITOR_EXPORT PropertyEditorView : public QWidget
 	Q_OBJECT
 
 public:
-	explicit PropertyEditorView(QWidget *parent = 0);
+	explicit PropertyEditorView(QWidget *parent = nullptr);
 	~PropertyEditorView();
 
 	// QAbstractItemView's methods

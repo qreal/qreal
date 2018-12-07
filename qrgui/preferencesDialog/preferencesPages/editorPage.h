@@ -27,7 +27,7 @@ class PreferencesEditorPage : public qReal::gui::PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit PreferencesEditorPage(QWidget *parent = 0);
+	explicit PreferencesEditorPage(QWidget *parent = nullptr);
 	~PreferencesEditorPage();
 
 	/// Sets value to palette combo box and spin box respectively/

@@ -32,7 +32,7 @@ public:
 
 	virtual QRectF boundingRect() const;
 	virtual QRectF sceneBoundingRectCoord(const QPoint &topLeftPicture);
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
 	virtual void resizeItem(QGraphicsSceneMouseEvent *event);

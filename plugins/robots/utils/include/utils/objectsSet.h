@@ -33,7 +33,7 @@ class ROBOTS_UTILS_EXPORT ObjectsSetBase : public QObject
 public:
 	typedef std::function<void(const QVariant &)> Visitor;
 
-	explicit ObjectsSetBase(QObject *parent = 0);
+	explicit ObjectsSetBase(QObject *parent = nullptr);
 
 	/// Returns an object that was added to this collection first of all.
 	/// If the collection is empty returns invalid QVariant.
@@ -63,7 +63,7 @@ public:
 	/// Creates new collection wraps some existing data source.
 	/// @param list A collection passed by reference. This list must not be temporal instance
 	/// cause it is not copied.
-	explicit ObjectsSet(const QList<T> &list, QObject *parent = 0)
+	explicit ObjectsSet(const QList<T> &list, QObject *parent = nullptr)
 		: ObjectsSetBase(parent)
 		, mList(list)
 	{
@@ -110,8 +110,8 @@ private:
 class ROBOTS_UTILS_EXPORT VariantSet : public ObjectsSetBase
 {
 public:
-	explicit VariantSet(QObject *parent = 0);
-	explicit VariantSet(const QVariantList &list, QObject *parent = 0);
+	explicit VariantSet(QObject *parent = nullptr);
+	explicit VariantSet(const QVariantList &list, QObject *parent = nullptr);
 
 	QVariant first() const override;
 	QVariant last() const override;

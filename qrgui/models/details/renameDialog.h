@@ -23,14 +23,14 @@ namespace gui {
 class RenameDialog : public QDialog
 {
 public:
-	static QString selectNewName(const QString &currentName, QWidget *parent = 0);
+	static QString selectNewName(const QString &currentName, QWidget *parent = nullptr);
 
 private slots:
 	virtual void accept();
 	virtual void reject();
 
 private:
-	explicit RenameDialog(const QString &initialText = "", QWidget *parent = 0);
+	explicit RenameDialog(const QString &initialText = "", QWidget *parent = nullptr);
 	virtual ~RenameDialog();
 
 	QString name() const;

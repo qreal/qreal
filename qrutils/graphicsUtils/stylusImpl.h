@@ -30,7 +30,7 @@ public :
 	QPainterPath shape(const QList<AbstractItem *> &listLine) const;
 
 	void drawItem(const QList<AbstractItem *> &listLine, QPainter *painter, const QStyleOptionGraphicsItem *option
-			, QWidget *widget = 0);
+			, QWidget *widget = nullptr);
 
 	void drawExtractionForItem(const QList<AbstractItem *> &listLine, QPainter *painter);
 	void drawFieldForResizeItem(QPainter* painter);

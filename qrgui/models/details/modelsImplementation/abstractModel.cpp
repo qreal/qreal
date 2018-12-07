@@ -200,16 +200,17 @@ void AbstractModel::reinit()
 
 void AbstractModel::cleanupTree(modelsImplementation::AbstractModelItem * item)
 {
-	foreach (AbstractModelItem *childItem, item->children()) {
+	for (AbstractModelItem *childItem : item->children()) {
 		cleanupTree(childItem);
 		delete childItem;
 	}
+
 	item->clearChildren();
 }
 
 void AbstractModel::removeModelItems(details::modelsImplementation::AbstractModelItem *const root)
 {
-	foreach (AbstractModelItem *child, root->children()) {
+	for (AbstractModelItem *child : root->children()) {
 		removeModelItems(child);
 		int childRow = child->row();
 		beginRemoveRows(index(root),childRow,childRow);

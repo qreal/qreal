@@ -83,7 +83,7 @@ void MetaEditorSupportPlugin::generateEditorForQrxc()
 	QDir dir(".");
 
 	QHash<Id, QPair<QString, QString> > metamodelList = editorGenerator.getMetamodelList();
-	foreach (Id const &key, metamodelList.keys()) {
+	for (Id const &key : metamodelList.keys()) {
 		QString const nameOfTheDirectory = metamodelList[key].first;
 		QString const pathToQRealRoot = metamodelList[key].second;
 		dir.mkpath(nameOfTheDirectory);
@@ -134,7 +134,7 @@ void MetaEditorSupportPlugin::generateEditorWithQrmc()
 
 	int forEditor = 60 / metamodels.size();
 
-	foreach (Id const &key, metamodels) {
+	for (Id const &key : metamodels) {
 		QString const objectType = key.element();
 		if (objectType == "MetamodelDiagram" && mLogicalRepoApi->isLogicalElement(key)) {
 			QString nameOfTheDirectory = mLogicalRepoApi->stringProperty(key, "name of the directory");
@@ -248,7 +248,7 @@ void MetaEditorSupportPlugin::parseEditorXml()
 	QString directoryName = ".";
 	while (dir.cdUp()) {
 		QFileInfoList const infoList = dir.entryInfoList(QDir::Dirs);
-		foreach (QFileInfo const &directory, infoList){
+		for (QFileInfo const &directory : infoList){
 			if (directory.baseName() == "qrxml") {
 				directoryName = directory.absolutePath() + "/qrxml";
 			}

@@ -35,7 +35,7 @@ public:
 	QString name() const;
 	virtual void setIsDynamicText(bool isDynamic);
 	void drawForPictureText(QPainter* painter, QRectF rect);
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 
 	QDomElement setFontToDoc(QDomDocument &document, const QString &domName);
 	virtual QPair<QDomElement, Item::DomElementTypes> generateItem(QDomDocument &document

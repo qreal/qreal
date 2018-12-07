@@ -46,12 +46,12 @@ void MessageGenerator::generate()
 	loadTemplateFromFile(fileName, result);
 	loadUtilsTemplates();
 
-	foreach (Id const &diagram, mApi.elementsByType("DataStructuresDiagram")) {
+	for (Id const &diagram : mApi.elementsByType("DataStructuresDiagram")) {
 		if (!mApi.isLogicalElement(diagram)) {
 			continue;
 		}
 
-		foreach (Id const &element, mApi.children(diagram)) {
+		for (Id const &element : mApi.children(diagram)) {
 			if (!mApi.isLogicalElement(element)) {
 				continue;
 			}
@@ -79,7 +79,7 @@ void MessageGenerator::generate()
 QString MessageGenerator::generateEnumElements(qReal::Id const &element) const
 {
 	QString result;
-	foreach (Id const &id, mApi.children(element)) {
+	for (Id const &id : mApi.children(element)) {
 		if (!mApi.isLogicalElement(id) || id.element() != "EnumElement") {
 			continue;
 		}
@@ -98,7 +98,7 @@ QString MessageGenerator::generateEnumElements(qReal::Id const &element) const
 QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &element) const
 {
 	QString fieldsInitialization;
-	foreach (Id const &property, mApi.children(element)) {
+	for (Id const &property : mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}
@@ -122,7 +122,7 @@ QString MessageGenerator::generateDefaultFieldsInitialization(qReal::Id const &e
 QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element) const
 {
 	QString fieldsInitialization;
-	foreach (Id const &property, mApi.children(element)) {
+	for (Id const &property : mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}
@@ -141,7 +141,7 @@ QString MessageGenerator::generateFieldsInitialization(qReal::Id const &element)
 QString MessageGenerator::generateConstructorArguments(qReal::Id const &element) const
 {
 	QString parametersList;
-	foreach (Id const &property, mApi.children(element)) {
+	for (Id const &property : mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}
@@ -158,7 +158,7 @@ QString MessageGenerator::generateConstructorArguments(qReal::Id const &element)
 QString MessageGenerator::generateConstructorActualArguments(qReal::Id const &element) const
 {
 	QString parametersList;
-	foreach (Id const &property, mApi.children(element)) {
+	for (Id const &property : mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}
@@ -182,7 +182,7 @@ QString MessageGenerator::generateUnpackFields(qReal::Id const &element) const
 QString MessageGenerator::generateSerializationRelatedCode(qReal::Id const &element, QString const &method) const
 {
 	QString serializersList;
-	foreach (Id const &property, mApi.children(element)) {
+	for (Id const &property : mApi.children(element)) {
 		if (!mApi.isLogicalElement(property) || property.element() != "Field") {
 			continue;
 		}

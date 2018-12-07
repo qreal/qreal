@@ -148,7 +148,7 @@ QList<qReal::ActionInfo> VisualDebuggerPlugin::actions()
 void VisualDebuggerPlugin::activeTabChanged(TabInfo const &info)
 {
 	bool const enabled = info.rootDiagramId().diagram() == blockDiagram;
-	foreach (ActionInfo const &actionInfo, mActionInfos) {
+	for (ActionInfo const &actionInfo : mActionInfos) {
 		if (actionInfo.isAction()) {
 			actionInfo.action()->setEnabled(enabled);
 		} else {
@@ -259,7 +259,7 @@ void VisualDebuggerPlugin::placeBreakpointsInDebugger()
 		if (mVisualDebugger->canComputeBreakpoints()) {
 			QList<int>* breakpoints = mVisualDebugger->computeBreakpoints();
 
-			foreach (int const &breakpoint, *breakpoints) {
+			for (int const &breakpoint : *breakpoints) {
 				mDebuggerConnector->sendCommand("break " + QString::number(breakpoint) + "\n");
 			}
 

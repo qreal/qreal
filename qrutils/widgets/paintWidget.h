@@ -30,7 +30,7 @@ class QRUTILS_EXPORT PaintWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit PaintWidget(QWidget *parent = 0);
+	explicit PaintWidget(QWidget *parent = nullptr);
 
 	/// Sets painter which will be used to draw.
 	void setPainter(PainterInterface *painter);

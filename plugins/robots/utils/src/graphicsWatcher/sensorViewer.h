@@ -36,13 +36,13 @@ class SensorViewer : public QGraphicsView
 	Q_OBJECT
 
 public:
-	explicit SensorViewer(QWidget *parent = 0);
+	explicit SensorViewer(QWidget *parent = nullptr);
 	~SensorViewer();
 
 	/// @note All intervals in ms
 	void configureUserOptions(const int &fpsDelay, const int &autoScaleDelay, const int &textInfoUpdateDelay);
 
-	void resizeEvent(QResizeEvent *event = 0);
+	void resizeEvent(QResizeEvent *event = nullptr);
 
 public slots:
 	void setTimeline(TimelineInterface &timeline);

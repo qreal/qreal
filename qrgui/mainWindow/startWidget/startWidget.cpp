@@ -34,7 +34,7 @@ using namespace qReal;
 StartWidget::StartWidget(MainWindow *mainWindow, ProjectManager *projectManager)
 	: mMainWindow(mainWindow)
 	, mProjectManager(projectManager)
-	, mProjectListSize(5)  // TODO: Why 5?
+	, mProjectListSize(SettingsManager::value("recentProjectsLimit", 5).toInt())  // TODO: Why 5?
 	, mNewProjectButton(nullptr)
 	, mOpenProjectButton(nullptr)
 	, mOpenInterpreterButton(nullptr)
@@ -103,6 +103,10 @@ QWidget *StartWidget::createHeader()
 
 QWidget *StartWidget::createRecentProjectsWidget()
 {
+	if (mProjectListSize == 0) {
+		return nullptr;
+	}
+
 	const QString recentProjects = SettingsManager::value("recentProjects").toString();
 	if (recentProjects.isEmpty() || mMainWindow->editorManager().editors().isEmpty()) {
 		return nullptr;

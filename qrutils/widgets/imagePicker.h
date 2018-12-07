@@ -30,7 +30,7 @@ class QRUTILS_EXPORT ImagePicker : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ImagePicker(QWidget *parent = 0);
+	explicit ImagePicker(QWidget *parent = nullptr);
 
 	/// Sets parameters of the image picker.
 	void configure(const QString &settingsKey, const QString &title);

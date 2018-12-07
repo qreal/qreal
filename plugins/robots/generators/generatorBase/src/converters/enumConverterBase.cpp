@@ -31,7 +31,7 @@ void EnumConverterBase::addMapping(const QString &enumValue, const QString &temp
 
 QString EnumConverterBase::convert(const QString &data) const
 {
-	foreach (const QString &value, mValuesToTemplates.keys()) {
+	for (const QString &value : mValuesToTemplates.keys()) {
 		if (value == data) {
 			return readTemplate(mValuesToTemplates[value]);
 		}

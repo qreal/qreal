@@ -26,7 +26,7 @@ public:
 	CommentElementGenerator(const qrRepo::RepoApi &repo
 			, GeneratorCustomizer &customizer
 			, const qReal::Id &id
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 };
 

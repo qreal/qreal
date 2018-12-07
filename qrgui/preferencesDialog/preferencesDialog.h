@@ -36,7 +36,7 @@ class QRGUI_PREFERENCES_DIALOG_EXPORT PreferencesDialog : public utils::QRealDia
 	Q_OBJECT
 
 public:
-	explicit PreferencesDialog(QWidget *parent = 0);
+	explicit PreferencesDialog(QWidget *parent = nullptr);
 	~PreferencesDialog();
 
 	void init();

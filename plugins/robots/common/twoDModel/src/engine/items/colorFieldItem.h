@@ -27,7 +27,7 @@ class ColorFieldItem : public graphicsUtils::AbstractItem
 	Q_PROPERTY(int thickness READ thickness WRITE setThickness)
 
 public:
-	explicit ColorFieldItem(QGraphicsItem *parent = 0);
+	explicit ColorFieldItem(QGraphicsItem *parent = nullptr);
 	~ColorFieldItem() override;
 
 	/// Returns a color of this item.

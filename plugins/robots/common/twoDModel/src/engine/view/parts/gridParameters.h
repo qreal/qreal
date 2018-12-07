@@ -26,7 +26,7 @@ class GridParameters : public QFrame
 	Q_OBJECT
 
 public:
-	explicit GridParameters(QWidget *parent = 0);
+	explicit GridParameters(QWidget *parent = nullptr);
 	~GridParameters();
 
 public slots:

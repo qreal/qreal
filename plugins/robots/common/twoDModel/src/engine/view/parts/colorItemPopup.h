@@ -35,7 +35,7 @@ class ColorItemPopup : public graphicsUtils::ItemPopup
 	Q_OBJECT
 
 public:
-	ColorItemPopup(const QPen &pen, graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
+	ColorItemPopup(const QPen &pen, graphicsUtils::AbstractScene &scene, QWidget *parent = nullptr);
 	~ColorItemPopup();
 
 	/// Returns last color selected by user.

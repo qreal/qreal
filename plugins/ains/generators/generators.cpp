@@ -67,7 +67,7 @@ void AinsPlugin::generateDatabaseScheme()
 {
 
 	QHash<Id, QPair<QString, QString> > modelList = mDatabaseEditorGenerator->modelList();
-	foreach (Id id, modelList.keys()) {
+	for (Id id : modelList.keys()) {
 		QString path = modelList[id].first + "/" + modelList[id].second;
 		mDatabaseEditorGenerator->generateDatabaseScheme(id, path);
 	}

@@ -31,7 +31,7 @@ class RobotItemPopup : public graphicsUtils::ItemPopup
 	Q_OBJECT
 
 public:
-	explicit RobotItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = 0);
+	explicit RobotItemPopup(graphicsUtils::AbstractScene &scene, QWidget *parent = nullptr);
 	~RobotItemPopup();
 
 signals:

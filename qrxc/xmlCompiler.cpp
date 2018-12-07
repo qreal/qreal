@@ -117,7 +117,7 @@ Editor* XmlCompiler::loadXmlFile(const QDir &currentDir, const QString &inputXml
 
 Diagram * XmlCompiler::getDiagram(const QString &diagramName)
 {
-	foreach (Editor *editor, mEditors) {
+	for (Editor *editor : mEditors) {
 		Diagram *diagram = editor->findDiagram(diagramName);
 		if (diagram) {
 			return diagram;

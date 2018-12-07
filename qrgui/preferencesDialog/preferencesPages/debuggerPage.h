@@ -25,7 +25,7 @@ class PreferencesDebuggerPage : public qReal::gui::PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit PreferencesDebuggerPage(QWidget *parent = 0);
+	explicit PreferencesDebuggerPage(QWidget *parent = nullptr);
 	~PreferencesDebuggerPage();
 
 	void save();

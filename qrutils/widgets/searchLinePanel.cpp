@@ -42,6 +42,7 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 	mCloseButton->setIcon(style()->standardIcon(QStyle::SP_DialogCloseButton));
 	mCloseButton->setFlat(true);
 	mCloseButton->setFixedWidth(mCloseButton->height());
+
 	hLayout->addWidget(mCloseButton);
 
 	setFrameShape(QFrame::Box);
@@ -51,7 +52,7 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 
 	connect(mSearchLineEdit, &SearchLineEdit::textChanged, this, &SearchLinePanel::textChanged);
 	connect(mNextButton, &QPushButton::pressed, this, &SearchLinePanel::nextPressed);
-	connect(mCloseButton, &QPushButton::pressed, [this](){
+	connect(mCloseButton, &QPushButton::pressed, this, [this](){
 		emit closePressed();
 		detach();
 		hide();

@@ -39,7 +39,7 @@ Stylus::Stylus(const Stylus &other)
 	mTmpX1 = other.mTmpX1;
 	mTmpY1 = other.mTmpY1;
 	mListScalePoint = other.mListScalePoint;
-	foreach (AbstractItem *line, other.mAbstractListLine) {
+	for (AbstractItem *line : other.mAbstractListLine) {
 		Line *newLine = new Line(*dynamic_cast<Line *>(line));
 		mAbstractListLine.append(newLine);
 	}
@@ -137,7 +137,7 @@ void Stylus::setBrushColor(const QString &text)
 QPair<QDomElement, Item::DomElementTypes> Stylus::generateItem(QDomDocument &document, const QPoint &topLeftPicture)
 {
 	QDomElement stylus = document.createElement("stylus");
-	foreach (AbstractItem *aItem, mAbstractListLine) {
+	for (AbstractItem *aItem : mAbstractListLine) {
 		Line *line = dynamic_cast<Line *>(aItem);
 		QDomElement item = (line->generateItem(document
 				, topLeftPicture - QPoint(static_cast<int>(scenePos().x()), static_cast<int>(scenePos().y())))).first;

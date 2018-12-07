@@ -29,7 +29,7 @@ public:
 	SendMailGenerator(const qrRepo::RepoApi &repo
 			, generatorBase::GeneratorCustomizer &customizer
 			, const qReal::Id &id
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 };
 
 }

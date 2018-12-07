@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. */
 
+#include <QtCore/QDebug>
 #include "controller.h"
 
 using namespace qReal;
@@ -168,7 +169,7 @@ QList<UndoStack *> Controller::stacks() const
 void Controller::projectSaved()
 {
 	mGlobalStack->setClean();
-	foreach (UndoStack * const stack, mModuleStacks) {
+	for (UndoStack * const stack : mModuleStacks) {
 		stack->setClean();
 	}
 }
