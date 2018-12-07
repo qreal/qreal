@@ -22,24 +22,29 @@ using namespace utils::robotCommunication;
 void NetworkCommunicationErrorReporter::connectErrorReporter(const TcpRobotCommunicator &communicator
 		, qReal::ErrorReporterInterface &errorReporter)
 {
-	QObject::connect(&communicator, &TcpRobotCommunicator::trikRuntimeVersionGettingError, [&errorReporter]() {
+	QObject::connect(&communicator, &TcpRobotCommunicator::trikRuntimeVersionGettingError
+			, &communicator, [&errorReporter]() {
 		errorReporter.addError(QObject::tr("Current TRIK runtime version can not be received"));
 	});
 
-	QObject::connect(&communicator, &TcpRobotCommunicator::trikRuntimeVersionError, [&errorReporter]() {
+	QObject::connect(&communicator, &TcpRobotCommunicator::trikRuntimeVersionError
+			, &communicator, [&errorReporter]() {
 		errorReporter.addError(QObject::tr("TRIK runtime version is too old, please update it by pressing "
 				"'Upload Runtime' button on toolbar"));
 	});
 
-	QObject::connect(&communicator, &TcpRobotCommunicator::infoFromRobot, [&errorReporter](const QString &message) {
+	QObject::connect(&communicator, &TcpRobotCommunicator::infoFromRobot
+			, &communicator, [&errorReporter](const QString &message) {
 		errorReporter.addInformation(QObject::tr("From robot: ") + message);
 	});
 
-	QObject::connect(&communicator, &TcpRobotCommunicator::errorFromRobot, [&errorReporter](const QString &message) {
+	QObject::connect(&communicator, &TcpRobotCommunicator::errorFromRobot
+			, &communicator, [&errorReporter](const QString &message) {
 		errorReporter.addError(QObject::tr("From robot: ") + message);
 	});
 
-	QObject::connect(&communicator, &TcpRobotCommunicator::connectionError, [&errorReporter](const QString &message) {
+	QObject::connect(&communicator, &TcpRobotCommunicator::connectionError
+			, &communicator, [&errorReporter](const QString &message) {
 		errorReporter.addError(message);
 	});
 }

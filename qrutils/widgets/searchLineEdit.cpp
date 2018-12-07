@@ -90,15 +90,17 @@ void SearchLineEdit::onTextChanged(const QString &text)
 
 void SearchLineEdit::makeContextMenu()
 {
-	connect(mCaseSensitive, &QAction::triggered, [=]() {
+	connect(mCaseSensitive, &QAction::triggered, this, [=]() {
 		mCurrentOption = SearchOptions::CaseSensitive;
 		notifyTextChanged();
 	});
-	connect(mCaseInsensitive, &QAction::triggered, [=]() {
+
+	connect(mCaseInsensitive, &QAction::triggered, this, [=]() {
 		mCurrentOption = SearchOptions::CaseInsensitive;
 		notifyTextChanged();
 	});
-	connect(mRegularExpression, &QAction::triggered, [=]() {
+
+	connect(mRegularExpression, &QAction::triggered, this, [=]() {
 		mCurrentOption = SearchOptions::RegularExpression;
 		notifyTextChanged();
 	});
