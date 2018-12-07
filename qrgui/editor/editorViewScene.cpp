@@ -91,7 +91,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
-	connect(&mExploser, &view::details::ExploserView::expandElement, [=](const Id &element) {
+	connect(&mExploser, &view::details::ExploserView::expandElement, this, [=](const Id &element) {
 		if (NodeElement * const node = getNodeById(element)) {
 			mController.execute(new ExpandCommand(node));
 		}
@@ -1020,7 +1020,7 @@ void EditorViewScene::createEdgeMenu(const IdList &ids)
 	for (const Id &id : ids) {
 		QAction *element = new QAction(mEditorManager.friendlyName(id), edgeMenu.data());
 		edgeMenu->addAction(element);
-		QObject::connect(element, &QAction::triggered, [this, id](){
+		QObject::connect(element, &QAction::triggered, this, [this, id](){
 			createEdge(id);
 		});
 	}
@@ -1485,13 +1485,13 @@ IdList EditorViewScene::selectedIds() const
 void EditorViewScene::setSearchPanel(ui::SearchLinePanel &searchPanel)
 {
 	searchPanel.setMode(ui::SearchLinePanel::OperationOptions::Find);
-	connect(&searchPanel, &ui::SearchLinePanel::findTextChanged, [this](const QRegExp &txt) {
+	connect(&searchPanel, &ui::SearchLinePanel::findTextChanged, this, [this](const QRegExp &txt) {
 		mSearchText = txt;
 		mLastSearchOccur = false;
 	});
 
 	/// @todo: add more polite politic
-	connect(mModels.graphicalModel(), &QAbstractItemModel::dataChanged, [this]() {
+	connect(mModels.graphicalModel(), &QAbstractItemModel::dataChanged, this, [this]() {
 		mLastSearchOccur = false;
 	});
 
@@ -1547,9 +1547,9 @@ void EditorViewScene::setSearchPanel(ui::SearchLinePanel &searchPanel)
 		mLastSearchElements.at(mCurrentSearchElement)->setFocus(Qt::ShortcutFocusReason);
 	};
 
-	connect(&searchPanel, &ui::SearchLinePanel::nextPressed
+	connect(&searchPanel, &ui::SearchLinePanel::nextPressed, this
 			, [handleNextPreviousSearch](){ handleNextPreviousSearch(true); });
-	connect(&searchPanel, &ui::SearchLinePanel::previousPressed
+	connect(&searchPanel, &ui::SearchLinePanel::previousPressed, this
 			, [handleNextPreviousSearch](){ handleNextPreviousSearch(false); });
 }
 

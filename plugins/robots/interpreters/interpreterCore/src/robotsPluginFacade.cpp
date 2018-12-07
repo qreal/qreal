@@ -143,7 +143,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	connectEventsForKitPlugin();
 
-	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
+	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered, this
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
@@ -152,7 +152,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	// Just to capture them, not configurer.
 	qReal::ProjectManagementInterface &projectManager = configurer.projectManager();
 	qReal::GraphicalModelAssistInterface &graphicalModel = configurer.graphicalModelApi();
-	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &graphicalModel, this]() {
+	connect(&mActionsManager.homeAction(), &QAction::triggered, this, [&projectManager, &graphicalModel, this]() {
 		if (projectManager.somethingOpened()) {
 			for (const qReal::Id &diagram : graphicalModel.children(qReal::Id::rootId())) {
 				if (diagram.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")) {
@@ -188,7 +188,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 				}
 			});
 
-	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered, [this] () {
+	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered, this, [this] () {
 		if (!mSaveAsTaskManager->save()) {
 			mMainWindow->errorReporter()
 					->addError(tr("Cannot export exercise to the given location (try to change location)"));
@@ -200,7 +200,8 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	mProjectManager = &configurer.projectManager();
 	connect(mProjectManager
 			, &qReal::ProjectManagementInterface::afterOpen
-			, [&](const QString &path){
+			, this
+			, [=](const QString &path){
 		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
 		const QString code = logicalRepo->metaInformation("activeCode").toString();
 		const QString name = logicalRepo->metaInformation("activeCodeName").toString();
@@ -356,7 +357,7 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	auto hideVariables = [=]() { mWatchListWindow->hideVariables(mParser->hiddenVariables()); };
 	hideVariables();
-	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, this, hideVariables);
 
 	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, mRobotModelManager, this);
 	connect(&mProxyInterpreter, &kitBase::InterpreterInterface::started

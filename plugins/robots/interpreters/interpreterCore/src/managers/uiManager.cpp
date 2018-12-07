@@ -69,7 +69,7 @@ UiManager::UiManager(QAction &debugModeAction
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::interpretationStarted
 			, mRobotConsole, &qReal::ui::ConsoleDock::clear);
 	connect(&kitPluginEvents, &kitBase::EventsForKitPluginInterface::robotModelChanged
-			, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocksSavingToolbarsAndErrors())); });
+			, this, [=]() { QTimer::singleShot(0, this, SLOT(reloadDocksSavingToolbarsAndErrors())); });
 	connect(&robotModelManager, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, this, &UiManager::onRobotModelChanged);
 	connect(&debugModeAction, &QAction::triggered, this, &UiManager::switchToDebuggerMode);
@@ -78,7 +78,7 @@ UiManager::UiManager(QAction &debugModeAction
 	mRobotConsole->hide();
 	initTab();
 	mCustomWidgetsBar->setObjectName("robotsMiscellaneousBar");
-	connect(this, &QObject::destroyed, [this]() { mCustomWidgetsBar->setParent(nullptr); });
+	connect(this, &QObject::destroyed, this, [this]() { mCustomWidgetsBar->setParent(nullptr); });
 	mMainWindow.addToolBar(Qt::TopToolBarArea, mCustomWidgetsBar);
 	mMainWindow.addDockWidget(Qt::BottomDockWidgetArea, mRobotConsole);
 	mMainWindow.tabifyDockWidget(mRobotConsole, mMainWindow.errorReporterDock());
@@ -110,7 +110,7 @@ void UiManager::placeDevicesConfig(QWidget *devicesWidget)
 {
 	QDockWidget * const devicesDock = produceDockWidget(QObject::tr("Configure devices"), devicesWidget);
 	devicesDock->setObjectName("devicesConfigurationDock");
-	connect(this, &QObject::destroyed, [this, devicesDock](){
+	connect(this, &QObject::destroyed, this, [this, devicesDock](){
 		devicesDock->setParent(nullptr);
 		mDockWidgets.remove(devicesDock);
 	});
@@ -131,12 +131,12 @@ void UiManager::placeWatchPlugins(QDockWidget *watchWindow, QWidget *graphicsWat
 	graphWatchDock->setObjectName("graphicsWatcherDock");
 	mMainWindow.addDockWidget(Qt::LeftDockWidgetArea, graphWatchDock);
 
-	connect(this, &QObject::destroyed, [this, watchWindow](){
+	connect(this, &QObject::destroyed, this, [this, watchWindow](){
 		watchWindow->setParent(nullptr);
 		mDockWidgets.remove(watchWindow);
 	});
 
-	connect(this, &QObject::destroyed, [this, graphWatchDock](){
+	connect(this, &QObject::destroyed, this, [this, graphWatchDock](){
 		graphWatchDock->setParent(nullptr);
 		mDockWidgets.remove(graphWatchDock);
 	});
@@ -154,7 +154,7 @@ void UiManager::addWidgetToToolbar(kitBase::robotModel::RobotModelInterface &rob
 	QAction * const action = mCustomWidgetsBar->addWidget(widget);
 	mToolBarWidgets[action] = &robotModel;
 
-	connect(action, &QAction::changed, [this]() {
+	connect(action, &QAction::changed, this, [this]() {
 		for (QAction * const action : mCustomWidgetsBar->actions()) {
 			if (action->isVisible()) {
 				mCustomWidgetsBar->setVisible(true);
@@ -201,7 +201,7 @@ void UiManager::onRobotModelChanged(kitBase::robotModel::RobotModelInterface &mo
 
 	// Shell can be already configured or not. However, checking for it now or later, when everything is ready for use.
 	subscribeShell();
-	connect(&model, &kitBase::robotModel::RobotModelInterface::allDevicesConfigured, subscribeShell);
+	connect(&model, &kitBase::robotModel::RobotModelInterface::allDevicesConfigured, this, subscribeShell);
 }
 
 void UiManager::switchToEditorMode()
@@ -281,7 +281,7 @@ void UiManager::produceModeButton(UiManager::Mode mode, QAction &action, QStatus
 
 	result->setVisible(false);
 	statusBar->addWidget(result, 10);
-	connect(this, &QObject::destroyed, [result]() { delete result; });
+	connect(this, &QObject::destroyed, this, [result]() { delete result; });
 }
 
 int UiManager::currentMode() const
@@ -448,7 +448,7 @@ void UiManager::enableDocksSnapshotter() const
 	dialog->setLayout(layout);
 	QPushButton * const button = new QPushButton("Snapshot docks", mainWindow);
 	QLineEdit * const lineEdit = new QLineEdit(mainWindow);
-	connect(button, &QPushButton::clicked, [=]() {
+	connect(button, &QPushButton::clicked, this, [=]() {
 		const QString tempSettingsFileName = "tempFileForStoringWindowState";
 		QSettings tempSettings(tempSettingsFileName, QSettings::IniFormat);
 		tempSettings.setValue(currentSettingsKey(), mMainWindow.saveState(currentMode()));

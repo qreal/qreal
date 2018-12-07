@@ -31,7 +31,7 @@ SubprogramsCollectionDialog::SubprogramsCollectionDialog(QMap<QString, bool> &va
 	showWarningLabel(false);
 
 	connect(mUi->listWidget, &QListWidget::itemChanged, this, &SubprogramsCollectionDialog::highlightItem);
-	connect(mUi->selectAllButton, &QPushButton::clicked, [this]() {
+	connect(mUi->selectAllButton, &QPushButton::clicked, this, [this]() {
 		for (int i=0; i < mUi->listWidget->count(); ++i) {
 			mUi->listWidget->item(i)->setCheckState(mSelectMode ? Qt::Checked : Qt::Unchecked);
 		}

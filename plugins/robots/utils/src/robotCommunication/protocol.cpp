@@ -44,7 +44,7 @@ Protocol::~Protocol()
 void Protocol::setAction(QState *state, const std::function<void(TcpRobotCommunicatorInterface &)> &action)
 {
 	state->disconnect();
-	connect(state, &QState::entered, [this, action](){ action(mCommunicator); });
+	connect(state, &QState::entered, this, [this, action](){ action(mCommunicator); });
 }
 
 void Protocol::run()

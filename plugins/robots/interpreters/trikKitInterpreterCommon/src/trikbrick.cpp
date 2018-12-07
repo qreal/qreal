@@ -390,13 +390,13 @@ void TrikBrick::wait(int milliseconds)
 			}
 		};
 
-		connect(t.data(), &utils::AbstractTimer::timeout, mainHandler);
-		connect(this, &TrikBrick::stopWaiting, mainHandler);
+		connect(t.data(), &utils::AbstractTimer::timeout, this, mainHandler);
+		connect(this, &TrikBrick::stopWaiting, this, mainHandler);
 
 		// timers that are produced by produceTimer() doesn't use stop singal
 		// be careful, one who use just utils::AbstractTimer can stuck
-		connect(&timeline, &twoDModel::model::Timeline::beforeStop, mainHandler);
-		abortConnection = connect(&abortTimer, &QTimer::timeout, abortHandler);
+		connect(&timeline, &twoDModel::model::Timeline::beforeStop, this, mainHandler);
+		abortConnection = connect(&abortTimer, &QTimer::timeout, this, abortHandler);
 
 		// because timer is depends on twoDModel::model::Timeline
 		if (timeline.isStarted()) {

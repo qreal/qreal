@@ -76,7 +76,7 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 	setFrameShape(QFrame::StyledPanel);
 	setLayout(gridLayout);
 
-	connect(mSearchLineEdit, &SearchLineEdit::textChanged, [this](const QRegExp &text){
+	connect(mSearchLineEdit, &SearchLineEdit::textChanged, this, [this](const QRegExp &text){
 		setSearchLineColor(QColor("white"));
 		emit findTextChanged(text);
 	});
@@ -84,7 +84,7 @@ SearchLinePanel::SearchLinePanel(QWidget *parent)
 	connect(mNextButton, &QPushButton::pressed, this, &SearchLinePanel::nextPressed);
 	connect(mPreviousButton, &QPushButton::pressed, this, &SearchLinePanel::previousPressed);
 	connect(mReplaceButton, &QPushButton::pressed, this, &SearchLinePanel::replacePressed);
-	connect(mCloseButton, &QPushButton::pressed, [this](){
+	connect(mCloseButton, &QPushButton::pressed, this, [this](){
 		emit closePressed();
 		detach();
 		hide();

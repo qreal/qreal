@@ -169,8 +169,9 @@ bool UploaderTool::checkUnixToolExist(const QString &name, const QStringList &ar
 {
 	QLOG_DEBUG() << "Starting" << qPrintable(name) << args;
 	QProcess tool;
-	connect(&tool, &QProcess::readyReadStandardOutput, [&tool]() { QLOG_DEBUG() << tool.readAllStandardOutput(); });
-	connect(&tool, &QProcess::readyReadStandardError, [&tool]() { QLOG_DEBUG() << tool.readAllStandardError(); });
+	connect(&tool, &QProcess::readyReadStandardOutput
+			, this, [&tool]() { QLOG_DEBUG() << tool.readAllStandardOutput(); });
+	connect(&tool, &QProcess::readyReadStandardError, this, [&tool]() { QLOG_DEBUG() << tool.readAllStandardError(); });
 	tool.start(name, args);
 	if (!tool.waitForFinished()) {
 		QLOG_ERROR() << qPrintable(name) << "failed to start; error: " << tool.errorString();
