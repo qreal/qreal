@@ -54,7 +54,8 @@ const QString jsOverrides = "script.random = brick.random;script.wait = brick.wa
 
 const QString pyOverrides ="\ndef print(args): brick.log(args);\n";
 
-trik::TrikTextualInterpreter::TrikTextualInterpreter(const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
+trik::TrikTextualInterpreter::TrikTextualInterpreter(
+		const QSharedPointer<trik::robotModel::twoD::TrikTwoDRobotModel> &model)
 	: mRunning(false), mBrick(model), mScriptRunner(mBrick, nullptr), mErrorReporter(nullptr)
 {
 	connect(&mBrick, &TrikBrick::error, this, &TrikTextualInterpreter::reportError);
