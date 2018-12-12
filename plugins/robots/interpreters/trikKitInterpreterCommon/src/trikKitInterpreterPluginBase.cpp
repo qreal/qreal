@@ -266,12 +266,17 @@ void TrikKitInterpreterPluginBase::init(const kitBase::KitPluginConfigurator &co
 			, &kitBase::robotModel::RobotModelManagerInterface::robotModelChanged
 			, this
 			, [this](kitBase::robotModel::RobotModelInterface &model){
+
+		mStart.setVisible(false);
+		mStop.setVisible(false);
+
 		mIsModelSelected = robotModels().contains(&model);
 		/// @todo: would probably make sense to make the current opened tab info available globally somewhere
-		bool isCodeTabOpen = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab()) != nullptr;
-		/// @todo: bad, relies on the slot order, because of another @todo in actionManager (custom visibility logic)
-		bool isQtsInterp = mTextualInterpreter->supportedRobotModelNames().contains(model.name());
-		mStart.setVisible(mIsModelSelected && isCodeTabOpen && isQtsInterp);
+		auto textTab = dynamic_cast<qReal::text::QScintillaTextEdit *>(mMainWindow->currentTab());
+		bool isTextualInterp = mTextualInterpreter->supportedRobotModelNames().contains(model.name());
+		/// FIX IT!!!!!!
+		mStart.setVisible(mIsModelSelected && isTextualInterp && textTab
+				&& textTab->currentLanguage().extension == "js");
 		mStop.setVisible(false); // interpretation should always stop when switching models?
 	});
 
