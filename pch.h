@@ -28,17 +28,11 @@
 #include <QtCore/QSocketNotifier>
 #include <QtCore/QReadWriteLock>
 #include <QtCore/qglobal.h>
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-	#include <QtGui/QWidget>
-	#include <QtGui/QLabel>
-	#include <QtGui/QApplication>
-	#include <QtGui/QVBoxLayout>
-#else
-	#include <QtWidgets/QWidget>
-	#include <QtWidgets/QLabel>
-	#include <QtWidgets/QApplication>
-	#include <QtWidgets/QVBoxLayout>
-#endif
-
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QVBoxLayout>
 #include <QtGui/QKeyEvent>
+#include <QtGui/QVector3D>
+#include <QtGui/QVector4D>
+#include <QtGui/QBitmap>

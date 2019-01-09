@@ -266,4 +266,17 @@ defineTest(links) {
 
 	export(LIBS)
 }
+
+defineTest(noPch) {
+	CONFIG -= precompile_header
+	PRECOMPILED_HEADER =
+	export(CONFIG)
+	export(PRECOMPILED_HEADER)
+}
+
+
+CONFIG(noPch) {
+	noPch()
+}
+
 } # GLOBAL_PRI_INCLUDED
