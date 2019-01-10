@@ -28,8 +28,8 @@ configuration:
   - release
 
 cache:
-  - '%BUILD_DIR% -> **\*.pr?'
-  - '%CCACHE_DIR% -> **\*.pr?'
+  - '%BUILD_DIR% -> **\*.pr?, appveyor.yml'
+  - '%CCACHE_DIR% -> **\*.pr?, appveyor.yml'
   - C:\ProgramData\chocolatey\bin -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
   - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
