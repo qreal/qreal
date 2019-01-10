@@ -3,6 +3,8 @@ set -euxo pipefail
 case $TRAVIS_OS_NAME in
   osx)
     REQUIRED_PACKAGES="qt ccache pyenv"
+    export HOMEBREW_TEMP="$HOME/homebrew.tmp"
+    export HOMEBREW_LOGS="$HOMEBREW_TEMP"
     export HOMEBREW_NO_AUTO_UPDATE=1
     for pkg in $REQUIRED_PACKAGES ; do
       p="${pkg##*/}"
