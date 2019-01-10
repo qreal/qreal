@@ -5,6 +5,16 @@ clone_folder: c:\qreal
 clone_depth: 1
 #shallow_clone: true
 
+skip_commits:
+  files:
+    - '.travis/*'
+    - '.travis.yml'
+    - '**/*.html'
+    - '**/*.txt'
+    - '**/*.md'
+  message: /\[NOCI\]/
+
+
 environment:
   global:
     MSYS_DIR: C:\msys64
@@ -37,7 +47,7 @@ cache:
 init:
   - git config --global core.autocrlf true
   - if "x%appveyor_pull_request_number%" EQU "x" set APPVEYOR_CACHE_SKIP_SAVE=true
-  - if "x%appveyor_repo_branch%" NEQ "master" set APPVEYOR_CACHE_SKIP_SAVE=true
+  - if "x%appveyor_repo_branch%" NEQ "xmaster" set APPVEYOR_CACHE_SKIP_SAVE=true
 
 clone_script:
     - cmd: |
