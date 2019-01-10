@@ -1,5 +1,7 @@
-compiler:
-  - gcc
+language: generic
+
+git:
+  depth: 1
 
 env:
   global:
@@ -51,16 +53,12 @@ matrix:
       env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTest TESTS=$ALL_TESTS
       name: "Linux debug + vera + tests"
     - os: osx
-      osx_image: 9.latest
+      language: cpp
       name: "macOS release"
     - os: osx
-      osx_image: 9.latest
+      language: cpp
       name: "macOS debug + tests"
       env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTest TESTS=$ALL_TESTS
-git:
-  depth: 1
-
-language: cpp
 
 before_install:
   - wait $EARLY_START_DOCKER_PULL_PID || true
