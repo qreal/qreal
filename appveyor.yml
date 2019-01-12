@@ -46,7 +46,7 @@ cache:
 
 init:
   - git config --global core.autocrlf true
-  - if "x%appveyor_pull_request_number%" EQU "x" set APPVEYOR_CACHE_SKIP_SAVE=true
+  - if "x%appveyor_pull_request_number%" NEQ "x" set APPVEYOR_CACHE_SKIP_SAVE=true
   - if "x%appveyor_repo_branch%" NEQ "xmaster" set APPVEYOR_CACHE_SKIP_SAVE=true
 
 clone_script:
