@@ -9,7 +9,7 @@ case $TRAVIS_OS_NAME in
     for pkg in $REQUIRED_PACKAGES ; do
       p="${pkg##*/}"
       p="${p%.*}"
-      rmdir $CELLAR_CACHE_DIR/$p &&  ( unset HOMEBREW_NO_AUTO_UPDATE && brew install $pkg ) \
+      rmdir $CELLAR_CACHE_DIR/$p &&  (  brew install $pkg  || echo "FAILED to update $pkg" ) \
       || { brew unlink $p ; brew link --force $p ; }
     done
     # export PYENV_ROOT="$CELLAR_CACHE_DIR/.pyenv"
