@@ -62,17 +62,17 @@ matrix:
 
 before_install:
   - wait $EARLY_START_DOCKER_PULL_PID || true
-  - ./.travis/before_install.sh
+  - ./buildScripts/travis/before_install.sh
 
 install:
-  - ./.travis/install.sh
+  - ./buildScripts/travis/install.sh
 
 script:
-  - ./.travis/script.sh & WPID=$!
+  - ./buildScripts/travis/script.sh & WPID=$!
   - sleep 2400 && { kill $WPID || true ; echo "***KILLED ON TIMEOUT***" ; } & KPID=$!
   - wait $WPID ; RES=$?; kill $KPID > /dev/null ; ( exit $RES )
 after_script:
-  - ./.travis/after_script.sh
+  - ./buildScripts/travis/after_script.sh
   - kill $HEARTBEAT
   - tail -n 1000 build.log
 
