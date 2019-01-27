@@ -8,7 +8,7 @@ case $TRAVIS_OS_NAME in
      export PATH="$(pyenv root)/bin:$PATH"
      eval "$(pyenv init -)"
      export PKG_CONFIG_PATH="$(python3-config --prefix)/lib/pkgconfig"
-     EXECUTOR="buildScripts/travis/with_pyenv "
+     EXECUTOR="buildScripts/with_pyenv "
      QMAKE_EXTRA="CONFIG+=no-sanitizers"
     ;;
   linux)
