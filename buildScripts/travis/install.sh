@@ -2,23 +2,18 @@
 set -euxo pipefail
 case $TRAVIS_OS_NAME in
   osx)
-    REQUIRED_PACKAGES="qt ccache pyenv"
+    REQUIRED_PACKAGES="qt ccache pyenv coreutils"
     export HOMEBREW_TEMP="$HOME/homebrew.tmp"
     export HOMEBREW_LOGS="$HOMEBREW_TEMP"
+    #To turn autoupdate on use `unset HOMEBREW_NO_AUTO_UPDATE` in a sub-shell before `breq install`
     export HOMEBREW_NO_AUTO_UPDATE=1
     for pkg in $REQUIRED_PACKAGES ; do
       p="${pkg##*/}"
       p="${p%.*}"
-      rmdir $CELLAR_CACHE_DIR/$p &&  (  brew install $pkg  || echo "FAILED to update $pkg" ) \
+      rmdir $CELLAR_CACHE_DIR/$p && \
+      ( brew install $pkg || echo "Failed to install $pkg" ) \
       || { brew unlink $p ; brew link --force $p ; }
     done
-    # export PYENV_ROOT="$CELLAR_CACHE_DIR/.pyenv"
-    export PATH="$(pyenv root)/bin:$PATH"
-    eval "$(pyenv init -)"
-    BEST_AVAILABLE_PYTHON_VERSION=$(pyenv install --list | grep -E '^\s*3\.5\.[0-9]+$' | sort -ruVifb | head -n 1)
-    echo "From pyenv the best matched version is $BEST_AVAILABLE_PYTHON_VERSION"
-    env CFLAGS="-O2 -fPIC" pyenv install -s  $BEST_AVAILABLE_PYTHON_VERSION
-    pyenv global $BEST_AVAILABLE_PYTHON_VERSION
   ;;
   linux)
     docker pull trikset/linux-builder
