@@ -50,7 +50,7 @@ public:
 	qReal::SystemEvents &systemEvents();
 	qReal::gui::editor::SceneCustomizationInterface &sceneCustomizer();
 	qReal::TextManagerInterface &textManager();
-
+	const qReal::Id & activeTab();
 	void setActiveTab(qReal::Id const &id);
 
 private:

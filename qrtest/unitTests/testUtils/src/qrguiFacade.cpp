@@ -20,12 +20,11 @@ using namespace ::testing;
 QrguiFacade::QrguiFacade(QString const &modelName)
 	: mModels(modelName, mEditorManager)
 {
-	mActiveTab = mModels.graphicalModelAssistApi().children(mModels.graphicalModelAssistApi().rootId())[0];
 
 	ON_CALL(mMainWindowInterpretersInterfaceMock, errorReporter()).WillByDefault(Return(&mErrorReporterMock));
 
 	ON_CALL(mMainWindowInterpretersInterfaceMock, activeDiagram()).WillByDefault(Invoke(
-			[this] () { return mActiveTab; }
+			[this] () { return activeTab(); }
 	));
 
 	ON_CALL(mMainWindowInterpretersInterfaceMock, highlight(_, _, _)).WillByDefault(Return());
@@ -39,7 +38,7 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 			[this](const QFileInfo &file, const QString & genName, const qReal::text::LanguageInfo &language) {
 				Q_UNUSED(genName)
 				Q_UNUSED(language)
-				emit mSystemEvents.newCodeAppeared(mActiveTab, QFileInfo(file));
+				emit mSystemEvents.newCodeAppeared(activeTab(), QFileInfo(file));
 			}
 			));
 
@@ -142,6 +141,17 @@ qReal::gui::editor::SceneCustomizationInterface &QrguiFacade::sceneCustomizer()
 qReal::TextManagerInterface &QrguiFacade::textManager()
 {
 	return mTextManagerMock;
+}
+
+const qReal::Id &QrguiFacade::activeTab()
+{
+	if (mActiveTab.isNull()) {
+		auto && tabs = mModels.graphicalModelAssistApi().children(mModels.graphicalModelAssistApi().rootId());
+		ASSERT_FALSE(tabs.empty()), mActiveTab;
+		mActiveTab = tabs[0];
+	}
+
+	return mActiveTab;
 }
 
 void QrguiFacade::setActiveTab(qReal::Id const &id)

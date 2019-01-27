@@ -28,9 +28,11 @@ TcpRobotSimulator::TcpRobotSimulator(int port)
 
 TcpRobotSimulator::~TcpRobotSimulator()
 {
-	QMetaObject::invokeMethod(mConnection.data(), "closeConnection");
+	if (mConnection) {
+		QMetaObject::invokeMethod(mConnection.data(), "closeConnection");
+	}
 
-	if (mConnectionThread->isRunning()) {
+	if (mConnectionThread && mConnectionThread->isRunning()) {
 		mConnectionThread->quit();
 		mConnectionThread->wait(1000);
 	}
@@ -50,17 +52,17 @@ void TcpRobotSimulator::incomingConnection(qintptr socketDescriptor)
 
 bool TcpRobotSimulator::runProgramRequestReceived() const
 {
-	return mConnection->runProgramRequestReceived();
+	return mConnection && mConnection->runProgramRequestReceived();
 }
 
 bool TcpRobotSimulator::configVersionRequestReceived() const
 {
-	return mConnection->configVersionRequestReceived();
+	return mConnection && mConnection->configVersionRequestReceived();
 }
 
 bool TcpRobotSimulator::versionRequestReceived() const
 {
-	return mConnection->versionRequestReceived();
+	return mConnection && mConnection->versionRequestReceived();
 }
 
 void TcpRobotSimulator::setConfigVersion(const QString &configVersion)
