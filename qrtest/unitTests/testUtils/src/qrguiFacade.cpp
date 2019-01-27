@@ -76,6 +76,7 @@ QrguiFacade::QrguiFacade(QString const &modelName)
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, dehighlight(_)).Times(AtLeast(0));
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, dehighlight()).Times(AtLeast(0));
 	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, activateItemOrDiagram(_, _)).Times(AtLeast(0));
+	EXPECT_CALL(mMainWindowInterpretersInterfaceMock, currentTab()).Times(AtLeast(0));
 
 	EXPECT_CALL(mErrorReporterMock, addInformation(_, _)).Times(AtLeast(0));
 	EXPECT_CALL(mErrorReporterMock, addWarning(_, _)).Times(AtLeast(0));

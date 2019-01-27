@@ -148,6 +148,7 @@ CommonRobotModelTest::CommonRobotModelDescendantMock::CommonRobotModelDescendant
 			emit connected(true, "");
 		});
 	}
+	EXPECT_CALL(*this, needsConnection()).Times(AtLeast(0));
 }
 
 void CommonRobotModelTest::CommonRobotModelDescendantMock::connectToRobot()
