@@ -5,6 +5,7 @@ git:
 
 env:
   global:
+    - PYENVROOT="$HOME/pyenv.root"
     - CONFIG=release
     - VERA=false
     - PROJECT=qrealRobots
@@ -23,6 +24,7 @@ cache:
     - $CELLAR_CACHE_DIR/ccache
     - $CELLAR_CACHE_DIR/python@3
     - $CELLAR_CACHE_DIR/pyenv
+    - $PYENVROOT
 #    - /usr/local/opt/
 #    - /usr/local/lib/
 #    - $HOME/.ccache
