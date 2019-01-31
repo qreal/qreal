@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Package>
     <DisplayName>Python generator</DisplayName>
-    <DisplayName xml:lang="ru_ru">Генератор в Питон(Python)</DisplayName>
+    <DisplayName xml:lang="ru_ru">Генератор в Python</DisplayName>
     <Description>Install it for Python support in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором ТРИК на языке Питон(Python)</Description>
     <Dependencies>ru.qreal.root.trik.core</Dependencies>
