@@ -82,6 +82,11 @@ void InterpreterTest::SetUp()
 	ON_CALL(mModel, timeline()).WillByDefault(ReturnRef(mTimeline));
 	EXPECT_CALL(mModel, timeline()).Times(AtLeast(1));
 
+	ON_CALL(mModel, updateIntervalForInterpretation()).WillByDefault(Return(10));
+	EXPECT_CALL(mModel, updateIntervalForInterpretation()).Times(AtLeast(1));
+
+	EXPECT_CALL(mModel, updateSensorsValues()).Times(AtLeast(1));
+
 
 	ON_CALL(mModelManager, model()).WillByDefault(ReturnRef(mModel));
 	EXPECT_CALL(mModelManager, model()).Times(AtLeast(1));
