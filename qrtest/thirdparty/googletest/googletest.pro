@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CONFIG += noPch
+
 include(../../../global.pri)
 
 TEMPLATE = lib

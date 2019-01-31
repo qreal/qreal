@@ -368,24 +368,24 @@ int TrikBrick::random(int from, int to)
 
 void TrikBrick::wait(int milliseconds)
 {
-	QEventLoop loop;
-	auto &timeline = dynamic_cast<twoDModel::model::Timeline &> (mTwoDRobotModel->timeline());
+	auto timeline = dynamic_cast<twoDModel::model::Timeline *> (&mTwoDRobotModel->timeline());
 
-	if (timeline.isStarted()) {
-		QScopedPointer<utils::AbstractTimer> t(timeline.produceTimer());
+	if (timeline->isStarted()) {
+		QSharedPointer<utils::AbstractTimer> t(timeline->produceTimer());
 		QTimer abortTimer;
 		QMetaObject::Connection abortConnection;
+		QSharedPointer<QEventLoop> loop (new QEventLoop());
 
-		auto mainHandler = [this, &t, &loop, &timeline, &abortConnection]() {
+		auto mainHandler = [=]() {
 			disconnect(abortConnection);
 			disconnect(this, &TrikBrick::stopWaiting, nullptr, nullptr);
-			disconnect(&timeline, &twoDModel::model::Timeline::beforeStop, nullptr, nullptr);
+			disconnect(timeline, &twoDModel::model::Timeline::beforeStop, nullptr, nullptr);
 			disconnect(t.data(), &utils::AbstractTimer::timeout, nullptr, nullptr);
-			loop.quit();
+			loop->quit();
 		};
 
-		auto abortHandler = [mainHandler, &timeline]() {
-			if (!timeline.isStarted()) {
+		auto abortHandler = [=]() {
+			if (!timeline->isStarted()) {
 				mainHandler();
 			}
 		};
@@ -395,14 +395,14 @@ void TrikBrick::wait(int milliseconds)
 
 		// timers that are produced by produceTimer() doesn't use stop singal
 		// be careful, one who use just utils::AbstractTimer can stuck
-		connect(&timeline, &twoDModel::model::Timeline::beforeStop, this, mainHandler);
+		connect(timeline, &twoDModel::model::Timeline::beforeStop, this, mainHandler);
 		abortConnection = connect(&abortTimer, &QTimer::timeout, this, abortHandler);
 
 		// because timer is depends on twoDModel::model::Timeline
-		if (timeline.isStarted()) {
+		if (timeline->isStarted()) {
 			t->start(milliseconds);
 			abortTimer.start(10);
-			loop.exec();
+			loop->exec();
 		} else {
 			mainHandler();
 		}

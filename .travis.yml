@@ -1,8 +1,11 @@
-compiler:
-  - gcc
+language: generic
+
+git:
+  depth: 1
 
 env:
   global:
+    - PYENVROOT="$HOME/pyenv.root"
     - CONFIG=release
     - VERA=false
     - PROJECT=qrealRobots
@@ -21,6 +24,7 @@ cache:
     - $CELLAR_CACHE_DIR/ccache
     - $CELLAR_CACHE_DIR/python@3
     - $CELLAR_CACHE_DIR/pyenv
+    - $PYENVROOT
 #    - /usr/local/opt/
 #    - /usr/local/lib/
 #    - $HOME/.ccache
@@ -51,30 +55,26 @@ matrix:
       env: CONFIG=debug  VERA=true PROJECT=qrealRobotsTest TESTS=$ALL_TESTS
       name: "Linux debug + vera + tests"
     - os: osx
-      osx_image: 9.latest
+      language: cpp
       name: "macOS release"
     - os: osx
-      osx_image: 9.latest
+      language: cpp
       name: "macOS debug + tests"
       env: CONFIG=debug  VERA=false PROJECT=qrealRobotsTest TESTS=$ALL_TESTS
-git:
-  depth: 1
-
-language: cpp
 
 before_install:
   - wait $EARLY_START_DOCKER_PULL_PID || true
-  - ./.travis/before_install.sh
+  - ./buildScripts/travis/before_install.sh
 
 install:
-  - ./.travis/install.sh
+  - ./buildScripts/travis/install.sh
 
 script:
-  - ./.travis/script.sh & WPID=$!
+  - ./buildScripts/travis/script.sh & WPID=$!
   - sleep 2400 && { kill $WPID || true ; echo "***KILLED ON TIMEOUT***" ; } & KPID=$!
   - wait $WPID ; RES=$?; kill $KPID > /dev/null ; ( exit $RES )
 after_script:
-  - ./.travis/after_script.sh
+  - ./buildScripts/travis/after_script.sh
   - kill $HEARTBEAT
   - tail -n 1000 build.log
 

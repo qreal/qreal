@@ -5,6 +5,16 @@ clone_folder: c:\qreal
 clone_depth: 1
 #shallow_clone: true
 
+skip_commits:
+  files:
+    - 'buildScripts/travis/*'
+    - '.travis.yml'
+    - '**/*.html'
+    - '**/*.txt'
+    - '**/*.md'
+  message: /\[NOCI\]/
+
+
 environment:
   global:
     MSYS_DIR: C:\msys64
@@ -27,15 +37,17 @@ configuration:
 #  - debug
   - release
 
-cache:
-  - C:\ProgramData\chocolatey\bin -> appveyor.yml
-  - C:\ProgramData\chocolatey\lib -> appveyor.yml
-  - '%CCACHE_DIR% -> **\*.pr?'
-  - '%BUILD_DIR% -> **\*.pr?'
-  - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
+#cache:
+#  - '%BUILD_DIR% -> **\*.pr?, appveyor.yml'
+#  - '%CCACHE_DIR% -> **\*.pr?, appveyor.yml'
+#  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+#  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+#  - '%MSYS_DIR%\var\cache\pacman\pkg -> appveyor.yml'
 
 init:
   - git config --global core.autocrlf true
+  - if "x%appveyor_pull_request_number%" NEQ "x" set APPVEYOR_CACHE_SKIP_SAVE=true
+  - if "x%appveyor_repo_branch%" NEQ "xmaster" set APPVEYOR_CACHE_SKIP_SAVE=true
 
 clone_script:
     - cmd: |

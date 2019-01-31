@@ -4,10 +4,11 @@ case $TRAVIS_OS_NAME in
   osx)
      export PATH="/usr/local/opt/qt/bin:$PATH"
      export PATH="/usr/local/opt/ccache/libexec:$PATH"
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
      export PATH="$(pyenv root)/bin:$PATH"
      eval "$(pyenv init -)"
      export PKG_CONFIG_PATH="$(python3-config --prefix)/lib/pkgconfig"
-     EXECUTOR=
+     EXECUTOR="buildScripts/with_pyenv "
      QMAKE_EXTRA="CONFIG+=no-sanitizers"
     ;;
   linux)
@@ -16,7 +17,7 @@ case $TRAVIS_OS_NAME in
    ;;
   *) exit 1 ;;
 esac
-if $VERA ; then $EXECUTOR .travis/runVera++.sh ; fi
+if $VERA ; then $EXECUTOR buildScripts/travis/runVera++.sh ; fi
 $EXECUTOR bash -lc "{ [ -r /root/.bashrc ] && source /root/.bashrc || true ; } ; \
    export CCACHE_DIR=$HOME/.ccache/$TRAVIS_OS_NAME-$CONFIG \
 && export CCACHE_CPP2=yes \
