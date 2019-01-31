@@ -154,6 +154,7 @@ void Connection::processBuffer()
 				}
 			}
 		}
+		break;
 	}
 	case Protocol::endOfLineSeparator:
 	{
@@ -165,6 +166,7 @@ void Connection::processBuffer()
 
 			mBuffer = messages.last();
 		}
+		break;
 	}
 	}
 }
