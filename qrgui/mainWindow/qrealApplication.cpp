@@ -54,6 +54,12 @@ bool QRealApplication::notify(QObject *obj, QEvent *e)
 		break;
 	}
 
+#if 0
+	if (QString(obj->metaObject()->className()) == "<type of destination>") {
+		qDebug() << e << e->type();
+		qDebug() << obj << obj->metaObject()->className();
+	}
+#endif
 	emit lowLevelEvent(obj, e);
 	return QApplication::notify(obj, e);
 }
