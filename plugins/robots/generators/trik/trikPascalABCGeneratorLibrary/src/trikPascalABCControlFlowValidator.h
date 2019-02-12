@@ -26,7 +26,7 @@ public:
 	TrikPascalABCControlFlowValidator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, generatorBase::GeneratorCustomizer &customizer
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	PrimaryControlFlowValidator *clone() override;
 

@@ -69,7 +69,7 @@ public:
 	};
 
 	RobotModel(twoDModel::robotModel::TwoDRobotModel &robotModel
-			, const Settings &settings, QObject *parent = 0);
+			, const Settings &settings, QObject *parent = nullptr);
 
 	~RobotModel();
 

@@ -24,7 +24,7 @@ class UpdateVersionDialog
 {
 public:
 	/// @return true if user wishes to update version now.
-	static bool promptUpdate(QWidget *parent = 0);
+	static bool promptUpdate(QWidget *parent = nullptr);
 };
 
 }

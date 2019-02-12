@@ -70,7 +70,7 @@ QWidget *RobotItemPopup::initFollowButton()
 	mFollowButton = initButton(":/icons/2d_target.png", QString());
 	mFollowButton->setCheckable(true);
 	connect(mFollowButton, &QAbstractButton::toggled, this, &RobotItemPopup::followingChanged);
-	connect(mFollowButton, &QAbstractButton::toggled, [=](bool enabled) {
+	connect(mFollowButton, &QAbstractButton::toggled, this, [=](bool enabled) {
 		mFollowButton->setToolTip(tr("Camera folowing robot: %1")
 				.arg(enabled ? tr("enabled") : tr("disabled")));
 	});

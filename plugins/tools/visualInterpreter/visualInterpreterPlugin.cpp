@@ -179,7 +179,7 @@ void VisualInterpreterPlugin::insertSemanticsEnums(QDomDocument metamodel, QStri
 	QDomElement semanticsEnum = metamodel.createElement("enum");
 	semanticsEnum.setAttribute("name", name);
 
-	foreach (QString const &value, values) {
+	for (QString const &value : values) {
 		QDomElement elem = metamodel.createElement("value");
 		QDomText text = metamodel.createTextNode(value);
 		elem.appendChild(text);
@@ -457,7 +457,7 @@ void VisualInterpreterPlugin::insertPaletteGroups(QDomDocument metamodel, QStrin
 	QDomElement editorGroup = metamodel.createElement("group");
 	editorGroup.setAttribute("name", diagramDisplayedName);
 
-	foreach (QString const &elemName, elementNames) {
+	for (QString const &elemName : elementNames) {
 		QDomElement el = metamodel.createElement("element");
 		el.setAttribute("name", elemName);
 		editorGroup.appendChild(el);
@@ -473,7 +473,7 @@ void VisualInterpreterPlugin::removeDirectory(QString const &dirName)
 {
 	QDir const dir(dirName);
 
-	foreach (QFileInfo info, dir.entryInfoList(QDir::Hidden
+	for (QFileInfo info : dir.entryInfoList(QDir::Hidden
 			| QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files, QDir::DirsFirst))
 	{
 		if (info.isDir()) {

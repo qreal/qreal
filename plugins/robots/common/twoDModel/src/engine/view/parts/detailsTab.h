@@ -25,8 +25,8 @@ class DetailsTab : public QTreeWidget
 	Q_OBJECT
 
 public:
-	explicit DetailsTab(QWidget *parent = 0);
-	~DetailsTab() override;
+	explicit DetailsTab(QWidget *parent = nullptr);
+	~DetailsTab();
 
 public slots:
 	/// Shows display item in corresponding section. If nullptr is passed the whole section will be hidden.

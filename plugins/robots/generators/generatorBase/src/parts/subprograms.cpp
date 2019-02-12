@@ -193,7 +193,7 @@ QString Subprograms::readSubprogramSignature(const Id &id, const QString &pathTo
 Id Subprograms::graphicalId(const Id &logicalId) const
 {
 	const IdList graphicalIds = mRepo.graphicalElements(logicalId.type());
-	foreach (const Id &id, graphicalIds) {
+	for (const Id &id : graphicalIds) {
 		if (mRepo.logicalId(id) == logicalId) {
 			return id;
 		}
@@ -211,7 +211,7 @@ bool Subprograms::checkIdentifier(const QString &identifier, const QString &rawN
 	}
 
 	if (mUsedNames.contains(identifier)) {
-		mErrorReporter.addError(QObject::tr("Duplicate identifier: ") + identifier);
+		mErrorReporter.addError(QObject::tr("Subprograms should have unique names, please rename"));
 		return false;
 	}
 

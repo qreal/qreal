@@ -54,7 +54,7 @@ public:
 	explicit ExploserView(const models::Models &models
 			, Controller &controller
 			, const SceneCustomizer &sceneCustomizer
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Adds to @see contextMenu actions and submenus related to explosions
 	void createConnectionSubmenus(QMenu &contextMenu, const Element * const element) const;

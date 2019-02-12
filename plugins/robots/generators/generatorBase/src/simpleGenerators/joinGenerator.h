@@ -28,7 +28,7 @@ public:
 			, const qReal::Id &id
 			, const QStringList &joinedThreads
 			, const QString &mainThreadId
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	QString generate() override;
 

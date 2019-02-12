@@ -205,7 +205,7 @@ AbstractCommand *Exploser::renameCommands(const Id &oneOfIds, const QString &new
 	DoNothingCommand *result = new DoNothingCommand;
 
 	const IdList idsToRename = explosionsHierarchy(oneOfIds);
-	foreach (const Id &id, idsToRename) {
+	for (const Id &id : idsToRename) {
 		result->addPostAction(new RenameCommand(mApi, id, newNames));
 	}
 
@@ -220,7 +220,7 @@ void Exploser::explosionsHierarchyPrivate(const Id &currentId, IdList &targetIds
 {
 	targetIds << currentId;
 	const IdList incomingExplosions = mApi.logicalRepoApi().incomingExplosions(currentId);
-	foreach (const Id incoming, incomingExplosions) {
+	for (const Id incoming : incomingExplosions) {
 		explosionsHierarchyPrivate(incoming, targetIds);
 	}
 }

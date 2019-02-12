@@ -512,7 +512,7 @@ public:
     };
 
     //! Construct an empty QsciScintilla with parent \a parent.
-    QsciScintilla(QWidget *parent = 0);
+    QsciScintilla(QWidget *parent = nullptr);
 
     //! Destroys the QsciScintilla instance.
     virtual ~QsciScintilla();
@@ -1840,7 +1840,7 @@ public slots:
     //! \a lex is 0 then syntax styling is disabled.
     //!
     //! \sa lexer()
-    virtual void setLexer(QsciLexer *lexer = 0);
+    virtual void setLexer(QsciLexer *lexer = nullptr);
 
     //! Set the background colour of all margins to \a col.  The default is a
     //! gray.

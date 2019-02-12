@@ -59,7 +59,7 @@ QString TextCodeGenerator::generateScript(bool const isApplicationCondition)
 
 bool TextCodeGenerator::hasElementName(QString const &name) const
 {
-	foreach (Id const &id, mRuleElements) {
+	for (Id const &id : mRuleElements) {
 		if (property(id, "name") == name) {
 			return true;
 		}
@@ -69,7 +69,7 @@ bool TextCodeGenerator::hasElementName(QString const &name) const
 
 Id TextCodeGenerator::idByName(QString const &name) const
 {
-	foreach (Id const &id, mRuleElements) {
+	for (Id const &id : mRuleElements) {
 		if (property(id, "name") == name) {
 			return id;
 		}
@@ -153,8 +153,8 @@ void TextCodeGenerator::collectPropertiesUsageAndMethodsInvocation(QString const
 QString TextCodeGenerator::replacePropertiesUsage(QString const &code) const
 {
 	QString res = code;
-	foreach (QString const &elemName, mPropertiesUsage.keys()) {
-		foreach (QString const &propertyName, *mPropertiesUsage.value(elemName)) {
+	for (QString const &elemName : mPropertiesUsage.keys()) {
+		for (QString const &propertyName : *mPropertiesUsage.value(elemName)) {
 			res = res.replace(elemName + "." + propertyName, elemName + delimeter + propertyName);
 		}
 	}
@@ -165,8 +165,8 @@ QString TextCodeGenerator::replaceMethodsInvocation(QString const &code) const
 {
 	QString result = code;
 	QString funcDefs = "";
-	foreach (QString const &elemName, mMethodsInvocation.keys()) {
-		foreach (QString const &propertyName, *mMethodsInvocation.value(elemName)) {
+	for (QString const &elemName : mMethodsInvocation.keys()) {
+		for (QString const &propertyName : *mMethodsInvocation.value(elemName)) {
 			result.replace(elemName + "." + propertyName + "()", elemName + delimeter + propertyName + "()");
 			funcDefs += createBehaviourFunction(elemName, propertyName);
 		}
@@ -216,7 +216,7 @@ QString TextCodeGenerator::escape(QString const &string) const
 
 	QList<QString> escapedSymbols;
 	escapedSymbols << "\\" << "'" << "\"" ;
-	foreach (QString e, escapedSymbols) {
+	for (QString e : escapedSymbols) {
 		result.replace(e, "\\" + e);
 	}
 

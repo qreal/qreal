@@ -49,8 +49,8 @@ void PioneerStateMachineGenerator::performGeneration()
 	mConditionZonesQueue.clear();
 	mSemanticTreeManager.reset(new SemanticTreeManager(*mSemanticTree, mErrorReporter, mErrorsOccured));
 	GotoControlFlowGenerator::performGeneration();
-	if (mConditionals != mConditionalEnds) {
-		reportError(tr("Diagram should have same number of \"Conditonal\" and \"End If\" blocks."));
+	if (mConditionals != mConditionalEnds && not errorsOccured()) {
+		reportError(tr("The diagram must have the same number of \"Conditonal\" and \"End If\" blocks."));
 	}
 }
 
@@ -68,7 +68,7 @@ void PioneerStateMachineGenerator::visitRegular(const qReal::Id &id, const QList
 		mLabeledNodes << links.first().target;
 	}
 
-	if (id.element() == "FiBlock") {
+	if (not mVisitedNodes.contains(id) && id.element() == "FiBlock") {
 		++mConditionalEnds;
 	}
 
@@ -112,6 +112,18 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 	SemanticNode *nextNode = nullptr;
 
 	if (mAsynchronousNodes.contains(thisNode->id().element())) {
+		if (not mSemanticTreeManager->isTopLevelNode(thisNode)) {
+			// we in the if branches or smth like that
+			if (not mConditionZonesQueue.isEmpty()) {
+				const auto * const thenZone = std::get<2>(mConditionZonesQueue.last());
+				const auto * const elseZone = std::get<3>(mConditionZonesQueue.last());
+				auto * const parentZone = thisNode->parentZone();
+				if (thenZone == parentZone || elseZone == parentZone) {
+					mBranchAsyncMarkers[parentZone] = true;
+				}
+			}
+		}
+
 		if (mSemanticTree->findNodeFor(target)) {
 			trace("Asynchronous node, target visited.");
 
@@ -127,12 +139,22 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 				mSemanticTreeManager->addAfter(thisNode, nextNode);
 			}
 
-			if (nextNode->id().element() == "FiBlock" && !mConditionZonesQueue.isEmpty()) {
-				mConditionZonesQueue.dequeue();
+			// already visited target
+			if (nextNode->id().element() == "FiBlock") {
+				if (not mConditionZonesQueue.isEmpty()) {
+					if (std::get<1>(mConditionZonesQueue.last())) {
+						mConditionZonesQueue.removeLast();
+					} else {
+						reportAndExplainConditions();
+						return;
+					}
+				} else {
+					reportError(tr("\"End If\" block occurs before \"If block\""));
+					return;
+				}
 			}
 
 			if (!mLabeledNodes.contains(target)) {
-				//
 				// Target node, despite being already visited, does not have a label, it means that it is a part of
 				// a synchronous fragment. We copy that fragment from this node to the first asyncronous node and
 				// label a start of the copied fragment. At the end of the fragment we will generate said
@@ -191,24 +213,19 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 
 				// Skipping "end" that finishes handler with If.
 				SemanticNode * endOfHandler = findEndOfHandler(parent);
-
-				// here we first time visiting FiBlock
-				if (nextNode->id().element() == "FiBlock") {
-					mConditionZonesQueue.first().second = true;
+				if (not endOfHandler) {
 					endOfHandler = produceEndOfHandlerNode();
 					mSemanticTreeManager->addAfter(parent, endOfHandler);
 				}
 
-				if (!endOfHandler) {
-					reportError(tr("Can not find end of an If statement, generation internal error or "
-							"too complex algorithmic construction."));
-					reportError(tr("Only fully synchronous IF construction is supported now,"
-							" or fully asynchronous IF construction, where \"End if\" has two Asynchronous parents."));
-					return;
-				}
-
 				// Adding our labeled node denoting new handler after the end of a handler with If node.
 				mSemanticTreeManager->addAfter(endOfHandler, nextNode);
+			}
+
+			// here we first time visiting FiBlock and it is descended from async node
+			// it can be not actually in branch zone anymore (if async block appear before it)
+			if (nextNode->id().element() == "FiBlock") {
+				std::get<1>(mConditionZonesQueue.last()) = true;
 			}
 		}
 	} else {
@@ -217,10 +234,10 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 			if (target.element() == "FiBlock") {
 				nextNode = mSemanticTreeManager->produceNode(target);
 				if (mConditionZonesQueue.isEmpty()) {
-					reportError(tr("\"End if\" block without \"Conditional\" is not allowed."));
+					reportError(tr("\"End If\" block occurs before \"If block\""));
 				} else {
-					const QPair<SemanticNode *, bool> conditionZone = mConditionZonesQueue.last();
-					SemanticNode *conditionalZone = conditionZone.first;
+					auto conditionZone = mConditionZonesQueue.last();
+					SemanticNode *conditionalZone = std::get<0>(conditionZone);
 					mSemanticTreeManager->addAfter(conditionalZone, nextNode);
 				}
 
@@ -234,11 +251,13 @@ void PioneerStateMachineGenerator::processNode(NonZoneNode *thisNode, const qRea
 			trace("Synchronous node, target visited.");
 
 			if (target.element() == "FiBlock") {
-				if (mLabeledNodes.contains(target) || mConditionZonesQueue.first().second) {
-					reportError(tr("Only fully synchronous IF construction is supported for now,"
-							" or fully asynchronous IF construction, where \"End if\" has two Asynchronous parents."));
+				auto thenZone = std::get<2>(mConditionZonesQueue.last());
+				auto elseZone = std::get<3>(mConditionZonesQueue.last());
+				if (std::get<1>(mConditionZonesQueue.last())
+						|| mBranchAsyncMarkers[thenZone] || mBranchAsyncMarkers[elseZone]) {
+					reportAndExplainConditions();
 				} else {
-					mConditionZonesQueue.pop_front();
+					mConditionZonesQueue.removeLast();
 					nextNode = mSemanticTreeManager->produceNode(target);
 				}
 
@@ -266,7 +285,9 @@ void PioneerStateMachineGenerator::visitConditional(const qReal::Id &id, const Q
 		return;
 	}
 
-	++mConditionals;
+	if (not mVisitedNodes.contains(id)) {
+		++mConditionals;
+	}
 
 	const QPair<LinkInfo, LinkInfo> branches(ifBranchesFor(id));
 	const LinkInfo thenLink = branches.first;
@@ -279,7 +300,9 @@ void PioneerStateMachineGenerator::visitConditional(const qReal::Id &id, const Q
 
 		mSemanticTreeManager->addToZone(thisNode->thenZone(), thenLink.target);
 		mSemanticTreeManager->addToZone(thisNode->elseZone(), elseLink.target);
-		mConditionZonesQueue.enqueue(qMakePair(thisNode, false));
+		mConditionZonesQueue.enqueue(std::make_tuple(thisNode, false, thisNode->thenZone(), thisNode->elseZone()));
+		mBranchAsyncMarkers[thisNode->thenZone()] = false;
+		mBranchAsyncMarkers[thisNode->elseZone()] = false;
 
 		if (!mSemanticTreeManager->isTopLevelNode(thisNode)) {
 			reportError(tr("Nested If's constructions is not allowed."));
@@ -467,7 +490,9 @@ SemanticNode *PioneerStateMachineGenerator::copySynchronousFragment(
 			return ifNode;
 		}
 	} else {
-		reportError(tr("Purely synchronous loops or If branches are not supported yet."));
+		reportError(tr("There is a problem with If construction or with loops"
+				" (loops without sending requests to the autopilot"
+				" through \"Takeoff\", \"Landing\", \"Go to local point\" blocks are not supported yet)."));
 	}
 
 	return nullptr;
@@ -497,6 +522,21 @@ SemanticNode *PioneerStateMachineGenerator::produceEndOfHandlerNode()
 	// No need for special handling, from the point of view of a generator it is just some simple node.
 	result->bindToSyntheticConstruction(SimpleNode::noSytheticBinding);
 	return result;
+}
+
+void PioneerStateMachineGenerator::addInfo(const QString &message) const
+{
+	mErrorReporter.addInformation(message);
+}
+
+void PioneerStateMachineGenerator::reportAndExplainConditions()
+{
+	addInfo(tr("The blocks (\"Takeoff\", \"Landing\", \"Go to local point\") which work with "
+			"autopilot were observed in both (or only in one) conditional branches."));
+	reportError(tr("Such blocks must appear and finish both branches "
+			"(the \"End if\" block must have two such parents) or not appear at branches at all."));
+	addInfo(tr("Such blocks may appear in each"
+			" branch several times but one of them must finish it in each branch."));
 }
 
 void PioneerStateMachineGenerator::reportError(const QString &message)

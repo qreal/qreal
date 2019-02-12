@@ -97,7 +97,7 @@ void PreferencesDialog::changeEvent(QEvent *e)
 	switch (e->type()) {
 		case QEvent::LanguageChange:
 			mUi->retranslateUi(this);
-			foreach (PreferencesPage *page, mCustomPages.values())
+			for (PreferencesPage *page : mCustomPages.values())
 				page->changeEvent(e);
 			break;
 		default:

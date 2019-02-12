@@ -28,7 +28,7 @@ public:
 			, const qReal::Id &id
 			, bool doWhileForm
 			, bool needInverting
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 };
 
 }

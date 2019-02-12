@@ -19,6 +19,9 @@
 #include "qrgui/systemFacade/components/autosaver.h"
 #include "qrgui/plugins/toolPluginInterface/toolPluginInterfaceDeclSpec.h"
 
+
+#include <QDebug>
+
 namespace qReal {
 
 /// Interface that provides all of the work load project from a file, stored in the project file, and so on

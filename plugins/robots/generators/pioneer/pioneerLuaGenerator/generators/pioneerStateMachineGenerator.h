@@ -46,7 +46,7 @@ public:
 			, generatorBase::GeneratorCustomizer &customizer
 			, generatorBase::PrimaryControlFlowValidator &validator
 			, const qReal::Id &diagramId
-			, QObject *parent = 0
+			, QObject *parent = nullptr
 			, bool isThisDiagramMain = true);
 
 	/// Registers a function that will be called when generator visits a node with given id.
@@ -80,6 +80,9 @@ private:
 
 	/// Logs an error and flags that there were errors.
 	void reportError(const QString &message);
+	/// Logs an information.
+	void addInfo(const QString &message) const;
+	void reportAndExplainConditions();
 
 	/// Return true if this is an If node.
 	static bool isIf(const generatorBase::semantics::SemanticNode * const node);
@@ -124,8 +127,17 @@ private:
 	/// can be breaking change.
 	QSet<qReal::Id> mVisitedNodes;
 
-	/// Queue to keep track conditional nodes. Bolean value indicates presense of asynchronous nodes in braches.
-	QQueue<QPair<generatorBase::semantics::SemanticNode *, bool>> mConditionZonesQueue;
+	/// Queue to keep track conditional nodes.
+	/// The boolean value indicates the fact that the asynchronous node in the branch leads to fi block.
+	/// Zone nodes refer to branch nodes
+	QQueue<std::tuple<
+			generatorBase::semantics::SemanticNode *
+			, bool
+			, generatorBase::semantics::ZoneNode *
+			, generatorBase::semantics::ZoneNode *>> mConditionZonesQueue;
+
+	/// The storage show if the branch contains async node
+	QHash<generatorBase::semantics::ZoneNode *, bool> mBranchAsyncMarkers;
 
 	/// For assertion, that diagram has same number of Conditonal and End If blocks.
 	int mConditionals;

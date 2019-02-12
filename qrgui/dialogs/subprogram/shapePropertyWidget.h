@@ -28,7 +28,7 @@ class ShapePropertyWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ShapePropertyWidget(QWidget *parent = 0);
+	explicit ShapePropertyWidget(QWidget *parent = nullptr);
 
 	/// Configures widget instance to use the set of \a shapes.
 	/// @param currentShape Currently selected shape.

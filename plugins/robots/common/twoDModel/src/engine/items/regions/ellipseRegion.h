@@ -23,7 +23,7 @@ namespace items {
 class EllipseRegion : public RegionItem
 {
 public:
-	explicit EllipseRegion(QGraphicsItem *parent = 0);
+	explicit EllipseRegion(QGraphicsItem *parent = nullptr);
 
 private:
 	QPainterPath shape() const override;

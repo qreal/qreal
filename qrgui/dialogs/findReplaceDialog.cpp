@@ -31,7 +31,7 @@ FindReplaceDialog::FindReplaceDialog(const qrRepo::LogicalRepoApi &logicalRepoAp
 
 	mCheckBoxes.first()->setChecked(true);
 
-	foreach (QCheckBox *current, mCheckBoxes) {
+	for (QCheckBox *current : mCheckBoxes) {
 		connect(current, SIGNAL(clicked()), this, SLOT(tryEnableReplaceButton()));
 	}
 
@@ -70,7 +70,7 @@ void FindReplaceDialog::findClicked()
 {
 	if (mUi->mFindEdit->text().length() != 0) {
 		QStringList searchData;
-		foreach (QCheckBox *current, mCheckBoxes) {
+		for (QCheckBox *current : mCheckBoxes) {
 			if (current->isChecked()) {
 				searchData.append(current->text());
 			}
@@ -86,7 +86,7 @@ void FindReplaceDialog::replaceHandler()
 {
 	if ((mUi->mFindEdit->text().length() != 0) && (mUi->mReplaceEdit->text().length() != 0)) {
 		QStringList searchData;
-		foreach (QCheckBox *current, mCheckBoxes) {
+		for (QCheckBox *current : mCheckBoxes) {
 			if (current->isChecked()) {
 				searchData.append(current->text());
 			}
@@ -110,7 +110,7 @@ void FindReplaceDialog::initIds(QMap<QString, QString> foundData)
 {
 	mUi->mListWidget->clear();
 
-	foreach (QString currentId, foundData.keys()) {
+	for (QString currentId : foundData.keys()) {
 		qReal::Id parentId = mCommonApi.parent(qReal::Id::loadFromString(currentId));
 		QString parentName = mCommonApi.name(parentId);
 		if (!parentName.contains("qrm:/")) {

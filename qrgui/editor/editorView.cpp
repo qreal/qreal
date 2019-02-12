@@ -21,6 +21,7 @@
 #include <qrkernel/settingsListener.h>
 #include <qrutils/mathUtils/math.h>
 #include <qrgui/models/models.h>
+#include <qrutils/widgets/searchLinePanel.h>
 
 using namespace qReal;
 using namespace qReal::gui::editor;
@@ -39,6 +40,7 @@ EditorView::EditorView(const models::Models &models
 	, mMouseOldPosition()
 	, mWheelPressed(false)
 	, mTouchManager(this)
+	, mSearchLinePanel(new ui::SearchLinePanel(this))
 {
 	setRenderHint(QPainter::Antialiasing, true);
 
@@ -239,7 +241,8 @@ void EditorView::ensureElementVisible(const Element * const element)
 		const qreal widgetHeight = size().height();
 		const qreal elementWidth = element->boundingRect().width();
 		const qreal elementHeight = element->boundingRect().height();
-		ensureVisible(element, (widgetWidth - elementWidth) / 2, (widgetHeight - elementHeight) / 2);
+		ensureVisible(element, static_cast<int>((widgetWidth - elementWidth) / 2)
+				, static_cast<int>((widgetHeight - elementHeight) / 2));
 	}
 }
 
@@ -276,10 +279,21 @@ bool EditorView::supportsCutting() const
 	return true;
 }
 
-void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
-		, QAction &copy, QAction &paste, QAction &cut, QAction &find)
+bool EditorView::supportsReplacingBy() const
 {
-	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find);
+	return  true;
+}
+
+bool EditorView::supportsSearching() const
+{
+	return true;
+}
+
+void EditorView::configure(QAction &zoomIn, QAction &zoomOut, QAction &undo, QAction &redo
+		, QAction &copy, QAction &paste, QAction &cut, QAction &find, QAction &findAndReplace, QAction &replaceBy)
+{
+	mScene.configure(zoomIn, zoomOut, undo, redo, copy, paste, cut, find, findAndReplace, replaceBy);
+	mScene.setSearchPanel(*mSearchLinePanel);
 }
 
 void EditorView::zoomInTime()
@@ -333,6 +347,16 @@ void EditorView::paste()
 void EditorView::cut()
 {
 	mScene.cut();
+}
+
+void EditorView::replaceBy()
+{
+	mScene.replaceBy();
+}
+
+void EditorView::find()
+{
+	mSearchLinePanel->attachTo(this);
 }
 
 void EditorView::setSceneFont()

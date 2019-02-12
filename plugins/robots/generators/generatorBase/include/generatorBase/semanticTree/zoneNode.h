@@ -25,7 +25,7 @@ namespace semantics {
 class ROBOTS_GENERATOR_EXPORT ZoneNode : public SemanticNode
 {
 public:
-	explicit ZoneNode(QObject *parent = 0);
+	explicit ZoneNode(QObject *parent = nullptr);
 
 	qReal::Id id() const override;
 

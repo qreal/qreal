@@ -43,7 +43,7 @@ class ReferenceList : public QDialog
 
 public:
 	ReferenceList(qReal::MainWindow *mainWindow, const QPersistentModelIndex &index
-			, const QString &refType, const QStringList &currentValue, int role, QWidget *parent = 0);
+			, const QString &refType, const QStringList &currentValue, int role, QWidget *parent = nullptr);
 	~ReferenceList();
 
 public slots:

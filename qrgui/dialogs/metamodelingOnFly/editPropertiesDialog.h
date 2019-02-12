@@ -42,7 +42,7 @@ public:
 	EditPropertiesDialog(const EditorManagerInterface &interpreterEditorManager
 			, qrRepo::LogicalRepoApi &api
 			, const Id &id
-			, QWidget *parent = 0);
+			, QWidget *parent = nullptr);
 
 	/// Destructor.
 	~EditPropertiesDialog();

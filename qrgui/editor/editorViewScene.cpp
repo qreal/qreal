@@ -22,12 +22,14 @@
 #include <QtWidgets/QMenu>
 #include <math.h>
 #include <qmath.h>
+#include <thread>
 
 #include <qrkernel/definitions.h>
 #include <qrkernel/logging.h>
 #include <qrgui/models/models.h>
 #include <qrgui/mouseGestures/mouseMovementManager.h>
 #include <qrgui/mouseGestures/dummyMouseMovementManager.h>
+#include <qrutils/widgets/searchLinePanel.h>
 #include <metaMetaModel/nodeElementType.h>
 #include <metaMetaModel/edgeElementType.h>
 
@@ -72,7 +74,6 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	, mMouseGesturesEnabled(false)
 	, mExploser(models, controller, sceneCustomizer, this)
 	, mActionDeleteFromDiagram(nullptr)
-
 {
 	mNeedDrawGrid = SettingsManager::value("ShowGrid").toBool();
 	mWidthOfGrid = static_cast<qreal>(SettingsManager::value("GridWidth").toInt()) / 100;
@@ -90,7 +91,7 @@ EditorViewScene::EditorViewScene(const models::Models &models
 	connect(&mExploser, &view::details::ExploserView::goTo, this, &EditorViewScene::goTo);
 	connect(&mExploser, &view::details::ExploserView::refreshPalette, this, &EditorViewScene::refreshPalette);
 	connect(&mExploser, &view::details::ExploserView::openShapeEditor, this, &EditorViewScene::openShapeEditor);
-	connect(&mExploser, &view::details::ExploserView::expandElement, [=](const Id &element) {
+	connect(&mExploser, &view::details::ExploserView::expandElement, this, [=](const Id &element) {
 		if (NodeElement * const node = getNodeById(element)) {
 			mController.execute(new ExpandCommand(node));
 		}
@@ -334,6 +335,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 		if (i > 0) {
 			createElemMenu->addSeparator();
 		}
+
 		const QStringList targetsInGroup = targetsInGroups.values(targetGroups[i]);
 		for (const QString &target : targetsInGroup) {
 			const Id id = Id::loadFromString("qrm:/" + node->id().editor() + "/" + node->id().diagram() + "/" + target);
@@ -341,7 +343,7 @@ int EditorViewScene::launchEdgeMenu(EdgeElement *edge, NodeElement *node
 			QAction *element = new QAction(friendlyName, createElemMenu);
 			// deleted as child of createElemMenu
 			createElemMenu->addAction(element);
-			QObject::connect(element,SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
+			QObject::connect(element, SIGNAL(triggered()), menuSignalMapper, SLOT(map()));
 			menuSignalMapper->setMapping(element, id.toString());
 		}
 	}
@@ -649,6 +651,84 @@ void EditorViewScene::paste(bool isGraphicalCopy)
 	mClipboardHandler.paste(rootItemId(), currentMousePos(), isGraphicalCopy);
 }
 
+void EditorViewScene::replaceBy()
+{
+	QList<NodeElement *> nodes;
+	QList<EdgeElement *> edges;
+
+	// it may be node or edge, node is replaced by new node,
+	// edge is replaced by two edges and node (if it connected and it's not cycled link)
+	for (auto *item : selectedItems()) {
+		if (auto node = dynamic_cast<NodeElement *>(item)) {
+			nodes << node;
+		}
+
+		if (auto edge = dynamic_cast<EdgeElement *>(item)) {
+			edges << edge;
+		}
+	}
+
+	/// @todo: allow multiple replacing
+	if (nodes.size() + edges.size() != 1) {
+		return;
+	}
+
+	Element *elem = edges.isEmpty() ? dynamic_cast<Element *>(nodes.first()) : edges.first();
+	QMenu menu(tr("Replace by..."));
+	auto currentDiagramsAllowedElementsSet = mEditorManager.elements(elem->id()).toSet();
+	const QStringList groups = mEditorManager.paletteGroups(elem->id(), elem->id());
+
+	for (const QString &group : groups) {
+		menu.addSection(group);
+		const QStringList groupsContents = mEditorManager.paletteGroupList(
+				elem->id(), elem->id(), group);
+		for (const QString &elementInGroup : groupsContents) {
+			const Id id = Id::loadFromString("qrm:/" + elem->id().editor() + "/"
+					+ elem->id().diagram() + "/" + elementInGroup);
+			const QString friendlyName = mEditorManager.friendlyName(id);
+			if (currentDiagramsAllowedElementsSet.contains(id)) {
+				QAction *element = new QAction(friendlyName, &menu);
+				element->setData(id.toString());
+				menu.addAction(element);
+			}
+		}
+	}
+
+	if (nodes.size() == 1) {
+		NodeElement *node = nodes.first();
+		const QList<EdgeElement *> edges = node->edgeList();
+		QAction *action = menu.exec(QCursor::pos());
+		if (action) {
+			QString string = action->data().toString();
+			mCreatePoint = node->pos();
+			createElement(string);
+			mController.execute((new RemoveAndUpdateCommand(*this, mModels))->withItemsToDelete({ node->id() }));
+		}
+
+		for (auto edge : edges) {
+			reConnectLink(edge);
+		}
+	} else {
+		EdgeElement *edge = edges.first();
+		if (edge->isHanging()) {
+			return;
+		}
+
+		QAction *action = menu.exec(QCursor::pos());
+		if (action) {
+			QString string = action->data().toString();
+			QPolygonF line = edge->line();
+			if (line.size() == 2) {
+				mCreatePoint = line.boundingRect().center() + edge->pos();
+			} else {
+				mCreatePoint = line.at(line.size() / 2) + edge->pos();
+			}
+
+			const Id createdId = createElement(string);
+		}
+	}
+}
+
 QPointF EditorViewScene::currentMousePos() const
 {
 	const EditorView *editor = nullptr;
@@ -820,6 +900,7 @@ void EditorViewScene::initContextMenu(Element *e, const QPointF &pos)
 	mContextMenu.addAction(mCopyAction);
 	mContextMenu.addAction(mPasteAction);
 	mContextMenu.addAction(mCutAction);
+	mContextMenu.addAction(mReplaceByAction);
 
 	QSignalMapper *createChildMapper = nullptr;
 	if (const NodeElement *node = dynamic_cast<NodeElement *>(e)) {
@@ -851,6 +932,7 @@ void EditorViewScene::updateActions()
 	mCopyAction->setEnabled(elementActionsEnabled);
 	mCutAction->setEnabled(elementActionsEnabled);
 	mPasteAction->setEnabled(!mClipboardHandler.isEmpty());
+	mReplaceByAction->setEnabled(elementActionsEnabled);
 }
 
 void EditorViewScene::getObjectByGesture()
@@ -938,7 +1020,7 @@ void EditorViewScene::createEdgeMenu(const IdList &ids)
 	for (const Id &id : ids) {
 		QAction *element = new QAction(mEditorManager.friendlyName(id), edgeMenu.data());
 		edgeMenu->addAction(element);
-		QObject::connect(element, &QAction::triggered, [this, id](){
+		QObject::connect(element, &QAction::triggered, this, [this, id](){
 			createEdge(id);
 		});
 	}
@@ -1242,6 +1324,7 @@ void EditorViewScene::wheelEvent(QGraphicsSceneWheelEvent *wheelEvent)
 		} else {
 			emit zoomOut();
 		}
+
 		wheelEvent->accept();
 	}
 }
@@ -1397,6 +1480,77 @@ IdList EditorViewScene::selectedIds() const
 	}
 
 	return result;
+}
+
+void EditorViewScene::setSearchPanel(ui::SearchLinePanel &searchPanel)
+{
+	searchPanel.setMode(ui::SearchLinePanel::OperationOptions::Find);
+	connect(&searchPanel, &ui::SearchLinePanel::findTextChanged, this, [this](const QRegExp &txt) {
+		mSearchText = txt;
+		mLastSearchOccur = false;
+	});
+
+	/// @todo: add more polite politic
+	connect(mModels.graphicalModel(), &QAbstractItemModel::dataChanged, this, [this]() {
+		mLastSearchOccur = false;
+	});
+
+	auto handleNextPreviousSearch = [this](bool next) {
+		if (not mLastSearchOccur) {
+			mLastSearchElements.clear();
+			QList<NodeElement *> nodeDiagramElements;
+			for (QGraphicsItem *item : items()) {
+				NodeElement *node = dynamic_cast<NodeElement*>(item);
+				if (node && node->id().diagram() == mRootId.diagram()) {
+					nodeDiagramElements.append(node);
+				}
+			}
+
+			for (auto &&node : nodeDiagramElements) {
+				/// @todo: the node's name is stored in the language which
+				/// isn't updates when Studio change editor language..
+				bool success = false;
+				auto graphicalId = node->id();
+				auto logicalId = mModels.graphicalModelAssistApi().logicalId(graphicalId);
+				auto logicalPropertiesIterator = mModels.logicalRepoApi().propertiesIterator(logicalId);
+				QMap<QString, QVariant> graphicalProperties = mModels.graphicalRepoApi().properties(graphicalId);
+
+				for (auto &&value : graphicalProperties) {
+					success |= value.toString().contains(mSearchText);
+				}
+
+				while (logicalPropertiesIterator.hasNext()) {
+					logicalPropertiesIterator.next();
+					success |= logicalPropertiesIterator.value().toString().contains(mSearchText);
+				}
+
+				if (success) {
+					mLastSearchElements.append(node);
+				}
+			}
+
+			mCurrentSearchElement = 0;
+		}
+
+		if (mLastSearchElements.isEmpty()) {
+			return;
+		}
+
+		mLastSearchOccur = true;
+		this->clearSelection();
+		mCurrentSearchElement = (mCurrentSearchElement + (next ? 1 : -1)) % mLastSearchElements.length();
+		if (mCurrentSearchElement < 0) {
+			mCurrentSearchElement += mLastSearchElements.length();
+		}
+
+		mLastSearchElements.at(mCurrentSearchElement)->setSelected(true);
+		mLastSearchElements.at(mCurrentSearchElement)->setFocus(Qt::ShortcutFocusReason);
+	};
+
+	connect(&searchPanel, &ui::SearchLinePanel::nextPressed, this
+			, [handleNextPreviousSearch](){ handleNextPreviousSearch(true); });
+	connect(&searchPanel, &ui::SearchLinePanel::previousPressed, this
+			, [handleNextPreviousSearch](){ handleNextPreviousSearch(false); });
 }
 
 void EditorViewScene::deselectLabels()

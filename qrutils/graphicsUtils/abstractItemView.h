@@ -25,7 +25,7 @@ class QRUTILS_EXPORT AbstractView : public QGraphicsView
 {
 	Q_OBJECT
 public:
-	AbstractView(QWidget *parent = 0);
+	AbstractView(QWidget *parent = nullptr);
 
 public slots:
 	void zoomIn();

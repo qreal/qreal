@@ -8,15 +8,15 @@
         <translation type="vanished">ТРИК (новый корпус)</translation>
     </message>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="42"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/trikV62KitInterpreterPlugin.cpp" line="47"/>
         <source>TRIK</source>
-        <translation>TRIK</translation>
+        <translation>ТРИК</translation>
     </message>
 </context>
 <context>
     <name>trik::robotModel::real::RealRobotModel</name>
     <message>
-        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/robotModel/real/trikV62RealRobotModel.cpp" line="65"/>
+        <location filename="../../../../plugins/robots/interpreters/trikV62KitInterpreter/src/robotModel/real/trikV62RealRobotModel.cpp" line="69"/>
         <source>Interpretation (Wi-Fi)</source>
         <translation>Интерпретация (Wi-Fi)</translation>
     </message>

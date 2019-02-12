@@ -25,7 +25,7 @@ class PreferencesFeaturesPage : public qReal::gui::PreferencesPage
 	Q_OBJECT
 
 public:
-	explicit PreferencesFeaturesPage(QWidget *parent = 0);
+	explicit PreferencesFeaturesPage(QWidget *parent = nullptr);
 	~PreferencesFeaturesPage();
 
 	void save();

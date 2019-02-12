@@ -46,7 +46,7 @@ class QRGUI_THIRDPARTY_EXPORT QsKineticScroller: public QObject
    Q_OBJECT
 
 public:
-   explicit QsKineticScroller(QObject* parent = 0);
+   explicit QsKineticScroller(QObject* parent = nullptr);
    ~QsKineticScroller();
    //! enabled for one widget only, new calls remove previous association
    void enableKineticScrollFor(QAbstractScrollArea* scrollArea);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<TS version="2.1" language="fr_FR">
 <context>
     <name>AddNodeDialog</name>
     <message>
@@ -61,12 +61,12 @@
     </message>
     <message>
         <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="58"/>
-        <source>Dynamic Properties:</source>
+        <source>Subprogram arguments:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.ui" line="90"/>
-        <source>Add Label</source>
+        <source>Add Argumet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -590,28 +590,44 @@
         <translation type="unfinished">Valeur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="151"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="166"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="181"/>
         <source>Error</source>
         <translation type="unfinished">Erreur</translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="337"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="181"/>
+        <source>There is already a subprogram with that name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="368"/>
         <source>Name is not filled in row %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="348"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="373"/>
+        <source>Name should start with a lowercase letter(row %1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="384"/>
         <source>Value in row %1 is not integer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="358"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="389"/>
+        <source>Value in row %1 is not float</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="399"/>
         <source>Duplicate names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="118"/>
-        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="366"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="129"/>
+        <location filename="../../qrgui/dialogs/subprogram/dynamicPropertiesDialog.cpp" line="407"/>
         <source>Delete</source>
         <translation type="unfinished">Supprimer</translation>
     </message>
@@ -636,7 +652,7 @@
 <context>
     <name>qReal::gui::PropertiesDialog</name>
     <message>
-        <location filename="../../qrgui/dialogs/metamodelingOnFly/propertiesDialog.cpp" line="42"/>
+        <location filename="../../qrgui/dialogs/metamodelingOnFly/propertiesDialog.cpp" line="41"/>
         <source>Properties: </source>
         <translation>Propriétés :</translation>
     </message>

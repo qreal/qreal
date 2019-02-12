@@ -25,7 +25,7 @@ namespace semantics {
 class ROBOTS_GENERATOR_EXPORT LoopNode : public ConditionalNode
 {
 public:
-	explicit LoopNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit LoopNode(const qReal::Id &idBinded, QObject *parent = nullptr);
 
 	void appendChildren(QLinkedList<SemanticNode *> const &nodes);
 

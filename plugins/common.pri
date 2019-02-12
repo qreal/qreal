@@ -14,3 +14,4 @@
 
 SUBDIRS += \
 	$$PWD/tools/updatesChecker/updatesChecker.pro \
+	$$PWD/tools/subprogramsImporterExporter/subprogramsImporterExporter.pro \

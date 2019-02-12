@@ -30,6 +30,10 @@
 
 namespace qReal {
 
+namespace ui {
+class SearchLinePanel;
+}
+
 namespace commands {
 class CreateElementsCommand;
 }
@@ -52,22 +56,22 @@ public:
 			/// @todo: move scene customizer properties to metamodel
 			, const SceneCustomizer &sceneCustomizer
 			, const Id &rootId
-			, QObject *parent = 0);
-	~EditorViewScene();
+			, QObject *parent = nullptr);
+	~EditorViewScene() override;
 
 	void clearScene();
 
 	virtual int launchEdgeMenu(EdgeElement *edge, NodeElement *node, const QPointF &scenePos
-			, bool canBeConnected, qReal::commands::CreateElementsCommand **elementCommand = 0);
+			, bool canBeConnected, qReal::commands::CreateElementsCommand **elementCommand = nullptr);
 
 	//! @arg shiftToParent vector from (0,0) of container Node to new Element (aka localPos)
 	virtual Id createElement(const QString &idString
 			, const QPointF &scenePos
-			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
+			, qReal::commands::CreateElementsCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
 	virtual void createElement(const QMimeData *mimeData, const QPointF &scenePos
-			, qReal::commands::CreateElementsCommand **createCommandPointer = 0
+			, qReal::commands::CreateElementsCommand **createCommandPointer = nullptr
 			, bool executeImmediately = true);
 
 	// is virtual only to trick linker. is used from plugins and generators and we have no intention of
@@ -143,6 +147,9 @@ public:
 	/// Returns a list of ids of currently selected elements.
 	IdList selectedIds() const;
 
+	/// Connects to search panel's signals.
+	void setSearchPanel(ui::SearchLinePanel &searchPanel);
+
 public slots:
 	Id createElement(const QString &type);
 
@@ -150,6 +157,7 @@ public slots:
 	void copy() override;
 	void paste() override;
 	void paste(bool logicalCopy);
+	void replaceBy() override;
 
 	/// selects all elements on the current scene
 	void selectAll();
@@ -289,6 +297,11 @@ private:
 
 	view::details::ExploserView mExploser;
 	QAction mActionDeleteFromDiagram;
+
+	QList<NodeElement *> mLastSearchElements;
+	QRegExp mSearchText;
+	bool mLastSearchOccur = false;
+	int mCurrentSearchElement;
 };
 
 }

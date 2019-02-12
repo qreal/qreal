@@ -28,7 +28,7 @@ class TabWidget : public QTabWidget, public EditorInterface
 
 public:
 	/// Constructor.
-	explicit TabWidget(QWidget *parent = 0);
+	explicit TabWidget(QWidget *parent = nullptr);
 
 	/// Hides close button on the tab with the given \a index.
 	void setTabUnclosable(int index);
@@ -40,6 +40,8 @@ public:
 	bool supportsPasting() const override;
 	bool supportsCutting() const override;
 	bool supportsSearching() const override;
+	bool supportsReplacingBy() const override;
+	bool supportsFindAndReplace() const override;
 
 	void zoomIn() override;
 	void zoomOut() override;
@@ -48,6 +50,8 @@ public:
 	void paste() override;
 	void cut() override;
 	void find() override;
+	void findAndReplace() override;
+	void replaceBy() override;
 
 	void forceFocus() override;
 

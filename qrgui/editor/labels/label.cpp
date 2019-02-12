@@ -56,7 +56,6 @@ const LabelProperties &Label::info() const
 void Label::init()
 {
 	QGraphicsTextItem::setFlags(ItemIsSelectable);
-	QGraphicsTextItem::setFlag(ItemIsMovable, SettingsManager::value("MoveLabels", true).toBool());
 	connect(document(), &QTextDocument::contentsChanged, this, &Label::saveToRepo);
 
 	reinitFont();
@@ -282,13 +281,6 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if (!mShouldMove) {
 		setSelected(false);
-		return;
-	}
-
-	QPointF cursorPoint = mapToItem(this, event->pos());
-
-	if (mIsStretched && SettingsManager::value("ResizeLabels", true).toBool()) {
-		updateRect(cursorPoint);
 		return;
 	}
 

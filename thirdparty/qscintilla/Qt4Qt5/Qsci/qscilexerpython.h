@@ -110,7 +110,7 @@ public:
 
     //! Construct a QsciLexerPython with parent \a parent.  \a parent is
     //! typically the QsciScintilla instance.
-    QsciLexerPython(QObject *parent = 0);
+    QsciLexerPython(QObject *parent = nullptr);
 
     //! Destroys the QsciLexerPython instance.
     virtual ~QsciLexerPython();
@@ -133,7 +133,7 @@ public:
     //! \internal Returns a space separated list of words or characters in
     //! a particular style that define the start of a block for
     //! auto-indentation.  The styles is returned via \a style.
-    const char *blockStart(int *style = 0) const;
+    const char *blockStart(int *style = nullptr) const;
 
     //! \internal Returns the style used for braces for brace matching.
     int braceStyle() const;

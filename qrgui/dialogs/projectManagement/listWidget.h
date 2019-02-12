@@ -27,7 +27,7 @@ class ListWidget : public QWidget
 	Q_OBJECT
 
 public:
-	explicit ListWidget(QWidget *parent = 0);
+	explicit ListWidget(QWidget *parent = nullptr);
 
 	/// @param text Item label
 	/// @param userData Associated with item the string data

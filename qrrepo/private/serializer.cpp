@@ -81,7 +81,8 @@ bool Serializer::saveToDisk(QList<Object *> const &objects, QHash<QString, QVari
 		, "Serializer::saveToDisk(...)"
 		, "may be Repository of RepoApi (see Models constructor also) has been initialised with empty filename?");
 
-	foreach (const Object * const object, objects) {
+	clearWorkingDir();
+	for (const Object * const object : objects) {
 		const QString filePath = createDirectory(object->id(), object->isLogicalObject());
 
 		QDomDocument doc;
@@ -146,7 +147,7 @@ void Serializer::loadFromDisk(const QString &currentPath, QHash<qReal::Id, Objec
 
 void Serializer::loadModel(const QDir &dir, QHash<qReal::Id, Object*> &objectsHash)
 {
-	foreach (const QFileInfo &fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+	for (const QFileInfo &fileInfo : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
 		const QString path = fileInfo.filePath();
 		if (fileInfo.isDir()) {
 			loadModel(path, objectsHash);

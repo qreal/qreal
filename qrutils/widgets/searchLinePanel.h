@@ -1,4 +1,4 @@
-/* Copyright 2017 CyberTech Labs Ltd.
+/* Copyright 2018 CyberTech Labs Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 #include <QtWidgets/QFrame>
 
 class QPushButton;
+class QLineEdit;
+class QHBoxLayout;
 
 namespace qReal {
 namespace ui {
@@ -28,19 +30,45 @@ class SearchLineEdit;
 class QRUTILS_EXPORT SearchLinePanel : public QFrame
 {
 	Q_OBJECT
+	Q_PROPERTY(QColor searchLineColor READ getSearchLineColor WRITE setSearchLineColor)
 
 public:
+	/// A enumeration of possible search options
+	enum class OperationOptions
+	{
+		/// Search representation
+		Find
+		/// Search and replace representation
+		, FindAndReplace
+		/// Go to line and column representation
+		, GoToLineAndColumn
+	};
+
 	explicit SearchLinePanel(QWidget *parent);
 
-	void setBackgroundColor(const QColor &color);
+	void reportError();
 	void attachTo(QWidget *parent);
 	void detach();
 
+	void setMode(const OperationOptions &option);
+	OperationOptions getMode() const;
+
+	QString getTextForReplace() const;
+	QString getTextForFind() const;
+
+public:
+	QColor getSearchLineColor() const;
+	void setSearchLineColor(const QColor &color);
+
 signals:
-	/// Emitted when the text in the text field is modified.
+	/// Emitted when the text in the find text field is modified.
 	/// @param text A ready for matching regular expression.
-	void textChanged(const QRegExp &text);
+	void findTextChanged(const QRegExp &text);
+	/// Emitted when the text in the replace text field is modified.
+	void replaceTextChanged(const QString &text);
 	void nextPressed();
+	void previousPressed();
+	void replacePressed();
 	void closePressed();
 
 protected:
@@ -52,7 +80,13 @@ private:
 
 	SearchLineEdit *mSearchLineEdit;
 	QPushButton *mNextButton;
+	QPushButton *mPreviousButton;
 	QPushButton *mCloseButton;
+	QPushButton *mReplaceButton;
+	QLineEdit *mReplaceLineEdit;
+
+	OperationOptions mCurrentOption;
+	QColor mSearchLineColor = "white";
 };
 
 }

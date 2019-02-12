@@ -38,7 +38,7 @@ public:
 	static const int normalSpeedFactor = 5;
 	static const int immediateSpeedFactor = 100000000;
 
-	explicit Timeline(QObject *parent = 0);
+	explicit Timeline(QObject *parent = nullptr);
 
 	int speedFactor() const;
 

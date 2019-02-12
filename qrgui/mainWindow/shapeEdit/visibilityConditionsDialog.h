@@ -39,7 +39,7 @@ public:
 	};
 
 	explicit VisibilityConditionsDialog(QMap<QString, PropertyInfo> const &enumValues
-			, QList<Item *> const &items, QWidget *parent = 0);
+			, QList<Item *> const &items, QWidget *parent = nullptr);
 	~VisibilityConditionsDialog();
 
 private slots:

@@ -51,7 +51,7 @@ bool DotRunner::run(const QString &algorithm)
 		}
 		const IdList childrenId = mGraphicalModelApi.children(mDiagramId);
 		int index = 1;
-		foreach (Id id, childrenId) {
+		for (Id id : childrenId) {
 			if (mEditorManagerInterface.isGraphicalElementNode(id)) {
 				buildSubgraph(outFile, id, index);
 				writeGraphToDotFile(outFile, id);
@@ -80,7 +80,7 @@ void DotRunner::writeGraphToDotFile(QTextStream &outFile, const Id &id)
 	if (outgoingLinks.isEmpty() && mLogicalModelApi.logicalRepoApi().incomingLinks(id).isEmpty()) {
 		outFile << nameOfElement(id) << ";\n";
 	}
-	foreach (Id linkId, outgoingLinks) {
+	for (Id linkId : outgoingLinks) {
 		const Id elementId = mGraphicalModelApi.graphicalRepoApi().otherEntityFromLink(linkId, id);
 		if (mEditorManagerInterface.isGraphicalElementNode(elementId)) {
 			outFile << nameOfElement(id) << " -> " << nameOfElement(elementId) << ";\n";
@@ -96,7 +96,7 @@ void DotRunner::buildSubgraph(QTextStream &out, const Id &id, int &index)
 	}
 	out << QString("subgraph %1 {\n").arg(index);
 	index++;
-	foreach (Id childId, childrenId) {
+	for (Id childId : childrenId) {
 		buildSubgraph(out, childId, index);
 		writeGraphToDotFile(out, childId);
 	}
@@ -123,7 +123,7 @@ void DotRunner::parseDOTCoordinates()
 	QRegExp regexp("\\s*(\\w+)\\s\\[pos=\"(\\d+\\,\\d+)\"\\,"
 			"\\swidth=\"(\\d+\\.\\d+)\",\\sheight=\"(\\d+\\.\\d+)\"\\]");
 
-	foreach (const QString &string, list) {
+	for (const QString &string : list) {
 		if (string.indexOf(regexp) == -1) {
 			continue;
 		}
@@ -137,7 +137,7 @@ void DotRunner::parseDOTCoordinates()
 				, regexp.capturedTexts().at(4).toDouble());
 		mDOTCoordinatesOfElements.insert(id, qMakePair(pointF, pair));
 	}
-	foreach (const Id &id, mDOTCoordinatesOfElements.keys()) {
+	for (const Id &id : mDOTCoordinatesOfElements.keys()) {
 		const QPolygon configuration = mGraphicalModelApi.configuration(id);
 		int width = 0;
 		int height = 0;

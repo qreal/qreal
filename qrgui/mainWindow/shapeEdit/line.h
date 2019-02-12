@@ -22,14 +22,14 @@ class Line : public Item
 {
 	Q_INTERFACES(AbstractItem)
 public:
-	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = 0);
+	Line(qreal x1, qreal y1, qreal x2, qreal y2, Item* parent = nullptr);
 	Line(const Line &other);
 	virtual Item* clone();
 	QLineF line() const;
 	QPainterPath shape() const;
 	virtual QRectF boundingRect() const;
 	virtual QRectF realBoundingRect() const;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);
 	virtual void changeScalingPointState(qreal x, qreal y);

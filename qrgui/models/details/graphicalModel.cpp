@@ -106,7 +106,7 @@ AbstractModelItem *GraphicalModel::createModelItem(const Id &id, AbstractModelIt
 
 void GraphicalModel::updateElements(const Id &logicalId, const QString &name)
 {
-	foreach (AbstractModelItem *item,  mModelItems.values()) {
+	for (AbstractModelItem *item :  mModelItems.values()) {
 		GraphicalModelItem *graphicalItem = static_cast<GraphicalModelItem *>(item);
 		if (graphicalItem->logicalId() == logicalId) {
 			setNewName(graphicalItem->id(), name);
@@ -429,7 +429,7 @@ void GraphicalModel::removeModelItemFromApi(details::modelsImplementation::Abstr
 QList<QPersistentModelIndex> GraphicalModel::indexesWithLogicalId(const Id &logicalId) const
 {
 	QList<QPersistentModelIndex> indexes;
-	foreach (AbstractModelItem *item, mModelItems.values()) {
+	for (AbstractModelItem *item : mModelItems.values()) {
 		if (static_cast<GraphicalModelItem *>(item)->logicalId() == logicalId)
 			indexes.append(index(item));
 	}

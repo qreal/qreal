@@ -31,7 +31,7 @@ class QRGUI_PREFERENCES_DIALOG_EXPORT PreferencesPage : public QWidget
 	friend class PreferencesDialog;
 
 public:
-	explicit PreferencesPage(QWidget *parent = 0);
+	explicit PreferencesPage(QWidget *parent = nullptr);
 	virtual ~PreferencesPage();
 
 	/// This method will be called on pressing "Apply" or "Ok"

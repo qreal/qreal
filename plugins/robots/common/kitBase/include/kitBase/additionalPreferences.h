@@ -29,7 +29,7 @@ class ROBOTS_KIT_BASE_EXPORT AdditionalPreferences : public qReal::gui::Preferen
 public:
 	/// Constructor.
 	/// @param parent - parent widget in terms of Qt widget system.
-	explicit AdditionalPreferences(QWidget *parent = 0)
+	explicit AdditionalPreferences(QWidget *parent = nullptr)
 		: PreferencesPage(parent)
 	{
 	}

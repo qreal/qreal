@@ -33,6 +33,11 @@ ConstraintsParserTests::ConstraintsParserTests()
 {
 }
 
+ConstraintsParserTests::~ConstraintsParserTests()
+{
+	qDeleteAll(mEvents);
+}
+
 void ConstraintsParserTests::SetUp()
 {
 	qDeleteAll(mEvents);

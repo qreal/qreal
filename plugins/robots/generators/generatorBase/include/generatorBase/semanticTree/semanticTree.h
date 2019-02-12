@@ -37,7 +37,7 @@ class ROBOTS_GENERATOR_EXPORT SemanticTree : public QObject
 {
 public:
 	SemanticTree(GeneratorCustomizer &customizer, const qReal::Id &initialBlock
-			, bool isMainTree, QObject *parent = 0);
+			, bool isMainTree, QObject *parent = nullptr);
 
 	/// Returns an id of the initial node in this semantic tree. Semantic trees are
 	/// equal if their root ids are equal.

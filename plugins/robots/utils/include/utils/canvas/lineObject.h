@@ -29,12 +29,12 @@ class ROBOTS_UTILS_EXPORT LineObject : public CanvasObject
 	Q_PROPERTY(QRect boundingRect READ boundingRect)
 
 public:
-	explicit LineObject(QObject *parent = 0);
+	explicit LineObject(QObject *parent = nullptr);
 	LineObject(const QPoint &begin
 			, const QPoint &end
 			, const QColor &color = Qt::black
 			, int thickness = 1
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Returns the first end of the segment.
 	QPoint begin() const;

@@ -37,7 +37,7 @@ public:
 	PropertiesDialog(const EditorManagerInterface &interpreterEditorManager
 			, qrRepo::LogicalRepoApi &logicalRepoApi
 			, const Id &id
-			, QWidget *parent = 0);
+			, QWidget *parent = nullptr);
 
 	/// Destructor.
 	~PropertiesDialog();

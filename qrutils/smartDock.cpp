@@ -247,7 +247,7 @@ void SmartDock::initDialog()
 	layout->setContentsMargins(0, 0, 0, 0);
 	mDialog->setLayout(layout);
 	mDialog->setVisible(false);
-	connect(mDialog, &QDialog::finished, [=]() {
+	connect(mDialog, &QDialog::finished, this, [=]() {
 		if (mMainWindow) {
 			switchToDocked();
 		} else {

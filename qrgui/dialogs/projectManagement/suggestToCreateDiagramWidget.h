@@ -31,7 +31,7 @@ class SuggestToCreateDiagramWidget : public ListWidget
 
 public:
 	explicit SuggestToCreateDiagramWidget(const EditorManagerInterface &editorManager
-			, QWidget *parent = 0);
+			, QWidget *parent = nullptr);
 
 private:
 	void addItem(const Id &editor, const Id &diagram);

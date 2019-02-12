@@ -130,3 +130,8 @@ qReal::IdList NxtBlocksFactory::blocksToDisable() const
 
 	return result;
 }
+
+qReal::IdList NxtBlocksFactory::blocksToHide() const
+{
+	return { id("Join"), id("SendMessageThreads"), id("ReceiveMessageThreads"), id("KillThread") };
+}

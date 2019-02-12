@@ -55,7 +55,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Dynamic Properties:</string>
+      <string>Subprogram arguments:</string>
      </property>
     </widget>
    </item>
@@ -87,7 +87,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Add Label</string>
+      <string>Add Argumet</string>
      </property>
     </widget>
    </item>

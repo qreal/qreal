@@ -50,7 +50,7 @@ IdList BaseGraphTransformationUnit::elementsFromActiveDiagram() const
 	}
 	const IdList activeDiagramElements = children(activeDiagram);
 	IdList activeDiagramGraphicalElements;
-	foreach (const Id &id, activeDiagramElements) {
+	for (const Id &id : activeDiagramElements) {
 		if (mGraphicalModelApi.isGraphicalId(id)) {
 			activeDiagramGraphicalElements.append(id);
 		}
@@ -81,7 +81,7 @@ bool BaseGraphTransformationUnit::checkRuleMatching(const IdList &elements)
 
 	mNodesHavingOutsideLinks.append(startElem);
 
-	foreach (const Id &element, elements) {
+	for (const Id &element : elements) {
 		if (compareElements(element, startElem)) {
 			mCurrentMatchedGraphInRule.clear();
 			mCurrentMatchedGraphInModel.clear();
@@ -134,26 +134,26 @@ bool BaseGraphTransformationUnit::checkRuleMatchingRecursively()
 		IdList currentMatchedGraphInModelBackup = mCurrentMatchedGraphInModel;
 		const int posBackup = mPos;
 
-		foreach (const Id &linkInModel, linksInModel) {
+		for (const Id &linkInModel : linksInModel) {
 			const Id linkEndInModelElement = linkEndInModel(linkInModel, nodeInModel);
 			if (checkNodeForAddingToMatch(linkEndInModelElement, linkEndInRuleElement)) {
 				if (checkRuleMatchingRecursively()) {
 					isMatched = true;
 					mMatch = QHash<Id, Id>();
-					foreach (const Id id, matchBackup.keys()) {
+					for (const Id id : matchBackup.keys()) {
 						mMatch.insert(id, matchBackup.value(id));
 					}
 
 					mNodesHavingOutsideLinks = IdList();
-					foreach (const Id id, nodesHavingOutsideLinksBackup) {
+					for (const Id id : nodesHavingOutsideLinksBackup) {
 						mNodesHavingOutsideLinks.append(id);
 					}
 					mCurrentMatchedGraphInRule = IdList();
-					foreach (const Id id, currentMatchedGraphInRuleBackup) {
+					for (const Id id : currentMatchedGraphInRuleBackup) {
 						mCurrentMatchedGraphInRule.append(id);
 					}
 					mCurrentMatchedGraphInModel = IdList();
-					foreach (const Id id, currentMatchedGraphInModelBackup) {
+					for (const Id id : currentMatchedGraphInModelBackup) {
 						mCurrentMatchedGraphInModel.append(id);
 					}
 
@@ -196,7 +196,7 @@ bool BaseGraphTransformationUnit::checkExistingLinks(const Id &nodeInModel
 {
 	const IdList linksInRuleElement = linksInRule(nodeInRule);
 
-	foreach (const Id &linkInRule, linksInRuleElement) {
+	for (const Id &linkInRule : linksInRuleElement) {
 		const Id linkEndInR = linkEndInRule(linkInRule, nodeInRule);
 		if (mCurrentMatchedGraphInRule.contains(linkEndInR)) {
 			Id properLinkInModel = properLink(nodeInModel, linkInRule, linkEndInR);
@@ -230,7 +230,7 @@ void BaseGraphTransformationUnit::rollback()
 	}
 
 	const IdList links = linksToMatchedSubgraph(nodeToRemove);
-	foreach (const Id &link, links) {
+	for (const Id &link : links) {
 		mMatch.remove(link);
 	}
 }
@@ -239,7 +239,7 @@ IdList BaseGraphTransformationUnit::linksToMatchedSubgraph(const Id &nodeInRule)
 {
 	IdList result;
 	const IdList lnksInRule = linksInRule(nodeInRule);
-	foreach (const Id &link, lnksInRule) {
+	for (const Id &link : lnksInRule) {
 		const Id linkEnd = linkEndInRule(link, nodeInRule);
 		if (mCurrentMatchedGraphInRule.contains(linkEnd)) {
 			result.append(link);
@@ -251,7 +251,7 @@ IdList BaseGraphTransformationUnit::linksToMatchedSubgraph(const Id &nodeInRule)
 Id BaseGraphTransformationUnit::outsideLink(const Id &nodeInRule) const
 {
 	const IdList lnksInRule = linksInRule(nodeInRule);
-	foreach (const Id &linkInRule, lnksInRule) {
+	for (const Id &linkInRule : lnksInRule) {
 		const Id linkEndInR = linkEndInRule(linkInRule, nodeInRule);
 		if (!mCurrentMatchedGraphInRule.contains(linkEndInR)) {
 			return linkInRule;
@@ -282,7 +282,7 @@ Id BaseGraphTransformationUnit::linkEndInRule(const Id &linkInRule, const Id &no
 Id BaseGraphTransformationUnit::properLink(const Id &nodeInModel, const Id &linkInRule, const Id &linkEndInR) const
 {
 	const IdList lnksInModel = linksInModel(nodeInModel);
-	foreach (const Id &linkInModel, lnksInModel) {
+	for (const Id &linkInModel : lnksInModel) {
 		if (compareLinks(linkInModel, linkInRule)) {
 			Id linkEndInM = linkEndInModel(linkInModel, nodeInModel);
 			if (!mLogicalModelApi.isLogicalId(linkEndInM)) {
@@ -305,7 +305,7 @@ IdList BaseGraphTransformationUnit::properLinks(const Id &nodeInModel, const Id 
 {
 	IdList result;
 	const IdList lnksInModel = linksInModel(nodeInModel);
-	foreach (const Id &linkInModel, lnksInModel) {
+	for (const Id &linkInModel : lnksInModel) {
 		if (mCurrentMatchedGraphInModel.contains(linkEndInModel(linkInModel, nodeInModel))) {
 			continue;
 		}
@@ -367,7 +367,7 @@ bool BaseGraphTransformationUnit::compareElementTypesAndProperties(const Id &fir
 {
 	if (first.element() == second.element() && first.diagram() == second.diagram()) {
 		QHash<QString, QVariant> secondProperties = properties(second);
-		foreach (const QString &key, secondProperties.keys()) {
+		for (const QString &key : secondProperties.keys()) {
 			const QVariant value = secondProperties.value(key);
 			if (value.toString().isEmpty()) {
 				continue;

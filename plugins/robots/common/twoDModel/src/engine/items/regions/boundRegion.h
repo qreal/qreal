@@ -23,7 +23,7 @@ namespace items {
 class BoundRegion : public RegionItem
 {
 public:
-	explicit BoundRegion(const QGraphicsObject &boundItem, const QString &boundId, QGraphicsItem *parent = 0);
+	explicit BoundRegion(const QGraphicsObject &boundItem, const QString &boundId, QGraphicsItem *parent = nullptr);
 
 	/// Returns a width of the stripe on which region item wider than item it is bound to.
 	int stroke() const;

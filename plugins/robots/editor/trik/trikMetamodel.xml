@@ -344,7 +344,24 @@
 						<parent parentName="AbstractNode"/>
 					</generalizations>
 				</logic>
-			</node>
+			</node><node displayedName="Disable Video Streaming" name="TrikStopVideoStreaming" description="Disables video stream on robot.">
+			<graphics>
+				<picture sizex="50" sizey="50">
+					<image y1="0" name="images/stopVideoStreamingBlock.svg" x1="0" y2="50" x2="50"/>
+				</picture>
+				<labels>
+					<label x="-25" y="60" text="Disable Video Streaming" background="white"/>
+				</labels>
+				<nonResizeable/>
+			</graphics>
+			<logic>
+				<properties>
+				</properties>
+				<generalizations>
+					<parent parentName="AbstractNode"/>
+				</generalizations>
+			</logic>
+		</node>
 			<node displayedName="Initialize Videocamera" name="TrikInitCamera" description="Enables line or object or color detector by videocamera and draws videostream on the robot`s screen.">
 				<graphics>
 					<picture sizex="50" sizey="50">
@@ -353,6 +370,31 @@
 					<labels>
 						<label x="40" y="-35" textBinded="Mode" hard="true" background="white" prefix="Mode:"/>
 						<label x="-25" y="60" text="Initialize Videocamera" background="white"/>
+					</labels>
+					<nonResizeable/>
+				</graphics>
+				<logic>
+					<properties>
+						<property displayedName="Mode" type="VideoSensor" name="Mode">
+							<default>line</default>
+						</property>
+						<property displayedName="Draw stream" type="Bool" name="DrawStream">
+							<default>true</default>
+						</property>
+					</properties>
+					<generalizations>
+						<parent parentName="AbstractNode"/>
+					</generalizations>
+				</logic>
+			</node>
+			<node displayedName="Stop Videocamera" name="TrikStopCamera" description="Stops line or object or color detector by videocamera.">
+				<graphics>
+					<picture sizex="50" sizey="50">
+						<image y1="0" name="images/stopCameraBlock.svg" x1="0" y2="50" x2="50"/>
+					</picture>
+					<labels>
+						<label x="40" y="-35" textBinded="Mode" hard="true" background="white" prefix="Mode:"/>
+						<label x="-25" y="60" text="Stop Videocamera" background="white"/>
 					</labels>
 					<nonResizeable/>
 				</graphics>
@@ -1258,9 +1300,11 @@
 				<element name="TrikLed" />
 				<element name="TrikSystem" />
 				<element name="TrikInitCamera" />
+				<element name="TrikStopCamera" />
 				<element name="TrikDetect" />
 				<element name="TrikDetectorToVariable" />
 				<element name="TrikInitVideoStreaming" />
+				<element name="TrikStopVideoStreaming" />
 				<element name="TrikSendMessage" />
 				<element name="TrikWriteToFile"/>
 				<element name="TrikRemoveFile"/>

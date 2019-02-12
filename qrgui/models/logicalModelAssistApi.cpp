@@ -218,7 +218,7 @@ void LogicalModelAssistApi::removeReferencesTo(const Id &id)
 {
 	IdList backReferences = mLogicalModel.api().property(id, "backReferences").value<IdList>();
 
-	foreach (const Id &reference, backReferences) {
+	for (const Id &reference : backReferences) {
 		mLogicalModel.api().removeBackReference(id, reference);
 		removeReference(reference, id);
 	}
@@ -228,10 +228,10 @@ void LogicalModelAssistApi::removeReferencesFrom(const Id &id)
 {
 	QStringList referenceProperties = mModelsAssistApi.editorManagerInterface().referenceProperties(id.type());
 
-	foreach (const QString &property, referenceProperties) {
+	for (const QString &property : referenceProperties) {
 		QStringList propertyValue = mLogicalModel.api().property(id, property).toString().split(','
 				, QString::SkipEmptyParts);
-		foreach (const QString &value, propertyValue) {
+		for (const QString &value : propertyValue) {
 			Id idValue = Id::loadFromString(value);
 			mLogicalModel.api().removeBackReference(idValue, id);
 		}
@@ -242,7 +242,7 @@ void LogicalModelAssistApi::removeReference(const Id &id, const Id &reference)
 {
 	QStringList referenceProperties = mModelsAssistApi.editorManagerInterface().referenceProperties(id.type());
 
-	foreach (const QString &propertyName, referenceProperties) {
+	for (const QString &propertyName : referenceProperties) {
 		QStringList stringData = mLogicalModel.api().property(id, propertyName).toString().split(','
 				, QString::SkipEmptyParts);
 		stringData.removeAll(reference.toString());

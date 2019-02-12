@@ -25,7 +25,7 @@ namespace semantics {
 class ROBOTS_GENERATOR_EXPORT NonZoneNode : public SemanticNode
 {
 public:
-	explicit NonZoneNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit NonZoneNode(const qReal::Id &idBinded, QObject *parent = nullptr);
 
 	/// Returns zone to which this node belongs to
 	ZoneNode *parentZone() const;

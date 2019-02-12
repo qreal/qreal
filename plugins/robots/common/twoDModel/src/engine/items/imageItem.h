@@ -41,7 +41,7 @@ public:
 
 	QRectF boundingRect() const override;
 	QRectF calcNecessaryBoundingRect() const override;
-	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 
 	QDomElement serialize(QDomElement &parent) const override;
 	void deserialize(const QDomElement &element) override;

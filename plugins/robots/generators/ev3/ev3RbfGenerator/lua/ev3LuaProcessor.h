@@ -37,7 +37,7 @@ public:
 	Ev3LuaProcessor(qReal::ErrorReporterInterface &errorReporter
 			, qrtext::LanguageToolboxInterface &textLanguage
 			, const utils::ParserErrorReporter &parserErrorReporter
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	~Ev3LuaProcessor() override;
 

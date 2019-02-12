@@ -99,7 +99,7 @@ private:
 		SquarePos minPos;
 		if (!key.isEmpty())
 			minPos = key.at(0);
-		foreach (SquarePos pos, key) {
+		for (SquarePos pos : key) {
 			if (pos.first < minPos.first || (pos.first == minPos.first
 											 && pos.second < minPos.second))
 				minPos = pos;

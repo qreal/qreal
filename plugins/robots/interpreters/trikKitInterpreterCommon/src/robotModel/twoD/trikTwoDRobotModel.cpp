@@ -83,7 +83,7 @@ robotParts::Device *TrikTwoDRobotModel::createDevice(const PortInfo &port, const
 		parts::Shell * const shell = new parts::Shell(deviceInfo, port, *engine());
 		// Error reporter will come only after global plugin init() is called. Shell is however
 		// configured even later. So setting error reporter only when everything will be ready.
-		connect(shell, &parts::Shell::configured, [=]() { shell->setErrorReporter(*mErrorReporter); });
+		connect(shell, &parts::Shell::configured, this, [=]() { shell->setErrorReporter(*mErrorReporter); });
 		return shell;
 	}
 

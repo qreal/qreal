@@ -32,7 +32,7 @@ class NxtDisplayWidget : public twoDModel::engine::TwoDModelDisplayWidget
 	Q_OBJECT
 
 public:
-	explicit NxtDisplayWidget(QWidget *parent = 0);
+	explicit NxtDisplayWidget(QWidget *parent = nullptr);
 	~NxtDisplayWidget();
 
 	void setPainter(qReal::ui::PainterInterface *painter) override;

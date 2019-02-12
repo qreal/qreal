@@ -37,7 +37,7 @@ public:
 	QPainterPath shape() const override;
 	QRectF boundingRect() const override;
 
-	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void drawItem(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
 	void drawExtractionForItem(QPainter *painter) override;
 
 	void resizeItem(QGraphicsSceneMouseEvent *event) override;
@@ -49,7 +49,7 @@ private:
 	class Marker : public QGraphicsObject
 	{
 	public:
-		explicit Marker(QGraphicsItem *parent = 0);
+		explicit Marker(QGraphicsItem *parent = nullptr);
 		QRectF boundingRect() const override;
 
 	private:

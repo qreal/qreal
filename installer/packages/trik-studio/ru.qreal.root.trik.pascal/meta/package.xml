@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <Package>
     <DisplayName>Pascal generator</DisplayName>
-    <DisplayName xml:lang="ru_ru">Генератор в Паскаль</DisplayName>
+    <DisplayName xml:lang="ru_ru">Генератор в Pascal</DisplayName>
     <Description>Install it for working with Pascal (PascalABC.NET dialect) in TRIK Studio</Description>
     <Description xml:lang="ru_ru">Установите это для работы с конструктором ТРИК на языке Паскаль (с помощью PascalABC.NET, который надо установить отдельно)</Description>
     <Dependencies>ru.qreal.root.trik.core</Dependencies>

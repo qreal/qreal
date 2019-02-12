@@ -25,7 +25,7 @@ namespace semantics {
 class ROBOTS_GENERATOR_EXPORT JoinNode : public NonZoneNode
 {
 public:
-	explicit JoinNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit JoinNode(const qReal::Id &idBinded, QObject *parent = nullptr);
 
 	/// Sets a main thread for this join (the one which will continue execution after join).
 	void setThreadId(const QString &threadId);

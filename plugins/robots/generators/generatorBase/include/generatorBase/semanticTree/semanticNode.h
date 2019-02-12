@@ -49,7 +49,7 @@ public:
 	SemanticNode *findNodeFor(const qReal::Id &id);
 
 protected:
-	explicit SemanticNode(const qReal::Id &idBinded = qReal::Id(), QObject *parent = 0);
+	explicit SemanticNode(const qReal::Id &idBinded = qReal::Id(), QObject *parent = nullptr);
 
 	virtual QLinkedList<SemanticNode *> children() const = 0;
 

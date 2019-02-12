@@ -29,7 +29,7 @@ class Ruler : public QFrame
 	Q_PROPERTY(Qt::Orientation orientation READ orientation WRITE setOrientation)
 
 public:
-	explicit Ruler(QWidget *parent = 0);
+	explicit Ruler(QWidget *parent = nullptr);
 	~Ruler();
 
 	/// Returns the orientation of this ruler.

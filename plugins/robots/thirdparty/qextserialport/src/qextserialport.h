@@ -178,9 +178,9 @@ public:
         EventDriven
     };
 
-    explicit QextSerialPort(QueryMode mode = EventDriven, QObject *parent = 0);
-    explicit QextSerialPort(const QString &name, QueryMode mode = EventDriven, QObject *parent = 0);
-    explicit QextSerialPort(const PortSettings &s, QueryMode mode = EventDriven, QObject *parent = 0);
+    explicit QextSerialPort(QueryMode mode = EventDriven, QObject *parent = nullptr);
+    explicit QextSerialPort(const QString &name, QueryMode mode = EventDriven, QObject *parent = nullptr);
+    explicit QextSerialPort(const PortSettings &s, QueryMode mode = EventDriven, QObject *parent = nullptr);
     QextSerialPort(const QString &name, const PortSettings &s, QueryMode mode = EventDriven, QObject *parent=0);
 
     ~QextSerialPort();

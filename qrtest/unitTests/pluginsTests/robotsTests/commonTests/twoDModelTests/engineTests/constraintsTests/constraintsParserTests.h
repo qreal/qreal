@@ -77,7 +77,7 @@ public:
 
 protected:
 	void SetUp() override;
-
+	~ConstraintsParserTests();
 	twoDModel::constraints::details::Events mEvents;
 	twoDModel::constraints::details::Variables mVariables;
 	twoDModel::constraints::details::Objects mObjects;

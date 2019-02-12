@@ -17,6 +17,7 @@
 #include <generatorBase/generatorCustomizer.h>
 
 using namespace trik::simple;
+using namespace generatorBase::simple;
 
 InitCameraGenerator::InitCameraGenerator(const qrRepo::RepoApi &repo
 		, generatorBase::GeneratorCustomizer &customizer
@@ -24,7 +25,9 @@ InitCameraGenerator::InitCameraGenerator(const qrRepo::RepoApi &repo
 		, QObject *parent)
 	: BindingGenerator(repo, customizer, id
 			, "videosensors/init" + repo.property(id, "Mode").toString() + "Sensor.t"
-			, {}
+			, { Binding::createConverting("@@DRAW@@"
+						, "DrawStream", customizer.factory()->boolPropertyConverter(id, "DrawStream", false))
+			}
 			, parent)
 {
 }

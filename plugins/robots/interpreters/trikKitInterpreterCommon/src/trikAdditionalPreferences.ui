@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>53</height>
+    <width>357</width>
+    <height>434</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,8 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="qReal::ui::ImagePicker" name="robotImagePicker">
-    </widget>
+    <widget class="qReal::ui::ImagePicker" name="robotImagePicker" native="true"/>
    </item>
    <item>
     <widget class="QGroupBox" name="tcpSettingsGroupBox">
@@ -41,6 +40,89 @@
         <property name="placeholderText">
          <string>Enter robot IP-address here</string>
         </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="multimediaSettingsGroupBox">
+     <property name="title">
+      <string>Multimedia Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="realCameraCheckBox">
+        <property name="text">
+         <string>Use real camera</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QFrame" name="realCameraFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="cameraNamelabel">
+           <property name="text">
+            <string>Camera:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="cameraNameLineEdit"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QFrame" name="simulatedCameraFrame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QCheckBox" name="imagesFromProjectCheckBox">
+           <property name="text">
+            <string>Use images from project</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QGroupBox" name="imagesFromDiskFrame">
+           <property name="title">
+            <string>Images:</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="0" column="1">
+             <widget class="QPushButton" name="browseImagesPathButton">
+              <property name="text">
+               <string>Browse...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLineEdit" name="imagesPathlineEdit"/>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QPushButton" name="packImagesPushButton">
+              <property name="text">
+               <string>Pack images to project</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

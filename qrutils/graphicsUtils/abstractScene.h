@@ -28,7 +28,7 @@ class QRUTILS_EXPORT AbstractScene : public QGraphicsScene
 	Q_OBJECT
 
 public:
-	explicit AbstractScene(AbstractView *view, QObject *parent = 0);
+	explicit AbstractScene(AbstractView *view, QObject *parent = nullptr);
 	graphicsUtils::AbstractView *mainView();
 	QRect realItemsBoundingRect() const;
 

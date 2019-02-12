@@ -33,7 +33,7 @@ public:
 	virtual void setIsDynamicText(bool isDynamic);
 	virtual QRectF boundingRect() const;
 	virtual QRectF realBoundingRect() const;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);

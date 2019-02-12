@@ -70,7 +70,7 @@ GraphicType::GraphicType(Diagram *diagram)
 
 GraphicType::~GraphicType()
 {
-	foreach (Label *label, mLabels) {
+	for (Label *label : mLabels) {
 		delete label;
 	}
 }

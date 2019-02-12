@@ -37,7 +37,7 @@ public:
 	/// @param editorManagerProxy Editor manager.
 	explicit EdgePropertiesDialog(const Id &diagram
 			, const EditorManagerInterface &editorManagerProxy
-			, QWidget *parent = 0);
+			, QWidget *parent = nullptr);
 
 	/// Destructor.
 	~EdgePropertiesDialog();

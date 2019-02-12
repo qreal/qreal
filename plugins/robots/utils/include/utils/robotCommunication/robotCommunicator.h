@@ -30,7 +30,7 @@ class ROBOTS_UTILS_EXPORT RobotCommunicator : public QObject
 	Q_OBJECT
 
 public:
-	explicit RobotCommunicator(QObject *parent = 0);
+	explicit RobotCommunicator(QObject *parent = nullptr);
 	~RobotCommunicator();
 
 	void send(QObject *addressee, const QByteArray &buffer, const unsigned responseSize);

@@ -65,7 +65,7 @@ private:
 class LambdaListener0 : public AbstractListener
 {
 public:
-	LambdaListener0(std::function<void()> const & lambda, QObject *owner = 0)
+	LambdaListener0(std::function<void()> const & lambda, QObject *owner = nullptr)
 		: mLambda(lambda)
 		, mOwner(owner)
 	{
@@ -118,7 +118,7 @@ template <typename Type>
 class LambdaListener1 : public AbstractListener
 {
 public:
-	LambdaListener1(std::function<void(Type)> lambda, QObject *owner = 0)
+	LambdaListener1(std::function<void(Type)> lambda, QObject *owner = nullptr)
 		: mLambda(lambda)
 		, mOwner(owner)
 	{

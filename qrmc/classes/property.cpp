@@ -39,14 +39,14 @@ bool Property::init()
 		return false;
 	} else {
 		const qReal::IdList listOfEnums = mApi.elementsByType("MetaEntityEnum");
-		foreach (const qReal::Id enumElement, listOfEnums) {
+		for (const qReal::Id enumElement : listOfEnums) {
 			const QString nameOfEnumElement = mApi.name(enumElement);
 			if (nameOfEnumElement == mType) {
 				mIsEnum = true;
 			}
 		}
 		const qReal::IdList listOfNodes = mApi.elementsByType("MetaEntityNode");
-		foreach (const qReal::Id nodeElement, listOfNodes) {
+		for (const qReal::Id nodeElement : listOfNodes) {
 			const QString nameOfNodeElement = mApi.name(nodeElement);
 			if (nameOfNodeElement == mType) {
 				mIsReference = true;

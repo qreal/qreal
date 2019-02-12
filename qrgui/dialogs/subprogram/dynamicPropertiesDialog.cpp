@@ -50,6 +50,17 @@ DynamicPropertiesDialog::DynamicPropertiesDialog(const qReal::Id &id
 	mUi->labels->setColumnCount(4);
 	mUi->labels->setHorizontalHeaderLabels({tr("Name"), tr("Type"), tr("Value"), ""});
 	mUi->labels->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	connect(mUi->labels, &QTableWidget::cellChanged, this, [&](int row, int col){
+		if (col != 0) {
+			return;
+		}
+
+		QString text = mUi->labels->item(row, col)->text();
+		if (text.size() > 0 && text.at(0).isUpper()) {
+			text[0] = text[0].toLower();
+			mUi->labels->item(row, col)->setText(text);
+		}
+	});
 
 	if (hideLabels) {
 		mUi->labels->hide();
@@ -122,7 +133,7 @@ void DynamicPropertiesDialog::addLabelButtonClicked()
 	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
 	QComboBox *types = new QComboBox(this);
-	types->addItems({"int", "bool", "string"});
+	types->addItems({"int", "float", "bool", "string"});
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);
 }
@@ -131,6 +142,10 @@ QString DynamicPropertiesDialog::defaultLabelValue(const QString &type) const
 {
 	if (type == "int") {
 		return "0";
+	}
+
+	if (type == "float") {
+		return "0.0";
 	}
 
 	if (type == "string") {
@@ -153,6 +168,20 @@ void DynamicPropertiesDialog::saveButtonClicked()
 	}
 
 	const QString localStringPropertyName = mLogicalRepoApi.mutableLogicalRepoApi().stringProperty(mId, "name");
+
+	QSet<QString> uniqueNames;
+	QMultiMap<Id, Id> localExplosions = mExploser.explosions(mId);
+	for (const Id &id : localExplosions.values()) {
+		if (id != mId) {
+			uniqueNames.insert(mLogicalRepoApi.name(id));
+		}
+	}
+
+	if (uniqueNames.contains(mUi->subprogramName->text())) {
+		QMessageBox::critical(this, tr("Error"), tr("There is already a subprogram with that name"));
+		return;
+	}
+
 	auto command = new commands::ChangePropertyCommand(
 			&mLogicalRepoApi.mutableLogicalRepoApi()
 			, "name"
@@ -195,7 +224,7 @@ void DynamicPropertiesDialog::saveButtonClicked()
 		const QString type = qobject_cast<QComboBox *>(mUi->labels->cellWidget(i, 1))->currentText();
 		const QString value = type == "bool"
 				? qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 2))->currentText()
-				: mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
+				: mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : QString();
 
 		QDomElement label = dynamicLabels.createElement("label");
 		label.setAttribute("x", x);
@@ -336,18 +365,28 @@ QString DynamicPropertiesDialog::tryToSave() const
 	for (int i = 0; i < rowCount; ++i) {
 		// Return false if "Name" not filled
 		if (!mUi->labels->item(i, 0) || mUi->labels->item(i, 0)->text().isEmpty()) {
-			return tr("Name is not filled in row %1").arg(i);
+			return tr("Name is not filled in row %1").arg(i + 1);
+		}
+
+		// Return false if "Name" starts with digit
+		if (!mUi->labels->item(i, 0) || not mUi->labels->item(i, 0)->text().at(0).isLower()) {
+			return tr("Name should start with a lowercase letter(row %1)").arg(i + 1);
 		}
 
 		const QString type = qobject_cast<QComboBox*>(mUi->labels->cellWidget(i, 1))->currentText();
-		if (type == "int") {
-			QString value = mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
-			if (!value.isEmpty()) {
-				bool ok;
+		QString value = mUi->labels->item(i, 2) ? mUi->labels->item(i, 2)->text() : "";
+		if (!value.isEmpty()) {
+			bool ok;
+			if (type == "int") {
 				value.toInt(&ok);
 				// Return false if "int" value isn't int
 				if (!ok) {
 					return tr("Value in row %1 is not integer").arg(i + 1);
+				}
+			} else if (type == "float") {
+				value.toDouble(&ok);
+				if (!ok) {
+					return tr("Value in row %1 is not float").arg(i + 1);
 				}
 			}
 		}
@@ -372,7 +411,7 @@ void DynamicPropertiesDialog::addLabel(const QString &name, const QString &type,
 	connect(button, &QPushButton::clicked, this, &DynamicPropertiesDialog::deleteButtonClicked);
 
 	QComboBox *types = new QComboBox(this);
-	types->addItems({"int", "bool", "string"});
+	types->addItems({"int", "float", "bool", "string"});
 	types->setCurrentText(type);
 	mUi->labels->setCellWidget(rowCount, 1, types);
 	connect(types, &QComboBox::currentTextChanged, this, &DynamicPropertiesDialog::typeChanged);

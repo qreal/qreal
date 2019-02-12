@@ -17,13 +17,17 @@ TEMPLATE = subdirs
 include(../../../../global.pri)
 
 win32 {
-	copyToDestdir(python27.dll, NOW)
 	copyToDestdir(python35.dll, NOW)
+	copyToDestdir(python36.dll, NOW)
+	copyToDestdir(vcruntime140.dll, NOW) # python deps
 }
 
-macx {
-	copyToDestdir(libpython27.dylib, NOW)
-}
+# todo check and add appropriate libs!!!
+#macx {
+#}
+#
+#linux {
+#}
 
 CONFIG(clang) {
 	QMAKE_CXXFLAGS += -Wno-error=zero-length-array -Wno-error=vla-extension

@@ -39,6 +39,7 @@ RobotsPluginFacade::RobotsPluginFacade()
 	, mActionsManager(mKitPluginManager, mRobotModelManager)
 	, mDockDevicesConfigurer(nullptr)
 	, mGraphicsWatcherManager(nullptr)
+	, mPaletteUpdateManager(nullptr)
 {
 	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged
 			, &mActionsManager, &ActionsManager::onRobotModelChanged);
@@ -143,7 +144,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 
 	connectEventsForKitPlugin();
 
-	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered
+	connect(&mActionsManager.robotSettingsAction(), &QAction::triggered, this
 			, [=] () { configurer.mainWindowInterpretersInterface().openSettingsDialog(tr("Robots")); });
 
 	connect(&configurer.systemEvents(), &qReal::SystemEvents::activeTabChanged
@@ -152,7 +153,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	// Just to capture them, not configurer.
 	qReal::ProjectManagementInterface &projectManager = configurer.projectManager();
 	qReal::GraphicalModelAssistInterface &graphicalModel = configurer.graphicalModelApi();
-	connect(&mActionsManager.homeAction(), &QAction::triggered, [&projectManager, &graphicalModel, this]() {
+	connect(&mActionsManager.homeAction(), &QAction::triggered, this, [&projectManager, &graphicalModel, this]() {
 		if (projectManager.somethingOpened()) {
 			for (const qReal::Id &diagram : graphicalModel.children(qReal::Id::rootId())) {
 				if (diagram.type() == qReal::Id("RobotsMetamodel", "RobotsDiagram", "RobotsDiagramNode")) {
@@ -188,7 +189,7 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 				}
 			});
 
-	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered, [this] () {
+	connect(&mActionsManager.exportExerciseAction(), &QAction::triggered, this, [this] () {
 		if (!mSaveAsTaskManager->save()) {
 			mMainWindow->errorReporter()
 					->addError(tr("Cannot export exercise to the given location (try to change location)"));
@@ -200,16 +201,18 @@ void RobotsPluginFacade::init(const qReal::PluginConfigurator &configurer)
 	mProjectManager = &configurer.projectManager();
 	connect(mProjectManager
 			, &qReal::ProjectManagementInterface::afterOpen
-			, [&](const QString &path){
+			, this
+			, [=](const QString &path){
 		auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
 		const QString code = logicalRepo->metaInformation("activeCode").toString();
-		const QString name = logicalRepo->metaInformation("activeCodeName").toString();
+		const QString name = "lastSavedCode";
+		const QString extension = logicalRepo->metaInformation("activeCodeLanguageExtension").toString();
 		if (code.isEmpty() || name.isEmpty() || path.isEmpty()) {
 			return;
 		}
 
 		QFileInfo codeDir(path);
-		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + ".js")); // absoluteDir?
+		QFileInfo codePath(codeDir.dir().absoluteFilePath(name + '.' + extension)); // absoluteDir?
 		bool success = false;
 		utils::OutFile out(codePath.filePath(), &success);
 		if (success) {
@@ -286,21 +289,21 @@ bool RobotsPluginFacade::interpretCode(const QString &inputs)
 {
 	auto logicalRepo = &mLogicalModelApi->logicalRepoApi();
 	QString code = logicalRepo->metaInformation("activeCode").toString();
-	QString name = logicalRepo->metaInformation("activeCodeName").toString();//not needed?
-	if (code.isEmpty() || name.isEmpty()) {
-		mMainWindow->errorReporter()->addError(tr("No saved js code found in the qrs file"));
+	QString extension = logicalRepo->metaInformation("activeCodeLanguageExtension").toString();
+	if (code.isEmpty()) {
+		mMainWindow->errorReporter()->addError(tr("No saved code found in the qrs file"));
 		return false;
 	}
 
-	emit mEventsForKitPlugin.interpretCode(code, inputs);
+	emit mEventsForKitPlugin.interpretCode(code, inputs, extension);
 	return true;
 }
 
-void RobotsPluginFacade::saveCode(const QString &code)
+void RobotsPluginFacade::saveCode(const QString &code, const QString &languageExtension)
 {
 	auto logicalRepo = &mLogicalModelApi->mutableLogicalRepoApi();
 	logicalRepo->setMetaInformation("activeCode", code);
-	logicalRepo->setMetaInformation("activeCodeName", "script");  // no concise name for now
+	logicalRepo->setMetaInformation("activeCodeLanguageExtension", languageExtension);
 	mProjectManager->setUnsavedIndicator(true);
 }
 
@@ -336,7 +339,9 @@ bool RobotsPluginFacade::selectKit()
 	if (selectedKit.isEmpty() && !mKitPluginManager.kitIds().isEmpty()) {
 		qReal::SettingsManager::setValue("SelectedRobotKit", mKitPluginManager.kitIds()[0]);
 	} else if (mKitPluginManager.kitIds().isEmpty()) {
-		mPaletteUpdateManager->disableAll();
+		if (mPaletteUpdateManager) {
+			mPaletteUpdateManager->disableAll();
+		}
 
 		/// @todo Correctly handle unselected kit.
 		return false;
@@ -356,7 +361,7 @@ void RobotsPluginFacade::initSensorWidgets()
 
 	auto hideVariables = [=]() { mWatchListWindow->hideVariables(mParser->hiddenVariables()); };
 	hideVariables();
-	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, hideVariables);
+	connect(&mRobotModelManager, &RobotModelManager::robotModelChanged, this, hideVariables);
 
 	mGraphicsWatcherManager = new GraphicsWatcherManager(*mParser, mRobotModelManager, this);
 	connect(&mProxyInterpreter, &kitBase::InterpreterInterface::started

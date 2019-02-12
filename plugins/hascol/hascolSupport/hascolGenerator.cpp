@@ -35,7 +35,7 @@ void HascolGenerator::generate()
 	Id const repoId = Id::rootId();
 	IdList const rootDiagrams = mApi.children(repoId);
 
-	foreach (Id const &diagram, rootDiagrams) {
+	for (Id const &diagram : rootDiagrams) {
 		if (diagram.element() == "HascolPortMappingDiagram") {
 			mPortMappingDiagrams.append(diagram);
 		} else if (diagram.element() == "HascolActivityDiagram") {
@@ -43,7 +43,7 @@ void HascolGenerator::generate()
 		}
 	}
 
-	foreach (Id const &diagram, rootDiagrams) {
+	for (Id const &diagram : rootDiagrams) {
 		if (diagram.element() == "HascolStructureDiagram") {
 			generateDiagram(diagram);
 		}
@@ -61,7 +61,7 @@ void HascolGenerator::generateDiagram(Id const &id)
 	out() << "using bincompl;\n";  // Default signature, defines common types and operations
 	out() << "\n";
 
-	foreach (Id const &element, mApi.children(id)) {
+	for (Id const &element : mApi.children(id)) {
 		if (element.element() == "Process" && !mApi.name(element).isEmpty()) {
 			generateProcess(element, out);
 			out() << "\n";
@@ -82,14 +82,14 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 {
 	out() << "begin\n";
 
-	foreach (Id const &child, mApi.children(id)) {
+	for (Id const &child : mApi.children(id)) {
 		if (child.element() == "ProcessOperation") {
 			generateProcessOperation(child, out);
 		}
 	}
 
 	bool firstResource = true;
-	foreach (Id const &child, mApi.children(id)) {
+	for (Id const &child : mApi.children(id)) {
 		if (child.element() == "Resource") {
 			if (firstResource) {
 				out() << "data\n";
@@ -104,13 +104,13 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		out() << ";\n";
 	}
 
-	foreach (Id const &child, mApi.children(id)) {
+	for (Id const &child : mApi.children(id)) {
 		if (child.element() == "LetBinding") {
 			generateLetBinding(child, out);
 		}
 	}
 
-	foreach (Id const &link, mApi.incomingLinks(id)) {
+	for (Id const &link : mApi.incomingLinks(id)) {
 		if (link.element() == "UsedProcessRelation") {
 			Id const usedProcess = mApi.otherEntityFromLink(link, id);
 			out() << "process " << mApi.name(link) << " = " << mApi.name(usedProcess) << ";\n";
@@ -122,13 +122,13 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 		}
 	}
 
-	foreach (Id const &activity, mActivityDiagrams) {
+	for (Id const &activity : mActivityDiagrams) {
 		if (mApi.name(activity) == mApi.name(id)) {
 			generateActivity(activity, out);
 		}
 	}
 
-	foreach (Id const &portMap, mPortMappingDiagrams) {
+	for (Id const &portMap : mPortMappingDiagrams) {
 		if (mApi.name(portMap) == mApi.name(id)) {
 			generatePortMap(portMap, out);
 		}
@@ -139,15 +139,15 @@ void HascolGenerator::generateProcessTypeBody(Id const &id, utils::OutFile &out)
 
 void HascolGenerator::generatePortMap(Id const &id, utils::OutFile &out)
 {
-	foreach (Id const &child, mApi.children(id)) {
+	for (Id const &child : mApi.children(id)) {
 		if (child.element() == "ProcessInstance" || child.element() == "FunctorInstance") {
-			foreach (Id const &instanceChild, mApi.children(child)) {
+			for (Id const &instanceChild : mApi.children(child)) {
 				if (instanceChild.element() == "ProcessInstance"
 						|| instanceChild.element() == "ProcessInstance")
 				{
 					out() << "process " << mApi.name(instanceChild).replace(":", "=") << " with\n";
 					bool first = true;
-					foreach (Id const &port, mApi.children(instanceChild)) {
+					for (Id const &port : mApi.children(instanceChild)) {
 						if (port.element() == "Port") {
 							if (mApi.links(port).isEmpty()) {
 								mErrorReporter.addWarning("Port without connections", port);
@@ -191,7 +191,7 @@ void HascolGenerator::generateFunctor(Id const &id, OutFile &out)
 {
 	out() << "process " << mApi.name(id) << " (\n";
 
-	foreach (Id const &child, mApi.children(id)) {
+	for (Id const &child : mApi.children(id)) {
 		if (child.element() == "FunctorFormalParameter") {
 			generateFunctorFormalParameter(child, out);
 		}
@@ -235,7 +235,7 @@ void HascolGenerator::generateResource(Id const &id, bool first, OutFile &out)
 
 void HascolGenerator::generateActivity(Id const &id, utils::OutFile &out)
 {
-	foreach (Id const &element, mApi.children(id)) {
+	for (Id const &element : mApi.children(id)) {
 		if (element.element() == "Group") {
 			out() << "group {\n";
 			generateActivity(element, out);
@@ -270,7 +270,7 @@ Id HascolGenerator::generateChain(Id const &startNode, utils::OutFile &out)
 			generateActivityNode(currentId, out);
 			Id chainEndId;
 			bool wasOutgoingLink = false;
-			foreach (Id const &linkId, mApi.outgoingLinks(currentId)) {
+			for (Id const &linkId : mApi.outgoingLinks(currentId)) {
 				if (wasOutgoingLink) {
 					out() << "|\n";
 				}

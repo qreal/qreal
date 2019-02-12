@@ -22,11 +22,11 @@
 class PointPort : public Item
 {
 public:
-	PointPort(qreal x, qreal y, Item *parent = 0);
+	PointPort(qreal x, qreal y, Item *parent = nullptr);
 	PointPort(const PointPort &other);
 	virtual Item* clone();
 	virtual QRectF boundingRect() const;
-	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
+	virtual void drawItem(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = nullptr);
 	virtual void drawExtractionForItem(QPainter* painter);
 	virtual void drawFieldForResizeItem(QPainter* painter);
 	virtual void drawScalingRects(QPainter* painter);

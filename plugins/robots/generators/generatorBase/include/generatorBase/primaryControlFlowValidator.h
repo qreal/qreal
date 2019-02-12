@@ -37,7 +37,7 @@ public:
 	PrimaryControlFlowValidator(const qrRepo::RepoApi &repo
 			, qReal::ErrorReporterInterface &errorReporter
 			, GeneratorCustomizer &customizer
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Validates given diagram assuming that execution of the diagram starts in a thread with given id.
 	virtual bool validate(const qReal::Id &diagramId, const QString &threadId);

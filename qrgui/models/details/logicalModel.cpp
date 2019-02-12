@@ -52,7 +52,7 @@ void LogicalModel::init()
 
 void LogicalModel::loadSubtreeFromClient(LogicalModelItem * const parent)
 {
-	foreach (Id childId, mApi.children(parent->id())) {
+	for (Id childId : mApi.children(parent->id())) {
 		if (mApi.isLogicalElement(childId)) {
 			LogicalModelItem *child = loadElement(parent, childId);
 			loadSubtreeFromClient(child);
@@ -88,14 +88,14 @@ void LogicalModel::addInsufficientProperties(const Id &id, const QString &name)
 	standardProperties.insert("links", IdListHelper::toVariant(IdList()));
 	standardProperties.insert("outgoingExplosion", Id().toVariant());
 	standardProperties.insert("incomingExplosions", IdListHelper::toVariant(IdList()));
-	foreach (const QString &property, standardProperties.keys()) {
+	for (const QString &property : standardProperties.keys()) {
 		if (!mApi.hasProperty(id, property)) {
 			mApi.setProperty(id, property, standardProperties[property]);
 		}
 	}
 
 	const QStringList properties = mEditorManagerInterface.propertyNames(id.type());
-	foreach (const QString &property, properties) {
+	for (const QString &property : properties) {
 		// for those properties that doesn't have default values, plugin will return empty string
 		if (!mApi.hasProperty(id, property)) {
 			mApi.setProperty(id, property, mEditorManagerInterface.defaultPropertyValue(id, property));

@@ -28,7 +28,7 @@ class SemanticTree;
 class ROBOTS_GENERATOR_EXPORT ForkNode : public NonZoneNode
 {
 public:
-	explicit ForkNode(const qReal::Id &idBinded, QObject *parent = 0);
+	explicit ForkNode(const qReal::Id &idBinded, QObject *parent = nullptr);
 
 	/// Adds one more thread to this fork block.
 	void appendThread(const qReal::Id &thread, const QString &threadId);

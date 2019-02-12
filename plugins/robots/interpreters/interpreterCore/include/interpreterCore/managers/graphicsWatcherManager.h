@@ -35,7 +35,7 @@ public:
 	/// @param parent - parent of this widget in Qt widget hierarchy.
 	GraphicsWatcherManager(const qrtext::DebuggerInterface &parser
 			, RobotModelManager &robotManager
-			, QObject *parent = 0);
+			, QObject *parent = nullptr);
 
 	/// Returns the graphics watcher widget itself for placing it into dock. Takes ownership over result.
 	QWidget *widget();

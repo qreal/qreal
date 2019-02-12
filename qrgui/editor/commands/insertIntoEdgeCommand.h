@@ -36,7 +36,7 @@ public:
 			, const QPointF &scenePos
 			, const QPointF &shift
 			, bool isFromLogicalModel
-			, qReal::commands::CreateElementsCommand *createCommand = 0);
+			, qReal::commands::CreateElementsCommand *createCommand = nullptr);
 
 	~InsertIntoEdgeCommand();
 

@@ -29,7 +29,7 @@ public:
 			, qrRepo::LogicalRepoApi &logicalApi
 			, qReal::gui::MainWindowInterpretersInterface *mainWindow
 			, FindReplaceDialog *findReplaceDialog
-			, QObject *paresnt = 0);
+			, QObject *paresnt = nullptr);
 
 public slots:
 	/// handler for find dialog 'button find' pressed

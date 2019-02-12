@@ -29,7 +29,7 @@ class Palette : public QWidget
 	Q_OBJECT
 
 public:
-	explicit Palette(QWidget *parent = 0);
+	explicit Palette(QWidget *parent = nullptr);
 	~Palette();
 
 	/// Returns a pointer to 'none' tool that triggered when no other tool selected.
@@ -41,6 +41,9 @@ public slots:
 
 	/// Activates cursor action.
 	void unselect();
+
+	/// Sets size of tools in pallete.
+	void setSize(const QSize &size);
 
 private:
 	QScopedPointer<QAction> mCursorAction;

@@ -36,7 +36,7 @@ AbstractItem *StylusItem::clone() const
 {
 	const auto cloned = new StylusItem(x1(), y1());
 	AbstractItem::copyTo(cloned);
-	connect(this, &StylusItem::segmentAdded, [=](LineItem * const segment) {
+	connect(this, &StylusItem::segmentAdded, this, [=](LineItem * const segment) {
 		cloned->mAbstractListLine << segment->clone();
 		cloned->recalculateProperties();
 	});

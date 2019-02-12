@@ -27,7 +27,7 @@ TextHighlighter::TextHighlighter(QTextDocument *document): QSyntaxHighlighter(do
 	keywordPatterns << "\\bconst\\b" << "\\bdouble\\b" << "\\bint\\b" << "\\bvoid\\b"
 					<< "\\bwhile\\b" << "\\bif\\b" << "\\belse\\b"
 					<< "\\breturn\\b" << "\\bcontinue\\b" << "\\bbreak\\b"  ;
-	foreach (const QString &pattern, keywordPatterns) {
+	for (const QString &pattern : keywordPatterns) {
 		rule.pattern = QRegExp(pattern);
 		rule.format = mKeywordFormat;
 		mHighlightingRules.append(rule);
@@ -67,7 +67,7 @@ TextHighlighter::TextHighlighter(QTextDocument *document): QSyntaxHighlighter(do
 
 void TextHighlighter::highlightBlock(const QString &text)
 {
-	foreach (const HighlightingRule &rule, mHighlightingRules) {
+	for (const HighlightingRule &rule : mHighlightingRules) {
 		QRegExp expression(rule.pattern);
 		int index = expression.indexIn(text);
 		while (index >= 0) {
