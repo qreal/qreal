@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>umlCheckerForm</class>
+ <widget class="QWidget" name="umlCheckerForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>583</width>
+    <height>374</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Template Window</string>
+  </property>
+  <widget class="QWidget" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>19</x>
+     <y>19</y>
+     <width>251</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>-1</x>
+      <y>-1</y>
+      <width>261</width>
+      <height>321</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QListWidget" name="blockList">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="lineWidth">
+        <number>1</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QWidget" name="widget_2" native="true">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>19</y>
+     <width>291</width>
+     <height>311</height>
+    </rect>
+   </property>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>281</width>
+      <height>311</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QSplitter" name="splitter">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>340</y>
+     <width>398</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <widget class="QPushButton" name="addToCollection">
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Add to Collection</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>52</width>
+      <height>444</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="saveButton">
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Save</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cancelButton">
+    <property name="minimumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>130</width>
+      <height>25</height>
+     </size>
+    </property>
+    <property name="text">
+     <string>Cancel</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

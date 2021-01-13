@@ -1,4 +1,4 @@
-# Copyright 2007-2017 Julia Khramyshkina, QReal Research Group
+# Copyright 2015 Yurii Litvinov, QReal Research Group
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@
 
 TEMPLATE = subdirs
 
-SUBDIRS = \
-	editor \
-	umlCheckerSupport \
+include (common.pri)
+
+SUBDIRS += \
+	$$PWD/tools/umlChecker/umlChecker.pro \
 

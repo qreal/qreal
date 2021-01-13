@@ -1,0 +1,1 @@
+/home/julia/qreal/qreal/plugins/tools/umlChecker/test/twoClassesWithComp.qrs
